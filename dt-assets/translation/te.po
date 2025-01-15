@@ -3,11 +3,11 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
+"POT-Creation-Date: 2024-12-16T08:22:53+00:00\n"
 "PO-Revision-Date: 2024-10-17 03:00+0000\n"
 "Last-Translator: \"Venkataramana (Wesley)\" <venkataramana.m1@gmail.com>\n"
-"Language-Team: Telugu <https://translate.disciple.tools/projects/"
-"disciple-tools/disciple-tools-theme/te/>\n"
+"Language-Team: Telugu <https://translate.disciple.tools/projects/disciple-"
+"tools/disciple-tools-theme/te/>\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,8 +30,7 @@ msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 msgid ""
 "Disciple.Tools is a coalition management system for disciple making "
 "movements."
-msgstr ""
-"శిష్యుడు.సాధనాలు అనేది శిష్యత్వ తర్ఫీదు ఉద్యమానికి సంకీర్ణ నిర్వహణ వ్యవస్థ."
+msgstr "శిష్యుడు.సాధనాలు అనేది శిష్యత్వ తర్ఫీదు ఉద్యమానికి సంకీర్ణ నిర్వహణ వ్యవస్థ."
 
 #. Author URI of the theme
 #: style.css
@@ -65,8 +64,7 @@ msgstr "రికార్డ్ ప్రవేశాన్ని కోరం�
 #: 403.php:49
 msgid ""
 "Record owner to be notified of access request. Are you happy to proceed?"
-msgstr ""
-"ప్రవేశ అభ్యర్థన గురించి యజమానికి తెలియజేయమని రికార్డ్ చేయండి. మీరు కొనసాగడం సంతోషంగా ఉందా?"
+msgstr "ప్రవేశ అభ్యర్థన గురించి యజమానికి తెలియజేయమని రికార్డ్ చేయండి. మీరు కొనసాగడం సంతోషంగా ఉందా?"
 
 #: 403.php:52
 msgid "Submit Request"
@@ -250,8 +248,8 @@ msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
-"ప్రస్తుత ఫిల్టర్‌ని ఉపయోగించుట, ఇది ప్రాథమిక సమాచారాన్ని ఎగుమతి చేయడానికి మరియు ఇతర అప్లికేషన్‌లలో ఉపయోగించడానికి సులభమై"
-"న మార్గం."
+"ప్రస్తుత ఫిల్టర్‌ని ఉపయోగించుట, ఇది ప్రాథమిక సమాచారాన్ని ఎగుమతి చేయడానికి మరియు ఇతర అప్లికేషన్‌లలో "
+"ఉపయోగించడానికి సులభమైన మార్గం."
 
 #: archive-template.php:342
 msgid ""
@@ -262,11 +260,11 @@ msgid ""
 "provider. The BCC email tool is meant to assist small group emails. Bulk "
 "email should be handled through bulk email providers."
 msgstr ""
-"ప్రస్తుత ఫిల్టర్‌ని ఉపయోగించి, అందుబాటులో ఉన్న ఇమెయిల్‌లను 50 తో సమూహంగా చేయాలి మరియు సమూహం ద్వారా మీ డిఫాల్ట్ ఇమెయిల్ "
-"క్లయింట్‌లోకి ప్రారంభించబడతాయి. చాలా మంది ఇమెయిల్ ప్రొవైడర్లు BCC ఇమెయిల్‌లపై 50 పరిమితిని విధించారు. మీరు \"అన్నీ తెరువు\" "
-"బటన్‌ను ఉపయోగించి అన్ని సమూహాలను ఒకేసారి తెరవవచ్చు. జాబితా చాలా పెద్దదైతే, ఇది మీ ఇమెయిల్ ప్రొవైడర్‌ను హెచ్చరించవచ్చు. "
-"BCC ఇమెయిల్ సాధనం చిన్న సమూహ ఇమెయిల్‌లకు సహాయం చేయడానికి ఉద్దేశించబడింది. బల్క్ ఇమెయిల్ ను బల్క్ ఇమెయిల్ ప్రొవైడర్ల "
-"ద్వారా నిర్వహించాలి."
+"ప్రస్తుత ఫిల్టర్‌ని ఉపయోగించి, అందుబాటులో ఉన్న ఇమెయిల్‌లను 50 తో సమూహంగా చేయాలి మరియు సమూహం ద్వారా మీ "
+"డిఫాల్ట్ ఇమెయిల్ క్లయింట్‌లోకి ప్రారంభించబడతాయి. చాలా మంది ఇమెయిల్ ప్రొవైడర్లు BCC ఇమెయిల్‌లపై 50 పరిమితిని "
+"విధించారు. మీరు \"అన్నీ తెరువు\" బటన్‌ను ఉపయోగించి అన్ని సమూహాలను ఒకేసారి తెరవవచ్చు. జాబితా చాలా "
+"పెద్దదైతే, ఇది మీ ఇమెయిల్ ప్రొవైడర్‌ను హెచ్చరించవచ్చు. BCC ఇమెయిల్ సాధనం చిన్న సమూహ ఇమెయిల్‌లకు సహాయం "
+"చేయడానికి ఉద్దేశించబడింది. బల్క్ ఇమెయిల్ ను బల్క్ ఇమెయిల్ ప్రొవైడర్ల ద్వారా నిర్వహించాలి."
 
 #: archive-template.php:345
 msgid "Phone Number List"
@@ -278,16 +276,16 @@ msgid ""
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
-"ప్రస్తుత ఫిల్టర్‌ని ఉపయోగించాలి, ఇది మెసేజింగ్ యాప్, WhatsApp, సిగ్నల్ మొదలైన వాటిలో నంబర్‌ల జాబితాను కాపీ చేసి, పేస్ట్ "
-"చేయడానికి ఉద్దేశించబడింది. సమూహ సంభాషణను ప్రారంభించడానికి ఇది త్వరిత మార్గం."
+"ప్రస్తుత ఫిల్టర్‌ని ఉపయోగించాలి, ఇది మెసేజింగ్ యాప్, WhatsApp, సిగ్నల్ మొదలైన వాటిలో నంబర్‌ల జాబితాను కాపీ "
+"చేసి, పేస్ట్ చేయడానికి ఉద్దేశించబడింది. సమూహ సంభాషణను ప్రారంభించడానికి ఇది త్వరిత మార్గం."
 
 #: archive-template.php:350
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
-"ప్రస్తుత ఫిల్టర్‌ని ఉపయోగించాలి, ఇది జాబితా చేయబడిన వ్యక్తుల యొక్క తెలిసిన ప్రాంతాల యొక్క ప్రాథమిక పాయింట్ల మ్యాప్‌ను "
-"సృష్టిస్తుంది."
+"ప్రస్తుత ఫిల్టర్‌ని ఉపయోగించాలి, ఇది జాబితా చేయబడిన వ్యక్తుల యొక్క తెలిసిన ప్రాంతాల యొక్క ప్రాథమిక పాయింట్ల "
+"మ్యాప్‌ను సృష్టిస్తుంది."
 
 #: archive-template.php:376
 msgctxt "Contacts List"
@@ -357,8 +355,7 @@ msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "వినియోగదారులను శోధించండి"
 
-#: archive-template.php:594 dt-metrics/groups/tree.php:86
-#: dt-metrics/personal/group-tree.php:87 dt-metrics/records/genmap.php:148
+#: archive-template.php:594 dt-metrics/records/genmap.php:148
 #: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2777
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:127
@@ -453,8 +450,7 @@ msgstr "వీరికి సందేశ ప్రత్యుత్తరం"
 
 #: archive-template.php:817
 msgid "A valid reply to email address must be specified."
-msgstr ""
-"ఇమెయిల్ చిరునామాకు చెల్లుబాటు అయ్యే ప్రత్యుత్తరాన్ని తప్పనిసరిగా పేర్కొనాలి."
+msgstr "ఇమెయిల్ చిరునామాకు చెల్లుబాటు అయ్యే ప్రత్యుత్తరాన్ని తప్పనిసరిగా పేర్కొనాలి."
 
 #: archive-template.php:819
 msgid "Emails will be sent from: %s"
@@ -1115,8 +1111,8 @@ msgid "Admin"
 msgstr "అడ్మిన్"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
-#: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:260
+#: dt-metrics/combined/hover-map.php:269
+#: dt-metrics/combined/locations-list.php:263
 #: dt-metrics/records/dynamic-records-map.php:65
 #: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
@@ -1667,7 +1663,6 @@ msgid "Digital Responder"
 msgstr "డిజిటల్ ప్రతిస్పందన"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:134
-#: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "కేటాయించిన"
@@ -1677,8 +1672,8 @@ msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr "ఈ పరిచయాన్ని నివేదించడానికి బాధ్యత వహించే ప్రధాన వ్యక్తిని ఎంచుకోండి."
 
-#: dt-contacts/access-module.php:115 dt-metrics/contacts/seeker-path.php:25
-#: dt-metrics/contacts/seeker-path.php:62
+#: dt-contacts/access-module.php:115 dt-metrics/combined/site-links.php:79
+#: dt-metrics/combined/site-links.php:82
 msgid "Seeker Path"
 msgstr "సీకర్ మార్గం"
 
@@ -1720,6 +1715,7 @@ msgid "Being Coached"
 msgstr "కోచ్‌గా ఉండటం"
 
 #: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:294
+#: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
 msgstr "సంప్రదింపు స్థితి"
 
@@ -1941,11 +1937,8 @@ msgstr "ఆమోదించబడిన"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
-#: dt-metrics/personal/activity-log.php:23
-#: dt-metrics/personal/baptism-tree.php:26
-#: dt-metrics/personal/coaching-tree.php:26
-#: dt-metrics/personal/group-tree.php:25 dt-metrics/personal/overview.php:23
+#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
 msgid "Personal"
 msgstr "వ్యక్తిగత"
 
@@ -2100,16 +2093,10 @@ msgstr "నకిలీ చెకర్"
 #: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:250 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/hover-map.php:128
-#: dt-metrics/combined/locations-list.php:123
-#: dt-metrics/contacts/baptism-tree.php:25
-#: dt-metrics/contacts/coaching-tree.php:25
-#: dt-metrics/contacts/mapbox-maps.php:28
-#: dt-metrics/contacts/milestones-map.php:25
-#: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
-#: dt-metrics/personal/mapbox-contacts-maps.php:28
-#: dt-metrics/personal/overview.php:58
+#: dt-metrics/combined/hover-map.php:132
+#: dt-metrics/combined/locations-list.php:126
+#: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
+#: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:466
 msgid "Contacts"
@@ -2456,7 +2443,8 @@ msgstr "తిరిగి మార్చబడింది"
 msgid "Private Connection"
 msgstr "ప్రైవేట్ కనెక్షన్"
 
-#: dt-contacts/dmm-module.php:58
+#: dt-contacts/dmm-module.php:58 dt-metrics/combined/site-links.php:80
+#: dt-metrics/combined/site-links.php:83
 msgid "Faith Milestones"
 msgstr "విశ్వాసం మైలురాళ్ళు"
 
@@ -2619,7 +2607,7 @@ msgid "Coached by me"
 msgstr "నాకు కోచ్"
 
 #: dt-contacts/dmm-module.php:409
-#: dt-metrics/personal/activity-highlights.php:218
+#: dt-metrics/personal/activity-highlights.php:233
 msgid "Quick Actions"
 msgstr "శీఘ్ర చర్యలు"
 
@@ -3014,7 +3002,6 @@ msgstr ""
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
 #: dt-groups/base-setup.php:165 dt-metrics/personal/activity-highlights.php:58
-#: dt-metrics/personal/group-tree.php:164
 msgid "Group"
 msgstr "సమూహం"
 
@@ -3022,11 +3009,10 @@ msgstr "సమూహం"
 #: dt-groups/base-setup.php:436 dt-groups/base-setup.php:620
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
-#: dt-metrics/combined/hover-map.php:173
-#: dt-metrics/combined/locations-list.php:168
+#: dt-metrics/combined/hover-map.php:177
+#: dt-metrics/combined/locations-list.php:171
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3119,7 +3105,7 @@ msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "సమూహం / చర్చి యొక్క పురోగతి మరియు ఆరోగ్యాన్ని ట్రాక్ చేయండి."
 
-#: dt-groups/base-setup.php:194 dt-metrics/personal/baptism-tree.php:139
+#: dt-groups/base-setup.php:194
 msgid "Baptism"
 msgstr "బాప్టిజం"
 
@@ -3500,8 +3486,8 @@ msgid "Lost Password"
 msgstr "రహస్యపదాన్ని మార్చుకోండి"
 
 #: dt-mapping/columns/add-churches-column.php:57
-#: dt-metrics/combined/hover-map.php:218
-#: dt-metrics/combined/locations-list.php:213
+#: dt-metrics/combined/hover-map.php:222
+#: dt-metrics/combined/locations-list.php:216
 msgid "Churches"
 msgstr "చర్చిలు"
 
@@ -3569,7 +3555,7 @@ msgstr "క్లిష్టమైన మార్గం"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:98
 #: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
@@ -3690,9 +3676,7 @@ msgstr "చర్చిని ప్రారంభించిన మరియ�
 msgid "Activity by Day"
 msgstr "రోజు వారీ కార్యాచరణ"
 
-#: dt-metrics/combined/daily-activity.php:72
-#: dt-metrics/contacts/milestones.php:69 dt-metrics/contacts/seeker-path.php:65
-#: dt-metrics/contacts/sources.php:89
+#: dt-metrics/combined/daily-activity.php:72 dt-metrics/contacts/sources.php:89
 #: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
 msgstr "తేదీ పరిధికి ఫిల్టర్ చేయండి"
@@ -3728,7 +3712,7 @@ msgid ""
 msgstr "దిగువ కొలమానాల వివరణాత్మక జాబితాను ప్రదర్శించడానికి టైమ్‌లైన్ రోజు సారాంశంపై క్లిక్ చేయండి."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
 msgid "Metrics"
 msgstr "కొలతలు"
 
@@ -3762,8 +3746,6 @@ msgstr "సంయుక్త పటాలు"
 
 #: dt-metrics/combined/mapbox-maps.php:62
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
-#: dt-metrics/personal/mapbox-contacts-maps.php:60
-#: dt-metrics/personal/mapbox-groups-maps.php:54
 #: dt-metrics/records/dynamic-records-map.php:104
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
@@ -3817,53 +3799,9 @@ msgstr "తేదీ పరిధిలో %s మార్పులు"
 msgid "No Data Available"
 msgstr "సమాచారం అందుబాటులో లేదు"
 
-#: dt-metrics/contacts/baptism-tree.php:24
-msgid "Baptism Tree"
-msgstr "బాప్టిజం చెట్టు"
-
-#: dt-metrics/contacts/baptism-tree.php:56
-msgid "Baptism Generation Tree"
-msgstr "బాప్టిజం జనరేషన్ ట్రీ"
-
-#: dt-metrics/contacts/coaching-tree.php:24
-msgid "Coaching Tree"
-msgstr "కోచింగ్ ట్రీ"
-
-#: dt-metrics/contacts/coaching-tree.php:57
-msgid "Coaching Generation Tree"
-msgstr "కోచింగ్ జనరేషన్ ట్రీ"
-
 #: dt-metrics/contacts/mapbox-maps.php:27
 msgid "Access Contact Maps"
 msgstr "సంప్రదింపు మ్యాప్‌లను ప్రాప్యత చేయండి"
-
-#: dt-metrics/contacts/milestones-map.php:24
-#: dt-metrics/contacts/milestones-map.php:40
-msgid "Milestones Map"
-msgstr "మైలురాళ్ల మ్యాప్"
-
-#: dt-metrics/contacts/milestones-map.php:65
-#: dt-metrics/contacts/milestones.php:66
-msgid "Milestones"
-msgstr "మైలురాళ్ళు"
-
-#: dt-metrics/contacts/milestones.php:23
-msgid "Milestones Chart"
-msgstr "మైలురాళ్ళు చార్ట్"
-
-#: dt-metrics/contacts/milestones.php:67 dt-metrics/contacts/seeker-path.php:63
-#: dt-metrics/contacts/sources.php:87
-msgid "Filter contacts to date range:"
-msgstr "తేదీ పరిధికి పరిచయాలను ఫిల్టర్ చేయండి:"
-
-#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
-#: dt-metrics/contacts/sources.php:88
-#: dt-metrics/personal/activity-highlights.php:54
-#: dt-metrics/records/select-tags-charts.php:89
-#: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:432
-msgid "All Time"
-msgstr "అన్ని సమయంలో"
 
 #: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
@@ -3900,6 +3838,18 @@ msgstr "అన్ని క్రియాశీల పరిచయాల అన
 #: dt-metrics/contacts/sources.php:24
 msgid "Sources Chart"
 msgstr "సోర్సెస్ చార్ట్"
+
+#: dt-metrics/contacts/sources.php:87
+msgid "Filter contacts to date range:"
+msgstr "తేదీ పరిధికి పరిచయాలను ఫిల్టర్ చేయండి:"
+
+#: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
+#: dt-metrics/records/time-charts.php:115
+#: dt-users/template-user-management.php:432
+msgid "All Time"
+msgstr "అన్ని సమయంలో"
 
 #: dt-metrics/contacts/sources.php:91
 msgid "Showing contacts created during"
@@ -3990,49 +3940,11 @@ msgstr "తరాలు"
 msgid "Generation"
 msgstr "తరం"
 
-#: dt-metrics/groups/tree.php:25
-msgid "Groups Tree"
-msgstr "గుంపులు చెట్టు"
-
-#: dt-metrics/groups/tree.php:80
-msgid "Group Generation Tree"
-msgstr "గ్రూప్ జనరేషన్ ట్రీ"
-
-#: dt-metrics/groups/tree.php:81 dt-metrics/personal/group-tree.php:82
-#: dt-metrics/records/genmap.php:143
-msgid "Highlight Active"
-msgstr "హైలైట్ యాక్టివ్"
-
-#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:144
-msgid "Highlight Churches"
-msgstr "చర్చిలను హైలైట్ చేయండి"
-
-#: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
-msgid "Members"
-msgstr "సభ్యులు"
-
-#: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:146
-msgid "View Record"
-msgstr "రికార్డ్ చూడండి"
-
-#: dt-metrics/groups/tree.php:87 dt-metrics/personal/group-tree.php:88
-#: dt-metrics/records/genmap.php:149
-msgid "Total Members"
-msgstr "మొత్తం సభ్యులు"
-
-#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:150
-msgid "View Group"
-msgstr "సమూహాన్ని వీక్షించండి"
-
-#: dt-metrics/metrics.php:86
+#: dt-metrics/metrics.php:79
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+#: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
 msgstr ""
 
@@ -4079,7 +3991,7 @@ msgstr "నేను పోస్ట్ చేసిన వ్యాఖ్యల
 msgid "Date"
 msgstr "తేదీ"
 
-#: dt-metrics/personal/activity-highlights.php:176
+#: dt-metrics/personal/activity-highlights.php:191
 msgid "%1$d %2$s created"
 msgstr "%1$d %2$s సృష్టించబడింది"
 
@@ -4091,42 +4003,6 @@ msgstr "కార్యాచరణ లాగ్"
 #: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:193
 msgid "Less"
 msgstr "తక్కువ"
-
-#: dt-metrics/personal/baptism-tree.php:25
-msgid "My Baptism Tree"
-msgstr "నా బాప్టిజం చెట్టు"
-
-#: dt-metrics/personal/baptism-tree.php:57
-msgid "My Baptism Generation Tree"
-msgstr "నా బాప్టిజం జనరేషన్ ట్రీ"
-
-#: dt-metrics/personal/coaching-tree.php:25
-msgid "My Coaching Tree"
-msgstr "నా కోచింగ్ ట్రీ"
-
-#: dt-metrics/personal/coaching-tree.php:58
-msgid "My Coaching Generation Tree"
-msgstr "నా కోచింగ్ జనరేషన్ ట్రీ"
-
-#: dt-metrics/personal/coaching-tree.php:143
-msgid "Disciple"
-msgstr "శిష్యుడు"
-
-#: dt-metrics/personal/group-tree.php:26
-msgid "My Groups Tree"
-msgstr "నా గుంపులు చెట్టు"
-
-#: dt-metrics/personal/group-tree.php:81
-msgid "My Group Generation Tree"
-msgstr "నా గ్రూప్ జనరేషన్ ట్రీ"
-
-#: dt-metrics/personal/mapbox-contacts-maps.php:27
-msgid "Contacts Maps"
-msgstr "పరిచయాల మ్యాప్స్"
-
-#: dt-metrics/personal/mapbox-groups-maps.php:27
-msgid "Groups Maps"
-msgstr "గుంపులు పటాలు"
 
 #: dt-metrics/personal/overview.php:55
 msgid "My Overview"
@@ -4291,6 +4167,30 @@ msgstr "అన్ని ఫీల్డ్‌లను చూపించు"
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
 msgstr ""
+
+#: dt-metrics/records/genmap.php:143
+msgid "Highlight Active"
+msgstr "హైలైట్ యాక్టివ్"
+
+#: dt-metrics/records/genmap.php:144
+msgid "Highlight Churches"
+msgstr "చర్చిలను హైలైట్ చేయండి"
+
+#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
+msgid "Members"
+msgstr "సభ్యులు"
+
+#: dt-metrics/records/genmap.php:146
+msgid "View Record"
+msgstr "రికార్డ్ చూడండి"
+
+#: dt-metrics/records/genmap.php:149
+msgid "Total Members"
+msgstr "మొత్తం సభ్యులు"
+
+#: dt-metrics/records/genmap.php:150
+msgid "View Group"
+msgstr "సమూహాన్ని వీక్షించండి"
 
 #: dt-metrics/records/genmap.php:155
 msgid "Coaches"
@@ -5985,6 +5885,60 @@ msgstr "ప్రాప్యత పరిచయాలు స్కాన్ చ
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "నకిలీలు కనుగొనబడ్డాయి:"
+
+#~ msgid "Baptism Tree"
+#~ msgstr "బాప్టిజం చెట్టు"
+
+#~ msgid "Baptism Generation Tree"
+#~ msgstr "బాప్టిజం జనరేషన్ ట్రీ"
+
+#~ msgid "Coaching Tree"
+#~ msgstr "కోచింగ్ ట్రీ"
+
+#~ msgid "Coaching Generation Tree"
+#~ msgstr "కోచింగ్ జనరేషన్ ట్రీ"
+
+#~ msgid "Milestones Map"
+#~ msgstr "మైలురాళ్ల మ్యాప్"
+
+#~ msgid "Milestones"
+#~ msgstr "మైలురాళ్ళు"
+
+#~ msgid "Milestones Chart"
+#~ msgstr "మైలురాళ్ళు చార్ట్"
+
+#~ msgid "Groups Tree"
+#~ msgstr "గుంపులు చెట్టు"
+
+#~ msgid "Group Generation Tree"
+#~ msgstr "గ్రూప్ జనరేషన్ ట్రీ"
+
+#~ msgid "My Baptism Tree"
+#~ msgstr "నా బాప్టిజం చెట్టు"
+
+#~ msgid "My Baptism Generation Tree"
+#~ msgstr "నా బాప్టిజం జనరేషన్ ట్రీ"
+
+#~ msgid "My Coaching Tree"
+#~ msgstr "నా కోచింగ్ ట్రీ"
+
+#~ msgid "My Coaching Generation Tree"
+#~ msgstr "నా కోచింగ్ జనరేషన్ ట్రీ"
+
+#~ msgid "Disciple"
+#~ msgstr "శిష్యుడు"
+
+#~ msgid "My Groups Tree"
+#~ msgstr "నా గుంపులు చెట్టు"
+
+#~ msgid "My Group Generation Tree"
+#~ msgstr "నా గ్రూప్ జనరేషన్ ట్రీ"
+
+#~ msgid "Contacts Maps"
+#~ msgstr "పరిచయాల మ్యాప్స్"
+
+#~ msgid "Groups Maps"
+#~ msgstr "గుంపులు పటాలు"
 
 #, fuzzy
 #~| msgid "Add Records"

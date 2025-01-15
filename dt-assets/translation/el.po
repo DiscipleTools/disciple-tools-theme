@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
+"POT-Creation-Date: 2024-12-16T08:22:53+00:00\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -360,8 +360,7 @@ msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Αναζήτηση χρηστών"
 
-#: archive-template.php:594 dt-metrics/groups/tree.php:86
-#: dt-metrics/personal/group-tree.php:87 dt-metrics/records/genmap.php:148
+#: archive-template.php:594 dt-metrics/records/genmap.php:148
 #: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2777
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:127
@@ -1126,8 +1125,8 @@ msgid "Admin"
 msgstr "Διαχειριστής"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
-#: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:260
+#: dt-metrics/combined/hover-map.php:269
+#: dt-metrics/combined/locations-list.php:263
 #: dt-metrics/records/dynamic-records-map.php:65
 #: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
@@ -1707,7 +1706,6 @@ msgid "Digital Responder"
 msgstr "Ψηφιακός Ανταποκριτής"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:134
-#: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "Ανατέθηκε Σε"
@@ -1719,8 +1717,8 @@ msgstr ""
 "Επιλέξτε το βασικό πρόσωπο που είναι υπεύθυνο για την αναφορά αυτής της "
 "επαφής."
 
-#: dt-contacts/access-module.php:115 dt-metrics/contacts/seeker-path.php:25
-#: dt-metrics/contacts/seeker-path.php:62
+#: dt-contacts/access-module.php:115 dt-metrics/combined/site-links.php:79
+#: dt-metrics/combined/site-links.php:82
 msgid "Seeker Path"
 msgstr "Μονοπάτι Αναζήτησης"
 
@@ -1762,6 +1760,7 @@ msgid "Being Coached"
 msgstr "Καθοδηγείται"
 
 #: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:294
+#: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
 msgstr "Κατάσταση Επαφής"
 
@@ -1995,11 +1994,8 @@ msgstr "Δέχτηκε"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
-#: dt-metrics/personal/activity-log.php:23
-#: dt-metrics/personal/baptism-tree.php:26
-#: dt-metrics/personal/coaching-tree.php:26
-#: dt-metrics/personal/group-tree.php:25 dt-metrics/personal/overview.php:23
+#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
 msgid "Personal"
 msgstr "Προσωπικός"
 
@@ -2159,16 +2155,10 @@ msgstr "Έλεγχος Διπλότυπων"
 #: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:250 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/hover-map.php:128
-#: dt-metrics/combined/locations-list.php:123
-#: dt-metrics/contacts/baptism-tree.php:25
-#: dt-metrics/contacts/coaching-tree.php:25
-#: dt-metrics/contacts/mapbox-maps.php:28
-#: dt-metrics/contacts/milestones-map.php:25
-#: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
-#: dt-metrics/personal/mapbox-contacts-maps.php:28
-#: dt-metrics/personal/overview.php:58
+#: dt-metrics/combined/hover-map.php:132
+#: dt-metrics/combined/locations-list.php:126
+#: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
+#: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:466
 msgid "Contacts"
@@ -2518,7 +2508,8 @@ msgstr "επεξεργασμένο"
 msgid "Private Connection"
 msgstr "Ιδιωτική Σύνδεση"
 
-#: dt-contacts/dmm-module.php:58
+#: dt-contacts/dmm-module.php:58 dt-metrics/combined/site-links.php:80
+#: dt-metrics/combined/site-links.php:83
 msgid "Faith Milestones"
 msgstr "Ορόσημα Πίστεως"
 
@@ -2682,7 +2673,7 @@ msgid "Coached by me"
 msgstr "Καθοδηγούνται από εμένα"
 
 #: dt-contacts/dmm-module.php:409
-#: dt-metrics/personal/activity-highlights.php:218
+#: dt-metrics/personal/activity-highlights.php:233
 msgid "Quick Actions"
 msgstr "Γρήγορες Ενέργειες"
 
@@ -3101,7 +3092,6 @@ msgstr ""
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
 #: dt-groups/base-setup.php:165 dt-metrics/personal/activity-highlights.php:58
-#: dt-metrics/personal/group-tree.php:164
 msgid "Group"
 msgstr "Ομάδα"
 
@@ -3109,11 +3099,10 @@ msgstr "Ομάδα"
 #: dt-groups/base-setup.php:436 dt-groups/base-setup.php:620
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
-#: dt-metrics/combined/hover-map.php:173
-#: dt-metrics/combined/locations-list.php:168
+#: dt-metrics/combined/hover-map.php:177
+#: dt-metrics/combined/locations-list.php:171
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3214,7 +3203,7 @@ msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "Παρακολουθήστε την πρόοδο και την υγεία μιας ομάδας/εκκλησίας."
 
-#: dt-groups/base-setup.php:194 dt-metrics/personal/baptism-tree.php:139
+#: dt-groups/base-setup.php:194
 msgid "Baptism"
 msgstr "Βάπτιση"
 
@@ -3603,8 +3592,8 @@ msgid "Lost Password"
 msgstr "Επαναφορά κωδικού πρόσβασης"
 
 #: dt-mapping/columns/add-churches-column.php:57
-#: dt-metrics/combined/hover-map.php:218
-#: dt-metrics/combined/locations-list.php:213
+#: dt-metrics/combined/hover-map.php:222
+#: dt-metrics/combined/locations-list.php:216
 msgid "Churches"
 msgstr "Εκκλησίες"
 
@@ -3672,7 +3661,7 @@ msgstr "Κρίσιμη Πορεία"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:98
 #: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
@@ -3797,9 +3786,7 @@ msgstr ""
 msgid "Activity by Day"
 msgstr "Δραστηριότητα ανά Ημέρα"
 
-#: dt-metrics/combined/daily-activity.php:72
-#: dt-metrics/contacts/milestones.php:69 dt-metrics/contacts/seeker-path.php:65
-#: dt-metrics/contacts/sources.php:89
+#: dt-metrics/combined/daily-activity.php:72 dt-metrics/contacts/sources.php:89
 #: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
 msgstr "Φιλτράρισμα σε εύρος ημερομηνιών"
@@ -3837,7 +3824,7 @@ msgstr ""
 "μια λεπτομερής λίστα των μετρήσεων παρακάτω."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
 msgid "Metrics"
 msgstr "Μετρήσεις"
 
@@ -3871,8 +3858,6 @@ msgstr "Συνδυαστικοί Χάρτες"
 
 #: dt-metrics/combined/mapbox-maps.php:62
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
-#: dt-metrics/personal/mapbox-contacts-maps.php:60
-#: dt-metrics/personal/mapbox-groups-maps.php:54
 #: dt-metrics/records/dynamic-records-map.php:104
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
@@ -3928,53 +3913,9 @@ msgstr "%s αλλαγές κατά τη διάρκεια του εύρους η�
 msgid "No Data Available"
 msgstr "Μη Διαθέσιμα Δεδομένα"
 
-#: dt-metrics/contacts/baptism-tree.php:24
-msgid "Baptism Tree"
-msgstr "Δέντρο Βαπτίσεων"
-
-#: dt-metrics/contacts/baptism-tree.php:56
-msgid "Baptism Generation Tree"
-msgstr "Γενεαλογικό Δέντρο Βαπτίσεων"
-
-#: dt-metrics/contacts/coaching-tree.php:24
-msgid "Coaching Tree"
-msgstr "Δέντρο Καθοδηγήσεων"
-
-#: dt-metrics/contacts/coaching-tree.php:57
-msgid "Coaching Generation Tree"
-msgstr "Γενεαλογικό Δέντρο Καθοδηγήσεων"
-
 #: dt-metrics/contacts/mapbox-maps.php:27
 msgid "Access Contact Maps"
 msgstr "Πρόσβαση σε Χάρτες Επαφής"
-
-#: dt-metrics/contacts/milestones-map.php:24
-#: dt-metrics/contacts/milestones-map.php:40
-msgid "Milestones Map"
-msgstr "Χάρτης Ορόσημων"
-
-#: dt-metrics/contacts/milestones-map.php:65
-#: dt-metrics/contacts/milestones.php:66
-msgid "Milestones"
-msgstr "Ορόσημα"
-
-#: dt-metrics/contacts/milestones.php:23
-msgid "Milestones Chart"
-msgstr "Διάγραμμα Ορόσημων"
-
-#: dt-metrics/contacts/milestones.php:67 dt-metrics/contacts/seeker-path.php:63
-#: dt-metrics/contacts/sources.php:87
-msgid "Filter contacts to date range:"
-msgstr "Φιλτράρισμα επαφών σε εύρος ημερομηνιών:"
-
-#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
-#: dt-metrics/contacts/sources.php:88
-#: dt-metrics/personal/activity-highlights.php:54
-#: dt-metrics/records/select-tags-charts.php:89
-#: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:432
-msgid "All Time"
-msgstr "Εξ Αρχής"
 
 #: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
@@ -4011,6 +3952,18 @@ msgstr "Παρακολούθηση όλων των ενεργών επαφών"
 #: dt-metrics/contacts/sources.php:24
 msgid "Sources Chart"
 msgstr "Διάγραμμα Πηγών"
+
+#: dt-metrics/contacts/sources.php:87
+msgid "Filter contacts to date range:"
+msgstr "Φιλτράρισμα επαφών σε εύρος ημερομηνιών:"
+
+#: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
+#: dt-metrics/records/time-charts.php:115
+#: dt-users/template-user-management.php:432
+msgid "All Time"
+msgstr "Εξ Αρχής"
 
 #: dt-metrics/contacts/sources.php:91
 msgid "Showing contacts created during"
@@ -4101,49 +4054,11 @@ msgstr "γενεές"
 msgid "Generation"
 msgstr "Γενιά"
 
-#: dt-metrics/groups/tree.php:25
-msgid "Groups Tree"
-msgstr "Δέντρο Ομάδων"
-
-#: dt-metrics/groups/tree.php:80
-msgid "Group Generation Tree"
-msgstr "Γενεαλογικό Δέντρο Ομάδων"
-
-#: dt-metrics/groups/tree.php:81 dt-metrics/personal/group-tree.php:82
-#: dt-metrics/records/genmap.php:143
-msgid "Highlight Active"
-msgstr "Επισήμανση Ενεργών"
-
-#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:144
-msgid "Highlight Churches"
-msgstr "Επισήμανση Εκκλησιών"
-
-#: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
-msgid "Members"
-msgstr "Μέλη"
-
-#: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:146
-msgid "View Record"
-msgstr "Προβολή Εγγραφής"
-
-#: dt-metrics/groups/tree.php:87 dt-metrics/personal/group-tree.php:88
-#: dt-metrics/records/genmap.php:149
-msgid "Total Members"
-msgstr "Σύνολο Μελών"
-
-#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:150
-msgid "View Group"
-msgstr "Προβολή Ομάδας"
-
-#: dt-metrics/metrics.php:86
+#: dt-metrics/metrics.php:79
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+#: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
 msgstr ""
 
@@ -4190,7 +4105,7 @@ msgstr "Σχόλια Που Ανήρτησα"
 msgid "Date"
 msgstr "Ημερομηνία"
 
-#: dt-metrics/personal/activity-highlights.php:176
+#: dt-metrics/personal/activity-highlights.php:191
 msgid "%1$d %2$s created"
 msgstr "%1$d %2$s δημιουργήθηκε"
 
@@ -4202,42 +4117,6 @@ msgstr "Αρχείο Καταγραφής Δραστηριοτήτων"
 #: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:193
 msgid "Less"
 msgstr "Λιγότερα"
-
-#: dt-metrics/personal/baptism-tree.php:25
-msgid "My Baptism Tree"
-msgstr "Το Δέντρο Βάπτισής Μου"
-
-#: dt-metrics/personal/baptism-tree.php:57
-msgid "My Baptism Generation Tree"
-msgstr "Το Δέντρο της Γενιάς Βάπτισης Μου"
-
-#: dt-metrics/personal/coaching-tree.php:25
-msgid "My Coaching Tree"
-msgstr "Το Δέντρο Καθοδήγησής Μου"
-
-#: dt-metrics/personal/coaching-tree.php:58
-msgid "My Coaching Generation Tree"
-msgstr "Το Δέντρο Γενιάς Καθοδηγήσεών Μου"
-
-#: dt-metrics/personal/coaching-tree.php:143
-msgid "Disciple"
-msgstr "Μαθητευόμενος"
-
-#: dt-metrics/personal/group-tree.php:26
-msgid "My Groups Tree"
-msgstr "Το Δέντρο Ομάδων Μου"
-
-#: dt-metrics/personal/group-tree.php:81
-msgid "My Group Generation Tree"
-msgstr "Το Δέντρο Γενιάς Ομάδων Μου"
-
-#: dt-metrics/personal/mapbox-contacts-maps.php:27
-msgid "Contacts Maps"
-msgstr "Χάρτες Επαφών"
-
-#: dt-metrics/personal/mapbox-groups-maps.php:27
-msgid "Groups Maps"
-msgstr "Χάρτες Ομάδων"
 
 #: dt-metrics/personal/overview.php:55
 msgid "My Overview"
@@ -4402,6 +4281,30 @@ msgstr "Εμφάνιση όλων των πεδίων"
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
 msgstr ""
+
+#: dt-metrics/records/genmap.php:143
+msgid "Highlight Active"
+msgstr "Επισήμανση Ενεργών"
+
+#: dt-metrics/records/genmap.php:144
+msgid "Highlight Churches"
+msgstr "Επισήμανση Εκκλησιών"
+
+#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
+msgid "Members"
+msgstr "Μέλη"
+
+#: dt-metrics/records/genmap.php:146
+msgid "View Record"
+msgstr "Προβολή Εγγραφής"
+
+#: dt-metrics/records/genmap.php:149
+msgid "Total Members"
+msgstr "Σύνολο Μελών"
+
+#: dt-metrics/records/genmap.php:150
+msgid "View Group"
+msgstr "Προβολή Ομάδας"
 
 #: dt-metrics/records/genmap.php:155
 msgid "Coaches"
@@ -6121,6 +6024,60 @@ msgstr "Σαρωμένες επαφές πρόσβασης:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Βρέθηκαν διπλότυπα:"
+
+#~ msgid "Baptism Tree"
+#~ msgstr "Δέντρο Βαπτίσεων"
+
+#~ msgid "Baptism Generation Tree"
+#~ msgstr "Γενεαλογικό Δέντρο Βαπτίσεων"
+
+#~ msgid "Coaching Tree"
+#~ msgstr "Δέντρο Καθοδηγήσεων"
+
+#~ msgid "Coaching Generation Tree"
+#~ msgstr "Γενεαλογικό Δέντρο Καθοδηγήσεων"
+
+#~ msgid "Milestones Map"
+#~ msgstr "Χάρτης Ορόσημων"
+
+#~ msgid "Milestones"
+#~ msgstr "Ορόσημα"
+
+#~ msgid "Milestones Chart"
+#~ msgstr "Διάγραμμα Ορόσημων"
+
+#~ msgid "Groups Tree"
+#~ msgstr "Δέντρο Ομάδων"
+
+#~ msgid "Group Generation Tree"
+#~ msgstr "Γενεαλογικό Δέντρο Ομάδων"
+
+#~ msgid "My Baptism Tree"
+#~ msgstr "Το Δέντρο Βάπτισής Μου"
+
+#~ msgid "My Baptism Generation Tree"
+#~ msgstr "Το Δέντρο της Γενιάς Βάπτισης Μου"
+
+#~ msgid "My Coaching Tree"
+#~ msgstr "Το Δέντρο Καθοδήγησής Μου"
+
+#~ msgid "My Coaching Generation Tree"
+#~ msgstr "Το Δέντρο Γενιάς Καθοδηγήσεών Μου"
+
+#~ msgid "Disciple"
+#~ msgstr "Μαθητευόμενος"
+
+#~ msgid "My Groups Tree"
+#~ msgstr "Το Δέντρο Ομάδων Μου"
+
+#~ msgid "My Group Generation Tree"
+#~ msgstr "Το Δέντρο Γενιάς Ομάδων Μου"
+
+#~ msgid "Contacts Maps"
+#~ msgstr "Χάρτες Επαφών"
+
+#~ msgid "Groups Maps"
+#~ msgstr "Χάρτες Ομάδων"
 
 #, fuzzy
 #~| msgid "Add Records"

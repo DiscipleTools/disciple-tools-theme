@@ -3,11 +3,11 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
+"POT-Creation-Date: 2024-12-16T08:22:53+00:00\n"
 "PO-Revision-Date: 2024-10-14 15:59+0000\n"
 "Last-Translator: Kyle Koval <kyle.koval@gmail.com>\n"
-"Language-Team: Italian <https://translate.disciple.tools/projects/"
-"disciple-tools/disciple-tools-theme/it_IT/>\n"
+"Language-Team: Italian <https://translate.disciple.tools/projects/disciple-"
+"tools/disciple-tools-theme/it_IT/>\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -368,8 +368,7 @@ msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Cerca Utenti"
 
-#: archive-template.php:594 dt-metrics/groups/tree.php:86
-#: dt-metrics/personal/group-tree.php:87 dt-metrics/records/genmap.php:148
+#: archive-template.php:594 dt-metrics/records/genmap.php:148
 #: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2777
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:127
@@ -1084,8 +1083,8 @@ msgid "Admin"
 msgstr "Amministratore"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
-#: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:260
+#: dt-metrics/combined/hover-map.php:269
+#: dt-metrics/combined/locations-list.php:263
 #: dt-metrics/records/dynamic-records-map.php:65
 #: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
@@ -1641,7 +1640,6 @@ msgid "Digital Responder"
 msgstr "Risponditore digitale"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:134
-#: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "Assegnato a"
@@ -1653,8 +1651,8 @@ msgstr ""
 "Seleziona la principale persona responsabile per la reportistica in questo "
 "contatto."
 
-#: dt-contacts/access-module.php:115 dt-metrics/contacts/seeker-path.php:25
-#: dt-metrics/contacts/seeker-path.php:62
+#: dt-contacts/access-module.php:115 dt-metrics/combined/site-links.php:79
+#: dt-metrics/combined/site-links.php:82
 msgid "Seeker Path"
 msgstr "Percorso del cercatore"
 
@@ -1696,6 +1694,7 @@ msgid "Being Coached"
 msgstr "In istruzione"
 
 #: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:294
+#: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
 msgstr "Stato del contatto"
 
@@ -1929,11 +1928,8 @@ msgstr "Accettato"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
-#: dt-metrics/personal/activity-log.php:23
-#: dt-metrics/personal/baptism-tree.php:26
-#: dt-metrics/personal/coaching-tree.php:26
-#: dt-metrics/personal/group-tree.php:25 dt-metrics/personal/overview.php:23
+#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
 msgid "Personal"
 msgstr "Personale"
 
@@ -2091,16 +2087,10 @@ msgstr "Controllo Duplicati"
 #: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:250 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/hover-map.php:128
-#: dt-metrics/combined/locations-list.php:123
-#: dt-metrics/contacts/baptism-tree.php:25
-#: dt-metrics/contacts/coaching-tree.php:25
-#: dt-metrics/contacts/mapbox-maps.php:28
-#: dt-metrics/contacts/milestones-map.php:25
-#: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
-#: dt-metrics/personal/mapbox-contacts-maps.php:28
-#: dt-metrics/personal/overview.php:58
+#: dt-metrics/combined/hover-map.php:132
+#: dt-metrics/combined/locations-list.php:126
+#: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
+#: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:466
 msgid "Contacts"
@@ -2450,7 +2440,8 @@ msgstr "redatto"
 msgid "Private Connection"
 msgstr "Connessione privata"
 
-#: dt-contacts/dmm-module.php:58
+#: dt-contacts/dmm-module.php:58 dt-metrics/combined/site-links.php:80
+#: dt-metrics/combined/site-links.php:83
 msgid "Faith Milestones"
 msgstr "Pietre miliari della fede"
 
@@ -2614,7 +2605,7 @@ msgid "Coached by me"
 msgstr "Guidati da me"
 
 #: dt-contacts/dmm-module.php:409
-#: dt-metrics/personal/activity-highlights.php:218
+#: dt-metrics/personal/activity-highlights.php:233
 msgid "Quick Actions"
 msgstr "Azioni Rapide"
 
@@ -3029,7 +3020,6 @@ msgstr "Scopri di più"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
 #: dt-groups/base-setup.php:165 dt-metrics/personal/activity-highlights.php:58
-#: dt-metrics/personal/group-tree.php:164
 msgid "Group"
 msgstr "Gruppo"
 
@@ -3037,11 +3027,10 @@ msgstr "Gruppo"
 #: dt-groups/base-setup.php:436 dt-groups/base-setup.php:620
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
-#: dt-metrics/combined/hover-map.php:173
-#: dt-metrics/combined/locations-list.php:168
+#: dt-metrics/combined/hover-map.php:177
+#: dt-metrics/combined/locations-list.php:171
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3138,7 +3127,7 @@ msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "Monitora i progressi e la salute di un gruppo/una Chiesa."
 
-#: dt-groups/base-setup.php:194 dt-metrics/personal/baptism-tree.php:139
+#: dt-groups/base-setup.php:194
 msgid "Baptism"
 msgstr "Battesimo"
 
@@ -3520,8 +3509,8 @@ msgid "Lost Password"
 msgstr "Password Dimenticata"
 
 #: dt-mapping/columns/add-churches-column.php:57
-#: dt-metrics/combined/hover-map.php:218
-#: dt-metrics/combined/locations-list.php:213
+#: dt-metrics/combined/hover-map.php:222
+#: dt-metrics/combined/locations-list.php:216
 msgid "Churches"
 msgstr "Chiese"
 
@@ -3589,7 +3578,7 @@ msgstr "Percorso critico"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:98
 #: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
@@ -3714,9 +3703,7 @@ msgstr ""
 msgid "Activity by Day"
 msgstr "Attività per giorno"
 
-#: dt-metrics/combined/daily-activity.php:72
-#: dt-metrics/contacts/milestones.php:69 dt-metrics/contacts/seeker-path.php:65
-#: dt-metrics/contacts/sources.php:89
+#: dt-metrics/combined/daily-activity.php:72 dt-metrics/contacts/sources.php:89
 #: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
 msgstr "Filtra per intervallo di data"
@@ -3754,7 +3741,7 @@ msgstr ""
 "qui sotto un elenco di metriche dettagliate."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
 msgid "Metrics"
 msgstr "Metriche"
 
@@ -3786,8 +3773,6 @@ msgstr "Mappe Combinate"
 
 #: dt-metrics/combined/mapbox-maps.php:62
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
-#: dt-metrics/personal/mapbox-contacts-maps.php:60
-#: dt-metrics/personal/mapbox-groups-maps.php:54
 #: dt-metrics/records/dynamic-records-map.php:104
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
@@ -3841,53 +3826,9 @@ msgstr "%s modifiche durante l'intervallo di date"
 msgid "No Data Available"
 msgstr "Nessun dato disponibile"
 
-#: dt-metrics/contacts/baptism-tree.php:24
-msgid "Baptism Tree"
-msgstr "Albero del battesimo"
-
-#: dt-metrics/contacts/baptism-tree.php:56
-msgid "Baptism Generation Tree"
-msgstr "Albero della generazione del battesimo"
-
-#: dt-metrics/contacts/coaching-tree.php:24
-msgid "Coaching Tree"
-msgstr "Albero del Coaching"
-
-#: dt-metrics/contacts/coaching-tree.php:57
-msgid "Coaching Generation Tree"
-msgstr "Albero della generazione di coaching"
-
 #: dt-metrics/contacts/mapbox-maps.php:27
 msgid "Access Contact Maps"
 msgstr "Accedi alle Mappe dei Contatti"
-
-#: dt-metrics/contacts/milestones-map.php:24
-#: dt-metrics/contacts/milestones-map.php:40
-msgid "Milestones Map"
-msgstr "Mappa delle pietre miliari"
-
-#: dt-metrics/contacts/milestones-map.php:65
-#: dt-metrics/contacts/milestones.php:66
-msgid "Milestones"
-msgstr "Pietre miliari"
-
-#: dt-metrics/contacts/milestones.php:23
-msgid "Milestones Chart"
-msgstr "Grafico delle pietre miliari"
-
-#: dt-metrics/contacts/milestones.php:67 dt-metrics/contacts/seeker-path.php:63
-#: dt-metrics/contacts/sources.php:87
-msgid "Filter contacts to date range:"
-msgstr "Filtra contatti per intervallo di data:"
-
-#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
-#: dt-metrics/contacts/sources.php:88
-#: dt-metrics/personal/activity-highlights.php:54
-#: dt-metrics/records/select-tags-charts.php:89
-#: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:432
-msgid "All Time"
-msgstr "Per tutto il tempo"
 
 #: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
@@ -3924,6 +3865,18 @@ msgstr "Monitoraggio di tutti i contatti attivi"
 #: dt-metrics/contacts/sources.php:24
 msgid "Sources Chart"
 msgstr "Grafico delle fonti"
+
+#: dt-metrics/contacts/sources.php:87
+msgid "Filter contacts to date range:"
+msgstr "Filtra contatti per intervallo di data:"
+
+#: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
+#: dt-metrics/records/time-charts.php:115
+#: dt-users/template-user-management.php:432
+msgid "All Time"
+msgstr "Per tutto il tempo"
 
 #: dt-metrics/contacts/sources.php:91
 msgid "Showing contacts created during"
@@ -4016,49 +3969,11 @@ msgstr "generazioni"
 msgid "Generation"
 msgstr "Generazione"
 
-#: dt-metrics/groups/tree.php:25
-msgid "Groups Tree"
-msgstr "Albero dei Gruppi"
-
-#: dt-metrics/groups/tree.php:80
-msgid "Group Generation Tree"
-msgstr "Albero di generazione del gruppo"
-
-#: dt-metrics/groups/tree.php:81 dt-metrics/personal/group-tree.php:82
-#: dt-metrics/records/genmap.php:143
-msgid "Highlight Active"
-msgstr "Evidenzia Attivo"
-
-#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:144
-msgid "Highlight Churches"
-msgstr "Evidenzia Chiese"
-
-#: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
-msgid "Members"
-msgstr "Membri"
-
-#: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:146
-msgid "View Record"
-msgstr "Visualizza record"
-
-#: dt-metrics/groups/tree.php:87 dt-metrics/personal/group-tree.php:88
-#: dt-metrics/records/genmap.php:149
-msgid "Total Members"
-msgstr "Totale Membri"
-
-#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:150
-msgid "View Group"
-msgstr "Visualizza Gruppo"
-
-#: dt-metrics/metrics.php:86
+#: dt-metrics/metrics.php:79
 msgid "Genmap"
 msgstr "Mappa Generazionale"
 
-#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+#: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
 msgstr "Mappe"
 
@@ -4105,7 +4020,7 @@ msgstr "Commenti I Inviati"
 msgid "Date"
 msgstr "Data"
 
-#: dt-metrics/personal/activity-highlights.php:176
+#: dt-metrics/personal/activity-highlights.php:191
 msgid "%1$d %2$s created"
 msgstr "%1$d %2$s creati"
 
@@ -4117,42 +4032,6 @@ msgstr "Registro delle attività"
 #: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:193
 msgid "Less"
 msgstr "Meno"
-
-#: dt-metrics/personal/baptism-tree.php:25
-msgid "My Baptism Tree"
-msgstr "L'Albero del Mio Battesimo"
-
-#: dt-metrics/personal/baptism-tree.php:57
-msgid "My Baptism Generation Tree"
-msgstr "Il Mio Albero della Creazione del Battesimo"
-
-#: dt-metrics/personal/coaching-tree.php:25
-msgid "My Coaching Tree"
-msgstr "L'Albero del Mio Discepolato"
-
-#: dt-metrics/personal/coaching-tree.php:58
-msgid "My Coaching Generation Tree"
-msgstr "Il mio Albero delle Generazioni di Coaching"
-
-#: dt-metrics/personal/coaching-tree.php:143
-msgid "Disciple"
-msgstr "Discepolo"
-
-#: dt-metrics/personal/group-tree.php:26
-msgid "My Groups Tree"
-msgstr "L'Albero dei Miei Gruppi"
-
-#: dt-metrics/personal/group-tree.php:81
-msgid "My Group Generation Tree"
-msgstr "Albero delle Generazioni del mio Gruppo"
-
-#: dt-metrics/personal/mapbox-contacts-maps.php:27
-msgid "Contacts Maps"
-msgstr "Mappe dei Contatti"
-
-#: dt-metrics/personal/mapbox-groups-maps.php:27
-msgid "Groups Maps"
-msgstr "Mappe dei Gruppi"
 
 #: dt-metrics/personal/overview.php:55
 msgid "My Overview"
@@ -4284,6 +4163,30 @@ msgstr "Visualizza come icone"
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
 msgstr "Seleziona strato di dati da acquisire"
+
+#: dt-metrics/records/genmap.php:143
+msgid "Highlight Active"
+msgstr "Evidenzia Attivo"
+
+#: dt-metrics/records/genmap.php:144
+msgid "Highlight Churches"
+msgstr "Evidenzia Chiese"
+
+#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
+msgid "Members"
+msgstr "Membri"
+
+#: dt-metrics/records/genmap.php:146
+msgid "View Record"
+msgstr "Visualizza record"
+
+#: dt-metrics/records/genmap.php:149
+msgid "Total Members"
+msgstr "Totale Membri"
+
+#: dt-metrics/records/genmap.php:150
+msgid "View Group"
+msgstr "Visualizza Gruppo"
 
 #: dt-metrics/records/genmap.php:155
 msgid "Coaches"
@@ -5925,6 +5828,60 @@ msgstr "Accedi ai contatti analizzati:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Duplicati trovati:"
+
+#~ msgid "Baptism Tree"
+#~ msgstr "Albero del battesimo"
+
+#~ msgid "Baptism Generation Tree"
+#~ msgstr "Albero della generazione del battesimo"
+
+#~ msgid "Coaching Tree"
+#~ msgstr "Albero del Coaching"
+
+#~ msgid "Coaching Generation Tree"
+#~ msgstr "Albero della generazione di coaching"
+
+#~ msgid "Milestones Map"
+#~ msgstr "Mappa delle pietre miliari"
+
+#~ msgid "Milestones"
+#~ msgstr "Pietre miliari"
+
+#~ msgid "Milestones Chart"
+#~ msgstr "Grafico delle pietre miliari"
+
+#~ msgid "Groups Tree"
+#~ msgstr "Albero dei Gruppi"
+
+#~ msgid "Group Generation Tree"
+#~ msgstr "Albero di generazione del gruppo"
+
+#~ msgid "My Baptism Tree"
+#~ msgstr "L'Albero del Mio Battesimo"
+
+#~ msgid "My Baptism Generation Tree"
+#~ msgstr "Il Mio Albero della Creazione del Battesimo"
+
+#~ msgid "My Coaching Tree"
+#~ msgstr "L'Albero del Mio Discepolato"
+
+#~ msgid "My Coaching Generation Tree"
+#~ msgstr "Il mio Albero delle Generazioni di Coaching"
+
+#~ msgid "Disciple"
+#~ msgstr "Discepolo"
+
+#~ msgid "My Groups Tree"
+#~ msgstr "L'Albero dei Miei Gruppi"
+
+#~ msgid "My Group Generation Tree"
+#~ msgstr "Albero delle Generazioni del mio Gruppo"
+
+#~ msgid "Contacts Maps"
+#~ msgstr "Mappe dei Contatti"
+
+#~ msgid "Groups Maps"
+#~ msgstr "Mappe dei Gruppi"
 
 #~ msgid "Records Map"
 #~ msgstr "Mappa dei Record"

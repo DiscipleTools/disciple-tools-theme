@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-10-04T10:13:03+00:00\n"
+"POT-Creation-Date: 2024-12-16T08:22:53+00:00\n"
 "PO-Revision-Date: 2023-10-28 17:05+0000\n"
 "Last-Translator: ajay karki <ajaykarki667@gmail.com>\n"
 "Language-Team: Nepali <https://translate.disciple.tools/projects/disciple-"
@@ -360,8 +360,7 @@ msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "प्रयोगकर्ता गर्नुहोस"
 
-#: archive-template.php:594 dt-metrics/groups/tree.php:86
-#: dt-metrics/personal/group-tree.php:87 dt-metrics/records/genmap.php:148
+#: archive-template.php:594 dt-metrics/records/genmap.php:148
 #: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2777
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:127
@@ -1123,8 +1122,8 @@ msgid "Admin"
 msgstr "प्रशान "
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
-#: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:260
+#: dt-metrics/combined/hover-map.php:269
+#: dt-metrics/combined/locations-list.php:263
 #: dt-metrics/records/dynamic-records-map.php:65
 #: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
@@ -1683,7 +1682,6 @@ msgid "Digital Responder"
 msgstr "डिजिटल जवाफदाता/ विधुतीय जवाफदाता"
 
 #: dt-contacts/access-module.php:104 dt-groups/base-setup.php:134
-#: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "खटाईयका "
@@ -1693,8 +1691,8 @@ msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr "मुख्य सम्पर्क छान्नुहोस् जो यस सम्पर्कमा रिपोर्टि गर्न जिम्मेवार छ।"
 
-#: dt-contacts/access-module.php:115 dt-metrics/contacts/seeker-path.php:25
-#: dt-metrics/contacts/seeker-path.php:62
+#: dt-contacts/access-module.php:115 dt-metrics/combined/site-links.php:79
+#: dt-metrics/combined/site-links.php:82
 msgid "Seeker Path"
 msgstr "खोजीकर्ता मार्ग"
 
@@ -1736,6 +1734,7 @@ msgid "Being Coached"
 msgstr "प्रशिक्षित हुँदै"
 
 #: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:294
+#: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
 msgstr "सम्पर्क स्थिति"
 
@@ -1958,11 +1957,8 @@ msgstr "स्वीकार गरियो"
 
 #: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:100 dt-metrics/personal/activity-highlights.php:23
-#: dt-metrics/personal/activity-log.php:23
-#: dt-metrics/personal/baptism-tree.php:26
-#: dt-metrics/personal/coaching-tree.php:26
-#: dt-metrics/personal/group-tree.php:25 dt-metrics/personal/overview.php:23
+#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
 msgid "Personal"
 msgstr "व्यक्तिगत "
 
@@ -2117,16 +2113,10 @@ msgstr "नक्कल परीक्षक"
 #: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
 #: dt-contacts/base-setup.php:250 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/hover-map.php:128
-#: dt-metrics/combined/locations-list.php:123
-#: dt-metrics/contacts/baptism-tree.php:25
-#: dt-metrics/contacts/coaching-tree.php:25
-#: dt-metrics/contacts/mapbox-maps.php:28
-#: dt-metrics/contacts/milestones-map.php:25
-#: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/groups/overview.php:64
-#: dt-metrics/personal/mapbox-contacts-maps.php:28
-#: dt-metrics/personal/overview.php:58
+#: dt-metrics/combined/hover-map.php:132
+#: dt-metrics/combined/locations-list.php:126
+#: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
+#: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:156
 #: dt-users/template-user-management.php:466
 msgid "Contacts"
@@ -2474,7 +2464,8 @@ msgstr "सम्पादित "
 msgid "Private Connection"
 msgstr "निजी जडान"
 
-#: dt-contacts/dmm-module.php:58
+#: dt-contacts/dmm-module.php:58 dt-metrics/combined/site-links.php:80
+#: dt-metrics/combined/site-links.php:83
 msgid "Faith Milestones"
 msgstr "बिश्वासको माईलस्टोन"
 
@@ -2636,7 +2627,7 @@ msgid "Coached by me"
 msgstr "म द्वारा प्रशिक्षित "
 
 #: dt-contacts/dmm-module.php:409
-#: dt-metrics/personal/activity-highlights.php:218
+#: dt-metrics/personal/activity-highlights.php:233
 msgid "Quick Actions"
 msgstr "द्रुत कार्यहरू"
 
@@ -3039,7 +3030,6 @@ msgstr "अरु धेरै खोज्नुहोस्"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
 #: dt-groups/base-setup.php:165 dt-metrics/personal/activity-highlights.php:58
-#: dt-metrics/personal/group-tree.php:164
 msgid "Group"
 msgstr "समूह "
 
@@ -3047,11 +3037,10 @@ msgstr "समूह "
 #: dt-groups/base-setup.php:436 dt-groups/base-setup.php:620
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
-#: dt-metrics/combined/hover-map.php:173
-#: dt-metrics/combined/locations-list.php:168
+#: dt-metrics/combined/hover-map.php:177
+#: dt-metrics/combined/locations-list.php:171
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/personal/mapbox-groups-maps.php:28
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
 #: dt-people-groups/people-groups-base.php:175
 msgid "Groups"
@@ -3144,7 +3133,7 @@ msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "समूह / मण्डलीको प्रगति र स्वास्थ्य ट्र्याक गर्नुहोस्।"
 
-#: dt-groups/base-setup.php:194 dt-metrics/personal/baptism-tree.php:139
+#: dt-groups/base-setup.php:194
 msgid "Baptism"
 msgstr "बप्तिस्मा "
 
@@ -3526,8 +3515,8 @@ msgid "Lost Password"
 msgstr "पासवर्ड रिसेट"
 
 #: dt-mapping/columns/add-churches-column.php:57
-#: dt-metrics/combined/hover-map.php:218
-#: dt-metrics/combined/locations-list.php:213
+#: dt-metrics/combined/hover-map.php:222
+#: dt-metrics/combined/locations-list.php:216
 msgid "Churches"
 msgstr "मण्डलीहरु "
 
@@ -3595,7 +3584,7 @@ msgstr "आलोचनात्मक बाटो "
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:110
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:98
 #: dt-metrics/records/date-range-activity.php:44
 #: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
@@ -3720,9 +3709,7 @@ msgstr ""
 msgid "Activity by Day"
 msgstr "दिन को गतिविधि"
 
-#: dt-metrics/combined/daily-activity.php:72
-#: dt-metrics/contacts/milestones.php:69 dt-metrics/contacts/seeker-path.php:65
-#: dt-metrics/contacts/sources.php:89
+#: dt-metrics/combined/daily-activity.php:72 dt-metrics/contacts/sources.php:89
 #: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
 msgstr "मिति दायरामा फिल्टर गर्नुहोस्"
@@ -3759,7 +3746,7 @@ msgstr ""
 "तलको मेट्रिक्सको विस्तृत सूची प्रदर्शन गर्नको लागि टाइमलाइन दिन सारांशमा क्लिक गर्नुहोस्।"
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:127
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
 msgid "Metrics"
 msgstr "मेट्रिक्स "
 
@@ -3793,8 +3780,6 @@ msgstr "संयुक्त नक्शा"
 
 #: dt-metrics/combined/mapbox-maps.php:62
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
-#: dt-metrics/personal/mapbox-contacts-maps.php:60
-#: dt-metrics/personal/mapbox-groups-maps.php:54
 #: dt-metrics/records/dynamic-records-map.php:104
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
@@ -3846,53 +3831,9 @@ msgstr "मिति दायरा भित्र %s परिवर्तन
 msgid "No Data Available"
 msgstr "कुनै डाटा उपलब्ध छैन"
 
-#: dt-metrics/contacts/baptism-tree.php:24
-msgid "Baptism Tree"
-msgstr "बप्तिस्मा रुख "
-
-#: dt-metrics/contacts/baptism-tree.php:56
-msgid "Baptism Generation Tree"
-msgstr "बप्तिस्मा पुस्ता रुख "
-
-#: dt-metrics/contacts/coaching-tree.php:24
-msgid "Coaching Tree"
-msgstr "प्रशिक्षक रुख "
-
-#: dt-metrics/contacts/coaching-tree.php:57
-msgid "Coaching Generation Tree"
-msgstr "प्रशिक्षक पुस्टा रुख "
-
 #: dt-metrics/contacts/mapbox-maps.php:27
 msgid "Access Contact Maps"
 msgstr "सम्पर्क नक्शा पहुँच गर्नुहोस्"
-
-#: dt-metrics/contacts/milestones-map.php:24
-#: dt-metrics/contacts/milestones-map.php:40
-msgid "Milestones Map"
-msgstr "माईलस्टोन्स नक्शा"
-
-#: dt-metrics/contacts/milestones-map.php:65
-#: dt-metrics/contacts/milestones.php:66
-msgid "Milestones"
-msgstr "माईलस्टोन "
-
-#: dt-metrics/contacts/milestones.php:23
-msgid "Milestones Chart"
-msgstr "मईल्स्टन"
-
-#: dt-metrics/contacts/milestones.php:67 dt-metrics/contacts/seeker-path.php:63
-#: dt-metrics/contacts/sources.php:87
-msgid "Filter contacts to date range:"
-msgstr "मिति दायरामा सम्पर्कहरू छाटकाट  गर्नुहोस्"
-
-#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
-#: dt-metrics/contacts/sources.php:88
-#: dt-metrics/personal/activity-highlights.php:54
-#: dt-metrics/records/select-tags-charts.php:89
-#: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:432
-msgid "All Time"
-msgstr "सबै समय "
 
 #: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
@@ -3929,6 +3870,18 @@ msgstr "सकृय सम्पर्कहरु संग कुरा क�
 #: dt-metrics/contacts/sources.php:24
 msgid "Sources Chart"
 msgstr "श्रोतको चार्ट "
+
+#: dt-metrics/contacts/sources.php:87
+msgid "Filter contacts to date range:"
+msgstr "मिति दायरामा सम्पर्कहरू छाटकाट  गर्नुहोस्"
+
+#: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
+#: dt-metrics/records/time-charts.php:115
+#: dt-users/template-user-management.php:432
+msgid "All Time"
+msgstr "सबै समय "
 
 #: dt-metrics/contacts/sources.php:91
 msgid "Showing contacts created during"
@@ -4019,49 +3972,11 @@ msgstr "पुस्ताहरु "
 msgid "Generation"
 msgstr "पुस्ता "
 
-#: dt-metrics/groups/tree.php:25
-msgid "Groups Tree"
-msgstr "समूह रूख"
-
-#: dt-metrics/groups/tree.php:80
-msgid "Group Generation Tree"
-msgstr "समूह पुस्ता रुख "
-
-#: dt-metrics/groups/tree.php:81 dt-metrics/personal/group-tree.php:82
-#: dt-metrics/records/genmap.php:143
-msgid "Highlight Active"
-msgstr "हाइलाइट सक्रिय"
-
-#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:144
-msgid "Highlight Churches"
-msgstr "हाइलाइट चर्चहरू"
-
-#: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
-msgid "Members"
-msgstr "सदस्यहरु "
-
-#: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:146
-msgid "View Record"
-msgstr "अभिलेख हेर्नुहोस "
-
-#: dt-metrics/groups/tree.php:87 dt-metrics/personal/group-tree.php:88
-#: dt-metrics/records/genmap.php:149
-msgid "Total Members"
-msgstr "जम्मा सदस्यहरु "
-
-#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:150
-msgid "View Group"
-msgstr "समूह हेर्नुहोस्"
-
-#: dt-metrics/metrics.php:86
+#: dt-metrics/metrics.php:79
 msgid "Genmap"
 msgstr ""
 
-#: dt-metrics/metrics.php:87 dt-metrics/records/dynamic-records-map.php:31
+#: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
 msgstr ""
 
@@ -4108,7 +4023,7 @@ msgstr "मैले पोस्ट गरेको टिप्पणीहर
 msgid "Date"
 msgstr "मिति"
 
-#: dt-metrics/personal/activity-highlights.php:176
+#: dt-metrics/personal/activity-highlights.php:191
 msgid "%1$d %2$s created"
 msgstr "%1$d %2$s सिर्जना गरियो"
 
@@ -4120,42 +4035,6 @@ msgstr "गतिविधि लग"
 #: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:193
 msgid "Less"
 msgstr "थोरै"
-
-#: dt-metrics/personal/baptism-tree.php:25
-msgid "My Baptism Tree"
-msgstr "मेरो बप्तिस्मा ट्री"
-
-#: dt-metrics/personal/baptism-tree.php:57
-msgid "My Baptism Generation Tree"
-msgstr "मेरो बप्तिस्मा जेनेरेशन "
-
-#: dt-metrics/personal/coaching-tree.php:25
-msgid "My Coaching Tree"
-msgstr "मेरो शिक्षक ट्री"
-
-#: dt-metrics/personal/coaching-tree.php:58
-msgid "My Coaching Generation Tree"
-msgstr "मेरो कोचिंग जेनेर ट्री"
-
-#: dt-metrics/personal/coaching-tree.php:143
-msgid "Disciple"
-msgstr "चेला"
-
-#: dt-metrics/personal/group-tree.php:26
-msgid "My Groups Tree"
-msgstr "मेरो समुहको ट्री"
-
-#: dt-metrics/personal/group-tree.php:81
-msgid "My Group Generation Tree"
-msgstr "मेरो समूह उत्पादन रूख"
-
-#: dt-metrics/personal/mapbox-contacts-maps.php:27
-msgid "Contacts Maps"
-msgstr "सम्पर्क नक्शा"
-
-#: dt-metrics/personal/mapbox-groups-maps.php:27
-msgid "Groups Maps"
-msgstr "समूह नक्शा"
 
 #: dt-metrics/personal/overview.php:55
 msgid "My Overview"
@@ -4320,6 +4199,30 @@ msgstr "सबै क्षेत्रहरू देखाउनुहोस�
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
 msgstr ""
+
+#: dt-metrics/records/genmap.php:143
+msgid "Highlight Active"
+msgstr "हाइलाइट सक्रिय"
+
+#: dt-metrics/records/genmap.php:144
+msgid "Highlight Churches"
+msgstr "हाइलाइट चर्चहरू"
+
+#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
+msgid "Members"
+msgstr "सदस्यहरु "
+
+#: dt-metrics/records/genmap.php:146
+msgid "View Record"
+msgstr "अभिलेख हेर्नुहोस "
+
+#: dt-metrics/records/genmap.php:149
+msgid "Total Members"
+msgstr "जम्मा सदस्यहरु "
+
+#: dt-metrics/records/genmap.php:150
+msgid "View Group"
+msgstr "समूह हेर्नुहोस्"
 
 #: dt-metrics/records/genmap.php:155
 msgid "Coaches"
@@ -6007,6 +5910,60 @@ msgstr "सम्पर्कहरू स्क्यान गर्नुह�
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "नक्कल भेटियो:"
+
+#~ msgid "Baptism Tree"
+#~ msgstr "बप्तिस्मा रुख "
+
+#~ msgid "Baptism Generation Tree"
+#~ msgstr "बप्तिस्मा पुस्ता रुख "
+
+#~ msgid "Coaching Tree"
+#~ msgstr "प्रशिक्षक रुख "
+
+#~ msgid "Coaching Generation Tree"
+#~ msgstr "प्रशिक्षक पुस्टा रुख "
+
+#~ msgid "Milestones Map"
+#~ msgstr "माईलस्टोन्स नक्शा"
+
+#~ msgid "Milestones"
+#~ msgstr "माईलस्टोन "
+
+#~ msgid "Milestones Chart"
+#~ msgstr "मईल्स्टन"
+
+#~ msgid "Groups Tree"
+#~ msgstr "समूह रूख"
+
+#~ msgid "Group Generation Tree"
+#~ msgstr "समूह पुस्ता रुख "
+
+#~ msgid "My Baptism Tree"
+#~ msgstr "मेरो बप्तिस्मा ट्री"
+
+#~ msgid "My Baptism Generation Tree"
+#~ msgstr "मेरो बप्तिस्मा जेनेरेशन "
+
+#~ msgid "My Coaching Tree"
+#~ msgstr "मेरो शिक्षक ट्री"
+
+#~ msgid "My Coaching Generation Tree"
+#~ msgstr "मेरो कोचिंग जेनेर ट्री"
+
+#~ msgid "Disciple"
+#~ msgstr "चेला"
+
+#~ msgid "My Groups Tree"
+#~ msgstr "मेरो समुहको ट्री"
+
+#~ msgid "My Group Generation Tree"
+#~ msgstr "मेरो समूह उत्पादन रूख"
+
+#~ msgid "Contacts Maps"
+#~ msgstr "सम्पर्क नक्शा"
+
+#~ msgid "Groups Maps"
+#~ msgstr "समूह नक्शा"
 
 #, fuzzy
 #~| msgid "Add Records"
