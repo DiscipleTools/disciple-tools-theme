@@ -448,7 +448,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             ?>
             <h1>Better Mapping and Locations Field</h1>
             <p>Add a mapbox key for better and more detailed maps and better results when selecting a location on a record.</p>
-            <p>See the docs for more information and examples: <a href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/" target="_blank">Geolocation Docs</a></p>
+            <p>See the docs for more information and examples: <a href="https://disciple.tools/docs/geolocation/" target="_blank">Geolocation Docs</a></p>
 
             <form method="post">
                 <table class="widefat striped">

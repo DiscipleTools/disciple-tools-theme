@@ -1060,7 +1060,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             if ( $uri && ( ( strpos( $uri, 'edit.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) || ( strpos( $uri, 'post-new.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) ) ) : ?>
                 <script>
                     jQuery(function($) {
-                        $(`<div><a href="https://disciple.tools/user-docs/getting-started-info/admin/site-links/" style="margin-bottom:15px;" target="_blank">
+                        $(`<div><a href="https://disciple.tools/docs/site-links/" style="margin-bottom:15px;" target="_blank">
                         <img style="height:15px" class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         Site link documentation</a></div>`).insertAfter(
                             '#wpbody-content .wrap .wp-header-end:eq(0)')

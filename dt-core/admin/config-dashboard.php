@@ -401,7 +401,7 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
     $items['explore_site_link'] = [
         'label' => 'Explore Site Links',
         'description' => 'Did you know that you can link up several Disciple.Tools instances in a single place? Navigate the Site Link section to find out more!',
-        'link' => 'https://disciple.tools/user-docs/getting-started-info/admin/site-links/',
+        'link' => 'https://disciple.tools/docs/site-links/',
         'complete' => false,
         'hide_mark_done' => false
     ];

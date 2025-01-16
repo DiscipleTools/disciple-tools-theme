@@ -101,7 +101,7 @@ export class SetupWizardKeys extends OpenLitElement {
             <p>
               For additional details and information, refer to the
               <a
-                href="https://disciple.tools/user-docs/getting-started-info/admin/geolocation/"
+                href="https://disciple.tools/docs/geolocation/"
                 target="_blank"
                 >Geolocation Documentation</a
               >.
