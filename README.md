@@ -20,7 +20,7 @@
 # Disciple.Tools
 
 Disciple.Tools is a powerful CRM that boosts collaboration, clarity, and accountability for christian ministries seeking the growth and multiplication of disciples and churches.
-For more information see the [Disciple.Tools website](https://disciple.tools) and [User Documentation](https://disciple.tools/docs)
+For more information see the [Disciple.Tools website](https://disciple.tools) and [User Documentation](https://disciple.tools/docs).
 
 ## Plateform
 
@@ -59,7 +59,7 @@ See the [starter plugin](https://github.com/DiscipleTools/disciple-tools-plugin-
 Please make sure any theme and plugin contributions align with the [contributing guidelines](https://github.com/DiscipleTools/disciple-tools-theme/wiki/Contribution-guidelines).
 
 Disciple.Tools has a powerful REST API and many hooks to help you build your feature.
-Find the documentation and help setting up your coding environment in the [developer documentation](https://developers.disciple.tools/)
+Find the documentation and help setting up your coding environment in the [developer documentation](https://developers.disciple.tools/).
 
 ## How to responsibly disclose a security vulnerability
 
