@@ -18,14 +18,17 @@
  ╚════╝                 ╚════╝
 ```
 # Disciple.Tools
+
 Disciple.Tools is a powerful CRM that boosts collaboration, clarity, and accountability for christian ministries seeking the growth and multiplication of disciples and churches.
-See the [Disciple.Tools website](https://disciple.tools) and [User Documentation](https://disciple.tools/docs)
+For more information see the [Disciple.Tools website](https://disciple.tools) and [User Documentation](https://disciple.tools/docs)
 
 ## Plateform
+
 Disciple.Tools is a WordPress Theme. Install WordPress anywhere and simply upload and activate the Disciple.Tools theme.
-Be sure to check out the [Disciple.Tools Plugins](https://disciple.tools/plugins) list for even more functionality.
+THen be sure to check out the [Disciple.Tools Plugins list](https://disciple.tools/plugins) for even more functionality.
 
 ## Description
+
 As a contact relationship management (CRM) system it is :
 
 - free and open source – you have full control over your infrastructure and data
@@ -38,18 +41,25 @@ As a contact relationship management (CRM) system it is :
 - mobile-friendly - giving full-functionality from a mobile device
 
 ## Origin
+
 Disciple.Tools was started out of a need for a simple, low-cost, highly distributable CRM. Most other CRMs charge per user and are too expensive for to be used by small volunteer teams.
 
 
-### Contribution
-Missing Feature? Bug Fix? We'd love your help. Before coding and creating a PR please create or comment on an issue you'd like to work on. This will help others know you are working on it and avoid duplicate work.
+## Contribution
 
-Need Help or want to Brainstorm? Join our discord channel and share your questions and ideas.
+Missing Feature? Bug Fix? We'd love your help.
+
+Before coding and creating a PR please create or comment on an issue you'd like to work on. This will help others know you are working on it and avoid duplicate work.
+
+Need help or want to brainstorm? Join our [discord channel](https://discord.gg/kp5pYmrhSd) and share your questions and ideas.
 
 We recommend building most new features in a plugin first. Later we can decide if it should be included in the core theme.
 See the [starter plugin](https://github.com/DiscipleTools/disciple-tools-plugin-starter-template) for a good starting point.
 
-See the [developer documentation](https://developers.disciple.tools/) for API documentation and the [contributing docs](https://github.com/DiscipleTools/disciple-tools-theme/wiki/Contribution-guidelines) for more information on how to contribute.
+Please make sure any theme and plugin contributions align with the [contributing guidelines](https://github.com/DiscipleTools/disciple-tools-theme/wiki/Contribution-guidelines).
+
+Disciple.Tools has a powerful REST API and many hooks to help you build your feature.
+Find the documentation and help setting up your coding environment in the [developer documentation](https://developers.disciple.tools/)
 
 ## How to responsibly disclose a security vulnerability
 
