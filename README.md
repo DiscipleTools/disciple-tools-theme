@@ -45,7 +45,7 @@ As a contact relationship management (CRM) system it is:
 
 ## Origin
 
-Disciple.Tools was started out of a need for a simple, low-cost, highly distributable CRM. Most other CRMs charge per user and are too expensive for to be used by small volunteer teams.
+Disciple.Tools was started out of a need for a simple, low-cost, highly distributable CRM. Most other CRMs charge per user and are too expensive to be used by small volunteer teams.
 
 ## Contribution
 
