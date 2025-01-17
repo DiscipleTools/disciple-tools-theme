@@ -50,6 +50,7 @@ Disciple.Tools was started out of a need for a simple, low-cost, highly distribu
 Missing Feature? Bug Fix? We'd love your help.
 
 Before coding and creating a PR please create or comment on an issue you'd like to work on. This will help others know you are working on it and avoid duplicate work.
+A good place to start is the [help wanted GitHub Issues](https://github.com/DiscipleTools/disciple-tools-theme/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22help%20wanted%22).
 
 Need help or want to brainstorm? Join our [discord channel](https://discord.gg/kp5pYmrhSd) and share your questions and ideas.
 
