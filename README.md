@@ -45,7 +45,7 @@ As a contact relationship management (CRM) system it is:
 
 ## Origin
 
-Disciple.Tools was started out of a need for a simple, low-cost, highly distributable CRM. Most other CRMs charge per user and are too expensive for to be used by small volunteer teams.
+Disciple.Tools was started out of a need for a simple, low-cost, highly distributable CRM. Most other CRMs charge per user and are too expensive to be used by small volunteer teams.
 
 ## Contribution
 
@@ -59,11 +59,11 @@ We're excited to have you contribute to Disciple.Tools! Whether you're fixing a 
 You can find open issues that need help under the [Help Wanted](https://github.com/DiscipleTools/disciple-tools-theme/issues?q=is%3Aissue%20label%3A%22help%20wanted%22) label.
 
 ### How to Contribute via a Plugin
-We recommend building most new features in a plugin first. Later we can decide if it should be included in the core theme.
+We recommend building most new features in a plugin first. Later we can decide if it should be included in the theme.
 
 - **Use the Starter Template**: Start by creating a GitHub repo using the [starter plugin template](https://github.com/DiscipleTools/disciple-tools-plugin-starter-template).
 - **Customize the Plugin**: Use the [starter plugin wiki](https://github.com/DiscipleTools/disciple-tools-plugin-starter-template/wiki) to guide your development.
-- **Submit Pour Plugin**: Once your plugin is ready, submit it for inclusion in the [Disciple.Tools Plugins list](https://disciple.tools/plugins).
+- **Submit Your Plugin**: Once your plugin is ready, submit it for inclusion in the [Disciple.Tools Plugins list](https://disciple.tools/plugins).
 
 Disciple.Tools provides a REST API and hooks to make custom development easier. Explore the [developer documentation](https://developers.disciple.tools/) to get started.
 
