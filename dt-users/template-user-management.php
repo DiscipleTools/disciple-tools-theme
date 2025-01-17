@@ -290,7 +290,7 @@ $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
                                             $expected_roles = dt_list_roles( false );
                                             ?>
 
-                                            <p> <a href="https://disciple.tools/user-docs/getting-started-info/roles/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
+                                            <p> <a href="https://disciple.tools/docs/roles-introduction/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
 
                                             <ul id="user_roles_list" class="no-bullet">
                                                 <?php foreach ( $expected_roles as $role_key => $role_value ) : ?>

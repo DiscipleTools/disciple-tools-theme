@@ -162,7 +162,7 @@ class DT_Contacts_Base {
                         'hidden' => !$private_contacts_enabled,
                     ],
                 ],
-                'description' => 'See full documentation here: https://disciple.tools/user-docs/getting-started-info/contacts/contact-types',
+                'description' => 'See full documentation here: https://disciple.tools/docs/contact-types',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2',
                 'customizable' => false
             ];
