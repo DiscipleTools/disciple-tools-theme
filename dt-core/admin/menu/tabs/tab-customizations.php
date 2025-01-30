@@ -695,10 +695,11 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
         if ( !isset( $post_settings['fields'][$field_key]['type'] ) ) {
             return false;
         }
-        if ( isset( $post_settings['fields'][$field_key]['customizable'] ) && $post_settings['fields'][$field_key]['customizable'] === false ) {
+        $field_type = $post_settings['fields'][$field_key]['type'];
+
+        if ( !in_array( $field_type, [ 'communication_channel' ] ) && ( isset( $post_settings['fields'][$field_key]['customizable'] ) && $post_settings['fields'][$field_key]['customizable'] === false ) ) {
             return false;
         }
-        $field_type = $post_settings['fields'][$field_key]['type'];
         if ( in_array( $field_type, [ 'hash', 'array' ] ) ){
             return false;
         }
