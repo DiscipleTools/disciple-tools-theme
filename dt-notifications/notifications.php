@@ -924,7 +924,7 @@ class Disciple_Tools_Notifications
             $comment = get_comment( $notification['secondary_item_id'] );
             $comment_content = $comment ? self::format_comment( $comment->comment_content ) : '';
             $comment_content = $vertical_spacing . ' ' . $comment_content;
-            $display_name = $source_user ? $source_user->display_name : __( 'System', 'disciple_tools' );
+            $display_name = $source_user ? $source_user->display_name : ( $comment->comment_author ?: __( 'System', 'disciple_tools' ) );
             $notification_note = sprintf( esc_html_x( '%1$s mentioned you on %2$s saying: %3$s', 'User1 mentioned you on contact1 saying: test', 'disciple_tools' ), $display_name, $link, $comment_content );
         } elseif ( $notification['notification_name'] ==='comment' ){
             $source_user = get_userdata( $notification['source_user_id'] );
