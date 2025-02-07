@@ -141,7 +141,6 @@
     <exclude name="PEAR.Files.IncludingFile" />
     <exclude name="WordPress.Security.EscapeOutput.ExceptionNotEscaped" />
     <exclude name="Generic.Files.OneObjectStructurePerFile" />
-    <exclude name="WordPress.WP.EnqueuedResources" /> <!-- Removes requirement to enqueue scripts and styles since porch strategy loads many unenqueued files for the single page -->
   </rule>
 
   <rule ref="Generic.Classes">
