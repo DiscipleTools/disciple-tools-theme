@@ -12,8 +12,10 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.18.2",
     "@babel/preset-env": "^7.24.4",
+    "@disciple.tools/web-components": "^0.6.9",
     "browser-sync": "^3.0.2",
     "cssnano": "^6.1.2",
+    "del": "^6.1.1",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^9.1.0",
     "foundation-sites": "^6.7.2",
@@ -64,7 +66,8 @@
   },
   "eslintIgnore": [
     "dt-assets/build/js/scripts.min.js",
-    "dt-core/dependencies/*"
+    "dt-core/dependencies/*",
+    "dt-assets/build/components/**/*"
   ],
   "jshintConfig": {
     "globals": {

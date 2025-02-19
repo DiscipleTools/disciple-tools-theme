@@ -1899,6 +1899,19 @@ jQuery(document).ready(function ($) {
   /**
    * Custom Tile Display - [END]
    */
+
+  if (
+    window.WebComponentServices &&
+    window.WebComponentServices.ComponentService
+  ) {
+    const service = new window.WebComponentServices.ComponentService(
+      window.detailsSettings.post_type,
+      window.detailsSettings.post_id,
+      window.wpApiShare.nonce,
+    );
+    service.initialize();
+    window.componentService = service;
+  }
 });
 
 // change update needed notification and switch if needed.
