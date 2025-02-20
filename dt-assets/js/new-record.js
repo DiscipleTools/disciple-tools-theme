@@ -1,10 +1,7 @@
 // Check if the web component services and ComponentService are available
-if (
-  window.WebComponentServices &&
-  window.WebComponentServices.ComponentService
-) {
+if (window.DtWebComponents && window.DtWebComponents.ComponentService) {
   // Create a new instance of ComponentService
-  const service = new window.WebComponentServices.ComponentService(
+  const service = new window.DtWebComponents.ComponentService(
     window.new_record_localized.post_type,
     '',
     // eslint-disable-next-line no-undef
@@ -15,7 +12,7 @@ if (
   window.componentService = service;
 
   // Create a new instance of apiService
-  const initApiService = new window.WebComponentServices.ApiService(
+  const initApiService = new window.DtWebComponents.ApiService(
     // eslint-disable-next-line no-undef
     wpApiShare.nonce,
   );

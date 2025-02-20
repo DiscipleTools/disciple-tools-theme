@@ -31,7 +31,7 @@ Checking out a PR and seeing the orange debug table is disappointing.
 We look forward to hearing from you!
 
 ### Web Components
-When working on updates to the web components package and wanting to test them here in the them, you can use NPM Link to streamline local testing.
+When working on updates to the web components package and wanting to test them here in the theme, you can use NPM Link to streamline local testing.
 
 See https://medium.com/dailyjs/how-to-use-npm-link-7375b6219557 for a good overview of how NPM Link works.
 
