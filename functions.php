@@ -240,6 +240,7 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
              * Load first files
              */
             require_once( 'dt-core/multisite.php' );
+            require_once( 'dt-core/utilities/dt-components.php' );
             require_once( 'dt-core/global-functions.php' );
             require_once( 'dt-core/utilities/loader.php' );
 
