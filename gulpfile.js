@@ -82,7 +82,7 @@ const SOURCE = {
     '!dt-assets/js/footer-scripts.js',
   ],
 
-  components: 'node_modules/@disciple.tools/web-components/dist/**/*',
+  components: 'node_modules/@disciple.tools/web-components/dist/index.*js',
 
   php: '**/*.php'
 };

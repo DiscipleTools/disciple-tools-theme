@@ -61,7 +61,7 @@ class DT_Components
               ' . esc_html( $icon ) . '
               ' . esc_html( $required_tag ) . '
               ' . esc_html( $disabled ) . '
-              ' . ( $is_private ? 'private privateLabel=' . esc_attr( _x( "Private Field: Only I can see it\'s content", 'disciple_tools' ) ) : null ) . '
+              ' . ( $is_private ? 'private' : null ) . '
         ';
 
         return $shared_attributes;
