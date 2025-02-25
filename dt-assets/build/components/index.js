@@ -2157,12 +2157,13 @@ var DtWebComponents=function($){"use strict";var Pr=Object.defineProperty;var Ir
         }
 
         .icon-overlay {
+          height: 2.5rem;
           inset-inline-end: 2.5rem;
         }
       `]}static get properties(){return{...super.properties,placeholder:{type:String},options:{type:Array},value:{type:String,reflect:!0},color:{type:String,state:!0},onchange:{type:String}}}updateColor(){if(this.value&&this.options){const e=this.options.filter(t=>t.id===this.value);e&&e.length&&(this.color=e[0].color)}}isColorSelect(){return(this.options||[]).reduce((e,t)=>e||t.color,!1)}willUpdate(e){super.willUpdate(e),e.has("value")&&this.updateColor()}_change(e){const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value,newValue:e.target.value}});this.value=e.target.value,this._setFormValue(this.value),this.dispatchEvent(t)}render(){return d`
       ${this.labelTemplate()}
 
-      <div class="container" dir="${this.RTL?"rtl":"ltr"}">
+      <div class="input-group ${this.disabled?"disabled":""}" dir="${this.RTL?"rtl":"ltr"}">
         <select
           name="${this.name}"
           aria-label="${this.name}"
