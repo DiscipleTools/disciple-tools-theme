@@ -149,17 +149,18 @@ class DT_Components
 
     static function render_multi_select( $field_key, $fields, $post ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
+        $options_array = $fields[$field_key]['default'];
+        $options_array = array_map(function ( $key, $value ) {
+            return [
+                'id' => $key,
+                'label' => $value['label'],
+                'color' => $value['color'] ?? null,
+                'icon' => $value['icon'] ?? null,
+            ];
+        }, array_keys( $options_array ), $options_array);
 
-        // typeahead
         if ( isset( $fields[$field_key]['display'] ) && $fields[$field_key]['display'] === 'typeahead' ) {
-            $options_array = $fields[$field_key]['default'];
-            $options_array = array_map(function ( $key, $value ) {
-                return [
-                    'id' => $key,
-                    'label' => $value['label'],
-                    'color' => $value['color'] ?? null,
-                ];
-            }, array_keys( $options_array ), $options_array);
+            // typeahead
             ?>
             <dt-multi-select <?php echo wp_kses_post( $shared_attributes ) ?>
                 options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
@@ -167,19 +168,19 @@ class DT_Components
                 <?php dt_render_icon_slot( $fields[$field_key] ) ?>
             </dt-multi-select>
             <?php
-        // non-typeahead
         } else {
+            // button-group, non-typeahead
             $faith_milestone = array( $fields[$field_key]['default'] );
             $faith_milestone_json = json_encode( $faith_milestone );
 
             // $is_modal_array = [ 'Baptized' ];
             // $is_modal_json = json_encode( $is_modal_array );?>
             <?php /* isModal='<?php echo esc_attr( $is_modal_json ); ?>' */ ?>
-            <dt-multiselect-buttons-group <?php echo wp_kses_post( $shared_attributes ) ?>
-                buttons='<?php echo esc_attr( $faith_milestone_json ); ?>'
+            <dt-multi-select-button-group <?php echo wp_kses_post( $shared_attributes ) ?>
+                options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
                 value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>">
                 <?php dt_render_icon_slot( $fields[$field_key] ) ?>
-            </dt-multiselect-buttons-group>
+            </dt-multi-select-button-group>
             <?php
         }
     }

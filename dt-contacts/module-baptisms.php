@@ -267,14 +267,14 @@ class DT_Contacts_Baptisms extends DT_Module_Base {
             /**
              * detect if an update is made on the milestone field for baptized.
              */
-            $(document).on(
-              'dt_multi_select-updated',
-              function(e, newContact, fieldKey, optionKey, action) {
-                if (optionKey==='milestone_baptized' && action==='add') {
-                  openBaptismModal(newContact);
-                }
-              },
-            );
+            $(document).on('dt:post:update', function (e) {
+              console.log(e.detail);
+              const {response, field, value} = e?.detail;
+              if (field === 'milestones' && value.values.some(x => x.value === 'milestone_baptized' && !x.delete)) {
+                openBaptismModal(response);
+                //todo: instead of refresh, update the component value of appropriate fields
+              }
+            });
             /**
              * If a baptism date is added
              */
