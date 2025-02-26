@@ -528,6 +528,15 @@ jQuery(document).ready(function ($) {
     function (e, newContact, fieldKey, optionKey, action) {},
   );
 
+  $(document).on('dt:post:update', function (e) {
+    // newer event from DTWebComponents.ApiService
+    if (e.detail) {
+      const { response } = e.detail;
+      post = response;
+      resetDetailsFields();
+      record_updated(window.lodash.get(response, 'requires_path', false));
+    }
+  });
   $(document).on('dt_record_updated', function (e, response, request) {
     post = response;
     resetDetailsFields();

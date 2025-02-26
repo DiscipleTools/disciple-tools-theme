@@ -2,7 +2,7 @@
 
 class DT_Components
 {
-    static function shared_attributes( $field_key, $fields, $post ) {
+    public static function shared_attributes( $field_key, $fields, $post ) {
         $disabled = 'disabled';
         if ( isset( $post['post_type'] ) && isset( $post['ID'] ) ) {
             $can_update = DT_Posts::can_update( $post['post_type'], $post['ID'] );
@@ -67,7 +67,7 @@ class DT_Components
         return $shared_attributes;
     }
 
-    static function render_icon_slot( $field ) {
+    public static function render_icon_slot( $field ) {
         if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ): ?>
             <span slot="icon-start">
                 <i class="dt-icon <?php echo esc_html( $field['font-icon'] ) ?>"></i>
@@ -75,7 +75,7 @@ class DT_Components
         <?php endif;
     }
 
-    static function render_communication_channel( $field_key, $fields, $post ) {
+    public static function render_communication_channel( $field_key, $fields, $post ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
         ?>
         <dt-comm-channel <?php echo wp_kses_post( $shared_attributes ) ?>
@@ -86,7 +86,7 @@ class DT_Components
         <?php
     }
 
-    static function render_connection( $field_key, $fields, $post ) {
+    public static function render_connection( $field_key, $fields, $post ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
 
         $value = array_map(function ( $value ) {
@@ -106,7 +106,7 @@ class DT_Components
         <?php
     }
 
-    static function render_date( $field_key, $fields, $post ) {
+    public static function render_date( $field_key, $fields, $post ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
         ?>
         <dt-date <?php echo wp_kses_post( $shared_attributes ) ?>
@@ -116,7 +116,7 @@ class DT_Components
         <?php
     }
 
-    static function render_key_select( $field_key, $fields, $post ) {
+    public static function render_key_select( $field_key, $fields, $post ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
 
         $options_array = $fields[$field_key]['default'];
@@ -136,7 +136,7 @@ class DT_Components
         <?php
     }
 
-    static function render_location_meta( $field_key, $fields, $post ) {
+    public static function render_location_meta( $field_key, $fields, $post ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
         ?>
         <dt-location <?php echo wp_kses_post( $shared_attributes ) ?>
@@ -147,7 +147,7 @@ class DT_Components
         <?php
     }
 
-    static function render_multi_select( $field_key, $fields, $post ) {
+    public static function render_multi_select( $field_key, $fields, $post ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
         $options_array = $fields[$field_key]['default'];
         $options_array = array_map(function ( $key, $value ) {
@@ -185,7 +185,7 @@ class DT_Components
         }
     }
 
-    static function render_tags( $field_key, $fields, $post ) {
+    public static function render_tags( $field_key, $fields, $post ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
 
         $value = array_map(function ( $value ) {
@@ -201,7 +201,7 @@ class DT_Components
         <?php
     }
 
-    static function render_text( $field_key, $fields, $post ) {
+    public static function render_text( $field_key, $fields, $post ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
         ?>
         <dt-text <?php echo wp_kses_post( $shared_attributes ) ?>
@@ -211,7 +211,7 @@ class DT_Components
         <?php
     }
 
-    static function render_textarea( $field_key, $fields, $post ) {
+    public static function render_textarea( $field_key, $fields, $post ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
         ?>
         <dt-textarea <?php echo wp_kses_post( $shared_attributes ) ?>

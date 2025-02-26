@@ -142,29 +142,23 @@ class DT_Contacts_Baptisms extends DT_Module_Base {
           jQuery(document).ready(function ($) {
             let post = window.detailsSettings.post_fields;
             let openBaptismModal = function (newContact) {
+              post = newContact;
               if (
                 !post.baptism_date ||
                 !(post.milestones || []).includes('milestone_baptized') ||
                 (post.baptized_by || []).length === 0
               ) {
                 $('#baptism-modal').foundation('open');
+
+                // set values of fields in baptism modal
+                const componentService = window.DtWebComponents.ComponentService;
+                const baptizedByValue = componentService.convertApiValue('dt-connection', post.baptized_by);
+                $('#baptism-modal [name="baptized_by"]').attr('value', JSON.stringify(baptizedByValue));
+                $('#baptism-modal [name="baptism_date"]').attr('value', post?.baptism_date?.formatted);
               }
-              post = newContact;
             };
             $('#close-baptism-modal').on('click', function () {
               location.reload();
-            });
-
-            /**
-             * detect if an update is made on the baptized_by field.
-             */
-            $(document).on('dt_record_updated', function (e, response, request) {
-              post = response;
-              if (
-                request?.baptized_by && response?.baptized_by && response?.baptized_by[0]
-              ) {
-                openBaptismModal(response);
-              }
             });
 
             $(document).on('dt:post:update', function (e) {
@@ -173,12 +167,17 @@ class DT_Contacts_Baptisms extends DT_Module_Base {
               // open modal when baptism milestone is set
               if (field === 'milestones' && value.values.some(x => x.value === 'milestone_baptized' && !x.delete)) {
                 openBaptismModal(response);
-                //todo: instead of refresh, update the component value of appropriate fields
               }
 
               // open modal when baptism_date is set
               if (field === 'baptism_date' && response.baptism_date && response.baptism_date.timestamp) {
-                openBaptismModal(response)
+                openBaptismModal(response);
+              }
+
+              // open modal when baptized_by is set
+              if (field === 'baptized_by' && value?.values?.length
+                  && response?.baptized_by && response?.baptized_by.length) {
+                openBaptismModal(response);
               }
             });
 
@@ -191,8 +190,8 @@ class DT_Contacts_Baptisms extends DT_Module_Base {
 
             <div>
 
-                <?php DT_Components::render_connection( 'baptized_by', $field_settings, $post ) ?>
-                <?php DT_Components::render_date( 'baptism_date', $field_settings, $post ) ?>
+                <?php DT_Components::render_connection( 'baptized_by', $field_settings, null ) ?>
+                <?php DT_Components::render_date( 'baptism_date', $field_settings, null ) ?>
 
             </div>
 
