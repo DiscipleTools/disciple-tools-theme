@@ -618,9 +618,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 case 'key_select':
                     DT_Components::render_key_select( $field_key, $fields, $post );
                     break;
-                case 'location_meta':
-                    DT_Components::render_location_meta( $field_key, $fields, $post );
-                    break;
                 case 'multi_select':
                     DT_Components::render_multi_select( $field_key, $fields, $post );
                     break;
@@ -641,14 +638,62 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             if ( $is_legacy ) {
                 ?>
                 <div class="section-subheader">
-                <?php dt_render_field_icon( $fields[$field_key] );
+                    <?php dt_render_field_icon( $fields[$field_key] );
 
-                echo esc_html( $fields[$field_key]['name'] );
-                ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
-                <?php if ( $is_private ) : ?>
-                    <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
-                <?php endif;
+                    echo esc_html( $fields[$field_key]['name'] );
+                    ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
+                    <?php if ( $is_private ) : ?>
+                        <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
+                    <?php endif; ?>
 
+                    <?php if ( $field_type === 'link' ) : ?>
+                        <?php $only_one_option = count( $fields[$field_key]['default'] ) === 1 ? esc_attr( array_keys( $fields[$field_key]['default'] )[0] ) : '' ?>
+
+                        <div class="add-link-dropdown"
+                            <?php echo !empty( $only_one_option ) ? 'data-only-one-option' : '' ?>
+                             data-link-type="<?php echo esc_attr( $only_one_option ) ?>"
+                             data-field-key="<?php echo esc_attr( $field_key ) ?>">
+                            <button
+                                class="add-button add-link-dropdown__button"
+                                type="button"
+                                data-field-type="<?php echo esc_html( $field_type ) ?>"
+                                data-list-class="<?php echo esc_html( $display_field_id ); ?>"
+                                <?php echo esc_html( $disabled ); ?>
+                            >
+                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                            </button>
+
+                            <div class="add-link-dropdown__content add-link-<?php echo esc_attr( $display_field_id ) ?>"
+                                 style="<?php echo count( $fields[$field_key]['default'] ) < 2 ? 'display: none' : '' ?>">
+                                <?php foreach ( $fields[$field_key]['default'] as $option_key => $option_value ): ?>
+
+                                    <?php if ( isset( $option_value['deleted'] ) && $option_value['deleted'] === true ) {
+                                        continue;
+                                    } ?>
+
+                                    <div
+                                        class="add-link__option"
+                                        <?php echo !empty( $only_one_option ) ? 'data-only-one-option' : '' ?>
+                                        data-link-type="<?php echo esc_attr( $option_key ) ?>"
+                                        data-field-key="<?php echo esc_attr( $field_key ) ?>"
+                                    >
+                                        <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
+                                        <?php echo esc_html( $option_value['label'] ) ?>
+                                    </div>
+
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                    <?php endif; ?>
+                    <!-- location add -->
+                    <?php if ( ( $field_type === 'location' || 'location_meta' === $field_type ) && DT_Mapbox_API::get_key() && ! empty( $post ) ) : ?>
+                        <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" id="new-mapbox-search" type="button" <?php echo esc_html( $disabled ); ?>>
+                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
+                        </button>
+                    <?php endif ?>
+                </div>
+                <?php
                 // render fields
                 if ( $field_type === 'boolean' ):
                     $selected = '';
@@ -736,6 +781,24 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             <button id="<?php echo esc_html( $display_field_id ); ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $display_field_id ); ?>" title="Delete Date" type="button" <?php echo esc_html( $disabled ); ?>>x</button>
                         </div>
                     </div>
+                <?php elseif ( $field_type === 'location_meta' ) : ?>
+                    <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
+                        <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
+                            <input id="mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto" <?php echo esc_html( $disabled ); ?>/>
+                            <div class="input-group-button">
+                                <button id="mapbox-spinner-button" class="button hollow" style="display:none;" <?php echo esc_html( $disabled ); ?>><span class="loading-spinner active"></span></button>
+                                <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" style="display:none;" type="button" <?php echo esc_html( $disabled ); ?>>&times;</button>
+                            </div>
+                            <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
+                        </div>
+                        <script>
+                            jQuery(document).ready(function(){
+                                window.write_input_widget()
+                            })
+                        </script>
+                    <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>
+                        <div id="mapbox-wrapper"></div>
+                    <?php endif; ?>
                 <?php elseif ( $field_type === 'location' ) :?>
                     <div class="dt_location_grid" data-id="<?php echo esc_html( $field_key ); ?>">
                         <var id="<?php echo esc_html( $field_key ); ?>-result-container" class="result-container"></var>
@@ -777,7 +840,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
                     </div>
                 <?php endif; ?>
-                </div>
                 <?php
             }
         }

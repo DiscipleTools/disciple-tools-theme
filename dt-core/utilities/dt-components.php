@@ -78,11 +78,10 @@ class DT_Components
     public static function render_communication_channel( $field_key, $fields, $post ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
         ?>
-        <dt-comm-channel <?php echo wp_kses_post( $shared_attributes ) ?>
+        <dt-multi-text <?php echo wp_kses_post( $shared_attributes ) ?>
             value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>"
             <?php self::render_icon_slot( $fields[$field_key] ) ?>
-            >
-        </dt-comm-channel>
+        ></dt-multi-text>
         <?php
     }
 
