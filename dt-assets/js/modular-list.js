@@ -3819,7 +3819,6 @@
       let default_options_filters = JSON.parse(
         JSON.stringify(split_by_filters),
       );
-      delete default_options_filters['fields'];
 
       // First, always fetch all available options for given field_id.
       window.API.split_by(
@@ -3827,61 +3826,54 @@
         field_id,
         default_options_filters,
       ).then(function (default_options) {
-        // Next, execute split_by query for given filters.
-        window.API.split_by(
-          list_settings.post_type,
-          field_id,
-          split_by_filters,
-        ).then(function (split_by_response) {
-          $(split_by_current_filter_button).removeClass('loading');
-          let summary_displayed = false;
-          if (default_options && default_options.length > 0) {
-            let html = '';
+        $(split_by_current_filter_button).removeClass('loading');
+        let summary_displayed = false;
+        if (default_options && default_options.length > 0) {
+          let html = '';
 
-            // Iterate over default options and highlight selected filters.
-            $.each(default_options, function (idx, result) {
-              if (result['value']) {
-                summary_displayed = true;
-                let option_id = result['value'];
-                let option_id_label =
-                  result['label'] !== '' ? result['label'] : result['value'];
+          // Iterate over default options and highlight selected filters.
+          $.each(default_options, function (idx, result) {
+            if (result['value']) {
+              summary_displayed = true;
+              let option_id = result['value'];
+              let option_id_label =
+                result['label'] !== '' ? result['label'] : result['value'];
 
-                // Determine if option should be selected.
-                let option_selected = false;
-                if (split_by_filters['fields']) {
-                  if (
-                    split_by_filters['fields'].filter(
-                      (option) =>
-                        option[field_id] !== undefined &&
-                        option[field_id].includes(option_id),
-                    ).length > 0
-                  ) {
-                    option_selected = true;
-                  }
+              // Determine if option should be selected.
+              let option_selected = false;
+              if (split_by_filters['fields']) {
+                if (
+                  split_by_filters['fields'].filter(
+                    (option) =>
+                      option[field_id] !== undefined &&
+                      option[field_id].includes(option_id),
+                  ).length > 0
+                ) {
+                  option_selected = true;
                 }
+              }
 
-                html += `
+              html += `
                     <label class="list-view">
                       <input class="js-list-view-split-by" type="radio" name="split_by_list_view" ${option_selected ? 'checked' : ''} value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_id="${window.SHAREDFUNCTIONS.escapeHTML(field_id)}" data-field_option_id="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_option_label="${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}" autocomplete="off">
                       <span>${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}</span>
                       <span class="list-view__count js-list-view-count" data-value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}">${window.SHAREDFUNCTIONS.escapeHTML(result['count'])}</span>
                     </label>
                     `;
-              }
-            });
+            }
+          });
 
-            $(split_by_accordion).slideDown('fast', function () {
-              $(split_by_results).html(html);
-              $(split_by_results).slideDown('fast');
-            });
-          }
+          $(split_by_accordion).slideDown('fast', function () {
+            $(split_by_results).html(html);
+            $(split_by_results).slideDown('fast');
+          });
+        }
 
-          if (!summary_displayed) {
-            $(split_by_accordion).slideUp('fast', function () {
-              $(split_by_no_results_msg).fadeIn('fast');
-            });
-          }
-        });
+        if (!summary_displayed) {
+          $(split_by_accordion).slideUp('fast', function () {
+            $(split_by_no_results_msg).fadeIn('fast');
+          });
+        }
       });
     });
   }

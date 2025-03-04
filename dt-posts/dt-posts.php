@@ -821,6 +821,35 @@ class DT_Posts extends Disciple_Tools_Posts {
         //filter in to add or remove query parameters.
         $query = apply_filters( 'dt_search_viewable_posts_query', $query );
 
+        /**
+         * Exclude specified custom filter fields, to avoid default
+         * duplicates and count mismatches.
+         */
+
+        if ( !empty( $query['fields'] ) ) {
+            $updated_fields = [];
+            foreach ( $query['fields'] as $field ) {
+                if ( is_array( $field ) && count( array_intersect( array_keys( $field ), [ 'type' ] ) ) > 0 ) {
+                    $exclude = false;
+                    foreach ( $field as $key => $value ) {
+                        if ( count( array_intersect( $value, [ 'access' ] ) ) > 0 ) {
+                            $exclude = true;
+                        }
+                    }
+
+                    if ( !$exclude ) {
+                        $updated_fields[] = $field;
+                    }
+                } else {
+                    $updated_fields[] = $field;
+                }
+            }
+
+            if ( !empty( $updated_fields ) ){
+                $query['fields'] = $updated_fields;
+            }
+        }
+
         global $wpdb;
 
         $post_settings = self::get_post_settings( $post_type );
