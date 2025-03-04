@@ -26,7 +26,7 @@ $type_choice_present = false;
 $selected_type = null;
 if ( isset( $post_settings['fields']['type']['default'] ) ){
     $non_hidden_choices = array_filter( $post_settings['fields']['type']['default'], function ( $type_option ){
-        return empty( $type_option['hidden'] ) && !empty( $type_option['in_create_form'] );
+        return empty( $type_option['hidden'] ) && ( !isset( $type_option['in_create_form'] ) || $type_option['in_create_form'] !== false );
     } );
     if ( count( $non_hidden_choices ) > 1 ){
         $type_choice_present = true;
