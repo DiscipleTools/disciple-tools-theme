@@ -85,7 +85,7 @@ class DT_Components
         <?php
     }
 
-    public static function render_connection( $field_key, $fields, $post ) {
+    public static function render_connection( $field_key, $fields, $post, $allow_add = true ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
 
         $value = array_map(function ( $value ) {
@@ -99,8 +99,8 @@ class DT_Components
         ?>
         <dt-connection <?php echo wp_kses_post( $shared_attributes ) ?>
             value="<?php echo esc_attr( json_encode( $value ) ) ?>"
-            allowAdd>
-            <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+            <?php echo $allow_add ? 'allowAdd' : null ?>
+        ><?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-connection>
         <?php
     }

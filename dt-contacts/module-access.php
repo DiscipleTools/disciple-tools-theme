@@ -551,7 +551,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                                 <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" dir="auto"
                                        name="<?php echo esc_html( $display_field_id ); ?>[query]" placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
                                        data-field_type="user_select"
-                                       data-field="<?php echo esc_html( $field_key ); ?> <?php echo esc_html( $disabled ); ?>"
+                                       data-field="<?php echo esc_html( $field_key ); ?>"
                                        autocomplete="off" <?php echo esc_html( $disabled ); ?>>
                             </span>
                             <span class="typeahead__button">

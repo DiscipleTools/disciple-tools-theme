@@ -572,8 +572,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * @param bool $show_extra_controls // show typeahead create button
      * @param bool $show_hidden // show hidden select options
      * @param string $field_id_prefix // add a prefix to avoid fields with duplicate ids.
+     * @param object $options // additional options for specific fields
      */
-    function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '' ){
+    function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '', $options = [] ){
         $fields = apply_filters( 'dt_render_field_for_display_fields', $fields, $field_key, $post );
         $disabled = 'disabled';
         if ( isset( $post['post_type'] ) && isset( $post['ID'] ) ) {
@@ -610,7 +611,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     DT_Components::render_communication_channel( $field_key, $fields, $post );
                     break;
                 case 'connection':
-                    DT_Components::render_connection( $field_key, $fields, $post );
+                    $allow_add = isset( $options['connection'] ) && isset( $options['connection']['allow_add'] ) ? $options['connection']['allow_add'] : true;
+                    DT_Components::render_connection( $field_key, $fields, $post, $allow_add );
                     break;
                 case 'date':
                     DT_Components::render_date( $field_key, $fields, $post );
@@ -686,7 +688,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
 
                     <?php endif; ?>
-                    <!-- location add -->
                     <?php if ( ( $field_type === 'location' || 'location_meta' === $field_type ) && DT_Mapbox_API::get_key() && ! empty( $post ) ) : ?>
                         <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" id="new-mapbox-search" type="button" <?php echo esc_html( $disabled ); ?>>
                             <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>

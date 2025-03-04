@@ -16,6 +16,12 @@ if ( ! current_user_can( 'create_' . $dt_post_type ) ) {
 get_header();
 $post_settings = DT_Posts::get_post_settings( $dt_post_type );
 
+$field_options = [
+    'connection' => [
+        'allow_add' => false,
+    ]
+];
+
 $type_choice_present = false;
 $selected_type = null;
 if ( isset( $post_settings['fields']['type']['default'] ) ){
@@ -138,7 +144,7 @@ if ( isset( $post_settings['fields']['type']['default'] ) ){
                             <div <?php echo esc_html( !$show_field ? 'style=display:none' : '' ); ?>
                                 class="form-field <?php echo esc_html( $classes ); ?>">
                                 <?php
-                                render_field_for_display( $field_key, $post_settings['fields'], [ 'post_type' => $dt_post_type ] );
+                                render_field_for_display( $field_key, $post_settings['fields'], [ 'post_type' => $dt_post_type ], null, null, null, $field_options );
                                 if ( isset( $field_settings['required'] ) && $field_settings['required'] === true ) { ?>
                                     <p class="help-text" id="name-help-text"><?php esc_html_e( 'This is required', 'disciple_tools' ); ?></p>
                                 <?php } ?>

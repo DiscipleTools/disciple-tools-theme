@@ -401,8 +401,17 @@ function dt_site_scripts() {
             $dependencies[] = 'mapbox-search-widget';
             $dependencies[] = 'mapbox-gl';
         }
+    }
+    if ( $is_new_post ) {
         dt_theme_enqueue_script( 'new-record', 'dt-assets/js/new-record.js', $dependencies, true );
         wp_localize_script( 'new-record', 'new_record_localized', array(
+            'post_type'          => $post_type,
+            'post_type_settings' => $post_settings,
+            'translations'       => $translations,
+        ) );
+    } else if ( $is_new_bulk_post ) {
+        dt_theme_enqueue_script( 'new-bulk-record', 'dt-assets/js/new-bulk-record.js', $dependencies, true );
+        wp_localize_script( 'new-bulk-record', 'new_bulk_record_localized', array(
             'post_type'          => $post_type,
             'post_type_settings' => $post_settings,
             'translations'       => $translations,
