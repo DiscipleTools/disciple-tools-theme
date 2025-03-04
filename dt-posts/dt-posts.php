@@ -3166,6 +3166,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                     'object_note'       => implode( ', ', $emails )
                 ];
                 dt_activity_insert( $activity );
+                $comment = 'Email sent to ' . implode( ', ', $emails ) . " with the following message:\n\n" . $message;
+                self::add_post_comment( $post_type, $post_id, $comment, 'email', [
+                    'user_id'        => get_current_user_id(),
+                    'comment_author' => get_current_user_id() ? get_userdata( get_current_user_id() )->display_name : 'System'
+                ], false, true );
             }
         } elseif ( ( $send_method === 'sms' ) && class_exists( 'Disciple_Tools_Twilio_API', false ) && Disciple_Tools_Twilio_API::has_credentials() && Disciple_Tools_Twilio_API::is_enabled() ) {
             $is_sent = true;
