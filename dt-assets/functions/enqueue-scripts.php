@@ -411,7 +411,7 @@ function dt_site_scripts() {
         ) );
     } else if ( $is_new_bulk_post ) {
         dt_theme_enqueue_script( 'new-bulk-record', 'dt-assets/js/new-bulk-record.js', $dependencies, true );
-        wp_localize_script( 'new-bulk-record', 'new_bulk_record_localized', array(
+        wp_localize_script( 'new-bulk-record', 'new_record_localized', array(
             'post_type'          => $post_type,
             'post_type_settings' => $post_settings,
             'translations'       => $translations,

@@ -27,7 +27,7 @@ function new_bulk_record_scripts() {
 
     // Save updated localized data.
     $wp_scripts->add_data( 'new-bulk-record', 'data', '' );
-    wp_localize_script( 'new-bulk-record', 'new_bulk_record_localized', $localized_data );
+    wp_localize_script( 'new-bulk-record', 'new_record_localized', $localized_data );
 }
 
 /**

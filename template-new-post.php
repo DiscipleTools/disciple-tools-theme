@@ -49,13 +49,14 @@ if ( isset( $post_settings['fields']['type']['default'] ) ){
                                         <?php echo esc_html( sprintf( __( 'New %s', 'disciple_tools' ), $post_settings['label_singular'] ) ) ?>
                                     </h3>
                                 </td>
-                                <td>
+                                <td><?php /*
                                     <span style="float: right;">
                                         <a href="<?php echo esc_html( get_site_url() . '/' . $dt_post_type . '/new-bulk' ) ?>"
                                            class="button"
                                            style="margin:0px 0px 0px 0px; padding:5px 5px 5px 5px;"><?php echo esc_html__( 'Add Bulk Records?', 'disciple_tools' ) ?>
                                         </a>
                                     </span>
+                                    */ ?>
                                 </td>
                             </tr>
                         </tbody>
