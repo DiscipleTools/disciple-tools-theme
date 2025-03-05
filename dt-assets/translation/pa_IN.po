@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:31+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Punjabi <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/pa_IN/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Punjabi <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/pa_IN/>\n"
 "Language: pa_IN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -892,6 +892,7 @@ msgstr "ਤੁਹਾਡੇ ਫਿਲਟਰ ਨਾਲ ਮੇਲ ਖਾਂਦਾ �
 
 #: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:674
 #: dt-groups/base-setup.php:1036 dt-posts/custom-post-type.php:489
+#, fuzzy
 msgctxt "All records"
 msgid "All %s"
 msgstr "ਸਾਰੇ$s"
@@ -1782,6 +1783,7 @@ msgid "Other Social Links"
 msgstr "ਹੋਰ ਸਮਾਜਿਕ ਲਿੰਕ"
 
 #: dt-contacts/base-setup.php:261
+#, fuzzy
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "ਹੋਰ$s ਨਾਲ ਕੁਨੈਕਸ਼ਨ"
@@ -1928,6 +1930,7 @@ msgid "The website, event or location this contact came from."
 msgstr "ਵੈਬਸਾਈਟ, ਘਟਨਾ ਜਾਂ ਸਥਾਨ ਇਹ ਸੰਪਰਕ ਆਇਆ ਹੈ."
 
 #: dt-contacts/base-setup.php:433 dt-contacts/base-setup.php:465
+#, fuzzy
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "ਪੁਰਾਲੇਖ$s"
@@ -1942,6 +1945,7 @@ msgid "See duplicates"
 msgstr "ਡੁਪਲਿਕੇਟ ਵੇਖੋ"
 
 #: dt-contacts/base-setup.php:466
+#, fuzzy
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "ਕੀ ਤੁਸੀਂ$s ਨੂੰ ਪੁਰਾਲੇਖ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
@@ -1981,12 +1985,14 @@ msgid "Default Filters"
 msgstr "ਮੂਲ ਫਿਲਟਰ"
 
 #: dt-contacts/base-setup.php:678
+#, fuzzy
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "ਸਾਰੇ$s ਮੈਂ ਵੇਖ ਸਕਦਾ ਹਾਂ"
 
 #: dt-contacts/base-setup.php:689 dt-groups/base-setup.php:1042
 #: dt-posts/custom-post-type.php:501
+#, fuzzy
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "ਮਨਪਸੰਦ$s"
@@ -2028,6 +2034,7 @@ msgid "Sub-assigned to me"
 msgstr "ਮੈਨੂੰ ਸੌਂਪਿਆ ਗਿਆ"
 
 #: dt-contacts/base-setup.php:745
+#, fuzzy
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "ਜੁੜਿਆ$s"
@@ -2042,6 +2049,7 @@ msgid "Subassigned only"
 msgstr "ਸਿਰਫ ਸੌਂਪਿਆ ਗਿਆ"
 
 #: dt-contacts/base-setup.php:971
+#, fuzzy
 msgid "This %s is archived"
 msgstr "ਇਹ$s ਪੁਰਾਲੇਖ ਹੈ"
 
@@ -2094,6 +2102,7 @@ msgid "another site"
 msgstr "ਇਕ ਹੋਰ ਸਾਈਟ"
 
 #: dt-contacts/contacts-transfer.php:276
+#, fuzzy
 msgid "Already transfered to %s"
 msgstr "ਪਹਿਲਾਂ ਹੀ$s ਤੇ ਤਬਦੀਲ ਹੋ ਗਿਆ ਹੈ"
 
@@ -2128,6 +2137,7 @@ msgid "Minor transfer error."
 msgstr "ਮਾਮੂਲੀ ਤਬਾਦਲਾ ਗਲਤੀ."
 
 #: dt-contacts/contacts-transfer.php:479
+#, fuzzy
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "ਇਹ ਸੰਪਰਕ$s ਨੂੰ ਅੱਗੇ ਦੀ ਪਾਲਣਾ ਲਈ ਤਬਦੀਲ ਕੀਤਾ ਗਿਆ ਸੀ."
 
@@ -2495,6 +2505,7 @@ msgid "Decline"
 msgstr "ਅਸਵੀਕਾਰ"
 
 #: dt-contacts/module-access.php:956
+#, fuzzy
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "ਫਾਲੋ-ਅਪ$s"
@@ -3616,10 +3627,12 @@ msgid "Number of contacts that had the active status"
 msgstr "ਉਹਨਾਂ ਸੰਪਰਕਾਂ ਦੀ ਸੰਖਿਆ ਜਿਨ੍ਹਾਂ ਦੀ ਕਿਰਿਆਸ਼ੀਲ ਸਥਿਤੀ ਹੈ"
 
 #: dt-metrics/combined/critical-path.php:241
+#, fuzzy
 msgid "Number of contacts on %s at the end of the time range"
 msgstr "ਸਮਾਂ ਸੀਮਾ ਦੇ ਅੰਤ ਤੇ$s ਤੇ ਸੰਪਰਕਾਂ ਦੀ ਗਿਣਤੀ"
 
 #: dt-metrics/combined/critical-path.php:243
+#, fuzzy
 msgid "Number of contacts where %s was set on the seeker path"
 msgstr "ਸੰਪਰਕਾਂ ਦੀ ਗਿਣਤੀ ਜਿੱਥੇ$s ਨੂੰ ਸਰੋਤ ਮਾਰਗ ਤੇ ਸੈੱਟ ਕੀਤਾ ਗਿਆ ਸੀ"
 
@@ -3637,10 +3650,12 @@ msgstr ""
 "ਕਨੈਕਸ਼ਨ ਦੁਆਰਾ ਬਪਤਿਸਮਾ ਲਿਆ"
 
 #: dt-metrics/combined/critical-path.php:277
+#, fuzzy
 msgid "Generation %s Baptisms"
 msgstr "ਪੀੜ੍ਹੀ$s ਬਪਤਿਸਮਾ"
 
 #: dt-metrics/combined/critical-path.php:278
+#, fuzzy
 msgid "Number of generation %s baptisms"
 msgstr "ਪੀੜ੍ਹੀ$s ਬਪਤਿਸਮੇ ਦੀ ਗਿਣਤੀ"
 
@@ -3670,10 +3685,12 @@ msgid "Churches active at the end of the time range"
 msgstr "ਸਮੇਂ ਦੀ ਸੀਮਾ ਦੇ ਅੰਤ ਤੇ ਚਰਚਾਂ ਸਰਗਰਮ ਹਨ"
 
 #: dt-metrics/combined/critical-path.php:321
+#, fuzzy
 msgid "Generation %s Churches"
 msgstr "ਪੀੜ੍ਹੀ$s ਚਰਚ"
 
 #: dt-metrics/combined/critical-path.php:322
+#, fuzzy
 msgid "Number of generation %s churches at the end of the time range"
 msgstr "ਸਮਾਂ ਸੀਮਾ ਦੇ ਅੰਤ ਤੇ ਪੀੜ੍ਹੀ$s ਚਰਚਾਂ ਦੀ ਗਿਣਤੀ"
 
@@ -3746,6 +3763,7 @@ msgstr "ਕੋਈ ਗਤੀਵਿਧੀ ਨਹੀਂ ਮਿਲੀ!"
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
 #: template-new-post.php:43
+#, fuzzy
 msgid "New %s"
 msgstr "ਨਵਾਂ$s"
 
@@ -4599,6 +4617,7 @@ msgid "Access Request"
 msgstr "ਪਹੁੰਚ ਦੀ ਬੇਨਤੀ"
 
 #: dt-posts/posts.php:281
+#, fuzzy
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
 msgstr "ਬਪਤਿਸਮਾ ਦਿੱਤਾ$s"
@@ -4624,6 +4643,7 @@ msgid "%s added to members"
 msgstr "%s ਮੈਂਬਰਾਂ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ"
 
 #: dt-posts/posts.php:290
+#, fuzzy
 msgctxt "Added to group group1"
 msgid "Added to group %s"
 msgstr "ਸਮੂਹ$s ਵਿੱਚ ਜੋੜਿਆ ਗਿਆ"
@@ -4634,11 +4654,13 @@ msgid "Removed %s from group"
 msgstr "%s ਨੂੰ ਗਰੁੱਪ ਵਿੱਚੋਂ ਹਟਾਇਆ"
 
 #: dt-posts/posts.php:293
+#, fuzzy
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
 msgstr "ਸਮੂਹ$s ਤੋਂ ਹਟਾਇਆ"
 
 #: dt-posts/posts.php:298
+#, fuzzy
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
 msgstr "ਕੋਚਿੰਗ$s"
@@ -4649,6 +4671,7 @@ msgid "Coached by %s"
 msgstr "%s ਦੁਆਰਾ ਕੋਚ"
 
 #: dt-posts/posts.php:301
+#, fuzzy
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
 msgstr "ਹੁਣ$s ਕੋਚਿੰਗ ਨਹੀਂ ਰਹੇ"
@@ -4659,6 +4682,7 @@ msgid "No longer coached by %s"
 msgstr "%s ਦੁਆਰਾ ਹੁਣ ਕੋਚ ਨਹੀਂ ਦਿੱਤਾ ਗਿਆ"
 
 #: dt-posts/posts.php:306
+#, fuzzy
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
 msgstr "ਉਪ-ਨਿਰਧਾਰਤ$s"
@@ -4669,6 +4693,7 @@ msgid "Sub-assigned on %s"
 msgstr "%s ਤੇ ਸਬ-ਨਿਰਧਾਰਤ"
 
 #: dt-posts/posts.php:309
+#, fuzzy
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
 msgstr "ਹਟਾਏ ਗਏ ਉਪ-ਨਿਰਧਾਰਤ$s"
@@ -5497,6 +5522,7 @@ msgid "Showing %1$s of %2$s"
 msgstr "%2$s ਨਾਲ ਮਿਲਦੇ %1$s ਆਈਟਮਾਂ ਦਿਖਾ ਰਿਹਾ ਹੈ"
 
 #: dt-users/user-management.php:353
+#, fuzzy
 msgid "%s days since last update"
 msgstr "ਆਖਰੀ ਅਪਡੇਟ ਤੋਂ$s ਦਿਨ"
 
@@ -5608,6 +5634,7 @@ msgid "See what browser you are using."
 msgstr "ਵੇਖੋ ਕਿ ਤੁਸੀਂ ਕਿਹੜਾ ਬ੍ਰਾ .ਜ਼ਰ ਵਰਤ ਰਹੇ ਹੋ."
 
 #: single-template.php:99 single-template.php:107
+#, fuzzy
 msgid "This %s needs an update."
 msgstr "ਇਸ$s ਨੂੰ ਇੱਕ ਅਪਡੇਟ ਦੀ ਲੋੜ ਹੈ."
 
@@ -5645,6 +5672,7 @@ msgid "Create and apply tag"
 msgstr "ਟੈਗ ਬਣਾਓ ਅਤੇ ਲਾਗੂ ਕਰੋ"
 
 #: single-template.php:430
+#, fuzzy
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "ਕੀ ਤੁਸੀਂ$s ਨੂੰ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?"

@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2024-09-14 07:59+0000\n"
-"Last-Translator: Zack Han <suburbanideal@gmail.com>\n"
-"Language-Team: Korean <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/ko_KR/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Korean <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/ko_KR/>\n"
 "Language: ko_KR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -1214,6 +1214,7 @@ msgid "Merge %s"
 msgstr "%s 병합하기"
 
 #: dt-assets/parts/merge-details.php:37
+#, fuzzy
 msgctxt "Merge this contact with another contact"
 msgid "Merge this %1$s with another %2$s"
 msgstr "이 %1$s를 다른 %1$s와 병합하기"

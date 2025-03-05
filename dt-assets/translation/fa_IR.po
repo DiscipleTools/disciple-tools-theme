@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-04-06 06:14+0000\n"
-"Last-Translator: Micah Mills <micahmills@gmail.com>\n"
-"Language-Team: Persian <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/fa_IR/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Persian <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/fa_IR/>\n"
 "Language: fa_IR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -2958,6 +2958,7 @@ msgstr "شخصی برای حساب کاربری زیر درخواست تنظیم
 
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:319
+#, fuzzy
 msgid "DT Site Name: %s"
 msgstr "نام سایت ‏«ابزار.شاگردی»"
 

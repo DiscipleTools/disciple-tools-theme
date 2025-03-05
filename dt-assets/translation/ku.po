@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-06-09 07:28+0000\n"
-"Last-Translator: Corsacca <corsacca@gmail.com>\n"
-"Language-Team: Kurdish <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/ku/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Kurdish <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/ku/>\n"
 "Language: ku\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -3676,6 +3676,7 @@ msgstr ""
 "ve imad kirin"
 
 #: dt-metrics/combined/critical-path.php:277
+#, fuzzy
 msgid "Generation %s Baptisms"
 msgstr "Nifş% Vaftîzm"
 
@@ -4696,6 +4697,7 @@ msgid "No longer coaching %s"
 msgstr "Coachdî rahêneriya %s nake"
 
 #: dt-posts/posts.php:302
+#, fuzzy
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
 msgstr "%Dî bi %s rahênan nayê kirin"
@@ -5488,6 +5490,7 @@ msgid "%1$s was accepted on %2$s after %3$s days"
 msgstr "%1$s piştî %3$s rojan di %2$s de hate qebûl kirin"
 
 #: dt-users/user-management.php:181
+#, fuzzy
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
 msgstr "%1$s rojan li benda Hewldana Têkiliyê ye"
