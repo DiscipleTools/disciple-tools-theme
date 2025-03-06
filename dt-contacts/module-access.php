@@ -437,8 +437,9 @@ class DT_Contacts_Access extends DT_Module_Base {
                             }
                         }
                         ?>
+                    </span>
                     <button id="edit-reason" <?php if ( $hide_edit_button ) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
-                </div>
+            </div>
             <div class="reveal" id="paused-contact-modal" data-reveal>
                 <h3><?php echo esc_html( $contact_fields['reason_paused']['name'] ?? '' )?></h3>
                 <div><?php echo esc_html( $contact_fields['reason_paused']['description'] ?? '' )?></div>
