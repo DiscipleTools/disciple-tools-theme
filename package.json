@@ -14,6 +14,7 @@
     "@babel/preset-env": "^7.24.4",
     "browser-sync": "^3.0.2",
     "cssnano": "^6.1.2",
+    "cypress": "^14.1.0",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^9.1.0",
     "foundation-sites": "^6.7.2",
@@ -51,7 +52,8 @@
     "prettier": "npx prettier --write .",
     "update-foundation": "npm install foundation-sites",
     "prepare": "husky install",
-    "pre-commit": "npx lint-staged"
+    "pre-commit": "npx lint-staged",
+    "cy:open": "cypress open"
   },
   "lint-staged": {
     "*.php": [
