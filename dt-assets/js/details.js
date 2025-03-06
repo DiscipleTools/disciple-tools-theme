@@ -328,10 +328,18 @@ jQuery(document).ready(function ($) {
   $(document).on('dt:post:update', function (e) {
     // newer event from DTWebComponents.ApiService
     if (e.detail) {
-      const { response } = e.detail;
+      const { response, field, value, component } = e.detail;
       post = response;
       resetDetailsFields();
       record_updated(window.lodash.get(response, 'requires_path', false));
+
+      if (component === 'dt-multi-text') {
+        // re-bind value after save so we have the generated key in order to delete them
+        const els = document.getElementsByName(field);
+        for (const el of els) {
+          el.value = response[field];
+        }
+      }
     }
   });
   $(document).on('dt_record_updated', function (e, response, request) {
