@@ -49,7 +49,7 @@ class DT_Components
         }
         if ( isset( $fields[$field_key]['post_type'] ) ) {
             $post_type = 'postType=' . esc_attr( $fields[$field_key]['post_type'] );
-        } else {
+        } else if ( isset( $post ) && isset( $post['post_type'] ) ) {
             $post_type = 'postType=' . esc_attr( $post['post_type'] );
         }
 
@@ -118,14 +118,25 @@ class DT_Components
     public static function render_key_select( $field_key, $fields, $post ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
 
-        $options_array = $fields[$field_key]['default'];
-        $options_array = array_map(function ( $key, $value ) {
+        $options_array = [];
+
+        // if options don't have a 'none' key but can be empty, add an empty option first
+        if ( !isset( $fields[$field_key]['default']['none'] ) && empty( $fields[$field_key]['select_cannot_be_empty'] ) ) {
+            array_push( $options_array, [
+                'id' => '',
+                'label' => '',
+            ]);
+        }
+
+        $options = array_map(function ( $key, $value ) {
             return [
                 'id' => $key,
                 'label' => $value['label'],
                 'color' => $value['color'] ?? null,
             ];
-        }, array_keys( $options_array ), $options_array);
+        }, array_keys( $fields[$field_key]['default'] ), $fields[$field_key]['default']);
+
+        $options_array = array_merge( $options_array, $options );
         ?>
         <dt-single-select <?php echo wp_kses_post( $shared_attributes ) ?>
             options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
