@@ -867,6 +867,13 @@ button.loader {
     display: inline-block;
 }
 /**
+  Select field
+ */
+select.select-field {
+    margin: 0
+}
+
+/**
   Typeaheads
  */
 .scrollable-typeahead .typeahead__list {
@@ -884,7 +891,7 @@ button.loader {
 }
 
 .typeahead__container {
-    margin-bottom: 10px;
+    //margin-bottom: 10px;
 
     .typeahead__image_button {
         padding-top: 3px;

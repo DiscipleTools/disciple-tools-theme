@@ -131,7 +131,7 @@ function dt_display_tile( $tile, $post ): bool {
                             </button>
                         </h3>
 
-                        <div class="grid-x grid-margin-x">
+                        <div class="grid-x grid-margin-x grid-margin-y">
                         <?php
                         //setup the order of the tile fields
                         $order = $tiles['status']['order'] ?? [];
@@ -259,7 +259,7 @@ function dt_display_tile( $tile, $post ): bool {
                             </a></div>
 
                         <div id="details-section" class="display-fields" style="display: none; margin-top:20px">
-                            <div class="grid-x grid-margin-x">
+                            <div class="grid-x grid-margin-x grid-margin-y">
                                 <?php
                                 //setup the order of the tile fields
                                 $order = $tiles['details']['order'] ?? [];
@@ -340,7 +340,7 @@ function dt_display_tile( $tile, $post ): bool {
                                             </h3>
                                         <?php } ?>
 
-                                        <div class="section-body">
+                                        <div class="section-body grid-y grid-margin-y">
                                             <?php
                                             // let the plugin add section content
                                             add_action( 'dt_details_additional_section', function ( $t_key, $pt ) use ( $post_type, $tile_key, $post_settings, $dt_post, $tile_options ){
@@ -360,13 +360,16 @@ function dt_display_tile( $tile, $post ): bool {
                                                     }
 
                                                     $field = $post_settings['fields'][$field_key];
-                                                    if ( isset( $field['tile'] ) && $field['tile'] === $tile_key ){
-                                                        render_field_for_display( $field_key, $post_settings['fields'], $dt_post, true );
+                                                    if ( isset( $field['tile'] ) && $field['tile'] === $tile_key ) { ?>
+                                                        <div class="cell small-12 medium-12">
+                                                            <?php render_field_for_display( $field_key, $post_settings['fields'], $dt_post, true ); ?>
+                                                        </div>
+                                                        <?php
                                                     }
                                                 }
                                             }, 20, 2 );
                                             do_action( 'dt_details_additional_section', $tile_key, $post_type, $post_id );
-                                            ?>
+                                ?>
                                         </div>
                                     </div>
                                 </section>

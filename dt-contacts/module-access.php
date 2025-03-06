@@ -411,7 +411,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                 <?php dt_render_icon_slot( $contact_fields[$field_key] ) ?>
             </dt-single-select>
 
-            <p>
+            <div>
                     <span id="reason">
                         <?php
                         $hide_edit_button = false;
@@ -438,11 +438,11 @@ class DT_Contacts_Access extends DT_Module_Base {
                         }
                         ?>
                     <button id="edit-reason" <?php if ( $hide_edit_button ) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
-                </p>
+                </div>
             <div class="reveal" id="paused-contact-modal" data-reveal>
                 <h3><?php echo esc_html( $contact_fields['reason_paused']['name'] ?? '' )?></h3>
-                <p><?php echo esc_html( $contact_fields['reason_paused']['description'] ?? '' )?></p>
-                <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
+                <div><?php echo esc_html( $contact_fields['reason_paused']['description'] ?? '' )?></div>
+                <div><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></div>
 
                 <select id="reason-paused-options">
                     <?php
@@ -472,8 +472,8 @@ class DT_Contacts_Access extends DT_Module_Base {
             </div>
             <div class="reveal" id="unassignable-contact-modal" data-reveal>
                 <h3><?php echo esc_html( $contact_fields['reason_unassignable']['name'] ?? '' )?></h3>
-                <p><?php echo esc_html( $contact_fields['reason_unassignable']['description'] ?? '' )?></p>
-                <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
+                <div><?php echo esc_html( $contact_fields['reason_unassignable']['description'] ?? '' )?></div>
+                <div><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></div>
 
                 <select id="reason-unassignable-options">
                     <?php
@@ -503,8 +503,8 @@ class DT_Contacts_Access extends DT_Module_Base {
             </div>
             <div class="reveal" id="closed-contact-modal" data-reveal>
                 <h3><?php echo esc_html( $contact_fields['reason_closed']['name'] ?? '' )?></h3>
-                <p><?php echo esc_html( $contact_fields['reason_closed']['description'] ?? '' )?></p>
-                <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
+                <div><?php echo esc_html( $contact_fields['reason_closed']['description'] ?? '' )?></div>
+                <div><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></div>
 
                 <select id="reason-closed-options">
                     <?php

@@ -1003,7 +1003,6 @@ var DtWebComponents=function($){"use strict";var Pn=Object.defineProperty;var In
 
         .input-group {
           color: var(--dt-multi-select-text-color, #0a0a0a);
-          margin-bottom: 1rem;
         }
         .input-group.disabled input,
         .input-group.disabled .field-container {
@@ -1457,8 +1456,7 @@ var DtWebComponents=function($){"use strict";var Pn=Object.defineProperty;var In
 
         .input-group {
           position: relative;
-          display: inline-flex;
-          margin: 0 0 1.0666666667rem;
+          display: flex;
           width: 100%;
         }
 
@@ -2084,7 +2082,7 @@ var DtWebComponents=function($){"use strict";var Pn=Object.defineProperty;var In
           font-weight: 300;
           height: 2.5rem;
           line-height: 1.5;
-          margin: 0 0 1rem;
+          margin: 0;
           padding: 0.53rem;
           padding-inline-end: 1.6rem;
           transition: border-color 0.25s ease-in-out;
@@ -2197,7 +2195,7 @@ var DtWebComponents=function($){"use strict";var Pn=Object.defineProperty;var In
           font-weight: 300;
           height: 2.5rem;
           line-height: 1.5;
-          margin: 0 0 1.0666666667rem;
+          margin: 0;
           padding: var(--dt-form-padding, 0.5333333333rem);
           transition: var(
             --dt-form-transition,
@@ -2280,7 +2278,7 @@ var DtWebComponents=function($){"use strict";var Pn=Object.defineProperty;var In
           font-weight: 300;
           height: 10rem;
           line-height: 1.5;
-          margin: 0 0 1.0666666667rem;
+          margin: 0;
           padding: var(--dt-form-padding, 0.5333333333rem);
           transition: var(
             --dt-form-transition,
@@ -2531,9 +2529,13 @@ var DtWebComponents=function($){"use strict";var Pn=Object.defineProperty;var In
           border-color: var(--dt-text-border-color-alert, var(--alert-color));
         }
 
+        .input-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
         .field-container {
           display: flex;
-          margin-bottom: 0.5rem;
         }
         .field-container input {
           flex-grow: 1;
@@ -2648,7 +2650,11 @@ var DtWebComponents=function($){"use strict";var Pn=Object.defineProperty;var In
     `}}window.customElements.define("dt-multi-text",xs);class ks extends j{static get styles(){return[...super.styles,S`
         :host {
           margin-bottom: 5px;
+          --dt-button-font-size: 0.75rem;
           --dt-button-font-weight: 0;
+          --dt-button-line-height: 1em;
+          --dt-button-padding-y: 0.85em;
+          --dt-button-padding-x: 1em;
         }
         span .icon {
           vertical-align: middle;
@@ -2664,10 +2670,10 @@ var DtWebComponents=function($){"use strict";var Pn=Object.defineProperty;var In
           display: inline-flex;
           flex-direction: row;
           flex-wrap: wrap;
+          gap: 5px 10px;
         }
         dt-button {
-          margin-block-end: 5px;
-          margin-inline-end: 10px;
+          margin: 0px;
         }
 
         .icon-overlay {
@@ -2686,9 +2692,7 @@ var DtWebComponents=function($){"use strict";var Pn=Object.defineProperty;var In
       role="button"
       value="${e.id}"
     >
-      <span class="icon">
-        ${e.icon?d`<img src="${e.icon}" alt="${this.iconAltText}" />`:null}
-      </span>
+      ${e.icon?d`<span class="icon"><img src="${e.icon}" alt="${this.iconAltText}" /></span>`:null}
       ${e.label}
     </dt-button>
     `}render(){return d`
