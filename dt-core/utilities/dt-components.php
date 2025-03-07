@@ -57,7 +57,7 @@ class DT_Components
               id="' . esc_attr( $display_field_id ) . '"
               name="' . esc_attr( $field_key ) . '"
               label="' . esc_attr( $fields[$field_key]['name'] ) . '"
-              ' . esc_html( $post_type ) . '
+              ' . esc_html( $post_type ?? '' ) . '
               ' . esc_html( $icon ) . '
               ' . esc_html( $required_tag ) . '
               ' . esc_html( $disabled ) . '
