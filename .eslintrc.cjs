@@ -41,5 +41,7 @@ module.exports = {
     'node_modules',
     'vendor',
     '*.min.js',
+    'cypress.config.js',
+    'cypress/*'
   ]
 };
