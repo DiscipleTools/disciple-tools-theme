@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:31+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Bulgarian <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/bg_BG/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Bulgarian <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/bg_BG/>\n"
 "Language: bg_BG\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -654,6 +654,7 @@ msgid "Admin Actions"
 msgstr "Администраторски действия"
 
 #: dt-assets/functions/details-bar.php:68 single-template.php:429
+#, fuzzy
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "Изтриване на$s"
@@ -831,6 +832,7 @@ msgid "Transfer update successful."
 msgstr "Актуализацията на прехвърлянето е успешна."
 
 #: dt-assets/functions/enqueue-scripts.php:226
+#, fuzzy
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "Създадено на$s"
@@ -1806,6 +1808,7 @@ msgid "Other Social Links"
 msgstr "Други социални връзки"
 
 #: dt-contacts/base-setup.php:261
+#, fuzzy
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Връзки с други$s"
@@ -1961,6 +1964,7 @@ msgid "Archive %s"
 msgstr "Архивиране на %s"
 
 #: dt-contacts/base-setup.php:440
+#, fuzzy
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "Промяна на$s тип"
@@ -2009,6 +2013,7 @@ msgid "Default Filters"
 msgstr "Филтри по подразбиране"
 
 #: dt-contacts/base-setup.php:678
+#, fuzzy
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Всички$s мога да видя"
@@ -2056,6 +2061,7 @@ msgid "Sub-assigned to me"
 msgstr "Под-назначен за мен"
 
 #: dt-contacts/base-setup.php:745
+#, fuzzy
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "Свързан$s"
@@ -2533,6 +2539,7 @@ msgid "Decline"
 msgstr "Отказ"
 
 #: dt-contacts/module-access.php:956
+#, fuzzy
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "Последващи действия$s"
@@ -5678,6 +5685,7 @@ msgid "See what browser you are using."
 msgstr "Вижте какъв браузър използвате."
 
 #: single-template.php:99 single-template.php:107
+#, fuzzy
 msgid "This %s needs an update."
 msgstr "Този$s се нуждае от актуализация."
 
@@ -5715,6 +5723,7 @@ msgid "Create and apply tag"
 msgstr "Създаване и прилагане на таг"
 
 #: single-template.php:430
+#, fuzzy
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Наистина ли искате да изтриете$s?"
@@ -5766,6 +5775,7 @@ msgid "Choose which fields to display across new bulk records"
 msgstr "Изберете кои полета да се показват в новите групови записи"
 
 #: template-new-bulk-post.php:145 template-new-post.php:62
+#, fuzzy
 msgid "Select the %s type:"
 msgstr "Изберете типа$s:"
 

@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:31+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Dutch <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/nl_NL/>\n"
+"PO-Revision-Date: 2025-03-05 15:59+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Dutch <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/nl_NL/>\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -2335,6 +2335,7 @@ msgid "Needs Review"
 msgstr "herziening nodig"
 
 #: dt-contacts/module-access.php:203
+#, fuzzy
 msgid "Waiting for Confirmation"
 msgstr "[%s] Deelname Bevestiging"
 
@@ -5449,6 +5450,7 @@ msgid "To log in click here: %s"
 msgstr "Klik hier om in te loggen: %s"
 
 #: dt-users/user-hooks-and-config.php:388
+#, fuzzy
 msgid "Hi %s,"
 msgstr "Zijn,"
 

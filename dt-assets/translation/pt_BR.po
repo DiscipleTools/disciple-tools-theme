@@ -4,8 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:31+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Portuguese (Brazil) <https://translate.disciple.tools/"
 "projects/disciple-tools/disciple-tools-theme/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -2070,6 +2070,7 @@ msgid "Subassigned only"
 msgstr "Apenas para subassociados"
 
 #: dt-contacts/base-setup.php:971
+#, fuzzy
 msgid "This %s is archived"
 msgstr "Este % está arquivado"
 
@@ -2531,6 +2532,7 @@ msgid "Decline"
 msgstr "Declinar"
 
 #: dt-contacts/module-access.php:956
+#, fuzzy
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "Acompanhamentos"
@@ -4969,6 +4971,7 @@ msgid "Deleted %1$s: %2$s"
 msgstr "%1$s excluído: %2$s excluído"
 
 #: dt-posts/posts.php:574
+#, fuzzy
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "O nome mudou para:"
@@ -4979,6 +4982,7 @@ msgid "Created from Demo Plugin"
 msgstr "Criado pelo Plugin Demo"
 
 #: dt-posts/posts.php:583
+#, fuzzy
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr "Declinou tarefa"
@@ -4994,11 +4998,13 @@ msgid "%s accepted assignment"
 msgstr "%s atribuição aceita"
 
 #: dt-posts/posts.php:591
+#, fuzzy
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "Compartilhou com"
 
 #: dt-posts/posts.php:593
+#, fuzzy
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "Não compartilhou com"

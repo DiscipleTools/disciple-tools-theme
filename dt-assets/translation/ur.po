@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:32+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Urdu <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/ur/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Urdu <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/ur/>\n"
 "Language: ur\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -43,6 +43,7 @@ msgid "Permission denied"
 msgstr "اجازت نہیں دی گئی"
 
 #: 403.php:35
+#, fuzzy
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
 msgstr "معذرت ، آپ کو٪ 2 $ s id کے ساتھ٪ 1 $ s دیکھنے کی اجازت نہیں ہے۔"
 
@@ -290,6 +291,7 @@ msgid ""
 msgstr ""
 
 #: archive-template.php:376
+#, fuzzy
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "٪ s فہرست"
@@ -350,6 +352,7 @@ msgid "Choose which fields to display as columns in the list"
 msgstr "فہرست میں کالم کی حیثیت سے کون سے فیلڈز ڈسپلے کرنے کا انتخاب کریں"
 
 #: archive-template.php:552
+#, fuzzy
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
@@ -532,6 +535,7 @@ msgid "Type to search"
 msgstr "تلاش کرنے کے لئے ٹائپ کریں"
 
 #: archive-template.php:991
+#, fuzzy
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "٪ 2 $ s کے ساتھ تمام٪ 1 $ s"
@@ -652,6 +656,7 @@ msgid "Admin Actions"
 msgstr "ایڈمن ایکشن"
 
 #: dt-assets/functions/details-bar.php:68 single-template.php:429
+#, fuzzy
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "٪ s کو حذف کریں"
@@ -718,11 +723,13 @@ msgid "No results found matching \"{{query}}\""
 msgstr "\"{{سوال}}\" کے مماثل کوئی نتائج نہیں ملے۔"
 
 #: dt-assets/functions/enqueue-scripts.php:116
+#, fuzzy
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
 msgstr "٪ s آئٹمز دکھا رہا ہے۔ مزید معلومات کے ل Type ٹائپ کریں۔"
 
 #: dt-assets/functions/enqueue-scripts.php:117
+#, fuzzy
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
 msgstr "٪ 2 $ s سے مماثل٪ 1 $ s آئٹمز دکھا رہا ہے"
@@ -764,11 +771,13 @@ msgid "Hide Translation"
 msgstr "ترجمہ چھپائیں"
 
 #: dt-assets/functions/enqueue-scripts.php:182
+#, fuzzy
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "٪ 1 $ s نے٪ 2 $ s ایموجی کے ساتھ رد عمل ظاہر کیا"
 
 #: dt-assets/functions/enqueue-scripts.php:183
+#, fuzzy
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "٪ 3 $ s اور٪ 1 $ s نے٪ 2 $ s ایموجی کے ساتھ رد عمل ظاہر کیا"
@@ -810,6 +819,7 @@ msgid "Dismissed Duplicates"
 msgstr "خارج شدہ نقولات"
 
 #: dt-assets/functions/enqueue-scripts.php:222
+#, fuzzy
 msgid "Duplicates on: %s"
 msgstr "نقولات:٪ s پر"
 
@@ -826,6 +836,7 @@ msgid "Transfer update successful."
 msgstr "ٹرانسفر اپ ڈیٹ کامیاب۔"
 
 #: dt-assets/functions/enqueue-scripts.php:226
+#, fuzzy
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "٪ s پر تشکیل دیا گیا"
@@ -868,6 +879,7 @@ msgid "Matches Found:"
 msgstr "ملاپے:"
 
 #: dt-assets/functions/enqueue-scripts.php:300
+#, fuzzy
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "٪ s کے لئے تمام میچز کو مسترد کریں"
@@ -895,6 +907,7 @@ msgstr "آپ کے فلٹر سے مماثل کوئی ریکارڈ نہیں ملا
 
 #: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:674
 #: dt-groups/base-setup.php:1036 dt-posts/custom-post-type.php:489
+#, fuzzy
 msgctxt "All records"
 msgid "All %s"
 msgstr "تمام٪ s"
@@ -1567,6 +1580,7 @@ msgid "Edit New Record"
 msgstr "نیا ریکارڈ ترمیم کریں"
 
 #: dt-assets/parts/modals/modal-new-contact.php:30
+#, fuzzy
 msgctxt "back to record"
 msgid "Back to %s"
 msgstr "٪ s پر واپس جائیں"
@@ -1795,6 +1809,7 @@ msgid "Other Social Links"
 msgstr "دوسرے سماجی روابط"
 
 #: dt-contacts/base-setup.php:261
+#, fuzzy
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "دوسرے٪ s سے رابطے"
@@ -1945,11 +1960,13 @@ msgid "The website, event or location this contact came from."
 msgstr "ویب سائٹ ، واقعہ یا مقام سے یہ رابطہ آیا ہے۔"
 
 #: dt-contacts/base-setup.php:433 dt-contacts/base-setup.php:465
+#, fuzzy
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "محفوظ شدہ دستاویزات٪ s"
 
 #: dt-contacts/base-setup.php:440
+#, fuzzy
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "٪ s کی قسم تبدیل کریں"
@@ -1959,6 +1976,7 @@ msgid "See duplicates"
 msgstr "نقلیں دیکھیں"
 
 #: dt-contacts/base-setup.php:466
+#, fuzzy
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "کیا آپ واقعی٪ s کو محفوظ کرنا چاہتے ہیں؟"
@@ -1998,12 +2016,14 @@ msgid "Default Filters"
 msgstr "پہلے سے طے شدہ فلٹرز"
 
 #: dt-contacts/base-setup.php:678
+#, fuzzy
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "تمام٪ s میں دیکھ سکتا ہوں"
 
 #: dt-contacts/base-setup.php:689 dt-groups/base-setup.php:1042
 #: dt-posts/custom-post-type.php:501
+#, fuzzy
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "پسندیدہ٪ s"
@@ -2045,6 +2065,7 @@ msgid "Sub-assigned to me"
 msgstr "میرے سپرد"
 
 #: dt-contacts/base-setup.php:745
+#, fuzzy
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "منسلک٪ s"
@@ -2059,6 +2080,7 @@ msgid "Subassigned only"
 msgstr "صرف تسلیم شدہ"
 
 #: dt-contacts/base-setup.php:971
+#, fuzzy
 msgid "This %s is archived"
 msgstr "یہ٪ s محفوظ شدہ دستاویزات ہے"
 
@@ -2111,6 +2133,7 @@ msgid "another site"
 msgstr "ایک اور سائٹ"
 
 #: dt-contacts/contacts-transfer.php:276
+#, fuzzy
 msgid "Already transfered to %s"
 msgstr "پہلے ہی٪ s میں منتقل ہوچکا ہے"
 
@@ -2145,6 +2168,7 @@ msgid "Minor transfer error."
 msgstr "معمولی منتقلی کی خرابی۔"
 
 #: dt-contacts/contacts-transfer.php:479
+#, fuzzy
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "مزید رابطہ کے ل follow یہ رابطہ٪ s کو منتقل کر دیا گیا تھا۔"
 
@@ -2174,16 +2198,19 @@ msgid "redacted"
 msgstr "redacted"
 
 #: dt-contacts/duplicates-merging.php:442
+#, fuzzy
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(ڈپلیکیٹ سے):٪ s"
 
 #: dt-contacts/duplicates-merging.php:563
+#, fuzzy
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "یہ ریکارڈ ایک نقل ہے اور٪ 2 $ s میں ضم کردیا گیا تھا"
 
 #: dt-contacts/duplicates-merging.php:576
+#, fuzzy
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "٪ 1 $ s نے٪ 2 $ s کو اس ریکارڈ میں ضم کردیا"
@@ -2516,6 +2543,7 @@ msgid "Decline"
 msgstr "رد"
 
 #: dt-contacts/module-access.php:956
+#, fuzzy
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "فالو اپ٪ s"
@@ -2949,12 +2977,14 @@ msgstr ""
 
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:319
+#, fuzzy
 msgid "DT Site Name: %s"
 msgstr "ڈی ٹی سائٹ کا نام:٪ s"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:321
 #: dt-users/user-hooks-and-config.php:390
+#, fuzzy
 msgid "Username: %s"
 msgstr "صارف نام:٪ s"
 
@@ -2973,10 +3003,12 @@ msgid "This is required"
 msgstr "اس کی ضرورت ہے"
 
 #: dt-core/global-functions.php:713
+#, fuzzy
 msgid "Add new tag \"%s\""
 msgstr "نیا ٹیگ \"٪ s\" شامل کریں"
 
 #: dt-core/global-functions.php:714
+#, fuzzy
 msgid "Tag \"%s\" is already being used"
 msgstr "ٹیگ \"٪ s\" پہلے ہی استعمال ہورہا ہے"
 
@@ -3654,10 +3686,12 @@ msgid "Number of contacts that had the active status"
 msgstr "رابطوں کی تعداد جن کی فعال حیثیت تھی"
 
 #: dt-metrics/combined/critical-path.php:241
+#, fuzzy
 msgid "Number of contacts on %s at the end of the time range"
 msgstr "وقت کی حد کے اختتام پر٪ s پر رابطوں کی تعداد"
 
 #: dt-metrics/combined/critical-path.php:243
+#, fuzzy
 msgid "Number of contacts where %s was set on the seeker path"
 msgstr "رابطوں کی تعداد جہاں٪ s متلاشی راستے پر طے کیا گیا تھا"
 
@@ -3675,10 +3709,12 @@ msgstr ""
 "کنکشن کے ذریعہ بپتسمہ لینے کی تعداد"
 
 #: dt-metrics/combined/critical-path.php:277
+#, fuzzy
 msgid "Generation %s Baptisms"
 msgstr "نسل٪ s بپتسما"
 
 #: dt-metrics/combined/critical-path.php:278
+#, fuzzy
 msgid "Number of generation %s baptisms"
 msgstr "نسل٪ s بپتسما کی تعداد"
 
@@ -3708,10 +3744,12 @@ msgid "Churches active at the end of the time range"
 msgstr "چرچ وقت کی حد کے اختتام پر فعال ہیں"
 
 #: dt-metrics/combined/critical-path.php:321
+#, fuzzy
 msgid "Generation %s Churches"
 msgstr "نسل٪ s گرجا گھر"
 
 #: dt-metrics/combined/critical-path.php:322
+#, fuzzy
 msgid "Number of generation %s churches at the end of the time range"
 msgstr "وقت کی حد کے اختتام پر نسل کے٪ کلیسیاؤں کی تعداد"
 
@@ -3784,6 +3822,7 @@ msgstr "کوئی سرگرمی نہیں ملی!"
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
 #: template-new-post.php:43
+#, fuzzy
 msgid "New %s"
 msgstr "نیا٪ s"
 
@@ -4355,6 +4394,7 @@ msgid "Disconnected"
 msgstr "منسلک٪ s"
 
 #: dt-metrics/records/time-charts.php:113
+#, fuzzy
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
 msgstr "٪ 2 $ s میں٪ 1 $ s"
@@ -4378,6 +4418,7 @@ msgid "Click here to view or reply"
 msgstr "دیکھنے یا جواب دینے کے لئے یہاں کلک کریں"
 
 #: dt-notifications/notifications-email.php:138
+#, fuzzy
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
 msgstr "٪ 1 $ s #٪ 2 $ s پر اپ ڈیٹ کریں"
@@ -4431,56 +4472,67 @@ msgstr[0] "٪ s سال پہلے"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:909
+#, fuzzy
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
 msgstr "٪ s بنائے اور آپ کو تفویض کیا گیا تھا۔"
 
 #: dt-notifications/notifications.php:911
+#, fuzzy
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr "آپ کو تفویض کیا گیا ہے:٪ 1 $ s۔"
 
 #: dt-notifications/notifications.php:917
+#, fuzzy
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
 msgstr "٪ 1 $ s نے٪ 2 $ s کو٪ 3 $ s پر تفویض کیا۔"
 
 #: dt-notifications/notifications.php:921
+#, fuzzy
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
 msgstr "٪ 1 $ s نے٪ 2 $ s آپ کے ساتھ اشتراک کیا۔"
 
 #: dt-notifications/notifications.php:928
+#, fuzzy
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
 msgstr "٪ 1 $ s نے٪ 2 $ s کے قول پر آپ کا تذکرہ کیا:٪ 3 $ s"
 
 #: dt-notifications/notifications.php:935
+#, fuzzy
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
 msgstr "٪ 1 $ s نے٪ 2 $ s کے کہنے پر تبصرہ کیا:٪ 3 $ s"
 
 #: dt-notifications/notifications.php:939
+#, fuzzy
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
 msgstr "٪ 1 $ s نے٪ 2 $ s کو آپ کے سپرد کردیا۔"
 
 #: dt-notifications/notifications.php:949
+#, fuzzy
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
 msgstr "٪ 1 $ s نے٪ 3 $ s پر سنگ میل٪ 2 $ s شامل کیا۔"
 
 #: dt-notifications/notifications.php:952
+#, fuzzy
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr "@٪ 1 $ s ،٪ 2 $ s پر اپ ڈیٹ کی درخواست کی گئی ہے۔"
 
 #: dt-notifications/notifications.php:956
+#, fuzzy
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
 msgstr "٪ 2 $ s پر٪ 1 $ s رابطے کی ترمیم کی تفصیلات۔"
 
 #: dt-notifications/notifications.php:959
+#, fuzzy
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "٪ 1 $ s نے اسائنمنٹ کو:٪ 2. s سے انکار کردیا۔"
@@ -4621,6 +4673,7 @@ msgid "Details"
 msgstr "تفصیلات"
 
 #: dt-posts/dt-posts.php:2862
+#, fuzzy
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4638,6 +4691,7 @@ msgid "Access Request"
 msgstr "رسائی کی درخواست"
 
 #: dt-posts/posts.php:281
+#, fuzzy
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
 msgstr "بپتسمہ٪ s"
@@ -4649,167 +4703,200 @@ msgid "Baptized by %s"
 msgstr "%s کے ذریعہ بپتسمہ لیا"
 
 #: dt-posts/posts.php:284
+#, fuzzy
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
 msgstr "٪ s نے بپتسمہ نہیں لیا"
 
 #: dt-posts/posts.php:285
+#, fuzzy
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
 msgstr "٪ s کے ذریعہ بپتسمہ نہیں لیا"
 
 #: dt-posts/posts.php:289
+#, fuzzy
 msgctxt "contact1 added to members"
 msgid "%s added to members"
 msgstr "٪ s کو ممبروں میں شامل کیا گیا"
 
 #: dt-posts/posts.php:290
+#, fuzzy
 msgctxt "Added to group group1"
 msgid "Added to group %s"
 msgstr "٪ s گروپ میں شامل کیا گیا"
 
 #: dt-posts/posts.php:292
+#, fuzzy
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
 msgstr "٪ s کو گروپ سے ہٹا دیا گیا"
 
 #: dt-posts/posts.php:293
+#, fuzzy
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
 msgstr "گروپ٪ s سے ہٹا دیا گیا"
 
 #: dt-posts/posts.php:298
+#, fuzzy
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
 msgstr "کوچنگ٪ s"
 
 #: dt-posts/posts.php:299
+#, fuzzy
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
 msgstr "٪ s کے ذریعہ کوچ کیا گیا"
 
 #: dt-posts/posts.php:301
+#, fuzzy
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
 msgstr "اب٪ s کو کوچنگ نہیں کریں گے"
 
 #: dt-posts/posts.php:302
+#, fuzzy
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
 msgstr "اب٪ s کے ذریعہ کوچ نہیں کیا گیا"
 
 #: dt-posts/posts.php:306
+#, fuzzy
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
 msgstr "ذیلی تفویض کردہ٪ s"
 
 #: dt-posts/posts.php:307
+#, fuzzy
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
 msgstr "٪ s پر ذیلی تفویض کردہ"
 
 #: dt-posts/posts.php:309
+#, fuzzy
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
 msgstr "ذیلی تفویض کردہ٪ s کو ہٹا دیا گیا"
 
 #: dt-posts/posts.php:310
+#, fuzzy
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "٪ s پر اب ذیلی تفویض نہیں ہوگا"
 
 #: dt-posts/posts.php:314
+#, fuzzy
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
 msgstr "٪ 1 $ s کو٪ 2 $ s پر لوگوں کے گروپ کے بطور شامل کیا گیا"
 
 #: dt-posts/posts.php:315
+#, fuzzy
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
 msgstr "٪ s نے لوگوں کے گروپس میں شامل کیا"
 
 #: dt-posts/posts.php:317
+#, fuzzy
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
 msgstr "٪ 1 $ s کو٪ 2 $ s پر لوگوں کے گروپوں سے ہٹا دیا گیا"
 
 #: dt-posts/posts.php:318
+#, fuzzy
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "٪ s لوگوں کے گروپوں سے ہٹا دیا گیا"
 
 #: dt-posts/posts.php:322
+#, fuzzy
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
 msgstr "٪ 1 $ s کو٪ 2 $ s پر بطور رہنما شامل کیا گیا"
 
 #: dt-posts/posts.php:323
+#, fuzzy
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
 msgstr "٪ s نے رہنماؤں میں شامل کیا"
 
 #: dt-posts/posts.php:325
+#, fuzzy
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
 msgstr "٪ 1 $ s کو٪ 2 $ s پر قائدین سے ہٹا دیا گیا"
 
 #: dt-posts/posts.php:326
+#, fuzzy
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
 msgstr "٪ s کو قائدین سے ہٹا دیا گیا"
 
 #: dt-posts/posts.php:330
+#, fuzzy
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
 msgstr "٪ 1 $ s کو٪ 2 $ s پر بطور کوچ شامل کیا گیا"
 
 #: dt-posts/posts.php:331
+#, fuzzy
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
 msgstr "کوچوں میں٪ s کو شامل کیا گیا"
 
 #: dt-posts/posts.php:333
+#, fuzzy
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
 msgstr "٪ 1 $ s کو٪ 2 $ s پر کوچوں سے ہٹا دیا گیا"
 
 #: dt-posts/posts.php:334
+#, fuzzy
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
 msgstr "کوچوں سے٪ s کو ہٹا دیا گیا"
 
 #: dt-posts/posts.php:338
+#, fuzzy
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
 msgstr "٪ s کو بچوں کے گروپس میں شامل کیا گیا"
 
 #: dt-posts/posts.php:339
+#, fuzzy
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
 msgstr "٪ s کو والدین کے گروپوں میں شامل کیا گیا"
 
 #: dt-posts/posts.php:341
+#, fuzzy
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
 msgstr "بچوں کے گروپوں سے٪ s کو ہٹا دیا گیا"
 
 #: dt-posts/posts.php:342
+#, fuzzy
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
 msgstr "٪ s کو والدین کے گروپوں سے ہٹا دیا گیا"
 
 #: dt-posts/posts.php:347 dt-posts/posts.php:348
+#, fuzzy
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
 msgstr "٪ s کو ہم مرتبہ گروپوں میں شامل کیا گیا"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
+#, fuzzy
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
 msgstr "٪ s کو ہم مرتبہ گروپوں سے ہٹا دیا گیا"
 
 #: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
 #: dt-posts/posts.php:369
+#, fuzzy
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
 msgstr "٪ s سے منسلک"
@@ -4824,6 +4911,7 @@ msgstr "٪ 1 $ s کو٪ 2 $ s میں شامل کیا گیا"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
+#, fuzzy
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
 msgstr "٪ s سے کنکشن ہٹا دیا گیا"
@@ -4849,30 +4937,36 @@ msgid "Nobody"
 msgstr "کوئی نہیں"
 
 #: dt-posts/posts.php:421 dt-posts/posts.php:426
+#, fuzzy
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "٪ 1 $ s کو٪ 2 $ s میں تبدیل کر دیا گیا"
 
 #: dt-posts/posts.php:434 dt-posts/posts.php:445
+#, fuzzy
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
 msgstr "٪ 1 $ s کو٪ 2 $ s سے ہٹا دیا گیا"
 
 #: dt-posts/posts.php:437 dt-posts/posts.php:448
+#, fuzzy
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
 msgstr "٪ 1 $ s کو٪ 2 $ s میں شامل کیا گیا"
 
 #: dt-posts/posts.php:470
+#, fuzzy
 msgid "%s removed"
 msgstr "٪ s کو ہٹا دیا گیا"
 
 #: dt-posts/posts.php:478 dt-posts/posts.php:491
+#, fuzzy
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
 msgstr "٪ 1 $ s کو مقامات سے ہٹا دیا گیا"
 
 #: dt-posts/posts.php:481 dt-posts/posts.php:498
+#, fuzzy
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "٪ 1 $ s کو مقامات پر شامل کیا گیا"
@@ -4914,21 +5008,25 @@ msgid "not invalidated"
 msgstr "باطل نہیں"
 
 #: dt-posts/posts.php:566
+#, fuzzy
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
 msgstr "٪ 1 $ s:٪ 2 $ s شامل کیا گیا"
 
 #: dt-posts/posts.php:568
+#, fuzzy
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
 msgstr "٪ 1 $ s کو٪ 2 $ s سے٪ 3 $ s میں اپ ڈیٹ کیا گیا"
 
 #: dt-posts/posts.php:570
+#, fuzzy
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "حذف شدہ٪ 1 $ s:٪ 2 $ s"
 
 #: dt-posts/posts.php:574
+#, fuzzy
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "نام تبدیل کر دیا گیا:٪ s"
@@ -4939,6 +5037,7 @@ msgid "Created from Demo Plugin"
 msgstr "ڈیمو پلگ ان سے بنایا گیا ہے"
 
 #: dt-posts/posts.php:583
+#, fuzzy
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr "٪ s نے اسائنمنٹ سے انکار کردیا"
@@ -4949,16 +5048,19 @@ msgid "A user"
 msgstr "ایک صارف"
 
 #: dt-posts/posts.php:586
+#, fuzzy
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr "٪ s تفویض قبول ہوا"
 
 #: dt-posts/posts.php:591
+#, fuzzy
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "٪ s کے ساتھ اشتراک کردہ"
 
 #: dt-posts/posts.php:593
+#, fuzzy
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "٪ s کے ساتھ غیر مشترکہ"
@@ -5124,6 +5226,7 @@ msgid "User Status"
 msgstr "صارف کی حیثیت"
 
 #: dt-users/mapbox-coverage-map.php:75
+#, fuzzy
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
 msgstr "صارف کو اس میں شامل کریں:٪ s"
@@ -5479,16 +5582,19 @@ msgid "Add User"
 msgstr "صارف شامل کریں"
 
 #: dt-users/user-management.php:180
+#, fuzzy
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
 msgstr "٪ 1 $ s کو٪ 3 1 s دنوں کے بعد٪ 2 $ s پر قبول کیا گیا تھا"
 
 #: dt-users/user-management.php:181
+#, fuzzy
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
 msgstr "٪ 1 $ s٪ 2 $ s دنوں سے رابطہ کی کوشش کا منتظر ہے"
 
 #: dt-users/user-management.php:182
+#, fuzzy
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "٪ 3 $ s دنوں کے بعد٪ 2 $ s پر٪ 1 $ s سے رابطے کی کوشش کی گئی"
@@ -5542,6 +5648,7 @@ msgid "Showing %1$s of %2$s"
 msgstr "٪ 2 $ s سے مماثل٪ 1 $ s آئٹمز دکھا رہا ہے"
 
 #: dt-users/user-management.php:353
+#, fuzzy
 msgid "%s days since last update"
 msgstr "آخری تازہ کاری کے بعد٪ s دن"
 
@@ -5566,6 +5673,7 @@ msgid "Logged In"
 msgstr "لاگ ان"
 
 #: dt-users/user-metrics.php:119
+#, fuzzy
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "٪ s پر اسائنمنٹ سے انکار کردیا"
@@ -5617,11 +5725,13 @@ msgid "System Email"
 msgstr "سسٹم ای میل"
 
 #: dt-workflows/tasks.php:82
+#, fuzzy
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
 msgstr "آپ نے آج کے لئے٪ 1 $ s پر ایک یاد دہانی متعین کی"
 
 #: dt-workflows/tasks.php:86
+#, fuzzy
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "آپ نے یہ کام٪ 1 $ s:٪ 2 $ s پر طے کیا"
@@ -5654,6 +5764,7 @@ msgid "See what browser you are using."
 msgstr "دیکھیں کہ آپ کون سا براؤزر استعمال کر رہے ہیں۔"
 
 #: single-template.php:99 single-template.php:107
+#, fuzzy
 msgid "This %s needs an update."
 msgstr "اس٪ s کو اپ ڈیٹ کی ضرورت ہے۔"
 
@@ -5691,6 +5802,7 @@ msgid "Create and apply tag"
 msgstr "ٹیگ بنائیں اور اس کا اطلاق کریں"
 
 #: single-template.php:430
+#, fuzzy
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "کیا آپ واقعی٪ s کو حذف کرنا چاہتے ہیں؟"
@@ -5742,6 +5854,7 @@ msgid "Choose which fields to display across new bulk records"
 msgstr "منتخب کریں کہ نئے بلک ریکارڈز میں کن فیلڈز کو ڈسپلے کرنا ہے۔"
 
 #: template-new-bulk-post.php:145 template-new-post.php:62
+#, fuzzy
 msgid "Select the %s type:"
 msgstr "٪ s قسم منتخب کریں:"
 

@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-06-09 07:28+0000\n"
-"Last-Translator: Corsacca <corsacca@gmail.com>\n"
-"Language-Team: Kannada <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/kn/>\n"
+"PO-Revision-Date: 2025-03-05 15:59+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Kannada <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/kn/>\n"
 "Language: kn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -349,11 +349,11 @@ msgid "Choose which fields to display as columns in the list"
 msgstr "ಪಟ್ಟಿಯಲ್ಲಿ ಯಾವ ಕ್ಷೇತ್ರಗಳನ್ನು ಕಾಲಮ್‌ಗಳಾಗಿ ಪ್ರದರ್ಶಿಸಬೇಕು ಎಂಬುದನ್ನು ಆರಿಸಿ"
 
 #: archive-template.php:552
+#, fuzzy
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
-"ನೀವು ಪಟ್ಟಿಯಿಂದ ನವೀಕರಿಸಲು ಬಯಸುವ ಎಲ್ಲಾ% 1 $ ಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ ಮತ್ತು ಅವುಗಳನ್ನು ಕೆಳಗೆ "
-"ನವೀಕರಿಸಿ"
+"ನೀವು ಪಟ್ಟಿಯಿಂದ ನವೀಕರಿಸಲು ಬಯಸುವ ಎಲ್ಲಾ% 1 $ ಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ ಮತ್ತು ಅವುಗಳನ್ನು ಕೆಳಗೆ ನವೀಕರಿಸಿ"
 
 #: archive-template.php:570 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:549 dt-contacts/user-module.php:137
@@ -2168,6 +2168,7 @@ msgid "(From Duplicate): %s"
 msgstr "(ನಕಲಿನಿಂದ):%s"
 
 #: dt-contacts/duplicates-merging.php:563
+#, fuzzy
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "ಈ ರೆಕಾರ್ಡ್ ನಕಲು ಮತ್ತು ಅದನ್ನು% 2. S ಗೆ ವಿಲೀನಗೊಳಿಸಲಾಗಿದೆ"
@@ -2503,6 +2504,7 @@ msgid "Decline"
 msgstr "ಅವನತಿ"
 
 #: dt-contacts/module-access.php:956
+#, fuzzy
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "ಅನುಸರಣೆಗಳು"
@@ -3761,6 +3763,7 @@ msgstr "ಯಾವುದೇ ಚಟುವಟಿಕೆ ಪತ್ತೆಯಾಗಿ�
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
 #: template-new-post.php:43
+#, fuzzy
 msgid "New %s"
 msgstr "ಸುದ್ದಿ"
 
@@ -4428,6 +4431,7 @@ msgid "%1$s shared %2$s with you."
 msgstr "%1$s ನಿಮ್ಮೊಂದಿಗೆ %2$s ಹಂಚಿಕೊಂಡಿದ್ದಾರೆ."
 
 #: dt-notifications/notifications.php:928
+#, fuzzy
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
 msgstr "% 1 $ ರು ನಿಮ್ಮನ್ನು %2$s ನಲ್ಲಿ ಪ್ರಸ್ತಾಪಿಸಿದ್ದಾರೆ: %3$s"
@@ -4448,6 +4452,7 @@ msgid "%1$s added milestone %2$s on %3$s."
 msgstr "%1$s %3$s ನಲ್ಲಿ ಮೈಲಿಗಲ್ಲು %2$s ಅನ್ನು ಸೇರಿಸಲಾಗಿದೆ."
 
 #: dt-notifications/notifications.php:952
+#, fuzzy
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr "@%1$s,% 2. on ನಲ್ಲಿ ನವೀಕರಣವನ್ನು ಕೋರಲಾಗಿದೆ."
@@ -5404,6 +5409,7 @@ msgid "To log in click here: %s"
 msgstr "ಲಾಗ್ ಇನ್ ಮಾಡಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ: %s"
 
 #: dt-users/user-hooks-and-config.php:388
+#, fuzzy
 msgid "Hi %s,"
 msgstr "ಅವನ,"
 

@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"Language: bn\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Bengali (Bangladesh) <https://translate.disciple.tools/"
+"projects/disciple-tools/disciple-tools-theme/bn_BD/>\n"
+"Language: bn_BD\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -344,11 +348,12 @@ msgid "Choose which fields to display as columns in the list"
 msgstr "তালিকার কলাম হিসাবে কোন ক্ষেত্রগুলি প্রদর্শিত হবে তা চয়ন করুন"
 
 #: archive-template.php:552
+#, fuzzy
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
-"আপনি তালিকা থেকে আপডেট করতে চান এমন সমস্ত % 1 $ গুলি নির্বাচন করুন এবং তাদের "
-"নীচে আপডেট করুন"
+"আপনি তালিকা থেকে আপডেট করতে চান এমন সমস্ত % 1 $ গুলি নির্বাচন করুন এবং তাদের নীচে"
+" আপডেট করুন"
 
 #: archive-template.php:570 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:549 dt-contacts/user-module.php:137
@@ -526,6 +531,7 @@ msgid "Type to search"
 msgstr "অনুসন্ধান করতে টাইপ করুন"
 
 #: archive-template.php:991
+#, fuzzy
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s সহ সমস্ত 1%$s"
@@ -1786,6 +1792,7 @@ msgid "Other Social Links"
 msgstr "অন্যান্য সোশাল লিংকসমূহ"
 
 #: dt-contacts/base-setup.php:261
+#, fuzzy
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "অন্যান্য$s এর সাথে সংযোগ রয়েছে"
@@ -1989,6 +1996,7 @@ msgid "Default Filters"
 msgstr "ডিফল্ট ফিল্টার"
 
 #: dt-contacts/base-setup.php:678
+#, fuzzy
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "সমস্ত$s আমি দেখতে পারি"
@@ -2036,6 +2044,7 @@ msgid "Sub-assigned to me"
 msgstr "আমার কাছে সাব-এসাইনড"
 
 #: dt-contacts/base-setup.php:745
+#, fuzzy
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "সংযুক্ত$s"
@@ -2136,6 +2145,7 @@ msgid "Minor transfer error."
 msgstr "সামান্য স্থানান্তর ত্রুটি।"
 
 #: dt-contacts/contacts-transfer.php:479
+#, fuzzy
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "এই যোগাযোগটি আরও ফলোআপের জন্য$s এ স্থানান্তরিত হয়েছিল।"
 
@@ -4848,6 +4858,7 @@ msgid "%1$s removed from locations"
 msgstr "%1$s এর অবস্থান থেকে সরিয়ে ফেলা হয়েছে"
 
 #: dt-posts/posts.php:481 dt-posts/posts.php:498
+#, fuzzy
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "%s অবস্থানসমূহে যোগ করা হয়েছে"
@@ -5624,6 +5635,7 @@ msgid "See what browser you are using."
 msgstr "আপনি কোন ব্রাউজার ব্যবহার করছেন তা দেখুন।"
 
 #: single-template.php:99 single-template.php:107
+#, fuzzy
 msgid "This %s needs an update."
 msgstr "এই$s এর একটি আপডেট দরকার।"
 
@@ -5661,6 +5673,7 @@ msgid "Create and apply tag"
 msgstr "ট্যাগ তৈরি এবং প্রয়োগ করুন"
 
 #: single-template.php:430
+#, fuzzy
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "আপনি কি$s মুছে ফেলার বিষয়ে নিশ্চিত?"
