@@ -718,21 +718,12 @@ dt_please_log_in();
                             <div id="bulk_more" class="grid-x grid-margin-x" style="display:none;">
 
                                 <?php
-                                //custom display for location field.
-                                if ( isset( $field_options['location_grid'] ) ){
-                                    $modified_options = $field_options;
-                                    $modified_options['location_grid']['hidden'] = false; ?>
-                                    <div class="cell small-12 medium-4">
-                                        <?php render_field_for_display( 'location_grid', $modified_options, null, false, false, 'bulk_' ); ?>
-                                    </div>
-                                    <?php
-                                }
                                 //move multi_select fields to the end
                                 function multiselect_at_end( $a, $b ){
                                     return ( $a['type'] ?? '' === 'multi_select' && ( $a['display'] ?? '' ) !== 'typeahead' ) ? 1 : 0;
                                 };
                                 uasort( $field_options, 'multiselect_at_end' );
-                                $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status' ];
+                                $already_done = [ 'subassigned', 'assigned_to', 'overall_status' ];
                                 $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
                                 foreach ( $field_options as $field_option => $value ) :
                                     if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && in_array( $value['type'], $allowed_types )
