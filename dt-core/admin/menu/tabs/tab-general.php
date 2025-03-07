@@ -868,7 +868,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 <tr>
                     <td>
                         <label>
-                            <input type="checkbox" name="private_contacts_enabled" <?php echo $private_contacts_enabled ? 'checked' : '' ?> /> Private Contact Type Enabled. See <a href="https://disciple.tools/user-docs/getting-started-info/contacts/contact-types/" target="_blank">Contact Types Documentation</a>
+                            <input type="checkbox" name="private_contacts_enabled" <?php echo $private_contacts_enabled ? 'checked' : '' ?> /> Private Contact Type Enabled. See <a href="https://disciple.tools/docs/contact-types/" target="_blank">Contact Types Documentation</a>
                         </label>
                     </td>
                 </tr>
