@@ -72,8 +72,13 @@ abstract class DT_Magic_Url_Base {
      * @return void
      */
     public function hard_switch_to_default_dt_text_domain(): void {
-        unload_textdomain( 'disciple_tools' );
-        load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
+        $locale = determine_locale();
+        $theme_lang_path = get_template_directory() . '/dt-assets/translation/';
+        $mo_file = $theme_lang_path . $locale . '.mo';
+        if ( file_exists( $mo_file ) && $locale !== 'en_US' ) {
+            unload_textdomain( 'disciple_tools' );
+            load_textdomain( 'disciple_tools', $mo_file );
+        }
     }
 
     /**
