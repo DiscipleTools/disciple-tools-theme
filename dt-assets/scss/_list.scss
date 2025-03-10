@@ -157,13 +157,6 @@ table.js-list{
     overflow-x: auto;
 }
 
-.table-container, .table-container #records-table {
-    transform:rotateX(180deg);
-    -ms-transform:rotateX(180deg); /* IE 9 */
-    -webkit-transform:rotateX(180deg); /* Safari and Chrome */
-}
-
-
 table.js-list th[data-id="name"] {
     position: sticky;
     left: 32px;
