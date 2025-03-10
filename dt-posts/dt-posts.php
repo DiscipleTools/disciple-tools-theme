@@ -596,11 +596,17 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read $post_type with ID $post_id", [ 'status' => 403 ] );
         }
-        //@todo re-enable when load order is implemented.
-        //$post_types = self::get_post_types();
-        //if ( !in_array( $post_type, $post_types ) ){
-        //    return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", [ 'status' => 400 ] );
-        //}
+        //warning about calling get_post() too soon
+        if ( defined( 'WP_DEBUG' ) && WP_DEBUG ){
+            $post_types = self::get_post_types();
+            if ( !in_array( $post_type, $post_types ) ){
+                // if you come across this, you are calling get_post() too soon,
+                // maybe in the __construct() of a class.
+                // The fields and post type have not been loaded yet.
+                // try using the `disciple_tools_loaded` hook.
+                return new WP_Error( __FUNCTION__, "$post_type in not a valid post type or hasn't been declared yet. Please use the disciple_tools_loaded hook", [ 'status' => 400 ] );
+            }
+        }
         $current_user_id = get_current_user_id();
         $cached = wp_cache_get( 'post_' . $current_user_id . '_' . $post_id );
         if ( $cached && $use_cache ){

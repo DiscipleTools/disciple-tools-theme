@@ -194,7 +194,7 @@ class DT_Contacts_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/phone.svg?v=2',
                 'type' => 'communication_channel',
                 'tile' => 'details',
-                'customizable' => false,
+                'customizable' => true,
                 'in_create_form' => true,
                 'messagingServices' => [
                     'Signal' => [
@@ -220,7 +220,7 @@ class DT_Contacts_Base {
                 'type' => 'communication_channel',
                 'tile' => 'details',
                 'in_create_form' => true,
-                'customizable' => false
+                'customizable' => true
             ];
 
             $fields['contact_address'] = [
@@ -230,7 +230,7 @@ class DT_Contacts_Base {
                 'tile' => 'details',
                 'mapbox'    => false,
                 'in_create_form' => true,
-                'customizable' => false
+                'customizable' => true
             ];
             if ( DT_Mapbox_API::get_key() ){
                 $fields['contact_address']['custom_display'] = true;
@@ -246,7 +246,7 @@ class DT_Contacts_Base {
                 'hide_domain' => true,
                 'type' => 'communication_channel',
                 'tile' => 'details',
-                'customizable' => false
+                'customizable' => true
             ];
             $fields['contact_other'] = [
                 'name' => __( 'Other Social Links', 'disciple_tools' ),
@@ -254,7 +254,7 @@ class DT_Contacts_Base {
                 'hide_domain' => false,
                 'type' => 'communication_channel',
                 'tile' => 'details',
-                'customizable' => false
+                'customizable' => true
             ];
 
             $fields['relation'] = [
