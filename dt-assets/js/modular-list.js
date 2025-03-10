@@ -678,7 +678,6 @@
   }
 
   function setup_current_filter_labels() {
-    console.log(']]]]]]]]]]: ', current_filter);
     let html = '';
     let filter = current_filter;
     if (filter && filter.labels) {
