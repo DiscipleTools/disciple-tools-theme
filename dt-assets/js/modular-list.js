@@ -691,7 +691,6 @@
           : '';
 
         if (label?.name) {
-
           // Proceed with displaying of filter label
           html += `<span class="current-filter-list ${excluded_class} ${window.SHAREDFUNCTIONS.escapeHTML(label.field)}">${window.SHAREDFUNCTIONS.escapeHTML(label.name)}`;
 
