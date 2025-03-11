@@ -12,7 +12,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.18.2",
     "@babel/preset-env": "^7.24.4",
-    "@disciple.tools/web-components": "^0.7.1",
+    "@disciple.tools/web-components": "^0.7.2",
     "browser-sync": "^3.0.2",
     "cssnano": "^6.1.2",
     "del": "^6.1.1",
