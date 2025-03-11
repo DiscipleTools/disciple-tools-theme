@@ -1,5 +1,17 @@
 'use strict';
 (function ($, list_settings, Foundation) {
+  $(document).ready(function () {
+    if (window.DtWebComponents && window.DtWebComponents.ComponentService) {
+      const service = new window.DtWebComponents.ComponentService(
+        window.list_settings.post_type,
+        null,
+        window.wpApiShare.nonce,
+      );
+      window.componentService = service;
+
+      service.attachLoadEvents();
+    }
+  });
   let selected_filters = $('#selected-filters');
   let new_filter_labels = [];
   let custom_filters = [];
@@ -2850,6 +2862,24 @@
     let updatePayload = {};
     let sharePayload;
 
+    // Process web component values
+    const form = document.getElementById('bulk_edit_picker');
+    Array.from(form.elements).forEach((el) => {
+      // skip fields not from web components
+      if (!el.tagName.startsWith('DT-')) {
+        return;
+      }
+
+      if (el.value) {
+        updatePayload[el.name.trim()] =
+          window.DtWebComponents.ComponentService.convertValue(
+            el.tagName,
+            el.value,
+          );
+      }
+    });
+
+    // Process legacy components
     allInputs.each(function () {
       let inputData = $(this).data();
       $.each(inputData, function (key, value) {
@@ -3659,15 +3689,12 @@
     $(`#${input_id}`).val('');
   });
 
-  $('#bulk_edit_picker select.select-field').change((e) => {
+  $('#bulk_edit_picker dt-single-select').change((e) => {
     const val = $(e.currentTarget).val();
 
     if (val === 'paused') {
-      $('#reason-paused-options').parent().toggle();
+      $('#bulk_reason_paused').parent().toggle();
     }
-
-    let field_key = e.currentTarget.id.replace('bulk_', '');
-    $(e.currentTarget).data(`bulk_key_${field_key}`, val);
   });
 
   $('#bulk_edit_picker input.number-input').on('blur', function () {

@@ -135,12 +135,15 @@ class DT_Components
             ]);
         }
 
-        $options = array_map(function ( $key, $value ) {
-            return [
+        $options = array_map(function ( $key, $value ) use ( $params ) {
+            $option = [
                 'id' => $key,
                 'label' => $value['label'],
-                'color' => $value['color'] ?? null,
             ];
+            if ( !isset( $params['key_select']['disable_color'] ) ) {
+                $option['color'] = $value['color'] ?? null;
+            }
+            return $option;
         }, array_keys( $fields[$field_key]['default'] ), $fields[$field_key]['default']);
 
         $options_array = array_merge( $options_array, $options );
