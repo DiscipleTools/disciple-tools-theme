@@ -15,6 +15,7 @@
     "@disciple.tools/web-components": "^0.7.2",
     "browser-sync": "^3.0.2",
     "cssnano": "^6.1.2",
+    "cypress": "^14.1.0",
     "del": "^6.1.1",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^9.1.0",
@@ -54,7 +55,8 @@
     "prettier": "npx prettier --write .",
     "update-foundation": "npm install foundation-sites",
     "prepare": "husky install",
-    "pre-commit": "npx lint-staged"
+    "pre-commit": "npx lint-staged",
+    "cy:open": "cypress open"
   },
   "lint-staged": {
     "*.php": [

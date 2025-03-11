@@ -9,6 +9,11 @@ node_modules
 vendor
 *.min.js
 
+*.cy.js
+cypress.config.js
+cypress/support/e2e.js
+cypress/support/commands.js
+
 *.cjs
 *.css
 *.scss
