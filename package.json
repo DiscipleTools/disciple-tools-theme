@@ -47,6 +47,7 @@
     "build": "gulp",
     "scripts": "gulp scripts",
     "styles": "gulp styles",
+    "components": "gulp components",
     "watch": "gulp watch",
     "browsersync": "gulp browsersync",
     "lint": "npx eslint",

@@ -391,26 +391,12 @@ class DT_Contacts_Access extends DT_Module_Base {
                 return;
             }
 
-            $options_array = $contact_fields[$field_key]['default'];
-            $options_array = array_map( function( $key, $value ) {
-                return [
-                    'id' => $key,
-                    'label' => $value['label'],
-                    'color' => $value['color'] ?? null,
-                ];
-            }, array_keys( $options_array ), $options_array );
+            $params = [
+                'field_id_prefix' => str_replace( $field_key, '', $display_field_id ),
+            ];
 
-            if ( isset( $contact_fields[$field_key]['icon'] ) && !empty( $contact_fields[$field_key]['icon'] ) ) {
-                $icon = 'icon=' . esc_attr( $contact_fields[$field_key]['icon'] );
-            }
+            DT_Components::render_key_select( $field_key, $contact_fields, $post, $params );
             ?>
-                <dt-single-select id="overall_status" name="overall_status"
-                    label="<?php echo esc_attr( $contact_fields[$field_key]['name'] ) ?>" <?php echo esc_html( $icon ) ?>
-                options='<?php echo esc_attr( json_encode( $options_array ) ) ?>'
-                    value="<?php echo esc_attr( isset( $post[$field_key] ) ? $post[$field_key]['key'] : '' ) ?>">
-                <?php dt_render_icon_slot( $contact_fields[$field_key] ) ?>
-            </dt-single-select>
-
             <div>
                     <span id="reason">
                         <?php
