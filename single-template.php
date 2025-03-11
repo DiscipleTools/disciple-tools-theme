@@ -360,7 +360,7 @@ function dt_display_tile( $tile, $post ): bool {
                                                     }
 
                                                     $field = $post_settings['fields'][$field_key];
-                                                    if ( isset( $field['tile'] ) && $field['tile'] === $tile_key ) { ?>
+                                                    if ( isset( $field['tile'] ) && $field['tile'] === $tile_key && ( !isset( $field['hidden'] ) || !$field['hidden'] ) ) { ?>
                                                         <div class="cell small-12 medium-12">
                                                             <?php render_field_for_display( $field_key, $post_settings['fields'], $dt_post, true ); ?>
                                                         </div>

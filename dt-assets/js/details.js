@@ -1262,3 +1262,131 @@ function record_updated(updateNeeded) {
   jQuery('.update-needed-notification').toggle(updateNeeded);
   jQuery('.update-needed').prop('checked', updateNeeded);
 }
+
+/**
+ * Legacy fields (deprecated)
+ * These have been replaced with web components, but there may still be plugins
+ * that make use of them. Leaving them here until we can be sure they can be
+ * completely removed.
+ */
+jQuery(document).ready(function ($) {
+  let post_id = window.detailsSettings.post_id;
+  let post_type = window.detailsSettings.post_type;
+  let field_settings = window.detailsSettings.post_settings.fields;
+  window.post_type_fields = field_settings;
+  let rest_api = window.API;
+
+  $('.dt_textarea').change(function () {
+    console.warn(
+      'DEPRECATED: ' +
+        '`textarea.dt_textarea` has been replaced by web component `<dt-textarea>`. ' +
+        'Consider migrate to web components or copying this javascript to your plugin if unable to adopt web components.',
+    );
+    const id = $(this).attr('id');
+    const val = $(this).val();
+    $(`#${id}-spinner`).addClass('active');
+    rest_api
+      .update_post(post_type, post_id, { [id]: val })
+      .then((newPost) => {
+        $(`#${id}-spinner`).removeClass('active');
+        $(document).trigger('textarea-updated', [newPost, id, val]);
+      })
+      .catch(window.handleAjaxError);
+  });
+
+  $('button.dt_multi_select').on('click', function () {
+    console.warn(
+      'DEPRECATED: ' +
+        '`button.dt_multi_select` has been replaced by web component `<dt-multi-select-button-group>`. ' +
+        'Consider migrate to web components or copying this javascript to your plugin if unable to adopt web components.',
+    );
+    let fieldKey = $(this).data('field-key');
+    let optionKey = $(this).val();
+    let fieldValue = {};
+    let data = {};
+    let field = jQuery(`[data-field-key="${fieldKey}"][value="${optionKey}"]`);
+    field.addClass('submitting-select-button');
+    let action = 'add';
+    if (field.hasClass('selected-select-button')) {
+      fieldValue.values = [{ value: optionKey, delete: true }];
+      action = 'delete';
+    } else {
+      field.removeClass('empty-select-button');
+      field.addClass('selected-select-button');
+      fieldValue.values = [{ value: optionKey }];
+    }
+    data[optionKey] = fieldValue;
+    $(`#${fieldKey}-spinner`).addClass('active');
+    rest_api
+      .update_post(post_type, post_id, { [fieldKey]: fieldValue })
+      .then((resp) => {
+        $(`#${fieldKey}-spinner`).removeClass('active');
+        field.removeClass('submitting-select-button selected-select-button');
+        field.blur();
+        field.addClass(
+          action === 'delete'
+            ? 'empty-select-button'
+            : 'selected-select-button',
+        );
+        $(document).trigger('dt_multi_select-updated', [
+          resp,
+          fieldKey,
+          optionKey,
+          action,
+        ]);
+      })
+      .catch((err) => {
+        field.removeClass('submitting-select-button selected-select-button');
+        field.addClass(
+          action === 'add' ? 'empty-select-button' : 'selected-select-button',
+        );
+        window.handleAjaxError(err);
+      });
+  });
+
+  $('.dt_date_group .dt_date_picker')
+    .datepicker({
+      constrainInput: false,
+      dateFormat: 'yy-mm-dd',
+      onClose: function (date) {
+        date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
+
+        if (!$(this).val()) {
+          date = ' '; //null;
+        }
+
+        let id = $(this).attr('id');
+        $(`#${id}-spinner`).addClass('active');
+        rest_api
+          .update_post(post_type, post_id, {
+            [id]: window.moment.utc(date).unix(),
+          })
+          .then((resp) => {
+            $(`#${id}-spinner`).removeClass('active');
+            if (this.value) {
+              this.value = window.SHAREDFUNCTIONS.formatDate(
+                resp[id]['timestamp'],
+                false,
+                false,
+              );
+            }
+            $(document).trigger('dt_date_picker-updated', [resp, id, date]);
+          })
+          .catch(window.handleAjaxError);
+      },
+      changeMonth: true,
+      changeYear: true,
+      yearRange: '1900:2050',
+    })
+    .each(function () {
+      console.warn(
+        'DEPRECATED: ' +
+          '`.dt_date_group .dt_date_picker` has been replaced by web component `<dt-date>`. ' +
+          'Consider migrate to web components or copying this javascript to your plugin if unable to adopt web components.',
+      );
+
+      if (this.value && window.moment.unix(this.value).isValid()) {
+        this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+      }
+    });
+});
