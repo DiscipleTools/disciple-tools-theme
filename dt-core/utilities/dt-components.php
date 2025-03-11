@@ -2,7 +2,7 @@
 
 class DT_Components
 {
-    public static function shared_attributes( $field_key, $fields, $post ) {
+    public static function shared_attributes( $field_key, $fields, $post, $params = [] ) {
         $disabled = 'disabled';
         if ( isset( $post['post_type'] ) && isset( $post['ID'] ) ) {
             $can_update = DT_Posts::can_update( $post['post_type'], $post['ID'] );
@@ -17,7 +17,7 @@ class DT_Components
         $required_tag = ( isset( $fields[$field_key]['required'] ) && $fields[$field_key]['required'] === true ) ? 'required' : '';
         $field_type = $fields[$field_key]['type'] ?? null;
         $is_private = isset( $fields[$field_key]['private'] ) && $fields[$field_key]['private'] === true;
-        $display_field_id = $field_key;
+        $display_field_id = ( isset( $params['field_id_prefix'] ) ? $params['field_id_prefix'] : '' ) . $field_key;
 
         $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [
             'boolean',
@@ -75,8 +75,8 @@ class DT_Components
         <?php endif;
     }
 
-    public static function render_communication_channel( $field_key, $fields, $post ) {
-        $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
+    public static function render_communication_channel( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         ?>
         <dt-multi-text <?php echo wp_kses_post( $shared_attributes ) ?>
             value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>"
@@ -85,8 +85,15 @@ class DT_Components
         <?php
     }
 
-    public static function render_connection( $field_key, $fields, $post, $allow_add = true ) {
-        $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
+    public static function render_connection( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+
+        $allow_add = true;
+        if ( isset( $params['allow_add'] ) ) {
+            $allow_add = $params['allow_add'];
+        } else if ( isset( $params['connection']['allow_add'] ) ) {
+            $allow_add = $params['connection']['allow_add'];
+        }
 
         $value = array_map(function ( $value ) {
             return [
@@ -105,8 +112,8 @@ class DT_Components
         <?php
     }
 
-    public static function render_date( $field_key, $fields, $post ) {
-        $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
+    public static function render_date( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         ?>
         <dt-date <?php echo wp_kses_post( $shared_attributes ) ?>
             timestamp="<?php echo esc_html( $post[$field_key]['timestamp'] ?? '' ) ?>">
@@ -115,8 +122,8 @@ class DT_Components
         <?php
     }
 
-    public static function render_key_select( $field_key, $fields, $post ) {
-        $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
+    public static function render_key_select( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
 
         $options_array = [];
 
@@ -139,15 +146,15 @@ class DT_Components
         $options_array = array_merge( $options_array, $options );
         ?>
         <dt-single-select <?php echo wp_kses_post( $shared_attributes ) ?>
-            options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
+            options='<?php echo esc_attr( json_encode( $options_array ) ) ?>'
             value="<?php echo esc_attr( isset( $post[$field_key] ) ? $post[$field_key]['key'] : '' ) ?>">
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-single-select>
         <?php
     }
 
-    public static function render_location_meta( $field_key, $fields, $post ) {
-        $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
+    public static function render_location_meta( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         ?>
         <dt-location <?php echo wp_kses_post( $shared_attributes ) ?>
             value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>"
@@ -157,8 +164,8 @@ class DT_Components
         <?php
     }
 
-    public static function render_multi_select( $field_key, $fields, $post ) {
-        $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
+    public static function render_multi_select( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         $options_array = $fields[$field_key]['default'];
         $options_array = array_map(function ( $key, $value ) {
             return [
@@ -173,8 +180,8 @@ class DT_Components
             // typeahead
             ?>
             <dt-multi-select <?php echo wp_kses_post( $shared_attributes ) ?>
-                options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
-                value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>">
+                options='<?php echo esc_attr( json_encode( $options_array ) ) ?>'
+                value='<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>'>
                 <?php dt_render_icon_slot( $fields[$field_key] ) ?>
             </dt-multi-select>
             <?php
@@ -187,23 +194,23 @@ class DT_Components
             // $is_modal_json = json_encode( $is_modal_array );?>
             <?php /* isModal='<?php echo esc_attr( $is_modal_json ); ?>' */ ?>
             <dt-multi-select-button-group <?php echo wp_kses_post( $shared_attributes ) ?>
-                options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
-                value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>">
+                options='<?php echo esc_attr( json_encode( $options_array ) ) ?>'
+                value='<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>'>
                 <?php dt_render_icon_slot( $fields[$field_key] ) ?>
             </dt-multi-select-button-group>
             <?php
         }
     }
 
-    public static function render_tags( $field_key, $fields, $post ) {
-        $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
+    public static function render_tags( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
 
         $value = array_map(function ( $value ) {
             return $value;
         }, $post[$field_key] ?? []);
         ?>
         <dt-tags <?php echo wp_kses_post( $shared_attributes ) ?>
-            value="<?php echo esc_attr( json_encode( $value ) ) ?>"
+            value='<?php echo esc_attr( json_encode( $value ) ) ?>'
             placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) ) ?>"
             allowAdd>
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>
@@ -211,8 +218,8 @@ class DT_Components
         <?php
     }
 
-    public static function render_text( $field_key, $fields, $post ) {
-        $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
+    public static function render_text( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         ?>
         <dt-text <?php echo wp_kses_post( $shared_attributes ) ?>
             value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>">
@@ -221,8 +228,8 @@ class DT_Components
         <?php
     }
 
-    public static function render_textarea( $field_key, $fields, $post ) {
-        $shared_attributes = self::shared_attributes( $field_key, $fields, $post );
+    public static function render_textarea( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         ?>
         <dt-textarea <?php echo wp_kses_post( $shared_attributes ) ?>
             value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>"

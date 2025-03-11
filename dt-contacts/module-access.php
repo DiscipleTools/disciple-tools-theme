@@ -406,7 +406,7 @@ class DT_Contacts_Access extends DT_Module_Base {
             ?>
                 <dt-single-select id="overall_status" name="overall_status"
                     label="<?php echo esc_attr( $contact_fields[$field_key]['name'] ) ?>" <?php echo esc_html( $icon ) ?>
-                options="<?php echo esc_attr( json_encode( $options_array ) ) ?>"
+                options='<?php echo esc_attr( json_encode( $options_array ) ) ?>'
                     value="<?php echo esc_attr( isset( $post[$field_key] ) ? $post[$field_key]['key'] : '' ) ?>">
                 <?php dt_render_icon_slot( $contact_fields[$field_key] ) ?>
             </dt-single-select>

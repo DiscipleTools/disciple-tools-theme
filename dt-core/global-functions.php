@@ -576,6 +576,11 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      */
     function render_field_for_display( $field_key, $fields, $post, $show_extra_controls = false, $show_hidden = false, $field_id_prefix = '', $options = [] ){
         $fields = apply_filters( 'dt_render_field_for_display_fields', $fields, $field_key, $post );
+        $params = array_merge($options, [
+            'show_extra_controls' => $show_extra_controls,
+            'show_hidden' => $show_hidden,
+            'field_id_prefix' => $field_id_prefix,
+        ]);
         $disabled = 'disabled';
         if ( isset( $post['post_type'] ) && isset( $post['ID'] ) ) {
             $can_update = DT_Posts::can_update( $post['post_type'], $post['ID'] );
@@ -608,29 +613,28 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
             switch ( $field_type ) {
                 case 'communication_channel':
-                    DT_Components::render_communication_channel( $field_key, $fields, $post );
+                    DT_Components::render_communication_channel( $field_key, $fields, $post, $params );
                     break;
                 case 'connection':
-                    $allow_add = isset( $options['connection'] ) && isset( $options['connection']['allow_add'] ) ? $options['connection']['allow_add'] : true;
-                    DT_Components::render_connection( $field_key, $fields, $post, $allow_add );
+                    DT_Components::render_connection( $field_key, $fields, $post, $params );
                     break;
                 case 'date':
-                    DT_Components::render_date( $field_key, $fields, $post );
+                    DT_Components::render_date( $field_key, $fields, $post, $params );
                     break;
                 case 'key_select':
-                    DT_Components::render_key_select( $field_key, $fields, $post );
+                    DT_Components::render_key_select( $field_key, $fields, $post, $params );
                     break;
                 case 'multi_select':
-                    DT_Components::render_multi_select( $field_key, $fields, $post );
+                    DT_Components::render_multi_select( $field_key, $fields, $post, $params );
                     break;
                 case 'tags':
-                    DT_Components::render_tags( $field_key, $fields, $post );
+                    DT_Components::render_tags( $field_key, $fields, $post, $params );
                     break;
                 case 'text':
-                    DT_Components::render_text( $field_key, $fields, $post );
+                    DT_Components::render_text( $field_key, $fields, $post, $params );
                     break;
                 case 'textarea':
-                    DT_Components::render_textarea( $field_key, $fields, $post );
+                    DT_Components::render_textarea( $field_key, $fields, $post, $params );
                     break;
                 default:
                     $is_legacy = true;
