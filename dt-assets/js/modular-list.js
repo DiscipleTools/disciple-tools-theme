@@ -3415,103 +3415,105 @@
     }
   });
 
-  $('#bulk_edit_picker .dt_location_grid').each(() => {
-    let field_id = 'location_grid';
-    let typeaheadTotals = {};
-    $.typeahead({
-      input: '.js-typeahead-bulk_location_grid',
-      minLength: 0,
-      accent: true,
-      searchOnFocus: true,
-      maxItem: 20,
-      dropdownFilter: [
-        {
-          key: 'group',
-          value: 'focus',
-          template: window.SHAREDFUNCTIONS.escapeHTML(
-            window.wpApiShare.translations.regions_of_focus,
-          ),
-          all: window.SHAREDFUNCTIONS.escapeHTML(
-            window.wpApiShare.translations.all_locations,
-          ),
-        },
-      ],
-      source: {
-        focus: {
-          display: 'name',
-          ajax: {
-            url:
-              window.wpApiShare.root +
-              'dt/v1/mapping_module/search_location_grid_by_name',
-            data: {
-              s: '{{query}}',
-              filter: function () {
-                // return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
-              },
-            },
-            beforeSend: function (xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-            },
-            callback: {
-              done: function (data) {
-                if (typeof window.typeaheadTotals !== 'undefined') {
-                  window.typeaheadTotals.field = data.total;
-                }
-                return data.location_grid;
-              },
-            },
-          },
-        },
-      },
-      display: 'name',
-      templateValue: '{{name}}',
-      dynamic: true,
-      multiselect: {
-        matchOn: ['ID'],
-        data: '',
-        callback: {
-          onCancel: function (node, item) {
-            $(node).removeData(`bulk_key_${field_id}`);
-          },
-        },
-      },
-      callback: {
-        onClick: function (node, a, item, event) {
-          // $(`#${element_id}-spinner`).addClass('active');
-          node.data(`bulk_key_${field_id}`, { values: [{ value: item.ID }] });
-        },
-        onReady() {
-          this.filters.dropdown = {
+  if ($('#bulk_edit_picker .js-typeahead-bulk_location_grid').length) {
+    $('#bulk_edit_picker .dt_location_grid').each(() => {
+      let field_id = 'location_grid';
+      let typeaheadTotals = {};
+      $.typeahead({
+        input: '.js-typeahead-bulk_location_grid',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        maxItem: 20,
+        dropdownFilter: [
+          {
             key: 'group',
             value: 'focus',
             template: window.SHAREDFUNCTIONS.escapeHTML(
               window.wpApiShare.translations.regions_of_focus,
             ),
-          };
-          this.container
-            .removeClass('filter')
-            .find('.' + this.options.selector.filterButton)
-            .html(
-              window.SHAREDFUNCTIONS.escapeHTML(
+            all: window.SHAREDFUNCTIONS.escapeHTML(
+              window.wpApiShare.translations.all_locations,
+            ),
+          },
+        ],
+        source: {
+          focus: {
+            display: 'name',
+            ajax: {
+              url:
+                window.wpApiShare.root +
+                'dt/v1/mapping_module/search_location_grid_by_name',
+              data: {
+                s: '{{query}}',
+                filter: function () {
+                  // return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                },
+              },
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+              },
+              callback: {
+                done: function (data) {
+                  if (typeof window.typeaheadTotals !== 'undefined') {
+                    window.typeaheadTotals.field = data.total;
+                  }
+                  return data.location_grid;
+                },
+              },
+            },
+          },
+        },
+        display: 'name',
+        templateValue: '{{name}}',
+        dynamic: true,
+        multiselect: {
+          matchOn: ['ID'],
+          data: '',
+          callback: {
+            onCancel: function (node, item) {
+              $(node).removeData(`bulk_key_${field_id}`);
+            },
+          },
+        },
+        callback: {
+          onClick: function (node, a, item, event) {
+            // $(`#${element_id}-spinner`).addClass('active');
+            node.data(`bulk_key_${field_id}`, { values: [{ value: item.ID }] });
+          },
+          onReady() {
+            this.filters.dropdown = {
+              key: 'group',
+              value: 'focus',
+              template: window.SHAREDFUNCTIONS.escapeHTML(
                 window.wpApiShare.translations.regions_of_focus,
               ),
+            };
+            this.container
+              .removeClass('filter')
+              .find('.' + this.options.selector.filterButton)
+              .html(
+                window.SHAREDFUNCTIONS.escapeHTML(
+                  window.wpApiShare.translations.regions_of_focus,
+                ),
+              );
+          },
+          onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.location_grid;
+            let text = window.TYPEAHEADS.typeaheadHelpText(
+              resultCount,
+              query,
+              result,
             );
+            $('#location_grid-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#location_grid-result-container').html('');
+          },
         },
-        onResult: function (node, query, result, resultCount) {
-          resultCount = typeaheadTotals.location_grid;
-          let text = window.TYPEAHEADS.typeaheadHelpText(
-            resultCount,
-            query,
-            result,
-          );
-          $('#location_grid-result-container').html(text);
-        },
-        onHideLayout: function () {
-          $('#location_grid-result-container').html('');
-        },
-      },
+      });
     });
-  });
+  }
 
   $(
     '#bulk_edit_picker .tags input, #bulk_edit_picker .multi_select input',
