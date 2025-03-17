@@ -690,16 +690,18 @@
           ? 'current-filter-list-excluded'
           : '';
 
-        // Proceed with displaying of filter label
-        html += `<span class="current-filter-list ${excluded_class} ${window.SHAREDFUNCTIONS.escapeHTML(label.field)}">${window.SHAREDFUNCTIONS.escapeHTML(label.name)}`;
+        if (label?.name) {
+          // Proceed with displaying of filter label
+          html += `<span class="current-filter-list ${excluded_class} ${window.SHAREDFUNCTIONS.escapeHTML(label.field)}">${window.SHAREDFUNCTIONS.escapeHTML(label.name)}`;
 
-        if (label.id && label.field && label.name) {
-          html += `<span class="current-filter-list-close">x</span>`;
-        } else {
-          html += `&nbsp;`;
+          if (label.id && label.field && label.name) {
+            html += `<span class="current-filter-list-close">x</span>`;
+          } else {
+            html += `&nbsp;`;
+          }
+
+          html += `</span>`;
         }
-
-        html += `</span>`;
       });
     } else {
       let query = filter.query;
