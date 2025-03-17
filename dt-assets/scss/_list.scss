@@ -135,6 +135,10 @@
     }
 }
 
+.table-container {
+    overflow-y: auto;
+    transform: rotateX(180deg);
+}
 
 table.table-remove-top-border thead {
     border-top: 0;
@@ -144,28 +148,13 @@ table.js-list{
     word-wrap: break-word;
     width: 100%;
     white-space: nowrap;
-
+    transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg) translateZ(0px);
 }
 @media screen and (min-width : #{map-get($breakpoints, large)}) {
     table.js-list td {
         max-width: 250px;
     }
-}
-
-.table-container {
-    overflow-x: scroll;
-    overflow-y: auto;
-    transform: rotateX(180deg);
-}
-
-.table-container.table-container-table {
-    transform: rotateX(180deg);
-}
-
-.table-container.table-container-table-responsive {
-    width: 100%;
-    display: block;
-    overflow-x: scroll;
 }
 
 table.js-list th[data-id="name"] {
