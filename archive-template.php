@@ -862,7 +862,7 @@ Thanks!';
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 
                     <div class="table-container">
-                        <table class="js-list stack striped" id="records-table">
+                        <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
                                     <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
