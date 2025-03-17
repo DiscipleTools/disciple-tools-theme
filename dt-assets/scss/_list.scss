@@ -151,6 +151,9 @@ table.js-list{
     transform: rotateX(180deg);
     -webkit-transform: rotateX(180deg) translateZ(0px);
 }
+table.js-list tr {
+    -webkit-transform: translateZ(0px)
+}
 @media screen and (min-width : #{map-get($breakpoints, large)}) {
     table.js-list td {
         max-width: 250px;

@@ -1120,7 +1120,7 @@
       });
 
       if (mobile) {
-        table_rows += `<tr style="-webkit-transform: translateZ(0px) !important;" data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
+        table_rows += `<tr data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
           <td class="bulk_edit_checkbox">
               <input class="bulk_edit_checkbox" type="checkbox" name="bulk_edit_id" value="${record.ID}">
           </td>
@@ -1133,7 +1133,7 @@
           ${row_fields_html}
         `;
       } else {
-        table_rows += `<tr style="-webkit-transform: translateZ(0px) !important;" class="dnd-moved" data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
+        table_rows += `<tr class="dnd-moved" data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
           <td class="bulk_edit_checkbox" ><input type="checkbox" name="bulk_edit_id" value="${record.ID}"></td>
           <td style="white-space: nowrap" data-id="index" >${index + 1}.</td>
           ${row_fields_html}
