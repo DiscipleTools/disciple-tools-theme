@@ -4,12 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
+"PO-Revision-Date: 2025-03-05 15:59+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Greek <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/el/>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: POEditor.com\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -1972,6 +1976,7 @@ msgid "See duplicates"
 msgstr "Δείτε τα διπλότυπα"
 
 #: dt-contacts/base-setup.php:466
+#, fuzzy
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "Σίγουρα θέλετε να αρχειοθετήσετε τον/-ην"
@@ -2187,6 +2192,7 @@ msgid "redacted"
 msgstr "επεξεργασμένο"
 
 #: dt-contacts/duplicates-merging.php:442
+#, fuzzy
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(Από Διπλότυπο): &s"
@@ -2986,6 +2992,7 @@ msgstr "Όνομα Ιστότοπου DT: %s"
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:321
 #: dt-users/user-hooks-and-config.php:390
+#, fuzzy
 msgid "Username: %s"
 msgstr "Όνομα χρήστη: &s"
 
@@ -4746,6 +4753,7 @@ msgid "Sub-assigned %s"
 msgstr "%s υπανατέθηκε"
 
 #: dt-posts/posts.php:307
+#, fuzzy
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
 msgstr "Υπανατέθηκε στον/-ην"
@@ -5609,6 +5617,7 @@ msgid "Created record"
 msgstr "Δημιουργηθείσα εγγραφή"
 
 #: dt-users/user-metrics.php:115
+#, fuzzy
 msgid "Logged In %n times"
 msgstr "Συνδέθηκε %s φορές"
 

@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:31+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Marathi <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/mr/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Marathi <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/mr/>\n"
 "Language: mr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -530,6 +530,7 @@ msgid "Type to search"
 msgstr "शोधण्यासाठी टंकलिखित करा"
 
 #: archive-template.php:991
+#, fuzzy
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "प्रशिक्षणाचे सर्व संपर्क"
@@ -1954,6 +1955,7 @@ msgid "See duplicates"
 msgstr "दुबार नोंदी पाहा"
 
 #: dt-contacts/base-setup.php:466
+#, fuzzy
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "आपल्याला नक्की संग्रहीत करायचे आहे का?"
@@ -1999,6 +2001,7 @@ msgstr "मी पाहू शकत असलेल्या सर्व %s"
 
 #: dt-contacts/base-setup.php:689 dt-groups/base-setup.php:1042
 #: dt-posts/custom-post-type.php:501
+#, fuzzy
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "आवडते संपर्क"
@@ -2504,6 +2507,7 @@ msgid "Decline"
 msgstr "नाकारा"
 
 #: dt-contacts/module-access.php:956
+#, fuzzy
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "पाठपुरावा"
@@ -4326,6 +4330,7 @@ msgid "Disconnected"
 msgstr "संबंधित   %s"
 
 #: dt-metrics/records/time-charts.php:113
+#, fuzzy
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
 msgstr "जानेवारीमधील एकूण"
@@ -4835,6 +4840,7 @@ msgid "%1$s added to %2$s"
 msgstr "%1$s यात ऍड केला %2$s"
 
 #: dt-posts/posts.php:470
+#, fuzzy
 msgid "%s removed"
 msgstr "% काढले"
 
@@ -5456,6 +5462,7 @@ msgid "%1$s waiting for Contact Attempt for %2$s days"
 msgstr "%1$s संपर्कासाठी %2$s पासून वाट पाहत आहे."
 
 #: dt-users/user-management.php:182
+#, fuzzy
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "%2$sला  %2$s दिवसांनी %1$sशी संपर्काचा प्रयत्न केला गेला."

@@ -4,17 +4,17 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:31+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Slovenian <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/sl_SI/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Slovenian <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/sl_SI/>\n"
 "Language: sl_SI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
 "n%100==4 ? 3 : 0);\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -3743,12 +3743,13 @@ msgstr "Prejšnji mesec"
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
 #: dt-notifications/notifications.php:496
+#, fuzzy
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "pred %s mesecem"
-msgstr[1] "pred %s mesecema"
-msgstr[2] "pred %s meseci"
-msgstr[3] "drugo"
+msgstr[0] "pred %s mesecempred %s mesecemapred %s mesecidrugo"
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4384,44 +4385,49 @@ msgid "Daily Digest"
 msgstr "﻿Število odgovorov na dan"
 
 #: dt-notifications/notifications.php:476
+#, fuzzy
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "pred %s minuto"
-msgstr[1] "Pred %s minutama"
-msgstr[2] "Pred %s minutami"
-msgstr[3] "drugo"
+msgstr[0] "pred %s minutoPred %s minutamaPred %s minutamidrugo"
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: dt-notifications/notifications.php:481
+#, fuzzy
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "pred %s uro"
-msgstr[1] "pred %s urama"
-msgstr[2] "pred %s urami"
-msgstr[3] "drugo"
+msgstr[0] "pred %s uropred %s uramapred %s uramidrugo"
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: dt-notifications/notifications.php:486
+#, fuzzy
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "pred %s dnevom"
-msgstr[1] "pred %s dnevoma"
-msgstr[2] "pred %s dnevi"
-msgstr[3] "drugo"
+msgstr[0] "pred %s dnevompred %s dnevomapred %s dnevidrugo"
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: dt-notifications/notifications.php:491
+#, fuzzy
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "pred %s tednom"
-msgstr[1] "pred %s tednoma"
-msgstr[2] "pred %s tedni"
-msgstr[3] "drugo"
+msgstr[0] "pred %s tednompred %s tednomapred %s tednidrugo"
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: dt-notifications/notifications.php:510
+#, fuzzy
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "pred %s letom"
-msgstr[1] "pred %s letoma"
-msgstr[2] "pred %s leti"
-msgstr[3] "drugo"
+msgstr[0] "pred %s letompred %s letomapred %s letidrugo"
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 #: dt-notifications/notifications.php:514
 msgid "over %s year ago"

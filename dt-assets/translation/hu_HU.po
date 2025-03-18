@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:31+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Hungarian <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/hu_HU/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Hungarian <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/hu_HU/>\n"
 "Language: hu_HU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -350,6 +350,7 @@ msgid "Choose which fields to display as columns in the list"
 msgstr "Válassza ki, melyik mezők jelenjenek meg oszlopként a listában"
 
 #: archive-template.php:552
+#, fuzzy
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
@@ -1802,6 +1803,7 @@ msgid "Other Social Links"
 msgstr "Egyéb közösségi linkek"
 
 #: dt-contacts/base-setup.php:261
+#, fuzzy
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Kapcsolatok más %-hez"
@@ -2155,6 +2157,7 @@ msgid "Minor transfer error."
 msgstr "Kisebb Átviteli Hiba"
 
 #: dt-contacts/contacts-transfer.php:479
+#, fuzzy
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "Ez a kapcsolati személy irányítva volt %-hoz további utógondozásra"
 
@@ -2190,6 +2193,7 @@ msgid "(From Duplicate): %s"
 msgstr "(Másolatból): %s"
 
 #: dt-contacts/duplicates-merging.php:563
+#, fuzzy
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "Ez a bejegyzés egy duplikátum, és már %2$ része."
@@ -4468,6 +4472,7 @@ msgid "%1$s assigned %2$s to %3$s."
 msgstr "%1$s kiosztotta %2$s a következőnek %3$s."
 
 #: dt-notifications/notifications.php:921
+#, fuzzy
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
 msgstr "%1$s megosztotta %1$s-t veled."
@@ -4755,6 +4760,7 @@ msgid "%1$s removed from people groups on %2$s"
 msgstr "%1$s törölve az emberi csoportokból %2$s alkalmával"
 
 #: dt-posts/posts.php:318
+#, fuzzy
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "%1$s törölve az emberi csoportokból"
@@ -5578,6 +5584,7 @@ msgid "Updated fields"
 msgstr "Mezők frissítése"
 
 #: dt-users/user-metrics.php:109
+#, fuzzy
 msgid "Made %n comments"
 msgstr "%s hozzászólást fűzött"
 
@@ -5586,6 +5593,7 @@ msgid "Created record"
 msgstr "Létrehozott bejegyzés"
 
 #: dt-users/user-metrics.php:115
+#, fuzzy
 msgid "Logged In %n times"
 msgstr "%s alkalommal bejelentkezve"
 

@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2024-10-17 03:00+0000\n"
-"Last-Translator: \"Venkataramana (Wesley)\" <venkataramana.m1@gmail.com>\n"
-"Language-Team: Telugu <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/te/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Telugu <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/te/>\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -4380,6 +4380,7 @@ msgid "%1$s shared %2$s with you."
 msgstr "%1$s మీతో %2$s పంచుకున్నారు."
 
 #: dt-notifications/notifications.php:928
+#, fuzzy
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
 msgstr "% 1 $ లు మిమ్మల్ని %2$s లో పేర్కొన్నారు: %3$s"
@@ -4688,6 +4689,7 @@ msgid "%s removed from leaders"
 msgstr "నాయకుల నుండి%s తొలగించబడింది"
 
 #: dt-posts/posts.php:330
+#, fuzzy
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
 msgstr "%1$s ను కోచ్ 2%s లో చేర్చారు"
@@ -5353,6 +5355,7 @@ msgid "To log in click here: %s"
 msgstr "లాగిన్ అవ్వడానికి ఇక్కడ క్లిక్ చేయండి: %s"
 
 #: dt-users/user-hooks-and-config.php:388
+#, fuzzy
 msgid "Hi %s,"
 msgstr "తన,"
 

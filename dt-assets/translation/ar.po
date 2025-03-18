@@ -4,17 +4,17 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2024-10-09 10:59+0000\n"
-"Last-Translator: FarahDoumani <farahdoumani@gmail.com>\n"
-"Language-Team: Arabic <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/ar/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Arabic <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/ar/>\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -290,6 +290,7 @@ msgid ""
 msgstr ""
 
 #: archive-template.php:376
+#, fuzzy
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "قائمة جهات الاتصال"
@@ -659,6 +660,7 @@ msgid "Admin Actions"
 msgstr "إجراءات المسؤول"
 
 #: dt-assets/functions/details-bar.php:68 single-template.php:429
+#, fuzzy
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "حذف اتصال"
@@ -730,6 +732,7 @@ msgid "Showing %s items. Type to find more."
 msgstr "أظهر عناصر %s. اكتب لتجد المزيد."
 
 #: dt-assets/functions/enqueue-scripts.php:117
+#, fuzzy
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
 msgstr "إظهار العناصر 3D التي تطابق BOB"
@@ -817,6 +820,7 @@ msgid "Dismissed Duplicates"
 msgstr "التكرارات المرفوضة"
 
 #: dt-assets/functions/enqueue-scripts.php:222
+#, fuzzy
 msgid "Duplicates on: %s"
 msgstr "التكرارات على:٪ s"
 
@@ -1791,6 +1795,7 @@ msgid "Other Social Links"
 msgstr "روابط اجتماعية أخرى"
 
 #: dt-contacts/base-setup.php:261
+#, fuzzy
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "اتصالات بالسِجِلاَّت الأخرى"
@@ -1940,6 +1945,7 @@ msgid "Archive %s"
 msgstr "حفظ %s في الأرشيف"
 
 #: dt-contacts/base-setup.php:440
+#, fuzzy
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "تغيير نوع السِّجِل"
@@ -2134,6 +2140,7 @@ msgid "Minor transfer error."
 msgstr "خطأ بسيط في النقل"
 
 #: dt-contacts/contacts-transfer.php:479
+#, fuzzy
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "تم نقل جهة الاتصال هذه إلى٪ s لمزيد من المتابعة."
 
@@ -2169,11 +2176,13 @@ msgid "(From Duplicate): %s"
 msgstr "(من التكرار): %s"
 
 #: dt-contacts/duplicates-merging.php:563
+#, fuzzy
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "تم تكرار هذا السجل وتم دمجه في جهة الإتصال 2"
 
 #: dt-contacts/duplicates-merging.php:576
+#, fuzzy
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "المستخدم 1 دَمَجَ جهة الإتصال1 في هذا السجل"
@@ -2501,6 +2510,7 @@ msgid "Decline"
 msgstr "رفض"
 
 #: dt-contacts/module-access.php:956
+#, fuzzy
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "متابعة جميع السجلات"
@@ -2925,6 +2935,7 @@ msgstr "هناك من طلب تغيير كلمة السر للحساب التا�
 
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:319
+#, fuzzy
 msgid "DT Site Name: %s"
 msgstr "المترجمون:٪ s: اسم الموقع."
 
@@ -4858,10 +4869,12 @@ msgid "%1$s added to %2$s"
 msgstr "%1$s أضيف ل %2$s"
 
 #: dt-posts/posts.php:470
+#, fuzzy
 msgid "%s removed"
 msgstr "٪ s تمت إزالتها"
 
 #: dt-posts/posts.php:478 dt-posts/posts.php:491
+#, fuzzy
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
 msgstr "تمت إزالة %s من المواقع"
@@ -5118,6 +5131,7 @@ msgid "User Status"
 msgstr "الحالة"
 
 #: dt-users/mapbox-coverage-map.php:75
+#, fuzzy
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
 msgstr "أضف المستخدم إلى:"

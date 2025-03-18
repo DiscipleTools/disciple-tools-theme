@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:31+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Japanese <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/ja/>\n"
+"PO-Revision-Date: 2025-03-05 15:59+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Japanese <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -202,6 +202,7 @@ msgid "reset to default"
 msgstr "デフォルトにリセット"
 
 #: archive-template.php:215
+#, fuzzy
 msgctxt "Contacts Filters"
 msgid "%s Filters"
 msgstr "％sフィルター"
@@ -288,6 +289,7 @@ msgid ""
 msgstr ""
 
 #: archive-template.php:376
+#, fuzzy
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "％sリスト"
@@ -348,6 +350,7 @@ msgid "Choose which fields to display as columns in the list"
 msgstr "リストの列として表示するフィールドを選択します"
 
 #: archive-template.php:552
+#, fuzzy
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr "更新するすべての％1 $をリストから選択し、以下で更新します"
@@ -648,6 +651,7 @@ msgid "Admin Actions"
 msgstr "管理者のアクション"
 
 #: dt-assets/functions/details-bar.php:68 single-template.php:429
+#, fuzzy
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "％sを削除"
@@ -715,6 +719,7 @@ msgid "No results found matching \"{{query}}\""
 msgstr "「{{query}}」に一致する結果は見つかりませんでした"
 
 #: dt-assets/functions/enqueue-scripts.php:116
+#, fuzzy
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
 msgstr "％sアイテムを表示しています。詳細を検索するには、入力してください。"
@@ -807,6 +812,7 @@ msgid "Dismissed Duplicates"
 msgstr "却下された重複"
 
 #: dt-assets/functions/enqueue-scripts.php:222
+#, fuzzy
 msgid "Duplicates on: %s"
 msgstr "重複：％s"
 
@@ -823,6 +829,7 @@ msgid "Transfer update successful."
 msgstr "更新の転送が成功しました。"
 
 #: dt-assets/functions/enqueue-scripts.php:226
+#, fuzzy
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "％sで作成"
@@ -865,6 +872,7 @@ msgid "Matches Found:"
 msgstr "見つかった一致："
 
 #: dt-assets/functions/enqueue-scripts.php:300
+#, fuzzy
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "％sのすべての一致を却下します"
@@ -892,6 +900,7 @@ msgstr "フィルタに一致するレコードが見つかりませんでした
 
 #: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:674
 #: dt-groups/base-setup.php:1036 dt-posts/custom-post-type.php:489
+#, fuzzy
 msgctxt "All records"
 msgid "All %s"
 msgstr "すべての％s"
@@ -1555,6 +1564,7 @@ msgid "Edit New Record"
 msgstr "新しいレコードを編集する"
 
 #: dt-assets/parts/modals/modal-new-contact.php:30
+#, fuzzy
 msgctxt "back to record"
 msgid "Back to %s"
 msgstr "％sに戻る"
@@ -1781,6 +1791,7 @@ msgid "Other Social Links"
 msgstr "他のソーシャルリンク"
 
 #: dt-contacts/base-setup.php:261
+#, fuzzy
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "他の％sへの接続"
@@ -1928,11 +1939,13 @@ msgid "The website, event or location this contact came from."
 msgstr "この連絡先のWebサイト、イベント、または場所。"
 
 #: dt-contacts/base-setup.php:433 dt-contacts/base-setup.php:465
+#, fuzzy
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "アーカイブ％s"
 
 #: dt-contacts/base-setup.php:440
+#, fuzzy
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "％sタイプの変更"
@@ -1942,6 +1955,7 @@ msgid "See duplicates"
 msgstr "重複を見る"
 
 #: dt-contacts/base-setup.php:466
+#, fuzzy
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "％sをアーカイブしてもよろしいですか？"
@@ -1981,6 +1995,7 @@ msgid "Default Filters"
 msgstr "デフォルトのフィルター"
 
 #: dt-contacts/base-setup.php:678
+#, fuzzy
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "私が見ることができるすべての％s"
@@ -2028,6 +2043,7 @@ msgid "Sub-assigned to me"
 msgstr "私にサブアサイン"
 
 #: dt-contacts/base-setup.php:745
+#, fuzzy
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "接続された％s"
@@ -2042,6 +2058,7 @@ msgid "Subassigned only"
 msgstr "サブアサインのみ"
 
 #: dt-contacts/base-setup.php:971
+#, fuzzy
 msgid "This %s is archived"
 msgstr "この％sはアーカイブされています"
 
@@ -2094,6 +2111,7 @@ msgid "another site"
 msgstr "別のサイト"
 
 #: dt-contacts/contacts-transfer.php:276
+#, fuzzy
 msgid "Already transfered to %s"
 msgstr "すでに％sに転送されています"
 
@@ -2127,6 +2145,7 @@ msgid "Minor transfer error."
 msgstr "マイナーな転送エラー。"
 
 #: dt-contacts/contacts-transfer.php:479
+#, fuzzy
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "この連絡先は、さらなるフォローアップのために％sに転送されました。"
 
@@ -2156,6 +2175,7 @@ msgid "redacted"
 msgstr "編集済み"
 
 #: dt-contacts/duplicates-merging.php:442
+#, fuzzy
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "（複製から）：％s"
@@ -2498,6 +2518,7 @@ msgid "Decline"
 msgstr "低下"
 
 #: dt-contacts/module-access.php:956
+#, fuzzy
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "フォローアップ％s"
@@ -2924,12 +2945,14 @@ msgstr "誰かが次のアカウントのパスワードのリセットを要求
 
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:319
+#, fuzzy
 msgid "DT Site Name: %s"
 msgstr "DTサイト名：％s"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:321
 #: dt-users/user-hooks-and-config.php:390
+#, fuzzy
 msgid "Username: %s"
 msgstr "ユーザー名：％s"
 
@@ -3626,10 +3649,12 @@ msgid "Number of contacts that had the active status"
 msgstr "アクティブなステータスの連絡先の数"
 
 #: dt-metrics/combined/critical-path.php:241
+#, fuzzy
 msgid "Number of contacts on %s at the end of the time range"
 msgstr "時間範囲の終了時の％sの連絡先の数"
 
 #: dt-metrics/combined/critical-path.php:243
+#, fuzzy
 msgid "Number of contacts where %s was set on the seeker path"
 msgstr "シーカーパスに％sが設定された連絡先の数"
 
@@ -3645,10 +3670,12 @@ msgid ""
 msgstr "日付範囲内の洗礼日との洗礼を受けた接触の数と接続によって洗礼を受けた"
 
 #: dt-metrics/combined/critical-path.php:277
+#, fuzzy
 msgid "Generation %s Baptisms"
 msgstr "世代％sバプテスマ"
 
 #: dt-metrics/combined/critical-path.php:278
+#, fuzzy
 msgid "Number of generation %s baptisms"
 msgstr "世代数％sの洗礼"
 
@@ -3678,10 +3705,12 @@ msgid "Churches active at the end of the time range"
 msgstr "時間範囲の終わりに活動している教会"
 
 #: dt-metrics/combined/critical-path.php:321
+#, fuzzy
 msgid "Generation %s Churches"
 msgstr "世代％s教会"
 
 #: dt-metrics/combined/critical-path.php:322
+#, fuzzy
 msgid "Number of generation %s churches at the end of the time range"
 msgstr "時間範囲の終了時の世代％s教会の数"
 
@@ -3725,6 +3754,7 @@ msgstr "先月"
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
 #: dt-notifications/notifications.php:496
+#, fuzzy
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "％s月前"
@@ -3752,6 +3782,7 @@ msgstr "アクティビティが検出されませんでした!"
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
 #: template-new-post.php:43
+#, fuzzy
 msgid "New %s"
 msgstr "新しい％s"
 
@@ -4363,26 +4394,31 @@ msgid "Daily Digest"
 msgstr "デイリーダイジェスト"
 
 #: dt-notifications/notifications.php:476
+#, fuzzy
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "％s分前"
 
 #: dt-notifications/notifications.php:481
+#, fuzzy
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "％s時間前"
 
 #: dt-notifications/notifications.php:486
+#, fuzzy
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "％s日前"
 
 #: dt-notifications/notifications.php:491
+#, fuzzy
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "％s週間前"
 
 #: dt-notifications/notifications.php:510
+#, fuzzy
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "％s年前"
@@ -4393,6 +4429,7 @@ msgid_plural "over %s years ago"
 msgstr[0] "%s年以上前"
 
 #: dt-notifications/notifications.php:909
+#, fuzzy
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
 msgstr "％sが作成され、割り当てられました。"
@@ -4599,6 +4636,7 @@ msgid "Access Request"
 msgstr "アクセス申請"
 
 #: dt-posts/posts.php:281
+#, fuzzy
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
 msgstr "バプテスマを受けた％s"
@@ -4610,71 +4648,85 @@ msgid "Baptized by %s"
 msgstr "%s によるバプテスマ"
 
 #: dt-posts/posts.php:284
+#, fuzzy
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
 msgstr "％sにバプテスマを施しませんでした"
 
 #: dt-posts/posts.php:285
+#, fuzzy
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
 msgstr "％sによるバプテスマを受けていない"
 
 #: dt-posts/posts.php:289
+#, fuzzy
 msgctxt "contact1 added to members"
 msgid "%s added to members"
 msgstr "％sがメンバーに追加されました"
 
 #: dt-posts/posts.php:290
+#, fuzzy
 msgctxt "Added to group group1"
 msgid "Added to group %s"
 msgstr "グループ％sに追加"
 
 #: dt-posts/posts.php:292
+#, fuzzy
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
 msgstr "グループから％sを削除しました"
 
 #: dt-posts/posts.php:293
+#, fuzzy
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
 msgstr "グループ％sから削除されました"
 
 #: dt-posts/posts.php:298
+#, fuzzy
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
 msgstr "％sのコーチング"
 
 #: dt-posts/posts.php:299
+#, fuzzy
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
 msgstr "％sによる指導"
 
 #: dt-posts/posts.php:301
+#, fuzzy
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
 msgstr "％sを指導しなくなりました"
 
 #: dt-posts/posts.php:302
+#, fuzzy
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
 msgstr "％sによる指導はなくなりました"
 
 #: dt-posts/posts.php:306
+#, fuzzy
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
 msgstr "サブ割り当てされた％s"
 
 #: dt-posts/posts.php:307
+#, fuzzy
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
 msgstr "％sでサブ割り当て"
 
 #: dt-posts/posts.php:309
+#, fuzzy
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
 msgstr "サブ割り当てされた％sを削除しました"
 
 #: dt-posts/posts.php:310
+#, fuzzy
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "％sでサブ割り当てされなくなりました"
@@ -4685,6 +4737,7 @@ msgid "%1$s added as people group on %2$s"
 msgstr "%2$sの人々グループとして %1$s が追加されました"
 
 #: dt-posts/posts.php:315
+#, fuzzy
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
 msgstr "％sが人のグループに追加されました"
@@ -4695,6 +4748,7 @@ msgid "%1$s removed from people groups on %2$s"
 msgstr "%2$sの人々グループから %1$s が削除されました"
 
 #: dt-posts/posts.php:318
+#, fuzzy
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "％sが人のグループから削除されました"
@@ -4705,6 +4759,7 @@ msgid "%1$s added as leader on %2$s"
 msgstr "%1$s が%2$sのリーダーとして追加されました"
 
 #: dt-posts/posts.php:323
+#, fuzzy
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
 msgstr "％sがリーダーに追加されました"
@@ -4715,6 +4770,7 @@ msgid "%1$s removed from leaders on %2$s"
 msgstr "%2$sのリーダーから %1$s が削除されました"
 
 #: dt-posts/posts.php:326
+#, fuzzy
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
 msgstr "％sがリーダーから削除されました"
@@ -4725,6 +4781,7 @@ msgid "%1$s added as coach on %2$s"
 msgstr "%1$s が%2$sのコーチとして追加されました"
 
 #: dt-posts/posts.php:331
+#, fuzzy
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
 msgstr "％sがコーチに追加されました"
@@ -4735,42 +4792,50 @@ msgid "%1$s removed from coaches on %2$s"
 msgstr "%2$sのコーチから %1$s が削除されました"
 
 #: dt-posts/posts.php:334
+#, fuzzy
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
 msgstr "％sがコーチから削除されました"
 
 #: dt-posts/posts.php:338
+#, fuzzy
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
 msgstr "％sが子グループに追加されました"
 
 #: dt-posts/posts.php:339
+#, fuzzy
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
 msgstr "％sが親グループに追加されました"
 
 #: dt-posts/posts.php:341
+#, fuzzy
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
 msgstr "％sが子グループから削除されました"
 
 #: dt-posts/posts.php:342
+#, fuzzy
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
 msgstr "％sが親グループから削除されました"
 
 #: dt-posts/posts.php:347 dt-posts/posts.php:348
+#, fuzzy
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
 msgstr "％sがピアグループに追加されました"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
+#, fuzzy
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
 msgstr "％sがピアグループから削除されました"
 
 #: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
 #: dt-posts/posts.php:369
+#, fuzzy
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
 msgstr "％sに接続しました"
@@ -4785,6 +4850,7 @@ msgstr "%1$s が%2$sに追加されました"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
+#, fuzzy
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
 msgstr "％sへの接続を削除しました"
@@ -4825,6 +4891,7 @@ msgid "%1$s added to %2$s"
 msgstr "%1$s が%2$sに追加されました"
 
 #: dt-posts/posts.php:470
+#, fuzzy
 msgid "%s removed"
 msgstr "％sが削除されました"
 
@@ -4890,6 +4957,7 @@ msgid "Deleted %1$s: %2$s"
 msgstr "削除された %1$s ：%2$s"
 
 #: dt-posts/posts.php:574
+#, fuzzy
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "名前が次のように変更されました：％s"
@@ -4900,6 +4968,7 @@ msgid "Created from Demo Plugin"
 msgstr "デモプラグインから作成"
 
 #: dt-posts/posts.php:583
+#, fuzzy
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr "％sは割り当てを拒否しました"
@@ -4910,16 +4979,19 @@ msgid "A user"
 msgstr "ユーザー"
 
 #: dt-posts/posts.php:586
+#, fuzzy
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr "％s受け入れられた割り当て"
 
 #: dt-posts/posts.php:591
+#, fuzzy
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "％sと共有"
 
 #: dt-posts/posts.php:593
+#, fuzzy
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "％sと共有されていません"
@@ -5085,6 +5157,7 @@ msgid "User Status"
 msgstr "ユーザーステータス"
 
 #: dt-users/mapbox-coverage-map.php:75
+#, fuzzy
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
 msgstr "ユーザーの追加先：％s"
@@ -5502,6 +5575,7 @@ msgid "Showing %1$s of %2$s"
 msgstr "%2$sに一致する %1$s アイテムを表示しています"
 
 #: dt-users/user-management.php:353
+#, fuzzy
 msgid "%s days since last update"
 msgstr "最後の更新から％s日"
 
@@ -5526,6 +5600,7 @@ msgid "Logged In"
 msgstr "ログイン"
 
 #: dt-users/user-metrics.php:119
+#, fuzzy
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "％sでの割り当ての拒否"
@@ -5613,6 +5688,7 @@ msgid "See what browser you are using."
 msgstr "使用しているブラウザを確認してください。"
 
 #: single-template.php:99 single-template.php:107
+#, fuzzy
 msgid "This %s needs an update."
 msgstr "この％sは更新が必要です。"
 
@@ -5650,6 +5726,7 @@ msgid "Create and apply tag"
 msgstr "タグを作成して適用する"
 
 #: single-template.php:430
+#, fuzzy
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "％sを削除してもよろしいですか？"
@@ -5700,6 +5777,7 @@ msgid "Choose which fields to display across new bulk records"
 msgstr "新しい一括記録で表示するフィールドを選択する"
 
 #: template-new-bulk-post.php:145 template-new-post.php:62
+#, fuzzy
 msgid "Select the %s type:"
 msgstr "％sタイプを選択します。"
 

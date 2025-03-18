@@ -206,8 +206,10 @@ jQuery(document).ready(function ($) {
       recent: users_with_role
         .concat()
         .sort((a, b) => b.last_assignment - a.last_assignment),
-      language: users_with_role.filter(({ languages }) =>
-        languages.some((language) => contact_languages.includes(language)),
+      language: users_with_role.filter(
+        ({ languages }) =>
+          Array.isArray(languages) &&
+          languages.some((language) => contact_languages.includes(language)),
       ),
       gender: users_with_role.filter(
         (m) => contact_gender.label !== '' && m.gender === contact_gender.key,

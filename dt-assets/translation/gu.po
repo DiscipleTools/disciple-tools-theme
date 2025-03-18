@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-06-09 07:28+0000\n"
-"Last-Translator: Corsacca <corsacca@gmail.com>\n"
-"Language-Team: Gujarati <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/gu/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Gujarati <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/gu/>\n"
 "Language: gu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -2943,6 +2943,7 @@ msgid "Add new tag \"%s\""
 msgstr "નવો ટ tagગ \"%s\" ઉમેરો"
 
 #: dt-core/global-functions.php:714
+#, fuzzy
 msgid "Tag \"%s\" is already being used"
 msgstr "ટ %ગ \"%s\" પહેલાથી ઉપયોગમાં છે"
 
@@ -3738,6 +3739,7 @@ msgstr "કોઈ પ્રવૃત્તિ મળી નથી!"
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
 #: template-new-post.php:43
+#, fuzzy
 msgid "New %s"
 msgstr "સમાચાર"
 
@@ -4435,6 +4437,7 @@ msgid "%1$s modified contact details on %2$s."
 msgstr "%2$s પર %1$s ફેરફાર કરેલી સંપર્ક વિગતો."
 
 #: dt-notifications/notifications.php:959
+#, fuzzy
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s એ સોંપણી નકારી:% 2 lined s પર."
@@ -4878,6 +4881,7 @@ msgid "Updated %1$s from %2$s to %3$s"
 msgstr "%2$s થી %3$s પર %1$s ને અપડેટ કર્યું"
 
 #: dt-posts/posts.php:570
+#, fuzzy
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "કા 1ી નાખેલ% 1. S: %2$s"
