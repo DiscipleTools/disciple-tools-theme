@@ -135,6 +135,10 @@
     }
 }
 
+.table-container {
+    overflow-y: auto;
+    transform: rotateX(180deg);
+}
 
 table.table-remove-top-border thead {
     border-top: 0;
@@ -144,25 +148,17 @@ table.js-list{
     word-wrap: break-word;
     width: 100%;
     white-space: nowrap;
-
+    transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg) translateZ(0px);
+}
+table.js-list tr {
+    -webkit-transform: translateZ(0px)
 }
 @media screen and (min-width : #{map-get($breakpoints, large)}) {
     table.js-list td {
         max-width: 250px;
     }
 }
-
-.table-container {
-    display: block;
-    overflow-x: auto;
-}
-
-.table-container, .table-container #records-table {
-    transform:rotateX(180deg);
-    -ms-transform:rotateX(180deg); /* IE 9 */
-    -webkit-transform:rotateX(180deg); /* Safari and Chrome */
-}
-
 
 table.js-list th[data-id="name"] {
     position: sticky;
@@ -181,6 +177,7 @@ table.js-list th[data-id="index"] {
     position: sticky;
     left: -1px;
     background-color: #ffffff;
+    border-left: 1px solid rgb(232,232,232);
 }
 
 table.js-list td[data-id="index"] {

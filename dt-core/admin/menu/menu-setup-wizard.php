@@ -88,10 +88,7 @@ class DT_Setup_Wizard
             'hide_mark_done' => true
         ];
 
-        return [
-            'getting_started' => $setup_wizard_step,
-            ...$items,
-        ];
+        return array_merge( [ 'getting_started' => $setup_wizard_step ], $items );
     }
 
     public function has_access_permission() {
