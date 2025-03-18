@@ -119,6 +119,13 @@ jQuery(function ($) {
         }
       });
 
+      // legacy number field
+      $('.text-input').each((index, entry) => {
+        if ($(entry).val()) {
+          new_post[$(entry).attr('id')] = $(entry).val();
+        }
+      });
+
       // used for legacy boolean field
       $('.select-field').each((index, entry) => {
         if ($(entry).val()) {

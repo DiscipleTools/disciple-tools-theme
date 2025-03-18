@@ -33,6 +33,52 @@ jQuery(document).ready(function ($) {
     );
   });
 
+  /* field type: number */
+  const updateTextMetaOnChange = updateTextMeta();
+  $('input.text-input').change(updateTextMetaOnChange);
+  $('input.text-input').blur(updateTextMetaOnChange);
+
+  function updateTextMeta() {
+    let isUpdating = false;
+
+    return function () {
+      if (isUpdating) return;
+      isUpdating = true;
+
+      const id = $(this).attr('id');
+      if ($(this).prop('required') && $(this).val() === '') {
+        return;
+      }
+      let val = $(this).val();
+      const intVal = parseInt(val);
+
+      const min = parseInt(this.min);
+      const max = parseInt(this.max);
+
+      if (min && intVal < min) {
+        $(this).val(this.min);
+        val = parseInt(this.min);
+      }
+      if (max && intVal > max) {
+        $(this).val(this.max);
+        val = parseInt(this.max);
+      }
+
+      $(`#${id}-spinner`).addClass('active');
+      rest_api
+        .update_post(post_type, post_id, { [id]: val })
+        .then((newPost) => {
+          $(`#${id}-spinner`).removeClass('active');
+          $(document).trigger('text-input-updated', [newPost, id, val]);
+          isUpdating = false;
+        })
+        .catch((error) => {
+          window.handleAjaxError(error);
+          isUpdating = false;
+        });
+    };
+  }
+
   /* field type: link */
   $('input.link-input').change(function () {
     const link_input = $(this);
