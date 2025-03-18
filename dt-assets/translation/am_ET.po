@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-06-09 07:28+0000\n"
-"Last-Translator: Corsacca <corsacca@gmail.com>\n"
-"Language-Team: Amharic <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/am_ET/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Amharic <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/am_ET/>\n"
 "Language: am_ET\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -806,6 +806,7 @@ msgid "Dismissed Duplicates"
 msgstr "የተሰናበቱ ብዜቶች"
 
 #: dt-assets/functions/enqueue-scripts.php:222
+#, fuzzy
 msgid "Duplicates on: %s"
 msgstr "የተባዙት በ$s"
 
@@ -822,6 +823,7 @@ msgid "Transfer update successful."
 msgstr "የዝውውር ማሻሻያ ተሳክቷል።"
 
 #: dt-assets/functions/enqueue-scripts.php:226
+#, fuzzy
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "በ$s ላይ የተፈጠረ"
@@ -891,6 +893,7 @@ msgstr "ከማጣሪያዎ ጋር የሚዛመዱ ምንም መዝገቦች አ�
 
 #: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:674
 #: dt-groups/base-setup.php:1036 dt-posts/custom-post-type.php:489
+#, fuzzy
 msgctxt "All records"
 msgid "All %s"
 msgstr "ሁሉም$s"
@@ -1544,6 +1547,7 @@ msgid "Edit New Record"
 msgstr "አዲስ መዝገብ አርትዕ"
 
 #: dt-assets/parts/modals/modal-new-contact.php:30
+#, fuzzy
 msgctxt "back to record"
 msgid "Back to %s"
 msgstr "ወደ$s ተመለስ"
@@ -1770,6 +1774,7 @@ msgid "Other Social Links"
 msgstr "ሌሎች ማህበራዊ አገናኞች"
 
 #: dt-contacts/base-setup.php:261
+#, fuzzy
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "ከሌላ$s ጋር ግንኙነቶች"
@@ -1968,6 +1973,7 @@ msgid "Default Filters"
 msgstr "ነባሪ ማጣሪያዎች"
 
 #: dt-contacts/base-setup.php:678
+#, fuzzy
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "ሁሉንም$s ማየት እችላለሁ"
@@ -2015,6 +2021,7 @@ msgid "Sub-assigned to me"
 msgstr "ንዑስ-ተመደብኩኝ"
 
 #: dt-contacts/base-setup.php:745
+#, fuzzy
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "ተገናኝቷል$s"
@@ -2081,6 +2088,7 @@ msgid "another site"
 msgstr "ሌላ ጣቢያ"
 
 #: dt-contacts/contacts-transfer.php:276
+#, fuzzy
 msgid "Already transfered to %s"
 msgstr "ቀድሞውኑ ወደ$s ተዛውሯል"
 
@@ -2114,6 +2122,7 @@ msgid "Minor transfer error."
 msgstr "አነስተኛ የዝውውር ስህተት።"
 
 #: dt-contacts/contacts-transfer.php:479
+#, fuzzy
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "ለቀጣይ ክትትል ይህ ዕውቂያ ወደ$s ተላል wasል።"
 
@@ -2143,6 +2152,7 @@ msgid "redacted"
 msgstr "እንደገና ተቀይሯል"
 
 #: dt-contacts/duplicates-merging.php:442
+#, fuzzy
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(ከተባዛ)$s"
@@ -2478,6 +2488,7 @@ msgid "Decline"
 msgstr "ውድቅ አድርግ"
 
 #: dt-contacts/module-access.php:956
+#, fuzzy
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "ክትትል$s"
@@ -2898,6 +2909,7 @@ msgstr "አንድ ሰው ለሚከተለው መለያ የይለፍ ቃል ዳግ
 
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:319
+#, fuzzy
 msgid "DT Site Name: %s"
 msgstr "DT የጣቢያ ስም$s"
 
@@ -3592,10 +3604,12 @@ msgid "Number of contacts that had the active status"
 msgstr "የነቃ ሁኔታ የነበራቸው የእውቂያዎች ብዛት"
 
 #: dt-metrics/combined/critical-path.php:241
+#, fuzzy
 msgid "Number of contacts on %s at the end of the time range"
 msgstr "በጊዜ ክልል መጨረሻ ላይ በ$s ላይ ያሉ የእውቂያዎች ብዛት"
 
 #: dt-metrics/combined/critical-path.php:243
+#, fuzzy
 msgid "Number of contacts where %s was set on the seeker path"
 msgstr "በአመልካች መንገድ ላይ$s የተቀናበረበት የእውቂያዎች ብዛት"
 
@@ -3611,10 +3625,12 @@ msgid ""
 msgstr "የተጠመቀበት ቀን ከተጠቀሰው የጥምቀት ቀን ጋር እና በግንኙነት መጠመቅ"
 
 #: dt-metrics/combined/critical-path.php:277
+#, fuzzy
 msgid "Generation %s Baptisms"
 msgstr "ትውልድ$s ጥምቀቶች"
 
 #: dt-metrics/combined/critical-path.php:278
+#, fuzzy
 msgid "Number of generation %s baptisms"
 msgstr "የትውልድ ብዛት s s ጥምቀቶች"
 
@@ -3644,10 +3660,12 @@ msgid "Churches active at the end of the time range"
 msgstr "በጊዜ ክልል መጨረሻ ላይ የሚሠሩ አብያተ ክርስቲያናት"
 
 #: dt-metrics/combined/critical-path.php:321
+#, fuzzy
 msgid "Generation %s Churches"
 msgstr "ትውልድ$s አብያተ ክርስቲያናት"
 
 #: dt-metrics/combined/critical-path.php:322
+#, fuzzy
 msgid "Number of generation %s churches at the end of the time range"
 msgstr "በጊዜ ክልል መጨረሻ ላይ የትውልድ$s አብያተ ክርስቲያናት ብዛት"
 
@@ -3718,6 +3736,7 @@ msgstr "ምንም እንቅስቃሴ አልተገኘም!"
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
 #: template-new-post.php:43
+#, fuzzy
 msgid "New %s"
 msgstr "አዲስ$s"
 
@@ -4572,6 +4591,7 @@ msgid "Access Request"
 msgstr "የመዳረሻ ጥያቄ"
 
 #: dt-posts/posts.php:281
+#, fuzzy
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
 msgstr "ተጠመቀ$s"
@@ -4588,6 +4608,7 @@ msgid "Did not baptize %s"
 msgstr "%s ን አላጠመቀም"
 
 #: dt-posts/posts.php:285
+#, fuzzy
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
 msgstr "በ$s አልተጠመቀም"
@@ -4598,6 +4619,7 @@ msgid "%s added to members"
 msgstr "%s ወደ አባላት ታክሏል"
 
 #: dt-posts/posts.php:290
+#, fuzzy
 msgctxt "Added to group group1"
 msgid "Added to group %s"
 msgstr "ወደ ቡድን$s ታክሏል"
@@ -4608,6 +4630,7 @@ msgid "Removed %s from group"
 msgstr "%s ከቡድን ተወግዷል"
 
 #: dt-posts/posts.php:293
+#, fuzzy
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
 msgstr "ከቡድን$s ተወግዷል"
@@ -4618,6 +4641,7 @@ msgid "Coaching %s"
 msgstr "%s ን በማሰልጠን ላይ"
 
 #: dt-posts/posts.php:299
+#, fuzzy
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
 msgstr "በ$s የሰለጠነ"
@@ -4628,26 +4652,31 @@ msgid "No longer coaching %s"
 msgstr "%s ን ከእንግዲህ አያሰለጥንም"
 
 #: dt-posts/posts.php:302
+#, fuzzy
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
 msgstr "ከእንግዲህ በ$s አይሰለጥንም"
 
 #: dt-posts/posts.php:306
+#, fuzzy
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
 msgstr "በንዑስ የተመደበ$s"
 
 #: dt-posts/posts.php:307
+#, fuzzy
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
 msgstr "በ$s ላይ ንዑስ ተመድቧል"
 
 #: dt-posts/posts.php:309
+#, fuzzy
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
 msgstr "በንዑስ የተመደበ$s ተወግዷል"
 
 #: dt-posts/posts.php:310
+#, fuzzy
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "ከእንግዲህ በ$s ላይ አይመደብም"
@@ -4744,6 +4773,7 @@ msgstr "%s ከእኩዮች ቡድኖች ተወግዷል"
 
 #: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
 #: dt-posts/posts.php:369
+#, fuzzy
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
 msgstr "ከ$s ጋር ተገናኝቷል"
@@ -4758,6 +4788,7 @@ msgstr "%1$s ወደ %2$s ታክሏል"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
+#, fuzzy
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
 msgstr "ከ$s ጋር ያለው ግንኙነት ተወግዷል"
@@ -4858,11 +4889,13 @@ msgid "Updated %1$s from %2$s to %3$s"
 msgstr "%1$s ከ %2$s ወደ %3$s ዘምኗል"
 
 #: dt-posts/posts.php:570
+#, fuzzy
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "ተሰር %ል %1$s: %2$s"
 
 #: dt-posts/posts.php:574
+#, fuzzy
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "ስሙ ተቀይሯል ወደ$s"
@@ -4888,11 +4921,13 @@ msgid "%s accepted assignment"
 msgstr "%s ተቀባይነት ያለው ተልእኮ"
 
 #: dt-posts/posts.php:591
+#, fuzzy
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "ከ$s ጋር ተጋርቷል"
 
 #: dt-posts/posts.php:593
+#, fuzzy
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "ከ$s ጋር አልተጋራም"
@@ -5058,6 +5093,7 @@ msgid "User Status"
 msgstr "የተጠቃሚ ሁኔታ"
 
 #: dt-users/mapbox-coverage-map.php:75
+#, fuzzy
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
 msgstr "ተጠቃሚን አክል ወደ$s"
@@ -5468,6 +5504,7 @@ msgid "Showing %1$s of %2$s"
 msgstr "ከ %2$s ጋር የሚዛመዱ የ %1$s ንጥሎችን በማሳየት ላይ"
 
 #: dt-users/user-management.php:353
+#, fuzzy
 msgid "%s days since last update"
 msgstr "ካለፈው ዝመና ጀምሮ$s ቀናት"
 
@@ -5492,6 +5529,7 @@ msgid "Logged In"
 msgstr "ገብቷል"
 
 #: dt-users/user-metrics.php:119
+#, fuzzy
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "በ$s ላይ ውድቅ የሆነ ምደባ"
@@ -5578,6 +5616,7 @@ msgid "See what browser you are using."
 msgstr "ምን አሳሽ እየተጠቀሙ እንደሆነ ይመልከቱ።"
 
 #: single-template.php:99 single-template.php:107
+#, fuzzy
 msgid "This %s needs an update."
 msgstr "ይህ$s ዝመና ይፈልጋል።"
 
@@ -5615,6 +5654,7 @@ msgid "Create and apply tag"
 msgstr "መለያ ይፍጠሩ እና ይተግብሩ"
 
 #: single-template.php:430
+#, fuzzy
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "እርግጠኛ ነዎት$s ን መሰረዝ ይፈልጋሉ?"
@@ -5665,6 +5705,7 @@ msgid "Choose which fields to display across new bulk records"
 msgstr "በአዲስ የጅምላ መዝገቦች ላይ የትኛዎቹ መስኮች እንደሚታዩ ይምረጡ"
 
 #: template-new-bulk-post.php:145 template-new-post.php:62
+#, fuzzy
 msgid "Select the %s type:"
 msgstr "የ$s አይነት ይምረጡ"
 

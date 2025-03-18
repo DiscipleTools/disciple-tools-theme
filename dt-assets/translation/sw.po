@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2024-07-02 08:59+0000\n"
-"Last-Translator: Leila Mohamed <nevergvup.leila@gmail.com>\n"
-"Language-Team: Swahili <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/sw/>\n"
+"PO-Revision-Date: 2025-03-05 15:59+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Swahili <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/sw/>\n"
 "Language: sw\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -4712,6 +4712,7 @@ msgid "%s removed"
 msgstr "%s imeondolewa"
 
 #: dt-posts/posts.php:478 dt-posts/posts.php:491
+#, fuzzy
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
 msgstr "%s iliondolewa kwenye maeneo"

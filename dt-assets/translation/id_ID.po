@@ -4,8 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2024-02-01 14:57+0000\n"
-"Last-Translator: Brandon Cyboron <brandon@ttionline.org>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Indonesian <https://translate.disciple.tools/projects/"
 "disciple-tools/disciple-tools-theme/id_ID/>\n"
 "Language: id_ID\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -4433,6 +4433,7 @@ msgid "%s was created and assigned to you."
 msgstr "%s dibuat dan ditugaskan kepada Anda"
 
 #: dt-notifications/notifications.php:911
+#, fuzzy
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr "Anda ditugaskan:"

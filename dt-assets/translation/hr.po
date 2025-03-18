@@ -4,17 +4,17 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2024-06-20 19:59+0000\n"
-"Last-Translator: Zlatko Celik <zlatko.celik@gmail.com>\n"
-"Language-Team: Croatian <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/hr/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Croatian <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/hr/>\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.6\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -4266,32 +4266,36 @@ msgstr[1] "%s minuta prije"
 msgstr[2] "-"
 
 #: dt-notifications/notifications.php:481
+#, fuzzy
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "prije %s sata"
-msgstr[1] "prije %s sati"
-msgstr[2] "-"
+msgstr[0] "prije %s sataprije %s sati-"
+msgstr[1] ""
+msgstr[2] ""
 
 #: dt-notifications/notifications.php:486
+#, fuzzy
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "prije %s dana"
-msgstr[1] "prije %s dana"
-msgstr[2] "-"
+msgstr[0] "prije %s danaprije %s dana-"
+msgstr[1] ""
+msgstr[2] ""
 
 #: dt-notifications/notifications.php:491
+#, fuzzy
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "prije %s tjedna"
-msgstr[1] "prije %s tjedana"
-msgstr[2] "-"
+msgstr[0] "prije %s tjednaprije %s tjedana-"
+msgstr[1] ""
+msgstr[2] ""
 
 #: dt-notifications/notifications.php:510
+#, fuzzy
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "prije %s godine"
-msgstr[1] "prije %s godina"
-msgstr[2] "-"
+msgstr[0] "prije %s godineprije %s godina-"
+msgstr[1] ""
+msgstr[2] ""
 
 #: dt-notifications/notifications.php:514
 msgid "over %s year ago"

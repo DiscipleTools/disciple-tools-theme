@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-03-21 15:55+0000\n"
-"Last-Translator: Hanna Duhm <hde21@proton.me>\n"
-"Language-Team: German <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/de_DE/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: German <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/de_DE/>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -815,6 +815,7 @@ msgid "Dismissed Duplicates"
 msgstr "ausgeblendete Duplikate"
 
 #: dt-assets/functions/enqueue-scripts.php:222
+#, fuzzy
 msgid "Duplicates on: %s"
 msgstr "Duplikate bei: %"
 
@@ -2172,6 +2173,7 @@ msgid "Minor transfer error."
 msgstr "Unbedeutender Übertragungsfehler."
 
 #: dt-contacts/contacts-transfer.php:479
+#, fuzzy
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "Dieser Kontakt wurde zu % für weitere Nachbereitung übertragen."
 
@@ -5499,6 +5501,7 @@ msgid "To log in click here: %s"
 msgstr "Klicken Sie hier, um sich anzumelden: %s"
 
 #: dt-users/user-hooks-and-config.php:388
+#, fuzzy
 msgid "Hi %s,"
 msgstr "Seine,"
 

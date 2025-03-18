@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:32+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Tagalog <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/tl/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Tagalog <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/tl/>\n"
 "Language: tl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -352,6 +352,7 @@ msgstr ""
 "Piliin kung aling mga field ang ipapakita bilang mga column sa listahan"
 
 #: archive-template.php:552
+#, fuzzy
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
@@ -726,6 +727,7 @@ msgid "Showing %s items. Type to find more."
 msgstr "Ipinapakita ang %s item. Mag-type para makahanap pa."
 
 #: dt-assets/functions/enqueue-scripts.php:117
+#, fuzzy
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
 msgstr "Nagpapakita ng %s (na) item na tumutugma sa %2$s"
@@ -2980,6 +2982,7 @@ msgstr "May humiling ng pag-reset ng password para sa sumusunod na account:"
 
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:319
+#, fuzzy
 msgid "DT Site Name: %s"
 msgstr "Pangalan ng DT Site: %"
 
@@ -4893,6 +4896,7 @@ msgid "Nobody"
 msgstr "Wala"
 
 #: dt-posts/posts.php:421 dt-posts/posts.php:426
+#, fuzzy
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "Binago ang %$s sa %2$s"

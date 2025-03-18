@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:32+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Thai <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/th/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Thai <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/th/>\n"
 "Language: th\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -648,6 +648,7 @@ msgid "Admin Actions"
 msgstr "การดำเนินการของผู้ดูแลระบบ"
 
 #: dt-assets/functions/details-bar.php:68 single-template.php:429
+#, fuzzy
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "ลบ$s"
@@ -715,6 +716,7 @@ msgid "No results found matching \"{{query}}\""
 msgstr "ไม่พบผลลัพธ์ที่ตรงกับ \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:116
+#, fuzzy
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
 msgstr "กำลังแสดง$s รายการ พิมพ์เพื่อค้นหาเพิ่มเติม"
@@ -823,6 +825,7 @@ msgid "Transfer update successful."
 msgstr "การโอนการปรับปรุงเรียบร้อย"
 
 #: dt-assets/functions/enqueue-scripts.php:226
+#, fuzzy
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "สร้างเมื่อ$s"
@@ -865,6 +868,7 @@ msgid "Matches Found:"
 msgstr "พบรายการที่ตรงกัน:"
 
 #: dt-assets/functions/enqueue-scripts.php:300
+#, fuzzy
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "ปิดการแข่งขันทั้งหมดสำหรับ$s"
@@ -892,6 +896,7 @@ msgstr "ไม่พบบันทึกที่ตรงกับตัวก
 
 #: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:674
 #: dt-groups/base-setup.php:1036 dt-posts/custom-post-type.php:489
+#, fuzzy
 msgctxt "All records"
 msgid "All %s"
 msgstr "ทั้งหมด$s"
@@ -1540,6 +1545,7 @@ msgid "Edit New Record"
 msgstr "แก้ไขบันทึกใหม่"
 
 #: dt-assets/parts/modals/modal-new-contact.php:30
+#, fuzzy
 msgctxt "back to record"
 msgid "Back to %s"
 msgstr "กลับไปที่$s"
@@ -1766,6 +1772,7 @@ msgid "Other Social Links"
 msgstr "ลิงก์โซเชียลอื่น ๆ"
 
 #: dt-contacts/base-setup.php:261
+#, fuzzy
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "การเชื่อมต่อกับ$s อื่น ๆ"
@@ -1912,11 +1919,13 @@ msgid "The website, event or location this contact came from."
 msgstr "เว็บไซต์เหตุการณ์หรือสถานที่ติดต่อนี้มาจาก"
 
 #: dt-contacts/base-setup.php:433 dt-contacts/base-setup.php:465
+#, fuzzy
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "เก็บถาวร$s"
 
 #: dt-contacts/base-setup.php:440
+#, fuzzy
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "เปลี่ยน$s ประเภท"
@@ -1926,6 +1935,7 @@ msgid "See duplicates"
 msgstr "ดูรายการที่ซ้ำกัน"
 
 #: dt-contacts/base-setup.php:466
+#, fuzzy
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "แน่ใจไหมว่าต้องการเก็บ$s"
@@ -2012,6 +2022,7 @@ msgid "Sub-assigned to me"
 msgstr "ย่อยที่กำหนดให้ฉัน"
 
 #: dt-contacts/base-setup.php:745
+#, fuzzy
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "เชื่อมต่อแล้ว$s"
@@ -2026,6 +2037,7 @@ msgid "Subassigned only"
 msgstr "มอบหมายเฉพาะ"
 
 #: dt-contacts/base-setup.php:971
+#, fuzzy
 msgid "This %s is archived"
 msgstr "เก็บ$s นี้แล้ว"
 
@@ -2078,6 +2090,7 @@ msgid "another site"
 msgstr "ไซต์อื่น"
 
 #: dt-contacts/contacts-transfer.php:276
+#, fuzzy
 msgid "Already transfered to %s"
 msgstr "โอนไปยัง$s แล้ว"
 
@@ -2111,6 +2124,7 @@ msgid "Minor transfer error."
 msgstr "ข้อผิดพลาดเล็กน้อยในการโอน"
 
 #: dt-contacts/contacts-transfer.php:479
+#, fuzzy
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "รายชื่อติดต่อนี้ถูกโอนไปยัง$s เพื่อติดตามผลเพิ่มเติม"
 
@@ -2475,6 +2489,7 @@ msgid "Decline"
 msgstr "ลดลง"
 
 #: dt-contacts/module-access.php:956
+#, fuzzy
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "ติดตาม"
@@ -3591,10 +3606,12 @@ msgid "Number of contacts that had the active status"
 msgstr "จำนวนผู้ติดต่อที่มีสถานะใช้งานอยู่"
 
 #: dt-metrics/combined/critical-path.php:241
+#, fuzzy
 msgid "Number of contacts on %s at the end of the time range"
 msgstr "จำนวนผู้ติดต่อใน$s เมื่อสิ้นสุดช่วงเวลา"
 
 #: dt-metrics/combined/critical-path.php:243
+#, fuzzy
 msgid "Number of contacts where %s was set on the seeker path"
 msgstr "จำนวนผู้ติดต่อที่กำหนด$s บนเส้นทางผู้ค้นหา"
 
@@ -3610,10 +3627,12 @@ msgid ""
 msgstr "จำนวนผู้ติดต่อที่รับบัพติศมากับวันที่รับบัพติศมาในช่วงวันที่และรับบัพติศมาโดยการเชื่อมต่อ"
 
 #: dt-metrics/combined/critical-path.php:277
+#, fuzzy
 msgid "Generation %s Baptisms"
 msgstr "รุ่น$s บัพติศมา"
 
 #: dt-metrics/combined/critical-path.php:278
+#, fuzzy
 msgid "Number of generation %s baptisms"
 msgstr "จำนวนรุ่น$s บัพติศมา"
 
@@ -3647,6 +3666,7 @@ msgid "Generation %s Churches"
 msgstr "Generation %s คริสตจักร"
 
 #: dt-metrics/combined/critical-path.php:322
+#, fuzzy
 msgid "Number of generation %s churches at the end of the time range"
 msgstr "จำนวนคริสตจักรรุ่น$s เมื่อสิ้นสุดช่วงเวลา"
 
@@ -3715,6 +3735,7 @@ msgstr "ไม่พบกิจกรรม!"
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
 #: template-new-post.php:43
+#, fuzzy
 msgid "New %s"
 msgstr "ใหม่$s"
 
@@ -4354,6 +4375,7 @@ msgid_plural "over %s years ago"
 msgstr[0] "กว่า %s ปีที่แล้ว"
 
 #: dt-notifications/notifications.php:909
+#, fuzzy
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
 msgstr "สร้างและกำหนด$s ให้กับคุณแล้ว"
@@ -4560,6 +4582,7 @@ msgid "Access Request"
 msgstr "ร้องขอเข้าถึง"
 
 #: dt-posts/posts.php:281
+#, fuzzy
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
 msgstr "บัพติศมา$s"
@@ -4571,71 +4594,85 @@ msgid "Baptized by %s"
 msgstr "รับบัพติศมาโดย %s"
 
 #: dt-posts/posts.php:284
+#, fuzzy
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
 msgstr "ไม่ได้ล้างบาป$s"
 
 #: dt-posts/posts.php:285
+#, fuzzy
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
 msgstr "ไม่รับบัพติศมาโดย$s"
 
 #: dt-posts/posts.php:289
+#, fuzzy
 msgctxt "contact1 added to members"
 msgid "%s added to members"
 msgstr "เพิ่ม$s ให้กับสมาชิกแล้ว"
 
 #: dt-posts/posts.php:290
+#, fuzzy
 msgctxt "Added to group group1"
 msgid "Added to group %s"
 msgstr "เพิ่มในกลุ่ม$s แล้ว"
 
 #: dt-posts/posts.php:292
+#, fuzzy
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
 msgstr "ลบ$s ออกจากกลุ่ม"
 
 #: dt-posts/posts.php:293
+#, fuzzy
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
 msgstr "ลบออกจากกลุ่ม$s"
 
 #: dt-posts/posts.php:298
+#, fuzzy
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
 msgstr "การฝึกสอน$s"
 
 #: dt-posts/posts.php:299
+#, fuzzy
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
 msgstr "ฝึกสอนโดย$s"
 
 #: dt-posts/posts.php:301
+#, fuzzy
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
 msgstr "ไม่มีการฝึกสอน$s อีกต่อไป"
 
 #: dt-posts/posts.php:302
+#, fuzzy
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
 msgstr "ไม่มีการฝึกสอนโดย$s อีกต่อไป"
 
 #: dt-posts/posts.php:306
+#, fuzzy
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
 msgstr "กำหนดย่อย$s"
 
 #: dt-posts/posts.php:307
+#, fuzzy
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
 msgstr "กำหนดย่อยเมื่อ$s"
 
 #: dt-posts/posts.php:309
+#, fuzzy
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
 msgstr "ลบ$s ที่กำหนดย่อยแล้ว"
 
 #: dt-posts/posts.php:310
+#, fuzzy
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "ไม่มีการกำหนดย่อยใน$s อีกต่อไป"
@@ -4646,6 +4683,7 @@ msgid "%1$s added as people group on %2$s"
 msgstr "เพิ่ม %1$s เป็นกลุ่มคนใน %2$s"
 
 #: dt-posts/posts.php:315
+#, fuzzy
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
 msgstr "เพิ่ม$s ลงในกลุ่มคนแล้ว"
@@ -4656,6 +4694,7 @@ msgid "%1$s removed from people groups on %2$s"
 msgstr "ลบ %1$s ออกจากกลุ่มคนใน %2$s"
 
 #: dt-posts/posts.php:318
+#, fuzzy
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "ลบ$s ออกจากกลุ่มคนแล้ว"
@@ -4666,6 +4705,7 @@ msgid "%1$s added as leader on %2$s"
 msgstr "เพิ่ม %1$s เป็นผู้นำใน %2$s"
 
 #: dt-posts/posts.php:323
+#, fuzzy
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
 msgstr "เพิ่ม$s ให้กับผู้นำแล้ว"
@@ -4686,6 +4726,7 @@ msgid "%1$s added as coach on %2$s"
 msgstr "%1$s เพิ่มเป็นโค้ชเมื่อ %2$s"
 
 #: dt-posts/posts.php:331
+#, fuzzy
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
 msgstr "เพิ่ม$s ให้กับโค้ชแล้ว"
@@ -4701,37 +4742,44 @@ msgid "%s removed from coaches"
 msgstr "%s ถูกลบออกจากโค้ช"
 
 #: dt-posts/posts.php:338
+#, fuzzy
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
 msgstr "เพิ่ม$s ลงในกลุ่มย่อยแล้ว"
 
 #: dt-posts/posts.php:339
+#, fuzzy
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
 msgstr "เพิ่ม$s ในกลุ่มหลักแล้ว"
 
 #: dt-posts/posts.php:341
+#, fuzzy
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
 msgstr "ลบ$s ออกจากกลุ่มย่อยแล้ว"
 
 #: dt-posts/posts.php:342
+#, fuzzy
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
 msgstr "ลบ$s ออกจากกลุ่มหลักแล้ว"
 
 #: dt-posts/posts.php:347 dt-posts/posts.php:348
+#, fuzzy
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
 msgstr "เพิ่ม$s ในกลุ่มที่คล้ายกันแล้ว"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
+#, fuzzy
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
 msgstr "ลบ$s ออกจากกลุ่มเทียบเท่า"
 
 #: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
 #: dt-posts/posts.php:369
+#, fuzzy
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
 msgstr "เชื่อมต่อกับ$s"
@@ -4746,6 +4794,7 @@ msgstr "เพิ่ม %1$s ใน %2$s แล้ว"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
+#, fuzzy
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
 msgstr "ลบการเชื่อมต่อกับ$s แล้ว"
@@ -4786,6 +4835,7 @@ msgid "%1$s added to %2$s"
 msgstr "เพิ่ม %1$s ใน %2$s แล้ว"
 
 #: dt-posts/posts.php:470
+#, fuzzy
 msgid "%s removed"
 msgstr "ลบ$s แล้ว"
 
@@ -4871,16 +4921,19 @@ msgid "A user"
 msgstr "ผู้ใช้"
 
 #: dt-posts/posts.php:586
+#, fuzzy
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr "ยอมรับงานแล้ว$s"
 
 #: dt-posts/posts.php:591
+#, fuzzy
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "แชร์กับ$s"
 
 #: dt-posts/posts.php:593
+#, fuzzy
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "ยกเลิกการแชร์กับ$s"
@@ -5480,6 +5533,7 @@ msgid "Logged In"
 msgstr "เข้าสู่ระบบ"
 
 #: dt-users/user-metrics.php:119
+#, fuzzy
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "ปฏิเสธการมอบหมายเมื่อ$s"
@@ -5604,6 +5658,7 @@ msgid "Create and apply tag"
 msgstr "สร้างและใช้แท็ก"
 
 #: single-template.php:430
+#, fuzzy
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "แน่ใจไหมว่าต้องการลบ$s"
@@ -5654,6 +5709,7 @@ msgid "Choose which fields to display across new bulk records"
 msgstr "เลือกว่าจะแสดงเขตข้อมูลใดตลอดเรกคอร์ดแบบกลุ่มขนาดใหญ่อันใหม่"
 
 #: template-new-bulk-post.php:145 template-new-post.php:62
+#, fuzzy
 msgid "Select the %s type:"
 msgstr "เลือกประเภท$s:"
 

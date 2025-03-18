@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2024-02-08 09:16+0000\n"
-"Last-Translator: Corsacca <corsacca@gmail.com>\n"
-"Language-Team: Burmese <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/my_MM/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Burmese <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/my_MM/>\n"
 "Language: my_MM\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -1777,6 +1777,7 @@ msgid "Other Social Links"
 msgstr "အခြားလူမှုဆက်သွယ်မှုများ"
 
 #: dt-contacts/base-setup.php:261
+#, fuzzy
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "အခြား$s သို့ဆက်သွယ်မှုများ"
@@ -2126,6 +2127,7 @@ msgid "Minor transfer error."
 msgstr "အသေးစားလွှဲပြောင်းမှုအမှား။"
 
 #: dt-contacts/contacts-transfer.php:479
+#, fuzzy
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "ဤအဆက်အသွယ်ကိုနောက်ထပ်ဆက်လုပ်ရန်$s သို့လွှဲပြောင်းခဲ့သည်"
 
@@ -3628,10 +3630,12 @@ msgid "Number of contacts that had the active status"
 msgstr "တက်ကြွသောအခြေအနေရှိခဲ့သည့်အဆက်အသွယ်အရေအတွက်"
 
 #: dt-metrics/combined/critical-path.php:241
+#, fuzzy
 msgid "Number of contacts on %s at the end of the time range"
 msgstr "အချိန်ကာလအဆုံးတွင်$s ရှိအဆက်အသွယ်အရေအတွက်"
 
 #: dt-metrics/combined/critical-path.php:243
+#, fuzzy
 msgid "Number of contacts where %s was set on the seeker path"
 msgstr "ရှာဖွေသူလမ်းကြောင်းပေါ်$s သတ်မှတ်ထားသည့်အဆက်အသွယ်အရေအတွက်"
 
@@ -3653,6 +3657,7 @@ msgid "Generation %s Baptisms"
 msgstr "မျိုးဆက်$s နှစ်ခြင်း"
 
 #: dt-metrics/combined/critical-path.php:278
+#, fuzzy
 msgid "Number of generation %s baptisms"
 msgstr "နှစ်ခြင်းခံမျိုးဆက်$s"
 
@@ -3687,6 +3692,7 @@ msgid "Generation %s Churches"
 msgstr "%s အသင်းတော်များမျိုးဆက်"
 
 #: dt-metrics/combined/critical-path.php:322
+#, fuzzy
 msgid "Number of generation %s churches at the end of the time range"
 msgstr "အချိန်ကာလအကုန်ပိုင်းတွင်$s အသင်းတော်များ၏မျိုးဆက်အရေအတွက်"
 
@@ -3731,6 +3737,7 @@ msgstr "ပြီးခဲ့သည့်လ"
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
 #: dt-notifications/notifications.php:496
+#, fuzzy
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "လွန်ခဲ့သော$s လက"
@@ -4373,31 +4380,37 @@ msgid "Daily Digest"
 msgstr "နေ့စဉ် Digest"
 
 #: dt-notifications/notifications.php:476
+#, fuzzy
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "လွန်ခဲ့သော$s မိနစ်က"
 
 #: dt-notifications/notifications.php:481
+#, fuzzy
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "လွန်ခဲ့သော$s နာရီက"
 
 #: dt-notifications/notifications.php:486
+#, fuzzy
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "လွန်ခဲ့သော$s နေ့က"
 
 #: dt-notifications/notifications.php:491
+#, fuzzy
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "လွန်ခဲ့သော$s အပတ်က"
 
 #: dt-notifications/notifications.php:510
+#, fuzzy
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "လွန်ခဲ့သော$s နှစ်က"
 
 #: dt-notifications/notifications.php:514
+#, fuzzy
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "လွန်ခဲ့သောနှစ်%% ကျော်က"
@@ -4644,11 +4657,13 @@ msgid "Added to group %s"
 msgstr "%s အုပ်စုထဲသို့ထည့်သွင်းခဲ့သည်"
 
 #: dt-posts/posts.php:292
+#, fuzzy
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
 msgstr "အုပ်စုမှ$s ဖယ်ရှားခဲ့သည်"
 
 #: dt-posts/posts.php:293
+#, fuzzy
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
 msgstr "အုပ်စု$s မှဖယ်ရှားထားသည်"
@@ -4684,6 +4699,7 @@ msgid "Sub-assigned on %s"
 msgstr "%s တွင်ခွဲဝေပေးသည်"
 
 #: dt-posts/posts.php:309
+#, fuzzy
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
 msgstr "ခွဲဝေပေးထားသော$s ကိုဖယ်ရှားခဲ့သည်"

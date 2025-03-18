@@ -4,16 +4,17 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2024-05-09 11:58+0000\n"
-"Last-Translator: Jack Wu <jack.wu@tast.com.tw>\n"
-"Language-Team: Chinese (Traditional) <https://translate.disciple.tools/"
-"projects/disciple-tools/disciple-tools-theme/zh_Hant/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Chinese (Traditional Han script) <https://"
+"translate.disciple.tools/projects/disciple-tools/disciple-tools-theme/"
+"zh_Hant/>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.5.3\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -523,6 +524,7 @@ msgid "Type to search"
 msgstr "輸入搜索"
 
 #: archive-template.php:991
+#, fuzzy
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "所有％1 $ s與％2 $ s"
@@ -886,6 +888,7 @@ msgstr "找不到與您的過濾器匹配的記錄。"
 
 #: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:674
 #: dt-groups/base-setup.php:1036 dt-posts/custom-post-type.php:489
+#, fuzzy
 msgctxt "All records"
 msgid "All %s"
 msgstr "所有％s"
@@ -1532,6 +1535,7 @@ msgid "Edit New Record"
 msgstr "編輯新紀錄"
 
 #: dt-assets/parts/modals/modal-new-contact.php:30
+#, fuzzy
 msgctxt "back to record"
 msgid "Back to %s"
 msgstr "返回％s"
@@ -1961,6 +1965,7 @@ msgstr "所有我能查看的 %s"
 
 #: dt-contacts/base-setup.php:689 dt-groups/base-setup.php:1042
 #: dt-posts/custom-post-type.php:501
+#, fuzzy
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "最喜歡的％s"
@@ -2068,6 +2073,7 @@ msgid "another site"
 msgstr "另一個網站"
 
 #: dt-contacts/contacts-transfer.php:276
+#, fuzzy
 msgid "Already transfered to %s"
 msgstr "已經轉移到％s"
 
@@ -2130,6 +2136,7 @@ msgid "redacted"
 msgstr "已修訂"
 
 #: dt-contacts/duplicates-merging.php:442
+#, fuzzy
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "（來自重複項）：％s"
@@ -2890,6 +2897,7 @@ msgstr "DT 網站名稱：%s"
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:321
 #: dt-users/user-hooks-and-config.php:390
+#, fuzzy
 msgid "Username: %s"
 msgstr "用戶名：％s"
 
@@ -3575,10 +3583,12 @@ msgid "Number of contacts that had the active status"
 msgstr "處於活動狀態的聯繫人數量"
 
 #: dt-metrics/combined/critical-path.php:241
+#, fuzzy
 msgid "Number of contacts on %s at the end of the time range"
 msgstr "時間範圍末尾％s上的聯繫數"
 
 #: dt-metrics/combined/critical-path.php:243
+#, fuzzy
 msgid "Number of contacts where %s was set on the seeker path"
 msgstr "在搜尋者路徑上設置了％s的聯繫人數"
 
@@ -3594,10 +3604,12 @@ msgid ""
 msgstr "受洗日期在日期範圍內並通過連接受洗的受洗聯繫人的數量"
 
 #: dt-metrics/combined/critical-path.php:277
+#, fuzzy
 msgid "Generation %s Baptisms"
 msgstr "世代％s的洗禮"
 
 #: dt-metrics/combined/critical-path.php:278
+#, fuzzy
 msgid "Number of generation %s baptisms"
 msgstr "％s受洗的世代數"
 
@@ -3627,10 +3639,12 @@ msgid "Churches active at the end of the time range"
 msgstr "在時間範圍結束時活躍的教堂"
 
 #: dt-metrics/combined/critical-path.php:321
+#, fuzzy
 msgid "Generation %s Churches"
 msgstr "％s代教會"
 
 #: dt-metrics/combined/critical-path.php:322
+#, fuzzy
 msgid "Number of generation %s churches at the end of the time range"
 msgstr "時間範圍末尾的世代％s教堂數量"
 
@@ -3674,6 +3688,7 @@ msgstr "上個月"
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
 #: dt-notifications/notifications.php:496
+#, fuzzy
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "％s一個月前"
@@ -3699,6 +3714,7 @@ msgstr "未檢測到活動！"
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
 #: template-new-post.php:43
+#, fuzzy
 msgid "New %s"
 msgstr "新％s"
 
@@ -4268,6 +4284,7 @@ msgid "Disconnected"
 msgstr "已連結 %s"
 
 #: dt-metrics/records/time-charts.php:113
+#, fuzzy
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
 msgstr "在％2 $ s中的％1 $ s"
@@ -4308,26 +4325,31 @@ msgid "Daily Digest"
 msgstr "每日摘要"
 
 #: dt-notifications/notifications.php:476
+#, fuzzy
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "％s分鐘前"
 
 #: dt-notifications/notifications.php:481
+#, fuzzy
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "％s小時前"
 
 #: dt-notifications/notifications.php:486
+#, fuzzy
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "％s天前"
 
 #: dt-notifications/notifications.php:491
+#, fuzzy
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "％s週前"
 
 #: dt-notifications/notifications.php:510
+#, fuzzy
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "％s年前"
@@ -4338,6 +4360,7 @@ msgid_plural "over %s years ago"
 msgstr[0] "超過 %s 年前"
 
 #: dt-notifications/notifications.php:909
+#, fuzzy
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
 msgstr "％s已創建並分配給您。"
@@ -4544,6 +4567,7 @@ msgid "Access Request"
 msgstr "存取要求"
 
 #: dt-posts/posts.php:281
+#, fuzzy
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
 msgstr "受洗的％s"
@@ -4555,71 +4579,85 @@ msgid "Baptized by %s"
 msgstr "受洗的 %s"
 
 #: dt-posts/posts.php:284
+#, fuzzy
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
 msgstr "沒有為％s施洗"
 
 #: dt-posts/posts.php:285
+#, fuzzy
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
 msgstr "未受％s的洗禮"
 
 #: dt-posts/posts.php:289
+#, fuzzy
 msgctxt "contact1 added to members"
 msgid "%s added to members"
 msgstr "％s已添加到成員"
 
 #: dt-posts/posts.php:290
+#, fuzzy
 msgctxt "Added to group group1"
 msgid "Added to group %s"
 msgstr "已添加到組％s"
 
 #: dt-posts/posts.php:292
+#, fuzzy
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
 msgstr "從群組中刪除了％s"
 
 #: dt-posts/posts.php:293
+#, fuzzy
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
 msgstr "已從％s組中刪除"
 
 #: dt-posts/posts.php:298
+#, fuzzy
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
 msgstr "教練％s"
 
 #: dt-posts/posts.php:299
+#, fuzzy
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
 msgstr "由％s指導"
 
 #: dt-posts/posts.php:301
+#, fuzzy
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
 msgstr "不再指導％s"
 
 #: dt-posts/posts.php:302
+#, fuzzy
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
 msgstr "不再由％s指導"
 
 #: dt-posts/posts.php:306
+#, fuzzy
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
 msgstr "轉讓給％s"
 
 #: dt-posts/posts.php:307
+#, fuzzy
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
 msgstr "已在％s上分配"
 
 #: dt-posts/posts.php:309
+#, fuzzy
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
 msgstr "刪除了已分配的％s"
 
 #: dt-posts/posts.php:310
+#, fuzzy
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "不再在％s上分配"
@@ -4630,6 +4668,7 @@ msgid "%1$s added as people group on %2$s"
 msgstr "已將 %1$s 添加為“%2$s”上的人物組"
 
 #: dt-posts/posts.php:315
+#, fuzzy
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
 msgstr "％s已添加到人員組"
@@ -4640,6 +4679,7 @@ msgid "%1$s removed from people groups on %2$s"
 msgstr "已將 %1$s 從“%2$s”的人組中刪除"
 
 #: dt-posts/posts.php:318
+#, fuzzy
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "已將％s人群中刪除"
@@ -4650,6 +4690,7 @@ msgid "%1$s added as leader on %2$s"
 msgstr "已將 %1$s 作為領導者添加到%2$s"
 
 #: dt-posts/posts.php:323
+#, fuzzy
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
 msgstr "％s已添加到領導者"
@@ -4660,6 +4701,7 @@ msgid "%1$s removed from leaders on %2$s"
 msgstr "已從%2$s的領導者中刪除了 %1$s "
 
 #: dt-posts/posts.php:326
+#, fuzzy
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
 msgstr "已將％s從領導者中移除"
@@ -4670,6 +4712,7 @@ msgid "%1$s added as coach on %2$s"
 msgstr "已將 %1$s 作為教練添加到%2$s"
 
 #: dt-posts/posts.php:331
+#, fuzzy
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
 msgstr "％s已加入教練"
@@ -4680,42 +4723,50 @@ msgid "%1$s removed from coaches on %2$s"
 msgstr "已從%2$s的教練中刪除 %1$s "
 
 #: dt-posts/posts.php:334
+#, fuzzy
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
 msgstr "已將％s從教練中移除"
 
 #: dt-posts/posts.php:338
+#, fuzzy
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
 msgstr "％s已添加到子組"
 
 #: dt-posts/posts.php:339
+#, fuzzy
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
 msgstr "％s已添加到父組"
 
 #: dt-posts/posts.php:341
+#, fuzzy
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
 msgstr "從子組中刪除了％s"
 
 #: dt-posts/posts.php:342
+#, fuzzy
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
 msgstr "從父組中刪除了％s"
 
 #: dt-posts/posts.php:347 dt-posts/posts.php:348
+#, fuzzy
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
 msgstr "％s已添加到對等組"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
+#, fuzzy
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
 msgstr "已從同級組中刪除％s"
 
 #: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
 #: dt-posts/posts.php:369
+#, fuzzy
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
 msgstr "已連接到％s"
@@ -4730,6 +4781,7 @@ msgstr "已將 %1$s 添加到%2$s"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
+#, fuzzy
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
 msgstr "刪除了與％s的連接"
@@ -4835,6 +4887,7 @@ msgid "Deleted %1$s: %2$s"
 msgstr "刪除的 %1$s ：%2$s"
 
 #: dt-posts/posts.php:574
+#, fuzzy
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "名稱更改為：％s"
@@ -4845,6 +4898,7 @@ msgid "Created from Demo Plugin"
 msgstr "從演示插件創建"
 
 #: dt-posts/posts.php:583
+#, fuzzy
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr "％s拒絕分配"
@@ -4855,16 +4909,19 @@ msgid "A user"
 msgstr "一個用戶"
 
 #: dt-posts/posts.php:586
+#, fuzzy
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr "％s接受了分配"
 
 #: dt-posts/posts.php:591
+#, fuzzy
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "與％s共享"
 
 #: dt-posts/posts.php:593
+#, fuzzy
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "未與％s共享"
@@ -5322,6 +5379,7 @@ msgid "To log in click here: %s"
 msgstr "要登錄，請單擊此處：%s"
 
 #: dt-users/user-hooks-and-config.php:388
+#, fuzzy
 msgid "Hi %s,"
 msgstr "他的，"
 
@@ -5436,6 +5494,7 @@ msgid "Showing %1$s of %2$s"
 msgstr "顯示 %1$s 個與 %2$s 相符的項目"
 
 #: dt-users/user-management.php:353
+#, fuzzy
 msgid "%s days since last update"
 msgstr "自上次更新以來的％s天"
 
@@ -5460,6 +5519,7 @@ msgid "Logged In"
 msgstr "登錄"
 
 #: dt-users/user-metrics.php:119
+#, fuzzy
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "％s上的分配被拒絕"

@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
-"PO-Revision-Date: 2023-06-09 07:28+0000\n"
-"Last-Translator: Corsacca <corsacca@gmail.com>\n"
-"Language-Team: Tamil <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/ta/>\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"Language-Team: Tamil <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/ta/>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -43,6 +43,7 @@ msgid "Permission denied"
 msgstr "அனுமதி மறுக்கப்பட்டது"
 
 #: 403.php:35
+#, fuzzy
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
 msgstr "மன்னிக்கவும், %1$s ஐடி% 2 with s உடன் பார்க்க உங்களுக்கு அனுமதி இல்லை."
 
@@ -350,6 +351,7 @@ msgid "Choose which fields to display as columns in the list"
 msgstr "பட்டியலில் எந்த நெடுவரிசைகளை நெடுவரிசைகளாகக் காட்ட வேண்டும் என்பதைத் தேர்வுசெய்க"
 
 #: archive-template.php:552
+#, fuzzy
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
@@ -2507,6 +2509,7 @@ msgid "Decline"
 msgstr "சரிவு"
 
 #: dt-contacts/module-access.php:956
+#, fuzzy
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "பின்பற்ற வேண்டியவைகள்"
@@ -4438,6 +4441,7 @@ msgid "%1$s shared %2$s with you."
 msgstr "%1$s உங்களுடன் %2$s பகிரப்பட்டது."
 
 #: dt-notifications/notifications.php:928
+#, fuzzy
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
 msgstr "% 1 $ கள் உங்களை %2$s இல் குறிப்பிட்டுள்ளனர்: %3$s"
