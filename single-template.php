@@ -340,7 +340,7 @@ function dt_display_tile( $tile, $post ): bool {
                                             </h3>
                                         <?php } ?>
 
-                                        <div class="section-body grid-y grid-margin-y">
+                                        <div class="section-body grid-y">
                                             <?php
                                             // let the plugin add section content
                                             add_action( 'dt_details_additional_section', function ( $t_key, $pt ) use ( $post_type, $tile_key, $post_settings, $dt_post, $tile_options ){

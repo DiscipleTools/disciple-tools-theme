@@ -666,6 +666,11 @@ select.color-select {
     .chevron_down {
         display: none;
     }
+    .section-body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 
     &.collapsed {
         .chevron_up {
