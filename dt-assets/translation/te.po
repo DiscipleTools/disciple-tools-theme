@@ -3,11 +3,11 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
+"POT-Creation-Date: 2025-03-18T08:53:44+00:00\n"
 "PO-Revision-Date: 2025-03-05 16:00+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Telugu <https://translate.disciple.tools/projects/"
-"disciple-tools/disciple-tools-theme/te/>\n"
+"Language-Team: Telugu <https://translate.disciple.tools/projects/disciple-"
+"tools/disciple-tools-theme/te/>\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,7 +70,7 @@ msgstr "ప్రవేశ అభ్యర్థన గురించి యజ
 msgid "Submit Request"
 msgstr "అభ్యర్థనను సమర్పించండి"
 
-#: 403.php:55 archive-template.php:1108 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:1099 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -86,7 +86,7 @@ msgid "Cancel"
 msgstr "రద్దు చేయండి"
 
 #: 403.php:59 archive-template.php:506 archive-template.php:548
-#: archive-template.php:773 archive-template.php:1132
+#: archive-template.php:764 archive-template.php:1123
 #: dt-assets/functions/enqueue-scripts.php:440
 #: dt-assets/parts/loop-activity-comment.php:158
 #: dt-assets/parts/loop-activity-comment.php:163
@@ -356,7 +356,7 @@ msgid "Search Users"
 msgstr "వినియోగదారులను శోధించండి"
 
 #: archive-template.php:594 dt-metrics/records/genmap.php:148
-#: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2783
+#: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2687
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:127
 msgid "Status"
@@ -399,18 +399,18 @@ msgstr "మరిన్ని ఎంపికలు చూడండి"
 msgid "See Fewer Options"
 msgstr "తక్కువ ఎంపికలు చూడండి"
 
-#: archive-template.php:751 dt-assets/parts/loop-activity-comment.php:209
+#: archive-template.php:742 dt-assets/parts/loop-activity-comment.php:209
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "అప్డేట్"
 
-#: archive-template.php:752 archive-template.php:860
+#: archive-template.php:743 archive-template.php:851
 #: dt-assets/functions/enqueue-scripts.php:330
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "దిగువన ఎంపికలు చేయండి"
 
-#: archive-template.php:760 dt-assets/functions/enqueue-scripts.php:179
+#: archive-template.php:751 dt-assets/functions/enqueue-scripts.php:179
 #: dt-assets/functions/enqueue-scripts.php:213
 #: dt-assets/functions/enqueue-scripts.php:278
 #: dt-assets/functions/enqueue-scripts.php:318
@@ -418,130 +418,130 @@ msgstr "దిగువన ఎంపికలు చేయండి"
 msgid "Delete"
 msgstr "తొలగించు"
 
-#: archive-template.php:763 dt-assets/functions/enqueue-scripts.php:331
+#: archive-template.php:754 dt-assets/functions/enqueue-scripts.php:331
 msgid "Delete Selections Below"
 msgstr "దిగువ ఎంపికలు తొలగించండి"
 
-#: archive-template.php:777
+#: archive-template.php:768
 #, fuzzy
 #| msgid "Select all the %1$s to whom you want to send app links."
 msgid "Select all the %1$s to whom you want to message."
 msgstr "మీరు యాప్ లింక్‌లను పంపాలనుకుంటున్న %1$s అందరినీ ఎంచుకోండి."
 
-#: archive-template.php:807
+#: archive-template.php:798
 msgid "Message subject"
 msgstr "సందేశ విషయం"
 
-#: archive-template.php:809
+#: archive-template.php:800
 msgid "A valid message subject must be entered."
 msgstr "చెల్లుబాటు అయ్యే సందేశ విషయం తప్పనిసరిగా నమోదు చేయాలి."
 
-#: archive-template.php:811
+#: archive-template.php:802
 msgid "Message from name"
 msgstr "పేరు నుండి సందేశం"
 
-#: archive-template.php:813
+#: archive-template.php:804
 msgid "A valid from name must be specified."
 msgstr "పేరు నుండి చెల్లుబాటు అయ్యే దాన్ని తప్పనిసరిగా పేర్కొనాలి."
 
-#: archive-template.php:815
+#: archive-template.php:806
 msgid "Message reply to"
 msgstr "వీరికి సందేశ ప్రత్యుత్తరం"
 
-#: archive-template.php:817
+#: archive-template.php:808
 msgid "A valid reply to email address must be specified."
 msgstr "ఇమెయిల్ చిరునామాకు చెల్లుబాటు అయ్యే ప్రత్యుత్తరాన్ని తప్పనిసరిగా పేర్కొనాలి."
 
-#: archive-template.php:819
+#: archive-template.php:810
 msgid "Emails will be sent from: %s"
 msgstr "%s: ఇమెయిల్‌లు దీని నుండి పంపాలి"
 
-#: archive-template.php:842
+#: archive-template.php:833
 msgid "Please ensure a valid send method has been specified."
 msgstr "దయచేసి చెల్లుబాటయ్యే పంపే పద్ధతిని పేర్కొనేలా జాగ్రత్తపడాలి."
 
-#: archive-template.php:844
+#: archive-template.php:835
 msgid "Message"
 msgstr "సందేశం"
 
-#: archive-template.php:846
+#: archive-template.php:837
 msgid "Please ensure a valid send message has been entered."
 msgstr "దయచేసి చెల్లుబాటయ్యే పంపే సందేశాన్ని నమోదు చేసేలా జాగ్రత్త పడాలి."
 
-#: archive-template.php:847 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:838 dt-reports/magic-url-bulk-send.php:58
 #: dt-reports/magic-url-setup.php:131
 msgid "Message placeholders"
 msgstr "సందేశ ప్లేస్‌హోల్డర్‌లు"
 
-#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:841 dt-reports/magic-url-bulk-send.php:64
 #: dt-reports/magic-url-setup.php:137
 msgid "Name of the Record"
 msgstr "రికార్డ్ పేరు"
 
-#: archive-template.php:855 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:846 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "ఎంచుకున్న రికార్డులకు పంపండి"
 
-#: archive-template.php:856 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:847 dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "మీరు తప్పనిసరిగా కనీసం ఒక రికార్డ్‌ని ఎంచుకోవాలి"
 
-#: archive-template.php:859 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:94
 #: dt-reports/magic-url-setup.php:100
 msgid "Send"
 msgstr "పంపండి"
 
-#: archive-template.php:859 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "లింకులు"
 
-#: archive-template.php:864
+#: archive-template.php:855
 msgid "Ensure valid record selections have been made."
 msgstr "చెల్లుబాటు అయ్యే రికార్డ్ ఎంపికలు జరిగాయని నిర్ధారించుకోండి."
 
-#: archive-template.php:909
+#: archive-template.php:900
 msgid "Loading..."
 msgstr "లోడ్ అవుతుంది..."
 
-#: archive-template.php:914 dt-assets/functions/enqueue-scripts.php:410
+#: archive-template.php:905 dt-assets/functions/enqueue-scripts.php:410
 msgid "Load More"
 msgstr "మరిన్ని లోడ్ చేయండి"
 
-#: archive-template.php:926
+#: archive-template.php:917
 msgid "Field Name"
 msgstr "ఫీల్డ్ పేరు"
 
-#: archive-template.php:982
+#: archive-template.php:973
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "శోధించడానికి టైప్ చేయండి"
 
-#: archive-template.php:991
+#: archive-template.php:982
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s తో అన్ని %1$s"
 
-#: archive-template.php:994
+#: archive-template.php:985
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$s లేకుండా మొత్తం %1$s"
 
-#: archive-template.php:1001
+#: archive-template.php:992
 msgid "Filter for subassigned OR Assigned To"
 msgstr "ఉపకేటాయింపు లేదా కేటాయింపు చేసన వాటి కోసం ఫిల్టర్ చేయండి"
 
-#: archive-template.php:1010 dt-assets/functions/enqueue-scripts.php:321
+#: archive-template.php:1001 dt-assets/functions/enqueue-scripts.php:321
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "తేదీని సృష్టించుట"
 
-#: archive-template.php:1017 archive-template.php:1024
+#: archive-template.php:1008 archive-template.php:1015
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1057
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:961
 msgid "None Set"
 msgstr "ఏదీ సెట్ చేయలేదు"
 
-#: archive-template.php:1038 archive-template.php:1039
+#: archive-template.php:1029 archive-template.php:1030
 #: dt-assets/functions/enqueue-scripts.php:229 dt-core/global-functions.php:671
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-users/user-management.php:196 template-settings.php:313
@@ -549,7 +549,7 @@ msgstr "ఏదీ సెట్ చేయలేదు"
 msgid "No"
 msgstr "లేదు"
 
-#: archive-template.php:1045 archive-template.php:1046
+#: archive-template.php:1036 archive-template.php:1037
 #: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:672
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:195
@@ -557,29 +557,29 @@ msgstr "లేదు"
 msgid "Yes"
 msgstr "అవును"
 
-#: archive-template.php:1050
+#: archive-template.php:1041
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "పరిధి ప్రారంభం"
 
-#: archive-template.php:1053 archive-template.php:1064
+#: archive-template.php:1044 archive-template.php:1055
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "క్లియర్"
 
-#: archive-template.php:1060
+#: archive-template.php:1051
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "రేంజ్ ఎండ్"
 
-#: archive-template.php:1075
+#: archive-template.php:1066
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "పేరును ఫిల్టర్ చేయండి"
 
-#: archive-template.php:1080
+#: archive-template.php:1071
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -587,7 +587,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "%2$s తో అన్ని %1$s"
 
-#: archive-template.php:1084
+#: archive-template.php:1075
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -595,7 +595,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "%2$s లేకుండా మొత్తం %1$s"
 
-#: archive-template.php:1088
+#: archive-template.php:1079
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -603,7 +603,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "%2$s తో అన్ని %1$s"
 
-#: archive-template.php:1092
+#: archive-template.php:1083
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -611,15 +611,15 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "%2$s లేకుండా మొత్తం %1$s"
 
-#: archive-template.php:1116
+#: archive-template.php:1107
 msgid "Filter Name"
 msgstr "పేరును ఫిల్టర్ చేయండి"
 
-#: archive-template.php:1121
+#: archive-template.php:1112
 msgid "Filter Records"
 msgstr "రికార్డులను ఫిల్టర్ చేయండి"
 
-#: archive-template.php:1125 dt-assets/functions/enqueue-scripts.php:281
+#: archive-template.php:1116 dt-assets/functions/enqueue-scripts.php:281
 #: dt-assets/functions/enqueue-scripts.php:316
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
@@ -737,7 +737,7 @@ msgstr "మీకు చదవని నోటిఫికేషన్‌లు 
 msgid "You don't have any notifications"
 msgstr "మీకు నోటిఫికేషన్‌లు లేవు"
 
-#: dt-assets/functions/enqueue-scripts.php:176 dt-posts/dt-posts.php:1724
+#: dt-assets/functions/enqueue-scripts.php:176 dt-posts/dt-posts.php:1628
 msgid "D.T System"
 msgstr "D.T వ్యవస్థ"
 
@@ -4524,33 +4524,33 @@ msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1716
+#: dt-posts/dt-posts.php:1620
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "%s Submission"
 msgstr "మ్యాజిక్ లింక్ సమర్పణ"
 
-#: dt-posts/dt-posts.php:1716
+#: dt-posts/dt-posts.php:1620
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "Magic Link"
 msgstr "మ్యాజిక్ లింక్ సమర్పణ"
 
-#: dt-posts/dt-posts.php:1718 dt-posts/dt-posts.php:2265
+#: dt-posts/dt-posts.php:1622 dt-posts/dt-posts.php:2169
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "కార్యాచరణను మార్చండి"
 
-#: dt-posts/dt-posts.php:2505
+#: dt-posts/dt-posts.php:2409
 msgid "Post already shared with user."
 msgstr "పోస్ట్ ఇప్పటికే వినియోగదారుతో భాగస్వామ్యం చేయబడింది."
 
-#: dt-posts/dt-posts.php:2784 single-template.php:174
+#: dt-posts/dt-posts.php:2688 single-template.php:174
 msgid "Details"
 msgstr "వివరాలు"
 
-#: dt-posts/dt-posts.php:2862
+#: dt-posts/dt-posts.php:2766
 #, fuzzy
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
@@ -4563,7 +4563,7 @@ msgstr ""
 "@[%1$s](%2$s) - %3$s వినియోగదారు %4$s [%5$s](%6$s) కు ప్రాప్యత అభ్యర్థించారు. "
 "కావాలనుకుంటే, ప్రాప్యతను మంజూరు చేయడానికి ఈ రికార్డ్‌ను వినియోగదారుతో పంచుకోండి."
 
-#: dt-posts/dt-posts.php:2868
+#: dt-posts/dt-posts.php:2772
 msgid "Access Request"
 msgstr "ప్రాప్యత అభ్యర్థన"
 
