@@ -669,7 +669,6 @@ select.color-select {
     .section-body {
         display: flex;
         flex-direction: column;
-        gap: 0.8rem;
     }
 
     &.collapsed {
@@ -684,6 +683,9 @@ select.color-select {
         }
     }
 
+}
+.single-template .section-body {
+    gap: 0.8rem;
 }
 .hidden-grid-item {
     display: none
