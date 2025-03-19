@@ -4,8 +4,8 @@ if (window.DtWebComponents && window.DtWebComponents.ComponentService) {
   const service = new window.DtWebComponents.ComponentService(
     window.new_record_localized.post_type,
     '',
-    // eslint-disable-next-line no-undef
-    wpApiShare.nonce,
+    window.wpApiShare.nonce,
+    window.wpApiShare.root,
   );
   // Initialize the ComponentService
   service.initialize();

@@ -1297,6 +1297,7 @@ jQuery(document).ready(function ($) {
       window.detailsSettings.post_type,
       window.detailsSettings.post_id,
       window.wpApiShare.nonce,
+      window.wpApiShare.root,
     );
     service.initialize();
     window.componentService = service;

@@ -6,6 +6,7 @@
         window.list_settings.post_type,
         null,
         window.wpApiShare.nonce,
+        window.wpApiShare.root,
       );
       window.componentService = service;
 
