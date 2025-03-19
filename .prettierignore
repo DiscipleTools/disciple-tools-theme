@@ -1,4 +1,5 @@
 # Ignore artifacts:
+dt-assets/build/components/**/*
 dt-assets/js/modernizr-custom.js
 dt-core/admin/multi-role/js/min/
 dt-core/dependencies/

@@ -13,6 +13,15 @@ dt_please_log_in();
 
     $field_options = $post_settings['fields'];
 
+    $field_params = [
+        'connection' => [
+            'allow_add' => false,
+        ],
+        'key_select' => [
+            'disable_color' => true,
+        ]
+    ];
+
     get_header();
     ?>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
@@ -544,7 +553,7 @@ dt_please_log_in();
                         <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
                     </div>
 
-                    <div id="bulk_edit_picker" class="list_action_section">
+                    <form id="bulk_edit_picker" class="list_action_section">
                         <button class="close-button list-action-close-button" data-close="bulk_edit_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -576,59 +585,30 @@ dt_please_log_in();
                                 </div>
                             </div>
                             <?php endif; ?>
-                                <?php
-                                if ( $post_type == 'contacts' ) {?>
-                                    <?php if ( isset( $field_options['subassigned'] ) ) : ?>
+
+                            <?php if ( $post_type == 'contacts' ) {?>
+                                <?php if ( isset( $field_options['subassigned'] ) ) : ?>
                                     <div class="cell small-12 medium-4">
                                         <?php $field_options['subassigned']['custom_display'] = false ?>
-                                        <?php render_field_for_display( 'subassigned', $field_options, null, false, false, 'bulk_' ); ?>
+                                        <?php render_field_for_display( 'subassigned', $field_options, null, false, false, 'bulk_', $field_params ); ?>
                                     </div>
                                     <?php endif; ?>
                                     <?php if ( isset( $field_options['overall_status'] ) ) : ?>
                                     <div class="cell small-12 medium-4">
-                                        <div class="section-subheader">
-                                            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
-                                            <?php if ( isset( $tiles['status']['label'] ) && !empty( $tiles['status']['label'] ) ) {
-                                                echo esc_html( $tiles['status']['label'] );
-                                            } else {
-                                                echo esc_html__( 'Status', 'disciple_tools' );
-                                            }?>
-                                            <button class="help-button-field" data-section="overall_status-help-text">
-                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                            </button>
-                                        </div>
-                                        <select id="overall_status" class="select-field">
-                                            <option></option>
-                                            <?php foreach ( $field_options['overall_status']['default'] as $key => $option ){
-                                                $value = $option['label'] ?? '';?>
-                                                    <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                                            <?php } ?>
-                                        </select>
+                                        <?php
+                                        $field_key = 'overall_status';
+                                        if ( isset( $field_options[$field_key]['select_cannot_be_empty'] ) ) {
+                                            unset( $field_options[$field_key]['select_cannot_be_empty'] );
+                                        }
+                                        DT_Components::render_key_select( 'overall_status', $field_options, null, $field_params );
+                                        ?>
                                     </div>
                                     <?php endif; ?>
                                     <?php if ( isset( $field_options['reason_paused'] ) ) : ?>
                                     <div class="cell small-12 medium-4" style="display:none">
-
-                                        <div class="section-subheader">
-                                                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
-                                                <?php echo esc_html( $field_options['reason_paused']['name'] ?? '' ) ?>
-<!--                                                </button>-->
-                                            </div>
-
-                                        <select id="reason-paused-options">
-                                            <option></option>
-                                            <?php
-                                            foreach ( $field_options['reason_paused']['default'] as $reason_key => $option ) {
-                                                if ( $option['label'] ) {
-                                                    ?>
-                                                    <option value="<?php echo esc_attr( $reason_key ) ?>">
-                                                        <?php echo esc_html( $option['label'] ?? '' ) ?>
-                                                    </option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
+                                        <?php
+                                        render_field_for_display( 'reason_paused', $field_options, null, false, false, 'bulk_', $field_params );
+                                        ?>
                                     </div>
                                     <?php endif; ?>
 
@@ -758,7 +738,7 @@ dt_please_log_in();
                                 </button>
                             <?php } ?>
                         </span>
-                    </div>
+                    </form>
 
                     <div id="bulk_send_msg_picker" class="list_action_section">
                         <button class="close-button list-action-close-button" data-close="bulk_send_msg_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">

@@ -12,9 +12,11 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.18.2",
     "@babel/preset-env": "^7.24.4",
+    "@disciple.tools/web-components": "^0.7.2",
     "browser-sync": "^3.0.2",
     "cssnano": "^6.1.2",
     "cypress": "^14.1.0",
+    "del": "^6.1.1",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^9.1.0",
     "foundation-sites": "^6.7.2",
@@ -46,6 +48,7 @@
     "build": "gulp",
     "scripts": "gulp scripts",
     "styles": "gulp styles",
+    "components": "gulp components",
     "watch": "gulp watch",
     "browsersync": "gulp browsersync",
     "lint": "npx eslint",
@@ -66,7 +69,8 @@
   },
   "eslintIgnore": [
     "dt-assets/build/js/scripts.min.js",
-    "dt-core/dependencies/*"
+    "dt-core/dependencies/*",
+    "dt-assets/build/components/**/*"
   ],
   "jshintConfig": {
     "globals": {
