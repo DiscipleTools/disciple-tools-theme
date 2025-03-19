@@ -13,6 +13,7 @@ jQuery(function ($) {
         window.merge_post_details['post_settings']['post_type'],
         postId,
         window.wpApiShare.nonce,
+        window.wpApiShare.root,
       );
       window.componentService = service;
     }
