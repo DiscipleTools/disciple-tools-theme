@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 dt_please_log_in();
 
+if ( ! current_user_can( 'access_disciple_tools' ) ) {
+    wp_safe_redirect( '/registered' );
+    exit();
+}
+
 ( function () {
     $post_type = dt_get_post_type();
     if ( !current_user_can( 'access_' . $post_type ) ) {
