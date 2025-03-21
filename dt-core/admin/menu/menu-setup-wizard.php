@@ -119,6 +119,11 @@ class DT_Setup_Wizard
         );
         /* Hide the setup wizard in the menu */
         remove_menu_page( 'dt_setup_wizard' );
+
+        global $title;
+        if ( isset( $_GET['page'] ) && $_GET['page'] === 'dt_setup_wizard' ) {
+            $title = __( 'Setup Wizard (D.T)', 'disciple_tools' );
+        }
     }
 
     public function content() {
