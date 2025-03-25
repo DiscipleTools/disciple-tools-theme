@@ -71,6 +71,9 @@ Different field types have different filter formats:
 // Find contacts with status 'active' OR 'paused'
 'overall_status' => ['active', 'paused']
 
+// Find contacts with status 'active' AND 'paused'
+[ [ 'overall_status' => 'active' ], [ 'overall_status' => 'paused' ] ]
+
 // Find contacts NOT with status 'closed'
 'overall_status' => ['-closed']
 ```
@@ -363,4 +366,4 @@ $incomplete_contacts = DT_Posts::list_posts('contacts', [
     'contact_email' => [],  // No email
     'assigned_to' => [get_current_user_id()]
 ]);
-``` 
+```
