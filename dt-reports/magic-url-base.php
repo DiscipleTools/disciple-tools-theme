@@ -140,6 +140,16 @@ abstract class DT_Magic_Url_Base {
         return '';
     }
 
+    public function fetch_incoming_browser_lang() {
+        $lang_header = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+        if ( !empty( $lang_header ) ) {
+            $lang_parts = explode( ',', $lang_header );
+            if ( count( $lang_parts ) > 0 ) {
+                return str_replace( '-', '_', $lang_parts[0] );
+            }
+        }
+    }
+
     /**
      * Determine language locale to be adopted; based on translatable flags
      *
@@ -164,6 +174,9 @@ abstract class DT_Magic_Url_Base {
                         break;
                     case 'contact':
                         $lang = $this->fetch_incoming_contact_lang( $parts );
+                        break;
+                    case 'browser':
+                        $lang = $this->fetch_incoming_browser_lang();
                         break;
                 }
                 $flag_satisfied = ! empty( $lang );
