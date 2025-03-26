@@ -211,7 +211,6 @@ The `verify_rest_endpoint_permissions_on_post` function is a critical security c
 
 It gets and verifies the root, type, and key from the url. It then checks that the key provided matches the saved key on the record (contact, group, etc) or on the user.
 
-
 This function performs several security checks:
 
 1. **Required Parameters Check**
@@ -227,6 +226,68 @@ This function performs several security checks:
    - Returns `false` if any check fails, indicating the request is invalid or unauthorized
 
 Use this function  in the `permission_callback` parameter when registering REST routes, ensuring that only valid, authorized requests can access the endpoints.
+
+### Using 'parts' in REST API Calls
+
+When making REST API calls from JavaScript, you need to include the `parts` object in your requests. The `parts` object contains the necessary authentication information and is required for all REST API calls to magic link endpoints.
+
+#### GET Requests
+
+For GET requests, the `parts` object needs to be sent as query parameters using WordPress's array notation:
+
+```javascript
+// Create URL with parts as query parameters
+const url = new URL(`${jsObject.rest_base}${jsObject.rest_namespace}/endpoint`);
+
+// Add each part as a separate query parameter
+Object.entries(jsObject.parts).forEach(([key, value]) => {
+    url.searchParams.append(`parts[${key}]`, value);
+});
+
+const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': jsObject.nonce
+    }
+});
+```
+
+This will create a URL like:
+```
+/wp-json/namespace/endpoint?parts[meta_key]=value&parts[public_key]=value&parts[post_id]=value&parts[type]=value&parts[root]=value
+```
+
+#### POST/DELETE Requests
+
+For POST and DELETE requests, include the `parts` object in the request body:
+
+```javascript
+const response = await fetch(`${jsObject.rest_base}${jsObject.rest_namespace}/endpoint`, {
+    method: 'POST', // or 'DELETE'
+    headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': jsObject.nonce
+    },
+    body: JSON.stringify({
+        ...data, // your request data
+        parts: jsObject.parts
+    })
+});
+```
+
+#### Required Parts Object Structure
+
+The `parts` object must contain the following properties:
+```javascript
+{
+    meta_key: string,    // The meta key for the magic link
+    public_key: string,  // The public key for the magic link
+    post_id: number,     // The ID of the post/record
+    type: string,        // The type of magic link
+    root: string         // The root identifier for the magic link
+}
+```
 
 ### Available Functions
 
