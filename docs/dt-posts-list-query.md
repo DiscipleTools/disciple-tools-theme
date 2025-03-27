@@ -71,6 +71,9 @@ Different field types have different filter formats:
 // Find contacts with status 'active' OR 'paused'
 'overall_status' => ['active', 'paused']
 
+// Find contacts with status 'active' AND 'paused'
+[ [ 'overall_status' => 'active' ], [ 'overall_status' => 'paused' ] ]
+
 // Find contacts NOT with status 'closed'
 'overall_status' => ['-closed']
 ```
@@ -209,13 +212,78 @@ $results = DT_Posts::list_posts('contacts', [
 
 The method returns a response in the following format:
 
+he response includes:
+- `posts`: Array of post objects, each containing:
+  - `ID`: The post ID
+  - `name`: The post name/title (decoded from post_title)
+  - `post_date`: Creation date
+  - `last_modified`: Last modification date
+  - Any other fields specific to the post type
+- `total`: Total number of posts matching the query
+
+**Example Response:**
 ```php
 [
     'posts' => [
-        // Array of post objects
+        {
+            'ID' => 123,
+            'name' => 'John Doe',  // wp_specialchars_decoded
+            'post_type' => 'contacts',
+            'post_date' => 'last_modified' => [
+                'timestamp' => 1742985315,
+                'formatted' => '2025-03-26"
+            ],
+            'last_modified' => [
+                'timestamp' => 1742985315,
+                'formatted' => '2025-03-26"
+            ], // Last modification timestamp
+            'permalink' => 'https://example.com/contacts/123', // URL to the post
+            
+            // Additional fields will be populated based on the post_type, field_settings and the fields_to_return parameter and post type settings
+            'overall_status' => [           // Key select fields are returned as objects with key and label
+                'key' => 'active',
+                'label' => 'Active'
+            ],
+            'assigned_to' => [              // User select fields include user details
+                'id' => '8',
+                'type' => 'user',
+                'display' => 'Anthony Palacio (multiplier)',
+                'assigned-to' => 'user-8'
+            ],
+            'contact_phone' => [            // Communication channels are arrays of values
+                [
+                    'key' => 'contact_phone_ca2',
+                    'value' => '123456789',
+                    'verified' => true
+                ]
+            ],
+            'groups' => [                   // Connection fields are arrays of connected posts
+                [
+                    'ID' => 83,
+                    'post_type' => 'groups',
+                    'post_date' => '2018-07-02 15:05:53',
+                    'post_title' => 'Local Christian Church'
+                ]
+            ],
+            'milestones' => [               // Multi-select fields are arrays of values
+                'milestone_has_bible',
+                'milestone_reading_bible'
+            ],
+            'baptism_date' => [             // Date fields include both timestamp and formatted date
+                'timestamp' => '1552953600',
+                'formatted' => 'March 19, 2019'
+            ],
+            'requires_update' => true,      // Boolean fields are simple true/false
+            'location_grid' => [            // Location fields include grid IDs
+                [
+                    'id' => 100089589,
+                    'label' => 'Paris, France'
+                ]
+            ]
+        },
+        // ... more posts
     ],
-    'total' => 123,  // Total number of posts matching the query
-    'total_unfiltered' => 456  // Total posts available (without filters)
+    'total' => 50
 ]
 ```
 
@@ -363,4 +431,4 @@ $incomplete_contacts = DT_Posts::list_posts('contacts', [
     'contact_email' => [],  // No email
     'assigned_to' => [get_current_user_id()]
 ]);
-``` 
+```
