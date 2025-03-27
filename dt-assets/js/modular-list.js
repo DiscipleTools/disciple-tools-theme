@@ -1155,7 +1155,9 @@
   window.SHAREDFUNCTIONS['empty_list'] = empty_list;
 
   function empty_list() {
-    $('#table-content').html(`<tr><td colspan="10">${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.empty_list)}</td></tr>`);
+    $('#table-content').html(
+      `<tr><td colspan="10">${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.empty_list)}</td></tr>`,
+    );
   }
 
   function get_records(offset = 0, sort = null) {
