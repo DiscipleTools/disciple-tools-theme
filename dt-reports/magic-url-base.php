@@ -141,13 +141,14 @@ abstract class DT_Magic_Url_Base {
     }
 
     public function fetch_incoming_browser_lang() {
-        $lang_header = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-        if ( !empty( $lang_header ) ) {
+        if ( isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) && !empty( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ) {
+            $lang_header = sanitize_text_field( wp_unslash( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) );
             $lang_parts = explode( ',', $lang_header );
             if ( count( $lang_parts ) > 0 ) {
                 return str_replace( '-', '_', $lang_parts[0] );
             }
         }
+        return '';
     }
 
     /**
