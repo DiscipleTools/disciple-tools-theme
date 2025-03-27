@@ -29,7 +29,7 @@ dt_please_log_in();
                     <span class="hide-for-small-only"><?php esc_html_e( 'Filters', 'disciple_tools' ) ?></span>
                 </a>
                 <?php do_action( 'archive_template_action_bar_buttons', $post_type ) ?>
-                <div class="search-wrapper">
+                <!--<div class="search-wrapper">
                     <span class="text-input-wrapper">
                         <input class="search-input search-input--desktop" style="margin-right: 0;"
                                type="text" id="search-query" name="search"
@@ -61,14 +61,14 @@ dt_please_log_in();
                 <a class="button" id="search">
                     <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
                     <span><?php esc_html_e( 'Search', 'disciple_tools' ) ?></span>
-                </a>
+                </a>-->
                 <?php if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) : ?>
                     <button class="button export_map_list no-margin icon-button" style="font-size:large;padding: 0.1rem 0.75rem">
                         <i class="fi-map"></i>
                     </button>
                 <?php endif; ?>
             </div>
-            <div id="advanced_search_picker"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
+            <!--<div id="advanced_search_picker"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
                 <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
                 <ul class="ul-no-bullets" style="">
 
@@ -110,7 +110,7 @@ dt_please_log_in();
                 </ul>
                 <button class="button" id="save_advanced_search_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
                 <a class="button clear" id="advanced_search_reset" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
-            </div>
+            </div>-->
         </nav>
     </div>
     <nav  role="navigation" style="width:100%;"

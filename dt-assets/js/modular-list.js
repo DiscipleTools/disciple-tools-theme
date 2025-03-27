@@ -1152,6 +1152,12 @@
     favorite_edit_event();
   };
 
+  window.SHAREDFUNCTIONS['empty_list'] = empty_list;
+
+  function empty_list() {
+    $('#table-content').html(`<tr><td colspan="10">${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.empty_list)}</td></tr>`);
+  }
+
   function get_records(offset = 0, sort = null) {
     loading_spinner.addClass('active');
     let query = current_filter.query;
