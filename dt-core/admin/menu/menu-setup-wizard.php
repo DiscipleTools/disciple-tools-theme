@@ -122,7 +122,7 @@ class DT_Setup_Wizard
 
         global $title;
         if ( isset( $_GET['page'] ) && $_GET['page'] === 'dt_setup_wizard' ) {
-            $title = __( 'Setup Wizard (D.T)', 'disciple_tools' );
+            $title = __( 'Setup Wizard (D.T)', 'disciple_tools' ); //phpcs:ignore
         }
     }
 
