@@ -4326,7 +4326,7 @@
             });
 
             // Assuming counts match, assign to parent csv download array.
-            if (csv_row.length === exporting_fields.length + 1) {
+            if (csv_row.length <= exporting_fields.length + 1) {
               csv_export.push(csv_row);
             }
           });
