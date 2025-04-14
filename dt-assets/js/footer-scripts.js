@@ -9,6 +9,7 @@ if (window.Foundation.MediaQuery.current == 'small') {
     .attr('style', '');
 }
 
+window.Foundation.Reveal.defaults.closeOnClick = false;
 jQuery(document).foundation();
 
 jQuery(document).ready(function () {
