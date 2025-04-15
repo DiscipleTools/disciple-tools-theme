@@ -25,7 +25,7 @@ class Disciple_Tools_People_Groups
         $jp_csv = [];
         $handle = fopen( __DIR__ . '/csv/jp.csv', 'r' );
         if ( $handle !== false ) {
-            while ( ( $data = fgetcsv( $handle, 0, ',' ) ) !== false ) {
+            while ( ( $data = fgetcsv( $handle, 0, ',', '"', '\\' ) ) !== false ) {
                 $jp_csv[] = $data;
             }
             fclose( $handle );
@@ -41,7 +41,7 @@ class Disciple_Tools_People_Groups
         $imb_csv = [];
         $handle = fopen( __DIR__ . '/csv/imb.csv', 'r' );
         if ( $handle !== false ) {
-            while ( ( $data = fgetcsv( $handle, 0, ',' ) ) !== false ) {
+            while ( ( $data = fgetcsv( $handle, 0, ',', '"', '\\' ) ) !== false ) {
                 $imb_csv[] = $data;
             }
             fclose( $handle );
