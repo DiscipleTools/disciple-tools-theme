@@ -299,7 +299,8 @@ let color_workload_buttons = (name) => {
     let selected = jQuery(`.status-button[name=${name}]`);
     selected.removeClass('hollow');
     // Use optional chaining and nullish coalescing instead of lodash.get
-    const color = window.wpApiSettingsPage?.workload_status_options?.[name]?.color ?? '';
+    const color =
+      window.wpApiSettingsPage?.workload_status_options?.[name]?.color ?? '';
     selected.css('background-color', color);
     selected.blur();
   }
