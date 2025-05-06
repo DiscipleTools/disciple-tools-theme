@@ -4,7 +4,28 @@ jQuery(document).ready(function ($) {
 
   $(document).on('click', '.dt-storage-upload', function (e) {
     const element = $(e.target);
+
+    // Close the dt-storage-picture modal
+    if ($('#dt-storage-picture').length) {
+      $('#dt-storage-picture').foundation('close');
+    }
+
     display_storage_upload_modal(
+      $(element).data('storage_upload_post_type'),
+      $(element).data('storage_upload_post_id'),
+      $(element).data('storage_upload_meta_key'),
+      $(element).data('storage_upload_key_prefix'),
+      $(element).data('storage_upload_delete_enabled') !== undefined,
+    );
+  });
+
+  $(document).on('click', '.dt-storage-picture', function (e) {
+    const element = $(e.target);
+
+    display_picture_modal(
+      $(element).data('picture_large_thumbnail_url'),
+      $(element).data('picture_url'),
+      $(element).attr('alt'),
       $(element).data('storage_upload_post_type'),
       $(element).data('storage_upload_post_id'),
       $(element).data('storage_upload_meta_key'),
@@ -217,6 +238,60 @@ jQuery(document).ready(function ($) {
 
     // Open upload modal.
     $('#dt_storage_upload_modal').foundation('open');
+  }
+
+  function display_picture_modal(
+    large_thumbnail_url,
+    picture_url,
+    image_alt,
+    post_type,
+    post_id,
+    meta_key,
+    key_prefix,
+    delete_enabled = false,
+  ) {
+    const modal_html = `
+      <div class="reveal medium" id="dt-storage-picture" data-reveal data-reset-on-close>
+      <style>
+        #dt-storage-picture {
+          text-align: center;
+        }
+
+        #dt-storage-picture img {
+          max-width: 100%;
+          height: auto;
+          margin: 1rem auto 2rem;
+          display: block;
+        }
+      </style>
+      <h3>${escape(storage_settings?.translations?.modals?.upload?.title)}</h3>
+      <img src="${large_thumbnail_url}" class="" alt="${image_alt}" onerror="this.onerror=null;this.src='${picture_url}';"/>
+
+      <button class="dt-storage-upload button" data-storage_upload_post_type="${post_type}" data-storage_upload_post_id="${post_id}" data-storage_upload_meta_key="${meta_key}" data-storage_upload_key_prefix="${key_prefix}"
+      data-storage_upload_delete_enabled="${delete_enabled}">${escape(storage_settings?.translations?.modals?.upload?.but_replace)}</button>
+
+      <button class="close-button" data-close aria-label="${escape(storage_settings?.translations?.modals?.upload?.but_close)}" type="button">
+          <span aria-hidden="true">&times;</span>
+      </button>
+      </div>
+      `;
+    // Ensure to remove previous stale modal html, before appending generated code.
+    $(document.body).find('[id=dt-storage-picture]').remove();
+    $(document.body).append(modal_html);
+
+    // Activate upload widgets.
+    // activate_storage_upload_modal_widgets(
+    //   post_type,
+    //   post_id,
+    //   meta_key,
+    //   key_prefix,
+    // );
+
+    // Reload reveal foundation object, in order to detect recently added upload modal element.
+    $(document).foundation();
+
+    // Open upload modal.
+    $('#dt-storage-picture').foundation('open');
   }
 
   function activate_storage_upload_modal_widgets(

@@ -2609,6 +2609,7 @@ class Disciple_Tools_Posts
                         if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ){
                             $fields[$key] = [
                                 'thumb' => DT_storage::get_thumbnail_url( $value[0]['value'] ),
+                                'large' => DT_storage::get_large_thumbnail_url( $value[0]['value'] ),
                                 'full' => DT_storage::get_file_url( $value[0]['value'] ),
                             ];
                         }

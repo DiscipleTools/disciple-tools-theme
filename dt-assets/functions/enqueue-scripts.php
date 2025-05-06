@@ -448,6 +448,7 @@ function dt_site_scripts() {
                             'error_msg' => __( 'Unable to upload, please try again', 'disciple_tools' ),
                             'but_upload' => __( 'Upload', 'disciple_tools' ),
                             'but_delete' => __( 'Delete Existing File', 'disciple_tools' ),
+                            'but_replace' => __( 'Replace Existing Image', 'disciple_tools' ),
                             'delete_msg' => __( 'Are you sure you wish to delete existing file?', 'disciple_tools' ),
                             'delete_success_msg' => __( 'Successfully Deleted!', 'disciple_tools' ),
                             'delete_error_msg' => __( 'Delete failed, please try again', 'disciple_tools' ),
