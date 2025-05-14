@@ -844,6 +844,10 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'link' ] ) ){
                 $new_field['default'] = [];
 
+                if ( $field_type === 'key_select' ) {
+                    $new_field['select_cannot_be_empty'] = true;
+                }
+
                 if ( $field_type === 'link' ) {
                     $new_field['default']['default'] = [
                         'label' => 'Default'
