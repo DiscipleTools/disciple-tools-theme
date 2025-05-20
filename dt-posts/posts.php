@@ -2606,16 +2606,18 @@ class Disciple_Tools_Posts
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'image' ){
                     if ( !empty( $value[0]['value'] ) ){
-                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ){
+                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) {
                             $fields[$key] = [
-                                'thumb' => DT_storage::get_thumbnail_url( $value[0]['value'] ),
-                                'large' => DT_storage::get_large_thumbnail_url( $value[0]['value'] ),
-                                'full' => DT_storage::get_file_url( $value[0]['value'] ),
+                                'thumb' => DT_Storage::get_thumbnail_url( $value[0]['value'] ),
+                                'full'  => DT_Storage::get_file_url( $value[0]['value'] ),
                             ];
+                            if ( method_exists( 'DT_Storage', 'get_large_thumbnail_url' ) ) {
+                                $fields[$key]['large'] = DT_Storage::get_large_thumbnail_url( $value[0]['value'] );
+                            }
                         }
+                    } else {
+                        $fields[$key] = maybe_unserialize( $value[0]['value'] );
                     }
-                } else {
-                    $fields[$key] = maybe_unserialize( $value[0]['value'] );
                 }
             }
         }
