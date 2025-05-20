@@ -14,8 +14,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * Class Disciple_Tools_Posts
  * Functions for creating, finding, updating or deleting posts
  */
-class Disciple_Tools_Posts
-{
+class Disciple_Tools_Posts {
     /**
      * Disciple_Tools_Posts constructor.
      */
