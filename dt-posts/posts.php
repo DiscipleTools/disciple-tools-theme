@@ -2615,9 +2615,9 @@ class Disciple_Tools_Posts
                                 $fields[$key]['large'] = DT_Storage::get_large_thumbnail_url( $value[0]['value'] );
                             }
                         }
-                    } else {
-                        $fields[$key] = maybe_unserialize( $value[0]['value'] );
                     }
+                } else {
+                    $fields[$key] = maybe_unserialize( $value[0]['value'] );
                 }
             }
         }
