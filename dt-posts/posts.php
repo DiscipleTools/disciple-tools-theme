@@ -2608,12 +2608,12 @@ public static function adjust_post_custom_fields( $post_type, int $post_id, arra
                 if ( !empty( $value[0]['value'] ) ){
                     if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ){
                         $fields[$key] = [
-                            'thumb' => DT_storage::get_thumbnail_url( $value[0]['value'] ),
-                            'full' => DT_storage::get_file_url( $value[0]['value'] ),
+                            'thumb' => DT_Storage::get_thumbnail_url( $value[0]['value'] ),
+                            'full' => DT_Storage::get_file_url( $value[0]['value'] ),
                         ];
                     }
-                    if ( method_exists( 'DT_storage', 'get_large_thumbnail_url' ) ){
-                        $fields[$key]['large'] = DT_storage::get_large_thumbnail_url( $value[0]['value'] );
+                    if ( method_exists( 'DT_Storage', 'get_large_thumbnail_url' ) ){
+                        $fields[$key]['large'] = DT_Storage::get_large_thumbnail_url( $value[0]['value'] );
                     }
                 } else {
                     $fields[$key] = maybe_unserialize( $value[0]['value'] );
