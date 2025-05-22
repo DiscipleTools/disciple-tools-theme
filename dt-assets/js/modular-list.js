@@ -1165,6 +1165,14 @@
     favorite_edit_event();
   };
 
+  window.SHAREDFUNCTIONS['empty_list'] = empty_list;
+
+  function empty_list() {
+    $('#table-content').html(
+      `<tr><td colspan="10">${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.empty_list)}</td></tr>`,
+    );
+  }
+
   function get_records(offset = 0, sort = null) {
     loading_spinner.addClass('active');
     let query = current_filter.query;
@@ -1257,6 +1265,9 @@
   /**
    * Modal options
    */
+
+  // Promote as a shared function.
+  window.SHAREDFUNCTIONS['add_custom_filter'] = add_custom_filter;
 
   //add the new filter in the filters list
   function add_custom_filter(name, type, query, labels, load_records = true) {
@@ -1681,6 +1692,8 @@
     return { newLabel: { id: key, name: value, field } };
   }
 
+  // Promote as a shared function.
+  window.SHAREDFUNCTIONS['create_name_value_label'] = create_name_value_label;
   function create_name_value_label(field, id, value, listSettings) {
     let name = window.lodash.get(
       listSettings,
@@ -3954,6 +3967,8 @@
     return filter;
   }
 
+  // Promote as a shared function.
+  window.SHAREDFUNCTIONS['reset_split_by_filters'] = reset_split_by_filters;
   function reset_split_by_filters() {
     let split_by_filter_select = $('#split_by_current_filter_select');
     if (current_filter && current_filter['query']['fields'] !== undefined) {
