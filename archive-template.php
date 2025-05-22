@@ -29,7 +29,6 @@ dt_please_log_in();
                     <span class="hide-for-small-only"><?php esc_html_e( 'Filters', 'disciple_tools' ) ?></span>
                 </a>
                 <?php do_action( 'archive_template_action_bar_buttons', $post_type ) ?>
-                <?php do_action( 'dt_ai_action_bar_buttons', $post_type ) ?>
                 <div class="search-wrapper">
                     <span class="text-input-wrapper">
                         <input class="search-input search-input--desktop" style="margin-right: 0;"
