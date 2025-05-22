@@ -1033,9 +1033,8 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $post_type = $post_submission['post_type'];
         $field_option_key = $post_submission['field_option_key'];
 
-        $field_customizations = dt_get_option( 'dt_field_customizations' );
-
         // Adopt a different flow for key_select none options.
+        $field_customizations = dt_get_option( 'dt_field_customizations' );
         if ( in_array( $field_option_key, ['none'] ) && isset( $field_customizations[$post_type][$field_key]['type'] ) && $field_customizations[$post_type][$field_key]['type'] === 'key_select' ) {
             $field_customizations[$post_type][$field_key]['select_cannot_be_empty'] = true;
             update_option( 'dt_field_customizations', $field_customizations );
