@@ -2211,7 +2211,7 @@ jQuery(document).ready(function ($) {
                 <!-- START TOGGLED ITEMS -->
                 <div class="field-settings-table-child-toggle">
                     <div class="field-settings-table-field-option">
-                       <span class="sortable ui-icon ui-icon-arrow-4"></span>
+                        <span class="sortable ui-icon ui-icon-arrow-4"></span>
                         <span class="field-name-content">default blank</span>
                     </div>
                     <div class="field-settings-table-field-option new-field-option" data-parent-tile-key="${tile_key}" data-field-key="${field_key}">
