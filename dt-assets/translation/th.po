@@ -3,11 +3,11 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2025-03-05T14:50:29+00:00\n"
+"POT-Creation-Date: 2025-03-18T08:53:44+00:00\n"
 "PO-Revision-Date: 2025-03-05 16:00+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Thai <https://translate.disciple.tools/projects/"
-"disciple-tools/disciple-tools-theme/th/>\n"
+"Language-Team: Thai <https://translate.disciple.tools/projects/disciple-"
+"tools/disciple-tools-theme/th/>\n"
 "Language: th\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,7 +70,7 @@ msgstr "เจ้าของบันทึกจะได้รับแจ้
 msgid "Submit Request"
 msgstr "ส่งคำขอ"
 
-#: 403.php:55 archive-template.php:1108 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:1099 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -86,7 +86,7 @@ msgid "Cancel"
 msgstr "ยกเลิก"
 
 #: 403.php:59 archive-template.php:506 archive-template.php:548
-#: archive-template.php:773 archive-template.php:1132
+#: archive-template.php:764 archive-template.php:1123
 #: dt-assets/functions/enqueue-scripts.php:440
 #: dt-assets/parts/loop-activity-comment.php:158
 #: dt-assets/parts/loop-activity-comment.php:163
@@ -360,7 +360,7 @@ msgid "Search Users"
 msgstr "ค้นหาผู้ใช้"
 
 #: archive-template.php:594 dt-metrics/records/genmap.php:148
-#: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2783
+#: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2687
 #: dt-users/template-user-management.php:384 dt-users/users.php:175
 #: single-template.php:127
 msgid "Status"
@@ -406,18 +406,18 @@ msgstr "ดูตัวเลือกเพิ่มเติม"
 msgid "See Fewer Options"
 msgstr "ดูตัวเลือกน้อยลง"
 
-#: archive-template.php:751 dt-assets/parts/loop-activity-comment.php:209
+#: archive-template.php:742 dt-assets/parts/loop-activity-comment.php:209
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "อัปเดต"
 
-#: archive-template.php:752 archive-template.php:860
+#: archive-template.php:743 archive-template.php:851
 #: dt-assets/functions/enqueue-scripts.php:330
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "เลือกด้านล่าง"
 
-#: archive-template.php:760 dt-assets/functions/enqueue-scripts.php:179
+#: archive-template.php:751 dt-assets/functions/enqueue-scripts.php:179
 #: dt-assets/functions/enqueue-scripts.php:213
 #: dt-assets/functions/enqueue-scripts.php:278
 #: dt-assets/functions/enqueue-scripts.php:318
@@ -425,134 +425,134 @@ msgstr "เลือกด้านล่าง"
 msgid "Delete"
 msgstr "ลบ"
 
-#: archive-template.php:763 dt-assets/functions/enqueue-scripts.php:331
+#: archive-template.php:754 dt-assets/functions/enqueue-scripts.php:331
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
 msgstr "เลือกด้านล่าง"
 
-#: archive-template.php:777
+#: archive-template.php:768
 #, fuzzy
 #| msgid "Select all the %1$s to whom you want to send app links."
 msgid "Select all the %1$s to whom you want to message."
 msgstr "เลือก %1$s ทั้งหมดที่คุณต้องการส่งลิงก์แอปไปให้"
 
-#: archive-template.php:807
+#: archive-template.php:798
 msgid "Message subject"
 msgstr ""
 
-#: archive-template.php:809
+#: archive-template.php:800
 msgid "A valid message subject must be entered."
 msgstr ""
 
-#: archive-template.php:811
+#: archive-template.php:802
 msgid "Message from name"
 msgstr ""
 
-#: archive-template.php:813
+#: archive-template.php:804
 msgid "A valid from name must be specified."
 msgstr ""
 
-#: archive-template.php:815
+#: archive-template.php:806
 msgid "Message reply to"
 msgstr ""
 
-#: archive-template.php:817
+#: archive-template.php:808
 msgid "A valid reply to email address must be specified."
 msgstr ""
 
-#: archive-template.php:819
+#: archive-template.php:810
 msgid "Emails will be sent from: %s"
 msgstr ""
 
-#: archive-template.php:842
+#: archive-template.php:833
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
 
-#: archive-template.php:844
+#: archive-template.php:835
 msgid "Message"
 msgstr ""
 
-#: archive-template.php:846
+#: archive-template.php:837
 msgid "Please ensure a valid send message has been entered."
 msgstr ""
 
-#: archive-template.php:847 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:838 dt-reports/magic-url-bulk-send.php:58
 #: dt-reports/magic-url-setup.php:131
 msgid "Message placeholders"
 msgstr ""
 
-#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:841 dt-reports/magic-url-bulk-send.php:64
 #: dt-reports/magic-url-setup.php:137
 #, fuzzy
 #| msgid "Create Record"
 msgid "Name of the Record"
 msgstr "สร้างบันทึก"
 
-#: archive-template.php:855 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:846 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "ส่งไปยังเรกคอร์ดที่เลือก"
 
-#: archive-template.php:856 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:847 dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "คุณต้องเลือกเรกคอร์ดอย่างน้อยหนึ่งรายการ"
 
-#: archive-template.php:859 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:94
 #: dt-reports/magic-url-setup.php:100
 msgid "Send"
 msgstr "ส่ง"
 
-#: archive-template.php:859 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "ลิงก์"
 
-#: archive-template.php:864
+#: archive-template.php:855
 msgid "Ensure valid record selections have been made."
 msgstr ""
 
-#: archive-template.php:909
+#: archive-template.php:900
 msgid "Loading..."
 msgstr "กำลังโหลด ..."
 
-#: archive-template.php:914 dt-assets/functions/enqueue-scripts.php:410
+#: archive-template.php:905 dt-assets/functions/enqueue-scripts.php:410
 msgid "Load More"
 msgstr "โหลดเพิ่มเติม"
 
-#: archive-template.php:926
+#: archive-template.php:917
 msgid "Field Name"
 msgstr "ชื่อเขตข้อมูล"
 
-#: archive-template.php:982
+#: archive-template.php:973
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "พิมพ์เพื่อค้นหา"
 
-#: archive-template.php:991
+#: archive-template.php:982
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%1$sทั้งหมดที่มี%2$s"
 
-#: archive-template.php:994
+#: archive-template.php:985
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%1$s ทั้งหมดที่ไม่มี %2$s"
 
-#: archive-template.php:1001
+#: archive-template.php:992
 msgid "Filter for subassigned OR Assigned To"
 msgstr "กรองสำหรับมอบหมายย่อยหรือมอบหมายให้"
 
-#: archive-template.php:1010 dt-assets/functions/enqueue-scripts.php:321
+#: archive-template.php:1001 dt-assets/functions/enqueue-scripts.php:321
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "วันที่สร้าง"
 
-#: archive-template.php:1017 archive-template.php:1024
+#: archive-template.php:1008 archive-template.php:1015
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1057
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:961
 msgid "None Set"
 msgstr "ไม่มีการตั้งค่า"
 
-#: archive-template.php:1038 archive-template.php:1039
+#: archive-template.php:1029 archive-template.php:1030
 #: dt-assets/functions/enqueue-scripts.php:229 dt-core/global-functions.php:671
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-users/user-management.php:196 template-settings.php:313
@@ -560,7 +560,7 @@ msgstr "ไม่มีการตั้งค่า"
 msgid "No"
 msgstr "ไม่"
 
-#: archive-template.php:1045 archive-template.php:1046
+#: archive-template.php:1036 archive-template.php:1037
 #: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:672
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:195
@@ -568,29 +568,29 @@ msgstr "ไม่"
 msgid "Yes"
 msgstr "ใช่"
 
-#: archive-template.php:1050
+#: archive-template.php:1041
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "ช่วงเริ่มต้น"
 
-#: archive-template.php:1053 archive-template.php:1064
+#: archive-template.php:1044 archive-template.php:1055
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "ชัดเจน"
 
-#: archive-template.php:1060
+#: archive-template.php:1051
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "สิ้นสุดช่วง"
 
-#: archive-template.php:1075
+#: archive-template.php:1066
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "ชื่อตัวกรอง"
 
-#: archive-template.php:1080
+#: archive-template.php:1071
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -598,7 +598,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "%1$sทั้งหมดที่มี%2$s"
 
-#: archive-template.php:1084
+#: archive-template.php:1075
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -606,7 +606,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "%1$s ทั้งหมดที่ไม่มี %2$s"
 
-#: archive-template.php:1088
+#: archive-template.php:1079
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -614,7 +614,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "%1$sทั้งหมดที่มี%2$s"
 
-#: archive-template.php:1092
+#: archive-template.php:1083
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -622,15 +622,15 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "%1$s ทั้งหมดที่ไม่มี %2$s"
 
-#: archive-template.php:1116
+#: archive-template.php:1107
 msgid "Filter Name"
 msgstr "ชื่อตัวกรอง"
 
-#: archive-template.php:1121
+#: archive-template.php:1112
 msgid "Filter Records"
 msgstr "กรองบันทึก"
 
-#: archive-template.php:1125 dt-assets/functions/enqueue-scripts.php:281
+#: archive-template.php:1116 dt-assets/functions/enqueue-scripts.php:281
 #: dt-assets/functions/enqueue-scripts.php:316
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
@@ -750,7 +750,7 @@ msgstr "คุณไม่มีการแจ้งเตือนที่ย
 msgid "You don't have any notifications"
 msgstr "คุณไม่มีการแจ้งเตือนใด ๆ"
 
-#: dt-assets/functions/enqueue-scripts.php:176 dt-posts/dt-posts.php:1724
+#: dt-assets/functions/enqueue-scripts.php:176 dt-posts/dt-posts.php:1628
 msgid "D.T System"
 msgstr "ระบบ D.T"
 
@@ -4539,33 +4539,33 @@ msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1716
+#: dt-posts/dt-posts.php:1620
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "%s Submission"
 msgstr "การส่งลิงก์วิเศษ"
 
-#: dt-posts/dt-posts.php:1716
+#: dt-posts/dt-posts.php:1620
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "Magic Link"
 msgstr "การส่งลิงก์วิเศษ"
 
-#: dt-posts/dt-posts.php:1718 dt-posts/dt-posts.php:2265
+#: dt-posts/dt-posts.php:1622 dt-posts/dt-posts.php:2169
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "เปลี่ยนกลับกิจกรรม"
 
-#: dt-posts/dt-posts.php:2505
+#: dt-posts/dt-posts.php:2409
 msgid "Post already shared with user."
 msgstr "โพสต์แชร์กับผู้ใช้แล้ว"
 
-#: dt-posts/dt-posts.php:2784 single-template.php:174
+#: dt-posts/dt-posts.php:2688 single-template.php:174
 msgid "Details"
 msgstr "รายละเอียด"
 
-#: dt-posts/dt-posts.php:2862
+#: dt-posts/dt-posts.php:2766
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4577,7 +4577,7 @@ msgstr ""
 "@[%1$s](%2$s) - ผู้ใช้ที่ชื่อ %3$s ร้องขอเข้าถึง %4$s [%5$s](%6$s) หากยินดี "
 "ให้แชร์บันทึกนี้กับผู้ใช้เพื่อให้สิทธิ์การเข้าถึง"
 
-#: dt-posts/dt-posts.php:2868
+#: dt-posts/dt-posts.php:2772
 msgid "Access Request"
 msgstr "ร้องขอเข้าถึง"
 
