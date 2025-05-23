@@ -254,7 +254,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         </button>
                     </div>
                     <div class="section-body">
-                        <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="split_by_current_filter_select_labels"></div>
+                        <div style="display: flex; flex-wrap:wrap;" id="split_by_current_filter_select_labels"></div>
                         <table>
                             <tbody style="border: none;">
                             <tr style="border: none;">
@@ -325,17 +325,17 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         </button>
                     </div>
                     <div class="section-body" style="padding-top:1em;">
-                        <a id="export_csv_list"><?php esc_html_e( 'CSV List', 'disciple_tools' ) ?></a><br>
+                        <a id="export_csv_list"><?php esc_html_e( 'CSV List', 'disciple_tools' ) ?></a>
                         <?php
                         if ( !empty( DT_Posts::get_field_settings_by_type( $post_type, 'communication_channel' ) ) ) {
                             ?>
-                            <a id="export_bcc_email_list"><?php esc_html_e( 'BCC Email List', 'disciple_tools' ) ?></a><br>
-                            <a id="export_phone_list"><?php esc_html_e( 'Phone List', 'disciple_tools' ) ?></a><br>
+                            <a id="export_bcc_email_list"><?php esc_html_e( 'BCC Email List', 'disciple_tools' ) ?></a>
+                            <a id="export_phone_list"><?php esc_html_e( 'Phone List', 'disciple_tools' ) ?></a>
                             <?php
                         }
                         if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
                             ?>
-                            <a class="export_map_list"><?php esc_html_e( 'Map List', 'disciple_tools' ) ?></a><br>
+                            <a class="export_map_list"><?php esc_html_e( 'Map List', 'disciple_tools' ) ?></a>
                             <?php
                         }
                         ?>
