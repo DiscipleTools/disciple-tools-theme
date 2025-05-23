@@ -37,9 +37,13 @@ class DT_Setup_Wizard
             remove_action( 'network_admin_notices', 'update_nag', 3 );
             remove_action( 'network_admin_notices', 'maintenance_nag', 3 );
         });
-        add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_filter( 'script_loader_tag', [ $this, 'filter_script_loader_tag' ], 10, 2 );
         add_filter( 'dt_setup_wizard_items', [ $this, 'dt_setup_wizard_items' ], 10, 1 );
+
+        //only enqueue scripts if the setup wizard is being viewed
+        if ( isset( $_GET['page'] ) && $_GET['page'] === 'dt_setup_wizard' ) {
+            add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+        }
     }
 
     public function enqueue_scripts(){

@@ -1034,6 +1034,16 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $field_option_key = $post_submission['field_option_key'];
 
         $field_customizations = dt_get_option( 'dt_field_customizations' );
+
+        // Adopt a different flow for key_select none options.
+        if ( in_array( $field_option_key, [ 'none' ] ) && isset( $field_customizations[$post_type][$field_key]['type'] ) && $field_customizations[$post_type][$field_key]['type'] === 'key_select' ) {
+            $field_customizations[$post_type][$field_key]['select_cannot_be_empty'] = true;
+            update_option( 'dt_field_customizations', $field_customizations );
+
+            return $field_customizations;
+        }
+
+        // Proceed with default flow.
         if ( !isset( $field_customizations[$post_type][$field_key]['default'][$field_option_key] ) ){
             return new WP_Error( __METHOD__, 'Field option does not exist', [ 'status' => 400 ] );
         }
