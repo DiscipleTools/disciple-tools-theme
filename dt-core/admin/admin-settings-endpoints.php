@@ -826,6 +826,11 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 return false;
             }
 
+            // Handle communication channel field type prefixes.
+            if ( in_array( $field_type, [ 'communication_channel' ] ) ){
+                $field_key = dt_create_field_key( 'contact_' . $post_submission['new_field_name'] );
+            }
+
             // Field privacy
             $field_private = !empty( $post_submission['new_field_private'] );
 
