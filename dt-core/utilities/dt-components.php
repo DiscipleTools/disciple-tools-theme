@@ -170,12 +170,10 @@ class DT_Components
     public static function render_multi_select( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         $options_array = $fields[$field_key]['default'];
-        $dt_global_languages_list = dt_get_global_languages_list();
-
-        $options_array = array_map(function ( $key, $value ) use ( $dt_global_languages_list ) {
+        $options_array = array_map(function ( $key, $value ) {
             return [
                 'id' => $key,
-                'label' => !empty( $value['label'] ) ? $value['label'] : ( isset( $dt_global_languages_list[$key] ) ? $dt_global_languages_list[$key]['label'] : $key ),
+                'label' => $value['label'] ?? $key,
                 'color' => $value['color'] ?? null,
                 'icon' => $value['icon'] ?? null,
             ];
