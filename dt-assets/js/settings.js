@@ -262,7 +262,6 @@ jQuery('#add_unavailable_dates').on('click', function () {
 let display_dates_unavailable = (list = [], first_run) => {
   let date_unavailable_table = jQuery('#unavailable-list');
   let rows = ``;
-  // Sort the list by start_date in descending order using native JavaScript sort
   list = [...list].sort((a, b) => {
     return new Date(b.start_date) - new Date(a.start_date);
   });
@@ -298,7 +297,6 @@ let color_workload_buttons = (name) => {
   if (name) {
     let selected = jQuery(`.status-button[name=${name}]`);
     selected.removeClass('hollow');
-    // Use optional chaining and nullish coalescing instead of lodash.get
     const color =
       window.wpApiSettingsPage?.workload_status_options?.[name]?.color ?? '';
     selected.css('background-color', color);
