@@ -251,6 +251,12 @@ function dt_get_option( string $name ) {
                     'es' => [ 'label' => 'Spanish' ]
                 ];
             }
+            $available_languages = dt_get_available_languages( true, true );
+            foreach ( $languages as $key => $language ) {
+                if ( empty( $language['label'] ) ) {
+                    $languages[$key]['label'] = $available_languages[$key]['label'] ?? $key;
+                }
+            }
             $languages = DT_Posts_Hooks::dt_get_field_options_translation( $languages );
             return apply_filters( 'dt_working_languages', $languages );
 

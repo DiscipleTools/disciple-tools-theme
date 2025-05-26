@@ -173,7 +173,7 @@ class DT_Components
         $options_array = array_map(function ( $key, $value ) {
             return [
                 'id' => $key,
-                'label' => $value['label'],
+                'label' => $value['label'] ?? $key,
                 'color' => $value['color'] ?? null,
                 'icon' => $value['icon'] ?? null,
             ];
