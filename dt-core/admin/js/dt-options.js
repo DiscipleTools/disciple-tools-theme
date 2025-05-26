@@ -5,7 +5,90 @@ jQuery(document).ready(function ($) {
       $(this).siblings(),
       $(this).data('form_name'),
       $(this).data('source'),
+      $(this).data('value'),
+      $(this).data('callback'),
     );
+  });
+
+  // Handle label language translations on a language
+  window.update_language_translations = function (source, value) {
+    let translations_list = {};
+    $(
+      `#language_table .language_label_translations[data-field="${value}"]`,
+    ).each(function (index, element) {
+      const language = $(element).data('field');
+      if (!translations_list[language]) {
+        translations_list[language] = {};
+      }
+      if (!translations_list[language].translations) {
+        translations_list[language].translations = {};
+      }
+      const translation_key = $(element).data('value');
+      translations_list[language].translations[translation_key] =
+        $(element).val();
+    });
+
+    $.ajax({
+      type: 'POST',
+      dataType: 'json',
+      data: JSON.stringify(translations_list),
+      contentType: 'application/json; charset=utf-8',
+      url: `${window.dt_admin_scripts.rest_root}dt-admin-settings/languages/`,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
+      },
+      success: function () {
+        window.location.reload();
+      },
+      error: function (xhr, status, error) {
+        console.log(error);
+        console.log(status);
+        console.error(xhr.responseText);
+      },
+    });
+  };
+
+  // Handle languages tables
+  $('#save_lang_button').click(function (e) {
+    e.preventDefault();
+    let tableLangs = {};
+    $('#language_table .language-row').each(function (index, element) {
+      const lang = $(element).data('lang');
+      const label = $(element).find('.custom_label input').val();
+      const iso_code = $(element).find('.iso_code input').val();
+      const enabled = $(element).find('.enabled input').prop('checked');
+
+      if (!tableLangs[lang]) {
+        tableLangs[lang] = {
+          label: '',
+          'iso_639-3': '',
+          enabled: '',
+        };
+      }
+
+      tableLangs[lang]['label'] = label;
+      tableLangs[lang]['iso_639-3'] = iso_code;
+      tableLangs[lang]['enabled'] = enabled;
+    });
+
+    $.ajax({
+      type: 'POST',
+      dataType: 'json',
+      data: JSON.stringify(tableLangs),
+      contentType: 'application/json; charset=utf-8',
+      url: `${window.dt_admin_scripts.rest_root}dt-admin-settings/languages/`,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
+      },
+      success: function () {
+        window.location.reload();
+      },
+      error: function (xhr, status, error) {
+        console.log(error);
+        console.log(status);
+        console.error(xhr.responseText);
+      },
+    });
   });
 
   $('.change-icon-button').click(function (e) {
@@ -194,9 +277,15 @@ jQuery(document).ready(function ($) {
    * Translation modal dialog
    */
 
-  function display_translation_dialog(container, form_name, source = '') {
+  function display_translation_dialog(
+    container,
+    form_name,
+    source = '',
+    value = '',
+    callback = '',
+  ) {
     let dialog = $('#dt_translation_dialog');
-    if (container && form_name && dialog) {
+    if (container && dialog) {
       // Update dialog div
       $(dialog)
         .empty()
@@ -227,7 +316,9 @@ jQuery(document).ready(function ($) {
                 $('.dt-custom-fields-save-button')[0],
                 true,
               );
-            } else {
+            } else if (callback) {
+              window[callback](source, value);
+            } else if (form_name) {
               $('form[name="' + form_name + '"]').submit();
             }
           },
@@ -236,10 +327,6 @@ jQuery(document).ready(function ($) {
 
       // Display updated dialog
       dialog.dialog('open');
-    } else {
-      console.log(
-        'Unable to reference a valid: [container, form-name, dialog]',
-      );
     }
   }
 
@@ -960,7 +1047,8 @@ jQuery(document).ready(function ($) {
           $(tr)
             .find("input[id^='" + option_key_prefix + "']")
             .each(function (okt_idx, okt_input) {
-              let locale = window.lodash.split($(okt_input).attr('id'), '-')[1];
+              // expected format: field_option_{option_value}_translation-{locale}
+              let locale = okt_input.id.replace(option_key_prefix, '');
               let value = $(okt_input).val();
               if (locale && value) {
                 translations['option_translations'].push({

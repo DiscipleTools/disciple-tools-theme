@@ -78,7 +78,6 @@ class Disciple_Tools_Magic_Endpoints
                 ]
             ]
         );
-
     }
 
     /**
@@ -106,7 +105,7 @@ class Disciple_Tools_Magic_Endpoints
         if ( ! isset( $type[$params['type']] ) ) {
             return new WP_Error( __METHOD__, 'Magic link type not found', [ 'status' => 400 ] );
         } else {
-            $name = $type[$params['type']]['name'] ?? '';
+            $name = $type[$params['type']]['name'] ?: ( $type[$params['type']]['label'] ?: 'App' );
             $meta_key = $type[$params['type']]['meta_key'];
         }
 
@@ -271,6 +270,5 @@ class Disciple_Tools_Magic_Endpoints
 
         return $message;
     }
-
 }
 Disciple_Tools_Magic_Endpoints::instance();

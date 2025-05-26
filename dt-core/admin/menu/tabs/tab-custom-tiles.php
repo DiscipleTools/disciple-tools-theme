@@ -191,7 +191,7 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
                 <li>Choose a post type</li>
                 <li><strong>Create</strong> a new tile or <strong>modify</strong> an existing one</li>
                 <li>Sort <strong>tiles order</strong> and tile <strong>fields order</strong></li>
-                <li>See extra documentation <a href="https://disciple.tools/user-docs/getting-started-info/admin/settings-dt/custom-tiles/" target="_blank">here</a></li>
+                <li>See extra documentation <a href="https://disciple.tools/docs/custom-tiles/" target="_blank">here</a></li>
             </ol>
 
         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/sort-tiles.gif' ) ?>" style="width: 100%"/>
@@ -346,7 +346,6 @@ class Disciple_Tools_Tab_Custom_Tiles extends Disciple_Tools_Abstract_Menu_Base
 
 
         <?php
-
     }
 
     private function process_tile_order( $post_type ){

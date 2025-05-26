@@ -33,7 +33,6 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'dt_capabilities', [ $this, 'dt_capabilities' ], 50, 1 );
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 11, 1 );
         add_filter( 'dt_record_icon', [ $this, 'dt_record_icon' ], 100, 3 );
-
     }
 
     public function register_post_type(){
@@ -180,7 +179,8 @@ class Disciple_Tools_Post_Type_Template {
             'name' => __( 'Picture', 'disciple_tools' ),
             'type' => 'image',
             'show_in_table' => 1,
-            'hidden' => !class_exists( 'DT_Storage' ) || !DT_Storage::is_enabled()
+            'hidden' => !class_exists( 'DT_Storage' ) || !DT_Storage::is_enabled(),
+            'customizable' => false,
         ];
         $fields['last_modified'] =[
             'name' => __( 'Last Modified', 'disciple_tools' ),
@@ -217,26 +217,58 @@ class Disciple_Tools_Post_Type_Template {
             'name'        => __( 'Follow', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
-            'hidden'      => true
+            'hidden'      => true,
+            'customizable' => false,
         ];
         $fields['unfollow'] = [
             'name'        => __( 'Un-Follow', 'disciple_tools' ),
             'type'        => 'multi_select',
             'default'     => [],
-            'hidden'      => true
+            'hidden'      => true,
+            'customizable' => false,
         ];
         $fields['tasks'] = [
             'name' => __( 'Tasks', 'disciple_tools' ),
             'type' => 'task',
             'icon' => get_template_directory_uri() . '/dt-assets/images/calendar-clock.svg',
-            'private' => true
+            'private' => true,
+            'customizable' => false,
         ];
         //notes field used for adding comments when creating a record
         $fields['notes'] = [
             'name' => 'Notes',
             'type' => 'array',
-            'hidden' => true
+            'hidden' => true,
+            'customizable' => false,
         ];
+
+        // add location fields
+        $fields['location_grid'] = [
+            'name'        => __( 'Locations', 'disciple_tools' ),
+            'description' => _x( 'The general location where this record is located.', 'Optional Documentation', 'disciple_tools' ),
+            'type'        => 'location',
+            'mapbox'    => false,
+            'in_create_form' => true,
+            'tile' => 'details',
+            'icon' => get_template_directory_uri() . '/dt-assets/images/location.svg?v=2',
+        ];
+        $fields['location_grid_meta'] = [
+            'name'        => __( 'Locations or Address', 'disciple_tools' ),
+            'type'        => 'location_meta',
+            'tile'      => 'details',
+            'mapbox'    => false,
+            'hidden' => true,
+            'in_create_form' => true,
+            'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
+        ];
+
+        if ( DT_Mapbox_API::get_key() ) {
+            $fields['location_grid']['mapbox'] = true;
+            $fields['location_grid']['hidden'] = true;
+            $fields['location_grid_meta']['mapbox'] = true;
+            $fields['location_grid_meta']['hidden'] = false;
+        }
+
         return $fields;
     }
 

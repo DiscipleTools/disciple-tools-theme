@@ -166,7 +166,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                             </li>
                                                         <?php endforeach; ?>
                                                     </ul>
-                                                    <p> <a href="https://disciple.tools/user-docs/getting-started-info/roles/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
+                                                    <p> <a href="https://disciple.tools/docs/roles-introduction/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
                                                 </dd>
                                                 <?php endif; ?>
                                             </dl>

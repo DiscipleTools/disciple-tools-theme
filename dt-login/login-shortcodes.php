@@ -21,8 +21,16 @@ function dt_firebase_login_ui( $atts ) {
     $lang_code = $atts['lang_code'];
     $redirect_to = $atts['redirect_to'];
 
-    if ( !in_array( $lang_code, dt_login_firebase_supported_languages() ) ) {
-        $lang_code = $default_lang;
+    $firebase_langs = dt_login_firebase_supported_languages();
+
+
+    if ( !in_array( $lang_code, $firebase_langs ) ) {
+        if ( strpos( $lang_code, '_' ) !== false ) {
+            $lang_code = explode( '_', $lang_code )[0];
+        }
+        if ( !in_array( $lang_code, $firebase_langs ) ) {
+            $lang_code = $default_lang;
+        }
     }
 
     $lang_prefix = '';
@@ -154,6 +162,16 @@ function dt_firebase_login_ui( $atts ) {
 
         if (authResult.additionalUserInfo.isNewUser && authResult.user.emailVerified === false) {
           user.sendEmailVerification()
+        }
+
+        //get all data from inputs with ids starting with 'extra_register_input_'
+        const extraData = Array.from(document.querySelectorAll('input[id^="extra_register_input_"]')).reduce((acc, input) => {
+          const key = input.id.replace('extra_register_input_', '')
+          acc[key] = (input.type && input.type === 'checkbox') ? input.checked : input.value
+          return acc
+        }, {})
+        if ( Object.keys(extraData).length > 0 ) {
+          authResult.extraData = extraData
         }
 
         fetch( `${rest_url}/session/login`, {

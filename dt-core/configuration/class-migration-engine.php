@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Migration_Engine
 {
 
-    public static $migration_number = 56;
+    public static $migration_number = 60;
 
     protected static $migrations = null;
 
@@ -141,7 +141,6 @@ class Disciple_Tools_Migration_Engine
     public static function get_current_db_migration(){
         return get_option( 'dt_migration_number' );
     }
-
 }
 
 

@@ -375,7 +375,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     $number_of_translations = 0;
                                     foreach ( $langs as $lang => $val ) {
                                         if ( ! empty( $type['translations'][ $val['language'] ] ) ) {
-                                            $number_of_translations ++;
+                                            $number_of_translations++;
                                         }
                                     }
                                     ?>
@@ -624,9 +624,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         });
         $form_name = 'languages_box';
         ?>
-        <form method="post" name="<?php echo esc_html( $form_name ) ?>" id="languages">
-            <input type="hidden" name="languages_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'languages_box' ) ) ?>" />
-            <table class="widefat">
+            <table class="widefat" id='language_table'>
                 <thead>
                 <tr>
                     <td><?php esc_html_e( 'Key', 'disciple_tools' ) ?></td>
@@ -641,22 +639,25 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <?php foreach ( $languages as $language_key => $language_option ) :
 
                     $enabled = !isset( $language_option['deleted'] ) || $language_option['deleted'] == false; ?>
+                    
+                    <tr class="language-row" data-lang="<?php echo esc_html( $language_key ) ?>">
+                        <td class='lang_key'><?php echo esc_html( $language_key ) ?></td>
+                        <td class='default_label'><?php echo esc_html( isset( $dt_global_languages_list[$language_key] ) ? $dt_global_languages_list[$language_key]['label'] : '' ) ?></td>
+                        <td class='custom_label'><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>]" value="<?php echo esc_html( ( !isset( $dt_global_languages_list[$language_key] ) || ( isset( $dt_global_languages_list[$language_key] ) && $dt_global_languages_list[$language_key]['label'] != $language_option['label'] ) ) ? $language_option['label'] : '' ) ?>"></td>
+                        <td class='iso_code'><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>" value="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>"></td>
 
-                    <tr>
-                        <td><?php echo esc_html( $language_key ) ?></td>
-                        <td><?php echo esc_html( isset( $dt_global_languages_list[$language_key] ) ? $dt_global_languages_list[$language_key]['label'] : '' ) ?></td>
-                        <td><input type="text" placeholder="Custom Label" name="language_label[<?php echo esc_html( $language_key ) ?>][default]" value="<?php echo esc_html( ( !isset( $dt_global_languages_list[$language_key] ) || ( isset( $dt_global_languages_list[$language_key] ) && $dt_global_languages_list[$language_key]['label'] != $language_option['label'] ) ) ? $language_option['label'] : '' ) ?>"></td>
-                        <td><input type="text" placeholder="ISO 639-3 code" maxlength="3" name="language_code[<?php echo esc_html( $language_key ) ?>]" value="<?php echo esc_html( $language_option['iso_639-3'] ?? '' ) ?>"></td>
-                        <td>
+                        <td class='enabled'>
                             <input name="language_enabled[<?php echo esc_html( $language_key ) ?>]"
                                    type="checkbox" <?php echo esc_html( $enabled ? 'checked' : '' ) ?> />
                         </td>
 
-                        <td>
+                        <td class='translation_key'>
                             <?php $langs = dt_get_available_languages(); ?>
                             <button class="button small expand_translations"
-                                    data-form_name="<?php echo esc_html( $form_name ) ?>"
-                                    data-source="lists">
+                                    data-source="dt_languages"
+                                    data-value="<?php echo esc_html( $language_key ); ?>"
+                                    data-callback="update_language_translations"
+                            >
                                 <?php
                                 $number_of_translations = 0;
                                 foreach ( $langs as $lang => $val ){
@@ -673,7 +674,13 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     <?php foreach ( $langs as $lang => $val ) : ?>
                                         <tr>
                                             <td><label for="language_label[<?php echo esc_html( $language_key ) ?>][<?php echo esc_html( $val['language'] )?>]"><?php echo esc_html( $val['native_name'] )?></label></td>
-                                            <td><input name="language_label[<?php echo esc_html( $language_key ) ?>][<?php echo esc_html( $val['language'] )?>]" type="text" value="<?php echo esc_html( $language_option['translations'][$val['language']] ?? '' );?>"/></td>
+                                            <td><input
+                                                class="language_label_translations"
+                                                data-field="<?php echo esc_html( $language_key ); ?>"
+                                                data-value="<?php echo esc_html( $val['language'] ) ?>"
+                                                name="language_label[<?php echo esc_html( $language_key ) ?>][<?php echo esc_html( $val['language'] )?>]"
+                                                type="text"
+                                                value="<?php echo esc_html( $language_option['translations'][$val['language']] ?? '' );?>"/></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </table>
@@ -683,21 +690,24 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                 <?php endforeach; ?>
                 </tbody>
             </table>
-            <br><button type="button" onclick="jQuery('#add_language').toggle();" class="button">
-                <?php echo esc_html__( 'Add new language', 'disciple_tools' ) ?></button>
-            <button type="submit" class="button" style="float:right;">
+            <br>
+            <button id="save_lang_button" type="submit" class="button" style="float:right;">
                 <?php esc_html_e( 'Save', 'disciple_tools' ) ?>
             </button>
+            <form method="post" name="<?php echo esc_html( $form_name ) ?>" id="languages">
+            <input type="hidden" name="languages_box_nonce" value="<?php echo esc_attr( wp_create_nonce( 'languages_box' ) ) ?>" />
+            <br><button type="button" onclick="jQuery('#add_language').toggle();" class="button">
+                <?php echo esc_html__( 'Add new language', 'disciple_tools' ) ?></button>
             <div id="add_language" style="display:none;">
                 <hr>
                 <p><?php esc_html_e( 'Select from the language list', 'disciple_tools' ); ?></p>
-                <select name="new_lang_select">
-                    <option></option>
+                <select name="new_lang_select" id="new_lang_select">
+                    <option id></option>
                     <?php foreach ( $dt_global_languages_list as $lang_key => $lang_option ) : ?>
-                        <option value="<?php echo esc_html( $lang_key ); ?>"><?php echo esc_html( $lang_option['label'] ?? '' ); ?></option>
+                        <option name="<?php echo esc_html( $lang_key ); ?>" value="<?php echo esc_html( $lang_key ); ?>"><?php echo esc_html( $lang_option['label'] ?? '' ); ?></option>
                     <?php endforeach; ?>
                 </select>
-                <button type="submit" class="button"><?php esc_html_e( 'Add', 'disciple_tools' ) ?></button>
+                <button class="button" id="add_lang_button"><?php esc_html_e( 'Add', 'disciple_tools' ) ?></button>
                 <br>
                 <br>
                 <p><?php esc_html_e( 'If your language is not in the list, you can create it manually', 'disciple_tools' ); ?></p>
@@ -721,36 +731,6 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
         $languages = dt_get_option( 'dt_working_languages' ) ?: [];
         $dt_global_languages_list = dt_get_global_languages_list();
 
-        $langs = dt_get_available_languages();
-        foreach ( $languages as $language_key => $language_options ){
-
-            if ( isset( $_POST['language_label'][$language_key]['default'] ) ){
-                $label = sanitize_text_field( wp_unslash( $_POST['language_label'][$language_key]['default'] ) );
-                if ( $language_options['label'] != $label ){
-                    $languages[$language_key]['label'] = $label;
-                }
-                if ( empty( $label ) && isset( $dt_global_languages_list[$language_key]['label'] ) ){
-                    $languages[$language_key]['label'] = $dt_global_languages_list[$language_key]['label'];
-                }
-            }
-            if ( isset( $_POST['language_code'][$language_key] ) ){
-                $code = sanitize_text_field( wp_unslash( $_POST['language_code'][$language_key] ) );
-                if ( ( $language_options['iso_639-3'] ?? '' ) != $code ) {
-                    $languages[$language_key]['iso_639-3'] = $code;
-                }
-            }
-            foreach ( $langs as $lang => $val ){
-                $langcode = $val['language'];
-                if ( isset( $_POST['language_label'][$language_key][$langcode] ) ) {
-                    $translated_label = sanitize_text_field( wp_unslash( $_POST['language_label'][$language_key][$langcode] ) );
-                    if ( ( empty( $translated_label ) && !empty( $languages[$language_key]['translations'][$langcode] ) ) || !empty( $translated_label ) ){
-                        $languages[$language_key]['translations'][$langcode] = $translated_label;
-                    }
-                }
-            }
-            $languages[$language_key]['deleted'] = !isset( $_POST['language_enabled'][$language_key] );
-        }
-
         if ( !empty( $_POST['new_lang_select'] ) ) {
             $lang_key = sanitize_text_field( wp_unslash( $_POST['new_lang_select'] ) );
             $lang = isset( $dt_global_languages_list[ $lang_key ] ) ? $dt_global_languages_list[ $lang_key ] : null;
@@ -759,6 +739,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
             };
             $languages[$lang_key] = $dt_global_languages_list[ $lang_key ];
             $languages[$lang_key]['enabled'] = true;
+            $languages[$lang_key]['label'] = '';
         }
         if ( !empty( $_POST['create_custom_language'] ) ) {
             $language = sanitize_text_field( wp_unslash( $_POST['create_custom_language'] ) );
@@ -848,7 +829,7 @@ class Disciple_Tools_Tab_Custom_Lists extends Disciple_Tools_Abstract_Menu_Base
                                     $number_of_translations = 0;
                                     foreach ( $langs as $lang => $val ) {
                                         if ( !empty( $fields[$field_key]['translations'][$val['language']] ) ) {
-                                            $number_of_translations ++;
+                                            $number_of_translations++;
                                         }
                                     }
                                     ?>

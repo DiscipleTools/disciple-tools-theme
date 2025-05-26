@@ -3,13 +3,29 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
-class Disciple_Tools_People_Groups_Base {
+add_filter( 'dt_post_type_modules', function( $modules ){
+    $modules['people_groups_module'] = [
+        'name' => 'People Groups',
+        'enabled' => true,
+        'prerequisites' => [],
+        'post_type' => 'peoplegroups',
+        'description' => 'Create your own people groups or use Joshua Project data. Link your contacts and groups to their people group.',
+    ];
+    return $modules;
+}, 20, 1 );
+
+class Disciple_Tools_People_Groups_Base extends DT_Module_Base {
     public $post_type = 'peoplegroups';
     public $single_name = 'People Group';
     public $plural_name = 'People Groups';
     public $tile_key = 'jp';
+    public $module = 'people_groups_module';
 
     public function __construct() {
+        parent::__construct();
+        if ( !self::check_enabled_and_prerequisites() ){
+            return;
+        }
 
         //setup post type
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 20, 1 ); //after contacts
@@ -190,25 +206,6 @@ class Disciple_Tools_People_Groups_Base {
                 'tile'          => 'connections',
                 'show_in_table' => true
             ];
-            $fields['location_grid']      = [
-                'name'           => __( 'Locations', 'disciple_tools' ),
-                'description'    => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
-                'type'           => 'location',
-                'mapbox'         => false,
-                'in_create_form' => true,
-                'tile'           => 'details',
-                'icon'           => get_template_directory_uri() . '/dt-assets/images/location.svg',
-            ];
-            $fields['location_grid_meta'] = [
-                'name'        => __( 'Locations', 'disciple_tools' ),
-                //system string does not need translation
-                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
-                'type'        => 'location_meta',
-                'tile'        => 'details',
-                'mapbox'      => false,
-                'hidden'      => true,
-                'icon'        => get_template_directory_uri() . '/dt-assets/images/location.svg?v=2',
-            ];
             $fields['contact_address']    = [
                 'name'         => __( 'Address', 'disciple_tools' ),
                 'icon'         => get_template_directory_uri() . '/dt-assets/images/house.svg',
@@ -230,10 +227,6 @@ class Disciple_Tools_People_Groups_Base {
                 $fields['contact_address']['custom_display'] = true;
                 $fields['contact_address']['mapbox']         = true;
                 unset( $fields['contact_address']['tile'] );
-                $fields['location_grid']['mapbox']      = true;
-                $fields['location_grid_meta']['mapbox'] = true;
-                $fields['location_grid']['hidden']      = true;
-                $fields['location_grid_meta']['hidden'] = false;
             }
 
             /**
@@ -317,6 +310,33 @@ class Disciple_Tools_People_Groups_Base {
 
         }
 
+        if ( $post_type === 'contacts' ){
+            $fields['people_groups'] = [
+                'name' => __( 'People Groups', 'disciple_tools' ),
+                'description' => _x( 'The people groups represented by this contact.', 'Optional Documentation', 'disciple_tools' ),
+                'type' => 'connection',
+                'post_type' => 'peoplegroups',
+                'p2p_direction' => 'from',
+                'p2p_key' => 'contacts_to_peoplegroups',
+                'tile'     => 'details',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/people-group.svg?v=2',
+                'connection_count_field' => [ 'post_type' => 'peoplegroups', 'field_key' => 'contact_count', 'connection_field' => 'contacts' ]
+            ];
+        }
+        if ( $post_type === 'groups' ){
+            $fields['people_groups'] = [
+                'name' => __( 'People Groups', 'disciple_tools' ),
+                'description' => _x( 'The people groups represented by this group.', 'Optional Documentation', 'disciple_tools' ),
+                'icon' => get_template_directory_uri() . '/dt-assets/images/people-group.svg?v=2',
+                'type' => 'connection',
+                'post_type' => 'peoplegroups',
+                'p2p_direction' => 'from',
+                'p2p_key' => 'groups_to_peoplegroups',
+                'tile' => 'details',
+                'connection_count_field' => [ 'post_type' => 'peoplegroups', 'field_key' => 'group_total', 'connection_field' => 'groups' ]
+            ];
+        }
+
         return $fields;
     }
 
@@ -366,6 +386,5 @@ class Disciple_Tools_People_Groups_Base {
 
         return $permissions;
     }
-
 }
 

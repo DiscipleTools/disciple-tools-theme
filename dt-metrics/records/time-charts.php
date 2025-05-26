@@ -38,7 +38,7 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
             return;
         }
 
-        $this->title = __( 'Field Charts', 'disciple_tools' );
+        $this->title = __( 'Advanced Charts', 'disciple_tools' );
         $this->base_title = __( 'Project', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
@@ -119,7 +119,6 @@ class DT_Metrics_Time_Charts extends DT_Metrics_Chart_Base
                     'true_label' => __( 'Yes', 'disciple_tools' ),
                     'false_label' => __( 'No', 'disciple_tools' ),
                     'modal_title' => __( 'Records', 'disciple_tools' ),
-                    'modal_table_head_no' => __( 'No.', 'disciple_tools' ),
                     'modal_table_head_title' => __( 'Title', 'disciple_tools' ),
                     'modal_no_records' => __( 'No Records Available', 'disciple_tools' )
                 ],

@@ -231,7 +231,8 @@ final class Disciple_Tools_Dashboard
 
         add_meta_box( 'dt_news_feed', esc_html__( 'Disciple.Tools News Feed', 'disciple_tools' ), 'dt_show_news_widget', 'dashboard', 'side', 'high' );
 
-        wp_add_dashboard_widget( 'dt_setup_wizard', 'Disciple.Tools Setup Wizard', function (){
+
+        wp_add_dashboard_widget( 'dt_setup_wizard', 'Disciple.Tools Setup Tasks', function (){
 
             $setup_options = get_option( 'dt_setup_wizard_options', [] );
             $default = [
@@ -254,14 +255,9 @@ final class Disciple_Tools_Dashboard
                 }
 
                 if ( $dt_setup_wizard_items[$item_key]['complete'] === true ) {
-                    $completed ++;
+                    $completed++;
                 }
             }
-
-            // Order array by complete status
-            uasort( $dt_setup_wizard_items, function ( $a, $b ) {
-                return $a['complete'] <=> $b['complete'];
-            } );
 
             ?><p>Completed <?php echo esc_html( $completed ); ?> of <?php echo esc_html( sizeof( $dt_setup_wizard_items ) ); ?> tasks</p>
 
@@ -396,23 +392,16 @@ add_filter( 'dt_setup_wizard_items', function ( $items, $setup_options ){
         'hide_mark_done' => false
     ];
     $items['explore_custom_fields'] = [
-        'label' => 'Explore Custom Fields',
+        'label' => 'Explore Custom Tiles and Fields',
         'description' => 'Explore the custom fields section and unlock its full potential.',
-        'link' => admin_url( 'admin.php?page=dt_options&tab=custom-fields' ),
-        'complete' => false,
-        'hide_mark_done' => false
-    ];
-    $items['explore_custom_tiles'] = [
-        'label' => 'Explore Custom Tiles',
-        'description' => 'Explore the custom tiles section and personalize your Disicple.Tools instance.',
-        'link' => admin_url( 'admin.php?page=dt_options&tab=custom-tiles' ),
+        'link' => admin_url( 'admin.php?page=dt_customizations' ),
         'complete' => false,
         'hide_mark_done' => false
     ];
     $items['explore_site_link'] = [
         'label' => 'Explore Site Links',
         'description' => 'Did you know that you can link up several Disciple.Tools instances in a single place? Navigate the Site Link section to find out more!',
-        'link' => 'https://disciple.tools/user-docs/getting-started-info/admin/site-links/',
+        'link' => 'https://disciple.tools/docs/site-links/',
         'complete' => false,
         'hide_mark_done' => false
     ];

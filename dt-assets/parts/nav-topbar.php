@@ -104,8 +104,8 @@ if ( !empty( $custom_logo_url ) ) {
 
                     <!-- profile name -->
                     <?php if ( isset( $dt_nav_tabs['admin']['profile']['hidden'] ) && empty( $dt_nav_tabs['admin']['profile']['hidden'] ) ) : ?>
-                        <li class="image-menu-nav">
-                            <a href="<?php echo esc_url( $dt_nav_tabs['admin']['profile']['link'] ?? get_template_directory_uri() . '/dt-assets/images/profile.svg' ); ?>">
+                        <li class="image-menu-nav profile-settings">
+                            <a href="<?php echo esc_url( $dt_nav_tabs['admin']['profile']['link'] ?? site_url( '/settings/' ) ); ?>">
                                 <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?>" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/profile.svg?v=2' ) ?>">
                                 <span dir="auto"><?php echo esc_html( $dt_nav_tabs['admin']['profile']['label'] ); ?></span>
                             </a>
@@ -116,7 +116,7 @@ if ( !empty( $custom_logo_url ) ) {
                     <!-- advanced search -->
                     <?php if ( isset( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) && empty( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) ) : ?>
                         <li class="image-menu-nav">
-                            <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
+                            <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? '#' ); ?>">
                                 <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['advanced_search']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
                             </a>
                         </li>

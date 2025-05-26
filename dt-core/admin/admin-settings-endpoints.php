@@ -215,6 +215,103 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/languages', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_languages' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/modules-update', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_modules' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/update-dt-options', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'update_dt_options' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
+    }
+
+    public function update_dt_options( WP_REST_REQUEST $request ){
+        $params = $request->get_params();
+        $updated = false;
+        foreach ( $params as $option_key => $option_value ){
+            //only allow updating D.T options
+            if ( strpos( $option_key, 'dt_' ) !== 0 ){
+                continue;
+            }
+            update_option( $option_key, $option_value );
+            $updated = true;
+        }
+        return $updated;
+    }
+
+    public function update_modules( WP_REST_REQUEST $request ) {
+        $modules_option_name = 'dt_post_type_modules';
+        $modules_to_update = $request->get_param( 'modules' );
+        $modules_to_update = dt_recursive_sanitize_array( $modules_to_update );
+
+        $modules = get_option( $modules_option_name );
+
+        foreach ( $modules_to_update as $key => $enabled ){
+            if ( !isset( $modules[$key] ) ){
+                $modules[$key] = [];
+            }
+            $modules[$key]['enabled'] = !empty( $enabled );
+        }
+
+        update_option( $modules_option_name, $modules );
+        return true;
+    }
+
+    public function update_languages( WP_REST_REQUEST $request ) {
+        $params = $request->get_params();
+        $languages = dt_get_option( 'dt_working_languages' );
+
+        $langs = dt_get_available_languages();
+        foreach ( $languages as $language_key => $language_options ){
+
+            if ( isset( $params[$language_key]['label'] ) ){
+                $label = sanitize_text_field( wp_unslash( $params[$language_key]['label'] ) );
+                if ( ( $language_options['label'] ?? '' ) != $label ){
+                    $languages[$language_key]['label'] = $label;
+                }
+            }
+            if ( isset( $params[$language_key]['iso_639-3'] ) ){
+                $code = sanitize_text_field( wp_unslash( $params[$language_key]['iso_639-3'] ) );
+                if ( ( $language_options['iso_639-3'] ?? '' ) != $code ) {
+                    $languages[$language_key]['iso_639-3'] = $code;
+                }
+            }
+            if ( isset( $params[$language_key]['enabled'] ) ){
+                $enabled = sanitize_text_field( wp_unslash( $params[$language_key]['enabled'] ) );
+                if ( ( $language_options['enabled'] ?? '' ) != $enabled ) {
+                    $languages[$language_key]['enabled'] = !empty( $enabled );
+                }
+            }
+            if ( isset( $params[$language_key]['translations'] ) ) {
+                foreach ( $langs as $lang => $val ){
+                    $langcode = $val['language'];
+                    if ( isset( $params[$language_key]['translations'][$langcode] ) ) {
+                        $translated_label = sanitize_text_field( wp_unslash( $params[$language_key]['translations'][$langcode] ) );
+                        if ( ( empty( $translated_label ) && !empty( $languages[$language_key]['translations'][$langcode] ) ) || !empty( $translated_label ) ){
+                            $languages[$language_key]['translations'][$langcode] = $translated_label;
+                        }
+                    }
+                }
+            }
+            $languages[$language_key]['deleted'] = empty( $params[$language_key]['enabled'] );
+        }
+
+        update_option( 'dt_working_languages', $languages, false );
+        return true;
     }
 
     public static function get_post_fields() {
@@ -448,7 +545,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $updated_custom_role['custom'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['custom'] ?? false ) : true;
 
                 // Identify capabilities selection states.
-                $updated_capabilities = [];
+                $updated_capabilities = ( isset( $existing_custom_roles[$role]['capabilities'] ) && is_array( $existing_custom_roles[$role]['capabilities'] ) ) ? $existing_custom_roles[$role]['capabilities'] : [];
                 foreach ( $capabilities ?? [] as $capability ){
                     $updated_capabilities[$capability['key']] = $capability['enabled'];
                 }
@@ -512,7 +609,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $params = $request->get_params();
         $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
         $tile_key = sanitize_text_field( wp_unslash( $params['tile_key'] ) );
-        $tile_options = DT_Posts::get_post_tiles( $post_type, false );
+        $tile_options = DT_Posts::get_post_tiles( $post_type, false, false );
         return $tile_options[$tile_key];
     }
 
@@ -607,53 +704,35 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
             switch ( $post_submission['translation_type'] ) {
                 case 'tile-label':
-                    $translated_element = $tile_options[$post_type][$tile_key];
-                    break;
-
                 case 'tile-description':
                     $translated_element = $tile_options[$post_type][$tile_key];
                     break;
 
                 case 'field-label':
-                    if ( !isset( $post_submission['field_key'] ) ) {
-                        return false;
-                    }
-                    $field_key = $post_submission['field_key'];
-                    $translated_element = $field_customizations[$post_type][$field_key];
-                    break;
-
                 case 'field-description':
                     if ( !isset( $post_submission['field_key'] ) ) {
                         return false;
                     }
                     $field_key = $post_submission['field_key'];
                     $translated_element = $field_customizations[$post_type][$field_key];
-                        break;
-
-                case 'field-option-label':
-                    if ( !isset( $post_submission['field_key'] ) || !isset( $post_submission['field_option_key'] ) ) {
-                        return false;
-                    }
-                    $field_key = $post_submission['field_key'];
-                    $field_option_key = $post_submission['field_option_key'];
-                    $translated_element = $field_customizations[$post_type][$field_key]['default'][$field_option_key];
                     break;
 
+                case 'field-option-label':
                 case 'field-option-description':
                     if ( !isset( $post_submission['field_key'] ) || !isset( $post_submission['field_option_key'] ) ) {
                         return false;
                     }
                     $field_key = $post_submission['field_key'];
                     $field_option_key = $post_submission['field_option_key'];
-                    $translated_element = $field_customizations[$post_type][$field_key]['default'][$field_option_key];
+                    $translated_element = $field_customizations[$post_type][$field_key]['default'][$field_option_key] ?? [];
                     break;
             }
-
             // Check if translation is a description
             $translations_element_key = 'translations';
             if ( strpos( $post_submission['translation_type'], 'description' ) ) {
                 $translations_element_key = 'description_translations';
             }
+            $translated_element[$translations_element_key] = [];
 
             foreach ( $translations as $lang_key => $translation_val ) {
                 if ( $lang_key !== '' || !is_null( $lang_key ) ) {
@@ -663,30 +742,18 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
             switch ( $post_submission['translation_type'] ) {
                 case 'tile-label':
-                    $tile_options[$post_type][$tile_key] = $translated_element;
-                    update_option( 'dt_custom_tiles', $tile_options );
-                    break;
-
                 case 'tile-description':
                     $tile_options[$post_type][$tile_key] = $translated_element;
                     update_option( 'dt_custom_tiles', $tile_options );
                     break;
 
                 case 'field-label':
-                    $field_customizations[$post_type][$field_key] = $translated_element;
-                    update_option( 'dt_field_customizations', $field_customizations );
-                    break;
-
                 case 'field-description':
                     $field_customizations[$post_type][$field_key] = $translated_element;
                     update_option( 'dt_field_customizations', $field_customizations );
                     break;
 
                 case 'field-option-label':
-                    $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $translated_element;
-                    update_option( 'dt_field_customizations', $field_customizations );
-                    break;
-
                 case 'field-option-description':
                     $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $translated_element;
                     update_option( 'dt_field_customizations', $field_customizations );
@@ -757,6 +824,11 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
             if ( !$field_key ){
                 return false;
+            }
+
+            // Handle communication channel field type prefixes.
+            if ( in_array( $field_type, [ 'communication_channel' ] ) ){
+                $field_key = dt_create_field_key( 'contact_' . $post_submission['new_field_name'] );
             }
 
             // Field privacy
@@ -911,16 +983,31 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $new_field_option_description = $post_submission['new_field_option_description'];
         $field_option_icon = $post_submission['field_option_icon'];
 
+        $fields = DT_Posts::get_post_field_settings( $post_type, false, true );
+        $field_options = $fields[$field_key]['default'] ?? [];
+        $field_option = $field_options[$field_option_key] ?? [];
+
         $field_customizations = dt_get_option( 'dt_field_customizations' );
-        $custom_field_option = [
-            'label' => $new_field_option_label,
-            'description' => $new_field_option_description,
-        ];
+        $custom_field_option = [];
+        if ( isset( $field_customizations[$post_type][$field_key]['default'][$field_option_key] ) ){
+            $custom_field_option = array_merge( $field_customizations[$post_type][$field_key]['default'][$field_option_key], $custom_field_option );
+        }
+        $default_label = self::get_default_field_option_label( $post_type, $field_key, $field_option_key );
+        if ( $new_field_option_label !== $default_label ){
+            $custom_field_option['label'] = $new_field_option_label;
+        }
+        $default_description = self::get_default_field_option_description( $post_type, $field_key, $field_option_key );
+        if ( $new_field_option_description !== $default_description ){
+            $custom_field_option['description'] = $new_field_option_description;
+        }
 
         if ( $field_option_icon && strpos( $field_option_icon, 'undefined' ) === false ){
             $field_option_icon = strtolower( trim( $field_option_icon ) );
             $icon_key = ( strpos( $field_option_icon, 'mdi' ) !== 0 ) ? 'icon' : 'font-icon';
-            $custom_field_option[$icon_key] = $field_option_icon;
+
+            if ( $field_option_icon !== $field_option[$icon_key] ){
+                $custom_field_option[$icon_key] = $field_option_icon;
+            }
 
             if ( $icon_key == 'font-icon' ){
                 $custom_field_option['icon'] = '';
@@ -928,7 +1015,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         }
 
         // Create default_name to store the default field option label if it changed
-        if ( self::default_field_option_label_changed( $post_type, $field_key, $field_option_key, $custom_field_option['label'] ) ) {
+        if ( self::default_field_option_label_changed( $post_type, $field_key, $field_option_key, $custom_field_option['label'] ?? '' ) ) {
             $custom_field_option['default_name'] = self::get_default_field_option_label( $post_type, $field_key, $field_option_key );
         }
 
@@ -939,7 +1026,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
         $field_customizations[$post_type][$field_key]['default'][$field_option_key] = $custom_field_option;
         update_option( 'dt_field_customizations', $field_customizations );
-        return $custom_field_option;
+        return array_merge( $field_option, $custom_field_option );
     }
 
     public function delete_field_option( WP_REST_Request $request ) {
@@ -952,6 +1039,16 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $field_option_key = $post_submission['field_option_key'];
 
         $field_customizations = dt_get_option( 'dt_field_customizations' );
+
+        // Adopt a different flow for key_select none options.
+        if ( in_array( $field_option_key, [ 'none' ] ) && isset( $field_customizations[$post_type][$field_key]['type'] ) && $field_customizations[$post_type][$field_key]['type'] === 'key_select' ) {
+            $field_customizations[$post_type][$field_key]['select_cannot_be_empty'] = true;
+            update_option( 'dt_field_customizations', $field_customizations );
+
+            return $field_customizations;
+        }
+
+        // Proceed with default flow.
         if ( !isset( $field_customizations[$post_type][$field_key]['default'][$field_option_key] ) ){
             return new WP_Error( __METHOD__, 'Field option does not exist', [ 'status' => 400 ] );
         }
@@ -1007,6 +1104,13 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
         $all_non_custom_fields = array_merge( $base_fields, $default_fields );
         $default_name = $all_non_custom_fields[$field_key]['default'][$field_option_key]['label'] ?? '';
+        return $default_name;
+    }
+    public static function get_default_field_option_description( $post_type, $field_key, $field_option_key ) {
+        $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
+        $default_fields = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+        $all_non_custom_fields = array_merge( $base_fields, $default_fields );
+        $default_name = $all_non_custom_fields[$field_key]['default'][$field_option_key]['description'] ?? '';
         return $default_name;
     }
 

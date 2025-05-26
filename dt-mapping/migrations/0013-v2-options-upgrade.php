@@ -3,6 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Class DT_Mapping_Module_Migration_0013
+ * Setup location grid mirror urls
  *
  * @version_added 1.30.2
  */
@@ -34,7 +35,6 @@ class DT_Mapping_Module_Migration_0013 extends DT_Mapping_Module_Migration {
      * @throws \Exception  Got error when dropping table $name.
      */
     public function down() {
-
     }
 
     /**
@@ -49,5 +49,4 @@ class DT_Mapping_Module_Migration_0013 extends DT_Mapping_Module_Migration {
      */
     public function test() {
     }
-
 }

@@ -83,6 +83,10 @@ function dt_site_scripts() {
     // Register main stylesheet
     dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
 
+    // Register web components
+    dt_theme_enqueue_script( 'web-components', 'dt-assets/build/components/index.js', array(), false );
+    dt_theme_enqueue_style( 'web-components-css', 'dt-assets/build/css/light.min.css', array() );
+
     // Comment reply script for threaded comments
     if ( is_singular() && comments_open() && ( get_option( 'thread_comments' ) == 1 ) ) {
         wp_enqueue_script( 'comment-reply' );
@@ -200,6 +204,7 @@ function dt_site_scripts() {
                 'jquery',
                 'lodash',
                 'shared-functions',
+                'web-components',
                 'typeahead-jquery',
                 'jquery-masonry'
             ) );
@@ -375,6 +380,7 @@ function dt_site_scripts() {
             'fields_to_show_in_table' => DT_Posts::get_default_list_column_order( $post_type ),
             'translations' => apply_filters( 'dt_list_js_translations', $translations ),
             'filters' => Disciple_Tools_Users::get_user_filters( $post_type ),
+            'default_icon' => apply_filters( 'dt_record_icon', null, $post_type, null ),
         ) );
         if ( DT_Mapbox_API::get_key() ){
             DT_Mapbox_API::load_mapbox_search_widget();
@@ -395,8 +401,17 @@ function dt_site_scripts() {
             $dependencies[] = 'mapbox-search-widget';
             $dependencies[] = 'mapbox-gl';
         }
+    }
+    if ( $is_new_post ) {
         dt_theme_enqueue_script( 'new-record', 'dt-assets/js/new-record.js', $dependencies, true );
         wp_localize_script( 'new-record', 'new_record_localized', array(
+            'post_type'          => $post_type,
+            'post_type_settings' => $post_settings,
+            'translations'       => $translations,
+        ) );
+    } else if ( $is_new_bulk_post ) {
+        dt_theme_enqueue_script( 'new-bulk-record', 'dt-assets/js/new-bulk-record.js', $dependencies, true );
+        wp_localize_script( 'new-bulk-record', 'new_record_localized', array(
             'post_type'          => $post_type,
             'post_type_settings' => $post_settings,
             'translations'       => $translations,
@@ -433,6 +448,7 @@ function dt_site_scripts() {
                             'error_msg' => __( 'Unable to upload, please try again', 'disciple_tools' ),
                             'but_upload' => __( 'Upload', 'disciple_tools' ),
                             'but_delete' => __( 'Delete Existing File', 'disciple_tools' ),
+                            'but_replace' => __( 'Replace Existing Image', 'disciple_tools' ),
                             'delete_msg' => __( 'Are you sure you wish to delete existing file?', 'disciple_tools' ),
                             'delete_success_msg' => __( 'Successfully Deleted!', 'disciple_tools' ),
                             'delete_error_msg' => __( 'Delete failed, please try again', 'disciple_tools' ),
@@ -443,7 +459,6 @@ function dt_site_scripts() {
             ]
         );
     }
-
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );
 

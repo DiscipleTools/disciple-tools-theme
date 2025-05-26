@@ -226,7 +226,7 @@ class Disciple_Tools_Posts
         //don't create activity on connection fields that are hidden
         foreach ( $fields as $field ){
             if ( isset( $field['p2p_key'] ) && $field['p2p_key'] === $activity->meta_key ){
-                if ( ( ( $activity->field_type === 'connection to' ) || $activity->object_note === 'connection to' ) && $field['p2p_direction'] === 'to' || ( ( $activity->field_type === 'connection to' ) || $activity->object_note === 'connection to' ) && $field['p2p_direction'] !== 'to' ){
+                if ( ( ( $activity->field_type === 'connection to' || $activity->object_note === 'connection to' ) && $field['p2p_direction'] === 'to' ) || ( ( $activity->field_type === 'connection to' || $activity->object_note === 'connection to' ) && $field['p2p_direction'] !== 'to' ) ){
                     if ( isset( $field['hidden'] ) && !empty( $field['hidden'] ) ){
                         return '';
                     }
@@ -647,6 +647,7 @@ class Disciple_Tools_Posts
      * @return array|mixed
      */
     public static function fields_to_sql( $post_type, $query_array, $operator = 'AND', $args = [] ){
+        /**
         $examples = [
             'groups' => [ 3029, 39039 ],
             'groups' => [ -3029 ],
@@ -669,6 +670,7 @@ class Disciple_Tools_Posts
             'milestones' => [ 'milestone_has_bible', 'milestone_reading_bible' ],
             'milestones' => [ '-milestone_has_bible', '-milestone_reading_bible' ],
         ];
+        */
 
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
 
@@ -972,7 +974,7 @@ class Disciple_Tools_Posts
                                 $where_sql .= " OR $table_key.meta_value = '' ";
                             }
                             foreach ( $query_value as $value_key => $value ){
-                                $index ++;
+                                $index++;
                                 $equality = 'LIKE';
 
                                 //allow negative searches
@@ -1052,7 +1054,6 @@ class Disciple_Tools_Posts
         }
         $args['where_sql'] = str_replace( "$operator ()", '', $args['where_sql'] );
         return $args;
-
     }
 
 
@@ -1477,6 +1478,8 @@ class Disciple_Tools_Posts
 
         global $wpdb;
 
+        do_action( 'dt_before_post_deleted', $post_type, $post_id );
+
         $post_title = $wpdb->get_var( $wpdb->prepare( "SELECT post_title FROM $wpdb->posts WHERE ID = %d AND post_type = %s", $post_id, $post_type ) );
 
         $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->dt_notifications WHERE post_id = %s", $post_id ) );
@@ -1494,6 +1497,9 @@ class Disciple_Tools_Posts
             'object_id' => $post_id,
             'object_name' => $post_title
         ] );
+
+        //hook for signaling that a post has been deleted
+        do_action( 'dt_post_deleted', $post_type, $post_id, $post_title );
 
         return true;
     }
@@ -1597,6 +1603,7 @@ class Disciple_Tools_Posts
 
     public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, array $existing_post = null ){
 
+        global $wpdb;
         foreach ( $fields as $field_key => $field ){
 
             /********************************************************
@@ -1672,6 +1679,25 @@ class Disciple_Tools_Posts
                         Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value['grid_meta_id'], $existing_post );
                     }
 
+                    // Add by pre-defined meta grid values.
+                    else if ( !empty( $value['grid_id'] ) && !empty( $value['label'] ) && !empty( $value['level'] ) && !empty( $value['lng'] ) && !empty( $value['lat'] ) ) {
+                        $location_meta_grid = array();
+
+                        Location_Grid_Meta::validate_location_grid_meta( $location_meta_grid );
+                        $location_meta_grid['post_id'] = $post_id;
+                        $location_meta_grid['post_type'] = $post_type;
+                        $location_meta_grid['grid_id'] = $value['grid_id'];
+                        $location_meta_grid['lng'] = $value['lng'];
+                        $location_meta_grid['lat'] = $value['lat'];
+                        $location_meta_grid['level'] = $value['level'];
+                        $location_meta_grid['label'] = $value['label'];
+
+                        // Proceed accordingly with addition.
+                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                        if ( is_wp_error( $potential_error ) ) {
+                            return $potential_error;
+                        }
+                    }
                     // Add by grid_id
                     else if ( isset( $value['grid_id'] ) && ! empty( $value['grid_id'] ) ) {
                         $grid = $geocoder->query_by_grid_id( $value['grid_id'] );
@@ -2312,8 +2338,10 @@ class Disciple_Tools_Posts
         if ( !isset( $field_setting['p2p_key'], $field_setting['p2p_direction'] ) ) {
             return new WP_Error( __FUNCTION__, 'Could not add connection. Field settings missing', [ 'status' => 400 ] );
         }
+
+        $associated_workflow_detected = Disciple_Tools_Workflows_Execution_Handler::has_workflows_by_fields( $post_type, ( $post_settings['connection_types'] ?? [] ) );
         $current_connected_post = null;
-        if ( $field_setting['post_type'] !== $post_type ){
+        if ( ( $field_setting['post_type'] !== $post_type ) || $associated_workflow_detected ){
             $current_connected_post = DT_Posts::get_post( $field_setting['post_type'], $value, true, false );
         }
 
@@ -2337,7 +2365,7 @@ class Disciple_Tools_Posts
             $connection->permalink = get_permalink( $value );
 
             // Determine if update action to be fired for corresponding connection.
-            if ( $connection->post_type != $post_type ) {
+            if ( ( $connection->post_type != $post_type ) || $associated_workflow_detected ) {
                 $reversed_field = self::get_reverse_connection_field( $field_key, $field_setting );
                 if ( ! empty( $reversed_field ) ) {
 
@@ -2578,11 +2606,14 @@ class Disciple_Tools_Posts
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'image' ){
                     if ( !empty( $value[0]['value'] ) ){
-                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ){
+                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) {
                             $fields[$key] = [
-                                'thumb' => DT_storage::get_thumbnail_url( $value[0]['value'] ),
-                                'full' => DT_storage::get_file_url( $value[0]['value'] ),
+                                'thumb' => DT_Storage::get_thumbnail_url( $value[0]['value'] ),
+                                'full'  => DT_Storage::get_file_url( $value[0]['value'] ),
                             ];
+                            if ( method_exists( 'DT_Storage', 'get_large_thumbnail_url' ) ) {
+                                $fields[$key]['large'] = DT_Storage::get_large_thumbnail_url( $value[0]['value'] );
+                            }
                         }
                     }
                 } else {
@@ -2668,7 +2699,7 @@ class Disciple_Tools_Posts
                         }
                         $key = $m['meta_value'];
                         $label = isset( $field_settings[$field_key]['default'][$m['meta_value']]['label'] ) ? $field_settings[$field_key]['default'][$m['meta_value']]['label'] : $key;
-                        $fields[$field_key] = array( 'key' => $key, 'label' => $label  );
+                        $fields[$field_key] = array( 'key' => $key, 'label' => $label );
                     } else if ( self::is_link_key( $m['meta_key'], $field_settings ) ) {
                         $link_info = self::get_link_info( $m['meta_key'], $field_settings );
                         $field_key = $link_info['field_key'];
@@ -3014,7 +3045,7 @@ class Disciple_Tools_Posts
      */
     public static function geolocate_addresses( $post_id, $post_type, $field_key, $address_value ): bool {
         // Check if geocoder apis exist.
-        if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() || class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ){
+        if ( ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) || ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) ){
 
             $address_transpose_success = false;
 
@@ -3114,7 +3145,6 @@ class Disciple_Tools_Posts
 
         return false;
     }
-
 }
 
 /**
@@ -3213,5 +3243,4 @@ class Disciple_Tools_Metabox_Address
 
         return $fields;
     }
-
 }

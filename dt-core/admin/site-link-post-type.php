@@ -207,14 +207,17 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
              */
             // challenge https connection
             if ( WP_DEBUG !== true ) {
-                if ( !isset( $_SERVER['HTTPS'] ) ) {
-                    dt_write_log( __METHOD__ . ': Server does not have the HTTPS parameter set.' );
+                $disable_site_link_https_check = apply_filters( 'dt_disable_site_link_https_check', false );
+                if ( empty( $disable_site_link_https_check ) ){
+                    if ( !isset( $_SERVER['HTTPS'] ) ){
+                        dt_write_log( __METHOD__ . ': Server does not have the HTTPS parameter set.' );
 
-                    return false;
-                } elseif ( !( 'on' === $_SERVER['HTTPS'] ) ) {
-                    dt_write_log( __METHOD__ . ': Failed https challenge' );
+                        return false;
+                    } elseif ( !( 'on' === $_SERVER['HTTPS'] ) ){
+                        dt_write_log( __METHOD__ . ': Failed https challenge' );
 
-                    return false;
+                        return false;
+                    }
                 }
             }
 
@@ -1054,10 +1057,10 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             }
             $uri = $this->get_url_path();
 
-            if ( $uri && ( strpos( $uri, 'edit.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) || ( strpos( $uri, 'post-new.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) ) : ?>
+            if ( $uri && ( ( strpos( $uri, 'edit.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) || ( strpos( $uri, 'post-new.php' ) && strpos( $uri, 'post_type=site_link_system' ) ) ) ) : ?>
                 <script>
                     jQuery(function($) {
-                        $(`<div><a href="https://disciple.tools/user-docs/getting-started-info/admin/site-links/" style="margin-bottom:15px;" target="_blank">
+                        $(`<div><a href="https://disciple.tools/docs/site-links/" style="margin-bottom:15px;" target="_blank">
                         <img style="height:15px" class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                         Site link documentation</a></div>`).insertAfter(
                             '#wpbody-content .wrap .wp-header-end:eq(0)')
@@ -1514,6 +1517,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     $type['create_' . $post_type] = sprintf( __( 'Create %s', 'disciple_tools' ), $post_type_settings['label_plural'] );
                     $type['create_update_' . $post_type] = sprintf( __( 'Create and Update %s', 'disciple_tools' ), $post_type_settings['label_plural'] );
                 }
+                $type['all_permissions'] = 'All permissions';
             }
 
             return $type;
@@ -1532,6 +1536,11 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                         $args['capabilities'][] = 'update_any_' . $post_type;
                     }
                 }
+            }
+            if ( 'all_permissions' === $args['connection_type'] ){
+                $existing_roles_permissions = Disciple_Tools_Roles::get_dt_roles_and_permissions();
+                $administrator_permissions = array_keys( $existing_roles_permissions['administrator']['permissions'] );
+                $args['capabilities'] = $administrator_permissions;
             }
 
             return $args;
@@ -1590,6 +1599,5 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             add_filter( 'site_link_type', [ $this, 'default_site_link_type' ], 10, 1 );
             add_filter( 'site_link_type_capabilities', [ $this, 'default_site_link_capabilities' ], 10, 1 );
         } // End __construct()
-
     } // End Class
 }

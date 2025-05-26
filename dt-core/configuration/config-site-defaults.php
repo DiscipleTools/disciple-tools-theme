@@ -135,8 +135,6 @@ function dt_get_option( string $name ) {
             }
             return get_option( 'dt_site_options' );
 
-            break;
-
         case 'dt_site_custom_lists':
             $default_custom_lists = dt_get_site_custom_lists();
 
@@ -154,7 +152,6 @@ function dt_get_option( string $name ) {
             }
             //return apply_filters( "dt_site_custom_lists", get_option( 'dt_site_custom_lists' ) );
             return get_option( 'dt_site_custom_lists' );
-            break;
 
         case 'dt_field_customizations':
             return get_option( 'dt_field_customizations', [
@@ -163,14 +160,10 @@ function dt_get_option( string $name ) {
             ]);
         case 'dt_custom_tiles':
 
-            $custom_tiles = get_option( 'dt_custom_tiles', [
+            return get_option( 'dt_custom_tiles', [
                 'contacts' => [],
                 'groups' => []
             ]);
-
-             $custom_tiles_with_translations = apply_filters( 'options_dt_custom_tiles', $custom_tiles );
-
-             return $custom_tiles_with_translations;
 
         case 'base_user':
             if ( ! get_option( 'dt_base_user' ) ) { // options doesn't exist, create new.
@@ -196,8 +189,6 @@ function dt_get_option( string $name ) {
             else {
                 return get_option( 'dt_base_user' );
             }
-            break;
-
 
         case 'location_levels':
             $default_levels = dt_get_location_levels();
@@ -220,7 +211,6 @@ function dt_get_option( string $name ) {
                 $levels = get_option( 'dt_location_levels' );
             }
             return $levels['location_levels'];
-            break;
         case 'auto_location':
             $setting = get_option( 'dt_auto_location' );
             if ( false === $setting ) {
@@ -228,8 +218,6 @@ function dt_get_option( string $name ) {
                 $setting = get_option( 'dt_auto_location' );
             }
             return $setting;
-            break;
-
         case 'dt_storage_connection_id':
             return get_option( 'dt_storage_connection_id', '' );
 
@@ -239,8 +227,8 @@ function dt_get_option( string $name ) {
                 update_option( 'dt_email_base_subject', 'Disciple.Tools' );
             }
             return $subject_base;
-            break;
-
+        case 'dt_email_base_address_reply_to':
+            return get_option( 'dt_email_base_address_reply_to', '' );
         case 'dt_email_base_address':
             return get_option( 'dt_email_base_address', '' );
         case 'dt_email_base_name':
@@ -263,6 +251,12 @@ function dt_get_option( string $name ) {
                     'es' => [ 'label' => 'Spanish' ]
                 ];
             }
+            $available_languages = dt_get_available_languages( true, true );
+            foreach ( $languages as $key => $language ) {
+                if ( empty( $language['label'] ) ) {
+                    $languages[$key]['label'] = $available_languages[$key]['label'] ?? $key;
+                }
+            }
             $languages = DT_Posts_Hooks::dt_get_field_options_translation( $languages );
             return apply_filters( 'dt_working_languages', $languages );
 
@@ -284,7 +278,6 @@ function dt_get_option( string $name ) {
 
         default:
             return false;
-            break;
     }
 }
 
@@ -315,15 +308,11 @@ function dt_update_option( $name, $value, $autoload = false ) {
             $levels = wp_parse_args( $levels, $default_levels );
 
             return update_option( 'dt_location_levels', $levels, $autoload );
-
-            break;
         case 'auto_location':
             return update_option( 'dt_auto_location', $value, $autoload );
-            break;
 
         default:
             return false;
-            break;
     }
 }
 
@@ -379,17 +368,6 @@ function dt_get_site_options_defaults() {
                 'email' => false
             ]
         ]
-    ];
-
-    $fields['daily_reports'] = [
-        'build_report_for_contacts'  => true,
-        'build_report_for_groups'    => true,
-        'build_report_for_facebook'  => false,
-        'build_report_for_twitter'   => false,
-        'build_report_for_analytics' => false,
-        'build_report_for_adwords'   => false,
-        'build_report_for_mailchimp' => false,
-        'build_report_for_youtube'   => false,
     ];
 
     $fields['update_required'] = [
@@ -529,7 +507,7 @@ function dt_get_site_custom_lists( string $list_title = null ) {
     // alias's must be lower case with no spaces
     $fields['comment_reaction_options'] = [
             'thumbs_up' => [ 'name' => __( 'thumbs up', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f44d.png', 'emoji' => '👍' ],
-            'heart' => [ 'name' => __( 'heart', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/2764.png', 'emoji' => '❤️'],
+            'heart' => [ 'name' => __( 'heart', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/2764.png', 'emoji' => '❤️' ],
             'laugh' => [ 'name' => __( 'laugh', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f604.png', 'emoji' => '😄' ],
             'wow' => [ 'name' => __( 'wow', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f62e.png', 'emoji' => '😮' ],
             'sad' => [ 'name' => __( 'sad', 'disciple_tools' ), 'path' => 'https://github.githubassets.com/images/icons/emoji/unicode/1f615.png', 'emoji' => '😟' ],
@@ -677,7 +655,7 @@ function dt_header_icon_and_meta(){
     <link rel="apple-touch-icon" sizes="180x180" href="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/favicon-16x16.png">
-    <link rel="manifest" href="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/site.webmanifest">
+    <link rel="manifest" href="<?php echo esc_url( home_url( '/manifest.json' ) ); ?>">
     <link rel="shortcut icon" href="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/favicon.ico">
     <meta name="msapplication-TileColor" content="#3f729b">
     <meta name="msapplication-TileImage" content="<?php echo esc_url( get_template_directory_uri() ); ?>/dt-assets/favicons/mstile-144x144.png">

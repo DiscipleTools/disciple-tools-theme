@@ -1,5 +1,18 @@
 'use strict';
 (function ($, list_settings, Foundation) {
+  $(document).ready(function () {
+    if (window.DtWebComponents && window.DtWebComponents.ComponentService) {
+      const service = new window.DtWebComponents.ComponentService(
+        window.list_settings.post_type,
+        null,
+        window.wpApiShare.nonce,
+        window.wpApiShare.root,
+      );
+      window.componentService = service;
+
+      service.attachLoadEvents();
+    }
+  });
   let selected_filters = $('#selected-filters');
   let new_filter_labels = [];
   let custom_filters = [];
@@ -8,6 +21,7 @@
   let filterToEdit = '';
   let filter_accordions = $('#list-filter-tabs');
   let currentFilters = $('#current-filters');
+  let split_by_filter_labels = $('#split_by_current_filter_select_labels');
   let cookie = window.SHAREDFUNCTIONS.get_json_from_local_storage(
     'last_view',
     {},
@@ -377,7 +391,7 @@
     $(label).remove();
 
     // Refresh view records
-    get_records_for_current_filter(current_filter);
+    get_records_for_current_filter(current_filter, true);
   }
 
   /**
@@ -458,7 +472,10 @@
     window.history.pushState(null, document.title, url.search);
   }
 
-  function get_records_for_current_filter(custom_filter = null) {
+  function get_records_for_current_filter(
+    custom_filter = null,
+    remove_all_split_by_checked_options = false,
+  ) {
     let checked = $('.js-list-view:checked');
     let current_view = checked.val();
     let filter_id = checked.data('id') || current_view || '';
@@ -468,8 +485,10 @@
     if (custom_filter) {
       current_filter = custom_filter;
 
-      // Ensure to uncheck all split by option filters, to avoid infinity loops!
-      $('.js-list-view-split-by').prop('checked', false);
+      // If specified, ensure to uncheck all split by option filters, to avoid infinity loops!
+      if (remove_all_split_by_checked_options) {
+        $('.js-list-view-split-by').prop('checked', false);
+      }
     } else if (current_view === 'custom_filter') {
       let filterId = checked.data('id');
       current_filter = window.lodash.find(custom_filters, { ID: filterId });
@@ -684,16 +703,18 @@
           ? 'current-filter-list-excluded'
           : '';
 
-        // Proceed with displaying of filter label
-        html += `<span class="current-filter-list ${excluded_class} ${window.SHAREDFUNCTIONS.escapeHTML(label.field)}">${window.SHAREDFUNCTIONS.escapeHTML(label.name)}`;
+        if (label?.name) {
+          // Proceed with displaying of filter label
+          html += `<span class="current-filter-list ${excluded_class} ${window.SHAREDFUNCTIONS.escapeHTML(label.field)}">${window.SHAREDFUNCTIONS.escapeHTML(label.name)}`;
 
-        if (label.id && label.field && label.name) {
-          html += `<span class="current-filter-list-close">x</span>`;
-        } else {
-          html += `&nbsp;`;
+          if (label.id && label.field && label.name) {
+            html += `<span class="current-filter-list-close">x</span>`;
+          } else {
+            html += `&nbsp;`;
+          }
+
+          html += `</span>`;
         }
-
-        html += `</span>`;
       });
     } else {
       let query = filter.query;
@@ -707,6 +728,9 @@
         }
       });
     }
+
+    // Capture available filters, ensuring to ignore any sort labels below.
+    split_by_filter_labels.html(html);
 
     if (filter.query.sort) {
       let sortLabel = filter.query.sort;
@@ -1046,7 +1070,7 @@
             values = ['&check;'];
           } else if (field_settings.type === 'image') {
             values = [
-              `<i class='mdi mdi-account-outline medium list-image'></i>`,
+              `<i class='${window.SHAREDFUNCTIONS.escapeHTML(list_settings.default_icon)} medium list-image'></i>`,
             ];
           }
         } else {
@@ -1141,6 +1165,14 @@
     favorite_edit_event();
   };
 
+  window.SHAREDFUNCTIONS['empty_list'] = empty_list;
+
+  function empty_list() {
+    $('#table-content').html(
+      `<tr><td colspan="10">${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.empty_list)}</td></tr>`,
+    );
+  }
+
   function get_records(offset = 0, sort = null) {
     loading_spinner.addClass('active');
     let query = current_filter.query;
@@ -1233,6 +1265,9 @@
   /**
    * Modal options
    */
+
+  // Promote as a shared function.
+  window.SHAREDFUNCTIONS['add_custom_filter'] = add_custom_filter;
 
   //add the new filter in the filters list
   function add_custom_filter(name, type, query, labels, load_records = true) {
@@ -1657,6 +1692,8 @@
     return { newLabel: { id: key, name: value, field } };
   }
 
+  // Promote as a shared function.
+  window.SHAREDFUNCTIONS['create_name_value_label'] = create_name_value_label;
   function create_name_value_label(field, id, value, listSettings) {
     let name = window.lodash.get(
       listSettings,
@@ -2841,6 +2878,24 @@
     let updatePayload = {};
     let sharePayload;
 
+    // Process web component values
+    const form = document.getElementById('bulk_edit_picker');
+    Array.from(form.elements).forEach((el) => {
+      // skip fields not from web components
+      if (!el.tagName.startsWith('DT-')) {
+        return;
+      }
+
+      if (el.value) {
+        updatePayload[el.name.trim()] =
+          window.DtWebComponents.ComponentService.convertValue(
+            el.tagName,
+            el.value,
+          );
+      }
+    });
+
+    // Process legacy components
     allInputs.each(function () {
       let inputData = $(this).data();
       $.each(inputData, function (key, value) {
@@ -3406,103 +3461,105 @@
     }
   });
 
-  $('#bulk_edit_picker .dt_location_grid').each(() => {
-    let field_id = 'location_grid';
-    let typeaheadTotals = {};
-    $.typeahead({
-      input: '.js-typeahead-bulk_location_grid',
-      minLength: 0,
-      accent: true,
-      searchOnFocus: true,
-      maxItem: 20,
-      dropdownFilter: [
-        {
-          key: 'group',
-          value: 'focus',
-          template: window.SHAREDFUNCTIONS.escapeHTML(
-            window.wpApiShare.translations.regions_of_focus,
-          ),
-          all: window.SHAREDFUNCTIONS.escapeHTML(
-            window.wpApiShare.translations.all_locations,
-          ),
-        },
-      ],
-      source: {
-        focus: {
-          display: 'name',
-          ajax: {
-            url:
-              window.wpApiShare.root +
-              'dt/v1/mapping_module/search_location_grid_by_name',
-            data: {
-              s: '{{query}}',
-              filter: function () {
-                // return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
-              },
-            },
-            beforeSend: function (xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-            },
-            callback: {
-              done: function (data) {
-                if (typeof window.typeaheadTotals !== 'undefined') {
-                  window.typeaheadTotals.field = data.total;
-                }
-                return data.location_grid;
-              },
-            },
-          },
-        },
-      },
-      display: 'name',
-      templateValue: '{{name}}',
-      dynamic: true,
-      multiselect: {
-        matchOn: ['ID'],
-        data: '',
-        callback: {
-          onCancel: function (node, item) {
-            $(node).removeData(`bulk_key_${field_id}`);
-          },
-        },
-      },
-      callback: {
-        onClick: function (node, a, item, event) {
-          // $(`#${element_id}-spinner`).addClass('active');
-          node.data(`bulk_key_${field_id}`, { values: [{ value: item.ID }] });
-        },
-        onReady() {
-          this.filters.dropdown = {
+  if ($('#bulk_edit_picker .js-typeahead-bulk_location_grid').length) {
+    $('#bulk_edit_picker .dt_location_grid').each(() => {
+      let field_id = 'location_grid';
+      let typeaheadTotals = {};
+      $.typeahead({
+        input: '.js-typeahead-bulk_location_grid',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        maxItem: 20,
+        dropdownFilter: [
+          {
             key: 'group',
             value: 'focus',
             template: window.SHAREDFUNCTIONS.escapeHTML(
               window.wpApiShare.translations.regions_of_focus,
             ),
-          };
-          this.container
-            .removeClass('filter')
-            .find('.' + this.options.selector.filterButton)
-            .html(
-              window.SHAREDFUNCTIONS.escapeHTML(
+            all: window.SHAREDFUNCTIONS.escapeHTML(
+              window.wpApiShare.translations.all_locations,
+            ),
+          },
+        ],
+        source: {
+          focus: {
+            display: 'name',
+            ajax: {
+              url:
+                window.wpApiShare.root +
+                'dt/v1/mapping_module/search_location_grid_by_name',
+              data: {
+                s: '{{query}}',
+                filter: function () {
+                  // return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                },
+              },
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+              },
+              callback: {
+                done: function (data) {
+                  if (typeof window.typeaheadTotals !== 'undefined') {
+                    window.typeaheadTotals.field = data.total;
+                  }
+                  return data.location_grid;
+                },
+              },
+            },
+          },
+        },
+        display: 'name',
+        templateValue: '{{name}}',
+        dynamic: true,
+        multiselect: {
+          matchOn: ['ID'],
+          data: '',
+          callback: {
+            onCancel: function (node, item) {
+              $(node).removeData(`bulk_key_${field_id}`);
+            },
+          },
+        },
+        callback: {
+          onClick: function (node, a, item, event) {
+            // $(`#${element_id}-spinner`).addClass('active');
+            node.data(`bulk_key_${field_id}`, { values: [{ value: item.ID }] });
+          },
+          onReady() {
+            this.filters.dropdown = {
+              key: 'group',
+              value: 'focus',
+              template: window.SHAREDFUNCTIONS.escapeHTML(
                 window.wpApiShare.translations.regions_of_focus,
               ),
+            };
+            this.container
+              .removeClass('filter')
+              .find('.' + this.options.selector.filterButton)
+              .html(
+                window.SHAREDFUNCTIONS.escapeHTML(
+                  window.wpApiShare.translations.regions_of_focus,
+                ),
+              );
+          },
+          onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.location_grid;
+            let text = window.TYPEAHEADS.typeaheadHelpText(
+              resultCount,
+              query,
+              result,
             );
+            $('#location_grid-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#location_grid-result-container').html('');
+          },
         },
-        onResult: function (node, query, result, resultCount) {
-          resultCount = typeaheadTotals.location_grid;
-          let text = window.TYPEAHEADS.typeaheadHelpText(
-            resultCount,
-            query,
-            result,
-          );
-          $('#location_grid-result-container').html(text);
-        },
-        onHideLayout: function () {
-          $('#location_grid-result-container').html('');
-        },
-      },
+      });
     });
-  });
+  }
 
   $(
     '#bulk_edit_picker .tags input, #bulk_edit_picker .multi_select input',
@@ -3650,15 +3707,12 @@
     $(`#${input_id}`).val('');
   });
 
-  $('#bulk_edit_picker select.select-field').change((e) => {
+  $('#bulk_edit_picker dt-single-select').change((e) => {
     const val = $(e.currentTarget).val();
 
     if (val === 'paused') {
-      $('#reason-paused-options').parent().toggle();
+      $('#bulk_reason_paused').parent().toggle();
     }
-
-    let field_key = e.currentTarget.id.replace('bulk_', '');
-    $(e.currentTarget).data(`bulk_key_${field_key}`, val);
   });
 
   $('#bulk_edit_picker input.number-input').on('blur', function () {
@@ -3778,62 +3832,96 @@
    */
 
   $('#split_by_current_filter_button').on('click', function () {
+    refresh_split_by_view();
+  });
+
+  $(document).on('change', '.js-list-view-split-by', () => {
+    get_records_for_current_filter(current_filter);
+  });
+
+  function refresh_split_by_view() {
     let field_id = $('#split_by_current_filter_select').val();
     if (!field_id) {
       return;
     }
-    $(this).addClass('loading');
-    let split_by_accordion = $('.split-by-current-filter-accordion');
-    let split_by_results = $('#split_by_current_filter_results');
-    let split_by_no_results_msg = $('#split_by_current_filter_no_results_msg');
+
+    const split_by_current_filter_button = $('#split_by_current_filter_button');
+    const split_by_accordion = $('.split-by-current-filter-accordion');
+    const split_by_results = $('#split_by_current_filter_results');
+    const split_by_no_results_msg = $(
+      '#split_by_current_filter_no_results_msg',
+    );
+
+    $(split_by_current_filter_button).addClass('loading');
 
     $(split_by_no_results_msg).fadeOut('fast');
 
     $(split_by_results).slideUp('fast', function () {
-      let filters =
+      let split_by_filters =
         current_filter.query !== undefined ? current_filter.query : [];
-      window.API.split_by(list_settings.post_type, field_id, filters).then(
-        function (response) {
-          $('#split_by_current_filter_button').removeClass('loading');
-          let summary_displayed = false;
-          if (response && response.length > 0) {
-            let html = '';
-            $.each(response, function (idx, result) {
-              if (result['value']) {
-                summary_displayed = true;
-                let option_id = result['value'];
-                let option_id_label =
-                  result['label'] !== '' ? result['label'] : result['value'];
 
-                html += `
+      // Create filter for all available field options.
+      let default_options_filters = JSON.parse(
+        JSON.stringify(split_by_filters),
+      );
+
+      // First, always fetch all available options for given field_id.
+      window.API.split_by(
+        list_settings.post_type,
+        field_id,
+        default_options_filters,
+      ).then(function (default_options) {
+        $(split_by_current_filter_button).removeClass('loading');
+        let summary_displayed = false;
+        if (default_options && default_options.length > 0) {
+          let html = '';
+
+          // Iterate over default options and highlight selected filters.
+          $.each(default_options, function (idx, result) {
+            if (result['value']) {
+              summary_displayed = true;
+              let option_id = result['value'];
+              let option_id_label =
+                result['label'] !== '' ? result['label'] : result['value'];
+
+              // Determine if option should be selected.
+              let option_selected = false;
+              if (split_by_filters['fields']) {
+                if (
+                  split_by_filters['fields'].filter(
+                    (option) =>
+                      option[field_id] !== undefined &&
+                      option[field_id].includes(option_id),
+                  ).length > 0
+                ) {
+                  option_selected = true;
+                }
+              }
+
+              html += `
                     <label class="list-view">
-                      <input class="js-list-view-split-by" type="radio" name="split_by_list_view" value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_id="${window.SHAREDFUNCTIONS.escapeHTML(field_id)}" data-field_option_id="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_option_label="${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}" autocomplete="off">
+                      <input class="js-list-view-split-by" type="radio" name="split_by_list_view" ${option_selected ? 'checked' : ''} value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_id="${window.SHAREDFUNCTIONS.escapeHTML(field_id)}" data-field_option_id="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_option_label="${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}" autocomplete="off">
                       <span>${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}</span>
                       <span class="list-view__count js-list-view-count" data-value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}">${window.SHAREDFUNCTIONS.escapeHTML(result['count'])}</span>
                     </label>
                     `;
-              }
-            });
+            }
+          });
 
-            $(split_by_accordion).slideDown('fast', function () {
-              $(split_by_results).html(html);
-              $(split_by_results).slideDown('fast');
-            });
-          }
+          $(split_by_accordion).slideDown('fast', function () {
+            $(split_by_results).html(html);
+            $(split_by_results).slideDown('fast');
+          });
+        }
 
-          if (!summary_displayed) {
-            $(split_by_accordion).slideUp('fast', function () {
-              $(split_by_no_results_msg).fadeIn('fast');
-            });
-          }
-        },
-      );
+        if (!summary_displayed) {
+          $(split_by_accordion).slideUp('fast', function () {
+            $(split_by_no_results_msg).fadeIn('fast');
+          });
+        }
+      });
     });
-  });
-
-  $(document).on('change', '.js-list-view-split-by', () => {
-    get_records_for_current_filter();
-  });
+  }
 
   function apply_split_by_filters(filter, field_id, option_id, option_label) {
     if (filter && field_id && option_id && option_label) {
@@ -3845,17 +3933,29 @@
         field_id_label = setting_fields[field_id]['name'];
       }
 
+      // Ensure a fields array is available.
+      if (filter['query']['fields'] === undefined) {
+        filter['query']['fields'] = [];
+      }
+
+      // Ensure to enforce toggling of options of the same field, instead of tacking onto any previous selections.
+      filter['query']['fields'] = filter['query']['fields'].filter(
+        (field) => field[field_id] === undefined,
+      );
+      filter['labels'] = filter['labels'].filter((label) => {
+        if (label['id'] && label['field']) {
+          return label['id'] !== option_id && label['field'] !== field_id;
+        }
+
+        return true;
+      });
+
       // Add new label.
       filter['labels'].push({
         id: option_id,
         field: field_id,
         name: `${window.SHAREDFUNCTIONS.escapeHTML(field_id_label)}: ${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}`,
       });
-
-      // Ensure a fields array is available.
-      if (filter['query']['fields'] === undefined) {
-        filter['query']['fields'] = [];
-      }
 
       let query_field_obj = {};
       query_field_obj[field_id] = option_id !== 'NULL' ? [option_id] : [];
@@ -3867,6 +3967,8 @@
     return filter;
   }
 
+  // Promote as a shared function.
+  window.SHAREDFUNCTIONS['reset_split_by_filters'] = reset_split_by_filters;
   function reset_split_by_filters() {
     let split_by_filter_select = $('#split_by_current_filter_select');
     if (current_filter && current_filter['query']['fields'] !== undefined) {
@@ -4239,7 +4341,7 @@
             });
 
             // Assuming counts match, assign to parent csv download array.
-            if (csv_row.length === exporting_fields.length + 1) {
+            if (csv_row.length <= exporting_fields.length + 1) {
               csv_export.push(csv_row);
             }
           });

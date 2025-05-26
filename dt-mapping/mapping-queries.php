@@ -1184,34 +1184,34 @@ class Disciple_Tools_Mapping_Queries {
             GROUP BY t5.admin5_grid_id;
             ",
                 // 0
-                $wpdb->prefix .'user_status',
+                $wpdb->prefix . 'user_status',
                 $status,
-                $wpdb->prefix .'location_grid',
+                $wpdb->prefix . 'location_grid',
                 $status,
                 // 1
-                $wpdb->prefix .'user_status',
+                $wpdb->prefix . 'user_status',
                 $status,
-                $wpdb->prefix .'location_grid',
+                $wpdb->prefix . 'location_grid',
                 $status,
                 // 2
-                $wpdb->prefix .'user_status',
+                $wpdb->prefix . 'user_status',
                 $status,
-                $wpdb->prefix .'location_grid',
+                $wpdb->prefix . 'location_grid',
                 $status,
                 // 3
-                $wpdb->prefix .'user_status',
+                $wpdb->prefix . 'user_status',
                 $status,
-                $wpdb->prefix .'location_grid',
+                $wpdb->prefix . 'location_grid',
                 $status,
                 // 4
-                $wpdb->prefix .'user_status',
+                $wpdb->prefix . 'user_status',
                 $status,
-                $wpdb->prefix .'location_grid',
+                $wpdb->prefix . 'location_grid',
                 $status,
                 // 5
-                $wpdb->prefix .'user_status',
+                $wpdb->prefix . 'user_status',
                 $status,
-                $wpdb->prefix .'location_grid',
+                $wpdb->prefix . 'location_grid',
                 $status
             ), ARRAY_A );
 
@@ -1301,33 +1301,66 @@ class Disciple_Tools_Mapping_Queries {
         global $wpdb;
 
         //phpcs:disable
+        // Determine if post id filtering should take place.
+        $post_id_filter_sql = '';
+        $shared_user_join_sql = '';
+        $shared_user_condition_sql = '';
+        if ( isset( $args['slug'], $args['user_id'] ) && $args['slug'] === 'personal' ) {
+            $post_id_filter_sql = $wpdb->prepare( "
+                        SELECT api_p.ID
+                        FROM $wpdb->posts api_p
+                        WHERE (api_p.post_status = 'publish')
+                          AND api_p.post_type = %s
+                          GROUP BY api_p.ID
+            ", ( ( $post_type === 'system-users' ) ? 'contacts' : $post_type ) );
+
+            if ( isset( $args['field_type'] ) && $args['field_type'] == 'user_select' ) {
+                $shared_user_join_sql = "LEFT JOIN $wpdb->dt_share as field_shared_with ON ( field_shared_with.post_id = um.meta_value )";
+                $post_id_filter_sql = 'AND (um.meta_value IN ('. $post_id_filter_sql .'))';
+            } else {
+                $shared_user_join_sql = "LEFT JOIN $wpdb->dt_share as field_shared_with ON ( field_shared_with.post_id = p.ID )";
+                $post_id_filter_sql = 'AND (p.ID IN ('. $post_id_filter_sql .'))';
+            }
+            $shared_user_condition_sql = "AND (field_shared_with.user_id = ". $args['user_id'] .")";
+        }
+
         if ( isset( $args['field_key'], $args['field_type'] ) && in_array( $args['field_type'], [ 'key_select', 'multi_select' ] ) ){
             $prepared_query = $wpdb->prepare( "
-                SELECT p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
+                SELECT DISTINCT p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
                   FROM $wpdb->dt_location_grid_meta AS lgm
                   JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
                   LEFT JOIN $wpdb->postmeta AS pm ON ( p.ID = pm.post_id )
+                  ". $shared_user_join_sql ."
                   WHERE lgm.post_type = %s
+                  ". $shared_user_condition_sql ."
                   AND (pm.meta_key = %s)" . ( !empty( $args['field_values'] ) ? " AND (pm.meta_value IN (" . dt_array_to_sql( $args['field_values'] ) . "))" : '' ) ."
+                  ". $post_id_filter_sql ."
                   LIMIT %d, %d;
               ", $post_type, $args['field_key'], $offset, $limit );
 
         } elseif ( isset( $args['field_type'] ) && $args['field_type'] == 'user_select' ){
             $prepared_query = $wpdb->prepare("
-                SELECT u.display_name AS name, um.meta_value AS post_id, lgm.lng, lgm.lat
+                SELECT DISTINCT u.display_name AS name, um.meta_value AS post_id, lgm.lng, lgm.lat
                   FROM $wpdb->dt_location_grid_meta AS lgm
                   JOIN $wpdb->users AS u ON ( u.ID = lgm.post_id )
-                  LEFT JOIN wp_usermeta AS um ON ( u.ID = um.user_id AND um.meta_key = 'wp_corresponds_to_contact' )
+                  LEFT JOIN $wpdb->usermeta AS um ON ( u.ID = um.user_id AND um.meta_key = %s )
+                  INNER JOIN $wpdb->usermeta AS um_cap ON ( u.ID = um_cap.user_id AND um_cap.meta_key = %s )
+                  ". $shared_user_join_sql ."
                   WHERE lgm.post_type = %s
+                  ". $shared_user_condition_sql ."
+                  ". $post_id_filter_sql ."
                   LIMIT %d, %d;
-              ", 'users', $offset, $limit );
+              ", ( $wpdb->prefix . 'corresponds_to_contact' ), ( $wpdb->prefix . 'capabilities' ), 'users', $offset, $limit );
 
         } else {
             $prepared_query = $wpdb->prepare( "
-                SELECT p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
+                SELECT DISTINCT p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
                     FROM $wpdb->dt_location_grid_meta AS lgm
                     JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
+                    ". $shared_user_join_sql ."
                     WHERE lgm.post_type = %s
+                    ". $shared_user_condition_sql ."
+                    ". $post_id_filter_sql ."
                     LIMIT %d, %d;
                 ", $post_type, $offset, $limit );
         }

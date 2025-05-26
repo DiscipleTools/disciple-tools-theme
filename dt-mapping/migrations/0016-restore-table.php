@@ -13,6 +13,9 @@ class DT_Mapping_Module_Migration_0016 extends DT_Mapping_Module_Migration
      * @throws \Exception  Got error when creating table $name.
      */
     public function up() {
+        if ( version_compare( dt_get_initial_install_meta( 'theme_version' ), '1.31.0', '>=' ) ){
+            return;
+        }
         global $wpdb;
         $location_grid_rows = (int) $wpdb->get_var( "SELECT count(*) FROM $wpdb->dt_location_grid WHERE grid_id < 1000000000;" );
         if ( empty( $location_grid_rows ) ) {
@@ -34,7 +37,6 @@ class DT_Mapping_Module_Migration_0016 extends DT_Mapping_Module_Migration
      * @throws \Exception  Got error when dropping table $name.
      */
     public function down() {
-
     }
 
     /**
@@ -50,5 +52,4 @@ class DT_Mapping_Module_Migration_0016 extends DT_Mapping_Module_Migration
      */
     public function test() {
     }
-
 }

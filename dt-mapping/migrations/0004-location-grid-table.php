@@ -2,6 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Class DT_Mapping_Module_Migration_0004
+ * Setup dt_location_grid table if it does not exist.
  * @version_added 0.22.1
  */
 class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
@@ -16,7 +17,7 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
         global $wpdb;
         $expected_tables = $this->get_expected_tables();
         foreach ( $expected_tables as $name => $table ) {
-            $rv = $wpdb->query( $table ); // WPCS: unprepared SQL OK
+            $rv = $wpdb->query( $table ); //phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
             if ( $rv == false ) {
                 dt_write_log( "Got error when creating table $name: $wpdb->last_error" );
             }
@@ -30,7 +31,7 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
         global $wpdb;
         $expected_tables = $this->get_expected_tables();
         foreach ( $expected_tables as $name => $table ) {
-            $rv = $wpdb->query( "DROP TABLE `{$name}`" ); // WPCS: unprepared SQL OK
+            $rv = $wpdb->query( "DROP TABLE `{$name}`" ); //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             if ( $rv == false ) {
                 throw new Exception( "Got error when dropping table $name: $wpdb->last_error" );
             }
@@ -44,8 +45,8 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
         return array(
-            "{$wpdb->prefix}dt_location_grid" =>
-                "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}dt_location_grid` (
+            "{$wpdb->dt_location_grid}" =>
+                "CREATE TABLE IF NOT EXISTS `{$wpdb->dt_location_grid}` (
                   `grid_id` bigint(20) NOT NULL AUTO_INCREMENT,
                   `name` varchar(200) NOT NULL DEFAULT '',
                   `level` int(1) DEFAULT NULL,
@@ -100,5 +101,4 @@ class DT_Mapping_Module_Migration_0004 extends DT_Mapping_Module_Migration {
      */
     public function test() {
     }
-
 }

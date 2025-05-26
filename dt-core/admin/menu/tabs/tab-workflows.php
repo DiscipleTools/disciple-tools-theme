@@ -82,6 +82,22 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                         'mappings'                                         => $this->fetch_mapping_config()
                     )
                 );
+
+                wp_register_style( 'workflows-css', false );
+                wp_enqueue_style( 'workflows-css' );
+                wp_add_inline_style( 'workflows-css', '
+                #post-body {
+                    display: flex;
+                    gap: 20px;
+                }
+                #postbox-container-1 {
+                    position: sticky;
+                    top: 2rem;
+                    height: calc(100vh - 2rem);
+                    float: none;
+                    overflow-y: auto;
+                }
+                ' );
             }
         }
     }
@@ -274,10 +290,12 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
             $selected_post_type = $this->fetch_selected_post_type();
 
             $this->template( 'begin' );
-
             $this->workflows_post_types_section( $selected_post_type );
             $this->workflows_management_section( $selected_post_type );
             $this->workflows_design_section( $selected_post_type );
+
+            $this->template( 'right_column' );
+            $this->right_column();
 
             $this->template( 'end' );
 
@@ -743,7 +761,7 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                             </tr>
                             <tr id="workflows_design_section_step3_action_value_tr">
                                 <td>
-                                    value:
+                                    value: <span id="workflows_design_section_step3_help_text" type="hidden"></span>
                                 </td>
                                 <td>
                                     <input id="workflows_design_section_step3_action_value_id" type="hidden"
@@ -893,6 +911,12 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                     }
                 }
 
+                $fields[] = [
+                    'id' => 'comments',
+                    'name' => 'Comments',
+                    'type' => 'comments',
+                ];
+
                 $post_type                = $dt_post_type_settings['post_type'];
                 $post_types[ $post_type ] = [
                     'id'       => $post_type,
@@ -951,6 +975,28 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
         return $workflows;
     }
 
+    public function right_column() {
+        ?>
+        <!-- Box -->
+        <table style="display: none;" id="dt_right_docs_section" class="widefat striped">
+            <thead>
+            <tr>
+                <th id="dt_right_docs_title"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td id="dt_right_docs_content"></td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <!-- End Box -->
+        <?php
+
+        // Include helper documentation
+        include 'tab-workflows-docs.php';
+    }
 }
 
 Disciple_Tools_Tab_Workflows::instance();

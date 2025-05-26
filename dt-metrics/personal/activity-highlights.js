@@ -91,43 +91,103 @@ function buildHighlights(data, label = 'all time') {
             ${makeRecordsCreatedSection(contacts_created)}
           </div>
 
-        <h4>${makeTitle(quick_actions_done, field_I_changed)}</h4>
-          ${makeDataTable(quick_actions_done)}
-
+        ${
+          quick_actions_done
+            ? `
+          <h4>${makeTitle(quick_actions_done, field_I_changed)}</h4>
+          ${makeDataTable(quick_actions_done)}`
+            : ``
+        }
+        
+        ${
+          milestones_added
+            ? `
         <h4>${makeTitle(milestones_added, field_I_changed)}</h4>
-          ${makeDataTable(milestones_added)}
+          ${makeDataTable(milestones_added)}`
+            : ``
+        }
 
+        ${
+          milestones_added_by_others
+            ? `
         <h4>${makeTitle(milestones_added_by_others, field_others_changed)}</h4>
-          ${makeDataTable(milestones_added_by_others)}
+          ${makeDataTable(milestones_added_by_others)}`
+            : ``
+        }
 
+        ${
+          seeker_path_changed
+            ? `
         <h4>${makeTitle(seeker_path_changed, field_I_changed)}</h4>
-          ${makeDataTable(seeker_path_changed)}
+          ${makeDataTable(seeker_path_changed)}`
+            : ``
+        }
 
+        ${
+          seeker_path_changed_by_others
+            ? `
         <h4>${makeTitle(seeker_path_changed_by_others, field_others_changed)}</h4>
-          ${makeDataTable(seeker_path_changed_by_others)}
+          ${makeDataTable(seeker_path_changed_by_others)}`
+            : ``
+        }
 
+        ${
+          baptisms
+            ? `
         <h4>${baptism_by_me}</h4>
-          ${makeBaptismsSection(baptisms)}
+          ${makeBaptismsSection(baptisms)}`
+            : ``
+        }
 
+        ${
+          baptisms_by_others
+            ? `
         <h4>${baptism_by_others}</h4>
-          ${makeBaptismsByOthersSection(baptisms_by_others)}
+          ${makeBaptismsByOthersSection(baptisms_by_others)}`
+            : ``
+        }
 
+        ${
+          groups_created
+            ? `
         <h4>${makeTitle(groups_created, field_I_made)}</h4>
           <div class="left-margin">
             ${makeRecordsCreatedSection(groups_created)}
-          </div>
+          </div>`
+            : ``
+        }
 
+        ${
+          group_type_changed
+            ? `
         <h4>${makeTitle(group_type_changed, field_I_changed)}</h4>
-          ${makeDataTable(group_type_changed)}
+          ${makeDataTable(group_type_changed)}`
+            : ``
+        }
 
+        ${
+          group_type_changed_by_others
+            ? `
         <h4>${makeTitle(group_type_changed_by_others, field_others_changed)}</h4>
-          ${makeDataTable(group_type_changed_by_others)}
+          ${makeDataTable(group_type_changed_by_others)}`
+            : ``
+        }
 
+        ${
+          health_metrics_added
+            ? `
         <h4>${makeTitle(health_metrics_added, field_I_changed)}</h4>
-          ${makeDataTable(health_metrics_added)}
+          ${makeDataTable(health_metrics_added)}`
+            : ``
+        }
 
+        ${
+          health_metrics_added_by_others
+            ? `
         <h4>${makeTitle(health_metrics_added_by_others, field_others_changed)}</h4>
-          ${makeDataTable(health_metrics_added_by_others)}
+          ${makeDataTable(health_metrics_added_by_others)}`
+            : ``
+        }
 
       </div>
       <div class="cell large-6">

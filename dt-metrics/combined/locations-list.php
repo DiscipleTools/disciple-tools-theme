@@ -8,7 +8,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
-    public $base_slug = 'combined'; // lowercase
+    public $base_slug = 'records'; // lowercase
     public $base_title;
     public $title;
     public $slug = 'locations_list'; // lowercase
@@ -73,10 +73,13 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
     public function data( $force_refresh = false ) {
         //get initial data
         $data = DT_Mapping_Module::instance()->data();
+        $post_types = DT_Posts::get_post_types();
 
         $data = $this->add_contacts_column( $data );
-        $data = $this->add_groups_column( $data );
-        $data = $this->add_churches_column( $data );
+        if ( !empty( $post_types['groups'] ) ) {
+            $data = $this->add_groups_column( $data );
+            $data = $this->add_churches_column( $data );
+        }
         $data = $this->add_users_column( $data );
 
         return $data;
@@ -139,7 +142,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -184,7 +187,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -229,7 +232,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -279,7 +282,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 
@@ -293,8 +296,5 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
         $data['custom_column_data']   = $column_data;
         return $data;
     }
-
 }
 new DT_Metrics_Locations_List();
-
-

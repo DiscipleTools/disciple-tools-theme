@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-04-17T09:16:21+00:00\n"
-"PO-Revision-Date: 2024-02-01 14:57+0000\n"
-"Last-Translator: Brandon Cyboron <brandon@ttionline.org>\n"
+"POT-Creation-Date: 2025-03-18T08:53:44+00:00\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Indonesian <https://translate.disciple.tools/projects/"
 "disciple-tools/disciple-tools-theme/id_ID/>\n"
 "Language: id_ID\n"
@@ -13,17 +13,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
+#: style.css
 msgid "Disciple Tools"
 msgstr "Disciple Tools"
 
 #. Theme URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools/disciple-tools-theme"
 msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 
 #. Description of the theme
+#: style.css
 msgid ""
 "Disciple.Tools is a coalition management system for disciple making "
 "movements."
@@ -31,6 +34,7 @@ msgstr ""
 "Disciple.Tools adalah sistem manajemen koalisi untuk gerakan pemuridan."
 
 #. Author URI of the theme
+#: style.css
 msgid "https://github.com/DiscipleTools"
 msgstr "https://github.com/DiscipleTools"
 
@@ -69,27 +73,28 @@ msgstr ""
 msgid "Submit Request"
 msgstr "Ajukan Permintaan"
 
-#: 403.php:55 archive-template.php:1098 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:1099 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/access-module.php:518 dt-contacts/access-module.php:549
-#: dt-contacts/access-module.php:577 dt-contacts/base-setup.php:380
-#: dt-contacts/base-setup.php:415 dt-contacts/user-module.php:159
-#: single-template.php:415 single-template.php:432
+#: dt-contacts/base-setup.php:470 dt-contacts/base-setup.php:505
+#: dt-contacts/module-access.php:461 dt-contacts/module-access.php:492
+#: dt-contacts/module-access.php:520 dt-contacts/user-module.php:159
+#: single-template.php:417 single-template.php:434
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
-#: template-new-bulk-post.php:290 template-new-post.php:153
-#: template-new-post.php:180
+#: template-new-bulk-post.php:290 template-new-post.php:158
+#: template-new-post.php:185
 msgid "Cancel"
 msgstr "Batalkan"
 
-#: 403.php:59 archive-template.php:505 archive-template.php:547
-#: archive-template.php:772 archive-template.php:1122
-#: dt-assets/parts/loop-activity-comment.php:154
-#: dt-assets/parts/loop-activity-comment.php:159
-#: dt-assets/parts/loop-activity-comment.php:202
-#: dt-assets/parts/loop-activity-comment.php:207
+#: 403.php:59 archive-template.php:506 archive-template.php:548
+#: archive-template.php:764 archive-template.php:1123
+#: dt-assets/functions/enqueue-scripts.php:440
+#: dt-assets/parts/loop-activity-comment.php:158
+#: dt-assets/parts/loop-activity-comment.php:163
+#: dt-assets/parts/loop-activity-comment.php:206
+#: dt-assets/parts/loop-activity-comment.php:211
 #: dt-assets/parts/merge-details.php:26 dt-assets/parts/merge-details.php:31
 #: dt-assets/parts/merge-details.php:75
 #: dt-assets/parts/modals/modal-advanced-search.php:65
@@ -112,18 +117,18 @@ msgstr "Batalkan"
 #: dt-assets/parts/modals/modal-tasks.php:54
 #: dt-assets/parts/modals/modal-template-metrics.php:8
 #: dt-assets/parts/modals/modal-template-metrics.php:13
-#: dt-contacts/access-module.php:523 dt-contacts/access-module.php:554
-#: dt-contacts/access-module.php:582 dt-contacts/access-module.php:673
-#: dt-contacts/base-setup.php:385 dt-contacts/base-setup.php:420
-#: dt-contacts/dmm-module.php:524 dt-contacts/dmm-module.php:526
-#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:623
-#: dt-groups/base-setup.php:628 dt-reports/magic-url-bulk-send.php:34
+#: dt-contacts/base-setup.php:475 dt-contacts/base-setup.php:510
+#: dt-contacts/module-access.php:466 dt-contacts/module-access.php:497
+#: dt-contacts/module-access.php:525 dt-contacts/module-access.php:616
+#: dt-contacts/module-baptisms.php:325 dt-contacts/module-baptisms.php:327
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:583
+#: dt-groups/base-setup.php:588 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
-#: dt-users/user-initial-setup.php:82 single-template.php:420
-#: single-template.php:437 template-new-bulk-post.php:223
-#: template-new-bulk-post.php:295 template-new-post.php:185
-#: template-settings.php:564
+#: dt-users/user-initial-setup.php:82 single-template.php:422
+#: single-template.php:439 template-new-bulk-post.php:223
+#: template-new-bulk-post.php:295 template-new-post.php:190
+#: template-settings.php:602
 msgid "Close"
 msgstr "Menutup"
 
@@ -144,11 +149,11 @@ msgstr "Membuat baru %s"
 msgid "Filters"
 msgstr "Filter-filter"
 
-#: archive-template.php:36 archive-template.php:138 archive-template.php:655
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:726
-#: dt-core/global-functions.php:754 dt-core/global-functions.php:886
-#: dt-core/global-functions.php:930 dt-posts/custom-post-type.php:20
-#: template-settings.php:381
+#: archive-template.php:36 archive-template.php:138 archive-template.php:656
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:711
+#: dt-core/global-functions.php:739 dt-core/global-functions.php:871
+#: dt-core/global-functions.php:915 dt-posts/custom-post-type.php:20
+#: template-settings.php:399
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "Mencari %s"
@@ -164,15 +169,15 @@ msgstr "Bersihkan"
 msgid "Advanced Search"
 msgstr "Pencarian Tingkat Lanjut"
 
-#: archive-template.php:46 dt-assets/parts/loop-activity-comment.php:47
-#: dt-assets/parts/loop-activity-comment.php:95
-#: dt-assets/parts/loop-activity-comment.php:179
+#: archive-template.php:46 dt-assets/parts/loop-activity-comment.php:49
+#: dt-assets/parts/loop-activity-comment.php:99
+#: dt-assets/parts/loop-activity-comment.php:183
 #: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "Komentar"
 
 #: archive-template.php:63 archive-template.php:162
-#: dt-users/user-management.php:227
+#: dt-users/user-management.php:230
 msgid "Search"
 msgstr "Cari"
 
@@ -188,12 +193,12 @@ msgstr "Cari Semua Larik"
 msgid "Communication Channels"
 msgstr "Kanal Komunikasi"
 
-#: archive-template.php:111 archive-template.php:206 archive-template.php:542
+#: archive-template.php:111 archive-template.php:206 archive-template.php:543
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "Terapkan"
 
-#: archive-template.php:112 archive-template.php:207 archive-template.php:543
+#: archive-template.php:112 archive-template.php:207 archive-template.php:544
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "reset ke baku"
@@ -212,40 +217,40 @@ msgctxt "Split By"
 msgid "Split By"
 msgstr "Dibagi oleh"
 
-#: archive-template.php:295
+#: archive-template.php:296
 msgid "No results found"
 msgstr "Tidak ditemukan"
 
-#: archive-template.php:301
+#: archive-template.php:302
 msgctxt "List Exports"
 msgid "List Exports"
 msgstr "Daftar data"
 
-#: archive-template.php:313 archive-template.php:336
+#: archive-template.php:314 archive-template.php:337
 msgid "CSV List"
 msgstr "Daftar CSV"
 
-#: archive-template.php:317 archive-template.php:340
+#: archive-template.php:318 archive-template.php:341
 msgid "BCC Email List"
 msgstr ""
 
-#: archive-template.php:318
+#: archive-template.php:319
 #, fuzzy
 #| msgid "Phone"
 msgid "Phone List"
 msgstr "Telepon"
 
-#: archive-template.php:323 archive-template.php:348
+#: archive-template.php:324 archive-template.php:349
 #, fuzzy
 #| msgid "List"
 msgid "Map List"
 msgstr "Daftar"
 
-#: archive-template.php:332
+#: archive-template.php:333
 msgid "List Exports Help"
 msgstr "Daftar data bantuan"
 
-#: archive-template.php:337
+#: archive-template.php:338
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
@@ -253,7 +258,7 @@ msgstr ""
 "Dengan menggunakan filter saat ini, ini adalah cara sederhana untuk "
 "mengekspor informasi dasar dan menggunakannya di aplikasi lain."
 
-#: archive-template.php:341
+#: archive-template.php:342
 msgid ""
 "Using the current filter, the available emails are grouped by 50 and can be "
 "launched into your default email client by group. Many email providers put a "
@@ -263,20 +268,20 @@ msgid ""
 "email should be handled through bulk email providers."
 msgstr ""
 
-#: archive-template.php:344
+#: archive-template.php:345
 #, fuzzy
 #| msgid "Member List"
 msgid "Phone Number List"
 msgstr "Daftar Anggota"
 
-#: archive-template.php:345
+#: archive-template.php:346
 msgid ""
 "Using the current filter, this is intended for copy pasting a list of "
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
 
-#: archive-template.php:349
+#: archive-template.php:350
 #, fuzzy
 #| msgid ""
 #| "Using the current filter, this is a simple way to export basic "
@@ -288,305 +293,308 @@ msgstr ""
 "Dengan menggunakan filter saat ini, ini adalah cara sederhana untuk "
 "mengekspor informasi dasar dan menggunakannya di aplikasi lain."
 
-#: archive-template.php:375
+#: archive-template.php:376
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "Daftar %s"
 
-#: archive-template.php:382
+#: archive-template.php:383
 msgid "Sort"
 msgstr "Mengatur"
 
-#: archive-template.php:387
+#: archive-template.php:388
 msgid "Newest"
 msgstr "Paling Baru"
 
-#: archive-template.php:392
+#: archive-template.php:393
 msgid "Oldest"
 msgstr "Paling Tua"
 
-#: archive-template.php:397
+#: archive-template.php:398
 msgid "Most recently modified"
 msgstr "Yang baru-baru saja dirubah"
 
-#: archive-template.php:402
+#: archive-template.php:403
 msgid "Least recently modified"
 msgstr "Yang paling lama dirubah"
 
-#: archive-template.php:412 template-new-bulk-post.php:89
+#: archive-template.php:413 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "Larik"
 
-#: archive-template.php:419
+#: archive-template.php:420
 msgid "Bulk Edit"
 msgstr "Edit Massal"
 
-#: archive-template.php:426
+#: archive-template.php:427
 #, fuzzy
 #| msgid "Bulk Send App"
 msgid "Bulk Send Message"
 msgstr "Aplikasi Kirim Massal"
 
-#: archive-template.php:460 dt-assets/parts/nav-topbar.php:65
-#: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:193
+#: archive-template.php:461 dt-assets/parts/nav-topbar.php:65
+#: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
 msgid "More"
 msgstr "Lebih banyak lagi"
 
-#: archive-template.php:481 dt-contacts/base-setup.php:309
+#: archive-template.php:482 dt-contacts/base-setup.php:324
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "Diarsipkan"
 
-#: archive-template.php:485
+#: archive-template.php:486
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "Tampilkan %s"
 
-#: archive-template.php:508
+#: archive-template.php:509
 msgid "Choose which fields to display as columns in the list"
 msgstr "Pilih larik mana yang akan ditampilkan sebagai kolom dalam daftar"
 
-#: archive-template.php:551
+#: archive-template.php:552
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
 "Pilih semua %1$s yang ingin Anda perbarui dari daftar, dan perbarui di bawah "
 "ini"
 
-#: archive-template.php:569 dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/access-module.php:606 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:968
+#: archive-template.php:570 dt-assets/parts/modals/modal-share.php:27
+#: dt-contacts/module-access.php:549 dt-contacts/user-module.php:137
+#: dt-core/global-functions.php:953
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Mencari pengguna"
 
-#: archive-template.php:593 dt-metrics/groups/tree.php:87
-#: dt-metrics/personal/group-tree.php:88 dt-metrics/records/genmap.php:92
-#: dt-metrics/records/genmap.php:96 dt-posts/dt-posts.php:2766
-#: dt-users/template-user-management.php:370 dt-users/users.php:175
-#: single-template.php:128
+#: archive-template.php:594 dt-metrics/records/genmap.php:148
+#: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2687
+#: dt-users/template-user-management.php:384 dt-users/users.php:175
+#: single-template.php:127
 msgid "Status"
 msgstr "Status"
 
-#: archive-template.php:643
+#: archive-template.php:644
 msgid "Share with:"
 msgstr "Berbagi dengan:"
 
-#: archive-template.php:663
+#: archive-template.php:664
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "Tidak dibagi dengan %s"
 
-#: archive-template.php:675 dt-assets/functions/details-bar.php:166
-#: dt-posts/custom-post-type.php:209
+#: archive-template.php:676 dt-assets/functions/details-bar.php:186
+#: dt-posts/custom-post-type.php:217
 msgid "Follow"
 msgstr "Ikuti"
 
-#: archive-template.php:680 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:681 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "Komentar dan Aktivitas"
 
-#: archive-template.php:685 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:686 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "Menulis komentar atau catatan di sini"
 
-#: archive-template.php:693 dt-assets/parts/loop-activity-comment.php:56
+#: archive-template.php:694 dt-assets/parts/loop-activity-comment.php:59
 msgid "Type:"
 msgstr "Jenis:"
 
-#: archive-template.php:713 dt-users/template-new-user.php:127
+#: archive-template.php:714 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "Lihat Lebih Banyak Opsi"
 
-#: archive-template.php:714 dt-users/template-new-user.php:130
+#: archive-template.php:715 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "Lihat Lebih Sedikit Opsi"
 
-#: archive-template.php:750 dt-assets/parts/loop-activity-comment.php:205
+#: archive-template.php:742 dt-assets/parts/loop-activity-comment.php:209
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "Update"
 
-#: archive-template.php:751 archive-template.php:855
-#: dt-assets/functions/enqueue-scripts.php:325
+#: archive-template.php:743 archive-template.php:851
+#: dt-assets/functions/enqueue-scripts.php:330
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "Buat Pilihan Di Bawah"
 
-#: archive-template.php:759 dt-assets/functions/enqueue-scripts.php:174
-#: dt-assets/functions/enqueue-scripts.php:208
-#: dt-assets/functions/enqueue-scripts.php:273
-#: dt-assets/functions/enqueue-scripts.php:313
-#: dt-assets/parts/loop-activity-comment.php:157 single-template.php:435
+#: archive-template.php:751 dt-assets/functions/enqueue-scripts.php:179
+#: dt-assets/functions/enqueue-scripts.php:213
+#: dt-assets/functions/enqueue-scripts.php:278
+#: dt-assets/functions/enqueue-scripts.php:318
+#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:437
 msgid "Delete"
 msgstr "Hapuskan"
 
-#: archive-template.php:762 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:754 dt-assets/functions/enqueue-scripts.php:331
 msgid "Delete Selections Below"
 msgstr "Hapus Pilihan dibawah"
 
-#: archive-template.php:776
+#: archive-template.php:768
 #, fuzzy
 #| msgid "Select all the %1$s to whom you want to send app links."
 msgid "Select all the %1$s to whom you want to message."
 msgstr "Pilih semua %1$s yang ingin Anda kirimi tautan aplikasi."
 
-#: archive-template.php:802
+#: archive-template.php:798
 msgid "Message subject"
 msgstr ""
 
-#: archive-template.php:804
+#: archive-template.php:800
 msgid "A valid message subject must be entered."
 msgstr ""
 
-#: archive-template.php:806
+#: archive-template.php:802
 msgid "Message from name"
 msgstr ""
 
-#: archive-template.php:808
+#: archive-template.php:804
 msgid "A valid from name must be specified."
 msgstr ""
 
-#: archive-template.php:810
+#: archive-template.php:806
 msgid "Message reply to"
 msgstr ""
 
-#: archive-template.php:812
+#: archive-template.php:808
 msgid "A valid reply to email address must be specified."
 msgstr ""
 
-#: archive-template.php:814
+#: archive-template.php:810
 msgid "Emails will be sent from: %s"
 msgstr ""
 
-#: archive-template.php:837
+#: archive-template.php:833
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
 
-#: archive-template.php:839
+#: archive-template.php:835
 msgid "Message"
 msgstr ""
 
-#: archive-template.php:841
+#: archive-template.php:837
 msgid "Please ensure a valid send message has been entered."
 msgstr ""
 
-#: archive-template.php:842 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:838 dt-reports/magic-url-bulk-send.php:58
+#: dt-reports/magic-url-setup.php:131
 msgid "Message placeholders"
 msgstr ""
 
-#: archive-template.php:845 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:841 dt-reports/magic-url-bulk-send.php:64
+#: dt-reports/magic-url-setup.php:137
 #, fuzzy
 #| msgid "Create Record"
 msgid "Name of the Record"
 msgstr "Buat Rekod"
 
-#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:846 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "Kirim ke catatan yang dipilih"
 
-#: archive-template.php:851 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:847 dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "Anda harus memilih setidaknya satu catatan"
 
-#: archive-template.php:854 dt-reports/magic-url-bulk-send.php:94
-#: dt-reports/magic-url-setup.php:91
+#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:94
+#: dt-reports/magic-url-setup.php:100
 msgid "Send"
 msgstr "Kirim"
 
-#: archive-template.php:854 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "Tautan"
 
-#: archive-template.php:859
+#: archive-template.php:855
 msgid "Ensure valid record selections have been made."
 msgstr ""
 
-#: archive-template.php:899
+#: archive-template.php:900
 msgid "Loading..."
 msgstr "Sedang memuat..."
 
-#: archive-template.php:904 dt-assets/functions/enqueue-scripts.php:404
+#: archive-template.php:905 dt-assets/functions/enqueue-scripts.php:410
 msgid "Load More"
 msgstr "Memuat lagi"
 
-#: archive-template.php:916
+#: archive-template.php:917
 msgid "Field Name"
 msgstr "Nama Bidang"
 
-#: archive-template.php:972
+#: archive-template.php:973
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Mengetik untuk mencari"
 
-#: archive-template.php:981
+#: archive-template.php:982
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "Semua %1$s dengan %2$s"
 
-#: archive-template.php:984
+#: archive-template.php:985
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "Semua %1$s tanpa %2$s"
 
-#: archive-template.php:991
+#: archive-template.php:992
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Filter untuk kontak yang ditugaskan selanjutnya ATAU Ditugaskan Kepada"
 
-#: archive-template.php:1000 dt-assets/functions/enqueue-scripts.php:316
-#: dt-posts/custom-post-type.php:186
+#: archive-template.php:1001 dt-assets/functions/enqueue-scripts.php:321
+#: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "Tanggal Pembuatan"
 
-#: archive-template.php:1007 archive-template.php:1014
+#: archive-template.php:1008 archive-template.php:1015
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1045
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:961
 msgid "None Set"
 msgstr "Tak Diatur"
 
-#: archive-template.php:1028 archive-template.php:1029
-#: dt-assets/functions/enqueue-scripts.php:224 dt-core/global-functions.php:686
+#: archive-template.php:1029 archive-template.php:1030
+#: dt-assets/functions/enqueue-scripts.php:229 dt-core/global-functions.php:671
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
-#: template-settings.php:295 template-settings.php:539
+#: dt-users/user-management.php:196 template-settings.php:313
+#: template-settings.php:577
 msgid "No"
 msgstr "Tidak"
 
-#: archive-template.php:1035 archive-template.php:1036
-#: dt-assets/functions/enqueue-scripts.php:223 dt-core/global-functions.php:687
-#: dt-metrics/records/genmap.php:114 dt-metrics/records/time-charts.php:119
-#: dt-posts/posts.php:460 template-settings.php:294 template-settings.php:538
+#: archive-template.php:1036 archive-template.php:1037
+#: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:672
+#: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
+#: dt-posts/posts.php:460 dt-users/user-management.php:195
+#: template-settings.php:312 template-settings.php:576
 msgid "Yes"
 msgstr "Ya"
 
-#: archive-template.php:1040
+#: archive-template.php:1041
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Jarak mulai"
 
-#: archive-template.php:1043 archive-template.php:1054
+#: archive-template.php:1044 archive-template.php:1055
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Hapuskan"
 
-#: archive-template.php:1050
+#: archive-template.php:1051
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Jarak berakhir"
 
-#: archive-template.php:1065
+#: archive-template.php:1066
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "Filter nama"
 
-#: archive-template.php:1070
+#: archive-template.php:1071
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -594,7 +602,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "Semua %1$s dengan %2$s"
 
-#: archive-template.php:1074
+#: archive-template.php:1075
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -602,7 +610,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "Semua %1$s tanpa %2$s"
 
-#: archive-template.php:1078
+#: archive-template.php:1079
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -610,7 +618,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "Semua %1$s dengan %2$s"
 
-#: archive-template.php:1082
+#: archive-template.php:1083
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -618,73 +626,73 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "Semua %1$s tanpa %2$s"
 
-#: archive-template.php:1106
+#: archive-template.php:1107
 msgid "Filter Name"
 msgstr "Filter nama"
 
-#: archive-template.php:1111
+#: archive-template.php:1112
 msgid "Filter Records"
 msgstr "Filter Catatan"
 
-#: archive-template.php:1115 dt-assets/functions/enqueue-scripts.php:276
-#: dt-assets/functions/enqueue-scripts.php:311
-#: dt-users/user-initial-setup.php:79 template-settings.php:685
+#: archive-template.php:1116 dt-assets/functions/enqueue-scripts.php:281
+#: dt-assets/functions/enqueue-scripts.php:316
+#: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
 msgstr "Simpan"
 
-#: dt-assets/functions/details-bar.php:51
-#: dt-assets/functions/details-bar.php:242
-#: dt-core/configuration/config-site-defaults.php:364
-#: dt-workflows/update-required.php:80 dt-workflows/update-required.php:129
+#: dt-assets/functions/details-bar.php:52
+#: dt-assets/functions/details-bar.php:262
+#: dt-core/configuration/config-site-defaults.php:350
+#: dt-workflows/update-required.php:79 dt-workflows/update-required.php:128
 msgid "Update Needed"
 msgstr "informasi baru dibutuhkan"
 
-#: dt-assets/functions/details-bar.php:62
+#: dt-assets/functions/details-bar.php:63
 msgid "Admin Actions"
 msgstr "Tindakan Admin"
 
-#: dt-assets/functions/details-bar.php:67 single-template.php:427
+#: dt-assets/functions/details-bar.php:68 single-template.php:429
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "Hapus %s"
 
-#: dt-assets/functions/details-bar.php:72
+#: dt-assets/functions/details-bar.php:73
 msgctxt "View Contact History"
 msgid "View %s History"
 msgstr "Tampilkan %s Riwayat"
 
-#: dt-assets/functions/details-bar.php:80
+#: dt-assets/functions/details-bar.php:81
 msgctxt "Merge with another record"
 msgid "Merge with another %s"
 msgstr "Gabung dengan %s lain"
 
-#: dt-assets/functions/details-bar.php:96
-#: dt-assets/functions/details-bar.php:252
+#: dt-assets/functions/details-bar.php:97
+#: dt-assets/functions/details-bar.php:272
 msgid "Previous record"
 msgstr "Rekod sebelumnya"
 
-#: dt-assets/functions/details-bar.php:124
-#: dt-assets/functions/details-bar.php:277
+#: dt-assets/functions/details-bar.php:140
+#: dt-assets/functions/details-bar.php:308
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "oleh %s"
 
-#: dt-assets/functions/details-bar.php:130
-#: dt-assets/functions/details-bar.php:284
+#: dt-assets/functions/details-bar.php:150
+#: dt-assets/functions/details-bar.php:316
 msgid "Next record"
 msgstr "Rekod berikutnya"
 
-#: dt-assets/functions/details-bar.php:150
-#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:221
+#: dt-assets/functions/details-bar.php:170
+#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:231
 msgid "Tasks"
 msgstr "Tugas-tugas"
 
-#: dt-assets/functions/details-bar.php:157
-#: dt-assets/functions/details-bar.php:162
+#: dt-assets/functions/details-bar.php:177
+#: dt-assets/functions/details-bar.php:182
 msgid "Following"
 msgstr "Sedang mengikuti"
 
-#: dt-assets/functions/details-bar.php:176
+#: dt-assets/functions/details-bar.php:196
 msgid "Share"
 msgstr "Bagikan"
 
@@ -720,206 +728,215 @@ msgid "Showing %1$s items matching %2$s"
 msgstr "Menampilkan %1$s item yang cocok dengan %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:118
-#: dt-assets/functions/enqueue-scripts.php:173
-#: dt-assets/functions/enqueue-scripts.php:312 template-settings.php:119
-#: template-settings.php:567
+#: dt-assets/functions/enqueue-scripts.php:178
+#: dt-assets/functions/enqueue-scripts.php:317 template-settings.php:119
+#: template-settings.php:605
 msgid "Edit"
 msgstr "Mengedit"
 
-#: dt-assets/functions/enqueue-scripts.php:136
+#: dt-assets/functions/enqueue-scripts.php:119
+#: dt-reports/magic-url-setup.php:97 template-settings.php:303
+msgid "Copy"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:120
+msgid "Copied: %s"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:141
 msgid "You don't have any unread notifications"
 msgstr "Anda belum punya notifikasi yang belum dibaca"
 
-#: dt-assets/functions/enqueue-scripts.php:137
+#: dt-assets/functions/enqueue-scripts.php:142
 msgid "You don't have any notifications"
 msgstr "Anda tidak ada notifikasi"
 
-#: dt-assets/functions/enqueue-scripts.php:171 dt-posts/dt-posts.php:1706
+#: dt-assets/functions/enqueue-scripts.php:176 dt-posts/dt-posts.php:1628
 msgid "D.T System"
 msgstr "Sistem D.T"
 
-#: dt-assets/functions/enqueue-scripts.php:175
+#: dt-assets/functions/enqueue-scripts.php:180
 msgid "Translate with Google Translate"
 msgstr "Terjemahkan dengan Google Translate"
 
-#: dt-assets/functions/enqueue-scripts.php:176
+#: dt-assets/functions/enqueue-scripts.php:181
 msgid "Hide Translation"
 msgstr "Sembunyikan Terjemahan"
 
-#: dt-assets/functions/enqueue-scripts.php:177
+#: dt-assets/functions/enqueue-scripts.php:182
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "%1$s bereaksi dengan emoji %2$s"
 
-#: dt-assets/functions/enqueue-scripts.php:178
+#: dt-assets/functions/enqueue-scripts.php:183
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s dan %1$s bereaksi dengan emoji %2$s"
 
-#: dt-assets/functions/enqueue-scripts.php:209
+#: dt-assets/functions/enqueue-scripts.php:214
 msgid "Mark as complete"
 msgstr "Menandai sebagai sudah lengkap"
 
-#: dt-assets/functions/enqueue-scripts.php:210
+#: dt-assets/functions/enqueue-scripts.php:215
 msgid "No task created"
 msgstr "Kontak Diciptakan"
 
-#: dt-assets/functions/enqueue-scripts.php:211
+#: dt-assets/functions/enqueue-scripts.php:216
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr "Jenis Kelamin"
 
-#: dt-assets/functions/enqueue-scripts.php:212
+#: dt-assets/functions/enqueue-scripts.php:217
 msgid "No note set"
 msgstr "Tidak ada yang sudah ditentukan"
 
-#: dt-assets/functions/enqueue-scripts.php:213
+#: dt-assets/functions/enqueue-scripts.php:218
 msgid "Duplicates Detected"
 msgstr "Duplikat Terdeteksi"
 
-#: dt-assets/functions/enqueue-scripts.php:214
+#: dt-assets/functions/enqueue-scripts.php:219
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
 #: dt-users/template-new-user.php:293 template-merge-post-details.php:130
 #: template-merge-post-details.php:187
 msgid "Merge"
 msgstr "Gabungkan"
 
-#: dt-assets/functions/enqueue-scripts.php:215
+#: dt-assets/functions/enqueue-scripts.php:220
 msgid "Dismiss"
 msgstr "Menyingirkan"
 
-#: dt-assets/functions/enqueue-scripts.php:216
+#: dt-assets/functions/enqueue-scripts.php:221
 msgid "Dismissed Duplicates"
 msgstr "Buang Duplikat"
 
-#: dt-assets/functions/enqueue-scripts.php:217
+#: dt-assets/functions/enqueue-scripts.php:222
 msgid "Duplicates on: %s"
 msgstr "Duplikasikan pada: %s"
 
-#: dt-assets/functions/enqueue-scripts.php:218
+#: dt-assets/functions/enqueue-scripts.php:223
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "Transfer gagal. Cek konfigurasi site-to-site"
 
-#: dt-assets/functions/enqueue-scripts.php:219
+#: dt-assets/functions/enqueue-scripts.php:224
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr "Pembaruan transfer gagal. Periksa konfigurasi situs-ke-situs."
 
-#: dt-assets/functions/enqueue-scripts.php:220
+#: dt-assets/functions/enqueue-scripts.php:225
 msgid "Transfer update successful."
 msgstr "Pembaruan transfer berhasil."
 
-#: dt-assets/functions/enqueue-scripts.php:221
+#: dt-assets/functions/enqueue-scripts.php:226
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "Dibuat pada %s"
 
-#: dt-assets/functions/enqueue-scripts.php:222
+#: dt-assets/functions/enqueue-scripts.php:227
 msgid "Open With"
 msgstr "Buka Dengan"
 
-#: dt-assets/functions/enqueue-scripts.php:242
+#: dt-assets/functions/enqueue-scripts.php:247
 msgid "Revert Record Back To This Point"
 msgstr "Kembalikan Rekam Kembali ke Titik Ini"
 
-#: dt-assets/functions/enqueue-scripts.php:243
+#: dt-assets/functions/enqueue-scripts.php:248
 msgid "Are you sure you want to revert record state back to %s?"
 msgstr "Anda yakin ingin menghapus status rekaman %s?"
 
-#: dt-assets/functions/enqueue-scripts.php:274
+#: dt-assets/functions/enqueue-scripts.php:279
 msgid "Locations you are responsible for"
 msgstr "Lokasi yang Anda tangani"
 
-#: dt-assets/functions/enqueue-scripts.php:275
-#: dt-metrics/records/genmap.php:104
+#: dt-assets/functions/enqueue-scripts.php:280
+#: dt-metrics/records/genmap.php:160
 msgid "Add"
 msgstr "Tambah"
 
-#: dt-assets/functions/enqueue-scripts.php:277 template-settings.php:285
+#: dt-assets/functions/enqueue-scripts.php:282 template-settings.php:296
 msgid "link"
 msgstr "tautan"
 
-#: dt-assets/functions/enqueue-scripts.php:278 template-settings.php:286
+#: dt-assets/functions/enqueue-scripts.php:283
 msgid "copy"
 msgstr "salin"
 
-#: dt-assets/functions/enqueue-scripts.php:294
+#: dt-assets/functions/enqueue-scripts.php:299
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "Kecocokan Yang Ditemukan:"
 
-#: dt-assets/functions/enqueue-scripts.php:295
+#: dt-assets/functions/enqueue-scripts.php:300
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "Singkirkan semua kecocokan untuk %s"
 
-#: dt-assets/functions/enqueue-scripts.php:314
+#: dt-assets/functions/enqueue-scripts.php:319
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "Meampilkan_pemula_dari_jumlah_"
 
-#: dt-assets/functions/enqueue-scripts.php:315
+#: dt-assets/functions/enqueue-scripts.php:320
 msgid "Sorting By"
 msgstr "Sedang menyortir oleh"
 
-#: dt-assets/functions/enqueue-scripts.php:317
+#: dt-assets/functions/enqueue-scripts.php:322
 msgid "Date Modified"
 msgstr "Tanggal Dimodifikasikan"
 
-#: dt-assets/functions/enqueue-scripts.php:318
+#: dt-assets/functions/enqueue-scripts.php:323
 msgid "No filters, create one below"
 msgstr "Tidak ada filter, membuat salah satu di bawah"
 
-#: dt-assets/functions/enqueue-scripts.php:319
+#: dt-assets/functions/enqueue-scripts.php:324
 msgid "No records found matching your filter."
 msgstr "Tidak ada catatan yang sesuai dengan filter Anda."
 
-#: dt-assets/functions/enqueue-scripts.php:320 dt-contacts/base-setup.php:490
-#: dt-groups/base-setup.php:1076 dt-posts/custom-post-type.php:439
+#: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:674
+#: dt-groups/base-setup.php:1036 dt-posts/custom-post-type.php:489
 msgctxt "All records"
 msgid "All %s"
 msgstr "Semua %s"
 
-#: dt-assets/functions/enqueue-scripts.php:321
+#: dt-assets/functions/enqueue-scripts.php:326
 msgid "start"
 msgstr "mulai"
 
-#: dt-assets/functions/enqueue-scripts.php:322
+#: dt-assets/functions/enqueue-scripts.php:327
 msgid "end"
 msgstr "selesai"
 
-#: dt-assets/functions/enqueue-scripts.php:323
+#: dt-assets/functions/enqueue-scripts.php:328
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1315 dt-groups/base-setup.php:994
+#: dt-contacts/module-access.php:1179 dt-groups/base-setup.php:954
 #: dt-metrics/personal/activity-highlights.php:56
-#: dt-metrics/records/dynamic-records-map.php:96
+#: dt-metrics/records/dynamic-records-map.php:98
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "Semua"
 
-#: dt-assets/functions/enqueue-scripts.php:324
+#: dt-assets/functions/enqueue-scripts.php:329
 msgid "Without"
 msgstr "Tanpa"
 
-#: dt-assets/functions/enqueue-scripts.php:327
+#: dt-assets/functions/enqueue-scripts.php:332
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:328
+#: dt-assets/functions/enqueue-scripts.php:333
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "tidak terkirim (kemungkinan hilang email yang valid)"
 
-#: dt-assets/functions/enqueue-scripts.php:329
+#: dt-assets/functions/enqueue-scripts.php:334
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:330
+#: dt-assets/functions/enqueue-scripts.php:335
 msgid "Exclude Item"
 msgstr "Kecualikan Item"
 
-#: dt-assets/functions/enqueue-scripts.php:333
+#: dt-assets/functions/enqueue-scripts.php:338
 #, fuzzy
 #| msgctxt "The exported csv data to contain all fields"
 #| msgid "The exported csv data to contain all {0} %s fields."
@@ -927,7 +944,7 @@ msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr "Data csv yang diekspor berisi seluruh bidang {0} %s."
 
-#: dt-assets/functions/enqueue-scripts.php:334
+#: dt-assets/functions/enqueue-scripts.php:339
 #, fuzzy
 #| msgctxt "The exported csv data to contain all fields"
 #| msgid "The exported csv data to contain all {0} %s fields."
@@ -937,89 +954,144 @@ msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr "Data csv yang diekspor berisi seluruh bidang {0} %s."
 
-#: dt-assets/functions/enqueue-scripts.php:337
-#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-assets/functions/enqueue-scripts.php:350
 #, fuzzy
 #| msgctxt "Contacts List"
 #| msgid "%s List"
 msgid "Full List"
 msgstr "Daftar %s"
 
-#: dt-assets/functions/enqueue-scripts.php:338
+#: dt-assets/functions/enqueue-scripts.php:343
 #, fuzzy
 #| msgid "Address"
 msgid "No Addresses"
 msgstr "Alamat"
 
-#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:344
 msgid "With Additional Addresses"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:340
+#: dt-assets/functions/enqueue-scripts.php:345
 msgid "Open Email for Group"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:341
+#: dt-assets/functions/enqueue-scripts.php:346
 #, fuzzy
 #| msgid "Open Modal"
 msgid "Open All"
 msgstr "Buka Modal"
 
-#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-assets/functions/enqueue-scripts.php:347
 msgid "Show Group Addresses"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:346
+#: dt-assets/functions/enqueue-scripts.php:351
 msgid "Has No Phone Number"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:347
+#: dt-assets/functions/enqueue-scripts.php:352
 msgid "Has Additional Phone Numbers"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:351
+#: dt-assets/functions/enqueue-scripts.php:356
 #, fuzzy
 #| msgid "Used Locations"
 msgid "Mapped Locations"
 msgstr "Lokasi yang digunakan"
 
-#: dt-assets/functions/enqueue-scripts.php:352
+#: dt-assets/functions/enqueue-scripts.php:357
 #, fuzzy
 #| msgctxt "Reason Paused label"
 #| msgid "Contact on vacation"
 msgid "Contacts Without Locations"
 msgstr "Kontak lagi berlibur"
 
-#: dt-assets/functions/enqueue-scripts.php:353
+#: dt-assets/functions/enqueue-scripts.php:358
 #, fuzzy
 #| msgid "Add Records"
 msgid "Records on zoomed map"
 msgstr "Tambahkan Catatan"
 
-#: dt-assets/functions/enqueue-scripts.php:354
+#: dt-assets/functions/enqueue-scripts.php:359
 msgid "No Zoomed Map Records Found!"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:355
+#: dt-assets/functions/enqueue-scripts.php:360
 msgid "Open Zoomed Map Records"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:356
-#: dt-assets/functions/enqueue-scripts.php:357
+#: dt-assets/functions/enqueue-scripts.php:361
+#: dt-assets/functions/enqueue-scripts.php:362
 #, fuzzy
 #| msgid "Filter Name"
 msgid "Filtered Map"
 msgstr "Filter nama"
 
-#: dt-assets/functions/enqueue-scripts.php:384 dt-contacts/base-setup.php:51
-#: dt-contacts/base-setup.php:63 dt-metrics/personal/activity-highlights.php:57
+#: dt-assets/functions/enqueue-scripts.php:390 dt-contacts/base-setup.php:55
+#: dt-contacts/base-setup.php:67 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "Kontak"
 
-#: dt-assets/functions/enqueue-scripts.php:385
+#: dt-assets/functions/enqueue-scripts.php:391
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr "%s sudah ada"
+
+#: dt-assets/functions/enqueue-scripts.php:429
+msgid "File Upload"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:430
+#, fuzzy
+#| msgid "Choose an option:"
+msgid "Choose a file"
+msgstr "Memilih sebuah pilihan:"
+
+#: dt-assets/functions/enqueue-scripts.php:431
+msgid "or drag it here"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:432
+msgid "Successfully Uploaded!"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:433
+msgid "Error!"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:434
+#, fuzzy
+#| msgid "Unable to update"
+msgid "Unable to upload, please try again"
+msgstr "Tidak dapat memperbarui"
+
+#: dt-assets/functions/enqueue-scripts.php:435
+msgid "Upload"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:436
+#, fuzzy
+#| msgid "Delete Filter"
+msgid "Delete Existing File"
+msgstr "Hapuskan filter"
+
+#: dt-assets/functions/enqueue-scripts.php:437
+#, fuzzy
+#| msgctxt "Are you sure you want to delete name?"
+#| msgid "Are you sure you want to delete %s?"
+msgid "Are you sure you wish to delete existing file?"
+msgstr "Anda yakin ingin menghapus %s?"
+
+#: dt-assets/functions/enqueue-scripts.php:438
+msgid "Successfully Deleted!"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:439
+#, fuzzy
+#| msgid "Delete and replace the app link"
+msgid "Delete failed, please try again"
+msgstr "Hapus dan ganti tautan aplikasi"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:27
 msgid "Menu"
@@ -1040,7 +1112,7 @@ msgstr "Tambah Baru"
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:70 dt-assets/parts/nav-offcanvas.php:50
 #: dt-assets/parts/nav-topbar.php:157 template-notifications.php:33
-#: template-settings.php:60 template-settings.php:467
+#: template-settings.php:60 template-settings.php:485
 msgid "Notifications"
 msgstr "Notifikasi"
 
@@ -1056,10 +1128,10 @@ msgid "Admin"
 msgstr "Administrator"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
-#: dt-metrics/combined/hover-map.php:265
-#: dt-metrics/combined/locations-list.php:260
+#: dt-metrics/combined/hover-map.php:269
+#: dt-metrics/combined/locations-list.php:263
 #: dt-metrics/records/dynamic-records-map.php:65
-#: dt-users/user-management.php:135 dt-users/user-management.php:228
+#: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
 msgstr "Para Pengguna"
 
@@ -1071,52 +1143,52 @@ msgstr "Bantuan"
 msgid "D.T Forum"
 msgstr "Forum D.T"
 
-#: dt-assets/parts/loop-activity-comment.php:79
+#: dt-assets/parts/loop-activity-comment.php:83
 msgid "Submit comment"
 msgstr "Kasih komentar"
 
-#: dt-assets/parts/loop-activity-comment.php:87
+#: dt-assets/parts/loop-activity-comment.php:91
 msgid "Showing:"
 msgstr "Yang tertampak:"
 
-#: dt-assets/parts/loop-activity-comment.php:101
+#: dt-assets/parts/loop-activity-comment.php:105
 #: dt-users/template-user-management.php:91
 msgid "Activity"
 msgstr "Aktivitas"
 
-#: dt-assets/parts/loop-activity-comment.php:134
+#: dt-assets/parts/loop-activity-comment.php:138
 #: dt-assets/parts/modals/modal-record-history.php:28
 #: dt-assets/parts/modals/modal-record-history.php:36
 msgid "show all"
 msgstr "tampakkan semua"
 
-#: dt-assets/parts/loop-activity-comment.php:138
+#: dt-assets/parts/loop-activity-comment.php:142
 msgid "hide all"
 msgstr "sembunyikan semua"
 
-#: dt-assets/parts/loop-activity-comment.php:150
+#: dt-assets/parts/loop-activity-comment.php:154
 msgid "Delete Comment:"
 msgstr "Hapuskan Komentar:"
 
-#: dt-assets/parts/loop-activity-comment.php:164
-#: dt-assets/parts/loop-activity-comment.php:212
+#: dt-assets/parts/loop-activity-comment.php:168
+#: dt-assets/parts/loop-activity-comment.php:216
 #: template-merge-post-details.php:104
 msgid "Sorry, something went wrong"
 msgstr "Maaf, ada masalah terjadi"
 
-#: dt-assets/parts/loop-activity-comment.php:165
+#: dt-assets/parts/loop-activity-comment.php:169
 msgid "The comment could not be deleted."
 msgstr "Komentar tidak bisa dihapuskan."
 
-#: dt-assets/parts/loop-activity-comment.php:170
+#: dt-assets/parts/loop-activity-comment.php:174
 msgid "Edit Comment:"
 msgstr "Mengedit Komentar:"
 
-#: dt-assets/parts/loop-activity-comment.php:186
+#: dt-assets/parts/loop-activity-comment.php:190
 msgid "Type of Comment"
 msgstr "Jenis Komentar"
 
-#: dt-assets/parts/loop-activity-comment.php:213
+#: dt-assets/parts/loop-activity-comment.php:217
 msgid "The comment could not be updated."
 msgstr "Komentar ini tidak dapat diupdate."
 
@@ -1286,9 +1358,8 @@ msgstr ""
 "Dengan mengklik \"Mengedit\", Anda dapat mengubah hal-hal seperti bahasa "
 "yang digunakan sistem ini."
 
-#: dt-assets/parts/modals/modal-help.php:66 dt-contacts/base-setup.php:192
-#: dt-groups/base-setup.php:359 dt-people-groups/people-groups-base.php:194
-#: dt-people-groups/people-groups-base.php:203 dt-users/users.php:169
+#: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
+#: dt-users/users.php:169
 msgid "Locations"
 msgstr "Lokasi-lokasi"
 
@@ -1457,15 +1528,15 @@ msgstr "Buka halaman"
 msgid "Copy the link to the clipboard"
 msgstr "Salin tautan ke papan klip"
 
-#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:113
+#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:130
 msgid "Send the link via email."
 msgstr "Kirim tautan melalui email."
 
-#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:150
+#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:180
 msgid "Scan the QR code to open the magic link on a mobile device."
 msgstr "Pindai kode QR untuk membuka tautan ajaib di perangkat seluler."
 
-#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:155
+#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:185
 msgid ""
 "Reset the security code. No data is removed. Only access. The previous link "
 "will be disabled and another one created."
@@ -1479,9 +1550,9 @@ msgid "Create Record"
 msgstr "Buat Rekod"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:305
-#: dt-metrics/records/genmap.php:110 dt-posts/custom-post-type.php:169
-#: template-settings.php:136
+#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
+#: dt-metrics/records/genmap.php:166 dt-posts/custom-post-type.php:170
+#: dt-users/template-user-management.php:196 template-settings.php:146
 msgid "Name"
 msgstr "Nama"
 
@@ -1517,6 +1588,7 @@ msgstr "Mengembalikan Aktifitas ke status awal"
 
 #: dt-assets/parts/modals/modal-revert.php:5
 #: dt-metrics/records/date-range-activity.php:102
+#: dt-metrics/records/select-tags-charts.php:87
 #: dt-metrics/records/time-charts.php:107
 msgid "Field"
 msgstr "lapangan"
@@ -1603,642 +1675,197 @@ msgstr "Lihat semua"
 msgid "Mark All"
 msgstr "Menandai semua"
 
-#: dt-contacts/access-module.php:59
-msgid "Dispatcher"
-msgstr "Dispatcher"
-
-#: dt-contacts/access-module.php:66
-msgid "Partner"
-msgstr "Mitra"
-
-#: dt-contacts/access-module.php:73
-msgid "Digital Responder"
-msgstr "Digital Responder"
-
-#: dt-contacts/access-module.php:104
-msgid "Standard Contact"
-msgstr "Kontak Standar"
-
-#: dt-contacts/access-module.php:106
-msgid "A contact to collaborate on"
-msgstr "Kontak untuk berkolaborasi"
-
-#: dt-contacts/access-module.php:107
-msgid "Me and project leadership"
-msgstr "Saya dan kepemimpinan proyek"
-
-#: dt-contacts/access-module.php:113
-msgid "Connection"
-msgstr "Hubungan"
-
-#: dt-contacts/access-module.php:115 dt-contacts/dmm-module.php:51
-msgid "Connected to a contact, or generational fruit"
-msgstr "Terhubung ke kontak, atau buah generasional"
-
-#: dt-contacts/access-module.php:118
-msgid "Collaborators"
-msgstr "Kolaborator"
-
-#: dt-contacts/access-module.php:123 dt-groups/base-setup.php:137
-#: dt-metrics/groups/tree.php:86 dt-metrics/personal/group-tree.php:87
-#: dt-metrics/records/genmap.php:91 dt-metrics/records/genmap.php:98
-msgid "Assigned To"
-msgstr "Ditugaskan Kepada"
-
-#: dt-contacts/access-module.php:124
-msgid ""
-"Select the main person who is responsible for reporting on this contact."
-msgstr ""
-"Menentukan orang yang terutama bertanggung jawab untuk membuat laporan-"
-"laporan mengenai kontak ini."
-
-#: dt-contacts/access-module.php:134 dt-metrics/contacts/seeker-path.php:25
-#: dt-metrics/contacts/seeker-path.php:62
-msgid "Seeker Path"
-msgstr "Jalan Pencari"
-
-#: dt-contacts/access-module.php:135
-msgctxt "Seeker Path field description"
-msgid ""
-"Set the status of your progression with the contact. These are the steps "
-"that happen in a specific order to help a contact move forward."
-msgstr ""
-"Tetapkan status kemajuan Anda bersama dengan kontak ini. Ini adalah langkah-"
-"langkah yang dilakukan dalam urutan spesifik untuk membantu kontak untuk "
-"maju."
-
-#: dt-contacts/access-module.php:139
-msgid "Contact Attempt Needed"
-msgstr "Upaya kontak dibutuhkan."
-
-#: dt-contacts/access-module.php:143
-msgid "Contact Attempted"
-msgstr "Upaya kontak dibutuhkan."
-
-#: dt-contacts/access-module.php:147 dt-contacts/dmm-module.php:232
-msgid "Contact Established"
-msgstr "Kontak Diciptakan"
-
-#: dt-contacts/access-module.php:151
-msgid "First Meeting Scheduled"
-msgstr "Pertemuan sudah dijadwalkan."
-
-#: dt-contacts/access-module.php:155
-msgid "First Meeting Complete"
-msgstr "Pertemuan-pertemuan pertama"
-
-#: dt-contacts/access-module.php:159 dt-metrics/counter.php:140
-msgid "Ongoing Meetings"
-msgstr "Pertemuan-pertemuan yang berlangsung"
-
-#: dt-contacts/access-module.php:163
-msgid "Being Coached"
-msgstr "Dilatih oleh"
-
-#: dt-contacts/access-module.php:175 dt-contacts/base-setup.php:299
-msgid "Contact Status"
-msgstr "Kontak-kontak"
-
-#: dt-contacts/access-module.php:180
-msgid "New Contact"
-msgstr "Kontak Baru"
-
-#: dt-contacts/access-module.php:181
-msgctxt "Contact Status field description"
-msgid "The contact is new in the system."
-msgstr "Kontak ini baru di sistem"
-
-#: dt-contacts/access-module.php:185
-msgid "Not Ready"
-msgstr "Belum siap"
-
-#: dt-contacts/access-module.php:186
-msgctxt "Contact Status field description"
-msgid ""
-"There is not enough information to move forward with the contact at this "
-"time."
-msgstr ""
-"Sekarang ini belum ada informasi secukupnya untuk melanjutkan dengan kontak "
-"ini."
-
-#: dt-contacts/access-module.php:190
-msgid "Dispatch Needed"
-msgstr "informasi baru dibutuhkan"
-
-#: dt-contacts/access-module.php:191
-msgctxt "Contact Status field description"
-msgid "This contact needs to be assigned to a multiplier."
-msgstr "Kontak ini harus ditugaskan kepada seorang multiplier."
-
-#: dt-contacts/access-module.php:195
-msgid "Waiting to be accepted"
-msgstr "Sedang menunggu penerimaan"
-
-#: dt-contacts/access-module.php:196
-msgctxt "Contact Status field description"
-msgid ""
-"The contact has been assigned to someone, but has not yet been accepted by "
-"that person."
-msgstr ""
-"Kontak ini pernah ditugaskan kepada seseorang, akan tetapi dia belum "
-"diterima oleh orang itu."
-
-#: dt-contacts/access-module.php:201
-msgid "Paused"
-msgstr "Lagi pause"
-
-#: dt-contacts/access-module.php:202
-msgctxt "Contact Status field description"
-msgid "This contact is currently on hold (i.e. on vacation or not responding)."
-msgstr "Kontak ini lagi pause, (contohnya sedang berlibur atau tidak membalas)"
-
-#: dt-contacts/access-module.php:217
-msgid "Reason Not Ready"
-msgstr "Alasan Belum Siap"
-
-#: dt-contacts/access-module.php:218
-msgctxt "Optional Documentation"
-msgid "The main reason the contact is not ready to be assigned to a user."
-msgstr "Kontak ini sudah ditugaskan kepada anda."
-
-#: dt-contacts/access-module.php:225
-msgid "Insufficient Contact Information"
-msgstr "Informasi Kontak Tidak Cukup"
-
-#: dt-contacts/access-module.php:228
-msgid "Unknown Location"
-msgstr "Lokasi"
-
-#: dt-contacts/access-module.php:231
-msgid "Only wants media"
-msgstr "Hanya ingin medai"
-
-#: dt-contacts/access-module.php:234
-msgid "Outside Area"
-msgstr "Di luar daerah"
-
-#: dt-contacts/access-module.php:237
-msgid "Needs Review"
-msgstr "Perlu Ditinjau"
-
-#: dt-contacts/access-module.php:240
-msgid "Waiting for Confirmation"
-msgstr "Sedang Menunggu Konfirmasi"
-
-#: dt-contacts/access-module.php:248
-msgid "Reason Paused"
-msgstr "Alasan sedang Pause"
-
-#: dt-contacts/access-module.php:249
-msgctxt "Optional Documentation"
-msgid ""
-"A paused contact is one you are not currently interacting with but expect to "
-"in the future."
-msgstr ""
-"Kontak Pause adalah kontak yang tidak dilayani secara aktif, tetapi mungkin "
-"Anda berharap melayani mereka di masa depan"
-
-#: dt-contacts/access-module.php:253
-msgctxt "Reason Paused label"
-msgid "Contact on vacation"
-msgstr "Kontak lagi berlibur"
-
-#: dt-contacts/access-module.php:254
-msgctxt "Reason Paused label"
-msgid "Contact not responding"
-msgstr "Kontak lagi tidak membalas"
-
-#: dt-contacts/access-module.php:255
-msgctxt "Reason Paused label"
-msgid "Contact not available"
-msgstr "Kontak tidak tersedia"
-
-#: dt-contacts/access-module.php:256
-msgctxt "Reason Paused label"
-msgid "Contact has little interest/hunger"
-msgstr "Kontak tidak terlalu tertarik"
-
-#: dt-contacts/access-module.php:257
-msgctxt "Reason Paused label"
-msgid "Contact shows no initiative"
-msgstr "Kontak tidak memiliki prakarsa"
-
-#: dt-contacts/access-module.php:258
-msgctxt "Reason Paused label"
-msgid "Contact has questionable motives"
-msgstr "Kontak memiliki motivasi yang dapat dicurigai"
-
-#: dt-contacts/access-module.php:259
-msgctxt "Reason Paused label"
-msgid "Ball is in the contact's court"
-msgstr "Lagi menunggu pembalasan dari kontak"
-
-#: dt-contacts/access-module.php:260
-msgctxt "Reason Paused label"
-msgid "We want to see if/how the contact responds to automated text messages"
-msgstr ""
-"Kita ingin tahu jika kontak akan merespon ketika dihubungi lewat SMS "
-"automatis."
-
-#: dt-contacts/access-module.php:267
-msgid "Reason Archived"
-msgstr "Alasan Diarsipkan"
-
-#: dt-contacts/access-module.php:268
-msgctxt "Optional Documentation"
-msgid "A closed contact is one you can't or don't wish to interact with."
-msgstr "Kontak Tertutup adalah kontak yang Anda tidak ingin layani"
-
-#: dt-contacts/access-module.php:272
-msgctxt "Reason Closed label"
-msgid "Duplicate"
-msgstr "Salinan"
-
-#: dt-contacts/access-module.php:273
-msgctxt "Reason Closed label"
-msgid "Insufficient contact info"
-msgstr "Informasi kontak tidak cukup"
-
-#: dt-contacts/access-module.php:274
-msgctxt "Reason Closed label"
-msgid "Denies submitting contact request"
-msgstr "Kontak membantah bahwa ia pernah minta dihubungi"
-
-#: dt-contacts/access-module.php:275
-msgctxt "Reason Closed label"
-msgid "Hostile, playing games or self gain"
-msgstr "Ganas, bermain, atau egois"
-
-#: dt-contacts/access-module.php:276
-msgctxt "Reason Closed label"
-msgid "Only wants to argue or debate"
-msgstr "Hanya ingin berdebat"
-
-#: dt-contacts/access-module.php:277
-msgctxt "Reason Closed label"
-msgid "Just wanted media or book"
-msgstr "Hanya mau media atau buku"
-
-#: dt-contacts/access-module.php:278
-msgctxt "Reason Closed label"
-msgid "No longer interested"
-msgstr "Tidak tertarik lagi"
-
-#: dt-contacts/access-module.php:279
-msgctxt "Reason Closed label"
-msgid "No longer responding"
-msgstr "Tidak lagi membalas"
-
-#: dt-contacts/access-module.php:280
-msgctxt "Reason Closed label"
-msgid "Already in church or connected with others"
-msgstr "Sudah kumpul dengan jemaat atau terhubung dengan yang lain"
-
-#: dt-contacts/access-module.php:281
-msgctxt "Reason Closed label"
-msgid "Transferred contact to partner"
-msgstr "Kontak sudah ditransfer ke mitra"
-
-#: dt-contacts/access-module.php:282
-msgctxt "Reason Closed label"
-msgid "Martyred"
-msgstr "Disyahid"
-
-#: dt-contacts/access-module.php:283
-msgctxt "Reason Closed label"
-msgid "Moved or relocated"
-msgstr "Pindah rumah atau tempat"
-
-#: dt-contacts/access-module.php:284
-msgctxt "Reason Closed label"
-msgid "GDPR request"
-msgstr "Permintaan GDPR"
-
-#: dt-contacts/access-module.php:285
-msgctxt "Reason Closed label"
-msgid "Unknown"
-msgstr "Alasan tidak diketahui"
-
-#: dt-contacts/access-module.php:292
-msgid "Accepted"
-msgstr "Menerima"
-
-#: dt-contacts/access-module.php:300 dt-contacts/base-setup.php:528
-#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
-#: dt-metrics/personal/activity-log.php:23
-#: dt-metrics/personal/baptism-tree.php:26
-#: dt-metrics/personal/coaching-tree.php:26
-#: dt-metrics/personal/group-tree.php:25 dt-metrics/personal/overview.php:23
-msgid "Personal"
-msgstr "Pribadi"
-
-#: dt-contacts/access-module.php:304
-#: dt-core/configuration/config-site-defaults.php:344
-msgid "Web"
-msgstr "Web"
-
-#: dt-contacts/access-module.php:308 dt-contacts/base-setup.php:230
-msgid "Facebook"
-msgstr "Facebook"
-
-#: dt-contacts/access-module.php:312 dt-contacts/base-setup.php:238
-msgid "Twitter"
-msgstr "Twitter"
-
-#: dt-contacts/access-module.php:316
-msgid "Transfer"
-msgstr "Transfer"
-
-#: dt-contacts/access-module.php:318
-msgid ""
-"Contacts transferred from a partnership with another Disciple.Tools site."
-msgstr "Kontak ditransfer dari kemitraan dengan situs Disciple.Tools lainnya."
-
-#: dt-contacts/access-module.php:331 dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:616
-msgid "Sources"
-msgstr "Sumber-sumber"
-
-#: dt-contacts/access-module.php:332
-msgctxt "Optional Documentation"
-msgid "The website, event or location this contact came from."
-msgstr "Website, acara, atau lokasi yang memunculkan kontak ini"
-
-#: dt-contacts/access-module.php:344
-msgid "Campaigns"
-msgstr "Kampanye"
-
-#: dt-contacts/access-module.php:345
-msgctxt "Optional Documentation"
-msgid ""
-"Marketing campaigns or access activities that this contact interacted with."
-msgstr ""
-"Kampanye pemasaran atau aktivitas akses yang berinteraksi dengan kontak ini."
-
-#: dt-contacts/access-module.php:412 dt-metrics/combined/critical-path.php:77
-msgid "Follow Up"
-msgstr "Tindaklanjut"
-
-#: dt-contacts/access-module.php:499 dt-contacts/access-module.php:530
-#: dt-contacts/access-module.php:561 dt-contacts/base-setup.php:394
-msgid "Choose an option:"
-msgstr "Memilih sebuah pilihan:"
-
-#: dt-contacts/access-module.php:521 dt-contacts/access-module.php:552
-#: dt-contacts/access-module.php:580 dt-contacts/base-setup.php:418
-msgid "Confirm"
-msgstr "Belum dikonfirmasi"
-
-#: dt-contacts/access-module.php:624
-msgid "Multipliers"
-msgstr "Pelayan Lapangan"
-
-#: dt-contacts/access-module.php:627
-msgid "Dispatchers"
-msgstr "Dispatchers"
-
-#: dt-contacts/access-module.php:630
-msgid "Digital Responders"
-msgstr "Responden Digital"
-
-#: dt-contacts/access-module.php:637
-msgid "Assign To"
-msgstr "Menetapkan kepada"
-
-#: dt-contacts/access-module.php:689
-msgid "This contact has been assigned to you."
-msgstr "Kontak ini sudah ditugaskan kepada anda."
-
-#: dt-contacts/access-module.php:690
-msgid "Accept"
-msgstr "Menerima"
-
-#: dt-contacts/access-module.php:691
-msgid "Decline"
-msgstr "Menolak"
-
-#: dt-contacts/access-module.php:929 dt-contacts/access-module.php:939
-msgid "My Follow-Up"
-msgstr "Tindak Lanjut Saya"
-
-#: dt-contacts/access-module.php:940 dt-contacts/access-module.php:961
-#: dt-contacts/access-module.php:984 dt-contacts/access-module.php:1009
-#: dt-groups/base-setup.php:986
-msgid "Assigned to me"
-msgstr "Penugasan bagi saya"
-
-#: dt-contacts/access-module.php:941 dt-contacts/access-module.php:962
-#: dt-contacts/access-module.php:985 dt-contacts/access-module.php:1010
-msgid "Sub-assigned to me"
-msgstr "Sub-penugasan bagi saya"
-
-#: dt-contacts/access-module.php:1049
-msgctxt "All records"
-msgid "Follow-Up %s"
-msgstr "Tindak lanjut %s"
-
-#: dt-contacts/access-module.php:1057
-msgid "All Follow-Up"
-msgstr "Semua Tindak Lanjut"
-
-#: dt-contacts/access-module.php:1159 dt-contacts/access-module.php:1160
-msgid "Subassigned only"
-msgstr "Ditugaskan (kedua) saja"
-
-#: dt-contacts/access-module.php:1316
-msgid "Ready"
-msgstr "Siap"
-
-#: dt-contacts/access-module.php:1317
-msgid "Recent"
-msgstr "Terkini"
-
-#: dt-contacts/access-module.php:1318
-msgid "Location"
-msgstr "Lokasi"
-
-#: dt-contacts/access-module.php:1319
-msgid "Assign"
-msgstr "Menetapkan"
-
-#: dt-contacts/access-module.php:1320 dt-users/template-new-user.php:134
-#: template-settings.php:216
-msgid "Language"
-msgstr "Bahasa"
-
-#: dt-contacts/access-module.php:1321 dt-contacts/base-setup.php:267
-#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:223
-#: template-settings.php:654
-msgid "Gender"
-msgstr "Jenis Kelamin"
-
-#: dt-contacts/access-module.php:1494
-msgid "This record might be a duplicate of: "
-msgstr "Rekod ini mungkin duplikat dari:"
-
-#: dt-contacts/access-module.php:1500 dt-contacts/duplicates-merging.php:485
-#: dt-contacts/duplicates-merging.php:567
-msgid "Duplicate Checker"
-msgstr "Duplikasikan Pemeriksa"
-
-#: dt-contacts/base-setup.php:51 dt-contacts/base-setup.php:64
-#: dt-contacts/base-setup.php:255 dt-mapping/columns/add-contacts-column.php:59
+#: dt-contacts/base-setup.php:55 dt-contacts/base-setup.php:68
+#: dt-contacts/base-setup.php:261 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/hover-map.php:128
-#: dt-metrics/combined/locations-list.php:123
-#: dt-metrics/contacts/baptism-tree.php:25
-#: dt-metrics/contacts/coaching-tree.php:25
-#: dt-metrics/contacts/mapbox-maps.php:28
-#: dt-metrics/contacts/milestones-map.php:25
-#: dt-metrics/contacts/milestones.php:24 dt-metrics/contacts/overview.php:23
-#: dt-metrics/contacts/seeker-path.php:26 dt-metrics/contacts/sources.php:25
-#: dt-metrics/groups/overview.php:64 dt-metrics/metrics.php:102
-#: dt-metrics/personal/mapbox-contacts-maps.php:28
-#: dt-metrics/personal/overview.php:58
-#: dt-metrics/records/dynamic-records-map.php:31
-#: dt-people-groups/people-groups-base.php:156
-#: dt-users/template-user-management.php:452
+#: dt-metrics/combined/hover-map.php:132
+#: dt-metrics/combined/locations-list.php:126
+#: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
+#: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
+#: dt-people-groups/people-groups-base.php:172
+#: dt-users/template-user-management.php:466
 msgid "Contacts"
 msgstr "Kontak-kontak"
 
-#: dt-contacts/base-setup.php:104
+#: dt-contacts/base-setup.php:108
 msgid "Nickname"
 msgstr "Nama panggilan"
 
-#: dt-contacts/base-setup.php:111
+#: dt-contacts/base-setup.php:116
 msgid "Contact Type"
 msgstr "Kontak Diciptakan"
 
-#: dt-contacts/base-setup.php:115
+#: dt-contacts/base-setup.php:120
 msgid "User"
 msgstr "Pengguna"
 
-#: dt-contacts/base-setup.php:116
+#: dt-contacts/base-setup.php:121
 msgid "Representing a User in the system"
 msgstr "Mewakili salah satu Pengguna dalam sistem"
 
-#: dt-contacts/base-setup.php:122
+#: dt-contacts/base-setup.php:127
 msgid "Private Contact"
 msgstr "Kontak Pribadi"
 
-#: dt-contacts/base-setup.php:124
+#: dt-contacts/base-setup.php:129
 msgid "A friend, family member or acquaintance"
 msgstr "Seorang teman, anggota keluarga atau kenalan"
 
-#: dt-contacts/base-setup.php:125 dt-contacts/dmm-module.php:54
+#: dt-contacts/base-setup.php:130 dt-contacts/base-setup.php:160
 msgid "Only me"
 msgstr "Hanya saya"
 
-#: dt-contacts/base-setup.php:149 dt-users/users.php:162
+#: dt-contacts/base-setup.php:137
+msgid "Standard Contact"
+msgstr "Kontak Standar"
+
+#: dt-contacts/base-setup.php:139
+msgid "A contact to collaborate on"
+msgstr "Kontak untuk berkolaborasi"
+
+#: dt-contacts/base-setup.php:140
+msgid "Me and project leadership"
+msgstr "Saya dan kepemimpinan proyek"
+
+#: dt-contacts/base-setup.php:146
+msgid "Connection"
+msgstr "Hubungan"
+
+#: dt-contacts/base-setup.php:148 dt-contacts/base-setup.php:157
+msgid "Connected to a contact, or generational fruit"
+msgstr "Terhubung ke kontak, atau buah generasional"
+
+#: dt-contacts/base-setup.php:151
+msgid "Collaborators"
+msgstr "Kolaborator"
+
+#: dt-contacts/base-setup.php:155
+msgid "Private Connection"
+msgstr "Koneksi Pribadi"
+
+#: dt-contacts/base-setup.php:184 dt-users/users.php:162
 msgid "Languages"
 msgstr "Bahasa"
 
-#: dt-contacts/base-setup.php:158 template-settings.php:169
+#: dt-contacts/base-setup.php:193 template-settings.php:179
 msgid "Phone"
 msgstr "Telepon"
 
-#: dt-contacts/base-setup.php:166
+#: dt-contacts/base-setup.php:201
 msgid "Signal"
 msgstr "Sinyal"
 
-#: dt-contacts/base-setup.php:171
+#: dt-contacts/base-setup.php:206
 msgid "Viber"
 msgstr "Viber"
 
-#: dt-contacts/base-setup.php:176
+#: dt-contacts/base-setup.php:211
 #, fuzzy
 #| msgid "Whatsapp"
 msgid "WhatsApp"
 msgstr "Whatsapp"
 
-#: dt-contacts/base-setup.php:183
-#: dt-core/configuration/config-site-defaults.php:341
+#: dt-contacts/base-setup.php:218
+#: dt-core/configuration/config-site-defaults.php:327
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
-#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:215
-#: dt-users/users.php:129 template-settings.php:156
+#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
+#: dt-users/users.php:129 template-settings.php:166
 msgid "Email"
 msgstr "Email"
 
-#: dt-contacts/base-setup.php:193 dt-groups/base-setup.php:360
-#: dt-people-groups/people-groups-base.php:195
-#: dt-people-groups/people-groups-base.php:205
-msgctxt "Optional Documentation"
-msgid "The general location where this contact is located."
-msgstr "Lokasi secara jenderal yang menjadi lokasi kontak ini."
-
-#: dt-contacts/base-setup.php:201 dt-groups/base-setup.php:369
-msgid "Locations or Address"
-msgstr "Lokasi atau Alamat"
-
-#: dt-contacts/base-setup.php:210 dt-groups/base-setup.php:378
-#: dt-people-groups/people-groups-base.php:213 template-settings.php:180
+#: dt-contacts/base-setup.php:227 dt-groups/base-setup.php:354
+#: dt-people-groups/people-groups-base.php:210 template-settings.php:190
 msgid "Address"
 msgstr "Alamat"
 
-#: dt-contacts/base-setup.php:246
+#: dt-contacts/base-setup.php:244
+msgid "Facebook"
+msgstr "Facebook"
+
+#: dt-contacts/base-setup.php:252
 msgid "Other Social Links"
 msgstr "Tautan Sosial Lain"
 
-#: dt-contacts/base-setup.php:255
+#: dt-contacts/base-setup.php:261
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Hubungan ke %s lain"
 
-#: dt-contacts/base-setup.php:256
+#: dt-contacts/base-setup.php:262
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Hubungan yang kontak ini memiliki dengan kontak lain dalam sistem ini."
 
-#: dt-contacts/base-setup.php:270 dt-users/template-user-management.php:227
+#: dt-contacts/base-setup.php:273 dt-contacts/module-access.php:1185
+#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
+#: template-settings.php:714
+msgid "Gender"
+msgstr "Jenis Kelamin"
+
+#: dt-contacts/base-setup.php:276 dt-users/template-user-management.php:241
 msgid "Male"
 msgstr "Lelaki"
 
-#: dt-contacts/base-setup.php:271 dt-users/template-user-management.php:228
+#: dt-contacts/base-setup.php:277 dt-users/template-user-management.php:242
 msgid "Female"
 msgstr "Perempuan"
 
-#: dt-contacts/base-setup.php:278
+#: dt-contacts/base-setup.php:284
 msgid "Age"
 msgstr "Usia"
 
-#: dt-contacts/base-setup.php:282
+#: dt-contacts/base-setup.php:288
 msgid "Under 18 years old"
 msgstr "Di bawah usia 18 tahun"
 
-#: dt-contacts/base-setup.php:283
+#: dt-contacts/base-setup.php:289
 msgid "18-25 years old"
 msgstr "Usia 18-25 tahun"
 
-#: dt-contacts/base-setup.php:284
+#: dt-contacts/base-setup.php:290
 msgid "26-40 years old"
 msgstr "Usia 26-40 tahun"
 
-#: dt-contacts/base-setup.php:285
+#: dt-contacts/base-setup.php:291
 msgid "Over 40 years old"
 msgstr "Usiah lebih dari 40 tahun"
 
-#: dt-contacts/base-setup.php:293 dt-groups/base-setup.php:104
-#: dt-people-groups/people-groups-base.php:150
+#: dt-contacts/base-setup.php:299 dt-groups/base-setup.php:101
+#: dt-people-groups/people-groups-base.php:166
 msgid "Requires Update"
 msgstr "Update Dibutuhkan"
 
-#: dt-contacts/base-setup.php:300
+#: dt-contacts/base-setup.php:305 dt-contacts/module-access.php:142
+#: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
+msgid "Contact Status"
+msgstr "Kontak-kontak"
+
+#: dt-contacts/base-setup.php:306
 msgctxt "Contact Status field description"
 msgid ""
 "The Contact Status describes the progress in communicating with the contact."
 msgstr "Status Kontak mencatat kemajuan dalam kommunikasi dengan kontak ini"
 
-#: dt-contacts/base-setup.php:304 dt-groups/base-setup.php:120
+#: dt-contacts/base-setup.php:313 dt-groups/base-setup.php:117
 #: dt-users/users.php:177
 msgid "Active"
 msgstr "Aktif"
 
-#: dt-contacts/base-setup.php:305
+#: dt-contacts/base-setup.php:314
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "Kontak ini maju dengan baik dan terus menerus diupdate."
 
-#: dt-contacts/base-setup.php:311
+#: dt-contacts/base-setup.php:319
+msgid "New Contact"
+msgstr "Kontak Baru"
+
+#: dt-contacts/base-setup.php:320
+msgctxt "Contact Status field description"
+msgid "The contact is new in the system."
+msgstr "Kontak ini baru di sistem"
+
+#: dt-contacts/base-setup.php:326
 msgctxt "Contact Status field description"
 msgid ""
 "This contact has made it known that they no longer want to continue or you "
@@ -2247,76 +1874,187 @@ msgstr ""
 "Kontak ini sudah bilang bahwa mereka tidak mau lanjut atau Anda memutuskan "
 "untuk tidak melanjutkan dengan mereka."
 
-#: dt-contacts/base-setup.php:346 dt-contacts/base-setup.php:375
+#: dt-contacts/base-setup.php:332 dt-groups/base-setup.php:134
+#: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
+msgid "Assigned To"
+msgstr "Ditugaskan Kepada"
+
+#: dt-contacts/base-setup.php:333
+msgid ""
+"Select the main person who is responsible for reporting on this contact."
+msgstr ""
+"Menentukan orang yang terutama bertanggung jawab untuk membuat laporan-"
+"laporan mengenai kontak ini."
+
+#: dt-contacts/base-setup.php:343
+msgid "Sub-assigned to"
+msgstr "Ditugaskan (kedua) kepada"
+
+#: dt-contacts/base-setup.php:344
+msgid ""
+"Contact or User assisting the Assigned To user to follow up with the contact."
+msgstr ""
+"Kontak atau Pengguna yang menolong Pengguna Tertugas untuk menindaklanjuti "
+"kontak ini."
+
+#: dt-contacts/base-setup.php:355
+msgid "Sub-assigned on other Contacts"
+msgstr "Sub-penugasan pada Kontak lain"
+
+#: dt-contacts/base-setup.php:356
+msgid "Contacts this contacts is subassigned on"
+msgstr "Kontak-kontak yang diberikan sub-penugasan pada kontak ini"
+
+#: dt-contacts/base-setup.php:368 dt-contacts/base-setup.php:733
+#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
+#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
+msgid "Personal"
+msgstr "Pribadi"
+
+#: dt-contacts/base-setup.php:372
+#: dt-core/configuration/config-site-defaults.php:330
+msgid "Web"
+msgstr "Web"
+
+#: dt-contacts/base-setup.php:376
+msgid "Transfer"
+msgstr "Transfer"
+
+#: dt-contacts/base-setup.php:378
+msgid ""
+"Contacts transferred from a partnership with another Disciple.Tools site."
+msgstr "Kontak ditransfer dari kemitraan dengan situs Disciple.Tools lainnya."
+
+#: dt-contacts/base-setup.php:391 dt-metrics/contacts/sources.php:90
+#: dt-users/user-hooks-and-config.php:616
+msgid "Sources"
+msgstr "Sumber-sumber"
+
+#: dt-contacts/base-setup.php:392
+msgctxt "Optional Documentation"
+msgid "The website, event or location this contact came from."
+msgstr "Website, acara, atau lokasi yang memunculkan kontak ini"
+
+#: dt-contacts/base-setup.php:433 dt-contacts/base-setup.php:465
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "Arsipkan %s"
 
-#: dt-contacts/base-setup.php:353
+#: dt-contacts/base-setup.php:440
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "Ubah Tipe %s"
 
-#: dt-contacts/base-setup.php:359
+#: dt-contacts/base-setup.php:446
 msgid "See duplicates"
 msgstr "Lihat duplikat"
 
-#: dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:466
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "Anda yakin ingin mengarsipkan %s?"
 
-#: dt-contacts/base-setup.php:383
+#: dt-contacts/base-setup.php:473
 msgid "Archive"
 msgstr "Arsipkan"
 
-#: dt-contacts/base-setup.php:442
-#: dt-core/configuration/config-site-defaults.php:543
-#: dt-groups/base-setup.php:647 template-settings.php:202
+#: dt-contacts/base-setup.php:484 dt-contacts/module-access.php:442
+#: dt-contacts/module-access.php:473 dt-contacts/module-access.php:504
+msgid "Choose an option:"
+msgstr "Memilih sebuah pilihan:"
+
+#: dt-contacts/base-setup.php:508 dt-contacts/module-access.php:464
+#: dt-contacts/module-access.php:495 dt-contacts/module-access.php:523
+msgid "Confirm"
+msgstr "Belum dikonfirmasi"
+
+#: dt-contacts/base-setup.php:532
+#: dt-core/configuration/config-site-defaults.php:518
+#: dt-groups/base-setup.php:607 template-settings.php:212
 msgid "Other"
 msgstr "Yang lain"
 
-#: dt-contacts/base-setup.php:484 dt-groups/base-setup.php:1068
-#: dt-posts/custom-post-type.php:418
+#: dt-contacts/base-setup.php:623
+msgid "This record might be a duplicate of: "
+msgstr "Rekod ini mungkin duplikat dari:"
+
+#: dt-contacts/base-setup.php:629 dt-contacts/duplicates-merging.php:485
+#: dt-contacts/duplicates-merging.php:567
+msgid "Duplicate Checker"
+msgstr "Duplikasikan Pemeriksa"
+
+#: dt-contacts/base-setup.php:668 dt-groups/base-setup.php:1028
+#: dt-posts/custom-post-type.php:468
 msgid "Default Filters"
 msgstr "Filter Baku"
 
-#: dt-contacts/base-setup.php:494
+#: dt-contacts/base-setup.php:678
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Semua %s yang dapat saya lihat"
 
-#: dt-contacts/base-setup.php:505 dt-groups/base-setup.php:1082
-#: dt-posts/custom-post-type.php:451
+#: dt-contacts/base-setup.php:689 dt-groups/base-setup.php:1042
+#: dt-posts/custom-post-type.php:501
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "%s Favorit"
 
-#: dt-contacts/base-setup.php:511 dt-groups/base-setup.php:1087
-#: dt-posts/custom-post-type.php:193 dt-posts/custom-post-type.php:457
+#: dt-contacts/base-setup.php:695 dt-groups/base-setup.php:1047
+#: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:507
 msgid "Favorite"
 msgstr "Favorit"
 
-#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1093
-#: dt-posts/custom-post-type.php:466
+#: dt-contacts/base-setup.php:701 dt-groups/base-setup.php:1053
+#: dt-posts/custom-post-type.php:516
 msgid "My Recently Viewed"
 msgstr "Terakhir Saya Melihat"
 
-#: dt-contacts/base-setup.php:522 dt-groups/base-setup.php:1098
-#: dt-posts/custom-post-type.php:471
+#: dt-contacts/base-setup.php:706 dt-groups/base-setup.php:1058
+#: dt-posts/custom-post-type.php:521
 msgid "Last 30 viewed"
 msgstr "30 Terakhir yang dilihat"
 
-#: dt-contacts/base-setup.php:552 dt-contacts/base-setup.php:560
-#: dt-contacts/base-setup.php:578 dt-contacts/base-setup.php:579
+#: dt-contacts/base-setup.php:713
+#, fuzzy
+#| msgid "Assigned Contacts"
+msgid "My Assigned Contacts"
+msgstr "Kontak-kontak sudah ditugaskan"
+
+#: dt-contacts/base-setup.php:723
+msgid "My Follow-Up"
+msgstr "Tindak Lanjut Saya"
+
+#: dt-contacts/base-setup.php:724 dt-contacts/module-access.php:868
+#: dt-contacts/module-access.php:891 dt-contacts/module-access.php:916
+#: dt-groups/base-setup.php:946
+msgid "Assigned to me"
+msgstr "Penugasan bagi saya"
+
+#: dt-contacts/base-setup.php:725 dt-contacts/module-access.php:869
+#: dt-contacts/module-access.php:892 dt-contacts/module-access.php:917
+msgid "Sub-assigned to me"
+msgstr "Sub-penugasan bagi saya"
+
+#: dt-contacts/base-setup.php:745
+msgctxt "Personal records"
+msgid "Connected %s"
+msgstr "Terhubung %s"
+
+#: dt-contacts/base-setup.php:769 dt-contacts/base-setup.php:777
+#: dt-contacts/base-setup.php:813 dt-contacts/base-setup.php:814
 msgid "Shared with me"
 msgstr "Dibagikan dengan saya"
 
-#: dt-contacts/base-setup.php:688
+#: dt-contacts/base-setup.php:817 dt-contacts/base-setup.php:818
+msgid "Subassigned only"
+msgstr "Ditugaskan (kedua) saja"
+
+#: dt-contacts/base-setup.php:971
 msgid "This %s is archived"
 msgstr "%s ini telah diarsipkan"
 
-#: dt-contacts/base-setup.php:690
+#: dt-contacts/base-setup.php:973
 msgid "Restore"
 msgstr "Pulihkan"
 
@@ -2390,229 +2128,43 @@ msgstr "Transfer kontak ini ke:"
 msgid "Confirm Transfer"
 msgstr "Menkonfirmasi Transfer"
 
-#: dt-contacts/contacts-transfer.php:381
+#: dt-contacts/contacts-transfer.php:425
 msgid "Unknown error."
 msgstr "Error Tidak Diketahui"
 
-#: dt-contacts/contacts-transfer.php:413
+#: dt-contacts/contacts-transfer.php:457
 msgid "Minor transfer error."
 msgstr "Error Transfer Kecil"
 
-#: dt-contacts/contacts-transfer.php:435
+#: dt-contacts/contacts-transfer.php:479
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "Kontak ini ditransfer ke %s untuk tindak lanjut lebih lanjut."
 
-#: dt-contacts/contacts-transfer.php:569
+#: dt-contacts/contacts-transfer.php:623
 msgid "Contact transferred from site"
 msgstr "Kontak sudah ditransfer dari situs "
 
-#: dt-contacts/contacts-transfer.php:572 dt-contacts/contacts-transfer.php:587
-#: dt-contacts/contacts-transfer.php:617 dt-contacts/contacts-transfer.php:832
+#: dt-contacts/contacts-transfer.php:626 dt-contacts/contacts-transfer.php:641
+#: dt-contacts/contacts-transfer.php:671 dt-contacts/contacts-transfer.php:885
 msgid "Transfer Bot"
 msgstr "Bot Transfer"
 
-#: dt-contacts/contacts-transfer.php:579
+#: dt-contacts/contacts-transfer.php:633
 msgid "ALERT: Possible duplicate contact from a previous transfer."
 msgstr ""
 "PERINGATAN: Ada kemungkinan ada kontak salinan dari transfer sebelumnya"
 
-#: dt-contacts/contacts-transfer.php:1149
+#: dt-contacts/contacts-transfer.php:1202
 msgid "redacted email"
 msgstr "surel yang disunting"
 
-#: dt-contacts/contacts-transfer.php:1150
+#: dt-contacts/contacts-transfer.php:1203
 msgid "redacted name"
 msgstr "nama yang disunting"
 
-#: dt-contacts/contacts-transfer.php:1151
+#: dt-contacts/contacts-transfer.php:1204
 msgid "redacted"
 msgstr "disunting"
-
-#: dt-contacts/dmm-module.php:49
-msgid "Private Connection"
-msgstr "Koneksi Pribadi"
-
-#: dt-contacts/dmm-module.php:59
-msgid "Faith Milestones"
-msgstr "Batu Peringatan Iman"
-
-#: dt-contacts/dmm-module.php:60
-msgctxt "Optional Documentation"
-msgid ""
-"Assign which milestones the contact has reached in their faith journey. "
-"These are points in a contact’s spiritual journey worth celebrating but can "
-"happen in any order."
-msgstr ""
-"Mencatat tanda kemajuan yang kontak ini telah mencapai dalam perjalanan iman "
-"mereka. Inilah saat-saat yang penting dalam perjalanan spiritual mereka yang "
-"layak diraih, tetapi boleh terjadi dalam urutan beragam."
-
-#: dt-contacts/dmm-module.php:64
-msgid "Has Bible"
-msgstr "Memiliki Kitab Suci."
-
-#: dt-contacts/dmm-module.php:69
-msgid "Reading Bible"
-msgstr "Membacia Kitab Suci."
-
-#: dt-contacts/dmm-module.php:74
-msgid "States Belief"
-msgstr "Menyatakan Iman"
-
-#: dt-contacts/dmm-module.php:79
-msgid "Can Share Gospel/Testimony"
-msgstr "Bisa meyampaikan kabar baik / bersaksi"
-
-#: dt-contacts/dmm-module.php:84
-msgid "Sharing Gospel/Testimony"
-msgstr "Memberitakan kabar baik / kesaksian"
-
-#: dt-contacts/dmm-module.php:89 dt-contacts/dmm-module.php:202
-msgid "Baptized"
-msgstr "Sudah dipermandikan \\ Sudah dibaptis"
-
-#: dt-contacts/dmm-module.php:94
-msgid "Baptizing"
-msgstr "Sudah dipermandikan \\ Sudah dibaptis"
-
-#: dt-contacts/dmm-module.php:99
-msgid "In Church/Group"
-msgstr "Jumlah Jemaat dan Kelompok"
-
-#: dt-contacts/dmm-module.php:104
-msgid "Starting Churches"
-msgstr "Jemaat Aktiv"
-
-#: dt-contacts/dmm-module.php:115
-msgid "Faith Status"
-msgstr "Status Iman"
-
-#: dt-contacts/dmm-module.php:120
-msgid "Seeker"
-msgstr "Pencari"
-
-#: dt-contacts/dmm-module.php:123
-msgid "Believer"
-msgstr "Orang percaya"
-
-#: dt-contacts/dmm-module.php:126
-msgid "Leader"
-msgstr "Pemimpin"
-
-#: dt-contacts/dmm-module.php:134
-msgid "Sub-assigned to"
-msgstr "Ditugaskan (kedua) kepada"
-
-#: dt-contacts/dmm-module.php:135
-msgid ""
-"Contact or User assisting the Assigned To user to follow up with the contact."
-msgstr ""
-"Kontak atau Pengguna yang menolong Pengguna Tertugas untuk menindaklanjuti "
-"kontak ini."
-
-#: dt-contacts/dmm-module.php:146
-msgid "Sub-assigned on other Contacts"
-msgstr "Sub-penugasan pada Kontak lain"
-
-#: dt-contacts/dmm-module.php:147
-msgid "Contacts this contacts is subassigned on"
-msgstr "Kontak-kontak yang diberikan sub-penugasan pada kontak ini"
-
-#: dt-contacts/dmm-module.php:159
-msgid "Is Coaching"
-msgstr "Sedang Membimbing"
-
-#: dt-contacts/dmm-module.php:160
-msgctxt "Optional Documentation"
-msgid "Who is this contact coaching"
-msgstr "Transfer kontak ini ke:"
-
-#: dt-contacts/dmm-module.php:169
-msgid "Baptism Date"
-msgstr "Tanggal Permandian \\ Pembaptisan"
-
-#: dt-contacts/dmm-module.php:177 dt-metrics/counter.php:157
-msgid "Baptism Generation"
-msgstr "Generasi Permandian"
-
-#: dt-contacts/dmm-module.php:182
-msgid "Coached by"
-msgstr "Dilatih oleh"
-
-#: dt-contacts/dmm-module.php:183
-msgctxt "Optional Documentation"
-msgid "Who is coaching this contact"
-msgstr "Kenapa anda mau menutup kontak ini?"
-
-#: dt-contacts/dmm-module.php:192
-#: dt-metrics/personal/activity-highlights.php:68
-msgid "Baptized by"
-msgstr "Dipermandikan oleh \\ Dibaptis oleh"
-
-#: dt-contacts/dmm-module.php:193
-msgctxt "Optional Documentation"
-msgid "Who baptized this contact"
-msgstr "Kenapa anda mau menutup kontak ini?"
-
-#: dt-contacts/dmm-module.php:203
-msgctxt "Optional Documentation"
-msgid "Who this contact has baptized"
-msgstr "Kontak ini sudah ditransfer"
-
-#: dt-contacts/dmm-module.php:212 dt-groups/base-setup.php:399
-#: dt-people-groups/people-groups-base.php:96
-#: dt-people-groups/people-groups-base.php:106
-msgid "People Groups"
-msgstr "Suku-suku"
-
-#: dt-contacts/dmm-module.php:213
-msgctxt "Optional Documentation"
-msgid "The people groups represented by this contact."
-msgstr "Kelompok orang yang diwakili oleh kontak ini."
-
-#: dt-contacts/dmm-module.php:223
-msgid "No Answer"
-msgstr "Tidak Menjawab"
-
-#: dt-contacts/dmm-module.php:241
-msgid "Meeting Scheduled"
-msgstr "Pertemuan sudah dijadwalkan."
-
-#: dt-contacts/dmm-module.php:250
-msgid "Meeting Complete"
-msgstr "Pertemuan sudah dijadwalkan."
-
-#: dt-contacts/dmm-module.php:259
-msgid "Meeting No-show"
-msgstr "Pertemuan sudah dijadwalkan."
-
-#: dt-contacts/dmm-module.php:277
-msgid "Faith"
-msgstr "Iman"
-
-#: dt-contacts/dmm-module.php:361
-msgctxt "Personal records"
-msgid "Connected %s"
-msgstr "Terhubung %s"
-
-#: dt-contacts/dmm-module.php:374 dt-contacts/dmm-module.php:384
-#: dt-contacts/dmm-module.php:394 dt-contacts/dmm-module.php:395
-msgid "Coached by me"
-msgstr "Yang saya latih"
-
-#: dt-contacts/dmm-module.php:413
-#: dt-metrics/personal/activity-highlights.php:218
-msgid "Quick Actions"
-msgstr "Aksi cepat"
-
-#: dt-contacts/dmm-module.php:494
-msgid "Who was this contact baptized by and when?"
-msgstr "Kapan kontak ini dibaptis dan oleh siapa dia dibaptis?"
-
-#: dt-contacts/dmm-module.php:508
-msgctxt "input field placeholder"
-msgid "Search multipliers and contacts"
-msgstr "Mencari pengganda dan kontak"
 
 #: dt-contacts/duplicates-merging.php:442
 msgctxt "duplicate comment"
@@ -2633,6 +2185,493 @@ msgstr "%1$s digabung %2$s ke dalam catatan ini"
 #: dt-contacts/duplicates-merging.php:588
 msgid "View Duplicates"
 msgstr "Melihat salinan"
+
+#: dt-contacts/module-access.php:59
+msgid "Dispatcher"
+msgstr "Dispatcher"
+
+#: dt-contacts/module-access.php:66
+msgid "Partner"
+msgstr "Mitra"
+
+#: dt-contacts/module-access.php:73
+msgid "Digital Responder"
+msgstr "Digital Responder"
+
+#: dt-contacts/module-access.php:102 dt-metrics/combined/site-links.php:79
+#: dt-metrics/combined/site-links.php:82
+msgid "Seeker Path"
+msgstr "Jalan Pencari"
+
+#: dt-contacts/module-access.php:103
+msgctxt "Seeker Path field description"
+msgid ""
+"Set the status of your progression with the contact. These are the steps "
+"that happen in a specific order to help a contact move forward."
+msgstr ""
+"Tetapkan status kemajuan Anda bersama dengan kontak ini. Ini adalah langkah-"
+"langkah yang dilakukan dalam urutan spesifik untuk membantu kontak untuk "
+"maju."
+
+#: dt-contacts/module-access.php:107
+msgid "Contact Attempt Needed"
+msgstr "Upaya kontak dibutuhkan."
+
+#: dt-contacts/module-access.php:111 dt-contacts/module-access.php:273
+msgid "Contact Attempted"
+msgstr "Upaya kontak dibutuhkan."
+
+#: dt-contacts/module-access.php:115 dt-contacts/module-access.php:282
+msgid "Contact Established"
+msgstr "Kontak Diciptakan"
+
+#: dt-contacts/module-access.php:119
+msgid "First Meeting Scheduled"
+msgstr "Pertemuan sudah dijadwalkan."
+
+#: dt-contacts/module-access.php:123
+msgid "First Meeting Complete"
+msgstr "Pertemuan-pertemuan pertama"
+
+#: dt-contacts/module-access.php:127 dt-metrics/counter.php:140
+msgid "Ongoing Meetings"
+msgstr "Pertemuan-pertemuan yang berlangsung"
+
+#: dt-contacts/module-access.php:131
+msgid "Being Coached"
+msgstr "Dilatih oleh"
+
+#: dt-contacts/module-access.php:148
+msgid "Not Ready"
+msgstr "Belum siap"
+
+#: dt-contacts/module-access.php:149
+msgctxt "Contact Status field description"
+msgid ""
+"There is not enough information to move forward with the contact at this "
+"time."
+msgstr ""
+"Sekarang ini belum ada informasi secukupnya untuk melanjutkan dengan kontak "
+"ini."
+
+#: dt-contacts/module-access.php:153
+msgid "Dispatch Needed"
+msgstr "informasi baru dibutuhkan"
+
+#: dt-contacts/module-access.php:154
+msgctxt "Contact Status field description"
+msgid "This contact needs to be assigned to a multiplier."
+msgstr "Kontak ini harus ditugaskan kepada seorang multiplier."
+
+#: dt-contacts/module-access.php:158
+msgid "Waiting to be accepted"
+msgstr "Sedang menunggu penerimaan"
+
+#: dt-contacts/module-access.php:159
+msgctxt "Contact Status field description"
+msgid ""
+"The contact has been assigned to someone, but has not yet been accepted by "
+"that person."
+msgstr ""
+"Kontak ini pernah ditugaskan kepada seseorang, akan tetapi dia belum "
+"diterima oleh orang itu."
+
+#: dt-contacts/module-access.php:164
+msgid "Paused"
+msgstr "Lagi pause"
+
+#: dt-contacts/module-access.php:165
+msgctxt "Contact Status field description"
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
+msgstr "Kontak ini lagi pause, (contohnya sedang berlibur atau tidak membalas)"
+
+#: dt-contacts/module-access.php:180
+msgid "Reason Not Ready"
+msgstr "Alasan Belum Siap"
+
+#: dt-contacts/module-access.php:181
+msgctxt "Optional Documentation"
+msgid "The main reason the contact is not ready to be assigned to a user."
+msgstr "Kontak ini sudah ditugaskan kepada anda."
+
+#: dt-contacts/module-access.php:188
+msgid "Insufficient Contact Information"
+msgstr "Informasi Kontak Tidak Cukup"
+
+#: dt-contacts/module-access.php:191
+msgid "Unknown Location"
+msgstr "Lokasi"
+
+#: dt-contacts/module-access.php:194
+msgid "Only wants media"
+msgstr "Hanya ingin medai"
+
+#: dt-contacts/module-access.php:197
+msgid "Outside Area"
+msgstr "Di luar daerah"
+
+#: dt-contacts/module-access.php:200
+msgid "Needs Review"
+msgstr "Perlu Ditinjau"
+
+#: dt-contacts/module-access.php:203
+msgid "Waiting for Confirmation"
+msgstr "Sedang Menunggu Konfirmasi"
+
+#: dt-contacts/module-access.php:211
+msgid "Reason Paused"
+msgstr "Alasan sedang Pause"
+
+#: dt-contacts/module-access.php:212
+msgctxt "Optional Documentation"
+msgid ""
+"A paused contact is one you are not currently interacting with but expect to "
+"in the future."
+msgstr ""
+"Kontak Pause adalah kontak yang tidak dilayani secara aktif, tetapi mungkin "
+"Anda berharap melayani mereka di masa depan"
+
+#: dt-contacts/module-access.php:216
+msgctxt "Reason Paused label"
+msgid "Contact on vacation"
+msgstr "Kontak lagi berlibur"
+
+#: dt-contacts/module-access.php:217
+msgctxt "Reason Paused label"
+msgid "Contact not responding"
+msgstr "Kontak lagi tidak membalas"
+
+#: dt-contacts/module-access.php:218
+msgctxt "Reason Paused label"
+msgid "Contact not available"
+msgstr "Kontak tidak tersedia"
+
+#: dt-contacts/module-access.php:219
+msgctxt "Reason Paused label"
+msgid "Contact has little interest/hunger"
+msgstr "Kontak tidak terlalu tertarik"
+
+#: dt-contacts/module-access.php:220
+msgctxt "Reason Paused label"
+msgid "Contact shows no initiative"
+msgstr "Kontak tidak memiliki prakarsa"
+
+#: dt-contacts/module-access.php:221
+msgctxt "Reason Paused label"
+msgid "Contact has questionable motives"
+msgstr "Kontak memiliki motivasi yang dapat dicurigai"
+
+#: dt-contacts/module-access.php:222
+msgctxt "Reason Paused label"
+msgid "Ball is in the contact's court"
+msgstr "Lagi menunggu pembalasan dari kontak"
+
+#: dt-contacts/module-access.php:223
+msgctxt "Reason Paused label"
+msgid "We want to see if/how the contact responds to automated text messages"
+msgstr ""
+"Kita ingin tahu jika kontak akan merespon ketika dihubungi lewat SMS "
+"automatis."
+
+#: dt-contacts/module-access.php:230
+msgid "Reason Archived"
+msgstr "Alasan Diarsipkan"
+
+#: dt-contacts/module-access.php:231
+msgctxt "Optional Documentation"
+msgid "A closed contact is one you can't or don't wish to interact with."
+msgstr "Kontak Tertutup adalah kontak yang Anda tidak ingin layani"
+
+#: dt-contacts/module-access.php:235
+msgctxt "Reason Closed label"
+msgid "Duplicate"
+msgstr "Salinan"
+
+#: dt-contacts/module-access.php:236
+msgctxt "Reason Closed label"
+msgid "Insufficient contact info"
+msgstr "Informasi kontak tidak cukup"
+
+#: dt-contacts/module-access.php:237
+msgctxt "Reason Closed label"
+msgid "Denies submitting contact request"
+msgstr "Kontak membantah bahwa ia pernah minta dihubungi"
+
+#: dt-contacts/module-access.php:238
+msgctxt "Reason Closed label"
+msgid "Hostile, playing games or self gain"
+msgstr "Ganas, bermain, atau egois"
+
+#: dt-contacts/module-access.php:239
+msgctxt "Reason Closed label"
+msgid "Only wants to argue or debate"
+msgstr "Hanya ingin berdebat"
+
+#: dt-contacts/module-access.php:240
+msgctxt "Reason Closed label"
+msgid "Just wanted media or book"
+msgstr "Hanya mau media atau buku"
+
+#: dt-contacts/module-access.php:241
+msgctxt "Reason Closed label"
+msgid "No longer interested"
+msgstr "Tidak tertarik lagi"
+
+#: dt-contacts/module-access.php:242
+msgctxt "Reason Closed label"
+msgid "No longer responding"
+msgstr "Tidak lagi membalas"
+
+#: dt-contacts/module-access.php:243
+msgctxt "Reason Closed label"
+msgid "Already in church or connected with others"
+msgstr "Sudah kumpul dengan jemaat atau terhubung dengan yang lain"
+
+#: dt-contacts/module-access.php:244
+msgctxt "Reason Closed label"
+msgid "Transferred contact to partner"
+msgstr "Kontak sudah ditransfer ke mitra"
+
+#: dt-contacts/module-access.php:245
+msgctxt "Reason Closed label"
+msgid "Martyred"
+msgstr "Disyahid"
+
+#: dt-contacts/module-access.php:246
+msgctxt "Reason Closed label"
+msgid "Moved or relocated"
+msgstr "Pindah rumah atau tempat"
+
+#: dt-contacts/module-access.php:247
+msgctxt "Reason Closed label"
+msgid "GDPR request"
+msgstr "Permintaan GDPR"
+
+#: dt-contacts/module-access.php:248
+msgctxt "Reason Closed label"
+msgid "Unknown"
+msgstr "Alasan tidak diketahui"
+
+#: dt-contacts/module-access.php:255
+msgid "Accepted"
+msgstr "Menerima"
+
+#: dt-contacts/module-access.php:263
+msgid "Campaigns"
+msgstr "Kampanye"
+
+#: dt-contacts/module-access.php:264
+msgctxt "Optional Documentation"
+msgid ""
+"Marketing campaigns or access activities that this contact interacted with."
+msgstr ""
+"Kampanye pemasaran atau aktivitas akses yang berinteraksi dengan kontak ini."
+
+#: dt-contacts/module-access.php:291
+msgid "Meeting Scheduled"
+msgstr "Pertemuan sudah dijadwalkan."
+
+#: dt-contacts/module-access.php:300
+msgid "Meeting Complete"
+msgstr "Pertemuan sudah dijadwalkan."
+
+#: dt-contacts/module-access.php:309
+msgid "Meeting No-show"
+msgstr "Pertemuan sudah dijadwalkan."
+
+#: dt-contacts/module-access.php:358 dt-metrics/combined/critical-path.php:77
+msgid "Follow Up"
+msgstr "Tindaklanjut"
+
+#: dt-contacts/module-access.php:567
+msgid "Multipliers"
+msgstr "Pelayan Lapangan"
+
+#: dt-contacts/module-access.php:570
+msgid "Dispatchers"
+msgstr "Dispatchers"
+
+#: dt-contacts/module-access.php:573
+msgid "Digital Responders"
+msgstr "Responden Digital"
+
+#: dt-contacts/module-access.php:580
+msgid "Assign To"
+msgstr "Menetapkan kepada"
+
+#: dt-contacts/module-access.php:638
+msgid "This contact has been assigned to you."
+msgstr "Kontak ini sudah ditugaskan kepada anda."
+
+#: dt-contacts/module-access.php:639
+msgid "Accept"
+msgstr "Menerima"
+
+#: dt-contacts/module-access.php:640
+msgid "Decline"
+msgstr "Menolak"
+
+#: dt-contacts/module-access.php:956
+msgctxt "All records"
+msgid "Follow-Up %s"
+msgstr "Tindak lanjut %s"
+
+#: dt-contacts/module-access.php:964
+msgid "All Follow-Up"
+msgstr "Semua Tindak Lanjut"
+
+#: dt-contacts/module-access.php:1180
+msgid "Ready"
+msgstr "Siap"
+
+#: dt-contacts/module-access.php:1181
+msgid "Recent"
+msgstr "Terkini"
+
+#: dt-contacts/module-access.php:1182
+msgid "Location"
+msgstr "Lokasi"
+
+#: dt-contacts/module-access.php:1183
+msgid "Assign"
+msgstr "Menetapkan"
+
+#: dt-contacts/module-access.php:1184 dt-users/template-new-user.php:134
+#: template-settings.php:226
+msgid "Language"
+msgstr "Bahasa"
+
+#: dt-contacts/module-access.php:1206
+#: dt-metrics/personal/activity-highlights.php:233
+msgid "Quick Actions"
+msgstr "Aksi cepat"
+
+#: dt-contacts/module-baptisms.php:48
+msgid "Baptism Date"
+msgstr "Tanggal Permandian \\ Pembaptisan"
+
+#: dt-contacts/module-baptisms.php:56 dt-metrics/counter.php:157
+msgid "Baptism Generation"
+msgstr "Generasi Permandian"
+
+#: dt-contacts/module-baptisms.php:61
+#: dt-metrics/personal/activity-highlights.php:68
+msgid "Baptized by"
+msgstr "Dipermandikan oleh \\ Dibaptis oleh"
+
+#: dt-contacts/module-baptisms.php:62
+msgctxt "Optional Documentation"
+msgid "Who baptized this contact"
+msgstr "Kenapa anda mau menutup kontak ini?"
+
+#: dt-contacts/module-baptisms.php:71 dt-contacts/module-faith.php:73
+msgid "Baptized"
+msgstr "Sudah dipermandikan \\ Sudah dibaptis"
+
+#: dt-contacts/module-baptisms.php:72
+msgctxt "Optional Documentation"
+msgid "Who this contact has baptized"
+msgstr "Kontak ini sudah ditransfer"
+
+#: dt-contacts/module-baptisms.php:88 dt-contacts/module-faith.php:123
+msgid "Faith"
+msgstr "Iman"
+
+#: dt-contacts/module-baptisms.php:295
+msgid "Who was this contact baptized by and when?"
+msgstr "Kapan kontak ini dibaptis dan oleh siapa dia dibaptis?"
+
+#: dt-contacts/module-baptisms.php:309
+msgctxt "input field placeholder"
+msgid "Search multipliers and contacts"
+msgstr "Mencari pengganda dan kontak"
+
+#: dt-contacts/module-coaching.php:47
+msgid "Is Coaching"
+msgstr "Sedang Membimbing"
+
+#: dt-contacts/module-coaching.php:48
+msgctxt "Optional Documentation"
+msgid "Who is this contact coaching"
+msgstr "Transfer kontak ini ke:"
+
+#: dt-contacts/module-coaching.php:57
+msgid "Coached by"
+msgstr "Dilatih oleh"
+
+#: dt-contacts/module-coaching.php:58
+msgctxt "Optional Documentation"
+msgid "Who is coaching this contact"
+msgstr "Kenapa anda mau menutup kontak ini?"
+
+#: dt-contacts/module-coaching.php:109 dt-contacts/module-coaching.php:119
+#: dt-contacts/module-coaching.php:129 dt-contacts/module-coaching.php:130
+msgid "Coached by me"
+msgstr "Yang saya latih"
+
+#: dt-contacts/module-faith.php:43 dt-metrics/combined/site-links.php:80
+#: dt-metrics/combined/site-links.php:83
+msgid "Faith Milestones"
+msgstr "Batu Peringatan Iman"
+
+#: dt-contacts/module-faith.php:44
+msgctxt "Optional Documentation"
+msgid ""
+"Assign which milestones the contact has reached in their faith journey. "
+"These are points in a contact’s spiritual journey worth celebrating but can "
+"happen in any order."
+msgstr ""
+"Mencatat tanda kemajuan yang kontak ini telah mencapai dalam perjalanan iman "
+"mereka. Inilah saat-saat yang penting dalam perjalanan spiritual mereka yang "
+"layak diraih, tetapi boleh terjadi dalam urutan beragam."
+
+#: dt-contacts/module-faith.php:48
+msgid "Has Bible"
+msgstr "Memiliki Kitab Suci."
+
+#: dt-contacts/module-faith.php:53
+msgid "Reading Bible"
+msgstr "Membacia Kitab Suci."
+
+#: dt-contacts/module-faith.php:58
+msgid "States Belief"
+msgstr "Menyatakan Iman"
+
+#: dt-contacts/module-faith.php:63
+msgid "Can Share Gospel/Testimony"
+msgstr "Bisa meyampaikan kabar baik / bersaksi"
+
+#: dt-contacts/module-faith.php:68
+msgid "Sharing Gospel/Testimony"
+msgstr "Memberitakan kabar baik / kesaksian"
+
+#: dt-contacts/module-faith.php:78
+msgid "Baptizing"
+msgstr "Sudah dipermandikan \\ Sudah dibaptis"
+
+#: dt-contacts/module-faith.php:83
+msgid "In Church/Group"
+msgstr "Jumlah Jemaat dan Kelompok"
+
+#: dt-contacts/module-faith.php:88
+msgid "Starting Churches"
+msgstr "Jemaat Aktiv"
+
+#: dt-contacts/module-faith.php:98
+msgid "Faith Status"
+msgstr "Status Iman"
+
+#: dt-contacts/module-faith.php:103
+msgid "Seeker"
+msgstr "Pencari"
+
+#: dt-contacts/module-faith.php:106
+msgid "Believer"
+msgstr "Orang percaya"
+
+#: dt-contacts/module-faith.php:109
+msgid "Leader"
+msgstr "Pemimpin"
 
 #: dt-contacts/user-module.php:42
 msgid "Corresponds to user"
@@ -2720,28 +2759,28 @@ msgstr "Administrator"
 msgid "Subscriber"
 msgstr "Subscriber"
 
-#: dt-core/configuration/config-site-defaults.php:349
+#: dt-core/configuration/config-site-defaults.php:335
 msgid "Newly Assigned Contact"
 msgstr "Kontak yang baru ditugaskan"
 
-#: dt-core/configuration/config-site-defaults.php:354
+#: dt-core/configuration/config-site-defaults.php:340
 msgid "@Mentions"
 msgstr "@Penyebutan"
 
-#: dt-core/configuration/config-site-defaults.php:359
+#: dt-core/configuration/config-site-defaults.php:345
 msgid "New Comments"
 msgstr "Komentar baru"
 
-#: dt-core/configuration/config-site-defaults.php:369
+#: dt-core/configuration/config-site-defaults.php:355
 msgid "Contact Info Changed"
 msgstr "Informasi Kontak Sudah Berubah"
 
-#: dt-core/configuration/config-site-defaults.php:374
+#: dt-core/configuration/config-site-defaults.php:360
 #: dt-core/migrations/0012-typo-rename.php:13
 msgid "Contact Milestones and Group Health metrics"
 msgstr "Tanda kemajuan kontak dan metrik-metrik kesehatan kelompok"
 
-#: dt-core/configuration/config-site-defaults.php:399
+#: dt-core/configuration/config-site-defaults.php:374
 msgid ""
 "This contact is active but there is no record of anybody contacting them. "
 "Please do contact them."
@@ -2749,15 +2788,15 @@ msgstr ""
 "Kontak ini aktiv, tapi belum ada catatan bahwa dia suda dihubungi orang.  "
 "Tolong hubungi dia."
 
-#: dt-core/configuration/config-site-defaults.php:405
+#: dt-core/configuration/config-site-defaults.php:380
 msgid "Please try connecting with this contact again."
 msgstr "Tolong berusaha menghubungi kontak ini lagi."
 
-#: dt-core/configuration/config-site-defaults.php:411
-#: dt-core/configuration/config-site-defaults.php:417
-#: dt-core/configuration/config-site-defaults.php:423
-#: dt-core/configuration/config-site-defaults.php:429
-#: dt-core/configuration/config-site-defaults.php:435
+#: dt-core/configuration/config-site-defaults.php:386
+#: dt-core/configuration/config-site-defaults.php:392
+#: dt-core/configuration/config-site-defaults.php:398
+#: dt-core/configuration/config-site-defaults.php:404
+#: dt-core/configuration/config-site-defaults.php:410
 msgid ""
 "We haven't heard about this person in a while. Do you have an update for "
 "this contact?"
@@ -2765,109 +2804,109 @@ msgstr ""
 "Sudah lama kami tidak ada kabar tetang orang ini.  Anda ada kabar tentang "
 "kontak ini?"
 
-#: dt-core/configuration/config-site-defaults.php:445
+#: dt-core/configuration/config-site-defaults.php:420
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr ""
 "Sudah lama kami tidak ada kabar tentang kelompok ini.  Anda ada kabar baru?"
 
-#: dt-core/configuration/config-site-defaults.php:476
+#: dt-core/configuration/config-site-defaults.php:451
 msgid "Personal Phone"
 msgstr "HP Pribadi"
 
-#: dt-core/configuration/config-site-defaults.php:479
+#: dt-core/configuration/config-site-defaults.php:454
 msgid "Personal phone is private to the team, not for distribution."
 msgstr "Telepon pribadi ini hanya dikenal dalam tim, jangan dibagikan"
 
-#: dt-core/configuration/config-site-defaults.php:483
+#: dt-core/configuration/config-site-defaults.php:458
 msgid "Personal Email"
 msgstr "Email pribadi"
 
-#: dt-core/configuration/config-site-defaults.php:486
+#: dt-core/configuration/config-site-defaults.php:461
 msgid "Personal email is private to the team, not for distribution."
 msgstr "Email pribadi ini hanya dikenal oleh tim, jangan dibagikan"
 
-#: dt-core/configuration/config-site-defaults.php:490
+#: dt-core/configuration/config-site-defaults.php:465
 msgid "Personal Address"
 msgstr "Alamat pribadi"
 
-#: dt-core/configuration/config-site-defaults.php:493
+#: dt-core/configuration/config-site-defaults.php:468
 msgid "Personal address is private to the team, not for distribution."
 msgstr "Alamat pribadi ini hanya diketahui oleh tim, jangan membagi"
 
-#: dt-core/configuration/config-site-defaults.php:497
+#: dt-core/configuration/config-site-defaults.php:472
 msgid "Work Phone"
 msgstr "HP Kantor"
 
-#: dt-core/configuration/config-site-defaults.php:500
+#: dt-core/configuration/config-site-defaults.php:475
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr "HP kantor boleh dibagi dengan kontak dan pencari"
 
-#: dt-core/configuration/config-site-defaults.php:504
+#: dt-core/configuration/config-site-defaults.php:479
 msgid "Work Email"
 msgstr "Email kantor"
 
-#: dt-core/configuration/config-site-defaults.php:507
+#: dt-core/configuration/config-site-defaults.php:482
 msgid "Work email is for distribution to contacts and seekers."
 msgstr "Email kantor ini boleh dibagi dengan kontak dan pencari"
 
-#: dt-core/configuration/config-site-defaults.php:511
+#: dt-core/configuration/config-site-defaults.php:486
 msgid "Work Facebook"
 msgstr "Facebook kantor"
 
-#: dt-core/configuration/config-site-defaults.php:514
+#: dt-core/configuration/config-site-defaults.php:489
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr "Facebook kantor ini boleh dibagi dengan kontak dan pencari"
 
-#: dt-core/configuration/config-site-defaults.php:518
+#: dt-core/configuration/config-site-defaults.php:493
 msgid "Work WhatsApp"
 msgstr "WhatsApp kantor"
 
-#: dt-core/configuration/config-site-defaults.php:521
+#: dt-core/configuration/config-site-defaults.php:496
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "WhatsApp kantor ini boleh dibagi dengan kontak dan pencari"
 
-#: dt-core/configuration/config-site-defaults.php:528
+#: dt-core/configuration/config-site-defaults.php:503
 msgid "thumbs up"
 msgstr "angkat jempol"
 
-#: dt-core/configuration/config-site-defaults.php:529
+#: dt-core/configuration/config-site-defaults.php:504
 msgid "heart"
 msgstr "hati"
 
-#: dt-core/configuration/config-site-defaults.php:530
+#: dt-core/configuration/config-site-defaults.php:505
 msgid "laugh"
 msgstr "tertawa"
 
-#: dt-core/configuration/config-site-defaults.php:531
+#: dt-core/configuration/config-site-defaults.php:506
 msgid "wow"
 msgstr "wow"
 
-#: dt-core/configuration/config-site-defaults.php:532
+#: dt-core/configuration/config-site-defaults.php:507
 msgid "sad"
 msgstr "sedih"
 
-#: dt-core/configuration/config-site-defaults.php:533
+#: dt-core/configuration/config-site-defaults.php:508
 msgid "prayer"
 msgstr "doa"
 
-#: dt-core/configuration/config-site-defaults.php:541
+#: dt-core/configuration/config-site-defaults.php:516
 #: dt-login/login-template.php:529
 msgid "Home"
 msgstr "Beranda"
 
-#: dt-core/configuration/config-site-defaults.php:542
+#: dt-core/configuration/config-site-defaults.php:517
 msgid "Work"
 msgstr "Pekerjaan"
 
-#: dt-core/configuration/config-site-defaults.php:552
+#: dt-core/configuration/config-site-defaults.php:527
 msgid "Accepting new contacts"
 msgstr "Sedang terima kontak-kontak baru"
 
-#: dt-core/configuration/config-site-defaults.php:556
+#: dt-core/configuration/config-site-defaults.php:531
 msgid "I'm only investing in existing contacts"
 msgstr "Saya hanya meninvestasi waktu dalam kontak-kontak yang sudah ada."
 
-#: dt-core/configuration/config-site-defaults.php:560
+#: dt-core/configuration/config-site-defaults.php:535
 msgid "I have too many contacts"
 msgstr "Saya sudah punya terlalu banyak kontak-kontak"
 
@@ -2920,17 +2959,17 @@ msgstr ""
 msgid "To reset your password, visit the following address:"
 msgstr "Untuk reset kata sandi anda, kunjungi alamat ini:"
 
-#: dt-core/global-functions.php:564 single-template.php:410
-#: template-new-bulk-post.php:285 template-new-post.php:138
-#: template-new-post.php:175
+#: dt-core/global-functions.php:549 single-template.php:412
+#: template-new-bulk-post.php:285 template-new-post.php:143
+#: template-new-post.php:180
 msgid "This is required"
 msgstr "Ini dibutuhkan"
 
-#: dt-core/global-functions.php:728
+#: dt-core/global-functions.php:713
 msgid "Add new tag \"%s\""
 msgstr "Tambah tag baru \"%s\""
 
-#: dt-core/global-functions.php:729
+#: dt-core/global-functions.php:714
 msgid "Tag \"%s\" is already being used"
 msgstr "Tag \"%s\" telah digunakan sebelumnya"
 
@@ -2983,7 +3022,7 @@ msgid "Translate"
 msgstr "Terjemahkan"
 
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
-#: template-settings.php:675
+#: template-settings.php:735
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
@@ -3007,61 +3046,58 @@ msgstr ""
 msgid "Find out more"
 msgstr "Temukan lebih banyak lagi"
 
-#: dt-groups/base-setup.php:51 dt-groups/base-setup.php:63
-#: dt-groups/base-setup.php:168 dt-metrics/personal/activity-highlights.php:58
-#: dt-metrics/personal/group-tree.php:165
+#: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
+#: dt-groups/base-setup.php:165 dt-metrics/personal/activity-highlights.php:58
 msgid "Group"
 msgstr "Kelompok"
 
-#: dt-groups/base-setup.php:51 dt-groups/base-setup.php:64
-#: dt-groups/base-setup.php:462 dt-groups/base-setup.php:646
+#: dt-groups/base-setup.php:48 dt-groups/base-setup.php:61
+#: dt-groups/base-setup.php:422 dt-groups/base-setup.php:606
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
-#: dt-metrics/combined/hover-map.php:173
-#: dt-metrics/combined/locations-list.php:168
+#: dt-metrics/combined/hover-map.php:177
+#: dt-metrics/combined/locations-list.php:171
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
-#: dt-metrics/groups/tree.php:24 dt-metrics/metrics.php:106
-#: dt-metrics/personal/mapbox-groups-maps.php:28
-#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:97
-#: dt-people-groups/people-groups-base.php:175
+#: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
+#: dt-people-groups/people-groups-base.php:191
 msgid "Groups"
 msgstr "Kelompok-kelompok"
 
-#: dt-groups/base-setup.php:115
+#: dt-groups/base-setup.php:112
 msgid "Group Status"
 msgstr "Status Kelompok"
 
-#: dt-groups/base-setup.php:116
+#: dt-groups/base-setup.php:113
 msgctxt "field description"
 msgid "Set the current status of the group."
 msgstr "Status kelompok sekarang ini"
 
-#: dt-groups/base-setup.php:121
+#: dt-groups/base-setup.php:118
 msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "Kelompok ini berkumpul lagi secara aktif"
 
-#: dt-groups/base-setup.php:125 dt-users/users.php:180
+#: dt-groups/base-setup.php:122 dt-users/users.php:180
 msgid "Inactive"
 msgstr "Aktiv"
 
-#: dt-groups/base-setup.php:126
+#: dt-groups/base-setup.php:123
 msgctxt "field description"
 msgid "The group is no longer meeting."
 msgstr "Kelompok ini tidak berkumpul lagi"
 
-#: dt-groups/base-setup.php:138
+#: dt-groups/base-setup.php:135
 msgid "Select the main person who is responsible for reporting on this group."
 msgstr ""
 "Pilihlah orang yang terutuama bertanggung jawab untuk melaporkan tentang "
 "kelompok ini."
 
-#: dt-groups/base-setup.php:146
+#: dt-groups/base-setup.php:143
 msgid "Group Coach / Church Planter"
 msgstr "Pendamping Kelompok / Perintis Jemaat"
 
-#: dt-groups/base-setup.php:147
+#: dt-groups/base-setup.php:144
 msgctxt "Optional Documentation"
 msgid ""
 "The person who planted and/or is coaching this group. Only one person can be "
@@ -3072,42 +3108,42 @@ msgstr ""
 "dapat ditugaskan ke sebuah kelompok, tetapi banyak orang dapat menjadi "
 "pendamping / perintis jemaat bagi kelompok ini."
 
-#: dt-groups/base-setup.php:159
+#: dt-groups/base-setup.php:156
 msgid "Group Type"
 msgstr "Jenis Kelompok"
 
-#: dt-groups/base-setup.php:164
+#: dt-groups/base-setup.php:161
 msgid "Pre-Group"
 msgstr "Pra-kelompok"
 
-#: dt-groups/base-setup.php:165
+#: dt-groups/base-setup.php:162
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
 msgstr "Kelompok yang mayoritas orang belum percaya."
 
-#: dt-groups/base-setup.php:169
+#: dt-groups/base-setup.php:166
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr ""
 "Kelompok dengan 3 atau lebih dari 3 anggota yang belum mengedintifikasikan "
 "sebagai jemaat."
 
-#: dt-groups/base-setup.php:172
+#: dt-groups/base-setup.php:169
 msgid "Church"
 msgstr "Jemaat"
 
-#: dt-groups/base-setup.php:173
+#: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
 msgstr ""
 "Kelompok dengan 3 atau lebih dari 3 anggota yang sudah mengedintifikasikan "
 "sebagai jemaat."
 
-#: dt-groups/base-setup.php:176
+#: dt-groups/base-setup.php:173
 msgid "Team"
 msgstr "Tim-tim"
 
-#: dt-groups/base-setup.php:177
+#: dt-groups/base-setup.php:174
 msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
@@ -3115,139 +3151,139 @@ msgstr ""
 "Kelompok khusus yang tidak berkumpul secara jemaat (atau tidak mencoba "
 "menjadi jemaat)."
 
-#: dt-groups/base-setup.php:192 dt-groups/base-setup.php:639
+#: dt-groups/base-setup.php:188 dt-groups/base-setup.php:599
 msgid "Church Health"
 msgstr "Generasi Jemaat"
 
-#: dt-groups/base-setup.php:193
+#: dt-groups/base-setup.php:189
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "Melacak kemajuan dan kesehatan kelompok / jemaat."
 
-#: dt-groups/base-setup.php:197 dt-metrics/personal/baptism-tree.php:139
+#: dt-groups/base-setup.php:193
 msgid "Baptism"
 msgstr "Tanggal Permandian \\ Pembaptisan"
 
-#: dt-groups/base-setup.php:198
+#: dt-groups/base-setup.php:194
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "Kelompok ini sedang membaptis."
 
-#: dt-groups/base-setup.php:202
+#: dt-groups/base-setup.php:198
 msgid "Bible Study"
 msgstr "Pelajaran Kitab Suci"
 
-#: dt-groups/base-setup.php:203
+#: dt-groups/base-setup.php:199
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "Kelompok ini sedang belajar Kitab Suci."
 
-#: dt-groups/base-setup.php:207
+#: dt-groups/base-setup.php:203
 msgid "Communion"
 msgstr "Perjamuan"
 
-#: dt-groups/base-setup.php:208
+#: dt-groups/base-setup.php:204
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "Kelompok ini sedang melaksanakan acara perjamuan suci."
 
-#: dt-groups/base-setup.php:212
+#: dt-groups/base-setup.php:208
 msgid "Fellowship"
 msgstr "Sedang diikuti"
 
-#: dt-groups/base-setup.php:213
+#: dt-groups/base-setup.php:209
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "Kelompok ini sedang bersekutu."
 
-#: dt-groups/base-setup.php:217
+#: dt-groups/base-setup.php:213
 msgid "Giving"
 msgstr "Mempersembahkan"
 
-#: dt-groups/base-setup.php:218
+#: dt-groups/base-setup.php:214
 msgctxt "Optional Documentation"
 msgid "The group is giving."
 msgstr "Kelompok ini mempersembahkan."
 
-#: dt-groups/base-setup.php:222
+#: dt-groups/base-setup.php:218
 msgid "Prayer"
 msgstr "Daftar Doa"
 
-#: dt-groups/base-setup.php:223
+#: dt-groups/base-setup.php:219
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "Kelompok ini berdoa bersama-sama."
 
-#: dt-groups/base-setup.php:227
+#: dt-groups/base-setup.php:223
 msgid "Praise"
 msgstr "Pujian"
 
-#: dt-groups/base-setup.php:228
+#: dt-groups/base-setup.php:224
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "Kelompok ini memuji-muji."
 
-#: dt-groups/base-setup.php:232
+#: dt-groups/base-setup.php:228
 msgid "Sharing the Gospel"
 msgstr "Meberitakan kabar baik."
 
-#: dt-groups/base-setup.php:233
+#: dt-groups/base-setup.php:229
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
 msgstr "Kelompok ini lagi membagi kabar baik"
 
-#: dt-groups/base-setup.php:237 dt-groups/base-setup.php:300
+#: dt-groups/base-setup.php:233 dt-groups/base-setup.php:295
 msgid "Leaders"
 msgstr "Pemimpin-pemimpin"
 
-#: dt-groups/base-setup.php:238
+#: dt-groups/base-setup.php:234
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "Kelompok ini memiliki pemimpin-pemimpin"
 
-#: dt-groups/base-setup.php:242 dt-groups/base-setup.php:440
+#: dt-groups/base-setup.php:238 dt-groups/base-setup.php:400
 msgid "Church Commitment"
 msgstr "Kesepakatan menjadi jemaat"
 
-#: dt-groups/base-setup.php:243
+#: dt-groups/base-setup.php:239
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "Kelompok ini sudah bersepakat menjadi jemaat"
 
-#: dt-groups/base-setup.php:253 dt-users/template-user-management.php:180
-#: template-settings.php:426 template-settings.php:445
+#: dt-groups/base-setup.php:248 dt-users/template-user-management.php:180
+#: template-settings.php:444 template-settings.php:463
 msgid "Start Date"
 msgstr "Tanggal Mulai"
 
-#: dt-groups/base-setup.php:254
+#: dt-groups/base-setup.php:249
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "Tanggal kelompok ini mulai berkumpul"
 
-#: dt-groups/base-setup.php:261
+#: dt-groups/base-setup.php:256
 msgid "Church Start Date"
 msgstr "Tanggal jemaat dimulai"
 
-#: dt-groups/base-setup.php:262
+#: dt-groups/base-setup.php:257
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "Tanggal kelompok ini pertama mengidentifikasi sebagai jemaat"
 
-#: dt-groups/base-setup.php:270 dt-users/template-user-management.php:181
-#: template-settings.php:432 template-settings.php:446
+#: dt-groups/base-setup.php:265 dt-users/template-user-management.php:181
+#: template-settings.php:450 template-settings.php:464
 msgid "End Date"
 msgstr "Tanggal selesai"
 
-#: dt-groups/base-setup.php:271
+#: dt-groups/base-setup.php:266
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "Tanggal kelompok ini berhenti untuk kumpul (jika berlaku)."
 
-#: dt-groups/base-setup.php:281 dt-metrics/records/genmap.php:101
+#: dt-groups/base-setup.php:276 dt-metrics/records/genmap.php:157
 msgid "Member Count"
 msgstr "Jumlah anggota kelompok"
 
-#: dt-groups/base-setup.php:282
+#: dt-groups/base-setup.php:277
 msgctxt "Optional Documentation"
 msgid ""
 "The number of members in this group. It will automatically be updated when "
@@ -3260,34 +3296,34 @@ msgstr ""
 "manual untuk memasukkan orang yang mungkin tidak ada dalam sistem namun juga "
 "merupakan anggota dari grup."
 
-#: dt-groups/base-setup.php:290 dt-groups/base-setup.php:594
-#: dt-groups/base-setup.php:638
+#: dt-groups/base-setup.php:285 dt-groups/base-setup.php:554
+#: dt-groups/base-setup.php:598
 msgid "Member List"
 msgstr "Daftar Anggota"
 
-#: dt-groups/base-setup.php:291
+#: dt-groups/base-setup.php:286
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "Kontak-kontak yang adalah anggota kelompok ini."
 
-#: dt-groups/base-setup.php:310
+#: dt-groups/base-setup.php:305
 msgid "Leader Count"
 msgstr "Jumlah Pemimpin"
 
-#: dt-groups/base-setup.php:318
+#: dt-groups/base-setup.php:313
 msgid "Parent Group"
 msgstr "Kelompok Perintis"
 
-#: dt-groups/base-setup.php:319
+#: dt-groups/base-setup.php:314
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
 msgstr "Kelompok yang merintis kelompok ini."
 
-#: dt-groups/base-setup.php:330
+#: dt-groups/base-setup.php:325
 msgid "Peer Group"
 msgstr "Kelompok Sebaya"
 
-#: dt-groups/base-setup.php:331
+#: dt-groups/base-setup.php:326
 msgctxt "Optional Documentation"
 msgid ""
 "A related group that isn't a parent/child in relationship. It might indicate "
@@ -3297,57 +3333,52 @@ msgstr ""
 "kelompok ini. Ini mungkin berarti kelompok-kelompok yang berkollaborasi, mau "
 "bergabung, baru terpisah, dlsb."
 
-#: dt-groups/base-setup.php:342
+#: dt-groups/base-setup.php:337
 msgid "Child Group"
 msgstr "Kelompok yang dirintis oleh kelompok ini"
 
-#: dt-groups/base-setup.php:343
+#: dt-groups/base-setup.php:338
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "Kelompok yang dirintis oleh kelompok ini."
 
-#: dt-groups/base-setup.php:400
-msgctxt "Optional Documentation"
-msgid "The people groups represented by this group."
-msgstr "Suku-suku yang diwakili kelompok ini."
-
-#: dt-groups/base-setup.php:413
+#: dt-groups/base-setup.php:373
 msgid "Unbelievers"
 msgstr "Orang-orang yang belum percaya"
 
-#: dt-groups/base-setup.php:414
+#: dt-groups/base-setup.php:374
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "Jumlah orang dalam kelompok ini yang belum percaya"
 
-#: dt-groups/base-setup.php:422
+#: dt-groups/base-setup.php:382
 msgid "Believers"
 msgstr "Orang percaya"
 
-#: dt-groups/base-setup.php:423
+#: dt-groups/base-setup.php:383
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "Jumlah orang percaya dalam kelompok ini"
 
-#: dt-groups/base-setup.php:431
+#: dt-groups/base-setup.php:391
 msgid "Accountable"
 msgstr "Bertanggung jawab"
 
-#: dt-groups/base-setup.php:432
+#: dt-groups/base-setup.php:392
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "Jumlah orang dalam kelompok saling bertanggung jawab"
 
-#: dt-groups/base-setup.php:441
+#: dt-groups/base-setup.php:401
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "Apakah kelompok ini sudah menjadi jemaat - ya atau tidak?"
 
-#: dt-groups/base-setup.php:449
+#: dt-groups/base-setup.php:409
 msgid "Multiplying"
 msgstr "Sedang melipatgandakan"
 
-#: dt-groups/base-setup.php:450
+#: dt-groups/base-setup.php:410
 msgctxt "Optional Documentation"
 msgid ""
 "Number of people helping start other groups. How many members are "
@@ -3356,38 +3387,38 @@ msgstr ""
 "Jumlah orang yang menolong merintis kelompok-kelompok. Berapa anggota sedang "
 "melipatganda?"
 
-#: dt-groups/base-setup.php:463
+#: dt-groups/base-setup.php:423
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "Kelompok-kelompok yang diikuti kontak ini."
 
-#: dt-groups/base-setup.php:475
+#: dt-groups/base-setup.php:435
 msgid "Leader of Group"
 msgstr "Pemimpin Kelompok"
 
-#: dt-groups/base-setup.php:485
+#: dt-groups/base-setup.php:445
 msgid "Coach of Group"
 msgstr "Pelatih Grup"
 
-#: dt-groups/base-setup.php:597
+#: dt-groups/base-setup.php:557
 msgid "Create"
 msgstr "Menciptakan Kelompok"
 
-#: dt-groups/base-setup.php:602
+#: dt-groups/base-setup.php:562
 msgid "Select"
 msgstr "Pilih Semua"
 
-#: dt-groups/base-setup.php:607
+#: dt-groups/base-setup.php:567
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr ""
 "Untuk menambah anggota baru, silahkan klik \"membuat\" atau \"memilih\""
 
-#: dt-groups/base-setup.php:613
+#: dt-groups/base-setup.php:573
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Tambah anggota dari kontak-kontak yang sudah ada"
 
-#: dt-groups/base-setup.php:614
+#: dt-groups/base-setup.php:574
 msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
@@ -3396,11 +3427,11 @@ msgstr ""
 "Dalam field \"Daftar Anggota\", ketiklah nama kontak yang sudah ada, dan "
 "tambahkan mereka ke dalam kelompok ini."
 
-#: dt-groups/base-setup.php:642
+#: dt-groups/base-setup.php:602
 msgid "Four Fields"
 msgstr "Empat Lahan"
 
-#: dt-groups/base-setup.php:643
+#: dt-groups/base-setup.php:603
 msgctxt "Optional Documentation"
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
@@ -3493,7 +3524,7 @@ msgid "Username or password does not match. Try again."
 msgstr "Nama pengguna atau kata sandi tidak cocok. Coba lagi."
 
 #: dt-login/login-template.php:489 dt-users/template-new-user.php:121
-#: dt-users/template-new-user.php:122 template-settings.php:601
+#: dt-users/template-new-user.php:122 template-settings.php:661
 msgid "Password"
 msgstr "Kata Sandi"
 
@@ -3508,14 +3539,14 @@ msgid "Lost Password"
 msgstr "Reset kata sandi."
 
 #: dt-mapping/columns/add-churches-column.php:57
-#: dt-metrics/combined/hover-map.php:218
-#: dt-metrics/combined/locations-list.php:213
+#: dt-metrics/combined/hover-map.php:222
+#: dt-metrics/combined/locations-list.php:216
 msgid "Churches"
 msgstr "Jemaat-jemaat"
 
 #: dt-mapping/geocode-api/mapbox-api.php:288
 #: dt-mapping/geocode-api/mapbox-api.php:323
-#: dt-users/template-user-management.php:124 template-settings.php:322
+#: dt-users/template-user-management.php:124 template-settings.php:340
 msgid "add"
 msgstr "tambah"
 
@@ -3538,32 +3569,32 @@ msgstr "Hapus Lokasi"
 msgid "Open Mapping"
 msgstr "Buka Pemetaan"
 
-#: dt-mapping/mapping-module-config.php:74 dt-mapping/mapping.php:147
-#: dt-mapping/mapping.php:302
+#: dt-mapping/mapping-module-config.php:73 dt-mapping/mapping.php:146
+#: dt-mapping/mapping.php:300
 msgid "Mapping"
 msgstr "Pemetaan"
 
-#: dt-mapping/mapping.php:149
+#: dt-mapping/mapping.php:148
 msgid "Map"
 msgstr "Peta"
 
-#: dt-mapping/mapping.php:150
+#: dt-mapping/mapping.php:149
 msgid "List"
 msgstr "Daftar"
 
-#: dt-mapping/mapping.php:303
+#: dt-mapping/mapping.php:301
 msgid "Refresh Cached Data"
 msgstr "Memuat ulang data yang di-cache"
 
-#: dt-mapping/mapping.php:304 dt-people-groups/people-groups-base.php:283
+#: dt-mapping/mapping.php:302 dt-people-groups/people-groups-base.php:276
 msgid "Population"
 msgstr "Penduduk"
 
-#: dt-mapping/mapping.php:643 dt-mapping/mapping.php:724
+#: dt-mapping/mapping.php:640 dt-mapping/mapping.php:721
 msgid "World"
 msgstr "Dunia"
 
-#: dt-metrics/charts-base.php:132
+#: dt-metrics/charts-base.php:131
 msgid "No Results"
 msgstr "Tidak Ada Hasil"
 
@@ -3577,8 +3608,9 @@ msgstr "Jalur Yang Serius"
 #: dt-metrics/combined/daily-activity.php:23
 #: dt-metrics/combined/hover-map.php:26
 #: dt-metrics/combined/locations-list.php:26
-#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/combined/site-links.php:23
-#: dt-metrics/metrics.php:98 dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/combined/mapbox-maps.php:26 dt-metrics/metrics.php:98
+#: dt-metrics/records/date-range-activity.php:44
+#: dt-metrics/records/select-tags-charts.php:33
 #: dt-metrics/records/time-charts.php:42
 msgid "Project"
 msgstr "Proyek"
@@ -3614,7 +3646,7 @@ msgstr "Jumlah kontak yang ditugaskan untuk bertemu tatap muka"
 #: dt-metrics/combined/critical-path.php:230
 #: dt-metrics/combined/mapbox-maps.php:80 dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:67 dt-metrics/personal/overview.php:64
-#: dt-users/template-user-management.php:374
+#: dt-users/template-user-management.php:388
 msgid "Active Contacts"
 msgstr "Kontak-kontak Aktiv"
 
@@ -3701,9 +3733,7 @@ msgstr ""
 msgid "Activity by Day"
 msgstr "Aktivitas per Hari"
 
-#: dt-metrics/combined/daily-activity.php:72
-#: dt-metrics/contacts/milestones.php:69 dt-metrics/contacts/seeker-path.php:65
-#: dt-metrics/contacts/sources.php:89
+#: dt-metrics/combined/daily-activity.php:72 dt-metrics/contacts/sources.php:89
 #: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
 msgstr "Filter jarak waktu tanggal"
@@ -3713,12 +3743,12 @@ msgid "This Week"
 msgstr "Minggu Ini"
 
 #: dt-metrics/combined/daily-activity.php:76
-#: dt-users/template-user-management.php:404
+#: dt-users/template-user-management.php:418
 msgid "This Month"
 msgstr "Bulan ini"
 
 #: dt-metrics/combined/daily-activity.php:77
-#: dt-users/template-user-management.php:408
+#: dt-users/template-user-management.php:422
 msgid "Last Month"
 msgstr "Bulan yang lalu"
 
@@ -3727,7 +3757,7 @@ msgstr "Bulan yang lalu"
 #: dt-metrics/combined/daily-activity.php:80
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
-#: dt-notifications/notifications.php:497
+#: dt-notifications/notifications.php:496
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s bulan yang lalu"
@@ -3740,7 +3770,7 @@ msgstr ""
 "bawah ini."
 
 #. Template Name of the theme
-#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:126
+#: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
 msgid "Metrics"
 msgstr "Ukuran-ukuran"
 
@@ -3753,15 +3783,16 @@ msgid "No Activity Detected!"
 msgstr "Tidak Ada Aktivitas yang Terdeteksi!"
 
 #: dt-metrics/combined/daily-activity.php:89
-#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:149
-#: template-new-post.php:38
+#: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
+#: template-new-post.php:43
 msgid "New %s"
 msgstr "Baru %s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#: dt-users/hover-coverage-map.php:52
-msgid "Hover Map"
-msgstr "Peta Mengambang"
+#, fuzzy
+#| msgid "Filter Name"
+msgid "Simple Map"
+msgstr "Filter nama"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3773,9 +3804,7 @@ msgstr "Peta Gabungan"
 
 #: dt-metrics/combined/mapbox-maps.php:62
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
-#: dt-metrics/personal/mapbox-contacts-maps.php:60
-#: dt-metrics/personal/mapbox-groups-maps.php:54
-#: dt-metrics/records/dynamic-records-map.php:102
+#: dt-metrics/records/dynamic-records-map.php:104
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
@@ -3788,6 +3817,12 @@ msgstr "Pengguna Aktif"
 #: dt-metrics/combined/site-links.php:22 dt-metrics/combined/site-links.php:71
 msgid "Transferred Contacts"
 msgstr "Kontak yang Ditransfer"
+
+#: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
+#, fuzzy
+#| msgid "Accept"
+msgid "Access"
+msgstr "Menerima"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -3822,52 +3857,9 @@ msgstr "%s berubah selama rentang tanggal"
 msgid "No Data Available"
 msgstr "Tidak ada data yang tersedia"
 
-#: dt-metrics/contacts/baptism-tree.php:24
-msgid "Baptism Tree"
-msgstr "Pohon baptisan"
-
-#: dt-metrics/contacts/baptism-tree.php:56
-msgid "Baptism Generation Tree"
-msgstr "Pohon Generasi Pembaptisan"
-
-#: dt-metrics/contacts/coaching-tree.php:24
-msgid "Coaching Tree"
-msgstr "Pohon Pendamping"
-
-#: dt-metrics/contacts/coaching-tree.php:57
-msgid "Coaching Generation Tree"
-msgstr "Pohon Generasi Pendampingan"
-
 #: dt-metrics/contacts/mapbox-maps.php:27
 msgid "Access Contact Maps"
 msgstr "Peta Kontak Akses"
-
-#: dt-metrics/contacts/milestones-map.php:24
-#: dt-metrics/contacts/milestones-map.php:40
-msgid "Milestones Map"
-msgstr "Peta Prestasi"
-
-#: dt-metrics/contacts/milestones-map.php:65
-#: dt-metrics/contacts/milestones.php:66
-msgid "Milestones"
-msgstr "Peristiwa Penting"
-
-#: dt-metrics/contacts/milestones.php:23
-msgid "Milestones Chart"
-msgstr "Bagan Prestasi"
-
-#: dt-metrics/contacts/milestones.php:67 dt-metrics/contacts/seeker-path.php:63
-#: dt-metrics/contacts/sources.php:87
-msgid "Filter contacts to date range:"
-msgstr "Filter kontak-kontak dalam jarak tanggal ini:"
-
-#: dt-metrics/contacts/milestones.php:68 dt-metrics/contacts/seeker-path.php:64
-#: dt-metrics/contacts/sources.php:88
-#: dt-metrics/personal/activity-highlights.php:54
-#: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:418
-msgid "All Time"
-msgstr "Seluruh waktu"
 
 #: dt-metrics/contacts/overview.php:24 dt-metrics/groups/overview.php:24
 #: dt-metrics/personal/overview.php:22
@@ -3904,6 +3896,18 @@ msgstr "Menindaklanjuti semua kontak yang aktif"
 #: dt-metrics/contacts/sources.php:24
 msgid "Sources Chart"
 msgstr "Bagan Sumber"
+
+#: dt-metrics/contacts/sources.php:87
+msgid "Filter contacts to date range:"
+msgstr "Filter kontak-kontak dalam jarak tanggal ini:"
+
+#: dt-metrics/contacts/sources.php:88
+#: dt-metrics/personal/activity-highlights.php:54
+#: dt-metrics/records/select-tags-charts.php:89
+#: dt-metrics/records/time-charts.php:115
+#: dt-users/template-user-management.php:432
+msgid "All Time"
+msgstr "Seluruh waktu"
 
 #: dt-metrics/contacts/sources.php:91
 msgid "Showing contacts created during"
@@ -3996,49 +4000,13 @@ msgstr "Generasi-generasi"
 msgid "Generation"
 msgstr "Generasi"
 
-#: dt-metrics/groups/tree.php:25
-msgid "Groups Tree"
-msgstr "Pohon Kelompok"
+#: dt-metrics/metrics.php:79
+msgid "Genmap"
+msgstr ""
 
-#: dt-metrics/groups/tree.php:81
-msgid "Group Generation Tree"
-msgstr "Pohon Generasi Kelompok"
-
-#: dt-metrics/groups/tree.php:82 dt-metrics/personal/group-tree.php:83
-#: dt-metrics/records/genmap.php:87
-msgid "Highlight Active"
-msgstr "Sorot Aktif"
-
-#: dt-metrics/groups/tree.php:83 dt-metrics/personal/group-tree.php:84
-#: dt-metrics/records/genmap.php:88
-msgid "Highlight Churches"
-msgstr "Sorot Gereja"
-
-#: dt-metrics/groups/tree.php:84 dt-metrics/personal/group-tree.php:85
-#: dt-metrics/records/genmap.php:89 dt-metrics/records/genmap.php:102
-msgid "Members"
-msgstr "Anggota"
-
-#: dt-metrics/groups/tree.php:85 dt-metrics/personal/group-tree.php:86
-#: dt-metrics/records/genmap.php:90
-msgid "View Record"
-msgstr "Lihat Riwayat"
-
-#: dt-metrics/groups/tree.php:88 dt-metrics/personal/group-tree.php:89
-#: dt-metrics/records/genmap.php:93
-msgid "Total Members"
-msgstr "Total Anggota"
-
-#: dt-metrics/groups/tree.php:89 dt-metrics/personal/group-tree.php:90
-#: dt-metrics/records/genmap.php:94
-msgid "View Group"
-msgstr "Lihat Kelompok"
-
-#: dt-metrics/metrics.php:109
-#, fuzzy
-#| msgid "Metrics"
-msgid "Dynamic Metrics"
-msgstr "Ukuran-ukuran"
+#: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
+msgid "Maps"
+msgstr ""
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4078,11 +4046,12 @@ msgid "Comments I Posted"
 msgstr "Komentar yang Saya Posting"
 
 #: dt-metrics/personal/activity-highlights.php:67
+#: dt-metrics/records/select-tags-charts.php:88
 #: dt-metrics/records/time-charts.php:114
 msgid "Date"
 msgstr "Tanggal"
 
-#: dt-metrics/personal/activity-highlights.php:176
+#: dt-metrics/personal/activity-highlights.php:191
 msgid "%1$d %2$s created"
 msgstr "%1$d %2$s dibuat"
 
@@ -4091,45 +4060,9 @@ msgstr "%1$d %2$s dibuat"
 msgid "Activity Log"
 msgstr "Log aktivitas"
 
-#: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:194
+#: dt-metrics/personal/activity-log.php:54 dt-users/user-management.php:193
 msgid "Less"
 msgstr "Lebih sedikit"
-
-#: dt-metrics/personal/baptism-tree.php:25
-msgid "My Baptism Tree"
-msgstr "Pohon Pembaptisan Saya"
-
-#: dt-metrics/personal/baptism-tree.php:57
-msgid "My Baptism Generation Tree"
-msgstr "Pohon Generasi Pembaptisan Saya"
-
-#: dt-metrics/personal/coaching-tree.php:25
-msgid "My Coaching Tree"
-msgstr "Pohon Pelatihan Saya"
-
-#: dt-metrics/personal/coaching-tree.php:58
-msgid "My Coaching Generation Tree"
-msgstr "Silsilah Generasi Pembinaan Saya"
-
-#: dt-metrics/personal/coaching-tree.php:143
-msgid "Disciple"
-msgstr "Murid"
-
-#: dt-metrics/personal/group-tree.php:26
-msgid "My Groups Tree"
-msgstr "Pohon Kelompok Saya"
-
-#: dt-metrics/personal/group-tree.php:82
-msgid "My Group Generation Tree"
-msgstr "Silsilah Generasi Grup Saya"
-
-#: dt-metrics/personal/mapbox-contacts-maps.php:27
-msgid "Contacts Maps"
-msgstr "Peta Kontak"
-
-#: dt-metrics/personal/mapbox-groups-maps.php:27
-msgid "Groups Maps"
-msgstr "Peta Grup"
 
 #: dt-metrics/personal/overview.php:55
 msgid "My Overview"
@@ -4149,11 +4082,12 @@ msgstr "statistik per"
 
 #: dt-metrics/records/date-range-activity.php:43
 #, fuzzy
-#| msgid "Daily Activity"
-msgid "Field Activity"
-msgstr "Aktivitas"
+#| msgid "Activity Log"
+msgid "Activity Logs"
+msgstr "Log aktivitas"
 
 #: dt-metrics/records/date-range-activity.php:101
+#: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
 #, fuzzy
 #| msgid "Record"
@@ -4188,7 +4122,8 @@ msgid "Reload"
 msgstr ""
 
 #: dt-metrics/records/date-range-activity.php:108
-#: dt-metrics/records/time-charts.php:123
+#: dt-metrics/records/select-tags-charts.php:91
+#: dt-metrics/records/time-charts.php:122
 msgid "Title"
 msgstr ""
 
@@ -4212,115 +4147,191 @@ msgstr ""
 msgid "False"
 msgstr ""
 
-#: dt-metrics/records/dynamic-records-map.php:30
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records Map"
-msgstr "Tambahkan Catatan"
-
-#: dt-metrics/records/dynamic-records-map.php:91 template-new-bulk-post.php:264
+#: dt-metrics/records/dynamic-records-map.php:93 template-new-bulk-post.php:264
 msgid "Add Records"
 msgstr "Tambahkan Catatan"
 
-#: dt-metrics/records/dynamic-records-map.php:92
+#: dt-metrics/records/dynamic-records-map.php:94
 #, fuzzy
 #| msgid "Post Type"
 msgid "Post Types"
 msgstr "Jenis Pos"
 
-#: dt-metrics/records/dynamic-records-map.php:93
+#: dt-metrics/records/dynamic-records-map.php:95
 #, fuzzy
 #| msgid "prayer"
 msgid "Layer"
 msgstr "doa"
 
-#: dt-metrics/records/dynamic-records-map.php:94
+#: dt-metrics/records/dynamic-records-map.php:96
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete layer?"
 msgstr "Anda yakin ingin menghapus %s?"
 
-#: dt-metrics/records/dynamic-records-map.php:95
+#: dt-metrics/records/dynamic-records-map.php:97
 #, fuzzy
 #| msgid "Record"
 msgid "Record Types"
 msgstr "Rekod"
 
-#: dt-metrics/records/dynamic-records-map.php:97
-#: dt-notifications/notifications.php:922
-#: dt-notifications/notifications.php:929
-#: dt-notifications/notifications.php:936
-#: dt-notifications/notifications.php:940
-#: dt-notifications/notifications.php:950
-#: dt-notifications/notifications.php:957
+#: dt-metrics/records/dynamic-records-map.php:99
+#: dt-notifications/notifications.php:920
+#: dt-notifications/notifications.php:927
+#: dt-notifications/notifications.php:934
+#: dt-notifications/notifications.php:938
+#: dt-notifications/notifications.php:948
+#: dt-notifications/notifications.php:955
 msgid "System"
 msgstr "Sistem"
 
 #: dt-metrics/records/genmap.php:23
-msgid "Genmap"
+#, fuzzy
+#| msgid "Group Generation Tree"
+msgid "GenMapper Trees"
+msgstr "Pohon Generasi Kelompok"
+
+#: dt-metrics/records/genmap.php:136
+#, fuzzy
+#| msgid "Archived"
+msgid "Show Archived"
+msgstr "Diarsipkan"
+
+#: dt-metrics/records/genmap.php:137
+#, fuzzy
+#| msgid "prayer"
+msgid "Data Layers"
+msgstr "doa"
+
+#: dt-metrics/records/genmap.php:138
+msgid "Node Color"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:24 dt-metrics/records/genmap.php:86
+#: dt-metrics/records/genmap.php:139
 #, fuzzy
-#| msgid "Generation"
-msgid "Generation Map"
-msgstr "Generasi"
+#| msgid "Default Filters"
+msgid "Default"
+msgstr "Filter Baku"
 
-#: dt-metrics/records/genmap.php:99
+#: dt-metrics/records/genmap.php:140
+msgid "Add Data Layer"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:141
+#, fuzzy
+#| msgid "Show all fields"
+msgid "Show as icons"
+msgstr "Tampilkan semua larik"
+
+#: dt-metrics/records/genmap.php:142
+msgid "select data layer field to capture"
+msgstr ""
+
+#: dt-metrics/records/genmap.php:143
+msgid "Highlight Active"
+msgstr "Sorot Aktif"
+
+#: dt-metrics/records/genmap.php:144
+msgid "Highlight Churches"
+msgstr "Sorot Gereja"
+
+#: dt-metrics/records/genmap.php:145 dt-metrics/records/genmap.php:158
+msgid "Members"
+msgstr "Anggota"
+
+#: dt-metrics/records/genmap.php:146
+msgid "View Record"
+msgstr "Lihat Riwayat"
+
+#: dt-metrics/records/genmap.php:149
+msgid "Total Members"
+msgstr "Total Anggota"
+
+#: dt-metrics/records/genmap.php:150
+msgid "View Group"
+msgstr "Lihat Kelompok"
+
+#: dt-metrics/records/genmap.php:155
 msgid "Coaches"
 msgstr "Pembimbing"
 
-#: dt-metrics/records/genmap.php:100
+#: dt-metrics/records/genmap.php:156
 #, fuzzy
 #| msgid "Type:"
 msgid "Type"
 msgstr "Jenis:"
 
-#: dt-metrics/records/genmap.php:103
+#: dt-metrics/records/genmap.php:159
 #, fuzzy
 #| msgid "Open With"
 msgid "Open"
 msgstr "Buka Dengan"
 
-#: dt-metrics/records/genmap.php:105
+#: dt-metrics/records/genmap.php:161
 msgid "Focus"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:106
+#: dt-metrics/records/genmap.php:162
 msgid "Hide"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:109
+#: dt-metrics/records/genmap.php:165
 #, fuzzy
 #| msgid "Child Group"
 msgid "Add Child To"
 msgstr "Kelompok yang dirintis oleh kelompok ini"
 
-#: dt-metrics/records/genmap.php:111
+#: dt-metrics/records/genmap.php:167
 msgid "Add Child"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:112
+#: dt-metrics/records/genmap.php:168
 msgid "Focus On Node"
 msgstr ""
 
-#: dt-metrics/records/genmap.php:113
+#: dt-metrics/records/genmap.php:169
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
 msgstr "Anda yakin ingin menghapus %s?"
 
-#: dt-metrics/records/genmap.php:117
+#: dt-metrics/records/genmap.php:173
 msgid "Infinite Loops"
 msgstr ""
 
-#: dt-metrics/records/time-charts.php:41
+#: dt-metrics/records/select-tags-charts.php:32
 #, fuzzy
 #| msgid "Fields over Time Charts"
-msgid "Field Charts"
+msgid "Simple Chart"
 msgstr "Bidang atas Bagan Waktu"
+
+#: dt-metrics/records/select-tags-charts.php:85
+msgid ""
+"This chart shows the total number for each field value at the end of the "
+"selected date."
+msgstr ""
+
+#: dt-metrics/records/select-tags-charts.php:90
+#: dt-metrics/records/time-charts.php:121
+#, fuzzy
+#| msgid "Add Records"
+msgid "Records"
+msgstr "Tambahkan Catatan"
+
+#: dt-metrics/records/select-tags-charts.php:92
+#: dt-metrics/records/time-charts.php:123
+#, fuzzy
+#| msgid "No Data Available"
+msgid "No Records Available"
+msgstr "Tidak ada data yang tersedia"
+
+#: dt-metrics/records/time-charts.php:41
+#, fuzzy
+#| msgid "Advanced Search"
+msgid "Advanced Charts"
+msgstr "Pencarian Tingkat Lanjut"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -4365,24 +4376,6 @@ msgstr "Total kumulatif tunggal"
 msgid "Records changes"
 msgstr "Tambahkan Catatan"
 
-#: dt-metrics/records/time-charts.php:121
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records"
-msgstr "Tambahkan Catatan"
-
-#: dt-metrics/records/time-charts.php:122
-#, fuzzy
-#| msgid "No"
-msgid "No."
-msgstr "Tidak"
-
-#: dt-metrics/records/time-charts.php:124
-#, fuzzy
-#| msgid "No Data Available"
-msgid "No Records Available"
-msgstr "Tidak ada data yang tersedia"
-
 #: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
 msgstr "Silahkan klik di sini untuk melihat atau membalas"
@@ -4396,138 +4389,156 @@ msgstr "Kabar mengenai %1$s #%2$s"
 msgid "Do not reply directly to this email."
 msgstr "Mohon tidak membalas email ini secara langsung."
 
-#: dt-notifications/notifications-scheduler.php:140 template-settings.php:482
+#: dt-notifications/notifications-scheduler.php:140 template-settings.php:520
 msgid "Hourly Digest"
 msgstr "Intisari Setiap Jam"
 
-#: dt-notifications/notifications-scheduler.php:143 template-settings.php:486
+#: dt-notifications/notifications-scheduler.php:143 template-settings.php:524
 msgid "Daily Digest"
 msgstr "Intisari Harian"
 
-#: dt-notifications/notifications.php:477
+#: dt-notifications/notifications.php:476
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "%s menit yang lalu"
 
-#: dt-notifications/notifications.php:482
+#: dt-notifications/notifications.php:481
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "%s jam yang lalu"
 
-#: dt-notifications/notifications.php:487
+#: dt-notifications/notifications.php:486
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s hari yang lalu"
 
-#: dt-notifications/notifications.php:492
+#: dt-notifications/notifications.php:491
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "%s minggu yang lalu"
 
-#: dt-notifications/notifications.php:511
+#: dt-notifications/notifications.php:510
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "%s tahun yang lalu"
 
-#: dt-notifications/notifications.php:515
+#: dt-notifications/notifications.php:514
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "lebih dari %s tahun lalu"
 
-#: dt-notifications/notifications.php:911
+#: dt-notifications/notifications.php:909
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
 msgstr "%s dibuat dan ditugaskan kepada Anda"
 
-#: dt-notifications/notifications.php:913
+#: dt-notifications/notifications.php:911
+#, fuzzy
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr "Anda ditugaskan:"
 
-#: dt-notifications/notifications.php:919
+#: dt-notifications/notifications.php:917
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
 msgstr "%1$s tugaskan %2$s kepada %3$s."
 
-#: dt-notifications/notifications.php:923
+#: dt-notifications/notifications.php:921
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
 msgstr "%1$s membagi %2$s kepada Anda."
 
-#: dt-notifications/notifications.php:930
+#: dt-notifications/notifications.php:928
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
 msgstr "%1$s menyebutkan Anda di %2$s bilangnya: %3$s"
 
-#: dt-notifications/notifications.php:937
+#: dt-notifications/notifications.php:935
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
 msgstr "%1$s membuat komentar mengenai %2$s Tulisnya: %3$s"
 
-#: dt-notifications/notifications.php:941
+#: dt-notifications/notifications.php:939
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
 msgstr "%1$s mentugaskan %2$s kepada Anda."
 
-#: dt-notifications/notifications.php:951
+#: dt-notifications/notifications.php:949
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
 msgstr "%1$s menambahkan tanda kemajuan %2$s pada %3$s."
 
-#: dt-notifications/notifications.php:954
+#: dt-notifications/notifications.php:952
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr "@%1$s, mohon memberitahukan informasi baru mengenai %2$s."
 
-#: dt-notifications/notifications.php:958
+#: dt-notifications/notifications.php:956
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
 msgstr "%1$s mengubah ditel kontak pada %2$s."
 
-#: dt-notifications/notifications.php:961
+#: dt-notifications/notifications.php:959
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s menolak ditugaskan di: %2$s."
 
-#: dt-people-groups/people-groups-base.php:95
-#: dt-people-groups/people-groups-base.php:105
+#: dt-people-groups/people-groups-base.php:111
+#: dt-people-groups/people-groups-base.php:121
 msgid "People Group"
 msgstr "Suku"
 
-#: dt-people-groups/people-groups-base.php:168
+#: dt-people-groups/people-groups-base.php:112
+#: dt-people-groups/people-groups-base.php:122
+#: dt-people-groups/people-groups-base.php:315
+#: dt-people-groups/people-groups-base.php:328
+msgid "People Groups"
+msgstr "Suku-suku"
+
+#: dt-people-groups/people-groups-base.php:184
 msgid "Contacts Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:187
+#: dt-people-groups/people-groups-base.php:203
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:221
-#: dt-posts/custom-post-type.php:178
+#: dt-people-groups/people-groups-base.php:218
+#: dt-posts/custom-post-type.php:186
 msgid "Last Modified"
 msgstr "Tanggal Dimodifikasikan"
 
-#: dt-people-groups/people-groups-base.php:290
+#: dt-people-groups/people-groups-base.php:283
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:297
+#: dt-people-groups/people-groups-base.php:290
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:304
+#: dt-people-groups/people-groups-base.php:297
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:311
+#: dt-people-groups/people-groups-base.php:304
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:325
+#: dt-people-groups/people-groups-base.php:316
+msgctxt "Optional Documentation"
+msgid "The people groups represented by this contact."
+msgstr "Kelompok orang yang diwakili oleh kontak ini."
+
+#: dt-people-groups/people-groups-base.php:329
+msgctxt "Optional Documentation"
+msgid "The people groups represented by this group."
+msgstr "Suku-suku yang diwakili kelompok ini."
+
+#: dt-people-groups/people-groups-base.php:345
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:327
+#: dt-people-groups/people-groups-base.php:347
 msgid "Joshua Project"
 msgstr ""
 
@@ -4547,51 +4558,67 @@ msgstr "Terjemahan"
 msgid "Enter the People Group title here"
 msgstr "Masukkan nama Suku di sini"
 
-#: dt-posts/custom-post-type.php:201
+#: dt-posts/custom-post-type.php:179
+msgid "Picture"
+msgstr ""
+
+#: dt-posts/custom-post-type.php:209
 msgid "Tags"
 msgstr "Tanda-tanda"
 
-#: dt-posts/custom-post-type.php:202
+#: dt-posts/custom-post-type.php:210
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
 msgstr "Cara yang berguna untuk mengelompokkan item terkait."
 
-#: dt-posts/custom-post-type.php:215
+#: dt-posts/custom-post-type.php:224
 msgid "Un-Follow"
 msgstr "Tidak Ikuti Lagi"
+
+#: dt-posts/custom-post-type.php:248
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid "The general location where this contact is located."
+msgctxt "Optional Documentation"
+msgid "The general location where this record is located."
+msgstr "Lokasi secara jenderal yang menjadi lokasi kontak ini."
+
+#: dt-posts/custom-post-type.php:256
+msgid "Locations or Address"
+msgstr "Lokasi atau Alamat"
 
 #: dt-posts/dt-posts.php:100
 msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1698
+#: dt-posts/dt-posts.php:1620
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "%s Submission"
 msgstr "Pengiriman Tautan Ajaib"
 
-#: dt-posts/dt-posts.php:1698
+#: dt-posts/dt-posts.php:1620
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "Magic Link"
 msgstr "Pengiriman Tautan Ajaib"
 
-#: dt-posts/dt-posts.php:1700 dt-posts/dt-posts.php:2247
+#: dt-posts/dt-posts.php:1622 dt-posts/dt-posts.php:2169
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "Mengembalikan Aktifitas ke status awal"
 
-#: dt-posts/dt-posts.php:2487
+#: dt-posts/dt-posts.php:2409
 msgid "Post already shared with user."
 msgstr "Post sudah dishare dengan pengguna"
 
-#: dt-posts/dt-posts.php:2767 single-template.php:174
+#: dt-posts/dt-posts.php:2688 single-template.php:174
 msgid "Details"
 msgstr "Detail"
 
-#: dt-posts/dt-posts.php:2836
+#: dt-posts/dt-posts.php:2766
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4604,7 +4631,7 @@ msgstr ""
 "Bila diinginkan, bagi rekod ini dengan pengguna tersebut untuk memberikan "
 "akses."
 
-#: dt-posts/dt-posts.php:2842
+#: dt-posts/dt-posts.php:2772
 msgid "Access Request"
 msgstr "Permintaan Akses"
 
@@ -4934,7 +4961,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "Tidak dibagi dengan %s"
 
-#: dt-posts/posts.php:2494
+#: dt-posts/posts.php:2522
 #, fuzzy
 #| msgid "Remove"
 msgid "Removed User"
@@ -4971,13 +4998,13 @@ msgstr ""
 msgid "Configure email message"
 msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:61
+#: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:134
 #, fuzzy
 #| msgid "Select app to email"
 msgid "Selected app name"
 msgstr "Pilih aplikasi ke email"
 
-#: dt-reports/magic-url-bulk-send.php:67
+#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:140
 msgid "Unique link to access the app."
 msgstr ""
 
@@ -5020,37 +5047,44 @@ msgstr "Pengiriman Tautan Ajaib"
 msgid "Magic Links available on this record."
 msgstr "Aplikasi yang tersedia pada catatan ini."
 
-#: dt-reports/magic-url-setup.php:86
+#: dt-reports/magic-url-setup.php:94
 #, fuzzy
 #| msgid "View User"
 msgid "View"
 msgstr "Lihat Pengguna"
 
-#: dt-reports/magic-url-setup.php:87
-msgid "Copy to clipboard"
-msgstr ""
-
-#: dt-reports/magic-url-setup.php:92
+#: dt-reports/magic-url-setup.php:101
 msgid "QR code"
 msgstr ""
 
-#: dt-reports/magic-url-setup.php:93
+#: dt-reports/magic-url-setup.php:102
 msgid "Reset"
 msgstr ""
 
-#: dt-reports/magic-url-setup.php:113
+#: dt-reports/magic-url-setup.php:121
+msgid ""
+"Hello,\n"
+"\n"
+"Please click on the button below to access your app.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Thanks!"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:130
 msgid "Add email address"
 msgstr "Tambahkan alamat email"
 
-#: dt-reports/magic-url-setup.php:114
+#: dt-reports/magic-url-setup.php:131
 msgid "Add a note"
 msgstr "Tambahkan catatan"
 
-#: dt-reports/magic-url-setup.php:114
+#: dt-reports/magic-url-setup.php:144
 msgid "Send email with link"
 msgstr "Kirim email dengan tautan"
 
-#: dt-reports/magic-url-setup.php:156
+#: dt-reports/magic-url-setup.php:186
 msgid "Delete and replace the app link"
 msgstr "Hapus dan ganti tautan aplikasi"
 
@@ -5058,9 +5092,13 @@ msgstr "Hapus dan ganti tautan aplikasi"
 msgid "Added new report"
 msgstr "Laporan baru yang ditambahkan"
 
-#: dt-reports/reports.php:254
+#: dt-reports/reports.php:255
 msgid "Updated report"
 msgstr "Laporan yang diperbarui"
+
+#: dt-users/hover-coverage-map.php:52
+msgid "Hover Map"
+msgstr "Peta Mengambang"
 
 #: dt-users/hover-coverage-map.php:85 dt-users/mapbox-coverage-map.php:52
 msgid "Coverage Map"
@@ -5111,18 +5149,18 @@ msgstr "Kontak untuk membuat pengguna (opsional)"
 msgid "Search multipliers and contacts"
 msgstr "Cari pengganda dan kontak"
 
-#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:218
+#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:232
 #: dt-users/users.php:141
 msgid "Display Name"
 msgstr "Tampilkan Nama"
 
-#: dt-users/template-new-user.php:115 template-settings.php:143
-#: template-settings.php:622
+#: dt-users/template-new-user.php:115 template-settings.php:153
+#: template-settings.php:682
 msgid "Nickname (Display Name)"
 msgstr "Nama panggilan (nama yang ditampilkan)"
 
 #: dt-users/template-new-user.php:119 dt-users/template-new-user.php:120
-#: dt-users/users.php:135 template-settings.php:130 template-settings.php:587
+#: dt-users/users.php:135 template-settings.php:140 template-settings.php:647
 msgid "Username"
 msgstr "Nama Pengguna"
 
@@ -5130,7 +5168,7 @@ msgstr "Nama Pengguna"
 msgid "Role"
 msgstr "Peran"
 
-#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:279
+#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:293
 msgid "Click here to see roles documentation"
 msgstr ""
 "Silahkan klik di sini untuk melihat dokumentasi-dokumentasi terkait dengan "
@@ -5141,7 +5179,7 @@ msgid "Create User"
 msgstr "Buat Pengguna"
 
 #: dt-users/template-new-user.php:178 dt-users/template-new-user.php:180
-#: template-settings.php:611
+#: template-settings.php:671
 msgid "First Name"
 msgstr "Nama Pertama"
 
@@ -5152,14 +5190,14 @@ msgid "optional"
 msgstr "opsional"
 
 #: dt-users/template-new-user.php:182 dt-users/template-new-user.php:183
-#: template-settings.php:617
+#: template-settings.php:677
 msgid "Last Name"
 msgstr "Nama Keluarga"
 
 #: dt-users/template-new-user.php:218 dt-users/template-new-user.php:222
-#: dt-users/template-user-management.php:255
-#: dt-users/template-user-management.php:262 template-settings.php:226
-#: template-settings.php:646
+#: dt-users/template-user-management.php:269
+#: dt-users/template-user-management.php:276 template-settings.php:236
+#: template-settings.php:706
 msgid "Biography"
 msgstr "Biografi"
 
@@ -5223,16 +5261,16 @@ msgstr "Status Kelompok"
 msgid "Location Responsibility"
 msgstr "Tanggung Jawab Lokasi"
 
-#: dt-users/template-user-management.php:136 template-settings.php:337
+#: dt-users/template-user-management.php:136 template-settings.php:355
 msgid "Search Locations"
 msgstr "Lokasi-lokasi"
 
-#: dt-users/template-user-management.php:147 template-settings.php:350
+#: dt-users/template-user-management.php:147 template-settings.php:368
 msgid "Languages you are comfortable speaking"
 msgstr "Bahasa yang nyaman Anda gunakan untuk berbicara"
 
 #: dt-users/template-user-management.php:163 template-settings.php:59
-#: template-settings.php:413
+#: template-settings.php:431
 msgid "Availability"
 msgstr "Ketersediaan"
 
@@ -5252,44 +5290,56 @@ msgstr "Ketidaktersediaan Jadwal"
 msgid "Travel or Away Dates"
 msgstr "Tanggal perjalanan atau di luar"
 
-#: dt-users/template-user-management.php:198
+#: dt-users/template-user-management.php:191
+#, fuzzy
+#| msgid "Users"
+msgid "User Apps"
+msgstr "Para Pengguna"
+
+#: dt-users/template-user-management.php:197
+#, fuzzy
+#| msgid "App Activation"
+msgid "Activation"
+msgstr "Aktivasi Aplikasi"
+
+#: dt-users/template-user-management.php:212
 msgid "User Profile"
 msgstr "Profil Pengguna"
 
-#: dt-users/template-user-management.php:201
+#: dt-users/template-user-management.php:215
 #: dt-users/user-hooks-and-config.php:408
 msgid "View contact record"
 msgstr "Lihat catatan kontak"
 
-#: dt-users/template-user-management.php:206
+#: dt-users/template-user-management.php:220
 msgid "Edit User"
 msgstr "Edit Pengguna"
 
-#: dt-users/template-user-management.php:211
+#: dt-users/template-user-management.php:225
 #, fuzzy
 #| msgid "Password"
 msgid "Email Password Reset"
 msgstr "Kata Sandi"
 
-#: dt-users/template-user-management.php:274 dt-users/users.php:147
-#: template-settings.php:149
+#: dt-users/template-user-management.php:288 dt-users/users.php:147
+#: template-settings.php:159
 msgid "Roles"
 msgstr "Peran-peran"
 
-#: dt-users/template-user-management.php:306
+#: dt-users/template-user-management.php:320
 msgid "Save Roles"
 msgstr "Simpan Filter"
 
-#: dt-users/template-user-management.php:314
+#: dt-users/template-user-management.php:328
 msgid "Access by Source"
 msgstr "Akses berdasarkan Sumber"
 
-#: dt-users/template-user-management.php:320
+#: dt-users/template-user-management.php:334
 #: dt-users/user-hooks-and-config.php:623
 msgid "All Sources - gives access to all contacts"
 msgstr "Semua Sumber - memberikan akses ke semua kontak"
 
-#: dt-users/template-user-management.php:326
+#: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
@@ -5298,60 +5348,60 @@ msgstr ""
 "Kustom - Mengakses kontak milik sendiri dan semua kontak dari sumber yang "
 "dipilih di bawah ini"
 
-#: dt-users/template-user-management.php:332
+#: dt-users/template-user-management.php:346
 #: dt-users/user-hooks-and-config.php:637
 msgid "No Sources - only own contacts"
 msgstr "Tidak Ada Sumber - hanya kontak milik sendiri"
 
-#: dt-users/template-user-management.php:338
+#: dt-users/template-user-management.php:352
 msgid "Sources List"
 msgstr "Daftar Sumber"
 
-#: dt-users/template-user-management.php:350
+#: dt-users/template-user-management.php:364
 msgid "Save Allowed Sources"
 msgstr "Simpan Sumber yang Diperbolehkan"
 
-#: dt-users/template-user-management.php:380
+#: dt-users/template-user-management.php:394
 msgid "Updates Needed"
 msgstr "Diperlukan Pembaruan"
 
-#: dt-users/template-user-management.php:386
+#: dt-users/template-user-management.php:400
 msgid "Pending"
 msgstr "Belum diterima"
 
-#: dt-users/template-user-management.php:393
+#: dt-users/template-user-management.php:407
 msgid "Unread Notifications"
 msgstr "Notifikasi"
 
-#: dt-users/template-user-management.php:400
+#: dt-users/template-user-management.php:414
 msgid "Assignments"
 msgstr "Tugas"
 
-#: dt-users/template-user-management.php:414
+#: dt-users/template-user-management.php:428
 msgid "This Year"
 msgstr "Tahun ini"
 
-#: dt-users/template-user-management.php:432
+#: dt-users/template-user-management.php:446
 msgid "Pace"
 msgstr "Kecepatan"
 
-#: dt-users/template-user-management.php:433
+#: dt-users/template-user-management.php:447
 msgid "Assigned and not accepted"
 msgstr "Ditugaskan dan tidak diterima"
 
-#: dt-users/template-user-management.php:435
+#: dt-users/template-user-management.php:449
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr "Waktu dari ditugaskan hingga kontak diterima untuk 10 kontak terakhir"
 
-#: dt-users/template-user-management.php:437
+#: dt-users/template-user-management.php:451
 msgid "Accepted with no contact attempt"
 msgstr "Diterima dengan tanpa percobaan kontak"
 
-#: dt-users/template-user-management.php:439
+#: dt-users/template-user-management.php:453
 msgid "Oldest 10 update needed"
 msgstr "Memerlukan 10 pembaruan terakhir"
 
-#: dt-users/template-user-management.php:441
+#: dt-users/template-user-management.php:455
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "Waktu dari ditugaskan hingga percobaan kontak untuk 10 kontak terakhir"
 
@@ -5395,7 +5445,7 @@ msgstr "Informasi tambahan mengenai Disciple.Tools"
 msgid "Corresponds to Contact"
 msgstr "Terkait dengan kontak"
 
-#: dt-users/user-hooks-and-config.php:592 dt-users/user-management.php:192
+#: dt-users/user-hooks-and-config.php:592 dt-users/user-management.php:191
 msgid "View Contact"
 msgstr "Lihat Kontak"
 
@@ -5423,93 +5473,98 @@ msgstr "Undang Pengguna"
 msgid "Default Language"
 msgstr "Bahasa Pengguna"
 
-#: dt-users/user-management.php:137
+#: dt-users/user-management.php:136
 msgid "Add User"
 msgstr "Tambah Pengguna"
 
-#: dt-users/user-management.php:181
+#: dt-users/user-management.php:180
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
 msgstr "%1$s diterima pada %2$s setelah %3$s hari"
 
-#: dt-users/user-management.php:182
+#: dt-users/user-management.php:181
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
 msgstr "%1$s menunggu Coba Menghubungi selama %2$s hari"
 
-#: dt-users/user-management.php:183
+#: dt-users/user-management.php:182
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "Menghubungi %1$s dicobai pada %2$s setelah %3$s hari"
 
-#: dt-users/user-management.php:184
+#: dt-users/user-management.php:183
 msgid "Unable to update"
 msgstr "Tidak dapat memperbarui"
 
-#: dt-users/user-management.php:185
+#: dt-users/user-management.php:184
 msgid "View New User"
 msgstr "Lihat Pengguna Baru"
 
-#: dt-users/user-management.php:186
+#: dt-users/user-management.php:185
 msgid "View New Contact"
 msgstr "Lihat Kontak Baru"
 
-#: dt-users/user-management.php:187
+#: dt-users/user-management.php:186
 msgid "Email address is already in the system as a user!"
 msgstr "Alamat surel sudah ada di dalam sistem sebagai pengguna!"
 
-#: dt-users/user-management.php:188
+#: dt-users/user-management.php:187
 msgid "Username is already in the system as a user!"
 msgstr "Nama pengguna sudah ada di dalam sistem sebagai pengguna!"
 
-#: dt-users/user-management.php:189
+#: dt-users/user-management.php:188
 msgid "Remove"
 msgstr "Hapus"
 
-#: dt-users/user-management.php:190
+#: dt-users/user-management.php:189
 msgid "This contact is already a user."
 msgstr "Kontak ini sudah menjadi pengguna."
 
-#: dt-users/user-management.php:191
+#: dt-users/user-management.php:190
 msgid "View User"
 msgstr "Lihat Pengguna"
 
-#: dt-users/user-management.php:226
+#: dt-users/user-management.php:194 template-settings.php:311
+#: template-settings.php:575
+msgid "Enable"
+msgstr "Mengaktifkan"
+
+#: dt-users/user-management.php:229
 msgid "Go"
 msgstr ""
 
-#: dt-users/user-management.php:229
+#: dt-users/user-management.php:232
 #, fuzzy
 #| msgctxt "Showing 30 items matching bob"
 #| msgid "Showing %1$s items matching %2$s"
 msgid "Showing %1$s of %2$s"
 msgstr "Menampilkan %1$s item yang cocok dengan %2$s"
 
-#: dt-users/user-management.php:334
+#: dt-users/user-management.php:353
 msgid "%s days since last update"
 msgstr "%s hari sejak update terakhir"
 
-#: dt-users/user-metrics.php:106
+#: dt-users/user-metrics.php:105
 msgid "Updated fields"
 msgstr "Bidang yang diperbarui"
 
-#: dt-users/user-metrics.php:110
+#: dt-users/user-metrics.php:109
 msgid "Made %n comments"
 msgstr "Membuat %n komentar"
 
-#: dt-users/user-metrics.php:113
+#: dt-users/user-metrics.php:112
 msgid "Created record"
 msgstr "Catatan yang dibuat"
 
-#: dt-users/user-metrics.php:116
+#: dt-users/user-metrics.php:115
 msgid "Logged In %n times"
 msgstr "Masuk %n kali"
 
-#: dt-users/user-metrics.php:117
+#: dt-users/user-metrics.php:116
 msgid "Logged In"
 msgstr "Lagi Masuk"
 
-#: dt-users/user-metrics.php:120
+#: dt-users/user-metrics.php:119
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "Menolak ditugaskan dengan %s"
@@ -5556,7 +5611,7 @@ msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "Filter Kustom"
 
-#: dt-users/users.php:1305 template-settings.php:159 template-settings.php:593
+#: dt-users/users.php:1319 template-settings.php:169 template-settings.php:653
 msgid "System Email"
 msgstr "Email Sistem"
 
@@ -5570,7 +5625,7 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "Anda menentukan tugas ini bagi %1$s: %2$s"
 
-#: dt-workflows/workflows-triggers.php:63
+#: dt-workflows/workflows-triggers.php:68
 msgid "D.T Workflow"
 msgstr "Alur Kerja D.T"
 
@@ -5597,11 +5652,11 @@ msgstr ""
 msgid "See what browser you are using."
 msgstr "Lihat browser apa yang sedang Anda pakai."
 
-#: single-template.php:100 single-template.php:108
+#: single-template.php:99 single-template.php:107
 msgid "This %s needs an update."
 msgstr "%s ini perlu pembaruan."
 
-#: single-template.php:102 single-template.php:110
+#: single-template.php:101 single-template.php:109
 msgid "Please provide an update by posting a comment."
 msgstr "Mohon diupdate dengan memposting komentar"
 
@@ -5609,32 +5664,32 @@ msgstr "Mohon diupdate dengan memposting komentar"
 msgid "Edit all details fields"
 msgstr "Edit semua larik rincian"
 
-#: single-template.php:381
+#: single-template.php:383
 msgid "Show Hidden Tiles"
 msgstr ""
 
-#: single-template.php:402 template-new-bulk-post.php:276
-#: template-new-post.php:167
+#: single-template.php:404 template-new-bulk-post.php:276
+#: template-new-post.php:172
 msgid "Create Tag"
 msgstr "Membuat Tanda"
 
-#: single-template.php:403 template-new-bulk-post.php:277
-#: template-new-post.php:168
+#: single-template.php:405 template-new-bulk-post.php:277
+#: template-new-post.php:173
 msgid "Create a tag and apply it to this record."
 msgstr "Buat tag dan terapkan ke rekod ini."
 
-#: single-template.php:407 single-template.php:409
+#: single-template.php:409 single-template.php:411
 #: template-new-bulk-post.php:281 template-new-bulk-post.php:283
-#: template-new-post.php:172 template-new-post.php:174
+#: template-new-post.php:177 template-new-post.php:179
 msgid "Tag"
 msgstr "Tanda"
 
-#: single-template.php:418 template-new-bulk-post.php:293
-#: template-new-post.php:183
+#: single-template.php:420 template-new-bulk-post.php:293
+#: template-new-post.php:188
 msgid "Create and apply tag"
 msgstr "Membuat dan menerapkan tanda"
 
-#: single-template.php:428
+#: single-template.php:430
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Anda yakin ingin menghapus %s?"
@@ -5685,7 +5740,7 @@ msgstr "%s Massal Baru"
 msgid "Choose which fields to display across new bulk records"
 msgstr "Pilih bidang mana yang akan ditampilkan di seluruh catatan massal baru"
 
-#: template-new-bulk-post.php:145 template-new-post.php:57
+#: template-new-bulk-post.php:145 template-new-post.php:62
 msgid "Select the %s type:"
 msgstr "Pilih tipe %s:"
 
@@ -5693,19 +5748,19 @@ msgstr "Pilih tipe %s:"
 msgid "Add New Row"
 msgstr "Tambahkan Baris Baru"
 
-#: template-new-post.php:45
+#: template-new-post.php:50
 msgid "Add Bulk Records?"
 msgstr "Tambahkan Catatan Massal?"
 
-#: template-new-post.php:144
+#: template-new-post.php:149
 msgid "Show all fields"
 msgstr "Tampilkan semua larik"
 
-#: template-new-post.php:147
+#: template-new-post.php:152
 msgid "Hide fields"
 msgstr "Sembunyikan larik"
 
-#: template-new-post.php:154
+#: template-new-post.php:159
 msgid "Save and continue editing"
 msgstr "Simpan dan lanjut dengan edit"
 
@@ -5721,7 +5776,7 @@ msgstr "memuat notifikasi yang berikut"
 msgid "Apps"
 msgstr "Aplikasi"
 
-#: template-settings.php:58 template-settings.php:314
+#: template-settings.php:58 template-settings.php:332
 msgid "Multiplier Preferences"
 msgstr "Preferensi Pengganda"
 
@@ -5733,55 +5788,51 @@ msgstr "Undang Pengguna"
 msgid "View Contact Record"
 msgstr "Lihat Catatan Kontak"
 
-#: template-settings.php:191
+#: template-settings.php:201
 msgid "Social"
 msgstr "Sosial"
 
-#: template-settings.php:222
+#: template-settings.php:232
 msgid "English"
 msgstr "Inggris"
 
-#: template-settings.php:247
+#: template-settings.php:257
 msgid "Your Apps"
 msgstr "Aplikasi Anda"
 
-#: template-settings.php:252
+#: template-settings.php:262
 msgid "App Name"
 msgstr "Nama Aplikasi"
 
-#: template-settings.php:253
+#: template-settings.php:263
 msgid "App Description"
 msgstr "Deskripsi Aplikasi"
 
-#: template-settings.php:254
+#: template-settings.php:264
 msgid "App Link"
 msgstr "Tautan Aplikasi"
 
-#: template-settings.php:255
+#: template-settings.php:265
 msgid "App Activation"
 msgstr "Aktivasi Aplikasi"
 
-#: template-settings.php:265
+#: template-settings.php:275
 msgid "No apps installed"
 msgstr "Tak ada aplikasi yang terpasang"
 
-#: template-settings.php:293 template-settings.php:537
-msgid "Enable"
-msgstr "Mengaktifkan"
-
-#: template-settings.php:322 template-settings.php:327
+#: template-settings.php:340 template-settings.php:345
 msgid "Locations you are willing to be responsible for"
 msgstr "Lokasi yang bersedia Anda tanggung"
 
-#: template-settings.php:371
+#: template-settings.php:389
 msgid "People Groups you wish to serve"
 msgstr "Kelompok Orang yang ingin Anda layani"
 
-#: template-settings.php:394
+#: template-settings.php:412
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "Ketersediaan untuk menerima kontak dari Pengirim"
 
-#: template-settings.php:416
+#: template-settings.php:434
 msgid ""
 "Set the dates you will be traveling or unavailable so the Dispatcher will "
 "know your availability to receive new contacts"
@@ -5789,45 +5840,56 @@ msgstr ""
 "Silahkan menyebut tanggal perjalanan Anda supaya si Dispatcher bisa tahu "
 "ketersediaan Anda untuk menerima kontak-kontak yang baru."
 
-#: template-settings.php:420
+#: template-settings.php:438
 msgid "Schedule Travel or Dates Unavailable"
 msgstr ""
 "Menjadwalkan perjalanan atau tanggal-tanggal pada waktu Anda tidak tersedia"
 
-#: template-settings.php:437
+#: template-settings.php:455
 msgid "Add Unavailable dates"
 msgstr "Tambah tanggal-tanggal pada waktu Anda tidak tersedia"
 
-#: template-settings.php:451
+#: template-settings.php:469
 msgid "No Travel Scheduled"
 msgstr "Tidak ada perjalanan yang terjadwal"
 
-#: template-settings.php:472
+#: template-settings.php:489
+#, fuzzy
+#| msgid "Contact Info Changed"
+msgid "Contact Info"
+msgstr "Informasi Kontak Sudah Berubah"
+
+#: template-settings.php:493
+msgctxt "Email will be sent to: [email]"
+msgid "Email notifications will be sent to: %s"
+msgstr ""
+
+#: template-settings.php:510
 msgid "Email preferences"
 msgstr "Preferensi email"
 
-#: template-settings.php:478
+#: template-settings.php:516
 msgid "Real time"
 msgstr "Waktu sebenarnya"
 
-#: template-settings.php:493
+#: template-settings.php:531
 msgid "Type of Notification"
 msgstr "Jenis Notifikasi"
 
-#: template-settings.php:506
+#: template-settings.php:544
 msgid "required"
 msgstr "Dibutuhkan"
 
-#: template-settings.php:530
+#: template-settings.php:568
 msgid "Follow all contacts"
 msgstr "Ikuti semua kontak"
 
-#: template-settings.php:532
+#: template-settings.php:570
 msgid ""
 "You will receive a notification for any update that happens in the system."
 msgstr "Anda akan menerima notifikasi jikalau ada update pun di dalam sistem."
 
-#: template-settings.php:581
+#: template-settings.php:630
 msgid ""
 "Disciple Tools System does not store images. For profile images we use "
 "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
@@ -5840,28 +5902,51 @@ msgstr ""
 "pribadi, melainkan memilih gambar kartun, abstrak, atau foto buatan yang "
 "akan mewakili Anda."
 
-#: template-settings.php:582
+#: template-settings.php:631
 msgid "edit image on gravatar.com"
 msgstr "mengedit gambar di gravatar.com"
 
-#: template-settings.php:588 template-settings.php:589
+#: template-settings.php:637
+#, fuzzy
+#| msgid ""
+#| "Disciple Tools System does not store images. For profile images we use "
+#| "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
+#| "suggest not using a personal photo, but instead choose a cartoon, "
+#| "abstract, or alias photo to represent you."
+msgid ""
+"Disciple Tools System does not store images. All media assets will be placed "
+"within specified media connection storage service. If you have security "
+"concerns, we suggest not using a personal photo, but instead choose a "
+"cartoon, abstract, or alias photo to represent you."
+msgstr ""
+"Sistem Disciple Tools tidak menyimpan foto-foto. Untuk mengisi foto profil, "
+"Gravatar (Globally Recognized Avatar) digunakan. Ketika Anda mengalami "
+"situasi apabila keamanan sensitif, disarankan untuk tidak memakai foto "
+"pribadi, melainkan memilih gambar kartun, abstrak, atau foto buatan yang "
+"akan mewakili Anda."
+
+#: template-settings.php:638
+msgid "Upload new profile image"
+msgstr ""
+
+#: template-settings.php:648 template-settings.php:649
 msgid "Username cannot be changed"
 msgstr "Nama Pengguna tidak dapat dirubah"
 
-#: template-settings.php:594
+#: template-settings.php:654
 msgid "User email can be changed by site administrator."
 msgstr "Email pengguna dapat dirubah oleh administrator situs."
 
-#: template-settings.php:602
+#: template-settings.php:662
 msgid "Use this email reset form to create a new password."
 msgstr ""
 "Untuk membuat kata sandi yang baru, silahkan gunakan formulir reset ini."
 
-#: template-settings.php:604
+#: template-settings.php:664
 msgid "go to password change form"
 msgstr "Membuka formulir ganti kata sandi"
 
-#: template-settings.php:668
+#: template-settings.php:728
 msgid "System Language"
 msgstr "Bahasa Sistem"
 
@@ -5887,6 +5972,96 @@ msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Duplikat ditemukan:"
 
+#~ msgid "Twitter"
+#~ msgstr "Twitter"
+
+#~ msgid "Baptism Tree"
+#~ msgstr "Pohon baptisan"
+
+#~ msgid "Baptism Generation Tree"
+#~ msgstr "Pohon Generasi Pembaptisan"
+
+#~ msgid "Coaching Tree"
+#~ msgstr "Pohon Pendamping"
+
+#~ msgid "Coaching Generation Tree"
+#~ msgstr "Pohon Generasi Pendampingan"
+
+#~ msgid "Milestones Map"
+#~ msgstr "Peta Prestasi"
+
+#~ msgid "Milestones"
+#~ msgstr "Peristiwa Penting"
+
+#~ msgid "Milestones Chart"
+#~ msgstr "Bagan Prestasi"
+
+#~ msgid "Groups Tree"
+#~ msgstr "Pohon Kelompok"
+
+#~ msgid "Group Generation Tree"
+#~ msgstr "Pohon Generasi Kelompok"
+
+#~ msgid "My Baptism Tree"
+#~ msgstr "Pohon Pembaptisan Saya"
+
+#~ msgid "My Baptism Generation Tree"
+#~ msgstr "Pohon Generasi Pembaptisan Saya"
+
+#~ msgid "My Coaching Tree"
+#~ msgstr "Pohon Pelatihan Saya"
+
+#~ msgid "My Coaching Generation Tree"
+#~ msgstr "Silsilah Generasi Pembinaan Saya"
+
+#~ msgid "Disciple"
+#~ msgstr "Murid"
+
+#~ msgid "My Groups Tree"
+#~ msgstr "Pohon Kelompok Saya"
+
+#~ msgid "My Group Generation Tree"
+#~ msgstr "Silsilah Generasi Grup Saya"
+
+#~ msgid "Contacts Maps"
+#~ msgstr "Peta Kontak"
+
+#~ msgid "Groups Maps"
+#~ msgstr "Peta Grup"
+
+#, fuzzy
+#~| msgid "Add Records"
+#~ msgid "Records Map"
+#~ msgstr "Tambahkan Catatan"
+
+#, fuzzy
+#~| msgid "Metrics"
+#~ msgid "Dynamic Metrics"
+#~ msgstr "Ukuran-ukuran"
+
+#, fuzzy
+#~| msgid "Daily Activity"
+#~ msgid "Field Activity"
+#~ msgstr "Aktivitas"
+
+#, fuzzy
+#~| msgid "All cumulative totals"
+#~ msgid "Field Cumulative Values"
+#~ msgstr "Total kumulatif semuanya"
+
+#~ msgid "No Answer"
+#~ msgstr "Tidak Menjawab"
+
+#, fuzzy
+#~| msgid "No"
+#~ msgid "No."
+#~ msgstr "Tidak"
+
+#, fuzzy
+#~| msgid "Generation"
+#~ msgid "Generation Map"
+#~ msgstr "Generasi"
+
 #, fuzzy
 #~| msgid "List"
 #~ msgid "Map List Filter"
@@ -5905,11 +6080,6 @@ msgstr "Duplikat ditemukan:"
 #~ msgctxt "Assigned to: User1"
 #~ msgid "Assigned to: %s"
 #~ msgstr "Ditugaskan kepada: %s"
-
-#, fuzzy
-#~| msgid "Group Generation Tree"
-#~ msgid "Generation Tree"
-#~ msgstr "Pohon Generasi Kelompok"
 
 #, fuzzy
 #~| msgid "Generation"

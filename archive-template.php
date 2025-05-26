@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 dt_please_log_in();
 
+if ( ! current_user_can( 'access_disciple_tools' ) ) {
+    wp_safe_redirect( '/registered' );
+    exit();
+}
+
 ( function () {
     $post_type = dt_get_post_type();
     if ( !current_user_can( 'access_' . $post_type ) ) {
@@ -12,6 +17,15 @@ dt_please_log_in();
     $post_settings = DT_Posts::get_post_settings( $post_type );
 
     $field_options = $post_settings['fields'];
+
+    $field_params = [
+        'connection' => [
+            'allow_add' => false,
+        ],
+        'key_select' => [
+            'disable_color' => true,
+        ]
+    ];
 
     get_header();
     ?>
@@ -240,6 +254,7 @@ dt_please_log_in();
                         </button>
                     </div>
                     <div class="section-body">
+                        <div style="display: flex; flex-wrap:wrap;" id="split_by_current_filter_select_labels"></div>
                         <table>
                             <tbody style="border: none;">
                             <tr style="border: none;">
@@ -310,17 +325,17 @@ dt_please_log_in();
                         </button>
                     </div>
                     <div class="section-body" style="padding-top:1em;">
-                        <a id="export_csv_list"><?php esc_html_e( 'CSV List', 'disciple_tools' ) ?></a><br>
+                        <a id="export_csv_list"><?php esc_html_e( 'CSV List', 'disciple_tools' ) ?></a>
                         <?php
                         if ( !empty( DT_Posts::get_field_settings_by_type( $post_type, 'communication_channel' ) ) ) {
                             ?>
-                            <a id="export_bcc_email_list"><?php esc_html_e( 'BCC Email List', 'disciple_tools' ) ?></a><br>
-                            <a id="export_phone_list"><?php esc_html_e( 'Phone List', 'disciple_tools' ) ?></a><br>
+                            <a id="export_bcc_email_list"><?php esc_html_e( 'BCC Email List', 'disciple_tools' ) ?></a>
+                            <a id="export_phone_list"><?php esc_html_e( 'Phone List', 'disciple_tools' ) ?></a>
                             <?php
                         }
                         if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
                             ?>
-                            <a class="export_map_list"><?php esc_html_e( 'Map List', 'disciple_tools' ) ?></a><br>
+                            <a class="export_map_list"><?php esc_html_e( 'Map List', 'disciple_tools' ) ?></a>
                             <?php
                         }
                         ?>
@@ -543,7 +558,7 @@ dt_please_log_in();
                         <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
                     </div>
 
-                    <div id="bulk_edit_picker" class="list_action_section">
+                    <form id="bulk_edit_picker" class="list_action_section">
                         <button class="close-button list-action-close-button" data-close="bulk_edit_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -575,59 +590,30 @@ dt_please_log_in();
                                 </div>
                             </div>
                             <?php endif; ?>
-                                <?php
-                                if ( $post_type == 'contacts' ) {?>
-                                    <?php if ( isset( $field_options['subassigned'] ) ) : ?>
+
+                            <?php if ( $post_type == 'contacts' ) {?>
+                                <?php if ( isset( $field_options['subassigned'] ) ) : ?>
                                     <div class="cell small-12 medium-4">
                                         <?php $field_options['subassigned']['custom_display'] = false ?>
-                                        <?php render_field_for_display( 'subassigned', $field_options, null, false, false, 'bulk_' ); ?>
+                                        <?php render_field_for_display( 'subassigned', $field_options, null, false, false, 'bulk_', $field_params ); ?>
                                     </div>
                                     <?php endif; ?>
                                     <?php if ( isset( $field_options['overall_status'] ) ) : ?>
                                     <div class="cell small-12 medium-4">
-                                        <div class="section-subheader">
-                                            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
-                                            <?php if ( isset( $tiles['status']['label'] ) && !empty( $tiles['status']['label'] ) ) {
-                                                echo esc_html( $tiles['status']['label'] );
-                                            } else {
-                                                echo esc_html__( 'Status', 'disciple_tools' );
-                                            }?>
-                                            <button class="help-button-field" data-section="overall_status-help-text">
-                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                            </button>
-                                        </div>
-                                        <select id="overall_status" class="select-field">
-                                            <option></option>
-                                            <?php foreach ( $field_options['overall_status']['default'] as $key => $option ){
-                                                $value = $option['label'] ?? '';?>
-                                                    <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                                            <?php } ?>
-                                        </select>
+                                        <?php
+                                        $field_key = 'overall_status';
+                                        if ( isset( $field_options[$field_key]['select_cannot_be_empty'] ) ) {
+                                            unset( $field_options[$field_key]['select_cannot_be_empty'] );
+                                        }
+                                        DT_Components::render_key_select( 'overall_status', $field_options, null, $field_params );
+                                        ?>
                                     </div>
                                     <?php endif; ?>
                                     <?php if ( isset( $field_options['reason_paused'] ) ) : ?>
                                     <div class="cell small-12 medium-4" style="display:none">
-
-                                        <div class="section-subheader">
-                                                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/status.svg' ?>">
-                                                <?php echo esc_html( $field_options['reason_paused']['name'] ?? '' ) ?>
-<!--                                                </button>-->
-                                            </div>
-
-                                        <select id="reason-paused-options">
-                                            <option></option>
-                                            <?php
-                                            foreach ( $field_options['reason_paused']['default'] as $reason_key => $option ) {
-                                                if ( $option['label'] ) {
-                                                    ?>
-                                                    <option value="<?php echo esc_attr( $reason_key ) ?>">
-                                                        <?php echo esc_html( $option['label'] ?? '' ) ?>
-                                                    </option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
+                                        <?php
+                                        render_field_for_display( 'reason_paused', $field_options, null, false, false, 'bulk_', $field_params );
+                                        ?>
                                     </div>
                                     <?php endif; ?>
 
@@ -717,21 +703,12 @@ dt_please_log_in();
                             <div id="bulk_more" class="grid-x grid-margin-x" style="display:none;">
 
                                 <?php
-                                //custom display for location field.
-                                if ( isset( $field_options['location_grid'] ) ){
-                                    $modified_options = $field_options;
-                                    $modified_options['location_grid']['hidden'] = false; ?>
-                                    <div class="cell small-12 medium-4">
-                                        <?php render_field_for_display( 'location_grid', $modified_options, null, false, false, 'bulk_' ); ?>
-                                    </div>
-                                    <?php
-                                }
                                 //move multi_select fields to the end
                                 function multiselect_at_end( $a, $b ){
                                     return ( $a['type'] ?? '' === 'multi_select' && ( $a['display'] ?? '' ) !== 'typeahead' ) ? 1 : 0;
                                 };
                                 uasort( $field_options, 'multiselect_at_end' );
-                                $already_done = [ 'subassigned', 'location_grid', 'assigned_to', 'overall_status' ];
+                                $already_done = [ 'subassigned', 'assigned_to', 'overall_status' ];
                                 $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
                                 foreach ( $field_options as $field_option => $value ) :
                                     if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && in_array( $value['type'], $allowed_types )
@@ -766,7 +743,7 @@ dt_please_log_in();
                                 </button>
                             <?php } ?>
                         </span>
-                    </div>
+                    </form>
 
                     <div id="bulk_send_msg_picker" class="list_action_section">
                         <button class="close-button list-action-close-button" data-close="bulk_send_msg_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
@@ -798,6 +775,10 @@ Thanks!';
 
                                     $comms_channels[ $channel_key ] = $channel_value;
                                 }
+                                $msg_reply_to = dt_get_option( 'dt_email_base_address_reply_to' );
+                                if ( empty( $msg_reply_to ) ) {
+                                    $msg_reply_to = dt_get_option( 'dt_email_base_address' );
+                                }
                                 ?>
                                 <label for="bulk_send_msg_subject"><?php echo esc_html__( 'Message subject', 'disciple_tools' ); ?></label>
                                 <input type="text" id="bulk_send_msg_subject" value="<?php echo esc_attr( $default_subject ); ?>" style="margin-bottom: 0"/>
@@ -808,7 +789,7 @@ Thanks!';
                                 <span id="bulk_send_msg_from_name_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid from name must be specified.', 'disciple_tools' ); ?></span><br>
 
                                 <label for="bulk_send_msg_reply_to"><?php echo esc_html__( 'Message reply to', 'disciple_tools' ); ?></label>
-                                <input type="text" id="bulk_send_msg_reply_to" value="<?php echo esc_attr( dt_get_option( 'dt_email_base_address' ) ); ?>" style="margin-bottom: 0"/>
+                                <input type="text" id="bulk_send_msg_reply_to" value="<?php echo esc_attr( $msg_reply_to ); ?>" style="margin-bottom: 0"/>
                                 <span id="bulk_send_msg_reply_to_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid reply to email address must be specified.', 'disciple_tools' ); ?></span><br>
 
                                 <span><?php echo sprintf( esc_html__( 'Emails will be sent from: %s', 'disciple_tools' ), esc_html( dt_default_email_address() ) ); ?></span><br>

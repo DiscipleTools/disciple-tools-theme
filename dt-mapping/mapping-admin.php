@@ -400,16 +400,18 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <?php echo esc_attr( ( $tab == 'geocoding' ) ? 'nav-tab-active' : '' ); ?>">
                         <?php esc_attr_e( 'Geocoding', 'disciple_tools' ) ?>
                     </a>
-                    <!-- Names Tab -->
-                    <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab == 'names' ) ? 'nav-tab-active' : '' ); ?>">
-                        <?php esc_attr_e( 'Locations List', 'disciple_tools' ) ?>
-                    </a>
-                    <!-- Add Migration -->
-                    <a href="<?php echo esc_attr( $link ) . 'migration' ?>" class="nav-tab
-                        <?php echo esc_attr( ( $tab == 'migration' ) ? 'nav-tab-active' : '' ); ?>">
-                        <?php esc_attr_e( 'Migration', 'disciple_tools' ) ?>
-                    </a>
+                    <?php if ( !apply_filters( 'dt_using_multisite_location_grid_table', false ) ) : ?>
+                      <!-- Names Tab -->
+                      <a href="<?php echo esc_attr( $link ) . 'names' ?>" class="nav-tab
+                          <?php echo esc_attr( ( $tab == 'names' ) ? 'nav-tab-active' : '' ); ?>">
+                          <?php esc_attr_e( 'Locations List', 'disciple_tools' ) ?>
+                      </a>
+                      <!-- Add Migration -->
+                      <a href="<?php echo esc_attr( $link ) . 'migration' ?>" class="nav-tab
+                          <?php echo esc_attr( ( $tab == 'migration' ) ? 'nav-tab-active' : '' ); ?>">
+                          <?php esc_attr_e( 'Migration', 'disciple_tools' ) ?>
+                      </a>
+                    <?php endif; ?>
 
                     <!-- Add Locations Explorer -->
                     <a href="<?php echo esc_attr( $link ) . 'credits' ?>" class="nav-tab
@@ -753,7 +755,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 else if ( $option['type'] === 'country' && empty( $_POST['children'] ) ) {
                     $option['children'] = Disciple_Tools_Mapping_Queries::get_countries( true );
                 }
-                else if ( $option['type'] === 'state' && ( !isset( $_POST['children'] ) || empty( $_POST['children'] ) && !empty( $_POST['parent'] ) ) ) {
+                else if ( $option['type'] === 'state' && ( !isset( $_POST['children'] ) || empty( $_POST['children'] ) ) && !empty( $_POST['parent'] ) ) {
                     $list = Disciple_Tools_Mapping_Queries::get_children_by_grid_id( $option['parent'] );
                     foreach ( $list as $item ) {
                         $option['children'][] = $item['grid_id'];
@@ -1178,6 +1180,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         }
 
         public function box_levels() {
+            global $wpdb;
+            $location_grid_count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->dt_location_grid" );
+            $disabled = $location_grid_count > 386000;
+
             ?>
             <!-- Box -->
             <table class="widefat striped">
@@ -1191,8 +1197,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                             (levels 3, 4, 5). Installing administrative levels will increase the database from 50k records to 380k records
                         </p>
                         <hr>
+                      <?php if ( $disabled ) : ?>
+                          <p><strong>All lower levels are already installed</strong></p>
+                      <?php else : ?>
                         <p><a class="button" id="upgrade_button" href="<?php echo esc_url( trailingslashit( admin_url() ) ) ?>admin.php?page=<?php echo esc_attr( $this->token ) ?>&tab=levels&loop=true" disabled="true">Upgrade Away!</a></p>
                         <p id="show_message">LEAVE THIS PAGE OPEN UNTIL YOU SEE "FINISHED"</p>
+                      <?php endif; ?>
                     </th>
                 </tr>
                 </thead>
@@ -1366,7 +1376,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $local_download_dir_path = $uploads_dir . 'location_grid_download';
 
             if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
-                $scan = array_diff( scandir( $uploads_dir . 'location_grid_download' ), array( '.','..' ) );
+                $scan = array_diff( scandir( $uploads_dir . 'location_grid_download' ), array( '.', '..' ) );
                 foreach ( $scan as $f ) {
                     if ( is_dir( $uploads_dir . 'location_grid_download/' . $f ) ) {
                         rmdir( $uploads_dir . 'location_grid_download/' . $f );
@@ -1451,7 +1461,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 echo 'Error in step 2';
                 die();
             }
-
         }
         public function process_step_2() {
             dt_write_log( __METHOD__ );
@@ -1510,7 +1519,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             global $wpdb;
             $wpdb->query("
                 INSERT INTO {$wpdb->prefix}dt_location_grid_upgrade
-                SELECT * FROM {$wpdb->prefix}dt_location_grid WHERE grid_id >= 1000000000
+                SELECT * FROM $wpdb->dt_location_grid WHERE grid_id >= 1000000000
             ");
 
             return true;
@@ -1519,10 +1528,10 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             dt_write_log( __METHOD__ );
             global $wpdb;
             $wpdb->query("
-                DROP TABLE IF EXISTS `{$wpdb->prefix}dt_location_grid`
+                DROP TABLE IF EXISTS `$wpdb->dt_location_grid`
             ");
             $wpdb->query("
-                RENAME TABLE `{$wpdb->prefix}dt_location_grid_upgrade` TO `{$wpdb->prefix}dt_location_grid`;
+                RENAME TABLE `{$wpdb->prefix}dt_location_grid_upgrade` TO `$wpdb->dt_location_grid`;
             ");
             $wpdb->query( "UPDATE $wpdb->dt_location_grid SET level = '0' WHERE level is NULL AND level_name = 'admin0'" );
             return true;
@@ -1532,7 +1541,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $dir = wp_upload_dir();
             $uploads_dir = trailingslashit( $dir['basedir'] );
             if ( file_exists( $uploads_dir . 'location_grid_download' ) ) {
-                $scan = array_diff( scandir( $uploads_dir . 'location_grid_download' ), array( '.','..' ) );
+                $scan = array_diff( scandir( $uploads_dir . 'location_grid_download' ), array( '.', '..' ) );
                 foreach ( $scan as $f ) {
                     if ( is_dir( $uploads_dir . 'location_grid_download/' . $f ) ) {
                         rmdir( $uploads_dir . 'location_grid_download/' . $f );
@@ -1901,9 +1910,14 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
         public function get_record_count_with_no_location_meta(){
             global $wpdb;
             return $wpdb->get_var( "
-                SELECT ( count(*) - (SELECT COUNT(DISTINCT( postmeta_id_location_grid )) FROM $wpdb->dt_location_grid_meta WHERE post_type != 'users') )
-                FROM $wpdb->postmeta pm
-                WHERE pm.meta_key = 'location_grid'
+                SELECT COUNT(*)
+                FROM $wpdb->postmeta
+                WHERE meta_key = 'location_grid'
+                  AND meta_id NOT IN (
+                    SELECT DISTINCT( postmeta_id_location_grid )
+                    FROM $wpdb->dt_location_grid_meta
+                  )
+                  AND meta_value >= 100000000
                 "
             );
         }
@@ -2284,7 +2298,7 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                         <p>Thank you for completing this important step in using D.T.</p>
                         <p>This tool is to help you migrate from the old locations system, to the new one that uses the <a target="_blank" href="https://github.com/DiscipleTools/location-grid-project">LOCATION GRID PROJECT</a> as it's base.</p>
                         <p>You may wish to select a <a href="<?php echo esc_html( admin_url( 'admin.php?page=dt_mapping_module&tab=focus' ) ) ?>">mapping focus</a> to narrow the options given.</p>
-                        <p>Click <a target="_blank" href="https://disciple.tools/user-docs/getting-started-info/admin/mapping/">here</a> for a detailed explanation on the locations system and instructions on how to use this tool</p>
+                        <p>Click <a target="_blank" href="https://disciple.tools/docs/major-concepts-and-tricky-terminology/#6-toc-title">here</a> for a detailed explanation on the locations system and instructions on how to use this tool</p>
                         <h1>Instructions</h1>
                         <p>1. Select the corresponding Grid Location for the old location. If you choose a wrong location, click "World" to undo it.</p>
                         <p>2. Then click click one of the two options:</p>
@@ -2573,7 +2587,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
                 </table>
             </form>
             <?php
-
         }
 
         public function box_credits() {
@@ -2781,8 +2794,6 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $query .= ';';
             $query = str_replace( ', ;', ';', $query ); //remove last comma
             $wpdb->query( $query );  //phpcs:ignore
-
-
         }
 
         public function remove_additional_levels( $admin0_code, $level ) {
@@ -2795,13 +2806,12 @@ if ( ! class_exists( 'DT_Mapping_Module_Admin' ) ) {
             $level ) );
             dt_write_log( $result );
              return $result;
-
         }
 
         public function migrations_reset_and_rerun() {
             global $wpdb;
             // drop tables
-            $wpdb->dt_location_grid = $wpdb->prefix . 'dt_location_grid';
+            $wpdb->dt_location_grid = apply_filters( 'dt_location_grid_table', $wpdb->prefix . 'dt_location_grid' );
             $wpdb->query( "DROP TABLE IF EXISTS $wpdb->dt_location_grid" );
 
             // delete

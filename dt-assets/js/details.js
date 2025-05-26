@@ -33,6 +33,7 @@ jQuery(document).ready(function ($) {
     );
   });
 
+  /* field type: number */
   const updateTextMetaOnChange = updateTextMeta();
   $('input.text-input').change(updateTextMetaOnChange);
   $('input.text-input').blur(updateTextMetaOnChange);
@@ -78,7 +79,7 @@ jQuery(document).ready(function ($) {
     };
   }
 
-  /* breadcrumb: new-field-type Update record */
+  /* field type: link */
   $('input.link-input').change(function () {
     const link_input = $(this);
     const fieldKey = $(link_input).data('field-key');
@@ -125,104 +126,7 @@ jQuery(document).ready(function ($) {
       .catch(window.handleAjaxError);
   });
 
-  $('.dt_textarea').change(function () {
-    const id = $(this).attr('id');
-    const val = $(this).val();
-    $(`#${id}-spinner`).addClass('active');
-    rest_api
-      .update_post(post_type, post_id, { [id]: val })
-      .then((newPost) => {
-        $(`#${id}-spinner`).removeClass('active');
-        $(document).trigger('textarea-updated', [newPost, id, val]);
-      })
-      .catch(window.handleAjaxError);
-  });
-
-  $('button.dt_multi_select').on('click', function () {
-    let fieldKey = $(this).data('field-key');
-    let optionKey = $(this).val();
-    let fieldValue = {};
-    let data = {};
-    let field = jQuery(`[data-field-key="${fieldKey}"][value="${optionKey}"]`);
-    field.addClass('submitting-select-button');
-    let action = 'add';
-    if (field.hasClass('selected-select-button')) {
-      fieldValue.values = [{ value: optionKey, delete: true }];
-      action = 'delete';
-    } else {
-      field.removeClass('empty-select-button');
-      field.addClass('selected-select-button');
-      fieldValue.values = [{ value: optionKey }];
-    }
-    data[optionKey] = fieldValue;
-    $(`#${fieldKey}-spinner`).addClass('active');
-    rest_api
-      .update_post(post_type, post_id, { [fieldKey]: fieldValue })
-      .then((resp) => {
-        $(`#${fieldKey}-spinner`).removeClass('active');
-        field.removeClass('submitting-select-button selected-select-button');
-        field.blur();
-        field.addClass(
-          action === 'delete'
-            ? 'empty-select-button'
-            : 'selected-select-button',
-        );
-        $(document).trigger('dt_multi_select-updated', [
-          resp,
-          fieldKey,
-          optionKey,
-          action,
-        ]);
-      })
-      .catch((err) => {
-        field.removeClass('submitting-select-button selected-select-button');
-        field.addClass(
-          action === 'add' ? 'empty-select-button' : 'selected-select-button',
-        );
-        window.handleAjaxError(err);
-      });
-  });
-
-  $('.dt_date_group .dt_date_picker')
-    .datepicker({
-      constrainInput: false,
-      dateFormat: 'yy-mm-dd',
-      onClose: function (date) {
-        date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
-
-        if (!$(this).val()) {
-          date = ' '; //null;
-        }
-
-        let id = $(this).attr('id');
-        $(`#${id}-spinner`).addClass('active');
-        rest_api
-          .update_post(post_type, post_id, {
-            [id]: window.moment.utc(date).unix(),
-          })
-          .then((resp) => {
-            $(`#${id}-spinner`).removeClass('active');
-            if (this.value) {
-              this.value = window.SHAREDFUNCTIONS.formatDate(
-                resp[id]['timestamp'],
-                false,
-                false,
-              );
-            }
-            $(document).trigger('dt_date_picker-updated', [resp, id, date]);
-          })
-          .catch(window.handleAjaxError);
-      },
-      changeMonth: true,
-      changeYear: true,
-      yearRange: '1900:2050',
-    })
-    .each(function () {
-      if (this.value && window.moment.unix(this.value).isValid()) {
-        this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
-      }
-    });
-
+  /* field type: datetime */
   $('.dt_date_time_group').each(function setTimePickers() {
     const timestamp = this.dataset.timestamp;
 
@@ -341,6 +245,7 @@ jQuery(document).ready(function ($) {
       .catch(window.handleAjaxError);
   });
 
+  /* field type: boolean */
   $('select.select-field').change((e) => {
     const id = $(e.currentTarget).attr('id');
     const val = $(e.currentTarget).val();
@@ -364,6 +269,7 @@ jQuery(document).ready(function ($) {
       .catch(window.handleAjaxError);
   });
 
+  /* field type: number */
   $('input.number-input').on('blur', function () {
     const id = $(this).attr('id');
     const val = $(this).val();
@@ -391,6 +297,8 @@ jQuery(document).ready(function ($) {
       .catch(window.handleAjaxError);
   });
 
+  /* field type: location */
+  /* field type: link */
   // Clicking the plus sign next to the field label
   $('button.add-button').on('click', (e) => {
     const field = $(e.currentTarget).data('list-class');
@@ -403,6 +311,7 @@ jQuery(document).ready(function ($) {
           </div></div>`);
   });
 
+  /* field type: link */
   $('.add-link-dropdown[data-only-one-option]').on(
     'click',
     window.SHAREDFUNCTIONS.addLink,
@@ -414,32 +323,6 @@ jQuery(document).ready(function ($) {
     setTimeout(() => {
       event.target.parentElement.removeAttribute('style');
     }, 100);
-  });
-
-  $(document).on('click', '.channel-delete-button', function () {
-    let field = $(this).data('field');
-    let key = $(this).data('key');
-    let update = { delete: true };
-    if (key === 'new') {
-      $(this).parent().remove();
-    } else if (key) {
-      $(`#${field}-spinner`).addClass('active');
-      update['key'] = key;
-      window.API.update_post(post_type, post_id, { [field]: [update] })
-        .then((updatedContact) => {
-          $(this).parent().parent().remove();
-          let list = $(`#edit-${field}`);
-          if (list.children().length === 0) {
-            list.append(`<div class="input-group">
-            <input type="text" data-field="${window.SHAREDFUNCTIONS.escapeHTML(field)}" class="dt-communication-channel input-group-field" dir="auto" />
-            </div>`);
-          }
-          $(`#${field}-spinner`).removeClass('active');
-          post = updatedContact;
-          resetDetailsFields();
-        })
-        .catch(window.handleAjaxError);
-    }
   });
 
   $(document).on('click', '.link-delete-button', function () {
@@ -472,36 +355,6 @@ jQuery(document).ready(function ($) {
       .catch(window.handleAjaxError);
   });
 
-  $(document).on('blur', 'input.dt-communication-channel', function () {
-    let field_key = $(this).data('field');
-    let value = $(this).val();
-    let id = $(this).attr('id');
-    let update = { value };
-    if (id) {
-      update['key'] = id;
-    }
-    if (!value && !id) {
-      return;
-    }
-    $(`#${field_key}-spinner`).addClass('active');
-    window.API.update_post(post_type, post_id, { [field_key]: [update] })
-      .then((updatedContact) => {
-        $(`#${field_key}-spinner`).removeClass('active');
-        let key = window.lodash.last(updatedContact[field_key]).key;
-        $(this).attr('id', key);
-        if ($(this).next('div.input-group-button').length === 1) {
-          $(this).parent().find('.channel-delete-button').data('key', key);
-        } else {
-          $(this).parent().append(`<div class="input-group-button">
-            <button class="button alert delete-button-style input-height channel-delete-button delete-button" data-key="${window.SHAREDFUNCTIONS.escapeHTML(key)}" data-field="${window.SHAREDFUNCTIONS.escapeHTML(field_key)}">&times;</button>
-        </div>`);
-        }
-        post = updatedContact;
-        resetDetailsFields();
-      })
-      .catch(window.handleAjaxError);
-  });
-
   $(document).on('select-field-updated', function (e, newContact, id, val) {});
 
   $(document).on('text-input-updated', function (e, newContact, id, val) {
@@ -518,17 +371,25 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  $(document).on(
-    'dt_date_picker-updated',
-    function (e, newContact, id, date) {},
-  );
+  $(document).on('dt:post:update', function (e) {
+    // newer event from DTWebComponents.ApiService
+    if (e.detail) {
+      const { response, field, value, component } = e.detail;
+      post = response;
+      resetDetailsFields();
+      record_updated(window.lodash.get(response, 'requires_path', false));
 
-  $(document).on(
-    'dt_multi_select-updated',
-    function (e, newContact, fieldKey, optionKey, action) {},
-  );
-
+      if (component === 'dt-multi-text') {
+        // re-bind value after save so we have the generated key in order to delete them
+        const els = document.getElementsByName(field);
+        for (const el of els) {
+          el.value = response[field];
+        }
+      }
+    }
+  });
   $(document).on('dt_record_updated', function (e, response, request) {
+    // todo: remove this when all web components are integrated
     post = response;
     resetDetailsFields();
     record_updated(window.lodash.get(response, 'requires_update', false));
@@ -562,7 +423,7 @@ jQuery(document).ready(function ($) {
    */
 
   /**
-   * user select typeahead
+   * field type: user-select typeahead
    */
   $('.dt_user_select').each((key, el) => {
     let field_key = $(el).attr('id');
@@ -641,339 +502,28 @@ jQuery(document).ready(function ($) {
     });
   });
 
-  $('.dt_typeahead').each((key, el) => {
-    let div_id = $(el).attr('id');
-    let field_id = $(`#${div_id} input`).data('field');
-    let listing_post_type = window.lodash.get(
-      window.detailsSettings.post_settings.fields[field_id],
-      'post_type',
-      'contacts',
-    );
-    $.typeahead({
-      input: `.js-typeahead-${field_id}`,
-      minLength: 0,
-      accent: true,
-      maxItem: 30,
-      searchOnFocus: $(el).hasClass('disabled') ? false : true,
-      template: window.TYPEAHEADS.contactListRowTemplate,
-      matcher: function (item) {
-        return parseInt(item.ID) !== parseInt(post_id);
-      },
-      filter: function (item) {
-        return parseInt(item.ID) !== parseInt(post_id);
-      },
-      source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {
-        field_key: field_id,
-      }),
-      display: ['name', 'label'],
-      templateValue: function () {
-        if (this.items[this.items.length - 1].label) {
-          return '{{label}}';
-        } else {
-          return '{{name}}';
-        }
-      },
-      dynamic: true,
-      multiselect: {
-        matchOn: ['ID'],
-        data: function () {
-          return (post[field_id] || []).map((g) => {
-            return {
-              ID: g.ID,
-              name: g.post_title,
-              label: g.label,
-              status: g['status'] ?? null,
-            };
-          });
-        },
-        callback: {
-          onCancel: function (node, item) {
-            $(`#${field_id}-spinner`).addClass('active');
-            window.API.update_post(post_type, post_id, {
-              [field_id]: { values: [{ value: item.ID, delete: true }] },
-            })
-              .then(() => {
-                $(`#${field_id}-spinner`).removeClass('active');
-              })
-              .catch((err) => {
-                console.error(err);
-              });
-          },
-        },
-        href: function (item) {
-          return (
-            window.wpApiShare.site_url + `/${listing_post_type}/${item.ID}`
-          );
-        },
-      },
-      callback: {
-        onReady: function (node) {
-          //if the input is disabled don't allow clicks on the cancel button.
-          if ($(node).attr('disabled') == 'disabled') {
-            let cancelButton = $(`#${el.id} .typeahead__cancel-button`);
-            cancelButton.css('pointerEvents', 'none');
-          }
-
-          // If available, display item status colours within labels
-          set_item_label_status(this);
-        },
-        onClick: function (node, a, item, event) {
-          $(`#${field_id}-spinner`).addClass('active');
-          window.API.update_post(post_type, post_id, {
-            [field_id]: { values: [{ value: item.ID }] },
-          })
-            .then((new_post) => {
-              $(`#${field_id}-spinner`).removeClass('active');
-              $(document).trigger('dt-post-connection-added', [
-                new_post,
-                field_id,
-              ]);
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-
-          // If present, adjust status label, so as to remain uniform
-          if (item['status']) {
-            item['status']['label'] = item['status']['label']
-              ? '[' +
-                window.SHAREDFUNCTIONS.escapeHTML(
-                  item['status']['label'],
-                ).toLowerCase() +
-                ']'
-              : '';
-          }
-
-          this.addMultiselectItemLayout(item);
-          event.preventDefault();
-          this.hideLayout();
-          this.resetInput();
-          window.masonGrid.masonry('layout');
-        },
-        onResult: function (node, query, result, resultCount) {
-          let text = window.TYPEAHEADS.typeaheadHelpText(
-            resultCount,
-            query,
-            result,
-          );
-          $(`#${field_id}-result-container`).html(text);
-        },
-        onHideLayout: function (event, query) {
-          set_item_label_status(this);
-          if (!query) {
-            $(`#${field_id}-result-container`).empty();
-          }
-          window.masonGrid.masonry('layout');
-        },
-        onShowLayout() {
-          window.masonGrid.masonry('layout');
-        },
-      },
-    });
-  });
-
-  function set_item_label_status(field_typeahead) {
-    if (field_typeahead) {
-      $.each(field_typeahead.items, function (idx, item) {
-        if (item['ID'] && item['status'] && item['status']['color']) {
-          $(field_typeahead.label.container[0])
-            .find('a[href$=\\/' + item['ID'])
-            .each(function () {
-              // Obtain label handle
-              let label = $(this).parent();
-
-              // Once we have a handle, adjust colour styling accordingly
-              label.css('border-left', '3px solid ' + item['status']['color']);
-
-              // Assign corresponding tooltip, using title as trigger
-              if (item['status']['label']) {
-                label.attr('title', '');
-                label.tooltip({
-                  content: item['status']['label'],
-                  show: { effect: 'fade', duration: 100 },
-                });
-              }
-            });
-        }
-      });
-
-      field_typeahead.adjustInputSize();
-    }
-  }
-
-  //multi_select typeaheads
-  for (let input of $('.multi_select .typeahead__query input')) {
-    let field = $(input).data('field');
-    let typeahead_name = `.js-typeahead-${field}`;
-
-    if (window.Typeahead[typeahead_name]) {
-      return;
-    }
-
-    let source_data = { data: [] };
-    let field_options = window.lodash.get(
-      field_settings,
-      `${field}.default`,
-      {},
-    );
-    if (Object.keys(field_options).length > 0) {
-      window.lodash.forOwn(field_options, (val, key) => {
-        if (!val.deleted) {
-          source_data.data.push({
-            key: key,
-            name: key,
-            value: val.label || key,
-          });
-        }
-      });
-    } else {
-      source_data = {
-        [field]: {
-          display: ['value'],
-          ajax: {
-            url:
-              window.wpApiShare.root +
-              `dt-posts/v2/${post_type}/multi-select-values`,
-            data: {
-              s: '{{query}}',
-              field,
-            },
-            beforeSend: function (xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-            },
-            callback: {
-              done: function (data) {
-                return (data || []).map((tag) => {
-                  let label = window.lodash.get(
-                    field_options,
-                    tag + '.label',
-                    tag,
-                  );
-                  return { value: label, key: tag };
-                });
-              },
-            },
-          },
-        },
-      };
-    }
-    $.typeahead({
-      input: `.js-typeahead-${field}`,
-      minLength: 0,
-      maxItem: 20,
-      searchOnFocus: true,
-      template: function (query, item) {
-        return `<span>${window.SHAREDFUNCTIONS.escapeHTML(item.value)}</span>`;
-      },
-      source: source_data,
-      display: 'value',
-      templateValue: '{{value}}',
-      dynamic: true,
-      multiselect: {
-        matchOn: ['key'],
-        data: function () {
-          return (post[field] || []).map((g) => {
-            return {
-              key: g,
-              value: window.lodash.get(
-                field_settings,
-                `${field}.default.${g}.label`,
-                g,
-              ),
-            };
-          });
-        },
-        callback: {
-          onCancel: function (node, item, event) {
-            $(`#${field}-spinner`).addClass('active');
-            window.API.update_post(post_type, post_id, {
-              [field]: { values: [{ value: item.key, delete: true }] },
-            })
-              .then((new_post) => {
-                $(`#${field}-spinner`).removeClass('active');
-                this.hideLayout();
-                this.resetInput();
-                $(document).trigger('dt_multi_select-updated', [
-                  new_post,
-                  field,
-                ]);
-              })
-              .catch((err) => {
-                console.error(err);
-              });
-          },
-        },
-        href: function (item) {
-          const postType = window.wpApiShare.post_type;
-          const query = window.SHAREDFUNCTIONS.createCustomFilter(field, [
-            item.value,
-          ]);
-          const field_label = field_settings[field].name || field;
-          const labels = [
-            {
-              id: `${field}_${item.value}`,
-              name: `${field_label}: ${item.value}`,
-            },
-          ];
-          return window.SHAREDFUNCTIONS.create_url_for_list_query(
-            postType,
-            query,
-            labels,
-          );
-        },
-      },
-      callback: {
-        onClick: function (node, a, item, event) {
-          $(`#${field}-spinner`).addClass('active');
-          window.API.update_post(post_type, post_id, {
-            [field]: { values: [{ value: item.key }] },
-          })
-            .then((new_post) => {
-              $(`#${field}-spinner`).removeClass('active');
-              $(document).trigger('dt_multi_select-updated', [new_post, field]);
-              this.addMultiselectItemLayout(item);
-              event.preventDefault();
-              this.hideLayout();
-              this.resetInput();
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-        },
-        onResult: function (node, query, result, resultCount) {
-          let text = window.TYPEAHEADS.typeaheadHelpText(
-            resultCount,
-            query,
-            result,
-          );
-          if (Object.keys(field_options).length > 0) {
-            //adding the result text moves the input. The timeout helps keep the dropdown from closing as the user clicks and cursor moves away from the input.
-            setTimeout(() => {
-              $(`#${field}-result-container`).html(text);
-            }, 200);
-          } else {
-            $(`#${field}-result-container`).html(text);
-          }
-        },
-        onHideLayout: function () {
-          $(`#${field}-result-container`).html('');
-        },
-      },
-    });
-  }
-
   let connection_type = null;
-  //new record off a typeahead
-  $('.create-new-record').on('click', function () {
-    connection_type = $(this).data('connection-key');
-    $('#create-record-modal').foundation('open');
-    $('.js-create-record .error-text').empty();
-    $('.js-create-record-button').attr('disabled', false).removeClass('alert');
-    $('.reveal-after-record-create').hide();
-    $('.hide-after-record-create').show();
-    $('.js-create-record input[name=title]').val('');
-    //create new record
+  // New record off of dt-connection
+  $('dt-connection').on('change', (e) => {
+    if (e?.detail?.newValue && e.detail.newValue.some((x) => x.isNew)) {
+      e.stopImmediatePropagation(); // stop ComponentService listener from firing
+      // alert('open ze modal!!');
+
+      connection_type = e.currentTarget.name;
+      const newPost = e.detail.newValue.find((x) => x.isNew);
+
+      $('#create-record-modal').foundation('open');
+      $('.js-create-record .error-text').empty();
+      $('.js-create-record-button')
+        .attr('disabled', false)
+        .removeClass('alert');
+      $('.reveal-after-record-create').hide();
+      $('.hide-after-record-create').show();
+      $('.js-create-record input[name=title]').val(newPost.label);
+    }
   });
+
+  /* New Record Modal */
   $('.js-create-record').on('submit', function (e) {
     e.preventDefault();
     $('.js-create-record-button').attr('disabled', true).addClass('loading');
@@ -993,6 +543,7 @@ jQuery(document).ready(function ($) {
       },
     })
       .then((newRecord) => {
+        // update the modal UI to show new record
         $('.js-create-record-button')
           .attr('disabled', false)
           .removeClass('loading');
@@ -1005,15 +556,20 @@ jQuery(document).ready(function ($) {
           'href',
           window.SHAREDFUNCTIONS.escapeHTML(newRecord.permalink),
         );
-        $(document).trigger('dt-post-connection-created', [post, update_field]);
-        if (window.Typeahead[`.js-typeahead-${connection_type}`]) {
-          window.Typeahead[
-            `.js-typeahead-${connection_type}`
-          ].addMultiselectItemLayout({
-            ID: newRecord.ID.toString(),
-            name: title,
-          });
-          window.masonGrid.masonry('layout');
+
+        // update the field value
+        const field = document.querySelector(`[name="${connection_type}"]`);
+        if (field) {
+          if (field.value && field.value.some((x) => x.isNew)) {
+            // for new values already selected in list, remove them first
+            field.value = [...field.value.filter((x) => !x.isNew)];
+          }
+          field._select(
+            window.DtWebComponents.ComponentService.convertApiValue(
+              field.tagName.toLowerCase(),
+              [newRecord],
+            )[0],
+          );
         }
       })
       .catch(function (error) {
@@ -1029,6 +585,7 @@ jQuery(document).ready(function ($) {
       });
   });
 
+  /* field type: location */
   $('.dt_location_grid').each((key, el) => {
     let field_id = $(el).data('id') || 'location_grid';
     $.typeahead({
@@ -1350,166 +907,6 @@ jQuery(document).ready(function ($) {
         favorite_check(new_post);
       });
   });
-
-  /**
-   * Tags
-   */
-  $('.tags .typeahead__query input').each((key, input) => {
-    let field = $(input).data('field') || 'tags';
-    let typeahead_name = `.js-typeahead-${field}`;
-    $.typeahead({
-      input: typeahead_name,
-      minLength: 0,
-      maxItem: 20,
-      searchOnFocus: true,
-      source: {
-        tags: {
-          display: ['name'],
-          ajax: {
-            url:
-              window.wpApiShare.root +
-              `dt-posts/v2/${post_type}/multi-select-values`,
-            data: {
-              s: '{{query}}',
-              field: field,
-            },
-            beforeSend: function (xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-            },
-            callback: {
-              done: function (data) {
-                return (data || []).map((tag) => {
-                  return { name: tag };
-                });
-              },
-            },
-          },
-        },
-      },
-      display: 'name',
-      templateValue: '{{name}}',
-      emptyTemplate: function (query) {
-        const { addNewTagText, tagExistsText } = this.node[0].dataset;
-        if (this.comparedItems.includes(query)) {
-          return tagExistsText.replace('%s', query);
-        }
-        const liItem = $('<li>');
-        const button = $('<button>', {
-          class: 'button primary',
-          text: addNewTagText.replace('%s', query),
-        });
-        const tag = this.query;
-        const addTag = addTagOnClick.bind(this);
-        button.on('click', function () {
-          addTag(field, tag);
-        });
-        liItem.append(button);
-        return liItem;
-      },
-      dynamic: true,
-      multiselect: {
-        matchOn: ['name'],
-        data: function () {
-          return (post[field] || []).map((t) => {
-            return { name: t };
-          });
-        },
-        callback: {
-          onCancel: function (node, item, event) {
-            $(`#${field}-spinner`).addClass('active');
-            window.API.update_post(post_type, post_id, {
-              [field]: { values: [{ value: item.name, delete: true }] },
-            })
-              .then((new_post) => {
-                $(`#${field}-spinner`).removeClass('active');
-                this.hideLayout();
-                this.resetInput();
-                $(document).trigger('dt_multi_select-updated', [
-                  new_post,
-                  field,
-                ]);
-              })
-              .catch((err) => {
-                console.error(err);
-              });
-          },
-        },
-        href: function (item) {
-          const postType = window.wpApiShare.post_type;
-          const query = window.SHAREDFUNCTIONS.createCustomFilter(field, [
-            item.name,
-          ]);
-          const field_label = field_settings[field].name || field;
-          const labels = [
-            {
-              id: `${field}_${item.name}`,
-              name: `${field_label}: ${item.name}`,
-            },
-          ];
-          return window.SHAREDFUNCTIONS.create_url_for_list_query(
-            postType,
-            query,
-            labels,
-          );
-        },
-      },
-      callback: {
-        onClick: function (node, a, item, event) {
-          event.preventDefault();
-          const addTag = addTagOnClick.bind(this);
-          addTag(field, item.name);
-        },
-        onResult: function (node, query, result, resultCount) {
-          let text = window.TYPEAHEADS.typeaheadHelpText(
-            resultCount,
-            query,
-            result,
-          );
-          $(`#${field}-result-container`).html(text);
-          window.masonGrid.masonry('layout');
-        },
-        onHideLayout: function () {
-          $(`#${field}-result-container`).html('');
-          window.masonGrid.masonry('layout');
-        },
-        onShowLayout() {
-          window.masonGrid.masonry('layout');
-        },
-      },
-    });
-  });
-
-  $('.create-new-tag').on('click', function () {
-    let field = $(this).data('field');
-    $('#create-tag-modal').data('field', field);
-  });
-  $('#create-tag-return').on('click', function () {
-    let field = $('#create-tag-modal').data('field');
-    let tag = $('#new-tag').val();
-    window.Typeahead['.js-typeahead-' + field].addMultiselectItemLayout({
-      name: tag,
-    });
-    window.API.update_post(post_type, post_id, {
-      [field]: { values: [{ value: tag }] },
-    });
-  });
-
-  function addTagOnClick(field, tag) {
-    $(`#${field}-spinner`).addClass('active');
-    window.API.update_post(post_type, post_id, {
-      [field]: { values: [{ value: tag }] },
-    })
-      .then((new_post) => {
-        $(`#${field}-spinner`).removeClass('active');
-        this.addMultiselectItemLayout({ name: tag });
-        this.hideLayout();
-        this.resetInput();
-        window.masonGrid.masonry('layout');
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
 
   let upgradeUrl = (url) => {
     if (!url.includes('http')) {
@@ -1894,6 +1291,17 @@ jQuery(document).ready(function ($) {
   /**
    * Custom Tile Display - [END]
    */
+
+  if (window.DtWebComponents && window.DtWebComponents.ComponentService) {
+    const service = new window.DtWebComponents.ComponentService(
+      window.detailsSettings.post_type,
+      window.detailsSettings.post_id,
+      window.wpApiShare.nonce,
+      window.wpApiShare.root,
+    );
+    service.initialize();
+    window.componentService = service;
+  }
 });
 
 // change update needed notification and switch if needed.
@@ -1901,3 +1309,131 @@ function record_updated(updateNeeded) {
   jQuery('.update-needed-notification').toggle(updateNeeded);
   jQuery('.update-needed').prop('checked', updateNeeded);
 }
+
+/**
+ * Legacy fields (deprecated)
+ * These have been replaced with web components, but there may still be plugins
+ * that make use of them. Leaving them here until we can be sure they can be
+ * completely removed.
+ */
+jQuery(document).ready(function ($) {
+  let post_id = window.detailsSettings.post_id;
+  let post_type = window.detailsSettings.post_type;
+  let field_settings = window.detailsSettings.post_settings.fields;
+  window.post_type_fields = field_settings;
+  let rest_api = window.API;
+
+  $('.dt_textarea').change(function () {
+    console.warn(
+      'DEPRECATED: ' +
+        '`textarea.dt_textarea` has been replaced by web component `<dt-textarea>`. ' +
+        'Consider migrate to web components or copying this javascript to your plugin if unable to adopt web components.',
+    );
+    const id = $(this).attr('id');
+    const val = $(this).val();
+    $(`#${id}-spinner`).addClass('active');
+    rest_api
+      .update_post(post_type, post_id, { [id]: val })
+      .then((newPost) => {
+        $(`#${id}-spinner`).removeClass('active');
+        $(document).trigger('textarea-updated', [newPost, id, val]);
+      })
+      .catch(window.handleAjaxError);
+  });
+
+  $('button.dt_multi_select').on('click', function () {
+    console.warn(
+      'DEPRECATED: ' +
+        '`button.dt_multi_select` has been replaced by web component `<dt-multi-select-button-group>`. ' +
+        'Consider migrate to web components or copying this javascript to your plugin if unable to adopt web components.',
+    );
+    let fieldKey = $(this).data('field-key');
+    let optionKey = $(this).val();
+    let fieldValue = {};
+    let data = {};
+    let field = jQuery(`[data-field-key="${fieldKey}"][value="${optionKey}"]`);
+    field.addClass('submitting-select-button');
+    let action = 'add';
+    if (field.hasClass('selected-select-button')) {
+      fieldValue.values = [{ value: optionKey, delete: true }];
+      action = 'delete';
+    } else {
+      field.removeClass('empty-select-button');
+      field.addClass('selected-select-button');
+      fieldValue.values = [{ value: optionKey }];
+    }
+    data[optionKey] = fieldValue;
+    $(`#${fieldKey}-spinner`).addClass('active');
+    rest_api
+      .update_post(post_type, post_id, { [fieldKey]: fieldValue })
+      .then((resp) => {
+        $(`#${fieldKey}-spinner`).removeClass('active');
+        field.removeClass('submitting-select-button selected-select-button');
+        field.blur();
+        field.addClass(
+          action === 'delete'
+            ? 'empty-select-button'
+            : 'selected-select-button',
+        );
+        $(document).trigger('dt_multi_select-updated', [
+          resp,
+          fieldKey,
+          optionKey,
+          action,
+        ]);
+      })
+      .catch((err) => {
+        field.removeClass('submitting-select-button selected-select-button');
+        field.addClass(
+          action === 'add' ? 'empty-select-button' : 'selected-select-button',
+        );
+        window.handleAjaxError(err);
+      });
+  });
+
+  $('.dt_date_group .dt_date_picker')
+    .datepicker({
+      constrainInput: false,
+      dateFormat: 'yy-mm-dd',
+      onClose: function (date) {
+        date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
+
+        if (!$(this).val()) {
+          date = ' '; //null;
+        }
+
+        let id = $(this).attr('id');
+        $(`#${id}-spinner`).addClass('active');
+        rest_api
+          .update_post(post_type, post_id, {
+            [id]: window.moment.utc(date).unix(),
+          })
+          .then((resp) => {
+            $(`#${id}-spinner`).removeClass('active');
+            if (this.value) {
+              this.value = window.SHAREDFUNCTIONS.formatDate(
+                resp[id]['timestamp'],
+                false,
+                false,
+              );
+            }
+            $(document).trigger('dt_date_picker-updated', [resp, id, date]);
+          })
+          .catch(window.handleAjaxError);
+      },
+      changeMonth: true,
+      changeYear: true,
+      yearRange: '1900:2050',
+    })
+    .each(function () {
+      console.warn(
+        'DEPRECATED: ' +
+          '`.dt_date_group .dt_date_picker` has been replaced by web component `<dt-date>`. ' +
+          'Consider migrate to web components or copying this javascript to your plugin if unable to adopt web components.',
+      );
+
+      if (this.value && window.moment.unix(this.value).isValid()) {
+        this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+      }
+    });
+});

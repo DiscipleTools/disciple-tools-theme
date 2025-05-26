@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
 
     //slug and title of the top menu folder
-    public $base_slug = 'combined'; // lowercase
+    public $base_slug = 'records'; // lowercase
     public $base_title;
     public $title;
     public $slug = 'daily-activity'; // lowercase
@@ -333,7 +333,6 @@ class DT_Metrics_Daily_Activity extends DT_Metrics_Chart_Base {
         AND log.hist_time BETWEEN %d AND %d
         GROUP BY log.meta_value
         ", $field_name, $field_name, $start, $end ) );
-
     }
 
     private function new_groups_count( $start, $end ): int {

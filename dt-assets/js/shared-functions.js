@@ -171,6 +171,12 @@ window.API = {
 
   search_users: (query) => makeRequest('GET', `users/get_users?s=${query}`),
 
+  search_location_grid_by_name: (query, filter = 'all') =>
+    makeRequest(
+      'GET',
+      `mapping_module/search_location_grid_by_name?s=${query}&filter=${filter}`,
+    ),
+
   get_filters: () => makeRequest('GET', 'users/get_filters'),
 
   save_filters: (post_type, filter) =>
@@ -660,6 +666,14 @@ window.SHAREDFUNCTIONS = {
     }
     if (localStorage) {
       window.localStorage.setItem(key, JSON.stringify(json));
+    }
+  },
+  remove_json_from_local_storage(key, path) {
+    if (path) {
+      key = path + '_' + key;
+    }
+    if (localStorage) {
+      window.localStorage.removeItem(key);
     }
   },
   createCustomFilter(field, value) {

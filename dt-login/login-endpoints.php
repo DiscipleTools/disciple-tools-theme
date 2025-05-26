@@ -71,6 +71,16 @@ class DT_Login_Endpoints {
             $payload['name'] = $body->user->displayName;
         }
 
+        if ( empty( $payload['email'] ) && isset( $body->user->email ) ) {
+            $payload['email'] = $body->user->email;
+        }
+
+        //phpcs:disable
+        if ( empty( $payload['email'] ) && isset( $body->additionalUserInfo->profile->email ) ){
+            $payload['email'] = $body->additionalUserInfo->profile->email;
+        }
+        //phpcs:enable
+
         $user_manager = new DT_Login_User_Manager( $payload );
 
         try {
@@ -85,6 +95,12 @@ class DT_Login_Endpoints {
         if ( !$response ) {
             return new WP_Error( 'login_error', 'Something went wrong with the login', [ 'status' => 401 ] );
         }
+
+        //phpcs:disable
+        if ( isset( $body->extraData ) ) {
+            do_action( 'dt_sso_login_extra_fields', (array) $body->extraData, (array) $body );
+        }
+        //phpcs:enable
 
         return new WP_REST_Response( [
             'status' => 200,
@@ -170,6 +186,5 @@ class DT_Login_Endpoints {
 
         return $payload;
     }
-
 }
 DT_Login_Endpoints::instance();

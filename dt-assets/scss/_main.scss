@@ -1,3 +1,4 @@
+@use "sass:map";
 /************************************************
 
 Stylesheet: Main Stylesheet
@@ -43,6 +44,13 @@ color:$light-gray;
     width: 100%;
 }
 
+html {
+    --primary-color: #{map.get($foundation-palette, "primary")};
+    --secondary-color: #{map.get($foundation-palette, "secondary")};
+    --success-color: #{map.get($foundation-palette, "success")};
+    --warning-color: #{map.get($foundation-palette, "warning")};
+    --alert-color: #{map.get($foundation-palette, "alert")};
+}
 body {
     background-color: #e2e2e2;
 }
@@ -529,32 +537,7 @@ html[dir='rtl'] nav.second-bar .advanced_search {
     left: 1.15rem;
 }
 
-.is-stuck {
-    #second-bar-small {
-        border-top: .5rem solid $primary-color;
-        .mobile-nav-actions {
-            display: none;
-        }
-        #record-tagline {
-            opacity:0;
-            height: 0;
-        }
-    }
-    .hide-on-scroll {
-        display: none;
-    }
-}
 
-#second-bar-small{
-    border-top: none;
-    .grid-x {
-        margin-bottom: .3rem;
-    }
-    #record-tagline {
-        transition: all .3s;
-        opacity:1;
-    }
-}
 .off-canvas-list {
     ul {
         margin-left: 0;
@@ -884,6 +867,13 @@ button.loader {
     display: inline-block;
 }
 /**
+  Select field
+ */
+select.select-field {
+    margin: 0
+}
+
+/**
   Typeaheads
  */
 .scrollable-typeahead .typeahead__list {
@@ -901,7 +891,7 @@ button.loader {
 }
 
 .typeahead__container {
-    margin-bottom: 10px;
+    //margin-bottom: 10px;
 
     .typeahead__image_button {
         padding-top: 3px;
@@ -1490,6 +1480,29 @@ img.dt-red-icon, i.dt-red-icon {
 img.dt-black-icon, i.dt-black-icon {
     filter: invert(0%) sepia(0%) saturate(17%) hue-rotate(193deg) brightness(99%) contrast(101%);
 }
+
+/**
+ * Metrics - Gen-Mapper
+ */
+
+.dt-metrics-plus-count {
+    font-size: 12px;
+    font-weight: bold;
+    vertical-align: text-bottom;
+}
+
+.dt-metrics-node-icon-small {
+    font-size: 15px;
+    min-width: 15px;
+    min-height: 15px;
+    max-width: 15px;
+    max-height: 15px;
+}
+
+/**
+ * Metrics - Gen-Mapper
+ */
+
 
 .error-text {
     color: red;

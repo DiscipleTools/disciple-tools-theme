@@ -12,15 +12,17 @@ class DT_Login_User_Manager {
     private $email;
     private $name;
     private $identities;
+    private $sign_in_provider;
 
     const DEFAULT_AUTH_SERVICE_ENDPOINT = 'wp-json/jwt-auth/v1/token';
 
     public function __construct( array $firebase_auth ) {
         $this->firebase_auth = $firebase_auth;
         $this->uid = $this->firebase_auth['user_id'];
-        $this->email = $this->firebase_auth['email'];
+        $this->email = $this->firebase_auth['email'] ?? null;
         $this->name = $this->firebase_auth['name'];
         $this->identities = (array) $this->firebase_auth['firebase']->identities;
+        $this->sign_in_provider = $this->firebase_auth['firebase']->sign_in_provider;
         add_filter( 'dt_allow_rest_access', [ $this, 'authorize_url' ], 10, 1 );
     }
 
@@ -62,10 +64,16 @@ class DT_Login_User_Manager {
         return $response;
     }
 
-    private function user_exists() {
+    private function get_user(){
         $user = get_user_by( 'email', $this->email );
+        if ( empty( $user ) ) {
+            $user = get_user_by( 'login', $this->uid );
+        }
+        return $user;
+    }
 
-        return $user ? true : false;
+    private function user_exists() {
+        return !empty( $this->get_user() );
     }
 
     private function create_user() {
@@ -89,12 +97,12 @@ class DT_Login_User_Manager {
     }
 
     private function update_user() {
-        $user = get_user_by( 'email', $this->email );
+        $user = $this->get_user();
 
-        $user_role = $user->roles[0];
-
-        if ( !$user_role ) {
+        if ( !isset( $user->roles ) || !is_array( $user->roles ) || empty( $user_roles ) ) {
             $user_role = $this->get_default_role();
+        } else {
+            $user_role = $user->roles[0];
         }
 
         $this->add_user_to_blog_if_needed( $user->ID, $user_role ); // add user to site.
@@ -105,6 +113,17 @@ class DT_Login_User_Manager {
     private function update_user_meta( int $user_id ) {
         update_user_meta( $user_id, 'firebase_uid', $this->uid );
         update_user_meta( $user_id, 'firebase_identities', $this->identities );
+
+        $sign_in_providers = maybe_unserialize( get_user_meta( $user_id, 'sign_in_providers', true ) );
+
+        if ( empty( $sign_in_providers ) ) {
+            $sign_in_providers = [];
+        }
+        if ( !in_array( $this->sign_in_provider, $sign_in_providers ) ) {
+            $sign_in_providers[] = $this->sign_in_provider;
+        }
+
+        update_user_meta( $user_id, 'sign_in_providers', $sign_in_providers );
     }
 
     public function add_user_to_blog_if_needed( int $user_id, string $user_role ) {
@@ -129,14 +148,27 @@ class DT_Login_User_Manager {
             wp_logout();
         }
 
+        $login_length = DT_Login_Fields::get( 'login_length' );
+        if ( empty( $login_length ) || !is_numeric( $login_length ) ) {
+            $login_length = 14;
+        }
+
+        add_filter( 'auth_cookie_expiration', function () use ( $login_length ) {
+            return $login_length * DAY_IN_SECONDS;
+        } );
+
         add_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10, 3 );    // hook in earlier than other callbacks to short-circuit them
 
-        $user = wp_signon( array( 'user_login' => $this->email ) );
+        $user = wp_signon( [
+            'user_login' => $this->email ?: $this->uid,
+            'user_password' => 'not-the-real-password',
+            'remember' => true,
+        ] );
 
         remove_filter( 'authenticate', [ $this, 'allow_programmatic_login' ], 10 );
 
         if ( is_a( $user, 'WP_User' ) ) {
-            wp_set_current_user( $user->ID, $user->user_login );
+            wp_set_current_user( $user->ID, $user->data->user_login );
 
             if ( is_user_logged_in() ) {
                 return [
@@ -195,6 +227,9 @@ class DT_Login_User_Manager {
      */
     public function allow_programmatic_login( $user, $user_identifier, $password ) {
         $user = get_user_by( 'email', $user_identifier );
+        if ( empty( $user ) ) {
+            $user = get_user_by( 'login', $user_identifier );
+        }
         return $user;
     }
 }

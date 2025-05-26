@@ -20,7 +20,6 @@ class Disciple_Tools_Migration_0055 extends Disciple_Tools_Migration {
             DELETE FROM $wpdb->dt_activity_log
             WHERE action = 'comment'
         " );
-
     }
 
     public function down() {

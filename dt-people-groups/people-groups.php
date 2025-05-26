@@ -25,7 +25,7 @@ class Disciple_Tools_People_Groups
         $jp_csv = [];
         $handle = fopen( __DIR__ . '/csv/jp.csv', 'r' );
         if ( $handle !== false ) {
-            while ( ( $data = fgetcsv( $handle, 0, ',' ) ) !== false ) {
+            while ( ( $data = fgetcsv( $handle, 0, ',', '"', '\\' ) ) !== false ) {
                 $jp_csv[] = $data;
             }
             fclose( $handle );
@@ -41,7 +41,7 @@ class Disciple_Tools_People_Groups
         $imb_csv = [];
         $handle = fopen( __DIR__ . '/csv/imb.csv', 'r' );
         if ( $handle !== false ) {
-            while ( ( $data = fgetcsv( $handle, 0, ',' ) ) !== false ) {
+            while ( ( $data = fgetcsv( $handle, 0, ',', '"', '\\' ) ) !== false ) {
                 $imb_csv[] = $data;
             }
             fclose( $handle );
@@ -49,16 +49,21 @@ class Disciple_Tools_People_Groups
         return $imb_csv;
     }
 
-    public static function search_csv( $search ) { // gets a list by country
+    public static function search_csv( $search, $as_object = false ) { // gets a list by country
         if ( ! current_user_can( 'manage_dt' ) ) {
             return new WP_Error( __METHOD__, 'Insufficient permissions', [] );
         }
         $data = self::get_jp_source();
+        $columns = [ ...$data[0], 'duplicate' ];
         $result = [];
         foreach ( $data as $row ) {
             if ( $row[1] === $search ) {
                 $row[] = ( self::duplicate_db_checker_by_rop3( $row[1], $row[3] ) > 0 );
-                $result[] = $row;
+                if ( $as_object === true ) {
+                    $result[] = array_combine( $columns, $row );
+                } else {
+                    $result[] = $row;
+                }
             }
         }
         return $result;

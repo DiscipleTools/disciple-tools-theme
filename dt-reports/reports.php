@@ -174,7 +174,7 @@ class Disciple_Tools_Reports
      * @param array $args
      * @return false|int
      */
-    public static function update( array $args ) {
+    public static function update( array $args, $create_activity_log = false ) {
         global $wpdb;
 
         if ( ! isset( $args['id'] ) ){
@@ -242,18 +242,20 @@ class Disciple_Tools_Reports
             }
         }
 
-        dt_activity_insert(
-            [
-                'action' => 'update_report',
-                'object_type' => $args['type'],
-                'object_subtype' => $args['subtype'],
-                'object_id' => $args['post_id'],
-                'object_name' => 'report',
-                'meta_id'      => $report_id,
-                'meta_key'     => ' ',
-                'object_note'  => __( 'Updated report', 'disciple_tools' ),
-            ]
-        );
+        if ( $create_activity_log ){
+            dt_activity_insert(
+                [
+                    'action' => 'update_report',
+                    'object_type' => $args['type'],
+                    'object_subtype' => $args['subtype'],
+                    'object_id' => $args['post_id'],
+                    'object_name' => 'report',
+                    'meta_id' => $report_id,
+                    'meta_key' => ' ',
+                    'object_note' => __( 'Updated report', 'disciple_tools' ),
+                ]
+            );
+        }
 
         // Final action on insert.
         do_action( 'dt_update_report', $args );
@@ -305,6 +307,59 @@ class Disciple_Tools_Reports
                 $meta = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->dt_reportmeta WHERE report_id = %s", $value ), ARRAY_A );
                 $report['meta_input'] = $meta;
                 break;
+        }
+
+        return $report;
+    }
+
+    /**
+     * List reports filtered by where clauses
+     *
+     * @param array $where An assoc array of key, value pairs
+     *
+     * The value parts of the array should be arrays, with 'value' => $value. This allows for adding functionality like operators etc.
+     */
+    public static function list( $where = [] ) {
+        global $wpdb;
+        $report = [];
+
+        $sql = '';
+        $args = [];
+
+        foreach ( $where as $key => $details ) {
+            if ( !is_array( $details ) || !isset( $details['value'] ) ) {
+                return new WP_Error( 'missing-value-type', 'value key is missing for ' . $key );
+            }
+            $value = $details['value'];
+            $new_sql = '';
+            if ( !empty( $sql ) ) {
+                $new_sql .= ' AND';
+            } else {
+                $new_sql .= ' WHERE';
+            }
+
+            $new_sql .= $wpdb->prepare( ' %1$s = ', $key );
+
+            if ( is_numeric( $value ) ) {
+                $new_sql .= '%d';
+            } else if ( is_string( $value ) ) {
+                $new_sql .= '%s';
+            } else {
+                return new WP_Error( 'invalid-value-type', ' $value is of type ' . gettype( $value ) . ' but should be a string or number' );
+            }
+            $sql .= $new_sql;
+            $args[] = $value;
+        }
+
+        //phpcs:ignore
+        $results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->dt_reports $sql", $args ), ARRAY_A );
+        if ( ! empty( $results ) ) {
+            foreach ( $results as $index => $result ){
+                if ( isset( $result['payload'] ) ){
+                    $results[$index]['payload'] = maybe_unserialize( $result['payload'] );
+                }
+            }
+            $report = $results;
         }
 
         return $report;
@@ -385,8 +440,6 @@ class Disciple_Tools_Reports
             [ '%s' ],
             [ '%d', '%s' ]
         );
-
-
     }
 
 
@@ -463,5 +516,4 @@ class Disciple_Tools_Reports
 
         return $meta_value['meta_value'];
     }
-
 }

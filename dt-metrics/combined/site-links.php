@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
 
     //slug and title of the top menu folder
-    public $base_slug = 'combined'; // lowercase
+    public $base_slug = 'access'; // lowercase
     public $base_title;
     public $title;
     public $slug = 'site-links'; // lowercase
@@ -20,7 +20,7 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
             return;
         }
         $this->title      = __( 'Transferred Contacts', 'disciple_tools' );
-        $this->base_title = __( 'Project', 'disciple_tools' );
+        $this->base_title = __( 'Access', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
@@ -75,12 +75,12 @@ class DT_Metrics_Site_Links extends DT_Metrics_Chart_Base {
                         'site_links_header'          => __( 'Site Links', 'disciple_tools' ),
                         'site_links_none_header'     => __( 'None Set', 'disciple_tools' ),
                         'totals_header'              => _x( 'Contacts transferred during date range', 'Contacts transferred during date range', 'disciple_tools' ),
-                        'status_created_header'      => sprintf( _x( '%s of contacts created in date range', 'Seeker Path of contacts created in date range', 'disciple_tools' ), $field_settings['overall_status']['name'] ),
-                        'seeker_path_created_header' => sprintf( _x( '%s of contacts created in date range', 'Seeker Path of contacts created in date range', 'disciple_tools' ), $field_settings['seeker_path']['name'] ),
-                        'milestones_created_header'  => sprintf( _x( '%s of contacts created in date range', 'Seeker Path of contacts created in date range', 'disciple_tools' ), $field_settings['milestones']['name'] ),
-                        'status_changes_header'      => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings['overall_status']['name'] ),
-                        'seeker_path_changes_header' => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings['seeker_path']['name'] ),
-                        'milestones_changes_header'  => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings['milestones']['name'] ),
+                        'status_created_header'      => sprintf( _x( '%s of contacts created in date range', 'Seeker Path of contacts created in date range', 'disciple_tools' ), $field_settings['overall_status']['name'] ?? __( 'Contact Status', 'disciple_tools' ) ),
+                        'seeker_path_created_header' => sprintf( _x( '%s of contacts created in date range', 'Seeker Path of contacts created in date range', 'disciple_tools' ), $field_settings['seeker_path']['name'] ?? __( 'Seeker Path', 'disciple_tools' ) ),
+                        'milestones_created_header'  => sprintf( _x( '%s of contacts created in date range', 'Seeker Path of contacts created in date range', 'disciple_tools' ), $field_settings['milestones']['name'] ?? __( 'Faith Milestones', 'disciple_tools' ) ),
+                        'status_changes_header'      => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings['overall_status']['name'] ?? __( 'Contact Status', 'disciple_tools' ) ),
+                        'seeker_path_changes_header' => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings['seeker_path']['name'] ?? __( 'Seeker Path', 'disciple_tools' ) ),
+                        'milestones_changes_header'  => sprintf( _x( '%s changes during date range', 'Seeker Path changes during date range', 'disciple_tools' ), $field_settings['milestones']['name'] ?? __( 'Faith Milestones', 'disciple_tools' ) ),
                     ],
                     'general'  => [
                         'no_data_msg' => __( 'No Data Available', 'disciple_tools' )

@@ -41,7 +41,6 @@ class DT_Groups_Base extends DT_Module_Base {
         //list
         add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 10, 2 );
         add_filter( 'dt_filter_access_permissions', [ $this, 'dt_filter_access_permissions' ], 20, 2 );
-
     }
 
     public function after_setup_theme(){
@@ -175,7 +174,6 @@ class DT_Groups_Base extends DT_Module_Base {
                         'description' => _x( 'A special group that is not meeting as a church (or trying to become church).', 'Optional Documentation', 'disciple_tools' ),
                     ],
                 ],
-                'customizable' => 'add_only',
                 'tile' => 'groups',
                 'in_create_form' => true,
                 'show_in_table' => 15,
@@ -242,7 +240,6 @@ class DT_Groups_Base extends DT_Module_Base {
                         'icon' => get_template_directory_uri() . '/dt-assets/images/groups/covenant.svg'
                     ],
                 ],
-                'customizable' => 'add_only',
                 'tile' => 'health-metrics',
                 'custom_display' => true
             ];
@@ -353,25 +350,6 @@ class DT_Groups_Base extends DT_Module_Base {
 
 
             // Group Locations
-            $fields['location_grid'] = [
-                'name'        => __( 'Locations', 'disciple_tools' ),
-                'description' => _x( 'The general location where this contact is located.', 'Optional Documentation', 'disciple_tools' ),
-                'type'        => 'location',
-                'mapbox'    => false,
-                'in_create_form' => true,
-                'tile' => 'details',
-                'icon' => get_template_directory_uri() . '/dt-assets/images/location.svg?v=2',
-            ];
-
-            $fields['location_grid_meta'] = [
-                'name'        => __( 'Locations or Address', 'disciple_tools' ),
-                'type'        => 'location_meta',
-                'tile'      => 'details',
-                'mapbox'    => false,
-                'hidden' => true,
-                'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
-            ];
-
             $fields['contact_address'] = [
                 'name' => __( 'Address', 'disciple_tools' ),
                 'icon' => get_template_directory_uri() . '/dt-assets/images/house.svg?v=2',
@@ -385,25 +363,9 @@ class DT_Groups_Base extends DT_Module_Base {
                 $fields['contact_address']['custom_display'] = true;
                 $fields['contact_address']['mapbox'] = true;
                 unset( $fields['contact_address']['tile'] );
-                $fields['location_grid']['mapbox'] = true;
-                $fields['location_grid_meta']['mapbox'] = true;
-                $fields['location_grid']['hidden'] = true;
-                $fields['location_grid_meta']['hidden'] = false;
             }
 
 
-
-            $fields['people_groups'] = [
-                'name' => __( 'People Groups', 'disciple_tools' ),
-                'description' => _x( 'The people groups represented by this group.', 'Optional Documentation', 'disciple_tools' ),
-                'icon' => get_template_directory_uri() . '/dt-assets/images/people-group.svg?v=2',
-                'type' => 'connection',
-                'post_type' => 'peoplegroups',
-                'p2p_direction' => 'from',
-                'p2p_key' => 'groups_to_peoplegroups',
-                'tile' => 'details',
-                'connection_count_field' => [ 'post_type' => 'peoplegroups', 'field_key' => 'group_total', 'connection_field' => 'groups' ]
-            ];
 
             $field_fields_enabled = self::four_fields_is_enabled();
 

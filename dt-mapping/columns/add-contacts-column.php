@@ -94,7 +94,7 @@ function dt_mm_add_contacts_column( $data ) {
                         $i                         = 0;
                         while ( $i <= $next_column_number ) {
                             $column_data[$grid_id][$i] = 0;
-                            $i ++;
+                            $i++;
                         }
                     }
 

@@ -109,30 +109,45 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
 
     private static function get_user_highlights( $from = null, $to = null ) {
 
+        $post_types = DT_Posts::get_post_types();
+
         $contact_field_settings = DT_Posts::get_post_field_settings( 'contacts' );
 
         $data = [];
         $data['contacts_created'] = self::get_records_created( $from, $to, 'contacts' );
-        $data['quick_actions_done'] = self::get_quick_actions_done( $from, $to, $contact_field_settings );
-        $data['seeker_path_changed'] = self::get_info_added( $from, $to, 'contacts', 'seeker_path', '%', $contact_field_settings );
-        $data['milestones_added'] = self::get_info_added( $from, $to, 'contacts', 'milestones', 'milestone_%', $contact_field_settings );
 
-        $data['milestones_added_by_others'] = self::get_info_added_by_others( $from, $to, 'contacts', 'milestones', 'milestone_', $contact_field_settings );
-        $data['seeker_path_changed_by_others'] = self::get_info_added_by_others( $from, $to, 'contacts', 'seeker_path', '', $contact_field_settings );
+        if ( isset( $contact_field_settings['quick_button_no_answer'] ) ){
+            $data['quick_actions_done'] = self::get_quick_actions_done( $from, $to, $contact_field_settings );
+        }
 
-        $data['baptisms'] = self::get_baptisms( $from, $to );
-        $data['baptisms_by_others'] = self::get_baptisms_by_others( $from, $to );
+        if ( isset( $contact_field_settings['milestones'] ) ){
+            $data['milestones_added'] = self::get_info_added( $from, $to, 'contacts', 'milestones', 'milestone_%', $contact_field_settings );
+            $data['milestones_added_by_others'] = self::get_info_added_by_others( $from, $to, 'contacts', 'milestones', 'milestone_', $contact_field_settings );
+        }
+
+        if ( isset( $contact_field_settings['seeker_path'] ) ){
+            $data['seeker_path_changed_by_others'] = self::get_info_added_by_others( $from, $to, 'contacts', 'seeker_path', '', $contact_field_settings );
+            $data['seeker_path_changed'] = self::get_info_added( $from, $to, 'contacts', 'seeker_path', '%', $contact_field_settings );
+        }
+
+        if ( isset( $contact_field_settings['baptized'] ) ){
+            $data['baptisms'] = self::get_baptisms( $from, $to );
+            $data['baptisms_by_others'] = self::get_baptisms_by_others( $from, $to );
+        }
 
         $data['comments_posted'] = self::get_comments_posted( $from, $to );
         $data['comments_liked'] = self::get_comments_liked( $from, $to );
 
-        $group_field_settings = DT_Posts::get_post_field_settings( 'groups' );
-        $data['groups_created'] = self::get_records_created( $from, $to, 'groups' );
-        $data['health_metrics_added'] = self::get_info_added( $from, $to, 'groups', 'health_metrics', 'church_%', $group_field_settings );
-        $data['group_type_changed'] = self::get_info_added( $from, $to, 'groups', 'group_type', '%', $group_field_settings );
+        if ( in_array( 'groups', $post_types ) ) {
+            $group_field_settings = DT_Posts::get_post_field_settings( 'groups' );
+            $data['groups_created'] = self::get_records_created( $from, $to, 'groups' );
+            $data['health_metrics_added'] = self::get_info_added( $from, $to, 'groups', 'health_metrics', 'church_%', $group_field_settings );
+            $data['group_type_changed'] = self::get_info_added( $from, $to, 'groups', 'group_type', '%', $group_field_settings );
 
-        $data['health_metrics_added_by_others'] = self::get_info_added_by_others( $from, $to, 'groups', 'health_metrics', 'church_', $group_field_settings );
-        $data['group_type_changed_by_others'] = self::get_info_added_by_others( $from, $to, 'groups', 'group_type', '', $group_field_settings );
+            $data['health_metrics_added_by_others'] = self::get_info_added_by_others( $from, $to, 'groups', 'health_metrics', 'church_', $group_field_settings );
+            $data['group_type_changed_by_others'] = self::get_info_added_by_others( $from, $to, 'groups', 'group_type', '', $group_field_settings );
+        }
+
 
         return $data;
     }
@@ -171,7 +186,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $records_created = empty( $rows ) ? 0 : $rows[0]['records_created'];
 
         return [
-            'field_label' => $post_settings['label_plural'],
+            'field_label' => $post_settings['label_plural'] ?? $post_type,
             'count' => $records_created,
             'label' => sprintf( esc_html__( '%1$d %2$s created', 'disciple_tools' ), $records_created, $records_created === 1 ? $post_settings['label_singular'] : $post_settings['label_plural'] ),
         ];
@@ -258,7 +273,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $rows = self::insert_labels( $rows, $subtype, $field_settings );
 
         return [
-            'field_label' => $field_settings[$subtype]['name'],
+            'field_label' => $field_settings[$subtype]['name'] ?? $subtype,
             'rows' => $rows,
         ];
     }
@@ -307,7 +322,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
         $post_settings = apply_filters( 'dt_get_post_type_settings', [], $post_type );
 
         return [
-            'field_label' => $field_settings[$subtype]['name'],
+            'field_label' => $field_settings[$subtype]['name'] ?? $subtype,
             'post_type_label' => $post_settings['label_plural'],
             'rows' => $rows,
         ];
@@ -640,6 +655,5 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
             $prepare_args[] = $epoch_timestamp ? strtotime( $to ) : $to;
         }
     }
-
 }
 new Disciple_Tools_Metrics_Personal_Activity_Highlights();

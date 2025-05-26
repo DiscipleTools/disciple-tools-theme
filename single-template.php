@@ -4,7 +4,7 @@ declare( strict_types=1 );
 dt_please_log_in();
 
 $dt_post_type = get_post_type();
-if ( ! current_user_can( 'access_' . $dt_post_type ) ) {
+if ( !current_user_can( 'access_' . $dt_post_type ) || !current_user_can( 'access_disciple_tools' ) ) {
     wp_safe_redirect( '/settings' );
     exit();
 }
@@ -75,7 +75,6 @@ function dt_display_tile( $tile, $post ): bool {
     Disciple_Tools_Notifications::process_new_notifications( get_the_ID() ); // removes new notifications for this post
     add_action( 'dt_nav_add_after', function ( $desktop = true ){
         dt_print_details_bar( $desktop );
-
     }, 10, 1);
     get_header();
 
@@ -132,7 +131,7 @@ function dt_display_tile( $tile, $post ): bool {
                             </button>
                         </h3>
 
-                        <div class="grid-x grid-margin-x">
+                        <div class="grid-x grid-margin-x grid-margin-y">
                         <?php
                         //setup the order of the tile fields
                         $order = $tiles['status']['order'] ?? [];
@@ -260,7 +259,7 @@ function dt_display_tile( $tile, $post ): bool {
                             </a></div>
 
                         <div id="details-section" class="display-fields" style="display: none; margin-top:20px">
-                            <div class="grid-x grid-margin-x">
+                            <div class="grid-x grid-margin-x grid-margin-y">
                                 <?php
                                 //setup the order of the tile fields
                                 $order = $tiles['details']['order'] ?? [];
@@ -277,7 +276,7 @@ function dt_display_tile( $tile, $post ): bool {
                                     }
                                     $field = $post_settings['fields'][$field_key];
                                     $enabled_for_type = dt_field_enabled_for_record_type( $field, $dt_post );
-                                    if ( isset( $post_settings['fields'][$field_key]['hidden'] ) && true === $post_settings['fields'][$field_key]['hidden']
+                                    if ( ( isset( $post_settings['fields'][$field_key]['hidden'] ) && true === $post_settings['fields'][$field_key]['hidden'] )
                                         || !$enabled_for_type ){
                                         continue;
                                     }
@@ -341,7 +340,7 @@ function dt_display_tile( $tile, $post ): bool {
                                             </h3>
                                         <?php } ?>
 
-                                        <div class="section-body">
+                                        <div class="section-body grid-y">
                                             <?php
                                             // let the plugin add section content
                                             add_action( 'dt_details_additional_section', function ( $t_key, $pt ) use ( $post_type, $tile_key, $post_settings, $dt_post, $tile_options ){
@@ -361,13 +360,16 @@ function dt_display_tile( $tile, $post ): bool {
                                                     }
 
                                                     $field = $post_settings['fields'][$field_key];
-                                                    if ( isset( $field['tile'] ) && $field['tile'] === $tile_key ){
-                                                        render_field_for_display( $field_key, $post_settings['fields'], $dt_post, true );
+                                                    if ( isset( $field['tile'] ) && $field['tile'] === $tile_key && ( !isset( $field['hidden'] ) || !$field['hidden'] ) ) { ?>
+                                                        <div class="cell small-12 medium-12">
+                                                            <?php render_field_for_display( $field_key, $post_settings['fields'], $dt_post, true ); ?>
+                                                        </div>
+                                                        <?php
                                                     }
                                                 }
                                             }, 20, 2 );
                                             do_action( 'dt_details_additional_section', $tile_key, $post_type, $post_id );
-                                            ?>
+                                ?>
                                         </div>
                                     </div>
                                 </section>
@@ -400,31 +402,6 @@ function dt_display_tile( $tile, $post ): bool {
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'share' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'tasks' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-contact' ); ?>
-
-    <div class="reveal" id="create-tag-modal" data-reveal data-reset-on-close>
-        <h3><?php esc_html_e( 'Create Tag', 'disciple_tools' )?></h3>
-        <p><?php esc_html_e( 'Create a tag and apply it to this record.', 'disciple_tools' )?></p>
-
-        <form class="js-create-tag">
-            <label for="title">
-                <?php esc_html_e( 'Tag', 'disciple_tools' ); ?>
-            </label>
-            <input name="title" id="new-tag" type="text" placeholder="<?php esc_html_e( 'Tag', 'disciple_tools' ); ?>" required aria-describedby="name-help-text">
-            <p class="help-text" id="name-help-text"><?php esc_html_e( 'This is required', 'disciple_tools' ); ?></p>
-        </form>
-
-        <div class="grid-x">
-            <button class="button button-cancel clear" data-close aria-label="Close reveal" type="button">
-                <?php echo esc_html__( 'Cancel', 'disciple_tools' )?>
-            </button>
-            <button class="button" data-close type="button" id="create-tag-return">
-                <?php esc_html_e( 'Create and apply tag', 'disciple_tools' ); ?>
-            </button>
-            <button class="close-button" data-close aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </div>
 
     <div class="reveal" id="delete-record-modal" data-reveal data-reset-on-close>
         <h3><?php echo esc_html( sprintf( _x( 'Delete %s', 'Delete Contact', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_singular'] ) ) ?></h3>

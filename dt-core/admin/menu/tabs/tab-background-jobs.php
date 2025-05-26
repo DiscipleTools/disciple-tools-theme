@@ -172,7 +172,6 @@ class Disciple_Tools_Tab_Background_Jobs extends Disciple_Tools_Abstract_Menu_Ba
             'jquery',
             'wp-color-picker'
         ], filemtime( disciple_tools()->admin_js_path . 'dt-utilities-scripts.js' ), true );
-
     }
 }
 

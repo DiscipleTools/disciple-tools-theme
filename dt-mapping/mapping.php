@@ -132,7 +132,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
             /* End DEFAULT MAPPING DEFINITION */
 
             add_action( 'delete_post', [ $this, 'delete_grid_meta_on_post_delete' ] );
-
         }
 
         /**
@@ -190,7 +189,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     'mapping_module' => $this->localize_script(),
                 ]
             );
-
         }
 
 
@@ -322,7 +320,6 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     );
                 }
             }
-
         }
 
         /************************************************************************************************************
@@ -1077,7 +1074,7 @@ if ( ! class_exists( 'DT_Mapping_Module' ) ) {
                     $results['children'][$index]['id'] = (int) $child['id'];
                     $results['children'][$index]['grid_id'] = (int) $child['grid_id'];
                     $results['children'][$index]['population'] = (int) $child['population'];
-                    $results['children'][$index]['population_formatted'] = number_format( $child['population'] );
+                    $results['children'][$index]['population_formatted'] = number_format( $child['population'] ?? 0 );
                     $results['children'][$index]['latitude'] = (float) $child['latitude'];
                     $results['children'][$index]['longitude'] = (float) $child['longitude'];
                     $results['children'][$index]['parent_id'] = empty( $child['parent_id'] ) ? null : (int) $child['parent_id'];

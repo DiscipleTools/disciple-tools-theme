@@ -388,6 +388,15 @@ class DT_Login_Fields {
                 'type' => 'role',
                 'multisite_level' => false,
             ],
+            'login_length' => [
+                'tab' => 'general',
+                'key' => 'login_length',
+                'label' => 'Login Length',
+                'description' => 'How many days should the login token last for',
+                'value' => '14',
+                'type' => 'text',
+                'multisite_level' => false,
+            ],
 
             // shortcodes
             'shortcode_firebase_logon_buttons' => [

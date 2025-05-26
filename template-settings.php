@@ -148,10 +148,10 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     </p>
                                 <?php endif; ?>
 
-                                <?php if ( ! empty( $dt_user->nickname ) ) : ?>
+                                <?php if ( ! empty( $dt_user->display_name ) ) : ?>
                                     <p>
                                         <strong dir="auto"><?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' )?></strong><br>
-                                        <span dir="auto"><?php echo esc_html( $dt_user->nickname ); ?></span>
+                                        <span dir="auto"><?php echo esc_html( $dt_user->display_name ); ?></span>
                                     </p>
                                 <?php endif; ?>
 
@@ -635,7 +635,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                             ?>
                                             <span data-tooltip data-click-open="true" class="top" tabindex="1"
                                                   title="<?php esc_html_e( 'Disciple Tools System does not store images. All media assets will be placed within specified media connection storage service. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.', 'disciple_tools' ) ?>">
-                                                <br><?php esc_html_e( 'upload new profile image', 'disciple_tools' ) ?><br>
+                                                <br><?php esc_html_e( 'Upload new profile image', 'disciple_tools' ) ?><br>
                                                 <input id="user_profile_pic" name="user_profile_pic" type="file" accept=".gif,.jpg,.jpeg,.png" />
                                             </span>
                                             <?php
@@ -681,7 +681,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 <tr>
                                     <td><label for="nickname"><span dir="auto"><?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' )?></span></label></td>
                                     <td><input type="text" class="profile-input" id="nickname" name="nickname" dir="auto"
-                                               value=" <?php echo esc_html( $dt_user->nickname ); ?>"/></td>
+                                               value=" <?php echo esc_html( $dt_user->display_name ); ?>"/></td>
                                 </tr>
 
                                 <?php // site defined fields

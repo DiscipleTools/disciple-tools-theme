@@ -98,7 +98,7 @@ function dt_default_menu_array() : array {
                     ],
                     'help' => [
                         'label' => __( 'Help', 'disciple_tools' ),
-                        'link' => 'https://disciple.tools/user-docs',
+                        'link' => 'https://disciple.tools/docs',
                         'hidden' => false,
                         'icon' => get_template_directory_uri() . '/dt-assets/images/help.svg?v=2',
                     ],

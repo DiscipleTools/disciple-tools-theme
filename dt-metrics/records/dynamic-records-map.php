@@ -7,7 +7,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
 {
 
     //slug and title of the top menu folder
-    public $base_slug = 'records'; // lowercase
+    public $base_slug; // lowercase
     public $base_title;
     public $post_type = 'contacts';
     public $post_types = [];
@@ -18,17 +18,17 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
     public $slug = 'dynamic_records_map'; // lowercase
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $js_file_name = '/dt-metrics/records/dynamic-records-map.js'; // should be full file name plus extension
-    public $permissions = [ 'dt_all_access_contacts', 'view_project_metrics' ];
+    public $permissions = [];
     public $namespace = 'dt-metrics/records';
     public $base_filter = [];
 
-    public function __construct() {
+    public function __construct( $base_slug, $base_title ) {
+        $this->base_slug = $base_slug;
+        $this->base_title = $base_title;
+
         parent::__construct();
-        if ( !$this->has_permission() ){
-            return;
-        }
-        $this->title = __( 'Records Map', 'disciple_tools' );
-        $this->base_title = __( 'Contacts', 'disciple_tools' );
+
+        $this->title = __( 'Maps', 'disciple_tools' );
 
         // Build post types array, ignoring some for now.
         // TODO: Only select post types with valid location field types!
@@ -69,6 +69,8 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         if ( "metrics/$this->base_slug/$this->slug" === $url_path ) {
             add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
         }
+
+        $this->namespace = "dt-metrics/$this->base_slug/$this->slug";
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
 
@@ -172,7 +174,10 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         $params = $request->get_json_params() ?? $request->get_body_params();
         $offset = !empty( $params['offset'] ) ? $params['offset'] : 0;
         $limit = !empty( $params['limit'] ) ? $params['limit'] : 500000;
-        if ( !empty( $params['post_type'] ) ){
+
+        // Ensure to prevent any backdoor entries for non-slug related requests.
+        if ( !empty( $params['post_type'] ) && !empty( $params['slug'] ) ) {
+            $slug = $params['slug'];
 
             // Ensure params shape is altered accordingly, for system based post types.
             switch ( $params['post_type'] ){
@@ -183,8 +188,28 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
                     break;
             }
 
-            // Execute request query.
-            $response = Disciple_Tools_Mapping_Queries::post_type_geojson( $params['post_type'], $params, $offset, $limit );
+            // Ensure user has required permissions, based on specified slug request.
+            $has_permission = false;
+            if ( ( $slug === 'personal' ) && current_user_can( 'access_contacts' ) ) {
+                $has_permission = true;
+            }
+            if ( ( $slug === 'records' ) && ( current_user_can( 'dt_all_access_contacts' ) || current_user_can( 'view_project_metrics' ) ) ) {
+                $has_permission = true;
+            }
+
+            if ( $has_permission ) {
+
+                // Determine type of query to be executed, based on incoming slug.
+                if ( $slug === 'personal' ) {
+                    $params['user_id'] = get_current_user_id();
+                }
+
+                // Execute request query.
+                $response = Disciple_Tools_Mapping_Queries::post_type_geojson( $params['post_type'], $params, $offset, $limit );
+
+                // Ensure to unset user_id for security reasons.
+                unset( $params['user_id'] );
+            }
         }
 
         return [
@@ -223,7 +248,6 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         }
 
         return $list;
-
     }
 
     public function get_list_by_grid_id( WP_REST_Request $request ) {
@@ -254,7 +278,4 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
 
         return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query );
     }
-
-
 }
-new DT_Metrics_Dynamic_Records_Map();

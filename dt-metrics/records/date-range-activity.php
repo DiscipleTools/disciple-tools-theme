@@ -40,7 +40,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
             return;
         }
 
-        $this->title = __( 'Field Activity', 'disciple_tools' );
+        $this->title = __( 'Activity Logs', 'disciple_tools' );
         $this->base_title = __( 'Project', 'disciple_tools' );
 
         $url_path = dt_get_url_path( true );
@@ -397,6 +397,5 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
         asort( $select_options );
         return $select_options;
     }
-
 }
 new DT_Metrics_Date_Range_Activity();
