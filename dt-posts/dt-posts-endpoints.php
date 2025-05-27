@@ -593,7 +593,7 @@ class Disciple_Tools_Posts_Endpoints {
         $overwrite_existing_fields     = isset( $get_params['overwrite_existing_fields'] ) && $get_params['overwrite_existing_fields'] === 'true';
         $post       = DT_Posts::create_post( $url_params['post_type'], $fields, $silent, true, [
             'check_for_duplicates' => $check_dups,
-            'overwrite_existing_fields' => $overwrite_existing_fields
+            'do_not_overwrite_existing_fields' => !$overwrite_existing_fields
         ] );
         return $post;
     }
@@ -609,7 +609,10 @@ class Disciple_Tools_Posts_Endpoints {
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         $silent = isset( $get_params['silent'] ) && $get_params['silent'] === 'true';
-        return DT_Posts::update_post( $url_params['post_type'], $url_params['id'], $fields, $silent );
+        $overwrite_existing_fields     = isset( $get_params['overwrite_existing_fields'] ) && $get_params['overwrite_existing_fields'] === 'true';
+        return DT_Posts::update_post( $url_params['post_type'], $url_params['id'], $fields, $silent, true, [
+            'do_not_overwrite_existing_fields' => !$overwrite_existing_fields
+        ] );
     }
 
     public function delete_post( WP_REST_Request $request ){

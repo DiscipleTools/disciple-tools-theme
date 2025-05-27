@@ -97,7 +97,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                  * to have them removed from importing fields.
                  */
 
-                if ( isset( $args['overwrite_existing_fields'] ) && !$args['overwrite_existing_fields'] ) {
+                if ( isset( $args['do_not_overwrite_existing_fields'] ) && $args['do_not_overwrite_existing_fields'] ) {
                     $fields = apply_filters( 'dt_ignore_duplicated_post_fields', [], $fields, $post_type, $duplicate_post_id );
                 }
 
@@ -401,7 +401,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return array|WP_Error
      */
-    public static function update_post( string $post_type, int $post_id, array $fields, bool $silent = false, bool $check_permissions = true ){
+    public static function update_post( string $post_type, int $post_id, array $fields, bool $silent = false, bool $check_permissions = true, $args = [] ){
         $post_types = self::get_post_types();
         if ( !in_array( $post_type, $post_types ) ){
             return new WP_Error( __FUNCTION__, 'Post type does not exist', [ 'status' => 403 ] );
@@ -423,6 +423,15 @@ class DT_Posts extends Disciple_Tools_Posts {
         $post = get_post( $post_id );
         if ( !$post ) {
             return new WP_Error( __FUNCTION__, 'post does not exist', [ 'status' => 404 ] );
+        }
+
+        /**
+         * If field overwrite has been disabled for existing fields, then ensure
+         * to have them removed from importing fields.
+         */
+
+        if ( isset( $args['do_not_overwrite_existing_fields'] ) && $args['do_not_overwrite_existing_fields'] ) {
+            $fields = apply_filters( 'dt_ignore_duplicated_post_fields', [], $fields, $post_type, $post_id );
         }
 
         $existing_post = self::get_post( $post_type, $post_id, false, false );

@@ -230,7 +230,7 @@ class DT_Posts_Hooks {
      * @param $post_id
      */
     public static function dt_ignore_duplicated_post_fields( $updated_fields, $fields, $post_type, $post_id ) {
-        $existing_fields = DT_Posts::get_post( $post_type, $post_id );
+        $existing_fields = DT_Posts::get_post( $post_type, $post_id, true, false );
         if ( !empty( $existing_fields ) && !is_wp_error( $existing_fields ) ) {
             $field_settings = DT_Posts::get_post_field_settings( $post_type );
             foreach ( $fields as $field_key => $field_value ) {
@@ -293,14 +293,26 @@ class DT_Posts_Hooks {
                             break;
                         case 'communication_channel':
                             $values = [];
+                            $existing_field_values = $existing_fields[ $field_key ];
+
                             foreach ( $field_value ?? [] as $value ) {
                                 $key = 'value';
-                                $found = array_filter( $existing_fields[ $field_key ], function ( $option ) use ( $value, $key ) {
-                                    return isset( $option[$key] ) && $option[$key] == $value['value'];
-                                } );
+                                $found = array_values( array_filter( $value, function ( $option ) use ( $existing_field_values, $key ) {
 
-                                if ( empty( $found ) || count( $found ) == 0 ) {
-                                    $values[] = $value;
+                                    $hit = false;
+                                    foreach ( $existing_field_values as $existing_field_value ) {
+                                        if ( !$hit && isset( $option[$key] ) && $option[$key] != $existing_field_value[$key] ) {
+                                            $hit = true;
+                                        }
+                                    }
+                                    return $hit;
+                                } ) );
+                                if ( !empty( $found ) ) {
+                                    foreach ( $found as $found_value ) {
+                                        $values[] = [
+                                            'value' => $found_value[$key]
+                                        ];
+                                    }
                                 }
                             }
                             if ( !empty( $values ) ) {
