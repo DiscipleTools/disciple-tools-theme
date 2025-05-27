@@ -24,84 +24,15 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
      * For this to work, this file must be compatible with old PHP versions.
      * Feel free to use PHP 7 features in other files, but not in this one.
      */
-    add_action( 'admin_notices', 'dt_theme_admin_notice_required_php_version' );
-} else {
-
-
-    /**
-     * Load the Disciple Tools Theme
-     * Note: This will be moved before of the after_setup_theme hook
-     */
-    add_action( 'after_setup_theme', 'dt_theme_load', 5 );
-
-
-    /**
-     * The disciple_tools_load_plugins hook
-     * Set up hook for loading plugins
-     */
-    add_action( 'after_setup_theme', function (){
-        do_action( 'disciple_tools_load_plugins' );
-    }, 30 );
-
-    /**
-     * The disciple_tools_loaded hook
-     * Disciple.Tools theme and plugins are loaded.
-     * It is now safe to us the Disciple.Tools API, run actions and views
-     */
-    add_action( 'init', function (){
-        do_action( 'disciple_tools_loaded' );
-    }, 10 );
-
-
-    /**
-     * Adds the Disciple_Tools Class and runs database and roles version checks.
-     */
-    function dt_theme_load() {
-        /** We want to make sure roles are up-to-date. */
-        require_once( 'dt-core/configuration/class-roles.php' );
-        Disciple_Tools_Roles::instance()->set_roles_if_needed();
-
-        disciple_tools();
-
-
-
-        /**
-         * Load Language Files
-         */
-        load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
-    }
-
-
-    /**
-     * Run migrations after theme is loaded
-     */
-    add_action( 'init', function (){
-        /**
-         * We want to make sure migrations are run on updates.
-         *
-         * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
-         */
-        try {
-            require_once( 'dt-core/configuration/class-migration-engine.php' );
-            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools_Migration_Engine::$migration_number );
-        } catch ( Throwable $e ) {
-            new WP_Error( 'migration_error', 'Migration engine failed to migrate.', [ 'message' => $e->getMessage() ] );
-        }
-
-        $is_rest = dt_is_rest();
-
-        /**
-         * Redirect to setup wizard if not seen
-         */
-        $setup_wizard_completed = get_option( 'dt_setup_wizard_completed' );
-        $setup_wizard_completed = apply_filters( 'dt_setup_wizard_completed', $setup_wizard_completed );
-        $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
-        $is_administrator = current_user_can( 'manage_options' );
-        if ( !$is_rest && !is_network_admin() && !wp_doing_cron() && !$setup_wizard_completed && $is_administrator && $current_page !== 'dt_setup_wizard' ) {
-            wp_redirect( admin_url( 'admin.php?page=dt_setup_wizard' ) );
-        }
+    add_action( 'admin_notices', function (){
+        ?>
+        <div class="notice notice-error">
+            <p><?php echo esc_html( 'Disciple.Tools theme requires PHP version 7.4 or greater. Your current version is: ' . phpversion() . ' Please upgrade PHP.' );?></p>
+        </div>
+        <?php
     } );
-
+    return;
+} else {
     /**
      * Intended to avoid restrictions with passing null-containing strings to bcrypt functions like password_hash.
      *
@@ -140,15 +71,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
         }
     }
 
-    /**
-     * Returns the main instance of Disciple_Tools to prevent the need to use globals.
-     *
-     * @since  0.1.0
-     * @return object Disciple_Tools
-     */
-    function disciple_tools() {
-        return Disciple_Tools::instance();
-    }
 
     /**
      * Main Disciple_Tools Class
@@ -234,6 +156,10 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             $this->user_locale = get_user_locale();
             $this->site_locale = get_locale();
 
+            /** We want to make sure roles are up-to-date. */
+            require_once( 'dt-core/configuration/class-roles.php' );
+            Disciple_Tools_Roles::instance()->set_roles_if_needed();
+
             set_up_wpdb_tables();
 
             /**
@@ -280,45 +206,6 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
                 require_once( 'dt-assets/functions/menu.php' ); // Register menus and menu walkers
                 require_once( 'dt-assets/functions/details-bar.php' ); // Breadcrumbs bar
             }
-
-
-            /**
-             * URL loader
-             */
-            add_action( 'wp_loaded', function() {
-                $template_for_url = [
-                    'metrics'               => 'template-metrics.php',
-                    'settings'              => 'template-settings.php',
-                    'notifications'         => 'template-notifications.php',
-                    'view-duplicates'       => 'template-view-duplicates.php'
-                ];
-
-                $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
-
-                $url_path = untrailingslashit( dt_get_url_path( true ) ); //allow get parameters
-
-                if ( isset( $template_for_url[ $url_path ] ) && dt_please_log_in() ) {
-                    $template_filename = locate_template( $template_for_url[ $url_path ], true );
-                    if ( $template_filename ) {
-                        exit(); // just exit if template was found and loaded
-                    } else {
-                        throw new Error( 'Expected to find template ' . $template_for_url[ $url_path ] );
-                    }
-                }
-            }, 10000 );
-            /**
-             * Set the locale for the user
-             * must be loaded after most files
-             *
-             * @return string
-             */
-            add_filter( 'locale', function() {
-                if ( is_admin() ) {
-                    return $this->site_locale;
-                } else {
-                    return $this->user_locale;
-                }
-            } );
 
             /**
              * Versioning System
@@ -553,7 +440,77 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             require_once( 'dt-core/dependencies/deprecated-dt-functions.php' );
 
             add_action( 'switch_blog', 'set_up_wpdb_tables', 99, 2 );
+            add_action( 'wp_loaded', [ $this, 'dt_url_loader' ], 10000 );
+            add_filter( 'locale', [ $this, 'dt_locale' ] );
+            add_action( 'init', [ $this, 'migrations' ] );
+            add_action( 'init', [ $this, 'setup_wizard' ] );
         } // End __construct()
+
+
+        public function dt_url_loader(){
+            $template_for_url = [
+                'metrics'               => 'template-metrics.php',
+                'settings'              => 'template-settings.php',
+                'notifications'         => 'template-notifications.php',
+                'view-duplicates'       => 'template-view-duplicates.php'
+            ];
+
+            $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
+
+            $url_path = untrailingslashit( dt_get_url_path( true ) ); //allow get parameters
+
+            if ( isset( $template_for_url[ $url_path ] ) && dt_please_log_in() ) {
+                $template_filename = locate_template( $template_for_url[ $url_path ], true );
+                if ( $template_filename ) {
+                    exit(); // just exit if template was found and loaded
+                } else {
+                    throw new Error( 'Expected to find template ' . $template_for_url[ $url_path ] );
+                }
+            }
+        }
+
+        /**
+         * Set the locale for the user
+         * must be loaded after most files
+         *
+         * @return string
+         */
+        public function dt_locale() {
+            if ( is_admin() ) {
+                return $this->site_locale;
+            } else {
+                return $this->user_locale;
+            }
+        }
+
+        public function migrations(){
+            /**
+             * We want to make sure migrations are run on updates.
+             *
+             * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
+             */
+            try {
+                require_once( 'dt-core/configuration/class-migration-engine.php' );
+                Disciple_Tools_Migration_Engine::migrate( Disciple_Tools_Migration_Engine::$migration_number );
+            } catch ( Throwable $e ) {
+                new WP_Error( 'migration_error', 'Migration engine failed to migrate.', [ 'message' => $e->getMessage() ] );
+            }
+        }
+
+        public function setup_wizard(){
+            $is_rest = dt_is_rest();
+
+            /**
+             * Redirect to setup wizard if not seen
+             */
+            $setup_wizard_completed = get_option( 'dt_setup_wizard_completed' );
+            $setup_wizard_completed = apply_filters( 'dt_setup_wizard_completed', $setup_wizard_completed );
+            $current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
+            $is_administrator = current_user_can( 'manage_options' );
+            if ( !$is_rest && !is_network_admin() && !wp_doing_cron() && !$setup_wizard_completed && $is_administrator && $current_page !== 'dt_setup_wizard' ) {
+                wp_redirect( admin_url( 'admin.php?page=dt_setup_wizard' ) );
+            }
+        }
 
         /**
          * Cloning is forbidden.
@@ -620,15 +577,45 @@ if ( version_compare( phpversion(), '7.4', '<' ) ) {
             $wpdb->$table = $wpdb->prefix . $table;
         }
     }
-}
 
-/**
- * Php Version Alert
- */
-function dt_theme_admin_notice_required_php_version() {
-    ?>
-    <div class="notice notice-error">
-        <p><?php echo esc_html( 'Disciple.Tools theme requires PHP version 7.4 or greater. Your current version is: ' . phpversion() . ' Please upgrade PHP.' );?></p>
-    </div>
-    <?php
+    /**
+     * Returns the main instance of Disciple_Tools to prevent the need to use globals.
+     *
+     * @since  0.1.0
+     * @return object Disciple_Tools
+     */
+    function disciple_tools() {
+        return Disciple_Tools::instance();
+    }
+
+
+    add_action( 'after_setup_theme', function(){
+        /**
+         * Load Language Files
+         */
+        load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
+
+        /**
+         * Load the Disciple Tools Theme
+         */
+        disciple_tools();
+    }, 5 );
+
+    /**
+     * The disciple_tools_load_plugins hook
+     * Set up hook for loading plugins
+     */
+    add_action( 'after_setup_theme', function (){
+        do_action( 'disciple_tools_load_plugins' );
+    }, 30 );
+
+    /**
+     * The disciple_tools_loaded hook
+     * Disciple.Tools theme and plugins are loaded.
+     * It is now safe to us the Disciple.Tools API, run actions and views
+     */
+    add_action( 'init', function (){
+        do_action( 'disciple_tools_loaded' );
+    }, 100 );
+
 }
