@@ -642,7 +642,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             }
 
             if ( $is_legacy ) {
-                $is_empty_post = count( array_keys( $post ) ) <= 1; // if this is a new post, it only has a post_type key
+                $is_empty_post = !is_array( $post ) || count( array_keys( $post ) ) <= 1; // if this is a new post, it only has a post_type key
                 ?>
                 <div class="section-subheader">
                     <?php dt_render_field_icon( $fields[$field_key] );
