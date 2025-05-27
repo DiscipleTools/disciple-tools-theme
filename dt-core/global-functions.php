@@ -642,6 +642,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             }
 
             if ( $is_legacy ) {
+                $is_empty_post = count( array_keys( $post ) ) <= 1; // if this is a new post, it only has a post_type key
                 ?>
                 <div class="section-subheader">
                     <?php dt_render_field_icon( $fields[$field_key] );
@@ -692,7 +693,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
 
                     <?php endif; ?>
-                    <?php if ( ( $field_type === 'location' || 'location_meta' === $field_type ) && DT_Mapbox_API::get_key() && ! empty( $post ) ) : ?>
+                    <?php if ( ( $field_type === 'location' || 'location_meta' === $field_type ) && DT_Mapbox_API::get_key() && !$is_empty_post ) : ?>
                         <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" id="new-mapbox-search" type="button" <?php echo esc_html( $disabled ); ?>>
                             <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
                         </button>
@@ -787,7 +788,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
                     </div>
                 <?php elseif ( $field_type === 'location_meta' ) : ?>
-                    <?php if ( DT_Mapbox_API::get_key() && empty( $post ) ) : // test if Mapbox key is present ?>
+                    <?php if ( DT_Mapbox_API::get_key() && $is_empty_post ) : // test if Mapbox key is present ?>
                         <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
                             <input id="mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto" <?php echo esc_html( $disabled ); ?>/>
                             <div class="input-group-button">
