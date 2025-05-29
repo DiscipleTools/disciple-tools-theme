@@ -163,7 +163,7 @@ class DT_Components
         $options_array = $fields[$field_key]['default'];
         $options_array = array_map(function ( $key, $value ) {
             return [
-                'id' => $key,
+                'id' => (string) $key,
                 'label' => $value['label'] ?? $key,
                 'color' => $value['color'] ?? null,
                 'icon' => $value['icon'] ?? null,
