@@ -170,4 +170,107 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $contact4 = DT_Posts::create_post( 'contacts', [ 'name' => 'one', 'number_test' => '' ], true, false );
         $this->assertNotWPError( $contact4 );
     }
+
+    /**
+     * @testdox do_not_overwrite_existing_fields: create with duplicate detection
+     */
+    public function test_do_not_overwrite_existing_fields_create() {
+        // Create initial contact
+        $initial_contact = DT_Posts::create_post('contacts', [
+            'name' => 'John Doe',
+            'contact_phone' => [ 'values' => [ [ 'value' => '123-456-7890' ] ] ],
+            'overall_status' => 'active',
+            'nickname' => 'Johnny'
+        ], true, false);
+        $this->assertNotWPError( $initial_contact );
+
+        // Try to create duplicate with do_not_overwrite_existing_fields = true
+        $duplicate_fields = [
+            'name' => 'John Doe',
+            'contact_phone' => [ 'values' => [ [ 'value' => '123-456-7890' ] ] ],
+            'overall_status' => 'paused', // Different value
+            'nickname' => 'John', // Different value
+            'contact_email' => [ 'values' => [ [ 'value' => 'john@example.com' ] ] ] // New field
+        ];
+
+        $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
+            'check_for_duplicates' => [ 'contact_phone' ],
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+        // Should still only have one contact_phone entry.
+        $this->assertSame( 1, count( $result['contact_phone'] ) );
+        // Should update to new values, as they are different.
+        $this->assertSame( 'paused', $result['overall_status']['key'] );
+        $this->assertSame( 'John', $result['nickname'] );
+        // Should add new fields.
+        $this->assertSame( 'john@example.com', $result['contact_email'][0]['value'] );
+    }
+
+    /**
+     * @testdox do_not_overwrite_existing_fields: create with overwrite enabled
+     */
+    public function test_overwrite_existing_fields_create() {
+        // Create initial contact
+        $initial_contact = DT_Posts::create_post('contacts', [
+            'name' => 'Jane Doe',
+            'contact_phone' => [ 'values' => [ [ 'value' => '987-654-3210' ] ] ],
+            'overall_status' => 'active',
+            'nickname' => 'Janie'
+        ], true, false);
+        $this->assertNotWPError( $initial_contact );
+
+        // Try to create duplicate with do_not_overwrite_existing_fields = false
+        $duplicate_fields = [
+            'name' => 'Jane Doe',
+            'contact_phone' => [ 'values' => [ [ 'value' => '987-654-3210' ] ] ],
+            'overall_status' => 'paused', // Different value
+            'nickname' => 'Jane', // Different value
+            'contact_email' => [ 'values' => [ [ 'value' => 'jane@example.com' ] ] ] // New field
+        ];
+
+        $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
+            'check_for_duplicates' => [ 'contact_phone' ],
+            'do_not_overwrite_existing_fields' => false
+        ]);
+
+        $this->assertNotWPError( $result );
+        // Should update existing fields with new values
+        $this->assertSame( 'paused', $result['overall_status']['key'] );
+        $this->assertSame( 'Jane', $result['nickname'] );
+        // Should add new fields
+        $this->assertSame( 'jane@example.com', $result['contact_email'][0]['value'] );
+    }
+
+    /**
+     * @testdox do_not_overwrite_existing_fields: multi-select fields
+     */
+    public function test_do_not_overwrite_multi_select_fields_create() {
+        // Create initial contact with tags
+        $initial_contact = DT_Posts::create_post('contacts', [
+            'name' => 'Multi Test',
+            'contact_phone' => [ 'values' => [ [ 'value' => '555-0001' ] ] ],
+            'tags' => [ 'values' => [ [ 'value' => 'existing_tag' ] ] ]
+        ], true, false);
+        $this->assertNotWPError( $initial_contact );
+
+        // Try to create duplicate with additional tags
+        $duplicate_fields = [
+            'name' => 'Multi Test',
+            'contact_phone' => [ 'values' => [ [ 'value' => '555-0001' ] ] ],
+            'tags' => [ 'values' => [ [ 'value' => 'existing_tag' ], [ 'value' => 'new_tag' ] ] ]
+        ];
+
+        $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
+            'check_for_duplicates' => [ 'contact_phone' ],
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+        // Should only add new tags, not duplicate existing ones
+        $this->assertContains( 'existing_tag', $result['tags'] );
+        $this->assertContains( 'new_tag', $result['tags'] );
+        $this->assertSame( 2, count( $result['tags'] ) );
+    }
 }
