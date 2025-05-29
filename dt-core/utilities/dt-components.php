@@ -129,7 +129,7 @@ class DT_Components
 
         $options = array_map(function ( $key, $value ) use ( $params ) {
             $option = [
-                'id' => $key,
+                'id' => (string) $key,
                 'label' => $value['label'],
             ];
             if ( !isset( $params['key_select']['disable_color'] ) ) {
@@ -163,7 +163,7 @@ class DT_Components
         $options_array = $fields[$field_key]['default'];
         $options_array = array_map(function ( $key, $value ) {
             return [
-                'id' => $key,
+                'id' => (string) $key,
                 'label' => $value['label'] ?? $key,
                 'color' => $value['color'] ?? null,
                 'icon' => $value['icon'] ?? null,
