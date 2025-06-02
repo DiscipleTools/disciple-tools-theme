@@ -98,31 +98,28 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
         }
 
         public static function get_location_grid_meta_by_id( $grid_meta_id ) {
-            dt_write_log('get_location_grid_meta_by_id');
+
             global $wpdb;
             return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $grid_meta_id ), ARRAY_A );
         }
 
-        public static function get_existing_locations( $post_id, $grid_id ) {
-            dt_write_log('check_existing_locations');
+        public static function checks_existing_location( $post_id, $grid_id ) {
+
             global $wpdb;
 
-            $dates_meta = $wpdb->get_results( "
+            $data_meta = $wpdb->get_results( "
                     SELECT * FROM $wpdb->dt_location_grid_meta
                     WHERE 
                     ( post_id = $post_id )
                     AND  grid_id = $grid_id 
                     ", ARRAY_A);
 
-            return $dates_meta;
+            return $data_meta;
         }        
 
         public static function add_location_grid_meta( $post_id, array $location_grid_meta, $postmeta_id_location_grid = null ) {
             global $wpdb;
             $geocoder = new Location_Grid_Geocoder();
-
-            dt_write_log( 'add_location_grid_meta - $location_grid_meta' );
-            dt_write_log( $location_grid_meta );
 
             self::validate_location_grid_meta( $location_grid_meta );
 
@@ -148,15 +145,14 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             }
 
             if ( isset( $post_id ) ) {
-                $grid = self::get_existing_locations( $post_id, $location_grid_meta['grid_id'] );
-
-                dt_write_log( 'get_existing_locations -> grid' );
-                dt_write_log( $grid );
-
+                $grid = self::checks_existing_location( $post_id, $location_grid_meta['grid_id'] );
+                
                 if( !empty( $grid ) )
-                {
-                    dt_write_log( 'Location already exists.' );
-                    return new WP_Error( __METHOD__, 'This location already exists in the contact.' );
+                { //The location informed already exists in the contact.
+
+                    dt_write_log( "The location informed was not added because it already exists in the contact. Location's grid_id:" );
+                    dt_write_log( $grid_id );
+                    return;
                 }                                
             }
 
