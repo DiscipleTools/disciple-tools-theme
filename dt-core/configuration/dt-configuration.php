@@ -5,7 +5,7 @@ if ( !defined( 'ABSPATH' ) ) {
 /**
  * Hooks and configurations that customize wordpress for D.T
  */
-nocache_headers();
+
 add_action( 'init', 'dt_set_permalink_structure' );
 add_action( 'update_option_permalink_structure', 'dt_permalink_structure_changed_callback' );
 add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recipients', 10, 2 );

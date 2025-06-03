@@ -67,21 +67,13 @@ class DT_Components
         return $shared_attributes;
     }
 
-    public static function render_icon_slot( $field ) {
-        if ( isset( $field['font-icon'] ) && !empty( $field['font-icon'] ) ): ?>
-            <span slot="icon-start">
-                <i class="dt-icon <?php echo esc_html( $field['font-icon'] ) ?>"></i>
-            </span>
-        <?php endif;
-    }
-
     public static function render_communication_channel( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         ?>
         <dt-multi-text <?php echo wp_kses_post( $shared_attributes ) ?>
-            value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>"
-            <?php self::render_icon_slot( $fields[$field_key] ) ?>
-        ></dt-multi-text>
+            value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>">
+            <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        </dt-multi-text>
         <?php
     }
 
@@ -137,8 +129,8 @@ class DT_Components
 
         $options = array_map(function ( $key, $value ) use ( $params ) {
             $option = [
-                'id' => $key,
-                'label' => $value['label'],
+                'id' => (string) $key,
+                'label' => $value['label'] ?? $key,
             ];
             if ( !isset( $params['key_select']['disable_color'] ) ) {
                 $option['color'] = $value['color'] ?? null;
@@ -160,9 +152,8 @@ class DT_Components
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         ?>
         <dt-location <?php echo wp_kses_post( $shared_attributes ) ?>
-            value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>"
+            value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>">
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>
-            >
         </dt-location>
         <?php
     }
@@ -172,7 +163,7 @@ class DT_Components
         $options_array = $fields[$field_key]['default'];
         $options_array = array_map(function ( $key, $value ) {
             return [
-                'id' => $key,
+                'id' => (string) $key,
                 'label' => $value['label'] ?? $key,
                 'color' => $value['color'] ?? null,
                 'icon' => $value['icon'] ?? null,
