@@ -219,11 +219,11 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
      * @testdox do_not_overwrite_existing_fields: create with overwrite enabled
      */
     public function test_overwrite_existing_fields_create() {
-        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
-        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+        $base_user = get_option( 'dt_base_user' );
 
         // Create initial contact
         $initial_fields = $this->sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
         $initial_fields['name'] = 'John Doe';
         $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '987-654-3210' ] ] ];
         $initial_fields['overall_status'] = 'active';
@@ -234,6 +234,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         // Try to create duplicate with do_not_overwrite_existing_fields = false
         $duplicate_fields = [
+            'assigned_to' => $base_user,
             'name' => 'Jane Doe',
             'contact_phone' => [ 'values' => [ [ 'value' => '987-654-3210' ] ] ],
             'overall_status' => 'paused', // Different value
