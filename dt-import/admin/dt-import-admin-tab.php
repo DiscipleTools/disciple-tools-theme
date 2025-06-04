@@ -102,6 +102,7 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
             'postTypes' => $this->get_available_post_types(),
             'translations' => $this->get_translations(),
             'fieldTypes' => $this->get_field_types(),
+            'geocodingServices' => $this->get_geocoding_services(),
             'maxFileSize' => $this->get_max_file_size(),
             'allowedFileTypes' => [ 'text/csv', 'application/csv', 'text/plain' ]
         ]);
@@ -190,7 +191,16 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
             'warnings' => __( 'Warnings', 'disciple_tools' ),
             'importWarnings' => __( 'Import Warnings', 'disciple_tools' ),
             'newRecordsWillBeCreated' => __( 'Some records will create new connection records. Review the preview below for details.', 'disciple_tools' ),
-            'newRecordIndicator' => __( '(NEW)', 'disciple_tools' )
+            'newRecordIndicator' => __( '(NEW)', 'disciple_tools' ),
+
+            // Geocoding translations
+            'geocodingService' => __( 'Geocoding Service', 'disciple_tools' ),
+            'selectGeocodingService' => __( 'Select a geocoding service to convert addresses to coordinates', 'disciple_tools' ),
+            'geocodingNote' => __( 'Note: Geocoding will be applied to location_meta fields that contain addresses or coordinates', 'disciple_tools' ),
+            'geocodingOptional' => __( 'Geocoding is optional - you can import without it', 'disciple_tools' ),
+            'locationInfo' => __( 'location fields accept grid IDs, coordinates (lat,lng), or addresses', 'disciple_tools' ),
+            'locationMetaInfo' => __( 'location_meta fields accept grid IDs, coordinates (lat,lng), or addresses', 'disciple_tools' ),
+            'noGeocodingService' => __( 'No geocoding service is available. Please configure Google Maps or Mapbox API keys.', 'disciple_tools' )
         ];
     }
 
@@ -207,8 +217,27 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
             'communication_channel' => __( 'Communication Channel', 'disciple_tools' ),
             'connection' => __( 'Connection', 'disciple_tools' ),
             'user_select' => __( 'User Select', 'disciple_tools' ),
-            'location' => __( 'Location', 'disciple_tools' )
+            'location' => __( 'Location', 'disciple_tools' ),
+            'location_meta' => __( 'Location Meta', 'disciple_tools' )
         ];
+    }
+
+    private function get_geocoding_services() {
+        $available_services = DT_CSV_Import_Geocoding::get_available_geocoding_services();
+
+        $services = [
+            'none' => __( 'No Geocoding', 'disciple_tools' )
+        ];
+
+        if ( in_array( 'google', $available_services ) ) {
+            $services['google'] = __( 'Google Maps', 'disciple_tools' );
+        }
+
+        if ( in_array( 'mapbox', $available_services ) ) {
+            $services['mapbox'] = __( 'Mapbox', 'disciple_tools' );
+        }
+
+        return $services;
     }
 
     private function get_max_file_size() {

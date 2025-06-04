@@ -209,37 +209,45 @@ class DT_CSV_Import_Field_Handlers {
     }
 
     /**
-     * Handle location field processing
+     * Handle location_grid field processing (requires numeric grid ID)
+     */
+    public static function handle_location_grid_field( $value, $field_config ) {
+        $value = trim( $value );
+
+        // location_grid must be a numeric grid ID
+        if ( !is_numeric( $value ) ) {
+            throw new Exception( "location_grid field requires a numeric grid ID, got: {$value}" );
+        }
+
+        $grid_id = intval( $value );
+
+        // Validate that the grid ID exists
+        if ( !DT_CSV_Import_Geocoding::validate_grid_id( $grid_id ) ) {
+            throw new Exception( "Invalid location grid ID: {$grid_id}" );
+        }
+
+        return $grid_id;
+    }
+
+    /**
+     * Handle location_grid_meta field processing (supports numeric ID, coordinates, or address)
+     */
+    public static function handle_location_grid_meta_field( $value, $field_config, $geocode_service = 'none' ) {
+        return DT_CSV_Import_Geocoding::process_for_import( $value, $geocode_service );
+    }
+
+    /**
+     * Handle location field processing (legacy)
      */
     public static function handle_location_field( $value, $field_config ) {
         $value = trim( $value );
 
         // Check if it's a grid ID
         if ( is_numeric( $value ) ) {
-            // Validate grid ID exists
-            global $wpdb;
-            $grid_exists = $wpdb->get_var($wpdb->prepare(
-                "SELECT grid_id FROM {$wpdb->prefix}dt_location_grid WHERE grid_id = %d",
-                intval( $value )
-            ));
-
-            if ( $grid_exists ) {
-                return intval( $value );
-            }
+            return self::handle_location_grid_field( $value, $field_config );
         }
 
-        // Check if it's lat,lng coordinates
-        if ( preg_match( '/^-?\d+\.?\d*,-?\d+\.?\d*$/', $value ) ) {
-            list($lat, $lng) = explode( ',', $value );
-            return [
-                'lat' => floatval( $lat ),
-                'lng' => floatval( $lng )
-            ];
-        }
-
-        // Treat as address - return as-is for geocoding later
-        return [
-            'address' => $value
-        ];
+        // For non-numeric values, treat as location_grid_meta
+        return self::handle_location_grid_meta_field( $value, $field_config );
     }
 }

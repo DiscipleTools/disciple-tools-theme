@@ -179,6 +179,13 @@ class DT_CSV_Import_Processor {
             case 'location':
                 return self::process_location_value( $raw_value );
 
+            case 'location_grid':
+                return self::process_location_grid_value( $raw_value );
+
+            case 'location_meta':
+                $geocode_service = $mapping['geocode_service'] ?? 'none';
+                return self::process_location_grid_meta_value( $raw_value, $geocode_service );
+
             default:
                 return sanitize_text_field( trim( $raw_value ) );
         }
@@ -450,6 +457,21 @@ class DT_CSV_Import_Processor {
     }
 
     /**
+     * Process location_grid field value
+     */
+    private static function process_location_grid_value( $raw_value ) {
+        return DT_CSV_Import_Field_Handlers::handle_location_grid_field( $raw_value, [] );
+    }
+
+    /**
+     * Process location_grid_meta field value
+     */
+    private static function process_location_grid_meta_value( $raw_value, $geocode_service ) {
+        $result = DT_CSV_Import_Field_Handlers::handle_location_grid_meta_field( $raw_value, [], $geocode_service );
+        return $result;
+    }
+
+    /**
      * Format processed value for DT_Posts API according to field type
      */
     public static function format_value_for_api( $processed_value, $field_key, $post_type ) {
@@ -506,6 +528,28 @@ class DT_CSV_Import_Processor {
                     ];
                 } elseif ( is_array( $processed_value ) ) {
                     // Lat/lng or address data
+                    return [
+                        'values' => [
+                            $processed_value
+                        ]
+                    ];
+                }
+                break;
+
+            case 'location_grid':
+                // Format location grid ID for DT_Posts API
+                if ( is_numeric( $processed_value ) ) {
+                    return [
+                        'values' => [
+                            [ 'value' => $processed_value ]
+                        ]
+                    ];
+                }
+                break;
+
+            case 'location_meta':
+                // Format location meta for DT_Posts API (same as location_grid_meta)
+                if ( is_array( $processed_value ) && !empty( $processed_value ) ) {
                     return [
                         'values' => [
                             $processed_value
@@ -605,9 +649,11 @@ class DT_CSV_Import_Processor {
 
                 if ( is_wp_error( $result ) ) {
                     $error_count++;
+                    $error_message = $result->get_error_message();
+
                     $errors[] = [
                         'row' => $row_index + 2,
-                        'message' => $result->get_error_message()
+                        'message' => $error_message
                     ];
                 } else {
                     $imported_count++;

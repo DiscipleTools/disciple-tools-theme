@@ -48,6 +48,11 @@
         this.handleFieldMapping(e),
       );
 
+      // Geocoding service selection
+      $(document).on('change', '.geocoding-service-select', (e) =>
+        this.handleGeocodingServiceChange(e),
+      );
+
       // Inline value mapping events
       $(document).on('change', '.inline-value-mapping-select', (e) =>
         this.handleInlineValueMappingChange(e),
@@ -626,6 +631,8 @@
 
       if (['key_select', 'multi_select'].includes(fieldConfig.type)) {
         this.showInlineValueMapping(columnIndex, fieldKey, fieldConfig);
+      } else if (fieldConfig.type === 'location_meta') {
+        this.showGeocodingServiceSelector(columnIndex, fieldKey);
       } else {
         $options.hide().empty();
       }
@@ -1438,6 +1445,10 @@
         Array.isArray(value.values)
       ) {
         const values = value.values.map((item) => {
+          // Handle location_meta objects within values array
+          if (typeof item === 'object' && item.label !== undefined) {
+            return item.label;
+          }
           if (typeof item === 'object' && item.value !== undefined) {
             return item.value;
           }
@@ -1450,12 +1461,21 @@
       if (Array.isArray(value)) {
         return value
           .map((item) => {
+            // Handle location_meta objects in arrays
+            if (typeof item === 'object' && item.label !== undefined) {
+              return item.label;
+            }
             if (typeof item === 'object' && item.value !== undefined) {
               return item.value;
             }
             return item;
           })
           .join('; ');
+      }
+
+      // Handle location_meta objects directly
+      if (typeof value === 'object' && value.label !== undefined) {
+        return value.label;
       }
 
       if (typeof value === 'object') {
@@ -1526,6 +1546,84 @@
           $(step).removeClass('active').addClass('completed');
         }
       });
+    }
+
+    showGeocodingServiceSelector(columnIndex, fieldKey) {
+      const $card = $(
+        `.column-mapping-card[data-column-index="${columnIndex}"]`,
+      );
+      const $options = $card.find('.field-specific-options');
+
+      // Get available geocoding services
+      const geocodingServices = dtImport.geocodingServices || {};
+
+      // Create options HTML
+      const serviceOptionsHtml = Object.entries(geocodingServices)
+        .map(
+          ([key, label]) =>
+            `<option value="${this.escapeHtml(key)}">${this.escapeHtml(label)}</option>`,
+        )
+        .join('');
+
+      const geocodingSelectorHtml = `
+        <div class="geocoding-service-section">
+          <h5 style="margin: 0 0 10px 0; font-size: 13px;">${dtImport.translations.geocodingService}</h5>
+          <div class="geocoding-service-container">
+            <select class="geocoding-service-select" data-column-index="${columnIndex}" style="width: 100%; font-size: 12px;">
+              ${serviceOptionsHtml}
+            </select>
+            <p style="font-size: 11px; color: #666; margin-top: 5px;">
+              ${dtImport.translations.selectGeocodingService}
+            </p>
+            <div class="geocoding-info" style="font-size: 11px; color: #666; margin-top: 5px;">
+              <p>${dtImport.translations.geocodingNote}</p>
+              <p>${dtImport.translations.geocodingOptional}</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      $options.html(geocodingSelectorHtml).show();
+
+      // Set default value to 'none' if not already set
+      const currentMapping = this.fieldMappings[columnIndex];
+      if (!currentMapping || !currentMapping.geocode_service) {
+        $options.find('.geocoding-service-select').val('none');
+        this.updateFieldMappingGeocodingService(columnIndex, 'none');
+      } else {
+        $options
+          .find('.geocoding-service-select')
+          .val(currentMapping.geocode_service);
+      }
+    }
+
+    updateFieldMappingGeocodingService(columnIndex, serviceKey) {
+      // Update the field mappings with the selected geocoding service
+      if (!this.fieldMappings[columnIndex]) {
+        // This shouldn't happen since field mapping should be set first
+        console.warn(`No field mapping found for column ${columnIndex}`);
+        return;
+      } else {
+        this.fieldMappings[columnIndex].geocode_service = serviceKey;
+      }
+
+      console.log(
+        `DT Import: Added geocoding service mapping for column ${columnIndex} -> ${serviceKey}`,
+      );
+
+      this.updateMappingSummary();
+    }
+
+    handleGeocodingServiceChange(e) {
+      const $select = $(e.target);
+      const columnIndex = $select.data('column-index');
+      const serviceKey = $select.val();
+
+      console.log(
+        `DT Import: Column ${columnIndex} geocoding service changed to: "${serviceKey}"`,
+      );
+
+      this.updateFieldMappingGeocodingService(columnIndex, serviceKey);
     }
   }
 
