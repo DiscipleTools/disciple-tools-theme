@@ -25,6 +25,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
     public static function setupBeforeClass(): void  {
         //setup custom fields for each field type and custom tile.
         $user_id = wp_create_user( 'dispatcher1', 'test', 'test2@example.com' );
+        update_option( 'dt_base_user', $user_id, false );
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
@@ -198,11 +199,11 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
      * @testdox do_not_overwrite_existing_fields: update with protection enabled
      */
     public function test_do_not_overwrite_existing_fields_update() {
-        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
-        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+        $base_user = get_option( 'dt_base_user' );
 
         // Create a contact with initial values
         $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
         $initial_fields['name'] = 'Update Test';
         $initial_fields['nickname'] = 'Original Nick';
         $initial_fields['overall_status'] = 'active';
@@ -214,6 +215,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         // Update with do_not_overwrite_existing_fields = true
         $update_fields = [
+            'assigned_to' => $base_user,
             'overall_status' => 'paused', // Try to change existing field
             'nickname' => 'New Nick', // Try to change existing field
             'contact_email' => [ 'values' => [ [ 'value' => 'test@example.com' ] ] ], // Add new field
@@ -241,11 +243,11 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
      * @testdox do_not_overwrite_existing_fields: update with protection disabled
      */
     public function test_overwrite_existing_fields_update() {
-        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
-        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+        $base_user = get_option( 'dt_base_user' );
 
         // Create a contact with initial values
         $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
         $initial_fields['name'] = 'Overwrite Test';
         $initial_fields['nickname'] = 'Original Nick';
         $initial_fields['overall_status'] = 'active';
@@ -255,6 +257,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         // Update with do_not_overwrite_existing_fields = false (default behavior)
         $update_fields = [
+            'assigned_to' => $base_user,
             'overall_status' => 'paused',
             'nickname' => 'New Nick',
             'contact_email' => [ 'values' => [ [ 'value' => 'overwrite@example.com' ] ] ],
@@ -279,11 +282,11 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
      * @testdox do_not_overwrite_existing_fields: empty vs non-empty fields
      */
     public function test_do_not_overwrite_empty_fields_update() {
-        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
-        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+        $base_user = get_option( 'dt_base_user' );
 
         // Create a contact with some empty fields
         $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
         $initial_fields['name'] = 'Overwrite Test';
         $initial_fields['nickname'] = null;
         $initial_fields['overall_status'] = 'active';
@@ -293,6 +296,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         // Update with do_not_overwrite_existing_fields = true
         $update_fields = [
+            'assigned_to' => $base_user,
             'overall_status' => 'paused', // Try to change existing field
             'nickname' => 'Should Be Added' // Add to empty field
         ];
@@ -312,11 +316,11 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
      * @testdox do_not_overwrite_existing_fields: communication channel fields
      */
     public function test_do_not_overwrite_communication_channels_update() {
-        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
-        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+        $base_user = get_option( 'dt_base_user' );
 
         // Create a contact with phone number
         $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
         $initial_fields['name'] = 'Communication Test';
         $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '444-555-6666' ] ] ];
 
@@ -325,6 +329,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         // Update with additional phone and email
         $update_fields = [
+            'assigned_to' => $base_user,
             'contact_phone' => [ 'values' => [ [ 'value' => '444-555-6666' ], [ 'value' => '777-888-9999' ] ] ],
             'contact_email' => [ 'values' => [ [ 'value' => 'comm@example.com' ] ] ],
             'baptism_date' => $initial_fields['baptism_date']
@@ -351,11 +356,11 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
      * @testdox do_not_overwrite_existing_fields: date fields
      */
     public function test_do_not_overwrite_date_fields_update() {
-        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
-        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+        $base_user = get_option( 'dt_base_user' );
 
         // Create a contact with baptism date
         $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
         $initial_fields['name'] = 'Date Test';
         $initial_fields['baptism_date'] = '2020-01-01';
 
@@ -364,6 +369,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         // Try to update baptism date
         $update_fields = [
+            'assigned_to' => $base_user,
             'baptism_date' => '2023-12-25',
             'tags' => [ 'values' => [ [ 'value' => 'tag1' ], [ 'value' => 'tag2' ] ] ],
             'milestones' => [ 'values' => [ [ 'value' => 'mature_christian' ] ] ]
@@ -383,10 +389,10 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_text_fields_update() {
-        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
-        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+        $base_user = get_option( 'dt_base_user' );
 
         $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
         $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '123-456-7890' ] ] ];
         $initial_fields['nickname'] = 'Johnny';
 
@@ -394,6 +400,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertNotWPError( $contact );
 
         $update_fields = [
+            'assigned_to' => $base_user,
             'name' => 'John Doe',
             'contact_phone' => [ 'values' => [ [ 'value' => '123-456-7890' ] ] ],
             'nickname' => 'John', // Different value
@@ -409,15 +416,16 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_number_fields_update() {
-        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
-        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+        $base_user = get_option( 'dt_base_user' );
 
         $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
 
         $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
         $this->assertNotWPError( $contact );
 
         $update_fields = [
+            'assigned_to' => $base_user,
             'title' => $initial_fields['title'],
             'contact_phone' => $initial_fields['contact_phone'],
             'quick_button_contact_established' => 1
@@ -433,16 +441,17 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_boolean_fields_update() {
-        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
-        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+        $base_user = get_option( 'dt_base_user' );
 
         $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
         $initial_fields['requires_update'] = true;
 
         $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
         $this->assertNotWPError( $contact );
 
         $update_fields = [
+            'assigned_to' => $base_user,
             'title' => $initial_fields['title'],
             'contact_phone' => $initial_fields['contact_phone'],
             'requires_update' => false
@@ -458,16 +467,17 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_key_select_fields_update() {
-        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
-        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+        $base_user = get_option( 'dt_base_user' );
 
         $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
         $initial_fields['overall_status'] = 'active';
 
         $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
         $this->assertNotWPError( $contact );
 
         $update_fields = [
+            'assigned_to' => $base_user,
             'name' => 'John Doe',
             'contact_phone' => $initial_fields['contact_phone'],
             'overall_status' => 'paused', // Different value
@@ -483,16 +493,17 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_tags_fields_update() {
-        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
-        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+        $base_user = get_option( 'dt_base_user' );
 
         $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
         $initial_fields['tags'] = [ 'values' => [ [ 'value' => 'existing_tag' ] ] ];
 
         $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
         $this->assertNotWPError( $contact );
 
         $update_fields = [
+            'assigned_to' => $base_user,
             'name' => 'Tags Test',
             'contact_phone' => $initial_fields['contact_phone'],
             'tags' => [ 'values' => [ [ 'value' => 'existing_tag' ], [ 'value' => 'new_tag' ] ] ]
@@ -510,15 +521,16 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_location_fields_update() {
-        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
-        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+        $base_user = get_option( 'dt_base_user' );
 
         $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
 
         $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
         $this->assertNotWPError( $contact );
 
         $update_fields = [
+            'assigned_to' => $base_user,
             'title' => $initial_fields['title'],
             'contact_phone' => $initial_fields['contact_phone'],
             'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ]
