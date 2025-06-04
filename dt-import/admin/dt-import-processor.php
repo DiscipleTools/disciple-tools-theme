@@ -1,13 +1,13 @@
 <?php
 /**
- * DT Import Processor
+ * DT CSV Import Processor
  */
 
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 
-class DT_Import_Processor {
+class DT_CSV_Import_Processor {
 
     /**
      * Generate preview data
@@ -108,14 +108,14 @@ class DT_Import_Processor {
                 return floatval( $raw_value );
 
             case 'date':
-                $normalized_date = DT_Import_Utilities::normalize_date( $raw_value );
+                $normalized_date = DT_CSV_Import_Utilities::normalize_date( $raw_value );
                 if ( empty( $normalized_date ) ) {
                     throw new Exception( "Invalid date format: {$raw_value}" );
                 }
                 return $normalized_date;
 
             case 'boolean':
-                $boolean_value = DT_Import_Utilities::normalize_boolean( $raw_value );
+                $boolean_value = DT_CSV_Import_Utilities::normalize_boolean( $raw_value );
                 if ( $boolean_value === null ) {
                     throw new Exception( "Invalid boolean value: {$raw_value}" );
                 }
@@ -172,7 +172,7 @@ class DT_Import_Processor {
      * Process multi_select field value
      */
     private static function process_multi_select_value( $raw_value, $mapping, $field_config ) {
-        $values = DT_Import_Utilities::split_multi_value( $raw_value );
+        $values = DT_CSV_Import_Utilities::split_multi_value( $raw_value );
         $processed_values = [];
         $value_mapping = $mapping['value_mapping'] ?? [];
 
@@ -198,7 +198,7 @@ class DT_Import_Processor {
      * Process tags field value
      */
     private static function process_tags_value( $raw_value ) {
-        $tags = DT_Import_Utilities::split_multi_value( $raw_value );
+        $tags = DT_CSV_Import_Utilities::split_multi_value( $raw_value );
         return array_map(function( $tag ) {
             return sanitize_text_field( trim( $tag ) );
         }, $tags);
@@ -208,7 +208,7 @@ class DT_Import_Processor {
      * Process communication channel value
      */
     private static function process_communication_channel_value( $raw_value, $field_key ) {
-        $channels = DT_Import_Utilities::split_multi_value( $raw_value );
+        $channels = DT_CSV_Import_Utilities::split_multi_value( $raw_value );
         $processed_channels = [];
 
         foreach ( $channels as $channel ) {
@@ -244,7 +244,7 @@ class DT_Import_Processor {
             throw new Exception( 'Connection field missing post_type configuration' );
         }
 
-        $connections = DT_Import_Utilities::split_multi_value( $raw_value );
+        $connections = DT_CSV_Import_Utilities::split_multi_value( $raw_value );
         $processed_connections = [];
 
         foreach ( $connections as $connection ) {

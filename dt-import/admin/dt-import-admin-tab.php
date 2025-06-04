@@ -1,13 +1,13 @@
 <?php
 /**
- * DT Import Admin Tab Integration
+ * DT CSV Import Admin Tab Integration
  */
 
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 
-class DT_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
+class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
     private static $_instance = null;
 
     public static function instance() {
@@ -97,7 +97,7 @@ class DT_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
         // Localize script with necessary data
         wp_localize_script('dt-import-js', 'dtImport', [
             'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-            'restUrl' => rest_url( 'dt-import/v2/' ),
+            'restUrl' => rest_url( 'dt-csv-import/v2/' ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'postTypes' => $this->get_available_post_types(),
             'translations' => $this->get_translations(),

@@ -1,6 +1,6 @@
 <?php
 /**
- * DT Import REST API Endpoints
+ * DT CSV Import REST API Endpoints
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -8,9 +8,9 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Class DT_Import_Ajax
+ * Class DT_CSV_Import_Ajax
  */
-class DT_Import_Ajax {
+class DT_CSV_Import_Ajax {
 
     /**
      * @var object Instance variable
@@ -20,7 +20,7 @@ class DT_Import_Ajax {
     /**
      * Instance. Ensures only one instance is loaded or can be loaded.
      *
-     * @return DT_Import_Ajax instance
+     * @return DT_CSV_Import_Ajax instance
      */
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
@@ -33,7 +33,7 @@ class DT_Import_Ajax {
      * The REST API variables
      */
     private $version = 2;
-    private $context = 'dt-import';
+    private $context = 'dt-csv-import';
     private $namespace;
 
     /**
@@ -319,19 +319,19 @@ class DT_Import_Ajax {
         ];
 
         // Validate file
-        $validation_errors = DT_Import_Utilities::validate_file_upload( $sanitized_file );
+        $validation_errors = DT_CSV_Import_Utilities::validate_file_upload( $sanitized_file );
         if ( !empty( $validation_errors ) ) {
             return new WP_Error( 'file_validation_failed', implode( ', ', $validation_errors ), [ 'status' => 400 ] );
         }
 
         // Save file to temporary location
-        $file_path = DT_Import_Utilities::save_uploaded_file( $sanitized_file );
+        $file_path = DT_CSV_Import_Utilities::save_uploaded_file( $sanitized_file );
         if ( !$file_path ) {
             return new WP_Error( 'file_save_failed', 'Failed to save uploaded file', [ 'status' => 500 ] );
         }
 
         // Parse CSV data
-        $csv_data = DT_Import_Utilities::parse_csv_file( $file_path );
+        $csv_data = DT_CSV_Import_Utilities::parse_csv_file( $file_path );
         if ( is_wp_error( $csv_data ) ) {
             return $csv_data;
         }
@@ -370,7 +370,7 @@ class DT_Import_Ajax {
         $post_type = $session['post_type'];
 
         // Generate field mapping suggestions
-        $mapping_suggestions = DT_Import_Mapping::analyze_csv_columns( $csv_data, $post_type );
+        $mapping_suggestions = DT_CSV_Import_Mapping::analyze_csv_columns( $csv_data, $post_type );
 
         // Update session with mapping suggestions
         $this->update_import_session($session_id, [
@@ -400,7 +400,7 @@ class DT_Import_Ajax {
         }
 
         // Validate mappings
-        $validation_errors = DT_Import_Mapping::validate_mapping( $mappings, $session['post_type'] );
+        $validation_errors = DT_CSV_Import_Mapping::validate_mapping( $mappings, $session['post_type'] );
         if ( !empty( $validation_errors ) ) {
             return new WP_Error( 'mapping_validation_failed', implode( ', ', $validation_errors ), [ 'status' => 400 ] );
         }
@@ -440,7 +440,7 @@ class DT_Import_Ajax {
         }
 
         // Generate preview data
-        $preview_data = DT_Import_Processor::generate_preview(
+        $preview_data = DT_CSV_Import_Processor::generate_preview(
             $session['csv_data'],
             $session['field_mappings'],
             $session['post_type'],
@@ -494,7 +494,7 @@ class DT_Import_Ajax {
             ];
         } else {
             // Fallback to scheduled execution
-            wp_schedule_single_event( time(), 'dt_import_execute', [ $session_id ] );
+            wp_schedule_single_event( time(), 'dt_csv_import_execute', [ $session_id ] );
 
             return [
                 'success' => true,
@@ -667,10 +667,10 @@ class DT_Import_Ajax {
         $data_rows = array_slice( $csv_data, 1 );
 
         // Get unique values from the column (excluding header)
-        $unique_values = DT_Import_Mapping::get_unique_column_values( $data_rows, $column_index );
+        $unique_values = DT_CSV_Import_Mapping::get_unique_column_values( $data_rows, $column_index );
 
         // Also get sample data for preview (also excluding header)
-        $sample_data = DT_Import_Utilities::get_sample_data( $data_rows, $column_index, 10 );
+        $sample_data = DT_CSV_Import_Utilities::get_sample_data( $data_rows, $column_index, 10 );
 
         return [
             'success' => true,
@@ -728,7 +728,7 @@ class DT_Import_Ajax {
         }
 
         // Create the field using DT's field creation API
-        $result = DT_Import_Utilities::create_custom_field( $post_type, $field_key, $field_config );
+        $result = DT_CSV_Import_Utilities::create_custom_field( $post_type, $field_key, $field_config );
 
         if ( is_wp_error( $result ) ) {
             return $result;
@@ -924,7 +924,7 @@ class DT_Import_Ajax {
             ];
         } else {
             // For small imports, process completely
-            $result = DT_Import_Processor::execute_import( $session_id );
+            $result = DT_CSV_Import_Processor::execute_import( $session_id );
 
             return [
                 'started' => !is_wp_error( $result ),
@@ -1047,10 +1047,10 @@ class DT_Import_Ajax {
                     $raw_value = $row[$column_index] ?? '';
 
                     if ( !empty( trim( $raw_value ) ) ) {
-                        $processed_value = DT_Import_Processor::process_field_value( $raw_value, $field_key, $mapping, $post_type );
+                        $processed_value = DT_CSV_Import_Processor::process_field_value( $raw_value, $field_key, $mapping, $post_type );
                         if ( $processed_value !== null ) {
                             // Format value according to field type for DT_Posts API
-                            $post_data[$field_key] = DT_Import_Processor::format_value_for_api( $processed_value, $field_key, $post_type );
+                            $post_data[$field_key] = DT_CSV_Import_Processor::format_value_for_api( $processed_value, $field_key, $post_type );
                         }
                     }
                 }
@@ -1148,7 +1148,7 @@ class DT_Import_Ajax {
                 $this->process_import_chunk( $session_id, $rows_processed, 25 );
             } else {
                 // Restart the full import
-                DT_Import_Processor::execute_import( $session_id );
+                DT_CSV_Import_Processor::execute_import( $session_id );
             }
             return true;
         }
@@ -1157,4 +1157,4 @@ class DT_Import_Ajax {
     }
 }
 
-DT_Import_Ajax::instance();
+DT_CSV_Import_Ajax::instance();

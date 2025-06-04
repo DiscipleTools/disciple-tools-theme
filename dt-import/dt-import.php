@@ -9,9 +9,9 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Main DT Import Class
+ * Main DT CSV Import Class (renamed to avoid conflicts)
  */
-class DT_Theme_Import {
+class DT_Theme_CSV_Import {
     private static $_instance = null;
 
     public static function instance() {
@@ -33,16 +33,14 @@ class DT_Theme_Import {
             return;
         }
 
-        // Don't load if the disciple-tools-import plugin is already active
-        if ( class_exists( 'Disciple_Tools_Import' ) ) {
-            return;
-        }
+        // Log successful initialization
+        error_log( 'DT Theme CSV Import: Initializing theme CSV import feature' );
 
         // Load required files
         $this->load_dependencies();
 
         // Register the background import action hook
-        add_action( 'dt_import_execute', [ DT_Import_Processor::class, 'execute_import' ] );
+        add_action( 'dt_csv_import_execute', [ DT_CSV_Import_Processor::class, 'execute_import' ] );
 
         // Initialize admin interface if in admin
         if ( is_admin() ) {
@@ -58,17 +56,14 @@ class DT_Theme_Import {
         require_once plugin_dir_path( __FILE__ ) . 'admin/dt-import-processor.php';
         require_once plugin_dir_path( __FILE__ ) . 'ajax/dt-import-ajax.php';
 
-
-
         if ( is_admin() ) {
             require_once plugin_dir_path( __FILE__ ) . 'admin/dt-import-admin-tab.php';
         }
     }
 
     private function init_admin() {
-        DT_Import_Admin_Tab::instance();
+        DT_CSV_Import_Admin_Tab::instance();
     }
-
 
     public function activate() {
         // Create upload directory for temporary CSV files
@@ -134,4 +129,4 @@ class DT_Theme_Import {
 }
 
 // Initialize the plugin
-DT_Theme_Import::instance();
+DT_Theme_CSV_Import::instance();

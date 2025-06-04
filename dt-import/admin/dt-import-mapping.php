@@ -1,13 +1,13 @@
 <?php
 /**
- * DT Import Field Mapping Logic
+ * DT CSV Import Mapping
  */
 
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 
-class DT_Import_Mapping {
+class DT_CSV_Import_Mapping {
 
     /**
      * Analyze CSV columns and suggest field mappings

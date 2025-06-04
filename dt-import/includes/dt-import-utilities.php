@@ -1,13 +1,13 @@
 <?php
 /**
- * DT Import Utility Functions
+ * DT CSV Import Utilities
  */
 
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 
-class DT_Import_Utilities {
+class DT_CSV_Import_Utilities {
 
     /**
      * Parse CSV file and return data array
