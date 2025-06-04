@@ -219,6 +219,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
      * @testdox do_not_overwrite_existing_fields: create with overwrite enabled
      */
     public function test_overwrite_existing_fields_create() {
+        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
+        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+
         // Create initial contact
         $initial_fields = $this->sample_contact;
         $initial_fields['name'] = 'John Doe';
@@ -258,6 +261,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
      * @testdox do_not_overwrite_existing_fields: multi-select fields
      */
     public function test_do_not_overwrite_multi_select_fields_create() {
+        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
+        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+
         // Create initial contact with tags
         $initial_fields = $this->sample_contact;
         $initial_fields['name'] = 'Multi Test';
@@ -290,6 +296,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_text_fields_create() {
+        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
+        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+
         $initial_fields = $this->sample_contact;
         $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '123-456-7890' ] ] ];
         $initial_fields['nickname'] = 'Johnny';
@@ -313,6 +322,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_number_fields_create() {
+        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
+        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+
         $initial_fields = $this->sample_contact;
 
         $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
@@ -334,6 +346,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_boolean_fields_create() {
+        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
+        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+
         $initial_fields = $this->sample_contact;
         $initial_fields['requires_update'] = true;
 
@@ -356,6 +371,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_date_fields_create() {
+        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
+        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+
         $initial_fields = $this->sample_contact;
 
         $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
@@ -377,6 +395,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_key_select_fields_create() {
+        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
+        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+
         $initial_fields = $this->sample_contact;
         $initial_fields['overall_status'] = 'active';
 
@@ -399,6 +420,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_tags_fields_create() {
+        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
+        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+
         $initial_fields = $this->sample_contact;
         $initial_fields['tags'] = [ 'values' => [ [ 'value' => 'existing_tag' ] ] ];
 
@@ -423,6 +447,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_location_fields_create() {
+        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
+        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+
         $initial_fields = $this->sample_contact;
 
         $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
@@ -444,6 +471,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_comms_channel_fields_create() {
+        $user_id = wp_create_user( 'multiplier_user_select', 'test', 'multiplier_user_select@example.com' );
+        wp_set_current_user( $user_id )->set_role( 'multiplier' );
+
         $initial_fields = $this->sample_contact;
         $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '123-456-7890' ] ] ];
 
