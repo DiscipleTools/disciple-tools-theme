@@ -24,7 +24,7 @@ class DT_CSV_Import_Mapping {
 
         foreach ( $headers as $index => $column_name ) {
             $suggestion = self::suggest_field_mapping( $column_name, $field_settings );
-            $sample_data = DT_Import_Utilities::get_sample_data( $csv_data, $index, 5 );
+            $sample_data = DT_CSV_Import_Utilities::get_sample_data( $csv_data, $index, 5 );
 
             $mapping_suggestions[$index] = [
                 'column_name' => $column_name,
@@ -41,11 +41,11 @@ class DT_CSV_Import_Mapping {
      * Suggest field mapping for a column
      */
     private static function suggest_field_mapping( $column_name, $field_settings ) {
-        $column_normalized = DT_Import_Utilities::normalize_string( $column_name );
+        $column_normalized = DT_CSV_Import_Utilities::normalize_string( $column_name );
 
         // Direct field name matches
         foreach ( $field_settings as $field_key => $field_config ) {
-            $field_normalized = DT_Import_Utilities::normalize_string( $field_config['name'] );
+            $field_normalized = DT_CSV_Import_Utilities::normalize_string( $field_config['name'] );
 
             // Exact match
             if ( $column_normalized === $field_normalized ) {
@@ -53,14 +53,14 @@ class DT_CSV_Import_Mapping {
             }
 
             // Field key match
-            if ( $column_normalized === DT_Import_Utilities::normalize_string( $field_key ) ) {
+            if ( $column_normalized === DT_CSV_Import_Utilities::normalize_string( $field_key ) ) {
                 return $field_key;
             }
         }
 
         // Partial matches
         foreach ( $field_settings as $field_key => $field_config ) {
-            $field_normalized = DT_Import_Utilities::normalize_string( $field_config['name'] );
+            $field_normalized = DT_CSV_Import_Utilities::normalize_string( $field_config['name'] );
 
             if ( strpos( $field_normalized, $column_normalized ) !== false ||
                 strpos( $column_normalized, $field_normalized ) !== false ) {
@@ -72,7 +72,7 @@ class DT_CSV_Import_Mapping {
         $aliases = self::get_field_aliases();
         foreach ( $aliases as $field_key => $field_aliases ) {
             foreach ( $field_aliases as $alias ) {
-                if ( $column_normalized === DT_Import_Utilities::normalize_string( $alias ) ) {
+                if ( $column_normalized === DT_CSV_Import_Utilities::normalize_string( $alias ) ) {
                     return $field_key;
                 }
             }
@@ -85,10 +85,10 @@ class DT_CSV_Import_Mapping {
      * Calculate confidence score for field mapping
      */
     private static function calculate_confidence( $column_name, $field_key, $field_settings ) {
-        $column_normalized = DT_Import_Utilities::normalize_string( $column_name );
+        $column_normalized = DT_CSV_Import_Utilities::normalize_string( $column_name );
         $field_config = $field_settings[$field_key];
-        $field_normalized = DT_Import_Utilities::normalize_string( $field_config['name'] );
-        $field_key_normalized = DT_Import_Utilities::normalize_string( $field_key );
+        $field_normalized = DT_CSV_Import_Utilities::normalize_string( $field_config['name'] );
+        $field_key_normalized = DT_CSV_Import_Utilities::normalize_string( $field_key );
 
         // Exact matches get highest confidence
         if ( $column_normalized === $field_normalized || $column_normalized === $field_key_normalized ) {
@@ -105,7 +105,7 @@ class DT_CSV_Import_Mapping {
         $aliases = self::get_field_aliases();
         if ( isset( $aliases[$field_key] ) ) {
             foreach ( $aliases[$field_key] as $alias ) {
-                if ( $column_normalized === DT_Import_Utilities::normalize_string( $alias ) ) {
+                if ( $column_normalized === DT_CSV_Import_Utilities::normalize_string( $alias ) ) {
                     return 60;
                 }
             }
@@ -203,7 +203,7 @@ class DT_CSV_Import_Mapping {
                 $value = trim( $row[$column_index] );
 
                 // For multi-value fields, split by semicolon
-                $split_values = DT_Import_Utilities::split_multi_value( $value );
+                $split_values = DT_CSV_Import_Utilities::split_multi_value( $value );
                 foreach ( $split_values as $split_value ) {
                     if ( !empty( $split_value ) ) {
                         $values[$split_value] = $split_value;
@@ -222,13 +222,13 @@ class DT_CSV_Import_Mapping {
         $mappings = [];
 
         foreach ( $csv_values as $csv_value ) {
-            $csv_normalized = DT_Import_Utilities::normalize_string( $csv_value );
+            $csv_normalized = DT_CSV_Import_Utilities::normalize_string( $csv_value );
             $best_match = null;
             $best_score = 0;
 
             foreach ( $field_options as $option_key => $option_config ) {
                 $option_label = $option_config['label'] ?? $option_key;
-                $option_normalized = DT_Import_Utilities::normalize_string( $option_label );
+                $option_normalized = DT_CSV_Import_Utilities::normalize_string( $option_label );
 
                 // Exact match
                 if ( $csv_normalized === $option_normalized ) {

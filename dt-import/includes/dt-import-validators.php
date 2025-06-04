@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 
-class DT_Import_Validators {
+class DT_CSV_Import_Validators {
 
     /**
      * Validate CSV structure

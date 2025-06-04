@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 
-class DT_Import_Field_Handlers {
+class DT_CSV_Import_Field_Handlers {
 
     /**
      * Handle text field processing
@@ -37,7 +37,7 @@ class DT_Import_Field_Handlers {
      * Handle date field processing
      */
     public static function handle_date_field( $value, $field_config ) {
-        $normalized_date = DT_Import_Utilities::normalize_date( $value );
+        $normalized_date = DT_CSV_Import_Utilities::normalize_date( $value );
         if ( empty( $normalized_date ) ) {
             throw new Exception( "Invalid date format: {$value}" );
         }
@@ -48,7 +48,7 @@ class DT_Import_Field_Handlers {
      * Handle boolean field processing
      */
     public static function handle_boolean_field( $value, $field_config ) {
-        $boolean_value = DT_Import_Utilities::normalize_boolean( $value );
+        $boolean_value = DT_CSV_Import_Utilities::normalize_boolean( $value );
         if ( $boolean_value === null ) {
             throw new Exception( "Invalid boolean value: {$value}" );
         }
@@ -78,7 +78,7 @@ class DT_Import_Field_Handlers {
      * Handle multi_select field processing
      */
     public static function handle_multi_select_field( $value, $field_config, $value_mapping = [] ) {
-        $values = DT_Import_Utilities::split_multi_value( $value );
+        $values = DT_CSV_Import_Utilities::split_multi_value( $value );
         $processed_values = [];
 
         foreach ( $values as $val ) {
@@ -103,7 +103,7 @@ class DT_Import_Field_Handlers {
      * Handle tags field processing
      */
     public static function handle_tags_field( $value, $field_config ) {
-        $tags = DT_Import_Utilities::split_multi_value( $value );
+        $tags = DT_CSV_Import_Utilities::split_multi_value( $value );
         return array_map(function( $tag ) {
             return sanitize_text_field( trim( $tag ) );
         }, $tags);
@@ -113,7 +113,7 @@ class DT_Import_Field_Handlers {
      * Handle communication channel field processing
      */
     public static function handle_communication_channel_field( $value, $field_config, $field_key ) {
-        $channels = DT_Import_Utilities::split_multi_value( $value );
+        $channels = DT_CSV_Import_Utilities::split_multi_value( $value );
         $processed_channels = [];
 
         foreach ( $channels as $channel ) {
@@ -149,7 +149,7 @@ class DT_Import_Field_Handlers {
             throw new Exception( 'Connection field missing post_type configuration' );
         }
 
-        $connections = DT_Import_Utilities::split_multi_value( $value );
+        $connections = DT_CSV_Import_Utilities::split_multi_value( $value );
         $processed_connections = [];
 
         foreach ( $connections as $connection ) {
