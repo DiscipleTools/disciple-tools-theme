@@ -184,7 +184,13 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
             'fieldCreatedSuccess' => __( 'Field created successfully!', 'disciple_tools' ),
             'fieldCreationError' => __( 'Error creating field', 'disciple_tools' ),
             'ajaxError' => __( 'An error occurred. Please try again.', 'disciple_tools' ),
-            'fillRequiredFields' => __( 'Please fill in all required fields.', 'disciple_tools' )
+            'fillRequiredFields' => __( 'Please fill in all required fields.', 'disciple_tools' ),
+
+            // Warning translations
+            'warnings' => __( 'Warnings', 'disciple_tools' ),
+            'importWarnings' => __( 'Import Warnings', 'disciple_tools' ),
+            'newRecordsWillBeCreated' => __( 'Some records will create new connection records. Review the preview below for details.', 'disciple_tools' ),
+            'newRecordIndicator' => __( '(NEW)', 'disciple_tools' )
         ];
     }
 
