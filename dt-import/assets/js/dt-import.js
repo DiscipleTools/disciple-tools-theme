@@ -886,6 +886,11 @@
     }
 
     displayPreview(previewData) {
+      // Count total warnings across all rows
+      const totalWarnings = previewData.rows.reduce((count, row) => {
+        return count + (row.warnings ? row.warnings.length : 0);
+      }, 0);
+
       const step4Html = `
                 <div class="dt-import-step-content">
                     <h2>${dtImport.translations.previewImport}</h2>
@@ -900,11 +905,34 @@
                             <h3>${previewData.processable_count}</h3>
                             <p>Will Import</p>
                         </div>
+                        ${
+                          totalWarnings > 0
+                            ? `
+                        <div class="stat-card warning">
+                            <h3>${totalWarnings}</h3>
+                            <p>Warnings</p>
+                        </div>
+                        `
+                            : ''
+                        }
                         <div class="stat-card error">
                             <h3>${previewData.error_count}</h3>
                             <p>Errors</p>
                         </div>
                     </div>
+                    
+                    ${
+                      totalWarnings > 0
+                        ? `
+                    <div class="warnings-summary">
+                        <div class="notice notice-warning">
+                            <h4><i class="mdi mdi-alert"></i> Import Warnings</h4>
+                            <p>Some records will create new connection records. Review the preview below for details.</p>
+                        </div>
+                    </div>
+                    `
+                        : ''
+                    }
                     
                     <div class="preview-table-container">
                         ${this.createPreviewTable(previewData.rows)}
@@ -934,7 +962,13 @@
 
       const rowsHtml = rows
         .map((row) => {
-          const rowClass = row.has_errors ? 'error-row' : '';
+          const hasWarnings = row.warnings && row.warnings.length > 0;
+          const rowClass = row.has_errors
+            ? 'error-row'
+            : hasWarnings
+              ? 'warning-row'
+              : '';
+
           const cellsHtml = headers
             .map((header) => {
               const cellData = row.data[header];
@@ -944,7 +978,23 @@
             })
             .join('');
 
-          return `<tr class="${rowClass}">${cellsHtml}</tr>`;
+          // Create warnings display
+          const warningsHtml = hasWarnings
+            ? `
+            <tr class="warnings-row">
+              <td colspan="${headers.length}">
+                <div class="row-warnings">
+                  <strong><i class="mdi mdi-alert"></i> Warnings:</strong>
+                  <ul>
+                    ${row.warnings.map((warning) => `<li>${this.escapeHtml(warning)}</li>`).join('')}
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          `
+            : '';
+
+          return `<tr class="${rowClass}">${cellsHtml}</tr>${warningsHtml}`;
         })
         .join('');
 
