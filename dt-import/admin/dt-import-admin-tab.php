@@ -1,0 +1,267 @@
+<?php
+/**
+ * DT Import Admin Tab Integration
+ */
+
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+class DT_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
+    private static $_instance = null;
+
+    public static function instance() {
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
+
+    public function __construct() {
+        add_action( 'admin_menu', [ $this, 'add_submenu' ], 125 );
+        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 125, 1 );
+        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 125, 1 );
+        parent::__construct();
+    }
+
+    public function add_submenu() {
+        add_submenu_page(
+            'dt_options',
+            __( 'Import', 'disciple_tools' ),
+            __( 'Import', 'disciple_tools' ),
+            'manage_dt',
+            'dt_options&tab=import',
+            [ 'Disciple_Tools_Settings_Menu', 'content' ]
+        );
+    }
+
+    public function add_tab( $tab ) {
+        ?>
+        <a href="<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_options&tab=import"
+           class="nav-tab <?php echo esc_html( $tab == 'import' ? 'nav-tab-active' : '' ) ?>">
+            <?php echo esc_html__( 'Import', 'disciple_tools' ) ?>
+        </a>
+        <?php
+    }
+
+    public function content( $tab ) {
+        if ( 'import' !== $tab ) {
+            return;
+        }
+
+        // Check permissions
+        if ( !current_user_can( 'manage_dt' ) ) {
+            wp_die( 'You do not have sufficient permissions to access this page.' );
+        }
+
+        // Enqueue scripts and styles for this page
+        $this->enqueue_admin_scripts();
+
+        // Display the import interface
+        $this->display_import_interface();
+    }
+
+    private function enqueue_admin_scripts() {
+        // Enqueue DT Web Components if available
+        if ( function_exists( 'dt_theme_enqueue_script' ) ) {
+            dt_theme_enqueue_script( 'web-components', 'dt-assets/build/components/index.js', [], false );
+            dt_theme_enqueue_style( 'web-components-css', 'dt-assets/build/css/light.min.css', [] );
+        }
+
+        // Enqueue our custom import scripts
+        wp_enqueue_script(
+            'dt-import-js',
+            get_template_directory_uri() . '/dt-import/assets/js/dt-import.js',
+            [ 'jquery' ],
+            '1.0.0',
+            true
+        );
+
+        // Enqueue modal handling script
+        wp_enqueue_script(
+            'dt-import-modals-js',
+            get_template_directory_uri() . '/dt-import/assets/js/dt-import-modals.js',
+            [ 'dt-import-js' ],
+            '1.0.0',
+            true
+        );
+
+        // Enqueue our custom import styles
+        wp_enqueue_style(
+            'dt-import-css',
+            get_template_directory_uri() . '/dt-import/assets/css/dt-import.css',
+            [],
+            '1.0.0'
+        );
+
+        // Localize script with necessary data
+        wp_localize_script('dt-import-js', 'dtImport', [
+            'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+            'restUrl' => rest_url( 'dt-import/v2/' ),
+            'nonce' => wp_create_nonce( 'wp_rest' ),
+            'postTypes' => $this->get_available_post_types(),
+            'translations' => $this->get_translations(),
+            'fieldTypes' => $this->get_field_types(),
+            'maxFileSize' => $this->get_max_file_size(),
+            'allowedFileTypes' => [ 'text/csv', 'application/csv', 'text/plain' ]
+        ]);
+    }
+
+    private function get_available_post_types() {
+        $post_types = DT_Posts::get_post_types();
+        $formatted_types = [];
+
+        foreach ( $post_types as $post_type ) {
+            $post_settings = DT_Posts::get_post_settings( $post_type );
+            $formatted_types[] = [
+                'key' => $post_type,
+                'label_singular' => $post_settings['label_singular'] ?? ucfirst( $post_type ),
+                'label_plural' => $post_settings['label_plural'] ?? ucfirst( $post_type ) . 's',
+                'description' => $this->get_post_type_description( $post_type )
+            ];
+        }
+
+        return $formatted_types;
+    }
+
+    private function get_post_type_description( $post_type ) {
+        $descriptions = [
+            'contacts' => __( 'Individual people you are reaching or discipling', 'disciple_tools' ),
+            'groups' => __( 'Groups, churches, or gatherings of people', 'disciple_tools' ),
+        ];
+
+        return $descriptions[$post_type] ?? '';
+    }
+
+    private function get_translations() {
+        return [
+            'selectPostType' => __( 'Select Post Type', 'disciple_tools' ),
+            'uploadCsv' => __( 'Upload CSV', 'disciple_tools' ),
+            'mapFields' => __( 'Map Fields', 'disciple_tools' ),
+            'previewImport' => __( 'Preview & Import', 'disciple_tools' ),
+            'next' => __( 'Next', 'disciple_tools' ),
+            'back' => __( 'Back', 'disciple_tools' ),
+            'upload' => __( 'Upload', 'disciple_tools' ),
+            'import' => __( 'Import', 'disciple_tools' ),
+            'cancel' => __( 'Cancel', 'disciple_tools' ),
+            'skipColumn' => __( 'Skip this column', 'disciple_tools' ),
+            'createField' => __( 'Create New Field', 'disciple_tools' ),
+            'chooseFile' => __( 'Choose a file...', 'disciple_tools' ),
+            'dragDropFile' => __( 'or drag and drop it here', 'disciple_tools' ),
+            'fileUploaded' => __( 'File uploaded successfully!', 'disciple_tools' ),
+            'uploadError' => __( 'Error uploading file', 'disciple_tools' ),
+            'processingFile' => __( 'Processing file...', 'disciple_tools' ),
+            'invalidFileType' => __( 'Invalid file type. Please upload a CSV file.', 'disciple_tools' ),
+            'fileTooLarge' => __( 'File is too large. Maximum size is', 'disciple_tools' ),
+            'noFileSelected' => __( 'Please select a file to upload.', 'disciple_tools' ),
+            'mappingComplete' => __( 'Field mapping completed successfully!', 'disciple_tools' ),
+            'importProgress' => __( 'Importing records...', 'disciple_tools' ),
+            'importComplete' => __( 'Import completed successfully!', 'disciple_tools' ),
+            'importFailed' => __( 'Import failed. Please check the error log.', 'disciple_tools' ),
+            'recordsImported' => __( 'records imported', 'disciple_tools' ),
+            'errorsFound' => __( 'errors found', 'disciple_tools' ),
+            // CSV delimiter options
+            'comma' => __( 'Comma (,)', 'disciple_tools' ),
+            'semicolon' => __( 'Semicolon (;)', 'disciple_tools' ),
+            'tab' => __( 'Tab', 'disciple_tools' ),
+            'pipe' => __( 'Pipe (|)', 'disciple_tools' ),
+
+            // Value mapping translations
+            'mapValues' => __( 'Map Values', 'disciple_tools' ),
+            'csvValue' => __( 'CSV Value', 'disciple_tools' ),
+            'dtFieldValue' => __( 'DT Field Value', 'disciple_tools' ),
+            'skipValue' => __( '-- Skip this value --', 'disciple_tools' ),
+            'autoMapSimilar' => __( 'Auto-map Similar Values', 'disciple_tools' ),
+            'clearAllMappings' => __( 'Clear All Mappings', 'disciple_tools' ),
+            'saveMappings' => __( 'Save Mapping', 'disciple_tools' ),
+
+            // Field creation translations
+            'createNewField' => __( 'Create New Field', 'disciple_tools' ),
+            'fieldName' => __( 'Field Name', 'disciple_tools' ),
+            'fieldType' => __( 'Field Type', 'disciple_tools' ),
+            'fieldDescription' => __( 'Description', 'disciple_tools' ),
+            'creating' => __( 'Creating...', 'disciple_tools' ),
+            'fieldCreatedSuccess' => __( 'Field created successfully!', 'disciple_tools' ),
+            'fieldCreationError' => __( 'Error creating field', 'disciple_tools' ),
+            'ajaxError' => __( 'An error occurred. Please try again.', 'disciple_tools' ),
+            'fillRequiredFields' => __( 'Please fill in all required fields.', 'disciple_tools' )
+        ];
+    }
+
+    private function get_field_types() {
+        return [
+            'text' => __( 'Text', 'disciple_tools' ),
+            'textarea' => __( 'Text Area', 'disciple_tools' ),
+            'number' => __( 'Number', 'disciple_tools' ),
+            'date' => __( 'Date', 'disciple_tools' ),
+            'boolean' => __( 'Boolean', 'disciple_tools' ),
+            'key_select' => __( 'Dropdown', 'disciple_tools' ),
+            'multi_select' => __( 'Multi Select', 'disciple_tools' ),
+            'tags' => __( 'Tags', 'disciple_tools' ),
+            'communication_channel' => __( 'Communication Channel', 'disciple_tools' ),
+            'connection' => __( 'Connection', 'disciple_tools' ),
+            'user_select' => __( 'User Select', 'disciple_tools' ),
+            'location' => __( 'Location', 'disciple_tools' )
+        ];
+    }
+
+    private function get_max_file_size() {
+        return wp_max_upload_size();
+    }
+
+    private function display_import_interface() {
+        ?>
+        <div class="wrap dt-import-container">
+            <h1><?php esc_html_e( 'Import Data', 'disciple_tools' ); ?></h1>
+            
+            <!-- Progress Indicator -->
+            <div class="dt-import-progress">
+                <ul class="dt-import-steps">
+                    <li class="step active" data-step="1">
+                        <span class="step-number">1</span>
+                        <span class="step-name"><?php esc_html_e( 'Select Post Type', 'disciple_tools' ) ?></span>
+                    </li>
+                    <li class="step" data-step="2">
+                        <span class="step-number">2</span>
+                        <span class="step-name"><?php esc_html_e( 'Upload CSV', 'disciple_tools' ) ?></span>
+                    </li>
+                    <li class="step" data-step="3">
+                        <span class="step-number">3</span>
+                        <span class="step-name"><?php esc_html_e( 'Map Fields', 'disciple_tools' ) ?></span>
+                    </li>
+                    <li class="step" data-step="4">
+                        <span class="step-number">4</span>
+                        <span class="step-name"><?php esc_html_e( 'Preview & Import', 'disciple_tools' ) ?></span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Step Content Container -->
+            <div class="dt-import-step-content">
+                <!-- Initial step content will be loaded here -->
+                <div class="dt-import-initial-content">
+                    <h2><?php esc_html_e( 'Step 1: Select Post Type', 'disciple_tools' ) ?></h2>
+                    <p><?php esc_html_e( 'Choose the type of records you want to import from your CSV file.', 'disciple_tools' ) ?></p>
+                    
+                    <div class="post-type-grid">
+                        <!-- Post type cards will be dynamically populated -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="dt-import-navigation">
+                <button type="button" class="button dt-import-back" style="display: none;">
+                    <?php esc_html_e( '← Back', 'disciple_tools' ) ?>
+                </button>
+                <button type="button" class="button button-primary dt-import-next" disabled>
+                    <?php esc_html_e( 'Next →', 'disciple_tools' ) ?>
+                </button>
+            </div>
+            
+            <!-- Error container -->
+            <div class="dt-import-errors" style="display: none;"></div>
+        </div>
+        <?php
+    }
+}

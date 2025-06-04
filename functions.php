@@ -324,6 +324,12 @@ class Disciple_Tools
         Disciple_Tools_Workflows::instance();
 
         /**
+         * dt-import
+         */
+        require_once( 'dt-import/dt-import.php' );
+        DT_Theme_Import::instance();
+
+        /**
          * core
          */
         require_once( 'dt-core/core-endpoints.php' );
