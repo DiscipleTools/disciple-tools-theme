@@ -327,7 +327,7 @@ class Disciple_Tools
          * dt-import
          */
         require_once( 'dt-import/dt-import.php' );
-        DT_Theme_Import::instance();
+        DT_Theme_CSV_Import::instance();
 
         /**
          * core

@@ -19,11 +19,13 @@ class DT_CSV_Import_Processor {
         $skipped_count = 0;
 
         $data_rows = array_slice( $csv_data, $offset, $limit );
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
 
         foreach ( $data_rows as $row_index => $row ) {
             $processed_row = [];
             $has_errors = false;
             $row_errors = [];
+            $row_warnings = [];
 
             foreach ( $field_mappings as $column_index => $mapping ) {
                 if ( empty( $mapping['field_key'] ) || $mapping['field_key'] === 'skip' ) {
@@ -32,10 +34,44 @@ class DT_CSV_Import_Processor {
 
                 $field_key = $mapping['field_key'];
                 $raw_value = $row[$column_index] ?? '';
+                $field_config = $field_settings[$field_key] ?? [];
 
                 try {
-                    $processed_value = self::process_field_value( $raw_value, $field_key, $mapping, $post_type );
-                    $formatted_value = self::format_value_for_api( $processed_value, $field_key, $post_type );
+                    $processed_value = self::process_field_value( $raw_value, $field_key, $mapping, $post_type, true );
+
+                    // Handle connection fields specially for preview
+                    if ( $field_config['type'] === 'connection' && is_array( $processed_value ) ) {
+                        $connection_display = [];
+                        $has_new_connections = false;
+
+                        foreach ( $processed_value as $connection_info ) {
+                            if ( is_array( $connection_info ) ) {
+                                $display_name = $connection_info['name'];
+                                if ( $connection_info['will_create'] ) {
+                                    $display_name .= ' (NEW)';
+                                    $has_new_connections = true;
+                                }
+                                $connection_display[] = $display_name;
+                            } else {
+                                $connection_display[] = $connection_info;
+                            }
+                        }
+
+                        if ( $has_new_connections ) {
+                            $connection_post_type_settings = DT_Posts::get_post_settings( $field_config['post_type'] );
+                            $post_type_label = $connection_post_type_settings['label_plural'] ?? $field_config['post_type'];
+                            $row_warnings[] = sprintf(
+                                'New %s will be created for field "%s"',
+                                $post_type_label,
+                                $field_config['name']
+                            );
+                        }
+
+                        $formatted_value = implode( ', ', $connection_display );
+                    } else {
+                        $formatted_value = self::format_value_for_api( $processed_value, $field_key, $post_type );
+                    }
+
                     $processed_row[$field_key] = [
                         'raw' => $raw_value,
                         'processed' => $formatted_value,
@@ -57,7 +93,8 @@ class DT_CSV_Import_Processor {
                 'row_number' => $offset + $row_index + 2, // +2 for header and 0-based index
                 'data' => $processed_row,
                 'has_errors' => $has_errors,
-                'errors' => $row_errors
+                'errors' => $row_errors,
+                'warnings' => $row_warnings
             ];
 
             if ( $has_errors ) {
@@ -81,7 +118,7 @@ class DT_CSV_Import_Processor {
     /**
      * Process a single field value based on field type and mapping
      */
-    public static function process_field_value( $raw_value, $field_key, $mapping, $post_type ) {
+    public static function process_field_value( $raw_value, $field_key, $mapping, $post_type, $preview_mode = false ) {
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
 
         if ( !isset( $field_settings[$field_key] ) ) {
@@ -134,7 +171,7 @@ class DT_CSV_Import_Processor {
                 return self::process_communication_channel_value( $raw_value, $field_key );
 
             case 'connection':
-                return self::process_connection_value( $raw_value, $field_config );
+                return self::process_connection_value( $raw_value, $field_config, $preview_mode );
 
             case 'user_select':
                 return self::process_user_select_value( $raw_value );
@@ -238,7 +275,7 @@ class DT_CSV_Import_Processor {
     /**
      * Process connection field value
      */
-    private static function process_connection_value( $raw_value, $field_config ) {
+    private static function process_connection_value( $raw_value, $field_config, $preview_mode = false ) {
         $connection_post_type = $field_config['post_type'] ?? '';
         if ( empty( $connection_post_type ) ) {
             throw new Exception( 'Connection field missing post_type configuration' );
@@ -249,30 +286,99 @@ class DT_CSV_Import_Processor {
 
         foreach ( $connections as $connection ) {
             $connection = trim( $connection );
+            $connection_info = [
+                'raw_value' => $connection,
+                'id' => null,
+                'name' => null,
+                'exists' => false,
+                'will_create' => false
+            ];
 
-            // Try to find by ID
+            // Try to find by ID first
             if ( is_numeric( $connection ) ) {
                 $post = DT_Posts::get_post( $connection_post_type, intval( $connection ), true, false );
                 if ( !is_wp_error( $post ) ) {
-                    $processed_connections[] = intval( $connection );
+                    $connection_info['id'] = intval( $connection );
+                    $connection_info['name'] = $post['title'] ?? $post['name'] ?? "Record #{$connection}";
+                    $connection_info['exists'] = true;
+
+                    if ( $preview_mode ) {
+                        $processed_connections[] = $connection_info;
+                    } else {
+                        $processed_connections[] = intval( $connection );
+                    }
                     continue;
                 }
             }
 
-            // Try to find by title
+            // Try to find by title/name
             $posts = DT_Posts::list_posts($connection_post_type, [
                 'name' => $connection,
                 'limit' => 1
             ]);
 
             if ( !is_wp_error( $posts ) && !empty( $posts['posts'] ) ) {
-                $processed_connections[] = $posts['posts'][0]['ID'];
+                $found_post = $posts['posts'][0];
+                $connection_info['id'] = $found_post['ID'];
+                $connection_info['name'] = $found_post['title'] ?? $found_post['name'] ?? $connection;
+                $connection_info['exists'] = true;
+
+                if ( $preview_mode ) {
+                    $processed_connections[] = $connection_info;
+                } else {
+                    $processed_connections[] = $found_post['ID'];
+                }
             } else {
-                throw new Exception( "Connection not found: {$connection}" );
+                // Record not found - will need to create it
+                if ( $preview_mode ) {
+                    $connection_info['name'] = $connection;
+                    $connection_info['will_create'] = true;
+                    $processed_connections[] = $connection_info;
+                } else {
+                    // Create the record during actual import
+                    $new_post = self::create_connection_record( $connection_post_type, $connection );
+                    if ( !is_wp_error( $new_post ) ) {
+                        $connection_info['id'] = $new_post['ID'];
+                        $processed_connections[] = $new_post['ID'];
+                    } else {
+                        throw new Exception( "Failed to create connection record: {$connection} - " . $new_post->get_error_message() );
+                    }
+                }
             }
         }
 
         return $processed_connections;
+    }
+
+    /**
+     * Create a new connection record
+     */
+    private static function create_connection_record( $post_type, $name ) {
+        $post_data = [];
+
+        // Determine the title field name based on post type
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+
+        if ( isset( $field_settings['title'] ) ) {
+            $post_data['title'] = $name;
+        } elseif ( isset( $field_settings['name'] ) ) {
+            $post_data['name'] = $name;
+        } else {
+            // Fallback - use the first text field or 'title'
+            foreach ( $field_settings as $field_key => $field_config ) {
+                if ( $field_config['type'] === 'text' ) {
+                    $post_data[$field_key] = $name;
+                    break;
+                }
+            }
+
+            if ( empty( $post_data ) ) {
+                $post_data['title'] = $name; // Final fallback
+            }
+        }
+
+        // Create the post
+        return DT_Posts::create_post( $post_type, $post_data, true, false );
     }
 
     /**

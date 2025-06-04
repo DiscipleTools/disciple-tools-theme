@@ -22,7 +22,7 @@ Fields with multiple values are semicolon separated.
 
 tags and communication_channels fields, the values are sererated and imported 
 
-Connection fields, the values can either be the ID of the record it is connected to or the name of the field. If a name is provided, we need to do a search across the existing records of the selected selected connection field to make sure that that we can find the corresponding records or if we need to create corresponding records. 
+Connection fields, the values can either be the ID of the record it is connected to or the name of the record. If a name is provided, we need to do a search across the existing records of the selected connection's post type to make sure that that we can find the corresponding records. If we can't find the record, then we need to create corresponding records. 
 
 User select fields can accept the user ID or the name of the user or the email address of the user. A search needs to be done to find the user. If a user doesn't exist, we do not create new users. 
 
