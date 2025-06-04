@@ -426,30 +426,64 @@
 
       $('.dt-import-step-content').html(step3Html);
 
-      // Initialize field mappings from suggested mappings
-      Object.entries(mappingSuggestions).forEach(([index, mapping]) => {
-        if (mapping.suggested_field) {
-          this.fieldMappings[index] = {
-            field_key: mapping.suggested_field,
-            column_index: parseInt(index),
-          };
-        }
-      });
-
-      // Show field-specific options for auto-suggested fields after DOM is ready
-      setTimeout(() => {
+      // Initialize field mappings from suggested mappings ONLY if no existing mappings
+      if (Object.keys(this.fieldMappings).length === 0) {
+        // Initialize from suggestions for first-time display
         Object.entries(mappingSuggestions).forEach(([index, mapping]) => {
           if (mapping.suggested_field) {
+            this.fieldMappings[index] = {
+              field_key: mapping.suggested_field,
+              column_index: parseInt(index),
+            };
+          }
+        });
+      }
+
+      // Restore existing field mappings to the dropdowns and read actual dropdown values
+      setTimeout(() => {
+        // First, restore any existing user mappings to the dropdowns
+        Object.entries(this.fieldMappings).forEach(([columnIndex, mapping]) => {
+          const $select = $(
+            `.field-mapping-select[data-column-index="${columnIndex}"]`,
+          );
+          if ($select.length && mapping.field_key) {
+            $select.val(mapping.field_key);
             this.showFieldSpecificOptions(
-              parseInt(index),
-              mapping.suggested_field,
+              parseInt(columnIndex),
+              mapping.field_key,
             );
           }
         });
+
+        // Read the actual dropdown values to ensure mappings match what's displayed
+        // This handles cases where suggestions were auto-selected but user wants different behavior
+        const actualMappings = {};
+        $('.field-mapping-select').each((index, select) => {
+          const $select = $(select);
+          const columnIndex = $select.data('column-index');
+          const fieldKey = $select.val();
+
+          // Only create mapping if a field is actually selected (not empty)
+          if (fieldKey && fieldKey !== '' && fieldKey !== 'create_new') {
+            actualMappings[columnIndex] = {
+              field_key: fieldKey,
+              column_index: parseInt(columnIndex),
+            };
+          }
+        });
+
+        // Update field mappings to match actual dropdown state
+        this.fieldMappings = actualMappings;
+        console.log(
+          'DT Import: Field mappings synchronized with dropdown state:',
+          this.fieldMappings,
+        );
+
+        // Update the summary after mappings are initialized
+        this.updateMappingSummary();
       }, 100);
 
       this.updateNavigation();
-      this.updateMappingSummary();
     }
 
     createColumnMappingCard(columnIndex, mapping) {
@@ -465,12 +499,18 @@
         .map((sample) => `<li>${this.escapeHtml(sample)}</li>`)
         .join('');
 
+      // Check if there's an existing user mapping for this column
+      const existingMapping = this.fieldMappings[columnIndex];
+      const selectedField = existingMapping
+        ? existingMapping.field_key
+        : mapping.suggested_field; // Restore auto-mapping
+
       return `
                 <div class="column-mapping-card" data-column-index="${columnIndex}">
                     <div class="column-header">
                         <h4>${this.escapeHtml(mapping.column_name)}</h4>
                         ${
-                          mapping.confidence > 0
+                          mapping.confidence > 0 && !existingMapping
                             ? `
                             <div class="confidence-indicator confidence-${confidenceClass}">
                                 ${mapping.confidence}% confidence
@@ -489,7 +529,7 @@
                         <label>Map to field:</label>
                         <select class="field-mapping-select" data-column-index="${columnIndex}">
                             <option value="">-- Do not import --</option>
-                            ${this.getFieldOptions(mapping.suggested_field)}
+                            ${this.getFieldOptions(selectedField)}
                             <option value="create_new">+ Create New Field</option>
                         </select>
                         
@@ -537,15 +577,28 @@
         return;
       }
 
-      // Store mapping
-      if (fieldKey) {
+      console.log(
+        `DT Import: Column ${columnIndex} field mapping changed to: "${fieldKey}"`,
+      );
+
+      // Store mapping - properly handle empty values for "do not import"
+      if (fieldKey && fieldKey !== '') {
         this.fieldMappings[columnIndex] = {
           field_key: fieldKey,
           column_index: columnIndex,
         };
+        console.log(
+          `DT Import: Added mapping for column ${columnIndex} -> ${fieldKey}`,
+        );
       } else {
+        // When "do not import" is selected (empty value), remove the mapping entirely
         delete this.fieldMappings[columnIndex];
+        console.log(
+          `DT Import: Removed mapping for column ${columnIndex} (do not import)`,
+        );
       }
+
+      console.log('DT Import: Current field mappings:', this.fieldMappings);
 
       // Show field-specific options if needed
       this.showFieldSpecificOptions(columnIndex, fieldKey);
@@ -821,6 +874,10 @@
         return;
       }
 
+      console.log(
+        'DT Import: Saving field mappings to server:',
+        this.fieldMappings,
+      );
       this.showProcessing('Saving field mappings...');
 
       fetch(`${dtImport.restUrl}${this.sessionId}/mapping`, {
@@ -838,6 +895,7 @@
           this.hideProcessing();
 
           if (data.success) {
+            console.log('DT Import: Field mappings saved successfully');
             this.showStep4();
           } else {
             this.showError(data.message || 'Failed to save mappings');
@@ -955,7 +1013,14 @@
         return '<p>No data to preview.</p>';
       }
 
+      // Get only the headers for fields that are actually being imported
+      // The preview data from the server only contains fields that have mappings
       const headers = Object.keys(rows[0].data);
+
+      if (headers.length === 0) {
+        return '<p>No fields selected for import. Please go back and configure field mappings.</p>';
+      }
+
       const headerHtml = headers
         .map((header) => `<th>${this.escapeHtml(header)}</th>`)
         .join('');
@@ -1008,6 +1073,16 @@
                     </tbody>
                 </table>
             `;
+    }
+
+    getColumnIndexForField(fieldKey) {
+      // Find the column index that maps to this field
+      for (const [columnIndex, mapping] of Object.entries(this.fieldMappings)) {
+        if (mapping.field_key === fieldKey) {
+          return parseInt(columnIndex);
+        }
+      }
+      return null;
     }
 
     executeImport() {

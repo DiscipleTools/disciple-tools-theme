@@ -495,6 +495,25 @@ class DT_CSV_Import_Processor {
                 }
                 break;
 
+            case 'location':
+                // Format location data for DT_Posts API
+                if ( is_numeric( $processed_value ) ) {
+                    // Grid ID
+                    return [
+                        'values' => [
+                            [ 'value' => $processed_value ]
+                        ]
+                    ];
+                } elseif ( is_array( $processed_value ) ) {
+                    // Lat/lng or address data
+                    return [
+                        'values' => [
+                            $processed_value
+                        ]
+                    ];
+                }
+                break;
+
             case 'user_select':
                 // Convert single user ID to proper format
                 if ( is_numeric( $processed_value ) ) {
