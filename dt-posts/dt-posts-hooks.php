@@ -239,6 +239,7 @@ class DT_Posts_Hooks {
                     switch ( $field_type ) {
                         case 'text':
                         case 'textarea':
+                        case 'number':
                         case 'boolean':
                             if ( $field_value != $existing_fields[ $field_key ] ) {
                                 $updated_fields[ $field_key ] = $field_value;
@@ -254,6 +255,7 @@ class DT_Posts_Hooks {
                                 $updated_fields[ $field_key ] = $field_value;
                             }
                             break;
+                        case 'tags':
                         case 'multi_select':
                             $values = [];
                             foreach ( $field_value['values'] ?? [] as $value ) {

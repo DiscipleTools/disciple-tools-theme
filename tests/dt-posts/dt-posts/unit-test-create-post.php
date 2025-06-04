@@ -17,6 +17,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ],
         'contact_email' => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
         'tags' => [ 'values' => [ [ 'value' => 'tag1' ] ] ],
+        'quick_button_contact_established' => '1'
     ];
 
     public $sample_group = [
@@ -176,12 +177,13 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
      */
     public function test_do_not_overwrite_existing_fields_create() {
         // Create initial contact
-        $initial_contact = DT_Posts::create_post('contacts', [
-            'name' => 'John Doe',
-            'contact_phone' => [ 'values' => [ [ 'value' => '123-456-7890' ] ] ],
-            'overall_status' => 'active',
-            'nickname' => 'Johnny'
-        ], true, false);
+        $initial_fields = $this->sample_contact;
+        $initial_fields['name'] = 'John Doe';
+        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '123-456-7890' ] ] ];
+        $initial_fields['overall_status'] = 'active';
+        $initial_fields['nickname'] = 'Johnny';
+
+        $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
         $this->assertNotWPError( $initial_contact );
 
         // Try to create duplicate with do_not_overwrite_existing_fields = true
@@ -205,7 +207,12 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertSame( 'paused', $result['overall_status']['key'] );
         $this->assertSame( 'John', $result['nickname'] );
         // Should add new fields.
-        $this->assertSame( 'john@example.com', $result['contact_email'][0]['value'] );
+        $this->assertSame( 'john@example.com', $result['contact_email'][1]['value'] );
+        // Extra assertion sanity checks.
+        $this->assertContains( 'tag1', $result['tags'] );
+        $this->assertSame( 1, count( $result['location_grid'] ) );
+        $this->assertSame( 2, count( $result['milestones'] ) );
+        $this->assertSame( true, $result['requires_update'] );
     }
 
     /**
@@ -213,12 +220,13 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
      */
     public function test_overwrite_existing_fields_create() {
         // Create initial contact
-        $initial_contact = DT_Posts::create_post('contacts', [
-            'name' => 'Jane Doe',
-            'contact_phone' => [ 'values' => [ [ 'value' => '987-654-3210' ] ] ],
-            'overall_status' => 'active',
-            'nickname' => 'Janie'
-        ], true, false);
+        $initial_fields = $this->sample_contact;
+        $initial_fields['name'] = 'John Doe';
+        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '987-654-3210' ] ] ];
+        $initial_fields['overall_status'] = 'active';
+        $initial_fields['nickname'] = 'Janie';
+
+        $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
         $this->assertNotWPError( $initial_contact );
 
         // Try to create duplicate with do_not_overwrite_existing_fields = false
@@ -227,7 +235,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
             'contact_phone' => [ 'values' => [ [ 'value' => '987-654-3210' ] ] ],
             'overall_status' => 'paused', // Different value
             'nickname' => 'Jane', // Different value
-            'contact_email' => [ 'values' => [ [ 'value' => 'jane@example.com' ] ] ] // New field
+            'contact_email' => [ 'values' => [ [ 'value' => 'jane@example.com' ] ] ], // New field
+            'milestones' => [ 'values' => [ [ 'value' => 'milestone_has_bible' ], [ 'value' => 'mature_christian' ] ] ]
         ];
 
         $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
@@ -240,7 +249,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertSame( 'paused', $result['overall_status']['key'] );
         $this->assertSame( 'Jane', $result['nickname'] );
         // Should add new fields
-        $this->assertSame( 'jane@example.com', $result['contact_email'][0]['value'] );
+        $this->assertSame( 'jane@example.com', $result['contact_email'][1]['value'] );
+        // Extra assertion sanity checks.
+        $this->assertSame( 1, $result['quick_button_contact_established'] );
     }
 
     /**
@@ -248,18 +259,20 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
      */
     public function test_do_not_overwrite_multi_select_fields_create() {
         // Create initial contact with tags
-        $initial_contact = DT_Posts::create_post('contacts', [
-            'name' => 'Multi Test',
-            'contact_phone' => [ 'values' => [ [ 'value' => '555-0001' ] ] ],
-            'tags' => [ 'values' => [ [ 'value' => 'existing_tag' ] ] ]
-        ], true, false);
+        $initial_fields = $this->sample_contact;
+        $initial_fields['name'] = 'Multi Test';
+        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '555-0001' ] ] ];
+        $initial_fields['tags'] = [ 'values' => [ [ 'value' => 'existing_tag' ] ] ];
+
+        $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
         $this->assertNotWPError( $initial_contact );
 
         // Try to create duplicate with additional tags
         $duplicate_fields = [
             'name' => 'Multi Test',
             'contact_phone' => [ 'values' => [ [ 'value' => '555-0001' ] ] ],
-            'tags' => [ 'values' => [ [ 'value' => 'existing_tag' ], [ 'value' => 'new_tag' ] ] ]
+            'tags' => [ 'values' => [ [ 'value' => 'existing_tag' ], [ 'value' => 'new_tag' ] ] ],
+            'baptism_date' => '2025-01-01'
         ];
 
         $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
@@ -272,5 +285,184 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertContains( 'existing_tag', $result['tags'] );
         $this->assertContains( 'new_tag', $result['tags'] );
         $this->assertSame( 2, count( $result['tags'] ) );
+        // Extra assertion sanity checks.
+        $this->assertSame( $duplicate_fields['baptism_date'], $result['baptism_date']['formatted'] );
+    }
+
+    public function test_do_not_overwrite_text_fields_create() {
+        $initial_fields = $this->sample_contact;
+        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '123-456-7890' ] ] ];
+        $initial_fields['nickname'] = 'Johnny';
+
+        $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $initial_contact );
+
+        $duplicate_fields = [
+            'name' => 'John Doe',
+            'contact_phone' => [ 'values' => [ [ 'value' => '123-456-7890' ] ] ],
+            'nickname' => 'John', // Different value
+        ];
+
+        $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
+            'check_for_duplicates' => [ 'contact_phone' ],
+            'do_not_overwrite_existing_fields' => true
+        ]);
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( 'John', $result['nickname'] );
+    }
+
+    public function test_do_not_overwrite_number_fields_create() {
+        $initial_fields = $this->sample_contact;
+
+        $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $initial_contact );
+
+        $duplicate_fields = [
+            'title' => $initial_fields['title'],
+            'contact_phone' => $initial_fields['contact_phone'],
+            'quick_button_contact_established' => 1
+        ];
+
+        $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
+            'check_for_duplicates' => [ 'contact_phone' ],
+            'do_not_overwrite_existing_fields' => true
+        ]);
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( $duplicate_fields['quick_button_contact_established'], $result['quick_button_contact_established'] );
+    }
+
+    public function test_do_not_overwrite_boolean_fields_create() {
+        $initial_fields = $this->sample_contact;
+        $initial_fields['requires_update'] = true;
+
+        $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $initial_contact );
+
+        $duplicate_fields = [
+            'title' => $initial_fields['title'],
+            'contact_phone' => $initial_fields['contact_phone'],
+            'requires_update' => false
+        ];
+
+        $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
+            'check_for_duplicates' => [ 'contact_phone' ],
+            'do_not_overwrite_existing_fields' => false
+        ]);
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( true, empty( $result['requires_update'] ) );
+    }
+
+    public function test_do_not_overwrite_date_fields_create() {
+        $initial_fields = $this->sample_contact;
+
+        $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $initial_contact );
+
+        $duplicate_fields = [
+            'name' => 'Frank',
+            'contact_phone' => $initial_fields['contact_phone'],
+            'baptism_date' => '2025-01-01'
+        ];
+
+        $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
+            'check_for_duplicates' => [ 'contact_phone' ],
+            'do_not_overwrite_existing_fields' => true
+        ]);
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( $duplicate_fields['baptism_date'], $result['baptism_date']['formatted'] );
+    }
+
+    public function test_do_not_overwrite_key_select_fields_create() {
+        $initial_fields = $this->sample_contact;
+        $initial_fields['overall_status'] = 'active';
+
+        $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $initial_contact );
+
+        $duplicate_fields = [
+            'name' => 'John Doe',
+            'contact_phone' => $initial_fields['contact_phone'],
+            'overall_status' => 'paused', // Different value
+        ];
+
+        $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
+            'check_for_duplicates' => [ 'contact_phone' ],
+            'do_not_overwrite_existing_fields' => true
+        ]);
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( 'paused', $result['overall_status']['key'] );
+    }
+
+    public function test_do_not_overwrite_tags_fields_create() {
+        $initial_fields = $this->sample_contact;
+        $initial_fields['tags'] = [ 'values' => [ [ 'value' => 'existing_tag' ] ] ];
+
+        $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $initial_contact );
+
+        $duplicate_fields = [
+            'name' => 'Tags Test',
+            'contact_phone' => $initial_fields['contact_phone'],
+            'tags' => [ 'values' => [ [ 'value' => 'existing_tag' ], [ 'value' => 'new_tag' ] ] ]
+        ];
+
+        $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
+            'check_for_duplicates' => [ 'contact_phone' ],
+            'do_not_overwrite_existing_fields' => true
+        ]);
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( 2, count( $result['tags'] ) );
+        $this->assertContains( 'existing_tag', $result['tags'] );
+        $this->assertContains( 'new_tag', $result['tags'] );
+    }
+
+    public function test_do_not_overwrite_location_fields_create() {
+        $initial_fields = $this->sample_contact;
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        $duplicate_fields = [
+            'title' => $initial_fields['title'],
+            'contact_phone' => $initial_fields['contact_phone'],
+            'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ]
+        ];
+
+        $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
+            'check_for_duplicates' => [ 'contact_phone' ],
+            'do_not_overwrite_existing_fields' => false
+        ]);
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( 1, count( $result['location_grid'] ) );
+    }
+
+    public function test_do_not_overwrite_comms_channel_fields_create() {
+        $initial_fields = $this->sample_contact;
+        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '123-456-7890' ] ] ];
+
+        $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $initial_contact );
+
+        $duplicate_fields = [
+            'name' => 'John Doe',
+            'contact_phone' => [ 'values' => [ [ 'value' => '123-456-7890' ] ] ],
+            'contact_email' => [ 'values' => [ [ 'value' => 'john@example.com' ] ] ]
+        ];
+
+        $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
+            'check_for_duplicates' => [ 'contact_phone' ],
+            'do_not_overwrite_existing_fields' => true
+        ]);
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( 1, count( $result['contact_phone'] ) );
+        $this->assertSame( 'john@example.com', $result['contact_email'][1]['value'] );
     }
 }
