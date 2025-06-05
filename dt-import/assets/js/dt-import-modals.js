@@ -410,6 +410,83 @@
     }
   }
 
+  // Documentation Modal Handler
+  class DTImportDocumentationModal {
+    constructor() {
+      this.bindEvents();
+    }
+
+    bindEvents() {
+      // Show documentation modal
+      $(document).on('click', '#dt-import-view-docs', (e) => {
+        e.preventDefault();
+        this.showDocumentationModal();
+      });
+
+      // Handle tab switching
+      $(document).on('click', '.dt-import-docs-tabs a', (e) => {
+        e.preventDefault();
+        const targetTab = $(e.target).attr('href').substring(1);
+        this.switchTab(targetTab);
+      });
+
+      // Close modal events
+      $(document).on(
+        'click',
+        '#dt-import-docs-close, #dt-import-docs-close-btn',
+        (e) => {
+          e.preventDefault();
+          this.closeDocumentationModal();
+        },
+      );
+
+      // Close on overlay click
+      $(document).on('click', '#dt-import-documentation-modal', (e) => {
+        if (e.target === e.currentTarget) {
+          this.closeDocumentationModal();
+        }
+      });
+
+      // Close on escape key
+      $(document).on('keydown', (e) => {
+        if (
+          e.key === 'Escape' &&
+          $('#dt-import-documentation-modal').is(':visible')
+        ) {
+          this.closeDocumentationModal();
+        }
+      });
+    }
+
+    showDocumentationModal() {
+      const $modal = $('#dt-import-documentation-modal');
+      if ($modal.length) {
+        $modal.fadeIn(300);
+        $('body').addClass('modal-open');
+
+        // Focus management for accessibility
+        $modal.find('.dt-import-modal-close').focus();
+      }
+    }
+
+    closeDocumentationModal() {
+      const $modal = $('#dt-import-documentation-modal');
+      $modal.fadeOut(300, () => {
+        $('body').removeClass('modal-open');
+      });
+    }
+
+    switchTab(targetTab) {
+      // Update tab navigation
+      $('.dt-import-docs-tabs a').removeClass('active');
+      $(`.dt-import-docs-tabs a[href="#${targetTab}"]`).addClass('active');
+
+      // Show/hide tab content
+      $('.dt-import-docs-tab-content').removeClass('active');
+      $(`#${targetTab}`).addClass('active');
+    }
+  }
+
   // Extend the main DTImport class with modal functionality
   $(document).ready(() => {
     if (window.dtImportInstance) {
@@ -426,5 +503,8 @@
         window.dtImportInstance.modals.closeModals();
       };
     }
+
+    // Initialize documentation modal
+    window.dtImportDocumentationModal = new DTImportDocumentationModal();
   });
 })(jQuery);

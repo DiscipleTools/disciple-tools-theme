@@ -204,6 +204,55 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
         <?php
     }
 
+    private function display_documentation_sidebar() {
+        ?>
+        <div class="postbox">
+            <div class="postbox-header">
+                <h2 class="hndle"><?php esc_html_e( 'Import Documentation', 'disciple_tools' ); ?></h2>
+            </div>
+            <div class="inside">
+                <p><?php esc_html_e( 'Complete guide to CSV import field types and formatting.', 'disciple_tools' ); ?></p>
+                
+                <div class="dt-import-doc-actions">
+                    <button type="button" class="button button-primary dt-import-view-docs" id="dt-import-view-docs">
+                        <span class="dashicons dashicons-book-alt"></span>
+                        <?php esc_html_e( 'View Full Documentation', 'disciple_tools' ); ?>
+                    </button>
+                </div>
+                
+                <h4><?php esc_html_e( 'Quick Reference', 'disciple_tools' ); ?></h4>
+                <div class="dt-import-quick-ref">
+                    <h5><?php esc_html_e( 'Field Types Supported', 'disciple_tools' ); ?></h5>
+                    <ul class="ul-disc">
+                        <li><strong><?php esc_html_e( 'Text & Numbers', 'disciple_tools' ); ?>:</strong> <?php esc_html_e( 'Names, descriptions, ages, scores', 'disciple_tools' ); ?></li>
+                        <li><strong><?php esc_html_e( 'Dates', 'disciple_tools' ); ?>:</strong> <?php esc_html_e( 'YYYY-MM-DD format recommended', 'disciple_tools' ); ?></li>
+                        <li><strong><?php esc_html_e( 'Dropdowns', 'disciple_tools' ); ?>:</strong> <?php esc_html_e( 'Status, type, seeker path', 'disciple_tools' ); ?></li>
+                        <li><strong><?php esc_html_e( 'Multi-Select', 'disciple_tools' ); ?>:</strong> <?php esc_html_e( 'Sources, milestones (use semicolons)', 'disciple_tools' ); ?></li>
+                        <li><strong><?php esc_html_e( 'Communication', 'disciple_tools' ); ?>:</strong> <?php esc_html_e( 'Phone, email, social media', 'disciple_tools' ); ?></li>
+                        <li><strong><?php esc_html_e( 'Connections', 'disciple_tools' ); ?>:</strong> <?php esc_html_e( 'Groups, coaches, relationships', 'disciple_tools' ); ?></li>
+                        <li><strong><?php esc_html_e( 'Locations', 'disciple_tools' ); ?>:</strong> <?php esc_html_e( 'Addresses, coordinates, grid IDs', 'disciple_tools' ); ?></li>
+                    </ul>
+                    
+                    <h5><?php esc_html_e( 'Formatting Tips', 'disciple_tools' ); ?></h5>
+                    <ul class="ul-disc">
+                        <li><?php esc_html_e( 'Use semicolons (;) for multiple values', 'disciple_tools' ); ?></li>
+                        <li><?php esc_html_e( 'Boolean: true/false, yes/no, 1/0', 'disciple_tools' ); ?></li>
+                        <li><?php esc_html_e( 'Empty cells are okay - leave blank if no data', 'disciple_tools' ); ?></li>
+                        <li><?php esc_html_e( 'Quote text with commas: "Main St, City"', 'disciple_tools' ); ?></li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 15px; padding: 8px; background: #fff3cd; border-left: 4px solid #ffc107;">
+                    <p style="margin: 0; font-size: 12px;">
+                        <strong><?php esc_html_e( 'Tip:', 'disciple_tools' ); ?></strong>
+                        <?php esc_html_e( 'Start with a small test file to verify your formatting before importing large datasets.', 'disciple_tools' ); ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+
     private function get_translations() {
         return [
             'selectPostType' => __( 'Select Record Type', 'disciple_tools' ),
@@ -381,6 +430,7 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
                     </div><!-- end post-body-content -->
                     <div id="postbox-container-1" class="postbox-container">
                         <!-- Right Column -->
+                        <?php $this->display_documentation_sidebar(); ?>
                         <?php $this->display_csv_examples_sidebar(); ?>
                         <!-- End Right Column -->
                     </div><!-- postbox-container 1 -->
@@ -389,6 +439,9 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
                 </div><!-- post-body meta box container -->
             </div><!--poststuff end -->
         </div><!-- wrap end -->
+        
+        <!-- Include Documentation Modal -->
+        <?php include( plugin_dir_path( __FILE__ ) . '../templates/documentation-modal.php' ); ?>
         <?php
     }
 
