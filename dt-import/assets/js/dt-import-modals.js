@@ -199,37 +199,51 @@
         .prop('disabled', true)
         .text(dtImport.translations.creating);
 
-      // Create field via REST API
-      fetch(`${dtImport.restUrl}${fieldData.post_type}/create-field`, {
-        method: 'POST',
-        headers: {
-          'X-WP-Nonce': dtImport.nonce,
-          'Content-Type': 'application/json',
+      // Create field via DT's existing REST API
+      const createFieldData = new FormData();
+      createFieldData.append('new_field_name', fieldData.name);
+      createFieldData.append('new_field_type', fieldData.type);
+      createFieldData.append('post_type', fieldData.post_type);
+      createFieldData.append('tile_key', 'other');
+
+      fetch(
+        `${dtImport.restUrl.replace('dt-csv-import/v2/', '')}dt-admin-settings/new-field`,
+        {
+          method: 'POST',
+          headers: {
+            'X-WP-Nonce': dtImport.nonce,
+          },
+          body: createFieldData,
         },
-        body: JSON.stringify(fieldData),
-      })
+      )
         .then((response) => response.json())
         .then((data) => {
-          if (data.success) {
-            // Update the field mapping dropdown
-            this.updateFieldMappingDropdown(
-              fieldData.column_index,
-              data.data.field_key,
-              data.data.field_name,
-              fieldData.type,
-            );
+          if (data && data.key) {
+            const fieldKey = data.key;
 
-            // Show success message
-            this.dtImport.showSuccess(
-              dtImport.translations.fieldCreatedSuccess,
-            );
-
-            // Close modal
-            this.closeModals();
+            // If this is a select field with options, create the field options
+            if (
+              ['key_select', 'multi_select'].includes(fieldData.type) &&
+              Object.keys(fieldData.options || {}).length > 0
+            ) {
+              this.createFieldOptions(
+                fieldData.post_type,
+                fieldKey,
+                fieldData.options,
+              )
+                .then(() => {
+                  this.handleFieldCreationSuccess(fieldData, fieldKey);
+                })
+                .catch((error) => {
+                  console.error('Error creating field options:', error);
+                  // Field was created but options failed - still show success
+                  this.handleFieldCreationSuccess(fieldData, fieldKey);
+                });
+            } else {
+              this.handleFieldCreationSuccess(fieldData, fieldKey);
+            }
           } else {
-            this.showModalError(
-              data.message || dtImport.translations.fieldCreationError,
-            );
+            this.showModalError(dtImport.translations.fieldCreationError);
           }
         })
         .catch((error) => {
@@ -243,7 +257,59 @@
         });
     }
 
-    updateFieldMappingDropdown(columnIndex, fieldKey, fieldName, fieldType) {
+    createFieldOptions(postType, fieldKey, fieldOptions) {
+      const promises = [];
+
+      Object.entries(fieldOptions).forEach(([optionKey, optionLabel]) => {
+        const optionData = new FormData();
+        optionData.append('post_type', postType);
+        optionData.append('tile_key', 'other');
+        optionData.append('field_key', fieldKey);
+        optionData.append('field_option_name', optionLabel);
+        optionData.append('field_option_description', '');
+        optionData.append('field_option_key', optionKey);
+
+        const promise = fetch(
+          `${dtImport.restUrl.replace('dt-csv-import/v2/', '')}dt-admin-settings/new-field-option`,
+          {
+            method: 'POST',
+            headers: {
+              'X-WP-Nonce': dtImport.nonce,
+            },
+            body: optionData,
+          },
+        );
+
+        promises.push(promise);
+      });
+
+      return Promise.all(promises);
+    }
+
+    handleFieldCreationSuccess(fieldData, fieldKey) {
+      // Update the field mapping dropdown
+      this.updateFieldMappingDropdown(
+        fieldData.column_index,
+        fieldKey,
+        fieldData.name,
+        fieldData.type,
+        fieldData.options || {},
+      );
+
+      // Show success message
+      this.dtImport.showSuccess(dtImport.translations.fieldCreatedSuccess);
+
+      // Close modal
+      this.closeModals();
+    }
+
+    updateFieldMappingDropdown(
+      columnIndex,
+      fieldKey,
+      fieldName,
+      fieldType,
+      fieldOptions = {},
+    ) {
       const $select = $(
         `.field-mapping-select[data-column-index="${columnIndex}"]`,
       );
@@ -252,6 +318,34 @@
       const newOption = `<option value="${fieldKey}" data-field-type="${fieldType}" selected>${fieldName} (${fieldType})</option>`;
       $select.find('option[value="create_new"]').before(newOption);
 
+      // Clear the frontend cache to force refresh of field settings
+      this.dtImport.cachedFieldSettings = null;
+
+      // Update cached field settings with the new field
+      const fieldSettings = this.dtImport.getFieldSettingsForPostType();
+      if (fieldSettings) {
+        const fieldConfig = {
+          name: fieldName,
+          type: fieldType,
+        };
+
+        // Add field options for select fields
+        if (
+          ['key_select', 'multi_select'].includes(fieldType) &&
+          Object.keys(fieldOptions).length > 0
+        ) {
+          fieldConfig.default = {};
+          Object.entries(fieldOptions).forEach(([key, label]) => {
+            fieldConfig.default[key] = { label: label };
+          });
+        }
+
+        // Update the cached settings with the new field
+        if (this.dtImport.cachedFieldSettings) {
+          this.dtImport.cachedFieldSettings[fieldKey] = fieldConfig;
+        }
+      }
+
       // Manually update the field mapping without triggering change event to avoid infinite loop
       this.dtImport.fieldMappings[columnIndex] = {
         field_key: fieldKey,
@@ -259,7 +353,21 @@
       };
 
       // Update field specific options and summary
-      this.dtImport.showFieldSpecificOptions(columnIndex, fieldKey);
+      // For newly created select fields, pass the options directly instead of fetching from server
+      if (
+        ['key_select', 'multi_select'].includes(fieldType) &&
+        Object.keys(fieldOptions).length > 0
+      ) {
+        const fieldConfig = { name: fieldName, type: fieldType };
+        this.dtImport.showInlineValueMappingWithOptions(
+          columnIndex,
+          fieldKey,
+          fieldConfig,
+          fieldOptions,
+        );
+      } else {
+        this.dtImport.showFieldSpecificOptions(columnIndex, fieldKey);
+      }
       this.dtImport.updateMappingSummary();
     }
 

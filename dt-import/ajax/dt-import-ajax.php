@@ -172,19 +172,7 @@ class DT_CSV_Import_Ajax {
             ]
         );
 
-        // Create new field
-        register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/create-field', [
-                [
-                    'methods' => 'POST',
-                    'callback' => [ $this, 'create_field' ],
-                    'args' => [
-                        'post_type' => $arg_schemas['post_type'],
-                    ],
-                    'permission_callback' => [ $this, 'check_field_creation_permissions' ],
-                ]
-            ]
-        );
+
 
         // Get field options for key_select and multi_select fields
         register_rest_route(
@@ -263,12 +251,7 @@ class DT_CSV_Import_Ajax {
         return current_user_can( 'manage_dt' );
     }
 
-    /**
-     * Check field creation permissions
-     */
-    public function check_field_creation_permissions() {
-        return current_user_can( 'manage_dt' );
-    }
+
 
     /**
      * Get field settings for a post type
@@ -692,64 +675,7 @@ class DT_CSV_Import_Ajax {
     /**
      * Create new field
      */
-    public function create_field( WP_REST_Request $request ) {
-        $url_params = $request->get_url_params();
-        $post_type = $url_params['post_type'];
-        $body_params = $request->get_json_params() ?? $request->get_body_params();
 
-        $field_name = sanitize_text_field( $body_params['name'] ?? '' );
-        $field_type = sanitize_text_field( $body_params['type'] ?? '' );
-        $field_description = sanitize_textarea_field( $body_params['description'] ?? '' );
-        $field_options = $body_params['options'] ?? [];
-
-        if ( !$field_name || !$field_type ) {
-            return new WP_Error( 'missing_parameters', 'Missing required field parameters', [ 'status' => 400 ] );
-        }
-
-        // Generate field key from name
-        $field_key = sanitize_key( str_replace( ' ', '_', strtolower( $field_name ) ) );
-
-        // Ensure unique field key
-        $existing_fields = DT_Posts::get_post_field_settings( $post_type );
-        $counter = 1;
-        $original_key = $field_key;
-        while ( isset( $existing_fields[$field_key] ) ) {
-            $field_key = $original_key . '_' . $counter;
-            $counter++;
-        }
-
-        // Prepare field configuration
-        $field_config = [
-            'name' => $field_name,
-            'type' => $field_type,
-            'description' => $field_description
-        ];
-
-        // Add options for select fields
-        if ( in_array( $field_type, [ 'key_select', 'multi_select' ] ) && !empty( $field_options ) ) {
-            $field_config['default'] = [];
-            foreach ( $field_options as $key => $label ) {
-                $option_key = sanitize_key( $key );
-                $field_config['default'][$option_key] = [ 'label' => sanitize_text_field( $label ) ];
-            }
-        }
-
-        // Create the field using DT's field creation API
-        $result = DT_CSV_Import_Utilities::create_custom_field( $post_type, $field_key, $field_config );
-
-        if ( is_wp_error( $result ) ) {
-            return $result;
-        }
-
-        return [
-            'success' => true,
-            'data' => [
-                'field_key' => $field_key,
-                'field_name' => $field_name,
-                'message' => 'Field created successfully'
-            ]
-        ];
-    }
 
     /**
      * Create import session

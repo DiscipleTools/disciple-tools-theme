@@ -684,6 +684,49 @@
         });
     }
 
+    showInlineValueMappingWithOptions(
+      columnIndex,
+      fieldKey,
+      fieldConfig,
+      fieldOptions,
+    ) {
+      const $card = $(
+        `.column-mapping-card[data-column-index="${columnIndex}"]`,
+      );
+      const $options = $card.find('.field-specific-options');
+
+      // Get unique values from this CSV column (excluding header row)
+      this.getColumnUniqueValues(columnIndex)
+        .then((uniqueValues) => {
+          if (uniqueValues.length === 0) {
+            $options.hide().empty();
+            return;
+          }
+
+          // Use the provided field options directly
+          const mappingHtml = this.createInlineValueMappingHtml(
+            columnIndex,
+            fieldKey,
+            uniqueValues,
+            fieldOptions,
+            fieldConfig.type,
+          );
+          $options.html(mappingHtml).show();
+
+          // Apply auto-mapping
+          this.autoMapInlineValues(columnIndex, fieldOptions);
+
+          // Update field mappings with initial auto-mapped values
+          this.updateFieldMappingFromInline(columnIndex, fieldKey);
+        })
+        .catch((error) => {
+          console.error('Error fetching column data:', error);
+          $options
+            .html('<p style="color: red;">Error loading column data</p>')
+            .show();
+        });
+    }
+
     getColumnUniqueValues(columnIndex) {
       // Get unique values from the current session's CSV data
       return fetch(
@@ -1218,7 +1261,7 @@
                                         <li>
                                             <a href="${record.permalink}" target="_blank" rel="noopener noreferrer">
                                                 ${this.escapeHtml(record.name)}
-                                                ${record.action === 'updated' ? '<span class="action-indicator updated">(UPDATED)</span>' : '<span class="action-indicator created">(CREATED)</span>'}
+                                                ${record.action === 'updated' ? '<span class="action-indicator updated">(UPDATED)</span>' : ''}
                                             </a>
                                         </li>
                                     `,
