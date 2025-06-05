@@ -393,6 +393,7 @@ class DT_CSV_Import_Ajax {
         $body_params = $request->get_json_params() ?? $request->get_body_params();
 
         $mappings = $body_params['mappings'] ?? [];
+        $import_options = $body_params['import_options'] ?? [];
 
         $session = $this->get_import_session( $session_id );
         if ( is_wp_error( $session ) ) {
@@ -405,11 +406,17 @@ class DT_CSV_Import_Ajax {
             return new WP_Error( 'mapping_validation_failed', implode( ', ', $validation_errors ), [ 'status' => 400 ] );
         }
 
-        // Update session with mappings
-        $this->update_import_session($session_id, [
+        // Update session with mappings and import options
+        $update_data = [
             'field_mappings' => $mappings,
             'status' => 'mapped'
-        ]);
+        ];
+
+        if ( !empty( $import_options ) ) {
+            $update_data['import_options'] = $import_options;
+        }
+
+        $this->update_import_session( $session_id, $update_data );
 
         return [
             'success' => true,

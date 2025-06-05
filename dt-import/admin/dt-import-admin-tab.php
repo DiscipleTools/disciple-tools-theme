@@ -134,9 +134,79 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
         return $descriptions[$post_type] ?? '';
     }
 
+    private function display_csv_examples_sidebar() {
+        ?>
+        <div class="postbox">
+            <div class="postbox-header">
+                <h2 class="hndle"><?php esc_html_e( 'CSV Examples', 'disciple_tools' ); ?></h2>
+            </div>
+            <div class="inside">
+                <p><?php esc_html_e( 'Download example CSV files to help you format your data correctly.', 'disciple_tools' ); ?></p>
+                
+                <h4><?php esc_html_e( 'Basic Examples', 'disciple_tools' ); ?></h4>
+                <ul>
+                    <li>
+                        <a href="<?php echo esc_url( get_template_directory_uri() . '/dt-import/assets/example_contacts.csv' ); ?>" 
+                           download="example_contacts.csv" class="button button-secondary">
+                            <span class="dashicons dashicons-download"></span>
+                            <?php esc_html_e( 'Basic Contacts CSV', 'disciple_tools' ); ?>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?php echo esc_url( get_template_directory_uri() . '/dt-import/assets/example_groups.csv' ); ?>" 
+                           download="example_groups.csv" class="button button-secondary">
+                            <span class="dashicons dashicons-download"></span>
+                            <?php esc_html_e( 'Basic Groups CSV', 'disciple_tools' ); ?>
+                        </a>
+                    </li>
+                </ul>
+                
+                <h4><?php esc_html_e( 'Comprehensive Examples', 'disciple_tools' ); ?></h4>
+                <ul>
+                    <li>
+                        <a href="<?php echo esc_url( get_template_directory_uri() . '/dt-import/assets/example_contacts_comprehensive.csv' ); ?>" 
+                           download="example_contacts_comprehensive.csv" class="button button-secondary">
+                            <span class="dashicons dashicons-download"></span>
+                            <?php esc_html_e( 'Comprehensive Contacts CSV', 'disciple_tools' ); ?>
+                        </a>
+                        <p class="description">
+                            <?php esc_html_e( 'Includes all contact field types and milestone options with realistic examples.', 'disciple_tools' ); ?>
+                        </p>
+                    </li>
+                    <li>
+                        <a href="<?php echo esc_url( get_template_directory_uri() . '/dt-import/assets/example_groups_comprehensive.csv' ); ?>" 
+                           download="example_groups_comprehensive.csv" class="button button-secondary">
+                            <span class="dashicons dashicons-download"></span>
+                            <?php esc_html_e( 'Comprehensive Groups CSV', 'disciple_tools' ); ?>
+                        </a>
+                        <p class="description">
+                            <?php esc_html_e( 'Includes all group types, health metrics, and relationship examples.', 'disciple_tools' ); ?>
+                        </p>
+                    </li>
+                </ul>
+                
+                <h4><?php esc_html_e( 'Import Tips', 'disciple_tools' ); ?></h4>
+                <ul class="ul-disc">
+                    <li><?php esc_html_e( 'Use semicolons (;) to separate multiple values in a single field', 'disciple_tools' ); ?></li>
+                    <li><?php esc_html_e( 'Date format should be YYYY-MM-DD (e.g., 2024-01-15)', 'disciple_tools' ); ?></li>
+                    <li><?php esc_html_e( 'Leave cells empty if no data is available', 'disciple_tools' ); ?></li>
+                    <li><?php esc_html_e( 'Use exact field value keys for dropdown options', 'disciple_tools' ); ?></li>
+                </ul>
+                
+                <div style="margin-top: 15px; padding: 10px; background: #f0f8ff; border-left: 4px solid #0073aa;">
+                    <p style="margin: 0; font-size: 12px;">
+                        <strong><?php esc_html_e( 'Note:', 'disciple_tools' ); ?></strong>
+                        <?php esc_html_e( 'The comprehensive examples show all available field options. You only need to include the columns relevant to your data.', 'disciple_tools' ); ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+
     private function get_translations() {
         return [
-            'selectPostType' => __( 'Select Post Type', 'disciple_tools' ),
+            'selectPostType' => __( 'Select Record Type', 'disciple_tools' ),
             'uploadCsv' => __( 'Upload CSV', 'disciple_tools' ),
             'mapFields' => __( 'Map Fields', 'disciple_tools' ),
             'previewImport' => __( 'Preview & Import', 'disciple_tools' ),
@@ -251,57 +321,74 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
 
     private function display_import_interface() {
         ?>
-        <div class="wrap dt-import-container">
-            <h1><?php esc_html_e( 'Import Data', 'disciple_tools' ); ?></h1>
-            
-            <!-- Progress Indicator -->
-            <div class="dt-import-progress">
-                <ul class="dt-import-steps">
-                    <li class="step active" data-step="1">
-                        <span class="step-number">1</span>
-                        <span class="step-name"><?php esc_html_e( 'Select Post Type', 'disciple_tools' ) ?></span>
-                    </li>
-                    <li class="step" data-step="2">
-                        <span class="step-number">2</span>
-                        <span class="step-name"><?php esc_html_e( 'Upload CSV', 'disciple_tools' ) ?></span>
-                    </li>
-                    <li class="step" data-step="3">
-                        <span class="step-number">3</span>
-                        <span class="step-name"><?php esc_html_e( 'Map Fields', 'disciple_tools' ) ?></span>
-                    </li>
-                    <li class="step" data-step="4">
-                        <span class="step-number">4</span>
-                        <span class="step-name"><?php esc_html_e( 'Preview & Import', 'disciple_tools' ) ?></span>
-                    </li>
-                </ul>
-            </div>
-            
-            <!-- Step Content Container -->
-            <div class="dt-import-step-content">
-                <!-- Initial step content will be loaded here -->
-                <div class="dt-import-initial-content">
-                    <h2><?php esc_html_e( 'Step 1: Select Post Type', 'disciple_tools' ) ?></h2>
-                    <p><?php esc_html_e( 'Choose the type of records you want to import from your CSV file.', 'disciple_tools' ) ?></p>
-                    
-                    <div class="post-type-grid">
-                        <!-- Post type cards will be dynamically populated -->
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Navigation -->
-            <div class="dt-import-navigation">
-                <button type="button" class="button dt-import-back" style="display: none;">
-                    <?php esc_html_e( '← Back', 'disciple_tools' ) ?>
-                </button>
-                <button type="button" class="button button-primary dt-import-next" disabled>
-                    <?php esc_html_e( 'Next →', 'disciple_tools' ) ?>
-                </button>
-            </div>
-            
-            <!-- Error container -->
-            <div class="dt-import-errors" style="display: none;"></div>
-        </div>
+        <div class="wrap">
+            <div id="poststuff">
+                <div id="post-body" class="metabox-holder columns-2">
+                    <div id="post-body-content">
+                        <!-- Main Column -->
+                        <div class="dt-import-container">
+                            <h1><?php esc_html_e( 'Import Data', 'disciple_tools' ); ?></h1>
+                            
+                            <!-- Progress Indicator -->
+                            <div class="dt-import-progress">
+                                <ul class="dt-import-steps">
+                                    <li class="step active" data-step="1">
+                                        <span class="step-number">1</span>
+                                        <span class="step-name"><?php esc_html_e( 'Select Record Type', 'disciple_tools' ) ?></span>
+                                    </li>
+                                    <li class="step" data-step="2">
+                                        <span class="step-number">2</span>
+                                        <span class="step-name"><?php esc_html_e( 'Upload CSV', 'disciple_tools' ) ?></span>
+                                    </li>
+                                    <li class="step" data-step="3">
+                                        <span class="step-number">3</span>
+                                        <span class="step-name"><?php esc_html_e( 'Map Fields', 'disciple_tools' ) ?></span>
+                                    </li>
+                                    <li class="step" data-step="4">
+                                        <span class="step-number">4</span>
+                                        <span class="step-name"><?php esc_html_e( 'Preview & Import', 'disciple_tools' ) ?></span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Step Content Container -->
+                            <div class="dt-import-step-content">
+                                <!-- Initial step content will be loaded here -->
+                                <div class="dt-import-initial-content">
+                                    <h2><?php esc_html_e( 'Step 1: Select Post Type', 'disciple_tools' ) ?></h2>
+                                    <p><?php esc_html_e( 'Choose the type of records you want to import from your CSV file.', 'disciple_tools' ) ?></p>
+                                    
+                                    <div class="post-type-grid">
+                                        <!-- Post type cards will be dynamically populated -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Navigation -->
+                            <div class="dt-import-navigation">
+                                <button type="button" class="button dt-import-back" style="display: none;">
+                                    <?php esc_html_e( '← Back', 'disciple_tools' ) ?>
+                                </button>
+                                <button type="button" class="button button-primary dt-import-next" disabled>
+                                    <?php esc_html_e( 'Next →', 'disciple_tools' ) ?>
+                                </button>
+                            </div>
+                            
+                            <!-- Error container -->
+                            <div class="dt-import-errors" style="display: none;"></div>
+                        </div>
+                        <!-- End Main Column -->
+                    </div><!-- end post-body-content -->
+                    <div id="postbox-container-1" class="postbox-container">
+                        <!-- Right Column -->
+                        <?php $this->display_csv_examples_sidebar(); ?>
+                        <!-- End Right Column -->
+                    </div><!-- postbox-container 1 -->
+                    <div id="postbox-container-2" class="postbox-container">
+                    </div><!-- postbox-container 2 -->
+                </div><!-- post-body meta box container -->
+            </div><!--poststuff end -->
+        </div><!-- wrap end -->
         <?php
     }
 

@@ -110,6 +110,9 @@
       this.cachedFieldSettings = null;
 
       $('.dt-import-next').prop('disabled', false);
+
+      // Automatically proceed to step 2
+      this.showStep2();
     }
 
     // Step 2: File Upload
@@ -173,7 +176,7 @@
     showStep1() {
       const step1Html = `
                 <div class="dt-import-initial-content">
-                    <h2>Step 1: Select Post Type</h2>
+                    <h2>Step 1: Select Record Type</h2>
                     <p>Choose the type of records you want to import from your CSV file.</p>
                     
                     <div class="post-type-grid">
@@ -252,6 +255,9 @@
                             </tr>
                         </table>
                     </div>
+
+                    ${this.getImportOptionsHtml()}
+                </div>
                 </div>
             `;
 
@@ -266,6 +272,9 @@
           e.stopPropagation();
           $('#csv-file-input').get(0).click();
         });
+
+      // Populate import options dropdowns
+      this.populateImportOptions();
     }
 
     handleFileSelect(e) {
@@ -366,6 +375,18 @@
     // Step 3: Field Mapping
     analyzeCSV() {
       if (!this.sessionId) return;
+
+      // Capture import options from Step 2 before moving to Step 3
+      const assignedToVal = $('#import-assigned-to').val();
+      const sourceVal = $('#import-source').val();
+
+      this.importOptions = {
+        assigned_to:
+          assignedToVal && assignedToVal !== '' ? assignedToVal : null,
+        source: sourceVal && sourceVal !== '' ? sourceVal : null,
+        delimiter: $('#csv-delimiter').val() || ',',
+        encoding: $('#csv-encoding').val() || 'UTF-8',
+      };
 
       this.showProcessing('Analyzing CSV columns...');
 
@@ -865,6 +886,14 @@
       );
       this.showProcessing('Saving field mappings...');
 
+      // Use the import options that were captured in analyzeCSV()
+      const importOptions = this.importOptions || {
+        assigned_to: null,
+        source: null,
+        delimiter: ',',
+        encoding: 'UTF-8',
+      };
+
       fetch(`${dtImport.restUrl}${this.sessionId}/mapping`, {
         method: 'POST',
         headers: {
@@ -873,6 +902,7 @@
         },
         body: JSON.stringify({
           mappings: this.fieldMappings,
+          import_options: importOptions,
         }),
       })
         .then((response) => response.json())
@@ -1671,6 +1701,148 @@
       const isEnabled = $checkbox.prop('checked');
 
       this.updateFieldMappingDuplicateChecking(columnIndex, isEnabled);
+    }
+
+    getImportOptionsHtml() {
+      if (!this.selectedPostType) {
+        return '';
+      }
+
+      // Use field settings from getFieldSettingsForPostType instead
+      const fieldSettings = this.getFieldSettingsForPostType();
+
+      let html = '';
+
+      // Check if this post type supports assigned_to field
+      if (fieldSettings && fieldSettings.assigned_to) {
+        html += `
+          <div class="import-options">
+            <h3>Import Options</h3>
+            <table class="form-table">
+              <tr>
+                <th><label for="import-assigned-to">Assign to User</label></th>
+                <td>
+                  <select id="import-assigned-to">
+                    <option value="">Select a user...</option>
+                  </select>
+                  <p class="description">All imported records will be assigned to this user.</p>
+                </td>
+              </tr>`;
+      }
+
+      // Check if this post type supports sources field
+      if (fieldSettings && fieldSettings.sources) {
+        if (!html) {
+          html += `
+            <div class="import-options">
+              <h3>Import Options</h3>
+              <table class="form-table">`;
+        }
+        html += `
+              <tr>
+                <th><label for="import-source">Source</label></th>
+                <td>
+                  <select id="import-source">
+                    <option value="">Select a source...</option>
+                  </select>
+                  <p class="description">All imported records will have this source.</p>
+                </td>
+              </tr>`;
+      }
+
+      if (html) {
+        html += `
+            </table>
+          </div>`;
+      }
+
+      return html;
+    }
+
+    populateImportOptions() {
+      // Populate assigned_to dropdown
+      if ($('#import-assigned-to').length > 0) {
+        this.loadUsers()
+          .then((users) => {
+            const $select = $('#import-assigned-to');
+            $select
+              .empty()
+              .append('<option value="">Select a user...</option>');
+
+            users.forEach((user) => {
+              $select.append(
+                `<option value="${user.ID}">${this.escapeHtml(user.name)}</option>`,
+              );
+            });
+          })
+          .catch((error) => {
+            console.error('Error loading users:', error);
+          });
+      }
+
+      // Populate source dropdown
+      if ($('#import-source').length > 0) {
+        this.loadSources()
+          .then((sources) => {
+            const $select = $('#import-source');
+            $select
+              .empty()
+              .append('<option value="">Select a source...</option>');
+
+            sources.forEach((source) => {
+              $select.append(
+                `<option value="${this.escapeHtml(source.key)}">${this.escapeHtml(source.label)}</option>`,
+              );
+            });
+          })
+          .catch((error) => {
+            console.error('Error loading sources:', error);
+          });
+      }
+    }
+
+    loadUsers() {
+      // Use the existing DT users endpoint
+      const restUrl = window.wpApiSettings
+        ? window.wpApiSettings.root
+        : '/wp-json/';
+      const usersUrl = `${restUrl}dt/v1/users/get_users`;
+
+      return $.ajax({
+        url: usersUrl,
+        method: 'GET',
+        headers: {
+          'X-WP-Nonce': dtImport.nonce,
+        },
+        data: {
+          get_all: 1, // Get all assignable users
+          post_type: this.selectedPostType, // Pass the current post type
+        },
+      }).then((response) => {
+        if (response && Array.isArray(response)) {
+          return response;
+        } else {
+          throw new Error('Invalid response format for assignable users');
+        }
+      });
+    }
+
+    loadSources() {
+      const fieldSettings = this.getFieldSettingsForPostType();
+      const sourcesField = fieldSettings.sources;
+
+      if (sourcesField && sourcesField.default) {
+        // Convert sources field options to array format
+        const sources = Object.entries(sourcesField.default).map(
+          ([key, option]) => ({
+            key: key,
+            label: option.label || key,
+          }),
+        );
+        return Promise.resolve(sources);
+      }
+
+      return Promise.resolve([]);
     }
   }
 

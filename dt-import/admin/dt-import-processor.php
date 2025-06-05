@@ -609,6 +609,7 @@ class DT_CSV_Import_Processor {
         $payload = maybe_unserialize( $session['payload'] ) ?: [];
         $csv_data = $payload['csv_data'] ?? [];
         $field_mappings = $payload['field_mappings'] ?? [];
+        $import_options = $payload['import_options'] ?? [];
         $post_type = $session['post_type'];
 
         $headers = array_shift( $csv_data );
@@ -664,6 +665,23 @@ class DT_CSV_Import_Processor {
                                 $duplicate_check_fields[] = $field_key;
                             }
                         }
+                    }
+                }
+
+                // Apply import options as default values (only if not already set from CSV)
+                if ( !empty( $import_options ) ) {
+                    // Apply assigned_to if set and not already in post_data
+                    if ( isset( $import_options['assigned_to'] ) && $import_options['assigned_to'] !== null && $import_options['assigned_to'] !== '' && !isset( $post_data['assigned_to'] ) ) {
+                        $post_data['assigned_to'] = $import_options['assigned_to'];
+                    }
+
+                    // Apply source if set and not already in post_data
+                    if ( isset( $import_options['source'] ) && $import_options['source'] !== null && $import_options['source'] !== '' && !isset( $post_data['sources'] ) ) {
+                        $post_data['sources'] = [
+                            'values' => [
+                                [ 'value' => $import_options['source'] ]
+                            ]
+                        ];
                     }
                 }
 

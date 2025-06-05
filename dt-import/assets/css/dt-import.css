@@ -2,13 +2,78 @@
 
 /* Main Container */
 .dt-import-container {
-    max-width: 1200px;
     margin: 0;
     padding: 20px;
     background: #fff;
     border: 1px solid #c3c4c7;
     border-radius: 4px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+/* CSV Examples Sidebar */
+#postbox-container-1 .postbox {
+    margin-bottom: 20px;
+}
+
+#postbox-container-1 .postbox .inside {
+    padding: 12px;
+}
+
+#postbox-container-1 .postbox ul {
+    list-style: none;
+    margin: 0 0 15px 0;
+    padding: 0;
+}
+
+#postbox-container-1 .postbox ul li {
+    margin-bottom: 10px;
+}
+
+#postbox-container-1 .postbox .button {
+    width: 100%;
+    text-align: left;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+#postbox-container-1 .postbox .button .dashicons {
+    margin-right: 8px;
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+#postbox-container-1 .postbox .description {
+    margin: 5px 0 0 0;
+    font-size: 11px;
+    color: #666;
+    line-height: 1.4;
+}
+
+#postbox-container-1 .postbox h4 {
+    margin: 15px 0 10px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #23282d;
+}
+
+#postbox-container-1 .postbox h4:first-child {
+    margin-top: 0;
+}
+
+#postbox-container-1 .postbox .ul-disc {
+    list-style: disc;
+    margin-left: 20px;
+}
+
+#postbox-container-1 .postbox .ul-disc li {
+    margin-bottom: 5px;
+    font-size: 12px;
+    line-height: 1.4;
 }
 
 .dt-import-container h1 {

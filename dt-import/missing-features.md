@@ -10,7 +10,7 @@ Implementation: Uses check_for_duplicates=contact_phone,contact_email parameter 
 Theme status: ❌ Missing completely
 2. Source and Assigned To Fields
 Plugin has: Fields for setting import source and assigning imported records to a specific user
-Theme status: ❌ Missing completely
+Theme status: ✅ Complete - Fully implemented with UI fields in Step 2 that set default source and assigned_to values for all imported records
 3. Example CSV Files
 Plugin has: Provides downloadable example CSV files for contacts and groups
 Theme status: ❌ Missing
