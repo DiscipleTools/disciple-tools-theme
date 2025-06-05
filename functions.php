@@ -590,15 +590,16 @@ function disciple_tools() {
 
 
 add_action( 'after_setup_theme', function(){
-    /**
-     * Load Language Files
-     */
-    load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
 
     /**
      * Load the Disciple Tools Theme
      */
     disciple_tools();
+
+    /**
+     * Load Language Files
+     */
+    load_theme_textdomain( 'disciple_tools', get_template_directory() . '/dt-assets/translation' );
 }, 5 );
 
 /**
