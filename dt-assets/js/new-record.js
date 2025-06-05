@@ -86,6 +86,67 @@ jQuery(function ($) {
     $(this).closest('.link-section').remove();
   });
 
+  function check_field_value_exists(el, field, value) {
+    const postType = el.getAttribute('posttype');
+
+    // show loading indicator and reset error message
+    el.setAttribute('loading', true);
+    el.setAttribute('error', '');
+
+    if (value && Array.isArray(value)) {
+      const apiRequests = [];
+      // for each value in the communication channel,
+      // send API request to check for duplicate
+      for (const valueItem of value) {
+        const data = {
+          communication_channel: field,
+          field_value: valueItem?.value,
+        };
+        apiRequests.push(
+          window.componentService.api.checkFieldValueExists(postType, data),
+        );
+      }
+
+      // Process API response after all have completed
+      Promise.all(apiRequests)
+        .then((results) => {
+          for (const result of results) {
+            // if any value has a duplicate, set error
+            if (result && result.length) {
+              const fieldName = el.getAttribute('label');
+              // localize error message
+              const msg =
+                window.new_record_localized.translations.value_already_exists.replace(
+                  '%s',
+                  fieldName,
+                );
+              el.setAttribute('error', msg);
+            }
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        })
+        .finally(() => {
+          el.removeAttribute('loading');
+        });
+    }
+  }
+
+  // check for duplicates on field change events
+  const nonDuplicableFields = document.querySelectorAll(
+    '#contact_phone, #contact_email',
+  );
+  for (const nonDuplicableField of nonDuplicableFields) {
+    nonDuplicableField.addEventListener('change', (event) => {
+      check_field_value_exists(
+        nonDuplicableField,
+        event.detail.field,
+        event.detail.newValue,
+      );
+    });
+  }
+
   $('.js-create-post').on('click', '.delete-button', function () {
     $(this).parent().remove();
   });
