@@ -33,9 +33,6 @@ class DT_Theme_CSV_Import {
             return;
         }
 
-        // Log successful initialization
-        error_log( 'DT Theme CSV Import: Initializing theme CSV import feature' );
-
         // Load required files
         $this->load_dependencies();
 

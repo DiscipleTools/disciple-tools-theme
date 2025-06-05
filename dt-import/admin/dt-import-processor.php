@@ -26,6 +26,7 @@ class DT_CSV_Import_Processor {
             $has_errors = false;
             $row_errors = [];
             $row_warnings = [];
+            $duplicate_check_fields = [];
 
             foreach ( $field_mappings as $column_index => $mapping ) {
                 if ( empty( $mapping['field_key'] ) || $mapping['field_key'] === 'skip' ) {
@@ -38,6 +39,11 @@ class DT_CSV_Import_Processor {
 
                 try {
                     $processed_value = self::process_field_value( $raw_value, $field_key, $mapping, $post_type, true );
+
+                    // Check if this field has duplicate checking enabled
+                    if ( isset( $mapping['duplicate_checking'] ) && $mapping['duplicate_checking'] === true && !empty( trim( $raw_value ) ) ) {
+                        $duplicate_check_fields[] = $field_key;
+                    }
 
                     // Handle connection fields specially for preview
                     if ( $field_config['type'] === 'connection' && is_array( $processed_value ) ) {
@@ -89,12 +95,23 @@ class DT_CSV_Import_Processor {
                 }
             }
 
+            // Note about duplicate checking for preview
+            // In preview mode, we just indicate that duplicate checking will happen
+            // The actual duplicate checking is handled by DT_Posts during import
+            $will_update_existing = false;
+            if ( !empty( $duplicate_check_fields ) ) {
+                $will_update_existing = false; // We can't easily predict this in preview
+                // Note: Duplicate checking is configured but we don't show warnings in preview
+            }
+
             $preview_data[] = [
                 'row_number' => $offset + $row_index + 2, // +2 for header and 0-based index
                 'data' => $processed_row,
                 'has_errors' => $has_errors,
                 'errors' => $row_errors,
-                'warnings' => $row_warnings
+                'warnings' => $row_warnings,
+                'will_update_existing' => $will_update_existing,
+                'existing_post_id' => null // Not determined in preview
             ];
 
             if ( $has_errors ) {
@@ -626,6 +643,7 @@ class DT_CSV_Import_Processor {
         foreach ( $csv_data as $row_index => $row ) {
             try {
                 $post_data = [];
+                $duplicate_check_fields = [];
 
                 foreach ( $field_mappings as $column_index => $mapping ) {
                     if ( empty( $mapping['field_key'] ) || $mapping['field_key'] === 'skip' ) {
@@ -640,12 +658,23 @@ class DT_CSV_Import_Processor {
                         if ( $processed_value !== null ) {
                             // Format value according to field type for DT_Posts API
                             $post_data[$field_key] = self::format_value_for_api( $processed_value, $field_key, $post_type );
+
+                            // Check if this field has duplicate checking enabled
+                            if ( isset( $mapping['duplicate_checking'] ) && $mapping['duplicate_checking'] === true ) {
+                                $duplicate_check_fields[] = $field_key;
+                            }
                         }
                     }
                 }
 
-                // Create the post
-                $result = DT_Posts::create_post( $post_type, $post_data, true, false );
+                // Prepare create_post arguments
+                $create_args = [];
+                if ( !empty( $duplicate_check_fields ) ) {
+                    $create_args['check_for_duplicates'] = $duplicate_check_fields;
+                }
+
+                // Create the post (DT_Posts will handle duplicate checking internally)
+                $result = DT_Posts::create_post( $post_type, $post_data, true, false, $create_args );
 
                 if ( is_wp_error( $result ) ) {
                     $error_count++;

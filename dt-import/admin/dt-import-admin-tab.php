@@ -200,7 +200,12 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
             'geocodingOptional' => __( 'Geocoding is optional - you can import without it', 'disciple_tools' ),
             'locationInfo' => __( 'location fields accept grid IDs, coordinates (lat,lng), or addresses', 'disciple_tools' ),
             'locationMetaInfo' => __( 'location_meta fields accept grid IDs, coordinates (lat,lng), or addresses', 'disciple_tools' ),
-            'noGeocodingService' => __( 'No geocoding service is available. Please configure Google Maps or Mapbox API keys.', 'disciple_tools' )
+            'noGeocodingService' => __( 'No geocoding service is available. Please configure Google Maps or Mapbox API keys.', 'disciple_tools' ),
+
+            // Duplicate checking translations
+            'duplicateChecking' => __( 'Duplicate Checking', 'disciple_tools' ),
+            'enableDuplicateChecking' => __( 'Check for duplicates and merge with existing records', 'disciple_tools' ),
+            'duplicateCheckingNote' => __( 'When enabled, the import will look for existing records with the same value in this field and update them instead of creating duplicates.', 'disciple_tools' )
         ];
     }
 
@@ -298,5 +303,207 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
             <div class="dt-import-errors" style="display: none;"></div>
         </div>
         <?php
+    }
+
+    /**
+     * Display field mapping step
+     */
+    public function display_field_mapping_step( $session_data ) {
+        $csv_data = $session_data['csv_data'];
+        $post_type = $session_data['post_type'];
+
+        // Analyze CSV columns with enhanced field detection
+        $mapping_suggestions = DT_CSV_Import_Mapping::analyze_csv_columns( $csv_data, $post_type );
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+
+        ?>
+        <div class="wrap">
+            <h1><?php esc_html_e( 'Map CSV Columns to Fields', 'disciple_tools' ); ?></h1>
+            
+            <div class="notice notice-info">
+                <p><?php esc_html_e( 'We have automatically suggested field mappings based on your column headers. Please review and adjust as needed.', 'disciple_tools' ); ?></p>
+            </div>
+
+            <form method="post" id="field-mapping-form">
+                <?php wp_nonce_field( 'dt_csv_import_mapping', 'dt_csv_import_mapping_nonce' ); ?>
+                <input type="hidden" name="action" value="process_mapping" />
+                <input type="hidden" name="session_id" value="<?php echo esc_attr( $session_data['session_id'] ); ?>" />
+
+                <table class="wp-list-table widefat fixed striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%;"><?php esc_html_e( 'CSV Column', 'disciple_tools' ); ?></th>
+                            <th style="width: 25%;"><?php esc_html_e( 'Map to Field', 'disciple_tools' ); ?></th>
+                            <th style="width: 25%;"><?php esc_html_e( 'Sample Data', 'disciple_tools' ); ?></th>
+                            <th style="width: 25%;"><?php esc_html_e( 'Configuration', 'disciple_tools' ); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ( $mapping_suggestions as $column_index => $suggestion ): ?>
+                            <tr>
+                                <td>
+                                    <strong><?php echo esc_html( $suggestion['column_name'] ); ?></strong>
+                                    <?php if ( $suggestion['has_match'] ): ?>
+                                        <br><small class="description">
+                                            <?php esc_html_e( 'Auto-detected', 'disciple_tools' ); ?>
+                                        </small>
+                                    <?php else : ?>
+                                        <br><small class="description" style="color: #999;">
+                                            <?php esc_html_e( 'No match found', 'disciple_tools' ); ?>
+                                        </small>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <select name="field_mappings[<?php echo esc_attr( $column_index ); ?>][field_key]" 
+                                            class="field-select" 
+                                            data-column-index="<?php echo esc_attr( $column_index ); ?>">
+                                        <option value=""><?php esc_html_e( 'Skip this column', 'disciple_tools' ); ?></option>
+                                        
+                                        <?php if ( !$suggestion['has_match'] ): ?>
+                                            <option value="" disabled selected style="color: #999;">
+                                                <?php esc_html_e( 'No match found - select manually', 'disciple_tools' ); ?>
+                                            </option>
+                                        <?php endif; ?>
+
+                                        <?php
+                                        $field_groups = [
+                                            'core' => __( 'Core Fields', 'disciple_tools' ),
+                                            'communication' => __( 'Communication', 'disciple_tools' ),
+                                            'other' => __( 'Other Fields', 'disciple_tools' )
+                                        ];
+
+                                        foreach ( $field_groups as $group_key => $group_label ):
+                                            $group_fields = self::get_fields_by_group( $field_settings, $group_key );
+                                            if ( empty( $group_fields ) ) { continue;
+                                            }
+                                            ?>
+                                            <optgroup label="<?php echo esc_attr( $group_label ); ?>">
+                                                <?php foreach ( $group_fields as $field_key => $field_config ): ?>
+                                                    <option value="<?php echo esc_attr( $field_key ); ?>" 
+                                                            <?php
+                                                            // Auto-select if this is the suggested field
+                                                            if ( $suggestion['suggested_field'] === $field_key ) {
+                                                                echo 'selected';
+                                                            }
+                                                            ?>>
+                                                        <?php echo esc_html( $field_config['name'] ); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </optgroup>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="sample-data">
+                                        <?php if ( !empty( $suggestion['sample_data'] ) ): ?>
+                                            <?php foreach ( array_slice( $suggestion['sample_data'], 0, 3 ) as $sample ): ?>
+                                                <div class="sample-item"><?php echo esc_html( $sample ); ?></div>
+                                            <?php endforeach; ?>
+                                            <?php if ( count( $suggestion['sample_data'] ) > 3 ): ?>
+                                                <div class="sample-item">
+                                                    <em><?php
+                                                    /* translators: %d: number of additional samples */
+                                                    printf( esc_html__( '+%d more...', 'disciple_tools' ), count( $suggestion['sample_data'] ) - 3 );
+                                                    ?></em>
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php else : ?>
+                                            <em><?php esc_html_e( 'No sample data', 'disciple_tools' ); ?></em>
+                                        <?php endif; ?>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="field-configuration" id="config-<?php echo esc_attr( $column_index ); ?>">
+                                        <!-- Field-specific configuration will be loaded here via JavaScript -->
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+
+                <p class="submit">
+                    <input type="submit" name="submit" class="button-primary" value="<?php esc_attr_e( 'Preview Import', 'disciple_tools' ); ?>" />
+                    <a href="<?php echo esc_url( admin_url( 'admin.php?page=dt_import' ) ); ?>" class="button"><?php esc_html_e( 'Start Over', 'disciple_tools' ); ?></a>
+                </p>
+            </form>
+        </div>
+
+        <style>
+            .sample-data {
+                font-size: 12px;
+            }
+            .sample-item {
+                padding: 2px 0;
+                border-bottom: 1px solid #eee;
+            }
+            .sample-item:last-child {
+                border-bottom: none;
+            }
+            .field-configuration {
+                min-height: 40px;
+            }
+        </style>
+
+        <script>
+        jQuery(document).ready(function($) {
+            // Handle field mapping changes
+            $('.field-select').on('change', function() {
+                var columnIndex = $(this).data('column-index');
+                var selectedField = $(this).val();
+                var configContainer = $('#config-' + columnIndex);
+                
+                // Clear previous configuration
+                configContainer.html('');
+                
+                if (selectedField) {
+                    // Load field-specific configuration
+                    loadFieldConfiguration(columnIndex, selectedField, configContainer);
+                }
+            });
+            
+            // Load initial configurations for auto-detected fields
+            $('.field-select option:selected').each(function() {
+                if ($(this).val()) {
+                    var select = $(this).parent();
+                    var columnIndex = select.data('column-index');
+                    var selectedField = $(this).val();
+                    var configContainer = $('#config-' + columnIndex);
+                    loadFieldConfiguration(columnIndex, selectedField, configContainer);
+                }
+            });
+            
+            function loadFieldConfiguration(columnIndex, fieldKey, container) {
+                // This would load field-specific configuration via AJAX
+                // For now, show a simple message
+                container.html('<em><?php esc_html_e( 'Configuration will be loaded here', 'disciple_tools' ); ?></em>');
+            }
+        });
+        </script>
+        <?php
+    }
+
+    /**
+     * Get fields grouped by category
+     */
+    private static function get_fields_by_group( $field_settings, $group ) {
+        $grouped_fields = [];
+
+        foreach ( $field_settings as $field_key => $field_config ) {
+            $field_group = 'other'; // default group
+
+            // Categorize fields
+            if ( in_array( $field_key, [ 'name', 'title', 'overall_status', 'assigned_to' ] ) ) {
+                $field_group = 'core';
+            } elseif ( strpos( $field_key, 'contact_' ) === 0 || $field_config['type'] === 'communication_channel' ) {
+                $field_group = 'communication';
+            }
+
+            if ( $field_group === $group ) {
+                $grouped_fields[$field_key] = $field_config;
+            }
+        }
+
+        return $grouped_fields;
     }
 }

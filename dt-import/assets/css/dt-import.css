@@ -283,27 +283,18 @@
 }
 
 .confidence-indicator {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 3px;
     font-size: 12px;
     font-weight: 500;
-    margin-bottom: 10px;
+    color: #46b450;
+    background: #e8f5e8;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
 }
 
-.confidence-high {
-    background: #d4edda;
-    color: #155724;
-}
-
-.confidence-medium {
-    background: #fff3cd;
-    color: #856404;
-}
-
-.confidence-low {
-    background: #f8d7da;
-    color: #721c24;
+.confidence-indicator.no-match {
+    color: #dc3232;
+    background: #ffebee;
 }
 
 .sample-data {
@@ -1209,4 +1200,77 @@
     margin: 0;
     font-size: 13px;
     color: #85651a;
+}
+
+/* Duplicate Checking Styles */
+.duplicate-checking-section {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.duplicate-checking-section h5 {
+    color: #333;
+    font-weight: 600;
+}
+
+.duplicate-checking-container {
+    margin-top: 8px;
+}
+
+.duplicate-checking-checkbox {
+    margin-right: 8px !important;
+}
+
+.duplicate-checking-container label {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.duplicate-checking-container p {
+    margin: 5px 0 0 0;
+    font-style: italic;
+}
+
+/* Preview table update indicators */
+.preview-row.will-update {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+}
+
+.preview-row.will-update .row-number::after {
+    content: " (UPDATE)";
+    color: #856404;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+/* Action indicators in results */
+.action-indicator {
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-left: 8px;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.action-indicator.created {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.action-indicator.updated {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.update-indicator {
+    color: #856404;
+    font-weight: bold;
+    font-size: 0.9em;
 } 

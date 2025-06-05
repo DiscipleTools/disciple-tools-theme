@@ -53,6 +53,11 @@
         this.handleGeocodingServiceChange(e),
       );
 
+      // Duplicate checking selection
+      $(document).on('change', '.duplicate-checking-checkbox', (e) =>
+        this.handleDuplicateCheckingChange(e),
+      );
+
       // Inline value mapping events
       $(document).on('change', '.inline-value-mapping-select', (e) =>
         this.handleInlineValueMappingChange(e),
@@ -308,14 +313,6 @@
       formData.append('csv_file', file);
       formData.append('post_type', this.selectedPostType);
 
-      // Debug logging
-      console.log('DT Import Debug:');
-      console.log('REST URL:', `${dtImport.restUrl}upload`);
-      console.log('Nonce:', dtImport.nonce);
-      console.log('Post Type:', this.selectedPostType);
-      console.log('Nonce length:', dtImport.nonce.length);
-      console.log('Nonce type:', typeof dtImport.nonce);
-
       fetch(`${dtImport.restUrl}upload`, {
         method: 'POST',
         headers: {
@@ -325,12 +322,7 @@
         body: formData,
       })
         .then((response) => {
-          console.log('Response status:', response.status);
-          console.log('Response headers:', response.headers);
-          console.log('Response ok:', response.ok);
-
           return response.json().then((data) => {
-            console.log('Response data:', data);
             return { response, data };
           });
         })
@@ -492,13 +484,6 @@
     }
 
     createColumnMappingCard(columnIndex, mapping) {
-      const confidenceClass =
-        mapping.confidence >= 80
-          ? 'high'
-          : mapping.confidence >= 60
-            ? 'medium'
-            : 'low';
-
       const sampleDataHtml = mapping.sample_data
         .slice(0, 3)
         .map((sample) => `<li>${this.escapeHtml(sample)}</li>`)
@@ -515,10 +500,10 @@
                     <div class="column-header">
                         <h4>${this.escapeHtml(mapping.column_name)}</h4>
                         ${
-                          mapping.confidence > 0 && !existingMapping
+                          !mapping.has_match && !existingMapping
                             ? `
-                            <div class="confidence-indicator confidence-${confidenceClass}">
-                                ${mapping.confidence}% confidence
+                            <div class="confidence-indicator no-match">
+                                No match found
                             </div>
                         `
                             : ''
@@ -582,28 +567,16 @@
         return;
       }
 
-      console.log(
-        `DT Import: Column ${columnIndex} field mapping changed to: "${fieldKey}"`,
-      );
-
       // Store mapping - properly handle empty values for "do not import"
       if (fieldKey && fieldKey !== '') {
         this.fieldMappings[columnIndex] = {
           field_key: fieldKey,
           column_index: columnIndex,
         };
-        console.log(
-          `DT Import: Added mapping for column ${columnIndex} -> ${fieldKey}`,
-        );
       } else {
         // When "do not import" is selected (empty value), remove the mapping entirely
         delete this.fieldMappings[columnIndex];
-        console.log(
-          `DT Import: Removed mapping for column ${columnIndex} (do not import)`,
-        );
       }
-
-      console.log('DT Import: Current field mappings:', this.fieldMappings);
 
       // Show field-specific options if needed
       this.showFieldSpecificOptions(columnIndex, fieldKey);
@@ -633,6 +606,11 @@
         this.showInlineValueMapping(columnIndex, fieldKey, fieldConfig);
       } else if (fieldConfig.type === 'location_meta') {
         this.showGeocodingServiceSelector(columnIndex, fieldKey);
+      } else if (
+        fieldConfig.type === 'communication_channel' &&
+        this.isCommunicationFieldForDuplicateCheck(fieldKey)
+      ) {
+        this.showDuplicateCheckingOptions(columnIndex, fieldKey, fieldConfig);
       } else {
         $options.hide().empty();
       }
@@ -902,7 +880,6 @@
           this.hideProcessing();
 
           if (data.success) {
-            console.log('DT Import: Field mappings saved successfully');
             this.showStep4();
           } else {
             this.showError(data.message || 'Failed to save mappings');
@@ -1028,18 +1005,21 @@
         return '<p>No fields selected for import. Please go back and configure field mappings.</p>';
       }
 
-      const headerHtml = headers
-        .map((header) => `<th>${this.escapeHtml(header)}</th>`)
-        .join('');
+      const headerHtml =
+        `<th>Row #</th>` +
+        headers.map((header) => `<th>${this.escapeHtml(header)}</th>`).join('');
 
       const rowsHtml = rows
         .map((row) => {
           const hasWarnings = row.warnings && row.warnings.length > 0;
+          const willUpdate = row.will_update_existing || false;
           const rowClass = row.has_errors
             ? 'error-row'
             : hasWarnings
               ? 'warning-row'
-              : '';
+              : willUpdate
+                ? 'preview-row will-update'
+                : 'preview-row';
 
           const cellsHtml = headers
             .map((header) => {
@@ -1054,7 +1034,7 @@
           const warningsHtml = hasWarnings
             ? `
             <tr class="warnings-row">
-              <td colspan="${headers.length}">
+              <td colspan="${headers.length + 1}">
                 <div class="row-warnings">
                   <strong><i class="mdi mdi-alert"></i> Warnings:</strong>
                   <ul>
@@ -1066,7 +1046,15 @@
           `
             : '';
 
-          return `<tr class="${rowClass}">${cellsHtml}</tr>${warningsHtml}`;
+          // Add row number indicator with update status
+          const rowNumberDisplay = willUpdate
+            ? `Row ${row.row_number} <span class="update-indicator">(UPDATE)</span>`
+            : `Row ${row.row_number}`;
+
+          return `<tr class="${rowClass}" data-row-number="${row.row_number}">
+                    <td class="row-number">${rowNumberDisplay}</td>
+                    ${cellsHtml}
+                  </tr>${warningsHtml}`;
         })
         .join('');
 
@@ -1200,6 +1188,7 @@
                                         <li>
                                             <a href="${record.permalink}" target="_blank" rel="noopener noreferrer">
                                                 ${this.escapeHtml(record.name)}
+                                                ${record.action === 'updated' ? '<span class="action-indicator updated">(UPDATED)</span>' : '<span class="action-indicator created">(CREATED)</span>'}
                                             </a>
                                         </li>
                                     `,
@@ -1607,10 +1596,6 @@
         this.fieldMappings[columnIndex].geocode_service = serviceKey;
       }
 
-      console.log(
-        `DT Import: Added geocoding service mapping for column ${columnIndex} -> ${serviceKey}`,
-      );
-
       this.updateMappingSummary();
     }
 
@@ -1619,11 +1604,73 @@
       const columnIndex = $select.data('column-index');
       const serviceKey = $select.val();
 
-      console.log(
-        `DT Import: Column ${columnIndex} geocoding service changed to: "${serviceKey}"`,
-      );
-
       this.updateFieldMappingGeocodingService(columnIndex, serviceKey);
+    }
+
+    showDuplicateCheckingOptions(columnIndex, fieldKey, fieldConfig) {
+      const $card = $(
+        `.column-mapping-card[data-column-index="${columnIndex}"]`,
+      );
+      const $options = $card.find('.field-specific-options');
+
+      const duplicateCheckingHtml = `
+        <div class="duplicate-checking-section">
+          <h5 style="margin: 0 0 10px 0; font-size: 13px;">${dtImport.translations.duplicateChecking}</h5>
+          <div class="duplicate-checking-container">
+            <label>
+              <input type="checkbox" class="duplicate-checking-checkbox" data-column-index="${columnIndex}" style="margin-right: 5px;">
+              ${dtImport.translations.enableDuplicateChecking}
+            </label>
+            <p style="font-size: 11px; color: #666; margin-top: 5px;">
+              ${dtImport.translations.duplicateCheckingNote}
+            </p>
+          </div>
+        </div>
+      `;
+
+      $options.html(duplicateCheckingHtml).show();
+
+      // Set default value to false if not already set
+      const currentMapping = this.fieldMappings[columnIndex];
+      if (!currentMapping || !currentMapping.duplicate_checking) {
+        $options.find('.duplicate-checking-checkbox').prop('checked', false);
+        this.updateFieldMappingDuplicateChecking(columnIndex, false);
+      } else {
+        $options
+          .find('.duplicate-checking-checkbox')
+          .prop('checked', currentMapping.duplicate_checking);
+      }
+    }
+
+    updateFieldMappingDuplicateChecking(columnIndex, isEnabled) {
+      // Update the field mappings with the selected duplicate checking state
+      if (!this.fieldMappings[columnIndex]) {
+        // This shouldn't happen since field mapping should be set first
+        console.warn(`No field mapping found for column ${columnIndex}`);
+        return;
+      } else {
+        this.fieldMappings[columnIndex].duplicate_checking = isEnabled;
+      }
+
+      this.updateMappingSummary();
+    }
+
+    isCommunicationFieldForDuplicateCheck(fieldKey) {
+      const fieldSettings = this.getFieldSettingsForPostType();
+      const fieldConfig = fieldSettings[fieldKey];
+
+      if (fieldConfig && fieldConfig.type === 'communication_channel') {
+        return true;
+      }
+      return false;
+    }
+
+    handleDuplicateCheckingChange(e) {
+      const $checkbox = $(e.target);
+      const columnIndex = $checkbox.data('column-index');
+      const isEnabled = $checkbox.prop('checked');
+
+      this.updateFieldMappingDuplicateChecking(columnIndex, isEnabled);
     }
   }
 
@@ -1632,7 +1679,6 @@
     if ($('.dt-import-container').length > 0 && !window.dtImportInstance) {
       try {
         window.dtImportInstance = new DTImport();
-        console.log('DT Import initialized successfully');
       } catch (error) {
         console.error('Error initializing DT Import:', error);
       }
