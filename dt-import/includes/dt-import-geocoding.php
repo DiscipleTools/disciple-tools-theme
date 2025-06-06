@@ -1,7 +1,8 @@
 <?php
 /**
- * DT Import Geocoding Service
- * Handles geocoding for location fields during CSV import
+ * DT Import Location Processing
+ * Handles location field processing for CSV import
+ * Note: Actual geocoding is handled by DT core system via geolocate flag
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -11,142 +12,14 @@ if ( !defined( 'ABSPATH' ) ) {
 class DT_CSV_Import_Geocoding {
 
     /**
-     * Available geocoding services
+     * Check if geocoding is available in DT core
      */
-    const AVAILABLE_SERVICES = [ 'google', 'mapbox' ];
+    public static function is_geocoding_available() {
+        // Check if any geocoding service is available
+        $google_available = class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key();
+        $mapbox_available = class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key();
 
-    /**
-     * Check which geocoding services are available
-     */
-    public static function get_available_geocoding_services() {
-        $available = [];
-
-        if ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) {
-            $available[] = 'google';
-        }
-
-        if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) {
-            $available[] = 'mapbox';
-        }
-
-        return $available;
-    }
-
-    /**
-     * Process location grid meta data during import
-     */
-    public static function process_location_grid_meta( $data, $geocode_service = 'none' ) {
-        if ( empty( $data ) ) {
-            return null;
-        }
-
-        // If data is already processed (array with type), return as-is
-        if ( is_array( $data ) && isset( $data['type'] ) ) {
-            return $data;
-        }
-
-        // Convert to location grid meta format
-        $location_meta = self::convert_to_location_meta( $data, $geocode_service );
-
-        return $location_meta;
-    }
-
-    /**
-     * Convert raw location data to location grid meta format
-     */
-    private static function convert_to_location_meta( $data, $geocode_service ) {
-        $location_meta = [];
-
-        if ( isset( $data['grid_id'] ) ) {
-            $location_meta['grid_id'] = $data['grid_id'];
-        }
-
-        if ( isset( $data['lat'], $data['lng'] ) ) {
-            $location_meta['lng'] = $data['lng'];
-            $location_meta['lat'] = $data['lat'];
-        }
-
-        if ( isset( $data['level'] ) ) {
-            $location_meta['level'] = $data['level'];
-        }
-
-        if ( isset( $data['label'] ) ) {
-            $location_meta['label'] = $data['label'];
-        } elseif ( isset( $data['address'] ) ) {
-            $location_meta['label'] = $data['address'];
-        } elseif ( isset( $data['lat'], $data['lng'] ) ) {
-            $location_meta['label'] = $data['lat'] . ', ' . $data['lng'];
-        }
-
-        // Add source information
-        $location_meta['source'] = 'csv_import';
-
-        return $location_meta;
-    }
-
-    /**
-     * Geocode an address using the specified service
-     */
-    public static function geocode_address( $address, $geocode_service, $country_code = null ) {
-        $address = trim( $address );
-
-        if ( empty( $address ) ) {
-            throw new Exception( 'Address cannot be empty' );
-        }
-
-        switch ( strtolower( $geocode_service ) ) {
-            case 'google':
-                return self::geocode_with_google( $address, $country_code );
-
-            case 'mapbox':
-                return self::geocode_with_mapbox( $address, $country_code );
-
-            default:
-                throw new Exception( "Unsupported geocoding service: {$geocode_service}" );
-        }
-    }
-
-    /**
-     * Reverse geocode coordinates using the specified service
-     */
-    public static function reverse_geocode( $lat, $lng, $geocode_service ) {
-        if ( !is_numeric( $lat ) || !is_numeric( $lng ) ) {
-            throw new Exception( 'Invalid coordinates for reverse geocoding' );
-        }
-
-        // Validate coordinate ranges
-        if ( $lat < -90 || $lat > 90 || $lng < -180 || $lng > 180 ) {
-            throw new Exception( 'Coordinates out of valid range' );
-        }
-
-        switch ( strtolower( $geocode_service ) ) {
-            case 'google':
-                return self::reverse_geocode_with_google( $lat, $lng );
-
-            case 'mapbox':
-                return self::reverse_geocode_with_mapbox( $lat, $lng );
-
-            default:
-                throw new Exception( "Unsupported geocoding service: {$geocode_service}" );
-        }
-    }
-
-    /**
-     * Get location grid ID from coordinates
-     */
-    public static function get_grid_id_from_coordinates( $lat, $lng, $country_code = null ) {
-        if ( !class_exists( 'Location_Grid_Geocoder' ) ) {
-            throw new Exception( 'Location_Grid_Geocoder class not available' );
-        }
-
-        $geocoder = new Location_Grid_Geocoder();
-        $result = $geocoder->get_grid_id_by_lnglat( $lng, $lat, $country_code );
-
-        if ( empty( $result ) ) {
-            throw new Exception( 'Could not find location grid for coordinates' );
-        }
-
-        return $result;
+        return $google_available || $mapbox_available;
     }
 
     /**
@@ -164,147 +37,40 @@ class DT_CSV_Import_Geocoding {
     }
 
     /**
-     * Geocode with Google API
-     */
-    private static function geocode_with_google( $address, $country_code = null ) {
-        if ( !class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
-            throw new Exception( 'Google Geocoding API not available' );
-        }
-
-        if ( !Disciple_Tools_Google_Geocode_API::get_key() ) {
-            throw new Exception( 'Google API key not configured' );
-        }
-
-        if ( $country_code ) {
-            $result = Disciple_Tools_Google_Geocode_API::query_google_api_with_components(
-                $address,
-                [ 'country' => $country_code ]
-            );
-        } else {
-            $result = Disciple_Tools_Google_Geocode_API::query_google_api( $address );
-        }
-
-        if ( !$result || !isset( $result['results'][0] ) ) {
-            throw new Exception( 'Google geocoding failed for address: ' . $address );
-        }
-
-        $location = $result['results'][0]['geometry']['location'];
-        $formatted_address = $result['results'][0]['formatted_address'];
-
-        return [
-            'lat' => $location['lat'],
-            'lng' => $location['lng'],
-            'formatted_address' => $formatted_address,
-            'service' => 'google',
-            'raw' => $result
-        ];
-    }
-
-    /**
-     * Geocode with Mapbox API
-     */
-    private static function geocode_with_mapbox( $address, $country_code = null ) {
-        if ( !class_exists( 'DT_Mapbox_API' ) ) {
-            throw new Exception( 'Mapbox API not available' );
-        }
-
-        if ( !DT_Mapbox_API::get_key() ) {
-            throw new Exception( 'Mapbox API key not configured' );
-        }
-
-        $result = DT_Mapbox_API::forward_lookup( $address, $country_code );
-
-        if ( !$result || empty( $result['features'] ) ) {
-            throw new Exception( 'Mapbox geocoding failed for address: ' . $address );
-        }
-
-        $feature = $result['features'][0];
-        $center = $feature['center'];
-
-        return [
-            'lat' => $center[1],
-            'lng' => $center[0],
-            'formatted_address' => $feature['place_name'],
-            'relevance' => $feature['relevance'] ?? 1.0,
-            'service' => 'mapbox',
-            'raw' => $result
-        ];
-    }
-
-    /**
-     * Reverse geocode with Google API
-     */
-    private static function reverse_geocode_with_google( $lat, $lng ) {
-        if ( !class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
-            throw new Exception( 'Google Geocoding API not available' );
-        }
-
-        if ( !Disciple_Tools_Google_Geocode_API::get_key() ) {
-            throw new Exception( 'Google API key not configured' );
-        }
-
-        $result = Disciple_Tools_Google_Geocode_API::query_google_api_reverse( "{$lat},{$lng}" );
-
-        if ( !$result || !isset( $result['results'][0] ) ) {
-            throw new Exception( 'Google reverse geocoding failed' );
-        }
-
-        return [
-            'address' => $result['results'][0]['formatted_address'],
-            'service' => 'google',
-            'raw' => $result
-        ];
-    }
-
-    /**
-     * Reverse geocode with Mapbox API
-     */
-    private static function reverse_geocode_with_mapbox( $lat, $lng ) {
-        if ( !class_exists( 'DT_Mapbox_API' ) ) {
-            throw new Exception( 'Mapbox API not available' );
-        }
-
-        if ( !DT_Mapbox_API::get_key() ) {
-            throw new Exception( 'Mapbox API key not configured' );
-        }
-
-        $result = DT_Mapbox_API::reverse_lookup( $lng, $lat );
-
-        if ( !$result || empty( $result['features'] ) ) {
-            throw new Exception( 'Mapbox reverse geocoding failed' );
-        }
-
-        return [
-            'address' => $result['features'][0]['place_name'],
-            'service' => 'mapbox',
-            'raw' => $result
-        ];
-    }
-
-    /**
      * Process location data for import
-     * Combines geocoding with location grid assignment
-     * Supports multiple addresses separated by semicolons
+     * Note: This doesn't do actual geocoding - it just formats data and sets geolocate flag
+     * DT core handles the actual geocoding when geolocate=true
      */
     public static function process_for_import( $value, $geocode_service = 'none', $country_code = null, $preview_mode = false ) {
+        // Convert boolean geocoding flag to service name for backwards compatibility
+        if ( $geocode_service === true || $geocode_service === 'auto' ) {
+            $geocode_service = self::is_geocoding_available() ? 'enabled' : 'none';
+        } elseif ( $geocode_service === false ) {
+            $geocode_service = 'none';
+        }
+
         $value = trim( $value );
 
         if ( empty( $value ) ) {
             return null;
         }
 
+        $result = null;
+
         // In preview mode, don't perform actual geocoding - just return the raw values formatted for display
         if ( $preview_mode ) {
-            return self::process_for_preview( $value );
+            $result = self::process_for_preview( $value );
+        } else {
+            // Check if value contains multiple addresses separated by semicolons
+            if ( strpos( $value, ';' ) !== false ) {
+                $result = self::process_multiple_locations_for_dt( $value, $geocode_service, $country_code );
+            } else {
+                // Process single location using DT's built-in capabilities
+                $result = self::process_single_location_for_dt( $value, $geocode_service, $country_code );
+            }
         }
 
-        // Check if value contains multiple addresses separated by semicolons
-        if ( strpos( $value, ';' ) !== false ) {
-            return self::process_multiple_addresses( $value, $geocode_service, $country_code );
-        }
-
-        // Process single address/location
-        return self::process_single_location( $value, $geocode_service, $country_code );
+        return $result;
     }
 
     /**
@@ -383,66 +149,80 @@ class DT_CSV_Import_Geocoding {
     }
 
     /**
-     * Process multiple addresses separated by semicolons
+     * Process multiple locations using DT's built-in capabilities
      */
-    private static function process_multiple_addresses( $value, $geocode_service = 'none', $country_code = null ) {
+    private static function process_multiple_locations_for_dt( $value, $geocode_service = 'none', $country_code = null ) {
         $addresses = explode( ';', $value );
-        $processed_locations = [];
-        $errors = [];
+        $location_grid_values = [];
+        $address_values = [];
 
-        foreach ( $addresses as $address ) {
+        foreach ( $addresses as $index => $address ) {
             $address = trim( $address );
             if ( empty( $address ) ) {
                 continue;
             }
 
             try {
-                $location_result = self::process_single_location( $address, $geocode_service, $country_code );
-                if ( $location_result !== null ) {
-                    $processed_locations[] = $location_result;
-                }
+                $location_result = self::process_single_location_for_dt( $address, $geocode_service, $country_code );
 
-                // Add a small delay to avoid rate limiting for geocoding services
-                if ( $geocode_service !== 'none' && count( $addresses ) > 1 ) {
-                    usleep( 100000 ); // 0.1 second delay
+                if ( $location_result !== null ) {
+                    if ( isset( $location_result['grid_id'] ) ) {
+                        // Grid ID
+                        $location_grid_values[] = [
+                            'grid_id' => $location_result['grid_id']
+                        ];
+                    } elseif ( isset( $location_result['lat'], $location_result['lng'] ) ) {
+                        // Coordinates
+                        $location_grid_values[] = [
+                            'lng' => $location_result['lng'],
+                            'lat' => $location_result['lat']
+                        ];
+                    } elseif ( isset( $location_result['address_for_geocoding'] ) ) {
+                        // Address for geocoding - let DT core handle the geocoding
+                        $address_values[] = [
+                            'value' => $location_result['address_for_geocoding'],
+                            'geolocate' => $geocode_service !== 'none'
+                        ];
+                    }
                 }
             } catch ( Exception $e ) {
-                $errors[] = [
-                    'address' => $address,
-                    'error' => $e->getMessage()
-                ];
-
-                // Still add the address with error info
-                $processed_locations[] = [
-                    'label' => $address,
-                    'source' => 'csv_import',
-                    'geocoding_error' => $e->getMessage()
+                // Add as regular address without geocoding
+                $address_values[] = [
+                    'value' => $address,
+                    'geolocate' => false
                 ];
             }
         }
 
-        // If we have multiple locations, return them as an array
-        if ( count( $processed_locations ) > 1 ) {
-            return $processed_locations;
-        } elseif ( count( $processed_locations ) === 1 ) {
-            return $processed_locations[0];
-        } else {
-            throw new Exception( 'No valid addresses found in: ' . $value );
+        $result = [];
+
+        // Return location_grid_meta if we have grid IDs or coordinates
+        if ( !empty( $location_grid_values ) ) {
+            $result['location_grid_meta'] = [
+                'values' => $location_grid_values,
+                'force_values' => false
+            ];
         }
+
+        // Return contact_address if we have addresses to geocode
+        if ( !empty( $address_values ) ) {
+            $result['contact_address'] = $address_values;
+        }
+
+        return $result;
     }
 
     /**
-     * Process a single location (address, coordinates, or grid ID)
+     * Process a single location using DT's built-in capabilities
      */
-    private static function process_single_location( $value, $geocode_service = 'none', $country_code = null ) {
+    private static function process_single_location_for_dt( $value, $geocode_service = 'none', $country_code = null ) {
         try {
-            // If it's a numeric grid ID, validate and return
+            // If it's a numeric grid ID, return grid format
             if ( is_numeric( $value ) ) {
                 $grid_id = intval( $value );
                 if ( self::validate_grid_id( $grid_id ) ) {
                     return [
-                        'grid_id' => $grid_id,
-                        'source' => 'csv_import'
+                        'grid_id' => $grid_id
                     ];
                 } else {
                     throw new Exception( "Invalid location grid ID: {$grid_id}" );
@@ -451,6 +231,7 @@ class DT_CSV_Import_Geocoding {
 
             // Check if it's coordinates in DMS format (degrees, minutes, seconds)
             $dms_coords = self::parse_dms_coordinates( $value );
+
             if ( $dms_coords !== null ) {
                 $lat = $dms_coords['lat'];
                 $lng = $dms_coords['lng'];
@@ -460,50 +241,10 @@ class DT_CSV_Import_Geocoding {
                     throw new Exception( "Invalid DMS coordinates: {$value}" );
                 }
 
-                // Try to get grid ID from coordinates
-                try {
-                    $grid_result = self::get_grid_id_from_coordinates( $lat, $lng, $country_code );
-
-                    $location_meta = [
-                        'lng' => $lng,
-                        'lat' => $lat,
-                        'source' => 'csv_import'
-                    ];
-
-                    if ( isset( $grid_result['grid_id'] ) ) {
-                        $location_meta['grid_id'] = $grid_result['grid_id'];
-                    }
-
-                    if ( isset( $grid_result['level'] ) ) {
-                        $location_meta['level'] = $grid_result['level'];
-                    }
-
-                    // Try to get address if geocoding service is available
-                    if ( $geocode_service !== 'none' ) {
-                        try {
-                            $reverse_result = self::reverse_geocode( $lat, $lng, $geocode_service );
-                            $location_meta['label'] = $reverse_result['address'];
-                        } catch ( Exception $e ) {
-                            $location_meta['label'] = "{$lat}, {$lng}";
-                        }
-                    } else {
-                        $location_meta['label'] = "{$lat}, {$lng}";
-                    }
-
-                    return $location_meta;
-
-                } catch ( Exception $e ) {
-                    // If grid lookup fails, return coordinates anyway
-                    $location_meta = [
-                        'lng' => $lng,
-                        'lat' => $lat,
-                        'label' => "{$lat}, {$lng}",
-                        'source' => 'csv_import',
-                        'geocoding_note' => 'Could not assign to location grid: ' . $e->getMessage()
-                    ];
-
-                    return $location_meta;
-                }
+                return [
+                    'lng' => $lng,
+                    'lat' => $lat
+                ];
             }
 
             // Check if it's coordinates in decimal format (lat,lng)
@@ -517,99 +258,21 @@ class DT_CSV_Import_Geocoding {
                     throw new Exception( "Invalid coordinates: {$value}" );
                 }
 
-                // Try to get grid ID from coordinates
-                try {
-                    $grid_result = self::get_grid_id_from_coordinates( $lat, $lng, $country_code );
-
-                    $location_meta = [
-                        'lng' => $lng,
-                        'lat' => $lat,
-                        'source' => 'csv_import'
-                    ];
-
-                    if ( isset( $grid_result['grid_id'] ) ) {
-                        $location_meta['grid_id'] = $grid_result['grid_id'];
-                    }
-
-                    if ( isset( $grid_result['level'] ) ) {
-                        $location_meta['level'] = $grid_result['level'];
-                    }
-
-                    // Try to get address if geocoding service is available
-                    if ( $geocode_service !== 'none' ) {
-                        try {
-                            $reverse_result = self::reverse_geocode( $lat, $lng, $geocode_service );
-                            $location_meta['label'] = $reverse_result['address'];
-                        } catch ( Exception $e ) {
-                            $location_meta['label'] = "{$lat}, {$lng}";
-                        }
-                    } else {
-                        $location_meta['label'] = "{$lat}, {$lng}";
-                    }
-
-                    return $location_meta;
-
-                } catch ( Exception $e ) {
-                    // If grid lookup fails, return coordinates anyway
-                    $location_meta = [
-                        'lng' => $lng,
-                        'lat' => $lat,
-                        'label' => "{$lat}, {$lng}",
-                        'source' => 'csv_import',
-                        'geocoding_note' => 'Could not assign to location grid: ' . $e->getMessage()
-                    ];
-
-                    return $location_meta;
-                }
-            }
-
-            // Treat as address
-            if ( $geocode_service === 'none' ) {
                 return [
-                    'label' => $value,
-                    'source' => 'csv_import',
-                    'geocoding_note' => 'Address not geocoded - no geocoding service selected'
+                    'lng' => $lng,
+                    'lat' => $lat
                 ];
             }
 
-            // Geocode the address
-            $geocode_result = self::geocode_address( $value, $geocode_service, $country_code );
-
-            $location_meta = [
-                'lng' => $geocode_result['lng'],
-                'lat' => $geocode_result['lat'],
-                'label' => $geocode_result['formatted_address'],
-                'source' => 'csv_import'
+            // Treat as address - let DT handle the geocoding
+            return [
+                'address_for_geocoding' => $value
             ];
 
-            // Try to get grid ID from the geocoded coordinates
-            try {
-                $grid_result = self::get_grid_id_from_coordinates(
-                    $geocode_result['lat'],
-                    $geocode_result['lng'],
-                    $country_code
-                );
-
-                if ( isset( $grid_result['grid_id'] ) ) {
-                    $location_meta['grid_id'] = $grid_result['grid_id'];
-                }
-
-                if ( isset( $grid_result['level'] ) ) {
-                    $location_meta['level'] = $grid_result['level'];
-                }
-            } catch ( Exception $e ) {
-                $location_meta['geocoding_note'] = 'Could not assign to location grid: ' . $e->getMessage();
-            }
-
-            return $location_meta;
-
         } catch ( Exception $e ) {
-            error_log( 'DT CSV Import Geocoding Error: ' . $e->getMessage() );
-
+            // Return as regular address without geocoding on error
             return [
-                'label' => $value,
-                'source' => 'csv_import',
-                'geocoding_error' => $e->getMessage()
+                'address_for_geocoding' => $value
             ];
         }
     }
@@ -688,36 +351,6 @@ class DT_CSV_Import_Geocoding {
         return [
             'lat' => $lat,
             'lng' => $lng
-        ];
-    }
-
-    /**
-     * Batch process multiple location values
-     */
-    public static function batch_process( $values, $geocode_service = 'none', $country_code = null ) {
-        $results = [];
-        $errors = [];
-
-        foreach ( $values as $index => $value ) {
-            try {
-                $result = self::process_for_import( $value, $geocode_service, $country_code );
-                $results[$index] = $result;
-
-                // Add a small delay to avoid rate limiting
-                if ( $geocode_service !== 'none' && count( $values ) > 10 ) {
-                    usleep( 100000 ); // 0.1 second delay
-                }
-            } catch ( Exception $e ) {
-                $errors[$index] = [
-                    'value' => $value,
-                    'error' => $e->getMessage()
-                ];
-            }
-        }
-
-        return [
-            'results' => $results,
-            'errors' => $errors
         ];
     }
 }

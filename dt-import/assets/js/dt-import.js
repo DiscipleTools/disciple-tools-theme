@@ -49,7 +49,7 @@
       );
 
       // Geocoding service selection
-      $(document).on('change', '.geocoding-service-select', (e) =>
+      $(document).on('change', '.geocoding-service-checkbox', (e) =>
         this.handleGeocodingServiceChange(e),
       );
 
@@ -1100,9 +1100,21 @@
         return '<p>No fields selected for import. Please go back and configure field mappings.</p>';
       }
 
+      // Get field settings to convert field keys to human-readable names
+      const fieldSettings = this.getFieldSettingsForPostType();
+
       const headerHtml =
         `<th>Row #</th>` +
-        headers.map((header) => `<th>${this.escapeHtml(header)}</th>`).join('');
+        headers
+          .map((fieldKey) => {
+            // Convert field key to human-readable field name
+            const fieldName =
+              fieldSettings[fieldKey] && fieldSettings[fieldKey].name
+                ? fieldSettings[fieldKey].name
+                : fieldKey; // fallback to field key if name not found
+            return `<th>${this.escapeHtml(fieldName)}</th>`;
+          })
+          .join('');
 
       const rowsHtml = rows
         .map((row) => {
@@ -1767,27 +1779,14 @@
       );
       const $options = $card.find('.field-specific-options');
 
-      // Get available geocoding services
-      const geocodingServices = dtImport.geocodingServices || {};
-
-      // Create options HTML
-      const serviceOptionsHtml = Object.entries(geocodingServices)
-        .map(
-          ([key, label]) =>
-            `<option value="${this.escapeHtml(key)}">${this.escapeHtml(label)}</option>`,
-        )
-        .join('');
-
       const geocodingSelectorHtml = `
         <div class="geocoding-service-section">
           <h5 style="margin: 0 0 10px 0; font-size: 13px;">${dtImport.translations.geocodingService}</h5>
           <div class="geocoding-service-container">
-            <select class="geocoding-service-select" data-column-index="${columnIndex}" style="width: 100%; font-size: 12px;">
-              ${serviceOptionsHtml}
-            </select>
-            <p style="font-size: 11px; color: #666; margin-top: 5px;">
-              ${dtImport.translations.selectGeocodingService}
-            </p>
+            <label>
+              <input type="checkbox" class="geocoding-service-checkbox" data-column-index="${columnIndex}" style="margin-right: 5px;">
+              ${dtImport.translations.enableGeocoding}
+            </label>
             <div class="geocoding-info" style="font-size: 11px; color: #666; margin-top: 5px;">
               <p>${dtImport.translations.geocodingNote}</p>
               <p>${dtImport.translations.geocodingOptional}</p>
@@ -1798,37 +1797,42 @@
 
       $options.html(geocodingSelectorHtml).show();
 
-      // Set default value to 'none' if not already set
+      // Set default value to false if not already set
       const currentMapping = this.fieldMappings[columnIndex];
-      if (!currentMapping || !currentMapping.geocode_service) {
-        $options.find('.geocoding-service-select').val('none');
-        this.updateFieldMappingGeocodingService(columnIndex, 'none');
+      if (
+        !currentMapping ||
+        !currentMapping.geocode_service ||
+        currentMapping.geocode_service === 'none'
+      ) {
+        $options.find('.geocoding-service-checkbox').prop('checked', false);
+        this.updateFieldMappingGeocodingService(columnIndex, false);
       } else {
-        $options
-          .find('.geocoding-service-select')
-          .val(currentMapping.geocode_service);
+        $options.find('.geocoding-service-checkbox').prop('checked', true);
       }
     }
 
-    updateFieldMappingGeocodingService(columnIndex, serviceKey) {
-      // Update the field mappings with the selected geocoding service
+    updateFieldMappingGeocodingService(columnIndex, isEnabled) {
+      // Update the field mappings with the geocoding enabled state
       if (!this.fieldMappings[columnIndex]) {
         // This shouldn't happen since field mapping should be set first
         console.warn(`No field mapping found for column ${columnIndex}`);
         return;
       } else {
-        this.fieldMappings[columnIndex].geocode_service = serviceKey;
+        // Convert boolean to service key for backend compatibility
+        this.fieldMappings[columnIndex].geocode_service = isEnabled
+          ? 'auto'
+          : 'none';
       }
 
       this.updateMappingSummary();
     }
 
     handleGeocodingServiceChange(e) {
-      const $select = $(e.target);
-      const columnIndex = $select.data('column-index');
-      const serviceKey = $select.val();
+      const $checkbox = $(e.target);
+      const columnIndex = $checkbox.data('column-index');
+      const isEnabled = $checkbox.prop('checked');
 
-      this.updateFieldMappingGeocodingService(columnIndex, serviceKey);
+      this.updateFieldMappingGeocodingService(columnIndex, isEnabled);
     }
 
     showDuplicateCheckingOptions(columnIndex, fieldKey, fieldConfig) {

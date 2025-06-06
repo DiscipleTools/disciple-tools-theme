@@ -186,16 +186,20 @@ class DT_CSV_Import_Processor {
             return null;
         }
 
+        $result = null;
+
         switch ( $field_type ) {
             case 'text':
             case 'textarea':
-                return sanitize_text_field( trim( $raw_value ) );
+                $result = sanitize_text_field( trim( $raw_value ) );
+                break;
 
             case 'number':
                 if ( !is_numeric( $raw_value ) ) {
                     throw new Exception( "Invalid number: {$raw_value}" );
                 }
-                return floatval( $raw_value );
+                $result = floatval( $raw_value );
+                break;
 
             case 'date':
                 $date_format = isset( $mapping['date_format'] ) ? $mapping['date_format'] : 'auto';
@@ -203,46 +207,69 @@ class DT_CSV_Import_Processor {
                 if ( empty( $normalized_date ) ) {
                     throw new Exception( "Invalid date format: {$raw_value}" );
                 }
-                return $normalized_date;
+                $result = $normalized_date;
+                break;
 
             case 'boolean':
                 $boolean_value = DT_CSV_Import_Utilities::normalize_boolean( $raw_value );
                 if ( $boolean_value === null ) {
                     throw new Exception( "Invalid boolean value: {$raw_value}" );
                 }
-                return $boolean_value;
+                $result = $boolean_value;
+                break;
 
             case 'key_select':
-                return self::process_key_select_value( $raw_value, $mapping, $field_config );
+                $result = self::process_key_select_value( $raw_value, $mapping, $field_config );
+                break;
 
             case 'multi_select':
-                return self::process_multi_select_value( $raw_value, $mapping, $field_config );
+                $result = self::process_multi_select_value( $raw_value, $mapping, $field_config );
+                break;
 
             case 'tags':
-                return self::process_tags_value( $raw_value );
+                $result = self::process_tags_value( $raw_value );
+                break;
 
             case 'communication_channel':
-                return self::process_communication_channel_value( $raw_value, $field_key );
+                $result = self::process_communication_channel_value( $raw_value, $field_key );
+                // Add geolocate flag for address fields if geocoding is enabled
+                if ( ( $field_key === 'contact_address' || strpos( $field_key, 'address' ) !== false ) && is_array( $result ) ) {
+                    $geocode_service = $mapping['geocode_service'] ?? 'none';
+                    if ( $geocode_service !== 'none' ) {
+                        foreach ( $result as &$address_entry ) {
+                            $address_entry['geolocate'] = true;
+                        }
+                    }
+                }
+                break;
 
             case 'connection':
-                return self::process_connection_value( $raw_value, $field_config, $preview_mode );
+                $result = self::process_connection_value( $raw_value, $field_config, $preview_mode );
+                break;
 
             case 'user_select':
-                return self::process_user_select_value( $raw_value );
+                $result = self::process_user_select_value( $raw_value );
+                break;
 
             case 'location':
-                return self::process_location_value( $raw_value );
+                $result = self::process_location_value( $raw_value );
+                break;
 
             case 'location_grid':
-                return self::process_location_grid_value( $raw_value );
+                $result = self::process_location_grid_value( $raw_value );
+                break;
 
             case 'location_meta':
                 $geocode_service = $mapping['geocode_service'] ?? 'none';
-                return self::process_location_grid_meta_value( $raw_value, $geocode_service, $preview_mode );
+                $result = self::process_location_grid_meta_value( $raw_value, $geocode_service, $preview_mode );
+                break;
 
             default:
-                return sanitize_text_field( trim( $raw_value ) );
+                $result = sanitize_text_field( trim( $raw_value ) );
+                break;
         }
+
+        return $result;
     }
 
     /**
@@ -352,7 +379,7 @@ class DT_CSV_Import_Processor {
         $connections = DT_CSV_Import_Utilities::split_multi_value( $raw_value );
         $processed_connections = [];
 
-        foreach ( $connections as $connection ) {
+        foreach ( $connections as $connection_index => $connection ) {
             $connection = trim( $connection );
             $connection_info = [
                 'raw_value' => $connection,
@@ -365,6 +392,7 @@ class DT_CSV_Import_Processor {
             // Try to find by ID first
             if ( is_numeric( $connection ) ) {
                 $post = DT_Posts::get_post( $connection_post_type, intval( $connection ), true, false );
+
                 if ( !is_wp_error( $post ) ) {
                     $connection_info['id'] = intval( $connection );
                     $connection_info['name'] = $post['title'] ?? $post['name'] ?? "Record #{$connection}";
@@ -375,6 +403,7 @@ class DT_CSV_Import_Processor {
                     } else {
                         $processed_connections[] = intval( $connection );
                     }
+
                     continue;
                 }
             }
@@ -405,6 +434,7 @@ class DT_CSV_Import_Processor {
                 } else {
                     // Create the record during actual import
                     $new_post = self::create_connection_record( $connection_post_type, $connection );
+
                     if ( !is_wp_error( $new_post ) ) {
                         $connection_info['id'] = $new_post['ID'];
                         $processed_connections[] = $new_post['ID'];
@@ -446,7 +476,9 @@ class DT_CSV_Import_Processor {
         }
 
         // Create the post
-        return DT_Posts::create_post( $post_type, $post_data, true, false );
+        $result = DT_Posts::create_post( $post_type, $post_data, true, false );
+
+        return $result;
     }
 
     /**
@@ -525,10 +557,16 @@ class DT_CSV_Import_Processor {
     }
 
     /**
-     * Process location_grid_meta field value
+     * Process location_grid_meta field value using DT's native geocoding
      */
     private static function process_location_grid_meta_value( $raw_value, $geocode_service, $preview_mode = false ) {
-        $result = DT_CSV_Import_Field_Handlers::handle_location_grid_meta_field( $raw_value, [], $geocode_service, $preview_mode );
+        $import_settings = [
+            'geocode_service' => $geocode_service,
+            'preview_mode' => $preview_mode
+        ];
+
+        $result = DT_CSV_Import_Field_Handlers::handle_location_grid_meta( $raw_value, 'location_grid_meta', '', [], $import_settings );
+
         return $result;
     }
 
@@ -609,20 +647,24 @@ class DT_CSV_Import_Processor {
                 break;
 
             case 'location_meta':
-                // Format location meta for DT_Posts API (same as location_grid_meta)
+                // DT's native location_grid_meta format - already properly formatted by handlers
                 if ( is_array( $processed_value ) && !empty( $processed_value ) ) {
-                    // Check if this is an array of multiple locations (from semicolon-separated input)
+                    // Check if it's already in DT's native format with 'values' key
+                    if ( isset( $processed_value['values'] ) ) {
+                        return $processed_value;
+                    }
+                    // Legacy format - convert to DT's native format
                     if ( isset( $processed_value[0] ) && is_array( $processed_value[0] ) ) {
-                        // Multiple locations - each element is a location object
+                        // Multiple locations
                         return [
-                            'values' => $processed_value
+                            'values' => $processed_value,
+                            'force_values' => false
                         ];
                     } else {
                         // Single location object
                         return [
-                            'values' => [
-                                $processed_value
-                            ]
+                            'values' => [ $processed_value ],
+                            'force_values' => false
                         ];
                     }
                 }
@@ -634,6 +676,26 @@ class DT_CSV_Import_Processor {
                     return $processed_value;
                 }
                 break;
+        }
+
+        // Handle special field keys that might not have standard types
+        if ( $field_key === 'contact_address' || strpos( $field_key, 'address' ) !== false ) {
+            // contact_address is a communication channel - format as such
+            if ( is_array( $processed_value ) && !empty( $processed_value ) ) {
+                return [
+                    'values' => $processed_value
+                ];
+            }
+        }
+
+        if ( $field_key === 'location_grid_meta' ) {
+            // DT's native location_grid_meta format - already properly formatted by handlers
+            if ( is_array( $processed_value ) && !empty( $processed_value ) ) {
+                // Check if it's already in DT's native format with 'values' key
+                if ( isset( $processed_value['values'] ) ) {
+                    return $processed_value;
+                }
+            }
         }
 
         // For all other field types, return as-is
@@ -840,7 +902,6 @@ class DT_CSV_Import_Processor {
             try {
                 $post_data = [];
                 $duplicate_check_fields = [];
-
                 foreach ( $field_mappings as $column_index => $mapping ) {
                     if ( empty( $mapping['field_key'] ) || $mapping['field_key'] === 'skip' ) {
                         continue;
@@ -851,9 +912,33 @@ class DT_CSV_Import_Processor {
 
                     if ( !empty( trim( $raw_value ) ) ) {
                         $processed_value = self::process_field_value( $raw_value, $field_key, $mapping, $post_type );
+
                         if ( $processed_value !== null ) {
-                            // Format value according to field type for DT_Posts API
-                            $post_data[$field_key] = self::format_value_for_api( $processed_value, $field_key, $post_type );
+                            // Special handling for location_grid_meta that returns contact_address data
+                            if ( $field_key === 'location_grid_meta' && is_array( $processed_value ) && isset( $processed_value['contact_address'] ) ) {
+                                // Extract contact_address data and add it to the contact_address field
+                                $contact_address_data = $processed_value['contact_address'];
+
+                                // Format for API
+                                $formatted_address_value = self::format_value_for_api( $contact_address_data, 'contact_address', $post_type );
+
+                                // Add to post_data under contact_address field
+                                $post_data['contact_address'] = $formatted_address_value;
+
+                                // Remove contact_address from processed_value to avoid duplication
+                                unset( $processed_value['contact_address'] );
+
+                                // Check if there's still location_grid_meta data to process
+                                if ( isset( $processed_value['values'] ) && !empty( $processed_value['values'] ) ) {
+                                    // Process the remaining location_grid_meta data
+                                    $formatted_location_value = self::format_value_for_api( $processed_value, $field_key, $post_type );
+                                    $post_data[$field_key] = $formatted_location_value;
+                                }
+                            } else {
+                                // Normal field processing
+                                $formatted_value = self::format_value_for_api( $processed_value, $field_key, $post_type );
+                                $post_data[$field_key] = $formatted_value;
+                            }
 
                             // Check if this field has duplicate checking enabled
                             if ( isset( $mapping['duplicate_checking'] ) && $mapping['duplicate_checking'] === true ) {
@@ -955,9 +1040,11 @@ class DT_CSV_Import_Processor {
                 }
             } catch ( Exception $e ) {
                 $error_count++;
+                $error_message = $e->getMessage();
+
                 $errors[] = [
                     'row' => $row_index + 2,
-                    'message' => $e->getMessage()
+                    'message' => $error_message
                 ];
             }
         }
