@@ -138,7 +138,9 @@ if ( !defined( 'ABSPATH' ) ) {
                         <p><?php esc_html_e( 'Geographic information in various formats.', 'disciple_tools' ); ?></p>
                         <div class="dt-import-example">
                             <strong><?php esc_html_e( 'Address:', 'disciple_tools' ); ?></strong> <code>123 Main St, Springfield, IL</code><br>
-                            <strong><?php esc_html_e( 'Coordinates:', 'disciple_tools' ); ?></strong> <code>40.7128,-74.0060</code><br>
+                            <strong><?php esc_html_e( 'Decimal Coordinates:', 'disciple_tools' ); ?></strong> <code>40.7128,-74.0060</code><br>
+                            <strong><?php esc_html_e( 'DMS Coordinates:', 'disciple_tools' ); ?></strong> <code>35°50′40.9″N, 103°27′7.5″E</code><br>
+                            <strong><?php esc_html_e( 'Multiple Locations:', 'disciple_tools' ); ?></strong> <code>Paris, France; Berlin, Germany</code><br>
                             <strong><?php esc_html_e( 'Grid ID:', 'disciple_tools' ); ?></strong> <code>100364199</code>
                         </div>
                     </div>
@@ -213,7 +215,43 @@ if ( !defined( 'ABSPATH' ) ) {
                     </div>
                     
                     <div class="dt-import-example-section">
-                        <h4><?php esc_html_e( 'Special Formatting', 'disciple_tools' ); ?></h4>
+                        <h4><?php esc_html_e( 'Location Formats', 'disciple_tools' ); ?></h4>
+                        
+                        <h5><?php esc_html_e( 'Coordinate Formats', 'disciple_tools' ); ?></h5>
+                        <p><?php esc_html_e( 'Multiple coordinate formats are supported:', 'disciple_tools' ); ?></p>
+                        <div class="dt-import-csv-example">
+                            <table class="dt-import-example-table">
+                                <thead>
+                                    <tr>
+                                        <th><?php esc_html_e( 'Name', 'disciple_tools' ); ?></th>
+                                        <th><?php esc_html_e( 'Location', 'disciple_tools' ); ?></th>
+                                        <th><?php esc_html_e( 'Format', 'disciple_tools' ); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>New York</td>
+                                        <td>40.7128,-74.0060</td>
+                                        <td>Decimal Degrees</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Beijing</td>
+                                        <td>39°54′26″N, 116°23′29″E</td>
+                                        <td>DMS Coordinates</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Multiple</td>
+                                        <td>Paris, France; Berlin, Germany</td>
+                                        <td>Multiple Addresses</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Grid Location</td>
+                                        <td>100364199</td>
+                                        <td>Location Grid ID</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         
                         <h5><?php esc_html_e( 'Text with Commas', 'disciple_tools' ); ?></h5>
                         <p><?php esc_html_e( 'Use quotes around text containing commas:', 'disciple_tools' ); ?></p>
@@ -291,6 +329,11 @@ if ( !defined( 'ABSPATH' ) ) {
                     <div class="dt-import-troubleshoot-item">
                         <h4><?php esc_html_e( '"Connection not found" Error', 'disciple_tools' ); ?></h4>
                         <p><strong><?php esc_html_e( 'Solution:', 'disciple_tools' ); ?></strong> <?php esc_html_e( 'Ensure connected records exist. Use exact names or valid record IDs.', 'disciple_tools' ); ?></p>
+                    </div>
+                    
+                    <div class="dt-import-troubleshoot-item">
+                        <h4><?php esc_html_e( '"Invalid DMS coordinates" Error', 'disciple_tools' ); ?></h4>
+                        <p><strong><?php esc_html_e( 'Solution:', 'disciple_tools' ); ?></strong> <?php esc_html_e( 'Ensure DMS coordinates include direction indicators (N/S/E/W) and are properly formatted. Example: 35°50′40.9″N, 103°27′7.5″E', 'disciple_tools' ); ?></p>
                     </div>
                     
                     <div class="dt-import-troubleshoot-item">

@@ -233,8 +233,8 @@ class DT_CSV_Import_Field_Handlers {
     /**
      * Handle location_grid_meta field processing (supports numeric ID, coordinates, or address)
      */
-    public static function handle_location_grid_meta_field( $value, $field_config, $geocode_service = 'none' ) {
-        return DT_CSV_Import_Geocoding::process_for_import( $value, $geocode_service );
+    public static function handle_location_grid_meta_field( $value, $field_config, $geocode_service = 'none', $preview_mode = false ) {
+        return DT_CSV_Import_Geocoding::process_for_import( $value, $geocode_service, null, $preview_mode );
     }
 
     /**

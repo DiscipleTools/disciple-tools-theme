@@ -202,7 +202,7 @@ class DT_CSV_Import_Processor {
 
             case 'location_meta':
                 $geocode_service = $mapping['geocode_service'] ?? 'none';
-                return self::process_location_grid_meta_value( $raw_value, $geocode_service );
+                return self::process_location_grid_meta_value( $raw_value, $geocode_service, $preview_mode );
 
             default:
                 return sanitize_text_field( trim( $raw_value ) );
@@ -491,8 +491,8 @@ class DT_CSV_Import_Processor {
     /**
      * Process location_grid_meta field value
      */
-    private static function process_location_grid_meta_value( $raw_value, $geocode_service ) {
-        $result = DT_CSV_Import_Field_Handlers::handle_location_grid_meta_field( $raw_value, [], $geocode_service );
+    private static function process_location_grid_meta_value( $raw_value, $geocode_service, $preview_mode = false ) {
+        $result = DT_CSV_Import_Field_Handlers::handle_location_grid_meta_field( $raw_value, [], $geocode_service, $preview_mode );
         return $result;
     }
 
@@ -575,11 +575,20 @@ class DT_CSV_Import_Processor {
             case 'location_meta':
                 // Format location meta for DT_Posts API (same as location_grid_meta)
                 if ( is_array( $processed_value ) && !empty( $processed_value ) ) {
-                    return [
-                        'values' => [
-                            $processed_value
-                        ]
-                    ];
+                    // Check if this is an array of multiple locations (from semicolon-separated input)
+                    if ( isset( $processed_value[0] ) && is_array( $processed_value[0] ) ) {
+                        // Multiple locations - each element is a location object
+                        return [
+                            'values' => $processed_value
+                        ];
+                    } else {
+                        // Single location object
+                        return [
+                            'values' => [
+                                $processed_value
+                            ]
+                        ];
+                    }
                 }
                 break;
 
@@ -649,21 +658,17 @@ class DT_CSV_Import_Processor {
                     ) );
                     return $location_name ?: "Grid ID: {$processed_value}";
                 } elseif ( is_array( $processed_value ) ) {
-                    // Handle coordinate or address arrays
-                    if ( isset( $processed_value['lat'] ) && isset( $processed_value['lng'] ) ) {
-                        return "Coordinates: {$processed_value['lat']}, {$processed_value['lng']}";
-                    } elseif ( isset( $processed_value['address'] ) ) {
-                        return $processed_value['address'];
-                    } elseif ( isset( $processed_value['label'] ) ) {
-                        return $processed_value['label'];
-                    } elseif ( isset( $processed_value['name'] ) ) {
-                        return $processed_value['name'];
-                    }
-                    // Fallback: return first non-empty value
-                    foreach ( $processed_value as $value ) {
-                        if ( !empty( $value ) ) {
-                            return $value;
+                    // Check if this is an array of multiple locations (from semicolon-separated input)
+                    if ( isset( $processed_value[0] ) && is_array( $processed_value[0] ) ) {
+                        // Multiple locations - format each one
+                        $location_displays = [];
+                        foreach ( $processed_value as $location ) {
+                            $location_displays[] = self::format_single_location_for_preview( $location );
                         }
+                        return implode( '; ', $location_displays );
+                    } else {
+                        // Single location object
+                        return self::format_single_location_for_preview( $processed_value );
                     }
                 }
                 break;
@@ -697,6 +702,48 @@ class DT_CSV_Import_Processor {
 
         // For all other field types, return as string
         return is_array( $processed_value ) ? implode( ', ', $processed_value ) : (string) $processed_value;
+    }
+
+    /**
+     * Format a single location object for preview display
+     */
+    private static function format_single_location_for_preview( $location ) {
+        if ( !is_array( $location ) ) {
+            return (string) $location;
+        }
+
+        // If this is preview mode data, just return the raw value as-is
+        if ( isset( $location['preview_mode'] ) && $location['preview_mode'] === true ) {
+            return $location['raw_value'] ?? $location['label'] ?? 'Unknown location';
+        }
+
+        // Handle coordinate or address arrays (for actual geocoded data)
+        if ( isset( $location['lat'] ) && isset( $location['lng'] ) ) {
+            return "Coordinates: {$location['lat']}, {$location['lng']}";
+        } elseif ( isset( $location['address'] ) ) {
+            return $location['address'];
+        } elseif ( isset( $location['label'] ) ) {
+            return $location['label'];
+        } elseif ( isset( $location['name'] ) ) {
+            return $location['name'];
+        } elseif ( isset( $location['grid_id'] ) ) {
+            // Try to get the location name from grid ID
+            global $wpdb;
+            $location_name = $wpdb->get_var( $wpdb->prepare(
+                "SELECT name FROM $wpdb->dt_location_grid WHERE grid_id = %d",
+                intval( $location['grid_id'] )
+            ) );
+            return $location_name ?: "Grid ID: {$location['grid_id']}";
+        }
+
+        // Fallback: return first non-empty value
+        foreach ( $location as $key => $value ) {
+            if ( !empty( $value ) && !in_array( $key, [ 'source', 'geocoding_note', 'geocoding_error', 'preview_mode', 'raw_value' ] ) ) {
+                return $value;
+            }
+        }
+
+        return 'Unknown location';
     }
 
     /**

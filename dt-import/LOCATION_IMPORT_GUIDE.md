@@ -14,9 +14,12 @@ This guide explains how to import location data using the DT CSV Import feature.
 - **Purpose**: Flexible location data with optional geocoding
 - **Supported Formats**:
   - **Numeric grid ID**: `12345`
-  - **Coordinates**: `40.7128, -74.0060` (latitude, longitude)
+  - **Decimal coordinates**: `40.7128, -74.0060` (latitude, longitude)
+  - **DMS coordinates**: `35°50′40.9″N, 103°27′7.5″E` (degrees, minutes, seconds)
   - **Address**: `123 Main St, New York, NY 10001`
+  - **Multiple locations**: `Paris, France; Berlin, Germany` (separated by semicolons)
 - **Geocoding**: Can use Google Maps or Mapbox to convert addresses to coordinates
+- **Multi-location Support**: Multiple addresses, coordinates, or grid IDs can be separated by semicolons
 
 ### 3. `location` (Legacy)
 - **Purpose**: Generic location field
@@ -57,15 +60,54 @@ name,location_grid_meta
 John Doe,12345
 Jane Smith,"40.7128, -74.0060"
 Bob Johnson,"123 Main St, New York, NY"
+Alice Brown,"Paris, France; Berlin, Germany"
+Charlie Davis,"40.7128,-74.0060; 34.0522,-118.2437"
+Eve Wilson,"35°50′40.9″N, 103°27′7.5″E"
+Frank Miller,"40°42′46″N, 74°0′21″W; 51°30′26″N, 0°7′39″W"
 ```
 
 ### Mixed Location Data
 ```csv
 name,location_grid_meta,notes
 Person 1,12345,Direct grid ID
-Person 2,"40.7128, -74.0060",Coordinates
-Person 3,"New York City",Address (requires geocoding)
+Person 2,"40.7128, -74.0060",Decimal coordinates
+Person 3,"35°50′40.9″N, 103°27′7.5″E",DMS coordinates
+Person 4,"New York City",Address (requires geocoding)
+Person 5,"Tokyo, Japan; London, UK",Multiple addresses
+Person 6,"12345; 67890",Multiple grid IDs
+Person 7,"40.7128,-74.0060; Big Ben, London",Mixed decimal coordinates and address
+Person 8,"35°41′22″N, 139°41′30″E; Paris, France",Mixed DMS coordinates and address
 ```
+
+## Coordinate Formats
+
+### DMS (Degrees, Minutes, Seconds) Format
+The system supports DMS coordinates in various formats:
+
+**Standard Format:**
+- `35°50′40.9″N, 103°27′7.5″E` (with proper symbols)
+- `40°42′46″N, 74°0′21″W` (integer seconds)
+
+**Alternative Symbols:**
+- `35d50m40.9sN, 103d27m7.5sE` (using d/m/s)
+- `35°50'40.9"N, 103°27'7.5"E` (using regular quotes)
+
+**Requirements:**
+- Direction indicators (N/S/E/W) are **required**
+- Degrees: 0-180 for longitude, 0-90 for latitude
+- Minutes: 0-59
+- Seconds: 0-59.999 (decimal seconds supported)
+- Comma separation between latitude and longitude
+
+**Examples:**
+- Beijing: `39°54′26″N, 116°23′29″E`
+- London: `51°30′26″N, 0°7′39″W`
+- Sydney: `33°51′54″S, 151°12′34″E`
+
+### Decimal Degrees Format
+- Standard format: `40.7128, -74.0060`
+- Negative values for South (latitude) and West (longitude)
+- Range: -90 to 90 for latitude, -180 to 180 for longitude
 
 ## Configuration
 
@@ -80,8 +122,8 @@ Person 3,"New York City",Address (requires geocoding)
 1. Upload CSV file
 2. Map columns to fields
 3. For location_grid_meta fields, select geocoding service
-4. Preview import to verify location processing
-5. Execute import
+4. Preview import to verify field mapping (addresses shown as-is, no geocoding performed)
+5. Execute import (geocoding happens during actual import)
 
 ## Error Handling
 
@@ -104,6 +146,9 @@ Person 3,"New York City",Address (requires geocoding)
 3. **Test Small Batches**: Test with a few records before large imports
 4. **Monitor API Usage**: Be aware of geocoding API limits and costs
 5. **Backup Data**: Always backup before large imports
+6. **Multiple Locations**: Use semicolons to separate multiple addresses, coordinates, or grid IDs
+7. **Rate Limiting**: For multiple locations with geocoding, automatic delays prevent API rate limiting
+8. **Preview Mode**: Preview shows raw addresses as entered in CSV - geocoding only happens during actual import
 
 ## Technical Details
 

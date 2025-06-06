@@ -365,8 +365,25 @@ The import process consists of 4 steps:
 
 **Accepted Values**: 
 - **Address strings**: `"123 Main St, Springfield, IL"`
-- **Coordinates**: `"40.7128,-74.0060"` (latitude,longitude)
+- **Decimal coordinates**: `"40.7128,-74.0060"` (latitude,longitude)
+- **DMS coordinates**: `"35°50′40.9″N, 103°27′7.5″E"` (degrees, minutes, seconds)
 - **Location names**: `"Springfield, Illinois"`
+
+**Coordinate Formats**:
+
+**Decimal Degrees** (recommended):
+- Format: `latitude,longitude`
+- Range: -90 to 90 for latitude, -180 to 180 for longitude
+- Examples: `40.7128,-74.0060`, `35.8447,103.4521`
+
+**DMS (Degrees, Minutes, Seconds)**:
+- Format: `DD°MM′SS.S″N/S, DDD°MM′SS.S″E/W`
+- Direction indicators (N/S/E/W) are **required**
+- Supports various symbols: `°′″` or `d m s` or regular quotes `'"`
+- Examples: 
+  - `35°50′40.9″N, 103°27′7.5″E`
+  - `40°42′46″N, 74°0′21″W`
+  - `51°30′26″N, 0°7′39″W`
 
 **Examples**:
 
@@ -375,6 +392,7 @@ The import process consists of 4 steps:
 | 123 Main Street, Springfield, IL 62701 |
 | Downtown Community Center |
 | 40.7589, -73.9851 |
+| 35°50′40.9″N, 103°27′7.5″E |
 | First Baptist Church |
 
 ---
@@ -405,8 +423,24 @@ The import process consists of 4 steps:
 
 **Accepted Values**:
 - **Grid ID**: `100364199`
-- **Coordinates**: `"40.7128,-74.0060"`
+- **Decimal coordinates**: `"40.7128,-74.0060"`
+- **DMS coordinates**: `"35°50′40.9″N, 103°27′7.5″E"`
 - **Address**: `"123 Main St, Springfield, IL"`
+- **Multiple locations**: `"Paris, France; Berlin, Germany"` (semicolon-separated)
+
+**Coordinate Formats**:
+
+**Decimal Degrees**:
+- Format: `latitude,longitude`
+- Examples: `40.7128,-74.0060`, `35.8447,103.4521`
+
+**DMS (Degrees, Minutes, Seconds)**:
+- Format: `DD°MM′SS.S″N/S, DDD°MM′SS.S″E/W`
+- Direction indicators (N/S/E/W) are **required**
+- Examples: `35°50′40.9″N, 103°27′7.5″E`, `40°42′46″N, 74°0′21″W`
+
+**Multiple Locations**:
+- Separate with semicolons: `"France; Germany"`, `"40.7128,-74.0060; 35°50′40.9″N, 103°27′7.5″E"`
 
 **Geocoding**: Can automatically convert addresses to coordinates if geocoding service is configured
 
@@ -416,7 +450,9 @@ The import process consists of 4 steps:
 |---------------|
 | 100364199 |
 | 40.7589, -73.9851 |
+| 35°50′40.9″N, 103°27′7.5″E |
 | Times Square, New York, NY |
+| Paris, France; Berlin, Germany |
 | Central Park, Manhattan |
 
 ---

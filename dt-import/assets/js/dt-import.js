@@ -1191,7 +1191,7 @@
         .then((response) => response.json())
         .then((data) => {
           if (data.success) {
-            this.startProgressPolling();
+            // this.startProgressPolling();
           } else {
             this.isProcessing = false;
             this.hideProcessing();
@@ -1204,6 +1204,7 @@
           this.showError('Failed to start import');
           console.error('Import error:', error);
         });
+      this.startProgressPolling();
     }
 
     startProgressPolling() {

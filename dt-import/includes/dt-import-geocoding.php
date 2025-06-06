@@ -284,14 +284,157 @@ class DT_CSV_Import_Geocoding {
     /**
      * Process location data for import
      * Combines geocoding with location grid assignment
+     * Supports multiple addresses separated by semicolons
      */
-    public static function process_for_import( $value, $geocode_service = 'none', $country_code = null ) {
+    public static function process_for_import( $value, $geocode_service = 'none', $country_code = null, $preview_mode = false ) {
         $value = trim( $value );
 
         if ( empty( $value ) ) {
             return null;
         }
 
+        // In preview mode, don't perform actual geocoding - just return the raw values formatted for display
+        if ( $preview_mode ) {
+            return self::process_for_preview( $value );
+        }
+
+        // Check if value contains multiple addresses separated by semicolons
+        if ( strpos( $value, ';' ) !== false ) {
+            return self::process_multiple_addresses( $value, $geocode_service, $country_code );
+        }
+
+        // Process single address/location
+        return self::process_single_location( $value, $geocode_service, $country_code );
+    }
+
+    /**
+     * Process location data for preview mode (no geocoding)
+     * Just formats the raw values for display
+     */
+    private static function process_for_preview( $value ) {
+        // Check if value contains multiple addresses separated by semicolons
+        if ( strpos( $value, ';' ) !== false ) {
+            $addresses = explode( ';', $value );
+            $processed_locations = [];
+
+            foreach ( $addresses as $address ) {
+                $address = trim( $address );
+                if ( empty( $address ) ) {
+                    continue;
+                }
+
+                // For preview, just return the raw address/value with minimal processing
+                if ( is_numeric( $address ) ) {
+                    $processed_locations[] = [
+                        'label' => "Grid ID: {$address}",
+                        'raw_value' => $address,
+                        'preview_mode' => true
+                    ];
+                } elseif ( self::parse_dms_coordinates( $address ) !== null ) {
+                    $processed_locations[] = [
+                        'label' => "DMS Coordinates: {$address}",
+                        'raw_value' => $address,
+                        'preview_mode' => true
+                    ];
+                } elseif ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', $address ) ) {
+                    $processed_locations[] = [
+                        'label' => "Decimal Coordinates: {$address}",
+                        'raw_value' => $address,
+                        'preview_mode' => true
+                    ];
+                } else {
+                    $processed_locations[] = [
+                        'label' => $address,
+                        'raw_value' => $address,
+                        'preview_mode' => true
+                    ];
+                }
+            }
+
+            return count( $processed_locations ) > 1 ? $processed_locations : ( $processed_locations[0] ?? null );
+        } else {
+            // Single address/location for preview
+            if ( is_numeric( $value ) ) {
+                return [
+                    'label' => "Grid ID: {$value}",
+                    'raw_value' => $value,
+                    'preview_mode' => true
+                ];
+            } elseif ( self::parse_dms_coordinates( $value ) !== null ) {
+                return [
+                    'label' => "DMS Coordinates: {$value}",
+                    'raw_value' => $value,
+                    'preview_mode' => true
+                ];
+            } elseif ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', $value ) ) {
+                return [
+                    'label' => "Decimal Coordinates: {$value}",
+                    'raw_value' => $value,
+                    'preview_mode' => true
+                ];
+            } else {
+                return [
+                    'label' => $value,
+                    'raw_value' => $value,
+                    'preview_mode' => true
+                ];
+            }
+        }
+    }
+
+    /**
+     * Process multiple addresses separated by semicolons
+     */
+    private static function process_multiple_addresses( $value, $geocode_service = 'none', $country_code = null ) {
+        $addresses = explode( ';', $value );
+        $processed_locations = [];
+        $errors = [];
+
+        foreach ( $addresses as $address ) {
+            $address = trim( $address );
+            if ( empty( $address ) ) {
+                continue;
+            }
+
+            try {
+                $location_result = self::process_single_location( $address, $geocode_service, $country_code );
+                if ( $location_result !== null ) {
+                    $processed_locations[] = $location_result;
+                }
+
+                // Add a small delay to avoid rate limiting for geocoding services
+                if ( $geocode_service !== 'none' && count( $addresses ) > 1 ) {
+                    usleep( 100000 ); // 0.1 second delay
+                }
+            } catch ( Exception $e ) {
+                $errors[] = [
+                    'address' => $address,
+                    'error' => $e->getMessage()
+                ];
+
+                // Still add the address with error info
+                $processed_locations[] = [
+                    'label' => $address,
+                    'source' => 'csv_import',
+                    'geocoding_error' => $e->getMessage()
+                ];
+            }
+        }
+
+        // If we have multiple locations, return them as an array
+        if ( count( $processed_locations ) > 1 ) {
+            return $processed_locations;
+        } elseif ( count( $processed_locations ) === 1 ) {
+            return $processed_locations[0];
+        } else {
+            throw new Exception( 'No valid addresses found in: ' . $value );
+        }
+    }
+
+    /**
+     * Process a single location (address, coordinates, or grid ID)
+     */
+    private static function process_single_location( $value, $geocode_service = 'none', $country_code = null ) {
         try {
             // If it's a numeric grid ID, validate and return
             if ( is_numeric( $value ) ) {
@@ -306,7 +449,64 @@ class DT_CSV_Import_Geocoding {
                 }
             }
 
-            // Check if it's coordinates (lat,lng)
+            // Check if it's coordinates in DMS format (degrees, minutes, seconds)
+            $dms_coords = self::parse_dms_coordinates( $value );
+            if ( $dms_coords !== null ) {
+                $lat = $dms_coords['lat'];
+                $lng = $dms_coords['lng'];
+
+                // Validate coordinates
+                if ( $lat < -90 || $lat > 90 || $lng < -180 || $lng > 180 ) {
+                    throw new Exception( "Invalid DMS coordinates: {$value}" );
+                }
+
+                // Try to get grid ID from coordinates
+                try {
+                    $grid_result = self::get_grid_id_from_coordinates( $lat, $lng, $country_code );
+
+                    $location_meta = [
+                        'lng' => $lng,
+                        'lat' => $lat,
+                        'source' => 'csv_import'
+                    ];
+
+                    if ( isset( $grid_result['grid_id'] ) ) {
+                        $location_meta['grid_id'] = $grid_result['grid_id'];
+                    }
+
+                    if ( isset( $grid_result['level'] ) ) {
+                        $location_meta['level'] = $grid_result['level'];
+                    }
+
+                    // Try to get address if geocoding service is available
+                    if ( $geocode_service !== 'none' ) {
+                        try {
+                            $reverse_result = self::reverse_geocode( $lat, $lng, $geocode_service );
+                            $location_meta['label'] = $reverse_result['address'];
+                        } catch ( Exception $e ) {
+                            $location_meta['label'] = "{$lat}, {$lng}";
+                        }
+                    } else {
+                        $location_meta['label'] = "{$lat}, {$lng}";
+                    }
+
+                    return $location_meta;
+
+                } catch ( Exception $e ) {
+                    // If grid lookup fails, return coordinates anyway
+                    $location_meta = [
+                        'lng' => $lng,
+                        'lat' => $lat,
+                        'label' => "{$lat}, {$lng}",
+                        'source' => 'csv_import',
+                        'geocoding_note' => 'Could not assign to location grid: ' . $e->getMessage()
+                    ];
+
+                    return $location_meta;
+                }
+            }
+
+            // Check if it's coordinates in decimal format (lat,lng)
             if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', $value ) ) {
                 $coords = array_map( 'trim', explode( ',', $value ) );
                 $lat = floatval( $coords[0] );
@@ -412,6 +612,83 @@ class DT_CSV_Import_Geocoding {
                 'geocoding_error' => $e->getMessage()
             ];
         }
+    }
+
+    /**
+     * Parse DMS (Degrees, Minutes, Seconds) coordinates to decimal degrees
+     * Supports formats like: 35°50′40.9″N, 103°27′7.5″E
+     */
+    private static function parse_dms_coordinates( $value ) {
+        // Pattern to match DMS coordinates
+        // Supports various symbols: ° ' " or d m s or deg min sec
+        // Supports both N/S/E/W notation
+        // Using Unicode-aware regex with proper UTF-8 character classes
+        $pattern = '/^
+            \s*
+            (\d{1,3})                           # degrees
+            [°d]?                               # degree symbol (optional) - ° or d
+            \s*
+            (\d{1,2})                           # minutes
+            [′\'m]?                             # minute symbol (optional) - ′ or \' or m
+            \s*
+            ([\d.]+)                            # seconds (can be decimal)
+            [″"s]?                              # second symbol (optional) - ″ or " or s
+            \s*
+            ([NSEW])                            # direction (required)
+            \s*,?\s*                            # comma separator (optional)
+            (\d{1,3})                           # degrees
+            [°d]?                               # degree symbol (optional) - ° or d
+            \s*
+            (\d{1,2})                           # minutes
+            [′\'m]?                             # minute symbol (optional) - ′ or \' or m
+            \s*
+            ([\d.]+)                            # seconds (can be decimal)
+            [″"s]?                              # second symbol (optional) - ″ or " or s
+            \s*
+            ([NSEW])                            # direction (required)
+            \s*
+        $/xu';
+
+        if ( !preg_match( $pattern, $value, $matches ) ) {
+            return null;
+        }
+
+        $lat_deg = intval( $matches[1] );
+        $lat_min = intval( $matches[2] );
+        $lat_sec = floatval( $matches[3] );
+        $lat_dir = strtoupper( $matches[4] );
+
+        $lng_deg = intval( $matches[5] );
+        $lng_min = intval( $matches[6] );
+        $lng_sec = floatval( $matches[7] );
+        $lng_dir = strtoupper( $matches[8] );
+
+        // Convert DMS to decimal degrees
+        $lat = $lat_deg + ( $lat_min / 60 ) + ( $lat_sec / 3600 );
+        $lng = $lng_deg + ( $lng_min / 60 ) + ( $lng_sec / 3600 );
+
+        // Apply direction (negative for South and West)
+        if ( $lat_dir === 'S' ) {
+            $lat = -$lat;
+        }
+        if ( $lng_dir === 'W' ) {
+            $lng = -$lng;
+        }
+
+        // Validate that we have proper direction indicators
+        if ( !in_array( $lat_dir, [ 'N', 'S' ] ) || !in_array( $lng_dir, [ 'E', 'W' ] ) ) {
+            return null;
+        }
+
+        // Validate ranges
+        if ( $lat < -90 || $lat > 90 || $lng < -180 || $lng > 180 ) {
+            return null;
+        }
+
+        return [
+            'lat' => $lat,
+            'lng' => $lng
+        ];
     }
 
     /**
