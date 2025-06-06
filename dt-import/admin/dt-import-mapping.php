@@ -32,7 +32,6 @@ class DT_CSV_Import_Mapping {
             'email',
             'e-mail',
             'email_address',
-            'mail',
             'e_mail',
             'primary_email',
             'work_email',
@@ -208,22 +207,28 @@ class DT_CSV_Import_Mapping {
             return null;
         }
 
-        // Step 7: Partial matches for field names (more restrictive - only if column is a significant portion)
+        // Step 7: Very restrictive partial matches for field names
         foreach ( $field_settings as $field_key => $field_config ) {
             $field_name_normalized = self::normalize_string_for_matching( $field_config['name'] ?? '' );
 
             if ( !empty( $field_name_normalized ) && !empty( $column_normalized ) ) {
-                // Only match if the column name is at least 50% of the field name
-                // and the field name is not too much longer than the column name
                 $column_len = strlen( $column_normalized );
                 $field_len = strlen( $field_name_normalized );
 
-                if ( $column_len >= 3 && // minimum meaningful length
-                     $column_len >= ( $field_len * 0.5 ) && // column is at least 50% of field length
-                     $field_len <= ( $column_len * 2 ) && // field is not more than 2x column length
-                     ( strpos( $field_name_normalized, $column_normalized ) !== false ||
-                       strpos( $column_normalized, $field_name_normalized ) !== false ) ) {
-                    return $field_key;
+                // Much more restrictive: only allow partial matches if:
+                // 1. Both strings are reasonably long (4+ chars)
+                // 2. The shorter string is at least 40% of the longer string
+                // 3. One completely contains the other at the start or end (not in the middle)
+                if ( $column_len >= 4 && $field_len >= 4 && // minimum meaningful length
+                     min( $column_len, $field_len ) >= ( max( $column_len, $field_len ) * 0.4 ) ) {
+
+                    // Only match if one string completely contains the other at start or end
+                    if ( strpos( $field_name_normalized, $column_normalized ) === 0 || // field starts with column
+                         strpos( $column_normalized, $field_name_normalized ) === 0 || // column starts with field
+                         strpos( $field_name_normalized, $column_normalized ) === ( $field_len - $column_len ) || // field ends with column
+                         strpos( $column_normalized, $field_name_normalized ) === ( $column_len - $field_len ) ) { // column ends with field
+                        return $field_key;
+                    }
                 }
             }
         }
@@ -280,7 +285,6 @@ class DT_CSV_Import_Mapping {
                 'email',
             'e-mail',
             'email_address',
-            'mail',
             'e_mail',
                 'primary_email',
             'work_email',
