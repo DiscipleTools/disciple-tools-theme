@@ -579,12 +579,7 @@
       // Filter to ensure we have valid field configurations (removed hidden field filter)
       const validFields = Object.entries(fieldSettings).filter(
         ([fieldKey, fieldConfig]) => {
-          return (
-            fieldConfig &&
-            fieldConfig.name &&
-            fieldConfig.type &&
-            fieldConfig.customizable !== false
-          );
+          return fieldConfig && fieldConfig.name && fieldConfig.type;
         },
       );
 
@@ -1031,6 +1026,11 @@
         return count + (row.warnings ? row.warnings.length : 0);
       }, 0);
 
+      // Count total errors across all rows
+      const totalErrors = previewData.rows.reduce((count, row) => {
+        return count + (row.errors ? row.errors.length : 0);
+      }, 0);
+
       const step4Html = `
                 <div class="dt-import-step-content">
                     <h2>${dtImport.translations.previewImport}</h2>
@@ -1060,6 +1060,19 @@
                             <p>Errors</p>
                         </div>
                     </div>
+                    
+                    ${
+                      totalErrors > 0
+                        ? `
+                    <div class="errors-summary">
+                        <div class="notice notice-error">
+                            <h4><i class="mdi mdi-close-circle"></i> Import Errors</h4>
+                            <p>Some records have errors and will be skipped during import. Review the errors below for details.</p>
+                        </div>
+                    </div>
+                    `
+                        : ''
+                    }
                     
                     ${
                       totalWarnings > 0
@@ -1156,6 +1169,23 @@
           `
             : '';
 
+          // Create errors display
+          const hasErrors = row.errors && row.errors.length > 0;
+          const errorsHtml = hasErrors
+            ? `
+            <tr class="errors-row">
+              <td colspan="${headers.length + 1}">
+                <div class="row-errors">
+                  <strong><i class="mdi mdi-close-circle"></i> Errors:</strong>
+                  <ul>
+                    ${row.errors.map((error) => `<li>${this.escapeHtml(error)}</li>`).join('')}
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          `
+            : '';
+
           // Add row number indicator with update status
           const rowNumberDisplay = willUpdate
             ? `Row ${row.row_number} <span class="update-indicator">(UPDATE)</span>`
@@ -1164,7 +1194,7 @@
           return `<tr class="${rowClass}" data-row-number="${row.row_number}">
                     <td class="row-number">${rowNumberDisplay}</td>
                     ${cellsHtml}
-                  </tr>${warningsHtml}`;
+                  </tr>${errorsHtml}${warningsHtml}`;
         })
         .join('');
 
