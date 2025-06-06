@@ -52,7 +52,7 @@ class DT_Theme_CSV_Import {
         require_once plugin_dir_path( __FILE__ ) . 'includes/dt-import-field-handlers.php';
         require_once plugin_dir_path( __FILE__ ) . 'admin/dt-import-mapping.php';
         require_once plugin_dir_path( __FILE__ ) . 'admin/dt-import-processor.php';
-        require_once plugin_dir_path( __FILE__ ) . 'ajax/dt-import-ajax.php';
+        require_once plugin_dir_path( __FILE__ ) . 'admin/rest-endpoints.php';
 
         if ( is_admin() ) {
             require_once plugin_dir_path( __FILE__ ) . 'admin/dt-import-admin-tab.php';

@@ -11,12 +11,14 @@ The CSV Import feature allows you to bulk import data into Disciple Tools from C
 1. Navigate to **Admin** → **Settings** → **Import** tab
 2. You must have `manage_dt` permissions to access the import functionality
 
+**Note**: Only users with administrator or manager roles can access the import feature. If you don't see the Import tab, contact your system administrator to request the necessary permissions.
+
 ### Import Process
 
-The import process consists of 4 steps:
+The import process consists of 4 main steps:
 
 1. **Select Record Type** - Choose whether to import Contacts or Groups
-2. **Upload CSV** - Upload your CSV file (max 10MB)
+2. **Upload CSV & Configure Options** - Upload your CSV file (max 10MB) and set import options
 3. **Map Fields** - Map your CSV columns to Disciple Tools fields
 4. **Preview & Import** - Review and execute the import
 
@@ -39,6 +41,8 @@ The import process consists of 4 steps:
 ---
 
 ## Supported Field Types
+
+The CSV import tool supports 14 different field types. Each field type has specific formatting requirements and validation rules.
 
 ### 1. Text Fields
 
@@ -417,7 +421,7 @@ The import process consists of 4 steps:
 
 ### 14. Location Meta Fields
 
-**Field Type**: `location_grid_meta`
+**Field Type**: `location_meta`
 
 **Description**: Enhanced location with geocoding support
 
@@ -490,15 +494,22 @@ Use quotes around text containing commas:
 
 ### Default Values
 Set default values that apply to all imported records:
-- **Source**: Default source for tracking
-- **Assigned To**: Default user assignment
-- **Status**: Default status for new records
+- **Source**: Default source for tracking (e.g., 'csv_import', 'data_migration')
+- **Assigned To**: Default user assignment for all imported records
+
+### Duplicate Checking
+Configure how the system handles potential duplicate records:
+- **Enable Duplicate Checking**: Check for existing records with matching values
+- **Merge Fields**: Choose which fields to use for duplicate detection (typically phone or email)
+- **Behavior**: When duplicates are found, the system updates existing records instead of creating new ones
 
 ### Geocoding Services
-If enabled, addresses can be automatically geocoded:
-- **Google Maps**: Requires API key
-- **Mapbox**: Requires API token
-- **None**: No automatic geocoding
+Configure automatic address geocoding for location fields:
+- **Google Maps**: Requires Google Maps API key configuration
+- **Mapbox**: Requires Mapbox API token configuration  
+- **None**: Import addresses without automatic geocoding
+
+**Note**: Geocoding services must be configured in Disciple Tools settings before they become available for import.
 
 ---
 
@@ -554,6 +565,18 @@ If enabled, addresses can be automatically geocoded:
 3. **Check Field Options**: Review available options for dropdown fields during mapping
 4. **Validate Data**: Clean your data before import
 5. **Backup First**: Always backup your data before large imports
+6. **Review Mapping**: Carefully review automatic field mappings before proceeding
+7. **Check Duplicates**: Enable duplicate checking for communication fields to avoid duplicate records
+8. **Test Geocoding**: If using location fields, test geocoding with a few addresses first
+
+### System Limitations
+
+- **File Size**: Maximum 10MB per CSV file
+- **Memory**: Large imports may require adequate server memory
+- **Timeout**: Very large imports may be processed in batches to avoid timeouts
+- **Permissions**: Requires `manage_dt` capability to access import functionality
+- **Geocoding**: Requires API keys for Google Maps or Mapbox services
+- **Records**: No hard limit on number of records, but performance depends on server resources
 
 ---
 
@@ -570,11 +593,20 @@ During the import process, you'll map your CSV columns to Disciple Tools fields:
 
 ## Example CSV Files
 
-The import tool provides downloadable example files:
+The import tool provides four downloadable example files:
 
-- **Basic Contacts CSV**: Simple contact import template
-- **Basic Groups CSV**: Simple group import template  
-- **Comprehensive Contacts CSV**: All contact fields with examples
-- **Comprehensive Groups CSV**: All group fields with examples
+### Basic Templates
+- **`example_contacts.csv`**: Simple contact import template with essential fields
+- **`example_groups.csv`**: Simple group import template with basic fields
 
-Use these as starting points for your own import files. 
+### Comprehensive Templates  
+- **`example_contacts_comprehensive.csv`**: Complete contact template with all available field types, milestone options, and relationship examples
+- **`example_groups_comprehensive.csv`**: Complete group template with all field types, health metrics, and member/leader relationships
+
+**Access**: Download these files from the Import interface sidebar or from the admin settings page.
+
+**Usage Tips**:
+- Start with basic templates for simple imports
+- Use comprehensive templates to see all available field options
+- Modify the templates by removing unnecessary columns for your specific needs
+- Keep the header row and follow the same formatting patterns 

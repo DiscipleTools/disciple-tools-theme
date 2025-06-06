@@ -410,7 +410,7 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
         </div><!-- wrap end -->
         
         <!-- Include Documentation Modal -->
-        <?php include( plugin_dir_path( __FILE__ ) . '../templates/documentation-modal.php' ); ?>
+        <?php include( plugin_dir_path( __FILE__ ) . 'documentation-modal.php' ); ?>
         <?php
     }
 
