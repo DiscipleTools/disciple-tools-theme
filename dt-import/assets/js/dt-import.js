@@ -1208,7 +1208,13 @@
     }
 
     startProgressPolling() {
-      const pollInterval = setInterval(() => {
+      let isPolling = false;
+
+      const pollStatus = () => {
+        if (isPolling) return; // Skip if previous request is still in progress
+
+        isPolling = true;
+
         fetch(`${dtImport.restUrl}${this.sessionId}/status`, {
           headers: {
             'X-WP-Nonce': dtImport.nonce,
@@ -1230,18 +1236,26 @@
                 this.isProcessing = false;
                 this.hideProcessing();
                 this.showImportResults(data.data);
+                return; // Don't continue polling
               } else if (status === 'failed') {
                 clearInterval(pollInterval);
                 this.isProcessing = false;
                 this.hideProcessing();
                 this.showError('Import failed');
+                return; // Don't continue polling
               }
             }
           })
           .catch((error) => {
             console.error('Status polling error:', error);
+          })
+          .finally(() => {
+            isPolling = false; // Reset flag when request completes
           });
-      }, 2000); // Poll every 2 seconds
+      };
+
+      const pollInterval = setInterval(pollStatus, 5000); // Poll every 5 seconds
+      pollStatus(); // Start first poll immediately
     }
 
     updateProgress(progress, status) {

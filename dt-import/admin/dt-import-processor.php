@@ -15,11 +15,47 @@ class DT_CSV_Import_Processor {
     public static function generate_preview( $csv_data, $field_mappings, $post_type, $limit = 10, $offset = 0 ) {
         $headers = array_shift( $csv_data );
         $preview_data = [];
-        $processed_count = 0;
-        $skipped_count = 0;
-
-        $data_rows = array_slice( $csv_data, $offset, $limit );
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
+
+        // First, analyze ALL rows to get accurate counts
+        $total_processable_count = 0;
+        $total_error_count = 0;
+
+        foreach ( $csv_data as $row_index => $row ) {
+            $has_errors = false;
+
+            // Check if this row has any valid data for mapped fields
+            $has_valid_data = false;
+            foreach ( $field_mappings as $column_index => $mapping ) {
+                if ( empty( $mapping['field_key'] ) || $mapping['field_key'] === 'skip' ) {
+                    continue;
+                }
+
+                $field_key = $mapping['field_key'];
+                $raw_value = $row[$column_index] ?? '';
+
+                try {
+                    $processed_value = self::process_field_value( $raw_value, $field_key, $mapping, $post_type, true );
+                    if ( $processed_value !== null && $processed_value !== '' ) {
+                        $has_valid_data = true;
+                    }
+                } catch ( Exception $e ) {
+                    $has_errors = true;
+                    break; // If any field has errors, the whole row will be skipped
+                }
+            }
+
+            if ( $has_errors ) {
+                $total_error_count++;
+            } else if ( $has_valid_data ) {
+                $total_processable_count++;
+            }
+        }
+
+        // Now generate the limited preview data for display
+        $data_rows = array_slice( $csv_data, $offset, $limit );
+        $preview_processed_count = 0;
+        $preview_skipped_count = 0;
 
         foreach ( $data_rows as $row_index => $row ) {
             $processed_row = [];
@@ -115,9 +151,9 @@ class DT_CSV_Import_Processor {
             ];
 
             if ( $has_errors ) {
-                $skipped_count++;
+                $preview_skipped_count++;
             } else {
-                $processed_count++;
+                $preview_processed_count++;
             }
         }
 
@@ -125,8 +161,8 @@ class DT_CSV_Import_Processor {
             'rows' => $preview_data,
             'total_rows' => count( $csv_data ),
             'preview_count' => count( $preview_data ),
-            'processable_count' => $processed_count,
-            'error_count' => $skipped_count,
+            'processable_count' => $total_processable_count, // Use the accurate count from analyzing all rows
+            'error_count' => $total_error_count, // Use the accurate error count from analyzing all rows
             'offset' => $offset,
             'limit' => $limit
         ];
