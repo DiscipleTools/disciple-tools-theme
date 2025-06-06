@@ -400,17 +400,7 @@ class DT_CSV_Import_Processor {
         foreach ( $channels as $channel ) {
             $channel = trim( $channel );
 
-            // Basic validation based on field type
-            if ( strpos( $field_key, 'email' ) !== false ) {
-                if ( !filter_var( $channel, FILTER_VALIDATE_EMAIL ) ) {
-                    throw new Exception( "Invalid email address: {$channel}" );
-                }
-            } elseif ( strpos( $field_key, 'phone' ) !== false ) {
-                // Basic phone validation - just check if it contains digits
-                if ( !preg_match( '/\d/', $channel ) ) {
-                    throw new Exception( "Invalid phone number: {$channel}" );
-                }
-            }
+            // No validation here - the API will handle all communication channel validation
 
             $processed_channels[] = [
                 'value' => $channel,
