@@ -17,38 +17,90 @@ class DT_CSV_Import_Processor {
         $preview_data = [];
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
 
-        // First, analyze ALL rows to get accurate counts
+        // For large datasets (>1000 rows), use sampling to estimate counts
+        // For smaller datasets, analyze all rows for accurate counts
+        $total_rows = count( $csv_data );
+        $use_sampling = $total_rows > 1000;
+
         $total_processable_count = 0;
         $total_error_count = 0;
 
-        foreach ( $csv_data as $row_index => $row ) {
-            $has_errors = false;
+        if ( $use_sampling ) {
+            // Sample up to 500 rows for estimation
+            $sample_size = min( 500, $total_rows );
+            $sample_indices = array_rand( $csv_data, $sample_size );
+            if ( !is_array( $sample_indices ) ) {
+                $sample_indices = [ $sample_indices ];
+            }
 
-            // Check if this row has any valid data for mapped fields
-            $has_valid_data = false;
-            foreach ( $field_mappings as $column_index => $mapping ) {
-                if ( empty( $mapping['field_key'] ) || $mapping['field_key'] === 'skip' ) {
-                    continue;
+            $sample_processable = 0;
+            $sample_errors = 0;
+
+            foreach ( $sample_indices as $row_index ) {
+                $row = $csv_data[$row_index];
+                $has_errors = false;
+                $has_valid_data = false;
+
+                foreach ( $field_mappings as $column_index => $mapping ) {
+                    if ( empty( $mapping['field_key'] ) || $mapping['field_key'] === 'skip' ) {
+                        continue;
+                    }
+
+                    $field_key = $mapping['field_key'];
+                    $raw_value = $row[$column_index] ?? '';
+
+                    try {
+                        $processed_value = self::process_field_value( $raw_value, $field_key, $mapping, $post_type, true );
+                        if ( $processed_value !== null && $processed_value !== '' ) {
+                            $has_valid_data = true;
+                        }
+                    } catch ( Exception $e ) {
+                        $has_errors = true;
+                        break;
+                    }
                 }
 
-                $field_key = $mapping['field_key'];
-                $raw_value = $row[$column_index] ?? '';
-
-                try {
-                    $processed_value = self::process_field_value( $raw_value, $field_key, $mapping, $post_type, true );
-                    if ( $processed_value !== null && $processed_value !== '' ) {
-                        $has_valid_data = true;
-                    }
-                } catch ( Exception $e ) {
-                    $has_errors = true;
-                    break; // If any field has errors, the whole row will be skipped
+                if ( $has_errors ) {
+                    $sample_errors++;
+                } else if ( $has_valid_data ) {
+                    $sample_processable++;
                 }
             }
 
-            if ( $has_errors ) {
-                $total_error_count++;
-            } else if ( $has_valid_data ) {
-                $total_processable_count++;
+            // Extrapolate from sample to total
+            $total_processable_count = round( ( $sample_processable / $sample_size ) * $total_rows );
+            $total_error_count = round( ( $sample_errors / $sample_size ) * $total_rows );
+
+        } else {
+            // For smaller datasets, analyze all rows for accurate counts
+            foreach ( $csv_data as $row_index => $row ) {
+                $has_errors = false;
+                $has_valid_data = false;
+
+                foreach ( $field_mappings as $column_index => $mapping ) {
+                    if ( empty( $mapping['field_key'] ) || $mapping['field_key'] === 'skip' ) {
+                        continue;
+                    }
+
+                    $field_key = $mapping['field_key'];
+                    $raw_value = $row[$column_index] ?? '';
+
+                    try {
+                        $processed_value = self::process_field_value( $raw_value, $field_key, $mapping, $post_type, true );
+                        if ( $processed_value !== null && $processed_value !== '' ) {
+                            $has_valid_data = true;
+                        }
+                    } catch ( Exception $e ) {
+                        $has_errors = true;
+                        break;
+                    }
+                }
+
+                if ( $has_errors ) {
+                    $total_error_count++;
+                } else if ( $has_valid_data ) {
+                    $total_processable_count++;
+                }
             }
         }
 
@@ -161,10 +213,12 @@ class DT_CSV_Import_Processor {
             'rows' => $preview_data,
             'total_rows' => count( $csv_data ),
             'preview_count' => count( $preview_data ),
-            'processable_count' => $total_processable_count, // Use the accurate count from analyzing all rows
-            'error_count' => $total_error_count, // Use the accurate error count from analyzing all rows
+            'processable_count' => $total_processable_count,
+            'error_count' => $total_error_count,
             'offset' => $offset,
-            'limit' => $limit
+            'limit' => $limit,
+            'is_estimated' => $use_sampling, // Indicate if counts are estimated from sampling
+            'sample_size' => $use_sampling ? $sample_size : null
         ];
     }
 
@@ -789,7 +843,7 @@ class DT_CSV_Import_Processor {
             case 'date':
                 // Format date for display
                 if ( is_numeric( $processed_value ) ) {
-                    return date( 'Y-m-d', intval( $processed_value ) );
+                    return gmdate( 'Y-m-d', intval( $processed_value ) );
                 }
                 break;
 

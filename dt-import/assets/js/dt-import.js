@@ -1036,13 +1036,23 @@
                     <h2>${dtImport.translations.previewImport}</h2>
                     <p>Review the data before importing ${previewData.total_rows} records.</p>
                     
+                    ${
+                      previewData.is_estimated
+                        ? `
+                    <div class="notice notice-info">
+                        <p><strong>Large File Detected:</strong> Counts below are estimated based on a sample of ${previewData.sample_size} rows for faster processing. Actual numbers may vary slightly during import.</p>
+                    </div>
+                    `
+                        : ''
+                    }
+                    
                     <div class="preview-stats">
                         <div class="stat-card">
                             <h3>${previewData.total_rows}</h3>
                             <p>Total Records</p>
                         </div>
                         <div class="stat-card">
-                            <h3>${previewData.processable_count}</h3>
+                            <h3>${previewData.processable_count}${previewData.is_estimated ? '*' : ''}</h3>
                             <p>Will Import</p>
                         </div>
                         ${
@@ -1056,10 +1066,18 @@
                             : ''
                         }
                         <div class="stat-card error-card">
-                            <h3>${previewData.error_count}</h3>
+                            <h3>${previewData.error_count}${previewData.is_estimated ? '*' : ''}</h3>
                             <p>Errors</p>
                         </div>
                     </div>
+                    
+                    ${
+                      previewData.is_estimated
+                        ? `
+                    <p style="font-size: 12px; color: #666; margin-top: 5px;"><em>* Estimated values based on sampling</em></p>
+                    `
+                        : ''
+                    }
                     
                     ${
                       totalErrors > 0
