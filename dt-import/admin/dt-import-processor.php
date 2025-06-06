@@ -452,13 +452,19 @@ class DT_CSV_Import_Processor {
                 }
             }
 
-            // Try to find by title/name
+            // Try to find by title/name - but check for multiple matches first
             $posts = DT_Posts::list_posts($connection_post_type, [
                 'name' => $connection,
-                'limit' => 1
+                'limit' => 2  // Get 2 to check for duplicates
             ]);
 
             if ( !is_wp_error( $posts ) && !empty( $posts['posts'] ) ) {
+                // Check if multiple records found with same name
+                if ( count( $posts['posts'] ) > 1 ) {
+                    // Skip this connection instead of failing the entire row
+                    continue;
+                }
+
                 $found_post = $posts['posts'][0];
                 $connection_info['id'] = $found_post['ID'];
                 $connection_info['name'] = $found_post['title'] ?? $found_post['name'] ?? $connection;

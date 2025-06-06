@@ -628,7 +628,7 @@
       const $options = $card.find('.field-specific-options');
 
       if (!fieldKey) {
-        $options.hide().empty();
+        $options.hide().empty().removeClass('connection-help');
         return;
       }
 
@@ -636,9 +636,12 @@
       const fieldConfig = fieldSettings[fieldKey];
 
       if (!fieldConfig) {
-        $options.hide().empty();
+        $options.hide().empty().removeClass('connection-help');
         return;
       }
+
+      // Remove connection-help class first
+      $options.removeClass('connection-help');
 
       if (['key_select', 'multi_select'].includes(fieldConfig.type)) {
         this.showInlineValueMapping(columnIndex, fieldKey, fieldConfig);
@@ -651,6 +654,8 @@
         this.isCommunicationFieldForDuplicateCheck(fieldKey)
       ) {
         this.showDuplicateCheckingOptions(columnIndex, fieldKey, fieldConfig);
+      } else if (fieldConfig.type === 'connection') {
+        this.showConnectionFieldHelp(columnIndex, fieldKey, fieldConfig);
       } else {
         $options.hide().empty();
       }
@@ -2023,6 +2028,36 @@
       const dateFormat = $select.val();
 
       this.updateFieldMappingDateFormat(columnIndex, dateFormat);
+    }
+
+    showConnectionFieldHelp(columnIndex, fieldKey, fieldConfig) {
+      const $card = $(
+        `.column-mapping-card[data-column-index="${columnIndex}"]`,
+      );
+      const $options = $card.find('.field-specific-options');
+
+      const postTypeName = fieldConfig.post_type || 'records';
+      const fieldName = fieldConfig.name || 'Connection';
+
+      const helpHtml = `
+                <div class="connection-field-help">
+                    <div class="field-help-header">
+                        <i class="mdi mdi-information-outline"></i>
+                        <strong>Connection Field</strong>
+                    </div>
+                    <div class="field-help-content">
+                        <ul>
+                            <li><strong>Record ID</strong> (number): Links to that specific record</li>
+                            <li><strong>Name</strong> (text): Searches for existing ${postTypeName}</li>
+                            <li><strong>One match</strong>: Links to existing record</li>
+                            <li><strong>No match</strong>: Creates new record</li>
+                            <li><strong>Multiple matches</strong>: Connection skipped</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+      $options.html(helpHtml).show().addClass('connection-help');
     }
 
     getImportOptionsHtml() {

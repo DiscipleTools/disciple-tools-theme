@@ -310,6 +310,13 @@ The CSV import tool supports 14 different field types. Each field type has speci
 
 **Format**: Separate multiple connections with semicolons (`;`)
 
+**Connection Logic**:
+- **Record ID (numeric)**: Links directly to that specific record
+- **Record name (text)**: Searches for existing records by name
+- **Single match found**: Connects to the existing record
+- **No match found**: Creates a new record with that name
+- **Multiple matches found**: That specific connection is skipped (other connections in the same field will still process)
+
 **Common Examples**:
 
 **For Contacts**:
@@ -332,6 +339,8 @@ The CSV import tool supports 14 different field types. Each field type has speci
 | John Smith | Downtown Bible Study |
 | 142 | Small Group Alpha;Youth Group |
 | Mary Johnson | Prayer Group;Bible Study |
+
+**Important**: If multiple records exist with the same name (e.g., two contacts named "John Smith"), that connection will be skipped. To avoid this, use record IDs instead of names, or ensure all records have unique names before importing.
 
 ---
 
@@ -557,6 +566,24 @@ Configure automatic address geocoding for location fields:
 **"Invalid option for field"**: Check that dropdown values match available options
 **"Field does not exist"**: Verify field exists for the selected post type
 **"Connection not found"**: Ensure connected records exist or use valid IDs
+**"Connection skipped due to duplicate names"**: Multiple records exist with the same name - use record IDs instead
+
+### Connection Field Behavior
+
+When importing connection fields, the system processes each connection value as follows:
+
+1. **Numeric values** (e.g., `123`): Treated as record IDs - will link directly to the record with that ID
+2. **Text values** (e.g., `"John Smith"`): Searched by record name/title
+   - **Single match found**: Links to that existing record
+   - **No match found**: Creates a new record with that name
+   - **Multiple matches found**: **Skips that specific connection** (does not fail the entire row)
+
+**Example**: If your CSV has `"John Smith;Mary Johnson;456"` in a connection field:
+- `John Smith`: If 1 record found → connects to it; if 0 found → creates new; if 2+ found → skips
+- `Mary Johnson`: Processed independently with same logic
+- `456`: Links directly to record ID 456 (if it exists)
+
+The import will continue processing other connections and other fields even if some connections are skipped.
 
 ### Best Practices
 
@@ -568,6 +595,7 @@ Configure automatic address geocoding for location fields:
 6. **Review Mapping**: Carefully review automatic field mappings before proceeding
 7. **Check Duplicates**: Enable duplicate checking for communication fields to avoid duplicate records
 8. **Test Geocoding**: If using location fields, test geocoding with a few addresses first
+9. **Use Record IDs for Connections**: When connecting to existing records, use numeric IDs instead of names to avoid issues with duplicate names
 
 ### System Limitations
 

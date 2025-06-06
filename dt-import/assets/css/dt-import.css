@@ -1696,4 +1696,77 @@ body.modal-open {
     .dt-import-example-table td {
         padding: 6px 8px;
     }
-} 
+}
+
+/* Connection Field Help Styles */
+.field-specific-options .connection-field-help {
+    background: #e7f3ff;
+    border: 1px solid #b3d8ff;
+    border-radius: 6px;
+    padding: 15px;
+    margin: 0;
+}
+
+/* Override the grey box for connection field help */
+.field-specific-options.connection-help {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.field-help-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: #0073aa;
+}
+
+.field-help-header i {
+    font-size: 18px;
+}
+
+.field-help-header strong {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.field-help-content p {
+    margin: 0 0 10px 0;
+    font-size: 13px;
+    color: #2c3338;
+}
+
+.field-help-content ul {
+    margin: 0 0 15px 20px;
+    padding: 0;
+}
+
+.field-help-content li {
+    margin: 0 0 6px 0;
+    font-size: 13px;
+    color: #2c3338;
+    line-height: 1.4;
+}
+
+
+
+@media (max-width: 768px) {
+    .connection-field-help {
+        padding: 12px;
+    }
+    
+    .field-help-header {
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+    
+    .field-help-header strong {
+        font-size: 13px;
+    }
+    
+    .field-help-content li {
+        font-size: 12px;
+    }
+}

@@ -126,10 +126,14 @@ if ( !defined( 'ABSPATH' ) ) {
                     
                     <div class="dt-import-field-type">
                         <h4><?php esc_html_e( 'Connections', 'disciple_tools' ); ?></h4>
-                        <p><?php esc_html_e( 'Relationships to other records (contacts or groups).', 'disciple_tools' ); ?></p>
+                        <p><?php esc_html_e( 'Relationships to other records (contacts or groups). The system searches for existing records by name or ID.', 'disciple_tools' ); ?></p>
                         <div class="dt-import-example">
                             <strong><?php esc_html_e( 'By Name:', 'disciple_tools' ); ?></strong> <code>John Smith;Mary Johnson</code><br>
                             <strong><?php esc_html_e( 'By ID:', 'disciple_tools' ); ?></strong> <code>142;256</code>
+                        </div>
+                        <div class="dt-import-tip">
+                            <strong><?php esc_html_e( 'Important:', 'disciple_tools' ); ?></strong>
+                            <?php esc_html_e( 'If exactly one record matches the name, it will be connected. If no match is found, a new record will be created. If multiple records have the same name, that connection will be skipped. Use record IDs instead of names to avoid duplicate name issues.', 'disciple_tools' ); ?>
                         </div>
                     </div>
                     
@@ -329,6 +333,11 @@ if ( !defined( 'ABSPATH' ) ) {
                     <div class="dt-import-troubleshoot-item">
                         <h4><?php esc_html_e( '"Connection not found" Error', 'disciple_tools' ); ?></h4>
                         <p><strong><?php esc_html_e( 'Solution:', 'disciple_tools' ); ?></strong> <?php esc_html_e( 'Ensure connected records exist. Use exact names or valid record IDs.', 'disciple_tools' ); ?></p>
+                    </div>
+                    
+                    <div class="dt-import-troubleshoot-item">
+                        <h4><?php esc_html_e( 'Connection Fields with Duplicate Names', 'disciple_tools' ); ?></h4>
+                        <p><strong><?php esc_html_e( 'Behavior:', 'disciple_tools' ); ?></strong> <?php esc_html_e( 'When multiple records have the same name, that specific connection will be skipped during import. Use the specific record ID instead of the name, or ensure all records have unique names before importing.', 'disciple_tools' ); ?></p>
                     </div>
                     
                     <div class="dt-import-troubleshoot-item">

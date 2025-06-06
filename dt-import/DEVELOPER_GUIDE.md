@@ -38,423 +38,177 @@ wp-content/themes/disciple-tools-theme/dt-import/
 
 ## Field Type Processing
 
-### Field Handler Methods
+### Supported Field Types
 
-Each field type has specific processing logic:
+Each field type has specific processing logic in `DT_CSV_Import_Field_Handlers`:
 
-```php
-// Text fields - direct assignment
-handle_text_field($value, $field_key, $post_type)
+- **Text fields**: Direct assignment with sanitization
+- **Date fields**: Format conversion and validation
+- **Boolean fields**: Multiple format recognition (true/false, yes/no, 1/0, etc.)
+- **Key select**: CSV value mapping to field options
+- **Multi select**: Semicolon-separated value processing
+- **Communication channels**: Email/phone validation and formatting
+- **Connections**: ID/name lookup with duplicate handling
+- **User select**: User lookup by ID, username, or display name
+- **Location fields**: Address geocoding and coordinate processing
 
-// Date fields - format conversion to Y-m-d
-handle_date_field($value, $field_key, $post_type)
+### Connection Field Processing
 
-// Boolean fields - convert various formats to boolean
-handle_boolean_field($value, $field_key, $post_type)
+Connection fields have special handling for duplicate names:
 
-// Key select - map CSV values to field options
-handle_key_select_field($value, $field_key, $post_type, $value_mapping)
-
-// Multi select - split semicolon-separated values
-handle_multi_select_field($value, $field_key, $post_type, $value_mapping)
-
-// Communication channels - validate and format
-handle_communication_channel_field($value, $field_key, $post_type)
-
-// Connections - lookup by ID or name, create if needed
-handle_connection_field($value, $field_key, $post_type, $create_missing)
-
-// User select - lookup by ID, username, or display name
-handle_user_select_field($value, $field_key, $post_type)
-
-// Location fields - geocoding and grid assignment
-handle_location_field($value, $field_key, $post_type, $geocoding_service)
-handle_location_grid_field($value, $field_key, $post_type)
-handle_location_grid_meta_field($value, $field_key, $post_type, $geocoding_service)
-```
+1. **Numeric ID**: Direct lookup by post ID
+2. **Text name**: Search by title/name with duplicate detection
+3. **Single match**: Connect to existing record
+4. **No match**: Create new record (non-preview mode)
+5. **Multiple matches**: Skip that connection (continue processing other connections)
 
 ### Value Mapping Structure
 
-For key_select and multi_select fields:
-
-```php
-$field_mappings[column_index] = [
-    'field_key' => 'field_name',
-    'column_index' => 0,
-    'value_mapping' => [
-        'csv_value_1' => 'dt_option_key_1',
-        'csv_value_2' => 'dt_option_key_2',
-        // ... more mappings
-    ]
-];
-```
+For dropdown fields, mappings are stored as:
+- `field_key`: Target DT field
+- `column_index`: CSV column number
+- `value_mapping`: CSV value → DT option key mappings
 
 ## Automatic Field Detection
 
-### Detection Logic Priority
+### Detection Priority
 
 1. **Predefined Field Headings** (100% confidence)
-2. **Direct Field Matching** (100% confidence)
+2. **Direct Field Matching** (100% confidence) 
 3. **Communication Channel Detection** (100% confidence)
 4. **Partial Matching** (75% confidence)
 5. **Extended Field Aliases** (≤75% confidence)
 
-### Predefined Headings
-
-```php
-$predefined_headings = [
-    'contact_phone' => ['phone', 'mobile', 'telephone', 'cell', 'phone_number'],
-    'contact_email' => ['email', 'e-mail', 'email_address', 'mail'],
-    'contact_address' => ['address', 'street_address', 'home_address'],
-    'name' => ['title', 'name', 'contact_name', 'full_name', 'display_name'],
-    // ... more mappings
-];
-```
-
 ### Auto-Mapping Threshold
 
 - **≥75% confidence**: Automatically mapped
-- **<75% confidence**: Shows "No match found", requires manual selection
+- **<75% confidence**: Manual selection required
 
 ## API Endpoints
 
-### Get Field Options
-```
-GET /wp-json/dt-csv-import/v2/{post_type}/field-options?field_key={field_key}
-```
+### REST API Structure
 
-Returns available options for key_select and multi_select fields.
+Base URL: `/wp-json/dt-csv-import/v2/`
 
-### Get Column Data
-```
-GET /wp-json/dt-csv-import/v2/{session_id}/column-data?column_index={index}
-```
-
-Returns unique values and sample data from CSV column.
-
-### Import Processing
-```
-POST /wp-json/dt-csv-import/v2/import
-```
-
-Executes the import with field mappings and configuration.
+- **Field Options**: `/{post_type}/field-options?field_key={field_key}`
+- **Column Data**: `/{session_id}/column-data?column_index={index}`
+- **Import Processing**: `/import` (POST)
 
 ## Data Processing Flow
 
 ### Import Workflow
 
-1. **File Upload**: CSV uploaded and parsed
-2. **Field Detection**: Headers analyzed for field suggestions
-3. **Field Mapping**: User maps columns to DT fields
-4. **Value Mapping**: For key_select/multi_select, map CSV values to options
-5. **Validation**: Data validated against field requirements
-6. **Processing**: Records created via DT_Posts API
-7. **Reporting**: Results and errors reported
+1. **File Upload**: CSV parsing and validation
+2. **Field Detection**: Header analysis for field suggestions
+3. **Field Mapping**: User column-to-field mapping
+4. **Value Mapping**: Dropdown value mapping for select fields
+5. **Validation**: Data validation against field requirements
+6. **Processing**: Record creation via DT_Posts API
+7. **Reporting**: Results and error reporting
 
 ### Multi-Value Field Processing
 
-Fields supporting multiple values use semicolon separation:
-
-```php
-// Split semicolon-separated values
-$values = array_map('trim', explode(';', $csv_value));
-
-// Process each value
-foreach ($values as $value) {
-    // Handle individual value based on field type
-}
-```
+Fields supporting multiple values use semicolon (`;`) separation for processing multiple entries in a single CSV cell.
 
 ## Location Field Handling
 
-### Supported Location Formats
+### Supported Formats
 
-#### location_grid
-- **Input**: Numeric grid ID only
-- **Processing**: Direct validation and assignment
-- **Example**: `12345`
+- **location_grid**: Numeric grid ID only
+- **location_grid_meta**: Multiple formats supported
+  - Numeric grid IDs
+  - Decimal coordinates (lat,lng)
+  - DMS coordinates with direction indicators
+  - Address strings for geocoding
+  - Semicolon-separated multiple locations
 
-#### location_grid_meta
-- **Numeric grid ID**: `12345`
-- **Decimal coordinates**: `40.7128, -74.0060`
-- **DMS coordinates**: `35°50′40.9″N, 103°27′7.5″E`
-- **Address strings**: `123 Main St, New York, NY`
-- **Multiple locations**: `Paris; Berlin` (semicolon-separated)
+### Coordinate Format Support
 
-#### Coordinate Format Support
-
-**Decimal Degrees**:
-```php
-// Format: latitude,longitude
-// Range: -90 to 90 (lat), -180 to 180 (lng)
-preg_match('/^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/', $value, $matches)
-```
-
-**DMS (Degrees, Minutes, Seconds)**:
-```php
-// Format: DD°MM′SS.S″N/S, DDD°MM′SS.S″E/W
-// Supports various symbols: °′″ or d m s or regular quotes
-$dms_pattern = '/(\d+)[°d]\s*(\d+)[\'′m]\s*([\d.]+)["″s]?\s*([NSEW])/i';
-```
+- **Decimal Degrees**: Standard lat,lng format with range validation
+- **DMS**: Degrees/minutes/seconds with required direction indicators (N/S/E/W)
 
 ### Geocoding Integration
 
-```php
-// Geocoding availability check
-$is_geocoding_available = DT_CSV_Import_Geocoding::is_geocoding_available();
+Uses DT's built-in geocoding services (Google Maps/Mapbox) when configured. The import system sets the geolocate flag for address processing.
 
-// The system uses DT's built-in geocoding services:
-// - Google Maps (if API key configured)
-// - Mapbox (if API token configured)
+## Value Mapping System
 
-// Geocoding during import is handled by DT core
-// Import system just sets the geolocate flag
-$location_data = [
-    'value' => $address,
-    'geolocate' => $is_geocoding_available
-];
-```
+### Modal Features
 
-## Value Mapping for Select Fields
-
-### Modal System
-
-The value mapping modal provides:
-
-- Real CSV data fetching
-- Unique value detection
-- Auto-mapping with fuzzy matching
+- Real-time CSV data fetching
+- Unique value detection from actual CSV data
+- Auto-mapping with fuzzy string matching
 - Batch operations (clear all, auto-map)
 - Live mapping count updates
 
-### JavaScript Integration
-
-```javascript
-// Key methods in DT Import JavaScript
-// Main script: dt-import.js (2151 lines)
-// Modal handling: dt-import-modals.js (511 lines)
-
-// Core functionality:
-getColumnCSVData(columnIndex)      // Fetch CSV column data
-getFieldOptions(postType, fieldKey) // Fetch field options
-autoMapValues()                    // Intelligent auto-mapping
-clearAllMappings()                 // Clear all mappings
-updateMappingCount()               // Update mapping statistics
-```
-
 ### Auto-Mapping Algorithm
 
-```php
-// Fuzzy matching for auto-mapping
-function auto_map_values($csv_values, $field_options) {
-    foreach ($csv_values as $csv_value) {
-        $best_match = find_best_match($csv_value, $field_options);
-        if ($best_match['confidence'] >= 0.8) {
-            $mappings[$csv_value] = $best_match['option_key'];
-        }
-    }
-    return $mappings;
-}
-```
+Fuzzy matching compares CSV values to field options with confidence scoring. Mappings above 80% confidence are auto-applied.
 
 ## Security Implementation
 
 ### Access Control
-```php
-// Capability check for all operations
-if (!current_user_can('manage_dt')) {
-    wp_die('Insufficient permissions');
-}
-```
+- Requires `manage_dt` capability for all operations
+- WordPress nonce verification for all actions
 
 ### File Upload Security
-```php
-// File type validation
-$allowed_types = ['text/csv', 'application/csv'];
-if (!in_array($file['type'], $allowed_types)) {
-    throw new Exception('Invalid file type');
-}
-
-// File size validation
-if ($file['size'] > 10 * 1024 * 1024) { // 10MB
-    throw new Exception('File too large');
-}
-```
+- File type validation (CSV only)
+- Size limits (10MB maximum)
+- Server-side content validation
 
 ### Data Sanitization
-```php
-// Sanitize all inputs
-$sanitized_value = sanitize_text_field($raw_value);
-
-// Use WordPress nonces
-wp_verify_nonce($_POST['_wpnonce'], 'dt_import_action');
-```
+- All inputs sanitized before processing
+- Field-specific validation rules applied
 
 ## Error Handling
 
-### Validation Errors
-```php
-// Row-level error collection
-$errors = [
-    'row_2' => ['Invalid email format in column 3'],
-    'row_5' => ['Required field "name" is empty'],
-    'row_8' => ['Invalid option "maybe" for field "status"']
-];
-```
+### Validation Levels
+- **Row-level**: Collect all errors per row for batch reporting
+- **Field-specific**: Type-appropriate validation (email format, date parsing, etc.)
+- **Connection lookup**: Graceful handling of missing/duplicate records
 
-### Field-Specific Validation
-```php
-// Email validation
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    throw new DT_Import_Field_Exception('Invalid email format');
-}
+### Performance Considerations
 
-// Date validation
-$date = DateTime::createFromFormat('Y-m-d', $value);
-if (!$date || $date->format('Y-m-d') !== $value) {
-    throw new DT_Import_Field_Exception('Invalid date format');
-}
-```
+- **Memory Management**: Large file processing in chunks
+- **Database Optimization**: Batch operations where possible
+- **Progress Tracking**: Session-based progress for long imports
 
-## Performance Considerations
+## Current Limitations
 
-### Memory Management
-```php
-// Process large files in chunks
-$chunk_size = 1000;
-$offset = 0;
+### Extensibility
+The system has limited hook/filter support. Customization requires:
+- Direct file modification (not recommended)
+- Custom post type registration through DT's existing systems
+- Field type extension through DT's field system
 
-while ($records = get_csv_chunk($file, $offset, $chunk_size)) {
-    process_chunk($records);
-    $offset += $chunk_size;
-    
-    // Clear memory
-    unset($records);
-    if (function_exists('gc_collect_cycles')) {
-        gc_collect_cycles();
-    }
-}
-```
-
-### Database Optimization
-```php
-// Batch database operations
-$batch_size = 100;
-$batch_data = [];
-
-foreach ($records as $record) {
-    $batch_data[] = prepare_record_data($record);
-    
-    if (count($batch_data) >= $batch_size) {
-        process_batch($batch_data);
-        $batch_data = [];
-    }
-}
-```
-
-## Extending the System
-
-### Current Limitations
-
-The current CSV import system has limited extensibility options. To modify behavior, you would need to:
-
-1. **Modify Core Files**: Direct edits to the import classes (not recommended)
-2. **Custom Post Types**: Add new post types through DT's existing systems
-3. **Field Types**: Use DT's field type system rather than import-specific handlers
-
-### Extending Field Detection
-
-Field detection can be customized by modifying the `$field_headings` array in `DT_CSV_Import_Mapping`:
-
-```php
-// In dt-import-mapping.php
-private static $field_headings = [
-    'your_custom_field' => [
-        'custom_header',
-        'alternative_name',
-        'legacy_field'
-    ],
-    // ... existing mappings
-];
-```
-
-### Custom Field Handlers
-
-Field processing is handled in `DT_CSV_Import_Field_Handlers`. New field type support would require:
-
-1. Adding handler method in the class
-2. Updating the field type mapping logic
-3. Ensuring DT core supports the field type
-
-### Integration Points
-
-- **DT Posts API**: All imports go through `DT_Posts::create_post()`
-- **DT Field Settings**: Field definitions come from `DT_Posts::get_post_field_settings()`
-- **DT Geocoding**: Location processing uses DT's geocoding system
+### Extension Points
+- Field detection can be modified via `$field_headings` array
+- Field handlers can be added to `DT_CSV_Import_Field_Handlers`
+- All imports integrate through `DT_Posts::create_post()`
 
 ## Testing
 
-### Testing
+### Available Methods
+1. **Manual Testing**: Admin interface under Utilities
+2. **Field Detection**: Test various CSV column headers
+3. **Value Mapping**: Dropdown field mapping with sample data
+4. **Error Handling**: Invalid data testing
 
-The import system can be tested through the WordPress admin interface:
+### Test Resources
+- Example CSV files in assets directory
+- Basic and comprehensive templates for contacts/groups
+- Various format examples for testing edge cases
 
-1. **Manual Testing**: Use the CSV Import admin page under Utilities
-2. **Field Detection**: Test with various CSV column headers
-3. **Value Mapping**: Test dropdown field value mapping with sample data
-4. **Error Handling**: Test with invalid data to verify error reporting
-
-### Test CSV Files
-
-The system includes example CSV files for testing:
-- `assets/example_contacts.csv` - Basic contact import
-- `assets/example_contacts_comprehensive.csv` - All contact fields
-- `assets/example_groups.csv` - Basic group import
-- `assets/example_groups_comprehensive.csv` - All group fields
-
-## Configuration Hooks
-
-### Current Implementation
-
-The current CSV import system does not expose custom hooks or filters for extensibility. Configuration is handled through:
-
-1. **File Size Limits**: Controlled by WordPress `wp_max_upload_size()`
-2. **Field Detection**: Built into `DT_CSV_Import_Mapping` class methods
-3. **Geocoding**: Uses DT core geocoding services automatically
-4. **Validation**: Integrated with DT Posts API validation
-
-### Potential Extension Points
-
-If hooks were added in future versions, they might include:
-
-```php
-// Example hooks that could be implemented:
-// apply_filters('dt_csv_import_field_mappings', $mappings, $post_type)
-// apply_filters('dt_csv_import_supported_field_types', $field_types)
-// do_action('dt_csv_import_before_process', $import_data)
-// do_action('dt_csv_import_after_process', $results)
-```
-
-## Common Integration Patterns
+## Integration Patterns
 
 ### Custom Post Type Support
+Automatic support for any post type registered with DT's system via:
+- `DT_Posts::get_post_types()` for available types
+- `DT_Posts::get_post_field_settings()` for field definitions
 
-The import system automatically supports any post type available through `DT_Posts::get_post_types()`. To add import support for a custom post type:
+### Data Access Patterns
+- Session data: `DT_CSV_Import_Utilities::get_session_data()`
+- Field settings: `DT_Posts::get_post_field_settings($post_type)`
+- Import processing: All through DT_Posts API
 
-1. **Register with DT**: Ensure your post type is registered with DT's post type system
-2. **Field Settings**: Provide field settings via `DT_Posts::get_post_field_settings()`
-3. **Automatic Detection**: The import system will automatically include it
-
-### Working with Import Data
-
-```php
-// Get available post types for import
-$post_types = DT_Posts::get_post_types();
-
-// Get field settings for mapping
-$field_settings = DT_Posts::get_post_field_settings($post_type);
-
-// Access import session data
-$session_data = DT_CSV_Import_Utilities::get_session_data($session_id);
-```
-
-This developer guide provides comprehensive technical reference for working with the DT Import CSV system, covering all major components, APIs, and extension points. 
+This developer guide provides the essential technical reference for understanding and working with the DT Import CSV system architecture and implementation patterns. 
