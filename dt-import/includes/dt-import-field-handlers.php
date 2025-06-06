@@ -36,8 +36,8 @@ class DT_CSV_Import_Field_Handlers {
     /**
      * Handle date field processing
      */
-    public static function handle_date_field( $value, $field_config ) {
-        $normalized_date = DT_CSV_Import_Utilities::normalize_date( $value );
+    public static function handle_date_field( $value, $field_config, $date_format = 'auto' ) {
+        $normalized_date = DT_CSV_Import_Utilities::normalize_date( $value, $date_format );
         if ( empty( $normalized_date ) ) {
             throw new Exception( "Invalid date format: {$value}" );
         }
@@ -86,7 +86,8 @@ class DT_CSV_Import_Field_Handlers {
 
             if ( isset( $value_mapping[$val] ) ) {
                 $mapped_value = $value_mapping[$val];
-                if ( isset( $field_config['default'][$mapped_value] ) ) {
+                // Skip processing if mapped to empty string (represents "-- Skip --")
+                if ( !empty( $mapped_value ) && isset( $field_config['default'][$mapped_value] ) ) {
                     $processed_values[] = $mapped_value;
                 }
             } elseif ( isset( $field_config['default'][$val] ) ) {

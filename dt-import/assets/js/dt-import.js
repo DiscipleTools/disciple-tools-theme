@@ -58,6 +58,11 @@
         this.handleDuplicateCheckingChange(e),
       );
 
+      // Date format selection
+      $(document).on('change', '.date-format-select', (e) =>
+        this.handleDateFormatChange(e),
+      );
+
       // Inline value mapping events
       $(document).on('change', '.inline-value-mapping-select', (e) =>
         this.handleInlineValueMappingChange(e),
@@ -625,6 +630,8 @@
 
       if (['key_select', 'multi_select'].includes(fieldConfig.type)) {
         this.showInlineValueMapping(columnIndex, fieldKey, fieldConfig);
+      } else if (fieldConfig.type === 'date') {
+        this.showDateFormatSelector(columnIndex, fieldKey);
       } else if (fieldConfig.type === 'location_meta') {
         this.showGeocodingServiceSelector(columnIndex, fieldKey);
       } else if (
@@ -793,6 +800,7 @@
                             <select class="inline-value-mapping-select" data-csv-value="${this.escapeHtml(csvValue)}" style="width: 100%; font-size: 12px;">
                                 <option value="">-- Skip --</option>
                                 ${fieldOptionsHtml}
+                                <option value="__create__">-- Create --</option>
                             </select>
                         </td>
                     </tr>
@@ -1558,6 +1566,12 @@
       const columnIndex = $card.data('column-index');
       const fieldKey = $card.find('.field-mapping-select').val();
 
+      // Check if "-- Create --" option was selected
+      if ($select.val() === '__create__') {
+        this.handleCreateFieldOption($select, fieldKey);
+        return;
+      }
+
       // Update the mapping count
       this.updateInlineMappingCount(columnIndex);
 
@@ -1598,6 +1612,90 @@
       // Update count and mappings
       this.updateInlineMappingCount(columnIndex);
       this.updateFieldMappingFromInline(columnIndex, fieldKey);
+    }
+
+    handleCreateFieldOption($select, fieldKey) {
+      const csvValue = $select.data('csv-value');
+      const optionKey = this.sanitizeKey(csvValue);
+      const optionLabel = csvValue;
+
+      // Show loading state
+      $select.prop('disabled', true);
+      const originalOptions = $select.html();
+      $select.html('<option value="">Creating...</option>');
+
+      // Prepare the form data
+      const optionData = new FormData();
+      optionData.append('post_type', this.selectedPostType);
+      optionData.append('tile_key', 'other');
+      optionData.append('field_key', fieldKey);
+      optionData.append('field_option_name', optionLabel);
+      optionData.append('field_option_description', '');
+      optionData.append('field_option_key', optionKey);
+
+      // Create the field option
+      fetch(
+        `${dtImport.restUrl.replace('dt-csv-import/v2/', '')}dt-admin-settings/new-field-option`,
+        {
+          method: 'POST',
+          headers: {
+            'X-WP-Nonce': dtImport.nonce,
+          },
+          body: optionData,
+        },
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Check if response is successful - API returns the field key directly on success
+          if (
+            data &&
+            (typeof data === 'string' ||
+              (typeof data === 'object' && !data.error && !data.code))
+          ) {
+            // Restore original options and add the new one
+            $select.html(originalOptions);
+            const newOption = `<option value="${optionKey}">${optionLabel}</option>`;
+            $select.find('option[value="__create__"]').before(newOption);
+            $select.val(optionKey);
+            $select.prop('disabled', false);
+
+            // Update the mapping count and field mappings
+            const $card = $select.closest('.column-mapping-card');
+            const columnIndex = $card.data('column-index');
+            this.updateInlineMappingCount(columnIndex);
+            this.updateFieldMappingFromInline(columnIndex, fieldKey);
+          } else {
+            // Handle error - data contains error information
+            console.error('Error creating field option:', data);
+            $select.html(originalOptions);
+            $select.val('');
+            $select.prop('disabled', false);
+            const errorMessage =
+              data.error || data.message || 'Unknown error occurred';
+            alert(`Error creating field option: ${errorMessage}`);
+          }
+        })
+        .catch((error) => {
+          console.error('Error creating field option:', error);
+          $select.html(originalOptions);
+          $select.val('');
+          $select.prop('disabled', false);
+          alert('Error creating field option. Please try again.');
+        });
+    }
+
+    sanitizeKey(value) {
+      return value
+        .toString()
+        .toLowerCase()
+        .replace(/[^a-z0-9_]/g, '_')
+        .replace(/__+/g, '_')
+        .replace(/^_+|_+$/g, '');
     }
 
     markStepAsCompleted() {
@@ -1744,6 +1842,79 @@
       const isEnabled = $checkbox.prop('checked');
 
       this.updateFieldMappingDuplicateChecking(columnIndex, isEnabled);
+    }
+
+    showDateFormatSelector(columnIndex, fieldKey) {
+      const $card = $(
+        `.column-mapping-card[data-column-index="${columnIndex}"]`,
+      );
+      const $options = $card.find('.field-specific-options');
+
+      const dateFormatOptions = {
+        auto: 'Auto-detect (recommended)',
+        'Y-m-d': 'YYYY-MM-DD (2024-01-15)',
+        'm/d/Y': 'MM/DD/YYYY (01/15/2024)',
+        'd/m/Y': 'DD/MM/YYYY (15/01/2024)',
+        'F j, Y': 'Month Day, Year (January 15, 2024)',
+        'j M Y': 'Day Mon Year (15 Jan 2024)',
+        'Y-m-d H:i:s': 'YYYY-MM-DD HH:MM:SS (2024-01-15 14:30:00)',
+      };
+
+      const formatOptionsHtml = Object.entries(dateFormatOptions)
+        .map(
+          ([value, label]) =>
+            `<option value="${this.escapeHtml(value)}">${this.escapeHtml(label)}</option>`,
+        )
+        .join('');
+
+      const dateFormatHtml = `
+        <div class="date-format-section">
+          <h5 style="margin: 0 0 10px 0; font-size: 13px;">Date Format</h5>
+          <div class="date-format-container">
+            <label for="date-format-${columnIndex}" style="display: block; font-size: 12px; margin-bottom: 5px;">
+              Select the format of dates in your CSV:
+            </label>
+            <select id="date-format-${columnIndex}" class="date-format-select" data-column-index="${columnIndex}" style="width: 100%; padding: 5px;">
+              ${formatOptionsHtml}
+            </select>
+            <p style="font-size: 11px; color: #666; margin-top: 5px;">
+              Auto-detect works for most formats, but specifying the exact format ensures accuracy.
+            </p>
+          </div>
+        </div>
+      `;
+
+      $options.html(dateFormatHtml).show();
+
+      // Set default value to 'auto' if not already set
+      const currentMapping = this.fieldMappings[columnIndex];
+      if (!currentMapping || !currentMapping.date_format) {
+        $options.find('.date-format-select').val('auto');
+        this.updateFieldMappingDateFormat(columnIndex, 'auto');
+      } else {
+        $options.find('.date-format-select').val(currentMapping.date_format);
+      }
+    }
+
+    updateFieldMappingDateFormat(columnIndex, dateFormat) {
+      // Update the field mappings with the selected date format
+      if (!this.fieldMappings[columnIndex]) {
+        // This shouldn't happen since field mapping should be set first
+        console.warn(`No field mapping found for column ${columnIndex}`);
+        return;
+      } else {
+        this.fieldMappings[columnIndex].date_format = dateFormat;
+      }
+
+      this.updateMappingSummary();
+    }
+
+    handleDateFormatChange(e) {
+      const $select = $(e.target);
+      const columnIndex = $select.data('column-index');
+      const dateFormat = $select.val();
+
+      this.updateFieldMappingDateFormat(columnIndex, dateFormat);
     }
 
     getImportOptionsHtml() {

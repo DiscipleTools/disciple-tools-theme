@@ -162,7 +162,8 @@ class DT_CSV_Import_Processor {
                 return floatval( $raw_value );
 
             case 'date':
-                $normalized_date = DT_CSV_Import_Utilities::normalize_date( $raw_value );
+                $date_format = isset( $mapping['date_format'] ) ? $mapping['date_format'] : 'auto';
+                $normalized_date = DT_CSV_Import_Utilities::normalize_date( $raw_value, $date_format );
                 if ( empty( $normalized_date ) ) {
                     throw new Exception( "Invalid date format: {$raw_value}" );
                 }
@@ -242,13 +243,20 @@ class DT_CSV_Import_Processor {
 
             if ( isset( $value_mapping[$value] ) ) {
                 $mapped_value = $value_mapping[$value];
-                if ( isset( $field_config['default'][$mapped_value] ) ) {
+                // Skip processing if mapped to empty string (represents "-- Skip --")
+                if ( !empty( $mapped_value ) && isset( $field_config['default'][$mapped_value] ) ) {
                     $processed_values[] = $mapped_value;
                 }
+                // If mapped to empty string, silently skip this value
             } elseif ( isset( $field_config['default'][$value] ) ) {
                 $processed_values[] = $value;
             } else {
-                throw new Exception( "Invalid option for multi_select field: {$value}" );
+                // If value mapping is configured, skip unmapped invalid values silently
+                // If no value mapping is configured, throw exception for invalid values
+                if ( empty( $value_mapping ) ) {
+                    throw new Exception( "Invalid option for multi_select field: {$value}" );
+                }
+                // Otherwise silently skip invalid values when value mapping is present
             }
         }
 

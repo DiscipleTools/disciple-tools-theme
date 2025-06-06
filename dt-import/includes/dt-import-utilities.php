@@ -237,18 +237,48 @@ class DT_CSV_Import_Utilities {
     /**
      * Convert various date formats to Y-m-d
      */
-    public static function normalize_date( $date_string ) {
+    public static function normalize_date( $date_string, $format = 'auto' ) {
         if ( empty( $date_string ) ) {
             return '';
         }
 
-        // Try to parse the date
-        $timestamp = strtotime( $date_string );
-        if ( $timestamp === false ) {
-            return '';
+        // If format is specified and not 'auto', try to parse with that format
+        if ( $format !== 'auto' ) {
+            $date = DateTime::createFromFormat( $format, $date_string );
+            if ( $date !== false ) {
+                return $date->format( 'Y-m-d' );
+            }
+            // If specified format fails, fall through to auto-detection
         }
 
-        return gmdate( 'Y-m-d', $timestamp );
+        // Auto-detection: Try multiple common formats
+        $formats_to_try = [
+            'Y-m-d',           // 2024-01-15
+            'Y-m-d H:i:s',     // 2024-01-15 14:30:00
+            'm/d/Y',           // 01/15/2024
+            'd/m/Y',           // 15/01/2024
+            'F j, Y',          // January 15, 2024
+            'j M Y',           // 15 Jan 2024
+            'M j, Y',          // Jan 15, 2024
+            'j F Y',           // 15 January 2024
+            'd-m-Y',           // 15-01-2024
+            'm-d-Y',           // 01-15-2024
+        ];
+
+        foreach ( $formats_to_try as $try_format ) {
+            $date = DateTime::createFromFormat( $try_format, $date_string );
+            if ( $date !== false ) {
+                return $date->format( 'Y-m-d' );
+            }
+        }
+
+        // Fallback to strtotime for other formats
+        $timestamp = strtotime( $date_string );
+        if ( $timestamp !== false ) {
+            return gmdate( 'Y-m-d', $timestamp );
+        }
+
+        return '';
     }
 
     /**
