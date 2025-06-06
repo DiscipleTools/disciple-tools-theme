@@ -1,0 +1,4 @@
+name,address,member count,type,start date,end date,church health
+Alpha Group,123 some road; 948 other road,5,group,2015-04-03,2019-05-21,Baptism; Bible Study
+Group 1,Church basement,4,church,2017-04-03,,church_communion; church_praise
+Church 1,,0,,2017-04-03,,Giving 

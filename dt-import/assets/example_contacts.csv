@@ -1,0 +1,4 @@
+name,phone,email,gender,facebook,twitter,seeker_path,baptism Date,milestones,age
+"Mr O,Nubs",123546,test10@example.com; test12@example.com,male,12342.oeu,tx.acc,met,2015-04-03,milestone_has_bible; milestone_baptized ,>18
+"Mrs H'S,mith",7894565,test20@example.com; test22@example.com,,fb22.oeu,tx22.acc,,2017-04-03,milestone_baptized; milestone_sharing,
+Dr Renolds,7894565,test203@example.com; test225@example.com,female,fb22.oeu,tx22.acc,met3,2017-04-03,baptized, 

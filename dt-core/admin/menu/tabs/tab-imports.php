@@ -56,11 +56,11 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
     }
 
     public function add_submenu(){
-        add_submenu_page( 'edit.php?post_type=imports', __( 'Imports', 'disciple_tools' ), __( 'Imports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=imports', [
+        add_submenu_page( 'edit.php?post_type=imports', __( 'Settings Imports', 'disciple_tools' ), __( 'Settings Imports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=imports', [
             'Disciple_Tools_Settings_Menu',
             'content'
         ] );
-        add_submenu_page( 'dt_utilities', __( 'Imports', 'disciple_tools' ), __( 'Imports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=imports', [
+        add_submenu_page( 'dt_utilities', __( 'Settings Imports', 'disciple_tools' ), __( 'Settings Imports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=imports', [
             'Disciple_Tools_Settings_Menu',
             'content'
         ] );
@@ -71,7 +71,7 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
         if ( $tab == 'imports' ){
             echo 'nav-tab-active';
         }
-        echo '">' . esc_attr__( 'Imports' ) . '</a>';
+        echo '">' . esc_attr__( 'Settings Imports' ) . '</a>';
     }
 
     public function content( $tab ){
