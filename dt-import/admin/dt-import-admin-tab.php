@@ -18,34 +18,34 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
     }
 
     public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_submenu' ], 125 );
-        add_action( 'dt_settings_tab_menu', [ $this, 'add_tab' ], 125, 1 );
-        add_action( 'dt_settings_tab_content', [ $this, 'content' ], 125, 1 );
+        add_action( 'admin_menu', [ $this, 'add_submenu' ], 110 );
+        add_action( 'dt_utilities_tab_menu', [ $this, 'add_tab' ], 110, 1 );
+        add_action( 'dt_utilities_tab_content', [ $this, 'content' ], 110, 1 );
         parent::__construct();
     }
 
     public function add_submenu() {
         add_submenu_page(
-            'dt_options',
-            __( 'Import', 'disciple_tools' ),
-            __( 'Import', 'disciple_tools' ),
+            'dt_utilities',
+            __( 'CSV Import', 'disciple_tools' ),
+            __( 'CSV Import', 'disciple_tools' ),
             'manage_dt',
-            'dt_options&tab=import',
-            [ 'Disciple_Tools_Settings_Menu', 'content' ]
+            'dt_utilities&tab=csv_import',
+            [ 'DT_CSV_Import_Admin_Tab', 'content' ]
         );
     }
 
     public function add_tab( $tab ) {
         ?>
-        <a href="<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_options&tab=import"
-           class="nav-tab <?php echo esc_html( $tab == 'import' ? 'nav-tab-active' : '' ) ?>">
-            <?php echo esc_html__( 'Import', 'disciple_tools' ) ?>
+        <a href="<?php echo esc_url( admin_url() ) ?>admin.php?page=dt_utilities&tab=csv_import"
+           class="nav-tab <?php echo esc_html( $tab == 'csv_import' ? 'nav-tab-active' : '' ) ?>">
+            <?php echo esc_html__( 'CSV Import', 'disciple_tools' ) ?>
         </a>
         <?php
     }
 
     public function content( $tab ) {
-        if ( 'import' !== $tab ) {
+        if ( 'csv_import' !== $tab ) {
             return;
         }
 
@@ -240,7 +240,7 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
             'next' => __( 'Next', 'disciple_tools' ),
             'back' => __( 'Back', 'disciple_tools' ),
             'upload' => __( 'Upload', 'disciple_tools' ),
-            'import' => __( 'Import', 'disciple_tools' ),
+            'csv_import' => __( 'CSV Import', 'disciple_tools' ),
             'cancel' => __( 'Cancel', 'disciple_tools' ),
             'skipColumn' => __( 'Skip this column', 'disciple_tools' ),
             'createField' => __( 'Create New Field', 'disciple_tools' ),
