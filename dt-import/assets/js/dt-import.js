@@ -10,6 +10,7 @@
       this.selectedPostType = null;
       this.csvData = null;
       this.fieldMappings = {};
+      this.doNotImportColumns = new Set(); // Track columns explicitly set to "Do not import"
       this.isProcessing = false;
       this.cachedFieldSettings = null;
 
@@ -113,6 +114,10 @@
 
       // Clear cached field settings when post type changes
       this.cachedFieldSettings = null;
+
+      // Clear field mappings and do not import tracking when post type changes
+      this.fieldMappings = {};
+      this.doNotImportColumns.clear();
 
       $('.dt-import-next').prop('disabled', false);
 
@@ -421,7 +426,39 @@
           this.hideProcessing();
 
           if (data.success) {
-            this.showStep3(data.data);
+            // Handle new response format that may include saved data
+            const responseData = data.data;
+            let mappingSuggestions;
+
+            if (responseData.mapping_suggestions) {
+              // New format with saved data
+              mappingSuggestions = responseData.mapping_suggestions;
+
+              // Restore saved field mappings if they exist
+              if (responseData.saved_field_mappings) {
+                this.fieldMappings = responseData.saved_field_mappings;
+              }
+
+              // Restore saved do_not_import_columns if they exist
+              if (responseData.saved_do_not_import_columns) {
+                this.doNotImportColumns = new Set(
+                  responseData.saved_do_not_import_columns,
+                );
+
+                // Remove any field mappings for columns that are marked as "do not import"
+                // This handles cases where there might be conflicting data
+                this.doNotImportColumns.forEach((columnIndex) => {
+                  if (this.fieldMappings[columnIndex]) {
+                    delete this.fieldMappings[columnIndex];
+                  }
+                });
+              }
+            } else {
+              // Old format - just mapping suggestions
+              mappingSuggestions = responseData;
+            }
+
+            this.showStep3(mappingSuggestions);
           } else {
             this.showError(data.message || 'Failed to analyze CSV');
           }
@@ -463,9 +500,12 @@
 
       $('.dt-import-step-content').html(step3Html);
 
-      // Initialize field mappings from suggested mappings ONLY if no existing mappings
-      if (Object.keys(this.fieldMappings).length === 0) {
-        // Initialize from suggestions for first-time display
+      // Initialize field mappings from suggested mappings ONLY if no existing mappings AND no do_not_import_columns
+      if (
+        Object.keys(this.fieldMappings).length === 0 &&
+        this.doNotImportColumns.size === 0
+      ) {
+        // Initialize from suggestions for first-time display (only when no previous user choices exist)
         Object.entries(mappingSuggestions).forEach(([index, mapping]) => {
           if (mapping.suggested_field) {
             this.fieldMappings[index] = {
@@ -476,7 +516,7 @@
         });
       }
 
-      // Restore existing field mappings to the dropdowns and read actual dropdown values
+      // Restore existing field mappings to the dropdowns
       setTimeout(() => {
         // First, restore any existing user mappings to the dropdowns
         Object.entries(this.fieldMappings).forEach(([columnIndex, mapping]) => {
@@ -485,38 +525,52 @@
           );
           if ($select.length && mapping.field_key) {
             $select.val(mapping.field_key);
-            this.showFieldSpecificOptions(
+            // Restore field-specific options with existing configurations
+            this.restoreFieldSpecificOptions(
               parseInt(columnIndex),
               mapping.field_key,
+              mapping,
             );
           }
         });
 
-        // Read the actual dropdown values to ensure mappings match what's displayed
-        // This handles cases where suggestions were auto-selected but user wants different behavior
-        const actualMappings = {};
+        // Ensure "do not import" columns have empty dropdowns
+        this.doNotImportColumns.forEach((columnIndex) => {
+          const $select = $(
+            `.field-mapping-select[data-column-index="${columnIndex}"]`,
+          );
+          if ($select.length) {
+            $select.val('');
+          }
+        });
+
+        // For any dropdown that doesn't have an existing mapping but has a selected value,
+        // create a basic mapping (this handles auto-suggestions that weren't saved yet)
         $('.field-mapping-select').each((index, select) => {
           const $select = $(select);
           const columnIndex = $select.data('column-index');
           const fieldKey = $select.val();
 
-          // Only create mapping if a field is actually selected (not empty)
-          if (fieldKey && fieldKey !== '' && fieldKey !== 'create_new') {
-            actualMappings[columnIndex] = {
+          // Only create mapping if a field is selected and we don't already have a mapping
+          // AND the column is not marked as "do not import"
+          if (
+            fieldKey &&
+            fieldKey !== '' &&
+            fieldKey !== 'create_new' &&
+            !this.fieldMappings[columnIndex] &&
+            !this.doNotImportColumns.has(columnIndex)
+          ) {
+            this.fieldMappings[columnIndex] = {
               field_key: fieldKey,
               column_index: parseInt(columnIndex),
             };
+            // Show basic field-specific options for new mappings
+            this.showFieldSpecificOptions(parseInt(columnIndex), fieldKey);
           }
+          // Note: We don't modify doNotImportColumns here since we're just restoring the UI
         });
 
-        // Update field mappings to match actual dropdown state
-        this.fieldMappings = actualMappings;
-        console.log(
-          'DT Import: Field mappings synchronized with dropdown state:',
-          this.fieldMappings,
-        );
-
-        // Update the summary after mappings are initialized
+        // Update the summary after mappings are restored
         this.updateMappingSummary();
       }, 100);
 
@@ -531,13 +585,25 @@
 
       // Check if there's an existing user mapping for this column
       const existingMapping = this.fieldMappings[columnIndex];
-      const selectedField = existingMapping
-        ? existingMapping.field_key
-        : mapping.suggested_field; // Restore auto-mapping
+      const isDoNotImport = this.doNotImportColumns.has(columnIndex);
 
-      // For fields with no match and no existing mapping, ensure empty selection
+      let selectedField;
+      if (isDoNotImport) {
+        // User explicitly chose "Do not import"
+        selectedField = '';
+      } else if (existingMapping) {
+        // User has a field mapping
+        selectedField = existingMapping.field_key;
+      } else {
+        // No user choice yet, use auto-suggestion
+        selectedField = mapping.suggested_field;
+      }
+
+      // For fields with no match and no existing mapping or explicit choice, ensure empty selection
       const finalSelectedField =
-        !mapping.has_match && !existingMapping ? '' : selectedField;
+        !mapping.has_match && !existingMapping && !isDoNotImport
+          ? ''
+          : selectedField;
 
       return `
                 <div class="column-mapping-card" data-column-index="${columnIndex}">
@@ -611,9 +677,13 @@
           field_key: fieldKey,
           column_index: columnIndex,
         };
+        // Remove from do not import set if it was there
+        this.doNotImportColumns.delete(columnIndex);
       } else {
         // When "do not import" is selected (empty value), remove the mapping entirely
         delete this.fieldMappings[columnIndex];
+        // Track that this column was explicitly set to "do not import"
+        this.doNotImportColumns.add(columnIndex);
       }
 
       // Show field-specific options if needed
@@ -654,6 +724,60 @@
         this.isCommunicationFieldForDuplicateCheck(fieldKey)
       ) {
         this.showDuplicateCheckingOptions(columnIndex, fieldKey, fieldConfig);
+      } else if (fieldConfig.type === 'connection') {
+        this.showConnectionFieldHelp(columnIndex, fieldKey, fieldConfig);
+      } else {
+        $options.hide().empty();
+      }
+    }
+
+    restoreFieldSpecificOptions(columnIndex, fieldKey, existingMapping) {
+      const $card = $(
+        `.column-mapping-card[data-column-index="${columnIndex}"]`,
+      );
+      const $options = $card.find('.field-specific-options');
+
+      if (!fieldKey) {
+        $options.hide().empty().removeClass('connection-help');
+        return;
+      }
+
+      const fieldSettings = this.getFieldSettingsForPostType();
+      const fieldConfig = fieldSettings[fieldKey];
+
+      if (!fieldConfig) {
+        $options.hide().empty().removeClass('connection-help');
+        return;
+      }
+
+      // Remove connection-help class first
+      $options.removeClass('connection-help');
+
+      if (['key_select', 'multi_select'].includes(fieldConfig.type)) {
+        this.restoreInlineValueMapping(
+          columnIndex,
+          fieldKey,
+          fieldConfig,
+          existingMapping,
+        );
+      } else if (fieldConfig.type === 'date') {
+        this.restoreDateFormatSelector(columnIndex, fieldKey, existingMapping);
+      } else if (fieldConfig.type === 'location_meta') {
+        this.restoreGeocodingServiceSelector(
+          columnIndex,
+          fieldKey,
+          existingMapping,
+        );
+      } else if (
+        fieldConfig.type === 'communication_channel' &&
+        this.isCommunicationFieldForDuplicateCheck(fieldKey)
+      ) {
+        this.restoreDuplicateCheckingOptions(
+          columnIndex,
+          fieldKey,
+          fieldConfig,
+          existingMapping,
+        );
       } else if (fieldConfig.type === 'connection') {
         this.showConnectionFieldHelp(columnIndex, fieldKey, fieldConfig);
       } else {
@@ -948,10 +1072,27 @@
         return;
       }
 
-      console.log(
-        'DT Import: Saving field mappings to server:',
-        this.fieldMappings,
-      );
+      // Ensure all inline value mappings are up to date before saving
+      Object.entries(this.fieldMappings).forEach(([columnIndex, mapping]) => {
+        const fieldSettings = this.getFieldSettingsForPostType();
+        const fieldConfig = fieldSettings[mapping.field_key];
+
+        if (
+          fieldConfig &&
+          ['key_select', 'multi_select'].includes(fieldConfig.type)
+        ) {
+          // Check if there are inline value mapping selects for this column
+          const $card = $(
+            `.column-mapping-card[data-column-index="${columnIndex}"]`,
+          );
+          if ($card.find('.inline-value-mapping-select').length > 0) {
+            this.updateFieldMappingFromInline(
+              parseInt(columnIndex),
+              mapping.field_key,
+            );
+          }
+        }
+      });
       this.showProcessing('Saving field mappings...');
 
       // Use the import options that were captured in analyzeCSV()
@@ -970,6 +1111,7 @@
         },
         body: JSON.stringify({
           mappings: this.fieldMappings,
+          do_not_import_columns: Array.from(this.doNotImportColumns),
           import_options: importOptions,
         }),
       })
@@ -2220,6 +2362,144 @@
       }
 
       return Promise.resolve([]);
+    }
+
+    // Restore methods for preserving field-specific configurations
+    restoreInlineValueMapping(
+      columnIndex,
+      fieldKey,
+      fieldConfig,
+      existingMapping,
+    ) {
+      const $card = $(
+        `.column-mapping-card[data-column-index="${columnIndex}"]`,
+      );
+      const $options = $card.find('.field-specific-options');
+
+      // Get unique values from this CSV column (excluding header row)
+      this.getColumnUniqueValues(columnIndex)
+        .then((uniqueValues) => {
+          if (uniqueValues.length === 0) {
+            $options.hide().empty();
+            return;
+          }
+
+          // Get field options
+          this.getFieldOptionsForSelect(fieldKey)
+            .then((fieldOptions) => {
+              const mappingHtml = this.createInlineValueMappingHtml(
+                columnIndex,
+                fieldKey,
+                uniqueValues,
+                fieldOptions,
+                fieldConfig.type,
+              );
+              $options.html(mappingHtml).show();
+
+              // Restore existing value mappings instead of auto-mapping
+              if (existingMapping.value_mapping) {
+                this.restoreInlineValueMappingSelections(
+                  columnIndex,
+                  existingMapping.value_mapping,
+                );
+                // Update field mappings with restored values
+                this.updateFieldMappingFromInline(columnIndex, fieldKey);
+              } else {
+                // Apply auto-mapping if no existing mappings
+                this.autoMapInlineValues(columnIndex, fieldOptions);
+                // Update field mappings with auto-mapped values
+                this.updateFieldMappingFromInline(columnIndex, fieldKey);
+              }
+
+              // Update count
+              this.updateInlineMappingCount(columnIndex);
+            })
+            .catch((error) => {
+              console.error('Error fetching field options:', error);
+              $options
+                .html('<p style="color: red;">Error loading field options</p>')
+                .show();
+            });
+        })
+        .catch((error) => {
+          console.error('Error fetching column data:', error);
+          $options
+            .html('<p style="color: red;">Error loading column data</p>')
+            .show();
+        });
+    }
+
+    restoreInlineValueMappingSelections(columnIndex, valueMappings) {
+      const $card = $(
+        `.column-mapping-card[data-column-index="${columnIndex}"]`,
+      );
+
+      // Restore each value mapping
+      Object.entries(valueMappings).forEach(([csvValue, dtValue]) => {
+        const $select = $card.find(
+          `.inline-value-mapping-select[data-csv-value="${csvValue}"]`,
+        );
+        if ($select.length) {
+          $select.val(dtValue);
+        }
+      });
+    }
+
+    restoreDateFormatSelector(columnIndex, fieldKey, existingMapping) {
+      // Show the date format selector first
+      this.showDateFormatSelector(columnIndex, fieldKey);
+
+      // Then restore the selected value
+      setTimeout(() => {
+        if (existingMapping.date_format) {
+          const $select = $(
+            `.column-mapping-card[data-column-index="${columnIndex}"] .date-format-select`,
+          );
+          if ($select.length) {
+            $select.val(existingMapping.date_format);
+          }
+        }
+      }, 50);
+    }
+
+    restoreGeocodingServiceSelector(columnIndex, fieldKey, existingMapping) {
+      // Show the geocoding service selector first
+      this.showGeocodingServiceSelector(columnIndex, fieldKey);
+
+      // Then restore the selected value
+      setTimeout(() => {
+        if (existingMapping.geocode_service) {
+          const isEnabled = existingMapping.geocode_service !== 'none';
+          const $checkbox = $(
+            `.column-mapping-card[data-column-index="${columnIndex}"] .geocoding-service-checkbox`,
+          );
+          if ($checkbox.length) {
+            $checkbox.prop('checked', isEnabled);
+          }
+        }
+      }, 50);
+    }
+
+    restoreDuplicateCheckingOptions(
+      columnIndex,
+      fieldKey,
+      fieldConfig,
+      existingMapping,
+    ) {
+      // Show the duplicate checking options first
+      this.showDuplicateCheckingOptions(columnIndex, fieldKey, fieldConfig);
+
+      // Then restore the selected value
+      setTimeout(() => {
+        if (existingMapping.duplicate_checking !== undefined) {
+          const $checkbox = $(
+            `.column-mapping-card[data-column-index="${columnIndex}"] .duplicate-checking-checkbox`,
+          );
+          if ($checkbox.length) {
+            $checkbox.prop('checked', existingMapping.duplicate_checking);
+          }
+        }
+      }, 50);
     }
   }
 

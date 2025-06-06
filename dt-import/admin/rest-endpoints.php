@@ -361,9 +361,22 @@ class DT_CSV_Import_Ajax {
             'status' => 'analyzed'
         ]);
 
+        // Include saved field mappings and do_not_import_columns if they exist
+        $response_data = [
+            'mapping_suggestions' => $mapping_suggestions
+        ];
+
+        if ( !empty( $session['field_mappings'] ) ) {
+            $response_data['saved_field_mappings'] = $session['field_mappings'];
+        }
+
+        if ( !empty( $session['do_not_import_columns'] ) ) {
+            $response_data['saved_do_not_import_columns'] = $session['do_not_import_columns'];
+        }
+
         return [
             'success' => true,
-            'data' => $mapping_suggestions
+            'data' => $response_data
         ];
     }
 
@@ -376,6 +389,7 @@ class DT_CSV_Import_Ajax {
         $body_params = $request->get_json_params() ?? $request->get_body_params();
 
         $mappings = $body_params['mappings'] ?? [];
+        $do_not_import_columns = $body_params['do_not_import_columns'] ?? [];
         $import_options = $body_params['import_options'] ?? [];
 
         $session = $this->get_import_session( $session_id );
@@ -392,6 +406,7 @@ class DT_CSV_Import_Ajax {
         // Update session with mappings and import options
         $update_data = [
             'field_mappings' => $mappings,
+            'do_not_import_columns' => $do_not_import_columns,
             'status' => 'mapped'
         ];
 
