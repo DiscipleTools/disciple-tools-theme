@@ -156,7 +156,7 @@ class DT_CSV_Import_Geocoding {
         global $wpdb;
 
         $exists = $wpdb->get_var( $wpdb->prepare(
-            "SELECT grid_id FROM {$wpdb->prefix}dt_location_grid WHERE grid_id = %d",
+            "SELECT grid_id FROM $wpdb->dt_location_grid WHERE grid_id = %d",
             intval( $grid_id )
         ) );
 

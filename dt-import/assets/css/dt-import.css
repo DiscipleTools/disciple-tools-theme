@@ -460,15 +460,15 @@
     color: #0073aa;
 }
 
-.stat-card.error h3 {
+.stat-card.error-card h3 {
     color: #dc3232;
 }
 
-.stat-card.warning h3 {
+.stat-card.warning-card h3 {
     color: #f56e28;
 }
 
-.stat-card.success h3 {
+.stat-card.success-card h3 {
     color: #46b450;
 }
 

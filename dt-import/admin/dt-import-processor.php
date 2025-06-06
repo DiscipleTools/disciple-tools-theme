@@ -75,7 +75,7 @@ class DT_CSV_Import_Processor {
 
                         $formatted_value = implode( ', ', $connection_display );
                     } else {
-                        $formatted_value = self::format_value_for_api( $processed_value, $field_key, $post_type );
+                        $formatted_value = self::format_value_for_preview( $processed_value, $field_key, $post_type );
                     }
 
                     $processed_row[$field_key] = [
@@ -457,7 +457,7 @@ class DT_CSV_Import_Processor {
             // Validate grid ID exists
             global $wpdb;
             $grid_exists = $wpdb->get_var($wpdb->prepare(
-                "SELECT grid_id FROM {$wpdb->prefix}dt_location_grid WHERE grid_id = %d",
+                "SELECT grid_id FROM $wpdb->dt_location_grid WHERE grid_id = %d",
                 intval( $raw_value )
             ));
 
@@ -593,6 +593,110 @@ class DT_CSV_Import_Processor {
 
         // For all other field types, return as-is
         return $processed_value;
+    }
+
+    /**
+     * Format processed value for preview display (human-readable)
+     */
+    public static function format_value_for_preview( $processed_value, $field_key, $post_type ) {
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+
+        if ( !isset( $field_settings[$field_key] ) ) {
+            return $processed_value;
+        }
+
+        $field_config = $field_settings[$field_key];
+        $field_type = $field_config['type'];
+
+        // Handle null/empty values
+        if ( $processed_value === null || $processed_value === '' ) {
+            return '';
+        }
+
+        switch ( $field_type ) {
+            case 'multi_select':
+            case 'tags':
+                // Convert array to comma-separated display
+                if ( is_array( $processed_value ) ) {
+                    return implode( ', ', $processed_value );
+                }
+                break;
+
+            case 'connection':
+                // Already handled in generate_preview for connection fields
+                return $processed_value;
+
+            case 'communication_channel':
+                // Extract values from communication channel array
+                if ( is_array( $processed_value ) ) {
+                    $values = array_map( function( $channel ) {
+                        return $channel['value'] ?? $channel;
+                    }, $processed_value );
+                    return implode( ', ', $values );
+                }
+                break;
+
+            case 'location':
+            case 'location_grid':
+            case 'location_meta':
+                // Handle location data for preview display
+                if ( is_numeric( $processed_value ) ) {
+                    // Grid ID - try to get the location name
+                    global $wpdb;
+                    $location_name = $wpdb->get_var( $wpdb->prepare(
+                        "SELECT name FROM $wpdb->dt_location_grid WHERE grid_id = %d",
+                        intval( $processed_value )
+                    ) );
+                    return $location_name ?: "Grid ID: {$processed_value}";
+                } elseif ( is_array( $processed_value ) ) {
+                    // Handle coordinate or address arrays
+                    if ( isset( $processed_value['lat'] ) && isset( $processed_value['lng'] ) ) {
+                        return "Coordinates: {$processed_value['lat']}, {$processed_value['lng']}";
+                    } elseif ( isset( $processed_value['address'] ) ) {
+                        return $processed_value['address'];
+                    } elseif ( isset( $processed_value['label'] ) ) {
+                        return $processed_value['label'];
+                    } elseif ( isset( $processed_value['name'] ) ) {
+                        return $processed_value['name'];
+                    }
+                    // Fallback: return first non-empty value
+                    foreach ( $processed_value as $value ) {
+                        if ( !empty( $value ) ) {
+                            return $value;
+                        }
+                    }
+                }
+                break;
+
+            case 'key_select':
+                // Return the label for the selected key
+                if ( isset( $field_config['default'][$processed_value] ) ) {
+                    return $field_config['default'][$processed_value]['label'] ?? $processed_value;
+                }
+                break;
+
+            case 'user_select':
+                // Get user display name
+                if ( is_numeric( $processed_value ) ) {
+                    $user = get_user_by( 'id', intval( $processed_value ) );
+                    return $user ? $user->display_name : "User ID: {$processed_value}";
+                }
+                break;
+
+            case 'date':
+                // Format date for display
+                if ( is_numeric( $processed_value ) ) {
+                    return date( 'Y-m-d', intval( $processed_value ) );
+                }
+                break;
+
+            case 'boolean':
+                // Convert boolean to Yes/No
+                return $processed_value ? 'Yes' : 'No';
+        }
+
+        // For all other field types, return as string
+        return is_array( $processed_value ) ? implode( ', ', $processed_value ) : (string) $processed_value;
     }
 
     /**

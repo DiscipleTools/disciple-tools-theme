@@ -385,12 +385,26 @@
       const assignedToVal = $('#import-assigned-to').val();
       const sourceVal = $('#import-source').val();
 
+      // Update import options, preserving existing values if form fields are empty
       this.importOptions = {
         assigned_to:
-          assignedToVal && assignedToVal !== '' ? assignedToVal : null,
-        source: sourceVal && sourceVal !== '' ? sourceVal : null,
-        delimiter: $('#csv-delimiter').val() || ',',
-        encoding: $('#csv-encoding').val() || 'UTF-8',
+          assignedToVal && assignedToVal !== ''
+            ? assignedToVal
+            : this.importOptions
+              ? this.importOptions.assigned_to
+              : null,
+        source:
+          sourceVal && sourceVal !== ''
+            ? sourceVal
+            : this.importOptions
+              ? this.importOptions.source
+              : null,
+        delimiter:
+          $('#csv-delimiter').val() ||
+          (this.importOptions ? this.importOptions.delimiter : ','),
+        encoding:
+          $('#csv-encoding').val() ||
+          (this.importOptions ? this.importOptions.encoding : 'UTF-8'),
       };
 
       this.showProcessing('Analyzing CSV columns...');
@@ -1031,14 +1045,14 @@
                         ${
                           totalWarnings > 0
                             ? `
-                        <div class="stat-card warning">
+                        <div class="stat-card warning-card">
                             <h3>${totalWarnings}</h3>
                             <p>Warnings</p>
                         </div>
                         `
                             : ''
                         }
-                        <div class="stat-card error">
+                        <div class="stat-card error-card">
                             <h3>${previewData.error_count}</h3>
                             <p>Errors</p>
                         </div>
@@ -1239,14 +1253,14 @@
                 <div class="import-results">
                     <h2>Import Complete!</h2>
                     <div class="results-stats">
-                        <div class="stat-card success">
+                        <div class="stat-card success-card">
                             <h3>${results.records_imported}</h3>
                             <p>Records Imported</p>
                         </div>
                         ${
                           results.errors && results.errors.length > 0
                             ? `
-                            <div class="stat-card error">
+                            <div class="stat-card error-card">
                                 <h3>${results.errors.length}</h3>
                                 <p>Errors</p>
                             </div>
@@ -1546,6 +1560,30 @@
       // Handle location_meta objects directly
       if (typeof value === 'object' && value.label !== undefined) {
         return value.label;
+      }
+
+      // Handle coordinate objects
+      if (
+        typeof value === 'object' &&
+        value.lat !== undefined &&
+        value.lng !== undefined
+      ) {
+        return `Coordinates: ${value.lat}, ${value.lng}`;
+      }
+
+      // Handle address objects
+      if (typeof value === 'object' && value.address !== undefined) {
+        return value.address;
+      }
+
+      // Handle grid ID objects
+      if (typeof value === 'object' && value.grid_id !== undefined) {
+        return `Grid ID: ${value.grid_id}`;
+      }
+
+      // Handle name objects
+      if (typeof value === 'object' && value.name !== undefined) {
+        return value.name;
       }
 
       if (typeof value === 'object') {
@@ -1988,6 +2026,11 @@
                 `<option value="${user.ID}">${this.escapeHtml(user.name)}</option>`,
               );
             });
+
+            // Restore previously selected value if it exists
+            if (this.importOptions && this.importOptions.assigned_to) {
+              $select.val(this.importOptions.assigned_to);
+            }
           })
           .catch((error) => {
             console.error('Error loading users:', error);
@@ -2008,10 +2051,25 @@
                 `<option value="${this.escapeHtml(source.key)}">${this.escapeHtml(source.label)}</option>`,
               );
             });
+
+            // Restore previously selected value if it exists
+            if (this.importOptions && this.importOptions.source) {
+              $select.val(this.importOptions.source);
+            }
           })
           .catch((error) => {
             console.error('Error loading sources:', error);
           });
+      }
+
+      // Also restore the CSV options (delimiter and encoding)
+      if (this.importOptions) {
+        if (this.importOptions.delimiter) {
+          $('#csv-delimiter').val(this.importOptions.delimiter);
+        }
+        if (this.importOptions.encoding) {
+          $('#csv-encoding').val(this.importOptions.encoding);
+        }
       }
     }
 
