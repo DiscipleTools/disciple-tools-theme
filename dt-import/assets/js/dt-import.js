@@ -535,6 +535,10 @@
         ? existingMapping.field_key
         : mapping.suggested_field; // Restore auto-mapping
 
+      // For fields with no match and no existing mapping, ensure empty selection
+      const finalSelectedField =
+        !mapping.has_match && !existingMapping ? '' : selectedField;
+
       return `
                 <div class="column-mapping-card" data-column-index="${columnIndex}">
                     <div class="column-header">
@@ -559,7 +563,7 @@
                         <label>Map to field:</label>
                         <select class="field-mapping-select" data-column-index="${columnIndex}">
                             <option value="">-- Do not import --</option>
-                            ${this.getFieldOptions(selectedField)}
+                            ${this.getFieldOptions(finalSelectedField)}
                             <option value="create_new">+ Create New Field</option>
                         </select>
                         

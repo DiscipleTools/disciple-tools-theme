@@ -47,7 +47,6 @@ class DT_Theme_CSV_Import {
 
     private function load_dependencies() {
         require_once plugin_dir_path( __FILE__ ) . 'includes/dt-import-utilities.php';
-        require_once plugin_dir_path( __FILE__ ) . 'includes/dt-import-validators.php';
         require_once plugin_dir_path( __FILE__ ) . 'includes/dt-import-geocoding.php';
         require_once plugin_dir_path( __FILE__ ) . 'includes/dt-import-field-handlers.php';
         require_once plugin_dir_path( __FILE__ ) . 'admin/dt-import-mapping.php';
