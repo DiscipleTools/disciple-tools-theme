@@ -576,14 +576,13 @@
     getFieldOptions(suggestedField) {
       const fieldSettings = this.getFieldSettingsForPostType();
 
-      // Filter out hidden fields and ensure we have valid field configurations
+      // Filter to ensure we have valid field configurations (removed hidden field filter)
       const validFields = Object.entries(fieldSettings).filter(
         ([fieldKey, fieldConfig]) => {
           return (
             fieldConfig &&
             fieldConfig.name &&
             fieldConfig.type &&
-            !fieldConfig.hidden &&
             fieldConfig.customizable !== false
           );
         },
