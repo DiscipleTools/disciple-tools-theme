@@ -142,29 +142,29 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
             </div>
             <div class="inside">
                 <p><?php esc_html_e( 'Download example CSV files to help you format your data correctly.', 'disciple_tools' ); ?></p>
-                
+
                 <h4><?php esc_html_e( 'Basic Examples', 'disciple_tools' ); ?></h4>
                 <ul>
                     <li>
-                        <a href="<?php echo esc_url( get_template_directory_uri() . '/dt-import/assets/example_contacts.csv' ); ?>" 
+                        <a href="<?php echo esc_url( get_template_directory_uri() . '/dt-import/assets/example_contacts.csv' ); ?>"
                            download="example_contacts.csv" class="button button-secondary">
                             <span class="dashicons dashicons-download"></span>
                             <?php esc_html_e( 'Basic Contacts CSV', 'disciple_tools' ); ?>
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo esc_url( get_template_directory_uri() . '/dt-import/assets/example_groups.csv' ); ?>" 
+                        <a href="<?php echo esc_url( get_template_directory_uri() . '/dt-import/assets/example_groups.csv' ); ?>"
                            download="example_groups.csv" class="button button-secondary">
                             <span class="dashicons dashicons-download"></span>
                             <?php esc_html_e( 'Basic Groups CSV', 'disciple_tools' ); ?>
                         </a>
                     </li>
                 </ul>
-                
+
                 <h4><?php esc_html_e( 'Comprehensive Examples', 'disciple_tools' ); ?></h4>
                 <ul>
                     <li>
-                        <a href="<?php echo esc_url( get_template_directory_uri() . '/dt-import/assets/example_contacts_comprehensive.csv' ); ?>" 
+                        <a href="<?php echo esc_url( get_template_directory_uri() . '/dt-import/assets/example_contacts_comprehensive.csv' ); ?>"
                            download="example_contacts_comprehensive.csv" class="button button-secondary">
                             <span class="dashicons dashicons-download"></span>
                             <?php esc_html_e( 'Comprehensive Contacts CSV', 'disciple_tools' ); ?>
@@ -174,7 +174,7 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
                         </p>
                     </li>
                     <li>
-                        <a href="<?php echo esc_url( get_template_directory_uri() . '/dt-import/assets/example_groups_comprehensive.csv' ); ?>" 
+                        <a href="<?php echo esc_url( get_template_directory_uri() . '/dt-import/assets/example_groups_comprehensive.csv' ); ?>"
                            download="example_groups_comprehensive.csv" class="button button-secondary">
                             <span class="dashicons dashicons-download"></span>
                             <?php esc_html_e( 'Comprehensive Groups CSV', 'disciple_tools' ); ?>
@@ -184,7 +184,7 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
                         </p>
                     </li>
                 </ul>
-                
+
                 <h4><?php esc_html_e( 'Import Tips', 'disciple_tools' ); ?></h4>
                 <ul class="ul-disc">
                     <li><?php esc_html_e( 'Use semicolons (;) to separate multiple values in a single field', 'disciple_tools' ); ?></li>
@@ -192,7 +192,7 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
                     <li><?php esc_html_e( 'Leave cells empty if no data is available', 'disciple_tools' ); ?></li>
                     <li><?php esc_html_e( 'Use exact field value keys for dropdown options', 'disciple_tools' ); ?></li>
                 </ul>
-                
+
                 <div style="margin-top: 15px; padding: 10px; background: #f0f8ff; border-left: 4px solid #0073aa;">
                     <p style="margin: 0; font-size: 12px;">
                         <strong><?php esc_html_e( 'Note:', 'disciple_tools' ); ?></strong>
@@ -212,14 +212,14 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
             </div>
             <div class="inside">
                 <p><?php esc_html_e( 'Complete guide to CSV import field types and formatting.', 'disciple_tools' ); ?></p>
-                
+
                 <div class="dt-import-doc-actions">
                     <button type="button" class="button button-primary dt-import-view-docs" id="dt-import-view-docs">
                         <span class="dashicons dashicons-book-alt"></span>
                         <?php esc_html_e( 'View Full Documentation', 'disciple_tools' ); ?>
                     </button>
                 </div>
-                
+
                 <div style="margin-top: 15px; padding: 8px; background: #fff3cd; border-left: 4px solid #ffc107;">
                     <p style="margin: 0; font-size: 12px;">
                         <strong><?php esc_html_e( 'Tip:', 'disciple_tools' ); ?></strong>
@@ -346,7 +346,7 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
                         <!-- Main Column -->
                         <div class="dt-import-container">
                             <h1><?php esc_html_e( 'Import Data', 'disciple_tools' ); ?></h1>
-                            
+
                             <!-- Progress Indicator -->
                             <div class="dt-import-progress">
                                 <ul class="dt-import-steps">
@@ -368,20 +368,20 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
                                     </li>
                                 </ul>
                             </div>
-                            
+
                             <!-- Step Content Container -->
                             <div class="dt-import-step-content">
                                 <!-- Initial step content will be loaded here -->
                                 <div class="dt-import-initial-content">
-                                    <h2><?php esc_html_e( 'Step 1: Select Post Type', 'disciple_tools' ) ?></h2>
+                                    <h2><?php esc_html_e( 'Step 1: Select Record Type', 'disciple_tools' ) ?></h2>
                                     <p><?php esc_html_e( 'Choose the type of records you want to import from your CSV file.', 'disciple_tools' ) ?></p>
-                                    
+
                                     <div class="post-type-grid">
                                         <!-- Post type cards will be dynamically populated -->
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Navigation -->
                             <div class="dt-import-navigation">
                                 <button type="button" class="button dt-import-back" style="display: none;">
@@ -391,7 +391,7 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
                                     <?php esc_html_e( 'Next →', 'disciple_tools' ) ?>
                                 </button>
                             </div>
-                            
+
                             <!-- Error container -->
                             <div class="dt-import-errors" style="display: none;"></div>
                         </div>
@@ -408,7 +408,7 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
                 </div><!-- post-body meta box container -->
             </div><!--poststuff end -->
         </div><!-- wrap end -->
-        
+
         <!-- Include Documentation Modal -->
         <?php include( plugin_dir_path( __FILE__ ) . 'documentation-modal.php' ); ?>
         <?php
