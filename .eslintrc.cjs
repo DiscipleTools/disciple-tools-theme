@@ -14,6 +14,7 @@ module.exports = {
   ],
   "globals": {
     "jQuery": false,
+    "Toastify": false,
   },
   "rules": {
     "no-console": "off",

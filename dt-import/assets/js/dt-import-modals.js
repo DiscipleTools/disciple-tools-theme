@@ -297,7 +297,7 @@
       );
 
       // Show success message
-      this.dtImport.showSuccess(dtImport.translations.fieldCreatedSuccess);
+      this.showModalSuccess(dtImport.translations.fieldCreatedSuccess);
 
       // Close modal
       this.closeModals();
@@ -372,15 +372,28 @@
     }
 
     showModalError(message) {
-      // Remove existing error messages
-      $('.modal-error').remove();
+      // Use toast notification instead of inline modal error
+      if (this.dtImport && this.dtImport.showError) {
+        this.dtImport.showError(message);
+      } else {
+        // Fallback to inline modal error if toast is not available
+        // Remove existing error messages
+        $('.modal-error').remove();
 
-      // Add error message to modal
-      $('.modal-body').prepend(`
-                <div class="notice notice-error modal-error" style="margin-bottom: 15px;">
-                    <p>${this.escapeHtml(message)}</p>
-                </div>
-            `);
+        // Add error message to modal
+        $('.modal-body').prepend(`
+                  <div class="notice notice-error modal-error" style="margin-bottom: 15px;">
+                      <p>${this.escapeHtml(message)}</p>
+                  </div>
+              `);
+      }
+    }
+
+    showModalSuccess(message) {
+      // Use toast notification for success messages
+      if (this.dtImport && this.dtImport.showSuccess) {
+        this.dtImport.showSuccess(message);
+      }
     }
 
     closeModals() {

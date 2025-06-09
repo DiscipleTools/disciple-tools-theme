@@ -1639,35 +1639,65 @@
     }
 
     showError(message) {
-      $('.dt-import-errors')
-        .html(
-          `
-                <div class="notice notice-error">
-                    <p>${this.escapeHtml(message)}</p>
-                </div>
-            `,
-        )
-        .show();
+      // Use Toastify for error messages if available
+      if (typeof Toastify !== 'undefined') {
+        Toastify({
+          text: message,
+          duration: 5000,
+          close: true,
+          gravity: 'bottom',
+          position: 'center',
+          backgroundColor: '#dc3232',
+          className: 'dt-import-toast-error',
+          stopOnFocus: true,
+        }).showToast();
+      } else {
+        // Fallback to original method if Toastify is not available
+        $('.dt-import-errors')
+          .html(
+            `
+                  <div class="notice notice-error">
+                      <p>${this.escapeHtml(message)}</p>
+                  </div>
+              `,
+          )
+          .show();
 
-      setTimeout(() => {
-        $('.dt-import-errors').fadeOut();
-      }, 5000);
+        setTimeout(() => {
+          $('.dt-import-errors').fadeOut();
+        }, 5000);
+      }
     }
 
     showSuccess(message) {
-      $('.dt-import-errors')
-        .html(
-          `
-                <div class="notice notice-success">
-                    <p>${this.escapeHtml(message)}</p>
-                </div>
-            `,
-        )
-        .show();
+      // Use Toastify for success messages if available
+      if (typeof Toastify !== 'undefined') {
+        Toastify({
+          text: message,
+          duration: 3000,
+          close: true,
+          gravity: 'bottom',
+          position: 'center',
+          backgroundColor: '#46b450',
+          className: 'dt-import-toast-success',
+          stopOnFocus: true,
+        }).showToast();
+      } else {
+        // Fallback to original method if Toastify is not available
+        $('.dt-import-errors')
+          .html(
+            `
+                  <div class="notice notice-success">
+                      <p>${this.escapeHtml(message)}</p>
+                  </div>
+              `,
+          )
+          .show();
 
-      setTimeout(() => {
-        $('.dt-import-errors').fadeOut();
-      }, 3000);
+        setTimeout(() => {
+          $('.dt-import-errors').fadeOut();
+        }, 3000);
+      }
     }
 
     // Helper methods
@@ -1940,7 +1970,7 @@
             $select.prop('disabled', false);
             const errorMessage =
               data.error || data.message || 'Unknown error occurred';
-            alert(`Error creating field option: ${errorMessage}`);
+            this.showError(`Error creating field option: ${errorMessage}`);
           }
         })
         .catch((error) => {
@@ -1948,7 +1978,7 @@
           $select.html(originalOptions);
           $select.val('');
           $select.prop('disabled', false);
-          alert('Error creating field option. Please try again.');
+          this.showError('Error creating field option. Please try again.');
         });
     }
 

@@ -68,11 +68,15 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
             dt_theme_enqueue_style( 'web-components-css', 'dt-assets/build/css/light.min.css', [] );
         }
 
+        // Enqueue Toastify for toast notifications
+        wp_enqueue_style( 'toastify-css', 'https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css', [], '1.12.0' );
+        wp_enqueue_script( 'toastify-js', 'https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js', [], '1.12.0', true );
+
         // Enqueue our custom import scripts
         wp_enqueue_script(
             'dt-import-js',
             get_template_directory_uri() . '/dt-import/assets/js/dt-import.js',
-            [ 'jquery' ],
+            [ 'jquery', 'toastify-js' ],
             '1.0.0',
             true
         );
