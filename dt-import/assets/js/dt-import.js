@@ -1255,17 +1255,18 @@
                     <div class="preview-table-container">
                         ${this.createPreviewTable(previewData.rows)}
                     </div>
-                    
-                    <div class="import-actions">
-                        <button type="button" class="button button-primary execute-import-btn">
-                            Import ${previewData.processable_count} Records
-                        </button>
-                    </div>
                 </div>
             `;
 
       $('.dt-import-step-content').html(step4Html);
       this.updateNavigation();
+
+      // Add import button to navigation area
+      $('.dt-import-navigation').append(`
+        <button type="button" class="button button-primary execute-import-btn">
+          Import ${previewData.processable_count} Records
+        </button>
+      `);
     }
 
     createPreviewTable(rows) {
@@ -1581,6 +1582,10 @@
     updateNavigation() {
       const $backBtn = $('.dt-import-back');
       const $nextBtn = $('.dt-import-next');
+      const $importBtn = $('.execute-import-btn');
+
+      // Clear any existing import buttons from navigation
+      $importBtn.remove();
 
       // Back button
       if (this.currentStep === 1) {

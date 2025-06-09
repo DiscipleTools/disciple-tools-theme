@@ -581,6 +581,10 @@
     border-top: 1px solid #ddd;
 }
 
+.dt-import-navigation .execute-import-btn {
+    margin-left: auto;
+}
+
 .dt-import-actions,
 .import-actions {
     display: flex;
@@ -959,6 +963,12 @@
     .dt-import-navigation {
         flex-direction: column;
         gap: 10px;
+    }
+
+    .dt-import-navigation .execute-import-btn {
+        margin-left: 0;
+        order: 2;
+        width: 100%;
     }
     
     .imported-records-list {
