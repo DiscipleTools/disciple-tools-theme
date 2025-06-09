@@ -106,8 +106,8 @@
     content: '';
     position: absolute;
     top: 20px;
-    left: 25px;
-    right: 25px;
+    left: calc(12.5% + 20px);
+    right: calc(12.5% + 20px);
     height: 2px;
     background: #ddd;
     z-index: 1;
@@ -844,13 +844,26 @@
         padding: 15px;
     }
 
+    .dt-import-progress {
+        padding: 15px;
+        margin: 15px 0 20px 0;
+    }
+
     .dt-import-steps {
         flex-direction: column;
-        gap: 15px;
+        gap: 12px;
     }
 
     .dt-import-steps::before {
-        display: none;
+        content: '';
+        position: absolute;
+        top: 20px;
+        bottom: 20px;
+        left: 20px;
+        width: 2px;
+        height: auto;
+        background: linear-gradient(to bottom, #ddd 0%, #ddd 100%);
+        z-index: 1;
     }
 
     .dt-import-steps .step {
@@ -858,11 +871,59 @@
         align-items: center;
         text-align: left;
         gap: 15px;
+        padding: 10px 0;
+        position: relative;
+        z-index: 2;
+    }
+
+    .dt-import-steps .step-number {
+        width: 36px;
+        height: 36px;
+        line-height: 34px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+        font-size: 14px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
     }
 
     .dt-import-steps .step-name {
         display: inline;
         margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+        flex: 1;
+    }
+
+    /* Add completion indicator line for mobile */
+    .dt-import-steps .step.completed::after {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 46px;
+        width: 2px;
+        height: calc(100% + 12px);
+        background: #46b450;
+        z-index: 1;
+    }
+
+    .dt-import-steps .step.active::after {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 46px;
+        width: 2px;
+        height: calc(100% + 12px);
+        background: #0073aa;
+        z-index: 1;
+    }
+
+    /* Hide the line for the last step */
+    .dt-import-steps .step:last-child::after {
+        display: none;
     }
 
     .post-type-grid {
@@ -908,6 +969,62 @@
     .records-note {
         font-size: 12px;
         padding: 8px 12px;
+    }
+}
+
+/* Additional mobile optimizations for smaller screens */
+@media (max-width: 480px) {
+    .dt-import-container {
+        padding: 10px;
+    }
+
+    .dt-import-progress {
+        padding: 12px;
+        margin: 10px 0 15px 0;
+    }
+
+    .dt-import-steps {
+        gap: 8px;
+    }
+
+    .dt-import-steps .step {
+        gap: 12px;
+        padding: 8px 0;
+    }
+
+    .dt-import-steps .step-number {
+        width: 32px;
+        height: 32px;
+        line-height: 30px;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .dt-import-steps .step-name {
+        font-size: 14px;
+    }
+
+    .dt-import-steps::before {
+        left: 16px;
+    }
+
+    .dt-import-steps .step.completed::after,
+    .dt-import-steps .step.active::after {
+        left: 16px;
+        top: 40px;
+        height: calc(100% + 8px);
+    }
+
+    .dt-import-container h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .dt-import-step-content h2 {
+        font-size: 18px;
     }
 }
 
