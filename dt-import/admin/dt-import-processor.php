@@ -570,12 +570,39 @@ class DT_CSV_Import_Processor {
     private static function process_location_value( $raw_value, $preview_mode = false ) {
         $raw_value = trim( $raw_value );
 
-        // Location field only accepts grid IDs (numeric values)
-        if ( !is_numeric( $raw_value ) ) {
-            throw new Exception( "Location field requires a numeric grid ID, got: {$raw_value}" );
+        // Check if it's a grid ID (single numeric value)
+        if ( is_numeric( $raw_value ) ) {
+            return intval( $raw_value );
         }
 
-        return intval( $raw_value );
+        // Check if it's lat,lng coordinates (decimal degrees)
+        if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', $raw_value ) ) {
+            list($lat, $lng) = array_map( 'trim', explode( ',', $raw_value ) );
+
+            // Validate coordinate ranges
+            $lat = floatval( $lat );
+            $lng = floatval( $lng );
+            if ( $lat < -90 || $lat > 90 || $lng < -180 || $lng > 180 ) {
+                throw new Exception( "Invalid coordinates: {$raw_value}. Latitude must be between -90 and 90, longitude between -180 and 180" );
+            }
+
+            return [
+                'lat' => $lat,
+                'lng' => $lng
+            ];
+        }
+
+        // Check if it's DMS (degrees, minutes, seconds) coordinates
+        $dms_coords = DT_CSV_Import_Geocoding::parse_dms_coordinates( $raw_value );
+        if ( $dms_coords !== null ) {
+            return [
+                'lat' => $dms_coords['lat'],
+                'lng' => $dms_coords['lng']
+            ];
+        }
+
+        // If none of the above formats match, throw an error
+        throw new Exception( "Location field requires numeric values (grid ID, decimal coordinates, or DMS coordinates), got: {$raw_value}" );
     }
 
     /**

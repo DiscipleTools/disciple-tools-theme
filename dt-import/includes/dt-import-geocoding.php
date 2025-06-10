@@ -281,7 +281,7 @@ class DT_CSV_Import_Geocoding {
      * Parse DMS (Degrees, Minutes, Seconds) coordinates to decimal degrees
      * Supports formats like: 35°50′40.9″N, 103°27′7.5″E
      */
-    private static function parse_dms_coordinates( $value ) {
+    public static function parse_dms_coordinates( $value ) {
         // Pattern to match DMS coordinates
         // Supports various symbols: ° ' " or d m s or deg min sec
         // Supports both N/S/E/W notation
