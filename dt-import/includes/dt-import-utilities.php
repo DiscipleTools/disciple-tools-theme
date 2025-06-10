@@ -215,21 +215,33 @@ class DT_CSV_Import_Utilities {
      * Clean old temporary files
      */
     public static function cleanup_old_files( $hours = 24 ) {
-        $upload_dir = wp_upload_dir();
-        $temp_dir = $upload_dir['basedir'] . '/dt-import-temp/';
-
-        if ( !file_exists( $temp_dir ) ) {
+        // Prevent concurrent cleanup processes
+        $lock_key = 'dt_import_cleanup_old_files_running';
+        if ( get_transient( $lock_key ) ) {
             return;
         }
+        set_transient( $lock_key, 1, 300 ); // 5 minutes lock
 
-        $files = glob( $temp_dir . '*' );
-        $cutoff_time = time() - ( $hours * 3600 );
+        try {
+            $upload_dir = wp_upload_dir();
+            $temp_dir = $upload_dir['basedir'] . '/dt-import-temp/';
 
-        foreach ( $files as $file ) {
-            // Additional security: validate each file path before deletion
-            if ( is_file( $file ) && self::validate_file_path( $file ) && filemtime( $file ) < $cutoff_time ) {
-                unlink( $file );
+            if ( !file_exists( $temp_dir ) ) {
+                return;
             }
+
+            $files = glob( $temp_dir . '*' );
+            $cutoff_time = time() - ( $hours * 3600 );
+
+            foreach ( $files as $file ) {
+                // Additional security: validate each file path before deletion
+                if ( is_file( $file ) && self::validate_file_path( $file ) && filemtime( $file ) < $cutoff_time ) {
+                    unlink( $file );
+                }
+            }
+        } finally {
+            // Always release the lock, even if an error occurs
+            delete_transient( $lock_key );
         }
     }
 
