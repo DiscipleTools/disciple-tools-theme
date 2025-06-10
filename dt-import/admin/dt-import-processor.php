@@ -20,7 +20,7 @@ class DT_CSV_Import_Processor {
         // For large datasets (>1000 rows), use sampling to estimate counts
         // For smaller datasets, analyze all rows for accurate counts
         $total_rows = count( $csv_data );
-        $use_sampling = $total_rows > 1000;
+        $use_sampling = $total_rows > 500;
 
         $total_processable_count = 0;
         $total_error_count = 0;
