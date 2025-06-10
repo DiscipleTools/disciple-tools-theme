@@ -13,6 +13,11 @@ class DT_CSV_Import_Utilities {
      * Parse CSV file and return data array
      */
     public static function parse_csv_file( $file_path, $delimiter = ',' ) {
+        // Validate file path for security
+        if ( !self::validate_file_path( $file_path ) ) {
+            return new WP_Error( 'invalid_file_path', __( 'Invalid file path.', 'disciple_tools' ) );
+        }
+
         if ( !file_exists( $file_path ) ) {
             return new WP_Error( 'file_not_found', __( 'CSV file not found.', 'disciple_tools' ) );
         }
@@ -116,6 +121,14 @@ class DT_CSV_Import_Utilities {
         $filename = 'import_' . uniqid() . '_' . sanitize_file_name( $file_data['name'] );
         $filepath = $temp_dir . $filename;
 
+        // Path traversal protection - ensure file stays within temp directory
+        $real_temp_dir = realpath( $temp_dir );
+        $real_filepath = realpath( dirname( $filepath ) ) . '/' . basename( $filepath );
+
+        if ( $real_temp_dir === false || strpos( $real_filepath, $real_temp_dir ) !== 0 ) {
+            return new WP_Error( 'invalid_path', 'Invalid file path detected' );
+        }
+
         // Move uploaded file
         if ( move_uploaded_file( $file_data['tmp_name'], $filepath ) ) {
             return $filepath;
@@ -213,7 +226,8 @@ class DT_CSV_Import_Utilities {
         $cutoff_time = time() - ( $hours * 3600 );
 
         foreach ( $files as $file ) {
-            if ( is_file( $file ) && filemtime( $file ) < $cutoff_time ) {
+            // Additional security: validate each file path before deletion
+            if ( is_file( $file ) && self::validate_file_path( $file ) && filemtime( $file ) < $cutoff_time ) {
                 unlink( $file );
             }
         }
@@ -309,6 +323,39 @@ class DT_CSV_Import_Utilities {
 
         $values = explode( $separator, $value );
         return array_map( 'trim', $values );
+    }
+
+    /**
+     * Validate that a file path is within the allowed temp directory
+     */
+    public static function validate_file_path( $file_path ) {
+        if ( empty( $file_path ) ) {
+            return false;
+        }
+
+        $upload_dir = wp_upload_dir();
+        $temp_dir = $upload_dir['basedir'] . '/dt-import-temp/';
+        $real_temp_dir = realpath( $temp_dir );
+
+        // If temp directory doesn't exist, it's invalid
+        if ( $real_temp_dir === false ) {
+            return false;
+        }
+
+        // Get the real path of the file
+        $real_file_path = realpath( $file_path );
+
+        // If file doesn't exist yet or path is invalid, check the parent directory
+        if ( $real_file_path === false ) {
+            $parent_dir = realpath( dirname( $file_path ) );
+            if ( $parent_dir === false ) {
+                return false;
+            }
+            $real_file_path = $parent_dir . '/' . basename( $file_path );
+        }
+
+        // Ensure the file path is within the temp directory
+        return strpos( $real_file_path, $real_temp_dir ) === 0;
     }
 
     /**
