@@ -1470,8 +1470,15 @@
     }
 
     updateProgress(progress, status) {
-      $('.processing-message').text(`Importing records... ${progress}%`);
-      // You could add a progress bar here
+      const $processingMessage = $('.processing-message p');
+
+      if (progress > 0) {
+        // Show percentage once progress is above 0%
+        $processingMessage.text(`Importing records... ${progress}%`);
+      } else {
+        // Show just "Importing Records" when starting (0%)
+        $processingMessage.text('Importing Records');
+      }
     }
 
     showImportResults(results) {
@@ -1632,7 +1639,7 @@
       $('.dt-import-container').append(`
                 <div class="processing-overlay">
                     <div class="processing-message">
-                        <div class="spinner"></div>
+                        <div class="dt-spinner"></div>
                         <p>${message}</p>
                     </div>
                 </div>
