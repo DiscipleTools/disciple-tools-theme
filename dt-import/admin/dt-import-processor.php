@@ -306,7 +306,7 @@ class DT_CSV_Import_Processor {
                 break;
 
             case 'location':
-                $result = self::process_location_value( $raw_value );
+                $result = self::process_location_value( $raw_value, $preview_mode );
                 break;
 
             case 'location_grid':
@@ -567,36 +567,15 @@ class DT_CSV_Import_Processor {
     /**
      * Process location field value
      */
-    private static function process_location_value( $raw_value ) {
+    private static function process_location_value( $raw_value, $preview_mode = false ) {
         $raw_value = trim( $raw_value );
 
-        // Check if it's a grid ID
-        if ( is_numeric( $raw_value ) ) {
-            // Validate grid ID exists
-            global $wpdb;
-            $grid_exists = $wpdb->get_var($wpdb->prepare(
-                "SELECT grid_id FROM $wpdb->dt_location_grid WHERE grid_id = %d",
-                intval( $raw_value )
-            ));
-
-            if ( $grid_exists ) {
-                return intval( $raw_value );
-            }
+        // Location field only accepts grid IDs (numeric values)
+        if ( !is_numeric( $raw_value ) ) {
+            throw new Exception( "Location field requires a numeric grid ID, got: {$raw_value}" );
         }
 
-        // Check if it's lat,lng coordinates
-        if ( preg_match( '/^-?\d+\.?\d*,-?\d+\.?\d*$/', $raw_value ) ) {
-            list($lat, $lng) = explode( ',', $raw_value );
-            return [
-                'lat' => floatval( $lat ),
-                'lng' => floatval( $lng )
-            ];
-        }
-
-        // Treat as address - return as-is for geocoding later
-        return [
-            'address' => $raw_value
-        ];
+        return intval( $raw_value );
     }
 
     /**
