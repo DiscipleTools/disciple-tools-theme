@@ -417,30 +417,4 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
         <?php include( plugin_dir_path( __FILE__ ) . 'documentation-modal.php' ); ?>
         <?php
     }
-
-
-
-    /**
-     * Get fields grouped by category
-     */
-    private static function get_fields_by_group( $field_settings, $group ) {
-        $grouped_fields = [];
-
-        foreach ( $field_settings as $field_key => $field_config ) {
-            $field_group = 'other'; // default group
-
-            // Categorize fields
-            if ( in_array( $field_key, [ 'name', 'title', 'overall_status', 'assigned_to' ] ) ) {
-                $field_group = 'core';
-            } elseif ( strpos( $field_key, 'contact_' ) === 0 || $field_config['type'] === 'communication_channel' ) {
-                $field_group = 'communication';
-            }
-
-            if ( $field_group === $group ) {
-                $grouped_fields[$field_key] = $field_config;
-            }
-        }
-
-        return $grouped_fields;
-    }
 }
