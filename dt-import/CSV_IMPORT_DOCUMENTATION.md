@@ -374,13 +374,16 @@ The CSV import tool supports 14 different field types. Each field type has speci
 
 **Field Type**: `location`
 
-**Description**: Geographic location information
+**Description**: Geographic location information using coordinates or grid IDs only
 
 **Accepted Values**: 
-- **Address strings**: `"123 Main St, Springfield, IL"`
+- **Grid ID**: `100364199` (numeric location grid ID)
 - **Decimal coordinates**: `"40.7128,-74.0060"` (latitude,longitude)
 - **DMS coordinates**: `"35°50′40.9″N, 103°27′7.5″E"` (degrees, minutes, seconds)
-- **Location names**: `"Springfield, Illinois"`
+
+**Multiple Locations**: Separate multiple values with semicolons (`;`)
+
+**Note**: Location fields do NOT accept address strings. For addresses, use `location_meta` fields instead.
 
 **Coordinate Formats**:
 
@@ -402,11 +405,12 @@ The CSV import tool supports 14 different field types. Each field type has speci
 
 | Location |
 |----------|
-| 123 Main Street, Springfield, IL 62701 |
-| Downtown Community Center |
+| 100364199 |
 | 40.7589, -73.9851 |
 | 35°50′40.9″N, 103°27′7.5″E |
-| First Baptist Church |
+| 100089589 |
+| 100364199;100089589 |
+| 40.7589, -73.9851;35°50′40.9″N, 103°27′7.5″E |
 
 ---
 
@@ -432,13 +436,14 @@ The CSV import tool supports 14 different field types. Each field type has speci
 
 **Field Type**: `location_meta`
 
-**Description**: Enhanced location with geocoding support
+**Description**: Enhanced location with geocoding support and address processing
 
 **Accepted Values**:
-- **Grid ID**: `100364199`
-- **Decimal coordinates**: `"40.7128,-74.0060"`
-- **DMS coordinates**: `"35°50′40.9″N, 103°27′7.5″E"`
-- **Address**: `"123 Main St, Springfield, IL"`
+- **Grid ID**: `100364199` (numeric location grid ID)
+- **Decimal coordinates**: `"40.7128,-74.0060"` (latitude,longitude)
+- **DMS coordinates**: `"35°50′40.9″N, 103°27′7.5″E"` (degrees, minutes, seconds)
+- **Address strings**: `"123 Main St, Springfield, IL"` (requires geocoding service)
+- **Location names**: `"Springfield, Illinois"` (requires geocoding service)
 - **Multiple locations**: `"Paris, France; Berlin, Germany"` (semicolon-separated)
 
 **Coordinate Formats**:
@@ -464,9 +469,12 @@ The CSV import tool supports 14 different field types. Each field type has speci
 | 100364199 |
 | 40.7589, -73.9851 |
 | 35°50′40.9″N, 103°27′7.5″E |
+| 123 Main Street, Springfield, IL 62701 |
 | Times Square, New York, NY |
 | Paris, France; Berlin, Germany |
 | Central Park, Manhattan |
+| 100364199;40.7589, -73.9851 |
+| 123 Main St, Springfield; Times Square, NYC |
 
 ---
 

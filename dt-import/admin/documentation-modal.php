@@ -138,14 +138,25 @@ if ( !defined( 'ABSPATH' ) ) {
                     </div>
                     
                     <div class="dt-import-field-type">
-                        <h4><?php esc_html_e( 'Locations', 'disciple_tools' ); ?></h4>
-                        <p><?php esc_html_e( 'Geographic information in various formats.', 'disciple_tools' ); ?></p>
+                        <h4><?php esc_html_e( 'Location Fields', 'disciple_tools' ); ?></h4>
+                        <p><?php esc_html_e( 'Geographic coordinates and grid IDs only (no addresses).', 'disciple_tools' ); ?></p>
                         <div class="dt-import-example">
-                            <strong><?php esc_html_e( 'Address:', 'disciple_tools' ); ?></strong> <code>123 Main St, Springfield, IL</code><br>
+                            <strong><?php esc_html_e( 'Grid ID:', 'disciple_tools' ); ?></strong> <code>100364199</code><br>
                             <strong><?php esc_html_e( 'Decimal Coordinates:', 'disciple_tools' ); ?></strong> <code>40.7128,-74.0060</code><br>
                             <strong><?php esc_html_e( 'DMS Coordinates:', 'disciple_tools' ); ?></strong> <code>35°50′40.9″N, 103°27′7.5″E</code><br>
-                            <strong><?php esc_html_e( 'Multiple Locations:', 'disciple_tools' ); ?></strong> <code>Paris, France; Berlin, Germany</code><br>
-                            <strong><?php esc_html_e( 'Grid ID:', 'disciple_tools' ); ?></strong> <code>100364199</code>
+                            <strong><?php esc_html_e( 'Multiple Locations:', 'disciple_tools' ); ?></strong> <code>100364199;40.7128,-74.0060</code>
+                        </div>
+                    </div>
+                    
+                    <div class="dt-import-field-type">
+                        <h4><?php esc_html_e( 'Location Meta Fields', 'disciple_tools' ); ?></h4>
+                        <p><?php esc_html_e( 'Enhanced location fields with address support and geocoding.', 'disciple_tools' ); ?></p>
+                        <div class="dt-import-example">
+                            <strong><?php esc_html_e( 'Grid ID:', 'disciple_tools' ); ?></strong> <code>100364199</code><br>
+                            <strong><?php esc_html_e( 'Coordinates:', 'disciple_tools' ); ?></strong> <code>40.7128,-74.0060</code><br>
+                            <strong><?php esc_html_e( 'Address:', 'disciple_tools' ); ?></strong> <code>123 Main St, Springfield, IL</code><br>
+                            <strong><?php esc_html_e( 'Multiple Addresses:', 'disciple_tools' ); ?></strong> <code>Paris, France; Berlin, Germany</code><br>
+                            <strong><?php esc_html_e( 'Mixed Multiple:', 'disciple_tools' ); ?></strong> <code>100364199;Times Square, NYC</code>
                         </div>
                     </div>
                 </div>
