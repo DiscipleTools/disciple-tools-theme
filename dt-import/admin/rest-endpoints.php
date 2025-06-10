@@ -392,7 +392,7 @@ class DT_CSV_Import_Ajax {
         $do_not_import_columns = $body_params['do_not_import_columns'] ?? [];
         $import_options = $body_params['import_options'] ?? [];
 
-        $session = $this->get_import_session( $session_id );
+        $session = $this->get_import_session( $session_id, false ); // Don't load CSV data, just need metadata
         if ( is_wp_error( $session ) ) {
             return $session;
         }
@@ -466,7 +466,7 @@ class DT_CSV_Import_Ajax {
         $url_params = $request->get_url_params();
         $session_id = intval( $url_params['session_id'] );
 
-        $session = $this->get_import_session( $session_id );
+        $session = $this->get_import_session( $session_id, false ); // Don't load CSV data, just need metadata
         if ( is_wp_error( $session ) ) {
             return $session;
         }
@@ -775,8 +775,8 @@ class DT_CSV_Import_Ajax {
 
         $user_id = get_current_user_id();
 
-        // Get current session data
-        $current_session = $this->get_import_session( $session_id );
+        // Get current session data - don't load CSV data since we don't need it for updates
+        $current_session = $this->get_import_session( $session_id, false );
         if ( is_wp_error( $current_session ) ) {
             return $current_session;
         }
@@ -913,7 +913,7 @@ class DT_CSV_Import_Ajax {
         }
 
         // Check if import is already running
-        $session = $this->get_import_session( $session_id );
+        $session = $this->get_import_session( $session_id, false ); // Don't load CSV data, just need metadata
         if ( is_wp_error( $session ) ) {
             return [
                 'allowed' => false,
@@ -964,17 +964,27 @@ class DT_CSV_Import_Ajax {
      * Process a chunk of import records
      */
     private function process_import_chunk( $session_id, $start_row, $chunk_size ) {
-        $session = $this->get_import_session( $session_id );
+        $session = $this->get_import_session( $session_id, false ); // Don't auto-load CSV data
         if ( is_wp_error( $session ) ) {
             return false;
         }
 
         $payload = maybe_unserialize( $session['payload'] ) ?: [];
-        $csv_data = $payload['csv_data'] ?? [];
         $field_mappings = $payload['field_mappings'] ?? [];
         $post_type = $session['post_type'];
 
-        if ( empty( $csv_data ) || empty( $field_mappings ) ) {
+        // Load CSV data from file (no longer stored in payload)
+        $file_path = $payload['file_path'] ?? '';
+        if ( empty( $file_path ) || !file_exists( $file_path ) ) {
+            return false;
+        }
+
+        $csv_data = DT_CSV_Import_Utilities::parse_csv_file( $file_path );
+        if ( is_wp_error( $csv_data ) ) {
+            return false;
+        }
+
+        if ( empty( $field_mappings ) ) {
             return false;
         }
 

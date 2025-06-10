@@ -914,10 +914,20 @@ class DT_CSV_Import_Processor {
         }
 
         $payload = maybe_unserialize( $session['payload'] ) ?: [];
-        $csv_data = $payload['csv_data'] ?? [];
         $field_mappings = $payload['field_mappings'] ?? [];
         $import_options = $payload['import_options'] ?? [];
         $post_type = $session['post_type'];
+
+        // Load CSV data from file (no longer stored in payload)
+        $file_path = $payload['file_path'] ?? '';
+        if ( empty( $file_path ) || !file_exists( $file_path ) ) {
+            return new WP_Error( 'csv_file_not_found', 'CSV file not found' );
+        }
+
+        $csv_data = DT_CSV_Import_Utilities::parse_csv_file( $file_path );
+        if ( is_wp_error( $csv_data ) ) {
+            return new WP_Error( 'csv_parse_error', 'Failed to parse CSV file: ' . $csv_data->get_error_message() );
+        }
 
         $headers = array_shift( $csv_data );
         $imported_count = 0;
