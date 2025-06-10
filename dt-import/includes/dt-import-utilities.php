@@ -24,7 +24,7 @@ class DT_CSV_Import_Utilities {
             return new WP_Error( 'file_read_error', __( 'Unable to read CSV file.', 'disciple_tools' ) );
         }
 
-        while ( ( $row = fgetcsv( $handle, 0, $delimiter ) ) !== false ) {
+        while ( ( $row = fgetcsv( $handle, 0, $delimiter, '"', '\\' ) ) !== false ) {
             $data[] = $row;
         }
 

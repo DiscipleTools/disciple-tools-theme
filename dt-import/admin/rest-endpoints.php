@@ -520,7 +520,8 @@ class DT_CSV_Import_Ajax {
         $url_params = $request->get_url_params();
         $session_id = intval( $url_params['session_id'] );
 
-        $session = $this->get_import_session( $session_id );
+        // Don't load CSV data for status checks - we only need metadata
+        $session = $this->get_import_session( $session_id, false );
         if ( is_wp_error( $session ) ) {
             return $session;
         }
@@ -658,14 +659,20 @@ class DT_CSV_Import_Ajax {
             return new WP_Error( 'invalid_column_index', 'Valid column index is required', [ 'status' => 400 ] );
         }
 
-        $session = $this->get_import_session( $session_id );
+        // First get session without CSV data to check if it exists
+        $session = $this->get_import_session( $session_id, false );
         if ( is_wp_error( $session ) ) {
             return $session;
         }
 
-        $csv_data = $session['csv_data'];
-        if ( !$csv_data ) {
-            return new WP_Error( 'no_csv_data', 'No CSV data found in session', [ 'status' => 404 ] );
+        // Now load CSV data from file
+        if ( empty( $session['file_path'] ) || !file_exists( $session['file_path'] ) ) {
+            return new WP_Error( 'no_csv_file', 'CSV file not found', [ 'status' => 404 ] );
+        }
+
+        $csv_data = DT_CSV_Import_Utilities::parse_csv_file( $session['file_path'] );
+        if ( is_wp_error( $csv_data ) ) {
+            return new WP_Error( 'csv_parse_error', 'Failed to parse CSV file', [ 'status' => 500 ] );
         }
 
         // Skip the header row for unique value extraction
@@ -698,8 +705,8 @@ class DT_CSV_Import_Ajax {
     private function create_import_session( $post_type, $file_path, $csv_data ) {
         $user_id = get_current_user_id();
 
+        // Store only metadata, not the entire CSV data
         $session_data = [
-            'csv_data' => $csv_data,
             'headers' => $csv_data[0] ?? [],
             'row_count' => count( $csv_data ) - 1,
             'file_path' => $file_path,
@@ -727,7 +734,7 @@ class DT_CSV_Import_Ajax {
     /**
      * Get import session
      */
-    private function get_import_session( $session_id ) {
+    private function get_import_session( $session_id, $load_csv_data = true ) {
         global $wpdb;
 
         $user_id = get_current_user_id();
@@ -748,6 +755,14 @@ class DT_CSV_Import_Ajax {
         // Decode payload data and merge with session
         $payload = maybe_unserialize( $session['payload'] ) ?: [];
         $session = array_merge( $session, $payload );
+
+        // Load CSV data from file if requested and file exists
+        if ( $load_csv_data && !empty( $session['file_path'] ) && file_exists( $session['file_path'] ) ) {
+            $csv_data = DT_CSV_Import_Utilities::parse_csv_file( $session['file_path'] );
+            if ( !is_wp_error( $csv_data ) ) {
+                $session['csv_data'] = $csv_data;
+            }
+        }
 
         return $session;
     }
@@ -820,8 +835,8 @@ class DT_CSV_Import_Ajax {
 
         $user_id = get_current_user_id();
 
-        // Get session to clean up file
-        $session = $this->get_import_session( $session_id );
+        // Get session to clean up file - don't load CSV data, just need file path
+        $session = $this->get_import_session( $session_id, false );
         if ( !is_wp_error( $session ) && !empty( $session['file_path'] ) ) {
             if ( file_exists( $session['file_path'] ) ) {
                 unlink( $session['file_path'] );
