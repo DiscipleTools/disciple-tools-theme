@@ -632,7 +632,7 @@ class DT_CSV_Import_Mapping {
             // Try to find by display name
             if ( !$user ) {
                 $users = get_users( [ 'search' => $csv_value, 'search_columns' => [ 'display_name' ] ] );
-                if ( !empty( $users ) ) {
+                if ( !empty( $users ) && count( $users ) === 1 ) {
                     $user = $users[0];
                 }
             }
