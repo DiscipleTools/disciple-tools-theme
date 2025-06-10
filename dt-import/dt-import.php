@@ -82,46 +82,57 @@ class DT_Theme_CSV_Import {
     }
 
     private function cleanup_temp_files() {
-        $upload_dir = wp_upload_dir();
-        $dt_import_dir = $upload_dir['basedir'] . '/dt-import-temp/';
+        // Prevent concurrent cleanup processes
+        if ( get_transient( 'dt_import_cleanup_running' ) ) {
+            return;
+        }
+        set_transient( 'dt_import_cleanup_running', 1, 300 ); // 5 minutes lock
 
-        if ( file_exists( $dt_import_dir ) ) {
-            $files = glob( $dt_import_dir . '*' );
-            foreach ( $files as $file ) {
-                if ( is_file( $file ) ) {
-                    unlink( $file );
+        try {
+            $upload_dir = wp_upload_dir();
+            $dt_import_dir = $upload_dir['basedir'] . '/dt-import-temp/';
+
+            if ( file_exists( $dt_import_dir ) ) {
+                $files = glob( $dt_import_dir . '*' );
+                foreach ( $files as $file ) {
+                    if ( is_file( $file ) ) {
+                        unlink( $file );
+                    }
                 }
             }
-        }
 
-        // Clean up old import sessions (older than 24 hours) from dt_reports table
-        global $wpdb;
+            // Clean up old import sessions (older than 24 hours) from dt_reports table
+            global $wpdb;
 
-        // Get old import sessions to clean up their files
-        $old_sessions = $wpdb->get_results($wpdb->prepare(
-            "SELECT payload FROM $wpdb->dt_reports 
-             WHERE type = 'import_session' 
-             AND timestamp < %d",
-            strtotime( '-24 hours' )
-        ), ARRAY_A);
+            // Get old import sessions to clean up their files
+            $old_sessions = $wpdb->get_results($wpdb->prepare(
+                "SELECT payload FROM $wpdb->dt_reports 
+                 WHERE type = 'import_session' 
+                 AND timestamp < %d",
+                strtotime( '-24 hours' )
+            ), ARRAY_A);
 
-        // Clean up associated files
-        foreach ( $old_sessions as $session ) {
-            if ( !empty( $session['payload'] ) ) {
-                $payload = maybe_unserialize( $session['payload'] );
-                if ( isset( $payload['file_path'] ) && file_exists( $payload['file_path'] ) ) {
-                    unlink( $payload['file_path'] );
+            // Clean up associated files
+            foreach ( $old_sessions as $session ) {
+                if ( !empty( $session['payload'] ) ) {
+                    $payload = maybe_unserialize( $session['payload'] );
+                    if ( isset( $payload['file_path'] ) && file_exists( $payload['file_path'] ) ) {
+                        unlink( $payload['file_path'] );
+                    }
                 }
             }
-        }
 
-        // Delete old import session records
-        $wpdb->query($wpdb->prepare(
-            "DELETE FROM $wpdb->dt_reports 
-             WHERE type = 'import_session' 
-             AND timestamp < %d",
-            strtotime( '-24 hours' )
-        ));
+            // Delete old import session records
+            $wpdb->query($wpdb->prepare(
+                "DELETE FROM $wpdb->dt_reports 
+                 WHERE type = 'import_session' 
+                 AND timestamp < %d",
+                strtotime( '-24 hours' )
+            ));
+        } finally {
+            // Always release the lock, even if an error occurs
+            delete_transient( 'dt_import_cleanup_running' );
+        }
     }
 }
 
