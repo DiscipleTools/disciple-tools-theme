@@ -86,14 +86,14 @@
       const postTypesHtml = dtImport.postTypes
         .map(
           (postType) => `
-                <div class="post-type-card" data-post-type="${postType.key}">
+                <div class="post-type-card" data-post-type="${window.dt_admin_shared.escape(postType.key)}">
                     <div class="post-type-icon">
-                        <i class="mdi mdi-${this.getPostTypeIcon(postType.key)}"></i>
+                        <i class="mdi mdi-${window.dt_admin_shared.escape(this.getPostTypeIcon(postType.key))}"></i>
                     </div>
-                    <h3>${postType.label_plural}</h3>
-                    <p>${postType.description}</p>
+                    <h3>${window.dt_admin_shared.escape(postType.label_plural)}</h3>
+                    <p>${window.dt_admin_shared.escape(postType.description)}</p>
                     <div class="post-type-meta">
-                        <span class="post-type-singular">${postType.label_singular}</span>
+                        <span class="post-type-singular">${window.dt_admin_shared.escape(postType.label_singular)}</span>
                     </div>
                 </div>
             `,
@@ -212,8 +212,8 @@
 
       const step2Html = `
                 <div class="dt-import-step-content">
-                    <h2>${dtImport.translations.uploadCsv}</h2>
-                    <p>Upload a CSV file containing ${this.getPostTypeLabel()} data.</p>
+                    <h2>${window.dt_admin_shared.escape(dtImport.translations.uploadCsv)}</h2>
+                    <p>Upload a CSV file containing ${window.dt_admin_shared.escape(this.getPostTypeLabel())} data.</p>
                     
                     <div class="file-upload-section">
                         <div class="file-upload-area">
@@ -221,8 +221,8 @@
                                 <i class="mdi mdi-cloud-upload"></i>
                             </div>
                             <div class="upload-text">
-                                <h3>${dtImport.translations.chooseFile}</h3>
-                                <p>${dtImport.translations.dragDropFile}</p>
+                                <h3>${window.dt_admin_shared.escape(dtImport.translations.chooseFile)}</h3>
+                                <p>${window.dt_admin_shared.escape(dtImport.translations.dragDropFile)}</p>
                             </div>
                         </div>
                         <input type="file" id="csv-file-input" accept=".csv" style="display: none;">
@@ -246,10 +246,10 @@
                                 <th><label for="csv-delimiter">Delimiter</label></th>
                                 <td>
                                     <select id="csv-delimiter">
-                                        <option value=",">${dtImport.translations.comma}</option>
-                                        <option value=";">${dtImport.translations.semicolon}</option>
-                                        <option value="\t">${dtImport.translations.tab}</option>
-                                        <option value="|">${dtImport.translations.pipe}</option>
+                                        <option value=",">${window.dt_admin_shared.escape(dtImport.translations.comma)}</option>
+                                        <option value=";">${window.dt_admin_shared.escape(dtImport.translations.semicolon)}</option>
+                                        <option value="\t">${window.dt_admin_shared.escape(dtImport.translations.tab)}</option>
+                                        <option value="|">${window.dt_admin_shared.escape(dtImport.translations.pipe)}</option>
                                     </select>
                                 </td>
                             </tr>
@@ -320,7 +320,7 @@
 
       if (file.size > dtImport.maxFileSize) {
         this.showError(
-          `${dtImport.translations.fileTooLarge} ${this.formatFileSize(dtImport.maxFileSize)}`,
+          `${window.dt_admin_shared.escape(dtImport.translations.fileTooLarge)} ${window.dt_admin_shared.escape(this.formatFileSize(dtImport.maxFileSize))}`,
         );
         return;
       }
@@ -371,7 +371,7 @@
       $('.file-info h4').text(file.name);
       $('.file-size').text(this.formatFileSize(file.size));
       $('.file-rows').text(
-        `${csvData.row_count} rows, ${csvData.column_count} columns`,
+        `${window.dt_admin_shared.escape(csvData.row_count)} rows, ${window.dt_admin_shared.escape(csvData.column_count)} columns`,
       );
 
       $('.change-file-btn').on('click', () => {
@@ -486,7 +486,7 @@
 
       const step3Html = `
                 <div class="dt-import-step-content">
-                    <h2>${dtImport.translations.mapFields}</h2>
+                    <h2>${window.dt_admin_shared.escape(dtImport.translations.mapFields)}</h2>
                     <p>Map each CSV column to the appropriate field in Disciple.Tools.</p>
                     
                     <div class="name-field-warning" style="display: none;">
@@ -618,7 +618,7 @@
           : selectedField;
 
       return `
-                <div class="column-mapping-card" data-column-index="${columnIndex}">
+                <div class="column-mapping-card" data-column-index="${window.dt_admin_shared.escape(columnIndex)}">
                     <div class="column-header">
                         <h4>${this.escapeHtml(mapping.column_name)}</h4>
                         ${
@@ -639,7 +639,7 @@
                     
                     <div class="mapping-controls">
                         <label>Map to field:</label>
-                        <select class="field-mapping-select" data-column-index="${columnIndex}">
+                        <select class="field-mapping-select" data-column-index="${window.dt_admin_shared.escape(columnIndex)}">
                             <option value="">-- Do not import --</option>
                             ${this.getFieldOptions(finalSelectedField)}
                             <option value="create_new">+ Create New Field</option>
@@ -668,7 +668,7 @@
           const fieldType = this.escapeHtml(fieldConfig.type);
           const isNameField = fieldKey === 'name';
           const nameIndicator = isNameField ? ' (Required)' : '';
-          return `<option value="${fieldKey}" ${selected} data-field-type="${fieldType}">
+          return `<option value="${window.dt_admin_shared.escape(fieldKey)}" ${selected} data-field-type="${window.dt_admin_shared.escape(fieldType)}">
                     ${fieldName}${nameIndicator} (${fieldType})
                 </option>`;
         })
@@ -719,24 +719,24 @@
           if (fieldKey === 'name') {
             // For name field, warn and ask if they want to replace
             const confirmReplace = confirm(
-              `The name field is already mapped to column "${existingMapping[0]}". Do you want to replace it with this column?`,
+              `The name field is already mapped to column "${window.dt_admin_shared.escape(existingMapping[0])}". Do you want to replace it with this column?`,
             );
 
-            if (!confirmReplace) {
-              $select.val(previousMapping ? previousMapping.field_key : '');
-              return;
-            } else {
+            if (confirmReplace) {
               // Remove the existing mapping
               delete this.fieldMappings[existingMapping[0]];
               // Update the UI for the previously mapped column
               $(
-                `.field-mapping-select[data-column-index="${existingMapping[0]}"]`,
+                `.field-mapping-select[data-column-index="${window.dt_admin_shared.escape(existingMapping[0])}"]`,
               ).val('');
+            } else {
+              $select.val(previousMapping ? previousMapping.field_key : '');
+              return;
             }
           } else {
             // For other fields, just warn and prevent duplicate mapping
             this.showError(
-              `The ${fieldKey} field is already mapped to another column. Please choose a different field.`,
+              `The ${window.dt_admin_shared.escape(fieldKey)} field is already mapped to another column. Please choose a different field.`,
             );
             $select.val(previousMapping ? previousMapping.field_key : '');
             return;
@@ -1025,12 +1025,12 @@
 
       const moreValuesNote =
         uniqueValues.length > 10
-          ? `<p style="font-size: 11px; color: #666; margin-top: 5px;">Showing first 10 of ${uniqueValues.length} unique values</p>`
+          ? `<p style="font-size: 11px; color: #666; margin-top: 5px;">Showing first 10 of ${window.dt_admin_shared.escape(uniqueValues.length)} unique values</p>`
           : '';
 
       return `
                 <div class="inline-value-mapping-section">
-                    <h5 style="margin: 0 0 10px 0; font-size: 13px;">Value Mapping (${fieldType === 'multi_select' ? 'Multi-Select' : 'Dropdown'})</h5>
+                    <h5 style="margin: 0 0 10px 0; font-size: 13px;">Value Mapping (${window.dt_admin_shared.escape(fieldType) === 'multi_select' ? 'Multi-Select' : 'Dropdown'})</h5>
                     <div class="inline-value-mapping-container" style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 3px;">
                         <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
                             <thead style="background: #f9f9f9; position: sticky; top: 0;">
@@ -1046,10 +1046,10 @@
                     </div>
                     ${moreValuesNote}
                     <div class="inline-mapping-controls" style="margin-top: 8px;">
-                        <button type="button" class="button auto-map-inline-btn" data-column-index="${columnIndex}" style="font-size: 11px; padding: 3px 8px; height: auto;">
+                        <button type="button" class="button auto-map-inline-btn" data-column-index="${window.dt_admin_shared.escape(columnIndex)}" style="font-size: 11px; padding: 3px 8px; height: auto;">
                             Auto-map Similar
                         </button>
-                        <button type="button" class="button clear-inline-btn" data-column-index="${columnIndex}" style="font-size: 11px; padding: 3px 8px; height: auto;">
+                        <button type="button" class="button clear-inline-btn" data-column-index="${window.dt_admin_shared.escape(columnIndex)}" style="font-size: 11px; padding: 3px 8px; height: auto;">
                             Clear All
                         </button>
                         <span class="inline-mapping-count" style="font-size: 11px; color: #666; margin-left: 10px;">0 mapped</span>
@@ -1098,7 +1098,7 @@
 
     updateInlineMappingCount(columnIndex) {
       const $card = $(
-        `.column-mapping-card[data-column-index="${columnIndex}"]`,
+        `.column-mapping-card[data-column-index="${window.dt_admin_shared.escape(columnIndex)}"]`,
       );
       const totalSelects = $card.find('.inline-value-mapping-select').length;
       const mappedSelects = $card
@@ -1109,7 +1109,9 @@
 
       $card
         .find('.inline-mapping-count')
-        .text(`${mappedSelects} of ${totalSelects} mapped`);
+        .text(
+          `${window.dt_admin_shared.escape(mappedSelects)} of ${window.dt_admin_shared.escape(totalSelects)} mapped`,
+        );
     }
 
     updateFieldMappingFromInline(columnIndex, fieldKey) {
@@ -1267,14 +1269,14 @@
 
       const step4Html = `
                 <div class="dt-import-step-content">
-                    <h2>${dtImport.translations.previewImport}</h2>
-                    <p>Review the data before importing ${previewData.total_rows} records.</p>
+                    <h2>${window.dt_admin_shared.escape(dtImport.translations.previewImport)}</h2>
+                    <p>Review the data before importing ${window.dt_admin_shared.escape(previewData.total_rows)} records.</p>
                     
                     ${
                       previewData.is_estimated
                         ? `
                     <div class="notice notice-info">
-                        <p><strong>Large File Detected:</strong> Counts below are estimated based on a sample of ${previewData.sample_size} rows for faster processing. Actual numbers may vary slightly during import.</p>
+                        <p><strong>Large File Detected:</strong> Counts below are estimated based on a sample of ${window.dt_admin_shared.escape(previewData.sample_size)} rows for faster processing. Actual numbers may vary slightly during import.</p>
                     </div>
                     `
                         : ''
@@ -1282,25 +1284,25 @@
                     
                     <div class="preview-stats">
                         <div class="stat-card">
-                            <h3>${previewData.total_rows}</h3>
+                            <h3>${window.dt_admin_shared.escape(previewData.total_rows)}</h3>
                             <p>Total Records</p>
                         </div>
                         <div class="stat-card">
-                            <h3>${previewData.processable_count}${previewData.is_estimated ? '*' : ''}</h3>
+                            <h3>${window.dt_admin_shared.escape(previewData.processable_count)}${previewData.is_estimated ? '*' : ''}</h3>
                             <p>Will Import</p>
                         </div>
                         ${
                           totalWarnings > 0
                             ? `
                         <div class="stat-card warning-card">
-                            <h3>${totalWarnings}</h3>
+                            <h3>${window.dt_admin_shared.escape(totalWarnings)}</h3>
                             <p>Warnings</p>
                         </div>
                         `
                             : ''
                         }
                         <div class="stat-card error-card">
-                            <h3>${previewData.error_count}${previewData.is_estimated ? '*' : ''}</h3>
+                            <h3>${window.dt_admin_shared.escape(previewData.error_count)}${previewData.is_estimated ? '*' : ''}</h3>
                             <p>Errors</p>
                         </div>
                     </div>
@@ -1351,7 +1353,7 @@
       // Add import button to navigation area
       $('.dt-import-navigation').append(`
         <button type="button" class="button button-primary execute-import-btn">
-          Import ${previewData.processable_count} Records
+          Import ${window.dt_admin_shared.escape(previewData.processable_count)} Records
         </button>
       `);
     }
@@ -1410,7 +1412,7 @@
           const warningsHtml = hasWarnings
             ? `
             <tr class="warnings-row">
-              <td colspan="${headers.length + 1}">
+              <td colspan="${window.dt_admin_shared.escape(headers.length + 1)}">
                 <div class="row-warnings">
                   <strong><i class="mdi mdi-alert"></i> Warnings:</strong>
                   <ul>
@@ -1427,7 +1429,7 @@
           const errorsHtml = hasErrors
             ? `
             <tr class="errors-row">
-              <td colspan="${headers.length + 1}">
+              <td colspan="${window.dt_admin_shared.escape(headers.length + 1)}">
                 <div class="row-errors">
                   <strong><i class="mdi mdi-close-circle"></i> Errors:</strong>
                   <ul>
@@ -1441,10 +1443,10 @@
 
           // Add row number indicator with update status
           const rowNumberDisplay = willUpdate
-            ? `Row ${row.row_number} <span class="update-indicator">(UPDATE)</span>`
-            : `Row ${row.row_number}`;
+            ? `Row ${window.dt_admin_shared.escape(row.row_number)} <span class="update-indicator">(UPDATE)</span>`
+            : `Row ${window.dt_admin_shared.escape(row.row_number)}`;
 
-          return `<tr class="${rowClass}" data-row-number="${row.row_number}">
+          return `<tr class="${rowClass}" data-row-number="${window.dt_admin_shared.escape(row.row_number)}">
                     <td class="row-number">${rowNumberDisplay}</td>
                     ${cellsHtml}
                   </tr>${errorsHtml}${warningsHtml}`;
@@ -1561,7 +1563,9 @@
 
       if (progress > 0) {
         // Show percentage once progress is above 0%
-        $processingMessage.text(`Importing records... ${progress}%`);
+        $processingMessage.text(
+          `Importing records... ${window.dt_admin_shared.escape(progress)}%`,
+        );
       } else {
         // Show just "Importing Records" when starting (0%)
         $processingMessage.text('Importing Records');
@@ -1574,14 +1578,14 @@
                     <h2>Import Complete!</h2>
                     <div class="results-stats">
                         <div class="stat-card success-card">
-                            <h3>${results.records_imported}</h3>
+                            <h3>${window.dt_admin_shared.escape(results.records_imported)}</h3>
                             <p>Records Imported</p>
                         </div>
                         ${
                           results.errors && results.errors.length > 0
                             ? `
                             <div class="stat-card error-card">
-                                <h3>${results.errors.length}</h3>
+                                <h3>${window.dt_admin_shared.escape(results.errors.length)}</h3>
                                 <p>Errors</p>
                             </div>
                         `
@@ -1601,7 +1605,7 @@
                                       .map(
                                         (record) => `
                                         <li>
-                                            <a href="${record.permalink}" target="_blank" rel="noopener noreferrer">
+                                            <a href="${window.dt_admin_shared.escape(record.permalink)}" target="_blank" rel="noopener noreferrer">
                                                 ${this.escapeHtml(record.name)}
                                                 ${record.action === 'updated' ? '<span class="action-indicator updated">(UPDATED)</span>' : ''}
                                             </a>
@@ -1615,7 +1619,7 @@
                                   results.imported_records.length
                                     ? `
                                     <p class="records-note">
-                                        <em>Showing first ${results.imported_records.length} of ${results.records_imported} imported records</em>
+                                        <em>Showing first ${window.dt_admin_shared.escape(results.imported_records.length)} of ${window.dt_admin_shared.escape(results.records_imported)} imported records</em>
                                     </p>
                                 `
                                     : ''
@@ -1635,7 +1639,7 @@
                                 ${results.errors
                                   .map(
                                     (error) => `
-                                    <li>Row ${error.row}: ${this.escapeHtml(error.message)}</li>
+                                    <li>Row ${window.dt_admin_shared.escape(error.row)}: ${this.escapeHtml(error.message)}</li>
                                 `,
                                   )
                                   .join('')}
@@ -1732,12 +1736,12 @@
 
       if (!nameFieldMapped) {
         $('.summary-stats').html(`
-          <p>${mappedCount} of ${totalColumns} columns mapped</p>
+          <p>${window.dt_admin_shared.escape(mappedCount)} of ${window.dt_admin_shared.escape(totalColumns)} columns mapped</p>
           <p style="color: #dc3232; font-weight: bold;">⚠ Name field is required and must be mapped</p>
         `);
       } else {
         $('.summary-stats').html(`
-          <p>${mappedCount} of ${totalColumns} columns mapped</p>
+          <p>${window.dt_admin_shared.escape(mappedCount)} of ${window.dt_admin_shared.escape(totalColumns)} columns mapped</p>
           <p style="color: #46b450;">✓ Name field is mapped</p>
         `);
       }
@@ -1754,7 +1758,7 @@
                 <div class="processing-overlay">
                     <div class="processing-message">
                         <div class="dt-spinner"></div>
-                        <p>${message}</p>
+                        <p>${window.dt_admin_shared.escape(message)}</p>
                     </div>
                 </div>
             `);
@@ -2135,15 +2139,15 @@
 
       const geocodingSelectorHtml = `
         <div class="geocoding-service-section">
-          <h5 style="margin: 0 0 10px 0; font-size: 13px;">${dtImport.translations.geocodingService}</h5>
+          <h5 style="margin: 0 0 10px 0; font-size: 13px;">${window.dt_admin_shared.escape(dtImport.translations.geocodingService)}</h5>
           <div class="geocoding-service-container">
             <label>
-              <input type="checkbox" class="geocoding-service-checkbox" data-column-index="${columnIndex}" style="margin-right: 5px;">
-              ${dtImport.translations.enableGeocoding}
+              <input type="checkbox" class="geocoding-service-checkbox" data-column-index="${window.dt_admin_shared.escape(columnIndex)}" style="margin-right: 5px;">
+              ${window.dt_admin_shared.escape(dtImport.translations.enableGeocoding)}
             </label>
             <div class="geocoding-info" style="font-size: 11px; color: #666; margin-top: 5px;">
-              <p>${dtImport.translations.geocodingNote}</p>
-              <p>${dtImport.translations.geocodingOptional}</p>
+              <p>${window.dt_admin_shared.escape(dtImport.translations.geocodingNote)}</p>
+              <p>${window.dt_admin_shared.escape(dtImport.translations.geocodingOptional)}</p>
             </div>
           </div>
         </div>
@@ -2169,7 +2173,9 @@
       // Update the field mappings with the geocoding enabled state
       if (!this.fieldMappings[columnIndex]) {
         // This shouldn't happen since field mapping should be set first
-        console.warn(`No field mapping found for column ${columnIndex}`);
+        console.warn(
+          `No field mapping found for column ${window.dt_admin_shared.escape(columnIndex)}`,
+        );
         return;
       } else {
         // Convert boolean to service key for backend compatibility
@@ -2197,14 +2203,14 @@
 
       const duplicateCheckingHtml = `
         <div class="duplicate-checking-section">
-          <h5 style="margin: 0 0 10px 0; font-size: 13px;">${dtImport.translations.duplicateChecking}</h5>
+          <h5 style="margin: 0 0 10px 0; font-size: 13px;">${window.dt_admin_shared.escape(dtImport.translations.duplicateChecking)}</h5>
           <div class="duplicate-checking-container">
             <label>
-              <input type="checkbox" class="duplicate-checking-checkbox" data-column-index="${columnIndex}" style="margin-right: 5px;">
-              ${dtImport.translations.enableDuplicateChecking}
+              <input type="checkbox" class="duplicate-checking-checkbox" data-column-index="${window.dt_admin_shared.escape(columnIndex)}" style="margin-right: 5px;">
+              ${window.dt_admin_shared.escape(dtImport.translations.enableDuplicateChecking)}
             </label>
             <p style="font-size: 11px; color: #666; margin-top: 5px;">
-              ${dtImport.translations.duplicateCheckingNote}
+              ${window.dt_admin_shared.escape(dtImport.translations.duplicateCheckingNote)}
             </p>
           </div>
         </div>
@@ -2228,7 +2234,9 @@
       // Update the field mappings with the selected duplicate checking state
       if (!this.fieldMappings[columnIndex]) {
         // This shouldn't happen since field mapping should be set first
-        console.warn(`No field mapping found for column ${columnIndex}`);
+        console.warn(
+          `No field mapping found for column ${window.dt_admin_shared.escape(columnIndex)}`,
+        );
         return;
       } else {
         this.fieldMappings[columnIndex].duplicate_checking = isEnabled;
@@ -2282,10 +2290,10 @@
         <div class="date-format-section">
           <h5 style="margin: 0 0 10px 0; font-size: 13px;">Date Format</h5>
           <div class="date-format-container">
-            <label for="date-format-${columnIndex}" style="display: block; font-size: 12px; margin-bottom: 5px;">
+            <label for="date-format-${window.dt_admin_shared.escape(columnIndex)}" style="display: block; font-size: 12px; margin-bottom: 5px;">
               Select the format of dates in your CSV:
             </label>
-            <select id="date-format-${columnIndex}" class="date-format-select" data-column-index="${columnIndex}" style="width: 100%; padding: 5px;">
+            <select id="date-format-${window.dt_admin_shared.escape(columnIndex)}" class="date-format-select" data-column-index="${window.dt_admin_shared.escape(columnIndex)}" style="width: 100%; padding: 5px;">
               ${formatOptionsHtml}
             </select>
             <p style="font-size: 11px; color: #666; margin-top: 5px;">
@@ -2311,7 +2319,9 @@
       // Update the field mappings with the selected date format
       if (!this.fieldMappings[columnIndex]) {
         // This shouldn't happen since field mapping should be set first
-        console.warn(`No field mapping found for column ${columnIndex}`);
+        console.warn(
+          `No field mapping found for column ${window.dt_admin_shared.escape(columnIndex)}`,
+        );
         return;
       } else {
         this.fieldMappings[columnIndex].date_format = dateFormat;
@@ -2346,7 +2356,7 @@
                     <div class="field-help-content">
                         <ul>
                             <li><strong>Record ID</strong> (number): Links to that specific record</li>
-                            <li><strong>Name</strong> (text): Searches for existing ${postTypeName}</li>
+                            <li><strong>Name</strong> (text): Searches for existing ${window.dt_admin_shared.escape(postTypeName)}</li>
                             <li><strong>One match</strong>: Links to existing record</li>
                             <li><strong>No match</strong>: Creates new record</li>
                             <li><strong>Multiple matches</strong>: Connection skipped</li>
@@ -2426,7 +2436,7 @@
 
             users.forEach((user) => {
               $select.append(
-                `<option value="${user.ID}">${this.escapeHtml(user.name)}</option>`,
+                `<option value="${window.dt_admin_shared.escape(user.ID)}">${this.escapeHtml(user.name)}</option>`,
               );
             });
 

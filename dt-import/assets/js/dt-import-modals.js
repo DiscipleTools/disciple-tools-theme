@@ -56,7 +56,7 @@
                     <div class="modal-overlay"></div>
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h3>${dtImport.translations.createNewField}</h3>
+                            <h3>${window.dt_admin_shared.escape(dtImport.translations.createNewField)}</h3>
                             <button type="button" class="modal-close">&times;</button>
                         </div>
                         <div class="modal-body">
@@ -64,7 +64,7 @@
                                 <table class="form-table">
                                     <tr>
                                         <th scope="row">
-                                            <label for="new-field-name">${dtImport.translations.fieldName} *</label>
+                                            <label for="new-field-name">${window.dt_admin_shared.escape(dtImport.translations.fieldName)} *</label>
                                         </th>
                                         <td>
                                             <input type="text" id="new-field-name" name="field_name" required class="regular-text">
@@ -73,7 +73,7 @@
                                     </tr>
                                     <tr>
                                         <th scope="row">
-                                            <label for="new-field-type">${dtImport.translations.fieldType} *</label>
+                                            <label for="new-field-type">${window.dt_admin_shared.escape(dtImport.translations.fieldType)} *</label>
                                         </th>
                                         <td>
                                             <select id="new-field-type" name="field_type" required>
@@ -85,7 +85,7 @@
                                     </tr>
                                     <tr>
                                         <th scope="row">
-                                            <label for="new-field-description">${dtImport.translations.fieldDescription}</label>
+                                            <label for="new-field-description">${window.dt_admin_shared.escape(dtImport.translations.fieldDescription)}</label>
                                         </th>
                                         <td>
                                             <textarea id="new-field-description" name="field_description" rows="3" class="large-text"></textarea>
@@ -107,13 +107,13 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <input type="hidden" name="post_type" value="${this.dtImport.selectedPostType}">
-                                <input type="hidden" name="column_index" value="${columnIndex}">
+                                <input type="hidden" name="post_type" value="${window.dt_admin_shared.escape(this.dtImport.selectedPostType)}">
+                                <input type="hidden" name="column_index" value="${window.dt_admin_shared.escape(columnIndex)}">
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="button cancel-field-btn">Cancel</button>
-                            <button type="button" class="button button-primary save-field-btn">${dtImport.translations.createField}</button>
+                            <button type="button" class="button button-primary save-field-btn">${window.dt_admin_shared.escape(dtImport.translations.createField)}</button>
                         </div>
                     </div>
                 </div>
@@ -138,7 +138,7 @@
     getFieldTypeOptions() {
       return Object.entries(dtImport.fieldTypes)
         .map(([key, label]) => {
-          return `<option value="${key}">${label}</option>`;
+          return `<option value="${window.dt_admin_shared.escape(key)}">${window.dt_admin_shared.escape(label)}</option>`;
         })
         .join('');
     }
@@ -147,8 +147,8 @@
       const optionIndex = $('.field-option-row').length;
       const optionHtml = `
                 <div class="field-option-row" style="margin-bottom: 10px;">
-                    <input type="text" placeholder="Option key" name="option_keys[]" value="${key}" style="width: 200px; margin-right: 10px;">
-                    <input type="text" placeholder="Option label" name="option_labels[]" value="${label}" style="width: 200px; margin-right: 10px;">
+                    <input type="text" placeholder="Option key" name="option_keys[]" value="${window.dt_admin_shared.escape(key)}" style="width: 200px; margin-right: 10px;">
+                    <input type="text" placeholder="Option label" name="option_labels[]" value="${window.dt_admin_shared.escape(label)}" style="width: 200px; margin-right: 10px;">
                     <button type="button" class="button remove-option-btn">Remove</button>
                 </div>
             `;
@@ -311,11 +311,11 @@
       fieldOptions = {},
     ) {
       const $select = $(
-        `.field-mapping-select[data-column-index="${columnIndex}"]`,
+        `.field-mapping-select[data-column-index="${window.dt_admin_shared.escape(columnIndex)}"]`,
       );
 
       // Add new option before "Create New Field"
-      const newOption = `<option value="${fieldKey}" data-field-type="${fieldType}" selected>${fieldName} (${fieldType})</option>`;
+      const newOption = `<option value="${window.dt_admin_shared.escape(fieldKey)}" data-field-type="${window.dt_admin_shared.escape(fieldType)}" selected>${window.dt_admin_shared.escape(fieldName)} (${window.dt_admin_shared.escape(fieldType)})</option>`;
       $select.find('option[value="create_new"]').before(newOption);
 
       // Clear the frontend cache to force refresh of field settings
@@ -492,11 +492,13 @@
     switchTab(targetTab) {
       // Update tab navigation
       $('.dt-import-docs-tabs a').removeClass('active');
-      $(`.dt-import-docs-tabs a[href="#${targetTab}"]`).addClass('active');
+      $(
+        `.dt-import-docs-tabs a[href="#${window.dt_admin_shared.escape(targetTab)}"]`,
+      ).addClass('active');
 
       // Show/hide tab content
       $('.dt-import-docs-tab-content').removeClass('active');
-      $(`#${targetTab}`).addClass('active');
+      $(`#${window.dt_admin_shared.escape(targetTab)}`).addClass('active');
     }
   }
 
