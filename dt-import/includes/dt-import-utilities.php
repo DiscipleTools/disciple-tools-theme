@@ -369,17 +369,4 @@ class DT_CSV_Import_Utilities {
         // Ensure the file path is within the temp directory
         return strpos( $real_file_path, $real_temp_dir ) === 0;
     }
-
-    /**
-     * Log import activity
-     */
-    public static function log_import_activity( $session_id, $message, $level = 'info' ) {
-        dt_write_log([
-            'component' => 'dt_import',
-            'session_id' => $session_id,
-            'level' => $level,
-            'message' => $message,
-            'timestamp' => current_time( 'mysql' )
-        ]);
-    }
 }
