@@ -63,16 +63,11 @@ class DT_Theme_CSV_Import {
     }
 
     public function activate() {
-        // Create upload directory for temporary CSV files
-        $upload_dir = wp_upload_dir();
-        $dt_import_dir = $upload_dir['basedir'] . '/dt-import-temp/';
+        // Create secure temp directory outside web root
+        $dt_import_dir = get_temp_dir() . 'dt-import-temp/';
 
         if ( !file_exists( $dt_import_dir ) ) {
             wp_mkdir_p( $dt_import_dir );
-
-            // Create .htaccess file to prevent direct access
-            $htaccess_content = "Order deny,allow\nDeny from all\n";
-            file_put_contents( $dt_import_dir . '.htaccess', $htaccess_content );
         }
     }
 
@@ -89,8 +84,8 @@ class DT_Theme_CSV_Import {
         set_transient( 'dt_import_cleanup_running', 1, 300 ); // 5 minutes lock
 
         try {
-            $upload_dir = wp_upload_dir();
-            $dt_import_dir = $upload_dir['basedir'] . '/dt-import-temp/';
+            // Use secure temp directory outside web root
+            $dt_import_dir = get_temp_dir() . 'dt-import-temp/';
 
             if ( file_exists( $dt_import_dir ) ) {
                 $files = glob( $dt_import_dir . '*' );

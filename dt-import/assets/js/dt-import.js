@@ -474,6 +474,10 @@
       this.currentStep = 3;
       this.updateStepIndicator();
 
+      // Extract metadata and remove it from suggestions
+      const meta = mappingSuggestions['_meta'] || {};
+      delete mappingSuggestions['_meta'];
+
       const columnsHtml = Object.entries(mappingSuggestions)
         .map(([index, mapping]) => {
           return this.createColumnMappingCard(index, mapping);
@@ -484,6 +488,13 @@
                 <div class="dt-import-step-content">
                     <h2>${dtImport.translations.mapFields}</h2>
                     <p>Map each CSV column to the appropriate field in Disciple.Tools.</p>
+                    
+                    <div class="name-field-warning" style="display: none;">
+                        <div class="notice notice-error">
+                            <p><strong><i class="mdi mdi-alert"></i> Name Field Required</strong></p>
+                            <p>The name field is required for all imports. Please map at least one CSV column to the name field before proceeding.</p>
+                        </div>
+                    </div>
                     
                     <div class="mapping-container">
                         <div class="mapping-columns">
@@ -570,8 +581,9 @@
           // Note: We don't modify doNotImportColumns here since we're just restoring the UI
         });
 
-        // Update the summary after mappings are restored
+        // Update the summary and name field warning after mappings are restored
         this.updateMappingSummary();
+        this.updateNameFieldWarning();
       }, 100);
 
       this.updateNavigation();
@@ -642,7 +654,7 @@
     getFieldOptions(suggestedField) {
       const fieldSettings = this.getFieldSettingsForPostType();
 
-      // Filter to ensure we have valid field configurations (removed hidden field filter)
+      // Filter to ensure we have valid field configurations
       const validFields = Object.entries(fieldSettings).filter(
         ([fieldKey, fieldConfig]) => {
           return fieldConfig && fieldConfig.name && fieldConfig.type;
@@ -654,8 +666,10 @@
           const selected = fieldKey === suggestedField ? 'selected' : '';
           const fieldName = this.escapeHtml(fieldConfig.name);
           const fieldType = this.escapeHtml(fieldConfig.type);
+          const isNameField = fieldKey === 'name';
+          const nameIndicator = isNameField ? ' (Required)' : '';
           return `<option value="${fieldKey}" ${selected} data-field-type="${fieldType}">
-                    ${fieldName} (${fieldType})
+                    ${fieldName}${nameIndicator} (${fieldType})
                 </option>`;
         })
         .join('');
@@ -669,6 +683,65 @@
       // Skip processing if create_new is selected - modals file will handle it
       if (fieldKey === 'create_new') {
         return;
+      }
+
+      // Check if we're trying to unmap the name field
+      const previousMapping = this.fieldMappings[columnIndex];
+      if (
+        previousMapping &&
+        previousMapping.field_key === 'name' &&
+        (!fieldKey || fieldKey === '')
+      ) {
+        // Check if there's another column mapped to name
+        const otherNameMapping = Object.entries(this.fieldMappings).find(
+          ([idx, mapping]) =>
+            idx != columnIndex && mapping.field_key === 'name',
+        );
+
+        if (!otherNameMapping) {
+          // Don't allow unmapping the last name field
+          this.showError(
+            'The name field is required and cannot be unmapped. Please map another column to the name field first.',
+          );
+          $select.val(previousMapping.field_key); // Restore previous selection
+          return;
+        }
+      }
+
+      // Check if we're trying to map to a field that's already mapped (especially name field)
+      if (fieldKey && fieldKey !== '') {
+        const existingMapping = Object.entries(this.fieldMappings).find(
+          ([idx, mapping]) =>
+            idx != columnIndex && mapping.field_key === fieldKey,
+        );
+
+        if (existingMapping) {
+          if (fieldKey === 'name') {
+            // For name field, warn and ask if they want to replace
+            const confirmReplace = confirm(
+              `The name field is already mapped to column "${existingMapping[0]}". Do you want to replace it with this column?`,
+            );
+
+            if (!confirmReplace) {
+              $select.val(previousMapping ? previousMapping.field_key : '');
+              return;
+            } else {
+              // Remove the existing mapping
+              delete this.fieldMappings[existingMapping[0]];
+              // Update the UI for the previously mapped column
+              $(
+                `.field-mapping-select[data-column-index="${existingMapping[0]}"]`,
+              ).val('');
+            }
+          } else {
+            // For other fields, just warn and prevent duplicate mapping
+            this.showError(
+              `The ${fieldKey} field is already mapped to another column. Please choose a different field.`,
+            );
+            $select.val(previousMapping ? previousMapping.field_key : '');
+            return;
+          }
+        }
       }
 
       // Store mapping - properly handle empty values for "do not import"
@@ -689,6 +762,7 @@
       // Show field-specific options if needed
       this.showFieldSpecificOptions(columnIndex, fieldKey);
       this.updateMappingSummary();
+      this.updateNameFieldWarning();
     }
 
     showFieldSpecificOptions(columnIndex, fieldKey) {
@@ -1067,8 +1141,21 @@
 
     // Step 4: Preview & Import
     saveFieldMappings() {
+      // Check if at least one field is mapped
       if (Object.keys(this.fieldMappings).length === 0) {
         this.showError('Please map at least one field before proceeding.');
+        return;
+      }
+
+      // Check if name field is mapped (critical requirement)
+      const nameFieldMapped = Object.values(this.fieldMappings).some(
+        (mapping) => mapping.field_key === 'name',
+      );
+
+      if (!nameFieldMapped) {
+        this.showError(
+          'The name field is required and must be mapped to a CSV column before proceeding with the import.',
+        );
         return;
       }
 
@@ -1616,8 +1703,14 @@
           return !!this.selectedPostType;
         case 2:
           return !!this.csvData;
-        case 3:
-          return Object.keys(this.fieldMappings).length > 0;
+        case 3: {
+          // Check if at least one field is mapped AND the name field is mapped
+          const hasFieldMappings = Object.keys(this.fieldMappings).length > 0;
+          const nameFieldMapped = Object.values(this.fieldMappings).some(
+            (mapping) => mapping.field_key === 'name',
+          );
+          return hasFieldMappings && nameFieldMapped;
+        }
         default:
           return true;
       }
@@ -1627,12 +1720,30 @@
       const mappedCount = Object.keys(this.fieldMappings).length;
       const totalColumns = $('.column-mapping-card').length;
 
-      $('.mapping-summary').show();
-      $('.summary-stats').html(`
-                <p>${mappedCount} of ${totalColumns} columns mapped</p>
-            `);
+      // Check if name field is mapped
+      const nameFieldMapped = Object.values(this.fieldMappings).some(
+        (mapping) => mapping.field_key === 'name',
+      );
 
-      $('.dt-import-next').prop('disabled', mappedCount === 0);
+      $('.mapping-summary').show();
+
+      if (!nameFieldMapped) {
+        $('.summary-stats').html(`
+          <p>${mappedCount} of ${totalColumns} columns mapped</p>
+          <p style="color: #dc3232; font-weight: bold;">⚠ Name field is required and must be mapped</p>
+        `);
+      } else {
+        $('.summary-stats').html(`
+          <p>${mappedCount} of ${totalColumns} columns mapped</p>
+          <p style="color: #46b450;">✓ Name field is mapped</p>
+        `);
+      }
+
+      // Disable next button if no mappings OR name field is not mapped
+      $('.dt-import-next').prop(
+        'disabled',
+        mappedCount === 0 || !nameFieldMapped,
+      );
     }
 
     showProcessing(message) {
@@ -2542,6 +2653,19 @@
           }
         }
       }, 50);
+    }
+
+    updateNameFieldWarning() {
+      // Check if name field is mapped
+      const nameFieldMapped = Object.values(this.fieldMappings).some(
+        (mapping) => mapping.field_key === 'name',
+      );
+
+      if (nameFieldMapped) {
+        $('.name-field-warning').hide();
+      } else {
+        $('.name-field-warning').show();
+      }
     }
   }
 

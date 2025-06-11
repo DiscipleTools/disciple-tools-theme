@@ -109,8 +109,8 @@ class DT_CSV_Import_Utilities {
      * Save uploaded file to temporary directory
      */
     public static function save_uploaded_file( $file_data ) {
-        $upload_dir = wp_upload_dir();
-        $temp_dir = $upload_dir['basedir'] . '/dt-import-temp/';
+        // Use WordPress temp directory which is outside web root
+        $temp_dir = get_temp_dir() . 'dt-import-temp/';
 
         // Ensure directory exists
         if ( !file_exists( $temp_dir ) ) {
@@ -223,8 +223,8 @@ class DT_CSV_Import_Utilities {
         set_transient( $lock_key, 1, 300 ); // 5 minutes lock
 
         try {
-            $upload_dir = wp_upload_dir();
-            $temp_dir = $upload_dir['basedir'] . '/dt-import-temp/';
+            // Use WordPress temp directory which is outside web root
+            $temp_dir = get_temp_dir() . 'dt-import-temp/';
 
             if ( !file_exists( $temp_dir ) ) {
                 return;
@@ -345,8 +345,8 @@ class DT_CSV_Import_Utilities {
             return false;
         }
 
-        $upload_dir = wp_upload_dir();
-        $temp_dir = $upload_dir['basedir'] . '/dt-import-temp/';
+        // Use WordPress temp directory which is outside web root
+        $temp_dir = get_temp_dir() . 'dt-import-temp/';
         $real_temp_dir = realpath( $temp_dir );
 
         // If temp directory doesn't exist, it's invalid

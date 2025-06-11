@@ -512,17 +512,7 @@ class DT_CSV_Import_Processor {
         } elseif ( isset( $field_settings['name'] ) ) {
             $post_data['name'] = $name;
         } else {
-            // Fallback - use the first text field or 'title'
-            foreach ( $field_settings as $field_key => $field_config ) {
-                if ( $field_config['type'] === 'text' ) {
-                    $post_data[$field_key] = $name;
-                    break;
-                }
-            }
-
-            if ( empty( $post_data ) ) {
-                $post_data['title'] = $name; // Final fallback
-            }
+            throw new Exception( "No title field found for post type: {$post_type}" );
         }
 
         // Create the post
@@ -924,7 +914,7 @@ class DT_CSV_Import_Processor {
         $import_options = $payload['import_options'] ?? [];
         $post_type = $session['post_type'];
 
-        // Load CSV data from file (no longer stored in payload)
+        // Load CSV data from file
         $file_path = $payload['file_path'] ?? '';
         if ( empty( $file_path ) || !file_exists( $file_path ) ) {
             return new WP_Error( 'csv_file_not_found', 'CSV file not found' );

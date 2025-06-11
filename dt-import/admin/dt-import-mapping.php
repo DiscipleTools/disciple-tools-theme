@@ -91,6 +91,7 @@ class DT_CSV_Import_Mapping {
         $post_settings = DT_Posts::get_post_settings( $post_type );
 
         $mapping_suggestions = [];
+        $name_field_mapped = false;
 
         foreach ( $headers as $index => $column_name ) {
             $suggestion = self::suggest_field_mapping( $column_name, $field_settings, $post_settings, $post_type );
@@ -101,6 +102,11 @@ class DT_CSV_Import_Mapping {
                 $suggestion = null;
             }
 
+            // Check if this mapping suggests the name field
+            if ( $suggestion === 'name' ) {
+                $name_field_mapped = true;
+            }
+
             $mapping_suggestions[$index] = [
                 'column_name' => $column_name,
                 'suggested_field' => $suggestion,
@@ -109,7 +115,51 @@ class DT_CSV_Import_Mapping {
             ];
         }
 
+        // If no column was automatically mapped to the name field, try to find the best candidate
+        if ( !$name_field_mapped ) {
+            $name_column_index = self::find_best_name_column( $headers );
+            if ( $name_column_index !== null ) {
+                // Update the suggested mapping for the best name column
+                $mapping_suggestions[$name_column_index]['suggested_field'] = 'name';
+                $mapping_suggestions[$name_column_index]['has_match'] = true;
+                $name_field_mapped = true;
+            }
+        }
+
+        // Add metadata about whether name field was mapped
+        $mapping_suggestions['_meta'] = [
+            'name_field_mapped' => $name_field_mapped,
+            'post_type' => $post_type
+        ];
+
         return $mapping_suggestions;
+    }
+
+    /**
+     * Find the best column to map to the name field
+     */
+    private static function find_best_name_column( $headers ) {
+        // Look for columns that are likely to contain name data
+        $name_patterns = [ 'name', 'title', 'full_name', 'fullname', 'contact_name', 'person_name', 'display_name' ];
+
+        foreach ( $headers as $index => $column_name ) {
+            $normalized = self::normalize_string_for_matching( $column_name );
+            foreach ( $name_patterns as $pattern ) {
+                if ( $normalized === self::normalize_string_for_matching( $pattern ) ) {
+                    return $index;
+                }
+            }
+        }
+
+        // If no obvious name column found, look for partial matches
+        foreach ( $headers as $index => $column_name ) {
+            $normalized = self::normalize_string_for_matching( $column_name );
+            if ( strpos( $normalized, 'name' ) !== false || strpos( $normalized, 'title' ) !== false ) {
+                return $index;
+            }
+        }
+
+        return null; // No suitable column found
     }
 
     /**
@@ -425,6 +475,19 @@ class DT_CSV_Import_Mapping {
     public static function validate_mapping( $mapping_data, $post_type ) {
         $errors = [];
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
+
+        // First, check if name field is mapped - this is always required
+        $name_field_mapped = false;
+        foreach ( $mapping_data as $column_index => $mapping ) {
+            if ( !empty( $mapping['field_key'] ) && $mapping['field_key'] === 'name' ) {
+                $name_field_mapped = true;
+                break;
+            }
+        }
+
+        if ( !$name_field_mapped ) {
+            $errors[] = __( 'The name field is required and must be mapped to a CSV column before proceeding with the import.', 'disciple_tools' );
+        }
 
         foreach ( $mapping_data as $column_index => $mapping ) {
             if ( empty( $mapping['field_key'] ) || $mapping['field_key'] === 'skip' ) {

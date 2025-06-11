@@ -1949,3 +1949,37 @@ body.modal-open {
         font-size: 12px;
     }
 }
+
+
+
+/* Name Field Warning Banner */
+.name-field-warning {
+    margin-bottom: 20px;
+}
+
+.name-field-warning .notice {
+    border-left: 4px solid #d63638;
+    background: #fef7f7;
+    padding: 12px;
+    margin: 0;
+    border-radius: 3px;
+}
+
+.name-field-warning .notice p {
+    margin: 0;
+    color: #d63638;
+}
+
+.name-field-warning .notice p:first-child {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.name-field-warning .notice p:last-child {
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.name-field-warning .mdi {
+    margin-right: 5px;
+}
