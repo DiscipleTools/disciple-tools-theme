@@ -1657,6 +1657,9 @@
 
       // Mark step 4 as completed (green) since import is successful
       this.markStepAsCompleted();
+
+      // Remove the import button from navigation
+      this.updateNavigation();
     }
 
     // Utility methods
