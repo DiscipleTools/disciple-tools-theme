@@ -227,7 +227,23 @@ if ( !empty( $custom_logo_url ) ) {
                     </div>
                 <?php endif; ?>
             </div>
-            <div class="title-bar-right"></div>
+            <div class="title-bar-right">
+
+                <!-- advanced search -->
+                <?php if ( isset( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) && empty( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) ) : ?>
+                    <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? '#' ); ?>">
+                        <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['advanced_search']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
+                    </a>
+                <?php endif; // end advanced search ?>
+
+                <!-- add new -->
+                <button style="margin-left: 5px;">
+                    <a href="<?php echo esc_url( home_url( '/contacts/new' ) ); ?>">
+                        <img title="<?php echo esc_html( __( 'Add Record', 'disciple_tools' ) ); ?>" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ); ?>" style="width: 24px;">
+                    </a>
+                </button>
+
+            </div>
         </div>
 
         <?php // hook for nav header below menu bar
