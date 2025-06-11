@@ -945,9 +945,9 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $field_key = $post_submission['field_key'];
             $post_type = $post_submission['post_type'];
             $new_field_option_name = $post_submission['field_option_name'];
-            $new_field_option_key = dt_create_field_key( $new_field_option_name );
-            $new_field_option_description = $post_submission['field_option_description'];
-            $field_option_icon = $post_submission['field_option_icon'];
+            $new_field_option_key = $post_submission['field_option_key'] ?? dt_create_field_key( $new_field_option_name );
+            $new_field_option_description = $post_submission['field_option_description'] ?? '';
+            $field_option_icon = $post_submission['field_option_icon'] ?? '';
 
             $custom_field_options = dt_get_option( 'dt_field_customizations' );
             $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key] = [
@@ -980,8 +980,8 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $post_type = $post_submission['post_type'];
         $field_option_key = $post_submission['field_option_key'];
         $new_field_option_label = $post_submission['new_field_option_label'];
-        $new_field_option_description = $post_submission['new_field_option_description'];
-        $field_option_icon = $post_submission['field_option_icon'];
+        $new_field_option_description = $post_submission['new_field_option_description'] ?? '';
+        $field_option_icon = $post_submission['field_option_icon'] ?? '';
 
         $fields = DT_Posts::get_post_field_settings( $post_type, false, true );
         $field_options = $fields[$field_key]['default'] ?? [];

@@ -1872,13 +1872,17 @@ class Disciple_Tools_Posts
                         if ( in_array( $field['value'], $existing_values, true ) ){
                             continue;
                         }
-                        $potential_error = self::add_post_contact_method( $post_settings, $post_id, $field['key'], $field['value'], $field );
-                        if ( is_wp_error( $potential_error ) ){
-                            return $potential_error;
-                        }
+                        $is_address_to_geocode = $details_key === 'contact_address' && isset( $field['geolocate'] ) && !empty( $field['geolocate'] );
+                        $geocode_potential_error = null;
                         // Geocode any identified addresses ahead of field creation
-                        if ( $details_key === 'contact_address' && isset( $field['geolocate'] ) && !empty( $field['geolocate'] ) ){
-                            $potential_error = self::geolocate_addresses( $post_id, $post_settings['post_type'], $details_key, $field['value'] );
+                        if ( $is_address_to_geocode ){
+                            $geocode_potential_error = self::geolocate_addresses( $post_id, $post_settings['post_type'], $details_key, $field['value'] );
+                        }
+                        if ( !$is_address_to_geocode || is_wp_error( $geocode_potential_error ) || empty( $geocode_potential_error ) ){
+                            $potential_error = self::add_post_contact_method( $post_settings, $post_id, $field['key'], $field['value'], $field );
+                            if ( is_wp_error( $potential_error ) ){
+                                return $potential_error;
+                            }
                         }
                     }
                 } else {
