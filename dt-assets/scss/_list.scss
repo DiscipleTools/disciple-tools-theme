@@ -566,3 +566,129 @@ table.js-list i.list-image {
         position: relative;
     }
 }
+
+// Field picker styles
+.field-search-option {
+    display: flex;
+    align-items: center;
+    
+    &:hover {
+        background-color: #f0f0f0;
+    }
+    
+    &:last-child {
+        border-bottom: none !important;
+    }
+    
+    .dt-icon,
+    img,
+    svg,
+    i {
+        width: 16px !important;
+        height: 16px !important;
+        margin-right: 8px;
+        flex-shrink: 0;
+        display: block;
+    }
+    
+    // Add placeholder for options without icons to align text consistently
+    &.no-icon::before {
+        content: '';
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        flex-shrink: 0;
+        display: inline-block;
+    }
+    
+    > span {
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.enabled-field-tag {
+    display: inline-flex !important;
+    align-items: center;
+    height: 28px;
+    line-height: 1;
+    vertical-align: top; // Ensure consistent baseline alignment
+    
+    // Target all icon types directly
+    > .dt-icon,
+    > img,
+    > svg,
+    > i {
+        width: 14px !important;
+        height: 14px !important;
+        margin-right: 8px; // Spacing between icon and text
+        flex-shrink: 0;
+        display: block;
+    }
+    
+    // Apply white filter to SVGs only
+    > img {
+        filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
+    }
+    
+    // Font icons need white color in tags for visibility
+    > i {
+        color: white !important;
+    }
+    
+    // Legacy support for nested icons
+    .dt-icon {
+        width: 14px;
+        height: 14px;
+        margin-right: 12px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        // Ensure all icon types are properly aligned
+        svg, img, i {
+            width: 14px;
+            height: 14px;
+            display: block;
+        }
+        
+        // Handle font icons specifically
+        &::before {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 14px;
+            height: 14px;
+        }
+    }
+    
+    // No placeholder needed for tags without icons - let them start flush left
+    
+    > span {
+        flex-shrink: 0; // Prevent text from shrinking
+        white-space: nowrap; // Prevent text wrapping
+        display: flex;
+        align-items: center;
+        height: 100%; // Take full height of parent
+    }
+    
+    .remove-field-btn {
+        margin-left: 8px; // Spacing before remove button
+        flex-shrink: 0;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        line-height: 1;
+        padding: 0;
+        
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            border-radius: 2px;
+        }
+    }
+}
