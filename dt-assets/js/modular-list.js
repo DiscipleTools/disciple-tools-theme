@@ -812,18 +812,218 @@
   $('#choose_fields_to_show_in_table').on('click', function () {
     $('#list_column_picker').toggle();
   });
-  $('#save_column_choices').on('click', function () {
-    let new_selected = [];
-    $('#list_column_picker input:checked').each((index, elem) => {
-      new_selected.push($(elem).val());
-    });
-    fields_to_show_in_table = window.lodash.intersection(
-      fields_to_show_in_table,
-      new_selected,
-    ); // remove unchecked
-    fields_to_show_in_table = window.lodash.uniq(
-      window.lodash.union(fields_to_show_in_table, new_selected),
+  // Enhanced Field Selection UI
+  // Store original dropdown content for restoration after "no results" message
+  const originalDropdownContent = $('#field_search_dropdown').html();
+
+  // Show dropdown on focus
+  $('#field_search_input').on('focus', function () {
+    showFieldDropdown();
+  });
+
+  // Field search functionality - filters dropdown options based on user input
+  $('#field_search_input').on('input', function () {
+    const searchTerm = $(this).val().toLowerCase();
+
+    if (searchTerm.length === 0) {
+      // Show all available options when search is empty
+      showFieldDropdown();
+      return;
+    }
+
+    filterFieldDropdown(searchTerm);
+  });
+
+  function showFieldDropdown() {
+    const dropdown = $('#field_search_dropdown');
+
+    // Restore original content if it was replaced with "no results" message
+    if (!dropdown.find('.field-search-option').length) {
+      dropdown.html(originalDropdownContent);
+    }
+
+    const options = dropdown.find('.field-search-option');
+    const selectedFields = JSON.parse(
+      $('#selected_fields_input').val() || '[]',
     );
+    let hasVisibleOptions = false;
+
+    // Show all options that aren't already selected
+    options.each(function () {
+      const fieldKey = $(this).data('field-key');
+
+      if (selectedFields.includes(fieldKey)) {
+        $(this).hide();
+      } else {
+        $(this).show();
+        hasVisibleOptions = true;
+      }
+    });
+
+    if (hasVisibleOptions) {
+      dropdown.show();
+    } else {
+      dropdown.hide();
+    }
+  }
+
+  function filterFieldDropdown(searchTerm) {
+    const dropdown = $('#field_search_dropdown');
+
+    // Restore original content if it was replaced with "no results" message
+    if (!dropdown.find('.field-search-option').length) {
+      dropdown.html(originalDropdownContent);
+    }
+
+    const options = dropdown.find('.field-search-option');
+    const selectedFields = JSON.parse(
+      $('#selected_fields_input').val() || '[]',
+    );
+    let hasVisibleOptions = false;
+
+    options.each(function () {
+      const fieldName = $(this).data('field-name');
+      const fieldKey = $(this).data('field-key');
+
+      // Hide if already selected
+      if (selectedFields.includes(fieldKey)) {
+        $(this).hide();
+        return;
+      }
+
+      // Show/hide based on search term
+      if (
+        fieldName.includes(searchTerm) ||
+        fieldKey.toLowerCase().includes(searchTerm)
+      ) {
+        $(this).show();
+        hasVisibleOptions = true;
+      } else {
+        $(this).hide();
+      }
+    });
+
+    if (hasVisibleOptions) {
+      dropdown.show();
+    } else {
+      // Show "no results" message if search term exists but no matches
+      dropdown
+        .html('<div class="no-fields-found">No fields found</div>')
+        .show();
+    }
+  }
+
+  // Handle keyboard navigation
+  $('#field_search_input').on('keydown', function (e) {
+    const dropdown = $('#field_search_dropdown');
+    if (e.key === 'Escape') {
+      dropdown.hide();
+      $(this).val('');
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const firstVisibleOption = dropdown
+        .find('.field-search-option:visible')
+        .first();
+      if (firstVisibleOption.length) {
+        firstVisibleOption.click();
+      }
+    }
+  });
+
+  // Hide dropdown when clicking outside
+  $(document).on('click', function (e) {
+    if (
+      !$(e.target).closest('#field_search_input, #field_search_dropdown').length
+    ) {
+      $('#field_search_dropdown').hide();
+    }
+  });
+
+  // Add field when clicking on dropdown option
+  $(document).on('click', '.field-search-option', function () {
+    const fieldKey = $(this).data('field-key');
+    const fieldName = $(this).find('span').text();
+    const fieldIcon = $(this).find('.dt-icon').prop('outerHTML') || '';
+    const hasIcon = fieldIcon.length > 0;
+    const tagClasses = hasIcon
+      ? 'enabled-field-tag'
+      : 'enabled-field-tag no-icon';
+
+    // Add to selected fields
+    let selectedFields;
+    try {
+      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
+    } catch (e) {
+      console.error('Error parsing selected fields JSON:', e);
+      selectedFields = [];
+    }
+    if (!selectedFields.includes(fieldKey)) {
+      selectedFields.push(fieldKey);
+      $('#selected_fields_input').val(JSON.stringify(selectedFields));
+
+      // Add visual tag
+      const tag = `<span class="${tagClasses} enabled-field-tag-inline" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(fieldKey)}">
+                     ${fieldIcon}
+                     <span>${window.SHAREDFUNCTIONS.escapeHTML(fieldName)}</span>
+                     <button type="button" class="remove-field-btn remove-field-btn-inline" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(fieldKey)}">×</button>
+                   </span>`;
+
+      const container = $('#enabled_fields_container');
+      // Remove "no fields selected" message if present
+      container.find('span:contains("No fields selected")').remove();
+      container.append(tag);
+    }
+
+    // Clear search and close dropdown
+    $('#field_search_input').val('');
+    $('#field_search_dropdown').hide();
+  });
+
+  // Remove field when clicking X button
+  $(document).on('click', '.remove-field-btn', function () {
+    const fieldKey = $(this).data('field-key');
+
+    // Remove from selected fields
+    let selectedFields;
+    try {
+      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
+    } catch (e) {
+      console.error('Error parsing selected fields JSON:', e);
+      selectedFields = [];
+    }
+    selectedFields = selectedFields.filter((key) => key !== fieldKey);
+    $('#selected_fields_input').val(JSON.stringify(selectedFields));
+
+    // Remove visual tag
+    $(this).closest('.enabled-field-tag').remove();
+
+    // Show "no fields selected" message if empty
+    if (selectedFields.length === 0) {
+      $('#enabled_fields_container').html(
+        '<span class="no-fields-message">No fields selected</span>',
+      );
+    }
+
+    // Refresh dropdown if it's currently visible to show the newly available field
+    if ($('#field_search_dropdown').is(':visible')) {
+      const searchTerm = $('#field_search_input').val().toLowerCase();
+      if (searchTerm.length === 0) {
+        showFieldDropdown();
+      } else {
+        filterFieldDropdown(searchTerm);
+      }
+    }
+  });
+
+  $('#save_column_choices').on('click', function () {
+    let selectedFields;
+    try {
+      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
+    } catch (e) {
+      console.error('Error parsing selected fields JSON:', e);
+      selectedFields = [];
+    }
+    fields_to_show_in_table = selectedFields;
     window.SHAREDFUNCTIONS.save_json_cookie(
       'fields_to_show_in_table',
       fields_to_show_in_table,
@@ -833,6 +1033,10 @@
   });
   $('#reset_column_choices').on('click', function () {
     fields_to_show_in_table = [];
+    $('#selected_fields_input').val('[]');
+    $('#enabled_fields_container').html(
+      '<span class="no-fields-message">No fields selected</span>',
+    );
     window.SHAREDFUNCTIONS.save_json_cookie(
       'fields_to_show_in_table',
       fields_to_show_in_table,

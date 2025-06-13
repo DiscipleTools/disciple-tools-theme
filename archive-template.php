@@ -530,32 +530,85 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                             }
                         }
 
+                        // Get enabled fields (either from cookie or defaults)
+                        $enabled_fields = [];
+                        if ( empty( $fields_to_show_in_table ) ) {
+                            // Use default fields if no cookie is set
+                            foreach ( $post_settings['fields'] as $field_key => $field_values ) {
+                                if ( !empty( $field_values['show_in_table'] ) && empty( $field_values['hidden'] ) ) {
+                                    $enabled_fields[] = $field_key;
+                                }
+                            }
+                        } else {
+                            $enabled_fields = $fields_to_show_in_table;
+                        }
+
                         //order fields alphabetically by Name
                         uasort( $post_settings['fields'], function ( $a, $b ){
                             return $a['name'] <=> $b['name'];
                         });
 
                         ?>
-                        <ul class="ul-no-bullets" style="">
-                        <?php foreach ( $post_settings['fields'] as $field_key => $field_values ):
-                            if ( !empty( $field_values['hidden'] ) ){
-                                continue;
-                            }
-                            ?>
-                            <li style="" class="">
-                                <label style="margin-right:15px; cursor:pointer">
-                                    <input type="checkbox" value="<?php echo esc_html( $field_key ); ?>"
-                                           <?php echo esc_html( in_array( $field_key, $fields_to_show_in_table ) ? 'checked' : '' ); ?>
-                                           <?php echo esc_html( ( empty( $fields_to_show_in_table ) && !empty( $field_values['show_in_table'] ) ) ? 'checked' : '' ); ?>
-                                           style="margin:0">
-                                    <?php dt_render_field_icon( $field_values );
-                                    echo esc_html( $field_values['name'] ); ?>
+                        
+                        <div class="field-selection-ui">
+                            <!-- Search input for adding fields -->
+                            <div style="margin-bottom: 15px;">
+                                <label for="field_search_input" class="field-search-label">
+                                    <?php esc_html_e( 'Add fields:', 'disciple_tools' ); ?>
                                 </label>
-                            </li>
-                        <?php endforeach; ?>
-                        </ul>
-                        <button class="button" id="save_column_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
-                        <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
+                                <div class="field-search-container">
+                                    <input type="text" id="field_search_input" class="field-search-input" placeholder="<?php esc_html_e( 'Search for fields to add...', 'disciple_tools' ); ?>">
+                                    <div id="field_search_dropdown" class="field-search-dropdown">
+                                        <?php foreach ( $post_settings['fields'] as $field_key => $field_values ):
+                                            if ( !empty( $field_values['hidden'] ) ){
+                                                continue;
+                                            }
+                                            $has_icon = !empty( $field_values['icon'] ) || !empty( $field_values['font-icon'] );
+                                            $option_classes = 'field-search-option' . ( $has_icon ? '' : ' no-icon' );
+                                            ?>
+                                            <div class="<?php echo esc_attr( $option_classes ); ?> field-search-option-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>" 
+                                                 data-field-name="<?php echo esc_attr( strtolower( $field_values['name'] ) ); ?>">
+                                                <?php dt_render_field_icon( $field_values ); ?>
+                                                <span><?php echo esc_html( $field_values['name'] ); ?></span>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Enabled fields display -->
+                            <div class="enabled-fields-section">
+                                <label class="enabled-fields-label">
+                                    <?php esc_html_e( 'Enabled fields:', 'disciple_tools' ); ?>
+                                </label>
+                                <div id="enabled_fields_container" class="enabled-fields-container">
+                                    <?php if ( empty( $enabled_fields ) ): ?>
+                                        <span class="no-fields-message"><?php esc_html_e( 'No fields selected', 'disciple_tools' ); ?></span>
+                                    <?php else : ?>
+                                        <?php foreach ( $enabled_fields as $field_key ): ?>
+                                            <?php if ( isset( $post_settings['fields'][$field_key] ) ): ?>
+                                                <?php
+                                                $field_settings = $post_settings['fields'][$field_key];
+                                                $has_icon = !empty( $field_settings['icon'] ) || !empty( $field_settings['font-icon'] );
+                                                $tag_classes = 'enabled-field-tag' . ( $has_icon ? '' : ' no-icon' );
+                                                ?>
+                                                <span class="<?php echo esc_attr( $tag_classes ); ?> enabled-field-tag-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>">
+                                                    <?php dt_render_field_icon( $field_settings, 'dt-icon' ); ?>
+                                                    <span><?php echo esc_html( $field_settings['name'] ); ?></span>
+                                                    <button type="button" class="remove-field-btn remove-field-btn-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>">×</button>
+                                                </span>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <!-- Hidden input to store selected fields -->
+                            <input type="hidden" id="selected_fields_input" value="<?php echo esc_attr( json_encode( $enabled_fields ) ); ?>">
+
+                            <button class="button" id="save_column_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
+                            <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
+                        </div>
                     </div>
 
                     <form id="bulk_edit_picker" class="list_action_section">
