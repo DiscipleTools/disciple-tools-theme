@@ -133,7 +133,10 @@ gulp.task('styles', function () {
       this.emit('end');
     }))
     .pipe(plugin.sourcemaps.init())
-    .pipe(sass().on('error', sass.logError))
+    .pipe(sass({
+      quietDeps: true,
+      silenceDeprecations: ['legacy-js-api', 'import', 'global-builtin', 'color-functions']
+    }).on('error', sass.logError))
     .pipe(plugin.autoprefixer({
       cascade: false
     }))
