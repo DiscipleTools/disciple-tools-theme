@@ -908,9 +908,7 @@
     } else {
       // Show "no results" message if search term exists but no matches
       dropdown
-        .html(
-          '<div style="padding: 8px 12px; color: #666; font-style: italic;">No fields found</div>',
-        )
+        .html('<div class="no-fields-found">No fields found</div>')
         .show();
     }
   }
@@ -952,18 +950,22 @@
       : 'enabled-field-tag no-icon';
 
     // Add to selected fields
-    let selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
+    let selectedFields;
+    try {
+      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
+    } catch (e) {
+      console.error('Error parsing selected fields JSON:', e);
+      selectedFields = [];
+    }
     if (!selectedFields.includes(fieldKey)) {
       selectedFields.push(fieldKey);
       $('#selected_fields_input').val(JSON.stringify(selectedFields));
 
       // Add visual tag
-      const tag = `<span class="${tagClasses}" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(fieldKey)}" 
-                        style="background: #3f729b; color: white; padding: 0 8px; margin: 2px; border-radius: 3px; font-size: 12px;">
+      const tag = `<span class="${tagClasses} enabled-field-tag-inline" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(fieldKey)}">
                      ${fieldIcon}
                      <span>${window.SHAREDFUNCTIONS.escapeHTML(fieldName)}</span>
-                     <button type="button" class="remove-field-btn" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(fieldKey)}" 
-                             style="background: none; border: none; color: white; cursor: pointer;">×</button>
+                     <button type="button" class="remove-field-btn remove-field-btn-inline" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(fieldKey)}">×</button>
                    </span>`;
 
       const container = $('#enabled_fields_container');
@@ -982,7 +984,13 @@
     const fieldKey = $(this).data('field-key');
 
     // Remove from selected fields
-    let selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
+    let selectedFields;
+    try {
+      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
+    } catch (e) {
+      console.error('Error parsing selected fields JSON:', e);
+      selectedFields = [];
+    }
     selectedFields = selectedFields.filter((key) => key !== fieldKey);
     $('#selected_fields_input').val(JSON.stringify(selectedFields));
 
@@ -992,7 +1000,7 @@
     // Show "no fields selected" message if empty
     if (selectedFields.length === 0) {
       $('#enabled_fields_container').html(
-        '<span style="color: #666; font-style: italic;">No fields selected</span>',
+        '<span class="no-fields-message">No fields selected</span>',
       );
     }
 
@@ -1008,9 +1016,13 @@
   });
 
   $('#save_column_choices').on('click', function () {
-    const selectedFields = JSON.parse(
-      $('#selected_fields_input').val() || '[]',
-    );
+    let selectedFields;
+    try {
+      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
+    } catch (e) {
+      console.error('Error parsing selected fields JSON:', e);
+      selectedFields = [];
+    }
     fields_to_show_in_table = selectedFields;
     window.SHAREDFUNCTIONS.save_json_cookie(
       'fields_to_show_in_table',
@@ -1023,7 +1035,7 @@
     fields_to_show_in_table = [];
     $('#selected_fields_input').val('[]');
     $('#enabled_fields_container').html(
-      '<span style="color: #666; font-style: italic;">No fields selected</span>',
+      '<span class="no-fields-message">No fields selected</span>',
     );
     window.SHAREDFUNCTIONS.save_json_cookie(
       'fields_to_show_in_table',

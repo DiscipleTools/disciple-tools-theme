@@ -550,67 +550,65 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
 
                         ?>
                         
-                        <!-- Search input for adding fields -->
-                        <div style="margin-bottom: 15px;">
-                            <label for="field_search_input" style="font-weight: bold; display: block; margin-bottom: 5px;">
-                                <?php esc_html_e( 'Add fields:', 'disciple_tools' ); ?>
-                            </label>
-                            <div style="position: relative;">
-                                <input type="text" id="field_search_input" placeholder="<?php esc_html_e( 'Search for fields to add...', 'disciple_tools' ); ?>" 
-                                       style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                                <div id="field_search_dropdown" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ccc; border-top: none; border-radius: 0 0 4px 4px; max-height: 200px; overflow-y: auto; z-index: 1000;">
-                                    <?php foreach ( $post_settings['fields'] as $field_key => $field_values ):
-                                        if ( !empty( $field_values['hidden'] ) ){
-                                            continue;
-                                        }
-                                        $has_icon = !empty( $field_values['icon'] ) || !empty( $field_values['font-icon'] );
-                                        $option_classes = 'field-search-option' . ( $has_icon ? '' : ' no-icon' );
-                                        ?>
-                                        <div class="<?php echo esc_attr( $option_classes ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" 
-                                             data-field-name="<?php echo esc_attr( strtolower( $field_values['name'] ) ); ?>"
-                                             style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f0f0f0;">
-                                            <?php dt_render_field_icon( $field_values ); ?>
-                                            <span><?php echo esc_html( $field_values['name'] ); ?></span>
-                                        </div>
-                                    <?php endforeach; ?>
+                        <div class="field-selection-ui">
+                            <!-- Search input for adding fields -->
+                            <div style="margin-bottom: 15px;">
+                                <label for="field_search_input" class="field-search-label">
+                                    <?php esc_html_e( 'Add fields:', 'disciple_tools' ); ?>
+                                </label>
+                                <div class="field-search-container">
+                                    <input type="text" id="field_search_input" class="field-search-input" placeholder="<?php esc_html_e( 'Search for fields to add...', 'disciple_tools' ); ?>">
+                                    <div id="field_search_dropdown" class="field-search-dropdown">
+                                        <?php foreach ( $post_settings['fields'] as $field_key => $field_values ):
+                                            if ( !empty( $field_values['hidden'] ) ){
+                                                continue;
+                                            }
+                                            $has_icon = !empty( $field_values['icon'] ) || !empty( $field_values['font-icon'] );
+                                            $option_classes = 'field-search-option' . ( $has_icon ? '' : ' no-icon' );
+                                            ?>
+                                            <div class="<?php echo esc_attr( $option_classes ); ?> field-search-option-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>" 
+                                                 data-field-name="<?php echo esc_attr( strtolower( $field_values['name'] ) ); ?>">
+                                                <?php dt_render_field_icon( $field_values ); ?>
+                                                <span><?php echo esc_html( $field_values['name'] ); ?></span>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Enabled fields display -->
-                        <div style="margin-bottom: 15px;">
-                            <label style="font-weight: bold; display: block; margin-bottom: 5px;">
-                                <?php esc_html_e( 'Enabled fields:', 'disciple_tools' ); ?>
-                            </label>
-                            <div id="enabled_fields_container" style="min-height: 40px; border: 1px solid #ddd; border-radius: 4px; padding: 8px; background: #f9f9f9;">
-                                <?php if ( empty( $enabled_fields ) ): ?>
-                                    <span style="color: #666; font-style: italic;"><?php esc_html_e( 'No fields selected', 'disciple_tools' ); ?></span>
-                                <?php else : ?>
-                                    <?php foreach ( $enabled_fields as $field_key ): ?>
-                                        <?php if ( isset( $post_settings['fields'][$field_key] ) ): ?>
-                                            <?php
-                                            $field_settings = $post_settings['fields'][$field_key];
-                                            $has_icon = !empty( $field_settings['icon'] ) || !empty( $field_settings['font-icon'] );
-                                            $tag_classes = 'enabled-field-tag' . ( $has_icon ? '' : ' no-icon' );
-                                            ?>
-                                            <span class="<?php echo esc_attr( $tag_classes ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" 
-                                                  style="background: #3f729b; color: white; padding: 0 8px; margin: 2px; border-radius: 3px; font-size: 12px;">
-                                                <?php dt_render_field_icon( $field_settings, 'dt-icon' ); ?>
-                                                <span><?php echo esc_html( $field_settings['name'] ); ?></span>
-                                                <button type="button" class="remove-field-btn" data-field-key="<?php echo esc_attr( $field_key ); ?>" 
-                                                        style="background: none; border: none; color: white; cursor: pointer;">×</button>
-                                            </span>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
+                            <!-- Enabled fields display -->
+                            <div class="enabled-fields-section">
+                                <label class="enabled-fields-label">
+                                    <?php esc_html_e( 'Enabled fields:', 'disciple_tools' ); ?>
+                                </label>
+                                <div id="enabled_fields_container" class="enabled-fields-container">
+                                    <?php if ( empty( $enabled_fields ) ): ?>
+                                        <span class="no-fields-message"><?php esc_html_e( 'No fields selected', 'disciple_tools' ); ?></span>
+                                    <?php else : ?>
+                                        <?php foreach ( $enabled_fields as $field_key ): ?>
+                                            <?php if ( isset( $post_settings['fields'][$field_key] ) ): ?>
+                                                <?php
+                                                $field_settings = $post_settings['fields'][$field_key];
+                                                $has_icon = !empty( $field_settings['icon'] ) || !empty( $field_settings['font-icon'] );
+                                                $tag_classes = 'enabled-field-tag' . ( $has_icon ? '' : ' no-icon' );
+                                                ?>
+                                                <span class="<?php echo esc_attr( $tag_classes ); ?> enabled-field-tag-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>">
+                                                    <?php dt_render_field_icon( $field_settings, 'dt-icon' ); ?>
+                                                    <span><?php echo esc_html( $field_settings['name'] ); ?></span>
+                                                    <button type="button" class="remove-field-btn remove-field-btn-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>">×</button>
+                                                </span>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </div>
                             </div>
+
+                            <!-- Hidden input to store selected fields -->
+                            <input type="hidden" id="selected_fields_input" value="<?php echo esc_attr( json_encode( $enabled_fields ) ); ?>">
+
+                            <button class="button" id="save_column_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
+                            <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
                         </div>
-
-                        <!-- Hidden input to store selected fields -->
-                        <input type="hidden" id="selected_fields_input" value="<?php echo esc_attr( json_encode( $enabled_fields ) ); ?>">
-
-                        <button class="button" id="save_column_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
-                        <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
                     </div>
 
                     <form id="bulk_edit_picker" class="list_action_section">
