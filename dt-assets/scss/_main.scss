@@ -400,6 +400,50 @@ html[dir="rtl"] #top-bar-menu {
     }
 }
 
+// Mobile add new dropdown styling
+#mobile-add-new-dropdown {
+    background-color: #3f729b;
+    border: 1px solid #2a5674;
+    border-radius: 4px;
+    min-width: 180px;
+    max-width: 200px;
+    padding: 8px;
+
+    .menu.vertical {
+        margin: 0;
+
+        li {
+            margin: 0;
+
+            .add-new-menu-item {
+                display: flex;
+                align-items: center;
+                padding: 8px 12px;
+                color: white;
+                text-decoration: none;
+                border-radius: 2px;
+                transition: background-color 0.2s;
+
+                &:hover {
+                    background-color: #4a7fa8;
+                }
+
+                img {
+                    width: 16px;
+                    height: 16px;
+                    margin-right: 8px;
+                    flex-shrink: 0;
+                }
+
+                span {
+                    font-size: 14px;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+}
+
 nav.second-bar {
     padding: 0.5em;
     background-color: white;

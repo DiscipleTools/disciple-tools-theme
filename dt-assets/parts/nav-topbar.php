@@ -237,11 +237,32 @@ if ( !empty( $custom_logo_url ) ) {
                 <?php endif; // end advanced search ?>
 
                 <!-- add new -->
-                <button style="margin-left: 5px;">
-                    <a href="<?php echo esc_url( home_url( '/contacts/new' ) ); ?>">
-                        <img title="<?php echo esc_html( __( 'Add Record', 'disciple_tools' ) ); ?>" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ); ?>" style="width: 24px;">
-                    </a>
-                </button>
+                <?php if ( isset( $dt_nav_tabs['admin']['add_new']['hidden'] ) && empty( $dt_nav_tabs['admin']['add_new']['hidden'] ) ) : ?>
+                    <div class="has-submenu" style="margin-left: 5px; position: relative; display: inline-block;">
+                        <button type="button" data-toggle="mobile-add-new-dropdown">
+                            <img title="<?php echo esc_html( $dt_nav_tabs['admin']['add_new']['label'] ?? __( 'Add Record', 'disciple_tools' ) ); ?>" 
+                                 src="<?php echo esc_url( $dt_nav_tabs['admin']['add_new']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ); ?>" 
+                                 style="width: 24px;">
+                        </button>
+                        <div class="dropdown-pane" id="mobile-add-new-dropdown" data-dropdown data-position="bottom" data-alignment="right" data-v-offset="10">
+                            <ul class="menu vertical">
+                                <?php if ( isset( $dt_nav_tabs['admin']['add_new']['submenu'] ) && ! empty( $dt_nav_tabs['admin']['add_new']['submenu'] ) ) : ?>
+                                    <?php foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) : ?>
+                                        <?php if ( ! isset( $dt_nav_submenu['hidden'] ) || ! $dt_nav_submenu['hidden'] ) { ?>
+                                            <li>
+                                                <a class="add-new-menu-item" href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
+                                                    <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>"
+                                                         src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ) ?>">
+                                                    <span><?php echo esc_html( $dt_nav_submenu['label'] ); ?></span>
+                                                </a>
+                                            </li>
+                                        <?php } ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </ul>
+                        </div>
+                    </div>
+                <?php endif; // end add new ?>
 
             </div>
         </div>
