@@ -401,13 +401,29 @@ html[dir="rtl"] #top-bar-menu {
 }
 
 // Mobile add new dropdown styling
+.mobile-add-buttons {
+    margin-left: 5px;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.title-bar-right {
+    float: right;
+}
+
+.title-bar-right > * {
+    float: right;
+    margin-left: 10px;
+}
+
 #mobile-add-new-dropdown {
     background-color: #3f729b;
-    border: 1px solid #2a5674;
+    border: 1px solid #999;
     border-radius: 4px;
-    min-width: 180px;
-    max-width: 200px;
-    padding: 8px;
+    min-width: 160px;
+    max-width: 180px;
+    padding: 4px 0;
 
     .menu.vertical {
         margin: 0;
@@ -418,10 +434,11 @@ html[dir="rtl"] #top-bar-menu {
             .add-new-menu-item {
                 display: flex;
                 align-items: center;
-                padding: 8px 12px;
+                padding: 12px 16px;
                 color: white;
                 text-decoration: none;
-                border-radius: 2px;
+                font-size: 14px;
+                font-weight: bold;
                 transition: background-color 0.2s;
 
                 &:hover {
@@ -429,15 +446,10 @@ html[dir="rtl"] #top-bar-menu {
                 }
 
                 img {
-                    width: 16px;
-                    height: 16px;
-                    margin-right: 8px;
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 12px;
                     flex-shrink: 0;
-                }
-
-                span {
-                    font-size: 14px;
-                    white-space: nowrap;
                 }
             }
         }

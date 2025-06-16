@@ -229,22 +229,16 @@ if ( !empty( $custom_logo_url ) ) {
             </div>
             <div class="title-bar-right">
 
-                <!-- advanced search -->
-                <?php if ( isset( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) && empty( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) ) : ?>
-                    <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? '#' ); ?>">
-                        <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['advanced_search']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>">
-                    </a>
-                <?php endif; // end advanced search ?>
-
                 <!-- add new -->
                 <?php if ( isset( $dt_nav_tabs['admin']['add_new']['hidden'] ) && empty( $dt_nav_tabs['admin']['add_new']['hidden'] ) ) : ?>
-                    <div class="has-submenu" style="margin-left: 5px; position: relative; display: inline-block;">
+                    <div class="has-submenu center-items add-buttons mobile-add-buttons">
                         <button type="button" data-toggle="mobile-add-new-dropdown">
-                            <img title="<?php echo esc_html( $dt_nav_tabs['admin']['add_new']['label'] ?? __( 'Add Record', 'disciple_tools' ) ); ?>" 
+                            <img title="<?php echo esc_html( $dt_nav_tabs['admin']['add_new']['label'] ?? '' ); ?>" 
                                  src="<?php echo esc_url( $dt_nav_tabs['admin']['add_new']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ); ?>" 
-                                 style="width: 24px;">
+                                 style="width:24px;">
                         </button>
-                        <div class="dropdown-pane" id="mobile-add-new-dropdown" data-dropdown data-position="bottom" data-alignment="right" data-v-offset="10">
+                        <!--  /* MOBILE add menu */ -->
+                        <div class="dropdown-pane add-new-items-dropdown" id="mobile-add-new-dropdown" data-dropdown data-position="bottom" data-alignment="right" data-v-offset="5">
                             <ul class="menu vertical">
                                 <?php if ( isset( $dt_nav_tabs['admin']['add_new']['submenu'] ) && ! empty( $dt_nav_tabs['admin']['add_new']['submenu'] ) ) : ?>
                                     <?php foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) : ?>
@@ -253,7 +247,7 @@ if ( !empty( $custom_logo_url ) ) {
                                                 <a class="add-new-menu-item" href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
                                                     <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>"
                                                          src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ) ?>">
-                                                    <span><?php echo esc_html( $dt_nav_submenu['label'] ); ?></span>
+                                                    <?php echo esc_html( $dt_nav_submenu['label'] ); ?>
                                                 </a>
                                             </li>
                                         <?php } ?>
@@ -263,6 +257,13 @@ if ( !empty( $custom_logo_url ) ) {
                         </div>
                     </div>
                 <?php endif; // end add new ?>
+
+                <!-- advanced search -->
+                <?php if ( isset( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) && empty( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) ) : ?>
+                    <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? '#' ); ?>">
+                        <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['advanced_search']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>" style="width:24px;">
+                    </a>
+                <?php endif; // end advanced search ?>
 
             </div>
         </div>
