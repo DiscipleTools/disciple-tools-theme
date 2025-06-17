@@ -35,10 +35,8 @@ if ( isset( $post_settings['fields']['type']['default'] ) ){
 ?>
 
     <div id="content" class="template-new-post">
-        <div id="inner-content" class="grid-x grid-margin-x">
-            <div class="large-2 medium-12 small-12 cell"></div>
-
-            <span class="large-8 medium-12 small-12 cell">
+        <div id="inner-content" class="grid-x grid-margin-x" style="justify-content: center;">
+            <div class="large-8 medium-12 small-12 cell">
                 <form class="js-create-post bordered-box display-fields">
 
                     <table>
@@ -170,7 +168,6 @@ if ( isset( $post_settings['fields']['type']['default'] ) ){
 
             </div>
 
-            <div class="large-2 medium-12 small-12 cell"></div>
         </div>
     </div>
 
