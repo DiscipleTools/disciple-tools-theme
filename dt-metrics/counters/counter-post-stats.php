@@ -170,8 +170,8 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                         [ $time_unit_sql, $post_type, $field, $field, $field_type, $start, $end ]
                     );
 
-                    $added_post_changes = $wpdb->get_results( $wpdb->remove_placeholder_escape( $wpdb->prepare(
-                        "
+                    // Build the complete SQL query string
+                    $sql_query = "
                                 SELECT
                                     all_combinations.time_unit,
                                     all_combinations.selection,
@@ -216,8 +216,9 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                     GROUP BY posts.selection, posts.time_unit
                                 ) data ON all_combinations.time_unit = data.time_unit AND all_combinations.selection = data.selection
                                 ORDER BY all_combinations.time_unit ASC, all_combinations.selection
-                            ", ...$prepare_values
-                    ) ) );
+                            ";
+
+                    $added_post_changes = $wpdb->get_results( $wpdb->remove_placeholder_escape( $wpdb->prepare( $sql_query, ...$prepare_values ) ) );
                 }
 
                 break;
