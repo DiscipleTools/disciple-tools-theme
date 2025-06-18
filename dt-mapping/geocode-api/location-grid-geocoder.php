@@ -642,7 +642,7 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
             return $query;
         }
 
-        public function query_lowest_level_by_lnglat( float $longitude, float $latitude, string $country_code = null ): array {
+        public function query_lowest_level_by_lnglat( float $longitude, float $latitude, ?string $country_code = null ): array {
             global $wpdb;
 
             if ( is_null( $country_code ) ) {

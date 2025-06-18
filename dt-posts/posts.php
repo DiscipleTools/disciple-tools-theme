@@ -607,7 +607,7 @@ class Disciple_Tools_Posts
      * @param int $limit
      * @return array|object|null
      */
-    public static function get_recently_viewed_posts( string $post_type, int $user_id = null, int $limit = 30 ){
+    public static function get_recently_viewed_posts( string $post_type, ?int $user_id = null, int $limit = 30 ){
         if ( !$user_id ){
             $user_id = get_current_user_id();
         }
@@ -1536,7 +1536,7 @@ class Disciple_Tools_Posts
         return $bad_fields;
     }
 
-    public static function update_multi_select_fields( array $field_settings, int $post_id, array $fields, array $existing_contact = null ){
+    public static function update_multi_select_fields( array $field_settings, int $post_id, array $fields, ?array $existing_contact = null ){
         global $wpdb;
         $current_user_id = get_current_user_id();
 
@@ -1601,7 +1601,7 @@ class Disciple_Tools_Posts
         return $fields;
     }
 
-    public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, array $existing_post = null ){
+    public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, ?array $existing_post = null ){
 
         global $wpdb;
         foreach ( $fields as $field_key => $field ){
@@ -1808,7 +1808,7 @@ class Disciple_Tools_Posts
         return true;
     }
 
-    public static function update_post_contact_methods( array $post_settings, int $post_id, array $fields, array $existing_contact = null ){
+    public static function update_post_contact_methods( array $post_settings, int $post_id, array $fields, ?array $existing_contact = null ){
         // update contact details (phone, facebook, etc)
         foreach ( $post_settings['fields'] as $field_key => $field_settings ) {
             if ( $field_settings['type'] !== 'communication_channel' ){
