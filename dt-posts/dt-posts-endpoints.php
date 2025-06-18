@@ -590,7 +590,7 @@ class Disciple_Tools_Posts_Endpoints {
         $get_params = $request->get_query_params();
         $silent     = isset( $get_params['silent'] ) && $get_params['silent'] === 'true';
         $check_dups = ! empty( $get_params['check_for_duplicates'] ) ? explode( ',', $get_params['check_for_duplicates'] ) : [];
-        $overwrite_existing_fields     = isset( $get_params['overwrite_existing_fields'] ) && $get_params['overwrite_existing_fields'] === 'true';
+        $overwrite_existing_fields = !empty( $get_params['overwrite_existing_fields'] );
         $post       = DT_Posts::create_post( $url_params['post_type'], $fields, $silent, true, [
             'check_for_duplicates' => $check_dups,
             'do_not_overwrite_existing_fields' => !$overwrite_existing_fields
@@ -609,7 +609,7 @@ class Disciple_Tools_Posts_Endpoints {
         $url_params = $request->get_url_params();
         $get_params = $request->get_query_params();
         $silent = isset( $get_params['silent'] ) && $get_params['silent'] === 'true';
-        $overwrite_existing_fields     = isset( $get_params['overwrite_existing_fields'] ) && $get_params['overwrite_existing_fields'] === 'true';
+        $overwrite_existing_fields = !empty( $get_params['overwrite_existing_fields'] );
         return DT_Posts::update_post( $url_params['post_type'], $url_params['id'], $fields, $silent, true, [
             'do_not_overwrite_existing_fields' => !$overwrite_existing_fields
         ] );

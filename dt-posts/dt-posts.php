@@ -92,17 +92,8 @@ class DT_Posts extends Disciple_Tools_Posts {
                 //No need to update title or name.
                 unset( $fields['title'], $fields['name'], $fields['ID'] );
 
-                /**
-                 * If field overwrite has been disabled for existing fields, then ensure
-                 * to have them removed from importing fields.
-                 */
-
-                if ( isset( $args['do_not_overwrite_existing_fields'] ) && $args['do_not_overwrite_existing_fields'] ) {
-                    $fields = apply_filters( 'dt_ignore_duplicated_post_fields', [], $fields, $post_type, $duplicate_post_id );
-                }
-
                 //update most recently created matched post.
-                $updated_post = self::update_post( $post_type, $duplicate_post_id, $fields, $silent, false );
+                $updated_post = self::update_post( $post_type, $duplicate_post_id, $fields, $silent, false, $args );
                 if ( is_wp_error( $updated_post ) ){
                     return $updated_post;
                 }
@@ -431,7 +422,7 @@ class DT_Posts extends Disciple_Tools_Posts {
          */
 
         if ( isset( $args['do_not_overwrite_existing_fields'] ) && $args['do_not_overwrite_existing_fields'] ) {
-            $fields = apply_filters( 'dt_ignore_duplicated_post_fields', [], $fields, $post_type, $post_id );
+            $fields = self::dt_ignore_duplicated_post_fields( $fields, $post_type, $post_id );
         }
 
         $existing_post = self::get_post( $post_type, $post_id, false, false );
