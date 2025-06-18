@@ -126,31 +126,96 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
             case 'key_select':
 
-                $added_post_changes = $wpdb->get_results( $wpdb->remove_placeholder_escape( $wpdb->prepare(
-                    "
-                            SELECT
-                                COUNT( posts.id ) AS count,
-                                posts.selection AS selection,
-                                posts.time_unit AS time_unit
-                            FROM (
+                // Get all possible key_select values
+                $all_key_values = self::get_key_select_values( $post_type, $field );
+
+                if ( empty( $all_key_values ) ) {
+                    // Fallback to original query if no key values found
+                    $added_post_changes = $wpdb->get_results( $wpdb->remove_placeholder_escape( $wpdb->prepare(
+                        "
                                 SELECT
-                                    p.ID AS id,
-                                    p.post_title AS name,
-                                    log.meta_value AS selection,
-                                    %1s AS time_unit
-                                FROM $wpdb->dt_activity_log AS log
-                                INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                WHERE log.object_type = %s
-                                    AND log.object_subtype = %s
-                                    AND log.meta_key = %s
-                                    AND log.field_type = %s
-                                    AND log.hist_time BETWEEN %d AND %d
-                                GROUP BY p.ID, selection, time_unit
-                            ) posts
-                            GROUP BY posts.selection, posts.time_unit
-                            ORDER BY posts.time_unit ASC
-                        ", $time_unit_sql, $post_type, $field, $field, $field_type, $start, $end
-                ) ) );
+                                    COUNT( posts.id ) AS count,
+                                    posts.selection AS selection,
+                                    posts.time_unit AS time_unit
+                                FROM (
+                                    SELECT
+                                        p.ID AS id,
+                                        p.post_title AS name,
+                                        log.meta_value AS selection,
+                                        %1s AS time_unit
+                                    FROM $wpdb->dt_activity_log AS log
+                                    INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                    WHERE log.object_type = %s
+                                        AND log.object_subtype = %s
+                                        AND log.meta_key = %s
+                                        AND log.field_type = %s
+                                        AND log.hist_time BETWEEN %d AND %d
+                                    GROUP BY p.ID, selection, time_unit
+                                ) posts
+                                GROUP BY posts.selection, posts.time_unit
+                                ORDER BY posts.time_unit ASC
+                            ", $time_unit_sql, $post_type, $field, $field, $field_type, $start, $end
+                    ) ) );
+                } else {
+                    // Build query using the actual key_select values to ensure all options are included
+                    $value_placeholders = implode( ',', array_fill( 0, count( $all_key_values ), '%s' ) );
+
+                    $prepare_values = array_merge(
+                        [ $time_unit_sql, $post_type, $field, $start, $end ],
+                        $all_key_values,
+                        [ $time_unit_sql, $post_type, $field, $field, $field_type, $start, $end ]
+                    );
+
+                    $added_post_changes = $wpdb->get_results( $wpdb->remove_placeholder_escape( $wpdb->prepare(
+                        "
+                                SELECT
+                                    all_combinations.time_unit,
+                                    all_combinations.selection,
+                                    COALESCE(data.count, 0) AS count
+                                FROM (
+                                    SELECT
+                                        time_units.time_unit,
+                                        all_selections.selection
+                                    FROM (
+                                        SELECT DISTINCT %1s AS time_unit
+                                        FROM $wpdb->dt_activity_log AS log
+                                        WHERE log.object_type = %s
+                                            AND log.meta_key = %s
+                                            AND log.hist_time BETWEEN %d AND %d
+                                    ) time_units
+                                    CROSS JOIN (
+                                        SELECT selection FROM (
+                                            SELECT %s AS selection
+                                            " . str_repeat( " UNION ALL SELECT %s", count( $all_key_values ) - 1 ) . "
+                                        ) all_vals
+                                    ) all_selections
+                                ) all_combinations
+                                LEFT JOIN (
+                                    SELECT
+                                        COUNT( posts.id ) AS count,
+                                        posts.selection AS selection,
+                                        posts.time_unit AS time_unit
+                                    FROM (
+                                        SELECT
+                                            p.ID AS id,
+                                            p.post_title AS name,
+                                            log.meta_value AS selection,
+                                            %1s AS time_unit
+                                        FROM $wpdb->dt_activity_log AS log
+                                        INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                                        WHERE log.object_type = %s
+                                            AND log.object_subtype = %s
+                                            AND log.meta_key = %s
+                                            AND log.field_type = %s
+                                            AND log.hist_time BETWEEN %d AND %d
+                                        GROUP BY p.ID, selection, time_unit
+                                    ) posts
+                                    GROUP BY posts.selection, posts.time_unit
+                                ) data ON all_combinations.time_unit = data.time_unit AND all_combinations.selection = data.selection
+                                ORDER BY all_combinations.time_unit ASC, all_combinations.selection
+                            ", ...$prepare_values
+                    ) ) );
+                }
 
                 break;
 
@@ -417,6 +482,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
 
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
         $default_values = array_key_exists( $field, $field_settings ) ? $field_settings[$field]['default'] : [];
+        $field_type = $field_settings[$field]['type'] ?? '';
 
         if ( !empty( $default_values ) ) {
             $multi_values = array_keys( $default_values );
@@ -426,47 +492,108 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             $multi_values = self::get_meta_values( $field );
         }
 
-        $results = $wpdb->get_results(
-            // phpcs:disable
-            $wpdb->prepare( "
-                SELECT
-                    MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month,
-                    pm.meta_value AS value,
-                    count( Distinct( pm.post_id)) AS count
-                FROM $wpdb->posts AS p
-                JOIN $wpdb->postmeta AS pm
-                    ON p.ID = pm.post_id
-                JOIN $wpdb->dt_activity_log AS log
-                    ON log.object_id = p.ID
-                    AND log.meta_key = %s
-                WHERE p.post_type = %s
-                    AND pm.meta_key = %s
-                    AND log.meta_value = pm.meta_value
-                    AND pm.meta_value != ''
-                    AND pm.meta_value IS NOT NULL
-                    AND log.hist_time = (
-                        SELECT MAX( log2.hist_time )
-                        FROM $wpdb->dt_activity_log AS log2
-                        WHERE log.meta_value = log2.meta_value
+        if ( $field_type === 'key_select' ) {
+            // For key_select fields, ensure all options are included even with zero counts
+            $results = $wpdb->get_results(
+                // phpcs:disable
+                $wpdb->prepare( "
+                    SELECT
+                        months.month,
+                        all_values.value,
+                        COALESCE(data.count, 0) AS count
+                    FROM (
+                        SELECT DISTINCT MONTH(FROM_UNIXTIME(log.hist_time)) AS month
+                        FROM $wpdb->dt_activity_log AS log
+                        WHERE log.object_type = %s
+                            AND log.meta_key = %s
+                            AND log.hist_time >= %s
+                            AND log.hist_time <= %s
+                    ) months
+                    CROSS JOIN (
+                        SELECT DISTINCT pm.meta_value AS value
+                        FROM $wpdb->postmeta pm
+                        INNER JOIN $wpdb->posts p ON p.ID = pm.post_id
+                        WHERE p.post_type = %s
+                            AND pm.meta_key = %s
+                            AND pm.meta_value != ''
+                            AND pm.meta_value IS NOT NULL
+                    ) all_values
+                    LEFT JOIN (
+                        SELECT
+                            MONTH(FROM_UNIXTIME(log.hist_time)) AS month,
+                            pm.meta_value AS value,
+                            COUNT(DISTINCT pm.post_id) AS count
+                        FROM $wpdb->posts AS p
+                        JOIN $wpdb->postmeta AS pm ON p.ID = pm.post_id
+                        JOIN $wpdb->dt_activity_log AS log ON log.object_id = p.ID AND log.meta_key = %s
+                        WHERE p.post_type = %s
+                            AND pm.meta_key = %s
+                            AND log.meta_value = pm.meta_value
+                            AND pm.meta_value != ''
+                            AND pm.meta_value IS NOT NULL
+                            AND log.hist_time = (
+                                SELECT MAX(log2.hist_time)
+                                FROM $wpdb->dt_activity_log AS log2
+                                WHERE log.meta_value = log2.meta_value
+                                    AND log.meta_value = pm.meta_value
+                                    AND log.object_id = log2.object_id
+                                    AND log2.hist_time >= %s
+                                    AND log2.hist_time <= %s
+                                    AND log2.meta_key = %s
+                            )
+                            AND log.object_type = %s
+                            AND log.hist_time >= %s
+                            AND log.hist_time <= %s
+                        GROUP BY MONTH(FROM_UNIXTIME(log.hist_time)), pm.meta_value
+                    ) data ON months.month = data.month AND all_values.value = data.value
+                    ORDER BY months.month, all_values.value
+                ", $post_type, $field, $start, $end, $post_type, $field, $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end ), ARRAY_A
+                // phpcs:enable
+            );
+        } else {
+            // For other multi_select fields, use the original query
+            $results = $wpdb->get_results(
+                // phpcs:disable
+                $wpdb->prepare( "
+                    SELECT
+                        MONTH( FROM_UNIXTIME( log.hist_time ) ) AS month,
+                        pm.meta_value AS value,
+                        count( Distinct( pm.post_id)) AS count
+                    FROM $wpdb->posts AS p
+                    JOIN $wpdb->postmeta AS pm
+                        ON p.ID = pm.post_id
+                    JOIN $wpdb->dt_activity_log AS log
+                        ON log.object_id = p.ID
+                        AND log.meta_key = %s
+                    WHERE p.post_type = %s
+                        AND pm.meta_key = %s
                         AND log.meta_value = pm.meta_value
-                        AND log.object_id = log2.object_id
-                        AND log2.hist_time >= %s
-                        AND log2.hist_time <= %s
-                        AND log2.meta_key = %s
-                    )
-                    AND log.object_type = %s
-                    AND log.hist_time >= %s
-                    AND log.hist_time <= %s
-                GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) ), pm.meta_value
-                ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
-            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end ), ARRAY_A
-            // phpcs:enable
-        );
+                        AND pm.meta_value != ''
+                        AND pm.meta_value IS NOT NULL
+                        AND log.hist_time = (
+                            SELECT MAX( log2.hist_time )
+                            FROM $wpdb->dt_activity_log AS log2
+                            WHERE log.meta_value = log2.meta_value
+                            AND log.meta_value = pm.meta_value
+                            AND log.object_id = log2.object_id
+                            AND log2.hist_time >= %s
+                            AND log2.hist_time <= %s
+                            AND log2.meta_key = %s
+                        )
+                        AND log.object_type = %s
+                        AND log.hist_time >= %s
+                        AND log.hist_time <= %s
+                    GROUP BY MONTH( FROM_UNIXTIME( log.hist_time ) ), pm.meta_value
+                    ORDER BY MONTH( FROM_UNIXTIME( log.hist_time ) )
+                ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end ), ARRAY_A
+                // phpcs:enable
+            );
+        }
 
         $cumulative_offset = self::get_multi_field_cumulative_offsets( $post_type, $field, $start, $multi_values );
 
         return [
-            'data' => self::reshape_multi_field_results( $results, 'month' ),
+            'data' => self::reshape_multi_field_results( $results, 'month', $post_type, $field ),
             'cumulative_offset' => $cumulative_offset,
             'changes' => self::get_changed_post_counts( $post_type, $field, $start, $end, true )
         ];
@@ -482,52 +609,119 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
         $start = 0;
         $end = mktime( 24, 60, 60, 12, 31, $current_year );
 
-        $results = $wpdb->get_results(
-            // phpcs:disable
-            $wpdb->prepare( "
-                SELECT
-                    YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year,
-                    pm.meta_value AS value,
-                    count( Distinct( pm.post_id)) AS count
-                FROM $wpdb->posts AS p
-                JOIN $wpdb->postmeta AS pm
-                    ON p.ID = pm.post_id
-                JOIN $wpdb->dt_activity_log AS log
-                    ON log.object_id = p.ID
-                    AND log.meta_key = %s
-                WHERE p.post_type = %s
-                    AND pm.meta_key = %s
-                    AND log.meta_value = pm.meta_value
-                    AND pm.meta_value != ''
-                    AND pm.meta_value IS NOT NULL
-                    AND log.hist_time = (
-                        SELECT MAX( log2.hist_time )
-                        FROM $wpdb->dt_activity_log AS log2
-                        WHERE log.meta_value = log2.meta_value
+        // Check if this is a key_select field
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        $field_type = $field_settings[$field]['type'] ?? '';
+
+        if ( $field_type === 'key_select' ) {
+            // For key_select fields, ensure all options are included even with zero counts
+            $results = $wpdb->get_results(
+                // phpcs:disable
+                $wpdb->prepare( "
+                    SELECT
+                        years.year,
+                        all_values.value,
+                        COALESCE(data.count, 0) AS count
+                    FROM (
+                        SELECT DISTINCT YEAR(FROM_UNIXTIME(log.hist_time)) AS year
+                        FROM $wpdb->dt_activity_log AS log
+                        WHERE log.object_type = %s
+                            AND log.meta_key = %s
+                            AND log.hist_time >= %s
+                            AND log.hist_time <= %s
+                    ) years
+                    CROSS JOIN (
+                        SELECT DISTINCT pm.meta_value AS value
+                        FROM $wpdb->postmeta pm
+                        INNER JOIN $wpdb->posts p ON p.ID = pm.post_id
+                        WHERE p.post_type = %s
+                            AND pm.meta_key = %s
+                            AND pm.meta_value != ''
+                            AND pm.meta_value IS NOT NULL
+                    ) all_values
+                    LEFT JOIN (
+                        SELECT
+                            YEAR(FROM_UNIXTIME(log.hist_time)) AS year,
+                            pm.meta_value AS value,
+                            COUNT(DISTINCT pm.post_id) AS count
+                        FROM $wpdb->posts AS p
+                        JOIN $wpdb->postmeta AS pm ON p.ID = pm.post_id
+                        JOIN $wpdb->dt_activity_log AS log ON log.object_id = p.ID AND log.meta_key = %s
+                        WHERE p.post_type = %s
+                            AND pm.meta_key = %s
                             AND log.meta_value = pm.meta_value
-                            AND log.object_id = log2.object_id
-                            AND log2.hist_time >= %s
-                            AND log2.hist_time <= %s
-                            AND log2.meta_key = %s
-                    )
-                    AND log.object_type = %s
-                    AND log.hist_time >= %s
-                    AND log.hist_time <= %s
-                GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) ), pm.meta_value
-                ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
-            ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end ), ARRAY_A
-            // phpcs:enable
-        );
+                            AND pm.meta_value != ''
+                            AND pm.meta_value IS NOT NULL
+                            AND log.hist_time = (
+                                SELECT MAX(log2.hist_time)
+                                FROM $wpdb->dt_activity_log AS log2
+                                WHERE log.meta_value = log2.meta_value
+                                    AND log.meta_value = pm.meta_value
+                                    AND log.object_id = log2.object_id
+                                    AND log2.hist_time >= %s
+                                    AND log2.hist_time <= %s
+                                    AND log2.meta_key = %s
+                            )
+                            AND log.object_type = %s
+                            AND log.hist_time >= %s
+                            AND log.hist_time <= %s
+                        GROUP BY YEAR(FROM_UNIXTIME(log.hist_time)), pm.meta_value
+                    ) data ON years.year = data.year AND all_values.value = data.value
+                    ORDER BY years.year, all_values.value
+                ", $post_type, $field, $start, $end, $post_type, $field, $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end ), ARRAY_A
+                // phpcs:enable
+            );
+        } else {
+            // For other multi_select fields, use the original query
+            $results = $wpdb->get_results(
+                // phpcs:disable
+                $wpdb->prepare( "
+                    SELECT
+                        YEAR( FROM_UNIXTIME( log.hist_time ) ) AS year,
+                        pm.meta_value AS value,
+                        count( Distinct( pm.post_id)) AS count
+                    FROM $wpdb->posts AS p
+                    JOIN $wpdb->postmeta AS pm
+                        ON p.ID = pm.post_id
+                    JOIN $wpdb->dt_activity_log AS log
+                        ON log.object_id = p.ID
+                        AND log.meta_key = %s
+                    WHERE p.post_type = %s
+                        AND pm.meta_key = %s
+                        AND log.meta_value = pm.meta_value
+                        AND pm.meta_value != ''
+                        AND pm.meta_value IS NOT NULL
+                        AND log.hist_time = (
+                            SELECT MAX( log2.hist_time )
+                            FROM $wpdb->dt_activity_log AS log2
+                            WHERE log.meta_value = log2.meta_value
+                                AND log.meta_value = pm.meta_value
+                                AND log.object_id = log2.object_id
+                                AND log2.hist_time >= %s
+                                AND log2.hist_time <= %s
+                                AND log2.meta_key = %s
+                        )
+                        AND log.object_type = %s
+                        AND log.hist_time >= %s
+                        AND log.hist_time <= %s
+                    GROUP BY YEAR( FROM_UNIXTIME( log.hist_time ) ), pm.meta_value
+                    ORDER BY YEAR( FROM_UNIXTIME( log.hist_time ) )
+                ", $field, $post_type, $field, $start, $end, $field, $post_type, $start, $end ), ARRAY_A
+                // phpcs:enable
+            );
+        }
 
         return [
-            'data' => self::reshape_multi_field_results( $results, 'year' ),
+            'data' => self::reshape_multi_field_results( $results, 'year', $post_type, $field ),
             'changes' => self::get_changed_post_counts( $post_type, $field, $start, $end, false )
         ];
     }
 
-    private static function reshape_multi_field_results( $multi_field_results, $time_unit_label ): array {
+    private static function reshape_multi_field_results( $multi_field_results, $time_unit_label, $post_type = null, $field = null ): array {
         $reshaped_results = [];
         $grouped_results = [];
+
+        // Build grouped results from actual data
         foreach ( $multi_field_results as $value_count ) {
             $time_unit = $value_count[ $time_unit_label ];
             $value = $value_count['value'];
@@ -536,17 +730,35 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             if ( !isset( $grouped_results[ $time_unit ] ) ) {
                 $grouped_results[ $time_unit ] = [];
             }
-            $grouped_results[ $time_unit ][] = [
-                'value' => $value,
-                'count' => $count
-            ];
+            $grouped_results[ $time_unit ][ $value ] = $count;
         }
 
-        foreach ( $grouped_results as $time_unit => $grouped_result ) {
+        // For key_select fields, ensure all possible combinations are included
+        if ( $post_type && $field ) {
+            $field_settings = DT_Posts::get_post_field_settings( $post_type );
+            $field_type = $field_settings[$field]['type'] ?? '';
+
+            if ( $field_type === 'key_select' ) {
+                $all_possible_values = self::get_key_select_values( $post_type, $field );
+                $all_time_units = array_keys( $grouped_results );
+
+                // Ensure all time units have all possible values
+                foreach ( $all_time_units as $time_unit ) {
+                    foreach ( $all_possible_values as $value ) {
+                        if ( !isset( $grouped_results[ $time_unit ][ $value ] ) ) {
+                            $grouped_results[ $time_unit ][ $value ] = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Convert to final format
+        foreach ( $grouped_results as $time_unit => $values ) {
             $updated_grouping = [];
             $updated_grouping[ $time_unit_label ] = $time_unit;
-            foreach ( $grouped_result as $group ) {
-                $updated_grouping[ $group['value'] ] = $group['count'];
+            foreach ( $values as $value => $count ) {
+                $updated_grouping[ $value ] = $count;
             }
             $reshaped_results[] = $updated_grouping;
         }
@@ -796,6 +1008,38 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
             return $result->value;
         }, $results );
         return $meta_values;
+    }
+
+    /**
+     * Get all possible key_select values for a field, including those with zero counts
+     */
+    private static function get_key_select_values( $post_type, $field ) {
+        global $wpdb;
+
+        // First try to get from field settings
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        $default_values = array_key_exists( $field, $field_settings ) ? $field_settings[$field]['default'] : [];
+
+        if ( !empty( $default_values ) ) {
+            return array_keys( $default_values );
+        }
+
+        // Fallback to getting from database
+        $results = $wpdb->get_results(
+            $wpdb->prepare( "
+                SELECT DISTINCT pm.meta_value AS value
+                FROM $wpdb->postmeta pm
+                INNER JOIN $wpdb->posts p ON p.ID = pm.post_id
+                WHERE p.post_type = %s
+                    AND pm.meta_key = %s
+                    AND pm.meta_value != ''
+                    AND pm.meta_value IS NOT NULL
+            ", $post_type, $field )
+        );
+
+        return array_map( function( $result ) {
+            return $result->value;
+        }, $results );
     }
 
     private static function isPostField( $field ) {
