@@ -157,8 +157,12 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                             ", $time_unit_sql, $post_type, $field, $field, $field_type, $start, $end
                     ) ) );
                 } else {
-                    // Build query using the actual key_select values to ensure all options are included
-                    $value_placeholders = implode( ',', array_fill( 0, count( $all_key_values ), '%s' ) );
+                    // Build UNION query for all key_select values
+                    $union_parts = [];
+                    foreach ( $all_key_values as $value ) {
+                        $union_parts[] = 'SELECT %s AS selection';
+                    }
+                    $union_query = implode( ' UNION ALL ', $union_parts );
 
                     $prepare_values = array_merge(
                         [ $time_unit_sql, $post_type, $field, $start, $end ],
@@ -185,8 +189,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                     ) time_units
                                     CROSS JOIN (
                                         SELECT selection FROM (
-                                            SELECT %s AS selection
-                                            " . str_repeat( ' UNION ALL SELECT %s', count( $all_key_values ) - 1 ) . " -- phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+                                            $union_query
                                         ) all_vals
                                     ) all_selections
                                 ) all_combinations
