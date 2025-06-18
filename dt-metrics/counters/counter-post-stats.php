@@ -218,7 +218,9 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                 ORDER BY all_combinations.time_unit ASC, all_combinations.selection
                             ";
 
+                    // phpcs:disable
                     $added_post_changes = $wpdb->get_results( $wpdb->remove_placeholder_escape( $wpdb->prepare( $sql_query, ...$prepare_values ) ) );
+                    // phpcs:enable
                 }
 
                 break;
