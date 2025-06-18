@@ -186,7 +186,7 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                                     CROSS JOIN (
                                         SELECT selection FROM (
                                             SELECT %s AS selection
-                                            " . str_repeat( " UNION ALL SELECT %s", count( $all_key_values ) - 1 ) . "
+                                            " . str_repeat( ' UNION ALL SELECT %s', count( $all_key_values ) - 1 ) . " -- phpcs:ignore WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
                                         ) all_vals
                                     ) all_selections
                                 ) all_combinations
