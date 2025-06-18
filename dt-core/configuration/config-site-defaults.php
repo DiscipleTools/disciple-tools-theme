@@ -446,7 +446,7 @@ function dt_get_site_options_defaults() {
  *
  * @return array|mixed
  */
-function dt_get_site_custom_lists( string $list_title = null ) {
+function dt_get_site_custom_lists( ?string $list_title = null ) {
     $fields = [];
 
     $fields['version'] = 10;

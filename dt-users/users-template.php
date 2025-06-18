@@ -162,7 +162,7 @@ function dt_build_user_fields_display( array $usermeta ): array
  *
  * @return bool
  */
-function dt_user_notification_is_enabled( string $notification_name, string $channel, array $user_meta_data = null, int $user_id = null ): bool
+function dt_user_notification_is_enabled( string $notification_name, string $channel, ?array $user_meta_data = null, ?int $user_id = null ): bool
 {
     if ( empty( $user_id ) ) {
         $user_id = get_current_user_id();
