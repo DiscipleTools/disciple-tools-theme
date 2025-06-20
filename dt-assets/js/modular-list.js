@@ -4559,19 +4559,23 @@
           csv_export.unshift(csv_headers);
 
           // Convert csv arrays into raw downloadable data.
-          const csv = csv_export
-            .map((row) => {
-              return row.map((item) => {
-                let escapeditem = item;
-                //if the string contains a doublequote escape it by doubling the double quoate like "" - https://stackoverflow.com/a/769675
-                if (String(item).includes('"')) {
-                  escapeditem = item.replaceAll('"', '""');
-                }
+          // --- ADD BOM for UTF-8 ---
+          const BOM = '\uFEFF';
+          const csv =
+            BOM +
+            csv_export
+              .map((row) => {
+                return row.map((item) => {
+                  let escapeditem = item;
+                  //if the string contains a doublequote escape it by doubling the double quoate like "" - https://stackoverflow.com/a/769675
+                  if (String(item).includes('"')) {
+                    escapeditem = item.replaceAll('"', '""');
+                  }
 
-                return `"${escapeditem}"`;
-              });
-            })
-            .join('\r\n');
+                  return `"${escapeditem}"`;
+                });
+              })
+              .join('\r\n');
 
           // Finally, automatically execute a download of generated csv data.
           let csv_download_link = document.createElement('a');
