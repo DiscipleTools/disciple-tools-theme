@@ -76,7 +76,7 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
         $post_types = DT_Posts::get_post_types();
 
         $data = $this->add_contacts_column( $data );
-        if ( !empty( $post_types['groups'] ) ) {
+        if ( in_array( 'groups', $post_types ) ) {
             $data = $this->add_groups_column( $data );
             $data = $this->add_churches_column( $data );
         }
@@ -86,7 +86,14 @@ class DT_Metrics_Locations_List extends DT_Metrics_Chart_Base
     }
 
     public function translations() {
-        $translations = [];
+        $translations = [
+            'name' => __( 'Name', 'disciple_tools' ),
+            'population' => __( 'Population', 'disciple_tools' ),
+            'contacts' => __( 'Contacts', 'disciple_tools' ),
+            'groups' => __( 'Groups', 'disciple_tools' ),
+            'churches' => __( 'Churches', 'disciple_tools' ),
+            'users' => __( 'Users', 'disciple_tools' ),
+        ];
         return $translations;
     }
 
