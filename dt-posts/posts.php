@@ -3145,6 +3145,123 @@ class Disciple_Tools_Posts
 
         return false;
     }
+
+
+    /**
+     * Remove duplicated field values from specified post record.
+     *
+     * @param $fields
+     * @param $post_type
+     * @param $post_id
+     * @return array
+     */
+    public static function dt_ignore_duplicated_post_fields( $fields, $post_type, $post_id ) {
+        $updated_fields = [];
+        $existing_fields = DT_Posts::get_post( $post_type, $post_id, true, false );
+        if ( empty( $existing_fields ) || is_wp_error( $existing_fields ) ){
+            return $fields;
+        }
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        foreach ( $fields as $field_key => $field_value ) {
+            if ( !isset( $existing_fields[ $field_key ], $field_settings[ $field_key ]['type'] ) ){
+                $updated_fields[ $field_key ] = $field_value;
+                continue;
+            }
+
+            $field_type = $field_settings[ $field_key ]['type'];
+            switch ( $field_type ) {
+                case 'text':
+                case 'textarea':
+                case 'number':
+                case 'boolean':
+                    if ( $field_value != $existing_fields[ $field_key ] ) {
+                        $updated_fields[ $field_key ] = $field_value;
+                    }
+                    break;
+                case 'date':
+                case 'key_select':
+                    $key = 'key';
+                    if ( $field_type == 'date' ) {
+                        $key = 'formatted';
+                    }
+                    if ( !( isset( $existing_fields[ $field_key ][ $key ] ) && $existing_fields[ $field_key ][ $key ] == $field_value ) ) {
+                        $updated_fields[ $field_key ] = $field_value;
+                    }
+                    break;
+                case 'tags':
+                case 'multi_select':
+                    $values = [];
+                    foreach ( $field_value['values'] ?? [] as $value ) {
+                        if ( !( isset( $value['value'] ) && in_array( $value['value'], $existing_fields[ $field_key ] ) ) ) {
+                            $values[] = $value;
+                        }
+                    }
+                    if ( !empty( $values ) ) {
+                        $updated_fields[ $field_key ] = [
+                            'values' => $values,
+                        ];
+                    }
+                    break;
+                case 'location':
+                case 'location_meta':
+                    $values = [];
+                    foreach ( $field_value['values'] ?? [] as $value ) {
+                        $key = 'label';
+                        $found = array_filter( $existing_fields[ $field_key ], function ( $option ) use ( $value, $key ) {
+                            $hit = isset( $option[$key] ) && $option[$key] == $value['value'];
+
+                            if ( !$hit && isset( $option['matched_search'] ) && $option['matched_search'] == $value['value'] ) {
+                                $hit = true;
+                            }
+
+                            return $hit;
+                        } );
+                        if ( empty( $found ) || count( $found ) == 0 ) {
+                            $values[] = $value;
+                        }
+                    }
+                    if ( !empty( $values ) ) {
+                        $updated_fields[$field_key] = [
+                            'values' => $values,
+                        ];
+                    }
+                    break;
+                case 'communication_channel':
+                    $values = [];
+                    $existing_field_values = $existing_fields[ $field_key ];
+
+                    foreach ( $field_value ?? [] as $value ) {
+                        $key = 'value';
+                        $found = array_values( array_filter( $value, function ( $option ) use ( $existing_field_values, $key ) {
+
+                            $hit = false;
+                            foreach ( $existing_field_values as $existing_field_value ) {
+                                if ( !$hit && isset( $option[$key] ) && $option[$key] != $existing_field_value[$key] ) {
+                                    $hit = true;
+                                }
+                            }
+                            return $hit;
+                        } ) );
+                        if ( !empty( $found ) ) {
+                            foreach ( $found as $found_value ) {
+                                $values[] = [
+                                    'value' => $found_value[$key]
+                                ];
+                            }
+                        }
+                    }
+                    if ( !empty( $values ) ) {
+                        $updated_fields[ $field_key ] = $values;
+                    }
+                    break;
+                default:
+                    $updated_fields[ $field_key ] = $field_value;
+                    break;
+            }
+        }
+
+        return $updated_fields;
+    }
 }
 
 /**

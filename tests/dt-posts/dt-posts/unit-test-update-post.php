@@ -18,12 +18,14 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ],
         'contact_email' => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
         'tags' => [ 'values' => [ [ 'value' => 'tag1' ], [ 'value' => 'tagToDelete' ] ] ],
+        'quick_button_contact_established' => '1'
     ];
     public static $contact = null;
 
     public static function setupBeforeClass(): void  {
         //setup custom fields for each field type and custom tile.
         $user_id = wp_create_user( 'dispatcher1', 'test', 'test2@example.com' );
+        update_option( 'dt_base_user', $user_id, false );
         wp_set_current_user( $user_id );
         $current_user = wp_get_current_user();
         $current_user->set_role( 'dispatcher' );
@@ -191,5 +193,355 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertArrayNotHasKey( 'key_select_test_private', $contact2 );
         $this->assertArrayNotHasKey( 'tags_test_private', $contact2 );
         $this->assertArrayNotHasKey( 'number_test_private', $contact2 );
+    }
+
+    /**
+     * @testdox do_not_overwrite_existing_fields: update with protection enabled
+     */
+    public function test_do_not_overwrite_existing_fields_update() {
+        $base_user = get_option( 'dt_base_user' );
+
+        // Create a contact with initial values
+        $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
+        $initial_fields['name'] = 'Update Test';
+        $initial_fields['nickname'] = 'Original Nick';
+        $initial_fields['overall_status'] = 'active';
+        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '111-222-3333' ] ] ];
+        $initial_fields['tags'] = [ 'values' => [ [ 'value' => 'updating_tag' ] ] ];
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        // Update with do_not_overwrite_existing_fields = true
+        $update_fields = [
+            'assigned_to' => $base_user,
+            'overall_status' => 'paused', // Try to change existing field
+            'nickname' => 'New Nick', // Try to change existing field
+            'contact_email' => [ 'values' => [ [ 'value' => 'test@example.com' ] ] ], // Add new field
+            'tags' => [ 'values' => [ [ 'value' => 'updated_tag' ] ] ]
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+        // Should still only have one contact_phone entry.
+        $this->assertSame( 1, count( $result['contact_phone'] ) );
+        // Should update to new values, as they are different.
+        $this->assertSame( 'paused', $result['overall_status']['key'] );
+        $this->assertSame( 'New Nick', $result['nickname'] );
+        // Should add new fields
+        $this->assertSame( 'test@example.com', $result['contact_email'][1]['value'] );
+        // Extra assertion sanity checks.
+        $this->assertSame( 2, count( $result['tags'] ) );
+        $this->assertSame( $initial_fields['baptism_date'], $result['baptism_date']['formatted'] );
+    }
+
+    /**
+     * @testdox do_not_overwrite_existing_fields: update with protection disabled
+     */
+    public function test_overwrite_existing_fields_update() {
+        $base_user = get_option( 'dt_base_user' );
+
+        // Create a contact with initial values
+        $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
+        $initial_fields['name'] = 'Overwrite Test';
+        $initial_fields['nickname'] = 'Original Nick';
+        $initial_fields['overall_status'] = 'active';
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        // Update with do_not_overwrite_existing_fields = false (default behavior)
+        $update_fields = [
+            'assigned_to' => $base_user,
+            'overall_status' => 'paused',
+            'nickname' => 'New Nick',
+            'contact_email' => [ 'values' => [ [ 'value' => 'overwrite@example.com' ] ] ],
+            'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ]
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => false
+        ]);
+
+        $this->assertNotWPError( $result );
+        // Should update existing fields with new values
+        $this->assertSame( 'paused', $result['overall_status']['key'] );
+        $this->assertSame( 'New Nick', $result['nickname'] );
+        // Should add new fields
+        $this->assertSame( 'overwrite@example.com', $result['contact_email'][1]['value'] );
+        // Extra assertion sanity checks.
+        $this->assertSame( 1, count( $result['location_grid'] ) );
+    }
+
+    /**
+     * @testdox do_not_overwrite_existing_fields: empty vs non-empty fields
+     */
+    public function test_do_not_overwrite_empty_fields_update() {
+        $base_user = get_option( 'dt_base_user' );
+
+        // Create a contact with some empty fields
+        $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
+        $initial_fields['name'] = 'Overwrite Test';
+        $initial_fields['nickname'] = null;
+        $initial_fields['overall_status'] = 'active';
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        // Update with do_not_overwrite_existing_fields = true
+        $update_fields = [
+            'assigned_to' => $base_user,
+            'overall_status' => 'paused', // Try to change existing field
+            'nickname' => 'Should Be Added' // Add to empty field
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+        // Should update to new values, as they are different and not duplicates.
+        $this->assertSame( 'paused', $result['overall_status']['key'] );
+        // Should add value to empty field
+        $this->assertSame( 'Should Be Added', $result['nickname'] );
+    }
+
+    /**
+     * @testdox do_not_overwrite_existing_fields: communication channel fields
+     */
+    public function test_do_not_overwrite_communication_channels_update() {
+        $base_user = get_option( 'dt_base_user' );
+
+        // Create a contact with phone number
+        $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
+        $initial_fields['name'] = 'Communication Test';
+        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '444-555-6666' ] ] ];
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        // Update with additional phone and email
+        $update_fields = [
+            'assigned_to' => $base_user,
+            'contact_phone' => [ 'values' => [ [ 'value' => '444-555-6666' ], [ 'value' => '777-888-9999' ] ] ],
+            'contact_email' => [ 'values' => [ [ 'value' => 'comm@example.com' ] ] ],
+            'baptism_date' => $initial_fields['baptism_date']
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+        // Should keep existing phone and add new one
+        $phone_values = array_column( $result['contact_phone'], 'value' );
+        $this->assertContains( '444-555-6666', $phone_values );
+        $this->assertContains( '777-888-9999', $phone_values );
+        // Should add new email
+        $this->assertSame( 'comm@example.com', $result['contact_email'][1]['value'] );
+        // Extra assertion sanity checks.
+        $this->assertSame( 2, count( $result['contact_email'] ) );
+        $this->assertSame( 2, count( $result['milestones'] ) );
+        $this->assertSame( $initial_fields['baptism_date'], $result['baptism_date']['formatted'] );
+    }
+
+    /**
+     * @testdox do_not_overwrite_existing_fields: date fields
+     */
+    public function test_do_not_overwrite_date_fields_update() {
+        $base_user = get_option( 'dt_base_user' );
+
+        // Create a contact with baptism date
+        $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
+        $initial_fields['name'] = 'Date Test';
+        $initial_fields['baptism_date'] = '2020-01-01';
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        // Try to update baptism date
+        $update_fields = [
+            'assigned_to' => $base_user,
+            'baptism_date' => '2023-12-25',
+            'tags' => [ 'values' => [ [ 'value' => 'tag1' ], [ 'value' => 'tag2' ] ] ],
+            'milestones' => [ 'values' => [ [ 'value' => 'mature_christian' ] ] ]
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+        // Should update to new values, as they are different and not duplicates.
+        $this->assertSame( $update_fields['baptism_date'], $result['baptism_date']['formatted'] );
+        // Extra assertion sanity checks.
+        $this->assertContains( 'tag2', $result['tags'] );
+        $this->assertSame( 3, count( $result['tags'] ) );
+        $this->assertSame( 2, count( $result['milestones'] ) );
+    }
+
+    public function test_do_not_overwrite_text_fields_update() {
+        $base_user = get_option( 'dt_base_user' );
+
+        $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
+        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '123-456-7890' ] ] ];
+        $initial_fields['nickname'] = 'Johnny';
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        $update_fields = [
+            'assigned_to' => $base_user,
+            'name' => 'John Doe',
+            'contact_phone' => [ 'values' => [ [ 'value' => '123-456-7890' ] ] ],
+            'nickname' => 'John', // Different value
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( 'John', $result['nickname'] );
+    }
+
+    public function test_do_not_overwrite_number_fields_update() {
+        $base_user = get_option( 'dt_base_user' );
+
+        $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        $update_fields = [
+            'assigned_to' => $base_user,
+            'title' => $initial_fields['title'],
+            'contact_phone' => $initial_fields['contact_phone'],
+            'quick_button_contact_established' => 1
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( $update_fields['quick_button_contact_established'], $result['quick_button_contact_established'] );
+    }
+
+    public function test_do_not_overwrite_boolean_fields_update() {
+        $base_user = get_option( 'dt_base_user' );
+
+        $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
+        $initial_fields['requires_update'] = true;
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        $update_fields = [
+            'assigned_to' => $base_user,
+            'title' => $initial_fields['title'],
+            'contact_phone' => $initial_fields['contact_phone'],
+            'requires_update' => false
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( true, empty( $result['requires_update'] ) );
+    }
+
+    public function test_do_not_overwrite_key_select_fields_update() {
+        $base_user = get_option( 'dt_base_user' );
+
+        $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
+        $initial_fields['overall_status'] = 'active';
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        $update_fields = [
+            'assigned_to' => $base_user,
+            'name' => 'John Doe',
+            'contact_phone' => $initial_fields['contact_phone'],
+            'overall_status' => 'paused', // Different value
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( 'paused', $result['overall_status']['key'] );
+    }
+
+    public function test_do_not_overwrite_tags_fields_update() {
+        $base_user = get_option( 'dt_base_user' );
+
+        $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
+        $initial_fields['tags'] = [ 'values' => [ [ 'value' => 'existing_tag' ] ] ];
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        $update_fields = [
+            'assigned_to' => $base_user,
+            'name' => 'Tags Test',
+            'contact_phone' => $initial_fields['contact_phone'],
+            'tags' => [ 'values' => [ [ 'value' => 'existing_tag' ], [ 'value' => 'new_tag' ] ] ]
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( 2, count( $result['tags'] ) );
+        $this->assertContains( 'existing_tag', $result['tags'] );
+        $this->assertContains( 'new_tag', $result['tags'] );
+    }
+
+    public function test_do_not_overwrite_location_fields_update() {
+        $base_user = get_option( 'dt_base_user' );
+
+        $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        $update_fields = [
+            'assigned_to' => $base_user,
+            'title' => $initial_fields['title'],
+            'contact_phone' => $initial_fields['contact_phone'],
+            'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ]
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => false
+        ]);
+
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( 1, count( $result['location_grid'] ) );
     }
 }
