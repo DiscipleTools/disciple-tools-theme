@@ -3174,7 +3174,7 @@ class Disciple_Tools_Posts
                 case 'textarea':
                 case 'number':
                 case 'boolean':
-                    if ( $field_value != $existing_fields[ $field_key ] ) {
+                    if ( empty( $existing_fields[ $field_key ] ) ) {
                         $updated_fields[ $field_key ] = $field_value;
                     }
                     break;
@@ -3208,9 +3208,9 @@ class Disciple_Tools_Posts
                     foreach ( $field_value['values'] ?? [] as $value ) {
                         $key = 'label';
                         $found = array_filter( $existing_fields[ $field_key ], function ( $option ) use ( $value, $key ) {
-                            $hit = isset( $option[$key] ) && $option[$key] == $value['value'];
+                            $hit = isset( $option[$key], $value[$key] ) && $option[$key] == $value[$key];
 
-                            if ( !$hit && isset( $option['matched_search'] ) && $option['matched_search'] == $value['value'] ) {
+                            if ( !$hit && isset( $option['matched_search'], $value[$key] ) && $option['matched_search'] == $value[$key] ) {
                                 $hit = true;
                             }
 
@@ -3236,7 +3236,7 @@ class Disciple_Tools_Posts
 
                             $hit = false;
                             foreach ( $existing_field_values as $existing_field_value ) {
-                                if ( !$hit && isset( $option[$key] ) && $option[$key] != $existing_field_value[$key] ) {
+                                if ( !$hit && isset( $option ) && $option != $existing_field_value[$key] ) {
                                     $hit = true;
                                 }
                             }
@@ -3245,7 +3245,7 @@ class Disciple_Tools_Posts
                         if ( !empty( $found ) ) {
                             foreach ( $found as $found_value ) {
                                 $values[] = [
-                                    'value' => $found_value[$key]
+                                    'value' => $found_value
                                 ];
                             }
                         }
