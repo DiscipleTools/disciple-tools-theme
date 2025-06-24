@@ -496,6 +496,7 @@ let area_map = {
   previous_grid_list: [],
   behind_layer: null,
   setup: async function (behind_layer = null) {
+    jQuery('#loading-spinner').show();
     area_map.behind_layer = behind_layer;
     area_map.grid_data = await window.makeRequest(
       'POST',
@@ -529,6 +530,7 @@ let area_map = {
       let level = mapbox_library_api.get_level();
       area_map.load_detail_panel(e.lngLat.lng, e.lngLat.lat, level);
     });
+    jQuery('#loading-spinner').hide();
   },
   load_layer: async function (level = null) {
     mapbox_library_api.spinner.show();
