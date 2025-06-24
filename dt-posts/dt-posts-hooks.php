@@ -7,7 +7,6 @@ class DT_Posts_Hooks {
         add_action( 'post_connection_removed', [ $this, 'post_connection_removed' ], 10, 4 );
         add_action( 'post_connection_added', [ $this, 'post_connection_added' ], 10, 4 );
         add_filter( 'dt_create_check_for_duplicate_posts', [ $this, 'dt_create_check_for_duplicate_posts' ], 10, 5 );
-        add_filter( 'dt_ignore_duplicated_post_fields', [ $this, 'dt_ignore_duplicated_post_fields' ], 10, 4 );
     }
 
     /**
