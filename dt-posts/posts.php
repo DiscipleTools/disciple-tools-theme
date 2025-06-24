@@ -3221,7 +3221,7 @@ class Disciple_Tools_Posts
                         }
                     }
                     if ( !empty( $values ) ) {
-                        $updated_fields[$field_key] = [
+                        $updated_fields[ $field_key ] = [
                             'values' => $values,
                         ];
                     }
@@ -3245,13 +3245,15 @@ class Disciple_Tools_Posts
                         if ( !empty( $found ) ) {
                             foreach ( $found as $found_value ) {
                                 $values[] = [
-                                    'value' => $found_value
+                                    'value' => $found_value['value']
                                 ];
                             }
                         }
                     }
                     if ( !empty( $values ) ) {
-                        $updated_fields[ $field_key ] = $values;
+                        $updated_fields[ $field_key ] = [
+                            'values' => $values,
+                        ];
                     }
                     break;
                 default:

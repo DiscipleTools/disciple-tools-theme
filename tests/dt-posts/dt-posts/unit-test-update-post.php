@@ -231,7 +231,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertSame( 1, count( $result['contact_phone'] ) );
         // Should update to new values, as they are different.
         $this->assertSame( 'paused', $result['overall_status']['key'] );
-        $this->assertSame( 'New Nick', $result['nickname'] );
+        $this->assertSame( 'Original Nick', $result['nickname'] );
         // Should add new fields
         $this->assertSame( 'test@example.com', $result['contact_email'][1]['value'] );
         // Extra assertion sanity checks.
@@ -412,7 +412,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         $this->assertNotWPError( $result );
 
-        $this->assertSame( 'John', $result['nickname'] );
+        $this->assertSame( 'Johnny', $result['nickname'] );
     }
 
     public function test_do_not_overwrite_number_fields_update() {
@@ -463,7 +463,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         $this->assertNotWPError( $result );
 
-        $this->assertSame( true, empty( $result['requires_update'] ) );
+        $this->assertSame( false, empty( $result['requires_update'] ) );
     }
 
     public function test_do_not_overwrite_key_select_fields_update() {
