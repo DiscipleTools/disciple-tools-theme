@@ -129,99 +129,70 @@ class DT_Counter_Post_Stats extends Disciple_Tools_Counter_Base
                 // Get all possible key_select values
                 $all_key_values = self::get_key_select_values( $post_type, $field );
 
-                if ( empty( $all_key_values ) ) {
-                    // Fallback to original query if no key values found
-                    $added_post_changes = $wpdb->get_results( $wpdb->remove_placeholder_escape( $wpdb->prepare(
-                        "
-                                SELECT
-                                    COUNT( posts.id ) AS count,
-                                    posts.selection AS selection,
-                                    posts.time_unit AS time_unit
-                                FROM (
-                                    SELECT
-                                        p.ID AS id,
-                                        p.post_title AS name,
-                                        log.meta_value AS selection,
-                                        %1s AS time_unit
-                                    FROM $wpdb->dt_activity_log AS log
-                                    INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                    WHERE log.object_type = %s
-                                        AND log.object_subtype = %s
-                                        AND log.meta_key = %s
-                                        AND log.field_type = %s
-                                        AND log.hist_time BETWEEN %d AND %d
-                                    GROUP BY p.ID, selection, time_unit
-                                ) posts
-                                GROUP BY posts.selection, posts.time_unit
-                                ORDER BY posts.time_unit ASC
-                            ", $time_unit_sql, $post_type, $field, $field, $field_type, $start, $end
-                    ) ) );
-                } else {
-                    // Build UNION query for all key_select values
-                    $union_parts = [];
-                    foreach ( $all_key_values as $value ) {
-                        $union_parts[] = 'SELECT %s AS selection';
-                    }
-                    $union_query = implode( ' UNION ALL ', $union_parts );
-
-                    $prepare_values = array_merge(
-                        [ $time_unit_sql, $post_type, $field, $start, $end ],
-                        $all_key_values,
-                        [ $time_unit_sql, $post_type, $field, $field, $field_type, $start, $end ]
-                    );
-
-                    // Build the complete SQL query string
-                    $sql_query = "
-                                SELECT
-                                    all_combinations.time_unit,
-                                    all_combinations.selection,
-                                    COALESCE(data.count, 0) AS count
-                                FROM (
-                                    SELECT
-                                        time_units.time_unit,
-                                        all_selections.selection
-                                    FROM (
-                                        SELECT DISTINCT %1s AS time_unit
-                                        FROM $wpdb->dt_activity_log AS log
-                                        WHERE log.object_type = %s
-                                            AND log.meta_key = %s
-                                            AND log.hist_time BETWEEN %d AND %d
-                                    ) time_units
-                                    CROSS JOIN (
-                                        SELECT selection FROM (
-                                            $union_query
-                                        ) all_vals
-                                    ) all_selections
-                                ) all_combinations
-                                LEFT JOIN (
-                                    SELECT
-                                        COUNT( posts.id ) AS count,
-                                        posts.selection AS selection,
-                                        posts.time_unit AS time_unit
-                                    FROM (
-                                        SELECT
-                                            p.ID AS id,
-                                            p.post_title AS name,
-                                            log.meta_value AS selection,
-                                            %1s AS time_unit
-                                        FROM $wpdb->dt_activity_log AS log
-                                        INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
-                                        WHERE log.object_type = %s
-                                            AND log.object_subtype = %s
-                                            AND log.meta_key = %s
-                                            AND log.field_type = %s
-                                            AND log.hist_time BETWEEN %d AND %d
-                                        GROUP BY p.ID, selection, time_unit
-                                    ) posts
-                                    GROUP BY posts.selection, posts.time_unit
-                                ) data ON all_combinations.time_unit = data.time_unit AND all_combinations.selection = data.selection
-                                ORDER BY all_combinations.time_unit ASC, all_combinations.selection
-                            ";
-
-                    // phpcs:disable
-                    $added_post_changes = $wpdb->get_results( $wpdb->remove_placeholder_escape( $wpdb->prepare( $sql_query, ...$prepare_values ) ) );
-                    // phpcs:enable
+                // Build UNION query for all key_select values
+                $union_parts = [];
+                foreach ( $all_key_values as $value ) {
+                    $union_parts[] = 'SELECT %s AS selection';
                 }
+                $union_query = implode( ' UNION ALL ', $union_parts );
+
+                $prepare_values = array_merge(
+                    [ $time_unit_sql, $post_type, $field, $start, $end ],
+                    $all_key_values,
+                    [ $time_unit_sql, $post_type, $field, $field, $field_type, $start, $end ]
+                );
+
+                // Build the complete SQL query string
+                $sql_query = "
+                    SELECT
+                        all_combinations.time_unit,
+                        all_combinations.selection,
+                        COALESCE(data.count, 0) AS count
+                    FROM (
+                        SELECT
+                            time_units.time_unit,
+                            all_selections.selection
+                        FROM (
+                            SELECT DISTINCT %1s AS time_unit
+                            FROM $wpdb->dt_activity_log AS log
+                            WHERE log.object_type = %s
+                                AND log.meta_key = %s
+                                AND log.hist_time BETWEEN %d AND %d
+                        ) time_units
+                        CROSS JOIN (
+                            SELECT selection FROM (
+                                $union_query
+                            ) all_vals
+                        ) all_selections
+                    ) all_combinations
+                    LEFT JOIN (
+                        SELECT
+                            COUNT( posts.id ) AS count,
+                            posts.selection AS selection,
+                            posts.time_unit AS time_unit
+                        FROM (
+                            SELECT
+                                p.ID AS id,
+                                p.post_title AS name,
+                                log.meta_value AS selection,
+                                %1s AS time_unit
+                            FROM $wpdb->dt_activity_log AS log
+                            INNER JOIN $wpdb->posts AS p ON p.ID = log.object_id
+                            WHERE log.object_type = %s
+                                AND log.object_subtype = %s
+                                AND log.meta_key = %s
+                                AND log.field_type = %s
+                                AND log.hist_time BETWEEN %d AND %d
+                            GROUP BY p.ID, selection, time_unit
+                        ) posts
+                        GROUP BY posts.selection, posts.time_unit
+                    ) data ON all_combinations.time_unit = data.time_unit AND all_combinations.selection = data.selection
+                    ORDER BY all_combinations.time_unit ASC, all_combinations.selection
+                ";
+
+                // phpcs:disable
+                $added_post_changes = $wpdb->get_results( $wpdb->remove_placeholder_escape( $wpdb->prepare( $sql_query, ...$prepare_values ) ) );
+                // phpcs:enable
 
                 break;
 
