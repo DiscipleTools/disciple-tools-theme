@@ -15,8 +15,8 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         'assigned_to' => '1',
         'requires_update' => true,
         'nickname' => 'Bob the builder',
-        'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ],
-        'contact_email' => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
+        'contact_phone' => [ [ 'value' => '798456780' ] ],
+        'contact_email' => [ [ 'value' => 'bob@example.com' ] ],
         'tags' => [ 'values' => [ [ 'value' => 'tag1' ], [ 'value' => 'tagToDelete' ] ] ],
         'quick_button_contact_established' => '1'
     ];
@@ -207,7 +207,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $initial_fields['name'] = 'Update Test';
         $initial_fields['nickname'] = 'Original Nick';
         $initial_fields['overall_status'] = 'active';
-        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '111-222-3333' ] ] ];
+        $initial_fields['contact_phone'] = [ [ 'value' => '111-222-3333' ] ];
         $initial_fields['tags'] = [ 'values' => [ [ 'value' => 'updating_tag' ] ] ];
 
         $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
@@ -218,7 +218,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
             'assigned_to' => $base_user,
             'overall_status' => 'paused', // Try to change existing field
             'nickname' => 'New Nick', // Try to change existing field
-            'contact_email' => [ 'values' => [ [ 'value' => 'test@example.com' ] ] ], // Add new field
+            'contact_email' => [ [ 'value' => 'test@example.com' ] ], // Add new field
             'tags' => [ 'values' => [ [ 'value' => 'updated_tag' ] ] ]
         ];
 
@@ -230,7 +230,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         // Should still only have one contact_phone entry.
         $this->assertSame( 1, count( $result['contact_phone'] ) );
         // Should update to new values, as they are different.
-        $this->assertSame( 'paused', $result['overall_status']['key'] );
+        $this->assertSame( 'active', $result['overall_status']['key'] );
         $this->assertSame( 'Original Nick', $result['nickname'] );
         // Should add new fields
         $this->assertSame( 'test@example.com', $result['contact_email'][1]['value'] );
@@ -307,7 +307,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         $this->assertNotWPError( $result );
         // Should update to new values, as they are different and not duplicates.
-        $this->assertSame( 'paused', $result['overall_status']['key'] );
+        $this->assertSame( 'active', $result['overall_status']['key'] );
         // Should add value to empty field
         $this->assertSame( 'Should Be Added', $result['nickname'] );
     }
@@ -322,7 +322,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $initial_fields = self::$sample_contact;
         $initial_fields['assigned_to'] = $base_user;
         $initial_fields['name'] = 'Communication Test';
-        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '444-555-6666' ] ] ];
+        $initial_fields['contact_phone'] = [ [ 'value' => '444-555-6666' ] ];
 
         $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
         $this->assertNotWPError( $contact );
@@ -330,8 +330,8 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         // Update with additional phone and email
         $update_fields = [
             'assigned_to' => $base_user,
-            'contact_phone' => [ 'values' => [ [ 'value' => '444-555-6666' ], [ 'value' => '777-888-9999' ] ] ],
-            'contact_email' => [ 'values' => [ [ 'value' => 'comm@example.com' ] ] ],
+            'contact_phone' => [ [ 'value' => '444-555-6666' ], [ 'value' => '777-888-9999' ] ],
+            'contact_email' => [ [ 'value' => 'comm@example.com' ] ],
             'baptism_date' => $initial_fields['baptism_date']
         ];
 
@@ -381,7 +381,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         $this->assertNotWPError( $result );
         // Should update to new values, as they are different and not duplicates.
-        $this->assertSame( $update_fields['baptism_date'], $result['baptism_date']['formatted'] );
+        $this->assertSame( $initial_fields['baptism_date'], $result['baptism_date']['formatted'] );
         // Extra assertion sanity checks.
         $this->assertContains( 'tag2', $result['tags'] );
         $this->assertSame( 3, count( $result['tags'] ) );
@@ -393,7 +393,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         $initial_fields = self::$sample_contact;
         $initial_fields['assigned_to'] = $base_user;
-        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '123-456-7890' ] ] ];
+        $initial_fields['contact_phone'] = [ [ 'value' => '123-456-7890' ] ];
         $initial_fields['nickname'] = 'Johnny';
 
         $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
@@ -402,7 +402,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $update_fields = [
             'assigned_to' => $base_user,
             'name' => 'John Doe',
-            'contact_phone' => [ 'values' => [ [ 'value' => '123-456-7890' ] ] ],
+            'contact_phone' => [ [ 'value' => '123-456-7890' ] ],
             'nickname' => 'John', // Different value
         ];
 
@@ -489,7 +489,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         $this->assertNotWPError( $result );
 
-        $this->assertSame( 'paused', $result['overall_status']['key'] );
+        $this->assertSame( 'active', $result['overall_status']['key'] );
     }
 
     public function test_do_not_overwrite_tags_fields_update() {

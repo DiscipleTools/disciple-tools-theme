@@ -14,8 +14,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         'assigned_to' => '1',
         'requires_update' => true,
         'nickname' => 'Bob the builder',
-        'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ],
-        'contact_email' => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
+        'contact_phone' => [ [ 'value' => '798456780' ] ],
+        'contact_email' => [ [ 'value' => 'bob@example.com' ] ],
         'tags' => [ 'values' => [ [ 'value' => 'tag1' ] ] ],
         'quick_button_contact_established' => '1'
     ];
@@ -182,7 +182,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $initial_fields = $this->sample_contact;
         $initial_fields['assigned_to'] = $base_user;
         $initial_fields['name'] = 'John Doe';
-        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '123-456-7890' ] ] ];
+        $initial_fields['contact_phone'] = [ [ 'value' => '123-456-7890' ] ];
         $initial_fields['overall_status'] = 'active';
         $initial_fields['nickname'] = 'Johnny';
 
@@ -193,10 +193,10 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $duplicate_fields = [
             'assigned_to' => $base_user,
             'name' => 'John Doe',
-            'contact_phone' => [ 'values' => [ [ 'value' => '123-456-7890' ] ] ],
+            'contact_phone' => [ [ 'value' => '123-456-7890' ] ],
             'overall_status' => 'paused', // Different value
             'nickname' => 'John', // Different value
-            'contact_email' => [ 'values' => [ [ 'value' => 'john@example.com' ] ] ] // New field
+            'contact_email' => [ [ 'value' => 'john@example.com' ] ] // New field
         ];
 
         $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
@@ -208,7 +208,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         // Should still only have one contact_phone entry.
         $this->assertSame( 1, count( $result['contact_phone'] ) );
         // Should update to new values, as they are different.
-        $this->assertSame( 'paused', $result['overall_status']['key'] );
+        $this->assertSame( 'active', $result['overall_status']['key'] );
         $this->assertSame( 'Johnny', $result['nickname'] );
         // Should add new fields.
         $this->assertSame( 'john@example.com', $result['contact_email'][1]['value'] );
@@ -272,7 +272,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $initial_fields = $this->sample_contact;
         $initial_fields['assigned_to'] = $base_user;
         $initial_fields['name'] = 'Multi Test';
-        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '555-0001' ] ] ];
+        $initial_fields['contact_phone'] = [ [ 'value' => '555-0001' ] ];
         $initial_fields['tags'] = [ 'values' => [ [ 'value' => 'existing_tag' ] ] ];
 
         $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
@@ -282,7 +282,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $duplicate_fields = [
             'assigned_to' => $base_user,
             'name' => 'Multi Test',
-            'contact_phone' => [ 'values' => [ [ 'value' => '555-0001' ] ] ],
+            'contact_phone' => [ [ 'value' => '555-0001' ] ],
             'tags' => [ 'values' => [ [ 'value' => 'existing_tag' ], [ 'value' => 'new_tag' ] ] ],
             'baptism_date' => '2025-01-01'
         ];
@@ -298,7 +298,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertContains( 'new_tag', $result['tags'] );
         $this->assertSame( 2, count( $result['tags'] ) );
         // Extra assertion sanity checks.
-        $this->assertSame( $duplicate_fields['baptism_date'], $result['baptism_date']['formatted'] );
+        $this->assertSame( $initial_fields['baptism_date'], $result['baptism_date']['formatted'] );
     }
 
     public function test_do_not_overwrite_text_fields_create() {
@@ -306,7 +306,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         $initial_fields = $this->sample_contact;
         $initial_fields['assigned_to'] = $base_user;
-        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '123-456-7890' ] ] ];
+        $initial_fields['contact_phone'] = [ [ 'value' => '123-456-7890' ] ];
         $initial_fields['nickname'] = 'Johnny';
 
         $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
@@ -315,7 +315,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $duplicate_fields = [
             'assigned_to' => $base_user,
             'name' => 'John Doe',
-            'contact_phone' => [ 'values' => [ [ 'value' => '123-456-7890' ] ] ],
+            'contact_phone' => [ [ 'value' => '123-456-7890' ] ],
             'nickname' => 'John', // Different value
         ];
 
@@ -401,7 +401,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         ]);
         $this->assertNotWPError( $result );
 
-        $this->assertSame( $duplicate_fields['baptism_date'], $result['baptism_date']['formatted'] );
+        $this->assertSame( $initial_fields['baptism_date'], $result['baptism_date']['formatted'] );
     }
 
     public function test_do_not_overwrite_key_select_fields_create() {
@@ -427,7 +427,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         ]);
         $this->assertNotWPError( $result );
 
-        $this->assertSame( 'paused', $result['overall_status']['key'] );
+        $this->assertSame( 'active', $result['overall_status']['key'] );
     }
 
     public function test_do_not_overwrite_tags_fields_create() {
@@ -488,7 +488,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         $initial_fields = $this->sample_contact;
         $initial_fields['assigned_to'] = $base_user;
-        $initial_fields['contact_phone'] = [ 'values' => [ [ 'value' => '123-456-7890' ] ] ];
+        $initial_fields['contact_phone'] = [ [ 'value' => '123-456-7890' ] ];
 
         $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
         $this->assertNotWPError( $initial_contact );
@@ -496,8 +496,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $duplicate_fields = [
             'assigned_to' => $base_user,
             'name' => 'John Doe',
-            'contact_phone' => [ 'values' => [ [ 'value' => '123-456-7890' ] ] ],
-            'contact_email' => [ 'values' => [ [ 'value' => 'john@example.com' ] ] ]
+            'contact_phone' => [ [ 'value' => '123-456-7890' ] ],
+            'contact_email' => [ [ 'value' => 'john@example.com' ] ]
         ];
 
         $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [

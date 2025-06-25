@@ -3174,17 +3174,9 @@ class Disciple_Tools_Posts
                 case 'textarea':
                 case 'number':
                 case 'boolean':
-                    if ( empty( $existing_fields[ $field_key ] ) ) {
-                        $updated_fields[ $field_key ] = $field_value;
-                    }
-                    break;
                 case 'date':
                 case 'key_select':
-                    $key = 'key';
-                    if ( $field_type == 'date' ) {
-                        $key = 'formatted';
-                    }
-                    if ( !( isset( $existing_fields[ $field_key ][ $key ] ) && $existing_fields[ $field_key ][ $key ] == $field_value ) ) {
+                    if ( empty( $existing_fields[ $field_key ] ) ) {
                         $updated_fields[ $field_key ] = $field_value;
                     }
                     break;
@@ -3192,7 +3184,7 @@ class Disciple_Tools_Posts
                 case 'multi_select':
                     $values = [];
                     foreach ( $field_value['values'] ?? [] as $value ) {
-                        if ( !( isset( $value['value'] ) && in_array( $value['value'], $existing_fields[ $field_key ] ) ) ) {
+                        if ( isset( $value['delete'] ) || !( isset( $value['value'] ) && in_array( $value['value'], $existing_fields[ $field_key ] ) ) ) {
                             $values[] = $value;
                         }
                     }
@@ -3210,7 +3202,11 @@ class Disciple_Tools_Posts
                         $found = array_filter( $existing_fields[ $field_key ], function ( $option ) use ( $value, $key ) {
                             $hit = isset( $option[$key], $value[$key] ) && $option[$key] == $value[$key];
 
-                            if ( !$hit && isset( $option['matched_search'], $value[$key] ) && $option['matched_search'] == $value[$key] ) {
+                            if ( isset( $value['delete'] ) ) {
+                                $hit = false;
+                            } elseif ( !$hit && isset( $option['matched_search'], $value[$key] ) && $option['matched_search'] == $value[$key] ) {
+                                $hit = true;
+                            } elseif ( !$hit && isset( $option['id'], $value['value'] ) && $option['id'] == $value['value'] ) {
                                 $hit = true;
                             }
 
@@ -3231,29 +3227,22 @@ class Disciple_Tools_Posts
                     $existing_field_values = $existing_fields[ $field_key ];
 
                     foreach ( $field_value ?? [] as $value ) {
-                        $key = 'value';
-                        $found = array_values( array_filter( $value, function ( $option ) use ( $existing_field_values, $key ) {
+                        $hit = false;
+                        if ( !isset( $value['delete'] ) && isset( $value['value'] ) ) {
+                            $found = array_filter( $existing_field_values, function ( $existing_field ) use ( $value ) {
+                                return isset( $existing_field['value'] ) && $value['value'] == $existing_field['value'];
+                            } );
 
-                            $hit = false;
-                            foreach ( $existing_field_values as $existing_field_value ) {
-                                if ( !$hit && isset( $option ) && $option != $existing_field_value[$key] ) {
-                                    $hit = true;
-                                }
-                            }
-                            return $hit;
-                        } ) );
-                        if ( !empty( $found ) ) {
-                            foreach ( $found as $found_value ) {
-                                $values[] = [
-                                    'value' => $found_value['value']
-                                ];
-                            }
+                            $hit = !empty( $found );
+                        }
+
+                        if ( !$hit ) {
+                            $values[] = $value;
                         }
                     }
+
                     if ( !empty( $values ) ) {
-                        $updated_fields[ $field_key ] = [
-                            'values' => $values,
-                        ];
+                        $updated_fields[ $field_key ] = $values;
                     }
                     break;
                 default:
