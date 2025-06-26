@@ -2954,6 +2954,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $post_hits_count = count( $post_hits );
         return [
             'post_type' => $post_type,
+            'post_type_label_singular' => $post_settings['label_singular'] ?? $post_type,
             'posts'     => $post_hits,
             'total'     => $post_hits_count,
             'offset'    => intval( $offset ) + intval( $post_hits_count ) + 1
