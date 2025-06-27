@@ -264,7 +264,8 @@ jQuery(document).ready(function ($) {
     results.forEach(function (result) {
       results_html += '<tr>';
 
-      results_html += '<td class="advanced-search-modal-results-table-section-head-options">';
+      results_html +=
+        '<td class="advanced-search-modal-results-table-section-head-options">';
       if (result?.remaining_count > 0 || result?.has_more === true) {
         results_html +=
           '<a class="advanced-search-modal-results-table-row-section-head-load-more button hollow">' +

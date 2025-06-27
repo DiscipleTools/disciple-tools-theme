@@ -2925,7 +2925,6 @@ class DT_Posts extends Disciple_Tools_Posts {
         // WordPress.WP.PreparedSQL.NotPrepared
         $posts = $wpdb->get_results( $sql, OBJECT );
         // phpcs:enable
-        dt_write_log( $sql );
 
         if ( empty( $posts ) && ! empty( $wpdb->last_error ) ) {
             return new WP_Error( __FUNCTION__, 'Sorry, we had a query issue.', [ 'status' => 500 ] );
