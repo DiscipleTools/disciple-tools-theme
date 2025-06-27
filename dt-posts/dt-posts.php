@@ -2899,6 +2899,19 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $permissions_joins_sql = $fields_sql['joins_sql'];
         $permissions_where_sql = empty( $fields_sql['where_sql'] ) ? '' : ( $fields_sql['where_sql'] . ' AND ' );
+        // First, get the total count of matching records
+        $count_sql = 'SELECT COUNT(DISTINCT p.ID) as total_count
+            FROM ' . $wpdb->posts . ' p
+            ' . $extra_joins . '
+            ' . $permissions_joins_sql . '
+            WHERE ' . $permissions_where_sql . " (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "'
+            AND ( " . $extra_where . " )";
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
+        $total_count_result = $wpdb->get_row( $count_sql, OBJECT );
+        $total_count = $total_count_result ? intval( $total_count_result->total_count ) : 0;
+        // phpcs:enable
+
         $sql = 'SELECT p.ID, p.post_title, p.post_type, ' . $extra_fields . ' p.post_date, if ( p.post_title LIKE ' . $esc_like_search_sql . ", 'Y', 'N') post_hit
             FROM $wpdb->posts p
             " . $extra_joins . '
@@ -2912,6 +2925,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         // WordPress.WP.PreparedSQL.NotPrepared
         $posts = $wpdb->get_results( $sql, OBJECT );
         // phpcs:enable
+        dt_write_log( $sql );
 
         if ( empty( $posts ) && ! empty( $wpdb->last_error ) ) {
             return new WP_Error( __FUNCTION__, 'Sorry, we had a query issue.', [ 'status' => 500 ] );
@@ -2952,11 +2966,17 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //capture hits count and adjust future offsets
         $post_hits_count = count( $post_hits );
+        $remaining_count = max( 0, $total_count - intval( $offset ) - $post_hits_count );
+        $has_more = $remaining_count > 0;
+        
         return [
             'post_type' => $post_type,
             'post_type_label_singular' => $post_settings['label_singular'] ?? $post_type,
             'posts'     => $post_hits,
             'total'     => $post_hits_count,
+            'total_count' => $total_count,
+            'remaining_count' => $remaining_count,
+            'has_more' => $has_more,
             'offset'    => intval( $offset ) + intval( $post_hits_count ) + 1
         ];
     }
