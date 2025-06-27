@@ -2406,7 +2406,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
             return $results;
         } else {
-            return new WP_Error( 'add_shared', __( 'Post already shared with user.', 'disciple_tools' ), [ 'status' => 418 ] );
+            return new WP_Error( 'add_shared', __( 'Record already shared with user.', 'disciple_tools' ), [ 'status' => 418 ] );
         }
     }
 
