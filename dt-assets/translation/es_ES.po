@@ -4,16 +4,16 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2025-05-23T13:30:46+00:00\n"
-"PO-Revision-Date: 2024-10-13 22:59+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
-"Language-Team: Spanish <https://translate.disciple.tools/projects/disciple-"
-"tools/disciple-tools-theme/es_ES/>\n"
+"PO-Revision-Date: 2025-06-27 09:24+0000\n"
+"Last-Translator: Corsacca <corsacca@gmail.com>\n"
+"Language-Team: Spanish <https://translate.disciple.tools/projects/"
+"disciple-tools/disciple-tools-theme/es_ES/>\n"
 "Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.12.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -645,10 +645,8 @@ msgstr "Récord anterior"
 
 #: dt-assets/functions/details-bar.php:121
 #: dt-assets/functions/details-bar.php:301
-#, fuzzy
-#| msgid "Record Hits:"
 msgid "Record Picture"
-msgstr "Registro de Resultados:"
+msgstr ""
 
 #: dt-assets/functions/details-bar.php:153
 #: dt-assets/functions/details-bar.php:329
@@ -1032,10 +1030,8 @@ msgid "Delete Existing File"
 msgstr "Eliminar el archivo existente"
 
 #: dt-assets/functions/enqueue-scripts.php:451
-#, fuzzy
-#| msgid "Delete Existing File"
 msgid "Replace Existing Image"
-msgstr "Eliminar el archivo existente"
+msgstr "Reemplazar imagen existente"
 
 #: dt-assets/functions/enqueue-scripts.php:452
 msgid "Are you sure you wish to delete existing file?"
@@ -1971,10 +1967,8 @@ msgid "Last 30 viewed"
 msgstr "Últimos 30 vistos"
 
 #: dt-contacts/base-setup.php:713
-#, fuzzy
-#| msgid "Assigned Contacts"
 msgid "My Assigned Contacts"
-msgstr "Contactos Asignados"
+msgstr "Mis contactos asignados"
 
 #: dt-contacts/base-setup.php:723
 msgid "My Follow-Up"
@@ -4120,9 +4114,8 @@ msgid "Data Layers"
 msgstr "Capas de datos"
 
 #: dt-metrics/records/genmap.php:138
-#, fuzzy
 msgid "Node Color"
-msgstr "Color nodo"
+msgstr "Color del nodo"
 
 #: dt-metrics/records/genmap.php:139
 msgid "Default"
