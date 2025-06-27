@@ -2905,7 +2905,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             ' . $extra_joins . '
             ' . $permissions_joins_sql . '
             WHERE ' . $permissions_where_sql . " (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "'
-            AND ( " . $extra_where . " )";
+            AND ( " . $extra_where . ' )';
         // phpcs:disable
         // WordPress.WP.PreparedSQL.NotPrepared
         $total_count_result = $wpdb->get_row( $count_sql, OBJECT );
@@ -2968,7 +2968,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         $post_hits_count = count( $post_hits );
         $remaining_count = max( 0, $total_count - intval( $offset ) - $post_hits_count );
         $has_more = $remaining_count > 0;
-        
+
         return [
             'post_type' => $post_type,
             'post_type_label_singular' => $post_settings['label_singular'] ?? $post_type,
