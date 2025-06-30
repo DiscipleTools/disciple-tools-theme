@@ -1276,7 +1276,8 @@ class Disciple_Tools_Posts
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
             } elseif ( $post_fields[$sort]['type'] === 'boolean' ){
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql = "sort.meta_value $sort_dir";
+                $default_value = isset( $post_fields[$sort]['default'] ) ? ( $post_fields[$sort]['default'] ? '1' : '0' ) : '0';
+                $sort_sql = "COALESCE(sort.meta_value, '$default_value') $sort_dir";
             } elseif ( $post_fields[$sort]['type'] === 'number' ){
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', CAST( sort.meta_value as DECIMAL(18,4) ) $sort_dir";
