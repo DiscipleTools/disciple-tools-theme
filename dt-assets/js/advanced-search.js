@@ -114,12 +114,12 @@ jQuery(document).ready(function ($) {
 
   function execute_search_query_by_offset(evt, current_section_head) {
     let query = $('.advanced-search-modal-form-input').val();
-    let offset = evt.currentTarget.parentNode.parentNode
+    let offset = evt.target.parentNode.parentNode
       .querySelector(
         '#advanced-search-modal-results-table-row-section-head-hidden-offset',
       )
       .getAttribute('value');
-    let post_type = evt.currentTarget.parentNode.parentNode
+    let post_type = evt.target.parentNode.parentNode
       .querySelector(
         '#advanced-search-modal-results-table-row-section-head-hidden-post-type',
       )
@@ -152,7 +152,7 @@ jQuery(document).ready(function ($) {
           );
 
           // Update section offset value
-          evt.currentTarget.parentNode.parentNode
+          evt.target.parentNode.parentNode
             .querySelector(
               '#advanced-search-modal-results-table-row-section-head-hidden-offset',
             )
@@ -171,7 +171,7 @@ jQuery(document).ready(function ($) {
           });
         } else {
           // Hide more search option when there are no further hits to be returned.
-          evt.currentTarget.style.display = 'none';
+          evt.target.style.display = 'none';
         }
       })
       .catch((error) => {
@@ -263,15 +263,22 @@ jQuery(document).ready(function ($) {
       '<table class="advanced-search-modal-results-table" style="border-spacing: 0px 5px !important; border-collapse: separate;"><tbody>';
     results.forEach(function (result) {
       results_html += '<tr>';
+
       results_html +=
-        '<td class="advanced-search-modal-results-table-section-head-options"><a class="advanced-search-modal-results-table-row-section-head-load-more button hollow">' +
-        window.SHAREDFUNCTIONS.escapeHTML(fetch_more_text) +
-        '</a></td>';
+        '<td class="advanced-search-modal-results-table-section-head-options">';
+      if (result?.remaining_count > 0 || result?.has_more === true) {
+        results_html +=
+          '<a class="advanced-search-modal-results-table-row-section-head-load-more button hollow">' +
+          window.SHAREDFUNCTIONS.escapeHTML(fetch_more_text) +
+          '</a>';
+      }
+      results_html += '</td>';
+
       results_html +=
         '<td class="advanced-search-modal-results-table-section-head-post-type">';
       results_html +=
         '<b>' +
-        window.SHAREDFUNCTIONS.escapeHTML(result['post_type']) +
+        window.SHAREDFUNCTIONS.escapeHTML(result['post_type_label_singular']) +
         '</b></td>';
       results_html +=
         '<input type="hidden" id="advanced-search-modal-results-table-row-section-head-hidden-offset" value="' +
