@@ -641,6 +641,42 @@ jQuery(document).ready(function ($) {
     });
   });
 
+  $('dt-connection').on('dt:add-new', (e) => {
+    connection_type = e.detail.field;
+    
+    $('#create-record-modal').foundation('open');
+    $('.js-create-record .error-text').empty();
+    $('.js-create-record-button')
+      .attr('disabled', false)
+      .removeClass('alert');
+    $('.reveal-after-record-create').hide();
+    $('.hide-after-record-create').show();
+    $('.js-create-record input[name=title]').val(e.detail.value);
+  });
+
+  $('dt-tags').on('dt:add-new', (e) => {
+    $('#create-tag-modal').foundation('open');
+    $('.js-create-tag input[name=title]').val(e.detail.value);
+  });
+
+  $('.js-create-tag').on('submit', (e) => {
+    e.preventDefault();
+
+    let field = 'tags';
+    let tag = $('#new-tag').val();
+
+    window.API.update_post(post_type, post_id, {
+      [field]: { values: [{ value: tag }] },
+    }).then(() => {
+    field = document.querySelector(`[name="tags"]`);
+    if (field) {
+      field._select(tag);
+      field._clearSearch();
+    }
+
+    });
+  });
+
   $('.dt_typeahead').each((key, el) => {
     let div_id = $(el).attr('id');
     let field_id = $(`#${div_id} input`).data('field');
@@ -979,6 +1015,7 @@ jQuery(document).ready(function ($) {
     $('.js-create-record input[name=title]').val('');
     //create new record
   });
+  /* New Record Modal */
   $('.js-create-record').on('submit', function (e) {
     e.preventDefault();
     $('.js-create-record-button').attr('disabled', true).addClass('loading');
@@ -998,6 +1035,8 @@ jQuery(document).ready(function ($) {
       },
     })
       .then((newRecord) => {
+        console.log(newRecord);
+        // update the modal UI to show new record
         $('.js-create-record-button')
           .attr('disabled', false)
           .removeClass('loading');
@@ -1010,15 +1049,21 @@ jQuery(document).ready(function ($) {
           'href',
           window.SHAREDFUNCTIONS.escapeHTML(newRecord.permalink),
         );
-        $(document).trigger('dt-post-connection-created', [post, update_field]);
-        if (window.Typeahead[`.js-typeahead-${connection_type}`]) {
-          window.Typeahead[
-            `.js-typeahead-${connection_type}`
-          ].addMultiselectItemLayout({
-            ID: newRecord.ID.toString(),
-            name: title,
-          });
-          window.masonGrid.masonry('layout');
+
+        // update the field value
+        const field = document.querySelector(`[name="${connection_type}"]`);
+        if (field) {
+          if (field.value && field.value.some((x) => x.isNew)) {
+            // for new values already selected in list, remove them first
+            field.value = [...field.value.filter((x) => !x.isNew)];
+          }
+          field._select(
+            window.DtWebComponents.ComponentService.convertApiValue(
+              field.tagName.toLowerCase(),
+              [newRecord],
+            )[0],
+          );
+          field._clearSearch();
         }
       })
       .catch(function (error) {
