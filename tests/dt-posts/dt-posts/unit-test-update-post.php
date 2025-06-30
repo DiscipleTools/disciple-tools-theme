@@ -165,7 +165,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertSame( $result['date_test']['timestamp'], strtotime( $create_values['date_test'] ) );
         $this->assertArrayNotHasKey( 'date_test_private', $result );
         $this->assertSame( $result['boolean_test'], $create_values['boolean_test'] );
-        $this->assertArrayNotHasKey( 'boolean_test_private', $result );
+        $this->assertSame( false, $result['boolean_test_private'] ); //bools default to false
         $this->assertSame( $result['multi_select_test'][0], $create_values['multi_select_test']['values'][0]['value'] );
         $this->assertSame( $result['multi_select_test'][1], $create_values['multi_select_test']['values'][1]['value'] );
         $this->assertArrayNotHasKey( 'multi_select_test_private', $result );
@@ -186,7 +186,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         $this->assertSame( $contact2['title'], $create_values['title'] );
         $this->assertArrayNotHasKey( 'text_test_private', $contact2 );
         $this->assertArrayNotHasKey( 'date_test_private', $contact2 );
-        $this->assertArrayNotHasKey( 'boolean_test_private', $contact2 );
+        $this->assertSame( false, $contact2['boolean_test_private'] ); //bools default to false
         $this->assertArrayNotHasKey( 'multi_select_test_private', $contact2 );
         $this->assertArrayNotHasKey( 'key_select_test_private', $contact2 );
         $this->assertArrayNotHasKey( 'tags_test_private', $contact2 );
