@@ -120,7 +120,7 @@ abstract class BaseInstaller
      * @param  array  $paths
      * @param  string $name
      * @param  string $type
-     * @param  string $vendor = NULL
+     * @param  ?string $vendor = null
      * @return string|false
      */
     protected function mapCustomInstallPaths(array $paths, $name, $type, $vendor = NULL)

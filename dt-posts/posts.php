@@ -2761,8 +2761,8 @@ class Disciple_Tools_Posts
 
         // Apply default values for boolean fields that are not set
         foreach ( $field_settings as $field_key => $field_config ) {
-            if ( $field_config['type'] === 'boolean' && 
-                 !isset( $fields[$field_key] ) && 
+            if ( $field_config['type'] === 'boolean' &&
+                 !isset( $fields[$field_key] ) &&
                  isset( $field_config['default'] ) ) {
                 $fields[$field_key] = $field_config['default'];
             }
