@@ -27,8 +27,91 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
         ]
     ];
 
-    get_header();
-    ?>
+    // Mobile detection logic
+    $is_mobile = wp_is_mobile() || 
+                 (isset($_SERVER['HTTP_USER_AGENT']) && 
+                  preg_match('/Mobile|Android|iPhone|iPad/', $_SERVER['HTTP_USER_AGENT']));
+    
+    // Allow forcing mobile view for testing via URL parameter
+    if (isset($_GET['mobile']) && $_GET['mobile'] === '1') {
+        $is_mobile = true;
+    }
+    
+    // DEBUG: Check mobile detection
+    echo '<div style="position: fixed; top: 0; left: 0; background: orange; color: black; padding: 5px; z-index: 99999;">';
+    echo 'DEBUG Mobile Detection: ';
+    echo '$_GET[mobile] = ' . (isset($_GET['mobile']) ? $_GET['mobile'] : 'not set') . ' | ';
+    echo '$is_mobile = ' . ($is_mobile ? 'TRUE' : 'FALSE');
+    echo '</div>';
+
+    // Also consider mobile if user prefers mobile layout (stored in user meta)
+    if (is_user_logged_in()) {
+        $force_mobile = get_user_meta(get_current_user_id(), 'dt_prefer_mobile_view', true);
+        if ($force_mobile) {
+            $is_mobile = true;
+        }
+    }
+
+    echo '<div style="position: fixed; top: 30px; left: 0; background: yellow; color: black; padding: 5px; z-index: 99998;">DEBUG: About to check if mobile condition...</div>';
+    
+    if ( $is_mobile ) : 
+        echo '<div style="position: fixed; top: 60px; left: 0; background: purple; color: white; padding: 5px; z-index: 99997;">DEBUG: Inside mobile condition!</div>'; 
+        // Mobile: Skip standard header, use mobile header instead
+        ?>
+        <!-- Mobile Layout -->
+        <!-- Mobile Header -->
+        <?php 
+        echo '<div style="position: fixed; top: 180px; left: 0; background: lime; color: black; padding: 5px; z-index: 99993;">DEBUG: About to load mobile header...</div>';
+        
+        if ( file_exists( get_template_directory() . '/dt-assets/parts/mobile/mobile-header.php' ) ) {
+            echo '<div style="position: fixed; top: 210px; left: 0; background: cyan; color: black; padding: 5px; z-index: 99992;">DEBUG: Mobile header file exists!</div>';
+            get_template_part( 'dt-assets/parts/mobile/mobile-header' );
+            echo '<div style="position: fixed; top: 240px; left: 0; background: pink; color: black; padding: 5px; z-index: 99991;">DEBUG: Mobile header template included!</div>';
+        } else {
+            echo '<div style="position: fixed; top: 210px; left: 0; background: red; color: white; padding: 5px; z-index: 99992;">DEBUG: Mobile header file NOT FOUND!</div>';
+        }
+        ?>
+        <div style="position: fixed; top: 150px; left: 0; background: orange; color: black; padding: 5px; z-index: 99994;">
+            DEBUG: Mobile header template call completed!
+        </div>
+        
+        <div style="position: fixed !important; top: 70%; left: 50%; transform: translateX(-50%); background: orange !important; color: black !important; padding: 15px !important; z-index: 60000 !important; border: 3px solid black !important; font-size: 16px !important; font-weight: bold !important;">
+            📍 DEBUG: About to start CSS block...
+        </div>
+        
+        <style>
+         /* Simple mobile CSS - Fix for syntax error blocking execution */
+         .mobile-header, .mobile-contact-list, .mobile-fab-container, .mobile-bottom-nav {
+             display: block !important;
+             visibility: visible !important;
+         }
+         
+         /* Hide desktop elements on mobile */
+         .second-bar, .list-actions-bar, .top-bar, #wpadminbar, .bordered-box, footer, table {
+             display: none !important;
+         }
+         
+         /* Force mobile header to show */
+         header.mobile-header {
+             display: block !important;
+             position: relative !important;
+             z-index: 1001 !important;
+         }
+         
+         /* Mobile layout adjustments */
+         body { overflow-x: hidden; }
+         .archive-template.mobile-layout { padding: 0 !important; margin: 0 !important; }
+         .mobile-contact-list { padding: 16px !important; background: #f8f9fa !important; min-height: 100vh !important; }
+         </style>
+    <?php endif; ?>
+    
+    <?php if ( !$is_mobile ) : ?>
+        <?php 
+        echo '<div style="position: fixed; top: 90px; left: 0; background: cyan; color: black; padding: 5px; z-index: 99996;">DEBUG: Loading desktop header...</div>';
+        get_header(); // Load standard header for desktop
+        echo '<div style="position: fixed; top: 120px; left: 0; background: lime; color: black; padding: 5px; z-index: 99995;">DEBUG: Desktop header loaded!</div>';
+        ?>
+    <!-- Desktop Content -->
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
         <nav role="navigation"
              data-sticky data-options="marginTop:0;" data-top-anchor="1"
@@ -128,7 +211,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
         </nav>
     </div>
     <nav  role="navigation" style="width:100%;"
-          class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
+          class="second-bar <?php echo $is_mobile ? 'hide' : 'show-for-small-only'; ?> center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
         <div class="buttons-row">
             <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
                 <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
@@ -221,9 +304,10 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                 <a class="button clear" id="advanced_search_reset_mobile" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
             </div>
     </nav>
-    <div id="content" class="archive-template">
-        <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
-            <aside class="cell large-3 xxlarge-2" id="list-filters">
+    <div id="content" class="archive-template <?php echo $is_mobile ? 'mobile-layout' : 'desktop-layout'; ?>">
+        <div id="inner-content" class="<?php echo $is_mobile ? 'mobile-content' : 'grid-x grid-margin-x grid-margin-y'; ?>">
+            
+            <aside class="cell large-3 xxlarge-2 <?php echo $is_mobile ? 'hide' : ''; ?>" id="list-filters">
                 <div class="bordered-box">
                     <div class="section-header">
                         <?php echo esc_html( sprintf( _x( '%s Filters', 'Contacts Filters', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ) ) ?>
@@ -383,8 +467,8 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                 <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
             </aside>
 
-            <main id="main" class="large-9 xxlarge-10 cell padding-bottom" role="main">
-                <div class="bordered-box">
+            <main id="main" class="<?php echo $is_mobile ? 'mobile-main' : 'large-9 xxlarge-10 cell padding-bottom'; ?>" role="main">
+                <div class="<?php echo $is_mobile ? 'mobile-content-box' : 'bordered-box'; ?>">
                     <div >
                         <span class="section-header posts-header" style="display: inline-block">
                             <?php echo esc_html( sprintf( _x( '%s List', 'Contacts List', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ) ) ?>
@@ -847,27 +931,6 @@ Thanks!';
 
                                 <span><?php echo sprintf( esc_html__( 'Emails will be sent from: %s', 'disciple_tools' ), esc_html( dt_default_email_address() ) ); ?></span><br>
 
-<!--                                --><?php
-//                                if ( count( $comms_channels ) > 1 ) {
-//                                    ?>
-<!--                                    <br><label>--><?php //echo esc_html__( 'Select message send method', 'disciple_tools' ); ?><!--</label>-->
-<!--                                    --><?php
-//                                    foreach ( $comms_channels as $channel_key => $channel_value ) {
-//                                        if ( !in_array( $channel_key, [ 'web' ] ) ) {
-//                                            $method_id = 'bulk_send_msg_method_' . $channel_key;
-//                                            ?>
-<!--                                            <input type="radio" class="bulk-send-msg-method"-->
-<!--                                                   id="--><?php //echo esc_attr( $method_id ); ?><!--"-->
-<!--                                                   name="bulk_send_msg_method"-->
-<!--                                                   value="--><?php //echo esc_attr( $channel_key ); ?><!--"-->
-<!--                                                --><?php //echo( ( $channel_key === 'email' ) ? 'checked' : '' ) ?><!--/>-->
-<!--                                            <label-->
-<!--                                                for="--><?php //echo esc_attr( $method_id ); ?><!--">--><?php //echo esc_html( $channel_value['label'] ); ?><!--</label>-->
-<!--                                            --><?php
-//                                        }
-//                                    }
-//                                }
-//                                ?>
                                 <span id="bulk_send_msg_method_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><br><?php echo esc_html__( 'Please ensure a valid send method has been specified.', 'disciple_tools' ); ?></span><br>
 
                                 <label for="bulk_send_msg"><?php echo esc_html__( 'Message', 'disciple_tools' ); ?></label>
@@ -899,8 +962,78 @@ Thanks!';
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 
-                    <div class="table-container">
-                        <table class="table-remove-top-border js-list stack striped" id="records-table">
+                    <?php if ( $is_mobile ) : ?>
+                        <!-- Mobile Contact List View -->
+                        <div style="background: orange; color: black; padding: 10px; margin: 10px;">
+                            🎉 SUCCESS: Reached mobile contact list section! 
+                        </div>
+                        
+                        <div style="position: fixed !important; top: 85%; left: 50%; transform: translateX(-50%); background: green !important; color: white !important; padding: 15px !important; z-index: 60001 !important; border: 3px solid white !important; font-size: 16px !important; font-weight: bold !important;">
+                            🟢 BREAKTHROUGH: Mobile contact list section executing!
+                        </div>
+                        
+                        <style>
+                        /* Simple mobile CSS - Fixed for syntax errors */
+                        .mobile-contact-list { display: block !important; }
+                        .table-container, #records-table { display: none !important; }
+                        .mobile-header { display: block !important; }
+                        </style>
+                        
+                        <!-- CSS BLOCK FIXED - CONTINUING TO MOBILE CONTACT LIST -->
+                        
+                        <div style="position: fixed !important; top: 80%; left: 50%; transform: translateX(-50%); background: lime !important; color: black !important; padding: 15px !important; z-index: 59999 !important; border: 3px solid black !important; font-size: 16px !important; font-weight: bold !important;">
+                            ✅ DEBUG: CSS block completed successfully!
+                        </div>
+                        
+                        <!-- Mobile Contact List -->
+                        <div style="background: red; color: white; padding: 10px; margin: 10px;">
+                            DEBUG: Mobile section is rendering - mobile detection working!
+                        </div>
+                        <?php 
+                        echo '<div style="position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: magenta !important; color: white !important; padding: 15px !important; z-index: 50000 !important; border: 3px solid white !important; font-size: 16px !important; font-weight: bold !important;">🟣 DEBUG: About to load mobile contact list...</div>';
+                        
+                        // Set global variables for the template
+                        global $mobile_post_type, $mobile_post_settings;
+                        $mobile_post_type = $post_type;
+                        $mobile_post_settings = $post_settings;
+                        
+                        echo '<div style="position: fixed; top: 30%; left: 50%; transform: translateX(-50%); background: cyan !important; color: black !important; padding: 15px !important; z-index: 49999 !important; border: 3px solid black !important; font-size: 16px !important; font-weight: bold !important;">🔵 DEBUG: Global variables set...</div>';
+                        
+                        // Try to include the template directly
+                        $template_path = get_template_directory() . '/dt-assets/parts/mobile/mobile-contact-list.php';
+                        if ( file_exists( $template_path ) ) {
+                            echo '<div style="position: fixed; top: 40%; left: 50%; transform: translateX(-50%); background: lime !important; color: black !important; padding: 15px !important; z-index: 49998 !important; border: 3px solid black !important; font-size: 16px !important; font-weight: bold !important;">🟢 DEBUG: Contact list file exists, including...</div>';
+                            
+                            try {
+                                ob_start();
+                                include $template_path;
+                                $template_output = ob_get_clean();
+                                echo $template_output;
+                                echo '<div style="position: fixed; top: 50%; left: 50%; transform: translateX(-50%); background: yellow !important; color: black !important; padding: 15px !important; z-index: 49997 !important; border: 3px solid black !important; font-size: 16px !important; font-weight: bold !important;">🟡 DEBUG: Contact list template included successfully!</div>';
+                            } catch ( Exception $e ) {
+                                ob_end_clean();
+                                echo '<div style="position: fixed; top: 50%; left: 50%; transform: translateX(-50%); background: red !important; color: white !important; padding: 15px !important; z-index: 49997 !important; border: 3px solid white !important; font-size: 16px !important; font-weight: bold !important;">🔴 DEBUG: Error including template: ' . esc_html($e->getMessage()) . '</div>';
+                            } catch ( ParseError $e ) {
+                                ob_end_clean();
+                                echo '<div style="position: fixed; top: 50%; left: 50%; transform: translateX(-50%); background: red !important; color: white !important; padding: 15px !important; z-index: 49997 !important; border: 3px solid white !important; font-size: 16px !important; font-weight: bold !important;">🔴 DEBUG: Parse error in template: ' . esc_html($e->getMessage()) . '</div>';
+                            }
+                        } else {
+                            echo '<div style="position: fixed; top: 40%; left: 50%; transform: translateX(-50%); background: red !important; color: white !important; padding: 15px !important; z-index: 49998 !important; border: 3px solid white !important; font-size: 16px !important; font-weight: bold !important;">🔴 DEBUG: Contact list file NOT FOUND!</div>';
+                        }
+                        
+                        echo '<div style="position: fixed; top: 60%; left: 50%; transform: translateX(-50%); background: teal !important; color: white !important; padding: 15px !important; z-index: 49996 !important; border: 3px solid white !important; font-size: 16px !important; font-weight: bold !important;">🔷 DEBUG: Mobile contact list call completed!</div>';
+                        ?>
+                        
+                        <!-- Mobile FAB -->
+                        <?php get_template_part( 'dt-assets/parts/mobile/mobile-fab' ); ?>
+                        
+                        <!-- Mobile Bottom Navigation -->
+                        <?php get_template_part( 'dt-assets/parts/mobile/mobile-bottom-nav' ); ?>
+                        
+                    <?php else : ?>
+                        <!-- Desktop Table View -->
+                        <div class="table-container">
+                            <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
                                     <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
@@ -937,11 +1070,12 @@ Thanks!';
                             <tbody id="table-content">
                                 <tr class="js-list-loading"><td colspan=7><?php esc_html_e( 'Loading...', 'disciple_tools' ); ?></td></tr>
                             </tbody>
-                        </table>
-                    </div>
-                    <div class="center">
-                        <button id="load-more" class="button loader" style="display: none"><?php esc_html_e( 'Load More', 'disciple_tools' ) ?></button>
-                    </div>
+                            </table>
+                        </div>
+                        <div class="center">
+                            <button id="load-more" class="button loader" style="display: none"><?php esc_html_e( 'Load More', 'disciple_tools' ) ?></button>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </main>
         </div>
@@ -1164,7 +1298,9 @@ Thanks!';
     </div>
 
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'filters' ); ?>
+    <?php endif; ?>
+    
 
-    <?php
-    get_footer();
-} )();
+    
+    <?php get_footer(); ?>
+<?php } )(); ?>

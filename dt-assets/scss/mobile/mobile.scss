@@ -1,0 +1,313 @@
+/**
+ * Mobile Styles Entry Point
+ * 
+ * This file imports all mobile-specific styles and should be compiled
+ * separately from the main desktop styles.
+ */
+
+// Import mobile-specific components
+@import "mobile-base";
+@import "mobile-navigation";
+@import "mobile-contacts";
+@import "mobile-phase3";
+
+/**
+ * Mobile-specific utilities and overrides
+ * Only applied on screens smaller than 640px
+ */
+@media (max-width: 640px) {
+  
+  /**
+   * Global mobile adjustments
+   */
+  
+  // Ensure proper viewport handling
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  
+  // Improve touch scrolling on iOS
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  // Hide desktop-only Foundation elements
+  .hide-for-small-only {
+    @apply tw-hidden;
+    display: none !important;
+  }
+  
+  // Show mobile-only elements
+  .show-for-small-only {
+    @apply tw-block;
+    display: block !important;
+  }
+  
+  // Foundation grid overrides for mobile
+  .grid-x {
+    &.mobile-full-width {
+      @apply tw-mx-0;
+    }
+  }
+  
+  .cell {
+    &.mobile-full {
+      @apply tw-w-full tw-max-w-none;
+    }
+  }
+  
+  // Foundation button mobile improvements
+  .button {
+    @apply tw-min-h-11; // 44px minimum touch target
+    
+    &.small {
+      @apply tw-min-h-9; // 36px for small buttons
+    }
+    
+    &.large {
+      @apply tw-min-h-12; // 48px for large buttons
+    }
+  }
+  
+  // Foundation form improvements for mobile
+  input,
+  textarea,
+  select {
+    @apply tw-text-base; // Prevent zoom on iOS
+    
+    &:focus {
+      @apply tw-outline-none; // Remove default outline
+    }
+  }
+  
+  // Foundation reveal (modal) mobile adjustments
+  .reveal {
+    @apply tw-max-h-screen tw-overflow-y-auto;
+    
+    &.full {
+      @apply tw-h-screen tw-max-h-screen;
+      @apply tw-rounded-none;
+    }
+  }
+  
+  // Foundation off-canvas mobile adjustments
+  .off-canvas {
+    @apply tw-z-9999;
+  }
+  
+  /**
+   * Mobile accessibility improvements
+   */
+  
+  // Larger touch targets for better accessibility
+  .touch-friendly {
+    @apply tw-min-h-11 tw-min-w-11;
+    @apply tw-flex tw-items-center tw-justify-center;
+  }
+  
+  // Focus indicators optimized for mobile
+  .mobile-focus-ring {
+    &:focus {
+      @apply tw-outline-none tw-ring-2 tw-ring-dt-primary tw-ring-offset-2;
+    }
+  }
+  
+  // Screen reader optimizations for mobile
+  .sr-only-mobile {
+    @apply tw-sr-only;
+  }
+  
+  /**
+   * Mobile typography improvements
+   */
+  
+  // Optimize font sizes for mobile readability
+  .mobile-text {
+    &.small {
+      @apply tw-text-sm;
+    }
+    
+    &.base {
+      @apply tw-text-base;
+    }
+    
+    &.large {
+      @apply tw-text-lg;
+    }
+    
+    &.xl {
+      @apply tw-text-xl;
+    }
+  }
+  
+  // Improve line spacing for mobile reading
+  .mobile-readable {
+    @apply tw-leading-relaxed;
+  }
+  
+  /**
+   * Mobile spacing utilities
+   */
+  
+  .mobile-spacing {
+    &.tight {
+      @apply tw-p-2;
+    }
+    
+    &.normal {
+      @apply tw-p-4;
+    }
+    
+    &.loose {
+      @apply tw-p-6;
+    }
+  }
+  
+  .mobile-safe-area {
+    // Account for notches and home indicators
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  
+  /**
+   * Mobile performance optimizations
+   */
+  
+  // Hardware acceleration for smooth animations
+  .mobile-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  // Optimize scrolling performance
+  .mobile-scroll-optimized {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  
+  /**
+   * Mobile-specific animations
+   */
+  
+  // Slide animations for mobile transitions
+  @keyframes mobile-slide-in-right {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes mobile-slide-in-left {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes mobile-slide-in-up {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes mobile-slide-in-down {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  // Scale animations for touch feedback
+  @keyframes mobile-tap-scale {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.95);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  // Animation classes
+  .mobile-slide-in-right {
+    animation: mobile-slide-in-right 0.3s ease-out;
+  }
+  
+  .mobile-slide-in-left {
+    animation: mobile-slide-in-left 0.3s ease-out;
+  }
+  
+  .mobile-slide-in-up {
+    animation: mobile-slide-in-up 0.3s ease-out;
+  }
+  
+  .mobile-slide-in-down {
+    animation: mobile-slide-in-down 0.3s ease-out;
+  }
+  
+  .mobile-tap-feedback {
+    animation: mobile-tap-scale 0.15s ease-out;
+  }
+  
+  /**
+   * Dark mode support (optional)
+   */
+  
+  @media (prefers-color-scheme: dark) {
+    .mobile-dark-mode {
+      @apply tw-bg-gray-900 tw-text-white;
+      
+      .mobile-contact-card {
+        @apply tw-bg-gray-800 tw-border-gray-700;
+      }
+      
+      .mobile-header {
+        @apply tw-bg-gray-800 tw-border-gray-700;
+      }
+      
+      .mobile-bottom-nav {
+        @apply tw-bg-gray-800 tw-border-gray-700;
+      }
+    }
+  }
+  
+  /**
+   * Print styles for mobile
+   */
+  
+  @media print {
+    .mobile-header,
+    .mobile-bottom-nav,
+    .mobile-fab {
+      @apply tw-hidden;
+    }
+    
+    .mobile-contact-card {
+      @apply tw-shadow-none tw-border tw-border-gray-300;
+      @apply tw-break-inside-avoid;
+    }
+  }
+} 

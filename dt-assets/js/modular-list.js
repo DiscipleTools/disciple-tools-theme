@@ -63,7 +63,21 @@
   let items = [];
   let current_filter;
 
-  on_load();
+  // Check if we're in mobile mode - if so, don't initialize desktop functionality
+  function isMobileView() {
+    // Check for forced mobile mode via URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('mobile') === '1') {
+      return true;
+    }
+    
+    return window.innerWidth <= 640 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  // Only initialize desktop functionality if not in mobile mode
+  if (!isMobileView()) {
+    on_load();
+  }
 
   function on_load() {
     let cached_filter = cookie;
@@ -174,8 +188,14 @@
   }
 
   function check_first_filter() {
-    $('#list-filter-tabs .accordion-item a')[0].click();
-    $($('.js-list-view')[0]).prop('checked', true);
+    // Only execute if desktop elements exist (not in mobile mode)
+    const filterTabs = $('#list-filter-tabs .accordion-item a');
+    const listViews = $('.js-list-view');
+    
+    if (filterTabs.length > 0 && listViews.length > 0) {
+      filterTabs[0].click();
+      $(listViews[0]).prop('checked', true);
+    }
   }
 
   function determine_list_columns(fieldsToShowInTable) {
@@ -184,26 +204,41 @@
     }
   }
 
-  // get records when a filter is clicked
-  $(document).on('change', '.js-list-view', () => {
-    reset_split_by_filters();
-    get_records_for_current_filter();
-  });
-
-  //load record for the first filter when a tile is clicked
-  $(document).on('click', '.accordion-title', function () {
-    let selected_filter = $('.js-list-view:checked').data('id');
-    let tab = $(this).data('id');
-    if (selected_filter) {
-      $(`.accordion-item[data-id='${tab}'] .js-list-view`)
-        .first()
-        .prop('checked', true);
+  // Only set up desktop event handlers if not in mobile mode
+  if (!isMobileView()) {
+    // get records when a filter is clicked
+    $(document).on('change', '.js-list-view', () => {
+      reset_split_by_filters();
       get_records_for_current_filter();
-    }
-  });
+    });
 
-  // Support field name filtering
-  let searchable_filter_field_objects = build_searchable_filter_field_objects();
+    //load record for the first filter when a tile is clicked
+    $(document).on('click', '.accordion-title', function () {
+      let selected_filter = $('.js-list-view:checked').data('id');
+      let tab = $(this).data('id');
+      if (selected_filter) {
+        $(`.accordion-item[data-id='${tab}'] .js-list-view`)
+          .first()
+          .prop('checked', true);
+        get_records_for_current_filter();
+      }
+    });
+  }
+
+  // Support field name filtering - only for desktop
+  let searchable_filter_field_objects = [];
+  if (!isMobileView()) {
+    searchable_filter_field_objects = build_searchable_filter_field_objects();
+    
+    $(document).on('search', '#field-filter-name', function () {
+      execute_searchable_filter_field_query($(this).val());
+    });
+
+    $(document).on('keyup', '#field-filter-name', function () {
+      execute_searchable_filter_field_query($(this).val());
+    });
+  }
+  
   function build_searchable_filter_field_objects() {
     let searchable_objs = [];
 
@@ -218,14 +253,6 @@
 
     return searchable_objs;
   }
-
-  $(document).on('search', '#field-filter-name', function () {
-    execute_searchable_filter_field_query($(this).val());
-  });
-
-  $(document).on('keyup', '#field-filter-name', function () {
-    execute_searchable_filter_field_query($(this).val());
-  });
 
   function execute_searchable_filter_field_query(query) {
     // Search across field objects...
@@ -269,14 +296,21 @@
     });
   }
 
-  // Remove filter labels
-  $(document).on('click', '.current-filter-list-close', function () {
-    let label = $(this).parent();
-    remove_current_filter_label(
-      label,
-      get_current_filter_label_field_details(label),
-    );
-  });
+  if (!isMobileView()) {
+    // Remove filter labels
+    $(document).on('click', '.current-filter-list-close', function () {
+      let label = $(this).parent();
+      remove_current_filter_label(
+        label,
+        get_current_filter_label_field_details(label),
+      );
+    });
+
+    // Collapse filter tile for mobile view
+    $(window).resize(function () {
+      collapse_filters();
+    });
+  }
 
   // Collapse filter tile for mobile view
   function collapse_filters() {
@@ -286,10 +320,6 @@
       $('#list-filters .bordered-box').removeClass('collapsed');
     }
   }
-
-  $(window).resize(function () {
-    collapse_filters();
-  });
 
   function get_current_filter_label_field_details(label) {
     let field_id = null;
@@ -1686,41 +1716,47 @@
     );
   });
 
-  $(document).on('click', '.current-filter-label-button', function () {
-    if (is_custom_filter_modal_visible()) {
-      $(this).parent().toggleClass('current-filter-excluded');
-    }
-  });
+  // Only set up filter modification functionality for desktop
+  if (!isMobileView()) {
+    $(document).on('click', '.current-filter-label-button', function () {
+      if (is_custom_filter_modal_visible()) {
+        $(this).parent().toggleClass('current-filter-excluded');
+      }
+    });
 
-  // Detect selected custom filter additions and alter shape accordingly
-  new MutationObserver(function (mutation_list, observer) {
-    if (
-      is_custom_filter_modal_visible() &&
-      mutation_list[0] &&
-      $(mutation_list[0].target).attr('id') == 'selected-filters'
-    ) {
-      // Iterate over latest selected filters list
-      $(mutation_list[0].target)
-        .find('.current-filter')
-        .each(function () {
-          let filter_label = $(this);
+    // Detect selected custom filter additions and alter shape accordingly
+    const selectedFiltersElement = $('#selected-filters').get(0);
+    if (selectedFiltersElement) {
+      new MutationObserver(function (mutation_list, observer) {
+        if (
+          is_custom_filter_modal_visible() &&
+          mutation_list[0] &&
+          $(mutation_list[0].target).attr('id') == 'selected-filters'
+        ) {
+          // Iterate over latest selected filters list
+          $(mutation_list[0].target)
+            .find('.current-filter')
+            .each(function () {
+              let filter_label = $(this);
 
-          // Only add exclusion button, if required
-          if (
-            $(filter_label).find('.current-filter-label-button').length == 0 &&
-            is_custom_filter_field_type_supported_for_exclusion(filter_label)
-          ) {
-            $(filter_label).append(
-              `<span title="${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.exclude_item)}" class="current-filter-label-button mdi mdi-minus-circle-multiple-outline"></span>`,
-            );
-          }
-        });
+              // Only add exclusion button, if required
+              if (
+                $(filter_label).find('.current-filter-label-button').length == 0 &&
+                is_custom_filter_field_type_supported_for_exclusion(filter_label)
+              ) {
+                $(filter_label).append(
+                  `<span title="${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.exclude_item)}" class="current-filter-label-button mdi mdi-minus-circle-multiple-outline"></span>`,
+                );
+              }
+            });
+        }
+      }).observe(selectedFiltersElement, {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      });
     }
-  }).observe($('#selected-filters').get(0), {
-    attributes: true,
-    childList: true,
-    subtree: true,
-  });
+  }
 
   function is_custom_filter_modal_visible() {
     return $('#filter-modal').is(':visible');
@@ -3542,128 +3578,132 @@
     );
   }
 
-  /**
-   * Bulk share
-   */
-  $.typeahead({
-    input: '#bulk_share',
-    minLength: 0,
-    maxItem: 0,
-    accent: true,
-    searchOnFocus: true,
-    source: window.TYPEAHEADS.typeaheadUserSource(),
-    templateValue: '{{name}}',
-    dynamic: true,
-    multiselect: {
-      matchOn: ['ID'],
-      callback: {
-        onCancel: function (node, item) {
-          $(node).removeData(`bulk_key_bulk_share`);
-          $('#share-result-container').html('');
-        },
-      },
-    },
-    callback: {
-      onClick: function (node, a, item, event) {
-        let shareUserArray;
-        if (node.data('bulk_key_share')) {
-          shareUserArray = node.data('bulk_key_share');
-        } else {
-          shareUserArray = [];
-        }
-        shareUserArray.push(item.ID);
-        node.data(`bulk_key_share`, shareUserArray);
-      },
-      onResult: function (node, query, result, resultCount) {
-        if (query) {
-          let text = window.TYPEAHEADS.typeaheadHelpText(
-            resultCount,
-            query,
-            result,
-          );
-          $('#share-result-container').html(text);
-        }
-      },
-      onHideLayout: function () {
-        $('#share-result-container').html('');
-      },
-    },
-  });
-
-  /**
-   * Bulk Typeahead
-   */
-  let field_settings = window.list_settings.post_type_settings.fields;
-
-  $('#bulk_edit_picker .dt_typeahead').each((key, el) => {
-    let element_id = $(el)
-      .attr('id')
-      .replace(/_connection$/, '');
-    let div_id = $(el).attr('id');
-    let field_id = $(`#${div_id} input`).data('field');
-    if (element_id !== 'bulk_share') {
-      let listing_post_type = window.lodash.get(
-        window.list_settings.post_type_settings.fields[field_id],
-        'post_type',
-        'contacts',
-      );
-      $.typeahead({
-        input: `.js-typeahead-${element_id}`,
-        minLength: 0,
-        accent: true,
-        maxItem: 30,
-        searchOnFocus: true,
-        template: window.TYPEAHEADS.contactListRowTemplate,
-        source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {
-          field_key: field_id,
-        }),
-        display: 'name',
-        templateValue: '{{name}}',
-        dynamic: true,
-        multiselect: {
-          matchOn: ['ID'],
-          data: '',
-          callback: {
-            onCancel: function (node, item) {
-              $(node).removeData(`bulk_key_${field_id}`);
-            },
-          },
-          href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`,
-        },
+  // Only initialize bulk functionality for desktop
+  if (!isMobileView()) {
+    /**
+     * Bulk share
+     */
+    $.typeahead({
+      input: '#bulk_share',
+      minLength: 0,
+      maxItem: 0,
+      accent: true,
+      searchOnFocus: true,
+      source: window.TYPEAHEADS.typeaheadUserSource(),
+      templateValue: '{{name}}',
+      dynamic: true,
+      multiselect: {
+        matchOn: ['ID'],
         callback: {
-          onClick: function (node, a, item, event) {
-            let multiUserArray;
-            if (node.data(`bulk_key_${field_id}`)) {
-              multiUserArray = node.data(`bulk_key_${field_id}`).values;
-            } else {
-              multiUserArray = [];
-            }
-            multiUserArray.push({ value: item.ID });
-
-            node.data(`bulk_key_${field_id}`, { values: multiUserArray });
-            this.addMultiselectItemLayout(item);
-            event.preventDefault();
-            this.hideLayout();
-            this.resetInput();
+          onCancel: function (node, item) {
+            $(node).removeData(`bulk_key_bulk_share`);
+            $('#share-result-container').html('');
           },
-          onResult: function (node, query, result, resultCount) {
+        },
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          let shareUserArray;
+          if (node.data('bulk_key_share')) {
+            shareUserArray = node.data('bulk_key_share');
+          } else {
+            shareUserArray = [];
+          }
+          shareUserArray.push(item.ID);
+          node.data(`bulk_key_share`, shareUserArray);
+        },
+        onResult: function (node, query, result, resultCount) {
+          if (query) {
             let text = window.TYPEAHEADS.typeaheadHelpText(
               resultCount,
               query,
               result,
             );
-            $(`#${element_id}-result-container`).html(text);
-          },
-          onHideLayout: function (event, query) {
-            if (!query) {
-              $(`#${element_id}-result-container`).empty();
-            }
-          },
-          onShowLayout() {},
+            $('#share-result-container').html(text);
+          }
         },
-      });
-    }
-  });
+        onHideLayout: function () {
+          $('#share-result-container').html('');
+        },
+      },
+    });
+  }
+
+    /**
+     * Bulk Typeahead - Only for desktop
+     */
+    if (!isMobileView()) {
+      let field_settings = window.list_settings.post_type_settings.fields;
+
+      $('#bulk_edit_picker .dt_typeahead').each((key, el) => {
+      let element_id = $(el)
+        .attr('id')
+        .replace(/_connection$/, '');
+      let div_id = $(el).attr('id');
+      let field_id = $(`#${div_id} input`).data('field');
+      if (element_id !== 'bulk_share') {
+        let listing_post_type = window.lodash.get(
+          window.list_settings.post_type_settings.fields[field_id],
+          'post_type',
+          'contacts',
+        );
+        $.typeahead({
+          input: `.js-typeahead-${element_id}`,
+          minLength: 0,
+          accent: true,
+          maxItem: 30,
+          searchOnFocus: true,
+          template: window.TYPEAHEADS.contactListRowTemplate,
+          source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {
+            field_key: field_id,
+          }),
+          display: 'name',
+          templateValue: '{{name}}',
+          dynamic: true,
+          multiselect: {
+            matchOn: ['ID'],
+            data: '',
+            callback: {
+              onCancel: function (node, item) {
+                $(node).removeData(`bulk_key_${field_id}`);
+              },
+            },
+            href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`,
+          },
+          callback: {
+            onClick: function (node, a, item, event) {
+              let multiUserArray;
+              if (node.data(`bulk_key_${field_id}`)) {
+                multiUserArray = node.data(`bulk_key_${field_id}`).values;
+              } else {
+                multiUserArray = [];
+              }
+              multiUserArray.push({ value: item.ID });
+
+              node.data(`bulk_key_${field_id}`, { values: multiUserArray });
+              this.addMultiselectItemLayout(item);
+              event.preventDefault();
+              this.hideLayout();
+              this.resetInput();
+            },
+            onResult: function (node, query, result, resultCount) {
+              let text = window.TYPEAHEADS.typeaheadHelpText(
+                resultCount,
+                query,
+                result,
+              );
+              $(`#${element_id}-result-container`).html(text);
+            },
+            onHideLayout: function (event, query) {
+              if (!query) {
+                $(`#${element_id}-result-container`).empty();
+              }
+            },
+            onShowLayout() {},
+          },
+        });
+      }
+    });
 
   if ($('#bulk_edit_picker .js-typeahead-bulk_location_grid').length) {
     $('#bulk_edit_picker .dt_location_grid').each(() => {
@@ -5367,6 +5407,8 @@
 
     return null;
   }
+
+    } // End mobile check for bulk functionality
 
   /**
    * List Exports

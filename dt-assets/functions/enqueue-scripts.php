@@ -83,6 +83,9 @@ function dt_site_scripts() {
     // Register main stylesheet
     dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
 
+    // Register mobile styles (Tailwind CSS)
+    dt_theme_enqueue_style( 'mobile-css', 'dt-assets/build/css/mobile-styles.min.css', array(), '(max-width: 640px)' );
+
     // Register web components
     dt_theme_enqueue_script( 'web-components', 'dt-assets/build/components/index.js', array(), false );
     dt_theme_enqueue_style( 'web-components-css', 'dt-assets/build/css/light.min.css', array() );
@@ -458,6 +461,34 @@ function dt_site_scripts() {
                 ]
             ]
         );
+    }
+    
+    // Enqueue mobile API for mobile devices on archive pages
+    if ( wp_is_mobile() || (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/Mobile|Android|iPhone|iPad/', $_SERVER['HTTP_USER_AGENT'])) ) {
+        if ( $url_path === 'contacts' || $url_path === 'groups' || ( $post_type && in_array( $post_type, ['contacts', 'groups'] ) ) ) {
+            dt_theme_enqueue_script( 'dt-mobile-api', 'dt-assets/js/mobile-api.js', [ 'jquery', 'shared-functions' ], true );
+            wp_localize_script( 'dt-mobile-api', 'dtMobileAPI', [
+                'root' => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'current_user_id' => get_current_user_id(),
+                'current_post_type' => $post_type,
+                'translations' => [
+                    'loading' => __( 'Loading...', 'disciple_tools' ),
+                    'load_more' => __( 'Load More', 'disciple_tools' ),
+                    'no_results' => __( 'No results found', 'disciple_tools' ),
+                    'error_loading' => __( 'Error loading records', 'disciple_tools' ),
+                    'pull_to_refresh' => __( 'Pull to refresh', 'disciple_tools' ),
+                    'release_to_refresh' => __( 'Release to refresh', 'disciple_tools' ),
+                    'refreshing' => __( 'Refreshing...', 'disciple_tools' ),
+                    'selected' => __( 'Selected', 'disciple_tools' ),
+                    'select_all' => __( 'Select All', 'disciple_tools' ),
+                    'deselect_all' => __( 'Deselect All', 'disciple_tools' ),
+                    'bulk_actions' => __( 'Bulk Actions', 'disciple_tools' ),
+                    'filter_applied' => __( 'Filter applied', 'disciple_tools' ),
+                    'search_placeholder' => sprintf( __( 'Search %s...', 'disciple_tools' ), $post_type ),
+                ]
+            ] );
+        }
     }
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );

@@ -125,9 +125,18 @@ class Disciple_Tools
         set_up_wpdb_tables();
 
         /**
-         * Load first files
-         */
-        require_once( 'dt-core/multisite.php' );
+ * Handle WordPress skip link deprecation
+ */
+add_action( 'wp_enqueue_scripts', function() {
+    if ( function_exists( 'wp_enqueue_block_template_skip_link' ) ) {
+        wp_enqueue_block_template_skip_link();
+    }
+});
+
+/**
+ * Load first files
+ */
+require_once( 'dt-core/multisite.php' );
         require_once( 'dt-core/utilities/dt-components.php' );
         require_once( 'dt-core/global-functions.php' );
         require_once( 'dt-core/utilities/loader.php' );

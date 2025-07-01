@@ -14,6 +14,7 @@ var gulp = require('gulp'),
   rename = require('gulp-rename'),
   frep = require('gulp-frep'),
   postcss = require('gulp-postcss'),
+  gulpif = require('gulp-if'),
   del = require('del'),
   cssnano = require('cssnano');
 
@@ -74,7 +75,22 @@ const SOURCE = {
   // Scss files will be concantonated, minified if ran with --production
   styles: [
     'dt-assets/scss/**/*.scss',
+    '!dt-assets/scss/mobile/**/*.scss', // Exclude mobile styles from main build
     'node_modules/@disciple.tools/web-components/src/styles/*',
+  ],
+
+  // Mobile-specific styles (Tailwind CSS included)
+  mobileStyles: [
+    'dt-assets/scss/mobile/tailwind.css',
+    'dt-assets/scss/mobile/mobile.scss',
+  ],
+
+  // Phase 3 JavaScript files
+  phase3Scripts: [
+    'dt-assets/js/service-worker.js',
+    'dt-assets/js/pwa-manager.js',
+    'dt-assets/js/mobile-bulk-actions.js',
+    'dt-assets/js/mobile-gesture-manager.js',
   ],
 
   otherjs: [
@@ -145,6 +161,34 @@ gulp.task('styles', function () {
     .pipe(touch());
 });
 
+// Compile Mobile Sass with Tailwind CSS, Autoprefix and minify
+gulp.task('styles:mobile', function () {
+  const tailwindcss = require('tailwindcss');
+  const autoprefixer = require('autoprefixer');
+  
+  return gulp.src(SOURCE.mobileStyles)
+    .pipe(plugin.plumber(function (error) {
+      log.error(error.message);
+      this.emit('end');
+    }))
+    .pipe(plugin.sourcemaps.init())
+    // Process SCSS files through Sass
+    .pipe(gulpif('*.scss', sass().on('error', sass.logError)))
+    // Process all files through PostCSS (including Tailwind)
+    .pipe(postcss([
+      tailwindcss('./tailwind.config.js'),
+      autoprefixer({
+        cascade: false
+      }),
+      cssnano()
+    ]))
+    .pipe(plugin.concat('mobile-styles.min.css'))
+    // .pipe(plugin.sourcemaps.write('.'))
+    .pipe(frep(patterns))
+    .pipe(gulp.dest(BUILD_DIRS.styles))
+    .pipe(touch());
+});
+
 // Clean out components directory before copying new files
 gulp.task('components:clean', function () {
   return del([BUILD_DIRS.components]);
@@ -157,8 +201,8 @@ gulp.task('components:copy', function () {
 // clean & copy web components assets folder
 gulp.task('components', gulp.series('components:clean', 'components:copy'));
 
-// Run styles, scripts and foundation-js
-gulp.task('default', gulp.parallel('styles', 'scripts', 'components'));
+// Run styles, mobile styles, scripts and components
+gulp.task('default', gulp.parallel('styles', 'styles:mobile', 'scripts', 'components'));
 
 
 /**
@@ -196,14 +240,25 @@ function reload(done) {
 gulp.task('watch', function () {
   // Watch .scss files
   gulp.watch(SOURCE.styles, gulp.series('styles'));
+  // Watch mobile scss files
+  gulp.watch(SOURCE.mobileStyles, gulp.series('styles:mobile'));
   // Watch scripts files
   gulp.watch(SOURCE.scripts, gulp.series('scripts'));
+});
+
+// Watch mobile styles only | run "gulp watch:mobile" or "npm run watch:mobile"
+gulp.task('watch:mobile', function () {
+  gulp.watch(SOURCE.mobileStyles, gulp.series('styles:mobile'));
+  gulp.watch('dt-assets/scss/mobile/**/*.scss', gulp.series('styles:mobile'));
 });
 
 // Watch for file changes with Browser-Sync | run "gulp browsersync" or "npm run browsersync"
 gulp.task('watchWithBrowserSync', function () {
   // Watch .scss files
   gulp.watch(SOURCE.styles, gulp.series('styles', reload));
+  // Watch mobile scss files
+  gulp.watch(SOURCE.mobileStyles, gulp.series('styles:mobile', reload));
+  gulp.watch('dt-assets/scss/mobile/**/*.scss', gulp.series('styles:mobile', reload));
   // Watch scripts files
   gulp.watch(SOURCE.scripts, gulp.series('scripts', reload));
   //Watch php files
@@ -212,8 +267,8 @@ gulp.task('watchWithBrowserSync', function () {
   gulp.watch(SOURCE.otherjs, gulp.series(reload));
 });
 
-// Launch the development environemnt with Browser-Sync
-gulp.task('browsersync', gulp.series(gulp.parallel('styles', 'scripts'), serve, 'watchWithBrowserSync'));
+// Launch the development environment with Browser-Sync
+gulp.task('browsersync', gulp.series(gulp.parallel('styles', 'styles:mobile', 'scripts'), serve, 'watchWithBrowserSync'));
 
 /**
  * OPTIONAL - USE THE FOLLOWING TASK TO RUN BROWSER-SYNC WITH A PROXY ARGUMENT FROM THE COMMAND LINE.

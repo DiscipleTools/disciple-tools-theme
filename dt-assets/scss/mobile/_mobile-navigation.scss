@@ -1,0 +1,337 @@
+/**
+ * Mobile Navigation Styles
+ * 
+ * Social app inspired navigation for mobile devices
+ */
+
+@media (max-width: 640px) {
+  
+  /**
+   * Mobile Header
+   * Clean, search-focused header
+   */
+  .mobile-header {
+    @apply tw-bg-white tw-shadow-sm tw-border-b tw-border-gray-200;
+    @apply tw-sticky tw-top-0 tw-z-1000;
+    
+    .mobile-header__content {
+      @apply tw-px-4 tw-py-3;
+      
+      .mobile-header__top {
+        @apply tw-flex tw-items-center tw-justify-between tw-mb-3;
+        
+        .mobile-header__title {
+          @apply tw-text-lg tw-font-semibold tw-text-gray-900;
+        }
+        
+        .mobile-header__menu-btn {
+          @apply tw-p-2 tw-text-gray-400;
+          @apply tw-rounded-full tw-transition-colors tw-duration-150;
+          @apply tw-touch-target;
+          
+          &:hover {
+            @apply tw-text-gray-600 tw-bg-gray-50;
+          }
+        }
+      }
+      
+      .mobile-search {
+        @apply tw-relative;
+        
+        .mobile-search__input {
+          @apply tw-w-full tw-pl-10 tw-pr-4 tw-py-2;
+          @apply tw-border tw-border-gray-300 tw-rounded-full;
+          @apply tw-focus:ring-2 tw-focus:ring-dt-primary tw-focus:border-transparent;
+          @apply tw-text-base; // Prevent iOS zoom
+          @apply tw-bg-gray-50;
+          
+          &::placeholder {
+            @apply tw-text-gray-400;
+          }
+        }
+        
+        .mobile-search__icon {
+          @apply tw-absolute tw-inset-y-0 tw-left-0 tw-pl-3;
+          @apply tw-flex tw-items-center tw-pointer-events-none;
+          
+          svg {
+            @apply tw-h-5 tw-w-5 tw-text-gray-400;
+          }
+        }
+        
+        .mobile-search__clear {
+          @apply tw-absolute tw-inset-y-0 tw-right-0 tw-pr-3;
+          @apply tw-flex tw-items-center;
+          
+          button {
+            @apply tw-p-1 tw-text-gray-400;
+            @apply tw-rounded-full tw-transition-colors tw-duration-150;
+            
+            &:hover {
+              @apply tw-text-gray-600;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  /**
+   * Bottom Navigation
+   * Modern bottom tab navigation
+   */
+  .mobile-bottom-nav {
+    @apply tw-fixed tw-bottom-0 tw-left-0 tw-right-0;
+    @apply tw-bg-white tw-border-t tw-border-gray-200;
+    @apply tw-px-4 tw-py-2 tw-z-1000;
+    @apply tw-shadow-lg;
+    
+    // Safe area for devices with home indicator
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+    
+    .mobile-bottom-nav__container {
+      @apply tw-flex tw-justify-around;
+      
+      .mobile-bottom-nav__item {
+        @apply tw-flex tw-flex-col tw-items-center;
+        @apply tw-py-2 tw-px-3 tw-text-gray-600;
+        @apply tw-transition-colors tw-duration-150;
+        @apply tw-touch-target;
+        @apply tw-min-w-0; // Prevent flex items from growing too large
+        
+        &.active {
+          @apply tw-text-dt-primary;
+        }
+        
+        &:active {
+          @apply tw-text-dt-primary tw-bg-blue-50;
+          @apply tw-rounded-lg;
+        }
+        
+        .mobile-bottom-nav__icon {
+          @apply tw-h-6 tw-w-6 tw-mb-1;
+          @apply tw-transition-transform tw-duration-150;
+        }
+        
+        .mobile-bottom-nav__label {
+          @apply tw-text-xs tw-font-medium tw-truncate;
+          @apply tw-max-w-12; // Prevent long labels from breaking layout
+        }
+        
+        // Animate active state
+        &.active .mobile-bottom-nav__icon {
+          @apply tw-scale-110;
+        }
+      }
+    }
+  }
+  
+  /**
+   * Floating Action Button (FAB)
+   * Primary action button
+   */
+      .mobile-fab {
+      @apply tw-fixed tw-z-1000;
+      @apply tw-bg-dt-primary tw-text-white;
+      @apply tw-rounded-full tw-p-4;
+      @apply tw-shadow-lifted;
+      @apply tw-transition-all tw-duration-200;
+      
+      &:hover {
+        @apply tw-bg-blue-700;
+        transform: scale(1.05);
+      }
+      
+      &:active {
+        @apply tw-scale-95;
+      }
+    
+    // Position above bottom navigation
+    bottom: calc(4rem + max(0.5rem, env(safe-area-inset-bottom)));
+    right: 1rem;
+    
+    .mobile-fab__icon {
+      @apply tw-h-6 tw-w-6;
+    }
+    
+    // FAB with label
+    &.mobile-fab--extended {
+      @apply tw-flex tw-items-center tw-px-6 tw-py-3;
+      @apply tw-rounded-full;
+      
+      .mobile-fab__icon {
+        @apply tw-mr-2;
+      }
+      
+      .mobile-fab__label {
+        @apply tw-text-sm tw-font-medium tw-whitespace-nowrap;
+      }
+    }
+    
+    // Hide FAB when keyboard is visible
+    @media (max-height: 500px) {
+      @apply tw-hidden;
+    }
+  }
+  
+  /**
+   * Mobile Menu Overlay
+   * Slide-out navigation menu
+   */
+  .mobile-menu-overlay {
+    @apply tw-fixed tw-inset-0 tw-z-9999;
+    @apply tw-opacity-0 tw-pointer-events-none;
+    @apply tw-transition-opacity tw-duration-300;
+    
+    &.active {
+      @apply tw-opacity-100 tw-pointer-events-auto;
+    }
+    
+    .mobile-menu-backdrop {
+      @apply tw-absolute tw-inset-0;
+      @apply tw-bg-black tw-bg-opacity-50;
+    }
+    
+    .mobile-menu-panel {
+      @apply tw-absolute tw-right-0 tw-top-0 tw-bottom-0;
+      @apply tw-w-80 tw-max-w-full;
+      @apply tw-bg-white tw-shadow-lifted;
+      @apply tw-transform tw-translate-x-full;
+      @apply tw-transition-transform tw-duration-300;
+      
+      &.active {
+        @apply tw-translate-x-0;
+      }
+      
+      .mobile-menu-header {
+        @apply tw-p-4 tw-border-b tw-border-gray-200;
+        @apply tw-flex tw-items-center tw-justify-between;
+        
+        .mobile-menu-title {
+          @apply tw-text-lg tw-font-semibold tw-text-gray-900;
+        }
+        
+        .mobile-menu-close {
+          @apply tw-p-2 tw-text-gray-400;
+          @apply tw-rounded-full tw-transition-colors tw-duration-150;
+          @apply tw-touch-target;
+          
+          &:hover {
+            @apply tw-text-gray-600;
+          }
+        }
+      }
+      
+      .mobile-menu-content {
+        @apply tw-p-4 tw-overflow-y-auto;
+        height: calc(100vh - 5rem); // Account for header
+      }
+    }
+  }
+  
+  /**
+   * Filter Slide-Up Panel
+   * Bottom sheet for filters
+   */
+  .mobile-filter-panel {
+    @apply tw-fixed tw-inset-0 tw-z-9999;
+    @apply tw-opacity-0 tw-pointer-events-none;
+    @apply tw-transition-opacity tw-duration-300;
+    
+    &.active {
+      @apply tw-opacity-100 tw-pointer-events-auto;
+    }
+    
+    .mobile-filter-backdrop {
+      @apply tw-absolute tw-inset-0;
+      @apply tw-bg-black tw-bg-opacity-50;
+    }
+    
+    .mobile-filter-sheet {
+      @apply tw-absolute tw-bottom-0 tw-left-0 tw-right-0;
+      @apply tw-bg-white tw-rounded-t-2xl;
+      @apply tw-transform tw-translate-y-full;
+      @apply tw-transition-transform tw-duration-300;
+      @apply tw-max-h-96 tw-overflow-y-auto;
+      
+      // Safe area for devices with home indicator
+      padding-bottom: max(1rem, env(safe-area-inset-bottom));
+      
+      &.active {
+        @apply tw-translate-y-0;
+      }
+      
+      .mobile-filter-header {
+        @apply tw-p-4 tw-border-b tw-border-gray-200;
+        @apply tw-flex tw-items-center tw-justify-between;
+        
+        .mobile-filter-title {
+          @apply tw-text-lg tw-font-medium tw-text-gray-900;
+        }
+        
+        .mobile-filter-close {
+          @apply tw-p-2 tw-text-gray-400;
+          @apply tw-rounded-full tw-transition-colors tw-duration-150;
+          @apply tw-touch-target;
+          
+          &:hover {
+            @apply tw-text-gray-600;
+          }
+        }
+      }
+      
+      .mobile-filter-content {
+        @apply tw-p-4;
+        
+        .mobile-filter-chips {
+          @apply tw-flex tw-flex-wrap tw-gap-2 tw-mb-4;
+          
+          .mobile-filter-chip {
+            @apply tw-inline-flex tw-items-center;
+            @apply tw-px-3 tw-py-1 tw-rounded-full tw-text-sm;
+            @apply tw-bg-blue-100 tw-text-blue-800;
+            @apply tw-transition-colors tw-duration-150;
+            
+            .mobile-filter-chip__remove {
+              @apply tw-ml-1 tw-text-blue-600;
+              @apply tw-cursor-pointer;
+              
+              &:hover {
+                @apply tw-text-blue-800;
+              }
+            }
+          }
+        }
+        
+        .mobile-filter-section {
+          @apply tw-border-t tw-pt-4;
+          
+          .mobile-filter-section__title {
+            @apply tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-2;
+          }
+        }
+      }
+    }
+  }
+  
+  /**
+   * Hide desktop navigation elements
+   */
+  .second-bar.list-actions-bar {
+    @apply tw-hidden;
+  }
+  
+  .show-for-small-only {
+    @apply tw-hidden;
+  }
+}
+
+/**
+ * Mobile Navigation JavaScript Hooks
+ * Classes for JavaScript interaction
+ */
+.js-mobile-menu-toggle,
+.js-mobile-filter-toggle,
+.js-mobile-search-clear {
+  cursor: pointer;
+} 

@@ -1,0 +1,431 @@
+/**
+ * Mobile Contact List Styles
+ * 
+ * Social app inspired contact cards and list layout
+ */
+
+@media (max-width: 640px) {
+  
+  /**
+   * Mobile Contact List Container
+   */
+  .mobile-contact-list {
+    @apply tw-block tw-px-4 tw-pt-4;
+    // Add bottom padding to account for bottom navigation
+    padding-bottom: calc(5rem + max(1rem, env(safe-area-inset-bottom)));
+    
+    .mobile-contact-list__header {
+      @apply tw-mb-4;
+      
+      .mobile-contact-list__count {
+        @apply tw-text-sm tw-text-gray-600 tw-mb-2;
+      }
+      
+      .mobile-contact-list__filters {
+        @apply tw-flex tw-flex-wrap tw-gap-2;
+        
+        .mobile-filter-chip {
+          @apply tw-inline-flex tw-items-center;
+          @apply tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium;
+          @apply tw-bg-blue-100 tw-text-blue-800;
+          @apply tw-transition-all tw-duration-150;
+          
+          .mobile-filter-chip__remove {
+            @apply tw-ml-1 tw-text-blue-600;
+            @apply tw-cursor-pointer tw-transition-colors tw-duration-150;
+            
+            &:hover {
+              @apply tw-text-blue-800;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  /**
+   * Contact Card
+   * Individual contact card in the list
+   */
+  .mobile-contact-card {
+    @apply tw-bg-white tw-rounded-lg tw-shadow-card tw-border tw-border-gray-200;
+    @apply tw-mb-3 tw-transition-all tw-duration-200;
+    @apply tw-relative tw-overflow-hidden;
+    
+    // Touch feedback
+    &:active {
+      @apply tw-bg-gray-50 tw-scale-95;
+    }
+    
+    // Swipe actions container
+    .mobile-contact-card__swipe-actions {
+      @apply tw-absolute tw-inset-y-0 tw-right-0;
+      @apply tw-flex tw-items-center;
+      @apply tw-opacity-0 tw-transform tw-translate-x-full;
+      @apply tw-transition-all tw-duration-200;
+      
+      &.active {
+        @apply tw-opacity-100 tw-translate-x-0;
+      }
+      
+      .mobile-contact-card__action {
+        @apply tw-px-4 tw-py-8 tw-text-sm tw-font-medium tw-text-white;
+        @apply tw-flex tw-items-center tw-justify-center;
+        @apply tw-transition-all tw-duration-150;
+        @apply tw-cursor-pointer;
+        
+        &.edit {
+          @apply tw-bg-blue-500;
+          
+          &:hover {
+            @apply tw-bg-blue-600;
+          }
+        }
+        
+        &.call {
+          @apply tw-bg-green-500;
+          
+          &:hover {
+            @apply tw-bg-green-600;
+          }
+        }
+        
+        &.delete {
+          @apply tw-bg-red-500;
+          
+          &:hover {
+            @apply tw-bg-red-600;
+          }
+        }
+      }
+    }
+    
+    // Main card content
+    .mobile-contact-card__content {
+      @apply tw-p-4 tw-transition-transform tw-duration-200;
+      
+      .mobile-contact-card__main {
+        @apply tw-flex tw-items-center tw-space-x-3;
+        
+        .mobile-contact-card__avatar {
+          @apply tw-flex-shrink-0;
+          
+          .mobile-contact-card__image {
+            @apply tw-h-12 tw-w-12 tw-rounded-full tw-object-cover;
+            @apply tw-bg-gray-300; // Fallback background
+          }
+          
+          .mobile-contact-card__initials {
+            @apply tw-h-12 tw-w-12 tw-rounded-full;
+            @apply tw-bg-dt-primary tw-text-white;
+            @apply tw-flex tw-items-center tw-justify-center;
+            @apply tw-text-sm tw-font-medium;
+          }
+          
+          .mobile-contact-card__icon {
+            @apply tw-h-12 tw-w-12 tw-rounded-full;
+            @apply tw-bg-gray-100 tw-text-gray-400;
+            @apply tw-flex tw-items-center tw-justify-center;
+            
+            svg {
+              @apply tw-h-6 tw-w-6;
+            }
+          }
+        }
+        
+        .mobile-contact-card__info {
+          @apply tw-flex-1 tw-min-w-0; // Prevent text overflow
+          
+          .mobile-contact-card__name {
+            @apply tw-text-sm tw-font-medium tw-text-gray-900;
+            @apply tw-truncate tw-mb-1;
+          }
+          
+          .mobile-contact-card__details {
+            @apply tw-flex tw-items-center tw-space-x-2;
+            @apply tw-text-sm tw-text-gray-500;
+            
+            .mobile-contact-card__status {
+              @apply tw-truncate;
+            }
+            
+            .mobile-contact-card__separator {
+              @apply tw-text-gray-300;
+            }
+            
+            .mobile-contact-card__activity {
+              @apply tw-truncate;
+            }
+          }
+        }
+        
+        .mobile-contact-card__meta {
+          @apply tw-flex-shrink-0 tw-text-right;
+          
+          .mobile-contact-card__badge {
+            @apply tw-inline-flex tw-items-center;
+            @apply tw-px-2.5 tw-py-0.5 tw-rounded-full;
+            @apply tw-text-xs tw-font-medium;
+            @apply tw-mb-1;
+            
+            &.active {
+              @apply tw-bg-green-100 tw-text-green-800;
+            }
+            
+            &.paused {
+              @apply tw-bg-yellow-100 tw-text-yellow-800;
+            }
+            
+            &.closed {
+              @apply tw-bg-gray-100 tw-text-gray-800;
+            }
+            
+            &.assigned {
+              @apply tw-bg-blue-100 tw-text-blue-800;
+            }
+          }
+          
+          .mobile-contact-card__actions {
+            @apply tw-flex tw-items-center tw-space-x-1;
+            
+            .mobile-contact-card__favorite {
+              @apply tw-p-1 tw-text-gray-400;
+              @apply tw-transition-colors tw-duration-150;
+              
+              &:hover {
+                @apply tw-text-yellow-500;
+              }
+              
+              &.active {
+                @apply tw-text-yellow-500;
+              }
+            }
+            
+            .mobile-contact-card__menu {
+              @apply tw-p-1 tw-text-gray-400;
+              @apply tw-transition-colors tw-duration-150;
+              
+              &:hover {
+                @apply tw-text-gray-600;
+              }
+            }
+          }
+        }
+      }
+      
+      // Expanded details (collapsible)
+      .mobile-contact-card__expanded {
+        @apply tw-mt-3 tw-pt-3 tw-border-t tw-border-gray-100;
+        @apply tw-space-y-2;
+        @apply tw-hidden; // Hidden by default, shown via JavaScript
+        
+        &.active {
+          @apply tw-block;
+        }
+        
+        .mobile-contact-card__field {
+          @apply tw-flex tw-items-start tw-space-x-2;
+          
+          .mobile-contact-card__field-icon {
+            @apply tw-flex-shrink-0 tw-mt-1;
+            @apply tw-h-4 tw-w-4 tw-text-gray-400;
+          }
+          
+          .mobile-contact-card__field-content {
+            @apply tw-flex-1 tw-min-w-0;
+            
+            .mobile-contact-card__field-label {
+              @apply tw-text-xs tw-text-gray-500 tw-uppercase tw-tracking-wide;
+            }
+            
+            .mobile-contact-card__field-value {
+              @apply tw-text-sm tw-text-gray-900 tw-truncate;
+            }
+          }
+        }
+        
+        .mobile-contact-card__tags {
+          @apply tw-flex tw-flex-wrap tw-gap-1;
+          
+          .mobile-contact-card__tag {
+            @apply tw-inline-flex tw-items-center;
+            @apply tw-px-2 tw-py-1 tw-rounded tw-text-xs;
+            @apply tw-bg-gray-100 tw-text-gray-700;
+          }
+        }
+      }
+    }
+    
+    // Loading state
+    &.loading {
+      @apply tw-animate-pulse;
+      
+      .mobile-contact-card__image,
+      .mobile-contact-card__initials,
+      .mobile-contact-card__icon {
+        @apply tw-bg-gray-300;
+      }
+      
+      .mobile-contact-card__name,
+      .mobile-contact-card__details {
+        @apply tw-bg-gray-300 tw-text-transparent tw-rounded;
+      }
+    }
+    
+    // Selected state (for bulk operations)
+    &.selected {
+      @apply tw-ring-2 tw-ring-dt-primary tw-bg-blue-50;
+      
+      .mobile-contact-card__checkbox {
+        @apply tw-opacity-100;
+      }
+    }
+    
+    // Bulk selection checkbox
+    .mobile-contact-card__checkbox {
+      @apply tw-absolute tw-top-2 tw-left-2;
+      @apply tw-opacity-0 tw-transition-opacity tw-duration-150;
+      @apply tw-bg-white tw-rounded tw-shadow-sm;
+      @apply tw-p-1;
+    }
+  }
+  
+  /**
+   * Load More Button
+   */
+  .mobile-load-more {
+    @apply tw-w-full tw-py-3 tw-px-4 tw-my-4;
+    @apply tw-bg-white tw-border tw-border-gray-300 tw-rounded-lg;
+    @apply tw-text-sm tw-font-medium tw-text-gray-700;
+    @apply tw-transition-all tw-duration-150;
+    
+    &:hover {
+      @apply tw-bg-gray-50;
+    }
+    
+    &:active {
+      @apply tw-bg-gray-100;
+    }
+    
+    &.loading {
+      @apply tw-opacity-50 tw-cursor-not-allowed;
+    }
+    
+    .mobile-load-more__spinner {
+      @apply tw-inline-block tw-w-4 tw-h-4 tw-mr-2;
+      @apply tw-animate-spin;
+    }
+  }
+  
+  /**
+   * Empty State
+   */
+  .mobile-contact-list__empty {
+    @apply tw-flex tw-flex-col tw-items-center tw-justify-center;
+    @apply tw-py-12 tw-px-4 tw-text-center;
+    
+    .mobile-contact-list__empty-icon {
+      @apply tw-h-16 tw-w-16 tw-text-gray-300 tw-mb-4;
+    }
+    
+    .mobile-contact-list__empty-title {
+      @apply tw-text-lg tw-font-medium tw-text-gray-900 tw-mb-2;
+    }
+    
+    .mobile-contact-list__empty-description {
+      @apply tw-text-sm tw-text-gray-500 tw-mb-4;
+    }
+    
+    .mobile-contact-list__empty-action {
+      @apply tw-bg-dt-primary tw-text-white;
+      @apply tw-px-4 tw-py-2 tw-rounded-lg;
+      @apply tw-text-sm tw-font-medium;
+      @apply tw-transition-colors tw-duration-150;
+      
+      &:hover {
+        @apply tw-bg-blue-700;
+      }
+    }
+  }
+  
+  /**
+   * Bulk Selection Mode
+   */
+  .mobile-contact-list.bulk-mode {
+    .mobile-contact-card__checkbox {
+      @apply tw-opacity-100;
+    }
+    
+    .mobile-contact-card__actions {
+      @apply tw-opacity-50;
+    }
+  }
+  
+  /**
+   * Pull-to-Refresh
+   */
+  .mobile-pull-to-refresh {
+    @apply tw-relative;
+    
+    .mobile-pull-to-refresh__indicator {
+      @apply tw-absolute tw-top-0 tw-left-0 tw-right-0;
+      @apply tw-flex tw-justify-center tw-pt-4;
+      @apply tw-transition-transform tw-duration-300;
+      
+      .mobile-pull-to-refresh__spinner {
+        @apply tw-bg-white tw-rounded-full tw-p-2 tw-shadow-lg;
+        @apply tw-opacity-0 tw-transition-opacity tw-duration-200;
+        
+        &.active {
+          @apply tw-opacity-100;
+        }
+        
+        svg {
+          @apply tw-h-6 tw-w-6 tw-text-gray-600;
+          
+          &.spinning {
+            @apply tw-animate-spin;
+          }
+        }
+      }
+    }
+  }
+  
+  /**
+   * Virtual Scrolling Container
+   */
+  .mobile-virtual-scroll {
+    @apply tw-relative tw-overflow-y-auto;
+    
+    .mobile-virtual-scroll__spacer {
+      &.top {
+        @apply tw-block;
+      }
+      
+      &.bottom {
+        @apply tw-block;
+      }
+    }
+  }
+  
+  /**
+   * Hide desktop table and show mobile list
+   */
+  #records-table {
+    @apply tw-hidden;
+  }
+  
+  .mobile-contact-list {
+    @apply tw-block;
+  }
+}
+
+/**
+ * JavaScript Hooks for Mobile Interactions
+ */
+.js-mobile-contact-card,
+.js-mobile-swipe-card,
+.js-mobile-pull-refresh,
+.js-mobile-load-more {
+  cursor: pointer;
+} 

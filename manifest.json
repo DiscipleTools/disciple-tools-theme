@@ -1,0 +1,191 @@
+{
+  "name": "Disciple Tools Mobile",
+  "short_name": "DT Mobile",
+  "description": "Mobile app for Disciple Tools - Disciple relationship management system",
+  "theme_color": "#3F729B",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait-primary",  
+  "scope": "/",
+  "start_url": "/contacts?utm_source=pwa",
+  "id": "/contacts",
+  "categories": ["productivity", "business", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  
+  "icons": [
+    {
+      "src": "dt-assets/images/pwa/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "dt-assets/images/pwa/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "dt-assets/images/pwa/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "dt-assets/images/pwa/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "dt-assets/images/pwa/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "dt-assets/images/pwa/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "dt-assets/images/pwa/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "dt-assets/images/pwa/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  
+  "screenshots": [
+    {
+      "src": "dt-assets/images/pwa/screenshot-mobile-1.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Contact List View"
+    },
+    {
+      "src": "dt-assets/images/pwa/screenshot-mobile-2.png", 
+      "sizes": "375x812",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Contact Details"
+    },
+    {
+      "src": "dt-assets/images/pwa/screenshot-tablet-1.png",
+      "sizes": "768x1024", 
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Tablet Contact Management"
+    }
+  ],
+  
+  "shortcuts": [
+    {
+      "name": "New Contact",
+      "short_name": "New Contact",
+      "description": "Create a new contact",
+      "url": "/contacts/new?utm_source=pwa_shortcut",
+      "icons": [
+        {
+          "src": "dt-assets/images/pwa/shortcut-new-contact.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Search Contacts",
+      "short_name": "Search",
+      "description": "Search for contacts",
+      "url": "/contacts?search=true&utm_source=pwa_shortcut",
+      "icons": [
+        {
+          "src": "dt-assets/images/pwa/shortcut-search.png",
+          "sizes": "96x96", 
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Groups",
+      "short_name": "Groups",
+      "description": "Manage groups",
+      "url": "/groups?utm_source=pwa_shortcut",
+      "icons": [
+        {
+          "src": "dt-assets/images/pwa/shortcut-groups.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Metrics",
+      "short_name": "Metrics",
+      "description": "View metrics and reports",
+      "url": "/metrics?utm_source=pwa_shortcut",
+      "icons": [
+        {
+          "src": "dt-assets/images/pwa/shortcut-metrics.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "/manifest.json"
+    }
+  ],
+  
+  "prefer_related_applications": false,
+  
+  "protocol_handlers": [
+    {
+      "protocol": "mailto",
+      "url": "/contacts?email=%s"
+    },
+    {
+      "protocol": "tel", 
+      "url": "/contacts?phone=%s"
+    }
+  ],
+  
+  "share_target": {
+    "action": "/contacts/new",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "name",
+      "text": "description",
+      "url": "website"
+    }
+  },
+  
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  
+  "display_override": [
+    "window-controls-overlay",
+    "minimal-ui",
+    "standalone",
+    "browser"
+  ]
+} 
