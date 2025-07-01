@@ -1,0 +1,124 @@
+#map-wrapper {
+    position: relative;
+    height: 800px;
+    width:100%;
+}
+#map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width:100%;
+    height: 800px;
+}
+#legend {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 2;
+}
+#data {
+    word-wrap: break-word;
+}
+.legend {
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+    font: 12px/20px 'Roboto', Arial, sans-serif;
+    padding: 10px;
+    opacity: .9;
+}
+.legend h4 {
+    margin: 0 0 10px;
+}
+
+#spinner {
+    position: absolute;
+    top:50%;
+    left:50%;
+    z-index: 20;
+    display:none;
+}
+.spinner-image {
+    width: 30px;
+}
+.info-bar-font {
+    font-size: 1.5em;
+    padding-top: 9px;
+}
+.border-left {
+    border-left: 1px lightgray solid;
+    padding: 0 10px 0 10px;
+}
+#add_records_div {
+    position: absolute;
+    top: 90px;
+    left: 10px;
+    z-index: 2;
+    max-height: 100%;
+    overflow-x: auto;
+}
+.add-records-div {
+    background-color: #ffffff;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+    font: 12px/20px 'Roboto', Arial, sans-serif;
+    padding: 10px;
+    opacity: .9;
+    width: 300px;
+    display:none;
+}
+
+.close-add-records-div {
+    cursor:pointer;
+}
+#geocode-details {
+    position: absolute;
+    top: 15%;
+    right: 10px;
+    z-index: 2;
+}
+.geocode-details {
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+    font: 12px/20px 'Roboto', Arial, sans-serif;
+    padding: 10px;
+    opacity: .9;
+    width: 300px;
+    display:none;
+}
+.close-details {
+    cursor:pointer;
+}
+#map-wrapper {
+    #legend {
+        img {
+            height: 30px;
+            width: 30px;
+        }
+        #map-type {
+            padding: 0 10px 0 10px;
+            button{
+                margin-bottom: 0;
+                padding: 2px;
+            }
+            button.selected-select-button {
+                img {
+                    filter: invert(100%) sepia(0%) saturate(7481%) hue-rotate(180deg) brightness(109%) contrast(100%);
+                }
+            }
+        }
+        .map-option-buttons {
+            button {
+                margin: 0 0 0 3px;
+            }
+        }
+        #loading-legend span {
+            vertical-align: middle;
+            margin: 0 5px;
+            font-size: 14px;
+        }
+    }
+}

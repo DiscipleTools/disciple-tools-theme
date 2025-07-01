@@ -1,0 +1,24 @@
+# Ignore artifacts:
+dt-assets/build/components/**/*
+dt-assets/js/modernizr-custom.js
+dt-core/admin/multi-role/js/min/
+dt-core/dependencies/
+dt-core/libraries/
+gulpfile.js
+node_modules
+vendor
+*.min.js
+
+*.cy.js
+cypress.config.js
+cypress/support/e2e.js
+cypress/support/commands.js
+
+*.cjs
+*.css
+*.scss
+*.json
+*.md
+*.html
+*.yml
+*.webmanifest
