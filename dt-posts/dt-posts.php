@@ -596,11 +596,17 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, "No permissions to read $post_type with ID $post_id", [ 'status' => 403 ] );
         }
-        //@todo re-enable when load order is implemented.
-        //$post_types = self::get_post_types();
-        //if ( !in_array( $post_type, $post_types ) ){
-        //    return new WP_Error( __FUNCTION__, "$post_type in not a valid post type", [ 'status' => 400 ] );
-        //}
+        //warning about calling get_post() too soon
+        if ( defined( 'WP_DEBUG' ) && WP_DEBUG ){
+            $post_types = self::get_post_types();
+            if ( !in_array( $post_type, $post_types ) ){
+                // if you come across this, you are calling get_post() too soon,
+                // maybe in the __construct() of a class.
+                // The fields and post type have not been loaded yet.
+                // try using the `disciple_tools_loaded` hook.
+                return new WP_Error( __FUNCTION__, "$post_type in not a valid post type or hasn't been declared yet. Please use the disciple_tools_loaded hook", [ 'status' => 400 ] );
+            }
+        }
         $current_user_id = get_current_user_id();
         $cached = wp_cache_get( 'post_' . $current_user_id . '_' . $post_id );
         if ( $cached && $use_cache ){
@@ -820,6 +826,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //filter in to add or remove query parameters.
         $query = apply_filters( 'dt_search_viewable_posts_query', $query );
+        $query['limit'] = 1000;
 
         global $wpdb;
 
@@ -829,9 +836,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
         $post_fields = $post_settings['fields'];
 
-        $search = '';
         if ( isset( $query['text'] ) ){
-            $search = sanitize_text_field( $query['text'] );
             unset( $query['text'] );
         }
         if ( isset( $query['offset'] ) ){
@@ -843,9 +848,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( isset( $query['sort'] ) ){
             unset( $query['sort'] );
         }
-        $fields_to_search = [];
         if ( isset( $query['fields_to_search'] ) ){
-            $fields_to_search = $query['fields_to_search'];
             unset( $query ['fields_to_search'] );
         }
         if ( isset( $query['combine'] ) ){
@@ -858,97 +861,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             unset( $query['fields_to_return'] );
         }
 
-        $joins = '';
-        $post_query = '';
-
-        if ( !empty( $search ) ){
-
-            // Support wildcard searching between string tokens.
-            if ( !is_numeric( $search ) ){
-                $search = str_replace( ' ', '%', $search );
-            }
-
-            $other_search_fields = [];
-            if ( empty( $fields_to_search ) ){
-                $other_search_fields = apply_filters( 'dt_search_extra_post_meta_fields', [] );
-                $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )
-                    OR p.ID IN ( SELECT post_id
-                                FROM $wpdb->postmeta
-                                WHERE meta_key LIKE 'contact_%'
-                                AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
-                    )
-                ";
-            }
-            if ( !empty( $fields_to_search ) ){
-                if ( in_array( 'name', $fields_to_search ) ){
-                    $post_query .= "AND ( ( p.post_title LIKE '%" . esc_sql( $search ) . "%' )";
-                } else {
-                    $post_query .= 'AND ( ';
-                }
-
-                if ( in_array( 'comms', $fields_to_search ) ){
-                    if ( substr( $post_query, -6 ) !== 'AND ( ' ){
-                        $post_query .= 'OR ';
-                    }
-
-                    $post_query .= "p.ID IN ( SELECT post_id
-                                    FROM $wpdb->postmeta
-                                    WHERE meta_key LIKE 'contact_%'
-                                    AND REPLACE( meta_value, ' ', '') LIKE '%" . esc_sql( str_replace( ' ', '', $search ) ) . "%'
-                        )
-                    ";
-                }
-
-                if ( in_array( 'all', $fields_to_search ) ){
-                    if ( substr( $post_query, -6 ) !== 'AND ( ' ){
-                        $post_query .= 'OR ';
-                    }
-                    $user_id = get_current_user_id();
-                    $post_query .= "p.ID IN ( SELECT comment_post_ID
-                    FROM $wpdb->comments
-                    WHERE comment_content LIKE '%" . esc_sql( $search ) . "%'
-                    ) OR p.ID IN ( SELECT post_id
-                    FROM $wpdb->postmeta
-                    WHERE meta_value LIKE '%" . esc_sql( $search ) . "%'
-                    ) OR p.ID IN ( SELECT post_id
-                    FROM $wpdb->dt_post_user_meta
-                    WHERE user_id = $user_id
-                    AND meta_value LIKE '%" . esc_sql( $search ) . "%'
-                    ) ";
-                } else {
-                    if ( in_array( 'comment', $fields_to_search ) ){
-                        if ( substr( $post_query, -6 ) !== 'AND ( ' ){
-                            $post_query .= 'OR ';
-                        }
-                        $post_query .= " p.ID IN ( SELECT comment_post_ID
-                        FROM $wpdb->comments
-                        WHERE comment_content LIKE '%" . esc_sql( $search ) . "%'
-                        ) ";
-                    }
-                    foreach ( $fields_to_search as $field ){
-                        if ( $field !== 'comment' ){
-                            array_push( $other_search_fields, $field );
-                        }
-                    }
-                }
-            }
-            foreach ( $other_search_fields as $field ){
-                if ( substr( $post_query, -6 ) !== 'AND ( ' ){
-                    $post_query .= 'OR ';
-                }
-                $post_query .= "p.ID IN ( SELECT post_id
-                             FROM $wpdb->postmeta
-                             WHERE meta_key LIKE '" . esc_sql( $field ) . "'
-                             AND meta_value LIKE '%" . esc_sql( $search ) . "%'
-                ) ";
-            }
-            $post_query .= ' ) ';
-        }
-
-        $permissions = [
+        $permissions = apply_filters( 'dt_filter_access_permissions', [
             'shared_with' => [ 'me' ]
-        ];
-        $permissions = apply_filters( 'dt_filter_access_permissions', $permissions, $post_type );
+        ], $post_type );
 
         if ( $check_permissions && !empty( $permissions ) ){
             $query[] = $permissions;
@@ -977,12 +892,10 @@ class DT_Posts extends Disciple_Tools_Posts {
             // WordPress.WP.PreparedSQL.NotPrepared
             $connections = $wpdb->get_results( "
                 SELECT p.ID as id, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type as value
-                FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
-                $group_by_join . "
+                FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $group_by_join . "
                 WHERE " . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
-                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . "
-                GROUP BY p.ID, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type"
-            , ARRAY_A );
+                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "'
+                GROUP BY p.ID, group_by.p2p_from, group_by.p2p_to, group_by.p2p_type", ARRAY_A );
 
             // Collate records accordingly based on from/to id target.
             if ( !empty( $p2p_post_type ) ){
@@ -1033,12 +946,9 @@ class DT_Posts extends Disciple_Tools_Posts {
             // WordPress.WP.PreparedSQL.NotPrepared
             $posts = $wpdb->get_results( "
                 SELECT COUNT( DISTINCT( p.ID) ) as count, group_by.meta_value as value
-                FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $joins . ' ' .
-                    $group_by_join . '
+                FROM $wpdb->posts p " . $fields_sql['joins_sql'] . ' ' . $group_by_join . '
                 WHERE ' . $fields_sql['where_sql'] . ' ' . ( empty( $fields_sql['where_sql'] ) ? '' : ' AND ' ) . "
-                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' " . $post_query . '
-                GROUP BY group_by.meta_value'
-            , ARRAY_A );
+                (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "' GROUP BY group_by.meta_value", ARRAY_A );
             // phpcs:enable
         }
 
@@ -2496,7 +2406,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
             return $results;
         } else {
-            return new WP_Error( 'add_shared', __( 'Post already shared with user.', 'disciple_tools' ), [ 'status' => 418 ] );
+            return new WP_Error( 'add_shared', __( 'Record already shared with user.', 'disciple_tools' ), [ 'status' => 418 ] );
         }
     }
 
@@ -2989,6 +2899,19 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $permissions_joins_sql = $fields_sql['joins_sql'];
         $permissions_where_sql = empty( $fields_sql['where_sql'] ) ? '' : ( $fields_sql['where_sql'] . ' AND ' );
+        // First, get the total count of matching records
+        $count_sql = 'SELECT COUNT(DISTINCT p.ID) as total_count
+            FROM ' . $wpdb->posts . ' p
+            ' . $extra_joins . '
+            ' . $permissions_joins_sql . '
+            WHERE ' . $permissions_where_sql . " (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "'
+            AND ( " . $extra_where . ' )';
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
+        $total_count_result = $wpdb->get_row( $count_sql, OBJECT );
+        $total_count = $total_count_result ? intval( $total_count_result->total_count ) : 0;
+        // phpcs:enable
+
         $sql = 'SELECT p.ID, p.post_title, p.post_type, ' . $extra_fields . ' p.post_date, if ( p.post_title LIKE ' . $esc_like_search_sql . ", 'Y', 'N') post_hit
             FROM $wpdb->posts p
             " . $extra_joins . '
@@ -3042,10 +2965,17 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //capture hits count and adjust future offsets
         $post_hits_count = count( $post_hits );
+        $remaining_count = max( 0, $total_count - intval( $offset ) - $post_hits_count );
+        $has_more = $remaining_count > 0;
+
         return [
             'post_type' => $post_type,
+            'post_type_label_singular' => $post_settings['label_singular'] ?? $post_type,
             'posts'     => $post_hits,
             'total'     => $post_hits_count,
+            'total_count' => $total_count,
+            'remaining_count' => $remaining_count,
+            'has_more' => $has_more,
             'offset'    => intval( $offset ) + intval( $post_hits_count ) + 1
         ];
     }
@@ -3166,6 +3096,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                     'object_note'       => implode( ', ', $emails )
                 ];
                 dt_activity_insert( $activity );
+                $comment = 'Email sent to ' . implode( ', ', $emails ) . " with the following message:\n\n" . $message;
+                self::add_post_comment( $post_type, $post_id, $comment, 'email', [
+                    'user_id'        => get_current_user_id(),
+                    'comment_author' => get_current_user_id() ? get_userdata( get_current_user_id() )->display_name : 'System'
+                ], false, true );
             }
         } elseif ( ( $send_method === 'sms' ) && class_exists( 'Disciple_Tools_Twilio_API', false ) && Disciple_Tools_Twilio_API::has_credentials() && Disciple_Tools_Twilio_API::is_enabled() ) {
             $is_sent = true;

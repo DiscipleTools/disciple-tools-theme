@@ -91,7 +91,7 @@ class Disciple_Tools_No_Permission extends DT_Magic_Url_Base
             <div class="cell" style="text-align:center; padding-top:2em;">
                 <?php esc_html_e( 'You are registered but an administrator needs to assign you access permissions.', 'disciple_tools' ) ?>
                 <br><br>
-￼               <a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( 'Log Out', 'disciple_tools' )?></a>
+               <a href="<?php echo esc_url( wp_logout_url() ); ?>"><?php esc_html_e( 'Log Out', 'disciple_tools' )?></a>
             </div>
         </div>
         <?php

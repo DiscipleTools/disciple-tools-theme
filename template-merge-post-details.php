@@ -50,6 +50,7 @@ if ( isset( $dt_current_post['post_date']['timestamp'], $dt_duplicate_post['post
 }
 
 $post_settings        = DT_Posts::get_post_settings( $post_type );
+
 $post_settings_fields = DT_Posts::get_post_field_settings( $post_type, false );
 
 // Determine fields to be displayed
@@ -152,7 +153,7 @@ get_header();
 
                     <input type="hidden" id="main_archiving_current_post_id"
                            value="<?php echo esc_html( $dt_current_post['ID'] ) ?>"/>
-                    <div id="main_archiving_fields_div"></div>
+                    <div id="main_archiving_fields_div" class="post-scroll-window"></div>
                 </div>
             </main>
 
@@ -166,7 +167,7 @@ get_header();
 
                     <input type="hidden" id="main_primary_current_post_id"
                            value="<?php echo esc_html( $dt_duplicate_post['ID'] ) ?>"/>
-                    <div id="main_primary_fields_div" style="margin-top: 60px;"></div>
+                    <div id="main_primary_fields_div" class="post-scroll-window" style="margin-top: 60px;"></div>
                 </div>
             </main>
 
@@ -176,7 +177,7 @@ get_header();
                     <h2 class="center"><?php esc_html_e( 'Updated', 'disciple_tools' ) ?> - #<span
                             id="main_updated_post_id_title"></span></h2>
 
-                    <div id="main_updated_fields_div" style="margin-top: 60px;"></div>
+                    <form id="main_updated_fields_div" class="post-scroll-window" style="margin-top: 60px;"></form>
                 </div>
             </main>
 
@@ -219,6 +220,12 @@ function render_post_fields_html( $post, $fields, $settings_fields, $field_id_pr
 
 function render_post_fields( $post, $fields, $settings_fields, $field_id_prefix, $show_field_select = true ) {
     $merge_capable_field_types = list_merge_capable_field_types();
+
+    $field_options = [
+        'connection' => [
+            'allow_add' => false,
+        ]
+    ];
     ?>
 
     <table>
@@ -228,7 +235,7 @@ function render_post_fields( $post, $fields, $settings_fields, $field_id_prefix,
 
             // Capture rendered field html
             ob_start();
-            render_field_for_display( $field, $settings_fields, $post, true, false, $field_id_prefix );
+            render_field_for_display( $field, $settings_fields, $post, true, false, $field_id_prefix, $field_options );
             $rendered_field_html = ob_get_contents();
             ob_end_clean();
 

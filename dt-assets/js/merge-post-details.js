@@ -6,6 +6,17 @@ jQuery(function ($) {
   $(document).ready(function () {
     // Auto select primary post and trigger event call & response
     $('#main_archiving_primary_switch_but').trigger('click');
+
+    if (window.DtWebComponents && window.DtWebComponents.ComponentService) {
+      let postId = $('#main_primary_current_post_id').val();
+      const service = new window.DtWebComponents.ComponentService(
+        window.merge_post_details['post_settings']['post_type'],
+        postId,
+        window.wpApiShare.nonce,
+        window.wpApiShare.root,
+      );
+      window.componentService = service;
+    }
   });
 
   /**
@@ -271,270 +282,17 @@ jQuery(function ($) {
           case 'number':
           case 'boolean':
           case 'text':
-            // Disable field accordingly, based on read-only flag
-            $(td)
-              .find('#' + field_id)
-              .prop('disabled', read_only);
-            break;
-
-          case 'key_select': {
-            // Disable field accordingly, based on read-only flag and select type
-            let key_select = null;
-
-            // Determine select type
-            if ($(td).find('#' + field_id).length > 0) {
-              key_select = $(td).find('#' + field_id);
-            } else if (
-              $(td).find('#' + post_field_id).length > 0 &&
-              !window.lodash.isEmpty(
-                $(td)
-                  .find('#' + post_field_id)
-                  .css('background-color'),
-              )
-            ) {
-              key_select = $(td).find('#' + post_field_id);
-            }
-
-            // Assuming we have a handle on a valid select, disable accoridngly
-            if (key_select) {
-              key_select.prop('disabled', read_only);
-            }
-
-            break;
-          }
-
-          case 'date': {
-            /**
-             * Load Date Range Picker
-             */
-
-            let date_format = 'MMMM D, YYYY';
-            let date_config = {
-              autoUpdateInput: false,
-              singleDatePicker: true,
-              timePicker: true,
-              locale: {
-                format: date_format,
-              },
-            };
-
-            // Adjust start date based on post's date timestamp; if present
-            let post_timestamp = $(td)
-              .find('#' + field_id)
-              .val();
-            let hasStartDate =
-              post_timestamp && post && post[post_field_id] !== undefined;
-            if (hasStartDate) {
-              date_config['startDate'] = window.moment.unix(post_timestamp);
-              field_meta.val(post_timestamp);
-            }
-
-            // Initialise date range picker and respond to selections
-            $(td)
-              .find('#' + field_id)
-              .daterangepicker(date_config, function (start, end, label) {
-                if (start) {
-                  field_meta.val(start.unix());
-                }
-              });
-
-            // Render start date display accoridngly, post initialisation
-            if (hasStartDate) {
-              let start_date = $(td)
-                .find('#' + field_id)
-                .data('daterangepicker')
-                .startDate.format(date_format);
-              $(td)
-                .find('#' + field_id)
-                .val(start_date);
-            }
-
-            // Respond to apply date events
-            $(td)
-              .find('#' + field_id)
-              .on('apply.daterangepicker', function (evt, picker) {
-                $(td)
-                  .find('#' + field_id)
-                  .val(picker.startDate.format(date_format));
-              });
-
-            // Disable field accordingly, based on read-only flag
-            $(td)
-              .find('#' + field_id)
-              .prop('disabled', read_only);
-            $(td).find('.clear-date-button').prop('disabled', read_only);
-
-            /**
-             * Clear Date
-             */
-
-            $(td)
-              .find('.clear-date-button')
-              .on('click', (evt) => {
-                let input_id = $(evt.currentTarget).data('inputid');
-
-                if (input_id) {
-                  $(td)
-                    .find('#' + input_id)
-                    .val('');
-                  field_meta.val('');
-                }
-              });
-
-            break;
-          }
-
+          case 'key_select':
+          case 'date':
           case 'multi_select':
-            /**
-             * Handle Selections
-             */
-
-            if (!read_only) {
-              $(td)
-                .find('.dt_multi_select')
-                .on('click', function (evt) {
-                  let multi_select = $(evt.currentTarget);
-                  if (multi_select.hasClass('empty-select-button')) {
-                    multi_select.removeClass('empty-select-button');
-                    multi_select.addClass('selected-select-button');
-                  } else {
-                    multi_select.removeClass('selected-select-button');
-                    multi_select.addClass('empty-select-button');
-                  }
-                });
-            }
-
-            break;
-
-          case 'tags': {
-            /**
-             * Activate
-             */
-
-            let typeahead_tags_field_input = '.js-typeahead-' + field_id;
-
+          case 'tags':
+          case 'connection':
+          case 'communication_channel':
             // Disable field accordingly, based on read-only flag
-            $(td).find(typeahead_tags_field_input).prop('disabled', read_only);
-
-            // Hide new button and default to single entry
-            $(td).find('.create-new-tag').hide();
-
             $(td)
-              .find(typeahead_tags_field_input)
-              .typeahead({
-                input: typeahead_tags_field_input,
-                minLength: 0,
-                maxItem: 20,
-                searchOnFocus: true,
-                source: {
-                  tags: {
-                    display: ['name'],
-                    ajax: {
-                      url:
-                        url_root +
-                        `dt-posts/v2/${post_type}/multi-select-values`,
-                      data: {
-                        s: '{{query}}',
-                        field: field_id,
-                      },
-                      beforeSend: function (xhr) {
-                        xhr.setRequestHeader('X-WP-Nonce', nonce);
-                      },
-                      callback: {
-                        done: function (data) {
-                          return (data || []).map((tag) => {
-                            return { name: tag };
-                          });
-                        },
-                      },
-                    },
-                  },
-                },
-                display: 'name',
-                templateValue: '{{name}}',
-                emptyTemplate: function (query) {
-                  const { addNewTagText, tagExistsText } = this.node[0].dataset;
-                  if (this.comparedItems.includes(query)) {
-                    return tagExistsText.replace('%s', query);
-                  }
-                  const liItem = jQuery('<li>');
-                  const button = jQuery('<button>', {
-                    class: 'button primary',
-                    text: addNewTagText.replace('%s', query),
-                  });
-                  const tag = this.query;
-                  button.on('click', function () {
-                    window.Typeahead[
-                      typeahead_tags_field_input
-                    ].addMultiselectItemLayout({ name: tag });
-                  });
-                  liItem.append(button);
-                  return liItem;
-                },
-                dynamic: true,
-                multiselect: {
-                  matchOn: ['name'],
-                  data: function () {
-                    if (post && post[post_field_id]) {
-                      return (post[post_field_id] || []).map((t) => {
-                        return { name: t };
-                      });
-                    } else {
-                      return {};
-                    }
-                  },
-                  callback: {
-                    onCancel: function (node, item, event) {
-                      // Keep a record of deleted tags
-                      let deleted_items = field_meta.val()
-                        ? JSON.parse(field_meta.val())
-                        : [];
-                      deleted_items.push(item);
-                      field_meta.val(JSON.stringify(deleted_items));
-                    },
-                  },
-                  href: function (item) {},
-                },
-                callback: {
-                  onClick: function (node, a, item, event) {
-                    event.preventDefault();
-                    this.addMultiselectItemLayout({ name: item.name });
-                  },
-                  onResult: function (node, query, result, resultCount) {
-                    let text = window.TYPEAHEADS.typeaheadHelpText(
-                      resultCount,
-                      query,
-                      result,
-                    );
-                    $(td).find(`#${field_id}-result-container`).html(text);
-                  },
-                  onHideLayout: function () {
-                    $(td).find(`#${field_id}-result-container`).html('');
-                  },
-                  onShowLayout() {},
-                },
-              });
-
-            /**
-             * Load
-             */
-
-            // If available, load previous post record tags
-            if (post && post[post_field_id]) {
-              let typeahead_tags = window.Typeahead[typeahead_tags_field_input];
-              let post_tags = post[post_field_id];
-
-              if (post_tags !== undefined && typeahead_tags) {
-                jQuery.each(post_tags, function (idx, tag) {
-                  typeahead_tags.addMultiselectItemLayout({
-                    name: window.SHAREDFUNCTIONS.escapeHTML(tag),
-                  });
-                });
-              }
-            }
-
+              .find('#' + field_id)
+              .prop('disabled', read_only);
             break;
-          }
 
           case 'link': {
             // Disable/Display field accordingly, based on read-only flag
@@ -577,64 +335,6 @@ jQuery(function ($) {
 
             break;
           }
-
-          case 'communication_channel':
-            // Disable/Display field accordingly, based on read-only flag
-            $(td)
-              .find('input.dt-communication-channel')
-              .prop('disabled', read_only);
-
-            if (!read_only) {
-              $(td)
-                .find('input.dt-communication-channel')
-                .each(function (idx, input) {
-                  if (window.lodash.isEmpty($(input).val())) {
-                    $(input).parent().hide();
-                  }
-                });
-            }
-
-            /**
-             * Add
-             */
-
-            $(td)
-              .find('button.add-button')
-              .on('click', (evt) => {
-                let field = $(evt.currentTarget).data('list-class');
-                let list = $(td).find(`#edit-${field}`);
-
-                list.append(`
-                <div class="input-group">
-                    <input type="text" data-field="${window.SHAREDFUNCTIONS.escapeHTML(field)}" class="dt-communication-channel input-group-field" dir="auto" />
-                    <div class="input-group-button">
-                        <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.SHAREDFUNCTIONS.escapeHTML(field)}" data-key="new" data-field="${window.SHAREDFUNCTIONS.escapeHTML(field)}">&times;</button>
-                    </div>
-                </div>`);
-              });
-
-            /**
-             * Remove
-             */
-
-            $(document).on('click', '.channel-delete-button', (evt) => {
-              let field = $(evt.currentTarget).data('field');
-              let key = $(evt.currentTarget).data('key');
-
-              // If needed, keep a record of key for future api removal.
-              if (key !== 'new') {
-                let deleted_keys = field_meta.val()
-                  ? JSON.parse(field_meta.val())
-                  : [];
-                deleted_keys.push(key);
-                field_meta.val(JSON.stringify(deleted_keys));
-              }
-
-              // Final removal of input group
-              $(evt.currentTarget).parent().parent().remove();
-            });
-
-            break;
 
           case 'location_meta': {
             let mapbox = window.merge_post_details['mapbox'];
@@ -971,102 +671,12 @@ jQuery(function ($) {
 
             break;
           }
-
-          case 'connection': {
-            let connection_typeahead_field_input = '.js-typeahead-' + field_id;
-
-            // Disable field accordingly, based on read-only flag
-            $(td)
-              .find(connection_typeahead_field_input)
-              .prop('disabled', read_only);
-
-            // Hide typeahead search button
-            $(td).find('.typeahead__button').hide();
-
-            /**
-             * Load Typeahead
-             */
-
-            if ($(td).find(connection_typeahead_field_input).length) {
-              $(td)
-                .find(connection_typeahead_field_input)
-                .typeahead({
-                  input: connection_typeahead_field_input,
-                  minLength: 0,
-                  accent: true,
-                  searchOnFocus: true,
-                  maxItem: 20,
-                  template: window.TYPEAHEADS.contactListRowTemplate,
-                  source: window.TYPEAHEADS.typeaheadPostsSource(
-                    post_type,
-                    field_id,
-                  ),
-                  display: ['name', 'label'],
-                  templateValue: function () {
-                    if (this.items[this.items.length - 1].label) {
-                      return '{{label}}';
-                    } else {
-                      return '{{name}}';
-                    }
-                  },
-                  dynamic: true,
-                  multiselect: {
-                    matchOn: ['ID'],
-                    data: [],
-                    callback: {
-                      onCancel: function (node, item) {
-                        // Keep a record of deleted options
-                        let deleted_items = field_meta.val()
-                          ? JSON.parse(field_meta.val())
-                          : [];
-                        deleted_items.push(item);
-                        field_meta.val(JSON.stringify(deleted_items));
-                      },
-                    },
-                  },
-                  callback: {
-                    onResult: function (node, query, result, resultCount) {
-                      let text = window.TYPEAHEADS.typeaheadHelpText(
-                        resultCount,
-                        query,
-                        result,
-                      );
-                      $(`#${field_id}-result-container`).html(text);
-                    },
-                    onHideLayout: function () {
-                      $(`#${field_id}-result-container`).html('');
-                    },
-                    onClick: function (node, a, item, event) {
-                      // Stop list from opening again
-                      this.addMultiselectItemLayout(item);
-                      event.preventDefault();
-                      this.hideLayout();
-                      this.resetInput();
-                    },
-                  },
-                });
-            }
-
-            // If available, load previous post record locations
-            let connection_typeahead =
-              window.Typeahead[connection_typeahead_field_input];
-            let post_connections = post ? post[post_field_id] : undefined;
-
-            if (post_connections !== undefined && connection_typeahead) {
-              $.each(post_connections, function (idx, connection) {
-                connection_typeahead.addMultiselectItemLayout({
-                  ID: connection['ID'],
-                  name: window.SHAREDFUNCTIONS.escapeHTML(
-                    connection['post_title'],
-                  ),
-                });
-              });
-            }
-
-            break;
-          }
         }
       });
+
+    if (window.componentService) {
+      window.componentService.attachLoadEvents();
+    }
   }
 
   function handle_field_selection(evt) {
@@ -1093,206 +703,57 @@ jQuery(function ($) {
     field_id,
     field_type,
   ) {
+    const sourceField = $(`#${field_id}`);
+    const mergedField = $(`#${update_field_id}`);
+
     switch (field_type) {
       case 'textarea':
       case 'number':
       case 'boolean':
       case 'text':
-        if (is_selected) {
-          $('#' + update_field_id).val($('#' + field_id).val());
-        }
-        break;
-
       case 'key_select':
         if (is_selected) {
-          // Determine select type
-          let key_select = null;
-          let tr = $(selector).parent().parent();
-          if ($(tr).find('#' + field_id).length > 0) {
-            key_select = $(tr).find('#' + field_id);
-          } else if (
-            $(tr).find('#' + update_field_id).length > 0 &&
-            !window.lodash.isEmpty(
-              $(tr)
-                .find('#' + update_field_id)
-                .css('background-color'),
-            )
-          ) {
-            key_select = $(tr).find('#' + update_field_id);
-          }
-
-          // Assuming we have a handle on a valid select, update accoridngly
-          if (key_select) {
-            $('#main_updated_fields_div')
-              .find('#' + update_field_id)
-              .val($(key_select).val());
-          }
+          mergedField.val(sourceField.val());
         }
         break;
 
       case 'date':
         if (is_selected) {
-          let source_date_range_picker = $('#' + field_id).data(
-            'daterangepicker',
-          );
-          let update_date_range_picker = $('#' + update_field_id).data(
-            'daterangepicker',
-          );
-
-          // Determine values to be updated
-          let updated_date = source_date_range_picker.startDate;
-          let updated_date_ts = $('#' + field_id).val();
-
-          // Update values accordingly
-          update_date_range_picker.setStartDate(updated_date);
-          update_date_range_picker.setEndDate(updated_date);
-          $('#' + update_field_id).val(updated_date_ts);
-
-          // Transfer metadata info
-          let source_date_field_meta = $('#' + field_id)
-            .parent()
-            .parent()
-            .find('#field_meta');
-          let update_date_field_meta = $('#' + update_field_id)
-            .parent()
-            .parent()
-            .find('#field_meta');
-          $(update_date_field_meta).val($(source_date_field_meta).val());
+          mergedField.removeAttr('timestamp');
+          mergedField.val(sourceField.val());
         }
         break;
 
-      case 'multi_select': {
-        // Determine values to be updated
-        let updated_selections = $(selector.parent().parent()).find(
-          'button[data-field-key="' +
-            update_field_id +
-            '"].selected-select-button',
-        );
-
-        // Update values accordingly
-        $.each(updated_selections, function (idx, source_button) {
-          let update_button = $('#main_updated_fields_div').find(
-            '#' + $(source_button).attr('id'),
-          );
-          if (update_button) {
-            $(update_button).toggleClass(
-              'selected-select-button',
-              is_field_value_still_selected(
-                update_field_id,
-                field_type,
-                source_button,
-              ),
-            );
-          }
-        });
-
-        break;
-      }
-
+      case 'multi_select':
       case 'tags': {
         // Determine values to be updated
-        let source_typeahead_tags =
-          window.Typeahead['.js-typeahead-' + field_id];
-        let update_typeahead_tags =
-          window.Typeahead['.js-typeahead-' + update_field_id];
+        const sourceValue = sourceField.val() || [];
+        let mergedValue = mergedField.val() || [];
 
         // Update values accordingly
-        if (source_typeahead_tags && update_typeahead_tags) {
-          // Obtain handle onto update field meta - deletion array
-          let update_tags_field_meta = $('#main_updated_fields_div')
-            .find('#' + update_field_id)
-            .parent()
-            .find('#field_meta');
-          let deleted_items =
-            update_tags_field_meta &&
-            $(update_tags_field_meta).length > 0 &&
-            $(update_tags_field_meta).val()
-              ? JSON.parse($(update_tags_field_meta).val())
-              : [];
-
-          // Iterate source tags, updating accordingly
-          $.each(source_typeahead_tags.items, function (idx, source_tag) {
-            if (is_selected) {
-              // Add, if not already present
-
-              if (
-                !window.lodash.includes(update_typeahead_tags.items, source_tag)
-              ) {
-                update_typeahead_tags.addMultiselectItemLayout(source_tag);
-
-                // Keep deleted items in sync
-                let found_tag = window.lodash.find(
-                  deleted_items,
-                  function (item) {
-                    return (
-                      new String(item['name']).valueOf() ==
-                      new String(source_tag['name'].valueOf())
-                    );
-                  },
-                );
-
-                if (found_tag) {
-                  window.lodash.remove(deleted_items, found_tag);
-                  $(update_tags_field_meta).val(JSON.stringify(deleted_items));
-                }
-              }
-            } else {
-              // Remove, if present and not still selected anywhere else!
-
-              if (
-                !is_field_value_still_selected(
-                  update_field_id,
-                  field_type,
-                  source_tag,
-                )
-              ) {
-                // Remove item object
-                window.lodash.remove(
-                  update_typeahead_tags.items,
-                  function (tag) {
-                    return tag['name'] === source_tag['name'];
-                  },
-                );
-
-                // Remove compared item string
-                window.lodash.remove(
-                  update_typeahead_tags.comparedItems,
-                  function (tag) {
-                    return tag === source_tag['name'];
-                  },
-                );
-
-                // Remove matching label container
-                $(update_typeahead_tags.label.container)
-                  .find('.typeahead__label')
-                  .each(function (idx, label) {
-                    if ($(label).find('a').text() === source_tag['name']) {
-                      $(label).remove();
-                    }
-                  });
-
-                // Keep deleted items in sync
-                let found_tag = window.lodash.find(
-                  deleted_items,
-                  function (item) {
-                    return (
-                      new String(item['name']).valueOf() ==
-                      new String(source_tag['name'].valueOf())
-                    );
-                  },
-                );
-
-                if (!found_tag) {
-                  deleted_items.push(source_tag);
-                  $(update_tags_field_meta).val(JSON.stringify(deleted_items));
-                }
-              }
+        for (const sourceTag of sourceValue) {
+          const valIdx = mergedValue.findIndex((x) => x === sourceTag);
+          if (is_selected) {
+            // Add, if not already present
+            if (valIdx < 0) {
+              mergedValue.push(sourceTag);
             }
-          });
-
-          update_typeahead_tags.adjustInputSize();
+          } else {
+            // Remove, if present and not still selected anywhere else!
+            if (
+              !is_field_value_still_selected(
+                update_field_id,
+                field_type,
+                sourceTag,
+              )
+            ) {
+              mergedValue.splice(valIdx, 1);
+              // mergedValue = mergedValue.filter((x) => x !== sourceTag);
+            }
+          }
         }
 
+        mergedField.val(mergedValue);
         break;
       }
 
@@ -1370,100 +831,39 @@ jQuery(function ($) {
 
       case 'communication_channel': {
         // Determine values to be updated
-        let comm_values = [];
-        let comm_elements = $(selector.parent().parent()).find(
-          'input[data-field="' + update_field_id + '"].input-group-field',
-        );
-        $.each(comm_elements, function (idx, element) {
-          if ($(element).val()) {
-            comm_values.push($(element).val());
-          }
-        });
+        const sourceValue = sourceField.val() || [];
+        let mergedValue = mergedField.val() || [];
 
         // Update values accordingly
-        if (comm_values) {
-          // Obtain handle to existing list
-          let list = $('#main_updated_fields_div').find(
-            `#edit-${update_field_id}`,
-          );
-
-          // Obtain handle onto update field meta - deletion array
-          let update_field_meta = $('#main_updated_fields_div')
-            .find('#merge_field_id[value="' + update_field_id + '"]')
-            .parent()
-            .find('#field_meta');
-          let deleted_items =
-            update_field_meta &&
-            $(update_field_meta).length > 0 &&
-            $(update_field_meta).val()
-              ? JSON.parse($(update_field_meta).val())
-              : [];
-
-          // Iterate over values; processing accordingly
-          $.each(comm_values, function (idx, value) {
-            // Determine if the value already exists within update list
-            let has_value = false;
-            let value_ele = null;
-
-            $(list)
-              .find(
-                'input[data-field="' + update_field_id + '"].input-group-field',
-              )
-              .each(function (idx, input) {
-                if ($(input).val() === value) {
-                  has_value = true;
-                  value_ele = input;
-                }
-              });
-
-            // Add/Remove accordingly
-            if (is_selected && !has_value) {
-              // Add, if not already present
-              list.append(`
-                <div class="input-group">
-                    <input type="text" data-field="${window.SHAREDFUNCTIONS.escapeHTML(update_field_id)}" class="dt-communication-channel input-group-field" dir="auto" value="${window.SHAREDFUNCTIONS.escapeHTML(value)}" />
-                    <div class="input-group-button">
-                        <button class="button alert input-height delete-button-style channel-delete-button delete-button new-${window.SHAREDFUNCTIONS.escapeHTML(update_field_id)}" data-key="new" data-field="${window.SHAREDFUNCTIONS.escapeHTML(update_field_id)}">&times;</button>
-                    </div>
-                </div>`);
-
-              // If present, remove from deleted list
-              let purged_items = window.lodash.remove(
-                deleted_items,
-                function (deleted) {
-                  return window.lodash.includes(value, deleted['value']);
-                },
-              );
-
-              if (purged_items && purged_items.length > 0) {
-                $(update_field_meta).val(JSON.stringify(deleted_items));
-              }
-            } else if (!is_selected && has_value && value_ele) {
-              // Remove, if present and not still selected anywhere else!
-              if (
-                !is_field_value_still_selected(
-                  update_field_id,
-                  field_type,
-                  value,
-                )
-              ) {
-                $(value_ele).parent().remove();
-
-                // Keep deleted items in sync
-                if (
-                  $(value_ele).attr('id') &&
-                  $(value_ele).attr('id').length > 0
-                ) {
-                  deleted_items.push({
-                    key: $(value_ele).attr('id'),
-                    value: value,
-                  });
-                  $(update_field_meta).val(JSON.stringify(deleted_items));
-                }
-              }
+        for (const sourceItem of sourceValue) {
+          const valIdx = mergedValue.findIndex((x) => x.key === sourceItem.key);
+          if (is_selected) {
+            // Add, if not already present
+            if (valIdx < 0) {
+              mergedValue.push(sourceItem);
             }
-          });
+          } else {
+            // Remove, if present and not still selected anywhere else!
+            if (
+              !is_field_value_still_selected(
+                update_field_id,
+                field_type,
+                sourceItem,
+              )
+            ) {
+              mergedValue.splice(valIdx, 1);
+            }
+          }
         }
+
+        // if there is an empty value, remove it
+        const emptyIdx = mergedValue.findIndex((x) => !x.value && x.tempKey);
+        if (mergedValue.length > 1 && emptyIdx > -1) {
+          mergedValue.splice(emptyIdx, 1);
+        }
+
+        // set value attribute of element
+        mergedField.attr('value', JSON.stringify(mergedValue));
 
         break;
       }
@@ -1565,7 +965,38 @@ jQuery(function ($) {
         break;
       }
 
-      case 'connection':
+      case 'connection': {
+        // Determine values to be updated
+        const sourceValue = sourceField.val() || [];
+        let mergedValue = mergedField.val() || [];
+
+        // Update values accordingly
+        for (const sourceItem of sourceValue) {
+          const valIdx = mergedValue.findIndex((x) => x.id === sourceItem.id);
+          if (is_selected) {
+            // Add, if not already present
+            if (valIdx < 0) {
+              mergedValue.push(sourceItem);
+            }
+          } else {
+            // Remove, if present and not still selected anywhere else!
+            if (
+              !is_field_value_still_selected(
+                update_field_id,
+                field_type,
+                sourceItem,
+              )
+            ) {
+              mergedValue.splice(valIdx, 1);
+            }
+          }
+        }
+
+        // set value attribute of element
+        mergedField.attr('value', JSON.stringify(mergedValue));
+
+        break;
+      }
       case 'location': {
         // Determine values to be updated
         let source_typeahead = window.Typeahead['.js-typeahead-' + field_id];
@@ -1714,7 +1145,7 @@ jQuery(function ($) {
     ];
 
     // Iterate over both ids, in search of matching field values
-    $.each(merging_objs, function (idx, merge_obj) {
+    for (const merge_obj of merging_objs) {
       // Obtain handle on td field select input widget
       let td_field_select_input = $('#' + merge_obj['fields_div']).find(
         '.td-field-select input[data-merge_field_id="' +
@@ -1740,27 +1171,21 @@ jQuery(function ($) {
             break;
           }
 
-          case 'multi_select': {
-            $(td_field_select_input)
+          case 'multi_select':
+          case 'tags': {
+            const selectedValue = $(td_field_select_input)
               .parent()
               .parent()
-              .find('button.selected-select-button')
-              .each(function (idx, button) {
-                if (
-                  button &&
-                  $(button).length > 0 &&
-                  field_value &&
-                  $(button).attr('id').valueOf() ==
-                    $(field_value).attr('id').valueOf()
-                ) {
-                  still_selected = true;
-                }
-              });
+              .find(`[name=${field_id}]`)
+              .val();
+
+            if (selectedValue && selectedValue.includes(field_value)) {
+              still_selected = true;
+            }
 
             break;
           }
 
-          case 'tags':
           case 'location': {
             let typeahead =
               window.Typeahead[
@@ -1785,7 +1210,23 @@ jQuery(function ($) {
             break;
           }
 
-          case 'communication_channel':
+          case 'communication_channel': {
+            const selectedValue = $(td_field_select_input)
+              .parent()
+              .parent()
+              .find(`[name=${field_id}]`)
+              .val();
+
+            if (
+              selectedValue &&
+              selectedValue.some((x) => x.key === field_value.key)
+            ) {
+              still_selected = true;
+            }
+
+            break;
+          }
+
           case 'location_meta': {
             let matched_value = $(td_field_select_input)
               .parent()
@@ -1803,31 +1244,24 @@ jQuery(function ($) {
           }
 
           case 'connection': {
-            let connection_typeahead =
-              window.Typeahead[
-                '.js-typeahead-' + merge_obj['post_id'] + '_' + field_id
-              ];
-            if (connection_typeahead) {
-              let matched_value = window.lodash.find(
-                connection_typeahead.items,
-                function (item) {
-                  return (
-                    new String(item['ID']).valueOf() ==
-                    new String(field_value['ID'].valueOf())
-                  );
-                },
-              );
+            const selectedValue = $(td_field_select_input)
+              .parent()
+              .parent()
+              .find(`[name=${field_id}]`)
+              .val();
 
-              if (matched_value && $(matched_value).length > 0) {
-                still_selected = true;
-              }
+            if (
+              selectedValue &&
+              selectedValue.some((x) => x.id === field_value.id)
+            ) {
+              still_selected = true;
             }
 
             break;
           }
         }
       }
-    });
+    }
 
     return still_selected;
   }
@@ -1906,6 +1340,39 @@ jQuery(function ($) {
 
     // Start packaging updated fields
     let values = {};
+
+    // process web component values
+    const form = document.getElementById('main_updated_fields_div');
+    Array.from(form.elements).forEach((el) => {
+      // skip fields not from web components
+      if (!el.tagName.startsWith('DT-')) {
+        return;
+      }
+
+      if (el.value) {
+        let value = window.DtWebComponents.ComponentService.convertValue(
+          el.tagName,
+          el.value,
+        );
+        switch (el.tagName.toLowerCase()) {
+          case 'dt-multi-text':
+            value = value.map((x) => {
+              const retVal = {
+                value: x.value,
+              };
+              if (x.key) {
+                retVal.key = x.key;
+              }
+              return retVal;
+            });
+            break;
+          default:
+            break;
+        }
+        values[el.name.trim()] = value;
+      }
+    });
+
     $('#main_updated_fields_div')
       .find('.td-field-input')
       .each(function (idx, td) {
@@ -1915,42 +1382,14 @@ jQuery(function ($) {
         let field_meta = $(td).find('#field_meta');
 
         switch (field_type) {
-          case 'textarea':
           case 'number':
           case 'boolean':
-          case 'text':
-          case 'key_select':
             values[post_field_id] = $(td)
               .find('#' + field_id)
               .val();
             break;
 
-          case 'date':
-            values[post_field_id] = $(field_meta).val();
-            break;
-
-          case 'multi_select': {
-            let options = [];
-            $(td)
-              .find('button')
-              .each(function () {
-                options.push({
-                  value: $(this).attr('id'),
-                  delete: !$(this).hasClass('selected-select-button'),
-                });
-              });
-
-            if (options) {
-              values[post_field_id] = {
-                values: options,
-              };
-            }
-            break;
-          }
-
-          case 'tags':
-          case 'location':
-          case 'connection': {
+          case 'location': {
             let typeahead = window.Typeahead['.js-typeahead-' + field_id];
             if (typeahead) {
               // Determine values to be processed
@@ -2079,54 +1518,6 @@ jQuery(function ($) {
             break;
           }
 
-          case 'communication_channel': {
-            // Determine values to be processed
-            let comm_entries = [];
-            let comm_deletions = field_meta.val()
-              ? JSON.parse(field_meta.val())
-              : [];
-
-            // Package values and any deletions
-            $(td)
-              .find('.input-group')
-              .each(function () {
-                let comm_key = $(this).find('button').data('key');
-                let comm_val = $(this).find('input').val();
-
-                if (
-                  comm_val &&
-                  !is_field_value_already_in_primary(
-                    post_field_id,
-                    field_type,
-                    comm_val,
-                  )
-                ) {
-                  let comm_entry = {
-                    value: comm_val,
-                  };
-
-                  if (comm_key && comm_key !== 'new') {
-                    comm_entry['key'] = comm_key;
-                  }
-
-                  comm_entries.push(comm_entry);
-                }
-              });
-
-            $.each(comm_deletions, function (idx, deleted) {
-              comm_entries.push({
-                key: deleted['key'],
-                delete: true,
-              });
-            });
-
-            // If present, capture entries
-            if (comm_entries) {
-              values[post_field_id] = comm_entries;
-            }
-            break;
-          }
-
           case 'user_select': {
             let user_select_typeahead =
               window.Typeahead['.js-typeahead-' + field_id];
@@ -2184,4 +1575,14 @@ jQuery(function ($) {
       $('.submit-merge').toggleClass('loading').attr('disabled', false);
     }
   }
+
+  // sync scroll across different posts
+  $('.post-scroll-window').on('scroll', function (evt) {
+    const scrollWindow = evt.currentTarget;
+    $('.post-scroll-window').each((idx, el) => {
+      if (el.id !== scrollWindow.id) {
+        el.scrollTop = scrollWindow.scrollTop;
+      }
+    });
+  });
 });

@@ -9,6 +9,7 @@ if (window.Foundation.MediaQuery.current == 'small') {
     .attr('style', '');
 }
 
+window.Foundation.Reveal.defaults.closeOnClick = false;
 jQuery(document).foundation();
 
 jQuery(document).ready(function () {
@@ -86,4 +87,20 @@ jQuery(document).ready(function ($) {
   if (required_parent.parent() && required_parent.parent().is('ul')) {
     required_parent.find('a').first().addClass('side-menu-item-highlight');
   }
+});
+
+/**
+ * Mobile navigation dropdown functionality
+ */
+jQuery(document).ready(function ($) {
+  // Close mobile add new dropdown when clicking outside
+  $(document).on('click', function (e) {
+    if (
+      !$(e.target).closest(
+        '#mobile-add-new-dropdown, [data-toggle="mobile-add-new-dropdown"]',
+      ).length
+    ) {
+      $('#mobile-add-new-dropdown').foundation('close');
+    }
+  });
 });

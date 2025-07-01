@@ -141,152 +141,46 @@ class DT_Contacts_Baptisms extends DT_Module_Base {
         <script>
           jQuery(document).ready(function ($) {
             let post = window.detailsSettings.post_fields;
-            let post_id = window.detailsSettings.post_id;
-            // Baptism date
-            let modalBaptismDatePicker = $('input#modal-baptism-date-picker');
-            modalBaptismDatePicker.datepicker({
-              constrainInput: false,
-              dateFormat: 'yy-mm-dd',
-              onSelect: function (date) {
-                window.API.update_post('contacts', post_id, { baptism_date: date })
-                .then((resp) => {
-                  if (this.value) {
-                    this.value = window.SHAREDFUNCTIONS.formatDate(
-                      resp['baptism_date']['timestamp'],
-                    );
-                  }
-                })
-                .catch(window.handleAjaxError);
-              },
-              changeMonth: true,
-              changeYear: true,
-              yearRange: '-20:+10',
-            });
             let openBaptismModal = function (newContact) {
+              post = newContact;
               if (
                 !post.baptism_date ||
                 !(post.milestones || []).includes('milestone_baptized') ||
                 (post.baptized_by || []).length === 0
               ) {
                 $('#baptism-modal').foundation('open');
-                if (!window.Typeahead['.js-typeahead-modal_baptized_by']) {
-                  $.typeahead({
-                    input: '.js-typeahead-modal_baptized_by',
-                    minLength: 0,
-                    accent: true,
-                    searchOnFocus: true,
-                    source: window.TYPEAHEADS.typeaheadContactsSource(),
-                    templateValue: '{{name}}',
-                    template: window.TYPEAHEADS.contactListRowTemplate,
-                    matcher: function (item) {
-                      return parseInt(item.ID) !== parseInt(post.ID);
-                    },
-                    dynamic: true,
-                    hint: true,
-                    emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(
-                      window.wpApiShare.translations.no_records_found,
-                    ),
-                    multiselect: {
-                      matchOn: ['ID'],
-                      data: function () {
-                        return (post['baptized_by'] || []).map((g) => {
-                          return { ID: g.ID, name: g.post_title };
-                        });
-                      },
-                      callback: {
-                        onCancel: function (node, item) {
-                          window.API.update_post('contacts', post_id, {
-                            baptized_by: { values: [{ value: item.ID, delete: true }] },
-                          }).catch((err) => {
-                            console.error(err);
-                          });
-                        },
-                      },
-                      href:
-                        window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url) +
-                        '/contacts/{{ID}}',
-                    },
-                    callback: {
-                      onClick: function (node, a, item) {
-                        window.API.update_post('contacts', post_id, {
-                          baptized_by: { values: [{ value: item.ID }] },
-                        }).catch((err) => {
-                          console.error(err);
-                        });
-                        this.addMultiselectItemLayout(item);
-                        event.preventDefault();
-                        this.hideLayout();
-                        this.resetInput();
-                      },
-                      onResult: function (node, query, result, resultCount) {
-                        let text = window.TYPEAHEADS.typeaheadHelpText(
-                          resultCount,
-                          query,
-                          result,
-                        );
-                        $('#modal_baptized_by-result-container').html(text);
-                      },
-                      onHideLayout: function () {
-                        $('.modal_baptized_by-result-container').html('');
-                      },
-                    },
-                  });
-                }
-                if ( ( newContact.baptism_date?.timestamp || 0 ) > 0) {
-                  modalBaptismDatePicker.datepicker(
-                    'setDate',
-                    window.moment
-                    .unix(newContact['baptism_date']['timestamp'])
-                    .format('YYYY-MM-DD'),
-                  );
-                  modalBaptismDatePicker.val(
-                    window.SHAREDFUNCTIONS.formatDate(
-                      newContact['baptism_date']['timestamp'],
-                    ),
-                  );
-                }
+
+                // set values of fields in baptism modal
+                const componentService = window.DtWebComponents.ComponentService;
+                const baptizedByValue = componentService.convertApiValue('dt-connection', post.baptized_by);
+                $('#baptism-modal [name="baptized_by"]').attr('value', JSON.stringify(baptizedByValue));
+                $('#baptism-modal [name="baptism_date"]').attr('value', post?.baptism_date?.formatted);
               }
-              post = newContact;
             };
             $('#close-baptism-modal').on('click', function () {
               location.reload();
             });
 
-            /**
-             * detect if an update is made on the baptized_by field.
-             */
-            $(document).on('dt_record_updated', function (e, response, request) {
-              post = response;
-              if (
-                request?.baptized_by && response?.baptized_by && response?.baptized_by[0]
-              ) {
+            $(document).on('dt:post:update', function (e) {
+              const {response, field, value} = e?.detail;
+
+              // open modal when baptism milestone is set
+              if (field === 'milestones' && value.values.some(x => x.value === 'milestone_baptized' && !x.delete)) {
+                openBaptismModal(response);
+              }
+
+              // open modal when baptism_date is set
+              if (field === 'baptism_date' && response.baptism_date && response.baptism_date.timestamp) {
+                openBaptismModal(response);
+              }
+
+              // open modal when baptized_by is set
+              if (field === 'baptized_by' && value?.values?.length
+                  && response?.baptized_by && response?.baptized_by.length) {
                 openBaptismModal(response);
               }
             });
 
-            /**
-             * detect if an update is made on the milestone field for baptized.
-             */
-            $(document).on(
-              'dt_multi_select-updated',
-              function(e, newContact, fieldKey, optionKey, action) {
-                if (optionKey==='milestone_baptized' && action==='add') {
-                  openBaptismModal(newContact);
-                }
-              },
-            );
-            /**
-             * If a baptism date is added
-             */
-            $(document).on('dt_date_picker-updated', function(e, newContact, id, date) {
-              if (
-                id==='baptism_date' &&
-                newContact.baptism_date &&
-                newContact.baptism_date.timestamp
-              ) {
-                openBaptismModal(newContact);
-              }
-            });
           })
         </script>
         <div class="reveal" id="baptism-modal" data-reveal data-close-on-click="false">
@@ -295,27 +189,9 @@ class DT_Contacts_Baptisms extends DT_Module_Base {
             <p><?php esc_html_e( 'Who was this contact baptized by and when?', 'disciple_tools' )?></p>
 
             <div>
-                <div class="section-subheader">
-                    <?php echo esc_html( $field_settings['baptized_by']['name'] ?? '' )?>
-                </div>
-                <div class="modal_baptized_by details">
-                    <var id="modal_baptized_by-result-container" class="result-container modal_baptized_by-result-container"></var>
-                    <div id="modal_baptized_by_t" name="form-modal_baptized_by" class="scrollable-typeahead typeahead-margin-when-active">
-                        <div class="typeahead__container">
-                            <div class="typeahead__field">
-                                <span class="typeahead__query">
-                                    <input class="js-typeahead-modal_baptized_by input-height"
-                                           name="modal_baptized_by[query]"
-                                           placeholder="<?php echo esc_html_x( 'Search multipliers and contacts', 'input field placeholder', 'disciple_tools' ) ?>"
-                                           autocomplete="off">
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <span class="section-subheader"><?php echo esc_html( $field_settings['baptism_date']['name'] )?></span>
-                <input type="text" data-date-format='yy-mm-dd' value="<?php echo esc_html( $post['baptism_date']['timestamp'] ?? '' );?>" id="modal-baptism-date-picker" autocomplete="off">
+                <?php DT_Components::render_connection( 'baptized_by', $field_settings, null ) ?>
+                <?php DT_Components::render_date( 'baptism_date', $field_settings, null ) ?>
 
             </div>
 

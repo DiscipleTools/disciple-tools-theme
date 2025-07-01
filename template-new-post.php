@@ -16,11 +16,17 @@ if ( ! current_user_can( 'create_' . $dt_post_type ) ) {
 get_header();
 $post_settings = DT_Posts::get_post_settings( $dt_post_type );
 
+$field_options = [
+    'connection' => [
+        'allow_add' => false,
+    ]
+];
+
 $type_choice_present = false;
 $selected_type = null;
 if ( isset( $post_settings['fields']['type']['default'] ) ){
     $non_hidden_choices = array_filter( $post_settings['fields']['type']['default'], function ( $type_option ){
-        return empty( $type_option['hidden'] ) && !empty( $type_option['in_create_form'] );
+        return empty( $type_option['hidden'] ) && ( !isset( $type_option['in_create_form'] ) || $type_option['in_create_form'] !== false );
     } );
     if ( count( $non_hidden_choices ) > 1 ){
         $type_choice_present = true;
@@ -29,10 +35,8 @@ if ( isset( $post_settings['fields']['type']['default'] ) ){
 ?>
 
     <div id="content" class="template-new-post">
-        <div id="inner-content" class="grid-x grid-margin-x">
-            <div class="large-2 medium-12 small-12 cell"></div>
-
-            <span class="large-8 medium-12 small-12 cell">
+        <div id="inner-content" class="grid-x grid-margin-x" style="justify-content: center;">
+            <div class="large-8 medium-12 small-12 cell">
                 <form class="js-create-post bordered-box display-fields">
 
                     <table>
@@ -44,12 +48,12 @@ if ( isset( $post_settings['fields']['type']['default'] ) ){
                                     </h3>
                                 </td>
                                 <td>
-                                    <span style="float: right;">
+                                    <?php /*<span style="float: right;">
                                         <a href="<?php echo esc_html( get_site_url() . '/' . $dt_post_type . '/new-bulk' ) ?>"
                                            class="button"
                                            style="margin:0px 0px 0px 0px; padding:5px 5px 5px 5px;"><?php echo esc_html__( 'Add Bulk Records?', 'disciple_tools' ) ?>
                                         </a>
-                                    </span>
+                                    </span>*/ ?>
                                 </td>
                             </tr>
                         </tbody>
@@ -138,7 +142,7 @@ if ( isset( $post_settings['fields']['type']['default'] ) ){
                             <div <?php echo esc_html( !$show_field ? 'style=display:none' : '' ); ?>
                                 class="form-field <?php echo esc_html( $classes ); ?>">
                                 <?php
-                                render_field_for_display( $field_key, $post_settings['fields'], [] );
+                                render_field_for_display( $field_key, $post_settings['fields'], [ 'post_type' => $dt_post_type ], null, null, null, $field_options );
                                 if ( isset( $field_settings['required'] ) && $field_settings['required'] === true ) { ?>
                                     <p class="help-text" id="name-help-text"><?php esc_html_e( 'This is required', 'disciple_tools' ); ?></p>
                                 <?php } ?>
@@ -164,7 +168,6 @@ if ( isset( $post_settings['fields']['type']['default'] ) ){
 
             </div>
 
-            <div class="large-2 medium-12 small-12 cell"></div>
         </div>
     </div>
 

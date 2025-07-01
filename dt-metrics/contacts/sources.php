@@ -163,7 +163,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
      * ];
      *
      */
-    public static function get_source_data_from_db( string $from = null, string $to = null ) {
+    public static function get_source_data_from_db( ?string $from = null, ?string $to = null ) {
         global $wpdb;
 
         $prepare_args = [ '1' ];
@@ -236,7 +236,7 @@ class DT_Metrics_Sources_Chart extends DT_Metrics_Chart_Base
     }
 
 
-    public static function get_sources_milestones( string $from = null, string $to = null ) {
+    public static function get_sources_milestones( ?string $from = null, ?string $to = null ) {
         global $wpdb;
 
         $prepare_args = [ 'milestones' ];

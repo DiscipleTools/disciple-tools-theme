@@ -70,7 +70,7 @@ class Mustache_Parser
      *
      * @return array Mustache Token parse tree
      */
-    private function buildTree(array &$tokens, array $parent = null)
+    private function buildTree(array &$tokens, ?array $parent = null)
     {
         $nodes = array();
 

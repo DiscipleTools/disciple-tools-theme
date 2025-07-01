@@ -56,11 +56,11 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
     } // End __construct()
 
     public function add_submenu(){
-        add_submenu_page( 'edit.php?post_type=exports', __( 'Exports', 'disciple_tools' ), __( 'Exports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=exports', [
+        add_submenu_page( 'edit.php?post_type=exports', __( 'Settings Exports', 'disciple_tools' ), __( 'Settings Exports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=exports', [
             'Disciple_Tools_Settings_Menu',
             'content'
         ] );
-        add_submenu_page( 'dt_utilities', __( 'Exports', 'disciple_tools' ), __( 'Exports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=exports', [
+        add_submenu_page( 'dt_utilities', __( 'Settings Exports', 'disciple_tools' ), __( 'Settings Exports', 'disciple_tools' ), 'manage_dt', 'dt_utilities&tab=exports', [
             'Disciple_Tools_Settings_Menu',
             'content'
         ] );
@@ -71,7 +71,7 @@ class Disciple_Tools_Tab_Exports extends Disciple_Tools_Abstract_Menu_Base{
         if ( $tab == 'exports' ){
             echo 'nav-tab-active';
         }
-        echo '">' . esc_attr__( 'Exports' ) . '</a>';
+        echo '">' . esc_attr__( 'Settings Exports' ) . '</a>';
     }
 
     public function content( $tab ){

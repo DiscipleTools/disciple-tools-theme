@@ -26,9 +26,15 @@ function dt_print_details_bar(
         $shared_with_text .= sprintf( ', %s', $shared['display_name'] );
     }
 
-
+    $picture_style = !class_exists( 'Disciple_Tools_Storage' ) ? 'cursor: default !important;' : '';
     $record_picture = isset( $dt_post['record_picture']['thumb'] ) ? $dt_post['record_picture']['thumb'] : null;
+    $record_thumbnail = isset( $dt_post['record_picture']['thumb'] ) ? $dt_post['record_picture']['thumb'] : null;
+    $record_large_thumbnail = isset( $dt_post['record_picture']['large'] ) ? $dt_post['record_picture']['large'] : null;
+
     $picture = apply_filters( 'dt_record_picture', $record_picture, $dt_post_type, $post_id );
+    $picture_thumbnail = apply_filters( 'dt_record_picture', $record_thumbnail, $dt_post_type, $post_id );
+    $picture_large_thumbnail = apply_filters( 'dt_record_picture', $record_large_thumbnail, $dt_post_type, $post_id );
+
     $icon = apply_filters( 'dt_record_icon', null, $dt_post_type, $dt_post );
 
     $type_color = isset( $dt_post['type']['key'], $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] ) ? $post_settings['fields']['type']['default'][$dt_post['type']['key']]['color'] : '#000000';
@@ -109,7 +115,13 @@ function dt_print_details_bar(
                                     <td style="padding: 0">
                                         <?php
                                         if ( !empty( $picture ) ) : ?>
-                                            <img class="dt-storage-upload details-bar-picture" src="<?php echo esc_html( $picture )?>"
+
+                                            <img class="dt-storage-picture details-bar-picture"
+                                                 src="<?php echo esc_html( $picture_thumbnail )?>"
+                                                 alt="<?php echo esc_attr_x( 'Record Picture', 'the picture of the record', 'disciple_tools' ) ?>"
+                                                 style="<?php echo esc_attr( $picture_style ) ?>"
+                                                data-picture_url="<?php echo esc_html( $picture )?>"
+                                                data-picture_large_thumbnail_url="<?php echo esc_html( $picture_large_thumbnail )?>"
                                                  data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
                                                  data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
                                                  data-storage_upload_meta_key="record_picture"
@@ -117,6 +129,7 @@ function dt_print_details_bar(
                                                  data-storage_upload_delete_enabled="1">
                                         <?php else : ?>
                                             <i class="dt-storage-upload details-bar-picture <?php echo esc_html( $icon ) ?> medium"
+                                               style="<?php echo esc_attr( $picture_style ) ?>"
                                                data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
                                                data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
                                                data-storage_upload_meta_key="record_picture"
@@ -280,8 +293,15 @@ function dt_print_details_bar(
                     <div class="cell small-10 center" style="display: flex; justify-content: center">
                         <div style="display: flex">
                             <?php $picture = apply_filters( 'dt_record_picture', $record_picture, $dt_post_type, $post_id );
+                            $picture_thumbnail = apply_filters( 'dt_record_picture', $record_thumbnail, $dt_post_type, $post_id );
                             if ( !empty( $picture ) ) : ?>
-                                <img class="dt-storage-upload details-bar-picture" src="<?php echo esc_html( $picture )?>"
+                                <img class="dt-storage-picture details-bar-picture"
+                                     src="<?php echo esc_html( $picture_thumbnail )?>"
+                                     style="<?php echo esc_attr( $picture_style ) ?>"
+                                     alt="<?php esc_attr_e( 'Record Picture', 'disciple_tools' ) ?>"
+                                     data-picture_url="<?php echo esc_html( $picture )?>"
+                                     data-picture_large_thumbnail_url="<?php echo esc_html( $picture_large_thumbnail )?>"
+
                                      data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
                                      data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
                                      data-storage_upload_meta_key="record_picture"
@@ -289,6 +309,7 @@ function dt_print_details_bar(
                                      data-storage_upload_delete_enabled="1">
                             <?php else : ?>
                                 <i class="dt-storage-upload details-bar-picture <?php echo esc_html( $icon ) ?> medium"
+                                   style="<?php echo esc_attr( $picture_style ) ?>"
                                    data-storage_upload_post_type="<?php echo esc_attr( $dt_post_type )?>"
                                    data-storage_upload_post_id="<?php echo esc_attr( $post_id )?>"
                                    data-storage_upload_meta_key="record_picture"

@@ -1,5 +1,18 @@
 'use strict';
 (function ($, list_settings, Foundation) {
+  $(document).ready(function () {
+    if (window.DtWebComponents && window.DtWebComponents.ComponentService) {
+      const service = new window.DtWebComponents.ComponentService(
+        window.list_settings.post_type,
+        null,
+        window.wpApiShare.nonce,
+        window.wpApiShare.root,
+      );
+      window.componentService = service;
+
+      service.attachLoadEvents();
+    }
+  });
   let selected_filters = $('#selected-filters');
   let new_filter_labels = [];
   let custom_filters = [];
@@ -690,16 +703,18 @@
           ? 'current-filter-list-excluded'
           : '';
 
-        // Proceed with displaying of filter label
-        html += `<span class="current-filter-list ${excluded_class} ${window.SHAREDFUNCTIONS.escapeHTML(label.field)}">${window.SHAREDFUNCTIONS.escapeHTML(label.name)}`;
+        if (label?.name) {
+          // Proceed with displaying of filter label
+          html += `<span class="current-filter-list ${excluded_class} ${window.SHAREDFUNCTIONS.escapeHTML(label.field)}">${window.SHAREDFUNCTIONS.escapeHTML(label.name)}`;
 
-        if (label.id && label.field && label.name) {
-          html += `<span class="current-filter-list-close">x</span>`;
-        } else {
-          html += `&nbsp;`;
+          if (label.id && label.field && label.name) {
+            html += `<span class="current-filter-list-close">x</span>`;
+          } else {
+            html += `&nbsp;`;
+          }
+
+          html += `</span>`;
         }
-
-        html += `</span>`;
       });
     } else {
       let query = filter.query;
@@ -797,18 +812,218 @@
   $('#choose_fields_to_show_in_table').on('click', function () {
     $('#list_column_picker').toggle();
   });
-  $('#save_column_choices').on('click', function () {
-    let new_selected = [];
-    $('#list_column_picker input:checked').each((index, elem) => {
-      new_selected.push($(elem).val());
-    });
-    fields_to_show_in_table = window.lodash.intersection(
-      fields_to_show_in_table,
-      new_selected,
-    ); // remove unchecked
-    fields_to_show_in_table = window.lodash.uniq(
-      window.lodash.union(fields_to_show_in_table, new_selected),
+  // Enhanced Field Selection UI
+  // Store original dropdown content for restoration after "no results" message
+  const originalDropdownContent = $('#field_search_dropdown').html();
+
+  // Show dropdown on focus
+  $('#field_search_input').on('focus', function () {
+    showFieldDropdown();
+  });
+
+  // Field search functionality - filters dropdown options based on user input
+  $('#field_search_input').on('input', function () {
+    const searchTerm = $(this).val().toLowerCase();
+
+    if (searchTerm.length === 0) {
+      // Show all available options when search is empty
+      showFieldDropdown();
+      return;
+    }
+
+    filterFieldDropdown(searchTerm);
+  });
+
+  function showFieldDropdown() {
+    const dropdown = $('#field_search_dropdown');
+
+    // Restore original content if it was replaced with "no results" message
+    if (!dropdown.find('.field-search-option').length) {
+      dropdown.html(originalDropdownContent);
+    }
+
+    const options = dropdown.find('.field-search-option');
+    const selectedFields = JSON.parse(
+      $('#selected_fields_input').val() || '[]',
     );
+    let hasVisibleOptions = false;
+
+    // Show all options that aren't already selected
+    options.each(function () {
+      const fieldKey = $(this).data('field-key');
+
+      if (selectedFields.includes(fieldKey)) {
+        $(this).hide();
+      } else {
+        $(this).show();
+        hasVisibleOptions = true;
+      }
+    });
+
+    if (hasVisibleOptions) {
+      dropdown.show();
+    } else {
+      dropdown.hide();
+    }
+  }
+
+  function filterFieldDropdown(searchTerm) {
+    const dropdown = $('#field_search_dropdown');
+
+    // Restore original content if it was replaced with "no results" message
+    if (!dropdown.find('.field-search-option').length) {
+      dropdown.html(originalDropdownContent);
+    }
+
+    const options = dropdown.find('.field-search-option');
+    const selectedFields = JSON.parse(
+      $('#selected_fields_input').val() || '[]',
+    );
+    let hasVisibleOptions = false;
+
+    options.each(function () {
+      const fieldName = $(this).data('field-name');
+      const fieldKey = $(this).data('field-key');
+
+      // Hide if already selected
+      if (selectedFields.includes(fieldKey)) {
+        $(this).hide();
+        return;
+      }
+
+      // Show/hide based on search term
+      if (
+        fieldName.includes(searchTerm) ||
+        fieldKey.toLowerCase().includes(searchTerm)
+      ) {
+        $(this).show();
+        hasVisibleOptions = true;
+      } else {
+        $(this).hide();
+      }
+    });
+
+    if (hasVisibleOptions) {
+      dropdown.show();
+    } else {
+      // Show "no results" message if search term exists but no matches
+      dropdown
+        .html('<div class="no-fields-found">No fields found</div>')
+        .show();
+    }
+  }
+
+  // Handle keyboard navigation
+  $('#field_search_input').on('keydown', function (e) {
+    const dropdown = $('#field_search_dropdown');
+    if (e.key === 'Escape') {
+      dropdown.hide();
+      $(this).val('');
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const firstVisibleOption = dropdown
+        .find('.field-search-option:visible')
+        .first();
+      if (firstVisibleOption.length) {
+        firstVisibleOption.click();
+      }
+    }
+  });
+
+  // Hide dropdown when clicking outside
+  $(document).on('click', function (e) {
+    if (
+      !$(e.target).closest('#field_search_input, #field_search_dropdown').length
+    ) {
+      $('#field_search_dropdown').hide();
+    }
+  });
+
+  // Add field when clicking on dropdown option
+  $(document).on('click', '.field-search-option', function () {
+    const fieldKey = $(this).data('field-key');
+    const fieldName = $(this).find('span').text();
+    const fieldIcon = $(this).find('.dt-icon').prop('outerHTML') || '';
+    const hasIcon = fieldIcon.length > 0;
+    const tagClasses = hasIcon
+      ? 'enabled-field-tag'
+      : 'enabled-field-tag no-icon';
+
+    // Add to selected fields
+    let selectedFields;
+    try {
+      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
+    } catch (e) {
+      console.error('Error parsing selected fields JSON:', e);
+      selectedFields = [];
+    }
+    if (!selectedFields.includes(fieldKey)) {
+      selectedFields.push(fieldKey);
+      $('#selected_fields_input').val(JSON.stringify(selectedFields));
+
+      // Add visual tag
+      const tag = `<span class="${tagClasses} enabled-field-tag-inline" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(fieldKey)}">
+                     ${fieldIcon}
+                     <span>${window.SHAREDFUNCTIONS.escapeHTML(fieldName)}</span>
+                     <button type="button" class="remove-field-btn remove-field-btn-inline" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(fieldKey)}">×</button>
+                   </span>`;
+
+      const container = $('#enabled_fields_container');
+      // Remove "no fields selected" message if present
+      container.find('span:contains("No fields selected")').remove();
+      container.append(tag);
+    }
+
+    // Clear search and close dropdown
+    $('#field_search_input').val('');
+    $('#field_search_dropdown').hide();
+  });
+
+  // Remove field when clicking X button
+  $(document).on('click', '.remove-field-btn', function () {
+    const fieldKey = $(this).data('field-key');
+
+    // Remove from selected fields
+    let selectedFields;
+    try {
+      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
+    } catch (e) {
+      console.error('Error parsing selected fields JSON:', e);
+      selectedFields = [];
+    }
+    selectedFields = selectedFields.filter((key) => key !== fieldKey);
+    $('#selected_fields_input').val(JSON.stringify(selectedFields));
+
+    // Remove visual tag
+    $(this).closest('.enabled-field-tag').remove();
+
+    // Show "no fields selected" message if empty
+    if (selectedFields.length === 0) {
+      $('#enabled_fields_container').html(
+        '<span class="no-fields-message">No fields selected</span>',
+      );
+    }
+
+    // Refresh dropdown if it's currently visible to show the newly available field
+    if ($('#field_search_dropdown').is(':visible')) {
+      const searchTerm = $('#field_search_input').val().toLowerCase();
+      if (searchTerm.length === 0) {
+        showFieldDropdown();
+      } else {
+        filterFieldDropdown(searchTerm);
+      }
+    }
+  });
+
+  $('#save_column_choices').on('click', function () {
+    let selectedFields;
+    try {
+      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
+    } catch (e) {
+      console.error('Error parsing selected fields JSON:', e);
+      selectedFields = [];
+    }
+    fields_to_show_in_table = selectedFields;
     window.SHAREDFUNCTIONS.save_json_cookie(
       'fields_to_show_in_table',
       fields_to_show_in_table,
@@ -818,6 +1033,10 @@
   });
   $('#reset_column_choices').on('click', function () {
     fields_to_show_in_table = [];
+    $('#selected_fields_input').val('[]');
+    $('#enabled_fields_container').html(
+      '<span class="no-fields-message">No fields selected</span>',
+    );
     window.SHAREDFUNCTIONS.save_json_cookie(
       'fields_to_show_in_table',
       fields_to_show_in_table,
@@ -1048,9 +1267,9 @@
               `<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`,
             ];
           } else if (
-            field_value === undefined &&
             field_settings.type === 'boolean' &&
-            field_settings.default === true
+            field_settings.default === true &&
+            (field_value === undefined || field_value === null)
           ) {
             values = ['&check;'];
           } else if (field_settings.type === 'image') {
@@ -1150,6 +1369,14 @@
     favorite_edit_event();
   };
 
+  window.SHAREDFUNCTIONS['empty_list'] = empty_list;
+
+  function empty_list() {
+    $('#table-content').html(
+      `<tr><td colspan="10">${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.empty_list)}</td></tr>`,
+    );
+  }
+
   function get_records(offset = 0, sort = null) {
     loading_spinner.addClass('active');
     let query = current_filter.query;
@@ -1242,6 +1469,9 @@
   /**
    * Modal options
    */
+
+  // Promote as a shared function.
+  window.SHAREDFUNCTIONS['add_custom_filter'] = add_custom_filter;
 
   //add the new filter in the filters list
   function add_custom_filter(name, type, query, labels, load_records = true) {
@@ -1666,6 +1896,8 @@
     return { newLabel: { id: key, name: value, field } };
   }
 
+  // Promote as a shared function.
+  window.SHAREDFUNCTIONS['create_name_value_label'] = create_name_value_label;
   function create_name_value_label(field, id, value, listSettings) {
     let name = window.lodash.get(
       listSettings,
@@ -2850,6 +3082,24 @@
     let updatePayload = {};
     let sharePayload;
 
+    // Process web component values
+    const form = document.getElementById('bulk_edit_picker');
+    Array.from(form.elements).forEach((el) => {
+      // skip fields not from web components
+      if (!el.tagName.startsWith('DT-')) {
+        return;
+      }
+
+      if (el.value) {
+        updatePayload[el.name.trim()] =
+          window.DtWebComponents.ComponentService.convertValue(
+            el.tagName,
+            el.value,
+          );
+      }
+    });
+
+    // Process legacy components
     allInputs.each(function () {
       let inputData = $(this).data();
       $.each(inputData, function (key, value) {
@@ -3415,103 +3665,105 @@
     }
   });
 
-  $('#bulk_edit_picker .dt_location_grid').each(() => {
-    let field_id = 'location_grid';
-    let typeaheadTotals = {};
-    $.typeahead({
-      input: '.js-typeahead-bulk_location_grid',
-      minLength: 0,
-      accent: true,
-      searchOnFocus: true,
-      maxItem: 20,
-      dropdownFilter: [
-        {
-          key: 'group',
-          value: 'focus',
-          template: window.SHAREDFUNCTIONS.escapeHTML(
-            window.wpApiShare.translations.regions_of_focus,
-          ),
-          all: window.SHAREDFUNCTIONS.escapeHTML(
-            window.wpApiShare.translations.all_locations,
-          ),
-        },
-      ],
-      source: {
-        focus: {
-          display: 'name',
-          ajax: {
-            url:
-              window.wpApiShare.root +
-              'dt/v1/mapping_module/search_location_grid_by_name',
-            data: {
-              s: '{{query}}',
-              filter: function () {
-                // return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
-              },
-            },
-            beforeSend: function (xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-            },
-            callback: {
-              done: function (data) {
-                if (typeof window.typeaheadTotals !== 'undefined') {
-                  window.typeaheadTotals.field = data.total;
-                }
-                return data.location_grid;
-              },
-            },
-          },
-        },
-      },
-      display: 'name',
-      templateValue: '{{name}}',
-      dynamic: true,
-      multiselect: {
-        matchOn: ['ID'],
-        data: '',
-        callback: {
-          onCancel: function (node, item) {
-            $(node).removeData(`bulk_key_${field_id}`);
-          },
-        },
-      },
-      callback: {
-        onClick: function (node, a, item, event) {
-          // $(`#${element_id}-spinner`).addClass('active');
-          node.data(`bulk_key_${field_id}`, { values: [{ value: item.ID }] });
-        },
-        onReady() {
-          this.filters.dropdown = {
+  if ($('#bulk_edit_picker .js-typeahead-bulk_location_grid').length) {
+    $('#bulk_edit_picker .dt_location_grid').each(() => {
+      let field_id = 'location_grid';
+      let typeaheadTotals = {};
+      $.typeahead({
+        input: '.js-typeahead-bulk_location_grid',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        maxItem: 20,
+        dropdownFilter: [
+          {
             key: 'group',
             value: 'focus',
             template: window.SHAREDFUNCTIONS.escapeHTML(
               window.wpApiShare.translations.regions_of_focus,
             ),
-          };
-          this.container
-            .removeClass('filter')
-            .find('.' + this.options.selector.filterButton)
-            .html(
-              window.SHAREDFUNCTIONS.escapeHTML(
+            all: window.SHAREDFUNCTIONS.escapeHTML(
+              window.wpApiShare.translations.all_locations,
+            ),
+          },
+        ],
+        source: {
+          focus: {
+            display: 'name',
+            ajax: {
+              url:
+                window.wpApiShare.root +
+                'dt/v1/mapping_module/search_location_grid_by_name',
+              data: {
+                s: '{{query}}',
+                filter: function () {
+                  // return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                },
+              },
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+              },
+              callback: {
+                done: function (data) {
+                  if (typeof window.typeaheadTotals !== 'undefined') {
+                    window.typeaheadTotals.field = data.total;
+                  }
+                  return data.location_grid;
+                },
+              },
+            },
+          },
+        },
+        display: 'name',
+        templateValue: '{{name}}',
+        dynamic: true,
+        multiselect: {
+          matchOn: ['ID'],
+          data: '',
+          callback: {
+            onCancel: function (node, item) {
+              $(node).removeData(`bulk_key_${field_id}`);
+            },
+          },
+        },
+        callback: {
+          onClick: function (node, a, item, event) {
+            // $(`#${element_id}-spinner`).addClass('active');
+            node.data(`bulk_key_${field_id}`, { values: [{ value: item.ID }] });
+          },
+          onReady() {
+            this.filters.dropdown = {
+              key: 'group',
+              value: 'focus',
+              template: window.SHAREDFUNCTIONS.escapeHTML(
                 window.wpApiShare.translations.regions_of_focus,
               ),
+            };
+            this.container
+              .removeClass('filter')
+              .find('.' + this.options.selector.filterButton)
+              .html(
+                window.SHAREDFUNCTIONS.escapeHTML(
+                  window.wpApiShare.translations.regions_of_focus,
+                ),
+              );
+          },
+          onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.location_grid;
+            let text = window.TYPEAHEADS.typeaheadHelpText(
+              resultCount,
+              query,
+              result,
             );
+            $('#location_grid-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#location_grid-result-container').html('');
+          },
         },
-        onResult: function (node, query, result, resultCount) {
-          resultCount = typeaheadTotals.location_grid;
-          let text = window.TYPEAHEADS.typeaheadHelpText(
-            resultCount,
-            query,
-            result,
-          );
-          $('#location_grid-result-container').html(text);
-        },
-        onHideLayout: function () {
-          $('#location_grid-result-container').html('');
-        },
-      },
+      });
     });
-  });
+  }
 
   $(
     '#bulk_edit_picker .tags input, #bulk_edit_picker .multi_select input',
@@ -3659,15 +3911,12 @@
     $(`#${input_id}`).val('');
   });
 
-  $('#bulk_edit_picker select.select-field').change((e) => {
+  $('#bulk_edit_picker dt-single-select').change((e) => {
     const val = $(e.currentTarget).val();
 
     if (val === 'paused') {
-      $('#reason-paused-options').parent().toggle();
+      $('#bulk_reason_paused').parent().toggle();
     }
-
-    let field_key = e.currentTarget.id.replace('bulk_', '');
-    $(e.currentTarget).data(`bulk_key_${field_key}`, val);
   });
 
   $('#bulk_edit_picker input.number-input').on('blur', function () {
@@ -3819,7 +4068,6 @@
       let default_options_filters = JSON.parse(
         JSON.stringify(split_by_filters),
       );
-      delete default_options_filters['fields'];
 
       // First, always fetch all available options for given field_id.
       window.API.split_by(
@@ -3827,61 +4075,54 @@
         field_id,
         default_options_filters,
       ).then(function (default_options) {
-        // Next, execute split_by query for given filters.
-        window.API.split_by(
-          list_settings.post_type,
-          field_id,
-          split_by_filters,
-        ).then(function (split_by_response) {
-          $(split_by_current_filter_button).removeClass('loading');
-          let summary_displayed = false;
-          if (default_options && default_options.length > 0) {
-            let html = '';
+        $(split_by_current_filter_button).removeClass('loading');
+        let summary_displayed = false;
+        if (default_options && default_options.length > 0) {
+          let html = '';
 
-            // Iterate over default options and highlight selected filters.
-            $.each(default_options, function (idx, result) {
-              if (result['value']) {
-                summary_displayed = true;
-                let option_id = result['value'];
-                let option_id_label =
-                  result['label'] !== '' ? result['label'] : result['value'];
+          // Iterate over default options and highlight selected filters.
+          $.each(default_options, function (idx, result) {
+            if (result['value']) {
+              summary_displayed = true;
+              let option_id = result['value'];
+              let option_id_label =
+                result['label'] !== '' ? result['label'] : result['value'];
 
-                // Determine if option should be selected.
-                let option_selected = false;
-                if (split_by_filters['fields']) {
-                  if (
-                    split_by_filters['fields'].filter(
-                      (option) =>
-                        option[field_id] !== undefined &&
-                        option[field_id].includes(option_id),
-                    ).length > 0
-                  ) {
-                    option_selected = true;
-                  }
+              // Determine if option should be selected.
+              let option_selected = false;
+              if (split_by_filters['fields']) {
+                if (
+                  split_by_filters['fields'].filter(
+                    (option) =>
+                      option[field_id] !== undefined &&
+                      option[field_id].includes(option_id),
+                  ).length > 0
+                ) {
+                  option_selected = true;
                 }
+              }
 
-                html += `
+              html += `
                     <label class="list-view">
                       <input class="js-list-view-split-by" type="radio" name="split_by_list_view" ${option_selected ? 'checked' : ''} value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_id="${window.SHAREDFUNCTIONS.escapeHTML(field_id)}" data-field_option_id="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_option_label="${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}" autocomplete="off">
                       <span>${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}</span>
                       <span class="list-view__count js-list-view-count" data-value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}">${window.SHAREDFUNCTIONS.escapeHTML(result['count'])}</span>
                     </label>
                     `;
-              }
-            });
+            }
+          });
 
-            $(split_by_accordion).slideDown('fast', function () {
-              $(split_by_results).html(html);
-              $(split_by_results).slideDown('fast');
-            });
-          }
+          $(split_by_accordion).slideDown('fast', function () {
+            $(split_by_results).html(html);
+            $(split_by_results).slideDown('fast');
+          });
+        }
 
-          if (!summary_displayed) {
-            $(split_by_accordion).slideUp('fast', function () {
-              $(split_by_no_results_msg).fadeIn('fast');
-            });
-          }
-        });
+        if (!summary_displayed) {
+          $(split_by_accordion).slideUp('fast', function () {
+            $(split_by_no_results_msg).fadeIn('fast');
+          });
+        }
       });
     });
   }
@@ -3930,6 +4171,8 @@
     return filter;
   }
 
+  // Promote as a shared function.
+  window.SHAREDFUNCTIONS['reset_split_by_filters'] = reset_split_by_filters;
   function reset_split_by_filters() {
     let split_by_filter_select = $('#split_by_current_filter_select');
     if (current_filter && current_filter['query']['fields'] !== undefined) {
@@ -4302,7 +4545,7 @@
             });
 
             // Assuming counts match, assign to parent csv download array.
-            if (csv_row.length === exporting_fields.length + 1) {
+            if (csv_row.length <= exporting_fields.length + 1) {
               csv_export.push(csv_row);
             }
           });
@@ -4316,19 +4559,23 @@
           csv_export.unshift(csv_headers);
 
           // Convert csv arrays into raw downloadable data.
-          const csv = csv_export
-            .map((row) => {
-              return row.map((item) => {
-                let escapeditem = item;
-                //if the string contains a doublequote escape it by doubling the double quoate like "" - https://stackoverflow.com/a/769675
-                if (String(item).includes('"')) {
-                  escapeditem = item.replaceAll('"', '""');
-                }
+          // --- ADD BOM for UTF-8 ---
+          const BOM = '\uFEFF';
+          const csv =
+            BOM +
+            csv_export
+              .map((row) => {
+                return row.map((item) => {
+                  let escapeditem = item;
+                  //if the string contains a doublequote escape it by doubling the double quoate like "" - https://stackoverflow.com/a/769675
+                  if (String(item).includes('"')) {
+                    escapeditem = item.replaceAll('"', '""');
+                  }
 
-                return `"${escapeditem}"`;
-              });
-            })
-            .join('\r\n');
+                  return `"${escapeditem}"`;
+                });
+              })
+              .join('\r\n');
 
           // Finally, automatically execute a download of generated csv data.
           let csv_download_link = document.createElement('a');

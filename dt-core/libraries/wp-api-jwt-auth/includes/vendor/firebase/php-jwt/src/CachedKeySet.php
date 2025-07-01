@@ -78,9 +78,9 @@ class CachedKeySet implements ArrayAccess
         ClientInterface $httpClient,
         RequestFactoryInterface $httpFactory,
         CacheItemPoolInterface $cache,
-        int $expiresAfter = null,
+        ?int $expiresAfter = null,
         bool $rateLimit = false,
-        string $defaultAlg = null
+        ?string $defaultAlg = null
     ) {
         $this->jwksUri = $jwksUri;
         $this->httpClient = $httpClient;

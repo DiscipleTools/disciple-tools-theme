@@ -400,6 +400,62 @@ html[dir="rtl"] #top-bar-menu {
     }
 }
 
+// Mobile add new dropdown styling
+.mobile-add-buttons {
+    margin-left: 5px;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.title-bar-right {
+    float: right;
+    text-align: left;
+}
+
+.title-bar-right > * {
+    float: right;
+    margin-left: 10px;
+}
+
+#mobile-add-new-dropdown {
+    background-color: #3f729b;
+    border: 1px solid #999;
+    border-radius: 4px;
+    min-width: 160px;
+    max-width: 180px;
+    padding: 4px 0;
+
+    .menu.vertical {
+        margin: 0;
+        li {
+            margin: 0;
+
+            .add-new-menu-item {
+                display: flex;
+                align-items: center;
+                padding: 12px 16px;
+                color: white;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: bold;
+                transition: background-color 0.2s;
+
+                &:hover {
+                    background-color: #4a7fa8;
+                }
+
+                img {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 12px;
+                    flex-shrink: 0;
+                }
+            }
+        }
+    }
+}
+
 nav.second-bar {
     padding: 0.5em;
     background-color: white;
@@ -867,6 +923,13 @@ button.loader {
     display: inline-block;
 }
 /**
+  Select field
+ */
+select.select-field {
+    margin: 0
+}
+
+/**
   Typeaheads
  */
 .scrollable-typeahead .typeahead__list {
@@ -884,7 +947,7 @@ button.loader {
 }
 
 .typeahead__container {
-    margin-bottom: 10px;
+    //margin-bottom: 10px;
 
     .typeahead__image_button {
         padding-top: 3px;

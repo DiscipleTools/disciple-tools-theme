@@ -12,7 +12,7 @@ function new_bulk_record_scripts() {
     global $wp_scripts;
 
     // Obtain current data for given handle and reshape, if needed.
-    $localized_data = $wp_scripts->get_data( 'new-record', 'data' );
+    $localized_data = $wp_scripts->get_data( 'new-bulk-record', 'data' );
     if ( ! is_array( $localized_data ) ) {
         $localized_data = json_decode( str_replace( 'var new_record_localized = ', '', substr( $localized_data, 0, - 1 ) ), true );
     }
@@ -26,8 +26,8 @@ function new_bulk_record_scripts() {
     $localized_data['bulk_mapbox_placeholder_txt']     = esc_attr( __( 'Search Location', 'disciple_tools' ) );
 
     // Save updated localized data.
-    $wp_scripts->add_data( 'new-record', 'data', '' );
-    wp_localize_script( 'new-record', 'new_record_localized', $localized_data );
+    $wp_scripts->add_data( 'new-bulk-record', 'data', '' );
+    wp_localize_script( 'new-bulk-record', 'new_record_localized', $localized_data );
 }
 
 /**

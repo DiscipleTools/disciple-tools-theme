@@ -135,6 +135,10 @@
     }
 }
 
+.table-container {
+    overflow-y: auto;
+    transform: rotateX(180deg);
+}
 
 table.table-remove-top-border thead {
     border-top: 0;
@@ -144,25 +148,17 @@ table.js-list{
     word-wrap: break-word;
     width: 100%;
     white-space: nowrap;
-
+    transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg) translateZ(0px);
+}
+table.js-list tr {
+    -webkit-transform: translateZ(0px)
 }
 @media screen and (min-width : #{map-get($breakpoints, large)}) {
     table.js-list td {
         max-width: 250px;
     }
 }
-
-.table-container {
-    display: block;
-    overflow-x: auto;
-}
-
-.table-container, .table-container #records-table {
-    transform:rotateX(180deg);
-    -ms-transform:rotateX(180deg); /* IE 9 */
-    -webkit-transform:rotateX(180deg); /* Safari and Chrome */
-}
-
 
 table.js-list th[data-id="name"] {
     position: sticky;
@@ -181,6 +177,7 @@ table.js-list th[data-id="index"] {
     position: sticky;
     left: -1px;
     background-color: #ffffff;
+    border-left: 1px solid rgb(232,232,232);
 }
 
 table.js-list td[data-id="index"] {
@@ -451,6 +448,10 @@ table.js-list i.list-image {
     }
 }
 
+#bulk_edit_picker .cell {
+    margin-block-end: 0.66rem;
+}
+
 #bulk_edit_picker .button-group.small .button {
     border: 1px solid #ccc;
 }
@@ -564,4 +565,192 @@ table.js-list i.list-image {
         float: right;
         position: relative;
     }
+}
+
+// Field picker styles
+.field-search-option {
+    display: flex;
+    align-items: center;
+    
+    &:hover {
+        background-color: #f0f0f0;
+    }
+    
+    &:last-child {
+        border-bottom: none;
+    }
+    
+    .dt-icon,
+    img,
+    svg,
+    i {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        flex-shrink: 0;
+        display: block;
+    }
+    
+    // Add placeholder for options without icons to align text consistently
+    &.no-icon::before {
+        content: '';
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        flex-shrink: 0;
+        display: inline-block;
+    }
+    
+    > span {
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.enabled-field-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    line-height: 1;
+    vertical-align: top;
+    
+    // Base icon styling for all types
+    .dt-icon,
+    img,
+    svg,
+    i {
+        width: 14px;
+        height: 14px;
+        margin-right: 8px;
+        flex-shrink: 0;
+        display: block;
+    }
+    
+    // Apply white filter to image icons
+    img {
+        filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
+    }
+    
+    // Font icons need white color for visibility on colored background
+    i {
+        color: white;
+    }
+    
+    // Text content styling
+    > span {
+        flex-shrink: 0;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+    
+    // Remove button styling
+    .remove-field-btn {
+        margin-left: 8px;
+        flex-shrink: 0;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        line-height: 1;
+        padding: 0;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+        }
+    }
+}
+
+.field-selection-ui {
+  .field-search-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .field-search-container {
+    position: relative;
+  }
+
+  .field-search-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .field-search-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+
+  .field-search-option-inline {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .no-fields-found {
+    padding: 8px 12px;
+    color: #666;
+    font-style: italic;
+  }
+
+  .enabled-fields-section {
+    margin-bottom: 15px;
+  }
+
+  .enabled-fields-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .enabled-fields-container {
+    min-height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    background: #f9f9f9;
+  }
+
+  .no-fields-message {
+    color: #666;
+    font-style: italic;
+  }
+
+  .enabled-field-tag-inline {
+    background: #3f729b;
+    color: white;
+    padding: 0 8px;
+    margin: 2px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+
+  .remove-field-btn-inline {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
 }

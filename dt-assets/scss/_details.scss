@@ -649,6 +649,10 @@ select.color-select {
 
 
 .bordered-box{
+    .grid-margin-y .cell {
+        margin-block-start: 0;
+        margin-block-end: 0.66rem;
+    }
     .section-header {
         display: flex;
     }
@@ -661,6 +665,10 @@ select.color-select {
     }
     .chevron_down {
         display: none;
+    }
+    .section-body {
+        display: flex;
+        flex-direction: column;
     }
 
     &.collapsed {
@@ -675,6 +683,9 @@ select.color-select {
         }
     }
 
+}
+.single-template .section-body {
+    gap: 0.8rem;
 }
 .hidden-grid-item {
     display: none
@@ -799,7 +810,7 @@ select.color-select {
 
 //user select field
 .dt_user_select {
-    margin-bottom:15px;
+    //margin-bottom:15px;
 }
 
 // link field
