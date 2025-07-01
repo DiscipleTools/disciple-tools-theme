@@ -522,8 +522,6 @@ jQuery(document).ready(function ($) {
       $('.js-create-record input[name=title]').val(newPost.label);
     }
   });
-
-  //brady ====
   $('dt-connection').on('dt:add-new', (e) => {
     connection_type = e.detail.field;
 
@@ -533,29 +531,6 @@ jQuery(document).ready(function ($) {
     $('.reveal-after-record-create').hide();
     $('.hide-after-record-create').show();
     $('.js-create-record input[name=title]').val(e.detail.value);
-  });
-
-  $('dt-tags').on('dt:add-new', (e) => {
-    $('#create-tag-modal').foundation('open');
-    $('.js-create-tag input[name=title]').val(e.detail.value);
-  });
-
-  /* New Tag Modal */
-  $('.js-create-tag').on('submit', (e) => {
-    e.preventDefault();
-
-    let field = 'tags';
-    let tag = $('#new-tag').val();
-
-    window.API.update_post(post_type, post_id, {
-      [field]: { values: [{ value: tag }] },
-    }).then(() => {
-      field = document.querySelector(`[name="tags"]`);
-      if (field) {
-        field._select(tag);
-        field._clearSearch();
-      }
-    });
   });
 
   /* New Record Modal */
@@ -619,6 +594,30 @@ jQuery(document).ready(function ($) {
         );
         console.error(error);
       });
+  });
+
+  /* field type: tags */
+  $('dt-tags').on('dt:add-new', (e) => {
+    $('#create-tag-modal').foundation('open');
+    $('.js-create-tag input[name=title]').val(e.detail.value);
+  });
+
+  /* New Tag Modal */
+  $('.js-create-tag').on('submit', (e) => {
+    e.preventDefault();
+
+    let field = 'tags';
+    let tag = $('#new-tag').val();
+
+    window.API.update_post(post_type, post_id, {
+      [field]: { values: [{ value: tag }] },
+    }).then(() => {
+      field = document.querySelector(`[name="tags"]`);
+      if (field) {
+        field._select(tag);
+        field._clearSearch();
+      }
+    });
   });
 
   /* field type: location */
