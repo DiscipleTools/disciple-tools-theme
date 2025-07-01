@@ -585,6 +585,95 @@ if ( !defined( 'JWT_AUTH_SECRET_KEY' ) ) {
 }
 
 /**
+ * Mobile Detection and Tailwind Integration
+ * Added for enhanced mobile UI experience
+ */
+
+/**
+ * Detect if request is from mobile device or responsive design testing mode
+ *
+ * @return bool
+ */
+function dt_is_mobile_request() {
+    // Check for responsive design testing mode
+    if ( isset( $_GET['mobile'] ) || isset( $_GET['responsive'] ) ) {
+        return true;
+    }
+    
+    // User agent detection
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    $mobile_agents = [
+        'Mobile', 'Android', 'iPhone', 'iPad', 'iPod', 
+        'BlackBerry', 'Windows Phone', 'Opera Mini'
+    ];
+    
+    foreach ( $mobile_agents as $agent ) {
+        if ( stripos( $user_agent, $agent ) !== false ) {
+            return true;
+        }
+    }
+    
+    // WordPress built-in mobile detection
+    if ( function_exists( 'wp_is_mobile' ) && wp_is_mobile() ) {
+        return true;
+    }
+    
+    return false;
+}
+
+/**
+ * Enqueue Tailwind CSS and mobile-specific assets
+ */
+function dt_enqueue_mobile_assets() {
+    if ( dt_is_mobile_request() ) {
+        // Enqueue Tailwind CSS via CDN for initial implementation
+        wp_enqueue_style( 
+            'tailwind-css', 
+            'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css',
+            array(),
+            '2.2.19'
+        );
+        
+        // Enqueue mobile-specific styles
+        wp_enqueue_style(
+            'dt-mobile-header',
+            get_template_directory_uri() . '/dt-assets/css/mobile-header.css',
+            array( 'tailwind-css' ),
+            filemtime( get_template_directory() . '/dt-assets/css/mobile-header.css' )
+        );
+        
+        // Enqueue mobile-specific JavaScript
+        wp_enqueue_script(
+            'dt-mobile-header-js',
+            get_template_directory_uri() . '/dt-assets/js/mobile-header.js',
+            array( 'jquery' ),
+            filemtime( get_template_directory() . '/dt-assets/js/mobile-header.js' ),
+            true
+        );
+        
+        // Localize script with search settings
+        wp_localize_script( 'dt-mobile-header-js', 'dt_mobile_header', array(
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'rest_base' => esc_url_raw( rest_url() . 'dt/v1/' ),
+            'search_placeholder' => __( 'Search contacts, groups...', 'disciple_tools' ),
+            'nonce' => wp_create_nonce( 'wp_rest' ),
+        ) );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'dt_enqueue_mobile_assets' );
+
+/**
+ * Add mobile detection body class
+ */
+function dt_mobile_body_class( $classes ) {
+    if ( dt_is_mobile_request() ) {
+        $classes[] = 'dt-mobile-view';
+    }
+    return $classes;
+}
+add_filter( 'body_class', 'dt_mobile_body_class' );
+
+/**
  * Returns the main instance of Disciple_Tools to prevent the need to use globals.
  *
  * @since  0.1.0

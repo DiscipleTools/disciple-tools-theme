@@ -45,9 +45,14 @@
 
                 <header class="header" role="banner">
 
-                     <!-- This navs will be applied to the topbar, above all content
-                          To see additional nav styles, visit the /parts directory -->
+                     <!-- Conditional navigation based on device type -->
+                     <?php if ( dt_is_mobile_request() ) : ?>
+                        <!-- Enhanced Mobile Navigation -->
+                        <?php get_template_part( 'dt-assets/parts/nav', 'topbar-mobile' ); ?>
+                     <?php else : ?>
+                        <!-- Desktop Navigation -->
                         <?php get_template_part( 'dt-assets/parts/nav', 'topbar' ); ?>
+                     <?php endif; ?>
 
                 </header> <!-- end .header -->
 

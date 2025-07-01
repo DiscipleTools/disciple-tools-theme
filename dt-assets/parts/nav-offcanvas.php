@@ -1,5 +1,26 @@
-<div class="off-canvas position-left" id="off-canvas" data-off-canvas>
-    <ul class="vertical menu sticky is-stuck is-at-top" data-accordion-menu>
+<div class="off-canvas position-left <?php echo dt_is_mobile_request() ? 'mobile-enhanced' : ''; ?>" id="off-canvas" data-off-canvas>
+    <?php if ( dt_is_mobile_request() ) : ?>
+        <!-- Mobile Enhanced Header -->
+        <div class="mobile-offcanvas-header">
+            <div class="flex items-center justify-between p-4 border-b border-white border-opacity-20">
+                <div class="flex items-center">
+                    <?php 
+                    $dt_nav_tabs = dt_default_menu_array();
+                    $logo_url = $dt_nav_tabs['admin']['site']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/disciple-tools-logo-white.png';
+                    ?>
+                    <img src="<?php echo esc_url( $logo_url ); ?>" alt="Logo" class="h-8 w-auto mr-3">
+                    <span class="text-white font-semibold"><?php bloginfo( 'name' ); ?></span>
+                </div>
+                <button class="close-button text-white" aria-label="Close menu" type="button" data-close>
+                    <span aria-hidden="true" class="text-2xl">&times;</span>
+                </button>
+            </div>
+        </div>
+    <?php else : ?>
+        <?php $dt_nav_tabs = dt_default_menu_array(); ?>
+    <?php endif; ?>
+    
+    <ul class="vertical menu sticky is-stuck is-at-top <?php echo dt_is_mobile_request() ? 'mobile-menu' : ''; ?>" data-accordion-menu>
         <?php
 
         /**
@@ -7,7 +28,9 @@
          * @note Main post types (Contacts, Groups, Metrics) fire between 20-30. If you want to add an item before the
          * main post types, load before 20, if you want to load after the list, load after 30.
          */
-        $dt_nav_tabs = dt_default_menu_array();
+        if ( !isset( $dt_nav_tabs ) ) {
+            $dt_nav_tabs = dt_default_menu_array();
+        }
         ?>
 
         <!-- profile name -->
@@ -22,17 +45,46 @@
 
         <li><hr ><!-- Spacer--></li>
 
+        <?php if ( dt_is_mobile_request() ) : ?>
+            <!-- Mobile Enhanced Navigation -->
+            <li class="mobile-nav-section-header">
+                <span class="mobile-nav-section-title"><?php esc_html_e( 'Main Navigation', 'disciple_tools' ); ?></span>
+            </li>
+        <?php endif; ?>
+
         <?php
-        foreach ( $dt_nav_tabs['main'] as $dt_main_tabs ) :
+        foreach ( $dt_nav_tabs['main'] as $key => $dt_main_tabs ) :
             if ( ! ( isset( $dt_main_tabs['hidden'] ) && $dt_main_tabs['hidden'] ) ) {
                 ?>
-                <li><a href="<?php echo esc_url( $dt_main_tabs['link'] ) ?>"><?php echo esc_html( $dt_main_tabs['label'] ) ?>&nbsp;</a>
+                <li class="<?php echo dt_is_mobile_request() ? 'mobile-nav-item' : ''; ?>">
+                    <a href="<?php echo esc_url( $dt_main_tabs['link'] ) ?>" class="<?php echo dt_is_mobile_request() ? 'mobile-nav-link' : ''; ?>">
+                        <?php if ( dt_is_mobile_request() ) : ?>
+                            <div class="mobile-nav-item-content">
+                                <div class="mobile-nav-icon">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <?php if ( strpos( strtolower( $dt_main_tabs['label'] ), 'contact' ) !== false ) : ?>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        <?php elseif ( strpos( strtolower( $dt_main_tabs['label'] ), 'group' ) !== false ) : ?>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                        <?php elseif ( strpos( strtolower( $dt_main_tabs['label'] ), 'metric' ) !== false ) : ?>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                        <?php else : ?>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                        <?php endif; ?>
+                                    </svg>
+                                </div>
+                                <span class="mobile-nav-text"><?php echo esc_html( $dt_main_tabs['label'] ); ?></span>
+                            </div>
+                        <?php else : ?>
+                            <?php echo esc_html( $dt_main_tabs['label'] ) ?>&nbsp;
+                        <?php endif; ?>
+                    </a>
                     <?php
                     if ( isset( $dt_main_tabs['submenu'] ) && ! empty( $dt_main_tabs['submenu'] ) ) : ?>
-                        <ul class="is-active menu vertical nested">
+                        <ul class="is-active menu vertical nested <?php echo dt_is_mobile_request() ? 'mobile-submenu' : ''; ?>">
                             <?php foreach ( $dt_main_tabs['submenu'] as $dt_nav_submenu ) :
                                 if ( ! $dt_nav_submenu['hidden'] ?? false ) : ?>
-                                    <li><a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>"><?php echo esc_html( $dt_nav_submenu['label'] ) ?></a></li>
+                                    <li><a href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>" class="<?php echo dt_is_mobile_request() ? 'mobile-submenu-link' : ''; ?>"><?php echo esc_html( $dt_nav_submenu['label'] ) ?></a></li>
                                 <?php endif;
                             endforeach; ?>
                         </ul>

@@ -1,0 +1,269 @@
+/* 
+ * Mobile Header Styles
+ * Enhanced mobile experience with Tailwind CSS utilities
+ */
+
+/* Hide mobile header on desktop */
+@media (min-width: 769px) {
+    .dt-mobile-header {
+        display: none !important;
+    }
+}
+
+/* Mobile header base styles */
+.dt-mobile-header {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Search input enhancements */
+.dt-mobile-header #mobile-global-search:focus {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Search results */
+#mobile-search-results {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.search-result-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f3f4f6;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-result-item:hover,
+.search-result-item.active {
+    background-color: #f9fafb;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.mobile-search-result-title {
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 4px;
+}
+
+.mobile-search-result-meta {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.mobile-search-result-type {
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: #e5e7eb;
+    color: #374151;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    margin-right: 8px;
+}
+
+/* No results state */
+.mobile-search-no-results {
+    padding: 24px;
+    text-align: center;
+    color: #6b7280;
+}
+
+/* Quick action buttons */
+.dt-mobile-header button:active,
+.dt-mobile-header a:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
+/* Hide desktop elements in mobile view */
+.dt-mobile-view .hide-for-small-only {
+    display: none !important;
+}
+
+.dt-mobile-view .show-for-small-only {
+    display: block !important;
+}
+
+/* Enhanced off-canvas menu */
+.dt-mobile-view .off-canvas.mobile-enhanced {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.dt-mobile-view .off-canvas.mobile-enhanced .menu > li > a {
+    color: rgba(255, 255, 255, 0.9);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+}
+
+.dt-mobile-view .off-canvas.mobile-enhanced .menu > li > a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateX(5px);
+}
+
+/* Mobile navigation enhancements */
+.mobile-offcanvas-header {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.mobile-nav-section-header {
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-section-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.mobile-nav-item .mobile-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    color: rgba(255, 255, 255, 0.9);
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-item .mobile-nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateX(8px);
+}
+
+.mobile-nav-item-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.mobile-nav-icon {
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.mobile-nav-text {
+    flex: 1;
+    font-weight: 500;
+}
+
+.mobile-nav-arrow {
+    opacity: 0.6;
+    transition: transform 0.2s ease;
+}
+
+.mobile-nav-item.is-accordion-submenu-parent .mobile-nav-arrow {
+    transform: rotate(90deg);
+}
+
+.mobile-submenu .mobile-submenu-link {
+    padding: 12px 20px 12px 56px;
+    color: rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+}
+
+.mobile-submenu .mobile-submenu-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    transform: translateX(4px);
+}
+
+/* Add new dropdown animation */
+#mobile-add-new-dropdown {
+    transform: translateY(-10px);
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+#mobile-add-new-dropdown:not(.hidden) {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Accessibility improvements */
+.dt-mobile-header *:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.dt-mobile-header button:focus,
+.dt-mobile-header a:focus {
+    outline-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Safe area adjustments for notched devices */
+@supports (padding-top: env(safe-area-inset-top)) {
+    .dt-mobile-header {
+        padding-top: env(safe-area-inset-top);
+    }
+}
+
+/* Search loading animation */
+.search-loading-pulse {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Post type navigation pills */
+.dt-mobile-header .post-type-nav {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.dt-mobile-header .post-type-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.dt-mobile-header .post-type-pill {
+    white-space: nowrap;
+    min-width: fit-content;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Touch feedback */
+.dt-mobile-header button:active,
+.dt-mobile-header a:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .dt-mobile-header {
+        border-bottom: 2px solid currentColor;
+    }
+    
+    .dt-mobile-header button,
+    .dt-mobile-header a {
+        border: 1px solid currentColor;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .dt-mobile-header * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+} 
