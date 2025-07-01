@@ -1,0 +1,143 @@
+/**
+ * Mobile Base Styles
+ * 
+ * This file provides mobile-first base styles that work alongside 
+ * the existing Foundation framework. Tailwind CSS is processed by PostCSS.
+ */
+
+/**
+ * Mobile-First Media Query Wrapper
+ * Only apply mobile styles on screens smaller than 640px
+ */
+@media (max-width: 640px) {
+  
+  /**
+   * Base Mobile Overrides
+   * Override Foundation styles for mobile devices
+   */
+  
+  // Hide desktop-only elements
+  .hide-for-mobile {
+    @apply tw-hidden;
+    display: none !important;
+  }
+  
+  // Show mobile-only elements
+  .show-for-mobile {
+    @apply tw-block;
+    display: block !important;
+  }
+  
+  // Mobile body adjustments
+  body {
+    @apply tw-bg-gray-50;
+    // Ensure mobile viewport is properly handled
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  
+  // Archive template mobile overrides
+  .archive-template {
+    @apply tw-bg-gray-50;
+    
+    // Hide desktop sidebar on mobile
+    #list-filters {
+      @apply tw-hidden;
+    }
+    
+    // Full width main content on mobile
+    #main {
+      @apply tw-w-full tw-max-w-none tw-p-0;
+    }
+    
+    // Mobile content container
+    #inner-content {
+      @apply tw-p-0 tw-m-0;
+    }
+  }
+  
+  // Foundation button overrides for mobile
+  .button {
+    @apply tw-min-h-11; // 44px minimum touch target
+    @apply tw-px-4 tw-py-2;
+    @apply tw-text-base;
+    @apply tw-transition-all tw-duration-200;
+    
+    &:active {
+      @apply tw-scale-95;
+    }
+  }
+  
+  // Foundation form overrides for mobile
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="password"],
+  textarea,
+  select {
+    @apply tw-min-h-11; // 44px minimum touch target
+    @apply tw-text-base; // Prevent zoom on iOS
+    @apply tw-rounded-lg;
+    @apply tw-border-gray-300;
+    
+    &:focus {
+      @apply tw-ring-2 tw-ring-dt-primary tw-border-transparent;
+    }
+  }
+  
+  // Foundation table overrides - hide tables on mobile
+  .table-container {
+    @apply tw-hidden;
+  }
+  
+  // Mobile spacing utilities
+  .mobile-container {
+    @apply tw-px-4 tw-py-2;
+  }
+  
+  .mobile-section {
+    @apply tw-mb-4 tw-bg-white tw-rounded-lg tw-shadow-card;
+  }
+  
+  // Mobile touch targets
+  .touch-target {
+    @apply tw-min-h-11 tw-min-w-11;
+    @apply tw-flex tw-items-center tw-justify-center;
+    @apply tw-transition-colors tw-duration-150;
+    
+    &:active {
+      @apply tw-bg-gray-100;
+    }
+  }
+}
+
+/**
+ * Mobile-specific animations
+ */
+@keyframes mobile-slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes mobile-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mobile-slide-up {
+  animation: mobile-slide-up 0.3s ease-out;
+}
+
+.mobile-fade-in {
+  animation: mobile-fade-in 0.2s ease-out;
+} 

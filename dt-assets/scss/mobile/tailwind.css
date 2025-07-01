@@ -1,0 +1,100 @@
+/**
+ * Tailwind CSS Directives
+ * 
+ * This file contains Tailwind CSS directives that are processed by PostCSS.
+ * It's imported into the mobile styles build process.
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Custom mobile utility classes
+ */
+@layer utilities {
+  .safe-area-inset-top {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+  
+  .safe-area-inset-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  
+  .safe-area-inset-left {
+    padding-left: max(1rem, env(safe-area-inset-left));
+  }
+  
+  .safe-area-inset-right {
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  
+  .safe-area-inset {
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  
+  .tap-highlight-none {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .scroll-smooth {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  
+  .hardware-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+}
+
+/**
+ * Custom mobile component classes
+ */
+@layer components {
+  .tw-touch-target {
+    @apply tw-min-h-11 tw-min-w-11 tw-flex tw-items-center tw-justify-center tw-transition-colors tw-duration-150;
+  }
+  
+  .tw-touch-target:active {
+    @apply tw-bg-gray-100;
+  }
+  
+  .mobile-touch-target {
+    @apply tw-min-h-11 tw-min-w-11 tw-flex tw-items-center tw-justify-center;
+    @apply tw-transition-colors tw-duration-150;
+    
+    &:active {
+      @apply tw-bg-gray-100;
+    }
+  }
+  
+  .mobile-button {
+    @apply tw-min-h-11 tw-px-4 tw-py-2 tw-text-base tw-transition-all tw-duration-200;
+    
+    &:active {
+      @apply tw-scale-95;
+    }
+  }
+  
+  .mobile-input {
+    @apply tw-min-h-11 tw-text-base tw-rounded-lg tw-border-gray-300;
+    
+    &:focus {
+      @apply tw-ring-2 tw-ring-dt-primary tw-border-transparent;
+    }
+  }
+  
+  .mobile-card {
+    @apply tw-bg-white tw-rounded-lg tw-shadow-card tw-border tw-border-gray-200;
+    @apply tw-transition-all tw-duration-200;
+    
+    &:active {
+      @apply tw-bg-gray-50 tw-scale-95;
+    }
+  }
+} 

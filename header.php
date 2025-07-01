@@ -36,6 +36,7 @@
     <!-- Uncomment this line if using the Off-Canvas Menu -->
 
     <body <?php body_class(); ?>>
+        <?php wp_body_open(); ?>
 
         <div class="off-canvas-wrapper">
 

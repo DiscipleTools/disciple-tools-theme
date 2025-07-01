@@ -1,0 +1,760 @@
+/**
+ * Mobile Phase 3 Styles
+ * Advanced mobile features styling including:
+ * - PWA components (install prompts, update banners)
+ * - Bulk actions interface
+ * - Advanced gesture feedback
+ * - Context menus and modals
+ * - Progress indicators
+ * - Offline states
+ */
+
+/**
+ * PWA Components
+ */
+
+/* PWA Install Button */
+.pwa-install-button {
+  @apply tw-fixed tw-bottom-4 tw-right-4 tw-z-30;
+  @apply tw-bg-blue-600 tw-text-white tw-px-4 tw-py-2 tw-rounded-full;
+  @apply tw-shadow-lg tw-flex tw-items-center tw-gap-2;
+  @apply tw-transition-all tw-duration-200;
+  @apply tw-text-sm tw-font-medium;
+  
+  &:hover {
+    @apply tw-bg-blue-700 tw-shadow-xl;
+  }
+  
+  &:active {
+    @apply tw-scale-95;
+  }
+}
+
+/* PWA Update Banner */
+.pwa-update-banner {
+  @apply tw-fixed tw-top-0 tw-left-0 tw-right-0 tw-z-50;
+  @apply tw-bg-blue-600 tw-text-white tw-px-4 tw-py-3;
+  @apply tw-shadow-lg;
+  animation: slideDown 0.3s ease-out;
+  
+  .pwa-update-content {
+    @apply tw-flex tw-items-center tw-justify-between tw-gap-3;
+    
+    .pwa-update-message {
+      @apply tw-flex-1 tw-text-sm tw-font-medium;
+    }
+    
+    .pwa-update-button {
+      @apply tw-bg-white tw-text-blue-600 tw-px-3 tw-py-1 tw-rounded;
+      @apply tw-text-sm tw-font-medium tw-transition-colors;
+      
+      &:hover {
+        @apply tw-bg-gray-100;
+      }
+    }
+    
+    .pwa-update-dismiss {
+      @apply tw-text-white tw-underline tw-text-sm;
+    }
+  }
+}
+
+/* PWA Install Modal */
+.pwa-install-modal {
+  @apply tw-fixed tw-inset-0 tw-z-50 tw-bg-black tw-bg-opacity-50;
+  @apply tw-flex tw-items-center tw-justify-center tw-p-4;
+  
+  .pwa-install-content {
+    @apply tw-bg-white tw-rounded-lg tw-shadow-xl tw-w-full tw-max-w-sm;
+    @apply tw-overflow-hidden;
+    animation: modalAppear 0.3s ease-out;
+    
+    .pwa-install-header {
+      @apply tw-text-center tw-p-6 tw-border-b tw-border-gray-200;
+      
+      .pwa-install-icon {
+        @apply tw-w-16 tw-h-16 tw-mx-auto tw-mb-4 tw-rounded-lg;
+      }
+      
+      h3 {
+        @apply tw-text-lg tw-font-semibold tw-text-gray-900;
+      }
+    }
+    
+    .pwa-install-body {
+      @apply tw-p-6;
+      
+      p {
+        @apply tw-text-gray-600 tw-mb-4;
+      }
+      
+      .pwa-install-features {
+        @apply tw-space-y-2;
+        
+        li {
+          @apply tw-text-sm tw-text-gray-700;
+        }
+      }
+    }
+    
+    .pwa-install-actions {
+      @apply tw-flex tw-gap-3 tw-p-6 tw-pt-0;
+      
+      .pwa-install-yes {
+        @apply tw-flex-1 tw-bg-blue-600 tw-text-white tw-py-2 tw-rounded-lg;
+        @apply tw-font-medium tw-transition-colors;
+        
+        &:hover {
+          @apply tw-bg-blue-700;
+        }
+      }
+      
+      .pwa-install-no {
+        @apply tw-flex-1 tw-bg-gray-200 tw-text-gray-700 tw-py-2 tw-rounded-lg;
+        @apply tw-font-medium tw-transition-colors;
+        
+        &:hover {
+          @apply tw-bg-gray-300;
+        }
+      }
+    }
+  }
+}
+
+/* Offline Indicator */
+.pwa-offline-indicator {
+  @apply tw-fixed tw-top-0 tw-left-0 tw-right-0 tw-z-40;
+  @apply tw-bg-yellow-500 tw-text-white tw-px-4 tw-py-2;
+  @apply tw-text-center tw-text-sm tw-font-medium;
+  animation: slideDown 0.3s ease-out;
+  
+  .pwa-offline-content {
+    @apply tw-flex tw-items-center tw-justify-center tw-gap-2;
+  }
+}
+
+/* PWA Status Classes */
+.pwa-enabled {
+  .pwa-only {
+    @apply tw-block;
+  }
+  
+  .no-pwa {
+    @apply tw-hidden;
+  }
+}
+
+.pwa-installed {
+  .pwa-install-button {
+    @apply tw-hidden;
+  }
+}
+
+.pwa-offline {
+  .online-only {
+    @apply tw-opacity-50 tw-pointer-events-none;
+  }
+  
+  .offline-hidden {
+    @apply tw-hidden;
+  }
+}
+
+/**
+ * Bulk Actions Interface
+ */
+
+/* Bulk Actions Panel */
+.mobile-bulk-actions {
+  @apply tw-fixed tw-bottom-0 tw-left-0 tw-right-0 tw-z-40;
+  @apply tw-bg-white tw-border-t tw-border-gray-200 tw-shadow-lg;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+  
+  &.mobile-slide-up {
+    transform: translateY(0);
+  }
+}
+
+.mobile-bulk-header {
+  @apply tw-flex tw-items-center tw-justify-between tw-px-4 tw-py-3;
+  @apply tw-border-b tw-border-gray-100;
+  
+  .mobile-bulk-info {
+    @apply tw-flex tw-items-center tw-gap-3;
+    
+    .mobile-bulk-count {
+      @apply tw-font-semibold tw-text-gray-900;
+    }
+    
+    .mobile-bulk-clear {
+      @apply tw-text-blue-600 tw-text-sm tw-font-medium;
+      @apply tw-flex tw-items-center tw-gap-1;
+    }
+  }
+  
+  .mobile-bulk-toggle {
+    @apply tw-p-2 tw-text-gray-500;
+    @apply tw-transition-transform tw-duration-200;
+  }
+}
+
+/* Quick Actions Bar */
+.mobile-bulk-quick-actions {
+  @apply tw-flex tw-gap-2 tw-p-4;
+  
+  .mobile-bulk-action {
+    @apply tw-flex-1 tw-flex tw-flex-col tw-items-center tw-gap-1;
+    @apply tw-py-3 tw-px-2 tw-rounded-lg tw-border tw-border-gray-200;
+    @apply tw-bg-white tw-transition-all tw-duration-150;
+    
+    &:hover {
+      @apply tw-bg-gray-50 tw-border-gray-300;
+    }
+    
+    &:active {
+      @apply tw-bg-gray-100 tw-scale-95;
+    }
+    
+    &:disabled {
+      @apply tw-opacity-50 tw-pointer-events-none;
+    }
+    
+    i {
+      @apply tw-text-lg tw-text-gray-600;
+    }
+    
+    span {
+      @apply tw-text-xs tw-font-medium tw-text-gray-700;
+    }
+  }
+}
+
+/* Expanded Actions Panel */
+.mobile-bulk-expanded {
+  @apply tw-max-h-96 tw-overflow-y-auto tw-bg-gray-50;
+  
+  .mobile-bulk-section {
+    @apply tw-border-b tw-border-gray-200 tw-last:border-b-0;
+    
+    &.mobile-bulk-danger {
+      @apply tw-bg-red-50;
+    }
+  }
+  
+  .mobile-bulk-section-title {
+    @apply tw-px-4 tw-py-3 tw-text-sm tw-font-semibold tw-text-gray-700;
+    @apply tw-bg-gray-100 tw-border-b tw-border-gray-200;
+  }
+  
+  .mobile-bulk-action-grid {
+    @apply tw-grid tw-grid-cols-2 tw-gap-2 tw-p-4;
+  }
+  
+  .mobile-bulk-action-item {
+    @apply tw-flex tw-flex-col tw-items-center tw-gap-2;
+    @apply tw-py-4 tw-px-3 tw-rounded-lg tw-bg-white tw-border tw-border-gray-200;
+    @apply tw-transition-all tw-duration-150;
+    
+    &:hover {
+      @apply tw-bg-gray-50 tw-border-gray-300;
+    }
+    
+    &:active {
+      @apply tw-bg-gray-100 tw-scale-95;
+    }
+    
+    &.danger {
+      @apply tw-text-red-600 tw-border-red-200;
+      
+      &:hover {
+        @apply tw-bg-red-50 tw-border-red-300;
+      }
+    }
+    
+    i {
+      @apply tw-text-xl;
+    }
+    
+    span {
+      @apply tw-text-xs tw-font-medium tw-text-center;
+    }
+  }
+}
+
+/* History Controls */
+.mobile-bulk-history {
+  @apply tw-flex tw-justify-center tw-gap-4 tw-p-3 tw-border-t tw-border-gray-200;
+  
+  .mobile-bulk-undo,
+  .mobile-bulk-redo {
+    @apply tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2;
+    @apply tw-text-sm tw-font-medium tw-text-gray-600;
+    @apply tw-border tw-border-gray-300 tw-rounded-lg;
+    @apply tw-transition-all tw-duration-150;
+    
+    &:disabled {
+      @apply tw-opacity-50 tw-pointer-events-none;
+    }
+    
+    &:hover:not(:disabled) {
+      @apply tw-bg-gray-50 tw-border-gray-400;
+    }
+  }
+}
+
+/**
+ * Bulk Action Modals
+ */
+
+.mobile-bulk-modal {
+  @apply tw-fixed tw-inset-0 tw-z-50 tw-bg-black tw-bg-opacity-50;
+  @apply tw-flex tw-items-end;
+  
+  .mobile-bulk-modal-content {
+    @apply tw-w-full tw-bg-white tw-rounded-t-lg tw-max-h-96 tw-overflow-hidden;
+    animation: slideUpModal 0.3s ease-out;
+    
+    .mobile-bulk-modal-header {
+      @apply tw-flex tw-items-center tw-justify-between tw-p-4;
+      @apply tw-border-b tw-border-gray-200;
+      
+      h3 {
+        @apply tw-text-lg tw-font-semibold tw-text-gray-900;
+      }
+      
+      .mobile-bulk-modal-close {
+        @apply tw-p-2 tw-text-gray-500;
+      }
+    }
+    
+    .mobile-bulk-modal-body {
+      @apply tw-p-4 tw-max-h-64 tw-overflow-y-auto;
+      
+      .mobile-bulk-selected-info {
+        @apply tw-text-sm tw-text-gray-600 tw-mb-4 tw-font-medium;
+      }
+      
+      .mobile-bulk-form-group {
+        @apply tw-mb-4;
+        
+        label {
+          @apply tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-2;
+        }
+        
+        .mobile-bulk-select,
+        input[type="text"],
+        textarea {
+          @apply tw-w-full tw-px-3 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg;
+          @apply tw-focus:ring-2 tw-focus:ring-blue-500 tw-focus:border-transparent;
+        }
+        
+        textarea {
+          @apply tw-h-20 tw-resize-none;
+        }
+      }
+    }
+    
+    .mobile-bulk-modal-actions {
+      @apply tw-flex tw-gap-3 tw-p-4 tw-border-t tw-border-gray-200;
+      
+      .mobile-bulk-cancel {
+        @apply tw-flex-1 tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg;
+        @apply tw-font-medium tw-text-gray-700 tw-transition-colors;
+        
+        &:hover {
+          @apply tw-bg-gray-50;
+        }
+      }
+      
+      .mobile-bulk-confirm {
+        @apply tw-flex-1 tw-py-2 tw-bg-blue-600 tw-text-white tw-rounded-lg;
+        @apply tw-font-medium tw-transition-colors;
+        
+        &:hover {
+          @apply tw-bg-blue-700;
+        }
+      }
+    }
+  }
+}
+
+/* Progress Modal */
+.mobile-bulk-progress-modal {
+  @apply tw-fixed tw-inset-0 tw-z-50 tw-bg-black tw-bg-opacity-75;
+  @apply tw-flex tw-items-center tw-justify-center tw-p-4;
+  
+  .mobile-bulk-progress-content {
+    @apply tw-bg-white tw-rounded-lg tw-w-full tw-max-w-sm tw-overflow-hidden;
+    
+    .mobile-bulk-progress-header {
+      @apply tw-p-4 tw-text-center tw-border-b tw-border-gray-200;
+      
+      h3 {
+        @apply tw-text-lg tw-font-semibold tw-text-gray-900;
+      }
+    }
+    
+    .mobile-bulk-progress-body {
+      @apply tw-p-4;
+      
+      .mobile-bulk-progress-bar {
+        @apply tw-w-full tw-h-2 tw-bg-gray-200 tw-rounded-full tw-overflow-hidden tw-mb-3;
+        
+        .mobile-bulk-progress-fill {
+          @apply tw-h-full tw-bg-blue-600 tw-transition-all tw-duration-300;
+          width: 0%;
+        }
+      }
+      
+      .mobile-bulk-progress-text {
+        @apply tw-text-center tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-2;
+      }
+      
+      .mobile-bulk-progress-details {
+        @apply tw-text-center tw-text-xs tw-text-gray-500;
+      }
+    }
+    
+    .mobile-bulk-progress-actions {
+      @apply tw-p-4 tw-border-t tw-border-gray-200;
+      
+      .mobile-bulk-cancel-operation {
+        @apply tw-w-full tw-py-2 tw-border tw-border-gray-300 tw-rounded-lg;
+        @apply tw-font-medium tw-text-gray-700 tw-transition-colors;
+        
+        &:hover {
+          @apply tw-bg-gray-50;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Gesture Feedback
+ */
+
+/* Selection Mode */
+.mobile-selection-mode {
+  .mobile-contact-card {
+    @apply tw-pl-12; // Make room for checkbox
+    
+    .mobile-contact-checkbox {
+      @apply tw-absolute tw-left-3 tw-top-1/2 tw-transform tw--translate-y-1/2;
+      @apply tw-opacity-100 tw-transition-all tw-duration-200;
+    }
+    
+    &.selected {
+      @apply tw-bg-blue-50 tw-border-blue-200;
+    }
+  }
+}
+
+/* Swipe Actions */
+.mobile-contact-card {
+  position: relative;
+  overflow: hidden;
+  
+  &.swiping {
+    transition: transform 0.2s ease-out;
+  }
+  
+  .swipe-actions {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+    
+    &.left {
+      right: 0;
+      background: linear-gradient(90deg, #ef4444, #dc2626);
+      padding-left: 20px;
+    }
+    
+    &.right {
+      left: 0;
+      background: linear-gradient(90deg, #10b981, #059669);
+      padding-right: 20px;
+    }
+    
+    &.visible {
+      opacity: 1;
+    }
+    
+    .swipe-action {
+      color: white;
+      padding: 0 12px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: transform 0.15s ease-out;
+      
+      &:active {
+        transform: scale(1.2);
+      }
+    }
+  }
+}
+
+/* Context Menu */
+.mobile-context-menu {
+  @apply tw-fixed tw-bg-white tw-rounded-lg tw-shadow-xl tw-z-50;
+  @apply tw-border tw-border-gray-200 tw-overflow-hidden;
+  @apply tw-min-w-48;
+  animation: contextMenuAppear 0.2s ease-out;
+  
+  .context-menu-item {
+    @apply tw-flex tw-items-center tw-gap-3 tw-px-4 tw-py-3;
+    @apply tw-text-sm tw-text-gray-700 tw-cursor-pointer;
+    @apply tw-transition-colors tw-duration-150;
+    
+    &:hover {
+      @apply tw-bg-gray-50;
+    }
+    
+    &:active {
+      @apply tw-bg-gray-100;
+    }
+    
+    &.danger {
+      @apply tw-text-red-600;
+      
+      &:hover {
+        @apply tw-bg-red-50;
+      }
+    }
+    
+    i {
+      @apply tw-text-base tw-w-4 tw-flex-shrink-0;
+    }
+  }
+}
+
+/* Pull to Refresh */
+.pull-to-refresh-indicator {
+  @apply tw-fixed tw-left-1/2 tw-transform tw--translate-x-1/2 tw-z-50;
+  @apply tw-transition-all tw-duration-300;
+  top: -60px;
+  
+  .pull-content {
+    @apply tw-flex tw-flex-col tw-items-center tw-px-4 tw-py-2;
+    @apply tw-bg-white tw-rounded-full tw-shadow-lg;
+    @apply tw-border tw-border-gray-200;
+    
+    .pull-arrow,
+    .pull-spinner {
+      @apply tw-text-lg tw-text-gray-600 tw-transition-transform tw-duration-300;
+    }
+    
+    .pull-spinner {
+      animation: spin 1s linear infinite;
+    }
+    
+    .pull-text {
+      @apply tw-text-xs tw-text-gray-500 tw-mt-1;
+    }
+  }
+}
+
+/**
+ * Toast Notifications
+ */
+
+.mobile-bulk-toast {
+  @apply tw-fixed tw-bottom-20 tw-left-4 tw-right-4 tw-z-50;
+  @apply tw-bg-white tw-border tw-border-gray-200 tw-rounded-lg tw-shadow-lg;
+  @apply tw-flex tw-items-center tw-p-4 tw-gap-3;
+  animation: toastSlideUp 0.3s ease-out;
+  
+  &.success {
+    @apply tw-border-green-200 tw-bg-green-50;
+    
+    .mobile-bulk-toast-icon {
+      @apply tw-text-green-600;
+    }
+  }
+  
+  &.error {
+    @apply tw-border-red-200 tw-bg-red-50;
+    
+    .mobile-bulk-toast-icon {
+      @apply tw-text-red-600;
+    }
+  }
+  
+  &.warning {
+    @apply tw-border-yellow-200 tw-bg-yellow-50;
+    
+    .mobile-bulk-toast-icon {
+      @apply tw-text-yellow-600;
+    }
+  }
+  
+  &.info {
+    @apply tw-border-blue-200 tw-bg-blue-50;
+    
+    .mobile-bulk-toast-icon {
+      @apply tw-text-blue-600;
+    }
+  }
+  
+  .mobile-bulk-toast-icon {
+    @apply tw-flex-shrink-0;
+    
+    i {
+      @apply tw-text-lg;
+    }
+  }
+  
+  .mobile-bulk-toast-message {
+    @apply tw-flex-1 tw-text-sm tw-font-medium tw-text-gray-700;
+  }
+  
+  .mobile-bulk-toast-close {
+    @apply tw-flex-shrink-0 tw-p-1 tw-text-gray-400;
+    
+    i {
+      @apply tw-text-sm;
+    }
+  }
+}
+
+/**
+ * Animations
+ */
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpModal {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contextMenuAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes toastSlideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/**
+ * Dark Mode Support
+ */
+
+@media (prefers-color-scheme: dark) {
+  .mobile-bulk-actions {
+    @apply tw-bg-gray-800 tw-border-gray-700;
+    
+    .mobile-bulk-count {
+      @apply tw-text-gray-100;
+    }
+    
+    .mobile-bulk-section-title {
+      @apply tw-bg-gray-700 tw-text-gray-200 tw-border-gray-600;
+    }
+    
+    .mobile-bulk-action-item {
+      @apply tw-bg-gray-700 tw-border-gray-600 tw-text-gray-200;
+      
+      &:hover {
+        @apply tw-bg-gray-600;
+      }
+    }
+  }
+  
+  .mobile-bulk-modal .mobile-bulk-modal-content {
+    @apply tw-bg-gray-800;
+    
+    h3 {
+      @apply tw-text-gray-100;
+    }
+    
+    .mobile-bulk-modal-body {
+      @apply tw-text-gray-200;
+      
+      label {
+        @apply tw-text-gray-300;
+      }
+      
+      input,
+      select,
+      textarea {
+        @apply tw-bg-gray-700 tw-border-gray-600 tw-text-gray-100;
+      }
+    }
+  }
+  
+  .mobile-context-menu {
+    @apply tw-bg-gray-800 tw-border-gray-700;
+    
+    .context-menu-item {
+      @apply tw-text-gray-200;
+      
+      &:hover {
+        @apply tw-bg-gray-700;
+      }
+    }
+  }
+  
+  .mobile-bulk-toast {
+    @apply tw-bg-gray-800 tw-border-gray-700;
+    
+    .mobile-bulk-toast-message {
+      @apply tw-text-gray-200;
+    }
+  }
+} 

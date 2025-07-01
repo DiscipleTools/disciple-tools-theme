@@ -1,0 +1,503 @@
+/* Mobile-specific styles for Disciple Tools */
+@tailwind components;
+@tailwind utilities;
+
+/* Mobile Layout Styles */
+.mobile-layout {
+  @apply flex flex-col min-h-screen;
+}
+
+.mobile-content {
+  @apply flex-1 p-0 overflow-hidden;
+}
+
+.mobile-content-box {
+  @apply h-full overflow-y-auto;
+}
+
+.mobile-main {
+  @apply flex flex-col h-full;
+}
+
+/* Mobile Contact Card Styles */
+.mobile-contact-card {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 mb-3 mx-4 transition-all duration-200;
+  
+  &:hover {
+    @apply shadow-md;
+  }
+  
+  &:active {
+    @apply scale-95;
+  }
+  
+  &.selected {
+    @apply border-blue-500 bg-blue-50;
+  }
+}
+
+.mobile-contact-card__content {
+  @apply p-4 cursor-pointer;
+}
+
+.mobile-contact-card__header {
+  @apply flex items-center justify-between mb-3;
+}
+
+.mobile-contact-card__info {
+  @apply flex items-center space-x-3;
+}
+
+.mobile-contact-card__avatar {
+  @apply w-12 h-12 rounded-full flex-shrink-0;
+}
+
+.mobile-contact-card__avatar-image {
+  @apply w-full h-full rounded-full object-cover;
+}
+
+.mobile-contact-card__avatar-placeholder {
+  @apply w-full h-full rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold text-lg;
+}
+
+.mobile-contact-card__details {
+  @apply flex-1 min-w-0;
+}
+
+.mobile-contact-card__name {
+  @apply text-lg font-semibold text-gray-900 truncate;
+}
+
+.mobile-contact-card__meta {
+  @apply text-sm text-gray-600 space-y-1;
+}
+
+.mobile-contact-card__status {
+  @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium;
+  
+  &.active {
+    @apply bg-green-100 text-green-800;
+  }
+  
+  &.new {
+    @apply bg-blue-100 text-blue-800;
+  }
+  
+  &.assigned {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+  
+  &.closed {
+    @apply bg-gray-100 text-gray-800;
+  }
+}
+
+.mobile-contact-card__actions {
+  @apply flex items-center space-x-2;
+}
+
+.mobile-contact-card__checkbox {
+  @apply w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500;
+}
+
+.mobile-contact-card__menu-button {
+  @apply w-8 h-8 flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+/* Mobile Contact List Styles */
+.mobile-contact-list {
+  @apply flex flex-col h-full;
+  
+  &.bulk-mode {
+    .mobile-contact-card__checkbox {
+      @apply block;
+    }
+  }
+}
+
+.mobile-contact-list__container {
+  @apply flex-1 overflow-y-auto pb-20;
+}
+
+.mobile-contact-list__loading {
+  @apply flex items-center justify-center p-8 text-gray-500;
+}
+
+.mobile-contact-list__empty {
+  @apply flex flex-col items-center justify-center p-8 text-gray-500;
+}
+
+.mobile-contact-list__empty-icon {
+  @apply w-16 h-16 text-gray-300 mb-4;
+}
+
+.mobile-contact-list__empty-text {
+  @apply text-lg font-medium text-gray-900 mb-2;
+}
+
+.mobile-contact-list__empty-subtext {
+  @apply text-sm text-gray-600 text-center mb-4;
+}
+
+.mobile-contact-list__load-more {
+  @apply w-full bg-white border-t border-gray-200 p-4;
+}
+
+.mobile-contact-list__load-more-button {
+  @apply w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+/* Mobile Bulk Selection Styles */
+.mobile-bulk-info {
+  @apply bg-blue-50 border-t border-blue-200 p-4 flex items-center justify-between;
+}
+
+.mobile-bulk-info__text {
+  @apply text-sm font-medium text-blue-900;
+}
+
+.mobile-bulk-info__actions {
+  @apply flex space-x-2;
+}
+
+.mobile-bulk-info__button {
+  @apply px-3 py-1 text-sm font-medium rounded-md border;
+  
+  &.primary {
+    @apply bg-blue-600 text-white border-blue-600 hover:bg-blue-700;
+  }
+  
+  &.secondary {
+    @apply bg-white text-blue-600 border-blue-600 hover:bg-blue-50;
+  }
+}
+
+/* Mobile Filter Panel Styles */
+.mobile-filter-panel {
+  @apply fixed inset-x-0 bottom-0 bg-white border-t border-gray-200 transform transition-transform duration-300 ease-in-out z-50;
+  
+  &:not(.active) {
+    @apply translate-y-full;
+  }
+  
+  &.active {
+    @apply translate-y-0;
+  }
+}
+
+.mobile-filter-panel__overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 z-40;
+  
+  &:not(.active) {
+    @apply opacity-0 pointer-events-none;
+  }
+  
+  &.active {
+    @apply opacity-100;
+  }
+}
+
+.mobile-filter-panel__handle {
+  @apply flex justify-center p-2 cursor-pointer;
+}
+
+.mobile-filter-panel__handle-bar {
+  @apply w-10 h-1 bg-gray-300 rounded-full;
+}
+
+.mobile-filter-panel__content {
+  @apply max-h-96 overflow-y-auto;
+}
+
+.mobile-filter-panel__header {
+  @apply flex items-center justify-between p-4 border-b border-gray-200;
+}
+
+.mobile-filter-panel__title {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+.mobile-filter-panel__close {
+  @apply text-gray-400 hover:text-gray-600 focus:outline-none;
+}
+
+.mobile-filter-panel__body {
+  @apply p-4 space-y-4;
+}
+
+/* Mobile Header Styles */
+.mobile-header {
+  @apply bg-white border-b border-gray-200 sticky top-0 z-30;
+}
+
+.mobile-header__content {
+  @apply flex items-center justify-between p-4;
+}
+
+.mobile-header__title {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+.mobile-header__search {
+  @apply flex-1 mx-4;
+}
+
+.mobile-header__search-input {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.mobile-header__actions {
+  @apply flex items-center space-x-2;
+}
+
+/* Mobile Bottom Navigation Styles */
+.mobile-bottom-nav {
+  @apply fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40;
+}
+
+.mobile-bottom-nav__content {
+  @apply flex items-center justify-around p-2;
+}
+
+.mobile-bottom-nav__item {
+  @apply flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-gray-500 rounded-lg transition-colors duration-200;
+  
+  &.active {
+    @apply text-blue-600 bg-blue-50;
+  }
+  
+  &:hover {
+    @apply text-gray-700;
+  }
+}
+
+.mobile-bottom-nav__icon {
+  @apply w-6 h-6 mb-1;
+}
+
+.mobile-bottom-nav__label {
+  @apply text-xs;
+}
+
+/* Mobile FAB Styles */
+.mobile-fab {
+  @apply fixed bottom-20 right-4 z-30;
+}
+
+.mobile-fab__button {
+  @apply w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200;
+  
+  &:active {
+    @apply scale-95;
+  }
+}
+
+.mobile-fab__icon {
+  @apply w-6 h-6;
+}
+
+/* Mobile Utilities */
+.mobile-only {
+  @apply block;
+  
+  @screen md {
+    @apply hidden;
+  }
+}
+
+.desktop-only {
+  @apply hidden;
+  
+  @screen md {
+    @apply block;
+  }
+}
+
+/* Mobile Touch Enhancements */
+.touch-callout-none {
+  -webkit-touch-callout: none;
+}
+
+.touch-select-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Mobile Animations */
+.mobile-slide-up {
+  animation: mobile-slide-up 0.3s ease-out;
+}
+
+.mobile-slide-down {
+  animation: mobile-slide-down 0.3s ease-out;
+}
+
+.mobile-fade-in {
+  animation: mobile-fade-in 0.2s ease-out;
+}
+
+.mobile-bounce {
+  animation: mobile-bounce 0.4s ease-out;
+}
+
+@keyframes mobile-slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes mobile-slide-down {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes mobile-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mobile-bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+/* Mobile Loading Styles */
+.mobile-loading-spinner {
+  @apply inline-block w-4 h-4 border-2 border-current border-t-transparent text-gray-400 rounded-full animate-spin;
+}
+
+/* Mobile Error Styles */
+.mobile-error-message {
+  @apply flex flex-col items-center justify-center p-8 text-center;
+  
+  .mobile-error-icon {
+    @apply w-16 h-16 text-red-400 mb-4;
+    
+    svg {
+      @apply w-full h-full;
+    }
+  }
+  
+  .mobile-error-text {
+    @apply text-lg font-medium text-gray-900 mb-4;
+  }
+  
+  .mobile-error-retry {
+    @apply bg-blue-600 text-white px-4 py-2 rounded-lg;
+    @apply text-sm font-medium;
+    @apply transition-colors duration-150;
+    
+    &:hover {
+      @apply bg-blue-700;
+    }
+  }
+}
+
+.mobile-loading-dots {
+  @apply flex space-x-1;
+}
+
+.mobile-loading-dots::before,
+.mobile-loading-dots::after {
+  @apply w-2 h-2 bg-current rounded-full;
+  content: '';
+  animation: mobile-loading-dots 1.4s infinite ease-in-out both;
+}
+
+.mobile-loading-dots::before {
+  animation-delay: -0.32s;
+}
+
+.mobile-loading-dots::after {
+  animation-delay: -0.16s;
+}
+
+@keyframes mobile-loading-dots {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* Mobile Responsive Helpers */
+@media (max-width: 640px) {
+  .mobile-p-4 {
+    padding: 1rem;
+  }
+  
+  .mobile-text-sm {
+    font-size: 0.875rem;
+  }
+  
+  .mobile-text-lg {
+    font-size: 1.125rem;
+  }
+  
+  .mobile-space-y-2 > * + * {
+    margin-top: 0.5rem;
+  }
+  
+  .mobile-space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+}
+
+/* Mobile Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .mobile-contact-card {
+    @apply bg-gray-800 border-gray-700;
+  }
+  
+  .mobile-contact-card__name {
+    @apply text-white;
+  }
+  
+  .mobile-contact-card__meta {
+    @apply text-gray-300;
+  }
+  
+  .mobile-header {
+    @apply bg-gray-800 border-gray-700;
+  }
+  
+  .mobile-header__title {
+    @apply text-white;
+  }
+  
+  .mobile-bottom-nav {
+    @apply bg-gray-800 border-gray-700;
+  }
+  
+  .mobile-filter-panel {
+    @apply bg-gray-800 border-gray-700;
+  }
+} 
