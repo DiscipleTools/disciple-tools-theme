@@ -1,0 +1,16 @@
+<svg width="16" height="14" viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>broken</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(1087 91)">
+<g id="broken">
+<g id="Group">
+<g id="Vector">
+<use xlink:href="#path0_fill" transform="translate(-1087 -91)" fill="#F44336"/>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<path id="path0_fill" d="M 0 14L 15.8667 14L 7.93333 0L 0 14ZM 8.86667 12.1333L 7 12.1333L 7 10.2667L 8.86667 10.2667L 8.86667 12.1333ZM 8.86667 9.33333L 7 9.33333L 7 5.6L 8.86667 5.6L 8.86667 9.33333Z"/>
+</defs>
+</svg>

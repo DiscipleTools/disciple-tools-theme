@@ -1,0 +1,16 @@
+{
+    "recommendations": [
+        "DEVSENSE.phptools-vscode",
+        "ikappas.phpcs",
+        "johnbillion.vscode-wordpress-hooks",
+        "formulahendry.auto-close-tag",
+        "formulahendry.auto-rename-tag",
+        "naumovs.color-highlight",
+        "EditorConfig.EditorConfig",
+        "mrorz.language-gettext",
+        "eamodio.gitlens",
+        "2gua.rainbow-brackets",
+        "shardulm94.trailing-spaces",
+        "dbaeumer.vscode-eslint",
+    ]
+}

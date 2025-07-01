@@ -1,0 +1,44 @@
+<svg width="42" height="40" viewBox="0 0 42 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Group</title>
+<desc>Created using Figma</desc>
+<g id="Canvas" transform="translate(-2323 -183)">
+<rect x="2323" y="183" width="42" height="40" fill="#E5E5E5"/>
+<clipPath id="clip-0" clip-rule="evenodd">
+<path d="M 1778 -310L 3218 -310L 3218 1106L 1778 1106L 1778 -310Z" fill="#FFFFFF"/>
+</clipPath>
+<g id="Group Details" clip-path="url(#clip-0)">
+<path d="M 1778 -310L 3218 -310L 3218 1106L 1778 1106L 1778 -310Z" fill="#E2E2E2"/>
+<g id="Progress">
+<g id="Rectangle 14" filter="url(#filter0_d)">
+<use xlink:href="#path0_fill" transform="translate(2278 118)" fill="#FFFFFF"/>
+</g>
+<g id="Rectangle 6">
+<use xlink:href="#path1_fill" transform="translate(2310 173)" fill="#3F729B"/>
+</g>
+<g id="fellowship">
+<g id="Group">
+<g id="Group">
+<g id="Vector">
+<use xlink:href="#path2_fill" transform="translate(2323 183)" fill="#FFFFFF"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d" filterUnits="userSpaceOnUse" x="2274" y="116" width="448" height="625" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255 0"/>
+<feOffset dx="0" dy="2"/>
+<feGaussianBlur stdDeviation="2"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<path id="path0_fill" d="M 0 10C 0 4.47715 4.47715 0 10 0L 430 0C 435.523 0 440 4.47715 440 10L 440 607C 440 612.523 435.523 617 430 617L 10 617C 4.47715 617 0 612.523 0 607L 0 10Z"/>
+<path id="path1_fill" d="M 0 5C 0 2.23858 2.23858 0 5 0L 62 0C 64.7614 0 67 2.23858 67 5L 67 55C 67 57.7614 64.7614 60 62 60L 5 60C 2.23858 60 0 57.7614 0 55L 0 5Z"/>
+<path id="path2_fill" d="M 20.7424 40L 20.0265 39.5787C 19.5895 39.3211 9.24831 33.1656 3.34758 23.8392C 0.212194 18.8877 -0.762722 13.6588 0.600737 9.11866C 1.71798 5.4026 4.30826 2.46362 7.89624 0.84967C 9.14868 0.28607 10.441 -6.40647e-07 11.7375 -6.40647e-07C 15.8891 -6.40647e-07 19.1113 2.88632 20.7424 4.72656C 22.3748 2.88632 25.5956 -6.40647e-07 29.7486 -6.40647e-07C 31.0451 -6.40647e-07 32.3374 0.284646 33.5885 0.84967C 37.1764 2.46362 39.7681 5.40117 40.8854 9.11866C 42.2488 13.6574 41.2725 18.8849 38.1385 23.8406C 32.2378 33.1656 21.8966 39.3211 21.4597 39.5787L 20.7424 40ZM 11.7361 2.82512C 10.8409 2.82512 9.94 3.02864 9.05333 3.42715C 6.22394 4.70094 4.18159 7.01228 3.30346 9.93275C 2.1791 13.6759 3.04158 18.0793 5.73292 22.3305C 10.4111 29.7228 18.3314 35.1539 20.7424 36.6995C 23.1533 35.151 31.0821 29.71 35.7532 22.3305C 38.4431 18.0793 39.307 13.6759 38.1812 9.93275C 37.3031 7.01085 35.2608 4.69952 32.43 3.42715C 31.5433 3.02864 30.6424 2.82512 29.7486 2.82512C 25.2739 2.82512 21.9507 7.73243 21.9179 7.78225L 20.7424 9.54421L 19.5682 7.78225C 19.5354 7.73528 16.1823 2.82512 11.7361 2.82512Z"/>
+</defs>
+</svg>
