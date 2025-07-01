@@ -6,10 +6,7 @@ function setStatus(contact, openModal) {
   let statusSelect = jQuery('#overall_status');
   let status = window.lodash.get(contact, 'overall_status.key');
   let reasonLabel = window.lodash.get(contact, `reason_${status}.label`);
-  let statusColor = window.lodash.get(
-    window.detailsSettings,
-    `post_settings.fields.overall_status.default.${status}.color`,
-  );
+
   statusSelect.val(status);
 
   if (openModal) {
@@ -20,12 +17,6 @@ function setStatus(contact, openModal) {
     } else if (status === 'unassignable') {
       jQuery('#unassignable-contact-modal').foundation('open');
     }
-  }
-
-  if (statusColor) {
-    statusSelect.css('background-color', statusColor);
-  } else {
-    statusSelect.css('background-color', '#366184');
   }
 
   if (['paused', 'closed', 'unassignable'].includes(status)) {
@@ -39,15 +30,21 @@ function setStatus(contact, openModal) {
 
 function updateCriticalPath(key) {
   jQuery('#seeker_path').val(key);
-  let seekerPathKeys = window.lodash.keys(post.seeker_path.default);
-  let percentage =
-    ((window.lodash.indexOf(seekerPathKeys, key) || 0) /
-      (seekerPathKeys.length - 1)) *
-    100;
-  jQuery('#seeker-progress').css('width', `${percentage}%`);
 }
 
 jQuery(document).ready(function ($) {
+  $(document).on('dt:post:update', function (e) {
+    if (e && e.detail) {
+      const { response, field } = e.detail;
+
+      // open modal when overall_status is set
+      if (field === 'overall_status') {
+        setStatus(response, true);
+      }
+    }
+  });
+
+  // migrate these above if/when quick button and/or assigned_to are migrated to components
   $(document).on('dt_record_updated', function (e, response, request) {
     post = response;
     window.lodash.forOwn(request, (val, key) => {
@@ -56,7 +53,7 @@ jQuery(document).ready(function ($) {
           updateCriticalPath(response.seeker_path.key);
         }
       }
-      if (key === 'overall_status' || key === 'assigned_to') {
+      if (key === 'assigned_to') {
         setStatus(response);
       }
     });
@@ -80,16 +77,6 @@ jQuery(document).ready(function ($) {
     false,
   );
 
-  $(document).on('select-field-updated', function (e, newContact, id, val) {
-    if (id === 'seeker_path') {
-      // updateCriticalPath(newContact.seeker_path.key)
-      // refresh_quick_action_buttons(newContact)
-    } else if (id === 'reason_unassignable') {
-      setStatus(newContact);
-    } else if (id === 'overall_status') {
-      setStatus(newContact, true);
-    }
-  });
   //confirm setting a reason for a status.
   let confirmButton = $('.confirm-reason-button');
   confirmButton.on('click', function () {
@@ -206,8 +193,10 @@ jQuery(document).ready(function ($) {
       recent: users_with_role
         .concat()
         .sort((a, b) => b.last_assignment - a.last_assignment),
-      language: users_with_role.filter(({ languages }) =>
-        languages.some((language) => contact_languages.includes(language)),
+      language: users_with_role.filter(
+        ({ languages }) =>
+          Array.isArray(languages) &&
+          languages.some((language) => contact_languages.includes(language)),
       ),
       gender: users_with_role.filter(
         (m) => contact_gender.label !== '' && m.gender === contact_gender.key,

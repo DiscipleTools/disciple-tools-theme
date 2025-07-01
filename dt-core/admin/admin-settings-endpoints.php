@@ -826,6 +826,11 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 return false;
             }
 
+            // Handle communication channel field type prefixes.
+            if ( in_array( $field_type, [ 'communication_channel' ] ) ){
+                $field_key = dt_create_field_key( 'contact_' . $post_submission['new_field_name'] );
+            }
+
             // Field privacy
             $field_private = !empty( $post_submission['new_field_private'] );
 
@@ -940,9 +945,9 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $field_key = $post_submission['field_key'];
             $post_type = $post_submission['post_type'];
             $new_field_option_name = $post_submission['field_option_name'];
-            $new_field_option_key = dt_create_field_key( $new_field_option_name );
-            $new_field_option_description = $post_submission['field_option_description'];
-            $field_option_icon = $post_submission['field_option_icon'];
+            $new_field_option_key = $post_submission['field_option_key'] ?? dt_create_field_key( $new_field_option_name );
+            $new_field_option_description = $post_submission['field_option_description'] ?? '';
+            $field_option_icon = $post_submission['field_option_icon'] ?? '';
 
             $custom_field_options = dt_get_option( 'dt_field_customizations' );
             $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key] = [
@@ -975,8 +980,8 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $post_type = $post_submission['post_type'];
         $field_option_key = $post_submission['field_option_key'];
         $new_field_option_label = $post_submission['new_field_option_label'];
-        $new_field_option_description = $post_submission['new_field_option_description'];
-        $field_option_icon = $post_submission['field_option_icon'];
+        $new_field_option_description = $post_submission['new_field_option_description'] ?? '';
+        $field_option_icon = $post_submission['field_option_icon'] ?? '';
 
         $fields = DT_Posts::get_post_field_settings( $post_type, false, true );
         $field_options = $fields[$field_key]['default'] ?? [];
@@ -1034,6 +1039,16 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $field_option_key = $post_submission['field_option_key'];
 
         $field_customizations = dt_get_option( 'dt_field_customizations' );
+
+        // Adopt a different flow for key_select none options.
+        if ( in_array( $field_option_key, [ 'none' ] ) && isset( $field_customizations[$post_type][$field_key]['type'] ) && $field_customizations[$post_type][$field_key]['type'] === 'key_select' ) {
+            $field_customizations[$post_type][$field_key]['select_cannot_be_empty'] = true;
+            update_option( 'dt_field_customizations', $field_customizations );
+
+            return $field_customizations;
+        }
+
+        // Proceed with default flow.
         if ( !isset( $field_customizations[$post_type][$field_key]['default'][$field_option_key] ) ){
             return new WP_Error( __METHOD__, 'Field option does not exist', [ 'status' => 400 ] );
         }

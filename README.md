@@ -18,116 +18,61 @@
  ╚════╝                 ╚════╝
 ```
 # Disciple.Tools
-Disciple.Tools software boosts collaboration, clarity, and accountability for disciple and church multiplication movements.
 
-## Description
-As a contact relationship management (CRM) system it is :
+Disciple.Tools is a free, open-source CRM specifically designed to support Christian ministries in managing discipleship, church growth, and outreach efforts. With powerful features like generational tracking, data visualization, and secure collaboration, Disciple.Tools is built to help ministries of all sizes grow and multiply. Fully customizable and mobile-friendly, it empowers teams to stay organized, accountable, and connected.
 
-- unique – able to track and organize individuals or groups generationally
-- insightful - giving end-to-end dashboards, charts, and maps on contacts, baptisms, groups, churches, and movements
-- secure – restricting database access based on permission levels and specific assignments
-- federated - designed to host how and where you want and inter-link instances as desired
-- scalable – relevant for individuals, groups, or movements
-- customizable – highly adaptable through settings, built-in modifications, external plugins, and  requiring low-tech skills
-- multilingual  – translatable, facilitating cross-cultural collaboration
-- mobile-friendly - giving full-functionality from a mobile device
-- free and open source – created in the WordPress environment and improved by a volunteer community on Github (https://github.com/DiscipleTools/disciple-tools)
+[Visit the Disciple.Tools website](https://disciple.tools) for more information or explore the [User Documentation](https://disciple.tools/docs) to get started.
 
-The commit team will shape the development of Disciple.Tools, and is currently implementing generational mapping, a mobile app with offline use, and people group tracking.
-
-## Purpose
-There needs to exist a simple, low-cost, highly distributable CRM that is tailored to the process of using digital marketing to accelerate disciple making movements. Most CRM solutions are too expensive to be used by small volunteer teams, and they often require significant configuration and development to implement. This project is attempting to make a rapid launch, low cost system that is tailored for movements.
 
 ## Platform
-We are building on the Wordpress platform because of its open-source availability, simplicity of installation, numerous low cost hosting options, multi-lingual support, substantial configurability and customization, giant development community and resources, native REST API, mobile readiness, and healthy market place for distributing themes and plugins.
 
-## Guidebook
+Disciple.Tools is built as a WordPress theme. To use it, simply install WordPress (on any host or local server) and upload the Disciple.Tools theme via the WordPress admin dashboard. This allows you to leverage WordPress’s powerful ecosystem and customize Disciple.Tools to fit your ministry's needs.
 
-Visit our [online guidebook](https://disciple.tools/docs)
+For additional functionality, explore the [Disciple.Tools Plugins list](https://disciple.tools/plugins) for integrations and extra features.
 
+## Description
 
-## Theme
+As a contact relationship management (CRM) system it is:
 
-This repository contains only the WordPress theme. There are a growing number of plugin extensions to the theme, but the core of the Disciple.Tools system is this theme.
+- **Free & Open Source**: Full control over your data and infrastructure, without expensive user fees.
+- **Generational Tracking**: Track discipleship across multiple generations and groups, making it easy to see the long-term impact.
+- **Powerful Insights**: Visualize your data with end-to-end dashboards, charts, and maps covering contacts, baptisms, groups, and church movements.
+- **Secure & Scalable**: Manage access based on roles and permissions, ensuring your data stays safe and private.
+- **Federated Hosting**: Host your site wherever you prefer and link multiple instances together.
+- **Highly Customizable**: Adapt the theme to your needs using built-in settings, plugins, and low-code modifications.
+- **Mobile-Friendly**: Manage your ministry’s data on-the-go with full mobile functionality.
+- **Multilingual Support**: Reach a global audience with easy translation and cross-cultural collaboration features.
 
-## Support
+## Origin
 
-If you need support, email us at supportXXXdisciple.tools, replacing XXXX with the @ symbol. You can also read articles in our knowledge base at http://help.disciple.tools.
+Disciple.Tools was started out of a need for a simple, low-cost, highly distributable CRM. Most other CRMs charge per user and are too expensive to be used by small volunteer teams.
 
----
+## Contribution
 
-## How to Install
-The goal of the project is to create a disciple-making CRM that is incredibly simple, cheap, and fast to launch. Below are the simple steps to do that.
+We're excited to have you contribute to Disciple.Tools! Whether you're fixing a bug, adding a feature, or improving documentation, we welcome your input.
 
-**Note: You must have PHP 7.0 or above. PHP 5.6 will not work.**
+### How to Contribute to the Theme
+- **Create an  Issue**: If you're planning to work on a new feature or fix a bug, please [create an issue](https://github.com/DiscipleTools/disciple-tools-theme/issues) first to discuss your plans, or comment on an existing issue.
+- **Fork the Repo**: Once your issue is set, fork this repository and create a new branch for your work.
+- **Make a Pull Request**: Once you've completed your changes, submit a pull request with a clear description of what you've done. Please make sure any theme and plugin contributions align with the [contributing guidelines](https://github.com/DiscipleTools/disciple-tools-theme/wiki/Contribution-guidelines).
 
-### Step 1
-- Download the theme disciple-tools-theme.zip file from the Disciple-Tools-Theme GitHub release page (https://github.com/DiscipleTools/disciple-tools-theme/releases)
+You can find open issues that need help under the [Help Wanted](https://github.com/DiscipleTools/disciple-tools-theme/issues?q=is%3Aissue%20label%3A%22help%20wanted%22) label.
 
-### Step 2
-- Open up your Wordpress site.
-- Login to your Admin Dashboard. `http://{your website}/wp-admin/`
+### How to Contribute via a Plugin
+We recommend building most new features in a plugin first. Later we can decide if it should be included in the theme.
 
-> Note: You have to be an administrator with the permissions to install plugins.
+- **Use the Starter Template**: Start by creating a GitHub repo using the [starter plugin template](https://github.com/DiscipleTools/disciple-tools-plugin-starter-template).
+- **Customize the Plugin**: Use the [starter plugin wiki](https://github.com/DiscipleTools/disciple-tools-plugin-starter-template/wiki) to guide your development.
+- **Submit Your Plugin**: Once your plugin is ready, submit it for inclusion in the [Disciple.Tools Plugins list](https://disciple.tools/plugins).
 
-### Step 3
-- In the Admin area, go to `Appearance > Themes` in the left navigation. This is where themes are installed.
-- Select the `Add New` button at the top of the screen.
-- Then select the `"Upload Theme` button at the top of the screen.
-- Use the `choose file` button to find the disciple-tools-theme.zip file you saved in step 1, and upload that file and wait for Wordpress to install it.
+Disciple.Tools provides a REST API and hooks to make custom development easier. Explore the [developer documentation](https://developers.disciple.tools/) to get started.
 
-### Step 4
-- Once uploaded, you will see the new Disciple.Tools Theme installed with other themes. Next `Activate` the theme.
-
-Done! You now have a complete coalition management system for your movement.
-You can access it by clicking on the home button at the top of the navigation bar.
-
- Blessings!
-
-
-
-
-## How to Contribute
-
-Follow these steps.
-
-1. Fork it!
-1. Create your feature branch: `git checkout -b my-new-feature`
-1. Commit your changes: `git commit -am 'Add some feature'`
-1. Push to the branch: `git push origin my-new-feature`
-1. Submit a pull request
-
-To apply your changes to the plugin, update the contents of the `wp-content/themes/disciple-tools-theme` folder in your WordPress installation.
-
-Make sure tests are passing!
-
-[Read more in `CONTRIBUTING`](https://github.com/DiscipleTools/disciple-tools-theme/wiki/Contribution-guidelines)
-
- ## Setup for Developers
-
-Composer
-
-  Install via Homebrew or run Installer:
-```
-$ brew update
-$ brew install composer
-```
-  Run Composer to install dependencies
-```
-$ composer install
-```
-PHP Code Sniffer
-
-  Run `./vendor/bin/phpcs` to see list of PHP format errors
-
-  Run ```./vendor/bin/phpcbf``` to auto-fix all possible format errors
-
+Need help or want to brainstorm? Join our [discord channel](https://discord.gg/kp5pYmrhSd) and share your questions and ideas.
 
 ## How to responsibly disclose a security vulnerability
 
 If you discover a security vulnerability in these WordPress plugins and/or themes, or in the website https://disciple.tools , please send an email to supportXXXXdisciple.tools , replacing XXXX with the @ symbol. We ask that you give us a reasonable amount of time to correct the issue before you make the vulnerability public. Please do not submit a GitHub issue or a GitHub pull request, as these are public.
 
-## Community Projects
-1. [Installing Disciple.Tools with Kubernetes on Google](https://github.com/cairocoder01/disciple-tools-kubernetes) (Github Project)
-2. [Docker Image of DT](https://github.com/cairocoder01/dt-docker) (Github Project)
-1. [Disciple.Tools Mobile API](https://github.com/cairocoder01/dt-mobile-api) (Github Project)
+## License
+
+Disciple.Tools is licensed under the GNU General Public License v3.0. For more information, see the [license](./LICENSE) file.

@@ -607,7 +607,7 @@ class Disciple_Tools_Posts
      * @param int $limit
      * @return array|object|null
      */
-    public static function get_recently_viewed_posts( string $post_type, int $user_id = null, int $limit = 30 ){
+    public static function get_recently_viewed_posts( string $post_type, ?int $user_id = null, int $limit = 30 ){
         if ( !$user_id ){
             $user_id = get_current_user_id();
         }
@@ -1276,7 +1276,8 @@ class Disciple_Tools_Posts
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
             } elseif ( $post_fields[$sort]['type'] === 'boolean' ){
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql = "sort.meta_value $sort_dir";
+                $default_value = isset( $post_fields[$sort]['default'] ) ? ( $post_fields[$sort]['default'] ? '1' : '0' ) : '0';
+                $sort_sql = "COALESCE(sort.meta_value, '$default_value') $sort_dir";
             } elseif ( $post_fields[$sort]['type'] === 'number' ){
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', CAST( sort.meta_value as DECIMAL(18,4) ) $sort_dir";
@@ -1536,7 +1537,7 @@ class Disciple_Tools_Posts
         return $bad_fields;
     }
 
-    public static function update_multi_select_fields( array $field_settings, int $post_id, array $fields, array $existing_contact = null ){
+    public static function update_multi_select_fields( array $field_settings, int $post_id, array $fields, ?array $existing_contact = null ){
         global $wpdb;
         $current_user_id = get_current_user_id();
 
@@ -1601,7 +1602,7 @@ class Disciple_Tools_Posts
         return $fields;
     }
 
-    public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, array $existing_post = null ){
+    public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, ?array $existing_post = null ){
 
         global $wpdb;
         foreach ( $fields as $field_key => $field ){
@@ -1808,7 +1809,7 @@ class Disciple_Tools_Posts
         return true;
     }
 
-    public static function update_post_contact_methods( array $post_settings, int $post_id, array $fields, array $existing_contact = null ){
+    public static function update_post_contact_methods( array $post_settings, int $post_id, array $fields, ?array $existing_contact = null ){
         // update contact details (phone, facebook, etc)
         foreach ( $post_settings['fields'] as $field_key => $field_settings ) {
             if ( $field_settings['type'] !== 'communication_channel' ){
@@ -1872,13 +1873,17 @@ class Disciple_Tools_Posts
                         if ( in_array( $field['value'], $existing_values, true ) ){
                             continue;
                         }
-                        $potential_error = self::add_post_contact_method( $post_settings, $post_id, $field['key'], $field['value'], $field );
-                        if ( is_wp_error( $potential_error ) ){
-                            return $potential_error;
-                        }
+                        $is_address_to_geocode = $details_key === 'contact_address' && isset( $field['geolocate'] ) && !empty( $field['geolocate'] );
+                        $geocode_potential_error = null;
                         // Geocode any identified addresses ahead of field creation
-                        if ( $details_key === 'contact_address' && isset( $field['geolocate'] ) && !empty( $field['geolocate'] ) ){
-                            $potential_error = self::geolocate_addresses( $post_id, $post_settings['post_type'], $details_key, $field['value'] );
+                        if ( $is_address_to_geocode ){
+                            $geocode_potential_error = self::geolocate_addresses( $post_id, $post_settings['post_type'], $details_key, $field['value'] );
+                        }
+                        if ( !$is_address_to_geocode || is_wp_error( $geocode_potential_error ) || empty( $geocode_potential_error ) ){
+                            $potential_error = self::add_post_contact_method( $post_settings, $post_id, $field['key'], $field['value'], $field );
+                            if ( is_wp_error( $potential_error ) ){
+                                return $potential_error;
+                            }
                         }
                     }
                 } else {
@@ -2606,11 +2611,14 @@ class Disciple_Tools_Posts
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'image' ){
                     if ( !empty( $value[0]['value'] ) ){
-                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ){
+                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) {
                             $fields[$key] = [
-                                'thumb' => DT_storage::get_thumbnail_url( $value[0]['value'] ),
-                                'full' => DT_storage::get_file_url( $value[0]['value'] ),
+                                'thumb' => DT_Storage::get_thumbnail_url( $value[0]['value'] ),
+                                'full'  => DT_Storage::get_file_url( $value[0]['value'] ),
                             ];
+                            if ( method_exists( 'DT_Storage', 'get_large_thumbnail_url' ) ) {
+                                $fields[$key]['large'] = DT_Storage::get_large_thumbnail_url( $value[0]['value'] );
+                            }
                         }
                     }
                 } else {
@@ -2748,6 +2756,15 @@ class Disciple_Tools_Posts
                         $fields[$field_key] = maybe_unserialize( $m['meta_value'] );
                     }
                 }
+            }
+        }
+
+        // Apply default values for boolean fields that are not set
+        foreach ( $field_settings as $field_key => $field_config ) {
+            if ( $field_config['type'] === 'boolean' &&
+                 !isset( $fields[$field_key] ) &&
+                 isset( $field_config['default'] ) ) {
+                $fields[$field_key] = $field_config['default'];
             }
         }
 

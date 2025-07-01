@@ -390,42 +390,32 @@ class DT_Contacts_Access extends DT_Module_Base {
             if ( !dt_field_enabled_for_record_type( $contact_fields[$field_key], $post ) ){
                 return;
             }
+
+            $params = [
+                'field_id_prefix' => str_replace( $field_key, '', $display_field_id ),
+            ];
+
+            DT_Components::render_key_select( $field_key, $contact_fields, $post, $params );
             ?>
-                <div class="section-subheader">
-                    <?php dt_render_field_icon( $contact_fields[$field_key] ) ?>
-                    <?php echo esc_html( $contact_fields[$field_key]['name'] ) ?>
-                </div>
-                <?php
-                $active_color = '#366184';
-                $current_key = $contact['overall_status']['key'] ?? '';
-                if ( isset( $contact_fields['overall_status']['default'][ $current_key ]['color'] ) ){
-                    $active_color = $contact_fields['overall_status']['default'][ $current_key ]['color'];
-                }
-                ?>
-                <select id="overall_status" class="select-field color-select" style="margin-bottom:0; background-color: <?php echo esc_html( $active_color ) ?>" <?php echo esc_html( $disabled ); ?>>
-                    <?php foreach ( $contact_fields['overall_status']['default'] as $key => $option ){
-                        $value = $option['label'] ?? '';
-                        if ( $current_key === $key ) {
-                            ?>
-                            <option value="<?php echo esc_html( $key ) ?>" selected><?php echo esc_html( $value ); ?></option>
-                        <?php } else { ?>
-                            <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $value ); ?></option>
-                        <?php } ?>
-                    <?php } ?>
-                </select>
-                <p>
+            <div>
                     <span id="reason">
                         <?php
                         $hide_edit_button = false;
                         $status_key = isset( $contact['overall_status']['key'] ) ? $contact['overall_status']['key'] : '';
-                        if ( $status_key === 'paused' &&
-                            isset( $contact['reason_paused']['label'] ) ){
+                        if (
+                            $status_key === 'paused' &&
+                            isset( $contact['reason_paused']['label'] )
+                        ) {
                             echo '(' . esc_html( $contact['reason_paused']['label'] ) . ')';
-                        } else if ( $status_key === 'closed' &&
-                            isset( $contact['reason_closed']['label'] ) ){
+                        } else if (
+                            $status_key === 'closed' &&
+                            isset( $contact['reason_closed']['label'] )
+                        ) {
                             echo '(' . esc_html( $contact['reason_closed']['label'] ) . ')';
-                        } else if ( $status_key === 'unassignable' &&
-                            isset( $contact['reason_unassignable']['label'] ) ){
+                        } else if (
+                            $status_key === 'unassignable' &&
+                            isset( $contact['reason_unassignable']['label'] )
+                        ) {
                             echo '(' . esc_html( $contact['reason_unassignable']['label'] ) . ')';
                         } else {
                             if ( !in_array( $status_key, [ 'paused', 'closed', 'unassignable' ] ) ){
@@ -435,11 +425,11 @@ class DT_Contacts_Access extends DT_Module_Base {
                         ?>
                     </span>
                     <button id="edit-reason" <?php if ( $hide_edit_button ) : ?> style="display: none"<?php endif; ?> ><i class="fi-pencil"></i></button>
-                </p>
+            </div>
             <div class="reveal" id="paused-contact-modal" data-reveal>
                 <h3><?php echo esc_html( $contact_fields['reason_paused']['name'] ?? '' )?></h3>
-                <p><?php echo esc_html( $contact_fields['reason_paused']['description'] ?? '' )?></p>
-                <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
+                <div><?php echo esc_html( $contact_fields['reason_paused']['description'] ?? '' )?></div>
+                <div><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></div>
 
                 <select id="reason-paused-options">
                     <?php
@@ -469,8 +459,8 @@ class DT_Contacts_Access extends DT_Module_Base {
             </div>
             <div class="reveal" id="unassignable-contact-modal" data-reveal>
                 <h3><?php echo esc_html( $contact_fields['reason_unassignable']['name'] ?? '' )?></h3>
-                <p><?php echo esc_html( $contact_fields['reason_unassignable']['description'] ?? '' )?></p>
-                <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
+                <div><?php echo esc_html( $contact_fields['reason_unassignable']['description'] ?? '' )?></div>
+                <div><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></div>
 
                 <select id="reason-unassignable-options">
                     <?php
@@ -500,8 +490,8 @@ class DT_Contacts_Access extends DT_Module_Base {
             </div>
             <div class="reveal" id="closed-contact-modal" data-reveal>
                 <h3><?php echo esc_html( $contact_fields['reason_closed']['name'] ?? '' )?></h3>
-                <p><?php echo esc_html( $contact_fields['reason_closed']['description'] ?? '' )?></p>
-                <p><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></p>
+                <div><?php echo esc_html( $contact_fields['reason_closed']['description'] ?? '' )?></div>
+                <div><?php esc_html_e( 'Choose an option:', 'disciple_tools' )?></div>
 
                 <select id="reason-closed-options">
                     <?php
@@ -548,7 +538,7 @@ class DT_Contacts_Access extends DT_Module_Base {
                                 <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height" dir="auto"
                                        name="<?php echo esc_html( $display_field_id ); ?>[query]" placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
                                        data-field_type="user_select"
-                                       data-field="<?php echo esc_html( $field_key ); ?> <?php echo esc_html( $disabled ); ?>"
+                                       data-field="<?php echo esc_html( $field_key ); ?>"
                                        autocomplete="off" <?php echo esc_html( $disabled ); ?>>
                             </span>
                             <span class="typeahead__button">

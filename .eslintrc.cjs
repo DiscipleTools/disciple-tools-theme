@@ -14,6 +14,7 @@ module.exports = {
   ],
   "globals": {
     "jQuery": false,
+    "Toastify": false,
   },
   "rules": {
     "no-console": "off",
@@ -41,5 +42,7 @@ module.exports = {
     'node_modules',
     'vendor',
     '*.min.js',
+    'cypress.config.js',
+    'cypress/*'
   ]
 };

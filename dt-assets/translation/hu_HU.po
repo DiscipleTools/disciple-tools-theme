@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2024-12-16T08:22:53+00:00\n"
-"PO-Revision-Date: 2023-02-20 08:31+0000\n"
-"Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
+"POT-Creation-Date: 2025-05-23T13:30:46+00:00\n"
+"PO-Revision-Date: 2025-03-05 16:00+0000\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Hungarian <https://translate.disciple.tools/projects/disciple-"
 "tools/disciple-tools-theme/hu_HU/>\n"
 "Language: hu_HU\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -73,24 +73,23 @@ msgstr ""
 msgid "Submit Request"
 msgstr "Kérés beküldése"
 
-#: 403.php:55 archive-template.php:1108 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:1084 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/access-module.php:496 dt-contacts/access-module.php:527
-#: dt-contacts/access-module.php:555 dt-contacts/base-setup.php:375
-#: dt-contacts/base-setup.php:410 dt-contacts/user-module.php:159
-#: single-template.php:417 single-template.php:434
-#: template-new-bulk-post.php:229 template-new-bulk-post.php:262
-#: template-new-bulk-post.php:290 template-new-post.php:153
-#: template-new-post.php:180
+#: dt-contacts/base-setup.php:470 dt-contacts/base-setup.php:505
+#: dt-contacts/module-access.php:451 dt-contacts/module-access.php:482
+#: dt-contacts/module-access.php:510 dt-contacts/user-module.php:159
+#: single-template.php:412 template-new-bulk-post.php:229
+#: template-new-bulk-post.php:262 template-new-bulk-post.php:290
+#: template-new-post.php:164 template-new-post.php:191
 msgid "Cancel"
 msgstr "Mégse"
 
-#: 403.php:59 archive-template.php:506 archive-template.php:548
-#: archive-template.php:773 archive-template.php:1132
-#: dt-assets/functions/enqueue-scripts.php:440
+#: 403.php:59 archive-template.php:520 archive-template.php:562
+#: archive-template.php:749 archive-template.php:1108
+#: dt-assets/functions/enqueue-scripts.php:455
 #: dt-assets/parts/loop-activity-comment.php:158
 #: dt-assets/parts/loop-activity-comment.php:163
 #: dt-assets/parts/loop-activity-comment.php:206
@@ -117,18 +116,17 @@ msgstr "Mégse"
 #: dt-assets/parts/modals/modal-tasks.php:54
 #: dt-assets/parts/modals/modal-template-metrics.php:8
 #: dt-assets/parts/modals/modal-template-metrics.php:13
-#: dt-contacts/access-module.php:501 dt-contacts/access-module.php:532
-#: dt-contacts/access-module.php:560 dt-contacts/access-module.php:651
-#: dt-contacts/base-setup.php:380 dt-contacts/base-setup.php:415
-#: dt-contacts/dmm-module.php:520 dt-contacts/dmm-module.php:522
-#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:597
-#: dt-groups/base-setup.php:602 dt-reports/magic-url-bulk-send.php:34
+#: dt-contacts/base-setup.php:475 dt-contacts/base-setup.php:510
+#: dt-contacts/module-access.php:456 dt-contacts/module-access.php:487
+#: dt-contacts/module-access.php:515 dt-contacts/module-access.php:606
+#: dt-contacts/module-baptisms.php:201 dt-contacts/module-baptisms.php:203
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:583
+#: dt-groups/base-setup.php:588 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
-#: dt-users/user-initial-setup.php:82 single-template.php:422
-#: single-template.php:439 template-new-bulk-post.php:223
-#: template-new-bulk-post.php:295 template-new-post.php:185
-#: template-settings.php:602
+#: dt-users/user-initial-setup.php:82 single-template.php:417
+#: template-new-bulk-post.php:223 template-new-bulk-post.php:295
+#: template-new-post.php:196 template-settings.php:602
 msgid "Close"
 msgstr "Bezár"
 
@@ -140,127 +138,126 @@ msgstr "Epic 404 - Nincs Eredmény"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "Az ön által keresett oldal nem található vagy törölték"
 
-#: archive-template.php:25
+#: archive-template.php:39
 msgctxt "Create New record"
 msgid "Create New %s"
 msgstr "Új %s Létrehozása"
 
-#: archive-template.php:29
+#: archive-template.php:43
 msgid "Filters"
 msgstr "Szűrők"
 
-#: archive-template.php:36 archive-template.php:138 archive-template.php:656
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:711
-#: dt-core/global-functions.php:739 dt-core/global-functions.php:871
-#: dt-core/global-functions.php:915 dt-posts/custom-post-type.php:20
+#: archive-template.php:50 archive-template.php:152 archive-template.php:641
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:818
+#: dt-core/utilities/dt-components.php:217 dt-posts/custom-post-type.php:20
 #: template-settings.php:399
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "%s Keresése"
 
-#: archive-template.php:37 archive-template.php:139
+#: archive-template.php:51 archive-template.php:153
 #: dt-mapping/geocode-api/mapbox-api.php:293
 msgid "Clear"
 msgstr "Törlés"
 
-#: archive-template.php:41 archive-template.php:42 archive-template.php:143
-#: archive-template.php:144 dt-assets/functions/menu.php:57
+#: archive-template.php:55 archive-template.php:56 archive-template.php:157
+#: archive-template.php:158 dt-assets/functions/menu.php:57
 #: dt-assets/parts/modals/modal-advanced-search.php:2
 msgid "Advanced Search"
 msgstr "Fejlett Keresés"
 
-#: archive-template.php:46 dt-assets/parts/loop-activity-comment.php:49
+#: archive-template.php:60 dt-assets/parts/loop-activity-comment.php:49
 #: dt-assets/parts/loop-activity-comment.php:99
 #: dt-assets/parts/loop-activity-comment.php:183
 #: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "Hozzászólások"
 
-#: archive-template.php:63 archive-template.php:162
+#: archive-template.php:77 archive-template.php:176
 #: dt-users/user-management.php:230
 msgid "Search"
 msgstr "Keresés"
 
-#: archive-template.php:72 archive-template.php:167
+#: archive-template.php:86 archive-template.php:181
 msgid "Choose which fields to search"
 msgstr "Keresett mezők kiválasztása"
 
-#: archive-template.php:81 archive-template.php:176
+#: archive-template.php:95 archive-template.php:190
 msgid "Search All Fields"
 msgstr "Összes Mező Keresése"
 
-#: archive-template.php:91 archive-template.php:186
+#: archive-template.php:105 archive-template.php:200
 msgid "Communication Channels"
 msgstr "Kommunikációs csatornák"
 
-#: archive-template.php:111 archive-template.php:206 archive-template.php:543
+#: archive-template.php:125 archive-template.php:220 archive-template.php:557
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "Alkalmaz"
 
-#: archive-template.php:112 archive-template.php:207 archive-template.php:544
+#: archive-template.php:126 archive-template.php:221 archive-template.php:558
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "Visszaállítás"
 
-#: archive-template.php:215
+#: archive-template.php:229
 msgctxt "Contacts Filters"
 msgid "%s Filters"
 msgstr "%s Szűrők"
 
-#: archive-template.php:226
+#: archive-template.php:240
 msgid "Create custom filter"
 msgstr "Egyéni szűrő készítése"
 
-#: archive-template.php:234
+#: archive-template.php:248
 msgctxt "Split By"
 msgid "Split By"
 msgstr ""
 
-#: archive-template.php:296
+#: archive-template.php:310
 #, fuzzy
 #| msgid "No duplicates found."
 msgid "No results found"
 msgstr "Nem található másolatok"
 
-#: archive-template.php:302
+#: archive-template.php:316
 msgctxt "List Exports"
 msgid "List Exports"
 msgstr ""
 
-#: archive-template.php:314 archive-template.php:337
+#: archive-template.php:328 archive-template.php:351
 #, fuzzy
 #| msgid "List"
 msgid "CSV List"
 msgstr "Lista"
 
-#: archive-template.php:318 archive-template.php:341
+#: archive-template.php:332 archive-template.php:355
 msgid "BCC Email List"
 msgstr ""
 
-#: archive-template.php:319
+#: archive-template.php:333
 #, fuzzy
 #| msgid "Phone"
 msgid "Phone List"
 msgstr "Telefon"
 
-#: archive-template.php:324 archive-template.php:349
+#: archive-template.php:338 archive-template.php:363
 #, fuzzy
 #| msgid "List"
 msgid "Map List"
 msgstr "Lista"
 
-#: archive-template.php:333
+#: archive-template.php:347
 msgid "List Exports Help"
 msgstr ""
 
-#: archive-template.php:338
+#: archive-template.php:352
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
 
-#: archive-template.php:342
+#: archive-template.php:356
 msgid ""
 "Using the current filter, the available emails are grouped by 50 and can be "
 "launched into your default email client by group. Many email providers put a "
@@ -270,331 +267,325 @@ msgid ""
 "email should be handled through bulk email providers."
 msgstr ""
 
-#: archive-template.php:345
+#: archive-template.php:359
 #, fuzzy
 #| msgid "Member List"
 msgid "Phone Number List"
 msgstr "Tagok Listája"
 
-#: archive-template.php:346
+#: archive-template.php:360
 msgid ""
 "Using the current filter, this is intended for copy pasting a list of "
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
 
-#: archive-template.php:350
+#: archive-template.php:364
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
 
-#: archive-template.php:376
+#: archive-template.php:390
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "%s Lista"
 
-#: archive-template.php:383
+#: archive-template.php:397
 msgid "Sort"
 msgstr "Rendez"
 
-#: archive-template.php:388
+#: archive-template.php:402
 msgid "Newest"
 msgstr "Legújabb"
 
-#: archive-template.php:393
+#: archive-template.php:407
 msgid "Oldest"
 msgstr "Legrégebbi"
 
-#: archive-template.php:398
+#: archive-template.php:412
 msgid "Most recently modified"
 msgstr "Legújabban módosított"
 
-#: archive-template.php:403
+#: archive-template.php:417
 msgid "Least recently modified"
 msgstr "Legrégebben módosított"
 
-#: archive-template.php:413 template-new-bulk-post.php:89
+#: archive-template.php:427 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "Mezők"
 
-#: archive-template.php:420
+#: archive-template.php:434
 msgid "Bulk Edit"
 msgstr "Tömeges Szerkesztés"
 
-#: archive-template.php:427
+#: archive-template.php:441
 #, fuzzy
 #| msgid "Bulk Send App"
 msgid "Bulk Send Message"
 msgstr "Kötegelt küldési alkalmazás"
 
-#: archive-template.php:461 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:475 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
 msgid "More"
 msgstr "Több"
 
-#: archive-template.php:482 dt-contacts/base-setup.php:304
+#: archive-template.php:496 dt-contacts/base-setup.php:324
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "Archiválva"
 
-#: archive-template.php:486
+#: archive-template.php:500
 #, fuzzy
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "Új %s"
 
-#: archive-template.php:509
+#: archive-template.php:523
 msgid "Choose which fields to display as columns in the list"
 msgstr "Válassza ki, melyik mezők jelenjenek meg oszlopként a listában"
 
-#: archive-template.php:552
+#: archive-template.php:566
+#, fuzzy
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
 "Válassza ki az összes frissíteni kívánt %1$-t a listából, és frissítse őket "
 "alább."
 
-#: archive-template.php:570 dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/access-module.php:584 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:953
+#: archive-template.php:584 dt-assets/parts/modals/modal-share.php:27
+#: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
+#: dt-core/global-functions.php:833
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Felhasználók Keresése"
 
-#: archive-template.php:594 dt-metrics/records/genmap.php:148
-#: dt-metrics/records/genmap.php:152 dt-posts/dt-posts.php:2777
-#: dt-users/template-user-management.php:384 dt-users/users.php:175
-#: single-template.php:127
-msgid "Status"
-msgstr "Státusz"
-
-#: archive-template.php:644
+#: archive-template.php:629
 msgid "Share with:"
 msgstr "Megosztás vele:"
 
-#: archive-template.php:664
+#: archive-template.php:649
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "Nem megosztott %s"
 
-#: archive-template.php:676 dt-assets/functions/details-bar.php:186
-#: dt-posts/custom-post-type.php:216
+#: archive-template.php:661 dt-assets/functions/details-bar.php:199
+#: dt-posts/custom-post-type.php:217
 msgid "Follow"
 msgstr "Követni"
 
-#: archive-template.php:681 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:666 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "Hozzászólások közzététele"
 
-#: archive-template.php:686 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:671 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "Észrevételt, megjegyzést írj ide"
 
-#: archive-template.php:694 dt-assets/parts/loop-activity-comment.php:59
+#: archive-template.php:679 dt-assets/parts/loop-activity-comment.php:59
 msgid "Type:"
 msgstr "Típus:"
 
-#: archive-template.php:714 dt-users/template-new-user.php:127
+#: archive-template.php:699 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "Több Lehetőség"
 
-#: archive-template.php:715 dt-users/template-new-user.php:130
+#: archive-template.php:700 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "Kevesebb Lehetőség"
 
-#: archive-template.php:751 dt-assets/parts/loop-activity-comment.php:209
+#: archive-template.php:727 dt-assets/parts/loop-activity-comment.php:209
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "Frissítés"
 
-#: archive-template.php:752 archive-template.php:860
-#: dt-assets/functions/enqueue-scripts.php:330
+#: archive-template.php:728 archive-template.php:836
+#: dt-assets/functions/enqueue-scripts.php:335
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "Végezze el választásait alább"
 
-#: archive-template.php:760 dt-assets/functions/enqueue-scripts.php:179
-#: dt-assets/functions/enqueue-scripts.php:213
-#: dt-assets/functions/enqueue-scripts.php:278
-#: dt-assets/functions/enqueue-scripts.php:318
-#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:437
+#: archive-template.php:736 dt-assets/functions/enqueue-scripts.php:183
+#: dt-assets/functions/enqueue-scripts.php:218
+#: dt-assets/functions/enqueue-scripts.php:283
+#: dt-assets/functions/enqueue-scripts.php:323
+#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:415
 msgid "Delete"
 msgstr "Töröl"
 
-#: archive-template.php:763 dt-assets/functions/enqueue-scripts.php:331
+#: archive-template.php:739 dt-assets/functions/enqueue-scripts.php:336
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
 msgstr "Végezze el választásait alább"
 
-#: archive-template.php:777
+#: archive-template.php:753
 #, fuzzy
 #| msgid "Select all the %1$s to whom you want to send app links."
 msgid "Select all the %1$s to whom you want to message."
 msgstr "Jelölje ki az összes %1$s-t, akinek alkalmazáslinket szeretne küldeni."
 
-#: archive-template.php:807
+#: archive-template.php:783
 msgid "Message subject"
 msgstr ""
 
-#: archive-template.php:809
+#: archive-template.php:785
 msgid "A valid message subject must be entered."
 msgstr ""
 
-#: archive-template.php:811
+#: archive-template.php:787
 msgid "Message from name"
 msgstr ""
 
-#: archive-template.php:813
+#: archive-template.php:789
 msgid "A valid from name must be specified."
 msgstr ""
 
-#: archive-template.php:815
+#: archive-template.php:791
 msgid "Message reply to"
 msgstr ""
 
-#: archive-template.php:817
+#: archive-template.php:793
 msgid "A valid reply to email address must be specified."
 msgstr ""
 
-#: archive-template.php:819
+#: archive-template.php:795
 msgid "Emails will be sent from: %s"
 msgstr ""
 
-#: archive-template.php:842
+#: archive-template.php:818
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
 
-#: archive-template.php:844
+#: archive-template.php:820
 msgid "Message"
 msgstr ""
 
-#: archive-template.php:846
+#: archive-template.php:822
 msgid "Please ensure a valid send message has been entered."
 msgstr ""
 
-#: archive-template.php:847 dt-reports/magic-url-bulk-send.php:58
-#: dt-reports/magic-url-setup.php:131
+#: archive-template.php:823 dt-reports/magic-url-bulk-send.php:58
+#: dt-reports/magic-url-setup.php:133
 msgid "Message placeholders"
 msgstr ""
 
-#: archive-template.php:850 dt-reports/magic-url-bulk-send.php:64
-#: dt-reports/magic-url-setup.php:137
+#: archive-template.php:826 dt-reports/magic-url-bulk-send.php:64
+#: dt-reports/magic-url-setup.php:139
 #, fuzzy
 #| msgid "Create Record"
 msgid "Name of the Record"
 msgstr "Rekord létrehozása"
 
-#: archive-template.php:855 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:831 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "Küldés a megjelölt bejegyzéseknek"
 
-#: archive-template.php:856 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:832 dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "Választania kell legalább egy bejegyzést"
 
-#: archive-template.php:859 dt-reports/magic-url-bulk-send.php:94
-#: dt-reports/magic-url-setup.php:100
+#: archive-template.php:835 dt-reports/magic-url-bulk-send.php:94
+#: dt-reports/magic-url-setup.php:101
 msgid "Send"
 msgstr "Küldés"
 
-#: archive-template.php:859 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:835 dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "Linkek"
 
-#: archive-template.php:864
+#: archive-template.php:840
 msgid "Ensure valid record selections have been made."
 msgstr ""
 
-#: archive-template.php:909
+#: archive-template.php:885
 msgid "Loading..."
 msgstr "Betöltés..."
 
-#: archive-template.php:914 dt-assets/functions/enqueue-scripts.php:410
+#: archive-template.php:890 dt-assets/functions/enqueue-scripts.php:424
 msgid "Load More"
 msgstr "Több betöltése"
 
-#: archive-template.php:926
+#: archive-template.php:902
 msgid "Field Name"
 msgstr "Mező neve"
 
-#: archive-template.php:982
+#: archive-template.php:958
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Gépeljen a kereséshez"
 
-#: archive-template.php:991
+#: archive-template.php:967
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "Minden %2$s %1$s jellemzővel"
 
-#: archive-template.php:994
+#: archive-template.php:970
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "Minden %2$s nélküli %1$s"
 
-#: archive-template.php:1001
+#: archive-template.php:977
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Szűrő alkiosztottra VAGY a Kiosztottra"
 
-#: archive-template.php:1010 dt-assets/functions/enqueue-scripts.php:321
-#: dt-posts/custom-post-type.php:193
+#: archive-template.php:986 dt-assets/functions/enqueue-scripts.php:326
+#: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "Létrehozás Időpontja"
 
-#: archive-template.php:1017 archive-template.php:1024
+#: archive-template.php:993 archive-template.php:1000
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:1051
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:961
 msgid "None Set"
 msgstr "Nincs beállítva"
 
-#: archive-template.php:1038 archive-template.php:1039
-#: dt-assets/functions/enqueue-scripts.php:229 dt-core/global-functions.php:671
+#: archive-template.php:1014 archive-template.php:1015
+#: dt-assets/functions/enqueue-scripts.php:234 dt-core/global-functions.php:712
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-users/user-management.php:196 template-settings.php:313
 #: template-settings.php:577
 msgid "No"
 msgstr "Nem"
 
-#: archive-template.php:1045 archive-template.php:1046
-#: dt-assets/functions/enqueue-scripts.php:228 dt-core/global-functions.php:672
+#: archive-template.php:1021 archive-template.php:1022
+#: dt-assets/functions/enqueue-scripts.php:233 dt-core/global-functions.php:713
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:195
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
 msgstr "Igen"
 
-#: archive-template.php:1050
+#: archive-template.php:1026
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Kiterjedés Kezdete"
 
-#: archive-template.php:1053 archive-template.php:1064
+#: archive-template.php:1029 archive-template.php:1040
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Törlés"
 
-#: archive-template.php:1060
+#: archive-template.php:1036
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Kiterjedés Vége"
 
-#: archive-template.php:1075
+#: archive-template.php:1051
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "Szűrő Neve"
 
-#: archive-template.php:1080
+#: archive-template.php:1056
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -602,7 +593,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "Minden %2$s %1$s jellemzővel"
 
-#: archive-template.php:1084
+#: archive-template.php:1060
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -610,7 +601,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "Minden %2$s nélküli %1$s"
 
-#: archive-template.php:1088
+#: archive-template.php:1064
 #, fuzzy
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -618,7 +609,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "Minden %2$s %1$s jellemzővel"
 
-#: archive-template.php:1092
+#: archive-template.php:1068
 #, fuzzy
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -626,466 +617,479 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "Minden %2$s nélküli %1$s"
 
-#: archive-template.php:1116
+#: archive-template.php:1092
 msgid "Filter Name"
 msgstr "Szűrő Neve"
 
-#: archive-template.php:1121
+#: archive-template.php:1097
 msgid "Filter Records"
 msgstr "Szűrés feljegyzések"
 
-#: archive-template.php:1125 dt-assets/functions/enqueue-scripts.php:281
-#: dt-assets/functions/enqueue-scripts.php:316
+#: archive-template.php:1101 dt-assets/functions/enqueue-scripts.php:286
+#: dt-assets/functions/enqueue-scripts.php:321
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
 msgstr "Mentés"
 
-#: dt-assets/functions/details-bar.php:52
-#: dt-assets/functions/details-bar.php:262
-#: dt-core/configuration/config-site-defaults.php:365
+#: dt-assets/functions/details-bar.php:58
+#: dt-assets/functions/details-bar.php:275
+#: dt-core/configuration/config-site-defaults.php:350
 #: dt-workflows/update-required.php:79 dt-workflows/update-required.php:128
 msgid "Update Needed"
 msgstr "Frissítés szükséges"
 
-#: dt-assets/functions/details-bar.php:63
+#: dt-assets/functions/details-bar.php:69
 msgid "Admin Actions"
 msgstr "Adminisztrációs feladatok"
 
-#: dt-assets/functions/details-bar.php:68 single-template.php:429
+#: dt-assets/functions/details-bar.php:74 single-template.php:407
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "%s Törlése"
 
-#: dt-assets/functions/details-bar.php:73
+#: dt-assets/functions/details-bar.php:79
 msgctxt "View Contact History"
 msgid "View %s History"
 msgstr ""
 
-#: dt-assets/functions/details-bar.php:81
+#: dt-assets/functions/details-bar.php:87
 msgctxt "Merge with another record"
 msgid "Merge with another %s"
 msgstr "Összevonás egy másik %s-el"
 
-#: dt-assets/functions/details-bar.php:97
-#: dt-assets/functions/details-bar.php:272
+#: dt-assets/functions/details-bar.php:103
+#: dt-assets/functions/details-bar.php:285
 msgid "Previous record"
 msgstr "Előző bejegyzés"
 
-#: dt-assets/functions/details-bar.php:140
-#: dt-assets/functions/details-bar.php:308
+#: dt-assets/functions/details-bar.php:121
+#: dt-assets/functions/details-bar.php:301
+#, fuzzy
+#| msgid "Record Hits:"
+msgid "Record Picture"
+msgstr "Talált bejegyzések:"
+
+#: dt-assets/functions/details-bar.php:153
+#: dt-assets/functions/details-bar.php:329
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "%s által"
 
-#: dt-assets/functions/details-bar.php:150
-#: dt-assets/functions/details-bar.php:316
+#: dt-assets/functions/details-bar.php:163
+#: dt-assets/functions/details-bar.php:337
 msgid "Next record"
 msgstr "Következő bejegyzés"
 
-#: dt-assets/functions/details-bar.php:170
-#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:228
+#: dt-assets/functions/details-bar.php:183
+#: dt-assets/parts/modals/modal-tasks.php:7 dt-posts/custom-post-type.php:231
 msgid "Tasks"
 msgstr "Feladatok"
 
-#: dt-assets/functions/details-bar.php:177
-#: dt-assets/functions/details-bar.php:182
+#: dt-assets/functions/details-bar.php:190
+#: dt-assets/functions/details-bar.php:195
 msgid "Following"
 msgstr "Követés"
 
-#: dt-assets/functions/details-bar.php:196
+#: dt-assets/functions/details-bar.php:209
 msgid "Share"
 msgstr "Megosztás"
 
-#: dt-assets/functions/enqueue-scripts.php:112
+#: dt-assets/functions/enqueue-scripts.php:116
 #: dt-metrics/records/date-range-activity.php:111
-#: template-merge-post-details.php:102
+#: template-merge-post-details.php:103
 msgid "Regions of Focus"
 msgstr "Fókusz régió"
 
-#: dt-assets/functions/enqueue-scripts.php:113
+#: dt-assets/functions/enqueue-scripts.php:117
 #: dt-metrics/records/date-range-activity.php:112
-#: template-merge-post-details.php:103
+#: template-merge-post-details.php:104
 msgid "All Locations"
 msgstr "Összes Hely"
 
-#: dt-assets/functions/enqueue-scripts.php:114
+#: dt-assets/functions/enqueue-scripts.php:118
 msgid "Used Locations"
 msgstr "Felhasznált Helyek"
 
-#: dt-assets/functions/enqueue-scripts.php:115
+#: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
 msgstr "Egy eredmény sem eggyezik \"{{lekérdezés}}"
 
-#: dt-assets/functions/enqueue-scripts.php:116
+#: dt-assets/functions/enqueue-scripts.php:120
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
 msgstr "%s elem mutatása. Továbbiak kereséséhez írjon valamit."
 
-#: dt-assets/functions/enqueue-scripts.php:117
+#: dt-assets/functions/enqueue-scripts.php:121
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
 msgstr "%1$s elem mutatása %2$s kapcsán"
 
-#: dt-assets/functions/enqueue-scripts.php:118
-#: dt-assets/functions/enqueue-scripts.php:178
-#: dt-assets/functions/enqueue-scripts.php:317 template-settings.php:119
+#: dt-assets/functions/enqueue-scripts.php:122
+#: dt-assets/functions/enqueue-scripts.php:182
+#: dt-assets/functions/enqueue-scripts.php:322 template-settings.php:119
 #: template-settings.php:605
 msgid "Edit"
 msgstr "Szerkeszteni"
 
-#: dt-assets/functions/enqueue-scripts.php:119
-#: dt-reports/magic-url-setup.php:97 template-settings.php:303
+#: dt-assets/functions/enqueue-scripts.php:123
+#: dt-reports/magic-url-setup.php:98 template-settings.php:303
 msgid "Copy"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:120
+#: dt-assets/functions/enqueue-scripts.php:124
 msgid "Copied: %s"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:141
+#: dt-assets/functions/enqueue-scripts.php:145
 msgid "You don't have any unread notifications"
 msgstr "Nincs olvasatlan értesítése"
 
-#: dt-assets/functions/enqueue-scripts.php:142
+#: dt-assets/functions/enqueue-scripts.php:146
 msgid "You don't have any notifications"
 msgstr "Nincs értesítése"
 
-#: dt-assets/functions/enqueue-scripts.php:176 dt-posts/dt-posts.php:1718
+#: dt-assets/functions/enqueue-scripts.php:180 dt-posts/dt-posts.php:1628
 msgid "D.T System"
 msgstr "D.T Rendszer"
 
-#: dt-assets/functions/enqueue-scripts.php:180
+#: dt-assets/functions/enqueue-scripts.php:184
 msgid "Translate with Google Translate"
 msgstr "Fordítás a Google Fordítóval"
 
-#: dt-assets/functions/enqueue-scripts.php:181
+#: dt-assets/functions/enqueue-scripts.php:185
 msgid "Hide Translation"
 msgstr "Fordítás elrejtése"
 
-#: dt-assets/functions/enqueue-scripts.php:182
+#: dt-assets/functions/enqueue-scripts.php:186
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "%1$s %2$s emojival válaszolt"
 
-#: dt-assets/functions/enqueue-scripts.php:183
+#: dt-assets/functions/enqueue-scripts.php:187
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s és %1$s %2$s emojival válaszolt"
 
-#: dt-assets/functions/enqueue-scripts.php:214
+#: dt-assets/functions/enqueue-scripts.php:219
 msgid "Mark as complete"
 msgstr "Megjelölés teljesítettként"
 
-#: dt-assets/functions/enqueue-scripts.php:215
+#: dt-assets/functions/enqueue-scripts.php:220
 msgid "No task created"
 msgstr "Nincs megalkotva feladat"
 
-#: dt-assets/functions/enqueue-scripts.php:216
+#: dt-assets/functions/enqueue-scripts.php:221
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr "Emlékeztető"
 
-#: dt-assets/functions/enqueue-scripts.php:217
+#: dt-assets/functions/enqueue-scripts.php:222
 msgid "No note set"
 msgstr "Nincs megjegyzés"
 
-#: dt-assets/functions/enqueue-scripts.php:218
+#: dt-assets/functions/enqueue-scripts.php:223
 msgid "Duplicates Detected"
 msgstr "Duplikátumok észlelve"
 
-#: dt-assets/functions/enqueue-scripts.php:219
+#: dt-assets/functions/enqueue-scripts.php:224
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
-#: dt-users/template-new-user.php:293 template-merge-post-details.php:130
-#: template-merge-post-details.php:187
+#: dt-users/template-new-user.php:293 template-merge-post-details.php:131
+#: template-merge-post-details.php:188
 msgid "Merge"
 msgstr "Egyesít"
 
-#: dt-assets/functions/enqueue-scripts.php:220
+#: dt-assets/functions/enqueue-scripts.php:225
 msgid "Dismiss"
 msgstr "Mellőzés"
 
-#: dt-assets/functions/enqueue-scripts.php:221
+#: dt-assets/functions/enqueue-scripts.php:226
 msgid "Dismissed Duplicates"
 msgstr "Eltávolított duplikátumok"
 
-#: dt-assets/functions/enqueue-scripts.php:222
+#: dt-assets/functions/enqueue-scripts.php:227
 msgid "Duplicates on: %s"
 msgstr "Duplikátumok: %s"
 
-#: dt-assets/functions/enqueue-scripts.php:223
+#: dt-assets/functions/enqueue-scripts.php:228
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "Küldés sikertelen. Ellenőrizze az oldalak közti konfigurációt."
 
-#: dt-assets/functions/enqueue-scripts.php:224
+#: dt-assets/functions/enqueue-scripts.php:229
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr ""
 "Átvitel frissítése sikertelen. Ellenőrizze a webhelyek közötti konfigurációt."
 
-#: dt-assets/functions/enqueue-scripts.php:225
+#: dt-assets/functions/enqueue-scripts.php:230
 msgid "Transfer update successful."
 msgstr "Átvitel frissítése sikerült."
 
-#: dt-assets/functions/enqueue-scripts.php:226
+#: dt-assets/functions/enqueue-scripts.php:231
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "Készítve %s dátumon"
 
-#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/functions/enqueue-scripts.php:232
 msgid "Open With"
 msgstr "Megnyitás"
 
-#: dt-assets/functions/enqueue-scripts.php:247
+#: dt-assets/functions/enqueue-scripts.php:252
 msgid "Revert Record Back To This Point"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:248
+#: dt-assets/functions/enqueue-scripts.php:253
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
 msgstr "Biztos %s törlésében?"
 
-#: dt-assets/functions/enqueue-scripts.php:279
+#: dt-assets/functions/enqueue-scripts.php:284
 msgid "Locations you are responsible for"
 msgstr "Helyek amelyekért Ön felelős"
 
-#: dt-assets/functions/enqueue-scripts.php:280
+#: dt-assets/functions/enqueue-scripts.php:285
 #: dt-metrics/records/genmap.php:160
 msgid "Add"
 msgstr "Hozzáadás"
 
-#: dt-assets/functions/enqueue-scripts.php:282 template-settings.php:296
+#: dt-assets/functions/enqueue-scripts.php:287 template-settings.php:296
 msgid "link"
 msgstr "link"
 
-#: dt-assets/functions/enqueue-scripts.php:283
+#: dt-assets/functions/enqueue-scripts.php:288
 msgid "copy"
 msgstr "másol"
 
-#: dt-assets/functions/enqueue-scripts.php:299
+#: dt-assets/functions/enqueue-scripts.php:304
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "Találatok:"
 
-#: dt-assets/functions/enqueue-scripts.php:300
+#: dt-assets/functions/enqueue-scripts.php:305
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "%s összes találatának elvetése"
 
-#: dt-assets/functions/enqueue-scripts.php:319
+#: dt-assets/functions/enqueue-scripts.php:324
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "_START_ mutatása a(z) _TOTAL_-ból"
 
-#: dt-assets/functions/enqueue-scripts.php:320
+#: dt-assets/functions/enqueue-scripts.php:325
 msgid "Sorting By"
 msgstr "Rendezés"
 
-#: dt-assets/functions/enqueue-scripts.php:322
+#: dt-assets/functions/enqueue-scripts.php:327
 msgid "Date Modified"
 msgstr "Módosítás Dátuma"
 
-#: dt-assets/functions/enqueue-scripts.php:323
+#: dt-assets/functions/enqueue-scripts.php:328
 msgid "No filters, create one below"
 msgstr "Nincs szűrő, hozz létre egyet alább"
 
-#: dt-assets/functions/enqueue-scripts.php:324
+#: dt-assets/functions/enqueue-scripts.php:329
 msgid "No records found matching your filter."
 msgstr "Nincs a szűrőddel egyező feljegyzés"
 
-#: dt-assets/functions/enqueue-scripts.php:325 dt-contacts/base-setup.php:502
-#: dt-groups/base-setup.php:1050 dt-posts/custom-post-type.php:484
+#: dt-assets/functions/enqueue-scripts.php:330 dt-contacts/base-setup.php:674
+#: dt-groups/base-setup.php:1036 dt-posts/custom-post-type.php:489
 msgctxt "All records"
 msgid "All %s"
 msgstr "Összes %s"
 
-#: dt-assets/functions/enqueue-scripts.php:326
+#: dt-assets/functions/enqueue-scripts.php:331
 msgid "start"
 msgstr "kezdet"
 
-#: dt-assets/functions/enqueue-scripts.php:327
+#: dt-assets/functions/enqueue-scripts.php:332
 msgid "end"
 msgstr "vég"
 
-#: dt-assets/functions/enqueue-scripts.php:328
+#: dt-assets/functions/enqueue-scripts.php:333
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/access-module.php:1298 dt-groups/base-setup.php:968
+#: dt-contacts/module-access.php:1169 dt-groups/base-setup.php:954
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-metrics/records/dynamic-records-map.php:98
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "Összes"
 
-#: dt-assets/functions/enqueue-scripts.php:329
+#: dt-assets/functions/enqueue-scripts.php:334
 msgid "Without"
 msgstr "Nélkül"
 
-#: dt-assets/functions/enqueue-scripts.php:332
+#: dt-assets/functions/enqueue-scripts.php:337
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:333
+#: dt-assets/functions/enqueue-scripts.php:338
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "nincs elküldve (valószínűleg hiányzik az érvényes e-mail)"
 
-#: dt-assets/functions/enqueue-scripts.php:334
+#: dt-assets/functions/enqueue-scripts.php:339
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:335
+#: dt-assets/functions/enqueue-scripts.php:340
 msgid "Exclude Item"
 msgstr "Elem kihagyása"
 
-#: dt-assets/functions/enqueue-scripts.php:338
+#: dt-assets/functions/enqueue-scripts.php:343
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:344
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:342
-#: dt-assets/functions/enqueue-scripts.php:350
+#: dt-assets/functions/enqueue-scripts.php:347
+#: dt-assets/functions/enqueue-scripts.php:355
 #, fuzzy
 #| msgctxt "Contacts List"
 #| msgid "%s List"
 msgid "Full List"
 msgstr "%s Lista"
 
-#: dt-assets/functions/enqueue-scripts.php:343
+#: dt-assets/functions/enqueue-scripts.php:348
 #, fuzzy
 #| msgid "Address"
 msgid "No Addresses"
 msgstr "Lakcím"
 
-#: dt-assets/functions/enqueue-scripts.php:344
+#: dt-assets/functions/enqueue-scripts.php:349
 msgid "With Additional Addresses"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:350
 msgid "Open Email for Group"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:346
+#: dt-assets/functions/enqueue-scripts.php:351
 #, fuzzy
 #| msgid "Open Modal"
 msgid "Open All"
 msgstr "Modális megnyitása"
 
-#: dt-assets/functions/enqueue-scripts.php:347
+#: dt-assets/functions/enqueue-scripts.php:352
 msgid "Show Group Addresses"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:351
+#: dt-assets/functions/enqueue-scripts.php:356
 msgid "Has No Phone Number"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:352
+#: dt-assets/functions/enqueue-scripts.php:357
 msgid "Has Additional Phone Numbers"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:356
+#: dt-assets/functions/enqueue-scripts.php:361
 #, fuzzy
 #| msgid "Used Locations"
 msgid "Mapped Locations"
 msgstr "Felhasznált Helyek"
 
-#: dt-assets/functions/enqueue-scripts.php:357
+#: dt-assets/functions/enqueue-scripts.php:362
 #, fuzzy
 #| msgctxt "Reason Paused label"
 #| msgid "Contact on vacation"
 msgid "Contacts Without Locations"
 msgstr "Névjegy nyaral"
 
-#: dt-assets/functions/enqueue-scripts.php:358
+#: dt-assets/functions/enqueue-scripts.php:363
 #, fuzzy
 #| msgid "Add Records"
 msgid "Records on zoomed map"
 msgstr "Bejegyzések hozzáadása"
 
-#: dt-assets/functions/enqueue-scripts.php:359
+#: dt-assets/functions/enqueue-scripts.php:364
 msgid "No Zoomed Map Records Found!"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:360
+#: dt-assets/functions/enqueue-scripts.php:365
 msgid "Open Zoomed Map Records"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:361
-#: dt-assets/functions/enqueue-scripts.php:362
+#: dt-assets/functions/enqueue-scripts.php:366
+#: dt-assets/functions/enqueue-scripts.php:367
 #, fuzzy
 #| msgid "Filter Name"
 msgid "Filtered Map"
 msgstr "Szűrő Neve"
 
-#: dt-assets/functions/enqueue-scripts.php:390 dt-contacts/base-setup.php:50
-#: dt-contacts/base-setup.php:62 dt-metrics/personal/activity-highlights.php:57
+#: dt-assets/functions/enqueue-scripts.php:395 dt-contacts/base-setup.php:55
+#: dt-contacts/base-setup.php:67 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "Névjegy"
 
-#: dt-assets/functions/enqueue-scripts.php:391
+#: dt-assets/functions/enqueue-scripts.php:396
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:429
+#: dt-assets/functions/enqueue-scripts.php:443
 msgid "File Upload"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:430
+#: dt-assets/functions/enqueue-scripts.php:444
 #, fuzzy
 #| msgid "Choose an option:"
 msgid "Choose a file"
 msgstr "Válasszon lehetőséget:"
 
-#: dt-assets/functions/enqueue-scripts.php:431
+#: dt-assets/functions/enqueue-scripts.php:445
 msgid "or drag it here"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:432
+#: dt-assets/functions/enqueue-scripts.php:446
 msgid "Successfully Uploaded!"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:433
+#: dt-assets/functions/enqueue-scripts.php:447
 msgid "Error!"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:434
+#: dt-assets/functions/enqueue-scripts.php:448
 #, fuzzy
 #| msgid "Unable to update"
 msgid "Unable to upload, please try again"
 msgstr "Nem lehet frissíteni"
 
-#: dt-assets/functions/enqueue-scripts.php:435
+#: dt-assets/functions/enqueue-scripts.php:449
 msgid "Upload"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:436
+#: dt-assets/functions/enqueue-scripts.php:450
 #, fuzzy
 #| msgid "Delete Filter"
 msgid "Delete Existing File"
 msgstr "Szűrő Törlése"
 
-#: dt-assets/functions/enqueue-scripts.php:437
+#: dt-assets/functions/enqueue-scripts.php:451
+#, fuzzy
+#| msgid "Delete Filter"
+msgid "Replace Existing Image"
+msgstr "Szűrő Törlése"
+
+#: dt-assets/functions/enqueue-scripts.php:452
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete existing file?"
 msgstr "Biztos %s törlésében?"
 
-#: dt-assets/functions/enqueue-scripts.php:438
+#: dt-assets/functions/enqueue-scripts.php:453
 msgid "Successfully Deleted!"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:439
+#: dt-assets/functions/enqueue-scripts.php:454
 #, fuzzy
 #| msgid "Delete and replace the app link"
 msgid "Delete failed, please try again"
@@ -1172,7 +1176,7 @@ msgstr "Hozzászólás Törlése:"
 
 #: dt-assets/parts/loop-activity-comment.php:168
 #: dt-assets/parts/loop-activity-comment.php:216
-#: template-merge-post-details.php:104
+#: template-merge-post-details.php:105
 msgid "Sorry, something went wrong"
 msgstr "Sajnáljuk, valami elromlott"
 
@@ -1367,7 +1371,7 @@ msgstr ""
 "A „Szerkesztés” gombra kattintva állítható be többek közt a nyelv, amelyen a "
 "rendszer működik."
 
-#: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:242
+#: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
 #: dt-users/users.php:169
 msgid "Locations"
 msgstr "Helyek"
@@ -1537,15 +1541,15 @@ msgstr "Megnyitás"
 msgid "Copy the link to the clipboard"
 msgstr ""
 
-#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:130
+#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:132
 msgid "Send the link via email."
 msgstr "Link küldése e-mailben."
 
-#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:180
+#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:182
 msgid "Scan the QR code to open the magic link on a mobile device."
 msgstr "Olvassa be a QR-kódot a varázslink megnyitásához egy mobilkészüléken."
 
-#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:185
+#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:187
 msgid ""
 "Reset the security code. No data is removed. Only access. The previous link "
 "will be disabled and another one created."
@@ -1690,608 +1694,174 @@ msgstr "Összes Mutatása"
 msgid "Mark All"
 msgstr "Összes megjelölése"
 
-#: dt-contacts/access-module.php:59
-msgid "Dispatcher"
-msgstr "Diszpécser"
-
-#: dt-contacts/access-module.php:66
-msgid "Partner"
-msgstr "Partner"
-
-#: dt-contacts/access-module.php:73
-msgid "Digital Responder"
-msgstr "Digitális Válaszoló"
-
-#: dt-contacts/access-module.php:104 dt-groups/base-setup.php:134
-#: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
-msgid "Assigned To"
-msgstr "Kiosztva"
-
-#: dt-contacts/access-module.php:105
-msgid ""
-"Select the main person who is responsible for reporting on this contact."
-msgstr ""
-" Válaszd ki azt az embert, aki felelős az adott kapcsolati személlyel "
-"kapcsolatosan jelentést adni."
-
-#: dt-contacts/access-module.php:115 dt-metrics/combined/site-links.php:79
-#: dt-metrics/combined/site-links.php:82
-msgid "Seeker Path"
-msgstr "Kereső Út"
-
-#: dt-contacts/access-module.php:116
-msgctxt "Seeker Path field description"
-msgid ""
-"Set the status of your progression with the contact. These are the steps "
-"that happen in a specific order to help a contact move forward."
-msgstr ""
-"Állítsa be a haladását ezzel a névjeggyel. Ezek a lépések történnek meg egy "
-"bizonyos sorrendben, hogy segítsen haladni a névjegynek."
-
-#: dt-contacts/access-module.php:120
-msgid "Contact Attempt Needed"
-msgstr "Kapcsolatfelvétel Szükséges"
-
-#: dt-contacts/access-module.php:124 dt-contacts/dmm-module.php:222
-msgid "Contact Attempted"
-msgstr "Kapcsolatfelvétel megtörtént"
-
-#: dt-contacts/access-module.php:128 dt-contacts/dmm-module.php:231
-msgid "Contact Established"
-msgstr "Kapcsolatfelvétel sikeres"
-
-#: dt-contacts/access-module.php:132
-msgid "First Meeting Scheduled"
-msgstr "Első Találkozó Betervezve"
-
-#: dt-contacts/access-module.php:136
-msgid "First Meeting Complete"
-msgstr "Első Találkozó Megtörtént"
-
-#: dt-contacts/access-module.php:140 dt-metrics/counter.php:140
-msgid "Ongoing Meetings"
-msgstr "Folyamatban Lévő Meetingek"
-
-#: dt-contacts/access-module.php:144
-msgid "Being Coached"
-msgstr "Mentorálva"
-
-#: dt-contacts/access-module.php:156 dt-contacts/base-setup.php:294
-#: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
-msgid "Contact Status"
-msgstr "Kapcsolat állapota"
-
-#: dt-contacts/access-module.php:161
-msgid "New Contact"
-msgstr "Új névjegy"
-
-#: dt-contacts/access-module.php:162
-msgctxt "Contact Status field description"
-msgid "The contact is new in the system."
-msgstr "A névjegy új a rendszerben"
-
-#: dt-contacts/access-module.php:166
-msgid "Not Ready"
-msgstr "Nem kész"
-
-#: dt-contacts/access-module.php:167
-msgctxt "Contact Status field description"
-msgid ""
-"There is not enough information to move forward with the contact at this "
-"time."
-msgstr "Nincs elég információ jelenleg továbbmenni ezzel a névjeggyel."
-
-#: dt-contacts/access-module.php:171
-msgid "Dispatch Needed"
-msgstr "Kiküldés szükséges"
-
-#: dt-contacts/access-module.php:172
-msgctxt "Contact Status field description"
-msgid "This contact needs to be assigned to a multiplier."
-msgstr "Ezt a névjegyet be kell osztani egy sokszorozóhoz."
-
-#: dt-contacts/access-module.php:176
-msgid "Waiting to be accepted"
-msgstr "Elfogadásra váró"
-
-#: dt-contacts/access-module.php:177
-msgctxt "Contact Status field description"
-msgid ""
-"The contact has been assigned to someone, but has not yet been accepted by "
-"that person."
-msgstr ""
-"Ez a névjegy be van osztva valakihez, de ez a személy még nem fogadta el."
-
-#: dt-contacts/access-module.php:182
-msgid "Paused"
-msgstr "Szüneteltetve"
-
-#: dt-contacts/access-module.php:183
-msgctxt "Contact Status field description"
-msgid "This contact is currently on hold (i.e. on vacation or not responding)."
-msgstr "Ez a névjegy függőben van (pl. nyaraláson van vagy nem válaszol)"
-
-#: dt-contacts/access-module.php:198
-msgid "Reason Not Ready"
-msgstr "Az ok, hogy még nem áll készen"
-
-#: dt-contacts/access-module.php:199
-msgctxt "Optional Documentation"
-msgid "The main reason the contact is not ready to be assigned to a user."
-msgstr ""
-"A fő ok, hogy a kapcsolati személy nem áll készen a felhasználóval való "
-"kapcsolódásra"
-
-#: dt-contacts/access-module.php:206
-msgid "Insufficient Contact Information"
-msgstr "Elégtelen Névjegy Információ"
-
-#: dt-contacts/access-module.php:209
-msgid "Unknown Location"
-msgstr "Ismeretlen Hely"
-
-#: dt-contacts/access-module.php:212
-msgid "Only wants media"
-msgstr "Csak médiát szeretne"
-
-#: dt-contacts/access-module.php:215
-msgid "Outside Area"
-msgstr "Területen Kívül"
-
-#: dt-contacts/access-module.php:218
-msgid "Needs Review"
-msgstr "Vizsgálat Szükséges"
-
-#: dt-contacts/access-module.php:221
-msgid "Waiting for Confirmation"
-msgstr "Megerősítésre Vár"
-
-#: dt-contacts/access-module.php:229
-msgid "Reason Paused"
-msgstr "Szüneteltetés oka"
-
-#: dt-contacts/access-module.php:230
-msgctxt "Optional Documentation"
-msgid ""
-"A paused contact is one you are not currently interacting with but expect to "
-"in the future."
-msgstr ""
-"A szüneteltetett kapcsolati személy az, akivel jelenleg nem állsz "
-"kapcsolatban, de a jövőben szándékozol kapcsolatba lépni vele."
-
-#: dt-contacts/access-module.php:234
-msgctxt "Reason Paused label"
-msgid "Contact on vacation"
-msgstr "Névjegy nyaral"
-
-#: dt-contacts/access-module.php:235
-msgctxt "Reason Paused label"
-msgid "Contact not responding"
-msgstr "Névjegy nem válaszol"
-
-#: dt-contacts/access-module.php:236
-msgctxt "Reason Paused label"
-msgid "Contact not available"
-msgstr "Névjegy nem elérhető"
-
-#: dt-contacts/access-module.php:237
-msgctxt "Reason Paused label"
-msgid "Contact has little interest/hunger"
-msgstr "Névjegynek kicsi az érdeklődése/étványa"
-
-#: dt-contacts/access-module.php:238
-msgctxt "Reason Paused label"
-msgid "Contact shows no initiative"
-msgstr "Névjegy nem mutat kezdeményezést"
-
-#: dt-contacts/access-module.php:239
-msgctxt "Reason Paused label"
-msgid "Contact has questionable motives"
-msgstr "Névjegynek kérdéses szándékai vannak "
-
-#: dt-contacts/access-module.php:240
-msgctxt "Reason Paused label"
-msgid "Ball is in the contact's court"
-msgstr "A labda a névjegy térfelén"
-
-#: dt-contacts/access-module.php:241
-msgctxt "Reason Paused label"
-msgid "We want to see if/how the contact responds to automated text messages"
-msgstr ""
-"Szeretnénk látni, hogy a névjegy hogyan válaszol/válaszol-e az automatikus "
-"üzenetekre"
-
-#: dt-contacts/access-module.php:248
-msgid "Reason Archived"
-msgstr "Indoklás archiválva"
-
-#: dt-contacts/access-module.php:249
-msgctxt "Optional Documentation"
-msgid "A closed contact is one you can't or don't wish to interact with."
-msgstr ""
-"A lezárt kapcsolati személy az, akivel nem tudsz, vagy nem kívánsz "
-"kapcsolatba lépni."
-
-#: dt-contacts/access-module.php:253
-msgctxt "Reason Closed label"
-msgid "Duplicate"
-msgstr "Másolat készítése"
-
-#: dt-contacts/access-module.php:254
-msgctxt "Reason Closed label"
-msgid "Insufficient contact info"
-msgstr "Elégtelen névjegy infó"
-
-#: dt-contacts/access-module.php:255
-msgctxt "Reason Closed label"
-msgid "Denies submitting contact request"
-msgstr "Tagadja a névjegy kérés beküldését"
-
-#: dt-contacts/access-module.php:256
-msgctxt "Reason Closed label"
-msgid "Hostile, playing games or self gain"
-msgstr "Ellenséges, játszik vagy öncélú"
-
-#: dt-contacts/access-module.php:257
-msgctxt "Reason Closed label"
-msgid "Only wants to argue or debate"
-msgstr "Csak vitatkozni vagy kötekedni akar"
-
-#: dt-contacts/access-module.php:258
-msgctxt "Reason Closed label"
-msgid "Just wanted media or book"
-msgstr "Csak a médiát vagy könyvet szerette volna"
-
-#: dt-contacts/access-module.php:259
-msgctxt "Reason Closed label"
-msgid "No longer interested"
-msgstr "Már nem érdekli"
-
-#: dt-contacts/access-module.php:260
-msgctxt "Reason Closed label"
-msgid "No longer responding"
-msgstr "Már nem válaszol"
-
-#: dt-contacts/access-module.php:261
-msgctxt "Reason Closed label"
-msgid "Already in church or connected with others"
-msgstr "Már gyülekezetben vagy kapcsolatban valakivel"
-
-#: dt-contacts/access-module.php:262
-msgctxt "Reason Closed label"
-msgid "Transferred contact to partner"
-msgstr "Partnerhez irányított kapcsolat"
-
-#: dt-contacts/access-module.php:263
-msgctxt "Reason Closed label"
-msgid "Martyred"
-msgstr "Mártír"
-
-#: dt-contacts/access-module.php:264
-msgctxt "Reason Closed label"
-msgid "Moved or relocated"
-msgstr "Költözött vagy áthelyezték"
-
-#: dt-contacts/access-module.php:265
-msgctxt "Reason Closed label"
-msgid "GDPR request"
-msgstr "GDPR kérés"
-
-#: dt-contacts/access-module.php:266
-msgctxt "Reason Closed label"
-msgid "Unknown"
-msgstr "Ismeretlen"
-
-#: dt-contacts/access-module.php:273
-msgid "Accepted"
-msgstr "Elfogadva"
-
-#: dt-contacts/access-module.php:281 dt-contacts/base-setup.php:540
-#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
-#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
-#: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
-msgid "Personal"
-msgstr "Személyes"
-
-#: dt-contacts/access-module.php:285
-#: dt-core/configuration/config-site-defaults.php:345
-msgid "Web"
-msgstr "Web"
-
-#: dt-contacts/access-module.php:289 dt-contacts/base-setup.php:225
-msgid "Facebook"
-msgstr "Facebook"
-
-#: dt-contacts/access-module.php:293 dt-contacts/base-setup.php:233
-msgid "Twitter"
-msgstr "Twitter"
-
-#: dt-contacts/access-module.php:297
-msgid "Transfer"
-msgstr "Átvitel"
-
-#: dt-contacts/access-module.php:299
-msgid ""
-"Contacts transferred from a partnership with another Disciple.Tools site."
-msgstr ""
-"Egy másik Disciple.Tools oldallal való partnerségből átvett kapcsolatok."
-
-#: dt-contacts/access-module.php:312 dt-metrics/contacts/sources.php:90
-#: dt-users/user-hooks-and-config.php:616
-msgid "Sources"
-msgstr "Források"
-
-#: dt-contacts/access-module.php:313
-msgctxt "Optional Documentation"
-msgid "The website, event or location this contact came from."
-msgstr "A weboldal, esemény vagy helyszín, ahonnan a kapcsolat érkezett."
-
-#: dt-contacts/access-module.php:325
-msgid "Campaigns"
-msgstr "Kampányok"
-
-#: dt-contacts/access-module.php:326
-msgctxt "Optional Documentation"
-msgid ""
-"Marketing campaigns or access activities that this contact interacted with."
-msgstr ""
-"Marketing kampányok vagy elérési tevékenységek, amikkel a kapcsolata "
-"érintkezett."
-
-#: dt-contacts/access-module.php:390 dt-metrics/combined/critical-path.php:77
-msgid "Follow Up"
-msgstr "Utánkövetés"
-
-#: dt-contacts/access-module.php:477 dt-contacts/access-module.php:508
-#: dt-contacts/access-module.php:539 dt-contacts/base-setup.php:389
-msgid "Choose an option:"
-msgstr "Válasszon lehetőséget:"
-
-#: dt-contacts/access-module.php:499 dt-contacts/access-module.php:530
-#: dt-contacts/access-module.php:558 dt-contacts/base-setup.php:413
-msgid "Confirm"
-msgstr "Megerősítés"
-
-#: dt-contacts/access-module.php:602
-msgid "Multipliers"
-msgstr "Sokszorozók"
-
-#: dt-contacts/access-module.php:605
-msgid "Dispatchers"
-msgstr "Diszpécserek"
-
-#: dt-contacts/access-module.php:608
-msgid "Digital Responders"
-msgstr "Digitális Kiérkezők"
-
-#: dt-contacts/access-module.php:615
-msgid "Assign To"
-msgstr "Kiosztás a következőhöz:"
-
-#: dt-contacts/access-module.php:667
-msgid "This contact has been assigned to you."
-msgstr "Ez a névjegy Önhöz lett beosztva."
-
-#: dt-contacts/access-module.php:668
-msgid "Accept"
-msgstr "Elfogad"
-
-#: dt-contacts/access-module.php:669
-msgid "Decline"
-msgstr "Elutasít"
-
-#: dt-contacts/access-module.php:912 dt-contacts/access-module.php:922
-msgid "My Follow-Up"
-msgstr "Utógondozásom"
-
-#: dt-contacts/access-module.php:923 dt-contacts/access-module.php:944
-#: dt-contacts/access-module.php:967 dt-contacts/access-module.php:992
-#: dt-groups/base-setup.php:960
-msgid "Assigned to me"
-msgstr "Feladatom"
-
-#: dt-contacts/access-module.php:924 dt-contacts/access-module.php:945
-#: dt-contacts/access-module.php:968 dt-contacts/access-module.php:993
-msgid "Sub-assigned to me"
-msgstr "Alfeladatom"
-
-#: dt-contacts/access-module.php:1032
-msgctxt "All records"
-msgid "Follow-Up %s"
-msgstr "%s utánkövetése"
-
-#: dt-contacts/access-module.php:1040
-msgid "All Follow-Up"
-msgstr "Minden utógondozás"
-
-#: dt-contacts/access-module.php:1142 dt-contacts/access-module.php:1143
-msgid "Subassigned only"
-msgstr "Csak delegált"
-
-#: dt-contacts/access-module.php:1299
-msgid "Ready"
-msgstr "Kész"
-
-#: dt-contacts/access-module.php:1300
-msgid "Recent"
-msgstr "Mostani"
-
-#: dt-contacts/access-module.php:1301
-msgid "Location"
-msgstr "Helyszín"
-
-#: dt-contacts/access-module.php:1302
-msgid "Assign"
-msgstr "Kiosz"
-
-#: dt-contacts/access-module.php:1303 dt-users/template-new-user.php:134
-#: template-settings.php:226
-msgid "Language"
-msgstr "Nyelv"
-
-#: dt-contacts/access-module.php:1304 dt-contacts/base-setup.php:262
-#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
-#: template-settings.php:714
-msgid "Gender"
-msgstr "Nem"
-
-#: dt-contacts/access-module.php:1477
-msgid "This record might be a duplicate of: "
-msgstr "Ez a bejegyzés a következő duplikátuma lehet:"
-
-#: dt-contacts/access-module.php:1483 dt-contacts/duplicates-merging.php:485
-#: dt-contacts/duplicates-merging.php:567
-msgid "Duplicate Checker"
-msgstr "Másolat ellenőrző"
-
-#: dt-contacts/base-setup.php:50 dt-contacts/base-setup.php:63
-#: dt-contacts/base-setup.php:250 dt-mapping/columns/add-contacts-column.php:59
+#: dt-contacts/base-setup.php:55 dt-contacts/base-setup.php:68
+#: dt-contacts/base-setup.php:261 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:132
 #: dt-metrics/combined/locations-list.php:126
 #: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
 #: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
-#: dt-people-groups/people-groups-base.php:156
+#: dt-people-groups/people-groups-base.php:172
 #: dt-users/template-user-management.php:466
 msgid "Contacts"
 msgstr "Névjegyek"
 
-#: dt-contacts/base-setup.php:103
+#: dt-contacts/base-setup.php:108
 msgid "Nickname"
 msgstr "Becenév"
 
-#: dt-contacts/base-setup.php:111
+#: dt-contacts/base-setup.php:116
 msgid "Contact Type"
 msgstr "Névjegy fajtája"
 
-#: dt-contacts/base-setup.php:115
+#: dt-contacts/base-setup.php:120
 msgid "User"
 msgstr "Felhasználó"
 
-#: dt-contacts/base-setup.php:116
+#: dt-contacts/base-setup.php:121
 msgid "Representing a User in the system"
 msgstr "Felhasználói képviselet a rendszerben"
 
-#: dt-contacts/base-setup.php:122
+#: dt-contacts/base-setup.php:127
 msgid "Private Contact"
 msgstr "Privát kapcsolat"
 
-#: dt-contacts/base-setup.php:124
+#: dt-contacts/base-setup.php:129
 msgid "A friend, family member or acquaintance"
 msgstr "Barát, családtag, ismerős"
 
-#: dt-contacts/base-setup.php:125 dt-contacts/dmm-module.php:53
+#: dt-contacts/base-setup.php:130 dt-contacts/base-setup.php:160
 msgid "Only me"
 msgstr "Csak én"
 
-#: dt-contacts/base-setup.php:132
+#: dt-contacts/base-setup.php:137
 msgid "Standard Contact"
 msgstr "Normál kapcsolat"
 
-#: dt-contacts/base-setup.php:134
+#: dt-contacts/base-setup.php:139
 msgid "A contact to collaborate on"
 msgstr "Egy kapcsolat, amin közreműködjek"
 
-#: dt-contacts/base-setup.php:135
+#: dt-contacts/base-setup.php:140
 msgid "Me and project leadership"
 msgstr "Én és a projekt vezetősége"
 
-#: dt-contacts/base-setup.php:141
+#: dt-contacts/base-setup.php:146
 msgid "Connection"
 msgstr "Kapcsolat"
 
-#: dt-contacts/base-setup.php:143 dt-contacts/dmm-module.php:50
+#: dt-contacts/base-setup.php:148 dt-contacts/base-setup.php:157
 msgid "Connected to a contact, or generational fruit"
 msgstr "Kapcsolattartóhoz vagy generációs gyümölcshöz kapcsolódva"
 
-#: dt-contacts/base-setup.php:146
+#: dt-contacts/base-setup.php:151
 msgid "Collaborators"
 msgstr "Munkatársak"
 
-#: dt-contacts/base-setup.php:167 dt-users/users.php:162
+#: dt-contacts/base-setup.php:155
+msgid "Private Connection"
+msgstr "Privát csatlakozás"
+
+#: dt-contacts/base-setup.php:184 dt-users/users.php:162
 msgid "Languages"
 msgstr "Nyelvek"
 
-#: dt-contacts/base-setup.php:176 template-settings.php:179
+#: dt-contacts/base-setup.php:193 template-settings.php:179
 msgid "Phone"
 msgstr "Telefon"
 
-#: dt-contacts/base-setup.php:184
+#: dt-contacts/base-setup.php:201
 msgid "Signal"
 msgstr "Signal"
 
-#: dt-contacts/base-setup.php:189
+#: dt-contacts/base-setup.php:206
 msgid "Viber"
 msgstr "Viber"
 
-#: dt-contacts/base-setup.php:194
+#: dt-contacts/base-setup.php:211
 #, fuzzy
 #| msgid "Whatsapp"
 msgid "WhatsApp"
 msgstr "Whatsapp"
 
-#: dt-contacts/base-setup.php:201
-#: dt-core/configuration/config-site-defaults.php:342
+#: dt-contacts/base-setup.php:218
+#: dt-core/configuration/config-site-defaults.php:327
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
 #: dt-users/users.php:129 template-settings.php:166
 msgid "Email"
 msgstr "Email"
 
-#: dt-contacts/base-setup.php:209 dt-groups/base-setup.php:356
-#: dt-people-groups/people-groups-base.php:194 template-settings.php:190
+#: dt-contacts/base-setup.php:227 dt-groups/base-setup.php:354
+#: dt-people-groups/people-groups-base.php:210 template-settings.php:190
 msgid "Address"
 msgstr "Lakcím"
 
-#: dt-contacts/base-setup.php:241
+#: dt-contacts/base-setup.php:244
+msgid "Facebook"
+msgstr "Facebook"
+
+#: dt-contacts/base-setup.php:252
 msgid "Other Social Links"
 msgstr "Egyéb közösségi linkek"
 
-#: dt-contacts/base-setup.php:250
+#: dt-contacts/base-setup.php:261
+#, fuzzy
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Kapcsolatok más %-hez"
 
-#: dt-contacts/base-setup.php:251
+#: dt-contacts/base-setup.php:262
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr ""
 "A kapcsolati személy kapcsolata más kapcsolati személlyel a rendszeren  belül"
 
-#: dt-contacts/base-setup.php:265 dt-users/template-user-management.php:241
+#: dt-contacts/base-setup.php:273 dt-contacts/module-access.php:1175
+#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
+#: template-settings.php:714
+msgid "Gender"
+msgstr "Nem"
+
+#: dt-contacts/base-setup.php:276 dt-users/template-user-management.php:241
 msgid "Male"
 msgstr "Férfi"
 
-#: dt-contacts/base-setup.php:266 dt-users/template-user-management.php:242
+#: dt-contacts/base-setup.php:277 dt-users/template-user-management.php:242
 msgid "Female"
 msgstr "Nő"
 
-#: dt-contacts/base-setup.php:273
+#: dt-contacts/base-setup.php:284
 msgid "Age"
 msgstr "Kor"
 
-#: dt-contacts/base-setup.php:277
+#: dt-contacts/base-setup.php:288
 msgid "Under 18 years old"
 msgstr "18 év alatti"
 
-#: dt-contacts/base-setup.php:278
+#: dt-contacts/base-setup.php:289
 msgid "18-25 years old"
 msgstr "18-25 éves"
 
-#: dt-contacts/base-setup.php:279
+#: dt-contacts/base-setup.php:290
 msgid "26-40 years old"
 msgstr "26-40 éves"
 
-#: dt-contacts/base-setup.php:280
+#: dt-contacts/base-setup.php:291
 msgid "Over 40 years old"
 msgstr "40 év feletti"
 
-#: dt-contacts/base-setup.php:288 dt-groups/base-setup.php:101
-#: dt-people-groups/people-groups-base.php:150
+#: dt-contacts/base-setup.php:299 dt-groups/base-setup.php:101
+#: dt-people-groups/people-groups-base.php:166
 msgid "Requires Update"
 msgstr "Frissítés szükséges"
 
-#: dt-contacts/base-setup.php:295
+#: dt-contacts/base-setup.php:305 dt-contacts/module-access.php:142
+#: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
+msgid "Contact Status"
+msgstr "Kapcsolat állapota"
+
+#: dt-contacts/base-setup.php:306
 msgctxt "Contact Status field description"
 msgid ""
 "The Contact Status describes the progress in communicating with the contact."
@@ -2299,17 +1869,26 @@ msgstr ""
 "A kapcsolati státusz leírja a kommunikáció előrehaladását a kapcsolati "
 "személlyel"
 
-#: dt-contacts/base-setup.php:299 dt-groups/base-setup.php:117
+#: dt-contacts/base-setup.php:313 dt-groups/base-setup.php:117
 #: dt-users/users.php:177
 msgid "Active"
 msgstr "Aktív"
 
-#: dt-contacts/base-setup.php:300
+#: dt-contacts/base-setup.php:314
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "A névjegy feldolgozás alatt áll és/vagy folyamatosan frissül."
 
-#: dt-contacts/base-setup.php:306
+#: dt-contacts/base-setup.php:319
+msgid "New Contact"
+msgstr "Új névjegy"
+
+#: dt-contacts/base-setup.php:320
+msgctxt "Contact Status field description"
+msgid "The contact is new in the system."
+msgstr "A névjegy új a rendszerben"
+
+#: dt-contacts/base-setup.php:326
 msgctxt "Contact Status field description"
 msgid ""
 "This contact has made it known that they no longer want to continue or you "
@@ -2317,76 +1896,188 @@ msgid ""
 msgstr ""
 "Ez a névjegy kérte, hogy nem szeretné folytatni vagy vele nem folytatják."
 
-#: dt-contacts/base-setup.php:341 dt-contacts/base-setup.php:370
+#: dt-contacts/base-setup.php:332 dt-groups/base-setup.php:134
+#: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
+msgid "Assigned To"
+msgstr "Kiosztva"
+
+#: dt-contacts/base-setup.php:333
+msgid ""
+"Select the main person who is responsible for reporting on this contact."
+msgstr ""
+" Válaszd ki azt az embert, aki felelős az adott kapcsolati személlyel "
+"kapcsolatosan jelentést adni."
+
+#: dt-contacts/base-setup.php:343
+msgid "Sub-assigned to"
+msgstr "Alkiosztva"
+
+#: dt-contacts/base-setup.php:344
+msgid ""
+"Contact or User assisting the Assigned To user to follow up with the contact."
+msgstr ""
+"A kapcsolat vagy felhasználó, amely segíti a hozzárendelt felhasználót a "
+"kapcsolat nyomon követésében."
+
+#: dt-contacts/base-setup.php:355
+msgid "Sub-assigned on other Contacts"
+msgstr "Delelgálva más kapcsolatokra"
+
+#: dt-contacts/base-setup.php:356
+msgid "Contacts this contacts is subassigned on"
+msgstr "Kapcsolatok, amikre ez a kapcsolat delegálva van"
+
+#: dt-contacts/base-setup.php:368 dt-contacts/base-setup.php:733
+#: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
+#: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
+#: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
+msgid "Personal"
+msgstr "Személyes"
+
+#: dt-contacts/base-setup.php:372
+#: dt-core/configuration/config-site-defaults.php:330
+msgid "Web"
+msgstr "Web"
+
+#: dt-contacts/base-setup.php:376
+msgid "Transfer"
+msgstr "Átvitel"
+
+#: dt-contacts/base-setup.php:378
+msgid ""
+"Contacts transferred from a partnership with another Disciple.Tools site."
+msgstr ""
+"Egy másik Disciple.Tools oldallal való partnerségből átvett kapcsolatok."
+
+#: dt-contacts/base-setup.php:391 dt-metrics/contacts/sources.php:90
+#: dt-users/user-hooks-and-config.php:616
+msgid "Sources"
+msgstr "Források"
+
+#: dt-contacts/base-setup.php:392
+msgctxt "Optional Documentation"
+msgid "The website, event or location this contact came from."
+msgstr "A weboldal, esemény vagy helyszín, ahonnan a kapcsolat érkezett."
+
+#: dt-contacts/base-setup.php:433 dt-contacts/base-setup.php:465
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "%s archiválása"
 
-#: dt-contacts/base-setup.php:348
+#: dt-contacts/base-setup.php:440
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "%s típusának módosítása"
 
-#: dt-contacts/base-setup.php:354
+#: dt-contacts/base-setup.php:446
 msgid "See duplicates"
 msgstr "Másolatok megtekintése"
 
-#: dt-contacts/base-setup.php:371
+#: dt-contacts/base-setup.php:466
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "Biztos %s archiválásában?"
 
-#: dt-contacts/base-setup.php:378
+#: dt-contacts/base-setup.php:473
 msgid "Archive"
 msgstr "Archívum"
 
-#: dt-contacts/base-setup.php:437
-#: dt-core/configuration/config-site-defaults.php:544
-#: dt-groups/base-setup.php:621 template-settings.php:212
+#: dt-contacts/base-setup.php:484 dt-contacts/module-access.php:432
+#: dt-contacts/module-access.php:463 dt-contacts/module-access.php:494
+msgid "Choose an option:"
+msgstr "Válasszon lehetőséget:"
+
+#: dt-contacts/base-setup.php:508 dt-contacts/module-access.php:454
+#: dt-contacts/module-access.php:485 dt-contacts/module-access.php:513
+msgid "Confirm"
+msgstr "Megerősítés"
+
+#: dt-contacts/base-setup.php:532
+#: dt-core/configuration/config-site-defaults.php:518
+#: dt-groups/base-setup.php:607 template-settings.php:212
 msgid "Other"
 msgstr "Egyéb"
 
-#: dt-contacts/base-setup.php:496 dt-groups/base-setup.php:1042
-#: dt-posts/custom-post-type.php:463
+#: dt-contacts/base-setup.php:623
+msgid "This record might be a duplicate of: "
+msgstr "Ez a bejegyzés a következő duplikátuma lehet:"
+
+#: dt-contacts/base-setup.php:629 dt-contacts/duplicates-merging.php:485
+#: dt-contacts/duplicates-merging.php:567
+msgid "Duplicate Checker"
+msgstr "Másolat ellenőrző"
+
+#: dt-contacts/base-setup.php:668 dt-groups/base-setup.php:1028
+#: dt-posts/custom-post-type.php:468
 msgid "Default Filters"
 msgstr "Alapértelmezett szűrők"
 
-#: dt-contacts/base-setup.php:506
+#: dt-contacts/base-setup.php:678
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Minden megtekinthető %s"
 
-#: dt-contacts/base-setup.php:517 dt-groups/base-setup.php:1056
-#: dt-posts/custom-post-type.php:496
+#: dt-contacts/base-setup.php:689 dt-groups/base-setup.php:1042
+#: dt-posts/custom-post-type.php:501
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "Kedvenc %s"
 
-#: dt-contacts/base-setup.php:523 dt-groups/base-setup.php:1061
-#: dt-posts/custom-post-type.php:200 dt-posts/custom-post-type.php:502
+#: dt-contacts/base-setup.php:695 dt-groups/base-setup.php:1047
+#: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:507
 msgid "Favorite"
 msgstr "Kedvenc"
 
-#: dt-contacts/base-setup.php:529 dt-groups/base-setup.php:1067
-#: dt-posts/custom-post-type.php:511
+#: dt-contacts/base-setup.php:701 dt-groups/base-setup.php:1053
+#: dt-posts/custom-post-type.php:516
 msgid "My Recently Viewed"
 msgstr "Legutóbb megtekintett"
 
-#: dt-contacts/base-setup.php:534 dt-groups/base-setup.php:1072
-#: dt-posts/custom-post-type.php:516
+#: dt-contacts/base-setup.php:706 dt-groups/base-setup.php:1058
+#: dt-posts/custom-post-type.php:521
 msgid "Last 30 viewed"
 msgstr "30 legutóbb megtekintett"
 
-#: dt-contacts/base-setup.php:564 dt-contacts/base-setup.php:572
-#: dt-contacts/base-setup.php:590 dt-contacts/base-setup.php:591
+#: dt-contacts/base-setup.php:713
+#, fuzzy
+#| msgid "Assigned Contacts"
+msgid "My Assigned Contacts"
+msgstr "Kiosztott Névjegyek"
+
+#: dt-contacts/base-setup.php:723
+msgid "My Follow-Up"
+msgstr "Utógondozásom"
+
+#: dt-contacts/base-setup.php:724 dt-contacts/module-access.php:858
+#: dt-contacts/module-access.php:881 dt-contacts/module-access.php:906
+#: dt-groups/base-setup.php:946
+msgid "Assigned to me"
+msgstr "Feladatom"
+
+#: dt-contacts/base-setup.php:725 dt-contacts/module-access.php:859
+#: dt-contacts/module-access.php:882 dt-contacts/module-access.php:907
+msgid "Sub-assigned to me"
+msgstr "Alfeladatom"
+
+#: dt-contacts/base-setup.php:745
+msgctxt "Personal records"
+msgid "Connected %s"
+msgstr "Csatolt %s"
+
+#: dt-contacts/base-setup.php:769 dt-contacts/base-setup.php:777
+#: dt-contacts/base-setup.php:813 dt-contacts/base-setup.php:814
 msgid "Shared with me"
 msgstr "Velem megosztva"
 
-#: dt-contacts/base-setup.php:699
+#: dt-contacts/base-setup.php:817 dt-contacts/base-setup.php:818
+msgid "Subassigned only"
+msgstr "Csak delegált"
+
+#: dt-contacts/base-setup.php:971
 msgid "This %s is archived"
 msgstr "Ez a(z) %s archiválva van"
 
-#: dt-contacts/base-setup.php:701
+#: dt-contacts/base-setup.php:973
 msgid "Restore"
 msgstr "Visszaállít"
 
@@ -2469,6 +2160,7 @@ msgid "Minor transfer error."
 msgstr "Kisebb Átviteli Hiba"
 
 #: dt-contacts/contacts-transfer.php:479
+#, fuzzy
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "Ez a kapcsolati személy irányítva volt %-hoz további utógondozásra"
 
@@ -2498,195 +2190,13 @@ msgstr "kitakart név"
 msgid "redacted"
 msgstr "kitakart"
 
-#: dt-contacts/dmm-module.php:48
-msgid "Private Connection"
-msgstr "Privát csatlakozás"
-
-#: dt-contacts/dmm-module.php:58 dt-metrics/combined/site-links.php:80
-#: dt-metrics/combined/site-links.php:83
-msgid "Faith Milestones"
-msgstr "Hitbeli Mérföldkövek"
-
-#: dt-contacts/dmm-module.php:59
-msgctxt "Optional Documentation"
-msgid ""
-"Assign which milestones the contact has reached in their faith journey. "
-"These are points in a contact’s spiritual journey worth celebrating but can "
-"happen in any order."
-msgstr ""
-"Jelölje ki, hogy a kapcsolat milyen mérföldköveket ért el a hit útján. Ezek "
-"olyan pontok a kapcsolat lelki útjában, amelyeket érdemes megünnepelni, de "
-"bármilyen sorrendben megtörténhetnek."
-
-#: dt-contacts/dmm-module.php:63
-msgid "Has Bible"
-msgstr "Van Bibliája"
-
-#: dt-contacts/dmm-module.php:68
-msgid "Reading Bible"
-msgstr "Olvassa a Bibliát"
-
-#: dt-contacts/dmm-module.php:73
-msgid "States Belief"
-msgstr "Megvallja a hitét"
-
-#: dt-contacts/dmm-module.php:78
-msgid "Can Share Gospel/Testimony"
-msgstr "Meg tudja osztani az Evangéliumot/Bizonyságtételét"
-
-#: dt-contacts/dmm-module.php:83
-msgid "Sharing Gospel/Testimony"
-msgstr "Megosztja az Evangéliumot/Bizonyságtételét"
-
-#: dt-contacts/dmm-module.php:88 dt-contacts/dmm-module.php:201
-msgid "Baptized"
-msgstr "Bemerítkezett"
-
-#: dt-contacts/dmm-module.php:93
-msgid "Baptizing"
-msgstr "Bemerít"
-
-#: dt-contacts/dmm-module.php:98
-msgid "In Church/Group"
-msgstr "Gyülekezetben/Csoportban"
-
-#: dt-contacts/dmm-module.php:103
-msgid "Starting Churches"
-msgstr "Gyülekezeteket plántál"
-
-#: dt-contacts/dmm-module.php:114
-msgid "Faith Status"
-msgstr "Hit állapota"
-
-#: dt-contacts/dmm-module.php:119
-msgid "Seeker"
-msgstr "Kereső"
-
-#: dt-contacts/dmm-module.php:122
-msgid "Believer"
-msgstr "Hívő"
-
-#: dt-contacts/dmm-module.php:125
-msgid "Leader"
-msgstr "Vezető"
-
-#: dt-contacts/dmm-module.php:133
-msgid "Sub-assigned to"
-msgstr "Alkiosztva"
-
-#: dt-contacts/dmm-module.php:134
-msgid ""
-"Contact or User assisting the Assigned To user to follow up with the contact."
-msgstr ""
-"A kapcsolat vagy felhasználó, amely segíti a hozzárendelt felhasználót a "
-"kapcsolat nyomon követésében."
-
-#: dt-contacts/dmm-module.php:145
-msgid "Sub-assigned on other Contacts"
-msgstr "Delelgálva más kapcsolatokra"
-
-#: dt-contacts/dmm-module.php:146
-msgid "Contacts this contacts is subassigned on"
-msgstr "Kapcsolatok, amikre ez a kapcsolat delegálva van"
-
-#: dt-contacts/dmm-module.php:158
-msgid "Is Coaching"
-msgstr "Képzést tart"
-
-#: dt-contacts/dmm-module.php:159
-msgctxt "Optional Documentation"
-msgid "Who is this contact coaching"
-msgstr "Kit mentorál ez a kapcsolati személy"
-
-#: dt-contacts/dmm-module.php:168
-msgid "Baptism Date"
-msgstr "Bemerítkezés Időpontja"
-
-#: dt-contacts/dmm-module.php:176 dt-metrics/counter.php:157
-msgid "Baptism Generation"
-msgstr "Bemerítkezés Generáció"
-
-#: dt-contacts/dmm-module.php:181
-msgid "Coached by"
-msgstr "Mentorálja"
-
-#: dt-contacts/dmm-module.php:182
-msgctxt "Optional Documentation"
-msgid "Who is coaching this contact"
-msgstr "Ki mentorálja ezt a kapcsolati személyt"
-
-#: dt-contacts/dmm-module.php:191
-#: dt-metrics/personal/activity-highlights.php:68
-msgid "Baptized by"
-msgstr "Bemerítette"
-
-#: dt-contacts/dmm-module.php:192
-msgctxt "Optional Documentation"
-msgid "Who baptized this contact"
-msgstr "Ki merítette be ezt a kapcsolati személyt"
-
-#: dt-contacts/dmm-module.php:202
-msgctxt "Optional Documentation"
-msgid "Who this contact has baptized"
-msgstr "Kit merített be ez a kapcsolati személy"
-
-#: dt-contacts/dmm-module.php:211 dt-groups/base-setup.php:373
-#: dt-people-groups/people-groups-base.php:96
-#: dt-people-groups/people-groups-base.php:106
-msgid "People Groups"
-msgstr "Embercsoportok"
-
-#: dt-contacts/dmm-module.php:212
-msgctxt "Optional Documentation"
-msgid "The people groups represented by this contact."
-msgstr "A kapcsolat által képviselt emberi csoportok."
-
-#: dt-contacts/dmm-module.php:240
-msgid "Meeting Scheduled"
-msgstr "Találkozó Betervezve"
-
-#: dt-contacts/dmm-module.php:249
-msgid "Meeting Complete"
-msgstr "Találkozó Megtörtént"
-
-#: dt-contacts/dmm-module.php:258
-msgid "Meeting No-show"
-msgstr "Találkozón nem jelent meg"
-
-#: dt-contacts/dmm-module.php:276
-msgid "Faith"
-msgstr "Hit"
-
-#: dt-contacts/dmm-module.php:357
-msgctxt "Personal records"
-msgid "Connected %s"
-msgstr "Csatolt %s"
-
-#: dt-contacts/dmm-module.php:370 dt-contacts/dmm-module.php:380
-#: dt-contacts/dmm-module.php:390 dt-contacts/dmm-module.php:391
-msgid "Coached by me"
-msgstr "Általam mentorált"
-
-#: dt-contacts/dmm-module.php:409
-#: dt-metrics/personal/activity-highlights.php:233
-msgid "Quick Actions"
-msgstr "Gyors Műveletek"
-
-#: dt-contacts/dmm-module.php:490
-msgid "Who was this contact baptized by and when?"
-msgstr "Ki és mikor merítette be ezt a kapcsolati személyt"
-
-#: dt-contacts/dmm-module.php:504
-msgctxt "input field placeholder"
-msgid "Search multipliers and contacts"
-msgstr "Sokszorozók és kapcsolatok felkutatása"
-
 #: dt-contacts/duplicates-merging.php:442
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(Másolatból): %s"
 
 #: dt-contacts/duplicates-merging.php:563
+#, fuzzy
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "Ez a bejegyzés egy duplikátum, és már %2$ része."
@@ -2700,6 +2210,489 @@ msgstr "%1$s betette %2$s-t ebbe a bejegyzésbe"
 #: dt-contacts/duplicates-merging.php:588
 msgid "View Duplicates"
 msgstr "Másolatok megtekintése"
+
+#: dt-contacts/module-access.php:59
+msgid "Dispatcher"
+msgstr "Diszpécser"
+
+#: dt-contacts/module-access.php:66
+msgid "Partner"
+msgstr "Partner"
+
+#: dt-contacts/module-access.php:73
+msgid "Digital Responder"
+msgstr "Digitális Válaszoló"
+
+#: dt-contacts/module-access.php:102 dt-metrics/combined/site-links.php:79
+#: dt-metrics/combined/site-links.php:82
+msgid "Seeker Path"
+msgstr "Kereső Út"
+
+#: dt-contacts/module-access.php:103
+msgctxt "Seeker Path field description"
+msgid ""
+"Set the status of your progression with the contact. These are the steps "
+"that happen in a specific order to help a contact move forward."
+msgstr ""
+"Állítsa be a haladását ezzel a névjeggyel. Ezek a lépések történnek meg egy "
+"bizonyos sorrendben, hogy segítsen haladni a névjegynek."
+
+#: dt-contacts/module-access.php:107
+msgid "Contact Attempt Needed"
+msgstr "Kapcsolatfelvétel Szükséges"
+
+#: dt-contacts/module-access.php:111 dt-contacts/module-access.php:273
+msgid "Contact Attempted"
+msgstr "Kapcsolatfelvétel megtörtént"
+
+#: dt-contacts/module-access.php:115 dt-contacts/module-access.php:282
+msgid "Contact Established"
+msgstr "Kapcsolatfelvétel sikeres"
+
+#: dt-contacts/module-access.php:119
+msgid "First Meeting Scheduled"
+msgstr "Első Találkozó Betervezve"
+
+#: dt-contacts/module-access.php:123
+msgid "First Meeting Complete"
+msgstr "Első Találkozó Megtörtént"
+
+#: dt-contacts/module-access.php:127 dt-metrics/counter.php:140
+msgid "Ongoing Meetings"
+msgstr "Folyamatban Lévő Meetingek"
+
+#: dt-contacts/module-access.php:131
+msgid "Being Coached"
+msgstr "Mentorálva"
+
+#: dt-contacts/module-access.php:148
+msgid "Not Ready"
+msgstr "Nem kész"
+
+#: dt-contacts/module-access.php:149
+msgctxt "Contact Status field description"
+msgid ""
+"There is not enough information to move forward with the contact at this "
+"time."
+msgstr "Nincs elég információ jelenleg továbbmenni ezzel a névjeggyel."
+
+#: dt-contacts/module-access.php:153
+msgid "Dispatch Needed"
+msgstr "Kiküldés szükséges"
+
+#: dt-contacts/module-access.php:154
+msgctxt "Contact Status field description"
+msgid "This contact needs to be assigned to a multiplier."
+msgstr "Ezt a névjegyet be kell osztani egy sokszorozóhoz."
+
+#: dt-contacts/module-access.php:158
+msgid "Waiting to be accepted"
+msgstr "Elfogadásra váró"
+
+#: dt-contacts/module-access.php:159
+msgctxt "Contact Status field description"
+msgid ""
+"The contact has been assigned to someone, but has not yet been accepted by "
+"that person."
+msgstr ""
+"Ez a névjegy be van osztva valakihez, de ez a személy még nem fogadta el."
+
+#: dt-contacts/module-access.php:164
+msgid "Paused"
+msgstr "Szüneteltetve"
+
+#: dt-contacts/module-access.php:165
+msgctxt "Contact Status field description"
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
+msgstr "Ez a névjegy függőben van (pl. nyaraláson van vagy nem válaszol)"
+
+#: dt-contacts/module-access.php:180
+msgid "Reason Not Ready"
+msgstr "Az ok, hogy még nem áll készen"
+
+#: dt-contacts/module-access.php:181
+msgctxt "Optional Documentation"
+msgid "The main reason the contact is not ready to be assigned to a user."
+msgstr ""
+"A fő ok, hogy a kapcsolati személy nem áll készen a felhasználóval való "
+"kapcsolódásra"
+
+#: dt-contacts/module-access.php:188
+msgid "Insufficient Contact Information"
+msgstr "Elégtelen Névjegy Információ"
+
+#: dt-contacts/module-access.php:191
+msgid "Unknown Location"
+msgstr "Ismeretlen Hely"
+
+#: dt-contacts/module-access.php:194
+msgid "Only wants media"
+msgstr "Csak médiát szeretne"
+
+#: dt-contacts/module-access.php:197
+msgid "Outside Area"
+msgstr "Területen Kívül"
+
+#: dt-contacts/module-access.php:200
+msgid "Needs Review"
+msgstr "Vizsgálat Szükséges"
+
+#: dt-contacts/module-access.php:203
+msgid "Waiting for Confirmation"
+msgstr "Megerősítésre Vár"
+
+#: dt-contacts/module-access.php:211
+msgid "Reason Paused"
+msgstr "Szüneteltetés oka"
+
+#: dt-contacts/module-access.php:212
+msgctxt "Optional Documentation"
+msgid ""
+"A paused contact is one you are not currently interacting with but expect to "
+"in the future."
+msgstr ""
+"A szüneteltetett kapcsolati személy az, akivel jelenleg nem állsz "
+"kapcsolatban, de a jövőben szándékozol kapcsolatba lépni vele."
+
+#: dt-contacts/module-access.php:216
+msgctxt "Reason Paused label"
+msgid "Contact on vacation"
+msgstr "Névjegy nyaral"
+
+#: dt-contacts/module-access.php:217
+msgctxt "Reason Paused label"
+msgid "Contact not responding"
+msgstr "Névjegy nem válaszol"
+
+#: dt-contacts/module-access.php:218
+msgctxt "Reason Paused label"
+msgid "Contact not available"
+msgstr "Névjegy nem elérhető"
+
+#: dt-contacts/module-access.php:219
+msgctxt "Reason Paused label"
+msgid "Contact has little interest/hunger"
+msgstr "Névjegynek kicsi az érdeklődése/étványa"
+
+#: dt-contacts/module-access.php:220
+msgctxt "Reason Paused label"
+msgid "Contact shows no initiative"
+msgstr "Névjegy nem mutat kezdeményezést"
+
+#: dt-contacts/module-access.php:221
+msgctxt "Reason Paused label"
+msgid "Contact has questionable motives"
+msgstr "Névjegynek kérdéses szándékai vannak "
+
+#: dt-contacts/module-access.php:222
+msgctxt "Reason Paused label"
+msgid "Ball is in the contact's court"
+msgstr "A labda a névjegy térfelén"
+
+#: dt-contacts/module-access.php:223
+msgctxt "Reason Paused label"
+msgid "We want to see if/how the contact responds to automated text messages"
+msgstr ""
+"Szeretnénk látni, hogy a névjegy hogyan válaszol/válaszol-e az automatikus "
+"üzenetekre"
+
+#: dt-contacts/module-access.php:230
+msgid "Reason Archived"
+msgstr "Indoklás archiválva"
+
+#: dt-contacts/module-access.php:231
+msgctxt "Optional Documentation"
+msgid "A closed contact is one you can't or don't wish to interact with."
+msgstr ""
+"A lezárt kapcsolati személy az, akivel nem tudsz, vagy nem kívánsz "
+"kapcsolatba lépni."
+
+#: dt-contacts/module-access.php:235
+msgctxt "Reason Closed label"
+msgid "Duplicate"
+msgstr "Másolat készítése"
+
+#: dt-contacts/module-access.php:236
+msgctxt "Reason Closed label"
+msgid "Insufficient contact info"
+msgstr "Elégtelen névjegy infó"
+
+#: dt-contacts/module-access.php:237
+msgctxt "Reason Closed label"
+msgid "Denies submitting contact request"
+msgstr "Tagadja a névjegy kérés beküldését"
+
+#: dt-contacts/module-access.php:238
+msgctxt "Reason Closed label"
+msgid "Hostile, playing games or self gain"
+msgstr "Ellenséges, játszik vagy öncélú"
+
+#: dt-contacts/module-access.php:239
+msgctxt "Reason Closed label"
+msgid "Only wants to argue or debate"
+msgstr "Csak vitatkozni vagy kötekedni akar"
+
+#: dt-contacts/module-access.php:240
+msgctxt "Reason Closed label"
+msgid "Just wanted media or book"
+msgstr "Csak a médiát vagy könyvet szerette volna"
+
+#: dt-contacts/module-access.php:241
+msgctxt "Reason Closed label"
+msgid "No longer interested"
+msgstr "Már nem érdekli"
+
+#: dt-contacts/module-access.php:242
+msgctxt "Reason Closed label"
+msgid "No longer responding"
+msgstr "Már nem válaszol"
+
+#: dt-contacts/module-access.php:243
+msgctxt "Reason Closed label"
+msgid "Already in church or connected with others"
+msgstr "Már gyülekezetben vagy kapcsolatban valakivel"
+
+#: dt-contacts/module-access.php:244
+msgctxt "Reason Closed label"
+msgid "Transferred contact to partner"
+msgstr "Partnerhez irányított kapcsolat"
+
+#: dt-contacts/module-access.php:245
+msgctxt "Reason Closed label"
+msgid "Martyred"
+msgstr "Mártír"
+
+#: dt-contacts/module-access.php:246
+msgctxt "Reason Closed label"
+msgid "Moved or relocated"
+msgstr "Költözött vagy áthelyezték"
+
+#: dt-contacts/module-access.php:247
+msgctxt "Reason Closed label"
+msgid "GDPR request"
+msgstr "GDPR kérés"
+
+#: dt-contacts/module-access.php:248
+msgctxt "Reason Closed label"
+msgid "Unknown"
+msgstr "Ismeretlen"
+
+#: dt-contacts/module-access.php:255
+msgid "Accepted"
+msgstr "Elfogadva"
+
+#: dt-contacts/module-access.php:263
+msgid "Campaigns"
+msgstr "Kampányok"
+
+#: dt-contacts/module-access.php:264
+msgctxt "Optional Documentation"
+msgid ""
+"Marketing campaigns or access activities that this contact interacted with."
+msgstr ""
+"Marketing kampányok vagy elérési tevékenységek, amikkel a kapcsolata "
+"érintkezett."
+
+#: dt-contacts/module-access.php:291
+msgid "Meeting Scheduled"
+msgstr "Találkozó Betervezve"
+
+#: dt-contacts/module-access.php:300
+msgid "Meeting Complete"
+msgstr "Találkozó Megtörtént"
+
+#: dt-contacts/module-access.php:309
+msgid "Meeting No-show"
+msgstr "Találkozón nem jelent meg"
+
+#: dt-contacts/module-access.php:358 dt-metrics/combined/critical-path.php:77
+msgid "Follow Up"
+msgstr "Utánkövetés"
+
+#: dt-contacts/module-access.php:557
+msgid "Multipliers"
+msgstr "Sokszorozók"
+
+#: dt-contacts/module-access.php:560
+msgid "Dispatchers"
+msgstr "Diszpécserek"
+
+#: dt-contacts/module-access.php:563
+msgid "Digital Responders"
+msgstr "Digitális Kiérkezők"
+
+#: dt-contacts/module-access.php:570
+msgid "Assign To"
+msgstr "Kiosztás a következőhöz:"
+
+#: dt-contacts/module-access.php:628
+msgid "This contact has been assigned to you."
+msgstr "Ez a névjegy Önhöz lett beosztva."
+
+#: dt-contacts/module-access.php:629
+msgid "Accept"
+msgstr "Elfogad"
+
+#: dt-contacts/module-access.php:630
+msgid "Decline"
+msgstr "Elutasít"
+
+#: dt-contacts/module-access.php:946
+msgctxt "All records"
+msgid "Follow-Up %s"
+msgstr "%s utánkövetése"
+
+#: dt-contacts/module-access.php:954
+msgid "All Follow-Up"
+msgstr "Minden utógondozás"
+
+#: dt-contacts/module-access.php:1170
+msgid "Ready"
+msgstr "Kész"
+
+#: dt-contacts/module-access.php:1171
+msgid "Recent"
+msgstr "Mostani"
+
+#: dt-contacts/module-access.php:1172
+msgid "Location"
+msgstr "Helyszín"
+
+#: dt-contacts/module-access.php:1173
+msgid "Assign"
+msgstr "Kiosz"
+
+#: dt-contacts/module-access.php:1174 dt-users/template-new-user.php:134
+#: template-settings.php:226
+msgid "Language"
+msgstr "Nyelv"
+
+#: dt-contacts/module-access.php:1196
+#: dt-metrics/personal/activity-highlights.php:233
+msgid "Quick Actions"
+msgstr "Gyors Műveletek"
+
+#: dt-contacts/module-baptisms.php:48
+msgid "Baptism Date"
+msgstr "Bemerítkezés Időpontja"
+
+#: dt-contacts/module-baptisms.php:56 dt-metrics/counter.php:157
+msgid "Baptism Generation"
+msgstr "Bemerítkezés Generáció"
+
+#: dt-contacts/module-baptisms.php:61
+#: dt-metrics/personal/activity-highlights.php:68
+msgid "Baptized by"
+msgstr "Bemerítette"
+
+#: dt-contacts/module-baptisms.php:62
+msgctxt "Optional Documentation"
+msgid "Who baptized this contact"
+msgstr "Ki merítette be ezt a kapcsolati személyt"
+
+#: dt-contacts/module-baptisms.php:71 dt-contacts/module-faith.php:73
+msgid "Baptized"
+msgstr "Bemerítkezett"
+
+#: dt-contacts/module-baptisms.php:72
+msgctxt "Optional Documentation"
+msgid "Who this contact has baptized"
+msgstr "Kit merített be ez a kapcsolati személy"
+
+#: dt-contacts/module-baptisms.php:88 dt-contacts/module-faith.php:123
+msgid "Faith"
+msgstr "Hit"
+
+#: dt-contacts/module-baptisms.php:189
+msgid "Who was this contact baptized by and when?"
+msgstr "Ki és mikor merítette be ezt a kapcsolati személyt"
+
+#: dt-contacts/module-coaching.php:47
+msgid "Is Coaching"
+msgstr "Képzést tart"
+
+#: dt-contacts/module-coaching.php:48
+msgctxt "Optional Documentation"
+msgid "Who is this contact coaching"
+msgstr "Kit mentorál ez a kapcsolati személy"
+
+#: dt-contacts/module-coaching.php:57
+msgid "Coached by"
+msgstr "Mentorálja"
+
+#: dt-contacts/module-coaching.php:58
+msgctxt "Optional Documentation"
+msgid "Who is coaching this contact"
+msgstr "Ki mentorálja ezt a kapcsolati személyt"
+
+#: dt-contacts/module-coaching.php:109 dt-contacts/module-coaching.php:119
+#: dt-contacts/module-coaching.php:129 dt-contacts/module-coaching.php:130
+msgid "Coached by me"
+msgstr "Általam mentorált"
+
+#: dt-contacts/module-faith.php:43 dt-metrics/combined/site-links.php:80
+#: dt-metrics/combined/site-links.php:83
+msgid "Faith Milestones"
+msgstr "Hitbeli Mérföldkövek"
+
+#: dt-contacts/module-faith.php:44
+msgctxt "Optional Documentation"
+msgid ""
+"Assign which milestones the contact has reached in their faith journey. "
+"These are points in a contact’s spiritual journey worth celebrating but can "
+"happen in any order."
+msgstr ""
+"Jelölje ki, hogy a kapcsolat milyen mérföldköveket ért el a hit útján. Ezek "
+"olyan pontok a kapcsolat lelki útjában, amelyeket érdemes megünnepelni, de "
+"bármilyen sorrendben megtörténhetnek."
+
+#: dt-contacts/module-faith.php:48
+msgid "Has Bible"
+msgstr "Van Bibliája"
+
+#: dt-contacts/module-faith.php:53
+msgid "Reading Bible"
+msgstr "Olvassa a Bibliát"
+
+#: dt-contacts/module-faith.php:58
+msgid "States Belief"
+msgstr "Megvallja a hitét"
+
+#: dt-contacts/module-faith.php:63
+msgid "Can Share Gospel/Testimony"
+msgstr "Meg tudja osztani az Evangéliumot/Bizonyságtételét"
+
+#: dt-contacts/module-faith.php:68
+msgid "Sharing Gospel/Testimony"
+msgstr "Megosztja az Evangéliumot/Bizonyságtételét"
+
+#: dt-contacts/module-faith.php:78
+msgid "Baptizing"
+msgstr "Bemerít"
+
+#: dt-contacts/module-faith.php:83
+msgid "In Church/Group"
+msgstr "Gyülekezetben/Csoportban"
+
+#: dt-contacts/module-faith.php:88
+msgid "Starting Churches"
+msgstr "Gyülekezeteket plántál"
+
+#: dt-contacts/module-faith.php:98
+msgid "Faith Status"
+msgstr "Hit állapota"
+
+#: dt-contacts/module-faith.php:103
+msgid "Seeker"
+msgstr "Kereső"
+
+#: dt-contacts/module-faith.php:106
+msgid "Believer"
+msgstr "Hívő"
+
+#: dt-contacts/module-faith.php:109
+msgid "Leader"
+msgstr "Vezető"
 
 #: dt-contacts/user-module.php:42
 msgid "Corresponds to user"
@@ -2790,28 +2783,28 @@ msgstr "Adminisztrátor"
 msgid "Subscriber"
 msgstr "Feliratkozó"
 
-#: dt-core/configuration/config-site-defaults.php:350
+#: dt-core/configuration/config-site-defaults.php:335
 msgid "Newly Assigned Contact"
 msgstr "Újonnan Kiosztott Névjegy"
 
-#: dt-core/configuration/config-site-defaults.php:355
+#: dt-core/configuration/config-site-defaults.php:340
 msgid "@Mentions"
 msgstr "@Említések"
 
-#: dt-core/configuration/config-site-defaults.php:360
+#: dt-core/configuration/config-site-defaults.php:345
 msgid "New Comments"
 msgstr "Új Hozzászólások"
 
-#: dt-core/configuration/config-site-defaults.php:370
+#: dt-core/configuration/config-site-defaults.php:355
 msgid "Contact Info Changed"
 msgstr "Névjegy Infó Változott"
 
-#: dt-core/configuration/config-site-defaults.php:375
+#: dt-core/configuration/config-site-defaults.php:360
 #: dt-core/migrations/0012-typo-rename.php:13
 msgid "Contact Milestones and Group Health metrics"
 msgstr "Névjegy Mérföldkövek"
 
-#: dt-core/configuration/config-site-defaults.php:400
+#: dt-core/configuration/config-site-defaults.php:374
 msgid ""
 "This contact is active but there is no record of anybody contacting them. "
 "Please do contact them."
@@ -2819,15 +2812,15 @@ msgstr ""
 "Ez a névjegy aktív, de nincs feljegyezés kapcsolatfelvételről. Kérlek vegye "
 "fel vele a kapcsolatot."
 
-#: dt-core/configuration/config-site-defaults.php:406
+#: dt-core/configuration/config-site-defaults.php:380
 msgid "Please try connecting with this contact again."
 msgstr "Kérjük ismét próbáljon meg kapcsolódni ezzel a névjeggyel."
 
-#: dt-core/configuration/config-site-defaults.php:412
-#: dt-core/configuration/config-site-defaults.php:418
-#: dt-core/configuration/config-site-defaults.php:424
-#: dt-core/configuration/config-site-defaults.php:430
-#: dt-core/configuration/config-site-defaults.php:436
+#: dt-core/configuration/config-site-defaults.php:386
+#: dt-core/configuration/config-site-defaults.php:392
+#: dt-core/configuration/config-site-defaults.php:398
+#: dt-core/configuration/config-site-defaults.php:404
+#: dt-core/configuration/config-site-defaults.php:410
 msgid ""
 "We haven't heard about this person in a while. Do you have an update for "
 "this contact?"
@@ -2835,108 +2828,108 @@ msgstr ""
 "Errőr a személyről régen hallottunk utoljára. Van fejlemény erről a "
 "névjegyről?"
 
-#: dt-core/configuration/config-site-defaults.php:446
+#: dt-core/configuration/config-site-defaults.php:420
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "Egy ideje nem hallottunk erről a csoportról. Van fejlemény róla?"
 
-#: dt-core/configuration/config-site-defaults.php:477
+#: dt-core/configuration/config-site-defaults.php:451
 msgid "Personal Phone"
 msgstr "Személyes Telefon"
 
-#: dt-core/configuration/config-site-defaults.php:480
+#: dt-core/configuration/config-site-defaults.php:454
 msgid "Personal phone is private to the team, not for distribution."
 msgstr "Személyes telefon a csapat számára elérhető, nem megosztandó."
 
-#: dt-core/configuration/config-site-defaults.php:484
+#: dt-core/configuration/config-site-defaults.php:458
 msgid "Personal Email"
 msgstr "Személyes Email"
 
-#: dt-core/configuration/config-site-defaults.php:487
+#: dt-core/configuration/config-site-defaults.php:461
 msgid "Personal email is private to the team, not for distribution."
 msgstr "Személyes email a csapat számára elérhető, nem megosztandó."
 
-#: dt-core/configuration/config-site-defaults.php:491
+#: dt-core/configuration/config-site-defaults.php:465
 msgid "Personal Address"
 msgstr "Személyes Lakcím"
 
-#: dt-core/configuration/config-site-defaults.php:494
+#: dt-core/configuration/config-site-defaults.php:468
 msgid "Personal address is private to the team, not for distribution."
 msgstr "Személyes lakcím a csapat számára elérhető, nem megosztandó."
 
-#: dt-core/configuration/config-site-defaults.php:498
+#: dt-core/configuration/config-site-defaults.php:472
 msgid "Work Phone"
 msgstr "Munka Telefon"
 
-#: dt-core/configuration/config-site-defaults.php:501
+#: dt-core/configuration/config-site-defaults.php:475
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr "Munka telefon a csapat számára elérhető, nem megosztandó."
 
-#: dt-core/configuration/config-site-defaults.php:505
+#: dt-core/configuration/config-site-defaults.php:479
 msgid "Work Email"
 msgstr "Munka Email"
 
-#: dt-core/configuration/config-site-defaults.php:508
+#: dt-core/configuration/config-site-defaults.php:482
 msgid "Work email is for distribution to contacts and seekers."
 msgstr "Munka email a csapat számára elérhető, nem megosztandó."
 
-#: dt-core/configuration/config-site-defaults.php:512
+#: dt-core/configuration/config-site-defaults.php:486
 msgid "Work Facebook"
 msgstr "Munka Facebook"
 
-#: dt-core/configuration/config-site-defaults.php:515
+#: dt-core/configuration/config-site-defaults.php:489
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr "Munka Facebook a csapat számára elérhető, nem megosztandó."
 
-#: dt-core/configuration/config-site-defaults.php:519
+#: dt-core/configuration/config-site-defaults.php:493
 msgid "Work WhatsApp"
 msgstr "Munka WhatsApp"
 
-#: dt-core/configuration/config-site-defaults.php:522
+#: dt-core/configuration/config-site-defaults.php:496
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "Munka WhatsApp a csapat számára elérhető, nem megosztandó."
 
-#: dt-core/configuration/config-site-defaults.php:529
+#: dt-core/configuration/config-site-defaults.php:503
 msgid "thumbs up"
 msgstr "tetszik"
 
-#: dt-core/configuration/config-site-defaults.php:530
+#: dt-core/configuration/config-site-defaults.php:504
 msgid "heart"
 msgstr "szív"
 
-#: dt-core/configuration/config-site-defaults.php:531
+#: dt-core/configuration/config-site-defaults.php:505
 msgid "laugh"
 msgstr "nevetés"
 
-#: dt-core/configuration/config-site-defaults.php:532
+#: dt-core/configuration/config-site-defaults.php:506
 msgid "wow"
 msgstr "hűha"
 
-#: dt-core/configuration/config-site-defaults.php:533
+#: dt-core/configuration/config-site-defaults.php:507
 msgid "sad"
 msgstr "szomorú"
 
-#: dt-core/configuration/config-site-defaults.php:534
+#: dt-core/configuration/config-site-defaults.php:508
 msgid "prayer"
 msgstr "ima"
 
-#: dt-core/configuration/config-site-defaults.php:542
+#: dt-core/configuration/config-site-defaults.php:516
 #: dt-login/login-template.php:529
 msgid "Home"
 msgstr "Otthoni"
 
-#: dt-core/configuration/config-site-defaults.php:543
+#: dt-core/configuration/config-site-defaults.php:517
 msgid "Work"
 msgstr "Munka"
 
-#: dt-core/configuration/config-site-defaults.php:553
+#: dt-core/configuration/config-site-defaults.php:527
 msgid "Accepting new contacts"
 msgstr "Új névjegyek elfogadása"
 
-#: dt-core/configuration/config-site-defaults.php:557
+#: dt-core/configuration/config-site-defaults.php:531
 msgid "I'm only investing in existing contacts"
 msgstr "Csak a meglévő névjegyekbe fektetek be"
 
-#: dt-core/configuration/config-site-defaults.php:561
+#: dt-core/configuration/config-site-defaults.php:535
 msgid "I have too many contacts"
 msgstr "Túl sok névjegyem van"
 
@@ -2988,19 +2981,10 @@ msgstr ""
 msgid "To reset your password, visit the following address:"
 msgstr "A jelszó visszaállításához látogasson el a következő oldalra:"
 
-#: dt-core/global-functions.php:549 single-template.php:412
-#: template-new-bulk-post.php:285 template-new-post.php:138
-#: template-new-post.php:175
+#: dt-core/global-functions.php:549 template-new-bulk-post.php:285
+#: template-new-post.php:149 template-new-post.php:186
 msgid "This is required"
 msgstr "Ez szükséges"
-
-#: dt-core/global-functions.php:713
-msgid "Add new tag \"%s\""
-msgstr "Új címke hozzáadása „%s”"
-
-#: dt-core/global-functions.php:714
-msgid "Tag \"%s\" is already being used"
-msgstr "„%s” címke már használatban"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3075,7 +3059,7 @@ msgid "Group"
 msgstr "Csoport"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:61
-#: dt-groups/base-setup.php:436 dt-groups/base-setup.php:620
+#: dt-groups/base-setup.php:422 dt-groups/base-setup.php:606
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:177
@@ -3083,7 +3067,7 @@ msgstr "Csoport"
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
-#: dt-people-groups/people-groups-base.php:175
+#: dt-people-groups/people-groups-base.php:191
 msgid "Groups"
 msgstr "Csoportok"
 
@@ -3172,141 +3156,141 @@ msgstr ""
 "Különleges csoport, mely nem gyülekezetként jön össze (nem próbál "
 "gyülekezetté válni)"
 
-#: dt-groups/base-setup.php:189 dt-groups/base-setup.php:613
+#: dt-groups/base-setup.php:188 dt-groups/base-setup.php:599
 msgid "Church Health"
 msgstr "Gyülekezeti Egészség"
 
-#: dt-groups/base-setup.php:190
+#: dt-groups/base-setup.php:189
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "Kövesd nyomon a csoport/gyülekezet előrehaladását és egészségét"
 
-#: dt-groups/base-setup.php:194
+#: dt-groups/base-setup.php:193
 msgid "Baptism"
 msgstr "Bemerítkezés"
 
-#: dt-groups/base-setup.php:195
+#: dt-groups/base-setup.php:194
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "A csoport bemerít."
 
-#: dt-groups/base-setup.php:199
+#: dt-groups/base-setup.php:198
 msgid "Bible Study"
 msgstr "Bibliatanulmány"
 
-#: dt-groups/base-setup.php:200
+#: dt-groups/base-setup.php:199
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "A csoport tanulmányozza a Bibliát."
 
-#: dt-groups/base-setup.php:204
+#: dt-groups/base-setup.php:203
 msgid "Communion"
 msgstr "Úrvacsora"
 
-#: dt-groups/base-setup.php:205
+#: dt-groups/base-setup.php:204
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "A csoport úrvacsorázik."
 
-#: dt-groups/base-setup.php:209
+#: dt-groups/base-setup.php:208
 msgid "Fellowship"
 msgstr "Közösség"
 
-#: dt-groups/base-setup.php:210
+#: dt-groups/base-setup.php:209
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "A csoport közösségben vesz részt."
 
-#: dt-groups/base-setup.php:214
+#: dt-groups/base-setup.php:213
 msgid "Giving"
 msgstr "Adakozik"
 
-#: dt-groups/base-setup.php:215
+#: dt-groups/base-setup.php:214
 msgctxt "Optional Documentation"
 msgid "The group is giving."
 msgstr "A csoport adakozik"
 
-#: dt-groups/base-setup.php:219
+#: dt-groups/base-setup.php:218
 msgid "Prayer"
 msgstr "Ima"
 
-#: dt-groups/base-setup.php:220
+#: dt-groups/base-setup.php:219
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "A csoport imádkozik,"
 
-#: dt-groups/base-setup.php:224
+#: dt-groups/base-setup.php:223
 msgid "Praise"
 msgstr "Dicsőítés"
 
-#: dt-groups/base-setup.php:225
+#: dt-groups/base-setup.php:224
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "A csoport dicsőít."
 
-#: dt-groups/base-setup.php:229
+#: dt-groups/base-setup.php:228
 msgid "Sharing the Gospel"
 msgstr "Megosztja az Evangéliumot"
 
-#: dt-groups/base-setup.php:230
+#: dt-groups/base-setup.php:229
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
 msgstr "A csoport megosztja az evangéliumot."
 
-#: dt-groups/base-setup.php:234 dt-groups/base-setup.php:297
+#: dt-groups/base-setup.php:233 dt-groups/base-setup.php:295
 msgid "Leaders"
 msgstr "Vezetők"
 
-#: dt-groups/base-setup.php:235
+#: dt-groups/base-setup.php:234
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "A csoportnak vannak vezetői."
 
-#: dt-groups/base-setup.php:239 dt-groups/base-setup.php:414
+#: dt-groups/base-setup.php:238 dt-groups/base-setup.php:400
 msgid "Church Commitment"
 msgstr "Gyülekezeti Elkötelezettség"
 
-#: dt-groups/base-setup.php:240
+#: dt-groups/base-setup.php:239
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "A csoport elkötelezett, hogy gyülekezet legyen."
 
-#: dt-groups/base-setup.php:250 dt-users/template-user-management.php:180
+#: dt-groups/base-setup.php:248 dt-users/template-user-management.php:180
 #: template-settings.php:444 template-settings.php:463
 msgid "Start Date"
 msgstr "Kezdés dátuma"
 
-#: dt-groups/base-setup.php:251
+#: dt-groups/base-setup.php:249
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "A csoport találkozásának kezdeti dátuma"
 
-#: dt-groups/base-setup.php:258
+#: dt-groups/base-setup.php:256
 msgid "Church Start Date"
 msgstr "Gyülekezet kezdésének dátuma"
 
-#: dt-groups/base-setup.php:259
+#: dt-groups/base-setup.php:257
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "Annak a dátuma, mikortól a csoportból gyülekezet lett"
 
-#: dt-groups/base-setup.php:267 dt-users/template-user-management.php:181
+#: dt-groups/base-setup.php:265 dt-users/template-user-management.php:181
 #: template-settings.php:450 template-settings.php:464
 msgid "End Date"
 msgstr "Befejezés dátuma"
 
-#: dt-groups/base-setup.php:268
+#: dt-groups/base-setup.php:266
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr ""
 "Annak a dátuma, amikortól a csoport megszűnt találkozni (amennyiben "
 "alkalmazható)"
 
-#: dt-groups/base-setup.php:278 dt-metrics/records/genmap.php:157
+#: dt-groups/base-setup.php:276 dt-metrics/records/genmap.php:157
 msgid "Member Count"
 msgstr "Tagok Száma"
 
-#: dt-groups/base-setup.php:279
+#: dt-groups/base-setup.php:277
 msgctxt "Optional Documentation"
 msgid ""
 "The number of members in this group. It will automatically be updated when "
@@ -3319,34 +3303,34 @@ msgstr ""
 "hogy olyan személyeket is felvegyen a csoportba, akik esetleg nem "
 "szerepelnek a rendszerben, de tagjai a csoportnak."
 
-#: dt-groups/base-setup.php:287 dt-groups/base-setup.php:568
-#: dt-groups/base-setup.php:612
+#: dt-groups/base-setup.php:285 dt-groups/base-setup.php:554
+#: dt-groups/base-setup.php:598
 msgid "Member List"
 msgstr "Tagok Listája"
 
-#: dt-groups/base-setup.php:288
+#: dt-groups/base-setup.php:286
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "A kapcsolati személyek, akik ennek a csoportnak a tagjai"
 
-#: dt-groups/base-setup.php:307
+#: dt-groups/base-setup.php:305
 msgid "Leader Count"
 msgstr "Vezetők Száma"
 
-#: dt-groups/base-setup.php:315
+#: dt-groups/base-setup.php:313
 msgid "Parent Group"
 msgstr "Szülő Csoport"
 
-#: dt-groups/base-setup.php:316
+#: dt-groups/base-setup.php:314
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
 msgstr "Az a csoport, amely ezt a csoportot alapította"
 
-#: dt-groups/base-setup.php:327
+#: dt-groups/base-setup.php:325
 msgid "Peer Group"
 msgstr "Korcsoport"
 
-#: dt-groups/base-setup.php:328
+#: dt-groups/base-setup.php:326
 msgctxt "Optional Documentation"
 msgid ""
 "A related group that isn't a parent/child in relationship. It might indicate "
@@ -3356,57 +3340,52 @@ msgstr ""
 "olyan csoportokat, amelyek együttműködnek, összeolvadás előtt állnak, nemrég "
 "szétváltak stb."
 
-#: dt-groups/base-setup.php:339
+#: dt-groups/base-setup.php:337
 msgid "Child Group"
 msgstr "Gyermekcsoport"
 
-#: dt-groups/base-setup.php:340
+#: dt-groups/base-setup.php:338
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "A csoport, amely ebből a csoportból született meg"
 
-#: dt-groups/base-setup.php:374
-msgctxt "Optional Documentation"
-msgid "The people groups represented by this group."
-msgstr "A csoport által képviselt embercsoportok."
-
-#: dt-groups/base-setup.php:387
+#: dt-groups/base-setup.php:373
 msgid "Unbelievers"
 msgstr "Nemhívpk"
 
-#: dt-groups/base-setup.php:388
+#: dt-groups/base-setup.php:374
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "Nemhívők száma ebben a csoportban."
 
-#: dt-groups/base-setup.php:396
+#: dt-groups/base-setup.php:382
 msgid "Believers"
 msgstr "Hívők"
 
-#: dt-groups/base-setup.php:397
+#: dt-groups/base-setup.php:383
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "Hívők száma ebben a csoportban."
 
-#: dt-groups/base-setup.php:405
+#: dt-groups/base-setup.php:391
 msgid "Accountable"
 msgstr "Felelős"
 
-#: dt-groups/base-setup.php:406
+#: dt-groups/base-setup.php:392
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "Emberek száma felelősségi csoportban."
 
-#: dt-groups/base-setup.php:415
+#: dt-groups/base-setup.php:401
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "Ez egy gyülekezet - igen vagy nem?"
 
-#: dt-groups/base-setup.php:423
+#: dt-groups/base-setup.php:409
 msgid "Multiplying"
 msgstr "Sokszorozódik"
 
-#: dt-groups/base-setup.php:424
+#: dt-groups/base-setup.php:410
 msgctxt "Optional Documentation"
 msgid ""
 "Number of people helping start other groups. How many members are "
@@ -3415,38 +3394,38 @@ msgstr ""
 "Azon emberek száma, akik segítenek új csoportokat létre hozni. Hány tag "
 "sokszoroz?"
 
-#: dt-groups/base-setup.php:437
+#: dt-groups/base-setup.php:423
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "Csoportok, melyeknek a kapcsolati személy tagja"
 
-#: dt-groups/base-setup.php:449
+#: dt-groups/base-setup.php:435
 msgid "Leader of Group"
 msgstr "Csoport Vezetője"
 
-#: dt-groups/base-setup.php:459
+#: dt-groups/base-setup.php:445
 msgid "Coach of Group"
 msgstr "Csoport képzője"
 
-#: dt-groups/base-setup.php:571
+#: dt-groups/base-setup.php:557
 msgid "Create"
 msgstr "Készítés"
 
-#: dt-groups/base-setup.php:576
+#: dt-groups/base-setup.php:562
 msgid "Select"
 msgstr "Kiválasztás"
 
-#: dt-groups/base-setup.php:581
+#: dt-groups/base-setup.php:567
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr ""
 "Új tagok hozzáadásához, klikkelj a \"létrehozás\" vagy \"választás\" opcióra"
 
-#: dt-groups/base-setup.php:587
+#: dt-groups/base-setup.php:573
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Adj tagokat a létező kapcsolati személyek közül"
 
-#: dt-groups/base-setup.php:588
+#: dt-groups/base-setup.php:574
 msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
@@ -3455,11 +3434,11 @@ msgstr ""
 "A tagok listája mezőbe, gépeld be a meglévő kapcsolati személy nevét, hogy "
 "hozzá add a csoporthoz"
 
-#: dt-groups/base-setup.php:616
+#: dt-groups/base-setup.php:602
 msgid "Four Fields"
 msgstr "Négy Mező"
 
-#: dt-groups/base-setup.php:617
+#: dt-groups/base-setup.php:603
 msgctxt "Optional Documentation"
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
@@ -3583,17 +3562,17 @@ msgstr "Gyülekezetek"
 msgid "add"
 msgstr "hozzáadás"
 
-#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:97
+#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:98
 msgid "Use"
 msgstr "Használ"
 
-#: dt-mapping/geocode-api/mapbox-api.php:290 template-merge-post-details.php:95
+#: dt-mapping/geocode-api/mapbox-api.php:290 template-merge-post-details.php:96
 #: template-new-bulk-post.php:26 template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
 msgstr "Hely Keresése"
 
-#: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:96
+#: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:97
 #: template-new-bulk-post.php:216
 msgid "Delete Location"
 msgstr "Hely Törlése"
@@ -3619,7 +3598,7 @@ msgstr "Lista"
 msgid "Refresh Cached Data"
 msgstr "Gyorsítótárazott adatok frissítése"
 
-#: dt-mapping/mapping.php:302 dt-people-groups/people-groups-base.php:260
+#: dt-mapping/mapping.php:302 dt-people-groups/people-groups-base.php:276
 msgid "Population"
 msgstr "Népesség"
 
@@ -3819,7 +3798,7 @@ msgstr "Nem Észleltünk Tevékenységet!"
 
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
-#: template-new-post.php:38
+#: template-new-post.php:49
 msgid "New %s"
 msgstr "Új %s"
 
@@ -4277,6 +4256,12 @@ msgstr "Tagok"
 msgid "View Record"
 msgstr "Áttekintési feljegyzés"
 
+#: dt-metrics/records/genmap.php:148 dt-metrics/records/genmap.php:152
+#: dt-posts/dt-posts.php:2687 dt-users/template-user-management.php:384
+#: dt-users/users.php:175 single-template.php:127
+msgid "Status"
+msgstr "Státusz"
+
 #: dt-metrics/records/genmap.php:149
 msgid "Total Members"
 msgstr "Összes Tag"
@@ -4482,6 +4467,7 @@ msgid "%1$s assigned %2$s to %3$s."
 msgstr "%1$s kiosztotta %2$s a következőnek %3$s."
 
 #: dt-notifications/notifications.php:921
+#, fuzzy
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
 msgstr "%1$s megosztotta %1$s-t veled."
@@ -4521,45 +4507,62 @@ msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s elutasította a feladatot: %2$s."
 
-#: dt-people-groups/people-groups-base.php:95
-#: dt-people-groups/people-groups-base.php:105
+#: dt-people-groups/people-groups-base.php:111
+#: dt-people-groups/people-groups-base.php:121
 msgid "People Group"
 msgstr "Ember Csoport"
 
-#: dt-people-groups/people-groups-base.php:168
+#: dt-people-groups/people-groups-base.php:112
+#: dt-people-groups/people-groups-base.php:122
+#: dt-people-groups/people-groups-base.php:315
+#: dt-people-groups/people-groups-base.php:328
+msgid "People Groups"
+msgstr "Embercsoportok"
+
+#: dt-people-groups/people-groups-base.php:184
 msgid "Contacts Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:187
+#: dt-people-groups/people-groups-base.php:203
 msgid "Groups Total"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:202
-#: dt-posts/custom-post-type.php:185
+#: dt-people-groups/people-groups-base.php:218
+#: dt-posts/custom-post-type.php:186
 msgid "Last Modified"
 msgstr "Utoljára Módosítva"
 
-#: dt-people-groups/people-groups-base.php:267
+#: dt-people-groups/people-groups-base.php:283
 msgid "People Group Code"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:274
+#: dt-people-groups/people-groups-base.php:290
 msgid "People ID"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:281
+#: dt-people-groups/people-groups-base.php:297
 msgid "Primary Language"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:288
+#: dt-people-groups/people-groups-base.php:304
 msgid "Country"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:302
+#: dt-people-groups/people-groups-base.php:316
+msgctxt "Optional Documentation"
+msgid "The people groups represented by this contact."
+msgstr "A kapcsolat által képviselt emberi csoportok."
+
+#: dt-people-groups/people-groups-base.php:329
+msgctxt "Optional Documentation"
+msgid "The people groups represented by this group."
+msgstr "A csoport által képviselt embercsoportok."
+
+#: dt-people-groups/people-groups-base.php:345
 msgid "Connections"
 msgstr ""
 
-#: dt-people-groups/people-groups-base.php:304
+#: dt-people-groups/people-groups-base.php:347
 msgid "Joshua Project"
 msgstr ""
 
@@ -4583,20 +4586,20 @@ msgstr "Ember Csoport nevének felvétele itt"
 msgid "Picture"
 msgstr ""
 
-#: dt-posts/custom-post-type.php:208
+#: dt-posts/custom-post-type.php:209
 msgid "Tags"
 msgstr "Címkék"
 
-#: dt-posts/custom-post-type.php:209
+#: dt-posts/custom-post-type.php:210
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
 msgstr "Hasznos módszer a kapcsolódó elemek csoportosítására."
 
-#: dt-posts/custom-post-type.php:222
+#: dt-posts/custom-post-type.php:224
 msgid "Un-Follow"
 msgstr "Követés Leállítása"
 
-#: dt-posts/custom-post-type.php:243
+#: dt-posts/custom-post-type.php:248
 #, fuzzy
 #| msgctxt "Optional Documentation"
 #| msgid "The general location where this contact is located."
@@ -4604,7 +4607,7 @@ msgctxt "Optional Documentation"
 msgid "The general location where this record is located."
 msgstr "A kapcsolat általános tartózkodási helye."
 
-#: dt-posts/custom-post-type.php:251
+#: dt-posts/custom-post-type.php:256
 msgid "Locations or Address"
 msgstr "Terület vagy cím"
 
@@ -4613,33 +4616,33 @@ msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1710
+#: dt-posts/dt-posts.php:1620
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "%s Submission"
 msgstr "Varázslink beküldése"
 
-#: dt-posts/dt-posts.php:1710
+#: dt-posts/dt-posts.php:1620
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "Magic Link"
 msgstr "Varázslink beküldése"
 
-#: dt-posts/dt-posts.php:1712 dt-posts/dt-posts.php:2259
+#: dt-posts/dt-posts.php:1622 dt-posts/dt-posts.php:2169
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "Tevékenység visszaállítása"
 
-#: dt-posts/dt-posts.php:2499
+#: dt-posts/dt-posts.php:2409
 msgid "Post already shared with user."
 msgstr "A bejegyzést már megosztotta ezzel a felhasználóval."
 
-#: dt-posts/dt-posts.php:2778 single-template.php:174
+#: dt-posts/dt-posts.php:2688 single-template.php:174
 msgid "Details"
 msgstr "Részletek"
 
-#: dt-posts/dt-posts.php:2856
+#: dt-posts/dt-posts.php:2766
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4652,7 +4655,7 @@ msgstr ""
 "kapcsolathoz. Ha jónak látja, a hozzáférés engedélyezéséhez ossza meg ezt a "
 "bejegyzést a felhasználóval."
 
-#: dt-posts/dt-posts.php:2862
+#: dt-posts/dt-posts.php:2772
 msgid "Access Request"
 msgstr "Hozzáférési Kérés"
 
@@ -4752,6 +4755,7 @@ msgid "%1$s removed from people groups on %2$s"
 msgstr "%1$s törölve az emberi csoportokból %2$s alkalmával"
 
 #: dt-posts/posts.php:318
+#, fuzzy
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "%1$s törölve az emberi csoportokból"
@@ -5018,13 +5022,13 @@ msgstr ""
 msgid "Configure email message"
 msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:134
+#: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:136
 #, fuzzy
 #| msgid "Select app to email"
 msgid "Selected app name"
 msgstr "Válassza ki az alkalmazást az e-mailhez"
 
-#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:140
+#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:142
 msgid "Unique link to access the app."
 msgstr ""
 
@@ -5067,21 +5071,21 @@ msgstr "Varázslink beküldése"
 msgid "Magic Links available on this record."
 msgstr "Ezen a bejegyzésen elérhető alkalmazások."
 
-#: dt-reports/magic-url-setup.php:94
+#: dt-reports/magic-url-setup.php:95
 #, fuzzy
 #| msgid "View User"
 msgid "View"
 msgstr "Felhasználó Megtekintése"
 
-#: dt-reports/magic-url-setup.php:101
+#: dt-reports/magic-url-setup.php:102
 msgid "QR code"
 msgstr ""
 
-#: dt-reports/magic-url-setup.php:102
+#: dt-reports/magic-url-setup.php:103
 msgid "Reset"
 msgstr ""
 
-#: dt-reports/magic-url-setup.php:121
+#: dt-reports/magic-url-setup.php:123
 msgid ""
 "Hello,\n"
 "\n"
@@ -5092,19 +5096,19 @@ msgid ""
 "Thanks!"
 msgstr ""
 
-#: dt-reports/magic-url-setup.php:130
+#: dt-reports/magic-url-setup.php:132
 msgid "Add email address"
 msgstr "E-mail-cím hozzáadása"
 
-#: dt-reports/magic-url-setup.php:131
+#: dt-reports/magic-url-setup.php:133
 msgid "Add a note"
 msgstr "Megjegyzés hozzáadása"
 
-#: dt-reports/magic-url-setup.php:144
+#: dt-reports/magic-url-setup.php:146
 msgid "Send email with link"
 msgstr "E-mail küldése a linkkel"
 
-#: dt-reports/magic-url-setup.php:186
+#: dt-reports/magic-url-setup.php:188
 msgid "Delete and replace the app link"
 msgstr "Törölje és cserélje ki az alkalmazás linkjét"
 
@@ -5575,6 +5579,7 @@ msgid "Updated fields"
 msgstr "Mezők frissítése"
 
 #: dt-users/user-metrics.php:109
+#, fuzzy
 msgid "Made %n comments"
 msgstr "%s hozzászólást fűzött"
 
@@ -5583,6 +5588,7 @@ msgid "Created record"
 msgstr "Létrehozott bejegyzés"
 
 #: dt-users/user-metrics.php:115
+#, fuzzy
 msgid "Logged In %n times"
 msgstr "%s alkalommal bejelentkezve"
 
@@ -5689,45 +5695,24 @@ msgstr "Kérjük biztosítson frissítést egy hozzászólás közzétételével
 msgid "Edit all details fields"
 msgstr "Minden adatmező szerkesztése"
 
-#: single-template.php:383
+#: single-template.php:386
 msgid "Show Hidden Tiles"
 msgstr ""
 
-#: single-template.php:404 template-new-bulk-post.php:276
-#: template-new-post.php:167
-msgid "Create Tag"
-msgstr "Jelző Készítése"
-
-#: single-template.php:405 template-new-bulk-post.php:277
-#: template-new-post.php:168
-msgid "Create a tag and apply it to this record."
-msgstr "Készítsen egy címkét, és alkalmazza erre a bejegyzésre."
-
-#: single-template.php:409 single-template.php:411
-#: template-new-bulk-post.php:281 template-new-bulk-post.php:283
-#: template-new-post.php:172 template-new-post.php:174
-msgid "Tag"
-msgstr "Jelző"
-
-#: single-template.php:420 template-new-bulk-post.php:293
-#: template-new-post.php:183
-msgid "Create and apply tag"
-msgstr "Jelző készítése és alkalmazása"
-
-#: single-template.php:430
+#: single-template.php:408
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Biztos %s törlésében?"
 
-#: template-merge-post-details.php:98
+#: template-merge-post-details.php:99
 msgid "Open Modal"
 msgstr "Modális megnyitása"
 
-#: template-merge-post-details.php:120
+#: template-merge-post-details.php:121
 msgid "Merge Duplicate %s"
 msgstr "Duplikált %s összevonása"
 
-#: template-merge-post-details.php:122
+#: template-merge-post-details.php:123
 msgid ""
 "When you merge, the primary record is updated with the values you choose, "
 "and relationships to other items are shifted to the primary record; which "
@@ -5737,23 +5722,23 @@ msgstr ""
 "többi elemhez kötődő kapcsolat az elsődleges bejegyzésre helyeződik; ami "
 "alább kapcsolható."
 
-#: template-merge-post-details.php:125
+#: template-merge-post-details.php:126
 msgid "Copy comments to updated primary record"
 msgstr "Megjegyzések másolása a frissített elsődleges bejegyzésbe"
 
-#: template-merge-post-details.php:141
+#: template-merge-post-details.php:142
 msgid "Archiving"
 msgstr "Archiválás"
 
-#: template-merge-post-details.php:149
+#: template-merge-post-details.php:150
 msgid "Use as Primary"
 msgstr "Használja elsődlegesként"
 
-#: template-merge-post-details.php:162
+#: template-merge-post-details.php:163
 msgid "Primary"
 msgstr "Elsődleges"
 
-#: template-merge-post-details.php:176
+#: template-merge-post-details.php:177
 msgid "Updated"
 msgstr "Frissítve"
 
@@ -5765,7 +5750,7 @@ msgstr "Új kötegelt %s"
 msgid "Choose which fields to display across new bulk records"
 msgstr "Válassza ki az új kötegelt bejegyzésekben megjelenítendő mezőket"
 
-#: template-new-bulk-post.php:145 template-new-post.php:57
+#: template-new-bulk-post.php:145 template-new-post.php:68
 msgid "Select the %s type:"
 msgstr "Válasszon %s típust:"
 
@@ -5773,19 +5758,32 @@ msgstr "Válasszon %s típust:"
 msgid "Add New Row"
 msgstr "Új sor hozzáadása"
 
-#: template-new-post.php:45
-msgid "Add Bulk Records?"
-msgstr "Hozzáad kötegelt bejegyzéseket?"
+#: template-new-bulk-post.php:276 template-new-post.php:178
+msgid "Create Tag"
+msgstr "Jelző Készítése"
 
-#: template-new-post.php:144
+#: template-new-bulk-post.php:277 template-new-post.php:179
+msgid "Create a tag and apply it to this record."
+msgstr "Készítsen egy címkét, és alkalmazza erre a bejegyzésre."
+
+#: template-new-bulk-post.php:281 template-new-bulk-post.php:283
+#: template-new-post.php:183 template-new-post.php:185
+msgid "Tag"
+msgstr "Jelző"
+
+#: template-new-bulk-post.php:293 template-new-post.php:194
+msgid "Create and apply tag"
+msgstr "Jelző készítése és alkalmazása"
+
+#: template-new-post.php:155
 msgid "Show all fields"
 msgstr "Összes mező mutatása"
 
-#: template-new-post.php:147
+#: template-new-post.php:158
 msgid "Hide fields"
 msgstr "Mezők elrejtése"
 
-#: template-new-post.php:154
+#: template-new-post.php:165
 msgid "Save and continue editing"
 msgstr "Mentés és a szerkesztés folytatása"
 
@@ -5994,6 +5992,22 @@ msgstr "Beolvasott hozzáférési kapcsolatok:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Talált duplikátumok:"
+
+#~ msgctxt "input field placeholder"
+#~ msgid "Search multipliers and contacts"
+#~ msgstr "Sokszorozók és kapcsolatok felkutatása"
+
+#~ msgid "Add new tag \"%s\""
+#~ msgstr "Új címke hozzáadása „%s”"
+
+#~ msgid "Tag \"%s\" is already being used"
+#~ msgstr "„%s” címke már használatban"
+
+#~ msgid "Add Bulk Records?"
+#~ msgstr "Hozzáad kötegelt bejegyzéseket?"
+
+#~ msgid "Twitter"
+#~ msgstr "Twitter"
 
 #~ msgid "Baptism Tree"
 #~ msgstr "Bemerítkezés Fa"

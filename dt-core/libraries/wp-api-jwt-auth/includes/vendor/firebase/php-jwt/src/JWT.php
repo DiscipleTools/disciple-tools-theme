@@ -184,8 +184,8 @@ class JWT
         array $payload,
         $key,
         string $alg,
-        string $keyId = null,
-        array $head = null
+        ?string $keyId = null,
+        ?array $head = null
     ): string {
         $header = ['typ' => 'JWT', 'alg' => $alg];
         if ($keyId !== null) {
