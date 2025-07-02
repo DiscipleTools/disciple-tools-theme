@@ -84,8 +84,14 @@ function dt_default_menu_array() : array {
                         'hidden' => false,
                         'icon' => get_template_directory_uri() . '/dt-assets/images/profile.svg?v=2',
                     ],
+                    'frontend_admin' => [
+                        'label' => __( 'Frontend Admin', 'disciple_tools' ),
+                        'link' => site_url( '/dt-admin/' ),
+                        'hidden' => ( ! current_user_can( 'manage_dt' ) ),
+                        'icon' => get_template_directory_uri() . '/dt-assets/images/house.svg?v=2',
+                    ],
                     'admin' => [
-                        'label' => __( 'Admin', 'disciple_tools' ),
+                        'label' => __( 'WP Admin', 'disciple_tools' ),
                         'link' => get_admin_url(),
                         'hidden' => ( ! current_user_can( 'manage_dt' ) ),
                         'icon' => get_template_directory_uri() . '/dt-assets/images/house.svg?v=2',

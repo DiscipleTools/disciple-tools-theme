@@ -407,6 +407,11 @@ class Disciple_Tools
 
         require_once( 'dt-core/dependencies/deprecated-dt-functions.php' );
 
+        /**
+         * Frontend Admin Area
+         */
+        require_once( 'dt-admin/admin-functions.php' );
+
         add_action( 'switch_blog', 'set_up_wpdb_tables', 99, 2 );
         add_action( 'wp_loaded', [ $this, 'dt_url_loader' ], 10000 );
         add_filter( 'locale', [ $this, 'dt_locale' ] );
@@ -420,19 +425,31 @@ class Disciple_Tools
             'metrics'               => 'template-metrics.php',
             'settings'              => 'template-settings.php',
             'notifications'         => 'template-notifications.php',
-            'view-duplicates'       => 'template-view-duplicates.php'
+            'view-duplicates'       => 'template-view-duplicates.php',
+            'dt-admin'              => 'template-admin.php'
         ];
 
         $template_for_url = apply_filters( 'dt_templates_for_urls', $template_for_url );
 
         $url_path = untrailingslashit( dt_get_url_path( true ) ); //allow get parameters
 
+        // Check for exact matches first
         if ( isset( $template_for_url[ $url_path ] ) && dt_please_log_in() ) {
             $template_filename = locate_template( $template_for_url[ $url_path ], true );
             if ( $template_filename ) {
                 exit(); // just exit if template was found and loaded
             } else {
                 throw new Error( 'Expected to find template ' . $template_for_url[ $url_path ] );
+            }
+        }
+
+        // Check for dt-admin paths (including nested paths)
+        if ( strpos( $url_path, 'dt-admin' ) === 0 && dt_please_log_in() ) {
+            $template_filename = locate_template( 'template-admin.php', true );
+            if ( $template_filename ) {
+                exit(); // just exit if template was found and loaded
+            } else {
+                throw new Error( 'Expected to find template template-admin.php' );
             }
         }
     }
