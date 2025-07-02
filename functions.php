@@ -626,23 +626,18 @@ function dt_is_mobile_request() {
  */
 function dt_enqueue_mobile_assets() {
     if ( dt_is_mobile_request() ) {
-        // Enqueue Tailwind CSS via CDN for initial implementation
-        wp_enqueue_style( 
-            'tailwind-css', 
-            'https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css',
-            array(),
-            '2.2.19'
-        );
+        // Add critical mobile CSS inline to prevent FOUC
+        add_action( 'wp_head', 'dt_mobile_critical_css', 1 );
         
-        // Enqueue mobile-specific styles
+        // Enqueue mobile-specific styles (critical CSS is inline)
         wp_enqueue_style(
             'dt-mobile-header',
             get_template_directory_uri() . '/dt-assets/css/mobile-header.css',
-            array( 'tailwind-css' ),
+            array(),
             filemtime( get_template_directory() . '/dt-assets/css/mobile-header.css' )
         );
         
-        // Enqueue mobile-specific JavaScript
+        // Enqueue mobile-specific JavaScript with CSS loading detection
         wp_enqueue_script(
             'dt-mobile-header-js',
             get_template_directory_uri() . '/dt-assets/js/mobile-header.js',
@@ -651,12 +646,40 @@ function dt_enqueue_mobile_assets() {
             true
         );
         
-        // Localize script with search settings
+        // Enqueue mobile footer JavaScript
+        wp_enqueue_script(
+            'dt-mobile-footer-js',
+            get_template_directory_uri() . '/dt-assets/js/mobile-footer.js',
+            array( 'jquery' ),
+            filemtime( get_template_directory() . '/dt-assets/js/mobile-footer.js' ),
+            true
+        );
+        
+        // Localize script with search settings and CSS loading detection
         wp_localize_script( 'dt-mobile-header-js', 'dt_mobile_header', array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
             'rest_base' => esc_url_raw( rest_url() . 'dt/v1/' ),
             'search_placeholder' => __( 'Search contacts, groups...', 'disciple_tools' ),
             'nonce' => wp_create_nonce( 'wp_rest' ),
+            'css_loaded' => false, // Will be set to true once CSS is confirmed loaded
+        ) );
+        
+        // Localize mobile footer script with translations and settings
+        wp_localize_script( 'dt-mobile-footer-js', 'dt_mobile_footer', array(
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'rest_base' => esc_url_raw( rest_url() . 'dt/v1/' ),
+            'nonce' => wp_create_nonce( 'wp_rest' ),
+            'current_post_type' => get_post_type(),
+            'translations' => array(
+                'filters' => __( 'Filters', 'disciple_tools' ),
+                'split_by' => __( 'Split By', 'disciple_tools' ),
+                'exports' => __( 'Exports', 'disciple_tools' ),
+                'add_new' => __( 'Add New', 'disciple_tools' ),
+                'close' => __( 'Close', 'disciple_tools' ),
+                'go' => __( 'Go', 'disciple_tools' ),
+                'please_select_field' => __( 'Please select a field to split by', 'disciple_tools' ),
+                'no_filters_available' => __( 'No filters available for this view', 'disciple_tools' ),
+            )
         ) );
     }
 }
@@ -668,10 +691,247 @@ add_action( 'wp_enqueue_scripts', 'dt_enqueue_mobile_assets' );
 function dt_mobile_body_class( $classes ) {
     if ( dt_is_mobile_request() ) {
         $classes[] = 'dt-mobile-view';
+        
+        // Add class to indicate mobile footer is present for CSS adjustments
+        $current_page = get_query_var( 'post_type', 'contacts' );
+        if ( is_archive() || is_post_type_archive() ) {
+            $classes[] = 'has-mobile-footer';
+        }
     }
     return $classes;
 }
 add_filter( 'body_class', 'dt_mobile_body_class' );
+
+/**
+ * Add critical mobile CSS inline to prevent FOUC
+ */
+function dt_mobile_critical_css() {
+    ?>
+    <style id="dt-mobile-critical-css">
+    /* Critical CSS for mobile header to prevent FOUC */
+    .dt-mobile-header {
+        background-color: #2563eb; /* bg-blue-600 */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    
+    .dt-mobile-header.css-loaded {
+        opacity: 1;
+    }
+    
+    .dt-mobile-header .flex {
+        display: flex;
+    }
+    
+    .dt-mobile-header .items-center {
+        align-items: center;
+    }
+    
+    .dt-mobile-header .justify-between {
+        justify-content: space-between;
+    }
+    
+    .dt-mobile-header .px-4 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .dt-mobile-header .py-3 {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+    
+    .dt-mobile-header .w-10 {
+        width: 2.5rem;
+    }
+    
+    .dt-mobile-header .h-10 {
+        height: 2.5rem;
+    }
+    
+    .dt-mobile-header .w-8 {
+        width: 2rem;
+    }
+    
+    .dt-mobile-header .h-8 {
+        height: 2rem;
+    }
+    
+    .dt-mobile-header .rounded-md {
+        border-radius: 0.375rem;
+    }
+    
+    .dt-mobile-header .rounded-full {
+        border-radius: 9999px;
+    }
+    
+    .dt-mobile-header .text-white {
+        color: #ffffff;
+    }
+    
+    .dt-mobile-header .bg-blue-700 {
+        background-color: #1d4ed8;
+    }
+    
+    .dt-mobile-header .bg-blue-800 {
+        background-color: #1e40af;
+    }
+    
+    .dt-mobile-header .hover\:bg-blue-700:hover {
+        background-color: #1d4ed8;
+    }
+    
+    .dt-mobile-header .hover\:bg-blue-800:hover {
+        background-color: #1e40af;
+    }
+    
+    .dt-mobile-header .transition-colors {
+        transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    }
+    
+    .dt-mobile-header .hidden {
+        display: none;
+    }
+    
+    /* Loading spinner for graceful loading */
+    .dt-mobile-header-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #2563eb;
+        height: 4rem;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+    }
+    
+    .dt-mobile-header-loading .spinner {
+        width: 1.5rem;
+        height: 1.5rem;
+        border: 2px solid #ffffff;
+        border-top: 2px solid transparent;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    /* Prevent flash of unstyled content */
+    body.dt-mobile-view:not(.css-loaded) .dt-mobile-header {
+        opacity: 0;
+    }
+    
+    body.dt-mobile-view.css-loaded .dt-mobile-header {
+        opacity: 1;
+    }
+    </style>
+    <?php
+}
+
+/**
+ * AJAX handler for mobile global search
+ */
+function dt_mobile_global_search() {
+    // Verify nonce
+    if ( ! wp_verify_nonce( $_POST['nonce'], 'wp_rest' ) ) {
+        wp_die( 'Security check failed' );
+    }
+    
+    // Check if user is logged in
+    if ( ! is_user_logged_in() ) {
+        wp_send_json_error( 'User not authenticated' );
+        return;
+    }
+    
+    $query = sanitize_text_field( $_POST['query'] ?? '' );
+    
+    if ( empty( $query ) || strlen( $query ) < 2 ) {
+        wp_send_json_error( 'Query too short' );
+        return;
+    }
+    
+    $results = [];
+    
+    // Search contacts
+    if ( current_user_can( 'access_contacts' ) ) {
+        $contacts = dt_search_posts( 'contacts', $query, 5 );
+        if ( ! is_wp_error( $contacts ) && isset( $contacts['posts'] ) ) {
+            foreach ( $contacts['posts'] as $contact ) {
+                $results[] = [
+                    'id' => $contact['ID'],
+                    'title' => $contact['name'] ?? $contact['post_title'],
+                    'post_type' => 'contacts',
+                    'post_type_label' => __( 'Contact', 'disciple_tools' ),
+                    'status' => $contact['overall_status']['label'] ?? '',
+                ];
+            }
+        }
+    }
+    
+    // Search groups
+    if ( current_user_can( 'access_groups' ) ) {
+        $groups = dt_search_posts( 'groups', $query, 5 );
+        if ( ! is_wp_error( $groups ) && isset( $groups['posts'] ) ) {
+            foreach ( $groups['posts'] as $group ) {
+                $results[] = [
+                    'id' => $group['ID'],
+                    'title' => $group['name'] ?? $group['post_title'],
+                    'post_type' => 'groups',
+                    'post_type_label' => __( 'Group', 'disciple_tools' ),
+                    'status' => $group['group_status']['label'] ?? '',
+                ];
+            }
+        }
+    }
+    
+    // Limit total results
+    $results = array_slice( $results, 0, 10 );
+    
+    wp_send_json_success( $results );
+}
+add_action( 'wp_ajax_dt_mobile_global_search', 'dt_mobile_global_search' );
+
+/**
+ * Fallback search function if dt_search_posts doesn't exist
+ */
+function dt_search_posts( $post_type, $query, $limit = 10 ) {
+    if ( function_exists( 'DT_Posts::search' ) ) {
+        return DT_Posts::search( $post_type, [ 'text' => $query ], false );
+    }
+    
+    // Fallback to WordPress search
+    $search_args = [
+        'post_type' => $post_type,
+        'post_status' => 'publish',
+        'posts_per_page' => $limit,
+        's' => $query,
+        'meta_query' => [
+            [
+                'key' => '_wp_trash_meta_status',
+                'compare' => 'NOT EXISTS'
+            ]
+        ]
+    ];
+    
+    $posts = get_posts( $search_args );
+    
+    $formatted_posts = [];
+    foreach ( $posts as $post ) {
+        $formatted_posts[] = [
+            'ID' => $post->ID,
+            'post_title' => $post->post_title,
+            'name' => get_the_title( $post->ID ),
+        ];
+    }
+    
+    return [ 'posts' => $formatted_posts ];
+}
 
 /**
  * Returns the main instance of Disciple_Tools to prevent the need to use globals.

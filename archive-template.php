@@ -127,24 +127,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
             </div>
         </nav>
     </div>
-    <nav  role="navigation" style="width:100%;"
-          class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
-        <div class="buttons-row">
-            <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
-                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
-            </a>
-            <a class="button filter-posts-mobile" data-open="filter-modal">
-                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
-            </a>
-            <a class="button" id="open-search">
-                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
-            </a>
-            <?php if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) : ?>
-                <button class="button export_map_list no-margin icon-button" style="font-size:large;padding: 0.1rem 0.75rem">
-                    <i class="fi-map"></i>
-                </button>
-            <?php endif; ?>
-        </div>
+
         <div class="hideable-search" style="display: none; margin-top:5px">
             <div class="search-wrapper">
                 <span class="text-input-wrapper">
@@ -899,45 +882,89 @@ Thanks!';
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 
-                    <div class="table-container">
-                        <table class="table-remove-top-border js-list stack striped" id="records-table">
-                            <thead>
-                                <tr class="table-headers dnd-moved sortable">
-                                    <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
-                                    <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
-                                    </th>
-                                    <th data-id="index" style="width:32px; background-image:none; cursor:default"></th>
+                    <!-- Modern Cards Container -->
+                    <div class="records-cards-container">
+                        <!-- View Toggle Buttons -->
+                        <div class="view-toggle-container" style="margin-bottom: 20px;">
+                            <div class="view-toggle-buttons">
+                                <button id="cards-view-btn" class="view-toggle-btn active">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M3 3h7v7H3V3zm0 11h7v7H3v-7zm11-11h7v7h-7V3zm0 11h7v7h-7v-7z"/>
+                                    </svg>
+                                    Cards
+                                </button>
+                                <button id="table-view-btn" class="view-toggle-btn">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M3 3h18v2H3V3zm0 4h18v2H3V7zm0 4h18v2H3v-2zm0 4h18v2H3v-2z"/>
+                                    </svg>
+                                    Table
+                                </button>
+                            </div>
+                            <div class="bulk-select-all-container">
+                                <label class="bulk-select-all-label">
+                                    <input type="checkbox" id="bulk_edit_master_checkbox_cards" class="bulk-select-master">
+                                    <span>Select All</span>
+                                </label>
+                            </div>
+                        </div>
 
-                                    <?php $columns = [];
-                                    if ( empty( $fields_to_show_in_table ) ){
-                                        $columns = DT_Posts::get_default_list_column_order( $post_type );
-                                    }
-                                    $columns = array_unique( array_merge( $fields_to_show_in_table, $columns ) );
-                                    if ( in_array( 'favorite', $columns ) ) {
-                                        ?>
-                                        <th style="width:36px; background-image:none; cursor:default"></th>
-                                        <?php
-                                    }
-                                    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ):
-                                        if ( in_array( 'record_picture', $columns ) ) : ?>
-                                            <th data-id="record_picture" style="width:32px; background-image:none; cursor:default"></th>
-                                        <?php endif; ?>
-                                    <?php endif;
-                                    foreach ( $columns as $field_key ):
-                                        if ( ! in_array( $field_key, [ 'favorite', 'record_picture' ] ) ):
-                                            if ( isset( $post_settings['fields'][$field_key]['name'] ) ) : ?>
-                                                <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
-                                                    <?php echo esc_html( $post_settings['fields'][ $field_key ]['name'] ) ?>
-                                                </th>
-                                            <?php endif;
-                                        endif;
-                                    endforeach ?>
-                                </tr>
-                            </thead>
-                            <tbody id="table-content">
-                                <tr class="js-list-loading"><td colspan=7><?php esc_html_e( 'Loading...', 'disciple_tools' ); ?></td></tr>
-                            </tbody>
-                        </table>
+                        <!-- Cards Grid -->
+                        <div class="records-cards-grid" id="records-cards">
+                            <div class="loading-cards">
+                                <div class="loading-card">
+                                    <div class="loading-shimmer"></div>
+                                </div>
+                                <div class="loading-card">
+                                    <div class="loading-shimmer"></div>
+                                </div>
+                                <div class="loading-card">
+                                    <div class="loading-shimmer"></div>
+                                </div>
+                                <div class="loading-text"><?php esc_html_e( 'Loading...', 'disciple_tools' ); ?></div>
+                            </div>
+                        </div>
+
+                        <!-- Table View (Hidden by default) -->
+                        <div class="table-container" id="table-container" style="display: none;">
+                            <table class="table-remove-top-border js-list stack striped" id="records-table">
+                                <thead>
+                                    <tr class="table-headers dnd-moved sortable">
+                                        <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
+                                        <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
+                                        </th>
+                                        <th data-id="index" style="width:32px; background-image:none; cursor:default"></th>
+
+                                        <?php $columns = [];
+                                        if ( empty( $fields_to_show_in_table ) ){
+                                            $columns = DT_Posts::get_default_list_column_order( $post_type );
+                                        }
+                                        $columns = array_unique( array_merge( $fields_to_show_in_table, $columns ) );
+                                        if ( in_array( 'favorite', $columns ) ) {
+                                            ?>
+                                            <th style="width:36px; background-image:none; cursor:default"></th>
+                                            <?php
+                                        }
+                                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ):
+                                            if ( in_array( 'record_picture', $columns ) ) : ?>
+                                                <th data-id="record_picture" style="width:32px; background-image:none; cursor:default"></th>
+                                            <?php endif; ?>
+                                        <?php endif;
+                                        foreach ( $columns as $field_key ):
+                                            if ( ! in_array( $field_key, [ 'favorite', 'record_picture' ] ) ):
+                                                if ( isset( $post_settings['fields'][$field_key]['name'] ) ) : ?>
+                                                    <th class="all" data-id="<?php echo esc_html( $field_key ) ?>">
+                                                        <?php echo esc_html( $post_settings['fields'][ $field_key ]['name'] ) ?>
+                                                    </th>
+                                                <?php endif;
+                                            endif;
+                                        endforeach ?>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-content">
+                                    <tr class="js-list-loading"><td colspan=7><?php esc_html_e( 'Loading...', 'disciple_tools' ); ?></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div class="center">
                         <button id="load-more" class="button loader" style="display: none"><?php esc_html_e( 'Load More', 'disciple_tools' ) ?></button>

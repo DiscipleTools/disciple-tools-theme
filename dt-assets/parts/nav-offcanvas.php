@@ -93,6 +93,46 @@
             <?php } ?>
         <?php endforeach; ?>
 
+        <?php if ( dt_is_mobile_request() ) : ?>
+            <!-- Mobile Record Types Section -->
+            <li class="mobile-nav-section-header">
+                <span class="mobile-nav-section-title"><?php esc_html_e( 'Record Types', 'disciple_tools' ); ?></span>
+            </li>
+            
+            <?php 
+            // Get all main post types for mobile menu
+            foreach ( $dt_nav_tabs['main'] as $key => $nav_item ) :
+                if ( !( $nav_item['hidden'] ?? false ) ) :
+            ?>
+                <li class="mobile-nav-item mobile-post-type-item">
+                    <a href="<?php echo esc_url( $nav_item['link'] ); ?>" class="mobile-nav-link mobile-post-type-link">
+                        <div class="mobile-nav-item-content">
+                            <div class="mobile-nav-icon">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <?php if ( strpos( strtolower( $nav_item['label'] ), 'contact' ) !== false ) : ?>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    <?php elseif ( strpos( strtolower( $nav_item['label'] ), 'group' ) !== false ) : ?>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    <?php elseif ( strpos( strtolower( $nav_item['label'] ), 'training' ) !== false ) : ?>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                    <?php else : ?>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    <?php endif; ?>
+                                </svg>
+                            </div>
+                            <span class="mobile-nav-text"><?php echo esc_html( $nav_item['label'] ); ?></span>
+                            <svg class="mobile-nav-arrow w-4 h-4 ml-auto opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </a>
+                </li>
+            <?php 
+                endif;
+            endforeach; 
+            ?>
+        <?php endif; ?>
+
         <li><hr ><!-- Spacer--></li>
 
         <!--  notifications -->
