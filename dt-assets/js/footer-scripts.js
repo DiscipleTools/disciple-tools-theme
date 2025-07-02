@@ -89,18 +89,4 @@ jQuery(document).ready(function ($) {
   }
 });
 
-/**
- * Mobile navigation dropdown functionality
- */
-jQuery(document).ready(function ($) {
-  // Close mobile add new dropdown when clicking outside
-  $(document).on('click', function (e) {
-    if (
-      !$(e.target).closest(
-        '#mobile-add-new-dropdown, [data-toggle="mobile-add-new-dropdown"]',
-      ).length
-    ) {
-      $('#mobile-add-new-dropdown').foundation('close');
-    }
-  });
-});
+
