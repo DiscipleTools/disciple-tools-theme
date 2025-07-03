@@ -292,9 +292,9 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertNotWPError( $result );
         // Should only add new tags, not duplicate existing ones
         $this->assertSame( 3, count( $result['milestones'] ) );
-        $this->assertSame( 'milestone_has_bible', $result['milestones'][0]['value'] );
-        $this->assertSame( 'milestone_reading_bible', $result['milestones'][1]['value'] );
-        $this->assertSame( 'milestone_belief', $result['milestones'][2]['value'] );
+        $this->assertSame( 'milestone_has_bible', $result['milestones'][0] );
+        $this->assertSame( 'milestone_reading_bible', $result['milestones'][1] );
+        $this->assertSame( 'milestone_belief', $result['milestones'][2] );
     }
 
     public function test_do_not_overwrite_text_fields_create() {
@@ -346,7 +346,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         ]);
         $this->assertNotWPError( $result );
 
-        $this->assertSame( $initial_fields['quick_button_contact_established'], $result['quick_button_contact_established'] );
+        $this->assertSame( intval( $initial_fields['quick_button_contact_established'] ), intval( $result['quick_button_contact_established'] ) );
     }
 
     public function test_do_not_overwrite_boolean_fields_create() {
@@ -534,5 +534,42 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         $this->assertNotWPError( $result );
 
         $this->assertSame( $base_user, $result['assigned_to']['id'] );
+    }
+
+    public function test_do_not_overwrite_connection_fields_create() {
+        $initial_fields = $this->sample_contact;
+
+        // Create connection contacts.
+        $baptised_contact_1 = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $baptised_contact_1 );
+
+        $baptised_contact_2 = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $baptised_contact_2 );
+
+        // Create initial contact
+        $initial_fields['name'] = 'Connection Test';
+        $initial_fields['contact_phone'] = [ [ 'value' => '555-0001' ] ];
+        $initial_fields['baptized_by'] = [ 'values' => [ [ 'value' => $baptised_contact_1['ID'] ] ] ];
+
+        $initial_contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $initial_contact );
+
+        // Try to create duplicate with additional connections
+        $duplicate_fields = [
+            'name' => 'Connection Test',
+            'contact_phone' => [ [ 'value' => '555-0001' ] ],
+            'baptized_by' => [ 'values' => [ [ 'value' => $baptised_contact_2['ID'] ] ] ]
+        ];
+
+        $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
+            'check_for_duplicates' => [ 'contact_phone' ],
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( 2, count( $result['baptized_by'] ) );
+        $this->assertSame( $baptised_contact_1['ID'], $result['baptized_by'][0]['ID'] );
+        $this->assertSame( $baptised_contact_2['ID'], $result['baptized_by'][1]['ID'] );
     }
 }

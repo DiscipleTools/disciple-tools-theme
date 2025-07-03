@@ -544,4 +544,97 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         $this->assertSame( 1, count( $result['location_grid'] ) );
     }
+
+    public function test_do_not_overwrite_user_select_fields_update() {
+        $base_user = get_option( 'dt_base_user' );
+        $user_2 = wp_create_user( 'test_user_select', 'test', 'test_user_select@example.com' );
+        $user2 = get_user_by( 'ID', $user_2 );
+        $user2->set_role( 'multiplier' );
+
+        $initial_fields = self::$sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        $update_fields = [
+            'assigned_to' => $user_2,
+            'title' => $initial_fields['title'],
+            'contact_phone' => $initial_fields['contact_phone']
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( $base_user, $result['assigned_to']['id'] );
+    }
+
+    public function test_do_not_overwrite_connection_fields_update() {
+        $initial_fields = self::$sample_contact;
+
+        // Create connection contacts.
+        $baptised_contact_1 = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $baptised_contact_1 );
+
+        $baptised_contact_2 = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $baptised_contact_2 );
+
+        // Create initial contact
+        $initial_fields['name'] = 'Connection Test';
+        $initial_fields['contact_phone'] = [ [ 'value' => '555-0001' ] ];
+        $initial_fields['baptized_by'] = [ 'values' => [ [ 'value' => $baptised_contact_1['ID'] ] ] ];
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        // Try to update duplicate with additional connections
+        $update_fields = [
+            'name' => 'Connection Test',
+            'contact_phone' => [ [ 'value' => '555-0001' ] ],
+            'baptized_by' => [ 'values' => [ [ 'value' => $baptised_contact_2['ID'] ] ] ]
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( 2, count( $result['baptized_by'] ) );
+        $this->assertSame( $baptised_contact_1['ID'], $result['baptized_by'][0]['ID'] );
+        $this->assertSame( $baptised_contact_2['ID'], $result['baptized_by'][1]['ID'] );
+    }
+
+    public function test_do_not_overwrite_multi_select_fields_update() {
+
+        // Create initial contact with multi_selects
+        $initial_fields = self::$sample_contact;
+        $initial_fields['name'] = 'Multi Test';
+        $initial_fields['contact_phone'] = [ [ 'value' => '555-0001' ] ];
+        $initial_fields['milestones'] = [ 'values' => [ [ 'value' => 'milestone_has_bible' ] ] ];
+
+        $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
+        $this->assertNotWPError( $contact );
+
+        // Try to update duplicate with additional multi options
+        $update_fields = [
+            'name' => 'Multi Test',
+            'contact_phone' => [ [ 'value' => '555-0001' ] ],
+            'milestones' => [ 'values' => [ [ 'value' => 'milestone_reading_bible' ], [ 'value' => 'milestone_belief' ] ] ]
+        ];
+
+        $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
+            'do_not_overwrite_existing_fields' => true
+        ]);
+
+        $this->assertNotWPError( $result );
+
+        $this->assertSame( 3, count( $result['milestones'] ) );
+        $this->assertSame( 'milestone_has_bible', $result['milestones'][0] );
+        $this->assertSame( 'milestone_reading_bible', $result['milestones'][1] );
+        $this->assertSame( 'milestone_belief', $result['milestones'][2] );
+    }
 }

@@ -3176,11 +3176,14 @@ class Disciple_Tools_Posts
                 case 'boolean':
                 case 'date':
                 case 'key_select':
+                case 'user_select':
                     if ( empty( $existing_fields[ $field_key ] ) ) {
                         $updated_fields[ $field_key ] = $field_value;
                     }
                     break;
                 case 'tags':
+                case 'link':
+                case 'connection':
                 case 'multi_select':
                     $values = [];
                     foreach ( $field_value['values'] ?? [] as $value ) {
