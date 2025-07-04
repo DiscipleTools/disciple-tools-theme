@@ -84,15 +84,16 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( isset( $args['check_for_duplicates'] ) && is_array( $args['check_for_duplicates'] ) && ! empty( $args['check_for_duplicates'] ) ) {
             $duplicate_post_ids = apply_filters( 'dt_create_check_for_duplicate_posts', [], $post_type, $fields, $args['check_for_duplicates'], $check_permissions );
             if ( ! empty( $duplicate_post_ids ) && count( $duplicate_post_ids ) > 0 ) {
+                $duplicate_post_id = $duplicate_post_ids[0];
 
                 $name = $fields['name'] ?? $fields['title'];
 
                 $fields['notes'] = isset( $fields['notes'] ) ? $fields['notes'] : [];
                 //No need to update title or name.
-                unset( $fields['title'], $fields['name'] );
+                unset( $fields['title'], $fields['name'], $fields['ID'] );
 
                 //update most recently created matched post.
-                $updated_post = self::update_post( $post_type, $duplicate_post_ids[0], $fields, $silent, false );
+                $updated_post = self::update_post( $post_type, $duplicate_post_id, $fields, $silent, false, $args );
                 if ( is_wp_error( $updated_post ) ){
                     return $updated_post;
                 }
@@ -391,7 +392,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return array|WP_Error
      */
-    public static function update_post( string $post_type, int $post_id, array $fields, bool $silent = false, bool $check_permissions = true ){
+    public static function update_post( string $post_type, int $post_id, array $fields, bool $silent = false, bool $check_permissions = true, $args = [] ){
         $post_types = self::get_post_types();
         if ( !in_array( $post_type, $post_types ) ){
             return new WP_Error( __FUNCTION__, 'Post type does not exist', [ 'status' => 403 ] );
@@ -413,6 +414,15 @@ class DT_Posts extends Disciple_Tools_Posts {
         $post = get_post( $post_id );
         if ( !$post ) {
             return new WP_Error( __FUNCTION__, 'post does not exist', [ 'status' => 404 ] );
+        }
+
+        /**
+         * If field overwrite has been disabled for existing fields, then ensure
+         * to have them removed from importing fields.
+         */
+
+        if ( isset( $args['do_not_overwrite_existing_fields'] ) && $args['do_not_overwrite_existing_fields'] ) {
+            $fields = self::dt_ignore_duplicated_post_fields( $fields, $post_type, $post_id );
         }
 
         $existing_post = self::get_post( $post_type, $post_id, false, false );
