@@ -270,6 +270,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         // Create initial contact with tags
         $initial_fields = $this->sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
         $initial_fields['name'] = 'Multi Test';
         $initial_fields['contact_phone'] = [ [ 'value' => '555-0001' ] ];
         $initial_fields['milestones'] = [ 'values' => [ [ 'value' => 'milestone_has_bible' ] ] ];
@@ -279,6 +280,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         // Try to create duplicate with additional tags
         $duplicate_fields = [
+            'assigned_to' => $base_user,
             'name' => 'Multi Test',
             'contact_phone' => [ [ 'value' => '555-0001' ] ],
             'milestones' => [ 'values' => [ [ 'value' => 'milestone_reading_bible' ], [ 'value' => 'milestone_belief' ] ] ]
@@ -537,7 +539,10 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
     }
 
     public function test_do_not_overwrite_connection_fields_create() {
+        $base_user = get_option( 'dt_base_user' );
+
         $initial_fields = $this->sample_contact;
+        $initial_fields['assigned_to'] = $base_user;
 
         // Create connection contacts.
         $baptised_contact_1 = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
@@ -556,6 +561,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         // Try to create duplicate with additional connections
         $duplicate_fields = [
+            'assigned_to' => $base_user,
             'name' => 'Connection Test',
             'contact_phone' => [ [ 'value' => '555-0001' ] ],
             'baptized_by' => [ 'values' => [ [ 'value' => $baptised_contact_2['ID'] ] ] ]
