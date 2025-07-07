@@ -955,30 +955,6 @@ jQuery(document).ready(function ($) {
       });
   });
 
-  /* field type: tags */
-  $('dt-tags').on('dt:add-new', (e) => {
-    $('#create-tag-modal').foundation('open');
-    $('.js-create-tag input[name=title]').val(e.detail.value);
-  });
-
-  /* New Tag Modal */
-  $('.js-create-tag').on('submit', (e) => {
-    e.preventDefault();
-
-    let field = 'tags';
-    let tag = $('#new-tag').val();
-
-    window.API.update_post(post_type, post_id, {
-      [field]: { values: [{ value: tag }] },
-    }).then(() => {
-      field = document.querySelector(`[name="tags"]`);
-      if (field) {
-        field._select(tag);
-        field._clearSearch();
-      }
-    });
-  });
-
   /* field type: location */
   $('.dt_location_grid').each((key, el) => {
     let field_id = $(el).data('id') || 'location_grid';
@@ -1709,7 +1685,7 @@ function record_updated(updateNeeded) {
  * These have been replaced with web components, but there may still be plugins
  * that make use of them. Leaving them here until we can be sure they can be
  * completely removed.
- */
+ 
 jQuery(document).ready(function ($) {
   let post_id = window.detailsSettings.post_id;
   let post_type = window.detailsSettings.post_type;
