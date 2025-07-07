@@ -531,7 +531,9 @@ jQuery(document).ready(function ($) {
     $('.js-create-record input[name=title]').val(e.detail.value);
   });
 
+  let field_type = null;
   $('dt-tags').on('dt:add-new', (e) => {
+    field_type = e.detail.field;
     $('#create-tag-modal').foundation('open');
     $('.js-create-tag input[name=title]').val(e.detail.value);
   });
@@ -539,7 +541,7 @@ jQuery(document).ready(function ($) {
   $('.js-create-tag').on('submit', (e) => {
     e.preventDefault();
 
-    let field = e.detail.field;
+    let field = field_type;
     let tag = $('#new-tag').val();
 
     window.API.update_post(post_type, post_id, {
