@@ -56,6 +56,26 @@ jQuery(function ($) {
 
   $('.js-create-post-button').removeAttr('disabled');
 
+  /* field type: tags */
+  let tags_field = null;
+  $('dt-tags').on('dt:add-new', (e) => {
+    tags_field = e.detail.field;
+    $('#create-tag-modal').foundation('open');
+    $('.js-create-tag input[name=title]').val(e.detail.value);
+  });
+
+  $('.js-create-tag').on('submit', (e) => {
+    e.preventDefault();
+
+    const tag = $('#new-tag').val();
+    const field = document.querySelector(`#${tags_field}`);
+    if (field) {
+      // select the tag and the change event will handle saving it
+      field._select(tag);
+      field._clearSearch();
+    }
+  });
+
   // Clicking the plus sign next to the field label (field type: link)
   $('button.add-button').on('click', (e) => {
     const field = $(e.currentTarget).data('list-class');
