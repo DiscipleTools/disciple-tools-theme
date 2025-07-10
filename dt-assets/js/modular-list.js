@@ -62,6 +62,262 @@
 
   let items = [];
   let current_filter;
+  let current_view_mode = 'cards';
+
+  // Card and list view functions - declared early to avoid hoisting issues
+  let build_cards = (records) => {
+    let cards_html = ``;
+    
+    records.forEach((record, index) => {
+      // Get key fields for card display
+      let title = window.SHAREDFUNCTIONS.escapeHTML(record.post_title);
+      let permalink = window.SHAREDFUNCTIONS.escapeHTML(record.permalink);
+      let favorite_checked = window.lodash.get(record, 'favorite', false);
+      
+      // Build fields for card display (limit to first 4-5 key fields)
+      let card_fields_html = '';
+      let displayed_fields = 0;
+      const max_fields = 5;
+      
+      fields_to_show_in_table.forEach((field_key) => {
+        if (displayed_fields >= max_fields || field_key === 'name' || field_key === 'favorite') {
+          return;
+        }
+        
+        let field_settings = list_settings.post_type_settings.fields[field_key];
+        let field_value = window.lodash.get(record, field_key, false);
+        
+        if (field_value !== false && field_settings) {
+          let display_value = '';
+          let field_icon = '';
+          
+          // Format field value based on type
+          if (['text', 'textarea', 'number'].includes(field_settings.type)) {
+            display_value = window.SHAREDFUNCTIONS.escapeHTML(field_value);
+          } else if (field_settings.type === 'date') {
+            display_value = window.SHAREDFUNCTIONS.escapeHTML(
+              window.SHAREDFUNCTIONS.formatDate(field_value.timestamp)
+            );
+            field_icon = '📅';
+          } else if (field_settings.type === 'datetime') {
+            display_value = window.SHAREDFUNCTIONS.escapeHTML(
+              window.SHAREDFUNCTIONS.formatDate(field_value.timestamp, true)
+            );
+            field_icon = '🕒';
+          } else if (field_settings.type === 'user_select') {
+            display_value = window.SHAREDFUNCTIONS.escapeHTML(field_value.display);
+            field_icon = '👤';
+          } else if (field_settings.type === 'key_select') {
+            display_value = window.SHAREDFUNCTIONS.escapeHTML(field_value.label);
+          } else if (field_settings.type === 'multi_select') {
+            display_value = field_value.map(v => 
+              '<span class="tag">' + window.SHAREDFUNCTIONS.escapeHTML(window.lodash.get(field_settings, 'default[' + v + '].label', v)) + '</span>'
+            ).join(' ');
+          } else if (field_settings.type === 'tags') {
+            display_value = field_value.map(v => 
+              '<span class="tag">' + window.SHAREDFUNCTIONS.escapeHTML(window.lodash.get(field_settings, 'default[' + v + '].label', v)) + '</span>'
+            ).join(' ');
+            field_icon = '🏷️';
+          } else if (field_settings.type === 'location' || field_settings.type === 'location_meta') {
+            display_value = field_value.map(v => 
+              window.SHAREDFUNCTIONS.escapeHTML(v.label)
+            ).join(', ');
+            field_icon = '📍';
+          } else if (field_settings.type === 'communication_channel') {
+            display_value = field_value.map(v => 
+              window.SHAREDFUNCTIONS.escapeHTML(v.value)
+            ).join(', ');
+            field_icon = '📞';
+          } else if (field_settings.type === 'connection') {
+            display_value = field_value.map(v => {
+              let meta = [];
+              if (field_settings.meta_fields) {
+                Object.keys(field_settings.meta_fields).forEach((key) => {
+                  if (v.meta && v.meta[key]) {
+                    meta.push(v.meta[key]);
+                  }
+                });
+              }
+              return window.SHAREDFUNCTIONS.escapeHTML(v.post_title) + (meta.length ? ` (${meta.join(',')})` : '');
+            }).join(', ');
+            field_icon = '🔗';
+          } else if (field_settings.type === 'boolean' && field_value === true) {
+            display_value = '✓';
+          }
+          
+          if (display_value) {
+            card_fields_html += `
+              <div class="record-card-field">
+                ${field_icon ? `<div class="record-card-field-icon">${field_icon}</div>` : ''}
+                <div class="record-card-field-content">
+                  <div class="record-card-field-label">${window.SHAREDFUNCTIONS.escapeHTML(field_settings.name || field_key)}</div>
+                  <div class="record-card-field-value">${display_value}</div>
+                </div>
+              </div>
+            `;
+            displayed_fields++;
+          }
+        }
+      });
+      
+      // Get status for styling
+      let status = window.lodash.get(record, 'overall_status.key', 'active');
+      let status_label = window.lodash.get(record, 'overall_status.label', status);
+      
+      cards_html += `
+        <div class="record-card" data-link="${permalink}" data-id="${record.ID}">
+          <div class="record-card-header">
+            <div class="record-card-title-section">
+              <h3 class="record-card-title">${title}</h3>
+              <div class="record-card-subtitle">#${record.ID}</div>
+            </div>
+            <div class="record-card-actions">
+              <input type="checkbox" class="record-card-checkbox bulk_edit_checkbox" name="bulk_edit_id" value="${record.ID}">
+              <svg class="record-card-favorite ${favorite_checked ? 'selected' : ''}" viewBox="0 0 32 32" data-id="${record.ID}">
+                <use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="record-card-body">
+            <div class="record-card-fields">
+              ${card_fields_html}
+            </div>
+          </div>
+          
+          <div class="record-card-footer">
+            <div class="record-card-meta">Updated ${window.SHAREDFUNCTIONS.formatDate(record.last_modified.timestamp)}</div>
+            <div class="record-card-status ${status.toLowerCase()}">${window.SHAREDFUNCTIONS.escapeHTML(status_label)}</div>
+          </div>
+        </div>
+      `;
+    });
+
+    if (records.length === 0) {
+      cards_html = `
+        <div class="empty-cards-state">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2 2v-5m16 0h-6.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 009.586 13H3" />
+          </svg>
+          <h3>${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.empty_list || 'No records found')}</h3>
+          <p>Try adjusting your filters or create a new record to get started.</p>
+        </div>
+      `;
+    }
+
+    $('#records-cards').html(cards_html);
+    bind_card_events();
+  };
+
+  let bind_card_events = () => {
+    // Card click to open record
+    $('.record-card').off('click').on('click', function(e) {
+      // Don't navigate if clicking on checkbox, favorite, or other interactive elements
+      if ($(e.target).closest('.record-card-checkbox, .record-card-favorite').length) {
+        return;
+      }
+      window.location = $(this).data('link');
+    });
+
+    // Checkbox selection
+    $('.record-card-checkbox').off('change').on('change', function() {
+      let card = $(this).closest('.record-card');
+      if (this.checked) {
+        card.addClass('selected');
+      } else {
+        card.removeClass('selected');
+      }
+      bulk_edit_count();
+    });
+
+    // Favorite toggle
+    $('.record-card-favorite').off('click').on('click', function(e) {
+      e.stopPropagation();
+      let recordId = $(this).data('id');
+      let isFavorited = $(this).hasClass('selected');
+      
+      // Toggle favorite state
+      $(this).toggleClass('selected');
+      
+      // Update favorite status via API
+      let update_data = {
+        favorite: !isFavorited
+      };
+      
+      window.makeRequestOnPosts('POST', list_settings.post_type + '/' + recordId, update_data)
+        .done(function(response) {
+          // Success - the visual state is already updated
+        })
+        .fail(function() {
+          // Revert on failure
+          $(this).toggleClass('selected');
+        });
+    });
+
+    // Master checkbox for cards
+    $('#bulk_edit_master_checkbox_cards').off('change').on('change', function() {
+      let isChecked = this.checked;
+      $('.record-card-checkbox').prop('checked', isChecked).trigger('change');
+    });
+  };
+
+  // Main build function that decides between cards and table
+  let build_list_view = (records) => {
+    if (current_view_mode === 'cards') {
+      build_cards(records);
+      $('#records-cards').show();
+      $('#table-container').hide();
+    } else {
+      build_table(records);
+      $('#records-cards').hide();
+      $('#table-container').show();
+    }
+  };
+
+  // View toggle functionality
+  function init_view_toggle() {
+    // Set initial view state
+    let saved_view = localStorage.getItem('dt_list_view_mode') || 'cards';
+    current_view_mode = saved_view;
+    
+    // Update button states
+    $('.view-toggle-btn').removeClass('active');
+    if (current_view_mode === 'cards') {
+      $('#cards-view-btn').addClass('active');
+      $('#records-cards').show();
+      $('#table-container').hide();
+    } else {
+      $('#table-view-btn').addClass('active');
+      $('#records-cards').hide();
+      $('#table-container').show();
+    }
+
+    // Cards view button
+    $('#cards-view-btn').off('click').on('click', function() {
+      current_view_mode = 'cards';
+      localStorage.setItem('dt_list_view_mode', 'cards');
+      
+      $('.view-toggle-btn').removeClass('active');
+      $(this).addClass('active');
+      
+      if (items && items.length > 0) {
+        build_list_view(items);
+      }
+    });
+
+    // Table view button  
+    $('#table-view-btn').off('click').on('click', function() {
+      current_view_mode = 'table';
+      localStorage.setItem('dt_list_view_mode', 'table');
+      
+      $('.view-toggle-btn').removeClass('active');
+      $(this).addClass('active');
+      
+      if (items && items.length > 0) {
+        build_list_view(items);
+      }
+    });
+  }
 
   on_load();
 
@@ -94,6 +350,8 @@
     get_filter_counts(old_filters);
 
     reset_sorting_in_table_header(current_filter);
+    
+    init_view_toggle();
   }
 
   function get_current_filter(urlCustomFilter, cachedFilter) {
@@ -1132,7 +1390,7 @@
     }
   }
 
-  $('#records-table')
+      $('#records-table')
     .dragableColumns({
       drag: true,
       dragClass: 'drag',
@@ -1447,7 +1705,7 @@
           .replace('_START_', items.length)
           .replace('_TOTAL_', response.total);
         $('.filter-result-text').html(result_text);
-        build_table(items);
+        build_list_view(items);
         setup_current_filter_labels();
         loading_spinner.removeClass('active');
       })
@@ -5053,7 +5311,7 @@
                       .replace('_START_', items.length)
                       .replace('_TOTAL_', response.total);
                     $('.filter-result-text').html(result_text);
-                    build_table(items);
+                    build_list_view(items);
 
                     // Generate corresponding custom filter.
                     reset_split_by_filters();
@@ -5371,4 +5629,6 @@
   /**
    * List Exports
    */
+
+
 })(window.jQuery, window.list_settings, window.Foundation);

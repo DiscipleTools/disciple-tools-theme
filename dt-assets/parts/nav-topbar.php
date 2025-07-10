@@ -202,75 +202,14 @@ if ( !empty( $custom_logo_url ) ) {
     </div>
 </div>
 
-<!-- MOBILE VIEW TOP LEFT SIDE MENU AREA -->
-<div data-sticky-container class="show-for-small-only">
-    <div data-sticky data-responsive-toggle='top-bar-menu' data-margin-top='0' data-sticky-on='small'>
-        <?php // hook for nav header above menu bar
-        do_action( 'dt_nav_add_before', false ) ?>
-
-        <div class='title-bar hide-on-scroll'>
-            <div class='title-bar-left'>
-                <!-- menu -->
-                <?php if ( !$dt_nav_tabs['admin']['menu']['hidden'] ?? !false ) : ?>
-                    <button class="" type="button" data-open="off-canvas">
-                        <img class="dt-white-icon"
-                             src="<?php echo esc_url( $dt_nav_tabs['admin']['menu']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/hamburger.svg?v=2' ) ?>">
-                    </button>
-                <?php endif; ?>
-
-                <!-- site logo -->
-                <?php if ( !$dt_nav_tabs['admin']['site']['hidden'] ?? !false ) : ?>
-                    <div class="title-bar-title" style="margin-left: 5px">
-                        <a href="<?php echo esc_url( $dt_nav_tabs['admin']['site']['link'] ?? site_url() ) ?>" class="logo-link">
-                            <img src="<?php echo esc_url( $logo_url ); ?>" class="logo" alt="logo-image">
-                        </a>
-                    </div>
-                <?php endif; ?>
-            </div>
-            <div class="title-bar-right">
-
-                <!-- add new -->
-                <?php if ( isset( $dt_nav_tabs['admin']['add_new']['hidden'] ) && empty( $dt_nav_tabs['admin']['add_new']['hidden'] ) ) : ?>
-                    <div class="has-submenu center-items add-buttons mobile-add-buttons">
-                        <button type="button" data-toggle="mobile-add-new-dropdown">
-                            <img title="<?php echo esc_html( $dt_nav_tabs['admin']['add_new']['label'] ?? '' ); ?>" 
-                                 src="<?php echo esc_url( $dt_nav_tabs['admin']['add_new']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ); ?>" 
-                                 style="width:24px;">
-                        </button>
-                        <!--  /* MOBILE add menu */ -->
-                        <div class="dropdown-pane add-new-items-dropdown" id="mobile-add-new-dropdown" data-dropdown data-position="bottom" data-alignment="right" data-v-offset="5">
-                            <ul class="menu vertical">
-                                <?php if ( isset( $dt_nav_tabs['admin']['add_new']['submenu'] ) && ! empty( $dt_nav_tabs['admin']['add_new']['submenu'] ) ) : ?>
-                                    <?php foreach ( $dt_nav_tabs['admin']['add_new']['submenu'] as $dt_nav_submenu ) : ?>
-                                        <?php if ( ! isset( $dt_nav_submenu['hidden'] ) || ! $dt_nav_submenu['hidden'] ) { ?>
-                                            <li>
-                                                <a class="add-new-menu-item" href="<?php echo esc_url( $dt_nav_submenu['link'] ) ?>">
-                                                    <img title="<?php echo esc_html( $dt_nav_submenu['label'] ); ?>"
-                                                         src="<?php echo esc_url( $dt_nav_submenu['icon'] ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ) ?>">
-                                                    <?php echo esc_html( $dt_nav_submenu['label'] ); ?>
-                                                </a>
-                                            </li>
-                                        <?php } ?>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </ul>
-                        </div>
-                    </div>
-                <?php endif; // end add new ?>
-
-                <!-- advanced search -->
-                <?php if ( isset( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) && empty( $dt_nav_tabs['admin']['advanced_search']['hidden'] ) ) : ?>
-                    <a class="advanced-search-nav-button" href="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['link'] ?? '#' ); ?>">
-                        <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['advanced_search']['label'] ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['advanced_search']['icon'] ); ?>" style="width:24px;">
-                    </a>
-                <?php endif; // end advanced search ?>
-
-            </div>
-        </div>
-
-        <?php // hook for nav header below menu bar
-        do_action( 'dt_nav_add_after', false ) ?>
-    </div>
+<!-- MOBILE VIEW ENHANCED HEADER -->
+<div class="show-for-small-only">
+    <?php
+    // Include enhanced mobile header for mobile devices
+    if ( dt_is_mobile_request() ) {
+        get_template_part( 'dt-assets/parts/nav-topbar', 'mobile' );
+    }
+    ?>
 </div>
 
 <?php if ( isset( $dt_nav_tabs['admin']['notifications'] ) && ! empty( $dt_nav_tabs['admin']['notifications'] ) ) : ?>
