@@ -2271,7 +2271,7 @@ jQuery(document).ready(function ($) {
         })
         .get(),
       show_in_table: $('#show-in-table').is(':checked'),
-      in_create_form: $('#show-in-creation').is(':checked')
+      in_create_form: $('#show-in-creation').is(':checked'),
     };
 
     let field_settings = all_settings.post_type_settings.fields[field_key];
