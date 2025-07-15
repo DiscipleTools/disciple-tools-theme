@@ -12,7 +12,7 @@ declare( strict_types=1 );
  * @throws \Error Dt_theme_enqueue_script took $rel_src argument which unexpectedly started with /.
  */
 function dt_theme_enqueue_script( string $handle, string $rel_src, array $deps = array(), bool $in_footer = false ) {
-    if ( $rel_src[0] === '/' ) {
+    if ( !empty( $rel_src ) && $rel_src[0] === '/' ) {
         throw new Error( 'dt_theme_enqueue_script took $rel_src argument which unexpectedly started with /' );
     }
     wp_enqueue_script( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $in_footer );
@@ -23,7 +23,7 @@ function dt_theme_enqueue_script( string $handle, string $rel_src, array $deps =
  *
  */
 function dt_theme_register_script( string $handle, string $rel_src, array $deps = array(), bool $in_footer = false ) {
-    if ( $rel_src[0] === '/' ) {
+    if ( !empty( $rel_src ) && $rel_src[0] === '/' ) {
         throw new Error( 'dt_theme_register_script took $rel_src argument which unexpectedly started with /' );
     }
     return wp_register_script( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $in_footer );
@@ -41,7 +41,7 @@ function dt_theme_register_script( string $handle, string $rel_src, array $deps 
  * @throws \Error Dt_theme_enqueue_style took $rel_src argument which unexpectedly started with /.
  */
 function dt_theme_enqueue_style( string $handle, string $rel_src, array $deps = array(), string $media = 'all' ) {
-    if ( $rel_src[0] === '/' ) {
+    if ( !empty( $rel_src ) && $rel_src[0] === '/' ) {
         throw new Error( 'dt_theme_enqueue_style took $rel_src argument which unexpectedly started with /' );
     }
     wp_enqueue_style( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $media );
@@ -52,7 +52,7 @@ function dt_theme_enqueue_style( string $handle, string $rel_src, array $deps = 
  * Register styles, in a way that implements cache-busting
  */
 function dt_theme_register_style( string $handle, string $rel_src, array $deps = array(), string $media = 'all' ) {
-    if ( $rel_src[0] === '/' ) {
+    if ( !empty( $rel_src ) && $rel_src[0] === '/' ) {
         throw new Error( 'dt_theme_register_style took $rel_src argument which unexpectedly started with /' );
     }
     return wp_register_style( $handle, get_template_directory_uri() . "/$rel_src", $deps, filemtime( get_template_directory() . "/$rel_src" ), $media );

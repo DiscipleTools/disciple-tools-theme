@@ -601,7 +601,7 @@ class DT_User_Management
          */
         $sort_sql = '';
         $sort = $params['sort'] ?? '';
-        $dir = ( !empty( $sort ) && $sort[0] === '-' ) ? 'DESC' : 'ASC';
+        $dir = ( isset( $sort[0] ) && $sort[0] === '-' ) ? 'DESC' : 'ASC';
         $sort_field = esc_sql( str_replace( '-', '', $sort ) );
         if ( !empty( $sort_field ) ){
             $table = $user_fields[$sort_field]['table'] ?? '';

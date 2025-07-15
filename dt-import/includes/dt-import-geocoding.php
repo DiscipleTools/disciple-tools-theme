@@ -250,8 +250,8 @@ class DT_CSV_Import_Geocoding {
             // Check if it's coordinates in decimal format (lat,lng)
             if ( preg_match( '/^-?\d+\.?\d*\s*,\s*-?\d+\.?\d*$/', $value ) ) {
                 $coords = array_map( 'trim', explode( ',', $value ) );
-                $lat = floatval( $coords[0] );
-                $lng = floatval( $coords[1] );
+                $lat = floatval( $coords[0] ?? 0 );
+                $lng = floatval( $coords[1] ?? 0 );
 
                 // Validate coordinates
                 if ( $lat < -90 || $lat > 90 || $lng < -180 || $lng > 180 ) {
