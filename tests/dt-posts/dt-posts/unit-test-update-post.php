@@ -463,7 +463,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         $this->assertNotWPError( $result );
 
-        $this->assertSame( false, empty( $result['requires_update'] ) );
+        $this->assertSame( true, $result['requires_update'] );
     }
 
     public function test_do_not_overwrite_key_select_fields_update() {
@@ -525,6 +525,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         $initial_fields = self::$sample_contact;
         $initial_fields['assigned_to'] = $base_user;
+        $initial_fields['location_grid'] = [ 'values' => [ [ 'value' => '100089589' ] ] ];
 
         $contact = DT_Posts::create_post( 'contacts', $initial_fields, true, false );
         $this->assertNotWPError( $contact );
@@ -533,16 +534,16 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
             'assigned_to' => $base_user,
             'title' => $initial_fields['title'],
             'contact_phone' => $initial_fields['contact_phone'],
-            'location_grid' => [ 'values' => [ [ 'value' => '100089589' ] ] ]
+            'location_grid' => [ 'values' => [ [ 'value' => '100222975' ] ] ]
         ];
 
         $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
-            'do_not_overwrite_existing_fields' => false
+            'do_not_overwrite_existing_fields' => true
         ]);
 
         $this->assertNotWPError( $result );
 
-        $this->assertSame( 1, count( $result['location_grid'] ) );
+        $this->assertSame( 2, count( $result['location_grid'] ) );
     }
 
     public function test_do_not_overwrite_user_select_fields_update() {

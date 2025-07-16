@@ -371,11 +371,11 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
             'check_for_duplicates' => [ 'contact_phone' ],
-            'do_not_overwrite_existing_fields' => false
+            'do_not_overwrite_existing_fields' => true
         ]);
         $this->assertNotWPError( $result );
 
-        $this->assertSame( true, empty( $result['requires_update'] ) );
+        $this->assertSame( true, $result['requires_update'] );
     }
 
     public function test_do_not_overwrite_date_fields_create() {
@@ -477,7 +477,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
 
         $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [
             'check_for_duplicates' => [ 'contact_phone' ],
-            'do_not_overwrite_existing_fields' => false
+            'do_not_overwrite_existing_fields' => true
         ]);
         $this->assertNotWPError( $result );
 
