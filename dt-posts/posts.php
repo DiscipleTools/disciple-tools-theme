@@ -3186,21 +3186,25 @@ class Disciple_Tools_Posts
                 case 'connection':
                 case 'multi_select':
                     $values = [];
-                    foreach ( $field_value['values'] ?? [] as $value ) {
+                    // Handle both direct array format [['value' => 'xxx']] and wrapped format ['values' => [['value' => 'xxx']]]
+                    $field_values = isset( $field_value['values'] ) ? $field_value['values'] : ( $field_value ?? [] );
+
+                    foreach ( $field_values as $value ) {
                         if ( isset( $value['delete'] ) || !( isset( $value['value'] ) && in_array( $value['value'], $existing_fields[ $field_key ] ) ) ) {
                             $values[] = $value;
                         }
                     }
                     if ( !empty( $values ) ) {
-                        $updated_fields[ $field_key ] = [
-                            'values' => $values,
-                        ];
+                        $updated_fields[ $field_key ] = [ 'values' => $values ];
                     }
                     break;
                 case 'location':
                 case 'location_meta':
                     $values = [];
-                    foreach ( $field_value['values'] ?? [] as $value ) {
+                    // Handle both direct array format [['value' => 'xxx']] and wrapped format ['values' => [['value' => 'xxx']]]
+                    $field_values = isset( $field_value['values'] ) ? $field_value['values'] : ( $field_value ?? [] );
+
+                    foreach ( $field_values as $value ) {
                         $key = 'label';
                         $found = array_filter( $existing_fields[ $field_key ], function ( $option ) use ( $value, $key ) {
                             $hit = isset( $option[$key], $value[$key] ) && $option[$key] == $value[$key];
@@ -3220,9 +3224,7 @@ class Disciple_Tools_Posts
                         }
                     }
                     if ( !empty( $values ) ) {
-                        $updated_fields[ $field_key ] = [
-                            'values' => $values,
-                        ];
+                        $updated_fields[ $field_key ] = [ 'values' => $values ];
                     }
                     break;
                 case 'communication_channel':
@@ -3248,12 +3250,7 @@ class Disciple_Tools_Posts
                     }
 
                     if ( !empty( $values ) ) {
-                        // Preserve the original format (wrapped or direct)
-                        if ( isset( $field_value['values'] ) ) {
-                            $updated_fields[ $field_key ] = [ 'values' => $values ];
-                        } else {
-                            $updated_fields[ $field_key ] = $values;
-                        }
+                        $updated_fields[ $field_key ] = [ 'values' => $values ];
                     }
                     break;
                 default:
