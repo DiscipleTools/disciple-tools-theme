@@ -103,8 +103,7 @@ class Disciple_Tools
          * Prepare variables
          */
         $this->token = 'disciple_tools';
-        $this->version = '1.71.0';
-        // $this->migration_number = 38; // moved to Disciple_Tools_Migration_Engine::$migration_number
+        $this->version = '1.72.0';
 
         $this->theme_url = get_template_directory_uri() . '/';
         $this->theme_path = get_template_directory() . '/';
