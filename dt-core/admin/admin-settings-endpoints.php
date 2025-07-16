@@ -1267,6 +1267,9 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 $custom_field['show_in_table'] = $post_submission['visibility']['show_in_table'];
             }
 
+            // Show as a default field in record creation form.
+            $custom_field['in_create_form'] = ( isset( $post_submission['visibility']['in_create_form'] ) && $post_submission['visibility']['in_create_form'] === true ) ? true : null;
+
             // Boolean Field Types: Checked by default
             if ( isset( $post_submission['visibility']['checked_by_default'] ) ) {
                 $custom_field['default'] = $post_submission['visibility']['checked_by_default'];
