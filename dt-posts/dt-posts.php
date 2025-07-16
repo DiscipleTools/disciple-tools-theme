@@ -84,15 +84,16 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( isset( $args['check_for_duplicates'] ) && is_array( $args['check_for_duplicates'] ) && ! empty( $args['check_for_duplicates'] ) ) {
             $duplicate_post_ids = apply_filters( 'dt_create_check_for_duplicate_posts', [], $post_type, $fields, $args['check_for_duplicates'], $check_permissions );
             if ( ! empty( $duplicate_post_ids ) && count( $duplicate_post_ids ) > 0 ) {
+                $duplicate_post_id = $duplicate_post_ids[0];
 
                 $name = $fields['name'] ?? $fields['title'];
 
                 $fields['notes'] = isset( $fields['notes'] ) ? $fields['notes'] : [];
                 //No need to update title or name.
-                unset( $fields['title'], $fields['name'] );
+                unset( $fields['title'], $fields['name'], $fields['ID'] );
 
                 //update most recently created matched post.
-                $updated_post = self::update_post( $post_type, $duplicate_post_ids[0], $fields, $silent, false );
+                $updated_post = self::update_post( $post_type, $duplicate_post_id, $fields, $silent, false, $args );
                 if ( is_wp_error( $updated_post ) ){
                     return $updated_post;
                 }
@@ -391,7 +392,7 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return array|WP_Error
      */
-    public static function update_post( string $post_type, int $post_id, array $fields, bool $silent = false, bool $check_permissions = true ){
+    public static function update_post( string $post_type, int $post_id, array $fields, bool $silent = false, bool $check_permissions = true, $args = [] ){
         $post_types = self::get_post_types();
         if ( !in_array( $post_type, $post_types ) ){
             return new WP_Error( __FUNCTION__, 'Post type does not exist', [ 'status' => 403 ] );
@@ -413,6 +414,15 @@ class DT_Posts extends Disciple_Tools_Posts {
         $post = get_post( $post_id );
         if ( !$post ) {
             return new WP_Error( __FUNCTION__, 'post does not exist', [ 'status' => 404 ] );
+        }
+
+        /**
+         * If field overwrite has been disabled for existing fields, then ensure
+         * to have them removed from importing fields.
+         */
+
+        if ( isset( $args['do_not_overwrite_existing_fields'] ) && $args['do_not_overwrite_existing_fields'] ) {
+            $fields = self::dt_ignore_duplicated_post_fields( $fields, $post_type, $post_id );
         }
 
         $existing_post = self::get_post( $post_type, $post_id, false, false );
@@ -2406,7 +2416,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
             return $results;
         } else {
-            return new WP_Error( 'add_shared', __( 'Post already shared with user.', 'disciple_tools' ), [ 'status' => 418 ] );
+            return new WP_Error( 'add_shared', __( 'Record already shared with user.', 'disciple_tools' ), [ 'status' => 418 ] );
         }
     }
 
@@ -2899,6 +2909,19 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $permissions_joins_sql = $fields_sql['joins_sql'];
         $permissions_where_sql = empty( $fields_sql['where_sql'] ) ? '' : ( $fields_sql['where_sql'] . ' AND ' );
+        // First, get the total count of matching records
+        $count_sql = 'SELECT COUNT(DISTINCT p.ID) as total_count
+            FROM ' . $wpdb->posts . ' p
+            ' . $extra_joins . '
+            ' . $permissions_joins_sql . '
+            WHERE ' . $permissions_where_sql . " (p.post_status = 'publish') AND p.post_type = '" . esc_sql( $post_type ) . "'
+            AND ( " . $extra_where . ' )';
+        // phpcs:disable
+        // WordPress.WP.PreparedSQL.NotPrepared
+        $total_count_result = $wpdb->get_row( $count_sql, OBJECT );
+        $total_count = $total_count_result ? intval( $total_count_result->total_count ) : 0;
+        // phpcs:enable
+
         $sql = 'SELECT p.ID, p.post_title, p.post_type, ' . $extra_fields . ' p.post_date, if ( p.post_title LIKE ' . $esc_like_search_sql . ", 'Y', 'N') post_hit
             FROM $wpdb->posts p
             " . $extra_joins . '
@@ -2952,10 +2975,17 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         //capture hits count and adjust future offsets
         $post_hits_count = count( $post_hits );
+        $remaining_count = max( 0, $total_count - intval( $offset ) - $post_hits_count );
+        $has_more = $remaining_count > 0;
+
         return [
             'post_type' => $post_type,
+            'post_type_label_singular' => $post_settings['label_singular'] ?? $post_type,
             'posts'     => $post_hits,
             'total'     => $post_hits_count,
+            'total_count' => $total_count,
+            'remaining_count' => $remaining_count,
+            'has_more' => $has_more,
             'offset'    => intval( $offset ) + intval( $post_hits_count ) + 1
         ];
     }

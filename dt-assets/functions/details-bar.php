@@ -118,7 +118,7 @@ function dt_print_details_bar(
 
                                             <img class="dt-storage-picture details-bar-picture"
                                                  src="<?php echo esc_html( $picture_thumbnail )?>"
-                                                 alt="<?php esc_attr_e( 'Record Picture', 'disciple_tools' ) ?>"
+                                                 alt="<?php echo esc_attr_x( 'Record Picture', 'the picture of the record', 'disciple_tools' ) ?>"
                                                  style="<?php echo esc_attr( $picture_style ) ?>"
                                                 data-picture_url="<?php echo esc_html( $picture )?>"
                                                 data-picture_large_thumbnail_url="<?php echo esc_html( $picture_large_thumbnail )?>"

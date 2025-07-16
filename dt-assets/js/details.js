@@ -502,8 +502,39 @@ jQuery(document).ready(function ($) {
     });
   });
 
+  /* field type: tags */
+  let tags_field = null;
+  $('dt-tags').on('dt:add-new', (e) => {
+    tags_field = e.detail.field;
+    $('#create-tag-modal').foundation('open');
+    $('.js-create-tag input[name=title]').val(e.detail.value);
+  });
+
+  $('.js-create-tag').on('submit', (e) => {
+    e.preventDefault();
+
+    const tag = $('#new-tag').val();
+    const field = document.querySelector(`#${tags_field}`);
+    if (field) {
+      // select the tag and the change event will handle saving it
+      field._select(tag);
+      field._clearSearch();
+    }
+  });
+
+  // new record from group member list
+  $('.create-new-record').on('click', function () {
+    connection_type = $(this).data('connection-key');
+    $('#create-record-modal').foundation('open');
+    $('.js-create-record .error-text').empty();
+    $('.js-create-record-button').attr('disabled', false).removeClass('alert');
+    $('.reveal-after-record-create').hide();
+    $('.hide-after-record-create').show();
+    $('.js-create-record input[name=title]').val('');
+  });
+
+  /* field type: connection */
   let connection_type = null;
-  // New record off of dt-connection
   $('dt-connection').on('change', (e) => {
     if (e?.detail?.newValue && e.detail.newValue.some((x) => x.isNew)) {
       e.stopImmediatePropagation(); // stop ComponentService listener from firing
@@ -522,7 +553,15 @@ jQuery(document).ready(function ($) {
       $('.js-create-record input[name=title]').val(newPost.label);
     }
   });
-
+  $('dt-connection').on('dt:add-new', (e) => {
+    connection_type = e.detail.field;
+    $('#create-record-modal').foundation('open');
+    $('.js-create-record .error-text').empty();
+    $('.js-create-record-button').attr('disabled', false).removeClass('alert');
+    $('.reveal-after-record-create').hide();
+    $('.hide-after-record-create').show();
+    $('.js-create-record input[name=title]').val(e.detail.value);
+  });
   /* New Record Modal */
   $('.js-create-record').on('submit', function (e) {
     e.preventDefault();
@@ -570,6 +609,7 @@ jQuery(document).ready(function ($) {
               [newRecord],
             )[0],
           );
+          field._clearSearch();
         }
       })
       .catch(function (error) {
@@ -1316,6 +1356,7 @@ function record_updated(updateNeeded) {
  * that make use of them. Leaving them here until we can be sure they can be
  * completely removed.
  */
+
 jQuery(document).ready(function ($) {
   let post_id = window.detailsSettings.post_id;
   let post_type = window.detailsSettings.post_type;

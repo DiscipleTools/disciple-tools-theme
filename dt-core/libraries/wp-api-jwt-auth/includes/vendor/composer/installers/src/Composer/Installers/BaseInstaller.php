@@ -19,7 +19,7 @@ abstract class BaseInstaller
      * @param Composer         $composer
      * @param IOInterface      $io
      */
-    public function __construct(PackageInterface $package = null, Composer $composer = null, IOInterface $io = null)
+    public function __construct(?PackageInterface $package = null, ?Composer $composer = null, ?IOInterface $io = null)
     {
         $this->composer = $composer;
         $this->package = $package;
@@ -120,7 +120,7 @@ abstract class BaseInstaller
      * @param  array  $paths
      * @param  string $name
      * @param  string $type
-     * @param  string $vendor = NULL
+     * @param  ?string $vendor = null
      * @return string|false
      */
     protected function mapCustomInstallPaths(array $paths, $name, $type, $vendor = NULL)

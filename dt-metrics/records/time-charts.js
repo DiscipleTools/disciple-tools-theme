@@ -278,7 +278,34 @@ function createCharts() {
       graphType: 'line',
     });
   } else {
-    const keys = getDataKeys(data);
+    let keys = getDataKeys(data);
+
+    // For key_select fields, ensure all possible options are included in the legend
+    if (fieldType === 'key_select') {
+      const { field } = window.dtMetricsProject.state;
+      const fieldSettings = window.dtMetricsProject.field_settings[field];
+      const defaultSettings =
+        fieldSettings && fieldSettings.default ? fieldSettings.default : [];
+
+      if (defaultSettings && Object.keys(defaultSettings).length > 0) {
+        // Get all possible option keys from field settings
+        const allPossibleKeys = Object.keys(defaultSettings);
+        const allPossibleCumulativeKeys = allPossibleKeys.map(
+          (key) => `${CUMULATIVE_PREFIX}${key}`,
+        );
+
+        // Merge with existing keys to ensure we don't lose any that might have data
+        const combinedKeys = [
+          ...new Set([
+            ...keys,
+            ...allPossibleKeys,
+            ...allPossibleCumulativeKeys,
+          ]),
+        ];
+        keys = combinedKeys;
+      }
+    }
+
     const totalKeys = keys.filter((key) => !key.includes('cumulative_'));
     const cumulativeKeys = keys.filter((key) => key.includes('cumulative_'));
     createChart('stacked-chart', cumulativeKeys);
@@ -548,6 +575,10 @@ function initialiseChart(id) {
   const valueAxis = chart.yAxes.push(new window.am4charts.ValueAxis());
   valueAxis.maxPrecision = 0;
 
+  // Ensure the Y-axis starts from 0 to properly show zero values
+  valueAxis.min = 0;
+  valueAxis.strictMinMax = false;
+
   // Adjust data shape accordingly based on field type.
   switch (field_type) {
     case 'connection': {
@@ -596,6 +627,11 @@ function createColumnSeries(chart, field, name, hidden = false) {
   series.dataFields.categoryX = chart_view;
   series.name = name;
   series.columns.template.tooltipText = `[#fff font-size: 12px]${tooltipLabel}:\n[/][#fff font-size: 15px]{valueY}[/] [#fff]{additional}[/]`;
+
+  // Ensure zero values are included in the chart
+  series.includeZeroValues = true;
+  series.baseValue = 0;
+
   if (hidden) {
     series.hide();
   }
@@ -642,6 +678,10 @@ function createLineSeries(chart, field, name, hidden = false) {
   lineSeries.name = name;
   lineSeries.dataFields.valueY = field;
   lineSeries.dataFields.categoryX = chart_view;
+
+  // Ensure zero values are included in the chart
+  lineSeries.includeZeroValues = true;
+  lineSeries.baseValue = 0;
 
   if (
     (field_type === 'connection' && field === 'disconnected') ||
@@ -1256,7 +1296,20 @@ function formatSimpleYearData(yearlyData) {
 function formatCompoundYearData(yearlyData) {
   if (yearlyData.length === 0) return yearlyData;
 
-  const keys = getDataKeys(yearlyData);
+  let keys = getDataKeys(yearlyData);
+
+  // For key_select fields, ensure all possible options are included
+  const { fieldType, field } = window.dtMetricsProject.state;
+  if (fieldType === 'key_select') {
+    const fieldSettings = window.dtMetricsProject.field_settings[field];
+    const defaultSettings =
+      fieldSettings && fieldSettings.default ? fieldSettings.default : [];
+
+    if (defaultSettings && Object.keys(defaultSettings).length > 0) {
+      const allPossibleKeys = Object.keys(defaultSettings);
+      keys = [...new Set([...keys, ...allPossibleKeys])];
+    }
+  }
 
   let cumulativeTotals = {};
   const cumulativeKeys = makeCumulativeKeys(keys);
@@ -1267,9 +1320,17 @@ function formatCompoundYearData(yearlyData) {
   const formattedYearlyData = [];
   let i = 0;
   for (let year = minYear; year < maxYear + 1; year++, i++) {
-    const yearData = yearlyData.find(
-      (data) => String(data.year) === String(year),
-    );
+    const yearData =
+      yearlyData.find((data) => String(data.year) === String(year)) || {};
+
+    // Initialize missing keys with 0 for key_select fields
+    if (fieldType === 'key_select') {
+      keys.forEach((key) => {
+        if (!(key in yearData)) {
+          yearData[key] = 0;
+        }
+      });
+    }
 
     cumulativeTotals = calculateCumulativeTotals(
       keys,
@@ -1342,7 +1403,20 @@ function formatSimpleMonthData(monthlyData) {
 
 function formatCompoundMonthData(monthlyData) {
   const monthLabels = window.SHAREDFUNCTIONS.get_months_labels();
-  const keys = getDataKeys(monthlyData);
+  let keys = getDataKeys(monthlyData);
+
+  // For key_select fields, ensure all possible options are included
+  const { fieldType, field } = window.dtMetricsProject.state;
+  if (fieldType === 'key_select') {
+    const fieldSettings = window.dtMetricsProject.field_settings[field];
+    const defaultSettings =
+      fieldSettings && fieldSettings.default ? fieldSettings.default : [];
+
+    if (defaultSettings && Object.keys(defaultSettings).length > 0) {
+      const allPossibleKeys = Object.keys(defaultSettings);
+      keys = [...new Set([...keys, ...allPossibleKeys])];
+    }
+  }
 
   const cumulative_offsets = window.dtMetricsProject.cumulative_offset;
   let cumulativeTotals = {};
@@ -1368,6 +1442,16 @@ function formatCompoundMonthData(monthlyData) {
       monthlyData.find(
         (mData) => String(mData.month) === String(monthNumber),
       ) || {};
+
+    // Initialize missing keys with 0 for key_select fields
+    if (fieldType === 'key_select') {
+      keys.forEach((key) => {
+        if (!(key in monthData)) {
+          monthData[key] = 0;
+        }
+      });
+    }
+
     cumulativeTotals = calculateCumulativeTotals(
       keys,
       monthData,
@@ -1406,10 +1490,9 @@ function calculateCumulativeTotals(
     const count =
       typeof data !== 'undefined' && data[key] ? parseInt(data[key]) : 0;
     const cumulativeKey = cumulativeKeys[key];
-    if (!cumulativeTotals[cumulativeKey] && count > 0) {
+    if (!cumulativeTotals[cumulativeKey]) {
       cumulativeTotals[cumulativeKey] = count;
-      return;
-    } else if (cumulativeTotals[cumulativeKey] && count > 0) {
+    } else {
       cumulativeTotals[cumulativeKey] = cumulativeTotals[cumulativeKey] + count;
     }
   });

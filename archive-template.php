@@ -136,6 +136,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
             <a class="button filter-posts-mobile" data-open="filter-modal">
                 <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
             </a>
+            <?php do_action( 'archive_template_mobile_action_bar_buttons', $post_type ) ?>
             <a class="button" id="open-search">
                 <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
             </a>
@@ -549,7 +550,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         });
 
                         ?>
-                        
+
                         <div class="field-selection-ui">
                             <!-- Search input for adding fields -->
                             <div style="margin-bottom: 15px;">
@@ -566,7 +567,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                             $has_icon = !empty( $field_values['icon'] ) || !empty( $field_values['font-icon'] );
                                             $option_classes = 'field-search-option' . ( $has_icon ? '' : ' no-icon' );
                                             ?>
-                                            <div class="<?php echo esc_attr( $option_classes ); ?> field-search-option-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>" 
+                                            <div class="<?php echo esc_attr( $option_classes ); ?> field-search-option-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>"
                                                  data-field-name="<?php echo esc_attr( strtolower( $field_values['name'] ) ); ?>">
                                                 <?php dt_render_field_icon( $field_values ); ?>
                                                 <span><?php echo esc_html( $field_values['name'] ); ?></span>

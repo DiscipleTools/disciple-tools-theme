@@ -607,7 +607,7 @@ class Disciple_Tools_Posts
      * @param int $limit
      * @return array|object|null
      */
-    public static function get_recently_viewed_posts( string $post_type, int $user_id = null, int $limit = 30 ){
+    public static function get_recently_viewed_posts( string $post_type, ?int $user_id = null, int $limit = 30 ){
         if ( !$user_id ){
             $user_id = get_current_user_id();
         }
@@ -1276,7 +1276,8 @@ class Disciple_Tools_Posts
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value $sort_dir";
             } elseif ( $post_fields[$sort]['type'] === 'boolean' ){
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
-                $sort_sql = "sort.meta_value $sort_dir";
+                $default_value = isset( $post_fields[$sort]['default'] ) ? ( $post_fields[$sort]['default'] ? '1' : '0' ) : '0';
+                $sort_sql = "COALESCE(sort.meta_value, '$default_value') $sort_dir";
             } elseif ( $post_fields[$sort]['type'] === 'number' ){
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', CAST( sort.meta_value as DECIMAL(18,4) ) $sort_dir";
@@ -1536,7 +1537,7 @@ class Disciple_Tools_Posts
         return $bad_fields;
     }
 
-    public static function update_multi_select_fields( array $field_settings, int $post_id, array $fields, array $existing_contact = null ){
+    public static function update_multi_select_fields( array $field_settings, int $post_id, array $fields, ?array $existing_contact = null ){
         global $wpdb;
         $current_user_id = get_current_user_id();
 
@@ -1601,7 +1602,7 @@ class Disciple_Tools_Posts
         return $fields;
     }
 
-    public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, array $existing_post = null ){
+    public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, ?array $existing_post = null ){
 
         global $wpdb;
         foreach ( $fields as $field_key => $field ){
@@ -1808,7 +1809,7 @@ class Disciple_Tools_Posts
         return true;
     }
 
-    public static function update_post_contact_methods( array $post_settings, int $post_id, array $fields, array $existing_contact = null ){
+    public static function update_post_contact_methods( array $post_settings, int $post_id, array $fields, ?array $existing_contact = null ){
         // update contact details (phone, facebook, etc)
         foreach ( $post_settings['fields'] as $field_key => $field_settings ) {
             if ( $field_settings['type'] !== 'communication_channel' ){
@@ -2758,6 +2759,15 @@ class Disciple_Tools_Posts
             }
         }
 
+        // Apply default values for boolean fields that are not set
+        foreach ( $field_settings as $field_key => $field_config ) {
+            if ( $field_config['type'] === 'boolean' &&
+                 !isset( $fields[$field_key] ) &&
+                 isset( $field_config['default'] ) ) {
+                $fields[$field_key] = $field_config['default'];
+            }
+        }
+
         $fields = apply_filters( 'dt_adjust_post_custom_fields', $fields, $post_type );
     }
 
@@ -3148,6 +3158,122 @@ class Disciple_Tools_Posts
         }
 
         return false;
+    }
+
+
+    /**
+     * Remove duplicated field values from specified post record.
+     *
+     * @param $fields
+     * @param $post_type
+     * @param $post_id
+     * @return array
+     */
+    public static function dt_ignore_duplicated_post_fields( $fields, $post_type, $post_id ) {
+        $updated_fields = [];
+        $existing_fields = DT_Posts::get_post( $post_type, $post_id, true, false );
+        if ( empty( $existing_fields ) || is_wp_error( $existing_fields ) ){
+            return $fields;
+        }
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        foreach ( $fields as $field_key => $field_value ) {
+            if ( !isset( $existing_fields[ $field_key ], $field_settings[ $field_key ]['type'] ) ){
+                $updated_fields[ $field_key ] = $field_value;
+                continue;
+            }
+
+            $field_type = $field_settings[ $field_key ]['type'];
+            switch ( $field_type ) {
+                case 'text':
+                case 'textarea':
+                case 'number':
+                case 'boolean':
+                case 'date':
+                case 'key_select':
+                case 'user_select':
+                    if ( empty( $existing_fields[ $field_key ] ) ) {
+                        $updated_fields[ $field_key ] = $field_value;
+                    }
+                    break;
+                case 'tags':
+                case 'link':
+                case 'connection':
+                case 'multi_select':
+                    $values = [];
+                    // Handle both direct array format [['value' => 'xxx']] and wrapped format ['values' => [['value' => 'xxx']]]
+                    $field_values = isset( $field_value['values'] ) ? $field_value['values'] : ( $field_value ?? [] );
+
+                    foreach ( $field_values as $value ) {
+                        if ( isset( $value['delete'] ) || !( isset( $value['value'] ) && in_array( $value['value'], $existing_fields[ $field_key ] ) ) ) {
+                            $values[] = $value;
+                        }
+                    }
+                    if ( !empty( $values ) ) {
+                        $updated_fields[ $field_key ] = [ 'values' => $values ];
+                    }
+                    break;
+                case 'location':
+                case 'location_meta':
+                    $values = [];
+                    // Handle both direct array format [['value' => 'xxx']] and wrapped format ['values' => [['value' => 'xxx']]]
+                    $field_values = isset( $field_value['values'] ) ? $field_value['values'] : ( $field_value ?? [] );
+
+                    foreach ( $field_values as $value ) {
+                        $key = 'label';
+                        $found = array_filter( $existing_fields[ $field_key ], function ( $option ) use ( $value, $key ) {
+                            $hit = isset( $option[$key], $value[$key] ) && $option[$key] == $value[$key];
+
+                            if ( isset( $value['delete'] ) ) {
+                                $hit = false;
+                            } elseif ( !$hit && isset( $option['matched_search'], $value[$key] ) && $option['matched_search'] == $value[$key] ) {
+                                $hit = true;
+                            } elseif ( !$hit && isset( $option['id'], $value['value'] ) && $option['id'] == $value['value'] ) {
+                                $hit = true;
+                            }
+
+                            return $hit;
+                        } );
+                        if ( empty( $found ) || count( $found ) == 0 ) {
+                            $values[] = $value;
+                        }
+                    }
+                    if ( !empty( $values ) ) {
+                        $updated_fields[ $field_key ] = [ 'values' => $values ];
+                    }
+                    break;
+                case 'communication_channel':
+                    $values = [];
+                    $existing_field_values = $existing_fields[ $field_key ];
+
+                    // Handle both direct array format [['value' => 'xxx']] and wrapped format ['values' => [['value' => 'xxx']]]
+                    $field_values = isset( $field_value['values'] ) ? $field_value['values'] : ( $field_value ?? [] );
+
+                    foreach ( $field_values as $value ) {
+                        $hit = false;
+                        if ( !isset( $value['delete'] ) && isset( $value['value'] ) ) {
+                            $found = array_filter( $existing_field_values, function ( $existing_field ) use ( $value ) {
+                                return isset( $existing_field['value'] ) && $value['value'] == $existing_field['value'];
+                            } );
+
+                            $hit = !empty( $found );
+                        }
+
+                        if ( !$hit ) {
+                            $values[] = $value;
+                        }
+                    }
+
+                    if ( !empty( $values ) ) {
+                        $updated_fields[ $field_key ] = [ 'values' => $values ];
+                    }
+                    break;
+                default:
+                    $updated_fields[ $field_key ] = $field_value;
+                    break;
+            }
+        }
+
+        return $updated_fields;
     }
 }
 

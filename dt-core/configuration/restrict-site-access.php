@@ -258,7 +258,7 @@ function login_error_messages( $message ){
             sprintf(
                 ( '<a href="%1$s" title="%2$s">%3$s</a>?' ),
                 site_url( 'wp-login.php?action=lostpassword', 'login' ),
-                __( 'Reset password', 'disciple_tools' ),
+                __( 'Reset Password', 'disciple_tools' ),
                 __( 'Lost your password', 'disciple_tools' )
             );
     }

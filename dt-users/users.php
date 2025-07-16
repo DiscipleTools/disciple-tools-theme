@@ -208,7 +208,7 @@ class Disciple_Tools_Users
      * @param bool $get_all
      * @return array|WP_Error
      */
-    public static function get_assignable_users_compact( string $search_string = null, bool $get_all = false, string $post_type = null ) {
+    public static function get_assignable_users_compact( ?string $search_string = null, bool $get_all = false, ?string $post_type = null ) {
         if ( !current_user_can( 'access_contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( 'No permissions to assign', 'disciple_tools' ), [ 'status' => 403 ] );
         }
@@ -924,7 +924,7 @@ class Disciple_Tools_Users
      *
      * @return array
      */
-    public static function switch_preference( int $user_id, string $preference_key, string $type = null ) {
+    public static function switch_preference( int $user_id, string $preference_key, ?string $type = null ) {
 
         $value = get_user_meta( $user_id, $preference_key, true );
 

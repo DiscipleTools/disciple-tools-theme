@@ -545,7 +545,7 @@ class Disciple_Tools_Metrics_Personal_Activity_Highlights extends DT_Metrics_Cha
                         : [ $reaction ],
                 ], $row);
 
-                $comments['comment_content'] = wp_kses( $comments['comment_content'], DT_Posts::$allowable_comment_tags );
+                $comments['comment_content'] = wp_kses( $comments['comment_content'] ?? '', DT_Posts::$allowable_comment_tags );
             }
         }
 

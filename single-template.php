@@ -402,6 +402,7 @@ function dt_display_tile( $tile, $post ): bool {
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'share' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'tasks' ); ?>
     <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-contact' ); ?>
+    <?php get_template_part( 'dt-assets/parts/modals/modal', 'new-tag' ); ?>
 
     <div class="reveal" id="delete-record-modal" data-reveal data-reset-on-close>
         <h3><?php echo esc_html( sprintf( _x( 'Delete %s', 'Delete Contact', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_singular'] ) ) ?></h3>
