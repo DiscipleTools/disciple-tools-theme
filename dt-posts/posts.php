@@ -3177,7 +3177,7 @@ class Disciple_Tools_Posts
                 case 'date':
                 case 'key_select':
                 case 'user_select':
-                    if ( empty( $existing_fields[ $field_key ] ) ) {
+                    if ( !isset( $existing_fields[ $field_key ] ) ) {
                         $updated_fields[ $field_key ] = $field_value;
                     }
                     break;
