@@ -15,8 +15,8 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
         'assigned_to' => '1',
         'requires_update' => true,
         'nickname' => 'Bob the builder',
-        'contact_phone' => [ [ 'value' => '798456780' ] ],
-        'contact_email' => [ [ 'value' => 'bob@example.com' ] ],
+        'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ],
+        'contact_email' => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
         'tags' => [ 'values' => [ [ 'value' => 'tag1' ], [ 'value' => 'tagToDelete' ] ] ],
         'quick_button_contact_established' => '1'
     ];

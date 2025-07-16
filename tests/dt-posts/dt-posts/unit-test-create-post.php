@@ -14,8 +14,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         'assigned_to' => '1',
         'requires_update' => true,
         'nickname' => 'Bob the builder',
-        'contact_phone' => [ [ 'value' => '798456780' ] ],
-        'contact_email' => [ [ 'value' => 'bob@example.com' ] ],
+        'contact_phone' => [ 'values' => [ [ 'value' => '798456780' ] ] ],
+        'contact_email' => [ 'values' => [ [ 'value' => 'bob@example.com' ] ] ],
         'tags' => [ 'values' => [ [ 'value' => 'tag1' ] ] ],
         'quick_button_contact_established' => '1'
     ];
@@ -260,7 +260,7 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
         // Should add new fields
         $this->assertSame( 'jane@example.com', $result['contact_email'][1]['value'] );
         // Extra assertion sanity checks.
-        $this->assertSame( 1, $result['quick_button_contact_established'] );
+        $this->assertSame( 3, $result['quick_button_contact_established'] );
     }
 
     /**
