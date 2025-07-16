@@ -3229,7 +3229,10 @@ class Disciple_Tools_Posts
                     $values = [];
                     $existing_field_values = $existing_fields[ $field_key ];
 
-                    foreach ( $field_value ?? [] as $value ) {
+                    // Handle both direct array format [['value' => 'xxx']] and wrapped format ['values' => [['value' => 'xxx']]]
+                    $field_values = isset( $field_value['values'] ) ? $field_value['values'] : ( $field_value ?? [] );
+
+                    foreach ( $field_values as $value ) {
                         $hit = false;
                         if ( !isset( $value['delete'] ) && isset( $value['value'] ) ) {
                             $found = array_filter( $existing_field_values, function ( $existing_field ) use ( $value ) {
@@ -3245,7 +3248,12 @@ class Disciple_Tools_Posts
                     }
 
                     if ( !empty( $values ) ) {
-                        $updated_fields[ $field_key ] = $values;
+                        // Preserve the original format (wrapped or direct)
+                        if ( isset( $field_value['values'] ) ) {
+                            $updated_fields[ $field_key ] = [ 'values' => $values ];
+                        } else {
+                            $updated_fields[ $field_key ] = $values;
+                        }
                     }
                     break;
                 default:
