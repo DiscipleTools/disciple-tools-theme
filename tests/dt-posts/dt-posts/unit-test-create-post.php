@@ -244,7 +244,8 @@ class DT_Posts_DT_Posts_Create_Post extends WP_UnitTestCase {
             'overall_status' => 'paused', // Different value
             'nickname' => 'Jane', // Different value
             'contact_email' => [ 'values' => [ [ 'value' => 'jane@example.com' ] ] ], // New field
-            'milestones' => [ 'values' => [ [ 'value' => 'milestone_has_bible' ], [ 'value' => 'mature_christian' ] ] ]
+            'milestones' => [ 'values' => [ [ 'value' => 'milestone_has_bible' ], [ 'value' => 'mature_christian' ] ] ],
+            'quick_button_contact_established' => 3
         ];
 
         $result = DT_Posts::create_post('contacts', $duplicate_fields, true, false, [

@@ -428,7 +428,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
             'assigned_to' => $base_user,
             'title' => $initial_fields['title'],
             'contact_phone' => $initial_fields['contact_phone'],
-            'quick_button_contact_established' => 1
+            'quick_button_contact_established' => 3
         ];
 
         $result = DT_Posts::update_post('contacts', $contact['ID'], $update_fields, true, false, [
@@ -437,7 +437,7 @@ class DT_Posts_DT_Posts_Update_Post extends WP_UnitTestCase {
 
         $this->assertNotWPError( $result );
 
-        $this->assertSame( $update_fields['quick_button_contact_established'], $result['quick_button_contact_established'] );
+        $this->assertSame( intval( $initial_fields['quick_button_contact_established'] ), intval( $result['quick_button_contact_established'] ) );
     }
 
     public function test_do_not_overwrite_boolean_fields_update() {
