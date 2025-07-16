@@ -53,7 +53,7 @@ class DT_Mapping_Module_Migration_0006 extends DT_Mapping_Module_Migration {
                 $line = fgets( $fp, 2048 );
                 $count++;
 
-                $data = str_getcsv( $line, "\t" );
+                $data = str_getcsv( $line, "\t", '"', '\\' );
 
                 $data_sql = dt_array_to_sql( $data );
 
