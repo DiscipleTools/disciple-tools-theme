@@ -37,6 +37,14 @@
 
     <body <?php body_class(); ?>>
 
+        <?php
+        if ( function_exists( 'dt_is_mobile' ) && dt_is_mobile() ) {
+            // Load the new mobile UI and stop further processing
+            include get_template_directory() . '/dt-assets/mobile/mobile-ui.php';
+            exit;
+        }
+        ?>
+
         <div class="off-canvas-wrapper">
 
             <?php get_template_part( 'dt-assets/parts/nav', 'offcanvas' ); ?>
