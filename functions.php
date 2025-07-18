@@ -594,6 +594,22 @@ function disciple_tools() {
     return Disciple_Tools::instance();
 }
 
+/**
+ * Detect if the current request is from a mobile device.
+ * Uses user agent detection and allows override with ?is_mobile=1 for testing.
+ *
+ * @return bool
+ */
+function dt_is_mobile() {
+    // Allow override via URL param for testing in desktop browsers
+    if ( isset( $_GET['is_mobile'] ) ) {
+        return $_GET['is_mobile'] === '1';
+    }
+    // Basic user agent check
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    return (bool) preg_match('/Mobile|Android|iP(hone|od|ad)|IEMobile|BlackBerry|Opera Mini/i', $user_agent);
+}
+
 
 add_action( 'after_setup_theme', function(){
 
