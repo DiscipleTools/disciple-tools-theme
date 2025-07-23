@@ -3103,6 +3103,17 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $headers[] = 'From: ' . $from_name . ' <' . $default_email . '>';
                 $headers[] = 'Reply-To: ' . $from_name . ' <' . $from_email . '>';
 
+                /**
+                 * Filter the headers for the email.
+                 *
+                 * @param array $headers The headers for the email.
+                 * @param array $post The post data.
+                 * @param array $args The arguments for the message.
+                 *
+                 * @return array The filtered headers.
+                 */
+                $headers = apply_filters( 'dt_post_messaging_headers', $headers, $post, $args );
+
                 // Send email or schedule for later dispatch.
                 $subject = $args['subject'] ?? '';
                 $is_sent = ( wp_queue()->push( new DT_Send_Email_Job( $emails, $subject, $message, $headers ) ) !== false );
