@@ -3073,6 +3073,17 @@ class DT_Posts extends Disciple_Tools_Posts {
         // Replace placeholder.
         $message = str_replace( '{{name}}', $post['title'], $message );
 
+        /**
+         * Filter the message before it is sent.
+         *
+         * @param string $message The message to be sent.
+         * @param array $post The post data.
+         * @param array $args The arguments for the message.
+         *
+         * @return string The filtered message.
+         */
+        $message = apply_filters( 'dt_post_messaging_message', $message, $post, $args );
+
         // Dispatch accordingly, based on specified send method.
         if ( $send_method === 'email' && isset( $post['contact_email'] ) ) {
 
