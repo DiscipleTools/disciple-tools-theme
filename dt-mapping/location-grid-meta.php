@@ -98,15 +98,31 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
         }
 
         public static function get_location_grid_meta_by_id( $grid_meta_id ) {
+
             global $wpdb;
             return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $grid_meta_id ), ARRAY_A );
         }
+
+        public static function checks_existing_location( $post_id, $grid_id ) {
+
+            global $wpdb;
+
+            $data_meta = $wpdb->get_results( "
+                    SELECT * FROM $wpdb->dt_location_grid_meta
+                    WHERE 
+                    ( post_id = $post_id )
+                    AND  grid_id = $grid_id 
+                    ", ARRAY_A);
+
+            return $data_meta;
+        }        
 
         public static function add_location_grid_meta( $post_id, array $location_grid_meta, $postmeta_id_location_grid = null ) {
             global $wpdb;
             $geocoder = new Location_Grid_Geocoder();
 
             self::validate_location_grid_meta( $location_grid_meta );
+
 
             if ( !isset( $location_grid_meta['lng'] ) || !isset( $location_grid_meta['lat'] ) ) {
                 return new WP_Error( __METHOD__, 'Missing required lng or lat' );
@@ -128,6 +144,18 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 return new WP_Error( __METHOD__, 'Unable to create location_grid post meta and retrieve a key.' );
             }
 
+            if ( isset( $post_id ) ) {
+                $grid = self::checks_existing_location( $post_id, $location_grid_meta['grid_id'] );
+                
+                if( !empty( $grid ) )
+                { //The location informed already exists in the contact.
+
+                    dt_write_log( "The location informed was not added because it already exists in the contact. Location's grid_id:" );
+                    dt_write_log( $grid_id );
+                    return;
+                }                                
+            }
+
             $data = [
                 'post_id' => $post_id,
                 'post_type' => empty( $location_grid_meta['post_type'] ) ? get_post_type( $post_id ) : $location_grid_meta['post_type'],
@@ -145,7 +173,7 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 '%s',
                 '%d',
                 '%d',
-                '%s',
+                 '%s',
                 '%s',
                 '%s',
                 '%s',
