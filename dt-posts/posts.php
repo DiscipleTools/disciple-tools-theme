@@ -2586,6 +2586,9 @@ class Disciple_Tools_Posts
                 } else if ( self::is_link_key( $key, $field_settings ) ) {
 
                     $link_info = self::get_link_info( $key, $field_settings );
+                    if ( !$link_info ) {
+                        continue;
+                    }
                     $field_key = $link_info['field_key'];
 
                     if ( isset( $field_settings[$field_key] ) && $field_settings[$field_key]['type'] === 'link' ) {
