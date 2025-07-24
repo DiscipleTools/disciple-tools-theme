@@ -876,9 +876,16 @@ Thanks!';
                                 <span id="bulk_send_msg_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'Please ensure a valid send message has been entered.', 'disciple_tools' ); ?></span><br>
                                 <span><?php echo esc_html__( 'Message placeholders', 'disciple_tools' ); ?></span>
                                 <ul>
-                                    <li><span
-                                            style="font-weight: bold;">{{name}}</span>: <?php echo esc_html__( 'Name of the Record', 'disciple_tools' ); ?>
-                                    </li>
+                                    <li><span style="font-weight: bold;">{{name}}</span>: <?php echo esc_html__( 'Name of the Record', 'disciple_tools' ); ?></li>
+
+                                    <?php
+                                    $message_placeholders = apply_filters( 'dt_post_messaging_message_placeholders', [], $post_type );
+                                    foreach ( $message_placeholders as $placeholder ) {
+                                        ?>
+                                        <li><span style="font-weight: bold;"><?php echo esc_html( $placeholder['name'] ); ?></span>: <?php echo esc_html( $placeholder['description'] ); ?></li>
+                                        <?php
+                                    } ?>
+
                                 </ul>
                             </div>
                             <div class="cell">
