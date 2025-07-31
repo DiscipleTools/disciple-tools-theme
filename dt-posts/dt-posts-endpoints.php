@@ -874,17 +874,41 @@ class Disciple_Tools_Posts_Endpoints {
             'size' => $files['size'][0]
         ];
 
-        // To avoid a build up of stale object storage keys, reuse existing keys.
-        $meta_key_value = get_post_meta( $post_id, $meta_key, true );
+        // Determine storage upload requester type.
+        $upload_type = $params['upload_type'] ?? 'post';
 
-        // Push uploaded file to backend storage service.
+        // Process accordingly by requested upload type.
+        $meta_key_value = '';
+        switch ( $upload_type ) {
+            case 'post':
+                // To avoid a buildup of stale object storage keys, reuse existing keys.
+                $meta_key_value = get_post_meta( $post_id, $meta_key, true );
+                break;
+        }
+
+        // Push an uploaded file to backend storage service.
         $uploaded = DT_Storage::upload_file( $key_prefix, $uploaded_file, $meta_key_value );
 
-        // If successful, persist uploaded object file key.
+        // If successful, persist an uploaded object file key.
         if ( !empty( $uploaded ) ) {
             if ( !empty( $uploaded['uploaded_key'] ) ) {
                 $uploaded_key = $uploaded['uploaded_key'];
-                update_post_meta( $post_id, $meta_key, $uploaded_key );
+
+                switch ( $upload_type ) {
+                    case 'post':
+                        update_post_meta( $post_id, $meta_key, $uploaded_key );
+                        break;
+
+                    case 'audio_comment':
+                        DT_Posts::add_post_comment( $post_type, $post_id, $params['audio_timestamp'] ?? 'audio_comment', 'comment', [
+                            'comment_meta' => [
+                                $meta_key => $uploaded_key
+                            ]
+                        ], true, true );
+
+                        break;
+                }
+
                 $uploaded = true;
             }
         }

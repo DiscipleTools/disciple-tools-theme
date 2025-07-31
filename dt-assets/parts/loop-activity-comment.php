@@ -79,11 +79,56 @@
                 <?php do_action( 'dt_comment_action_quick_action', get_post_type() ); ?>
             </div>
             <div class="shrink cell" id="add-comment-button-container">
+                <!-- Add recording button next to submit button if storage capability is available -->
+                <?php if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) { ?>
+                    <button id="voice-record-button" class="voice-record-btn" title="<?php esc_html_e( 'Record Voice Message', 'disciple_tools' ) ?>" <?php echo esc_html( $disabled ) ?>>
+                        <i class="mdi mdi-microphone"></i>
+                    </button>
+                <?php } ?>
                 <button id="add-comment-button" class="button loader <?php echo esc_html( $disabled ); ?>">
                     <?php esc_html_e( 'Submit comment', 'disciple_tools' ) ?>
                 </button>
             </div>
         </div>
+
+        <!-- Audio recording controls (initially hidden) -->
+        <div id="audio-recording-controls" class="audio-recording-controls hide" style="display: none;">
+            <div class="recording-header">
+                <div class="recording-status">
+                    <span id="recording-status-text"><?php esc_html_e( 'Ready to record', 'disciple_tools' ) ?></span>
+                    <div id="recording-timer" class="recording-timer">00:00</div>
+                </div>
+            </div>
+
+            <!-- Audio visualization container -->
+            <div class="audio-visualization-container">
+                <canvas id="audio-visualizer" width="400" height="80"></canvas>
+            </div>
+
+            <div class="recording-controls">
+                <button id="start-recording-btn" class="button recording-btn start-btn">
+                    <i class="mdi mdi-record"></i> <?php esc_html_e( 'Start Recording', 'disciple_tools' ) ?>
+                </button>
+                <button id="stop-recording-btn" class="button recording-btn stop-btn" style="display: none;">
+                    <i class="mdi mdi-stop"></i> <?php esc_html_e( 'Stop Recording', 'disciple_tools' ) ?>
+                </button>
+                <button id="play-recording-btn" class="button recording-btn play-btn" style="display: none;">
+                    <i class="mdi mdi-play"></i> <?php esc_html_e( 'Play Recording', 'disciple_tools' ) ?>
+                </button>
+                <button id="save-recording-btn" class="button recording-btn save-btn" style="display: none;">
+                    <i class="mdi mdi-content-save"></i> <?php esc_html_e( 'Save Recording', 'disciple_tools' ) ?>
+                </button>
+                <button id="cancel-recording-btn" class="button recording-btn cancel-btn">
+                    <i class="mdi mdi-close"></i> <?php esc_html_e( 'Cancel', 'disciple_tools' ) ?>
+                </button>
+            </div>
+
+            <!-- Audio preview -->
+            <div class="audio-preview-container" style="display: none;">
+                <audio id="recording-preview" controls></audio>
+            </div>
+        </div>
+
         <div class="section-body"><!-- start collapse -->
         <div class="cell">
 

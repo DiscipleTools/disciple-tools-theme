@@ -1406,6 +1406,13 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !$comment ){
             return new WP_Error( __FUNCTION__, 'No comment found with id: ' . $comment_id, [ 'status' => 403 ] );
         }
+
+        // Provide space for any additional processing of metadata values.
+        $comment_meta = get_comment_meta( $comment_id );
+        if ( isset( $comment_meta, $comment_meta['audio_url'] ) && is_array( $comment_meta['audio_url'] ) && ( count( $comment_meta['audio_url'] ) > 0 ) && ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) ) {
+            DT_Storage::delete_file( $comment_meta['audio_url'][0] );
+        }
+
         return wp_delete_comment( $comment_id );
     }
 
@@ -1549,9 +1556,18 @@ class DT_Posts extends Disciple_Tools_Posts {
                 if ( !array_key_exists( $meta->meta_key, $comments_meta_dict[$meta->comment_id] ) ) {
                     $comments_meta_dict[$meta->comment_id][$meta->meta_key] = [];
                 }
+
+                // Provide space for the reshaping of meta-values.
+                $meta_value = $meta->meta_value;
+                if ( ( $meta->meta_key === 'audio_url' ) && !empty( $meta_value ) && ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) ) {
+                    $storage_obj_url = DT_Storage::get_file_url( $meta_value );
+                    $meta_value = !empty( $storage_obj_url ) ? $storage_obj_url : $meta_value;
+                }
+
+                // Capture comment meta.
                 $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = [
                     'id' => $meta->meta_id,
-                    'value' => $meta->meta_value,
+                    'value' => $meta_value
                 ];
             }
         }
