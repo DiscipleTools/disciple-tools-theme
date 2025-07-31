@@ -125,10 +125,10 @@
 
   var sections = new Sections();
 
-  window.lodash.each(dt_multi_role_cp_data.sections),
+  (window.lodash.each(dt_multi_role_cp_data.sections),
     function (data) {
       sections.add(new Section(data));
-    };
+    });
 
   sections.forEach(function (section, i) {
     var nav_view = new Nav_View({ model: section });

@@ -785,12 +785,12 @@ jQuery(document).ready(function ($) {
     }
 
     // Toggle recording controls
-    recordButton.on('click', function() {
+    recordButton.on('click', function () {
       const recordingControls = $('#audio-recording-controls');
       if (recordingControls.hasClass('show')) {
         // Slide up and hide
         recordingControls.removeClass('show').addClass('hide');
-        setTimeout(function() {
+        setTimeout(function () {
           recordingControls.hide();
         }, 600); // Increased from 300ms to 600ms for slower animation
       } else {
@@ -801,27 +801,27 @@ jQuery(document).ready(function ($) {
     });
 
     // Start recording
-    startBtn.on('click', function() {
+    startBtn.on('click', function () {
       startRecording();
     });
 
     // Stop recording
-    stopBtn.on('click', function() {
+    stopBtn.on('click', function () {
       stopRecording();
     });
 
     // Play recording
-    playBtn.on('click', function() {
+    playBtn.on('click', function () {
       playRecording();
     });
 
     // Save recording (Phase 1: just log to console)
-    saveBtn.on('click', function() {
+    saveBtn.on('click', function () {
       saveRecording();
     });
 
     // Cancel recording
-    cancelBtn.on('click', function() {
+    cancelBtn.on('click', function () {
       cancelRecording();
     });
   }
@@ -853,7 +853,7 @@ jQuery(document).ready(function ($) {
     ctx.fillStyle = '#6c757d';
     ctx.font = '14px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('Click "Start Recording" to begin', width / 2, (height / 2) + 5);
+    ctx.fillText('Click "Start Recording" to begin', width / 2, height / 2 + 5);
   }
 
   function drawVisualization(dataArray) {
@@ -881,7 +881,12 @@ jQuery(document).ready(function ($) {
       const barHeight = (dataArray[i] / 255) * height;
 
       // Create gradient
-      const gradient = ctx.createLinearGradient(0, height - barHeight, 0, height);
+      const gradient = ctx.createLinearGradient(
+        0,
+        height - barHeight,
+        0,
+        height,
+      );
       gradient.addColorStop(0, '#007bff');
       gradient.addColorStop(1, '#0056b3');
 
@@ -893,8 +898,9 @@ jQuery(document).ready(function ($) {
   }
 
   function startRecording() {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-      .then(function(stream) {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then(function (stream) {
         console.log('Microphone access granted, starting recording...');
 
         // Initialize Web Audio API for visualization
@@ -912,7 +918,7 @@ jQuery(document).ready(function ($) {
 
         // Show visualization container and start visualization
         $('.audio-visualization-container').fadeIn('fast');
-        
+
         // Start visualization
         function visualize() {
           if (analyser && visualizerCtx) {
@@ -939,17 +945,26 @@ jQuery(document).ready(function ($) {
         console.log('Initializing MediaRecorder with MIME type:', mimeType);
         mediaRecorder = new MediaRecorder(stream, { mimeType: mimeType });
 
-        mediaRecorder.addEventListener('dataavailable', function(event) {
+        mediaRecorder.addEventListener('dataavailable', function (event) {
           audioChunks.push(event.data);
         });
 
-        mediaRecorder.addEventListener('stop', function() {
+        mediaRecorder.addEventListener('stop', function () {
           // Check what audio formats are supported
           console.log('Supported audio formats:');
-          console.log('audio/webm;codecs=opus:', MediaRecorder.isTypeSupported('audio/webm;codecs=opus'));
-          console.log('audio/webm:', MediaRecorder.isTypeSupported('audio/webm'));
+          console.log(
+            'audio/webm;codecs=opus:',
+            MediaRecorder.isTypeSupported('audio/webm;codecs=opus'),
+          );
+          console.log(
+            'audio/webm:',
+            MediaRecorder.isTypeSupported('audio/webm'),
+          );
           console.log('audio/mp4:', MediaRecorder.isTypeSupported('audio/mp4'));
-          console.log('audio/ogg;codecs=opus:', MediaRecorder.isTypeSupported('audio/ogg;codecs=opus'));
+          console.log(
+            'audio/ogg;codecs=opus:',
+            MediaRecorder.isTypeSupported('audio/ogg;codecs=opus'),
+          );
 
           // Use a more compatible audio format
           let mimeType = 'audio/webm';
@@ -963,7 +978,10 @@ jQuery(document).ready(function ($) {
 
           console.log('Using MIME type:', mimeType);
           recordedAudioBlob = new Blob(audioChunks, { type: mimeType });
-          console.log('Recording stopped, audio blob created:', recordedAudioBlob);
+          console.log(
+            'Recording stopped, audio blob created:',
+            recordedAudioBlob,
+          );
 
           // Stop visualization
           if (animationId) {
@@ -972,7 +990,7 @@ jQuery(document).ready(function ($) {
           }
 
           // Stop all audio tracks
-          stream.getAudioTracks().forEach(track => track.stop());
+          stream.getAudioTracks().forEach((track) => track.stop());
 
           // Close audio context
           if (audioContext) {
@@ -983,7 +1001,10 @@ jQuery(document).ready(function ($) {
           // Show play and save buttons
           $('#play-recording-btn, #save-recording-btn').show();
           $('.audio-preview-container').show();
-          $('#recording-preview').attr('src', URL.createObjectURL(recordedAudioBlob));
+          $('#recording-preview').attr(
+            'src',
+            URL.createObjectURL(recordedAudioBlob),
+          );
 
           // Update status
           $('#recording-status-text').text('Recording completed');
@@ -1005,11 +1026,12 @@ jQuery(document).ready(function ($) {
         // Reset timer display and start timer
         $('#recording-timer').text('00:00');
         startRecordingTimer();
-
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.error('Error accessing microphone:', error);
-        alert('Error accessing microphone. Please ensure your microphone is connected and you\'ve granted permission to use it.');
+        alert(
+          "Error accessing microphone. Please ensure your microphone is connected and you've granted permission to use it.",
+        );
       });
   }
 
@@ -1036,30 +1058,36 @@ jQuery(document).ready(function ($) {
       const audio = new Audio();
 
       // Set up event listeners for better debugging
-      audio.addEventListener('loadstart', function() {
+      audio.addEventListener('loadstart', function () {
         console.log('Audio loading started');
       });
 
-      audio.addEventListener('canplay', function() {
+      audio.addEventListener('canplay', function () {
         console.log('Audio can start playing');
       });
 
-      audio.addEventListener('canplaythrough', function() {
+      audio.addEventListener('canplaythrough', function () {
         console.log('Audio can play through without buffering');
       });
 
-      audio.addEventListener('play', function() {
+      audio.addEventListener('play', function () {
         console.log('Audio playback started successfully');
       });
 
-      audio.addEventListener('error', function(e) {
+      audio.addEventListener('error', function (e) {
         console.error('Audio error event:', e);
         console.error('Audio error details:', audio.error);
-        console.error('Audio error code:', audio.error ? audio.error.code : 'No error code');
-        console.error('Audio error message:', audio.error ? audio.error.message : 'No error message');
+        console.error(
+          'Audio error code:',
+          audio.error ? audio.error.code : 'No error code',
+        );
+        console.error(
+          'Audio error message:',
+          audio.error ? audio.error.message : 'No error message',
+        );
       });
 
-      audio.addEventListener('ended', function() {
+      audio.addEventListener('ended', function () {
         console.log('Audio playback ended');
         // Clean up the object URL
         URL.revokeObjectURL(audioUrl);
@@ -1069,30 +1097,37 @@ jQuery(document).ready(function ($) {
       audio.src = audioUrl;
 
       // Wait a moment for the audio to load, then play
-      setTimeout(function() {
+      setTimeout(function () {
         console.log('Attempting to play audio after loading...');
-        audio.play().then(function() {
-          console.log('Audio play promise resolved successfully');
-        }).catch(function(error) {
-          console.error('Audio play promise rejected:', error);
-          console.error('Error name:', error.name);
-          console.error('Error message:', error.message);
-          console.error('Full error object:', error);
+        audio
+          .play()
+          .then(function () {
+            console.log('Audio play promise resolved successfully');
+          })
+          .catch(function (error) {
+            console.error('Audio play promise rejected:', error);
+            console.error('Error name:', error.name);
+            console.error('Error message:', error.message);
+            console.error('Full error object:', error);
 
-          // Try to provide more specific error messages
-          if (error.name === 'NotAllowedError') {
-            alert('Audio playback was blocked. Please check your browser\'s autoplay settings and try again.');
-          } else if (error.name === 'NotSupportedError') {
-            alert('Your browser doesn\'t support this audio format. Please try recording again.');
-          } else if (error.name === 'AbortError') {
-            alert('Audio playback was aborted. Please try again.');
-          } else {
-            alert('Unable to play audio. Error: ' + error.message);
-          }
+            // Try to provide more specific error messages
+            if (error.name === 'NotAllowedError') {
+              alert(
+                "Audio playback was blocked. Please check your browser's autoplay settings and try again.",
+              );
+            } else if (error.name === 'NotSupportedError') {
+              alert(
+                "Your browser doesn't support this audio format. Please try recording again.",
+              );
+            } else if (error.name === 'AbortError') {
+              alert('Audio playback was aborted. Please try again.');
+            } else {
+              alert('Unable to play audio. Error: ' + error.message);
+            }
 
-          // Clean up the object URL
-          URL.revokeObjectURL(audioUrl);
-        });
+            // Clean up the object URL
+            URL.revokeObjectURL(audioUrl);
+          });
       }, 100); // Small delay to ensure audio is loaded
     } else {
       console.error('No audio blob available for playback');
@@ -1117,16 +1152,16 @@ jQuery(document).ready(function ($) {
 
       // Create FormData for upload
       const formData = new FormData();
-      
+
       // Convert blob to file
       const audioFile = new File([recordedAudioBlob], 'voice-recording.webm', {
         type: recordedAudioBlob.type,
-        lastModified: Date.now()
+        lastModified: Date.now(),
       });
-      
+
       // Add the audio file
       formData.append('storage_upload_files[]', audioFile);
-      
+
       // Add required parameters
       formData.append('meta_key', 'audio_url');
       formData.append('key_prefix', postType);
@@ -1152,25 +1187,32 @@ jQuery(document).ready(function ($) {
         cache: false,
         contentType: false,
         processData: false,
-        beforeSend: function(xhr) {
+        beforeSend: function (xhr) {
           xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
         },
-        success: function(response) {
+        success: function (response) {
           console.log('Upload response:', response);
-          saveBtn.text('Uploaded!').removeClass('save-btn').addClass('save-btn-success');
-          setTimeout(function() {
-            saveBtn.text(originalText).prop('disabled', false).removeClass('save-btn-success').addClass('save-btn');
+          saveBtn
+            .text('Uploaded!')
+            .removeClass('save-btn')
+            .addClass('save-btn-success');
+          setTimeout(function () {
+            saveBtn
+              .text(originalText)
+              .prop('disabled', false)
+              .removeClass('save-btn-success')
+              .addClass('save-btn');
           }, 2000);
-          
+
           // Reset audio capturing area and close the recording window.
           cancelRecording();
         },
-        error: function(xhr, status, error) {
-          console.error('Upload failed:', {xhr, status, error});
+        error: function (xhr, status, error) {
+          console.error('Upload failed:', { xhr, status, error });
           console.error('Response text:', xhr.responseText);
           saveBtn.text(originalText).prop('disabled', false);
           alert('Upload failed. Check console for details.');
-        }
+        },
       });
     } else {
       console.error('No audio blob available for upload');
@@ -1200,7 +1242,7 @@ jQuery(document).ready(function ($) {
     // Reset UI with slide animation
     const recordingControls = $('#audio-recording-controls');
     recordingControls.removeClass('show').addClass('hide');
-    setTimeout(function() {
+    setTimeout(function () {
       recordingControls.hide();
       $('#start-recording-btn').show();
       $('#stop-recording-btn, #play-recording-btn, #save-recording-btn').hide();
@@ -1224,14 +1266,14 @@ jQuery(document).ready(function ($) {
   }
 
   function startRecordingTimer() {
-    recordingTimer = setInterval(function() {
+    recordingTimer = setInterval(function () {
       const elapsed = Date.now() - recordingStartTime;
       const seconds = Math.floor(elapsed / 1000);
       const minutes = Math.floor(seconds / 60);
       const remainingSeconds = seconds % 60;
 
       $('#recording-timer').text(
-        `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
+        `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`,
       );
     }, 1000);
   }
@@ -1246,7 +1288,7 @@ jQuery(document).ready(function ($) {
   }
 
   // Test function for debugging audio playback
-  window.testAudioPlayback = function() {
+  window.testAudioPlayback = function () {
     console.log('Testing audio playback...');
     console.log('recordedAudioBlob:', recordedAudioBlob);
 
@@ -1258,16 +1300,19 @@ jQuery(document).ready(function ($) {
       const testAudio = new Audio();
       const testUrl = URL.createObjectURL(recordedAudioBlob);
 
-      testAudio.addEventListener('canplay', function() {
+      testAudio.addEventListener('canplay', function () {
         console.log('Test audio can play');
-        testAudio.play().then(function() {
-          console.log('Test audio played successfully');
-        }).catch(function(error) {
-          console.error('Test audio play failed:', error);
-        });
+        testAudio
+          .play()
+          .then(function () {
+            console.log('Test audio played successfully');
+          })
+          .catch(function (error) {
+            console.error('Test audio play failed:', error);
+          });
       });
 
-      testAudio.addEventListener('error', function(e) {
+      testAudio.addEventListener('error', function (e) {
         console.error('Test audio error:', e);
         console.error('Test audio error details:', testAudio.error);
       });
