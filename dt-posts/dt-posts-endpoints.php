@@ -909,7 +909,7 @@ class Disciple_Tools_Posts_Endpoints {
                         break;
 
                     case 'image_comment':
-                        DT_Posts::add_post_comment( $post_type, $post_id, date( 'c' ), 'comment', [
+                        DT_Posts::add_post_comment( $post_type, $post_id, gmdate( 'c' ), 'comment', [
                             'comment_meta' => [
                                 $meta_key => $uploaded_key
                             ]
