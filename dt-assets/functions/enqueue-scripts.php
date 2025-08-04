@@ -458,6 +458,9 @@ function dt_site_scripts() {
                 ]
             ]
         );
+
+        // Add image commenting styles
+        wp_enqueue_style( 'dt-image-comment', get_template_directory_uri() . '/dt-assets/css/image-comments.css', [], filemtime( get_template_directory() . '/dt-assets/css/image-comments.css' ) );
     }
 }
 add_action( 'wp_enqueue_scripts', 'dt_site_scripts', 999 );

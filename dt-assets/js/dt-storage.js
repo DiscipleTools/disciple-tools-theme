@@ -454,6 +454,7 @@ jQuery(document).ready(function ($) {
           // Capture additional processing settings.
           ajax_data.append('meta_key', meta_key);
           ajax_data.append('key_prefix', key_prefix);
+          // TODO: ADD NEW UPLOAD TYPE
 
           // Push selected fields across to backend endpoint.
           $.ajax({

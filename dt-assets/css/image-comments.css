@@ -1,0 +1,26 @@
+/* Image Comment Styles */
+
+.image-comment-btn {
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-right: 10px;
+    color: #667;
+}
+
+.image-comment-btn:hover {
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+}
+
+.image-comment-btn i {
+    font-size: 24px;
+}

@@ -79,6 +79,17 @@
                 <?php do_action( 'dt_comment_action_quick_action', get_post_type() ); ?>
             </div>
             <div class="shrink cell" id="add-comment-button-container">
+                <!-- Add comment image upload button next to submit button if storage capability is available -->
+                <?php if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) { ?>
+                    <button id="image-comment-upload-button" class="image-comment-btn dt-storage-upload" title="<?php esc_html_e( 'Add Image Comment', 'disciple_tools' ) ?>" <?php echo esc_html( $disabled ) ?>
+                        data-storage_upload_post_type="<?php echo esc_attr( $post_type ) ?>"
+                        data-storage_upload_post_id="<?php echo esc_attr( $post_id ) ?>"
+                        data-storage_upload_meta_key="image_url"
+                        data-storage_upload_key_prefix="<?php echo esc_attr( $post_type )?>"
+                        data-storage_upload_type="image_comment">
+                        <i class="mdi mdi-tooltip-image-outline"></i>
+                    </button>
+                <?php } ?>
                 <button id="add-comment-button" class="button loader <?php echo esc_html( $disabled ); ?>">
                     <?php esc_html_e( 'Submit comment', 'disciple_tools' ) ?>
                 </button>
