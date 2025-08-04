@@ -81,6 +81,19 @@
             <div class="shrink cell" id="add-comment-button-container">
                 <!-- Add recording button next to submit button if storage capability is available -->
                 <?php if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) { ?>
+                    <button id="image-comment-upload-button" class="image-comment-btn dt-storage-upload" title="<?php esc_html_e( 'Add Image Comment', 'disciple_tools' ) ?>" <?php echo esc_html( $disabled ) ?>
+                            data-storage_upload_post_type="<?php echo esc_attr( $post_type ) ?>"
+                            data-storage_upload_post_id="<?php echo esc_attr( $post_id ) ?>"
+                            data-storage_upload_meta_key="image_url"
+                            data-storage_upload_key_prefix="<?php echo esc_attr( $post_type )?>"
+                            data-storage_upload_type="image_comment">
+                        <i class="mdi mdi-tooltip-image-outline"
+                           data-storage_upload_post_type="<?php echo esc_attr( $post_type ) ?>"
+                           data-storage_upload_post_id="<?php echo esc_attr( $post_id ) ?>"
+                           data-storage_upload_meta_key="image_url"
+                           data-storage_upload_key_prefix="<?php echo esc_attr( $post_type )?>"
+                           data-storage_upload_type="image_comment"></i>
+                    </button>
                     <button id="voice-record-button" class="voice-record-btn" title="<?php esc_html_e( 'Record Voice Message', 'disciple_tools' ) ?>" <?php echo esc_html( $disabled ) ?>>
                         <i class="mdi mdi-microphone"></i>
                     </button>

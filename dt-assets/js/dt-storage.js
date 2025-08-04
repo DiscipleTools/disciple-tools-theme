@@ -15,6 +15,7 @@ jQuery(document).ready(function ($) {
       $(element).data('storage_upload_post_id'),
       $(element).data('storage_upload_meta_key'),
       $(element).data('storage_upload_key_prefix'),
+      ( $(element).data('storage_upload_type') !== undefined ) ? $(element).data('storage_upload_type') : 'post',
       $(element).data('storage_upload_delete_enabled') !== undefined,
     );
   });
@@ -43,6 +44,7 @@ jQuery(document).ready(function ($) {
     post_id,
     meta_key,
     key_prefix,
+    upload_type,
     delete_enabled = false,
   ) {
     const modal_html = `
@@ -231,6 +233,7 @@ jQuery(document).ready(function ($) {
       post_id,
       meta_key,
       key_prefix,
+      upload_type
     );
 
     // Reload reveal foundation object, in order to detect recently added upload modal element.
@@ -299,6 +302,7 @@ jQuery(document).ready(function ($) {
     post_id,
     meta_key,
     key_prefix,
+    upload_type
   ) {
     // Determine feature detection for drag & drop upload capabilities.
     const is_advanced_upload = (function () {
@@ -454,6 +458,7 @@ jQuery(document).ready(function ($) {
           // Capture additional processing settings.
           ajax_data.append('meta_key', meta_key);
           ajax_data.append('key_prefix', key_prefix);
+          ajax_data.append('upload_type', upload_type);
 
           // Push selected fields across to backend endpoint.
           $.ajax({
