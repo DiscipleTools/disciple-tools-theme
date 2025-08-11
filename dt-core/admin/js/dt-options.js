@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-  $('.expand_translations').click(function (e) {
+  $(document).on('click', '.expand_translations', function (e) {
     e.preventDefault();
     display_translation_dialog(
       $(this).siblings(),
@@ -1087,5 +1087,178 @@ jQuery(document).ready(function ($) {
 
   /**
    * Alternative Save Flow - [END]
+   */
+
+  /**
+   * Update Needed Triggers - [START]
+   */
+
+  console.log('============================= HELLO WORLD', window.dtOptionAPI);
+  if ( new URLSearchParams( document.location.search ).get("page") === 'dt_options' ) {
+
+    $(document).on('click', '.add-update-trigger', function (e) {
+      e.preventDefault();
+
+      const table = $('#update_needed_triggers_table');
+      const tbody = $(table).find('tbody');
+
+      $(tbody).append(generate_update_required_options_row_html($(tbody).find('tr').length, {
+        'comment': '',
+        'days': '',
+        'field': '',
+        'option': '',
+        'translations': []
+      }, window.dtOptionAPI.contacts_field_settings, window.dtOptionAPI.available_languages));
+    });
+
+    $(document).on('click', '.delete-update-trigger', function (e) {
+      e.preventDefault();
+      $(this).parent().parent().remove();
+    });
+
+    $(document).on('change', '.update-trigger-field-select', function (e) {
+      e.preventDefault();
+
+      const options_select = $(this).parent().parent().find('.update-trigger-field_options-select');
+      options_select.empty();
+      options_select.html(`
+        <option disabled selected>--- select option ---</option>
+        ${ generate_update_required_options_row_option_select_html($(this).val(), '', window.dtOptionAPI.contacts_field_settings) }
+      `);
+    });
+
+    function init_update_needed_triggers_table() {
+      const table = $('#update_needed_triggers_table');
+      if( table && window.dtOptionAPI?.available_languages && window.dtOptionAPI?.site_options?.update_required) {
+
+        const available_languages = window.dtOptionAPI.available_languages;
+        const existing_updates = window.dtOptionAPI.site_options.update_required;
+        const field_settings = window.dtOptionAPI.contacts_field_settings;
+
+        // Reset main table body area, in preparation of new entries.
+        const tbody = $(table).find('tbody');
+        $(tbody).empty();
+
+        // Iterate over and display existing update triggers.
+        let counter = 0;
+        existing_updates?.options.forEach((update) => {
+          $(tbody).append(generate_update_required_options_row_html(counter++, update, field_settings, available_languages));
+        });
+      }
+    }
+    init_update_needed_triggers_table();
+
+    function generate_update_required_options_row_html( update_option_key, update_option, field_settings, available_languages ) {
+      const escaped_update_option_key = window.lodash.escape(update_option_key);
+
+      let translation_container_html = ``;
+      available_languages.forEach((language) => {
+        const escaped_language = window.lodash.escape(language['language']);
+        const escaped_native_name = window.lodash.escape(language['native_name']);
+
+        translation_container_html += `
+          <tr>
+            <td>
+                <label for="${ escaped_update_option_key }_translations[${ escaped_language }]">${ escaped_native_name }</label>
+            </td>
+            <td>
+                <input
+                    name="${ escaped_update_option_key }_translations[${ escaped_language }]"
+                    type="text"
+                    value="${ window.lodash.escape(update_option['translations'][language['language']] ?? '') }"
+                />
+            </td>
+          </tr>
+        `;
+      });
+
+      let translation_html = `
+      <button class="button small expand_translations"
+              data-form_name="update_required-form"
+              data-source="update_needed_triggers">
+          <img style="height: 15px; vertical-align: middle;" src="${ window.lodash.escape(window.dtOptionAPI.theme_uri + '/dt-assets/images/languages.svg') }">
+          (<span>${ update_option['translations'].length }</span>)
+      </button>
+      <div class="translation_container hide">
+        <table>
+            ${ translation_container_html }
+        </table>
+      </div>
+      `;
+
+      const field_key = update_option?.seeker_path ? 'seeker_path' : update_option?.field;
+      const option_key = update_option?.seeker_path ?? update_option?.option;
+
+      let html = `
+        <tr>
+          <td>
+            <select class="update-trigger-field-select">
+              <option disabled selected>--- select field ---</option>
+              ${ generate_update_required_options_row_field_select_html(field_key, field_settings) }
+            </select>
+          </td>
+          <td>
+            <select class="update-trigger-field_options-select">
+              <option disabled selected>--- select option ---</option>
+              ${ generate_update_required_options_row_option_select_html(field_key, option_key, field_settings) }
+            </select>
+          </td>
+          <td>
+            <input name="${ escaped_update_option_key }_days" type="number"
+                   value="${ window.lodash.escape(update_option['days']) }" />
+          </td>
+          <td>
+            <textarea name="${ escaped_update_option_key }_comment"
+                style="width: 100%;">${ window.lodash.escape(update_option['comment']) }</textarea>
+          </td>
+          <td>
+            ${ translation_html }
+          </td>
+          <td>
+            <button class="button delete-update-trigger">
+              <i class="mdi mdi-trash-can-outline"></i>
+            </button>
+          </td>
+        </tr>
+      `;
+
+      return html;
+    }
+
+    function generate_update_required_options_row_field_select_html(field_key, field_settings) {
+
+      let html = ``;
+      for (const [field, setting] of Object.entries(field_settings)) {
+        if ( ['key_select', 'multi_select'].includes(setting?.type) && Object.keys(setting?.default).length > 0 ) {
+          html += `
+            <option ${ (field_key === field) ? 'selected' : '' } value="${field}">${setting?.name}</option>
+          `;
+        }
+      }
+
+      return html;
+    }
+
+    function generate_update_required_options_row_option_select_html(field_key, option_key, field_settings) {
+
+      let html = ``;
+      if ( field_settings[field_key]?.default ) {
+        for (const [option, option_default] of Object.entries(field_settings[field_key].default)) {
+          html += `
+            <option ${ (option_key === option) ? 'selected' : '' } value="${option}">${option_default?.label}</option>
+          `;
+        }
+      }
+
+      return html;
+    }
+
+
+  }
+
+
+
+  /**
+   * Update Needed Triggers - [END]
    */
 });
