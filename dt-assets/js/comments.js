@@ -785,8 +785,6 @@ jQuery(document).ready(function ($) {
     if (visualizerCanvas) {
       visualizerCtx = visualizerCanvas.getContext('2d');
       drawInitialVisualization();
-      // Hide visualization container initially - only show when recording starts
-      $('.audio-visualization-container').hide();
     }
 
     // Toggle recording controls
@@ -801,6 +799,9 @@ jQuery(document).ready(function ($) {
       } else {
         // Show and slide down
         recordingControls.show().removeClass('hide').addClass('show');
+        // Ensure visualization container is shown and audio preview is hidden
+        $('.audio-visualization-container').show();
+        $('.audio-preview-container').hide();
         console.log('Voice recording controls displayed');
       }
     });
@@ -1003,20 +1004,21 @@ jQuery(document).ready(function ($) {
             audioContext = null;
           }
 
-          // Show play and save buttons
-          $('#play-recording-btn, #save-recording-btn').show();
+          // Hide waveform canvas and show audio player in its place
+          $('.audio-visualization-container').hide();
           $('.audio-preview-container').show();
           $('#recording-preview').attr(
             'src',
             URL.createObjectURL(recordedAudioBlob),
           );
 
+          // Hide start and play buttons, show only save and cancel
+          $('#start-recording-btn, #play-recording-btn').hide();
+          $('#save-recording-btn').show();
+
           // Update status
           $('#recording-status-text').text('Recording completed');
           $('#voice-record-button').removeClass('recording');
-
-          // Draw final visualization
-          drawInitialVisualization();
         });
 
         mediaRecorder.start();
@@ -1252,6 +1254,7 @@ jQuery(document).ready(function ($) {
       $('#start-recording-btn').show();
       $('#stop-recording-btn, #play-recording-btn, #save-recording-btn').hide();
       $('.audio-preview-container').hide();
+      $('.audio-visualization-container').show();
       $('#recording-status-text').text('Ready to record');
       $('#voice-record-button').removeClass('recording');
     }, 600); // Increased from 300ms to 600ms for slower animation
@@ -1263,8 +1266,7 @@ jQuery(document).ready(function ($) {
     // Reset timer display
     $('#recording-timer').text('00:00');
 
-    // Hide visualization container and reset visualization
-    $('.audio-visualization-container').hide();
+    // Reset visualization
     drawInitialVisualization();
 
     console.log('Recording cancelled');

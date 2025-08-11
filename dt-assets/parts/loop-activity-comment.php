@@ -118,6 +118,11 @@
                 <canvas id="audio-visualizer" width="400" height="80"></canvas>
             </div>
 
+            <!-- Audio preview (moved up to replace waveform canvas) -->
+            <div class="audio-preview-container" style="display: none;">
+                <audio id="recording-preview" controls></audio>
+            </div>
+
             <div class="recording-controls">
                 <button id="start-recording-btn" class="button recording-btn start-btn">
                     <i class="mdi mdi-record"></i> <?php esc_html_e( 'Start Recording', 'disciple_tools' ) ?>
@@ -134,11 +139,6 @@
                 <button id="cancel-recording-btn" class="button recording-btn cancel-btn">
                     <i class="mdi mdi-close"></i> <?php esc_html_e( 'Cancel', 'disciple_tools' ) ?>
                 </button>
-            </div>
-
-            <!-- Audio preview -->
-            <div class="audio-preview-container" style="display: none;">
-                <audio id="recording-preview" controls></audio>
             </div>
         </div>
 

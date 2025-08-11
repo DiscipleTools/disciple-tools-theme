@@ -627,9 +627,9 @@ DT comments and activity
     }
 
     .start-btn {
-        background: #28a745;
+        background: #00897B;
         color: white;
-        border: 1px solid #28a745;
+        border: 1px solid #00897B;
     }
 
     .start-btn:hover {
@@ -660,14 +660,14 @@ DT comments and activity
     }
 
     .save-btn {
-        background: #17a2b8;
+        background: #00897B;
         color: white;
-        border: 1px solid #17a2b8;
+        border: 1px solid #00897B;
     }
 
     .save-btn:hover {
-        background: #138496;
-        border-color: #117a8b;
+        background: #218838;
+        border-color: #1e7e34;
     }
 
     .save-btn-success {
@@ -693,11 +693,13 @@ DT comments and activity
     }
 
     .audio-preview-container {
-        margin-top: 20px;
-        padding: 15px;
+        position: relative;
         background: #fff;
         border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
         border: 1px solid #dee2e6;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     }
 
     #recording-preview {
@@ -732,6 +734,10 @@ DT comments and activity
         }
 
         .audio-visualization-container {
+            padding: 15px;
+        }
+
+        .audio-preview-container {
             padding: 15px;
         }
 
