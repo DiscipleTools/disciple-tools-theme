@@ -1408,8 +1408,8 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         // Provide space for any additional processing of metadata values.
-        $comment_meta = get_comment_meta( $comment_id );
         if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) {
+            $comment_meta = get_comment_meta( $comment_id );
             if ( isset( $comment_meta, $comment_meta['audio_url'] ) && is_array( $comment_meta['audio_url'] ) && ( count( $comment_meta['audio_url'] ) > 0 ) ) {
                 DT_Storage::delete_file( $comment_meta['audio_url'][0] );
             }

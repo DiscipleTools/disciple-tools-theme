@@ -802,7 +802,6 @@ jQuery(document).ready(function ($) {
         // Ensure visualization container is shown and audio preview is hidden
         $('.audio-visualization-container').show();
         $('.audio-preview-container').hide();
-        console.log('Voice recording controls displayed');
       }
     });
 
@@ -907,8 +906,6 @@ jQuery(document).ready(function ($) {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then(function (stream) {
-        console.log('Microphone access granted, starting recording...');
-
         // Initialize Web Audio API for visualization
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioContext.createAnalyser();
@@ -948,7 +945,6 @@ jQuery(document).ready(function ($) {
           mimeType = 'audio/mp4';
         }
 
-        console.log('Initializing MediaRecorder with MIME type:', mimeType);
         mediaRecorder = new MediaRecorder(stream, { mimeType: mimeType });
 
         mediaRecorder.addEventListener('dataavailable', function (event) {
@@ -956,22 +952,6 @@ jQuery(document).ready(function ($) {
         });
 
         mediaRecorder.addEventListener('stop', function () {
-          // Check what audio formats are supported
-          console.log('Supported audio formats:');
-          console.log(
-            'audio/webm;codecs=opus:',
-            MediaRecorder.isTypeSupported('audio/webm;codecs=opus'),
-          );
-          console.log(
-            'audio/webm:',
-            MediaRecorder.isTypeSupported('audio/webm'),
-          );
-          console.log('audio/mp4:', MediaRecorder.isTypeSupported('audio/mp4'));
-          console.log(
-            'audio/ogg;codecs=opus:',
-            MediaRecorder.isTypeSupported('audio/ogg;codecs=opus'),
-          );
-
           // Use a more compatible audio format
           let mimeType = 'audio/webm';
           if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
@@ -982,13 +962,7 @@ jQuery(document).ready(function ($) {
             mimeType = 'audio/mp4';
           }
 
-          console.log('Using MIME type:', mimeType);
           recordedAudioBlob = new Blob(audioChunks, { type: mimeType });
-          console.log(
-            'Recording stopped, audio blob created:',
-            recordedAudioBlob,
-          );
-
           // Stop visualization
           if (animationId) {
             cancelAnimationFrame(animationId);
@@ -1054,32 +1028,10 @@ jQuery(document).ready(function ($) {
 
   function playRecording() {
     if (recordedAudioBlob) {
-      console.log('Attempting to play audio blob:', recordedAudioBlob);
-      console.log('Audio blob size:', recordedAudioBlob.size, 'bytes');
-      console.log('Audio blob type:', recordedAudioBlob.type);
-
       // Create a new audio element for each playback to avoid conflicts
       const audioUrl = URL.createObjectURL(recordedAudioBlob);
-      console.log('Created audio URL:', audioUrl);
 
       const audio = new Audio();
-
-      // Set up event listeners for better debugging
-      audio.addEventListener('loadstart', function () {
-        console.log('Audio loading started');
-      });
-
-      audio.addEventListener('canplay', function () {
-        console.log('Audio can start playing');
-      });
-
-      audio.addEventListener('canplaythrough', function () {
-        console.log('Audio can play through without buffering');
-      });
-
-      audio.addEventListener('play', function () {
-        console.log('Audio playback started successfully');
-      });
 
       audio.addEventListener('error', function (e) {
         console.error('Audio error event:', e);
@@ -1095,7 +1047,6 @@ jQuery(document).ready(function ($) {
       });
 
       audio.addEventListener('ended', function () {
-        console.log('Audio playback ended');
         // Clean up the object URL
         URL.revokeObjectURL(audioUrl);
       });
@@ -1105,36 +1056,30 @@ jQuery(document).ready(function ($) {
 
       // Wait a moment for the audio to load, then play
       setTimeout(function () {
-        console.log('Attempting to play audio after loading...');
-        audio
-          .play()
-          .then(function () {
-            console.log('Audio play promise resolved successfully');
-          })
-          .catch(function (error) {
-            console.error('Audio play promise rejected:', error);
-            console.error('Error name:', error.name);
-            console.error('Error message:', error.message);
-            console.error('Full error object:', error);
+        audio.play().catch(function (error) {
+          console.error('Audio play promise rejected:', error);
+          console.error('Error name:', error.name);
+          console.error('Error message:', error.message);
+          console.error('Full error object:', error);
 
-            // Try to provide more specific error messages
-            if (error.name === 'NotAllowedError') {
-              alert(
-                "Audio playback was blocked. Please check your browser's autoplay settings and try again.",
-              );
-            } else if (error.name === 'NotSupportedError') {
-              alert(
-                "Your browser doesn't support this audio format. Please try recording again.",
-              );
-            } else if (error.name === 'AbortError') {
-              alert('Audio playback was aborted. Please try again.');
-            } else {
-              alert('Unable to play audio. Error: ' + error.message);
-            }
+          // Try to provide more specific error messages
+          if (error.name === 'NotAllowedError') {
+            alert(
+              "Audio playback was blocked. Please check your browser's autoplay settings and try again.",
+            );
+          } else if (error.name === 'NotSupportedError') {
+            alert(
+              "Your browser doesn't support this audio format. Please try recording again.",
+            );
+          } else if (error.name === 'AbortError') {
+            alert('Audio playback was aborted. Please try again.');
+          } else {
+            alert('Unable to play audio. Error: ' + error.message);
+          }
 
-            // Clean up the object URL
-            URL.revokeObjectURL(audioUrl);
-          });
+          // Clean up the object URL
+          URL.revokeObjectURL(audioUrl);
+        });
       }, 100); // Small delay to ensure audio is loaded
     } else {
       console.error('No audio blob available for playback');
@@ -1144,18 +1089,12 @@ jQuery(document).ready(function ($) {
 
   function saveRecording() {
     if (recordedAudioBlob) {
-      console.log('Saving recording...');
-      console.log('Audio blob size:', recordedAudioBlob.size, 'bytes');
-      console.log('Audio blob type:', recordedAudioBlob.type);
-
       // Validate current post information
       if (!postId || !postType) {
         console.error('Could not determine post ID or post type for upload');
         alert('Error: Could not determine post information for upload');
         return;
       }
-
-      console.log('Uploading to post:', postType, postId);
 
       // Create FormData for upload
       const formData = new FormData();
@@ -1198,7 +1137,6 @@ jQuery(document).ready(function ($) {
           xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
         },
         success: function (response) {
-          console.log('Upload response:', response);
           saveBtn
             .text('Uploaded!')
             .removeClass('save-btn')
@@ -1268,8 +1206,6 @@ jQuery(document).ready(function ($) {
 
     // Reset visualization
     drawInitialVisualization();
-
-    console.log('Recording cancelled');
   }
 
   function startRecordingTimer() {
@@ -1293,42 +1229,6 @@ jQuery(document).ready(function ($) {
     // Reset timer display
     //$('#recording-timer').text('00:00');
   }
-
-  // Test function for debugging audio playback
-  window.testAudioPlayback = function () {
-    console.log('Testing audio playback...');
-    console.log('recordedAudioBlob:', recordedAudioBlob);
-
-    if (recordedAudioBlob) {
-      console.log('Blob size:', recordedAudioBlob.size);
-      console.log('Blob type:', recordedAudioBlob.type);
-
-      // Test creating a simple audio element
-      const testAudio = new Audio();
-      const testUrl = URL.createObjectURL(recordedAudioBlob);
-
-      testAudio.addEventListener('canplay', function () {
-        console.log('Test audio can play');
-        testAudio
-          .play()
-          .then(function () {
-            console.log('Test audio played successfully');
-          })
-          .catch(function (error) {
-            console.error('Test audio play failed:', error);
-          });
-      });
-
-      testAudio.addEventListener('error', function (e) {
-        console.error('Test audio error:', e);
-        console.error('Test audio error details:', testAudio.error);
-      });
-
-      testAudio.src = testUrl;
-    } else {
-      console.log('No recorded audio blob available');
-    }
-  };
 
   // Initialize voice recording
   initializeVoiceRecording();
