@@ -141,6 +141,21 @@ jQuery(function ($) {
                   fieldName,
                 );
               el.setAttribute('error', msg);
+
+              let richMsg = msg;
+              for (const duplicate of result) {
+                richMsg += ` <a href="/${postType}/${duplicate.post_id}" target="_blank">#${duplicate.post_id}</a>`;
+              }
+
+              const errorSlot = el.querySelector('[slot=error]');
+              if (errorSlot) {
+                errorSlot.innerHTML = richMsg;
+              } else {
+                const errorEl = document.createElement('div');
+                errorEl.setAttribute('slot', 'error');
+                errorEl.innerHTML = richMsg;
+                el.append(errorEl);
+              }
             }
           }
         })
