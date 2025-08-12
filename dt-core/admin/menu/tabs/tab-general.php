@@ -296,7 +296,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                         <select name="storage_connection" id="storage_connection">
                             <option value="">--- None ---</option>
                             <?php
-                            $storage_connection_id = dt_get_option( 'dt_storage_connection_id' );
+                            $storage_connection_id = method_exists( 'DT_Storage', 'get_default_connection_id' ) ? DT_Storage::get_default_connection_id() : dt_get_option( 'dt_storage_connection_id' );
                             foreach ( $storage_connections as $connection ) {
                                 $selected = $connection['id'] === $storage_connection_id;
                                 ?>
@@ -320,7 +320,11 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function process_storage_settings() {
         if ( isset( $_POST['storage_settings_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['storage_settings_nonce'] ) ), 'storage_settings' ) ) {
             if ( isset( $_POST['storage_connection'] ) ) {
-                update_option( 'dt_storage_connection_id', sanitize_text_field( wp_unslash( $_POST['storage_connection'] ) ) );
+                if ( method_exists( 'DT_Storage', 'get_default_connection_id' ) ) {
+                    DT_Storage::update_default_connection_id( sanitize_text_field( wp_unslash( $_POST['storage_connection'] ) ) );
+                } else {
+                    update_option( 'dt_storage_connection_id', sanitize_text_field( wp_unslash( $_POST['storage_connection'] ) ) );
+                }
             }
         }
     }
