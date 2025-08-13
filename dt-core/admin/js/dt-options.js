@@ -1196,12 +1196,10 @@ jQuery(document).ready(function ($) {
     let translation_container_html = ``;
     available_languages.forEach((language) => {
       const escaped_language = window.lodash.escape(language['language']);
-      const escaped_native_name = window.lodash.escape(
-        language['native_name'],
-      );
+      const escaped_native_name = window.lodash.escape(language['native_name']);
       const input_value = window.lodash.escape(
         update_option?.translations &&
-        update_option['translations'][escaped_language]
+          update_option['translations'][escaped_language]
           ? update_option['translations'][escaped_language]
           : '',
       );
@@ -1333,52 +1331,50 @@ jQuery(document).ready(function ($) {
     let options = [];
 
     $('#update_needed_triggers_table_tbody')
-    .find('.update-needed-triggers-table-tbody-tr')
-    .each((i, tr) => {
-      // Capture row update trigger settings.
-      const status = $(tr).find('#update_trigger_status_select').val();
-      const field = $(tr).find('#update_trigger_field_select').val();
-      const option = $(tr)
-      .find('#update_trigger_field_options_select')
-      .val();
-      const days = $(tr).find('#update_trigger_days').val();
-      const comment = $(tr).find('#update_trigger_comment').val();
+      .find('.update-needed-triggers-table-tbody-tr')
+      .each((i, tr) => {
+        // Capture row update trigger settings.
+        const status = $(tr).find('#update_trigger_status_select').val();
+        const field = $(tr).find('#update_trigger_field_select').val();
+        const option = $(tr).find('#update_trigger_field_options_select').val();
+        const days = $(tr).find('#update_trigger_days').val();
+        const comment = $(tr).find('#update_trigger_comment').val();
 
-      // Ensure to validate in order to store within final options shape.
-      if (status && field && option && days && comment) {
-        let translations = {};
+        // Ensure to validate in order to store within final options shape.
+        if (status && field && option && days && comment) {
+          let translations = {};
 
-        // Determine if there are any translations to be included.
-        $(tr)
-        .find('.translation_container')
-        .find('tr')
-        .each((j, translation) => {
-          const lang_code = $(translation)
-          .find(
-            '#update_needed_triggers_table_tbody_tr_translation_input',
-          )
-          .data('lang_code');
-          const lang_val = $(translation)
-          .find(
-            '#update_needed_triggers_table_tbody_tr_translation_input',
-          )
-          .val();
-          if (lang_code && lang_val) {
-            translations[lang_code] = lang_val;
-          }
-        });
+          // Determine if there are any translations to be included.
+          $(tr)
+            .find('.translation_container')
+            .find('tr')
+            .each((j, translation) => {
+              const lang_code = $(translation)
+                .find(
+                  '#update_needed_triggers_table_tbody_tr_translation_input',
+                )
+                .data('lang_code');
+              const lang_val = $(translation)
+                .find(
+                  '#update_needed_triggers_table_tbody_tr_translation_input',
+                )
+                .val();
+              if (lang_code && lang_val) {
+                translations[lang_code] = lang_val;
+              }
+            });
 
-        // Package findings...
-        options.push({
-          status,
-          field,
-          option,
-          days,
-          comment,
-          translations,
-        });
-      }
-    });
+          // Package findings...
+          options.push({
+            status,
+            field,
+            option,
+            days,
+            comment,
+            translations,
+          });
+        }
+      });
 
     // Encode and submit captured options.
     console.log(options);
