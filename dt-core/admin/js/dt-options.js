@@ -1093,22 +1093,29 @@ jQuery(document).ready(function ($) {
    * Update Needed Triggers - [START]
    */
 
-  if ( new URLSearchParams( document.location.search ).get("page") === 'dt_options' ) {
-
+  if (
+    new URLSearchParams(document.location.search).get('page') === 'dt_options'
+  ) {
     $(document).on('click', '.add-update-trigger', function (e) {
       e.preventDefault();
 
       const table = $('#update_needed_triggers_table');
       const tbody = $(table).find('#update_needed_triggers_table_tbody');
 
-      $(tbody).append( generate_update_required_options_row_html( {
-        'comment': '',
-        'days': '',
-        'field': '',
-        'option': '',
-        'status': 'active',
-        'translations': {}
-      }, window.dtOptionAPI.contacts_field_settings, window.dtOptionAPI.available_languages ) );
+      $(tbody).append(
+        generate_update_required_options_row_html(
+          {
+            comment: '',
+            days: '',
+            field: '',
+            option: '',
+            status: 'active',
+            translations: {},
+          },
+          window.dtOptionAPI.contacts_field_settings,
+          window.dtOptionAPI.available_languages,
+        ),
+      );
     });
 
     $(document).on('click', '.delete-update-trigger', function (e) {
@@ -1119,11 +1126,14 @@ jQuery(document).ready(function ($) {
     $(document).on('change', '.update-trigger-field-select', function (e) {
       e.preventDefault();
 
-      const options_select = $(this).parent().parent().find('.update-trigger-field-options-select');
+      const options_select = $(this)
+        .parent()
+        .parent()
+        .find('.update-trigger-field-options-select');
       options_select.empty();
       options_select.html(`
         <option disabled selected>--- select option ---</option>
-        ${ generate_update_required_options_row_option_select_html($(this).val(), '', window.dtOptionAPI.contacts_field_settings) }
+        ${generate_update_required_options_row_option_select_html($(this).val(), '', window.dtOptionAPI.contacts_field_settings)}
       `);
     });
 
@@ -1134,18 +1144,25 @@ jQuery(document).ready(function ($) {
 
     function init_update_needed_triggers_table() {
       const table = $('#update_needed_triggers_table');
-      if( table && window.dtOptionAPI?.available_languages && window.dtOptionAPI?.site_options?.update_required) {
-
+      if (
+        table &&
+        window.dtOptionAPI?.available_languages &&
+        window.dtOptionAPI?.site_options?.update_required
+      ) {
         const available_languages = window.dtOptionAPI.available_languages;
         let existing_updates = window.dtOptionAPI.site_options.update_required;
         const field_settings = window.dtOptionAPI.contacts_field_settings;
 
         // Ensure the latest updates are always captured.
-        const encoded_latest_site_options = $('#update_needed_triggers_latest_site_options').val();
-        if ( encoded_latest_site_options ) {
-          const latest_site_options = JSON.parse( decodeURIComponent( encoded_latest_site_options ) );
-          if ( latest_site_options?.update_required ) {
-            existing_updates = latest_site_options.update_required
+        const encoded_latest_site_options = $(
+          '#update_needed_triggers_latest_site_options',
+        ).val();
+        if (encoded_latest_site_options) {
+          const latest_site_options = JSON.parse(
+            decodeURIComponent(encoded_latest_site_options),
+          );
+          if (latest_site_options?.update_required) {
+            existing_updates = latest_site_options.update_required;
           }
         }
 
@@ -1155,56 +1172,78 @@ jQuery(document).ready(function ($) {
 
         // Iterate over and display existing update triggers.
         existing_updates?.options.forEach((update) => {
-          $(tbody).append( generate_update_required_options_row_html( update, field_settings, available_languages ) );
+          $(tbody).append(
+            generate_update_required_options_row_html(
+              update,
+              field_settings,
+              available_languages,
+            ),
+          );
         });
       }
     }
     init_update_needed_triggers_table();
 
-    function generate_update_required_options_row_html( update_option, field_settings, available_languages ) {
-      const escaped_update_option_key = Math.floor( Math.random() * 1000 );
+    function generate_update_required_options_row_html(
+      update_option,
+      field_settings,
+      available_languages,
+    ) {
+      const escaped_update_option_key = Math.floor(Math.random() * 1000);
 
       let translation_container_html = ``;
       available_languages.forEach((language) => {
-        const escaped_language = window.lodash.escape( language['language'] );
-        const escaped_native_name = window.lodash.escape( language['native_name'] );
-        const input_value = window.lodash.escape( ( update_option?.translations && update_option['translations'][escaped_language] ) ? update_option['translations'][escaped_language] : '' );
+        const escaped_language = window.lodash.escape(language['language']);
+        const escaped_native_name = window.lodash.escape(
+          language['native_name'],
+        );
+        const input_value = window.lodash.escape(
+          update_option?.translations &&
+            update_option['translations'][escaped_language]
+            ? update_option['translations'][escaped_language]
+            : '',
+        );
 
         translation_container_html += `
           <tr>
             <td>
-                <label for="${ escaped_update_option_key }_translations[${ escaped_language }]">${ escaped_native_name }</label>
+                <label for="${escaped_update_option_key}_translations[${escaped_language}]">${escaped_native_name}</label>
             </td>
             <td>
                 <input
                     id="update_needed_triggers_table_tbody_tr_translation_input"
-                    name="${ escaped_update_option_key }_translations[${ escaped_language }]"
+                    name="${escaped_update_option_key}_translations[${escaped_language}]"
                     type="text"
-                    value="${ input_value }"
-                    data-lang_code="${ escaped_language }"
+                    value="${input_value}"
+                    data-lang_code="${escaped_language}"
                 />
             </td>
           </tr>
         `;
       });
 
-      const translations_total = ( typeof update_option?.translations === 'object' ) ? Object.keys( update_option['translations'] ).length : 0;
+      const translations_total =
+        typeof update_option?.translations === 'object'
+          ? Object.keys(update_option['translations']).length
+          : 0;
 
       let translation_html = `
       <button class="button small expand_translations">
-          <img style="height: 15px; vertical-align: middle;" src="${ window.lodash.escape( window.dtOptionAPI.theme_uri + '/dt-assets/images/languages.svg' ) }">
-          (<span>${ translations_total }</span>)
+          <img style="height: 15px; vertical-align: middle;" src="${window.lodash.escape(window.dtOptionAPI.theme_uri + '/dt-assets/images/languages.svg')}">
+          (<span>${translations_total}</span>)
       </button>
       <div class="translation_container hide">
         <table>
           <tbody>
-            ${ translation_container_html }
+            ${translation_container_html}
           </tbody>
         </table>
       </div>
       `;
 
-      const field_key = update_option?.seeker_path ? 'seeker_path' : update_option?.field;
+      const field_key = update_option?.seeker_path
+        ? 'seeker_path'
+        : update_option?.field;
       const option_key = update_option?.seeker_path ?? update_option?.option;
       const status = update_option?.status ?? 'active';
 
@@ -1213,31 +1252,31 @@ jQuery(document).ready(function ($) {
           <td>
             <select id="update_trigger_status_select" class="update-trigger-status-select">
                 <option disabled selected>--- select status ---</option>
-                ${ generate_update_required_options_row_option_select_html( 'overall_status', status, field_settings ) }
+                ${generate_update_required_options_row_option_select_html('overall_status', status, field_settings)}
             </select>
           </td>
           <td>
             <select id="update_trigger_field_select" class="update-trigger-field-select">
               <option disabled selected>--- select field ---</option>
-              ${ generate_update_required_options_row_field_select_html( field_key, field_settings ) }
+              ${generate_update_required_options_row_field_select_html(field_key, field_settings)}
             </select>
           </td>
           <td>
             <select id="update_trigger_field_options_select" class="update-trigger-field-options-select">
               <option disabled selected>--- select option ---</option>
-              ${ generate_update_required_options_row_option_select_html( field_key, option_key, field_settings ) }
+              ${generate_update_required_options_row_option_select_html(field_key, option_key, field_settings)}
             </select>
           </td>
           <td>
-            <input id="update_trigger_days" name="${ escaped_update_option_key }_days" type="number" style="max-width: 60px;"
-                   value="${ window.lodash.escape(update_option['days']) }" />
+            <input id="update_trigger_days" name="${escaped_update_option_key}_days" type="number" style="max-width: 60px;"
+                   value="${window.lodash.escape(update_option['days'])}" />
           </td>
           <td>
-            <textarea id="update_trigger_comment" name="${ escaped_update_option_key }_comment"
-                style="width: 100%;">${ window.lodash.escape(update_option['comment']) }</textarea>
+            <textarea id="update_trigger_comment" name="${escaped_update_option_key}_comment"
+                style="width: 100%;">${window.lodash.escape(update_option['comment'])}</textarea>
           </td>
           <td>
-            ${ translation_html }
+            ${translation_html}
           </td>
           <td>
             <button class="button delete-update-trigger">
@@ -1250,13 +1289,18 @@ jQuery(document).ready(function ($) {
       return html;
     }
 
-    function generate_update_required_options_row_field_select_html(field_key, field_settings) {
-
+    function generate_update_required_options_row_field_select_html(
+      field_key,
+      field_settings,
+    ) {
       let html = ``;
       for (const [field, setting] of Object.entries(field_settings)) {
-        if ( ['key_select', 'multi_select'].includes(setting?.type) && Object.keys(setting?.default).length > 0 ) {
+        if (
+          ['key_select', 'multi_select'].includes(setting?.type) &&
+          Object.keys(setting?.default).length > 0
+        ) {
           html += `
-            <option ${ (field_key === field) ? 'selected' : '' } value="${field}">${setting?.name}</option>
+            <option ${field_key === field ? 'selected' : ''} value="${field}">${setting?.name}</option>
           `;
         }
       }
@@ -1264,13 +1308,18 @@ jQuery(document).ready(function ($) {
       return html;
     }
 
-    function generate_update_required_options_row_option_select_html(field_key, option_key, field_settings) {
-
+    function generate_update_required_options_row_option_select_html(
+      field_key,
+      option_key,
+      field_settings,
+    ) {
       let html = ``;
-      if ( field_settings[field_key]?.default ) {
-        for (const [option, option_default] of Object.entries(field_settings[field_key].default)) {
+      if (field_settings[field_key]?.default) {
+        for (const [option, option_default] of Object.entries(
+          field_settings[field_key].default,
+        )) {
           html += `
-            <option ${ (option_key === option) ? 'selected' : '' } value="${option}">${option_default?.label}</option>
+            <option ${option_key === option ? 'selected' : ''} value="${option}">${option_default?.label}</option>
           `;
         }
       }
@@ -1281,43 +1330,57 @@ jQuery(document).ready(function ($) {
     function handle_update_needed_triggers_save_request() {
       let options = [];
 
-      $('#update_needed_triggers_table_tbody').find('.update-needed-triggers-table-tbody-tr').each((i, tr) => {
+      $('#update_needed_triggers_table_tbody')
+        .find('.update-needed-triggers-table-tbody-tr')
+        .each((i, tr) => {
+          // Capture row update trigger settings.
+          const status = $(tr).find('#update_trigger_status_select').val();
+          const field = $(tr).find('#update_trigger_field_select').val();
+          const option = $(tr)
+            .find('#update_trigger_field_options_select')
+            .val();
+          const days = $(tr).find('#update_trigger_days').val();
+          const comment = $(tr).find('#update_trigger_comment').val();
 
-        // Capture row update trigger settings.
-        const status = $(tr).find('#update_trigger_status_select').val();
-        const field = $(tr).find('#update_trigger_field_select').val();
-        const option = $(tr).find('#update_trigger_field_options_select').val();
-        const days =  $(tr).find('#update_trigger_days').val();
-        const comment = $(tr).find('#update_trigger_comment').val();
+          // Ensure to validate in order to store within final options shape.
+          if (status && field && option && days && comment) {
+            let translations = {};
 
-        // Ensure to validate in order to store within final options shape.
-        if ( status && field && option && days && comment ) {
-          let translations = {};
+            // Determine if there are any translations to be included.
+            $(tr)
+              .find('.translation_container')
+              .find('tr')
+              .each((j, translation) => {
+                const lang_code = $(translation)
+                  .find(
+                    '#update_needed_triggers_table_tbody_tr_translation_input',
+                  )
+                  .data('lang_code');
+                const lang_val = $(translation)
+                  .find(
+                    '#update_needed_triggers_table_tbody_tr_translation_input',
+                  )
+                  .val();
+                if (lang_code && lang_val) {
+                  translations[lang_code] = lang_val;
+                }
+              });
 
-          // Determine if there are any translations to be included.
-          $(tr).find('.translation_container').find('tr').each((j, translation) => {
-            const lang_code = $(translation).find('#update_needed_triggers_table_tbody_tr_translation_input').data('lang_code');
-            const lang_val = $(translation).find('#update_needed_triggers_table_tbody_tr_translation_input').val();
-            if ( lang_code && lang_val ) {
-              translations[ lang_code ] = lang_val;
-            }
-          });
-
-          // Package findings...
-          options.push({
-            status,
-            field,
-            option,
-            days,
-            comment,
-            translations
-          });
-        }
-      });
+            // Package findings...
+            options.push({
+              status,
+              field,
+              option,
+              days,
+              comment,
+              translations,
+            });
+          }
+        });
 
       // Encode and submit captured options.
       console.log(options);
-      $('#update_needed_triggers_options').val( JSON.stringify( options, null ) );
+      $('#update_needed_triggers_options').val(JSON.stringify(options, null));
       $('#update_needed_triggers_form').submit();
     }
   }
