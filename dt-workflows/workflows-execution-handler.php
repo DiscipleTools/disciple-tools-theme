@@ -591,7 +591,12 @@ class Disciple_Tools_Workflows_Execution_Handler {
                 $updated['notes'] = [
                     $value,
                 ];
-
+                break;
+            case 'share':
+                // Remove 'user-' prefix from user ID if present
+                $user_id = str_replace( 'user-', '', $value );
+                DT_Posts::add_shared( $post['post_type'], $post['ID'], $user_id, null, false, false );
+                break;
         }
 
         return $updated;
@@ -742,7 +747,11 @@ class Disciple_Tools_Workflows_Execution_Handler {
                     $updated[ $field_id ]['values'] = $updated_location_metas;
                 }
                 break;
-
+            case 'share':
+                // Remove 'user-' prefix from user ID if present
+                $user_id = str_replace( 'user-', '', $value );
+                DT_Posts::remove_shared( $post['post_type'], $post['ID'], $user_id, null, false, false );
+                break;
         }
 
         return $updated;
