@@ -899,17 +899,9 @@ class Disciple_Tools_Posts_Endpoints {
                         update_post_meta( $post_id, $meta_key, $uploaded_key );
                         break;
 
-                    case 'audio_comment':
-                        DT_Posts::add_post_comment( $post_type, $post_id, $params['audio_timestamp'] ?? 'audio_comment', 'comment', [
-                            'comment_meta' => [
-                                $meta_key => $uploaded_key
-                            ]
-                        ], true, true );
-
-                        break;
-
                     case 'image_comment':
-                        DT_Posts::add_post_comment( $post_type, $post_id, gmdate( 'c' ), 'comment', [
+                    case 'audio_comment':
+                        DT_Posts::add_post_comment( $post_type, $post_id, ' ', 'comment', [
                             'comment_meta' => [
                                 $meta_key => $uploaded_key
                             ]
