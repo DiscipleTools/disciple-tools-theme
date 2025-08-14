@@ -154,6 +154,7 @@ jQuery(document).ready(function ($) {
                   <img src="<%- meta.value %>" class="image-comment" />
                 <% }) %>
               <% } %>
+              <br>
               <div class="comment-reactions">
                 <div class="reaction-controls">
                   <button class="icon-button reactions__button" aria-label="Add your reaction" aria-haspopup="menu" role="button" data-toggle="react-to-<%- a.comment_ID %>">
