@@ -139,11 +139,6 @@ jQuery(document).ready(function ($) {
               <div class="comment-text" title="<%- a.date_formatted %>" dir=auto>
                   <%= a.text.replace(/\\n/g, '<br>') /* not escaped on purpose */ %>
               </div>
-            </div>
-            <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
-              <div class="translation-bubble" dir=auto></div>
-            <% } %>
-            <div  class="comment-controls">
               <% if ( a.meta && a.meta.audio_url ) { %>
                 <% window.lodash.forEach(a.meta.audio_url, function(meta){ %>
                   <audio controls class="audio-comment"><source src="<%- meta.value %>" /></audio>
@@ -154,7 +149,11 @@ jQuery(document).ready(function ($) {
                   <img src="<%- meta.value %>" class="image-comment" />
                 <% }) %>
               <% } %>
-              <br>
+            </div>
+            <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
+              <div class="translation-bubble" dir=auto></div>
+            <% } %>
+            <div  class="comment-controls">
               <div class="comment-reactions">
                 <div class="reaction-controls">
                   <button class="icon-button reactions__button" aria-label="Add your reaction" aria-haspopup="menu" role="button" data-toggle="react-to-<%- a.comment_ID %>">
