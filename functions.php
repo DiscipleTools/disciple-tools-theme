@@ -136,6 +136,7 @@ class Disciple_Tools
         require_once( 'dt-core/utilities/dt-components.php' );
         require_once( 'dt-core/global-functions.php' );
         require_once( 'dt-core/utilities/loader.php' );
+        require_once( 'dt-core/dt-storage.php' );
 
         $is_rest = dt_is_rest();
         $url_path = dt_get_url_path();
@@ -398,18 +399,16 @@ class Disciple_Tools
 
             require_once( 'dt-core/admin/menu/menu-customizations.php' );
             require_once( 'dt-core/admin/menu/tabs/tab-customizations.php' );
+
+            require_once( 'dt-core/admin/menu/tabs/tab-storage-settings.php' );
             /* End menu tab section */
 
             require_once( 'dt-core/setup-functions.php' );
 
         }
         // Storage module
-        require_once( 'storage/DT_Storage.php' );
-        if ( is_admin() ) {
-            require_once( 'storage/admin-settings.php' );
-        }
-        require_once( 'dt-core/admin/menu/tabs/admin-endpoints.php' );
 
+        require_once( 'dt-core/admin/menu/tabs/admin-endpoints.php' );
         //create scheduler for job queue
         wp_queue()->cron();
 

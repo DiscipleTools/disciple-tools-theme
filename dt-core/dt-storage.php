@@ -112,9 +112,9 @@ class Disciple_Tools_Storage {
             return '';
         }
         try {
-            $inputClass = '\\AsyncAws\\S3\\Input\\GetObjectRequest';
-            if ( class_exists( $inputClass ) ) {
-                $input = new $inputClass( [ 'Bucket' => $bucket, 'Key' => $key ] );
+            $input_class = '\\AsyncAws\\S3\\Input\\GetObjectRequest';
+            if ( class_exists( $input_class ) ) {
+                $input = new $input_class( [ 'Bucket' => $bucket, 'Key' => $key ] );
                 $presigned = $client->presign( $input, new \DateTimeImmutable( '+24 hours' ) );
                 return (string) $presigned;
             }
@@ -228,7 +228,7 @@ class Disciple_Tools_Storage {
                     $client->deleteObject( [ 'Bucket' => $bucket, 'Key' => $lthumb ] );
                     $resp['large_thumbnail_key'] = $lthumb;
                     $resp['large_thumbnail_deleted'] = true;
-                } catch ( Throwable $te ) {}
+                } catch ( Throwable $te ) { /* Thumbnail objects may not exist or are already deleted; ignoring is acceptable */ }
             }
             return $resp;
         } catch ( Throwable $e ) {
