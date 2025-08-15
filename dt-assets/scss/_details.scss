@@ -489,12 +489,13 @@ DT comments and activity
 
     .audio-comment {
         margin: 10px 0 10px 0;
+        width: 100%;
     }
 
     .image-comment {
-        aspect-ratio: 16/9;
         border-radius: 25px;
         margin: 10px 0 10px 0;
+        max-height: 400px;
     }
 
     /* Voice Recording Styles */
