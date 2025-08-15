@@ -117,6 +117,12 @@ class Disciple_Tools
         $this->user_locale = get_user_locale();
         $this->site_locale = get_locale();
 
+        // Composer autoload (for AsyncAws and other libs)
+        $autoload = get_template_directory() . '/vendor/autoload.php';
+        if ( file_exists( $autoload ) ) {
+            require_once( $autoload );
+        }
+
         /** We want to make sure roles are up-to-date. */
         require_once( 'dt-core/configuration/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
@@ -396,6 +402,12 @@ class Disciple_Tools
 
             require_once( 'dt-core/setup-functions.php' );
 
+        }
+        // Storage module
+        require_once( 'storage/DT_Storage.php' );
+        require_once( 'storage/hooks.php' );
+        if ( is_admin() ) {
+            require_once( 'storage/admin-settings.php' );
         }
         require_once( 'dt-core/admin/menu/tabs/admin-endpoints.php' );
 
