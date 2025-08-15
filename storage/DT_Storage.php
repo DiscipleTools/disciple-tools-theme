@@ -9,6 +9,10 @@ if ( !class_exists( 'DT_Storage' ) ) {
         private static function get_settings(): array {
             // New single-connection flat format
             $connection = get_option( 'dt_storage_connection', [] );
+            // Ensure default for path_style: true for minio, false otherwise if not set
+            if ( is_array( $connection ) && !array_key_exists( 'path_style', $connection ) ) {
+                $connection['path_style'] = ( isset( $connection['type'] ) && $connection['type'] === 'minio' );
+            }
             $id = is_array( $connection ) && isset( $connection['id'] ) ? $connection['id'] : '';
             return [ $id, is_array( $connection ) ? $connection : [] ];
         }
@@ -46,6 +50,7 @@ if ( !class_exists( 'DT_Storage' ) ) {
                 'endpoint' => $endpoint,
                 'accessKeyId' => $cfg['access_key'],
                 'accessKeySecret' => $cfg['secret_access_key'],
+                'pathStyleEndpoint' => (bool) ( $cfg['path_style'] ?? false ),
             ]);
             return [ $client, $cfg['bucket'], $id ];
         }

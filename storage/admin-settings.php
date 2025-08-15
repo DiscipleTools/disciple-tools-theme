@@ -67,7 +67,8 @@ class DT_Storage_Admin_Settings {
         if ( isset( $_POST['dt_storage_settings_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_storage_settings_nonce'] ) ), 'dt_storage_settings' ) ) {
             $enabled = isset( $_POST['enabled'] ) ? (bool) $_POST['enabled'] : false;
             $id = sanitize_text_field( wp_unslash( $_POST['id'] ?? '' ) );
-            $type = 'aws';
+            $existing_type = is_array( get_option( 'dt_storage_connection', [] ) ) ? ( get_option( 'dt_storage_connection', [] )['type'] ?? 'aws' ) : 'aws';
+            $type = sanitize_text_field( wp_unslash( $_POST['type'] ?? $existing_type ) );
             $details = [
                 'access_key' => sanitize_text_field( wp_unslash( $_POST['access_key'] ?? '' ) ),
                 'secret_access_key' => sanitize_text_field( wp_unslash( $_POST['secret_access_key'] ?? '' ) ),
@@ -79,7 +80,8 @@ class DT_Storage_Admin_Settings {
                 $id = substr( md5( maybe_serialize( $details ) ), 0, 12 );
             }
             // store single flat connection (no JSON)
-            $obj = [ 'id' => $id, 'enabled' => $enabled, 'name' => 'Default', 'type' => $type ] + $details;
+            $path_style = isset( $_POST['path_style'] ) ? (bool) $_POST['path_style'] : ( $type === 'minio' );
+            $obj = [ 'id' => $id, 'enabled' => $enabled, 'name' => 'Default', 'type' => $type, 'path_style' => $path_style ] + $details;
             update_option( 'dt_storage_connection', $obj );
             update_option( 'dt_storage_connection_id', $id );
             echo '<div class="updated"><p>' . esc_html__( 'Saved.', 'disciple_tools' ) . '</p></div>';
@@ -100,6 +102,16 @@ class DT_Storage_Admin_Settings {
                     <tr>
                         <th scope="row"><?php esc_html_e( 'Enabled', 'disciple_tools' ); ?></th>
                         <td><label><input type="checkbox" name="enabled" value="1" <?php checked( !empty( $current['enabled'] ) ); ?> /> <?php esc_html_e( 'Enable storage', 'disciple_tools' ); ?></label></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Provider</th>
+                        <td>
+                            <select name="type">
+                                <option value="aws" <?php selected( ($current['type'] ?? 'aws'), 'aws' ); ?>>AWS/Generic S3</option>
+                                <option value="backblaze" <?php selected( ($current['type'] ?? ''), 'backblaze' ); ?>>Backblaze</option>
+                                <option value="minio" <?php selected( ($current['type'] ?? ''), 'minio' ); ?>>MinIO</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <th scope="row">ID</th>
@@ -124,6 +136,10 @@ class DT_Storage_Admin_Settings {
                     <tr>
                         <th scope="row">Endpoint</th>
                         <td><input type="text" name="endpoint" value="<?php echo esc_attr( $current['endpoint'] ?? '' ); ?>" class="regular-text" placeholder="https://s3.amazonaws.com" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Path-style endpoint</th>
+                        <td><label><input type="checkbox" name="path_style" value="1" <?php checked( !empty( $current['path_style'] ) || ( ($current['type'] ?? '' ) === 'minio' ) ); ?> /> Use path-style addressing (required by many MinIO setups)</label></td>
                     </tr>
                 </table>
                 <?php submit_button(); ?>
