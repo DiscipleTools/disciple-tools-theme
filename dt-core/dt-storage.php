@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-class Disciple_Tools_Storage {
+class DT_Storage_API {
     /**
      * Return supported S3-compatible providers and basic defaults.
      * Consumers can use this for UI labels and default behaviors.

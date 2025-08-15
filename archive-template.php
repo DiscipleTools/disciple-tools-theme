@@ -1016,7 +1016,7 @@ Thanks!';
                                         <th style="width:36px; background-image:none; cursor:default"></th>
                                         <?php
                                     }
-                                    if ( Disciple_Tools_Storage::is_enabled() ):
+                                    if ( DT_Storage_API::is_enabled() ):
                                         if ( in_array( 'record_picture', $columns ) ) : ?>
                                             <th data-id="record_picture" style="width:32px; background-image:none; cursor:default"></th>
                                         <?php endif; ?>

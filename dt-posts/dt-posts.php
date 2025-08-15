@@ -1407,13 +1407,13 @@ class DT_Posts extends Disciple_Tools_Posts {
         }
 
         // Provide space for any additional processing of metadata values.
-        if ( Disciple_Tools_Storage::is_enabled() ) {
+        if ( DT_Storage_API::is_enabled() ) {
             $comment_meta = get_comment_meta( $comment_id );
             if ( isset( $comment_meta, $comment_meta['audio_url'] ) && is_array( $comment_meta['audio_url'] ) && ( count( $comment_meta['audio_url'] ) > 0 ) ) {
-                Disciple_Tools_Storage::delete_file( $comment_meta['audio_url'][0] );
+                DT_Storage_API::delete_file( $comment_meta['audio_url'][0] );
             }
             if ( isset( $comment_meta, $comment_meta['image_url'] ) && is_array( $comment_meta['image_url'] ) && ( count( $comment_meta['image_url'] ) > 0 ) ) {
-                Disciple_Tools_Storage::delete_file( $comment_meta['image_url'][0] );
+                DT_Storage_API::delete_file( $comment_meta['image_url'][0] );
             }
         }
 
@@ -1563,8 +1563,8 @@ class DT_Posts extends Disciple_Tools_Posts {
 
                 // Provide space for the reshaping of meta-values.
                 $meta_value = $meta->meta_value;
-                if ( in_array( $meta->meta_key, [ 'audio_url', 'image_url' ] ) && !empty( $meta_value ) && Disciple_Tools_Storage::is_enabled() ) {
-                    $storage_obj_url = Disciple_Tools_Storage::get_file_url( $meta_value );
+                if ( in_array( $meta->meta_key, [ 'audio_url', 'image_url' ] ) && !empty( $meta_value ) && DT_Storage_API::is_enabled() ) {
+                    $storage_obj_url = DT_Storage_API::get_file_url( $meta_value );
                     $meta_value = !empty( $storage_obj_url ) ? $storage_obj_url : $meta_value;
                 }
 

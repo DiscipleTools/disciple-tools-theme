@@ -179,7 +179,7 @@ class Disciple_Tools_Post_Type_Template {
             'name' => __( 'Picture', 'disciple_tools' ),
             'type' => 'image',
             'show_in_table' => 1,
-            'hidden' => !Disciple_Tools_Storage::is_enabled(),
+            'hidden' => !DT_Storage_API::is_enabled(),
             'customizable' => false,
         ];
         $fields['last_modified'] =[

@@ -851,8 +851,8 @@ class Disciple_Tools_Posts_Endpoints {
             return new WP_Error( __METHOD__, 'Missing parameters.' );
         }
 
-        if ( !Disciple_Tools_Storage::is_enabled() ) {
-            return new WP_Error( __METHOD__, 'Disciple_Tools_Storage Unavailable.' );
+        if ( !DT_Storage_API::is_enabled() ) {
+            return new WP_Error( __METHOD__, 'DT_Storage_API Unavailable.' );
         }
 
         $uploaded = false;
@@ -887,7 +887,7 @@ class Disciple_Tools_Posts_Endpoints {
         }
 
         // Push an uploaded file to backend storage service.
-        $uploaded = Disciple_Tools_Storage::upload_file( $key_prefix, $uploaded_file, $meta_key_value );
+        $uploaded = DT_Storage_API::upload_file( $key_prefix, $uploaded_file, $meta_key_value );
 
         // If successful, persist an uploaded object file key.
         if ( !empty( $uploaded ) ) {
@@ -926,8 +926,8 @@ class Disciple_Tools_Posts_Endpoints {
             return new WP_Error( __METHOD__, 'Missing parameters.' );
         }
 
-        if ( !( method_exists( 'Disciple_Tools_Storage', 'delete_file' ) && Disciple_Tools_Storage::is_enabled() ) ) {
-            return new WP_Error( __METHOD__, 'Disciple_Tools_Storage Delete Function Unavailable.' );
+        if ( !( method_exists( 'DT_Storage_API', 'delete_file' ) && DT_Storage_API::is_enabled() ) ) {
+            return new WP_Error( __METHOD__, 'DT_Storage_API Delete Function Unavailable.' );
         }
 
         $deleted = false;
@@ -941,7 +941,7 @@ class Disciple_Tools_Posts_Endpoints {
         $meta_key_value = get_post_meta( $post_id, $meta_key, true );
 
         if ( !empty( $meta_key_value ) ) {
-            $result = Disciple_Tools_Storage::delete_file( $meta_key_value );
+            $result = DT_Storage_API::delete_file( $meta_key_value );
             $deleted = $result['file_deleted'] ?? false;
             $deleted_key = $result['file_key'] ?? '';
         }

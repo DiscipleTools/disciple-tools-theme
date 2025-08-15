@@ -2614,13 +2614,13 @@ class Disciple_Tools_Posts
                     }
                 } else if ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] === 'image' ){
                     if ( !empty( $value[0]['value'] ) ){
-                        if ( Disciple_Tools_Storage::is_enabled() ) {
+                        if ( DT_Storage_API::is_enabled() ) {
                             $fields[$key] = [
-                                'thumb' => Disciple_Tools_Storage::get_thumbnail_url( $value[0]['value'] ),
-                                'full'  => Disciple_Tools_Storage::get_file_url( $value[0]['value'] ),
+                                'thumb' => DT_Storage_API::get_thumbnail_url( $value[0]['value'] ),
+                                'full'  => DT_Storage_API::get_file_url( $value[0]['value'] ),
                             ];
-                            if ( method_exists( 'Disciple_Tools_Storage', 'get_large_thumbnail_url' ) ) {
-                                $fields[$key]['large'] = Disciple_Tools_Storage::get_large_thumbnail_url( $value[0]['value'] );
+                            if ( method_exists( 'DT_Storage_API', 'get_large_thumbnail_url' ) ) {
+                                $fields[$key]['large'] = DT_Storage_API::get_large_thumbnail_url( $value[0]['value'] );
                             }
                         }
                     }

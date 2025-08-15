@@ -265,7 +265,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function storage_settings(): void {
-        $enabled = Disciple_Tools_Storage::is_enabled();
+        $enabled = DT_Storage_API::is_enabled();
         if ( !$enabled ) {
             ?>
           <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
