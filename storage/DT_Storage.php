@@ -5,16 +5,66 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( !class_exists( 'DT_Storage' ) ) {
     class DT_Storage {
+        /**
+         * Return supported S3-compatible providers and basic defaults.
+         * Consumers can use this for UI labels and default behaviors.
+         */
+        public static function list_supported_connection_types(): array {
+            return [
+                'aws' => [
+                    'key' => 'aws',
+                    'api' => 's3',
+                    'label' => 'AWS S3',
+                    'default_path_style' => false,
+                    'enabled' => true,
+                ],
+                'backblaze' => [
+                    'key' => 'backblaze',
+                    'api' => 's3',
+                    'label' => 'Backblaze B2',
+                    'default_path_style' => false,
+                    'enabled' => true,
+                ],
+                'minio' => [
+                    'key' => 'minio',
+                    'api' => 's3',
+                    'label' => 'MinIO',
+                    'default_path_style' => true,
+                    'enabled' => true,
+                ],
+                'cloudflare_r2' => [
+                    'key' => 'cloudflare_r2',
+                    'api' => 's3',
+                    'label' => 'Cloudflare R2',
+                    'default_path_style' => false,
+                    'enabled' => true,
+                ],
+                'other' => [
+                    'key' => 'other',
+                    'api' => 's3',
+                    'label' => 'Other (S3-compatible)',
+                    'default_path_style' => false,
+                    'enabled' => true,
+                ],
+            ];
+        }
 
-        private static function get_settings(): array {
+        public static function get_settings(): array {
             // New single-connection flat format
             $connection = get_option( 'dt_storage_connection', [] );
+
+            if ( empty( $connection ) && is_multisite() ) {
+                $connection = get_site_option( 'dt_storage_multisite_connection', [] );
+                if ( !empty( $connection ) ) {
+                    $connection = $connection;
+                }
+            }
+
             // Ensure default for path_style: true for minio, false otherwise if not set
             if ( is_array( $connection ) && !array_key_exists( 'path_style', $connection ) ) {
                 $connection['path_style'] = ( isset( $connection['type'] ) && $connection['type'] === 'minio' );
             }
-            $id = is_array( $connection ) && isset( $connection['id'] ) ? $connection['id'] : '';
-            return [ $id, is_array( $connection ) ? $connection : [] ];
+            return $connection;
         }
 
         public static function update_default_connection_id( string $connection_id ): bool {
@@ -27,12 +77,12 @@ if ( !class_exists( 'DT_Storage' ) ) {
         }
 
         public static function is_enabled(): bool {
-            [ $id, $conn ] = self::get_settings();
-            return !empty( $id ) && !empty( $conn ) && !empty( $conn['enabled'] );
+            $connection = self::get_settings();
+            return !empty( $connection['enabled'] );
         }
 
         private static function build_client_and_config(): array {
-            [ $id, $conn ] = self::get_settings();
+            $conn = self::get_settings();
             if ( empty( $conn ) || empty( $conn['type'] ) ) {
                 return [ null, null, null ];
             }
@@ -52,7 +102,7 @@ if ( !class_exists( 'DT_Storage' ) ) {
                 'accessKeySecret' => $cfg['secret_access_key'],
                 'pathStyleEndpoint' => (bool) ( $cfg['path_style'] ?? false ),
             ]);
-            return [ $client, $cfg['bucket'], $id ];
+            return [ $client, $cfg['bucket'], $cfg['id'] ];
         }
 
         private static function validate_url( $url ): string {

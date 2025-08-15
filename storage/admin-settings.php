@@ -64,23 +64,31 @@ class DT_Storage_Admin_Settings {
     }
 
     public static function render(){
+        // Load current single connection
+        $current = DT_Storage::get_settings();
+
+
         if ( isset( $_POST['dt_storage_settings_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_storage_settings_nonce'] ) ), 'dt_storage_settings' ) ) {
-            $enabled = isset( $_POST['enabled'] ) ? (bool) $_POST['enabled'] : false;
-            $id = sanitize_text_field( wp_unslash( $_POST['id'] ?? '' ) );
-            $existing_type = is_array( get_option( 'dt_storage_connection', [] ) ) ? ( get_option( 'dt_storage_connection', [] )['type'] ?? 'aws' ) : 'aws';
-            $type = sanitize_text_field( wp_unslash( $_POST['type'] ?? $existing_type ) );
+
+            $post = dt_recursive_sanitize_array( $_POST );
+            $enabled = isset( $post['enabled'] ) ? (bool) $post['enabled'] : false;
+            $id = $post['id'] ?? '';
+            $existing_type = is_array( $current ) ? ( $current['type'] ?? 'aws' ) : 'aws';
+            $type = $post['type'] ?? $existing_type;
+            $types = ( class_exists( 'DT_Storage' ) && method_exists( 'DT_Storage', 'list_supported_connection_types' ) ) ? DT_Storage::list_supported_connection_types() : [];
             $details = [
-                'access_key' => sanitize_text_field( wp_unslash( $_POST['access_key'] ?? '' ) ),
-                'secret_access_key' => sanitize_text_field( wp_unslash( $_POST['secret_access_key'] ?? '' ) ),
-                'region' => sanitize_text_field( wp_unslash( $_POST['region'] ?? '' ) ),
-                'bucket' => sanitize_text_field( wp_unslash( $_POST['bucket'] ?? '' ) ),
-                'endpoint' => sanitize_text_field( wp_unslash( $_POST['endpoint'] ?? '' ) ),
+                'access_key' => $post['access_key'] ?? '',
+                'secret_access_key' => $post['secret_access_key'] == '********' ? '' : $post['secret_access_key'],
+                'region' => $post['region'] ?? '',
+                'bucket' => $post['bucket'] ?? '',
+                'endpoint' => $post['endpoint'] ?? '',
             ];
             if ( empty( $id ) ) {
                 $id = substr( md5( maybe_serialize( $details ) ), 0, 12 );
             }
             // store single flat connection (no JSON)
-            $path_style = isset( $_POST['path_style'] ) ? (bool) $_POST['path_style'] : ( $type === 'minio' );
+            $default_path_style = isset( $types[$type]['default_path_style'] ) ? (bool) $types[$type]['default_path_style'] : ( $type === 'minio' );
+            $path_style = isset( $post['path_style'] ) ? (bool) $post['path_style'] : $default_path_style;
             $obj = [ 'id' => $id, 'enabled' => $enabled, 'name' => 'Default', 'type' => $type, 'path_style' => $path_style ] + $details;
             update_option( 'dt_storage_connection', $obj );
             update_option( 'dt_storage_connection_id', $id );
@@ -88,11 +96,7 @@ class DT_Storage_Admin_Settings {
         }
 
         // Load current single connection
-        $current = get_option( 'dt_storage_connection', [] );
-        if ( is_string( $current ) ) {
-            $maybe = json_decode( $current, true );
-            if ( is_array( $maybe ) ) { $current = $maybe; }
-        }
+        $current = DT_Storage::get_settings();
         ?>
         <div class="wrap">
             <h1><?php esc_html_e( 'Storage', 'disciple_tools' ); ?></h1>
@@ -107,9 +111,11 @@ class DT_Storage_Admin_Settings {
                         <th scope="row">Provider</th>
                         <td>
                             <select name="type">
-                                <option value="aws" <?php selected( ($current['type'] ?? 'aws'), 'aws' ); ?>>AWS/Generic S3</option>
-                                <option value="backblaze" <?php selected( ($current['type'] ?? ''), 'backblaze' ); ?>>Backblaze</option>
-                                <option value="minio" <?php selected( ($current['type'] ?? ''), 'minio' ); ?>>MinIO</option>
+                                <?php $types = ( class_exists( 'DT_Storage' ) && method_exists( 'DT_Storage', 'list_supported_connection_types' ) ) ? DT_Storage::list_supported_connection_types() : [];
+                                $selected_type = $current['type'] ?? 'aws'; foreach ( $types as $key => $meta ) { if ( !empty( $meta['enabled'] ) ) { ?>
+                                    <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $selected_type, $key ); ?>><?php echo esc_html( $meta['label'] ?? $key ); ?></option>
+                                                                <?php }
+                                } ?>
                             </select>
                         </td>
                     </tr>
@@ -123,7 +129,7 @@ class DT_Storage_Admin_Settings {
                     </tr>
                     <tr>
                         <th scope="row">Secret</th>
-                        <td><input type="password" name="secret_access_key" value="<?php echo esc_attr( $current['secret_access_key'] ?? '' ); ?>" class="regular-text" /></td>
+                        <td><input type="password" name="secret_access_key" value="<?php echo esc_attr( $current['secret_access_key'] ? '********' : '' ); ?>" class="regular-text" /></td>
                     </tr>
                     <tr>
                         <th scope="row">Region</th>
@@ -139,7 +145,13 @@ class DT_Storage_Admin_Settings {
                     </tr>
                     <tr>
                         <th scope="row">Path-style endpoint</th>
-                        <td><label><input type="checkbox" name="path_style" value="1" <?php checked( !empty( $current['path_style'] ) || ( ($current['type'] ?? '' ) === 'minio' ) ); ?> /> Use path-style addressing (required by many MinIO setups)</label></td>
+                        <td>
+                            <?php $types = ( class_exists( 'DT_Storage' ) && method_exists( 'DT_Storage', 'list_supported_connection_types' ) ) ? DT_Storage::list_supported_connection_types() : [];
+                            $selected_type = $current['type'] ?? 'aws';
+                            $default_path_style = isset( $types[$selected_type]['default_path_style'] ) ? (bool) $types[$selected_type]['default_path_style'] : false;
+                            $checked = isset( $current['path_style'] ) ? (bool) $current['path_style'] : $default_path_style; ?>
+                            <label><input type="checkbox" name="path_style" value="1" <?php checked( $checked ); ?> /> Use path-style addressing (required by many MinIO setups)</label>
+                        </td>
                     </tr>
                 </table>
                 <?php submit_button(); ?>
