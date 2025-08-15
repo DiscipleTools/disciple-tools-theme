@@ -228,7 +228,7 @@ class Disciple_Tools_Storage {
                     $client->deleteObject( [ 'Bucket' => $bucket, 'Key' => $lthumb ] );
                     $resp['large_thumbnail_key'] = $lthumb;
                     $resp['large_thumbnail_deleted'] = true;
-                } catch ( Throwable $te ) { /* Thumbnail objects may not exist or are already deleted; ignoring is acceptable */ }
+                } catch ( Throwable $te ) { /* Thumbnail objects may not exist or are already deleted; ignoring is acceptable */ unset( $te ); }
             }
             return $resp;
         } catch ( Throwable $e ) {
