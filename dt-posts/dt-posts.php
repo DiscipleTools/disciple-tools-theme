@@ -2308,15 +2308,15 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return false|int|WP_Error
      */
-    public static function remove_shared( string $post_type, int $post_id, int $user_id ) {
+    public static function remove_shared( string $post_type, int $post_id, int $user_id, $check_permissions = true ) {
         global $wpdb;
 
-        if ( !self::can_update( $post_type, $post_id ) ) {
+        if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'You do not have permission to unshare', [ 'status' => 403 ] );
         }
 
         $assigned_to_meta = get_post_meta( $post_id, 'assigned_to', true );
-        if ( !( self::can_update( $post_type, $post_id ) ||
+        if ( $check_permissions && !( self::can_update( $post_type, $post_id ) ||
                  get_current_user_id() === $user_id ||
                  dt_get_user_id_from_assigned_to( $assigned_to_meta ) === get_current_user_id() )
         ){

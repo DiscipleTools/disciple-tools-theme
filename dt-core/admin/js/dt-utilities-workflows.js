@@ -1077,6 +1077,16 @@ jQuery(function ($) {
           name: 'Add Comment',
         });
         break;
+      case 'share':
+        actions.push({
+          id: 'append',
+          name: 'Add Share',
+        });
+        actions.push({
+          id: 'remove',
+          name: 'Remove Share',
+        });
+        break;
     }
 
     // Append custom option if any custom actions are detected
@@ -1599,6 +1609,7 @@ jQuery(function ($) {
       case 'connection':
         return generate_event_value_connections(base_url, field);
       case 'user_select':
+      case 'share':
         return generate_event_value_user_select(base_url);
       case 'comments':
         return generate_event_value_textareafield();
