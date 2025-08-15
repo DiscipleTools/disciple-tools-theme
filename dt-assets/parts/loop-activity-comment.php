@@ -80,7 +80,7 @@
             </div>
             <div class="shrink cell" id="add-comment-button-container">
                 <!-- Add recording button next to submit button if storage capability is available -->
-                <?php if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) { ?>
+                <?php if ( Disciple_Tools_Storage::is_enabled() ) { ?>
                     <button id="image-comment-upload-button" class="image-comment-btn dt-storage-upload" title="<?php esc_html_e( 'Add Image Comment', 'disciple_tools' ) ?>" <?php echo esc_html( $disabled ) ?>
                             data-storage_upload_post_type="<?php echo esc_attr( $post_type ) ?>"
                             data-storage_upload_post_id="<?php echo esc_attr( $post_id ) ?>"

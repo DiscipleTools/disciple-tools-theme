@@ -26,7 +26,7 @@ function dt_print_details_bar(
         $shared_with_text .= sprintf( ', %s', $shared['display_name'] );
     }
 
-    $picture_style = !class_exists( 'Disciple_Tools_Storage' ) ? 'cursor: default !important;' : '';
+    $picture_style = !Disciple_Tools_Storage::is_enabled() ? 'cursor: default !important;' : '';
     $record_picture = isset( $dt_post['record_picture']['thumb'] ) ? $dt_post['record_picture']['thumb'] : null;
     $record_thumbnail = isset( $dt_post['record_picture']['thumb'] ) ? $dt_post['record_picture']['thumb'] : null;
     $record_large_thumbnail = isset( $dt_post['record_picture']['large'] ) ? $dt_post['record_picture']['large'] : null;

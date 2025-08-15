@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-class DT_Storage_Admin_Settings {
+class Disciple_Tools_Storage_Admin_Settings {
 
     public static function init(){
         add_action( 'admin_menu', [ __CLASS__, 'menu' ], 200 );
@@ -24,7 +24,7 @@ class DT_Storage_Admin_Settings {
 
 
     private static function process_form_and_get_current(){
-        $current = DT_Storage::get_settings();
+        $current = Disciple_Tools_Storage::get_settings();
         if ( isset( $_POST['dt_storage_settings_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_storage_settings_nonce'] ) ), 'dt_storage_settings' ) ) {
 
             $post = dt_recursive_sanitize_array( $_POST );
@@ -32,7 +32,7 @@ class DT_Storage_Admin_Settings {
             $id = $post['id'] ?? '';
             $existing_type = is_array( $current ) ? ( $current['type'] ?? 'aws' ) : 'aws';
             $type = $post['type'] ?? $existing_type;
-            $types = DT_Storage::list_supported_connection_types();
+            $types = Disciple_Tools_Storage::list_supported_connection_types();
             $details = [
                 'access_key' => $post['access_key'] ?? '',
                 'secret_access_key' => $post['secret_access_key'] == '********' ? $current['secret_access_key'] ?? '' : $post['secret_access_key'],
@@ -49,7 +49,7 @@ class DT_Storage_Admin_Settings {
             update_option( 'dt_storage_connection', $obj );
             echo '<div class="updated"><p>' . esc_html__( 'Saved.', 'disciple_tools' ) . '</p></div>';
         }
-        return DT_Storage::get_settings();
+        return Disciple_Tools_Storage::get_settings();
     }
 
     private static function render_form( $current ){
@@ -66,7 +66,7 @@ class DT_Storage_Admin_Settings {
                     <td><strong><?php esc_html_e( 'Provider', 'disciple_tools' ); ?></strong></td>
                     <td>
                         <select name="type">
-                            <?php $types = ( class_exists( 'DT_Storage' ) && method_exists( 'DT_Storage', 'list_supported_connection_types' ) ) ? DT_Storage::list_supported_connection_types() : [];
+                            <?php $types = Disciple_Tools_Storage::list_supported_connection_types();
                             $selected_type = $current['type'] ?? 'aws'; foreach ( $types as $key => $meta ) { if ( !empty( $meta['enabled'] ) ) { ?>
                                 <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $selected_type, $key ); ?>><?php echo esc_html( $meta['label'] ?? $key ); ?></option>
                             <?php }
@@ -101,7 +101,7 @@ class DT_Storage_Admin_Settings {
                 <tr>
                     <td><strong><?php esc_html_e( 'Path-style endpoint', 'disciple_tools' ); ?></strong></td>
                     <td>
-                        <?php $types = ( class_exists( 'DT_Storage' ) && method_exists( 'DT_Storage', 'list_supported_connection_types' ) ) ? DT_Storage::list_supported_connection_types() : [];
+                        <?php $types = Disciple_Tools_Storage::list_supported_connection_types();
                         $selected_type = $current['type'] ?? 'aws';
                         $default_path_style = isset( $types[$selected_type]['default_path_style'] ) ? (bool) $types[$selected_type]['default_path_style'] : false;
                         $checked = isset( $current['path_style'] ) ? (bool) $current['path_style'] : $default_path_style; ?>
@@ -152,6 +152,6 @@ class DT_Storage_Admin_Settings {
     }
 }
 
-DT_Storage_Admin_Settings::init();
+Disciple_Tools_Storage_Admin_Settings::init();
 
 

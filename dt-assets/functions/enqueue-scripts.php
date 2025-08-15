@@ -129,7 +129,7 @@ function dt_site_scripts() {
             'tiles' => DT_Posts::get_post_tiles( $post_type ),
             'can_manage_dt' => current_user_can( 'manage_dt' ),
             'features' => [
-                'storage' => class_exists( 'DT_Storage' ) && DT_Storage::is_enabled(),
+                'storage' => Disciple_Tools_Storage::is_enabled(),
             ]
         )
     );
@@ -424,7 +424,7 @@ function dt_site_scripts() {
         'fetch_more_text' => __( 'Load More', 'disciple_tools' ) // Support translations
     ) );
 
-    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ) {
+    if ( Disciple_Tools_Storage::is_enabled() ) {
         dt_theme_enqueue_script( 'dt-storage', 'dt-assets/js/dt-storage.js', [ 'jquery' ], true );
         wp_localize_script( 'dt-storage', 'storage_settings',
             [
