@@ -118,9 +118,9 @@ class Disciple_Tools
         $this->site_locale = get_locale();
 
         // Composer autoload (for AsyncAws and other libs)
-        $autoload = get_template_directory() . '/vendor/autoload.php';
-        if ( file_exists( $autoload ) ) {
-            require_once( $autoload );
+        $aa_autoload = get_template_directory() . '/dt-core/libraries/async-aws-autoload.php';
+        if ( file_exists( $aa_autoload ) ) {
+            require_once( $aa_autoload );
         }
 
         /** We want to make sure roles are up-to-date. */

@@ -1,8 +1,4 @@
 {
-    "require": {
-        "async-aws/s3": "^1.14",
-        "async-aws/core": "^1.14"
-    },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "1.*",
         "wp-coding-standards/wpcs": "3.1.*",
