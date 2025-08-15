@@ -405,7 +405,6 @@ class Disciple_Tools
         }
         // Storage module
         require_once( 'storage/DT_Storage.php' );
-        require_once( 'storage/hooks.php' );
         if ( is_admin() ) {
             require_once( 'storage/admin-settings.php' );
         }
