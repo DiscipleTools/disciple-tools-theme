@@ -67,15 +67,6 @@ if ( !class_exists( 'DT_Storage' ) ) {
             return $connection;
         }
 
-        public static function update_default_connection_id( string $connection_id ): bool {
-            return update_option( 'dt_storage_connection_id', $connection_id );
-        }
-
-        public static function get_default_connection_id(): string {
-            $id = dt_get_option( 'dt_storage_connection_id' );
-            return !empty( $id ) ? $id : '';
-        }
-
         public static function is_enabled(): bool {
             $connection = self::get_settings();
             return !empty( $connection['enabled'] );
