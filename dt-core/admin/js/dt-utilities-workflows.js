@@ -1726,17 +1726,48 @@ jQuery(function ($) {
           // Obtain handle to input locations search field.
           let input = $('#' + response['id']);
           if (input) {
-            // Execute predictions google api search.
-            let auto_complete_service =
-              new window.google.maps.places.AutocompleteService();
-            let promise = auto_complete_service.getPlacePredictions(
-              { input: input.val() },
-              function (predictions, status) {
-                if (status === 'OK') {
-                  google_predictions = predictions;
-                }
-              },
-            );
+            // Legacy first; fallback to REST when status is not OK
+            let auto_complete_service = new window.google.maps.places.AutocompleteService();
+            auto_complete_service.getPlacePredictions({ input: input.val() }, function (predictions, status) {
+              if (status === 'OK') {
+                google_predictions = predictions;
+              } else if (window.dtMapbox && window.dtMapbox.google_map_key) {
+                // Legacy failed; fallback to Places v1 REST
+                const url =
+                  'https://places.googleapis.com/v1/places:autocomplete?key=' +
+                  encodeURIComponent(window.dtMapbox.google_map_key);
+                const body = { input: input.val() };
+                fetch(url, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(body),
+                })
+                  .then((res) => res.json())
+                  .then((data) => {
+                    const suggestions = Array.isArray(data && data.suggestions)
+                      ? data.suggestions
+                      : [];
+                    google_predictions = suggestions
+                      .map((sug) => (sug && sug.placePrediction ? sug.placePrediction : null))
+                      .filter(Boolean)
+                      .map((pred) => {
+                        const placeId = pred.placeId || (pred.place ? String(pred.place).replace('places/', '') : null);
+                        const description = (pred.text && pred.text.text) ||
+                          [pred.structuredFormat && pred.structuredFormat.mainText && pred.structuredFormat.mainText.text,
+                           pred.structuredFormat && pred.structuredFormat.secondaryText && pred.structuredFormat.secondaryText.text]
+                            .filter(Boolean)
+                            .join(', ');
+                        return placeId && description
+                          ? { description: description, place_id: placeId }
+                          : null;
+                      })
+                      .filter(Boolean);
+                  })
+                  .catch(function (err) {
+                    console.log('Places Autocomplete REST error:', err);
+                  });
+              }
+            });
           }
 
           // Return current location predictions.
@@ -1744,15 +1775,34 @@ jQuery(function ($) {
         },
       };
 
+      // Helper function to convert level (keep in sync with mapbox-users-search-widget.js -> convert_level())
+      function convertLevel(level) {
+        switch (level) {
+          case 'administrative_area_level_0':
+            return 'admin0';
+          case 'administrative_area_level_1':
+            return 'admin1';
+          case 'administrative_area_level_2':
+            return 'admin2';
+          case 'administrative_area_level_3':
+            return 'admin3';
+          case 'administrative_area_level_4':
+            return 'admin4';
+          case 'administrative_area_level_5':
+            return 'admin5';
+          default:
+            return level;
+        }
+      }
+
       config['id_func'] = function (item) {
         if (item && item['place_id']) {
-          // Geocode item place details, for further information extraction; E.g. Lat/Lng.
+          // Legacy first; fallback to Places REST for details based on status
           let geocode_service = new window.google.maps.Geocoder();
           geocode_service.geocode(
             { placeId: item['place_id'] },
             function (results, status) {
               if (status === 'OK' && results && results.length > 0) {
-                // Ensure we can get a handle on lat/lng values.
                 if (results[0]['geometry']['location']) {
                   let location = results[0]['geometry']['location'];
                   let lat = location['lat']();
@@ -1760,46 +1810,42 @@ jQuery(function ($) {
                   let label = results[0]['formatted_address'];
                   let level = results[0]['types'][0];
 
-                  /**
-                   * Convert first type to appropriate level.
-                   * NB: Keep following switch-block in sync with
-                   *  mapbox-users-search-widget.js -> convert_level()
-                   */
-
-                  switch (level) {
-                    case 'administrative_area_level_0':
-                      level = 'admin0';
-                      break;
-                    case 'administrative_area_level_1':
-                      level = 'admin1';
-                      break;
-                    case 'administrative_area_level_2':
-                      level = 'admin2';
-                      break;
-                    case 'administrative_area_level_3':
-                      level = 'admin3';
-                      break;
-                    case 'administrative_area_level_4':
-                      level = 'admin4';
-                      break;
-                    case 'administrative_area_level_5':
-                      level = 'admin5';
-                      break;
-                  }
-
-                  // Package findings within json object, for downstream processing.
                   let location_pkg = {
                     label: label,
-                    level: level,
+                    level: convertLevel(level),
                     lat: lat,
                     lng: lng,
                   };
-
-                  // Stringify and persist location package.
                   event_value_object_id.val(
                     JSON.stringify(location_pkg).replaceAll('"', "'"),
                   );
                 }
+              } else if (window.dtMapbox && window.dtMapbox.google_map_key) {
+                // Legacy failed; fallback to Places v1 REST
+                const url =
+                  'https://places.googleapis.com/v1/places/' +
+                  encodeURIComponent(item['place_id']) +
+                  '?fields=formattedAddress,location,types&key=' +
+                  encodeURIComponent(window.dtMapbox.google_map_key);
+                fetch(url, { method: 'GET' })
+                  .then((res) => res.json())
+                  .then((place) => {
+                    if (place && place.location) {
+                      let lat = place.location.latitude;
+                      let lng = place.location.longitude;
+                      let label = place.formattedAddress || '';
+                      let level = (place.types && place.types.length > 0) ? place.types[0] : '';
+                      let location_pkg = {
+                        label: label,
+                        level: convertLevel(level),
+                        lat: lat,
+                        lng: lng,
+                      };
+                      event_value_object_id.val(
+                        JSON.stringify(location_pkg).replaceAll('"', "'"),
+                      );
+                    }
+                  });
               }
             },
           );

@@ -348,21 +348,16 @@ function close_all_lists(selection_id) {
     let update = { value: address };
     post_contact_address(update);
   } else if (window.dtMapbox.google_map_key) {
-    /* if Google Geocoding enabled*/
+    /* Google Places details: prefer Geocoder JS, fallback to REST */
     jQuery('#mapbox-search').val(
       window.mapbox_result_features[selection_id].description,
     );
     jQuery('#mapbox-autocomplete-list').empty();
 
+    const placeId = window.mapbox_result_features[selection_id].place_id;
     const geocoder = new window.google.maps.Geocoder();
-    geocoder.geocode(
-      { placeId: window.mapbox_result_features[selection_id].place_id },
-      (results, status) => {
-        if (status !== 'OK') {
-          console.log('Geocoder failed due to: ' + status);
-          return;
-        }
-
+    geocoder.geocode({ placeId: placeId }, (results, status) => {
+      if (status === 'OK') {
         window.location_data = {
           location_grid_meta: {
             values: [
@@ -379,9 +374,44 @@ function close_all_lists(selection_id) {
           },
         };
         post_geocoded_location();
-      },
-    );
-
+      } else {
+        const url =
+          'https://places.googleapis.com/v1/places/' +
+          encodeURIComponent(placeId) +
+          '?fields=formattedAddress,location,types&key=' +
+          encodeURIComponent(window.dtMapbox.google_map_key);
+        fetch(url, { method: 'GET' })
+          .then((res) => res.json())
+          .then((place) => {
+            if (!place || !place.location) {
+              console.log('Place details not found');
+              return;
+            }
+            const lat = place.location && place.location.latitude;
+            const lng = place.location && place.location.longitude;
+            const types = Array.isArray(place.types) && place.types.length > 0 ? place.types : [];
+            const label = window.mapbox_result_features[selection_id].description || place.formattedAddress || '';
+            let level = types.length > 0 ? types[0] : '';
+            window.location_data = {
+              location_grid_meta: {
+                values: [
+                  {
+                    lng: lng,
+                    lat: lat,
+                    level: convert_level(level),
+                    label: label,
+                    source: 'user',
+                  },
+                ],
+              },
+            };
+            post_geocoded_location();
+          })
+          .catch((err) => {
+            console.log('Places details error:', err);
+          });
+      }
+    });
     /* if Mapbox enabled */
   } else {
     jQuery('#mapbox-search').val(
@@ -464,10 +494,9 @@ function google_autocomplete(address) {
     return;
   }
 
+  // Legacy first, fallback to Places v1 REST on non-OK status
   let service = new window.google.maps.places.AutocompleteService();
-  service.getPlacePredictions(
-    { input: address },
-    function (predictions, status) {
+  service.getPlacePredictions({ input: address }, function (predictions, status) {
       let list = jQuery('#mapbox-autocomplete-list');
       list.empty();
 
@@ -491,7 +520,6 @@ function google_autocomplete(address) {
           close_all_lists(e.target.attributes['data-value'].value);
         });
 
-        // Set globals
         window.mapbox_result_features = predictions;
       } else if (status === 'ZERO_RESULTS') {
         list.append(`<div>No Results Found</div>`);
@@ -503,12 +531,65 @@ function google_autocomplete(address) {
           close_all_lists(e.target.attributes['data-value'].value);
         });
       } else {
-        console.log(
-          'Predictions was not successful for the following reason: ' + status,
-        );
+        // Legacy failed; fallback to REST autocomplete
+        const url =
+          'https://places.googleapis.com/v1/places:autocomplete?key=' +
+          encodeURIComponent(window.dtMapbox.google_map_key);
+        const body = { input: address };
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            const suggestions = Array.isArray(data && data.suggestions)
+              ? data.suggestions
+              : [];
+            const predictions = [];
+            suggestions.forEach((sug) => {
+              const pred = sug && sug.placePrediction ? sug.placePrediction : null;
+              if (!pred) return;
+              const placeId = pred.placeId || (pred.place ? String(pred.place).replace('places/', '') : null);
+              const description = (pred.text && pred.text.text) ||
+                [pred.structuredFormat && pred.structuredFormat.mainText && pred.structuredFormat.mainText.text,
+                 pred.structuredFormat && pred.structuredFormat.secondaryText && pred.structuredFormat.secondaryText.text]
+                  .filter(Boolean)
+                  .join(', ');
+              if (placeId && description) {
+                predictions.push({ description: description, place_id: placeId });
+              }
+            });
+
+            if (predictions.length === 0) {
+              list.append(`<div>No Results Found</div>`);
+            } else {
+              jQuery.each(predictions, function (index, value) {
+                if (4 > index) {
+                  list.append(
+                    `<div data-value="${index}">${window.escapeHTML(value.description)}</div>`,
+                  );
+                }
+              });
+
+              let add_address = jQuery('#mapbox-autocomplete').data('add-address');
+              if (typeof add_address === 'undefined' || add_address === true) {
+                list.append(
+                  `<div data-value="address" style="font-weight:bold;">${window.escapeHTML(window.dtMapbox.translations.use)}: <span dir="auto">"${window.escapeHTML(address)}"</span></div>`,
+                );
+              }
+
+              jQuery('#mapbox-autocomplete-list div').on('click', function (e) {
+                close_all_lists(e.target.attributes['data-value'].value);
+              });
+            }
+            window.mapbox_result_features = predictions;
+          })
+          .catch((err) => {
+            console.log('Places Autocomplete REST error:', err);
+          });
       }
-    },
-  );
+    });
 }
 
 // submits geocoded results and resets list
