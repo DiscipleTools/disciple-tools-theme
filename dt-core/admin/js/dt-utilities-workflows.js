@@ -1727,47 +1727,68 @@ jQuery(function ($) {
           let input = $('#' + response['id']);
           if (input) {
             // Legacy first; fallback to REST when status is not OK
-            let auto_complete_service = new window.google.maps.places.AutocompleteService();
-            auto_complete_service.getPlacePredictions({ input: input.val() }, function (predictions, status) {
-              if (status === 'OK') {
-                google_predictions = predictions;
-              } else if (window.dtMapbox && window.dtMapbox.google_map_key) {
-                // Legacy failed; fallback to Places v1 REST
-                const url =
-                  'https://places.googleapis.com/v1/places:autocomplete?key=' +
-                  encodeURIComponent(window.dtMapbox.google_map_key);
-                const body = { input: input.val() };
-                fetch(url, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(body),
-                })
-                  .then((res) => res.json())
-                  .then((data) => {
-                    const suggestions = Array.isArray(data && data.suggestions)
-                      ? data.suggestions
-                      : [];
-                    google_predictions = suggestions
-                      .map((sug) => (sug && sug.placePrediction ? sug.placePrediction : null))
-                      .filter(Boolean)
-                      .map((pred) => {
-                        const placeId = pred.placeId || (pred.place ? String(pred.place).replace('places/', '') : null);
-                        const description = (pred.text && pred.text.text) ||
-                          [pred.structuredFormat && pred.structuredFormat.mainText && pred.structuredFormat.mainText.text,
-                           pred.structuredFormat && pred.structuredFormat.secondaryText && pred.structuredFormat.secondaryText.text]
-                            .filter(Boolean)
-                            .join(', ');
-                        return placeId && description
-                          ? { description: description, place_id: placeId }
-                          : null;
-                      })
-                      .filter(Boolean);
+            let auto_complete_service =
+              new window.google.maps.places.AutocompleteService();
+            auto_complete_service.getPlacePredictions(
+              { input: input.val() },
+              function (predictions, status) {
+                if (status === 'OK') {
+                  google_predictions = predictions;
+                } else if (window.dtMapbox && window.dtMapbox.google_map_key) {
+                  // Legacy failed; fallback to Places v1 REST
+                  const url =
+                    'https://places.googleapis.com/v1/places:autocomplete?key=' +
+                    encodeURIComponent(window.dtMapbox.google_map_key);
+                  const body = { input: input.val() };
+                  fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body),
                   })
-                  .catch(function (err) {
-                    console.log('Places Autocomplete REST error:', err);
-                  });
-              }
-            });
+                    .then((res) => res.json())
+                    .then((data) => {
+                      const suggestions = Array.isArray(
+                        data && data.suggestions,
+                      )
+                        ? data.suggestions
+                        : [];
+                      google_predictions = suggestions
+                        .map((sug) =>
+                          sug && sug.placePrediction
+                            ? sug.placePrediction
+                            : null,
+                        )
+                        .filter(Boolean)
+                        .map((pred) => {
+                          const placeId =
+                            pred.placeId ||
+                            (pred.place
+                              ? String(pred.place).replace('places/', '')
+                              : null);
+                          const description =
+                            (pred.text && pred.text.text) ||
+                            [
+                              pred.structuredFormat &&
+                                pred.structuredFormat.mainText &&
+                                pred.structuredFormat.mainText.text,
+                              pred.structuredFormat &&
+                                pred.structuredFormat.secondaryText &&
+                                pred.structuredFormat.secondaryText.text,
+                            ]
+                              .filter(Boolean)
+                              .join(', ');
+                          return placeId && description
+                            ? { description: description, place_id: placeId }
+                            : null;
+                        })
+                        .filter(Boolean);
+                    })
+                    .catch(function (err) {
+                      console.log('Places Autocomplete REST error:', err);
+                    });
+                }
+              },
+            );
           }
 
           // Return current location predictions.
@@ -1776,7 +1797,7 @@ jQuery(function ($) {
       };
 
       // Helper function to convert level (keep in sync with mapbox-users-search-widget.js -> convert_level())
-      function convertLevel(level) {
+      var convertLevel = function (level) {
         switch (level) {
           case 'administrative_area_level_0':
             return 'admin0';
@@ -1793,7 +1814,7 @@ jQuery(function ($) {
           default:
             return level;
         }
-      }
+      };
 
       config['id_func'] = function (item) {
         if (item && item['place_id']) {
@@ -1834,7 +1855,10 @@ jQuery(function ($) {
                       let lat = place.location.latitude;
                       let lng = place.location.longitude;
                       let label = place.formattedAddress || '';
-                      let level = (place.types && place.types.length > 0) ? place.types[0] : '';
+                      let level =
+                        place.types && place.types.length > 0
+                          ? place.types[0]
+                          : '';
                       let location_pkg = {
                         label: label,
                         level: convertLevel(level),

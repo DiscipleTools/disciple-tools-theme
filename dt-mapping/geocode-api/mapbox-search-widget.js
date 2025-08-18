@@ -389,8 +389,14 @@ function close_all_lists(selection_id) {
             }
             const lat = place.location && place.location.latitude;
             const lng = place.location && place.location.longitude;
-            const types = Array.isArray(place.types) && place.types.length > 0 ? place.types : [];
-            const label = window.mapbox_result_features[selection_id].description || place.formattedAddress || '';
+            const types =
+              Array.isArray(place.types) && place.types.length > 0
+                ? place.types
+                : [];
+            const label =
+              window.mapbox_result_features[selection_id].description ||
+              place.formattedAddress ||
+              '';
             let level = types.length > 0 ? types[0] : '';
             window.location_data = {
               location_grid_meta: {
@@ -496,7 +502,9 @@ function google_autocomplete(address) {
 
   // Legacy first, fallback to Places v1 REST on non-OK status
   let service = new window.google.maps.places.AutocompleteService();
-  service.getPlacePredictions({ input: address }, function (predictions, status) {
+  service.getPlacePredictions(
+    { input: address },
+    function (predictions, status) {
       let list = jQuery('#mapbox-autocomplete-list');
       list.empty();
 
@@ -548,16 +556,29 @@ function google_autocomplete(address) {
               : [];
             const predictions = [];
             suggestions.forEach((sug) => {
-              const pred = sug && sug.placePrediction ? sug.placePrediction : null;
+              const pred =
+                sug && sug.placePrediction ? sug.placePrediction : null;
               if (!pred) return;
-              const placeId = pred.placeId || (pred.place ? String(pred.place).replace('places/', '') : null);
-              const description = (pred.text && pred.text.text) ||
-                [pred.structuredFormat && pred.structuredFormat.mainText && pred.structuredFormat.mainText.text,
-                 pred.structuredFormat && pred.structuredFormat.secondaryText && pred.structuredFormat.secondaryText.text]
+              const placeId =
+                pred.placeId ||
+                (pred.place ? String(pred.place).replace('places/', '') : null);
+              const description =
+                (pred.text && pred.text.text) ||
+                [
+                  pred.structuredFormat &&
+                    pred.structuredFormat.mainText &&
+                    pred.structuredFormat.mainText.text,
+                  pred.structuredFormat &&
+                    pred.structuredFormat.secondaryText &&
+                    pred.structuredFormat.secondaryText.text,
+                ]
                   .filter(Boolean)
                   .join(', ');
               if (placeId && description) {
-                predictions.push({ description: description, place_id: placeId });
+                predictions.push({
+                  description: description,
+                  place_id: placeId,
+                });
               }
             });
 
@@ -572,7 +593,9 @@ function google_autocomplete(address) {
                 }
               });
 
-              let add_address = jQuery('#mapbox-autocomplete').data('add-address');
+              let add_address = jQuery('#mapbox-autocomplete').data(
+                'add-address',
+              );
               if (typeof add_address === 'undefined' || add_address === true) {
                 list.append(
                   `<div data-value="address" style="font-weight:bold;">${window.escapeHTML(window.dtMapbox.translations.use)}: <span dir="auto">"${window.escapeHTML(address)}"</span></div>`,
@@ -589,7 +612,8 @@ function google_autocomplete(address) {
             console.log('Places Autocomplete REST error:', err);
           });
       }
-    });
+    },
+  );
 }
 
 // submits geocoded results and resets list
