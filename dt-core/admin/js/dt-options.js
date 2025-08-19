@@ -1097,52 +1097,58 @@ jQuery(document).ready(function ($) {
     handle_storage_connection_test_request(e);
   });
 
-  function handle_storage_connection_test_request( event ) {
+  function handle_storage_connection_test_request(event) {
     if (event) {
       event.preventDefault();
     }
 
     // Trigger spinner!
     const storage_connection_test_but = $('#storage_connection_test_but');
-    const storage_connection_test_but_spinner = $('#storage_connection_test_but_spinner');
-    const storage_connection_test_but_content = $('#storage_connection_test_but_content');
+    const storage_connection_test_but_spinner = $(
+      '#storage_connection_test_but_spinner',
+    );
+    const storage_connection_test_but_content = $(
+      '#storage_connection_test_but_content',
+    );
 
     $(storage_connection_test_but).addClass('disabled');
     $(storage_connection_test_but_spinner).addClass('loading-spinner active');
 
     try {
-
       // Request backend storage connection validation test.
-      validate_storage_connection_settings({},
-        function (response) {
-          $(storage_connection_test_but).removeClass('disabled');
-          $(storage_connection_test_but_spinner).removeClass('loading-spinner active');
-          $(storage_connection_test_but_content).text( ( response?.valid ? 'Connection Successful!' : 'Connection Failed!' ) );
-        }
-      );
-
-    } catch ( error ) {
-      console.log( error );
+      validate_storage_connection_settings({}, function (response) {
+        $(storage_connection_test_but).removeClass('disabled');
+        $(storage_connection_test_but_spinner).removeClass(
+          'loading-spinner active',
+        );
+        $(storage_connection_test_but_content).text(
+          response?.valid ? 'Connection Successful!' : 'Connection Failed!',
+        );
+      });
+    } catch (error) {
+      console.log(error);
       $(storage_connection_test_but).removeClass('disabled');
-      $(storage_connection_test_but_spinner).removeClass('loading-spinner active');
+      $(storage_connection_test_but_spinner).removeClass(
+        'loading-spinner active',
+      );
       $(storage_connection_test_but_content).text('Connection Failed!');
     }
   }
 
-  function validate_storage_connection_settings( payload, callback ) {
+  function validate_storage_connection_settings(payload, callback) {
     $.ajax({
       url: `${window.dt_admin_scripts.rest_root}dt-admin-settings/validate_storage_connection`,
       method: 'POST',
       data: payload,
       beforeSend: (xhr) => {
-        xhr.setRequestHeader("X-WP-Nonce", window.dt_admin_scripts.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
       },
       success: function (data) {
-        callback( data );
+        callback(data);
       },
       error: function (data) {
-        callback( data );
-      }
+        callback(data);
+      },
     });
   }
 
