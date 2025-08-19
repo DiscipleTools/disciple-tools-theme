@@ -338,4 +338,35 @@ class DT_Storage_API {
         }
         return $large_thumbnail_key_name;
     }
+
+    public static function validate_connection_settings(): bool {
+        [ $client, $bucket ] = self::build_client_and_config();
+        if ( !$client ) {
+            return false;
+        }
+
+        try {
+
+            // Attempt to upload an empty dummy file.
+            $key = 'validated';
+            $dummy_file = tmpfile();
+            fwrite( $dummy_file, self::generate_random_string( 24 ) );
+            rewind( $dummy_file );
+            $dummy_file_metadata = stream_get_meta_data( $dummy_file );
+
+            $client->putObject([
+                'Bucket' => $bucket,
+                'Key' => $key,
+                'Body' => fopen( $dummy_file_metadata['uri'], 'r' ),
+                'ContentType' => 'text/plain'
+            ]);
+
+            fclose( $dummy_file );
+
+        } catch ( Throwable $e ) {
+            return false;
+        }
+
+        return true;
+    }
 }

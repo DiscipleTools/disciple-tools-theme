@@ -111,7 +111,17 @@ class DT_Storage_API_Admin_Settings {
                 </tbody>
             </table>
             <br>
-            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
+            <span style="float:right;">
+                <?php
+                $storage_connection_settings = DT_Storage_API::get_settings();
+                if ( !empty( $storage_connection_settings ) && !empty( $storage_connection_settings['type'] ) ) {
+                    ?>
+                    <button id="storage_connection_test_but" class="button float-right"><span id="storage_connection_test_but_spinner" style="margin-bottom: 2px; margin-top: 2px; margin-right: 4px; width: 18px; height: 18px;"></span><span id="storage_connection_test_but_content"><?php esc_html_e( 'Test Connection', 'disciple_tools' ) ?></span></button>
+                    <?php
+                }
+                ?>
+                <button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
+            </span>
         </form>
         <?php
     }
