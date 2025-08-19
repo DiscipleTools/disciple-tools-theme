@@ -148,6 +148,19 @@ class DT_Storage_API {
             }
         }
 
+        //Create a folder for the current site in case a bucket is shared between multiple sites.
+        $dt_site_id = dt_site_id();
+        $site_key = substr( $dt_site_id, 0, 30 );
+
+        // Ensure duplicate site id prefixes are handled accordingly.
+        $site_id_prefix = $site_key . '/';
+        $site_id_dup_count = substr_count( $key, $site_id_prefix );
+        if ( $site_id_dup_count === 0 ) {
+            $key = $site_id_prefix . $key;
+        } elseif ( $site_id_dup_count > 1 ) {
+            $key = $site_id_prefix . str_replace( $site_id_prefix, '', $key, $site_id_dup_count );
+        }
+
         $tmp = $upload['tmp_name'] ?? '';
         $type = $upload['type'] ?? '';
 
