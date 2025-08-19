@@ -531,3 +531,31 @@
 .hidden-icon {
     margin: 0 3px;
 }
+
+/* Plugin Version Checking Styles */
+.plugin-update-status {
+    min-width: 180px;
+}
+
+.plugin-check-spinner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #666;
+}
+
+.plugin-check-spinner .spinner {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
+
+.plugin-status-result {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.check-all-plugins {
+    margin-bottom: 10px !important;
+}

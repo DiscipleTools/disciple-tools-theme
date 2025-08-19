@@ -85,26 +85,34 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         <form method="post">
         <?php
         wp_nonce_field( 'utilities_overview' );
-        $this->box( 'top', 'System Details', [ 'col_span' => 2 ] );
+        $this->box( 'top', 'System Details', [ 'col_span' => 3 ] );
         ?>
         <tr>
             <td><?php echo esc_html( sprintf( __( 'WordPress version: %1$s | PHP version: %2$s' ), get_bloginfo( 'version' ), phpversion() ) ); ?></td>
             <td></td>
+            <td></td>
         </tr>
         <tr>
             <td>Server: <?php echo esc_html( isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '' ); ?></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
             <td>
                 D.T Theme Version: <?php echo esc_html( wp_get_theme()->version ) ?>
             </td>
             <td></td>
+            <td></td>
         </tr>
         <tr>
             <td>Instance Url: <?php echo esc_html( get_site_url() ); ?></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
             <td>Is multisite: <?php echo esc_html( is_multisite() ? 'True' : 'False' ); ?></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
             <td>
@@ -113,9 +121,11 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
                 echo esc_html( sprintf( 'Background Jobs Queue: Jobs: %1$s, Failures: %2$s', $background_job_counts['jobs'], $background_job_counts['failures'] ) );
                 ?>
             </td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-            <td><strong>Migrations</strong></td><td></td>
+            <td><strong>Migrations</strong></td><td></td><td></td>
         </tr>
         <tr>
             <td>
@@ -125,6 +135,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
             <td>
                 <button name="reset_lock" value="dt_migration_lock">Reset Lock</button>
             </td>
+            <td></td>
         </tr>
         <tr>
             <td>
@@ -134,6 +145,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
             <td>
                 <button name="reset_lock" value="dt_mapping_module_migration_lock">Reset Lock</button>
             </td>
+            <td></td>
         </tr>
 
 
@@ -141,7 +153,7 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
         do_action( 'dt_utilities_system_details' );
         ?>
         <tr>
-            <td><strong>Plugins</strong></td><td></td>
+            <td><strong>Plugins</strong></td><td><strong>Status</strong></td><td><strong>Update Status</strong></td>
         </tr>
         <?php
         $plugins = get_plugins();
@@ -154,6 +166,15 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
             if ( !isset( $v['Name'], $v['Version'] ) ){
                 continue;
             }
+            $plugin_slug = dirname( $i );
+            if ( $plugin_slug === '.' ) {
+                $plugin_slug = pathinfo( $i, PATHINFO_FILENAME );
+            }
+
+            // Check if plugin has version-control.json
+            $plugin_dir = WP_PLUGIN_DIR . '/' . $plugin_slug;
+            $version_control_file = $plugin_dir . '/version-control.json';
+            $has_version_control = file_exists( $version_control_file );
             ?>
             <tr>
             <td><?php echo esc_html( $v['Name'] ); ?> version: <?php echo esc_html( $v['Version'] ); ?></td>
@@ -161,9 +182,24 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
             <?php if ( in_array( $i, $active_plugins ) ): ?>
                 Plugin Active
             <?php endif; ?>
-
             </td>
-            <tr>
+            <td class="plugin-update-status" id="plugin-status-<?php echo esc_attr( $plugin_slug ); ?>">
+            <?php if ( $has_version_control ): ?>
+                <span class="plugin-check-spinner" style="display: none;">
+                    <span class="spinner is-active" style="float: none; margin: 0;"></span>
+                    Checking...
+                </span>
+                <span class="plugin-status-result" style="display: none;"></span>
+                <button type="button" class="button button-secondary check-plugin-version" 
+                        data-plugin-slug="<?php echo esc_attr( $plugin_slug ); ?>" 
+                        style="font-size: 11px; height: 24px; line-height: 22px;">
+                    Check for Updates
+                </button>
+            <?php else : ?>
+                <span style="color: #666; font-size: 12px;">No version control</span>
+            <?php endif; ?>
+            </td>
+            </tr>
             <?php
         }
 

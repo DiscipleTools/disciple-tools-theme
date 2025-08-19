@@ -916,6 +916,157 @@ jQuery(document).ready(function ($) {
   }
 
   /**
+   * Plugin Version Checking
+   */
+  function makeUtilitiesRequest(type, endpoint, data) {
+    const options = {
+      type: type,
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      url: `${window.dt_admin_scripts.rest_root}dt-admin/scripts/${endpoint}`,
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader('X-WP-Nonce', window.dt_admin_scripts.nonce);
+      },
+    };
+    if (data && !window.lodash.isEmpty(data)) {
+      options.data = type === 'GET' ? data : JSON.stringify(data);
+    }
+    return jQuery.ajax(options);
+  }
+
+  // Plugin version check queue management
+  let checkQueue = [];
+  let activeChecks = 0;
+  const maxConcurrentChecks = 5;
+
+  function processCheckQueue() {
+    while (activeChecks < maxConcurrentChecks && checkQueue.length > 0) {
+      const button = checkQueue.shift();
+      performPluginCheck(button);
+    }
+  }
+
+  function performPluginCheck(button) {
+    activeChecks++;
+    const pluginSlug = button.data('plugin-slug');
+    const statusContainer = button.closest('.plugin-update-status');
+    const spinner = statusContainer.find('.plugin-check-spinner');
+    const result = statusContainer.find('.plugin-status-result');
+
+    // Show spinner and hide button
+    button.hide();
+    spinner.show();
+    result.hide();
+
+    makeUtilitiesRequest('POST', 'check_plugin_versions', {
+      plugin_slug: pluginSlug,
+    })
+      .then((response) => {
+        spinner.hide();
+
+        if (response.status === 'up_to_date') {
+          result.html('<span style="color: #46b450;">✓ Up to date</span>');
+        } else if (response.status === 'update_available') {
+          result.html(
+            `<span style="color: #dc3232;">⚠ Update available (${response.latest_version})</span>`,
+          );
+        } else if (response.status === 'no_version_control') {
+          result.html(
+            '<span style="color: #000;">No version-control.json</span>',
+          );
+        } else if (response.status === 'invalid_version_control') {
+          result.html(
+            '<span style="color: #000;">Invalid version control file</span>',
+          );
+        } else if (response.status === 'no_github_repo') {
+          result.html('<span style="color: #000;">No GitHub repo</span>');
+        } else if (response.status === 'error') {
+          result.html(
+            `<span style="color: #000;">Error: ${response.message}</span>`,
+          );
+        } else {
+          result.html('<span style="color: #000;">Unknown status</span>');
+        }
+
+        result.show();
+
+        // Decrement active checks and process queue
+        activeChecks--;
+        processCheckQueue();
+      })
+      .catch((error) => {
+        spinner.hide();
+        result.html('<span style="color: #000;">Error checking version</span>');
+        result.show();
+        button.show();
+        console.error('Plugin version check failed:', error);
+
+        // Decrement active checks and process queue
+        activeChecks--;
+        processCheckQueue();
+      });
+  }
+
+  // Handle plugin version check button clicks
+  $(document).on('click', '.check-plugin-version', function () {
+    const button = $(this);
+    checkQueue.push(button);
+    processCheckQueue();
+  });
+
+  // Add "Check All" button functionality
+  function addCheckAllButton() {
+    if ($('.check-all-plugins').length === 0) {
+      const checkAllBtn = $(
+        '<button type="button" class="button button-primary check-all-plugins" style="margin-bottom: 10px;">Check All Plugin Updates</button>',
+      );
+
+      checkAllBtn.on('click', function () {
+        const buttons = $('.check-plugin-version:visible');
+        // Add all buttons to the queue
+        buttons.each(function () {
+          checkQueue.push($(this));
+        });
+        // Start processing the queue
+        processCheckQueue();
+      });
+
+      // Insert before the plugins section
+      $('td:contains("Plugins")')
+        .closest('tr')
+        .before(
+          $('<tr><td colspan="3"></td></tr>')
+            .find('td')
+            .append(checkAllBtn)
+            .end(),
+        );
+    }
+  }
+
+  // Auto-check plugin versions on page load
+  function autoCheckPluginVersions() {
+    const buttons = $('.check-plugin-version:visible');
+    if (buttons.length > 0) {
+      // Add all buttons to the queue
+      buttons.each(function () {
+        checkQueue.push($(this));
+      });
+      // Start processing the queue
+      processCheckQueue();
+    }
+  }
+
+  // Initialize check all button and auto-check when page loads
+  $(document).ready(function () {
+    // Add some delay to ensure the table is fully rendered
+    setTimeout(() => {
+      addCheckAllButton();
+      // Auto-check all plugins on page load
+      autoCheckPluginVersions();
+    }, 1000);
+  });
+
+  /**
    * DT IMPORTS
    */
 });

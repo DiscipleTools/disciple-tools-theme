@@ -53,6 +53,15 @@ class DT_Admin_Endpoints {
             ]
         );
         register_rest_route(
+            $this->namespace, '/scripts/check_plugin_versions', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'check_plugin_versions' ],
+                'permission_callback' => function(){
+                    return current_user_can( 'manage_dt' );
+                },
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/scripts/locations_clean_up', [
                 'methods'  => 'POST',
                 'callback' => [ $this, 'locations_clean_up' ],
@@ -252,6 +261,186 @@ class DT_Admin_Endpoints {
             'success' => (bool) true,
             'remaining' => wp_queue_count_jobs(),
         ];
+    }
+
+    public function check_plugin_versions( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $plugin_slug = isset( $params['plugin_slug'] ) ? sanitize_text_field( $params['plugin_slug'] ) : '';
+
+        if ( empty( $plugin_slug ) ) {
+            return new WP_Error( 'missing_plugin_slug', 'Plugin slug is required', [ 'status' => 400 ] );
+        }
+
+        $plugins = get_plugins();
+        $plugin_data = null;
+        $plugin_file = '';
+
+        // Find the plugin by slug
+        foreach ( $plugins as $file => $data ) {
+            if ( strpos( $file, $plugin_slug ) === 0 ) {
+                $plugin_data = $data;
+                $plugin_file = $file;
+                break;
+            }
+        }
+
+        if ( !$plugin_data ) {
+            return new WP_Error( 'plugin_not_found', 'Plugin not found', [ 'status' => 404 ] );
+        }
+
+        // Check for version-control.json file
+        $plugin_dir = WP_PLUGIN_DIR . '/' . $plugin_slug;
+        $version_control_file = $plugin_dir . '/version-control.json';
+
+        if ( !file_exists( $version_control_file ) ) {
+            return [
+                'plugin_slug' => $plugin_slug,
+                'current_version' => $plugin_data['Version'] ?? '',
+                'latest_version' => null,
+                'update_available' => false,
+                'status' => 'no_version_control',
+                'message' => 'No version-control.json file found'
+            ];
+        }
+
+        // Read version-control.json
+        $version_control_content = file_get_contents( $version_control_file );
+        $version_control_data = json_decode( $version_control_content, true );
+
+        if ( !$version_control_data || !isset( $version_control_data['homepage'] ) ) {
+            return [
+                'plugin_slug' => $plugin_slug,
+                'current_version' => $plugin_data['Version'] ?? '',
+                'latest_version' => null,
+                'update_available' => false,
+                'status' => 'invalid_version_control',
+                'message' => 'Invalid version-control.json file or missing homepage'
+            ];
+        }
+
+        $current_version = $version_control_data['version'] ?? $plugin_data['Version'] ?? '';
+        $homepage_url = $version_control_data['homepage'];
+
+        // Try to extract GitHub repo info from homepage URL
+        $github_repo = $this->extract_github_repo( $homepage_url );
+
+        if ( !$github_repo ) {
+            return [
+                'plugin_slug' => $plugin_slug,
+                'current_version' => $current_version,
+                'latest_version' => null,
+                'update_available' => false,
+                'status' => 'no_github_repo',
+                'message' => 'No GitHub repository found in homepage URL'
+            ];
+        }
+
+        // Check GitHub for latest version
+        $latest_version = $this->get_github_latest_version( $github_repo );
+
+        if ( is_wp_error( $latest_version ) ) {
+            return [
+                'plugin_slug' => $plugin_slug,
+                'current_version' => $current_version,
+                'latest_version' => null,
+                'update_available' => false,
+                'status' => 'error',
+                'message' => $latest_version->get_error_message()
+            ];
+        }
+
+        $update_available = version_compare( $current_version, $latest_version, '<' );
+
+        return [
+            'plugin_slug' => $plugin_slug,
+            'current_version' => $current_version,
+            'latest_version' => $latest_version,
+            'update_available' => $update_available,
+            'status' => $update_available ? 'update_available' : 'up_to_date',
+            'github_repo' => $github_repo,
+            'version_control_data' => $version_control_data
+        ];
+    }
+
+    private function extract_github_repo( $plugin_uri ) {
+        if ( empty( $plugin_uri ) ) {
+            return false;
+        }
+
+        // Match GitHub URLs
+        if ( preg_match( '/github\.com\/([^\/]+)\/([^\/\?#]+)/i', $plugin_uri, $matches ) ) {
+            return $matches[1] . '/' . $matches[2];
+        }
+
+        return false;
+    }
+
+    private function get_github_latest_version( $repo ) {
+        $api_url = "https://api.github.com/repos/{$repo}/releases/latest";
+
+        $response = wp_remote_get( $api_url, [
+            'timeout' => 15,
+            'headers' => [
+                'User-Agent' => 'Disciple.Tools/' . get_bloginfo( 'version' )
+            ]
+        ] );
+
+        if ( is_wp_error( $response ) ) {
+            return new WP_Error( 'github_api_error', 'Failed to connect to GitHub API: ' . $response->get_error_message() );
+        }
+
+        $response_code = wp_remote_retrieve_response_code( $response );
+        if ( $response_code !== 200 ) {
+            // Try fallback: get tags if no releases
+            //return $this->get_github_latest_tag( $repo );
+            return new WP_Error( 'github_api_error', 'GitHub API returned status code: ' . $response_code );
+        }
+
+        $body = wp_remote_retrieve_body( $response );
+        $data = json_decode( $body, true );
+
+        if ( !$data || !isset( $data['tag_name'] ) ) {
+            return $this->get_github_latest_tag( $repo );
+        }
+
+        // Clean version number (remove 'v' prefix if present)
+        $version = $data['tag_name'];
+        $version = ltrim( $version, 'v' );
+
+        return $version;
+    }
+
+    private function get_github_latest_tag( $repo ) {
+        $api_url = "https://api.github.com/repos/{$repo}/tags";
+
+        $response = wp_remote_get( $api_url, [
+            'timeout' => 15,
+            'headers' => [
+                'User-Agent' => 'Disciple.Tools/' . get_bloginfo( 'version' )
+            ]
+        ] );
+
+        if ( is_wp_error( $response ) ) {
+            return new WP_Error( 'github_api_error', 'Failed to connect to GitHub API: ' . $response->get_error_message() );
+        }
+
+        $response_code = wp_remote_retrieve_response_code( $response );
+        if ( $response_code !== 200 ) {
+            return new WP_Error( 'github_api_error', 'GitHub API returned status code: ' . $response_code );
+        }
+
+        $body = wp_remote_retrieve_body( $response );
+        $data = json_decode( $body, true );
+
+        if ( !$data || !is_array( $data ) || empty( $data ) ) {
+            return new WP_Error( 'no_tags_found', 'No tags found in repository' );
+        }
+
+        // Get the first (latest) tag
+        $latest_tag = $data[0]['name'];
+        $version = ltrim( $latest_tag, 'v' );
+
+        return $version;
     }
 }
 
