@@ -3084,7 +3084,16 @@
 
     // Process web component values
     const form = document.getElementById('bulk_edit_picker');
-    Array.from(form.elements).forEach((el) => {
+
+    // Use querySelectorAll to avoid conflicts with elements that have id="elements"
+    // This ensures we always get the actual form elements regardless of any naming conflicts
+    const formElements = form.querySelectorAll('input, select, textarea');
+
+    // Also get DT web components separately since they can't be selected with CSS
+    const dtElements = Array.from(form.querySelectorAll('*')).filter(el => el.tagName.startsWith('DT-'));
+    const allFormElements = [...formElements, ...dtElements];
+
+    Array.from(allFormElements).forEach((el) => {
       // skip fields not from web components
       if (!el.tagName.startsWith('DT-')) {
         return;

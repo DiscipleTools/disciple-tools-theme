@@ -199,10 +199,19 @@ jQuery(function ($) {
 
       // build form values
       const form = event.target;
-      Array.from(form.elements).forEach((el) => {
+      
+      // Use querySelectorAll to avoid conflicts with elements that have id="elements"
+      // This ensures we always get the actual form elements regardless of any naming conflicts
+      const formElements = form.querySelectorAll('input, select, textarea');
+
+      // Also get DT web components separately since they can't be selected with CSS
+      const dtElements = Array.from(form.querySelectorAll('*')).filter(el => el.tagName.startsWith('DT-'));
+      const allFormElements = [...formElements, ...dtElements];
+      
+      Array.from(allFormElements).forEach((el) => {
         // skip fields like `field_name[query]` that are from typeaheads
         // and skip values not from web components
-        if (el.name.includes('[') || !el.tagName.startsWith('DT-')) {
+        if (el.name && (el.name.includes('[') || !el.tagName.startsWith('DT-'))) {
           return;
         }
 
