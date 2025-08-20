@@ -1349,7 +1349,9 @@ jQuery(function ($) {
     const formElements = form.querySelectorAll('input, select, textarea');
 
     // Also get DT web components separately since they can't be selected with CSS
-    const dtElements = Array.from(form.querySelectorAll('*')).filter(el => el.tagName.startsWith('DT-'));
+    const dtElements = Array.from(form.querySelectorAll('*')).filter((el) =>
+      el.tagName.startsWith('DT-'),
+    );
     const allFormElements = [...formElements, ...dtElements];
 
     Array.from(allFormElements).forEach((el) => {
