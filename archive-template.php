@@ -1016,7 +1016,7 @@ Thanks!';
                                         <th style="width:36px; background-image:none; cursor:default"></th>
                                         <?php
                                     }
-                                    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ):
+                                    if ( DT_Storage_API::is_enabled() ):
                                         if ( in_array( 'record_picture', $columns ) ) : ?>
                                             <th data-id="record_picture" style="width:32px; background-image:none; cursor:default"></th>
                                         <?php endif; ?>

@@ -117,6 +117,12 @@ class Disciple_Tools
         $this->user_locale = get_user_locale();
         $this->site_locale = get_locale();
 
+        // Composer autoload (for AsyncAws and other libs)
+        $aa_autoload = get_template_directory() . '/dt-core/libraries/async-aws-autoload.php';
+        if ( file_exists( $aa_autoload ) ) {
+            require_once( $aa_autoload );
+        }
+
         /** We want to make sure roles are up-to-date. */
         require_once( 'dt-core/configuration/class-roles.php' );
         Disciple_Tools_Roles::instance()->set_roles_if_needed();
@@ -130,6 +136,7 @@ class Disciple_Tools
         require_once( 'dt-core/utilities/dt-components.php' );
         require_once( 'dt-core/global-functions.php' );
         require_once( 'dt-core/utilities/loader.php' );
+        require_once( 'dt-core/dt-storage.php' );
 
         $is_rest = dt_is_rest();
         $url_path = dt_get_url_path();
@@ -392,13 +399,16 @@ class Disciple_Tools
 
             require_once( 'dt-core/admin/menu/menu-customizations.php' );
             require_once( 'dt-core/admin/menu/tabs/tab-customizations.php' );
+
+            require_once( 'dt-core/admin/menu/tabs/tab-storage-settings.php' );
             /* End menu tab section */
 
             require_once( 'dt-core/setup-functions.php' );
 
         }
-        require_once( 'dt-core/admin/menu/tabs/admin-endpoints.php' );
+        // Storage module
 
+        require_once( 'dt-core/admin/menu/tabs/admin-endpoints.php' );
         //create scheduler for job queue
         wp_queue()->cron();
 

@@ -32,6 +32,11 @@ function process_trigger( $trigger_id, $post, $initial_fields ) {
                 'name' => 'Comments',
                 'type' => 'comments',
             ];
+            $post_type_settings['fields']['share'] = [
+                'id' => 'share',
+                'name' => 'Share',
+                'type' => 'share',
+            ];
 
             // Iterate over returned workflows; evaluating and executing accordingly
             foreach ( $workflows as $workflow ) {
