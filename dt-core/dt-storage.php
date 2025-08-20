@@ -148,6 +148,19 @@ class DT_Storage_API {
             }
         }
 
+        //Create a folder for the current site in case a bucket is shared between multiple sites.
+        $dt_site_id = dt_site_id();
+        $site_key = substr( $dt_site_id, 0, 30 );
+
+        // Ensure duplicate site id prefixes are handled accordingly.
+        $site_id_prefix = $site_key . '/';
+        $site_id_dup_count = substr_count( $key, $site_id_prefix );
+        if ( $site_id_dup_count === 0 ) {
+            $key = $site_id_prefix . $key;
+        } elseif ( $site_id_dup_count > 1 ) {
+            $key = $site_id_prefix . str_replace( $site_id_prefix, '', $key, $site_id_dup_count );
+        }
+
         $tmp = $upload['tmp_name'] ?? '';
         $type = $upload['type'] ?? '';
 
@@ -324,5 +337,36 @@ class DT_Storage_API {
             $large_thumbnail_key_name = ( $part_1 . '_large_thumbnail.' ) . $part_2;
         }
         return $large_thumbnail_key_name;
+    }
+
+    public static function validate_connection_settings(): bool {
+        [ $client, $bucket ] = self::build_client_and_config();
+        if ( !$client ) {
+            return false;
+        }
+
+        try {
+
+            // Attempt to upload an empty dummy file.
+            $key = 'validated';
+            $dummy_file = tmpfile();
+            fwrite( $dummy_file, self::generate_random_string( 24 ) );
+            rewind( $dummy_file );
+            $dummy_file_metadata = stream_get_meta_data( $dummy_file );
+
+            $client->putObject([
+                'Bucket' => $bucket,
+                'Key' => $key,
+                'Body' => fopen( $dummy_file_metadata['uri'], 'r' ),
+                'ContentType' => 'text/plain'
+            ]);
+
+            fclose( $dummy_file );
+
+        } catch ( Throwable $e ) {
+            return false;
+        }
+
+        return true;
     }
 }

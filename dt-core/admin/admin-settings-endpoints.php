@@ -237,6 +237,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'permission_callback' => [ $this, 'default_permission_check' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/validate_storage_connection', [
+                'methods' => 'POST',
+                'callback' => [ $this, 'validate_storage_connection' ],
+                'permission_callback' => [ $this, 'default_permission_check' ],
+            ]
+        );
     }
 
     public function update_dt_options( WP_REST_REQUEST $request ){
@@ -1325,5 +1333,11 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             }
         }
         return false;
+    }
+
+    public function validate_storage_connection( WP_REST_Request $request ): array {
+        return [
+            'valid' => DT_Storage_API::validate_connection_settings()
+        ];
     }
 }
