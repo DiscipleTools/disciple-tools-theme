@@ -126,8 +126,8 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                                 <p>
                                     <?php
-                                    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() && isset( $dt_user_meta['dt_user_profile_picture'][0] ) ) {
-                                        $picture_url = DT_Storage::get_file_url( $dt_user_meta['dt_user_profile_picture'][0] ); ?>
+                                    if ( DT_Storage_API::is_enabled() && isset( $dt_user_meta['dt_user_profile_picture'][0] ) ) {
+                                        $picture_url = DT_Storage_API::get_file_url( $dt_user_meta['dt_user_profile_picture'][0] ); ?>
                                         <img src="<?php echo esc_attr( $picture_url ); ?>" alt="" width="150px" height="150px" />
                                         <?php
                                     } else {
@@ -614,8 +614,8 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                 <tr>
                                     <td>
                                         <?php
-                                        if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() && isset( $dt_user_meta['dt_user_profile_picture'][0] ) ){
-                                            $picture_url = DT_Storage::get_thumbnail_url( $dt_user_meta['dt_user_profile_picture'][0] );
+                                        if ( DT_Storage_API::is_enabled() && isset( $dt_user_meta['dt_user_profile_picture'][0] ) ){
+                                            $picture_url = DT_Storage_API::get_thumbnail_url( $dt_user_meta['dt_user_profile_picture'][0] );
                                             ?><img src="<?php echo esc_attr( $picture_url ); ?>" alt="" width="100px"/><?php
                                         } else {
                                             echo get_avatar( $dt_user->ID, '32', null, false, array( 'scheme' => 'https' ) );
@@ -624,7 +624,7 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
                                     </td>
                                     <td>
                                         <?php
-                                        if ( !apply_filters( 'dt_storage_connections_enabled', false, ( method_exists( 'DT_Storage', 'get_default_connection_id' ) ? DT_Storage::get_default_connection_id() : dt_get_option( 'dt_storage_connection_id' ) ) ) ) {
+                                        if ( !DT_Storage_API::is_enabled() ) {
                                             ?>
                                             <span data-tooltip data-click-open="true" class="top" tabindex="1"
                                                       title="<?php esc_html_e( 'Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you.', 'disciple_tools' ) ?>">
