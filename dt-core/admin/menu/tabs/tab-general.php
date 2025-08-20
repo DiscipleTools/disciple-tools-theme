@@ -422,6 +422,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             // Capture updated trigger options.
             if ( isset( $_POST['update_needed_triggers_options'] ) ) {
+                // phpcs:ignore
                 $site_options['update_required']['options'] = dt_recursive_sanitize_array( json_decode( wp_unslash( $_POST['update_needed_triggers_options'] ), true ) );
             }
 
