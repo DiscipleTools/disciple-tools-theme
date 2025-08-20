@@ -62,7 +62,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             /* Storage Settings */
             $this->box( 'top', 'Storage Settings' );
-            $this->process_storage_settings();
             $this->storage_settings();
             $this->box( 'bottom' );
             /* End Storage Settings */
@@ -266,62 +265,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function storage_settings(): void {
-        $storage_connections = apply_filters( 'dt_storage_connections', [] );
-        if ( !class_exists( 'DT_Storage' ) ) {
+        $enabled = DT_Storage_API::is_enabled();
+        if ( !$enabled ) {
             ?>
           <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
-                    <?php echo sprintf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s" target="_blank">installed and activated.</a>', 'https://github.com/DiscipleTools/disciple-tools-storage' ); ?>
-                </span>
-            <?php
-        } elseif ( empty( $storage_connections ) ) {
-            ?>
-          <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
-                    <?php echo sprintf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', esc_url( get_admin_url( null, 'admin.php?page=disciple_tools_storage' ) ) ); ?>
+                    <?php echo sprintf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', esc_url( get_admin_url( null, 'admin.php?page=dt_options&tab=storage' ) ) ); ?>
                 </span>
             <?php
         } else { ?>
-        <form method="POST">
-            <input type="hidden" name="storage_settings_nonce" id="storage_settings_nonce"
-                   value="<?php echo esc_attr( wp_create_nonce( 'storage_settings' ) ) ?>"/>
-
-            <table class="widefat">
-                <tbody>
-                <tr>
-                    <td>
-                        <label for="storage_connection"><?php esc_html_e( 'Select storage connection for uploading pictures and files.', 'disciple_tools' ) ?></label>
-                        <br>
-                        See configuration settings <a href="<?php echo esc_html( admin_url( 'admin.php?page=disciple_tools_storage' ) ) ?>">here</a>
-                    </td>
-                    <td>
-                        <select name="storage_connection" id="storage_connection">
-                            <option value="">--- None ---</option>
-                            <?php
-                            $storage_connection_id = dt_get_option( 'dt_storage_connection_id' );
-                            foreach ( $storage_connections as $connection ) {
-                                $selected = $connection['id'] === $storage_connection_id;
-                                ?>
-                                <option <?php echo ( $selected ? 'selected' : '' ) ?> value="<?php echo esc_attr( $connection['id'] ) ?>"><?php echo esc_attr( $connection['name'] ) ?></option>
-                                <?php
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-            <br>
-            <span style="float:right;">
-              <button type="submit" class="button float-right"><?php esc_html_e( 'Update', 'disciple_tools' ) ?></button></span>
-        </form>
-        <?php }
-    }
-
-    public function process_storage_settings() {
-        if ( isset( $_POST['storage_settings_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['storage_settings_nonce'] ) ), 'storage_settings' ) ) {
-            if ( isset( $_POST['storage_connection'] ) ) {
-                update_option( 'dt_storage_connection_id', sanitize_text_field( wp_unslash( $_POST['storage_connection'] ) ) );
-            }
+            <p>Storage is enabled. See configuration settings <a href="<?php echo esc_url( get_admin_url( null, 'admin.php?page=dt_options&tab=storage' ) ) ?>">here</a></p>
+            <?php
         }
     }
 

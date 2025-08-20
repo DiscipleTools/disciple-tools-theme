@@ -816,6 +816,15 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
 Bulk send message...
 
 Thanks!';
+
+                                /**
+                                 * Filter the default message for the current post type.
+                                 *
+                                 * @param string $default_message The default message.
+                                 * @param string $post_type The post type.
+                                 * @return string The filtered default message.
+                                 */
+                                $default_message = apply_filters( 'dt_post_messaging_message_default', $default_message, $post_type );
                                 // Filter communication channels.
                                 $comms_channels = [];
                                 foreach ( $dt_site_notification_defaults['channels'] as $channel_key => $channel_value ){
@@ -876,9 +885,97 @@ Thanks!';
                                 <span id="bulk_send_msg_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'Please ensure a valid send message has been entered.', 'disciple_tools' ); ?></span><br>
                                 <span><?php echo esc_html__( 'Message placeholders', 'disciple_tools' ); ?></span>
                                 <ul>
-                                    <li><span
-                                            style="font-weight: bold;">{{name}}</span>: <?php echo esc_html__( 'Name of the Record', 'disciple_tools' ); ?>
-                                    </li>
+                                    <?php
+
+                                    /**
+                                     * Filter the message placeholders for the current post type.
+                                     *
+                                     * @param array $message_placeholders The message placeholders.
+                                     * @param string $post_type The post type.
+                                     * @return array The filtered message placeholders. The array should be in the following format:
+                                     * [
+                                     *     [
+                                     *         'name' => '{{name}}', // Required
+                                     *         'description' => 'Name of the Record', // Required
+                                     *         'help' => [ // Optional
+                                     *             'id' => 'placeholder_help_text_1', // Required
+                                     *             'title' => 'Name of the Record', // Required
+                                     *             'description' => 'Description of the Record', // Required
+                                     *             'items' => [ // Optional
+                                     *                 [
+                                     *                     'title' => 'Title of the Item',
+                                     *                     'text' => 'Text of the Item',
+                                     *                 ]
+                                     *             ]
+                                     *         ]
+                                     *     ]
+                                     * ]
+                                     */
+                                    $message_placeholders = apply_filters( 'dt_post_messaging_message_placeholders', [
+                                        [
+                                            'name' => '{{name}}',
+                                            'description' => __( 'Name of the Record', 'disciple_tools' ),
+                                        ],
+                                    ], $post_type );
+                                    ?>
+
+                                    <?php foreach ( $message_placeholders as $placeholder ) : ?>
+
+                                        <li>
+                                            <span style="font-weight: bold;"><?php echo esc_html( $placeholder['name'] ); ?></span>:
+                                            <?php echo esc_html( $placeholder['description'] ); ?>
+
+                                            <?php if ( isset( $placeholder['help'] ) ) : ?>
+                                                <button class="float-right" data-open="placeholder_help_text_<?php echo esc_attr( $placeholder['help']['id'] ); ?>">
+                                                    <img class="help-icon"  style="padding-left: 5px;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" alt="help"/>
+                                                </button>
+                                            <?php endif; ?>
+                                        </li>
+
+
+                                        <?php if ( isset( $placeholder['help'] ) ) : ?>
+
+                                            <div id="placeholder_help_text_<?php echo esc_attr( $placeholder['help']['id'] ); ?>" class="large reveal" data-reveal data-v-offset="10px">
+                                                <span class="section-header"><?php esc_html_e( 'Message Placeholder Help', 'disciple_tools' ) ?></span>
+                                                <hr>
+                                                <div class="grid-x">
+
+                                                    <?php if ( isset( $placeholder['help']['title'] ) ) : ?>
+
+                                                        <div class="cell">
+                                                            <p><strong><?php echo esc_html( $placeholder['help']['title'] ); ?></strong></p>
+                                                        </div>
+
+                                                    <?php endif; ?>
+
+                                                    <?php if ( isset( $placeholder['help']['description'] ) ) : ?>
+                                                        <div class="cell">
+                                                            <p><?php echo esc_html( $placeholder['help']['description'] ); ?></p>
+                                                        </div>
+                                                    <?php endif; ?>
+
+                                                    <?php foreach ( $placeholder['help']['items'] as $item ) : ?>
+
+                                                        <div class="cell">
+                                                            <?php if ( isset( $item['title'] ) ) : ?>
+                                                                <span><strong><?php echo esc_html( $item['title'] ); ?></strong></span>:<?php echo ' '; ?>
+                                                            <?php endif; ?>
+                                                            <?php if ( isset( $item['text'] ) ) : ?>
+                                                                <span><?php echo esc_html( $item['text'] ); ?></span>
+                                                            <?php endif; ?>
+                                                        </div>
+
+                                                    <?php endforeach; ?>
+
+                                                </div>
+                                                <button class="close-button" data-close aria-label="Close modal" type="button">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+
+                                        <?php endif; ?>
+
+                                    <?php endforeach; ?>
                                 </ul>
                             </div>
                             <div class="cell">
@@ -919,7 +1016,7 @@ Thanks!';
                                         <th style="width:36px; background-image:none; cursor:default"></th>
                                         <?php
                                     }
-                                    if ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() ):
+                                    if ( DT_Storage_API::is_enabled() ):
                                         if ( in_array( 'record_picture', $columns ) ) : ?>
                                             <th data-id="record_picture" style="width:32px; background-image:none; cursor:default"></th>
                                         <?php endif; ?>

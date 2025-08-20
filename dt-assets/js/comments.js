@@ -139,16 +139,21 @@ jQuery(document).ready(function ($) {
               <div class="comment-text" title="<%- a.date_formatted %>" dir=auto>
                   <%= a.text.replace(/\\n/g, '<br>') /* not escaped on purpose */ %>
               </div>
+              <% if ( a.meta && a.meta.audio_url ) { %>
+                <% window.lodash.forEach(a.meta.audio_url, function(meta){ %>
+                  <audio controls class="audio-comment"><source src="<%- meta.value %>" /></audio>
+                <% }) %>
+              <% } %>
+              <% if ( a.meta && a.meta.image_url ) { %>
+                <% window.lodash.forEach(a.meta.image_url, function(meta){ %>
+                  <img src="<%- meta.value %>" class="image-comment" />
+                <% }) %>
+              <% } %>
             </div>
             <% if ( commentsSettings.google_translate_key !== ""  && is_Comment && !has_Comment_ID && activity[0].comment_type !== 'duplicate' ) { %>
               <div class="translation-bubble" dir=auto></div>
             <% } %>
             <div  class="comment-controls">
-              <% if ( a.meta && a.meta.audio_url ) { %>
-                <% window.lodash.forEach(a.meta.audio_url, function(meta){ %>
-                  <audio controls><source src="<%- meta.value %>" /></audio>
-                <% }) %>
-              <% } %>
               <div class="comment-reactions">
                 <div class="reaction-controls">
                   <button class="icon-button reactions__button" aria-label="Add your reaction" aria-haspopup="menu" role="button" data-toggle="react-to-<%- a.comment_ID %>">
@@ -750,4 +755,481 @@ jQuery(document).ready(function ($) {
       return true;
     }
   };
+
+  // Voice Recording Variables
+  let mediaRecorder = null;
+  let audioChunks = [];
+  let recordingStartTime = null;
+  let recordingTimer = null;
+  let recordedAudioBlob = null;
+  let audioContext = null;
+  let analyser = null;
+  let microphone = null;
+  let visualizerCanvas = null;
+  let visualizerCtx = null;
+  let animationId = null;
+
+  // Voice Recording Functions
+  function initializeVoiceRecording() {
+    const recordButton = $('#voice-record-button');
+    const recordingControls = $('#audio-recording-controls');
+    const startBtn = $('#start-recording-btn');
+    const stopBtn = $('#stop-recording-btn');
+    const playBtn = $('#play-recording-btn');
+    const saveBtn = $('#save-recording-btn');
+    const cancelBtn = $('#cancel-recording-btn');
+    const preview = $('#recording-preview');
+
+    // Initialize audio visualization
+    visualizerCanvas = document.getElementById('audio-visualizer');
+    if (visualizerCanvas) {
+      visualizerCtx = visualizerCanvas.getContext('2d');
+      drawInitialVisualization();
+    }
+
+    // Toggle recording controls
+    recordButton.on('click', function () {
+      const recordingControls = $('#audio-recording-controls');
+      if (recordingControls.hasClass('show')) {
+        // Slide up and hide
+        recordingControls.removeClass('show').addClass('hide');
+        setTimeout(function () {
+          recordingControls.hide();
+        }, 600); // Increased from 300ms to 600ms for slower animation
+      } else {
+        // Show and slide down
+        recordingControls.show().removeClass('hide').addClass('show');
+        // Ensure visualization container is shown and audio preview is hidden
+        $('.audio-visualization-container').show();
+        $('.audio-preview-container').hide();
+      }
+    });
+
+    // Start recording
+    startBtn.on('click', function () {
+      startRecording();
+    });
+
+    // Stop recording
+    stopBtn.on('click', function () {
+      stopRecording();
+    });
+
+    // Play recording
+    playBtn.on('click', function () {
+      playRecording();
+    });
+
+    // Save recording (Phase 1: just log to console)
+    saveBtn.on('click', function () {
+      saveRecording();
+    });
+
+    // Cancel recording
+    cancelBtn.on('click', function () {
+      cancelRecording();
+    });
+  }
+
+  function drawInitialVisualization() {
+    if (!visualizerCtx) return;
+
+    const canvas = visualizerCanvas;
+    const ctx = visualizerCtx;
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Draw background
+    ctx.fillStyle = '#f8f9fa';
+    ctx.fillRect(0, 0, width, height);
+
+    // Draw center line
+    /*ctx.strokeStyle = '#dee2e6';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, height / 2);
+    ctx.lineTo(width, height / 2);
+    ctx.stroke();*/
+
+    // Draw placeholder text
+    ctx.fillStyle = '#6c757d';
+    ctx.font = '14px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Click "Start Recording" to begin', width / 2, height / 2 + 5);
+  }
+
+  function drawVisualization(dataArray) {
+    if (!visualizerCtx) return;
+
+    const canvas = visualizerCanvas;
+    const ctx = visualizerCtx;
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Draw background
+    ctx.fillStyle = '#f8f9fa';
+    ctx.fillRect(0, 0, width, height);
+
+    // Calculate bar width and spacing
+    const barWidth = (width / dataArray.length) * 2.5;
+    const barSpacing = 2;
+    let x = 0;
+
+    // Draw frequency bars
+    for (let i = 0; i < dataArray.length; i++) {
+      const barHeight = (dataArray[i] / 255) * height;
+
+      // Create gradient
+      const gradient = ctx.createLinearGradient(
+        0,
+        height - barHeight,
+        0,
+        height,
+      );
+      gradient.addColorStop(0, '#007bff');
+      gradient.addColorStop(1, '#0056b3');
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(x, height - barHeight, barWidth - barSpacing, barHeight);
+
+      x += barWidth;
+    }
+  }
+
+  function startRecording() {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then(function (stream) {
+        // Initialize Web Audio API for visualization
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioContext.createAnalyser();
+        microphone = audioContext.createMediaStreamSource(stream);
+
+        // Configure analyser
+        analyser.fftSize = 256;
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        // Connect audio nodes
+        microphone.connect(analyser);
+
+        // Show visualization container and start visualization
+        $('.audio-visualization-container').fadeIn('fast');
+
+        // Start visualization
+        function visualize() {
+          if (analyser && visualizerCtx) {
+            analyser.getByteFrequencyData(dataArray);
+            drawVisualization(dataArray);
+            animationId = requestAnimationFrame(visualize);
+          }
+        }
+        visualize();
+
+        // Start MediaRecorder for actual recording
+        audioChunks = [];
+
+        // Choose the best available audio format
+        let mimeType = 'audio/webm';
+        if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+          mimeType = 'audio/webm;codecs=opus';
+        } else if (MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
+          mimeType = 'audio/ogg;codecs=opus';
+        } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+          mimeType = 'audio/mp4';
+        }
+
+        mediaRecorder = new MediaRecorder(stream, { mimeType: mimeType });
+
+        mediaRecorder.addEventListener('dataavailable', function (event) {
+          audioChunks.push(event.data);
+        });
+
+        mediaRecorder.addEventListener('stop', function () {
+          // Use a more compatible audio format
+          let mimeType = 'audio/webm';
+          if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
+            mimeType = 'audio/webm;codecs=opus';
+          } else if (MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
+            mimeType = 'audio/ogg;codecs=opus';
+          } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+            mimeType = 'audio/mp4';
+          }
+
+          recordedAudioBlob = new Blob(audioChunks, { type: mimeType });
+          // Stop visualization
+          if (animationId) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+          }
+
+          // Stop all audio tracks
+          stream.getAudioTracks().forEach((track) => track.stop());
+
+          // Close audio context
+          if (audioContext) {
+            audioContext.close();
+            audioContext = null;
+          }
+
+          // Hide waveform canvas and show audio player in its place
+          $('.audio-visualization-container').hide();
+          $('.audio-preview-container').show();
+          $('#recording-preview').attr(
+            'src',
+            URL.createObjectURL(recordedAudioBlob),
+          );
+
+          // Hide start and play buttons, show only save and cancel
+          $('#start-recording-btn, #play-recording-btn').hide();
+          $('#save-recording-btn').show();
+
+          // Update status
+          $('#recording-status-text').text('Recording completed');
+          $('#voice-record-button').removeClass('recording');
+        });
+
+        mediaRecorder.start();
+        recordingStartTime = Date.now();
+
+        // Update UI
+        $('#start-recording-btn').hide();
+        $('#stop-recording-btn').show();
+        $('#recording-status-text').text('Recording...');
+        $('#voice-record-button').addClass('recording');
+
+        // Reset timer display and start timer
+        $('#recording-timer').text('00:00');
+        startRecordingTimer();
+      })
+      .catch(function (error) {
+        console.error('Error accessing microphone:', error);
+        alert(
+          "Error accessing microphone. Please ensure your microphone is connected and you've granted permission to use it.",
+        );
+      });
+  }
+
+  function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.stop();
+      stopRecordingTimer();
+
+      $('#start-recording-btn').show();
+      $('#stop-recording-btn').hide();
+    }
+  }
+
+  function playRecording() {
+    if (recordedAudioBlob) {
+      // Create a new audio element for each playback to avoid conflicts
+      const audioUrl = URL.createObjectURL(recordedAudioBlob);
+
+      const audio = new Audio();
+
+      audio.addEventListener('error', function (e) {
+        console.error('Audio error event:', e);
+        console.error('Audio error details:', audio.error);
+        console.error(
+          'Audio error code:',
+          audio.error ? audio.error.code : 'No error code',
+        );
+        console.error(
+          'Audio error message:',
+          audio.error ? audio.error.message : 'No error message',
+        );
+      });
+
+      audio.addEventListener('ended', function () {
+        // Clean up the object URL
+        URL.revokeObjectURL(audioUrl);
+      });
+
+      // Set the source and attempt to play
+      audio.src = audioUrl;
+
+      // Wait a moment for the audio to load, then play
+      setTimeout(function () {
+        audio.play().catch(function (error) {
+          console.error('Audio play promise rejected:', error);
+          console.error('Error name:', error.name);
+          console.error('Error message:', error.message);
+          console.error('Full error object:', error);
+
+          // Try to provide more specific error messages
+          if (error.name === 'NotAllowedError') {
+            alert(
+              "Audio playback was blocked. Please check your browser's autoplay settings and try again.",
+            );
+          } else if (error.name === 'NotSupportedError') {
+            alert(
+              "Your browser doesn't support this audio format. Please try recording again.",
+            );
+          } else if (error.name === 'AbortError') {
+            alert('Audio playback was aborted. Please try again.');
+          } else {
+            alert('Unable to play audio. Error: ' + error.message);
+          }
+
+          // Clean up the object URL
+          URL.revokeObjectURL(audioUrl);
+        });
+      }, 100); // Small delay to ensure audio is loaded
+    } else {
+      console.error('No audio blob available for playback');
+      alert('No recording available to play.');
+    }
+  }
+
+  function saveRecording() {
+    if (recordedAudioBlob) {
+      // Validate current post information
+      if (!postId || !postType) {
+        console.error('Could not determine post ID or post type for upload');
+        alert('Error: Could not determine post information for upload');
+        return;
+      }
+
+      // Create FormData for upload
+      const formData = new FormData();
+
+      // Convert blob to file
+      const audioFile = new File([recordedAudioBlob], 'voice-recording.webm', {
+        type: recordedAudioBlob.type,
+        lastModified: Date.now(),
+      });
+
+      // Add the audio file
+      formData.append('storage_upload_files[]', audioFile);
+
+      // Add required parameters
+      formData.append('meta_key', 'audio_url');
+      formData.append('key_prefix', postType);
+      formData.append('upload_type', 'audio_comment');
+
+      // Add custom parameters for voice recording
+      formData.append('audio_duration', $('#recording-timer').text());
+      formData.append('audio_timestamp', new Date().toISOString());
+      formData.append('audio_format', recordedAudioBlob.type);
+      formData.append('audio_size', recordedAudioBlob.size.toString());
+
+      // Show loading state
+      const saveBtn = $('#save-recording-btn');
+      const originalText = saveBtn.text();
+      saveBtn.text('Uploading...').prop('disabled', true);
+
+      // Upload to storage endpoint
+      $.ajax({
+        url: `${window.wpApiShare.root}dt-posts/v2/${postType}/${postId}/storage_upload`,
+        type: 'POST',
+        data: formData,
+        dataType: 'json',
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+        },
+        success: function (response) {
+          saveBtn
+            .text('Uploaded!')
+            .removeClass('save-btn')
+            .addClass('save-btn-success');
+          setTimeout(function () {
+            saveBtn
+              .text(originalText)
+              .prop('disabled', false)
+              .removeClass('save-btn-success')
+              .addClass('save-btn');
+          }, 2000);
+
+          // Reset audio capturing area and close the recording window.
+          cancelRecording();
+        },
+        error: function (xhr, status, error) {
+          console.error('Upload failed:', { xhr, status, error });
+          console.error('Response text:', xhr.responseText);
+          saveBtn.text(originalText).prop('disabled', false);
+          alert('Upload failed. Check console for details.');
+        },
+      });
+    } else {
+      console.error('No audio blob available for upload');
+      alert('No recording available to upload.');
+    }
+  }
+
+  function cancelRecording() {
+    // Stop recording if active
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
+      mediaRecorder.stop();
+      stopRecordingTimer();
+    }
+
+    // Stop visualization
+    if (animationId) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+
+    // Close audio context
+    if (audioContext) {
+      audioContext.close();
+      audioContext = null;
+    }
+
+    // Reset UI with slide animation
+    const recordingControls = $('#audio-recording-controls');
+    recordingControls.removeClass('show').addClass('hide');
+    setTimeout(function () {
+      recordingControls.hide();
+      $('#start-recording-btn').show();
+      $('#stop-recording-btn, #play-recording-btn, #save-recording-btn').hide();
+      $('.audio-preview-container').hide();
+      $('.audio-visualization-container').show();
+      $('#recording-status-text').text('Ready to record');
+      $('#voice-record-button').removeClass('recording');
+    }, 600); // Increased from 300ms to 600ms for slower animation
+
+    // Clear recorded audio
+    recordedAudioBlob = null;
+    audioChunks = [];
+
+    // Reset timer display
+    $('#recording-timer').text('00:00');
+
+    // Reset visualization
+    drawInitialVisualization();
+  }
+
+  function startRecordingTimer() {
+    recordingTimer = setInterval(function () {
+      const elapsed = Date.now() - recordingStartTime;
+      const seconds = Math.floor(elapsed / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+
+      $('#recording-timer').text(
+        `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`,
+      );
+    }, 1000);
+  }
+
+  function stopRecordingTimer() {
+    if (recordingTimer) {
+      clearInterval(recordingTimer);
+      recordingTimer = null;
+    }
+    // Reset timer display
+    //$('#recording-timer').text('00:00');
+  }
+
+  // Initialize voice recording
+  initializeVoiceRecording();
 });

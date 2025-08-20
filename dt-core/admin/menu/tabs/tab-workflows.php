@@ -917,6 +917,12 @@ class Disciple_Tools_Tab_Workflows extends Disciple_Tools_Abstract_Menu_Base {
                     'type' => 'comments',
                 ];
 
+                $fields[] = [
+                    'id' => 'share',
+                    'name' => 'Share',
+                    'type' => 'share',
+                ];
+
                 $post_type                = $dt_post_type_settings['post_type'];
                 $post_types[ $post_type ] = [
                     'id'       => $post_type,

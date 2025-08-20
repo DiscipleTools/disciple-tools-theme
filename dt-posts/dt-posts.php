@@ -789,7 +789,6 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         self::get_all_connected_fields_on_list( $post_settings['fields'], $records, $fields_to_return );
         $site_url = site_url();
-        $dt_storage_enabled = ( class_exists( 'DT_Storage' ) && DT_Storage::is_enabled() );
         foreach ( $records as  &$record ){
 
             self::adjust_post_custom_fields( $post_type, $record['ID'], $record, $fields_to_return, $all_posts[ $record['ID'] ] ?? [], $all_post_user_meta[ $record['ID'] ] ?? [] );
@@ -1406,6 +1405,18 @@ class DT_Posts extends Disciple_Tools_Posts {
         if ( !$comment ){
             return new WP_Error( __FUNCTION__, 'No comment found with id: ' . $comment_id, [ 'status' => 403 ] );
         }
+
+        // Provide space for any additional processing of metadata values.
+        if ( DT_Storage_API::is_enabled() ) {
+            $comment_meta = get_comment_meta( $comment_id );
+            if ( isset( $comment_meta, $comment_meta['audio_url'] ) && is_array( $comment_meta['audio_url'] ) && ( count( $comment_meta['audio_url'] ) > 0 ) ) {
+                DT_Storage_API::delete_file( $comment_meta['audio_url'][0] );
+            }
+            if ( isset( $comment_meta, $comment_meta['image_url'] ) && is_array( $comment_meta['image_url'] ) && ( count( $comment_meta['image_url'] ) > 0 ) ) {
+                DT_Storage_API::delete_file( $comment_meta['image_url'][0] );
+            }
+        }
+
         return wp_delete_comment( $comment_id );
     }
 
@@ -1549,9 +1560,18 @@ class DT_Posts extends Disciple_Tools_Posts {
                 if ( !array_key_exists( $meta->meta_key, $comments_meta_dict[$meta->comment_id] ) ) {
                     $comments_meta_dict[$meta->comment_id][$meta->meta_key] = [];
                 }
+
+                // Provide space for the reshaping of meta-values.
+                $meta_value = $meta->meta_value;
+                if ( in_array( $meta->meta_key, [ 'audio_url', 'image_url' ] ) && !empty( $meta_value ) && DT_Storage_API::is_enabled() ) {
+                    $storage_obj_url = DT_Storage_API::get_file_url( $meta_value );
+                    $meta_value = !empty( $storage_obj_url ) ? $storage_obj_url : $meta_value;
+                }
+
+                // Capture comment meta.
                 $comments_meta_dict[$meta->comment_id][$meta->meta_key][] = [
                     'id' => $meta->meta_id,
-                    'value' => $meta->meta_value,
+                    'value' => $meta_value
                 ];
             }
         }
@@ -2287,15 +2307,15 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return false|int|WP_Error
      */
-    public static function remove_shared( string $post_type, int $post_id, int $user_id ) {
+    public static function remove_shared( string $post_type, int $post_id, int $user_id, $check_permissions = true ) {
         global $wpdb;
 
-        if ( !self::can_update( $post_type, $post_id ) ) {
+        if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'You do not have permission to unshare', [ 'status' => 403 ] );
         }
 
         $assigned_to_meta = get_post_meta( $post_id, 'assigned_to', true );
-        if ( !( self::can_update( $post_type, $post_id ) ||
+        if ( $check_permissions && !( self::can_update( $post_type, $post_id ) ||
                  get_current_user_id() === $user_id ||
                  dt_get_user_id_from_assigned_to( $assigned_to_meta ) === get_current_user_id() )
         ){
@@ -3073,6 +3093,17 @@ class DT_Posts extends Disciple_Tools_Posts {
         // Replace placeholder.
         $message = str_replace( '{{name}}', $post['title'], $message );
 
+        /**
+         * Filter the message before it is sent.
+         *
+         * @param string $message The message to be sent.
+         * @param array $post The post data.
+         * @param array $args The arguments for the message.
+         *
+         * @return string The filtered message.
+         */
+        $message = apply_filters( 'dt_post_messaging_message', $message, $post, $args );
+
         // Dispatch accordingly, based on specified send method.
         if ( $send_method === 'email' && isset( $post['contact_email'] ) ) {
 
@@ -3091,6 +3122,17 @@ class DT_Posts extends Disciple_Tools_Posts {
                 $from_name = !empty( $args['from_name'] ) ? $args['from_name'] : get_bloginfo( 'name' );
                 $headers[] = 'From: ' . $from_name . ' <' . $default_email . '>';
                 $headers[] = 'Reply-To: ' . $from_name . ' <' . $from_email . '>';
+
+                /**
+                 * Filter the headers for the email.
+                 *
+                 * @param array $headers The headers for the email.
+                 * @param array $post The post data.
+                 * @param array $args The arguments for the message.
+                 *
+                 * @return array The filtered headers.
+                 */
+                $headers = apply_filters( 'dt_post_messaging_headers', $headers, $post, $args );
 
                 // Send email or schedule for later dispatch.
                 $subject = $args['subject'] ?? '';
