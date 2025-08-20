@@ -32,7 +32,6 @@ class DT_Storage_API_Admin_Settings {
             $id = $post['id'] ?? '';
             $existing_type = is_array( $current ) ? ( $current['type'] ?? 'aws' ) : 'aws';
             $type = $post['type'] ?? $existing_type;
-            $types = DT_Storage_API::list_supported_connection_types();
             $details = [
                 'access_key' => $post['access_key'] ?? '',
                 'secret_access_key' => $post['secret_access_key'] == '********' ? $current['secret_access_key'] ?? '' : $post['secret_access_key'],
@@ -43,8 +42,7 @@ class DT_Storage_API_Admin_Settings {
             if ( empty( $id ) ) {
                 $id = substr( md5( maybe_serialize( $details ) ), 0, 12 );
             }
-            $default_path_style = isset( $types[$type]['default_path_style'] ) ? (bool) $types[$type]['default_path_style'] : ( $type === 'minio' );
-            $path_style = isset( $post['path_style'] ) ? (bool) $post['path_style'] : $default_path_style;
+            $path_style = isset( $post['path_style'] ) && $post['path_style'];
             $obj = [ 'id' => $id, 'enabled' => $enabled, 'name' => 'Default', 'type' => $type, 'path_style' => $path_style ] + $details;
             update_option( 'dt_storage_connection', $obj );
             echo '<div class="updated"><p>' . esc_html__( 'Saved.', 'disciple_tools' ) . '</p></div>';
