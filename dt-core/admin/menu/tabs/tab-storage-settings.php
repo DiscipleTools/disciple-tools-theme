@@ -16,7 +16,7 @@ class DT_Storage_API_Admin_Settings {
             __( 'Storage', 'disciple_tools' ),
             __( 'Storage', 'disciple_tools' ),
             'manage_options',
-            'disciple_tools_storage',
+            'dt_options&tab=storage',
             [ __CLASS__, 'render' ]
         );
     }
@@ -73,10 +73,6 @@ class DT_Storage_API_Admin_Settings {
                             } ?>
                         </select>
                     </td>
-                </tr>
-                <tr>
-                    <td><strong><?php esc_html_e( 'ID', 'disciple_tools' ); ?></strong></td>
-                    <td><input type="text" name="id" value="<?php echo esc_attr( $current['id'] ?? '' ); ?>" class="regular-text" /></td>
                 </tr>
                 <tr>
                     <td><strong><?php esc_html_e( 'Access Key', 'disciple_tools' ); ?></strong></td>

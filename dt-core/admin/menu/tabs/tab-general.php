@@ -269,11 +269,11 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         if ( !$enabled ) {
             ?>
           <span class="notice notice-warning" style="display: inline-block; padding-top: 10px; padding-bottom: 10px; width: 97%;">
-                    <?php echo sprintf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', esc_url( get_admin_url( null, 'admin.php?page=disciple_tools_storage' ) ) ); ?>
+                    <?php echo sprintf( 'Ensure Disciple.Tools Storage Plugin has been <a href="%s">set up with valid connections</a>; which have been enabled.', esc_url( get_admin_url( null, 'admin.php?page=dt_options&tab=storage' ) ) ); ?>
                 </span>
             <?php
         } else { ?>
-            <p>Storage is enabled. See configuration settings <a href="<?php echo esc_url( get_admin_url( null, 'admin.php?page=disciple_tools_storage' ) ) ?>">here</a></p>
+            <p>Storage is enabled. See configuration settings <a href="<?php echo esc_url( get_admin_url( null, 'admin.php?page=dt_options&tab=storage' ) ) ?>">here</a></p>
             <?php
         }
     }
