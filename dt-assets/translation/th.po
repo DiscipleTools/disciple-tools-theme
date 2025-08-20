@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2025-05-23T13:30:46+00:00\n"
+"POT-Creation-Date: 2025-07-16T11:35:31+00:00\n"
 "PO-Revision-Date: 2025-03-05 16:00+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Thai <https://translate.disciple.tools/projects/disciple-"
@@ -42,6 +42,7 @@ msgid "Permission denied"
 msgstr "ปฏิเสธการอนุญาต"
 
 #: 403.php:35
+#, php-format
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
 msgstr "ขออภัยคุณไม่มีสิทธิ์ดู %1$s ด้วย id %2$s"
 
@@ -70,22 +71,22 @@ msgstr "เจ้าของบันทึกจะได้รับแจ้
 msgid "Submit Request"
 msgstr "ส่งคำขอ"
 
-#: 403.php:55 archive-template.php:1084 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:1138 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/base-setup.php:470 dt-contacts/base-setup.php:505
-#: dt-contacts/module-access.php:451 dt-contacts/module-access.php:482
-#: dt-contacts/module-access.php:510 dt-contacts/user-module.php:159
-#: single-template.php:412 template-new-bulk-post.php:229
-#: template-new-bulk-post.php:262 template-new-bulk-post.php:290
-#: template-new-post.php:164 template-new-post.php:191
+#: dt-assets/parts/modals/modal-new-tag.php:12 dt-contacts/base-setup.php:470
+#: dt-contacts/base-setup.php:505 dt-contacts/module-access.php:451
+#: dt-contacts/module-access.php:482 dt-contacts/module-access.php:510
+#: dt-contacts/user-module.php:159 single-template.php:413
+#: template-new-bulk-post.php:229 template-new-bulk-post.php:262
+#: template-new-bulk-post.php:290 template-new-post.php:162
 msgid "Cancel"
 msgstr "ยกเลิก"
 
-#: 403.php:59 archive-template.php:520 archive-template.php:562
-#: archive-template.php:749 archive-template.php:1108
+#: 403.php:59 archive-template.php:521 archive-template.php:616
+#: archive-template.php:803 archive-template.php:1162
 #: dt-assets/functions/enqueue-scripts.php:455
 #: dt-assets/parts/loop-activity-comment.php:158
 #: dt-assets/parts/loop-activity-comment.php:163
@@ -121,9 +122,9 @@ msgstr "ยกเลิก"
 #: dt-groups/base-setup.php:588 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
-#: dt-users/user-initial-setup.php:82 single-template.php:417
+#: dt-users/user-initial-setup.php:82 single-template.php:418
 #: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-new-post.php:196 template-settings.php:602
+#: template-settings.php:602
 msgid "Close"
 msgstr "ปิด"
 
@@ -136,7 +137,7 @@ msgid "The page you were looking for was not found or was deleted"
 msgstr "ไม่พบเพจที่คุณกำลังค้นหาหรือถูกลบ"
 
 #: archive-template.php:39
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Create New record"
 msgid "Create New %s"
 msgstr "สร้าง%sใหม่"
@@ -145,21 +146,22 @@ msgstr "สร้าง%sใหม่"
 msgid "Filters"
 msgstr "ฟิลเตอร์"
 
-#: archive-template.php:50 archive-template.php:152 archive-template.php:641
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:818
-#: dt-core/utilities/dt-components.php:217 dt-posts/custom-post-type.php:20
+#: archive-template.php:50 archive-template.php:153 archive-template.php:695
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:819
+#: dt-core/utilities/dt-components.php:208 dt-posts/custom-post-type.php:20
 #: template-settings.php:399
+#, php-format
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "ค้นหา%s"
 
-#: archive-template.php:51 archive-template.php:153
+#: archive-template.php:51 archive-template.php:154
 #: dt-mapping/geocode-api/mapbox-api.php:293
 msgid "Clear"
 msgstr "เคลียร์"
 
-#: archive-template.php:55 archive-template.php:56 archive-template.php:157
-#: archive-template.php:158 dt-assets/functions/menu.php:57
+#: archive-template.php:55 archive-template.php:56 archive-template.php:158
+#: archive-template.php:159 dt-assets/functions/menu.php:57
 #: dt-assets/parts/modals/modal-advanced-search.php:2
 msgid "Advanced Search"
 msgstr "การค้นหาขั้นสูง"
@@ -171,91 +173,92 @@ msgstr "การค้นหาขั้นสูง"
 msgid "Comments"
 msgstr "ความคิดเห็น"
 
-#: archive-template.php:77 archive-template.php:176
+#: archive-template.php:77 archive-template.php:177
 #: dt-users/user-management.php:230
 msgid "Search"
 msgstr "ค้นหา"
 
-#: archive-template.php:86 archive-template.php:181
+#: archive-template.php:86 archive-template.php:182
 msgid "Choose which fields to search"
 msgstr "เลือกฟิลด์ที่จะค้นหา"
 
-#: archive-template.php:95 archive-template.php:190
+#: archive-template.php:95 archive-template.php:191
 msgid "Search All Fields"
 msgstr "ค้นหาทุกช่อง"
 
-#: archive-template.php:105 archive-template.php:200
+#: archive-template.php:105 archive-template.php:201
 msgid "Communication Channels"
 msgstr "ช่องทางสื่อสาร"
 
-#: archive-template.php:125 archive-template.php:220 archive-template.php:557
+#: archive-template.php:125 archive-template.php:221 archive-template.php:610
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "สมัคร"
 
-#: archive-template.php:126 archive-template.php:221 archive-template.php:558
+#: archive-template.php:126 archive-template.php:222 archive-template.php:611
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "รีเซ็ตเป็นค่าเริ่มต้น"
 
-#: archive-template.php:229
+#: archive-template.php:230
+#, php-format
 msgctxt "Contacts Filters"
 msgid "%s Filters"
 msgstr "%s ตัวกรอง"
 
-#: archive-template.php:240
+#: archive-template.php:241
 msgid "Create custom filter"
 msgstr "สร้างตัวกรองกำหนดเอง"
 
-#: archive-template.php:248
+#: archive-template.php:249
 msgctxt "Split By"
 msgid "Split By"
 msgstr ""
 
-#: archive-template.php:310
+#: archive-template.php:311
 #, fuzzy
 #| msgid "No duplicates found."
 msgid "No results found"
 msgstr "ไม่พบรายการที่ซ้ำกัน"
 
-#: archive-template.php:316
+#: archive-template.php:317
 msgctxt "List Exports"
 msgid "List Exports"
 msgstr ""
 
-#: archive-template.php:328 archive-template.php:351
+#: archive-template.php:329 archive-template.php:352
 #, fuzzy
 #| msgid "List"
 msgid "CSV List"
 msgstr "รายการ"
 
-#: archive-template.php:332 archive-template.php:355
+#: archive-template.php:333 archive-template.php:356
 msgid "BCC Email List"
 msgstr ""
 
-#: archive-template.php:333
+#: archive-template.php:334
 #, fuzzy
 #| msgid "Phone"
 msgid "Phone List"
 msgstr "โทรศัพท์"
 
-#: archive-template.php:338 archive-template.php:363
+#: archive-template.php:339 archive-template.php:364
 #, fuzzy
 #| msgid "List"
 msgid "Map List"
 msgstr "รายการ"
 
-#: archive-template.php:347
+#: archive-template.php:348
 msgid "List Exports Help"
 msgstr ""
 
-#: archive-template.php:352
+#: archive-template.php:353
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
 
-#: archive-template.php:356
+#: archive-template.php:357
 msgid ""
 "Using the current filter, the available emails are grouped by 50 and can be "
 "launched into your default email client by group. Many email providers put a "
@@ -265,362 +268,387 @@ msgid ""
 "email should be handled through bulk email providers."
 msgstr ""
 
-#: archive-template.php:359
+#: archive-template.php:360
 #, fuzzy
 #| msgid "Member List"
 msgid "Phone Number List"
 msgstr "รายชื่อสมาชิก"
 
-#: archive-template.php:360
+#: archive-template.php:361
 msgid ""
 "Using the current filter, this is intended for copy pasting a list of "
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
 
-#: archive-template.php:364
+#: archive-template.php:365
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
 
-#: archive-template.php:390
+#: archive-template.php:391
+#, php-format
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "%s รายการ"
 
-#: archive-template.php:397
+#: archive-template.php:398
 msgid "Sort"
 msgstr "จัดเรียง"
 
-#: archive-template.php:402
+#: archive-template.php:403
 msgid "Newest"
 msgstr "ใหม่ล่าสุด"
 
-#: archive-template.php:407
+#: archive-template.php:408
 msgid "Oldest"
 msgstr "เก่าที่สุด"
 
-#: archive-template.php:412
+#: archive-template.php:413
 msgid "Most recently modified"
 msgstr "แก้ไขล่าสุด"
 
-#: archive-template.php:417
+#: archive-template.php:418
 msgid "Least recently modified"
 msgstr "แก้ไขอย่างน้อยที่สุด"
 
-#: archive-template.php:427 template-new-bulk-post.php:89
+#: archive-template.php:428 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "ฟิลด์"
 
-#: archive-template.php:434
+#: archive-template.php:435
 msgid "Bulk Edit"
 msgstr "แก้ไขเป็นกลุ่ม"
 
-#: archive-template.php:441
+#: archive-template.php:442
 #, fuzzy
 #| msgid "Bulk Send App"
 msgid "Bulk Send Message"
 msgstr "แอปส่งเป็นกลุ่มขนาดใหญ่"
 
-#: archive-template.php:475 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:476 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
 msgid "More"
 msgstr "เพิ่มเติม"
 
-#: archive-template.php:496 dt-contacts/base-setup.php:324
+#: archive-template.php:497 dt-contacts/base-setup.php:324
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "เก็บถาวร"
 
-#: archive-template.php:500
-#, fuzzy
+#: archive-template.php:501
+#, fuzzy, php-format
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "ใหม่$s"
 
-#: archive-template.php:523
+#: archive-template.php:524
 msgid "Choose which fields to display as columns in the list"
 msgstr "เลือกฟิลด์ที่จะแสดงเป็นคอลัมน์ในรายการ"
 
-#: archive-template.php:566
+#: archive-template.php:558
+#, fuzzy
+#| msgid "Hide fields"
+msgid "Add fields:"
+msgstr "ซ่อนฟิลด์"
+
+#: archive-template.php:561
+msgid "Search for fields to add..."
+msgstr ""
+
+#: archive-template.php:583
+#, fuzzy
+#| msgid "Updated fields"
+msgid "Enabled fields:"
+msgstr "เขตข้อมูลที่ปรับปรุง"
+
+#: archive-template.php:587
+msgid "No fields selected"
+msgstr ""
+
+#: archive-template.php:620
+#, php-format
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr "เลือก %1$s ทั้งหมดที่คุณต้องการอัปเดตจากรายการและอัปเดตด้านล่าง"
 
-#: archive-template.php:584 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:638 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:833
+#: dt-core/global-functions.php:834
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "ค้นหาผู้ใช้"
 
-#: archive-template.php:629
+#: archive-template.php:683
 msgid "Share with:"
 msgstr "ร่วมกับ:"
 
-#: archive-template.php:649
+#: archive-template.php:703
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "ยกเลิกการแชร์กับ$s"
 
-#: archive-template.php:661 dt-assets/functions/details-bar.php:199
+#: archive-template.php:715 dt-assets/functions/details-bar.php:199
 #: dt-posts/custom-post-type.php:217
 msgid "Follow"
 msgstr "ติดตาม"
 
-#: archive-template.php:666 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:720 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "ความคิดเห็นและกิจกรรม"
 
-#: archive-template.php:671 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:725 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "เขียนความคิดเห็นหรือบันทึกของคุณที่นี่"
 
-#: archive-template.php:679 dt-assets/parts/loop-activity-comment.php:59
+#: archive-template.php:733 dt-assets/parts/loop-activity-comment.php:59
 msgid "Type:"
 msgstr "ประเภท:"
 
-#: archive-template.php:699 dt-users/template-new-user.php:127
+#: archive-template.php:753 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "ดูตัวเลือกเพิ่มเติม"
 
-#: archive-template.php:700 dt-users/template-new-user.php:130
+#: archive-template.php:754 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "ดูตัวเลือกน้อยลง"
 
-#: archive-template.php:727 dt-assets/parts/loop-activity-comment.php:209
+#: archive-template.php:781 dt-assets/parts/loop-activity-comment.php:209
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "อัปเดต"
 
-#: archive-template.php:728 archive-template.php:836
+#: archive-template.php:782 archive-template.php:890
 #: dt-assets/functions/enqueue-scripts.php:335
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "เลือกด้านล่าง"
 
-#: archive-template.php:736 dt-assets/functions/enqueue-scripts.php:183
+#: archive-template.php:790 dt-assets/functions/enqueue-scripts.php:183
 #: dt-assets/functions/enqueue-scripts.php:218
 #: dt-assets/functions/enqueue-scripts.php:283
 #: dt-assets/functions/enqueue-scripts.php:323
-#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:415
+#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:416
 msgid "Delete"
 msgstr "ลบ"
 
-#: archive-template.php:739 dt-assets/functions/enqueue-scripts.php:336
+#: archive-template.php:793 dt-assets/functions/enqueue-scripts.php:336
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
 msgstr "เลือกด้านล่าง"
 
-#: archive-template.php:753
-#, fuzzy
+#: archive-template.php:807
+#, fuzzy, php-format
 #| msgid "Select all the %1$s to whom you want to send app links."
 msgid "Select all the %1$s to whom you want to message."
 msgstr "เลือก %1$s ทั้งหมดที่คุณต้องการส่งลิงก์แอปไปให้"
 
-#: archive-template.php:783
+#: archive-template.php:837
 msgid "Message subject"
 msgstr ""
 
-#: archive-template.php:785
+#: archive-template.php:839
 msgid "A valid message subject must be entered."
 msgstr ""
 
-#: archive-template.php:787
+#: archive-template.php:841
 msgid "Message from name"
 msgstr ""
 
-#: archive-template.php:789
+#: archive-template.php:843
 msgid "A valid from name must be specified."
 msgstr ""
 
-#: archive-template.php:791
+#: archive-template.php:845
 msgid "Message reply to"
 msgstr ""
 
-#: archive-template.php:793
+#: archive-template.php:847
 msgid "A valid reply to email address must be specified."
 msgstr ""
 
-#: archive-template.php:795
+#: archive-template.php:849
+#, php-format
 msgid "Emails will be sent from: %s"
 msgstr ""
 
-#: archive-template.php:818
+#: archive-template.php:872
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
 
-#: archive-template.php:820
+#: archive-template.php:874
 msgid "Message"
 msgstr ""
 
-#: archive-template.php:822
+#: archive-template.php:876
 msgid "Please ensure a valid send message has been entered."
 msgstr ""
 
-#: archive-template.php:823 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:877 dt-reports/magic-url-bulk-send.php:58
 #: dt-reports/magic-url-setup.php:133
 msgid "Message placeholders"
 msgstr ""
 
-#: archive-template.php:826 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:880 dt-reports/magic-url-bulk-send.php:64
 #: dt-reports/magic-url-setup.php:139
 #, fuzzy
 #| msgid "Create Record"
 msgid "Name of the Record"
 msgstr "สร้างบันทึก"
 
-#: archive-template.php:831 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:885 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "ส่งไปยังเรกคอร์ดที่เลือก"
 
-#: archive-template.php:832 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:886 dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "คุณต้องเลือกเรกคอร์ดอย่างน้อยหนึ่งรายการ"
 
-#: archive-template.php:835 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:889 dt-reports/magic-url-bulk-send.php:94
 #: dt-reports/magic-url-setup.php:101
 msgid "Send"
 msgstr "ส่ง"
 
-#: archive-template.php:835 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:889 dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "ลิงก์"
 
-#: archive-template.php:840
+#: archive-template.php:894
 msgid "Ensure valid record selections have been made."
 msgstr ""
 
-#: archive-template.php:885
+#: archive-template.php:939
 msgid "Loading..."
 msgstr "กำลังโหลด ..."
 
-#: archive-template.php:890 dt-assets/functions/enqueue-scripts.php:424
+#: archive-template.php:944 dt-assets/functions/enqueue-scripts.php:424
 msgid "Load More"
 msgstr "โหลดเพิ่มเติม"
 
-#: archive-template.php:902
+#: archive-template.php:956
 msgid "Field Name"
 msgstr "ชื่อเขตข้อมูล"
 
-#: archive-template.php:958
+#: archive-template.php:1012
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "พิมพ์เพื่อค้นหา"
 
-#: archive-template.php:967
+#: archive-template.php:1021
+#, php-format
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%1$sทั้งหมดที่มี%2$s"
 
-#: archive-template.php:970
+#: archive-template.php:1024
+#, php-format
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%1$s ทั้งหมดที่ไม่มี %2$s"
 
-#: archive-template.php:977
+#: archive-template.php:1031
 msgid "Filter for subassigned OR Assigned To"
 msgstr "กรองสำหรับมอบหมายย่อยหรือมอบหมายให้"
 
-#: archive-template.php:986 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:1040 dt-assets/functions/enqueue-scripts.php:326
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "วันที่สร้าง"
 
-#: archive-template.php:993 archive-template.php:1000
+#: archive-template.php:1047 archive-template.php:1054
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:961
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:971
 msgid "None Set"
 msgstr "ไม่มีการตั้งค่า"
 
-#: archive-template.php:1014 archive-template.php:1015
-#: dt-assets/functions/enqueue-scripts.php:234 dt-core/global-functions.php:712
+#: archive-template.php:1068 archive-template.php:1069
+#: dt-assets/functions/enqueue-scripts.php:234 dt-core/global-functions.php:713
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-users/user-management.php:196 template-settings.php:313
 #: template-settings.php:577
 msgid "No"
 msgstr "ไม่"
 
-#: archive-template.php:1021 archive-template.php:1022
-#: dt-assets/functions/enqueue-scripts.php:233 dt-core/global-functions.php:713
+#: archive-template.php:1075 archive-template.php:1076
+#: dt-assets/functions/enqueue-scripts.php:233 dt-core/global-functions.php:714
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:195
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
 msgstr "ใช่"
 
-#: archive-template.php:1026
+#: archive-template.php:1080
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "ช่วงเริ่มต้น"
 
-#: archive-template.php:1029 archive-template.php:1040
+#: archive-template.php:1083 archive-template.php:1094
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "ชัดเจน"
 
-#: archive-template.php:1036
+#: archive-template.php:1090
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "สิ้นสุดช่วง"
 
-#: archive-template.php:1051
+#: archive-template.php:1105
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "ชื่อตัวกรอง"
 
-#: archive-template.php:1056
-#, fuzzy
+#: archive-template.php:1110
+#, fuzzy, php-format
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
 msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "%1$sทั้งหมดที่มี%2$s"
 
-#: archive-template.php:1060
-#, fuzzy
+#: archive-template.php:1114
+#, fuzzy, php-format
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
 msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "%1$s ทั้งหมดที่ไม่มี %2$s"
 
-#: archive-template.php:1064
-#, fuzzy
+#: archive-template.php:1118
+#, fuzzy, php-format
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
 msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "%1$sทั้งหมดที่มี%2$s"
 
-#: archive-template.php:1068
-#, fuzzy
+#: archive-template.php:1122
+#, fuzzy, php-format
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
 msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "%1$s ทั้งหมดที่ไม่มี %2$s"
 
-#: archive-template.php:1092
+#: archive-template.php:1146
 msgid "Filter Name"
 msgstr "ชื่อตัวกรอง"
 
-#: archive-template.php:1097
+#: archive-template.php:1151
 msgid "Filter Records"
 msgstr "กรองบันทึก"
 
-#: archive-template.php:1101 dt-assets/functions/enqueue-scripts.php:286
+#: archive-template.php:1155 dt-assets/functions/enqueue-scripts.php:286
 #: dt-assets/functions/enqueue-scripts.php:321
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
@@ -628,7 +656,7 @@ msgstr "บันทึก"
 
 #: dt-assets/functions/details-bar.php:58
 #: dt-assets/functions/details-bar.php:275
-#: dt-core/configuration/config-site-defaults.php:350
+#: dt-core/configuration/config-site-defaults.php:356
 #: dt-workflows/update-required.php:79 dt-workflows/update-required.php:128
 msgid "Update Needed"
 msgstr "จำเป็นต้องอัปเดต"
@@ -637,18 +665,20 @@ msgstr "จำเป็นต้องอัปเดต"
 msgid "Admin Actions"
 msgstr "การดำเนินการของผู้ดูแลระบบ"
 
-#: dt-assets/functions/details-bar.php:74 single-template.php:407
-#, fuzzy
+#: dt-assets/functions/details-bar.php:74 single-template.php:408
+#, fuzzy, php-format
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "ลบ$s"
 
 #: dt-assets/functions/details-bar.php:79
+#, php-format
 msgctxt "View Contact History"
 msgid "View %s History"
 msgstr ""
 
 #: dt-assets/functions/details-bar.php:87
+#, php-format
 msgctxt "Merge with another record"
 msgid "Merge with another %s"
 msgstr "ผสานกับ %s อีกอัน"
@@ -659,15 +689,15 @@ msgid "Previous record"
 msgstr "บันทึกก่อนหน้า"
 
 #: dt-assets/functions/details-bar.php:121
-#: dt-assets/functions/details-bar.php:301
 #, fuzzy
 #| msgid "Record Hits:"
+msgctxt "the picture of the record"
 msgid "Record Picture"
 msgstr "จำนวนที่เข้าดูบันทึก:"
 
 #: dt-assets/functions/details-bar.php:153
 #: dt-assets/functions/details-bar.php:329
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "โดย %s"
@@ -691,6 +721,12 @@ msgstr "กำลังติดตาม"
 msgid "Share"
 msgstr "แบ่งปัน"
 
+#: dt-assets/functions/details-bar.php:301
+#, fuzzy
+#| msgid "Record Hits:"
+msgid "Record Picture"
+msgstr "จำนวนที่เข้าดูบันทึก:"
+
 #: dt-assets/functions/enqueue-scripts.php:116
 #: dt-metrics/records/date-range-activity.php:111
 #: template-merge-post-details.php:103
@@ -713,12 +749,13 @@ msgid "No results found matching \"{{query}}\""
 msgstr "ไม่พบผลลัพธ์ที่ตรงกับ \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
 msgstr "กำลังแสดง$s รายการ พิมพ์เพื่อค้นหาเพิ่มเติม"
 
 #: dt-assets/functions/enqueue-scripts.php:121
+#, php-format
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
 msgstr "แสดง %1$s รายการที่ตรงกับ %2$s"
@@ -736,6 +773,7 @@ msgid "Copy"
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:124
+#, php-format
 msgid "Copied: %s"
 msgstr ""
 
@@ -747,7 +785,7 @@ msgstr "คุณไม่มีการแจ้งเตือนที่ย
 msgid "You don't have any notifications"
 msgstr "คุณไม่มีการแจ้งเตือนใด ๆ"
 
-#: dt-assets/functions/enqueue-scripts.php:180 dt-posts/dt-posts.php:1628
+#: dt-assets/functions/enqueue-scripts.php:180 dt-posts/dt-posts.php:1638
 msgid "D.T System"
 msgstr "ระบบ D.T"
 
@@ -760,11 +798,13 @@ msgid "Hide Translation"
 msgstr "ซ่อนคำแปล"
 
 #: dt-assets/functions/enqueue-scripts.php:186
+#, php-format
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "%1$s ตอบด้วยอีโมจิ %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:187
+#, php-format
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s และ %1$s ตอบด้วยอีโมจิ %2$s"
@@ -806,6 +846,7 @@ msgid "Dismissed Duplicates"
 msgstr "ปิดรายการที่ซ้ำกัน"
 
 #: dt-assets/functions/enqueue-scripts.php:227
+#, php-format
 msgid "Duplicates on: %s"
 msgstr "รายการซ้ำเมื่อ:%s"
 
@@ -822,7 +863,7 @@ msgid "Transfer update successful."
 msgstr "การโอนการปรับปรุงเรียบร้อย"
 
 #: dt-assets/functions/enqueue-scripts.php:231
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "สร้างเมื่อ$s"
@@ -836,7 +877,7 @@ msgid "Revert Record Back To This Point"
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:253
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
@@ -865,7 +906,7 @@ msgid "Matches Found:"
 msgstr "พบรายการที่ตรงกัน:"
 
 #: dt-assets/functions/enqueue-scripts.php:305
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "ปิดการแข่งขันทั้งหมดสำหรับ$s"
@@ -893,7 +934,7 @@ msgstr "ไม่พบบันทึกที่ตรงกับตัวก
 
 #: dt-assets/functions/enqueue-scripts.php:330 dt-contacts/base-setup.php:674
 #: dt-groups/base-setup.php:1036 dt-posts/custom-post-type.php:489
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "All records"
 msgid "All %s"
 msgstr "ทั้งหมด$s"
@@ -939,11 +980,13 @@ msgid "Exclude Item"
 msgstr "ไม่รวมรายการ"
 
 #: dt-assets/functions/enqueue-scripts.php:343
+#, php-format
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:344
+#, php-format
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
@@ -1030,6 +1073,7 @@ msgid "Contact"
 msgstr "ติดต่อ"
 
 #: dt-assets/functions/enqueue-scripts.php:396
+#, php-format
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -1120,7 +1164,7 @@ msgstr "การแจ้งเตือน"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:283
+#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:321
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "การตั้งค่า"
@@ -1131,7 +1175,8 @@ msgstr "ธุรการ"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:269
-#: dt-metrics/combined/locations-list.php:263
+#: dt-metrics/combined/locations-list.php:95
+#: dt-metrics/combined/locations-list.php:270
 #: dt-metrics/records/dynamic-records-map.php:65
 #: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
@@ -1217,11 +1262,13 @@ msgid "No duplicates found."
 msgstr "ไม่พบรายการที่ซ้ำกัน"
 
 #: dt-assets/parts/merge-details.php:36
+#, php-format
 msgctxt "Merge Contacts"
 msgid "Merge %s"
 msgstr "ผสาน %s"
 
 #: dt-assets/parts/merge-details.php:37
+#, php-format
 msgctxt "Merge this contact with another contact"
 msgid "Merge this %1$s with another %2$s"
 msgstr "ผสาน %1$s นี้กับ %2$s อีกอัน"
@@ -1444,7 +1491,7 @@ msgid ""
 "notifications."
 msgstr "คลิกปุ่ม \"ยังไม่ได้อ่าน\" เพื่อแสดงรายการการแจ้งเตือนที่ยังไม่ได้อ่านทั้งหมดของคุณ"
 
-#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:281
+#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "ทำเครื่องหมายทั้งหมดว่าอ่านแล้ว"
@@ -1534,8 +1581,9 @@ msgstr "สร้างบันทึก"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
-#: dt-metrics/records/genmap.php:166 dt-posts/custom-post-type.php:170
-#: dt-users/template-user-management.php:196 template-settings.php:146
+#: dt-metrics/combined/locations-list.php:90 dt-metrics/records/genmap.php:166
+#: dt-posts/custom-post-type.php:170 dt-users/template-user-management.php:196
+#: template-settings.php:146
 msgid "Name"
 msgstr "ชื่อ"
 
@@ -1548,13 +1596,36 @@ msgid "Edit New Record"
 msgstr "แก้ไขบันทึกใหม่"
 
 #: dt-assets/parts/modals/modal-new-contact.php:30
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "back to record"
 msgid "Back to %s"
 msgstr "กลับไปที่$s"
 
+#: dt-assets/parts/modals/modal-new-tag.php:2 template-new-bulk-post.php:276
+msgid "Create Tag"
+msgstr "สร้างแท็ก"
+
+#: dt-assets/parts/modals/modal-new-tag.php:3 template-new-bulk-post.php:277
+msgid "Create a tag and apply it to this record."
+msgstr "สร้างแท็กและใช้กับบันทึกนี้"
+
+#: dt-assets/parts/modals/modal-new-tag.php:7
+#: dt-assets/parts/modals/modal-new-tag.php:9 template-new-bulk-post.php:281
+#: template-new-bulk-post.php:283
+msgid "Tag"
+msgstr "แท็ก"
+
+#: dt-assets/parts/modals/modal-new-tag.php:10 dt-core/global-functions.php:549
+#: template-new-bulk-post.php:285 template-new-post.php:147
+msgid "This is required"
+msgstr "สิ่งนี้จำเป็น"
+
+#: dt-assets/parts/modals/modal-new-tag.php:15 template-new-bulk-post.php:293
+msgid "Create and apply tag"
+msgstr "สร้างและใช้แท็ก"
+
 #: dt-assets/parts/modals/modal-record-history.php:6
-#, fuzzy
+#, fuzzy, php-format
 #| msgid "Record Hits:"
 msgctxt "Record History"
 msgid "%s Record History"
@@ -1642,24 +1713,24 @@ msgstr "ออกจากระบบ"
 msgid "Theme Update Available!"
 msgstr "มีการอัปเดตธีม!"
 
-#: dt-assets/parts/nav-topbar.php:251 template-notifications.php:43
+#: dt-assets/parts/nav-topbar.php:289 template-notifications.php:43
 msgid "New"
 msgstr "ใหม่"
 
-#: dt-assets/parts/nav-topbar.php:257 template-notifications.php:50
+#: dt-assets/parts/nav-topbar.php:295 template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "ทั้งหมด"
 
-#: dt-assets/parts/nav-topbar.php:261 template-notifications.php:54
+#: dt-assets/parts/nav-topbar.php:299 template-notifications.php:54
 msgid "Unread"
 msgstr "ยังไม่ได้อ่าน"
 
-#: dt-assets/parts/nav-topbar.php:268
+#: dt-assets/parts/nav-topbar.php:306
 msgid "See All"
 msgstr "ดูทั้งหมด"
 
-#: dt-assets/parts/nav-topbar.php:287 template-notifications.php:72
+#: dt-assets/parts/nav-topbar.php:325 template-notifications.php:72
 msgid "Mark All"
 msgstr "ทำเครื่องหมายทั้งหมด"
 
@@ -1667,7 +1738,8 @@ msgstr "ทำเครื่องหมายทั้งหมด"
 #: dt-contacts/base-setup.php:261 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:132
-#: dt-metrics/combined/locations-list.php:126
+#: dt-metrics/combined/locations-list.php:92
+#: dt-metrics/combined/locations-list.php:133
 #: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
 #: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:172
@@ -1754,7 +1826,7 @@ msgid "WhatsApp"
 msgstr "Whatsapp"
 
 #: dt-contacts/base-setup.php:218
-#: dt-core/configuration/config-site-defaults.php:327
+#: dt-core/configuration/config-site-defaults.php:333
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
 #: dt-users/users.php:129 template-settings.php:166
@@ -1775,7 +1847,7 @@ msgid "Other Social Links"
 msgstr "ลิงก์โซเชียลอื่น ๆ"
 
 #: dt-contacts/base-setup.php:261
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "การเชื่อมต่อกับ$s อื่น ๆ"
@@ -1898,7 +1970,7 @@ msgid "Personal"
 msgstr "ส่วนบุคคล"
 
 #: dt-contacts/base-setup.php:372
-#: dt-core/configuration/config-site-defaults.php:330
+#: dt-core/configuration/config-site-defaults.php:336
 msgid "Web"
 msgstr "เว็บ"
 
@@ -1922,13 +1994,13 @@ msgid "The website, event or location this contact came from."
 msgstr "เว็บไซต์เหตุการณ์หรือสถานที่ติดต่อนี้มาจาก"
 
 #: dt-contacts/base-setup.php:433 dt-contacts/base-setup.php:465
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "เก็บถาวร$s"
 
 #: dt-contacts/base-setup.php:440
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "เปลี่ยน$s ประเภท"
@@ -1938,7 +2010,7 @@ msgid "See duplicates"
 msgstr "ดูรายการที่ซ้ำกัน"
 
 #: dt-contacts/base-setup.php:466
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "แน่ใจไหมว่าต้องการเก็บ$s"
@@ -1958,7 +2030,7 @@ msgid "Confirm"
 msgstr "ยืนยัน"
 
 #: dt-contacts/base-setup.php:532
-#: dt-core/configuration/config-site-defaults.php:518
+#: dt-core/configuration/config-site-defaults.php:524
 #: dt-groups/base-setup.php:607 template-settings.php:212
 msgid "Other"
 msgstr "อื่น ๆ"
@@ -1978,12 +2050,14 @@ msgid "Default Filters"
 msgstr "ตัวกรองเริ่มต้น"
 
 #: dt-contacts/base-setup.php:678
+#, php-format
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "%s ทั้งหมดที่ฉันสามารถดูได้"
 
 #: dt-contacts/base-setup.php:689 dt-groups/base-setup.php:1042
 #: dt-posts/custom-post-type.php:501
+#, php-format
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "%sโปรด"
@@ -2025,7 +2099,7 @@ msgid "Sub-assigned to me"
 msgstr "ย่อยที่กำหนดให้ฉัน"
 
 #: dt-contacts/base-setup.php:745
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "เชื่อมต่อแล้ว$s"
@@ -2040,7 +2114,7 @@ msgid "Subassigned only"
 msgstr "มอบหมายเฉพาะ"
 
 #: dt-contacts/base-setup.php:971
-#, fuzzy
+#, fuzzy, php-format
 msgid "This %s is archived"
 msgstr "เก็บ$s นี้แล้ว"
 
@@ -2093,7 +2167,7 @@ msgid "another site"
 msgstr "ไซต์อื่น"
 
 #: dt-contacts/contacts-transfer.php:276
-#, fuzzy
+#, fuzzy, php-format
 msgid "Already transfered to %s"
 msgstr "โอนไปยัง$s แล้ว"
 
@@ -2127,7 +2201,7 @@ msgid "Minor transfer error."
 msgstr "ข้อผิดพลาดเล็กน้อยในการโอน"
 
 #: dt-contacts/contacts-transfer.php:479
-#, fuzzy
+#, fuzzy, php-format
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "รายชื่อติดต่อนี้ถูกโอนไปยัง$s เพื่อติดตามผลเพิ่มเติม"
 
@@ -2157,16 +2231,19 @@ msgid "redacted"
 msgstr "redacted"
 
 #: dt-contacts/duplicates-merging.php:442
+#, php-format
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(จากรายการซ้ำ):%s"
 
 #: dt-contacts/duplicates-merging.php:563
+#, php-format
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "ระเบียนนี้ซ้ำและรวมเข้ากับ %2$s แล้ว"
 
 #: dt-contacts/duplicates-merging.php:576
+#, php-format
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s รวม %2$s เข้ากับเรกคอร์ดนี้"
@@ -2492,7 +2569,7 @@ msgid "Decline"
 msgstr "ลดลง"
 
 #: dt-contacts/module-access.php:946
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "ติดตาม"
@@ -2733,149 +2810,149 @@ msgstr "ผู้ดูแลระบบ"
 msgid "Subscriber"
 msgstr "สมาชิก"
 
-#: dt-core/configuration/config-site-defaults.php:335
+#: dt-core/configuration/config-site-defaults.php:341
 msgid "Newly Assigned Contact"
 msgstr "ผู้ติดต่อที่ได้รับมอบหมายใหม่"
 
-#: dt-core/configuration/config-site-defaults.php:340
+#: dt-core/configuration/config-site-defaults.php:346
 msgid "@Mentions"
 msgstr "@ เมนชั่น"
 
-#: dt-core/configuration/config-site-defaults.php:345
+#: dt-core/configuration/config-site-defaults.php:351
 msgid "New Comments"
 msgstr "ความคิดเห็นใหม่"
 
-#: dt-core/configuration/config-site-defaults.php:355
+#: dt-core/configuration/config-site-defaults.php:361
 msgid "Contact Info Changed"
 msgstr "ข้อมูลการติดต่อมีการเปลี่ยนแปลง"
 
-#: dt-core/configuration/config-site-defaults.php:360
+#: dt-core/configuration/config-site-defaults.php:366
 #: dt-core/migrations/0012-typo-rename.php:13
 msgid "Contact Milestones and Group Health metrics"
 msgstr "ติดต่อ Milestones และ Group Health metrics"
 
-#: dt-core/configuration/config-site-defaults.php:374
+#: dt-core/configuration/config-site-defaults.php:380
 msgid ""
 "This contact is active but there is no record of anybody contacting them. "
 "Please do contact them."
 msgstr "รายชื่อติดต่อนี้ใช้งานอยู่ แต่ไม่มีประวัติว่ามีใครติดต่อพวกเขา โปรดติดต่อพวกเขา"
 
-#: dt-core/configuration/config-site-defaults.php:380
+#: dt-core/configuration/config-site-defaults.php:386
 msgid "Please try connecting with this contact again."
 msgstr "โปรดลองเชื่อมต่อกับผู้ติดต่อนี้อีกครั้ง"
 
-#: dt-core/configuration/config-site-defaults.php:386
 #: dt-core/configuration/config-site-defaults.php:392
 #: dt-core/configuration/config-site-defaults.php:398
 #: dt-core/configuration/config-site-defaults.php:404
 #: dt-core/configuration/config-site-defaults.php:410
+#: dt-core/configuration/config-site-defaults.php:416
 msgid ""
 "We haven't heard about this person in a while. Do you have an update for "
 "this contact?"
 msgstr "เราไม่เคยได้ยินเกี่ยวกับบุคคลนี้มาระยะหนึ่งแล้ว คุณมีข้อมูลอัปเดตสำหรับผู้ติดต่อนี้หรือไม่"
 
-#: dt-core/configuration/config-site-defaults.php:420
+#: dt-core/configuration/config-site-defaults.php:426
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr "เราไม่เคยได้ยินเกี่ยวกับกลุ่มนี้มาระยะหนึ่งแล้ว คุณมีการอัปเดตหรือไม่?"
 
-#: dt-core/configuration/config-site-defaults.php:451
+#: dt-core/configuration/config-site-defaults.php:457
 msgid "Personal Phone"
 msgstr "โทรศัพท์ส่วนตัว"
 
-#: dt-core/configuration/config-site-defaults.php:454
+#: dt-core/configuration/config-site-defaults.php:460
 msgid "Personal phone is private to the team, not for distribution."
 msgstr "โทรศัพท์ส่วนตัวเป็นโทรศัพท์ส่วนตัวสำหรับทีมไม่ใช่เพื่อแจกจ่าย"
 
-#: dt-core/configuration/config-site-defaults.php:458
+#: dt-core/configuration/config-site-defaults.php:464
 msgid "Personal Email"
 msgstr "อีเมลส่วนตัว"
 
-#: dt-core/configuration/config-site-defaults.php:461
+#: dt-core/configuration/config-site-defaults.php:467
 msgid "Personal email is private to the team, not for distribution."
 msgstr "อีเมลส่วนตัวเป็นอีเมลส่วนตัวสำหรับทีมไม่ใช่เพื่อการแจกจ่าย"
 
-#: dt-core/configuration/config-site-defaults.php:465
+#: dt-core/configuration/config-site-defaults.php:471
 msgid "Personal Address"
 msgstr "ที่อยู่ส่วนบุคคล"
 
-#: dt-core/configuration/config-site-defaults.php:468
+#: dt-core/configuration/config-site-defaults.php:474
 msgid "Personal address is private to the team, not for distribution."
 msgstr "ที่อยู่ส่วนบุคคลเป็นส่วนตัวของทีมไม่ใช่เพื่อการแจกจ่าย"
 
-#: dt-core/configuration/config-site-defaults.php:472
+#: dt-core/configuration/config-site-defaults.php:478
 msgid "Work Phone"
 msgstr "โทรศัพท์ที่ทำงาน"
 
-#: dt-core/configuration/config-site-defaults.php:475
+#: dt-core/configuration/config-site-defaults.php:481
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr "โทรศัพท์ที่ทำงานมีไว้สำหรับแจกจ่ายให้กับผู้ติดต่อและผู้แสวงหา"
 
-#: dt-core/configuration/config-site-defaults.php:479
+#: dt-core/configuration/config-site-defaults.php:485
 msgid "Work Email"
 msgstr "อีเมลที่ทำงาน"
 
-#: dt-core/configuration/config-site-defaults.php:482
+#: dt-core/configuration/config-site-defaults.php:488
 msgid "Work email is for distribution to contacts and seekers."
 msgstr "อีเมลที่ทำงานมีไว้สำหรับแจกจ่ายให้กับผู้ติดต่อและผู้หางาน"
 
-#: dt-core/configuration/config-site-defaults.php:486
+#: dt-core/configuration/config-site-defaults.php:492
 msgid "Work Facebook"
 msgstr "ทำงาน Facebook"
 
-#: dt-core/configuration/config-site-defaults.php:489
+#: dt-core/configuration/config-site-defaults.php:495
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr "Work Facebook มีไว้สำหรับแจกจ่ายให้กับผู้ติดต่อและผู้แสวงหา"
 
-#: dt-core/configuration/config-site-defaults.php:493
+#: dt-core/configuration/config-site-defaults.php:499
 msgid "Work WhatsApp"
 msgstr "ทำงาน WhatsApp"
 
-#: dt-core/configuration/config-site-defaults.php:496
+#: dt-core/configuration/config-site-defaults.php:502
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "Work WhatsApp มีไว้สำหรับแจกจ่ายให้กับผู้ติดต่อและผู้แสวงหา"
 
-#: dt-core/configuration/config-site-defaults.php:503
+#: dt-core/configuration/config-site-defaults.php:509
 msgid "thumbs up"
 msgstr "ยกนิ้วให้"
 
-#: dt-core/configuration/config-site-defaults.php:504
+#: dt-core/configuration/config-site-defaults.php:510
 msgid "heart"
 msgstr "หัวใจ"
 
-#: dt-core/configuration/config-site-defaults.php:505
+#: dt-core/configuration/config-site-defaults.php:511
 msgid "laugh"
 msgstr "หัวเราะ"
 
-#: dt-core/configuration/config-site-defaults.php:506
+#: dt-core/configuration/config-site-defaults.php:512
 msgid "wow"
 msgstr "ว้าว"
 
-#: dt-core/configuration/config-site-defaults.php:507
+#: dt-core/configuration/config-site-defaults.php:513
 msgid "sad"
 msgstr "เศร้า"
 
-#: dt-core/configuration/config-site-defaults.php:508
+#: dt-core/configuration/config-site-defaults.php:514
 msgid "prayer"
 msgstr "คำภาวนา"
 
-#: dt-core/configuration/config-site-defaults.php:516
+#: dt-core/configuration/config-site-defaults.php:522
 #: dt-login/login-template.php:529
 msgid "Home"
 msgstr "บ้าน"
 
-#: dt-core/configuration/config-site-defaults.php:517
+#: dt-core/configuration/config-site-defaults.php:523
 msgid "Work"
 msgstr "งาน"
 
-#: dt-core/configuration/config-site-defaults.php:527
+#: dt-core/configuration/config-site-defaults.php:533
 msgid "Accepting new contacts"
 msgstr "รับผู้ติดต่อใหม่"
 
-#: dt-core/configuration/config-site-defaults.php:531
+#: dt-core/configuration/config-site-defaults.php:537
 msgid "I'm only investing in existing contacts"
 msgstr "ฉันลงทุนในรายชื่อติดต่อที่มีอยู่เท่านั้น"
 
-#: dt-core/configuration/config-site-defaults.php:535
+#: dt-core/configuration/config-site-defaults.php:541
 msgid "I have too many contacts"
 msgstr "ฉันมีรายชื่อติดต่อมากเกินไป"
 
@@ -2896,7 +2973,10 @@ msgid "ERROR: Invalid username/password combination."
 msgstr "ข้อผิดพลาด: ชื่อผู้ใช้ / รหัสผ่านไม่ถูกต้อง"
 
 #: dt-core/configuration/restrict-site-access.php:261
-msgid "Reset password"
+#: dt-login/login-template.php:217 dt-login/login-template.php:263
+#, fuzzy
+#| msgid "Reset password"
+msgid "Reset Password"
 msgstr "รีเซ็ตรหัสผ่าน"
 
 #: dt-core/configuration/restrict-site-access.php:262
@@ -2909,12 +2989,14 @@ msgstr "มีคนขอรีเซ็ตรหัสผ่านสำหร
 
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:319
+#, php-format
 msgid "DT Site Name: %s"
 msgstr "ชื่อไซต์ DT:%s"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:321
 #: dt-users/user-hooks-and-config.php:390
+#, php-format
 msgid "Username: %s"
 msgstr "ชื่อผู้ใช้:%s"
 
@@ -2926,11 +3008,6 @@ msgstr "หากนี่เป็นข้อผิดพลาดโปรด
 msgid "To reset your password, visit the following address:"
 msgstr "หากต้องการรีเซ็ตรหัสผ่านโปรดไปที่ที่อยู่ต่อไปนี้:"
 
-#: dt-core/global-functions.php:549 template-new-bulk-post.php:285
-#: template-new-post.php:149 template-new-post.php:186
-msgid "This is required"
-msgstr "สิ่งนี้จำเป็น"
-
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
 msgstr "(ไม่มีชื่อเรื่อง)"
@@ -2940,6 +3017,7 @@ msgid "Release Announcement!"
 msgstr ""
 
 #: dt-core/release-notifications.php:59
+#, php-format
 msgid "Disciple.Tools Theme Version %1$s"
 msgstr ""
 
@@ -3008,7 +3086,8 @@ msgstr "กลุ่ม"
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:177
-#: dt-metrics/combined/locations-list.php:171
+#: dt-metrics/combined/locations-list.php:93
+#: dt-metrics/combined/locations-list.php:178
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
@@ -3414,12 +3493,6 @@ msgstr ""
 msgid "Passwords do not match. Please, try again."
 msgstr ""
 
-#: dt-login/login-template.php:217 dt-login/login-template.php:263
-#, fuzzy
-#| msgid "Reset password"
-msgid "Reset Password"
-msgstr "รีเซ็ตรหัสผ่าน"
-
 #: dt-login/login-template.php:231 dt-login/login-template.php:234
 #: dt-login/login-template.php:353 dt-login/login-template.php:356
 #, fuzzy
@@ -3480,7 +3553,8 @@ msgstr "รีเซ็ตรหัสผ่าน"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:222
-#: dt-metrics/combined/locations-list.php:216
+#: dt-metrics/combined/locations-list.php:94
+#: dt-metrics/combined/locations-list.php:223
 msgid "Churches"
 msgstr "คริสตจักร"
 
@@ -3526,7 +3600,8 @@ msgstr "รายการ"
 msgid "Refresh Cached Data"
 msgstr "รีเฟรชข้อมูลแคช"
 
-#: dt-mapping/mapping.php:302 dt-people-groups/people-groups-base.php:276
+#: dt-mapping/mapping.php:302 dt-metrics/combined/locations-list.php:91
+#: dt-people-groups/people-groups-base.php:276
 msgid "Population"
 msgstr "ประชากร"
 
@@ -3595,12 +3670,12 @@ msgid "Number of contacts that had the active status"
 msgstr "จำนวนผู้ติดต่อที่มีสถานะใช้งานอยู่"
 
 #: dt-metrics/combined/critical-path.php:241
-#, fuzzy
+#, fuzzy, php-format
 msgid "Number of contacts on %s at the end of the time range"
 msgstr "จำนวนผู้ติดต่อใน$s เมื่อสิ้นสุดช่วงเวลา"
 
 #: dt-metrics/combined/critical-path.php:243
-#, fuzzy
+#, fuzzy, php-format
 msgid "Number of contacts where %s was set on the seeker path"
 msgstr "จำนวนผู้ติดต่อที่กำหนด$s บนเส้นทางผู้ค้นหา"
 
@@ -3616,12 +3691,12 @@ msgid ""
 msgstr "จำนวนผู้ติดต่อที่รับบัพติศมากับวันที่รับบัพติศมาในช่วงวันที่และรับบัพติศมาโดยการเชื่อมต่อ"
 
 #: dt-metrics/combined/critical-path.php:277
-#, fuzzy
+#, fuzzy, php-format
 msgid "Generation %s Baptisms"
 msgstr "รุ่น$s บัพติศมา"
 
 #: dt-metrics/combined/critical-path.php:278
-#, fuzzy
+#, fuzzy, php-format
 msgid "Number of generation %s baptisms"
 msgstr "จำนวนรุ่น$s บัพติศมา"
 
@@ -3651,11 +3726,12 @@ msgid "Churches active at the end of the time range"
 msgstr "คริสตจักรเปิดใช้งานเมื่อสิ้นสุดช่วงเวลา"
 
 #: dt-metrics/combined/critical-path.php:321
+#, php-format
 msgid "Generation %s Churches"
 msgstr "Generation %s คริสตจักร"
 
 #: dt-metrics/combined/critical-path.php:322
-#, fuzzy
+#, fuzzy, php-format
 msgid "Number of generation %s churches at the end of the time range"
 msgstr "จำนวนคริสตจักรรุ่น$s เมื่อสิ้นสุดช่วงเวลา"
 
@@ -3699,6 +3775,7 @@ msgstr "เดือนที่แล้ว"
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
 #: dt-notifications/notifications.php:496
+#, php-format
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s เดือนที่แล้ว"
@@ -3723,8 +3800,8 @@ msgstr "ไม่พบกิจกรรม!"
 
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
-#: template-new-post.php:49
-#, fuzzy
+#: template-new-post.php:47
+#, fuzzy, php-format
 msgid "New %s"
 msgstr "ใหม่$s"
 
@@ -3783,12 +3860,14 @@ msgstr "ผู้ติดต่อที่โอนในช่วงวัน
 
 #: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:79
 #: dt-metrics/combined/site-links.php:80
+#, php-format
 msgctxt "Seeker Path of contacts created in date range"
 msgid "%s of contacts created in date range"
 msgstr "%s ของผู้ติดต่อที่สร้างในช่วงวันที่"
 
 #: dt-metrics/combined/site-links.php:81 dt-metrics/combined/site-links.php:82
 #: dt-metrics/combined/site-links.php:83
+#, php-format
 msgctxt "Seeker Path changes during date range"
 msgid "%s changes during date range"
 msgstr "%s การเปลี่ยนแปลงในช่วงวันที่"
@@ -3954,10 +4033,12 @@ msgid "None"
 msgstr "ไม่มี"
 
 #: dt-metrics/personal/activity-highlights.php:60
+#, php-format
 msgid "%1$s I Changed"
 msgstr "%1$s ที่ฉันเปลี่ยนแปลง"
 
 #: dt-metrics/personal/activity-highlights.php:61
+#, php-format
 msgid "%1$s I Made"
 msgstr "%1$s ที่ฉันทำ"
 
@@ -3966,6 +4047,7 @@ msgid "Contacts I Baptized"
 msgstr "ผู้ติดต่อที่ฉันทำพิธีล้างบาปให้"
 
 #: dt-metrics/personal/activity-highlights.php:63
+#, php-format
 msgid "%1$s changed by others on my %2$s"
 msgstr "%1$s ที่ผู้อื่นเปลี่ยนแปลงใน %2$s ของฉัน"
 
@@ -3988,6 +4070,7 @@ msgid "Date"
 msgstr "วันที่"
 
 #: dt-metrics/personal/activity-highlights.php:191
+#, php-format
 msgid "%1$d %2$s created"
 msgstr "%1$d %2$s ที่สร้าง"
 
@@ -4088,10 +4171,11 @@ msgid "Add Records"
 msgstr "เพิ่มเรกคอร์ด"
 
 #: dt-metrics/records/dynamic-records-map.php:94
+#: dt-metrics/records/dynamic-records-map.php:97
 #, fuzzy
-#| msgid "Post Type"
-msgid "Post Types"
-msgstr "ชนิดของโพสต์"
+#| msgid "Record"
+msgid "Record Types"
+msgstr "บันทึก"
 
 #: dt-metrics/records/dynamic-records-map.php:95
 #, fuzzy
@@ -4105,12 +4189,6 @@ msgstr "คำภาวนา"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete layer?"
 msgstr "แน่ใจไหมว่าต้องการลบ$s"
-
-#: dt-metrics/records/dynamic-records-map.php:97
-#, fuzzy
-#| msgid "Record"
-msgid "Record Types"
-msgstr "บันทึก"
 
 #: dt-metrics/records/dynamic-records-map.php:99
 #: dt-notifications/notifications.php:920
@@ -4181,7 +4259,7 @@ msgid "View Record"
 msgstr "ดูบันทึก"
 
 #: dt-metrics/records/genmap.php:148 dt-metrics/records/genmap.php:152
-#: dt-posts/dt-posts.php:2687 dt-users/template-user-management.php:384
+#: dt-posts/dt-posts.php:2697 dt-users/template-user-management.php:384
 #: dt-users/users.php:175 single-template.php:127
 msgid "Status"
 msgstr "สถานะ"
@@ -4300,6 +4378,7 @@ msgid "Disconnected"
 msgstr "เชื่อมต่อแล้ว$s"
 
 #: dt-metrics/records/time-charts.php:113
+#, php-format
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
 msgstr "%1$sใน%2$s"
@@ -4323,6 +4402,7 @@ msgid "Click here to view or reply"
 msgstr "คลิกที่นี่เพื่อดูหรือตอบกลับ"
 
 #: dt-notifications/notifications-email.php:138
+#, php-format
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
 msgstr "อัปเดตเมื่อ %1$s # %2$s"
@@ -4340,87 +4420,103 @@ msgid "Daily Digest"
 msgstr "สรุปประจำวัน"
 
 #: dt-notifications/notifications.php:476
+#, php-format
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "%s นาทีที่แล้ว"
 
 #: dt-notifications/notifications.php:481
+#, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "%s ชั่วโมงที่แล้ว"
 
 #: dt-notifications/notifications.php:486
+#, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s วันที่แล้ว"
 
 #: dt-notifications/notifications.php:491
+#, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "%s สัปดาห์ที่แล้ว"
 
 #: dt-notifications/notifications.php:510
+#, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "%s ปีที่แล้ว"
 
 #: dt-notifications/notifications.php:514
+#, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "กว่า %s ปีที่แล้ว"
 
 #: dt-notifications/notifications.php:909
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
 msgstr "สร้างและกำหนด$s ให้กับคุณแล้ว"
 
 #: dt-notifications/notifications.php:911
+#, php-format
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr "คุณได้รับมอบหมาย: %1$s"
 
 #: dt-notifications/notifications.php:917
+#, php-format
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
 msgstr "%1$s กำหนด %2$s ให้กับ %3$s"
 
 #: dt-notifications/notifications.php:921
+#, php-format
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
 msgstr "%1$s แบ่งปัน %2$s กับคุณ"
 
 #: dt-notifications/notifications.php:928
+#, php-format
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
 msgstr "%1$s พูดถึงคุณใน %2$s ว่า: %3$s"
 
 #: dt-notifications/notifications.php:935
+#, php-format
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
 msgstr "%1$s แสดงความคิดเห็นกับ %2$s ว่า %3$s"
 
 #: dt-notifications/notifications.php:939
+#, php-format
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
 msgstr "%1$s มอบหมายงานย่อย %2$s ให้คุณ"
 
 #: dt-notifications/notifications.php:949
+#, php-format
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
 msgstr "%1$s เพิ่มเป้าหมาย %2$s เมื่อ %3$s"
 
 #: dt-notifications/notifications.php:952
+#, php-format
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr "@%1$s ขอให้อัปเดตเมื่อ %2$s"
 
 #: dt-notifications/notifications.php:956
+#, php-format
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
 msgstr "%1$s แก้ไขรายละเอียดการติดต่อใน %2$s"
 
 #: dt-notifications/notifications.php:959
+#, php-format
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s ปฏิเสธงานเมื่อ: %2$s"
@@ -4529,38 +4625,41 @@ msgstr "ตำแหน่งทั่วไปที่ผู้ติดต่
 msgid "Locations or Address"
 msgstr "สถานที่หรือที่อยู่"
 
-#: dt-posts/dt-posts.php:100
+#: dt-posts/dt-posts.php:101
 msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1620
-#, fuzzy
+#: dt-posts/dt-posts.php:1630
+#, fuzzy, php-format
 #| msgid "Magic Link Submission"
 msgid "%s Submission"
 msgstr "การส่งลิงก์วิเศษ"
 
-#: dt-posts/dt-posts.php:1620
+#: dt-posts/dt-posts.php:1630
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "Magic Link"
 msgstr "การส่งลิงก์วิเศษ"
 
-#: dt-posts/dt-posts.php:1622 dt-posts/dt-posts.php:2169
+#: dt-posts/dt-posts.php:1632 dt-posts/dt-posts.php:2179
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "เปลี่ยนกลับกิจกรรม"
 
-#: dt-posts/dt-posts.php:2409
-msgid "Post already shared with user."
+#: dt-posts/dt-posts.php:2419
+#, fuzzy
+#| msgid "Post already shared with user."
+msgid "Record already shared with user."
 msgstr "โพสต์แชร์กับผู้ใช้แล้ว"
 
-#: dt-posts/dt-posts.php:2688 single-template.php:174
+#: dt-posts/dt-posts.php:2698 single-template.php:174
 msgid "Details"
 msgstr "รายละเอียด"
 
-#: dt-posts/dt-posts.php:2766
+#: dt-posts/dt-posts.php:2776
+#, php-format
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4572,215 +4671,223 @@ msgstr ""
 "@[%1$s](%2$s) - ผู้ใช้ที่ชื่อ %3$s ร้องขอเข้าถึง %4$s [%5$s](%6$s) หากยินดี "
 "ให้แชร์บันทึกนี้กับผู้ใช้เพื่อให้สิทธิ์การเข้าถึง"
 
-#: dt-posts/dt-posts.php:2772
+#: dt-posts/dt-posts.php:2782
 msgid "Access Request"
 msgstr "ร้องขอเข้าถึง"
 
 #: dt-posts/posts.php:281
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
 msgstr "บัพติศมา$s"
 
 #: dt-posts/posts.php:282
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
 msgstr "รับบัพติศมาโดย %s"
 
 #: dt-posts/posts.php:284
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
 msgstr "ไม่ได้ล้างบาป$s"
 
 #: dt-posts/posts.php:285
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
 msgstr "ไม่รับบัพติศมาโดย$s"
 
 #: dt-posts/posts.php:289
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "contact1 added to members"
 msgid "%s added to members"
 msgstr "เพิ่ม$s ให้กับสมาชิกแล้ว"
 
 #: dt-posts/posts.php:290
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Added to group group1"
 msgid "Added to group %s"
 msgstr "เพิ่มในกลุ่ม$s แล้ว"
 
 #: dt-posts/posts.php:292
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
 msgstr "ลบ$s ออกจากกลุ่ม"
 
 #: dt-posts/posts.php:293
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
 msgstr "ลบออกจากกลุ่ม$s"
 
 #: dt-posts/posts.php:298
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
 msgstr "การฝึกสอน$s"
 
 #: dt-posts/posts.php:299
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
 msgstr "ฝึกสอนโดย$s"
 
 #: dt-posts/posts.php:301
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
 msgstr "ไม่มีการฝึกสอน$s อีกต่อไป"
 
 #: dt-posts/posts.php:302
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
 msgstr "ไม่มีการฝึกสอนโดย$s อีกต่อไป"
 
 #: dt-posts/posts.php:306
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
 msgstr "กำหนดย่อย$s"
 
 #: dt-posts/posts.php:307
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
 msgstr "กำหนดย่อยเมื่อ$s"
 
 #: dt-posts/posts.php:309
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
 msgstr "ลบ$s ที่กำหนดย่อยแล้ว"
 
 #: dt-posts/posts.php:310
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "ไม่มีการกำหนดย่อยใน$s อีกต่อไป"
 
 #: dt-posts/posts.php:314
+#, php-format
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
 msgstr "เพิ่ม %1$s เป็นกลุ่มคนใน %2$s"
 
 #: dt-posts/posts.php:315
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
 msgstr "เพิ่ม$s ลงในกลุ่มคนแล้ว"
 
 #: dt-posts/posts.php:317
+#, php-format
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
 msgstr "ลบ %1$s ออกจากกลุ่มคนใน %2$s"
 
 #: dt-posts/posts.php:318
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "ลบ$s ออกจากกลุ่มคนแล้ว"
 
 #: dt-posts/posts.php:322
+#, php-format
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
 msgstr "เพิ่ม %1$s เป็นผู้นำใน %2$s"
 
 #: dt-posts/posts.php:323
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
 msgstr "เพิ่ม$s ให้กับผู้นำแล้ว"
 
 #: dt-posts/posts.php:325
+#, php-format
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
 msgstr "%1$s ถูกลบออกจากผู้นำใน %2$s"
 
 #: dt-posts/posts.php:326
+#, php-format
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
 msgstr "%s ถูกลบออกจากผู้นำ"
 
 #: dt-posts/posts.php:330
+#, php-format
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
 msgstr "%1$s เพิ่มเป็นโค้ชเมื่อ %2$s"
 
 #: dt-posts/posts.php:331
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
 msgstr "เพิ่ม$s ให้กับโค้ชแล้ว"
 
 #: dt-posts/posts.php:333
+#, php-format
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
 msgstr "ลบ %1$s ออกจากโค้ชเมื่อ %2$s"
 
 #: dt-posts/posts.php:334
+#, php-format
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
 msgstr "%s ถูกลบออกจากโค้ช"
 
 #: dt-posts/posts.php:338
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
 msgstr "เพิ่ม$s ลงในกลุ่มย่อยแล้ว"
 
 #: dt-posts/posts.php:339
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
 msgstr "เพิ่ม$s ในกลุ่มหลักแล้ว"
 
 #: dt-posts/posts.php:341
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
 msgstr "ลบ$s ออกจากกลุ่มย่อยแล้ว"
 
 #: dt-posts/posts.php:342
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
 msgstr "ลบ$s ออกจากกลุ่มหลักแล้ว"
 
 #: dt-posts/posts.php:347 dt-posts/posts.php:348
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
 msgstr "เพิ่ม$s ในกลุ่มที่คล้ายกันแล้ว"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
 msgstr "ลบ$s ออกจากกลุ่มเทียบเท่า"
 
 #: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
 #: dt-posts/posts.php:369
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
 msgstr "เชื่อมต่อกับ$s"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Milestone1 added to Milestones"
 #| msgid "%1$s added to %2$s"
 msgctxt "Contact1 added to [field]"
@@ -4789,13 +4896,13 @@ msgstr "เพิ่ม %1$s ใน %2$s แล้ว"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
 msgstr "ลบการเชื่อมต่อกับ$s แล้ว"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Milestone1 removed from Milestones"
 #| msgid "%1$s removed from %2$s"
 msgctxt "contact1 removed from [field]"
@@ -4803,7 +4910,7 @@ msgid "%1$s removed from %2$s"
 msgstr "ลบ %1$s ออกจาก %2$s แล้ว"
 
 #: dt-posts/posts.php:416
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Total in January"
 #| msgid "%1$s in %2$s"
 msgctxt "User Select: User1"
@@ -4815,37 +4922,42 @@ msgid "Nobody"
 msgstr "ไม่มีใคร"
 
 #: dt-posts/posts.php:421 dt-posts/posts.php:426
+#, php-format
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "%1$s เปลี่ยนเป็น %2$s"
 
 #: dt-posts/posts.php:434 dt-posts/posts.php:445
+#, php-format
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
 msgstr "ลบ %1$s ออกจาก %2$s แล้ว"
 
 #: dt-posts/posts.php:437 dt-posts/posts.php:448
+#, php-format
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
 msgstr "เพิ่ม %1$s ใน %2$s แล้ว"
 
 #: dt-posts/posts.php:470
-#, fuzzy
+#, fuzzy, php-format
 msgid "%s removed"
 msgstr "ลบ$s แล้ว"
 
 #: dt-posts/posts.php:478 dt-posts/posts.php:491
+#, php-format
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
 msgstr "ลบ %1$s ออกจากสถานที่แล้ว"
 
 #: dt-posts/posts.php:481 dt-posts/posts.php:498
+#, php-format
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "เพิ่ม %1$s ในสถานที่แล้ว"
 
 #: dt-posts/posts.php:512
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Milestone1 removed from Milestones"
 #| msgid "%1$s removed from %2$s"
 msgctxt "link1 removed from Social Links"
@@ -4853,7 +4965,7 @@ msgid "%1$s removed from %2$s links"
 msgstr "ลบ %1$s ออกจาก %2$s แล้ว"
 
 #: dt-posts/posts.php:515
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Milestone1 added to Milestones"
 #| msgid "%1$s added to %2$s"
 msgctxt "link1 added to Social Links"
@@ -4881,21 +4993,25 @@ msgid "not invalidated"
 msgstr "ไม่ถูกต้อง"
 
 #: dt-posts/posts.php:566
+#, php-format
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
 msgstr "เพิ่ม %1$s: %2$s"
 
 #: dt-posts/posts.php:568
+#, php-format
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
 msgstr "อัปเดต %1$s จาก %2$s เป็น %3$s"
 
 #: dt-posts/posts.php:570
+#, php-format
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "ลบ %1$s: %2$s"
 
 #: dt-posts/posts.php:574
+#, php-format
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "เปลี่ยนชื่อเป็น:%s"
@@ -4906,6 +5022,7 @@ msgid "Created from Demo Plugin"
 msgstr "สร้างจาก Demo Plugin"
 
 #: dt-posts/posts.php:583
+#, php-format
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr "%s ปฏิเสธงาน"
@@ -4916,24 +5033,24 @@ msgid "A user"
 msgstr "ผู้ใช้"
 
 #: dt-posts/posts.php:586
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr "ยอมรับงานแล้ว$s"
 
 #: dt-posts/posts.php:591
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "แชร์กับ$s"
 
 #: dt-posts/posts.php:593
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "ยกเลิกการแชร์กับ$s"
 
-#: dt-posts/posts.php:2522
+#: dt-posts/posts.php:2527
 #, fuzzy
 #| msgid "Remove"
 msgid "Removed User"
@@ -4944,6 +5061,7 @@ msgid "Bulk Send App"
 msgstr "แอปส่งเป็นกลุ่มขนาดใหญ่"
 
 #: dt-reports/magic-url-bulk-send.php:38
+#, php-format
 msgid "Select all the %1$s to whom you want to send app links."
 msgstr "เลือก %1$s ทั้งหมดที่คุณต้องการส่งลิงก์แอปไปให้"
 
@@ -5000,6 +5118,7 @@ msgid "Link key is no longer valid or has expired."
 msgstr ""
 
 #: dt-reports/magic-url-landing-page.php:39
+#, php-format
 msgid "Please %s, or locate a more recent key, or request a new one."
 msgstr ""
 
@@ -5094,6 +5213,7 @@ msgid "User Status"
 msgstr "สถานะผู้ใช้"
 
 #: dt-users/mapbox-coverage-map.php:75
+#, php-format
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
 msgstr "เพิ่มผู้ใช้ใน:%s"
@@ -5369,6 +5489,7 @@ msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "เวลาจากที่กำหนดให้พยายามติดต่อสำหรับ 10 รายชื่อล่าสุด"
 
 #: dt-users/user-hooks-and-config.php:196
+#, php-format
 msgid ""
 "Welcome %1$s, this is your personal contact record. Feel free to update the "
 "fields and @mention me or other users"
@@ -5378,6 +5499,7 @@ msgstr ""
 
 #: dt-users/user-hooks-and-config.php:312
 #: dt-users/user-hooks-and-config.php:350
+#, php-format
 msgid "[%s] Login Details"
 msgstr "[%s] รายละเอียดการเข้าสู่ระบบ"
 
@@ -5386,14 +5508,17 @@ msgid "To set your password, visit the following address:"
 msgstr "หากต้องการตั้งรหัสผ่านของคุณ ให้ไปที่ที่อยู่ต่อไปนี้:"
 
 #: dt-users/user-hooks-and-config.php:346
+#, php-format
 msgid "To log in click here: %s"
 msgstr "หากต้องการเข้าสู่ระบบ ให้คลิกที่นี่: %s"
 
 #: dt-users/user-hooks-and-config.php:388
+#, php-format
 msgid "Hi %s,"
 msgstr "สวัสดี %s"
 
 #: dt-users/user-hooks-and-config.php:389
+#, php-format
 msgctxt ""
 "You've been invited to join Awesome Site at https://awesome_site.disciple."
 "tools"
@@ -5441,16 +5566,19 @@ msgid "Add User"
 msgstr "เพิ่มผู้ใช้"
 
 #: dt-users/user-management.php:180
+#, php-format
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
 msgstr "%1$s ได้รับการยอมรับใน %2$s หลังจาก %3$s วัน"
 
 #: dt-users/user-management.php:181
+#, php-format
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
 msgstr "%1$s กำลังรอความพยายามติดต่อเป็นเวลา %2$s วัน"
 
 #: dt-users/user-management.php:182
+#, php-format
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "พยายามติดต่อกับ %1$s เมื่อ %2$s หลังจาก %3$s วัน"
@@ -5497,13 +5625,14 @@ msgid "Go"
 msgstr ""
 
 #: dt-users/user-management.php:232
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Showing 30 items matching bob"
 #| msgid "Showing %1$s items matching %2$s"
 msgid "Showing %1$s of %2$s"
 msgstr "แสดง %1$s รายการที่ตรงกับ %2$s"
 
 #: dt-users/user-management.php:353
+#, php-format
 msgid "%s days since last update"
 msgstr "%s วันนับตั้งแต่การอัปเดตครั้งล่าสุด"
 
@@ -5528,7 +5657,7 @@ msgid "Logged In"
 msgstr "เข้าสู่ระบบ"
 
 #: dt-users/user-metrics.php:119
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "ปฏิเสธการมอบหมายเมื่อ$s"
@@ -5566,6 +5695,7 @@ msgid "Failed to add user to site."
 msgstr "เพิ่มผู้ใช้ลงในไซต์ไม่สำเร็จ"
 
 #: dt-users/users.php:540
+#, php-format
 msgctxt "These are archived comments for contact John Doe"
 msgid "These are archived comments for %1$s"
 msgstr "นี่คือความคิดเห็นสำหรับ %1$s ที่เก็บถาวร"
@@ -5580,11 +5710,13 @@ msgid "System Email"
 msgstr "อีเมลระบบ"
 
 #: dt-workflows/tasks.php:82
+#, php-format
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
 msgstr "คุณตั้งการแจ้งเตือนสำหรับวันนี้ใน %1$s"
 
 #: dt-workflows/tasks.php:86
+#, php-format
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "คุณตั้งค่างานนี้ใน %1$s: %2$s"
@@ -5616,6 +5748,7 @@ msgid "See what browser you are using."
 msgstr "ดูว่าคุณใช้เบราว์เซอร์อะไร"
 
 #: single-template.php:99 single-template.php:107
+#, php-format
 msgid "This %s needs an update."
 msgstr "%s นี้ต้องการการอัปเดต"
 
@@ -5631,8 +5764,8 @@ msgstr "แก้ไขฟิลด์รายละเอียดทั้ง
 msgid "Show Hidden Tiles"
 msgstr ""
 
-#: single-template.php:408
-#, fuzzy
+#: single-template.php:409
+#, fuzzy, php-format
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "แน่ใจไหมว่าต้องการลบ$s"
@@ -5642,6 +5775,7 @@ msgid "Open Modal"
 msgstr "เปิดโมดอล"
 
 #: template-merge-post-details.php:121
+#, php-format
 msgid "Merge Duplicate %s"
 msgstr "ผสาน %s ที่ซ้ำกัน"
 
@@ -5675,6 +5809,7 @@ msgid "Updated"
 msgstr "ปรับปรุงแล้ว"
 
 #: template-new-bulk-post.php:85
+#, php-format
 msgid "New Bulk %s"
 msgstr "%s แบบกลุ่มขนาดใหญ่อันใหม่"
 
@@ -5682,8 +5817,8 @@ msgstr "%s แบบกลุ่มขนาดใหญ่อันใหม่
 msgid "Choose which fields to display across new bulk records"
 msgstr "เลือกว่าจะแสดงเขตข้อมูลใดตลอดเรกคอร์ดแบบกลุ่มขนาดใหญ่อันใหม่"
 
-#: template-new-bulk-post.php:145 template-new-post.php:68
-#, fuzzy
+#: template-new-bulk-post.php:145 template-new-post.php:66
+#, fuzzy, php-format
 msgid "Select the %s type:"
 msgstr "เลือกประเภท$s:"
 
@@ -5691,32 +5826,15 @@ msgstr "เลือกประเภท$s:"
 msgid "Add New Row"
 msgstr "เพิ่มแถวใหม่"
 
-#: template-new-bulk-post.php:276 template-new-post.php:178
-msgid "Create Tag"
-msgstr "สร้างแท็ก"
-
-#: template-new-bulk-post.php:277 template-new-post.php:179
-msgid "Create a tag and apply it to this record."
-msgstr "สร้างแท็กและใช้กับบันทึกนี้"
-
-#: template-new-bulk-post.php:281 template-new-bulk-post.php:283
-#: template-new-post.php:183 template-new-post.php:185
-msgid "Tag"
-msgstr "แท็ก"
-
-#: template-new-bulk-post.php:293 template-new-post.php:194
-msgid "Create and apply tag"
-msgstr "สร้างและใช้แท็ก"
-
-#: template-new-post.php:155
+#: template-new-post.php:153
 msgid "Show all fields"
 msgstr "แสดงเขตข้อมูลทั้งหมด"
 
-#: template-new-post.php:158
+#: template-new-post.php:156
 msgid "Hide fields"
 msgstr "ซ่อนฟิลด์"
 
-#: template-new-post.php:165
+#: template-new-post.php:163
 msgid "Save and continue editing"
 msgstr "บันทึกและแก้ไขต่อ"
 
@@ -5813,6 +5931,7 @@ msgid "Contact Info"
 msgstr "ข้อมูลการติดต่อมีการเปลี่ยนแปลง"
 
 #: template-settings.php:493
+#, php-format
 msgctxt "Email will be sent to: [email]"
 msgid "Email notifications will be sent to: %s"
 msgstr ""
@@ -5919,6 +6038,14 @@ msgstr "เข้าถึงรายชื่อที่สแกน:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "พบรายการซ้ำ:"
+
+#~ msgid "Reset password"
+#~ msgstr "รีเซ็ตรหัสผ่าน"
+
+#, fuzzy
+#~| msgid "Post Type"
+#~ msgid "Post Types"
+#~ msgstr "ชนิดของโพสต์"
 
 #~ msgctxt "input field placeholder"
 #~ msgid "Search multipliers and contacts"
