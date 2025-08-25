@@ -1343,9 +1343,9 @@ jQuery(function ($) {
 
     // process web component values
     const form = document.getElementById('main_updated_fields_div');
-    Array.from(form.elements).forEach((el) => {
+    Array.from(form.querySelectorAll('*')).forEach((el) => {
       // skip fields not from web components
-      if (!el.tagName.startsWith('DT-')) {
+      if (!el.tagName || !el.tagName.startsWith('DT-')) {
         return;
       }
 
