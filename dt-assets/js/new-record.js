@@ -199,10 +199,14 @@ jQuery(function ($) {
 
       // build form values
       const form = event.target;
-      Array.from(form.elements).forEach((el) => {
+      Array.from(form.querySelectorAll('*')).forEach((el) => {
         // skip fields like `field_name[query]` that are from typeaheads
         // and skip values not from web components
-        if (el.name.includes('[') || !el.tagName.startsWith('DT-')) {
+        if (
+          !el.name ||
+          el.name.includes('[') ||
+          !el.tagName.startsWith('DT-')
+        ) {
           return;
         }
 
