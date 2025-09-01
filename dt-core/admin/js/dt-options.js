@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-  $('.expand_translations').click(function (e) {
+  $(document).on('click', '.expand_translations', function (e) {
     e.preventDefault();
     display_translation_dialog(
       $(this).siblings(),
@@ -1228,7 +1228,7 @@ jQuery(document).ready(function ($) {
         : 0;
 
     let translation_html = `
-      <button class="button small expand_translations">
+      <button class="button small expand_translations" data-callback="refresh_language_translations_counts">
           <img style="height: 15px; vertical-align: middle;" src="${window.lodash.escape(window.dtOptionAPI.theme_uri + '/dt-assets/images/languages.svg')}">
           (<span>${translations_total}</span>)
       </button>
@@ -1380,6 +1380,42 @@ jQuery(document).ready(function ($) {
     console.log(options);
     $('#update_needed_triggers_options').val(JSON.stringify(options, null));
     $('#update_needed_triggers_form').submit();
+  }
+
+  window.refresh_language_translations_counts = function (source, value) {
+    $('#update_needed_triggers_table_tbody')
+    .find('.update-needed-triggers-table-tbody-tr')
+    .each((i, tr) => {
+
+      // Determine total translation counts per row.
+      let translation_counts = 0;
+
+      $(tr)
+      .find('.translation_container')
+      .find('tr')
+      .each((j, translation) => {
+        const lang_code = $(translation)
+        .find(
+          '#update_needed_triggers_table_tbody_tr_translation_input',
+        )
+        .data('lang_code');
+        const lang_val = $(translation)
+        .find(
+          '#update_needed_triggers_table_tbody_tr_translation_input',
+        )
+        .val();
+        if (lang_code && lang_val) {
+          translation_counts++;
+        }
+      });
+
+      if (translation_counts > 0) {
+        $(tr)
+        .find('button.expand_translations')
+        .find('span')
+        .text(translation_counts);
+      }
+    });
   }
 
   /**
