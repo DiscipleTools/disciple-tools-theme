@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2025-05-23T13:30:46+00:00\n"
+"POT-Creation-Date: 2025-07-16T11:35:31+00:00\n"
 "PO-Revision-Date: 2025-03-05 16:00+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Hausa <https://translate.disciple.tools/projects/disciple-"
@@ -42,6 +42,7 @@ msgid "Permission denied"
 msgstr "An hana izinin"
 
 #: 403.php:35
+#, php-format
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
 msgstr "Yi haƙuri, ba ku da izinin duba %1$s tare da id %2$s."
 
@@ -71,22 +72,22 @@ msgstr ""
 msgid "Submit Request"
 msgstr "Sanya Takaddama"
 
-#: 403.php:55 archive-template.php:1084 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:1138 dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-contacts/base-setup.php:470 dt-contacts/base-setup.php:505
-#: dt-contacts/module-access.php:451 dt-contacts/module-access.php:482
-#: dt-contacts/module-access.php:510 dt-contacts/user-module.php:159
-#: single-template.php:412 template-new-bulk-post.php:229
-#: template-new-bulk-post.php:262 template-new-bulk-post.php:290
-#: template-new-post.php:164 template-new-post.php:191
+#: dt-assets/parts/modals/modal-new-tag.php:12 dt-contacts/base-setup.php:470
+#: dt-contacts/base-setup.php:505 dt-contacts/module-access.php:451
+#: dt-contacts/module-access.php:482 dt-contacts/module-access.php:510
+#: dt-contacts/user-module.php:159 single-template.php:413
+#: template-new-bulk-post.php:229 template-new-bulk-post.php:262
+#: template-new-bulk-post.php:290 template-new-post.php:162
 msgid "Cancel"
 msgstr "Soke"
 
-#: 403.php:59 archive-template.php:520 archive-template.php:562
-#: archive-template.php:749 archive-template.php:1108
+#: 403.php:59 archive-template.php:521 archive-template.php:616
+#: archive-template.php:803 archive-template.php:1162
 #: dt-assets/functions/enqueue-scripts.php:455
 #: dt-assets/parts/loop-activity-comment.php:158
 #: dt-assets/parts/loop-activity-comment.php:163
@@ -122,9 +123,9 @@ msgstr "Soke"
 #: dt-groups/base-setup.php:588 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
-#: dt-users/user-initial-setup.php:82 single-template.php:417
+#: dt-users/user-initial-setup.php:82 single-template.php:418
 #: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-new-post.php:196 template-settings.php:602
+#: template-settings.php:602
 msgid "Close"
 msgstr "Kusa"
 
@@ -137,6 +138,7 @@ msgid "The page you were looking for was not found or was deleted"
 msgstr "Ba a samo shafin da kake nema ba ko an share shi"
 
 #: archive-template.php:39
+#, php-format
 msgctxt "Create New record"
 msgid "Create New %s"
 msgstr "Irƙiri Sabon %s"
@@ -145,22 +147,22 @@ msgstr "Irƙiri Sabon %s"
 msgid "Filters"
 msgstr "Matatu"
 
-#: archive-template.php:50 archive-template.php:152 archive-template.php:641
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:818
-#: dt-core/utilities/dt-components.php:217 dt-posts/custom-post-type.php:20
+#: archive-template.php:50 archive-template.php:153 archive-template.php:695
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:819
+#: dt-core/utilities/dt-components.php:208 dt-posts/custom-post-type.php:20
 #: template-settings.php:399
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "Binciko %s"
 
-#: archive-template.php:51 archive-template.php:153
+#: archive-template.php:51 archive-template.php:154
 #: dt-mapping/geocode-api/mapbox-api.php:293
 msgid "Clear"
 msgstr "Bayyanannu"
 
-#: archive-template.php:55 archive-template.php:56 archive-template.php:157
-#: archive-template.php:158 dt-assets/functions/menu.php:57
+#: archive-template.php:55 archive-template.php:56 archive-template.php:158
+#: archive-template.php:159 dt-assets/functions/menu.php:57
 #: dt-assets/parts/modals/modal-advanced-search.php:2
 msgid "Advanced Search"
 msgstr "Binciken Bincike"
@@ -172,91 +174,92 @@ msgstr "Binciken Bincike"
 msgid "Comments"
 msgstr "Sharhi"
 
-#: archive-template.php:77 archive-template.php:176
+#: archive-template.php:77 archive-template.php:177
 #: dt-users/user-management.php:230
 msgid "Search"
 msgstr "Bincika"
 
-#: archive-template.php:86 archive-template.php:181
+#: archive-template.php:86 archive-template.php:182
 msgid "Choose which fields to search"
 msgstr "Zaɓi waɗanne fannoni don bincika"
 
-#: archive-template.php:95 archive-template.php:190
+#: archive-template.php:95 archive-template.php:191
 msgid "Search All Fields"
 msgstr "Binciko Duk Yankin"
 
-#: archive-template.php:105 archive-template.php:200
+#: archive-template.php:105 archive-template.php:201
 msgid "Communication Channels"
 msgstr "Tashoshin Sadarwa"
 
-#: archive-template.php:125 archive-template.php:220 archive-template.php:557
+#: archive-template.php:125 archive-template.php:221 archive-template.php:610
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "Aiwatar"
 
-#: archive-template.php:126 archive-template.php:221 archive-template.php:558
+#: archive-template.php:126 archive-template.php:222 archive-template.php:611
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "sake saitawa zuwa tsoho"
 
-#: archive-template.php:229
+#: archive-template.php:230
+#, php-format
 msgctxt "Contacts Filters"
 msgid "%s Filters"
 msgstr "Matatun %s"
 
-#: archive-template.php:240
+#: archive-template.php:241
 msgid "Create custom filter"
 msgstr "Ƙirƙiri tacewa na al'ada"
 
-#: archive-template.php:248
+#: archive-template.php:249
 msgctxt "Split By"
 msgid "Split By"
 msgstr ""
 
-#: archive-template.php:310
+#: archive-template.php:311
 #, fuzzy
 #| msgid "No duplicates found."
 msgid "No results found"
 msgstr "Babu kwafin da aka samo."
 
-#: archive-template.php:316
+#: archive-template.php:317
 msgctxt "List Exports"
 msgid "List Exports"
 msgstr ""
 
-#: archive-template.php:328 archive-template.php:351
+#: archive-template.php:329 archive-template.php:352
 #, fuzzy
 #| msgid "List"
 msgid "CSV List"
 msgstr "Jerin"
 
-#: archive-template.php:332 archive-template.php:355
+#: archive-template.php:333 archive-template.php:356
 msgid "BCC Email List"
 msgstr ""
 
-#: archive-template.php:333
+#: archive-template.php:334
 #, fuzzy
 #| msgid "Phone"
 msgid "Phone List"
 msgstr "Waya"
 
-#: archive-template.php:338 archive-template.php:363
+#: archive-template.php:339 archive-template.php:364
 #, fuzzy
 #| msgid "List"
 msgid "Map List"
 msgstr "Jerin"
 
-#: archive-template.php:347
+#: archive-template.php:348
 msgid "List Exports Help"
 msgstr ""
 
-#: archive-template.php:352
+#: archive-template.php:353
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
 
-#: archive-template.php:356
+#: archive-template.php:357
 msgid ""
 "Using the current filter, the available emails are grouped by 50 and can be "
 "launched into your default email client by group. Many email providers put a "
@@ -266,362 +269,387 @@ msgid ""
 "email should be handled through bulk email providers."
 msgstr ""
 
-#: archive-template.php:359
+#: archive-template.php:360
 #, fuzzy
 #| msgid "Member List"
 msgid "Phone Number List"
 msgstr "Jerin Membobi"
 
-#: archive-template.php:360
+#: archive-template.php:361
 msgid ""
 "Using the current filter, this is intended for copy pasting a list of "
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
 
-#: archive-template.php:364
+#: archive-template.php:365
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
 
-#: archive-template.php:390
+#: archive-template.php:391
+#, php-format
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "Jerin %s"
 
-#: archive-template.php:397
+#: archive-template.php:398
 msgid "Sort"
 msgstr "Tsara"
 
-#: archive-template.php:402
+#: archive-template.php:403
 msgid "Newest"
 msgstr "Mafi sabo"
 
-#: archive-template.php:407
+#: archive-template.php:408
 msgid "Oldest"
 msgstr "Mafi tsufa"
 
-#: archive-template.php:412
+#: archive-template.php:413
 msgid "Most recently modified"
 msgstr "Mafi kwanan nan gyara"
 
-#: archive-template.php:417
+#: archive-template.php:418
 msgid "Least recently modified"
 msgstr "Mafi ƙarancin kwanan nan"
 
-#: archive-template.php:427 template-new-bulk-post.php:89
+#: archive-template.php:428 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "Filin wasa"
 
-#: archive-template.php:434
+#: archive-template.php:435
 msgid "Bulk Edit"
 msgstr "Shirya Babban"
 
-#: archive-template.php:441
+#: archive-template.php:442
 #, fuzzy
 #| msgid "Bulk Send App"
 msgid "Bulk Send Message"
 msgstr "Babban Aika App"
 
-#: archive-template.php:475 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:476 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
 msgid "More"
 msgstr "Kara"
 
-#: archive-template.php:496 dt-contacts/base-setup.php:324
+#: archive-template.php:497 dt-contacts/base-setup.php:324
 #: dt-users/users.php:530
 msgid "Archived"
 msgstr "An adana"
 
-#: archive-template.php:500
-#, fuzzy
+#: archive-template.php:501
+#, fuzzy, php-format
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "Sabon %s"
 
-#: archive-template.php:523
+#: archive-template.php:524
 msgid "Choose which fields to display as columns in the list"
 msgstr "Zaɓi waɗanne fannoni don nunawa azaman ginshiƙai a cikin jerin"
 
-#: archive-template.php:566
+#: archive-template.php:558
+#, fuzzy
+#| msgid "Hide fields"
+msgid "Add fields:"
+msgstr "Fieldsoye filaye"
+
+#: archive-template.php:561
+msgid "Search for fields to add..."
+msgstr ""
+
+#: archive-template.php:583
+#, fuzzy
+#| msgid "Updated fields"
+msgid "Enabled fields:"
+msgstr "Filayen da aka sabunta"
+
+#: archive-template.php:587
+msgid "No fields selected"
+msgstr ""
+
+#: archive-template.php:620
+#, php-format
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr "Zaɓi duk %1$s da kuke son ɗaukakawa daga jerin, kuma sabunta su a ƙasa"
 
-#: archive-template.php:584 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:638 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:833
+#: dt-core/global-functions.php:834
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Masu Amfani da Bincike"
 
-#: archive-template.php:629
+#: archive-template.php:683
 msgid "Share with:"
 msgstr "Raba tare da:"
 
-#: archive-template.php:649
+#: archive-template.php:703
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "Ba a raba shi tare da %s"
 
-#: archive-template.php:661 dt-assets/functions/details-bar.php:199
+#: archive-template.php:715 dt-assets/functions/details-bar.php:199
 #: dt-posts/custom-post-type.php:217
 msgid "Follow"
 msgstr "Bi"
 
-#: archive-template.php:666 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:720 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "Sharhi da Ayyuka"
 
-#: archive-template.php:671 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:725 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "Rubuta tsokaci ko bayanin kula anan"
 
-#: archive-template.php:679 dt-assets/parts/loop-activity-comment.php:59
+#: archive-template.php:733 dt-assets/parts/loop-activity-comment.php:59
 msgid "Type:"
 msgstr "Rubuta:"
 
-#: archive-template.php:699 dt-users/template-new-user.php:127
+#: archive-template.php:753 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "Duba Optionsarin Zaɓuɓɓuka"
 
-#: archive-template.php:700 dt-users/template-new-user.php:130
+#: archive-template.php:754 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "Duba Optionsan Zaɓuɓɓuka"
 
-#: archive-template.php:727 dt-assets/parts/loop-activity-comment.php:209
+#: archive-template.php:781 dt-assets/parts/loop-activity-comment.php:209
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "Sabuntawa"
 
-#: archive-template.php:728 archive-template.php:836
+#: archive-template.php:782 archive-template.php:890
 #: dt-assets/functions/enqueue-scripts.php:335
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "Yi Zaɓuɓɓuka a ƙasa"
 
-#: archive-template.php:736 dt-assets/functions/enqueue-scripts.php:183
+#: archive-template.php:790 dt-assets/functions/enqueue-scripts.php:183
 #: dt-assets/functions/enqueue-scripts.php:218
 #: dt-assets/functions/enqueue-scripts.php:283
 #: dt-assets/functions/enqueue-scripts.php:323
-#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:415
+#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:416
 msgid "Delete"
 msgstr "Share"
 
-#: archive-template.php:739 dt-assets/functions/enqueue-scripts.php:336
+#: archive-template.php:793 dt-assets/functions/enqueue-scripts.php:336
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
 msgstr "Yi Zaɓuɓɓuka a ƙasa"
 
-#: archive-template.php:753
-#, fuzzy
+#: archive-template.php:807
+#, fuzzy, php-format
 #| msgid "Select all the %1$s to whom you want to send app links."
 msgid "Select all the %1$s to whom you want to message."
 msgstr "Zaɓi duk %1$s ga wanda kuke son aika hanyoyin haɗin yanar gizo."
 
-#: archive-template.php:783
+#: archive-template.php:837
 msgid "Message subject"
 msgstr ""
 
-#: archive-template.php:785
+#: archive-template.php:839
 msgid "A valid message subject must be entered."
 msgstr ""
 
-#: archive-template.php:787
+#: archive-template.php:841
 msgid "Message from name"
 msgstr ""
 
-#: archive-template.php:789
+#: archive-template.php:843
 msgid "A valid from name must be specified."
 msgstr ""
 
-#: archive-template.php:791
+#: archive-template.php:845
 msgid "Message reply to"
 msgstr ""
 
-#: archive-template.php:793
+#: archive-template.php:847
 msgid "A valid reply to email address must be specified."
 msgstr ""
 
-#: archive-template.php:795
+#: archive-template.php:849
+#, php-format
 msgid "Emails will be sent from: %s"
 msgstr ""
 
-#: archive-template.php:818
+#: archive-template.php:872
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
 
-#: archive-template.php:820
+#: archive-template.php:874
 msgid "Message"
 msgstr ""
 
-#: archive-template.php:822
+#: archive-template.php:876
 msgid "Please ensure a valid send message has been entered."
 msgstr ""
 
-#: archive-template.php:823 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:877 dt-reports/magic-url-bulk-send.php:58
 #: dt-reports/magic-url-setup.php:133
 msgid "Message placeholders"
 msgstr ""
 
-#: archive-template.php:826 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:880 dt-reports/magic-url-bulk-send.php:64
 #: dt-reports/magic-url-setup.php:139
 #, fuzzy
 #| msgid "Create Record"
 msgid "Name of the Record"
 msgstr "Recordirƙiri Rikodi"
 
-#: archive-template.php:831 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:885 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "Aika zuwa zaɓaɓɓun bayanan"
 
-#: archive-template.php:832 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:886 dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "Dole ne ku zaɓi rikodin aƙalla ɗaya"
 
-#: archive-template.php:835 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:889 dt-reports/magic-url-bulk-send.php:94
 #: dt-reports/magic-url-setup.php:101
 msgid "Send"
 msgstr "Aika"
 
-#: archive-template.php:835 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:889 dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "Hanyoyin haɗi"
 
-#: archive-template.php:840
+#: archive-template.php:894
 msgid "Ensure valid record selections have been made."
 msgstr ""
 
-#: archive-template.php:885
+#: archive-template.php:939
 msgid "Loading..."
 msgstr "Ana loda ..."
 
-#: archive-template.php:890 dt-assets/functions/enqueue-scripts.php:424
+#: archive-template.php:944 dt-assets/functions/enqueue-scripts.php:424
 msgid "Load More"
 msgstr "Loda Moreari"
 
-#: archive-template.php:902
+#: archive-template.php:956
 msgid "Field Name"
 msgstr "Sunan Filin"
 
-#: archive-template.php:958
+#: archive-template.php:1012
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Buga don bincika"
 
-#: archive-template.php:967
+#: archive-template.php:1021
+#, php-format
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "Duk %1$s tare da %2$s"
 
-#: archive-template.php:970
+#: archive-template.php:1024
+#, php-format
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "Duk %1$s ba tare da %2$s ba"
 
-#: archive-template.php:977
+#: archive-template.php:1031
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Tace don subassassun KO Sanya Zuwa"
 
-#: archive-template.php:986 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:1040 dt-assets/functions/enqueue-scripts.php:326
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "Ranar Halitta"
 
-#: archive-template.php:993 archive-template.php:1000
+#: archive-template.php:1047 archive-template.php:1054
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:961
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:971
 msgid "None Set"
 msgstr "Babu Saita"
 
-#: archive-template.php:1014 archive-template.php:1015
-#: dt-assets/functions/enqueue-scripts.php:234 dt-core/global-functions.php:712
+#: archive-template.php:1068 archive-template.php:1069
+#: dt-assets/functions/enqueue-scripts.php:234 dt-core/global-functions.php:713
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-users/user-management.php:196 template-settings.php:313
 #: template-settings.php:577
 msgid "No"
 msgstr "A'a"
 
-#: archive-template.php:1021 archive-template.php:1022
-#: dt-assets/functions/enqueue-scripts.php:233 dt-core/global-functions.php:713
+#: archive-template.php:1075 archive-template.php:1076
+#: dt-assets/functions/enqueue-scripts.php:233 dt-core/global-functions.php:714
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:195
 #: template-settings.php:312 template-settings.php:576
 msgid "Yes"
 msgstr "Ee"
 
-#: archive-template.php:1026
+#: archive-template.php:1080
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Fara Range"
 
-#: archive-template.php:1029 archive-template.php:1040
+#: archive-template.php:1083 archive-template.php:1094
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Bayyanannu"
 
-#: archive-template.php:1036
+#: archive-template.php:1090
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Endarshen Range"
 
-#: archive-template.php:1051
+#: archive-template.php:1105
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "Sunan Tace"
 
-#: archive-template.php:1056
-#, fuzzy
+#: archive-template.php:1110
+#, fuzzy, php-format
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
 msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "Duk %1$s tare da %2$s"
 
-#: archive-template.php:1060
-#, fuzzy
+#: archive-template.php:1114
+#, fuzzy, php-format
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
 msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "Duk %1$s ba tare da %2$s ba"
 
-#: archive-template.php:1064
-#, fuzzy
+#: archive-template.php:1118
+#, fuzzy, php-format
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
 msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "Duk %1$s tare da %2$s"
 
-#: archive-template.php:1068
-#, fuzzy
+#: archive-template.php:1122
+#, fuzzy, php-format
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
 msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "Duk %1$s ba tare da %2$s ba"
 
-#: archive-template.php:1092
+#: archive-template.php:1146
 msgid "Filter Name"
 msgstr "Sunan Tace"
 
-#: archive-template.php:1097
+#: archive-template.php:1151
 msgid "Filter Records"
 msgstr "Rikodin Rana"
 
-#: archive-template.php:1101 dt-assets/functions/enqueue-scripts.php:286
+#: archive-template.php:1155 dt-assets/functions/enqueue-scripts.php:286
 #: dt-assets/functions/enqueue-scripts.php:321
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
@@ -629,7 +657,7 @@ msgstr "Ajiye"
 
 #: dt-assets/functions/details-bar.php:58
 #: dt-assets/functions/details-bar.php:275
-#: dt-core/configuration/config-site-defaults.php:350
+#: dt-core/configuration/config-site-defaults.php:356
 #: dt-workflows/update-required.php:79 dt-workflows/update-required.php:128
 msgid "Update Needed"
 msgstr "Ana Bukatar Sabuntawa"
@@ -638,17 +666,20 @@ msgstr "Ana Bukatar Sabuntawa"
 msgid "Admin Actions"
 msgstr "Ayyukan Gudanarwa"
 
-#: dt-assets/functions/details-bar.php:74 single-template.php:407
+#: dt-assets/functions/details-bar.php:74 single-template.php:408
+#, php-format
 msgctxt "Delete Contact"
 msgid "Delete %s"
 msgstr "Share %s"
 
 #: dt-assets/functions/details-bar.php:79
+#, php-format
 msgctxt "View Contact History"
 msgid "View %s History"
 msgstr ""
 
 #: dt-assets/functions/details-bar.php:87
+#, php-format
 msgctxt "Merge with another record"
 msgid "Merge with another %s"
 msgstr "Haɗa da wani %s"
@@ -659,15 +690,15 @@ msgid "Previous record"
 msgstr "Rikodi na baya"
 
 #: dt-assets/functions/details-bar.php:121
-#: dt-assets/functions/details-bar.php:301
 #, fuzzy
 #| msgid "Record Hits:"
+msgctxt "the picture of the record"
 msgid "Record Picture"
 msgstr "Rikodin rikodi:"
 
 #: dt-assets/functions/details-bar.php:153
 #: dt-assets/functions/details-bar.php:329
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "ta %s"
@@ -691,6 +722,12 @@ msgstr "Mai biyowa"
 msgid "Share"
 msgstr "Raba"
 
+#: dt-assets/functions/details-bar.php:301
+#, fuzzy
+#| msgid "Record Hits:"
+msgid "Record Picture"
+msgstr "Rikodin rikodi:"
+
 #: dt-assets/functions/enqueue-scripts.php:116
 #: dt-metrics/records/date-range-activity.php:111
 #: template-merge-post-details.php:103
@@ -713,11 +750,13 @@ msgid "No results found matching \"{{query}}\""
 msgstr "Babu sakamakon da aka samu wanda yayi daidai da \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
+#, php-format
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
 msgstr "Nuna abubuwa %s Buga don neman ƙarin."
 
 #: dt-assets/functions/enqueue-scripts.php:121
+#, php-format
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
 msgstr "Nuna abubuwan %1$s daidai da %2$s"
@@ -735,6 +774,7 @@ msgid "Copy"
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:124
+#, php-format
 msgid "Copied: %s"
 msgstr ""
 
@@ -746,7 +786,7 @@ msgstr "Ba ku da wani sanarwar da ba a karanta ba"
 msgid "You don't have any notifications"
 msgstr "Ba ku da wani sanarwar"
 
-#: dt-assets/functions/enqueue-scripts.php:180 dt-posts/dt-posts.php:1628
+#: dt-assets/functions/enqueue-scripts.php:180 dt-posts/dt-posts.php:1638
 msgid "D.T System"
 msgstr "D.T Tsarin"
 
@@ -759,11 +799,13 @@ msgid "Hide Translation"
 msgstr "Boye Fassara"
 
 #: dt-assets/functions/enqueue-scripts.php:186
+#, php-format
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "%1$s ya amsa tare da %2$s emoji"
 
 #: dt-assets/functions/enqueue-scripts.php:187
+#, php-format
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s da %1$s sun yi aiki tare da emoji %2$s"
@@ -805,6 +847,7 @@ msgid "Dismissed Duplicates"
 msgstr "Abubuwan Da Aka Korar"
 
 #: dt-assets/functions/enqueue-scripts.php:227
+#, php-format
 msgid "Duplicates on: %s"
 msgstr "Kwafi kan:%s"
 
@@ -821,6 +864,7 @@ msgid "Transfer update successful."
 msgstr "Canja wurin sabuntawa yayi nasara."
 
 #: dt-assets/functions/enqueue-scripts.php:231
+#, php-format
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "An kirkira akan %s"
@@ -834,7 +878,7 @@ msgid "Revert Record Back To This Point"
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:253
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you want to revert record state back to %s?"
@@ -863,6 +907,7 @@ msgid "Matches Found:"
 msgstr "Matches da aka samo:"
 
 #: dt-assets/functions/enqueue-scripts.php:305
+#, php-format
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "A kori dukkan wasannin don %s"
@@ -890,6 +935,7 @@ msgstr "Babu rubutattun bayanai da suka yi daidai da matatar ku."
 
 #: dt-assets/functions/enqueue-scripts.php:330 dt-contacts/base-setup.php:674
 #: dt-groups/base-setup.php:1036 dt-posts/custom-post-type.php:489
+#, php-format
 msgctxt "All records"
 msgid "All %s"
 msgstr "Duk %s"
@@ -935,11 +981,13 @@ msgid "Exclude Item"
 msgstr "Cire Abu"
 
 #: dt-assets/functions/enqueue-scripts.php:343
+#, php-format
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:344
+#, php-format
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
@@ -1026,6 +1074,7 @@ msgid "Contact"
 msgstr "Saduwa"
 
 #: dt-assets/functions/enqueue-scripts.php:396
+#, php-format
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
@@ -1116,7 +1165,7 @@ msgstr "Sanarwa"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:283
+#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:321
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "Saituna"
@@ -1127,7 +1176,8 @@ msgstr "Gudanarwa"
 
 #: dt-assets/functions/menu.php:94 dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:269
-#: dt-metrics/combined/locations-list.php:263
+#: dt-metrics/combined/locations-list.php:95
+#: dt-metrics/combined/locations-list.php:270
 #: dt-metrics/records/dynamic-records-map.php:65
 #: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
@@ -1213,11 +1263,13 @@ msgid "No duplicates found."
 msgstr "Babu kwafin da aka samo."
 
 #: dt-assets/parts/merge-details.php:36
+#, php-format
 msgctxt "Merge Contacts"
 msgid "Merge %s"
 msgstr "Haɗa %s"
 
 #: dt-assets/parts/merge-details.php:37
+#, php-format
 msgctxt "Merge this contact with another contact"
 msgid "Merge this %1$s with another %2$s"
 msgstr "Haɗa wannan %1$s da wani %2$s"
@@ -1455,7 +1507,7 @@ msgid ""
 msgstr ""
 "Danna maballin 'Unread' don nuna jerin duk sanarwar da ba a karanta ba."
 
-#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:281
+#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "Yi alama duka kamar yadda aka karanta"
@@ -1548,8 +1600,9 @@ msgstr "Recordirƙiri Rikodi"
 
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
-#: dt-metrics/records/genmap.php:166 dt-posts/custom-post-type.php:170
-#: dt-users/template-user-management.php:196 template-settings.php:146
+#: dt-metrics/combined/locations-list.php:90 dt-metrics/records/genmap.php:166
+#: dt-posts/custom-post-type.php:170 dt-users/template-user-management.php:196
+#: template-settings.php:146
 msgid "Name"
 msgstr "Suna"
 
@@ -1562,12 +1615,36 @@ msgid "Edit New Record"
 msgstr "Shirya Sabon Rikodi"
 
 #: dt-assets/parts/modals/modal-new-contact.php:30
+#, php-format
 msgctxt "back to record"
 msgid "Back to %s"
 msgstr "Koma zuwa %s"
 
+#: dt-assets/parts/modals/modal-new-tag.php:2 template-new-bulk-post.php:276
+msgid "Create Tag"
+msgstr "Tagirƙiri Tag"
+
+#: dt-assets/parts/modals/modal-new-tag.php:3 template-new-bulk-post.php:277
+msgid "Create a tag and apply it to this record."
+msgstr "Irƙiri alama kuma yi amfani da shi zuwa wannan rikodin."
+
+#: dt-assets/parts/modals/modal-new-tag.php:7
+#: dt-assets/parts/modals/modal-new-tag.php:9 template-new-bulk-post.php:281
+#: template-new-bulk-post.php:283
+msgid "Tag"
+msgstr "Tag"
+
+#: dt-assets/parts/modals/modal-new-tag.php:10 dt-core/global-functions.php:549
+#: template-new-bulk-post.php:285 template-new-post.php:147
+msgid "This is required"
+msgstr "Ana buƙatar wannan"
+
+#: dt-assets/parts/modals/modal-new-tag.php:15 template-new-bulk-post.php:293
+msgid "Create and apply tag"
+msgstr "Irƙiri da amfani da alama"
+
 #: dt-assets/parts/modals/modal-record-history.php:6
-#, fuzzy
+#, fuzzy, php-format
 #| msgid "Record Hits:"
 msgctxt "Record History"
 msgid "%s Record History"
@@ -1657,24 +1734,24 @@ msgstr "Fita"
 msgid "Theme Update Available!"
 msgstr "Akwai Updateaukaka Jigo"
 
-#: dt-assets/parts/nav-topbar.php:251 template-notifications.php:43
+#: dt-assets/parts/nav-topbar.php:289 template-notifications.php:43
 msgid "New"
 msgstr "Sabo"
 
-#: dt-assets/parts/nav-topbar.php:257 template-notifications.php:50
+#: dt-assets/parts/nav-topbar.php:295 template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "Duk"
 
-#: dt-assets/parts/nav-topbar.php:261 template-notifications.php:54
+#: dt-assets/parts/nav-topbar.php:299 template-notifications.php:54
 msgid "Unread"
 msgstr "Ba a karanta ba"
 
-#: dt-assets/parts/nav-topbar.php:268
+#: dt-assets/parts/nav-topbar.php:306
 msgid "See All"
 msgstr "Duba Duk"
 
-#: dt-assets/parts/nav-topbar.php:287 template-notifications.php:72
+#: dt-assets/parts/nav-topbar.php:325 template-notifications.php:72
 msgid "Mark All"
 msgstr "Alama Duk"
 
@@ -1682,7 +1759,8 @@ msgstr "Alama Duk"
 #: dt-contacts/base-setup.php:261 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:132
-#: dt-metrics/combined/locations-list.php:126
+#: dt-metrics/combined/locations-list.php:92
+#: dt-metrics/combined/locations-list.php:133
 #: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
 #: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:172
@@ -1769,7 +1847,7 @@ msgid "WhatsApp"
 msgstr "Whatsapp"
 
 #: dt-contacts/base-setup.php:218
-#: dt-core/configuration/config-site-defaults.php:327
+#: dt-core/configuration/config-site-defaults.php:333
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
 #: dt-users/users.php:129 template-settings.php:166
@@ -1790,6 +1868,7 @@ msgid "Other Social Links"
 msgstr "Sauran Hanyoyin Sadarwar Zamani"
 
 #: dt-contacts/base-setup.php:261
+#, php-format
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Haɗi zuwa wasu %s"
@@ -1917,7 +1996,7 @@ msgid "Personal"
 msgstr "Na sirri"
 
 #: dt-contacts/base-setup.php:372
-#: dt-core/configuration/config-site-defaults.php:330
+#: dt-core/configuration/config-site-defaults.php:336
 msgid "Web"
 msgstr "Yanar gizo"
 
@@ -1943,11 +2022,13 @@ msgid "The website, event or location this contact came from."
 msgstr "Yanar gizo, taron ko wuri wannan lambar sadarwar ta fito."
 
 #: dt-contacts/base-setup.php:433 dt-contacts/base-setup.php:465
+#, php-format
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "Amsoshi %s"
 
 #: dt-contacts/base-setup.php:440
+#, php-format
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "Canza %s Nau'in"
@@ -1957,6 +2038,7 @@ msgid "See duplicates"
 msgstr "Duba abubuwan biyu"
 
 #: dt-contacts/base-setup.php:466
+#, php-format
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "Shin kun tabbata kuna son yin tarihin %s?"
@@ -1976,7 +2058,7 @@ msgid "Confirm"
 msgstr "Tabbatar"
 
 #: dt-contacts/base-setup.php:532
-#: dt-core/configuration/config-site-defaults.php:518
+#: dt-core/configuration/config-site-defaults.php:524
 #: dt-groups/base-setup.php:607 template-settings.php:212
 msgid "Other"
 msgstr "Sauran"
@@ -1996,12 +2078,14 @@ msgid "Default Filters"
 msgstr "Tsoffin Matatu"
 
 #: dt-contacts/base-setup.php:678
+#, php-format
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Duk %s Zan iya dubawa"
 
 #: dt-contacts/base-setup.php:689 dt-groups/base-setup.php:1042
 #: dt-posts/custom-post-type.php:501
+#, php-format
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "Mafi so %s"
@@ -2043,6 +2127,7 @@ msgid "Sub-assigned to me"
 msgstr "Sub-sanya ni"
 
 #: dt-contacts/base-setup.php:745
+#, php-format
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "Haɗa %s"
@@ -2057,6 +2142,7 @@ msgid "Subassigned only"
 msgstr "Assasashe kawai"
 
 #: dt-contacts/base-setup.php:971
+#, php-format
 msgid "This %s is archived"
 msgstr "Wannan %s an ajiye shi"
 
@@ -2109,6 +2195,7 @@ msgid "another site"
 msgstr "wani shafin"
 
 #: dt-contacts/contacts-transfer.php:276
+#, php-format
 msgid "Already transfered to %s"
 msgstr "An riga an canza zuwa %s"
 
@@ -2143,6 +2230,7 @@ msgid "Minor transfer error."
 msgstr "Kuskuren canja wurin wuri."
 
 #: dt-contacts/contacts-transfer.php:479
+#, php-format
 msgid "This contact was transferred to %s for further follow-up."
 msgstr "An canza wannan adireshin zuwa %s don ci gaba da bibiya."
 
@@ -2172,16 +2260,19 @@ msgid "redacted"
 msgstr "sake gyarawa"
 
 #: dt-contacts/duplicates-merging.php:442
+#, php-format
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(Daga Kwafi):%s"
 
 #: dt-contacts/duplicates-merging.php:563
+#, php-format
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "Wannan rikodin kwafi ne kuma an haɗa shi cikin %2$s"
 
 #: dt-contacts/duplicates-merging.php:576
+#, php-format
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s sun haɗu %2$s cikin wannan rikodin"
@@ -2515,6 +2606,7 @@ msgid "Decline"
 msgstr "Ragewa"
 
 #: dt-contacts/module-access.php:946
+#, php-format
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "Biyo Up %s"
@@ -2759,28 +2851,28 @@ msgstr "Mai gudanarwa"
 msgid "Subscriber"
 msgstr "Mai biyan kuɗi"
 
-#: dt-core/configuration/config-site-defaults.php:335
+#: dt-core/configuration/config-site-defaults.php:341
 msgid "Newly Assigned Contact"
 msgstr "Sabon Saduwa"
 
-#: dt-core/configuration/config-site-defaults.php:340
+#: dt-core/configuration/config-site-defaults.php:346
 msgid "@Mentions"
 msgstr "@Mai magana"
 
-#: dt-core/configuration/config-site-defaults.php:345
+#: dt-core/configuration/config-site-defaults.php:351
 msgid "New Comments"
 msgstr "Sabbin Sharhi"
 
-#: dt-core/configuration/config-site-defaults.php:355
+#: dt-core/configuration/config-site-defaults.php:361
 msgid "Contact Info Changed"
 msgstr "An canza Bayanin Saduwa"
 
-#: dt-core/configuration/config-site-defaults.php:360
+#: dt-core/configuration/config-site-defaults.php:366
 #: dt-core/migrations/0012-typo-rename.php:13
 msgid "Contact Milestones and Group Health metrics"
 msgstr "Tuntuɓi Maɗaurai da ma'aunin Kiwan Lafiya"
 
-#: dt-core/configuration/config-site-defaults.php:374
+#: dt-core/configuration/config-site-defaults.php:380
 msgid ""
 "This contact is active but there is no record of anybody contacting them. "
 "Please do contact them."
@@ -2788,15 +2880,15 @@ msgstr ""
 "Wannan lambar sadarwar tana aiki amma babu rikodin wani ya tuntube su. Da "
 "fatan za a tuntube su."
 
-#: dt-core/configuration/config-site-defaults.php:380
+#: dt-core/configuration/config-site-defaults.php:386
 msgid "Please try connecting with this contact again."
 msgstr "Da fatan a sake gwada haɗawa tare da wannan lambar sadarwar."
 
-#: dt-core/configuration/config-site-defaults.php:386
 #: dt-core/configuration/config-site-defaults.php:392
 #: dt-core/configuration/config-site-defaults.php:398
 #: dt-core/configuration/config-site-defaults.php:404
 #: dt-core/configuration/config-site-defaults.php:410
+#: dt-core/configuration/config-site-defaults.php:416
 msgid ""
 "We haven't heard about this person in a while. Do you have an update for "
 "this contact?"
@@ -2804,110 +2896,110 @@ msgstr ""
 "Ba mu taɓa jin labarin wannan mutumin ba ɗan lokaci. Kuna da sabuntawa don "
 "wannan lambar sadarwar?"
 
-#: dt-core/configuration/config-site-defaults.php:420
+#: dt-core/configuration/config-site-defaults.php:426
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr ""
 "Ba mu taɓa jin labarin wannan ƙungiyar ba cikin ɗan lokaci. Kuna da "
 "sabuntawa?"
 
-#: dt-core/configuration/config-site-defaults.php:451
+#: dt-core/configuration/config-site-defaults.php:457
 msgid "Personal Phone"
 msgstr "Keɓaɓɓen Waya"
 
-#: dt-core/configuration/config-site-defaults.php:454
+#: dt-core/configuration/config-site-defaults.php:460
 msgid "Personal phone is private to the team, not for distribution."
 msgstr "Wayar sirri ta sirri ce ga ƙungiyar, ba don rarrabawa ba."
 
-#: dt-core/configuration/config-site-defaults.php:458
+#: dt-core/configuration/config-site-defaults.php:464
 msgid "Personal Email"
 msgstr "Imel na Kai"
 
-#: dt-core/configuration/config-site-defaults.php:461
+#: dt-core/configuration/config-site-defaults.php:467
 msgid "Personal email is private to the team, not for distribution."
 msgstr "Imel na sirri na sirri ne ga ƙungiyar, ba don rarrabawa ba."
 
-#: dt-core/configuration/config-site-defaults.php:465
+#: dt-core/configuration/config-site-defaults.php:471
 msgid "Personal Address"
 msgstr "Adireshin Kai"
 
-#: dt-core/configuration/config-site-defaults.php:468
+#: dt-core/configuration/config-site-defaults.php:474
 msgid "Personal address is private to the team, not for distribution."
 msgstr "Adireshin sirri na sirri ne ga ƙungiyar, ba don rarrabawa ba."
 
-#: dt-core/configuration/config-site-defaults.php:472
+#: dt-core/configuration/config-site-defaults.php:478
 msgid "Work Phone"
 msgstr "Wayar aiki"
 
-#: dt-core/configuration/config-site-defaults.php:475
+#: dt-core/configuration/config-site-defaults.php:481
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr "Wayar aiki don rarrabawa ga lambobi da masu nema."
 
-#: dt-core/configuration/config-site-defaults.php:479
+#: dt-core/configuration/config-site-defaults.php:485
 msgid "Work Email"
 msgstr "Imel na Aiki"
 
-#: dt-core/configuration/config-site-defaults.php:482
+#: dt-core/configuration/config-site-defaults.php:488
 msgid "Work email is for distribution to contacts and seekers."
 msgstr "Imel ɗin aiki don rarrabawa zuwa lambobi da masu nema."
 
-#: dt-core/configuration/config-site-defaults.php:486
+#: dt-core/configuration/config-site-defaults.php:492
 msgid "Work Facebook"
 msgstr "Aiki Facebook"
 
-#: dt-core/configuration/config-site-defaults.php:489
+#: dt-core/configuration/config-site-defaults.php:495
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr "Aiki Facebook shine don rarrabawa zuwa lambobi da masu nema."
 
-#: dt-core/configuration/config-site-defaults.php:493
+#: dt-core/configuration/config-site-defaults.php:499
 msgid "Work WhatsApp"
 msgstr "Aiki WhatsApp"
 
-#: dt-core/configuration/config-site-defaults.php:496
+#: dt-core/configuration/config-site-defaults.php:502
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "Aikin WhatsApp don rarrabawa ga lambobi da masu nema."
 
-#: dt-core/configuration/config-site-defaults.php:503
+#: dt-core/configuration/config-site-defaults.php:509
 msgid "thumbs up"
 msgstr "babban yatsu sama"
 
-#: dt-core/configuration/config-site-defaults.php:504
+#: dt-core/configuration/config-site-defaults.php:510
 msgid "heart"
 msgstr "zuciya"
 
-#: dt-core/configuration/config-site-defaults.php:505
+#: dt-core/configuration/config-site-defaults.php:511
 msgid "laugh"
 msgstr "dariya"
 
-#: dt-core/configuration/config-site-defaults.php:506
+#: dt-core/configuration/config-site-defaults.php:512
 msgid "wow"
 msgstr "wow"
 
-#: dt-core/configuration/config-site-defaults.php:507
+#: dt-core/configuration/config-site-defaults.php:513
 msgid "sad"
 msgstr "bakin ciki"
 
-#: dt-core/configuration/config-site-defaults.php:508
+#: dt-core/configuration/config-site-defaults.php:514
 msgid "prayer"
 msgstr "addu'a"
 
-#: dt-core/configuration/config-site-defaults.php:516
+#: dt-core/configuration/config-site-defaults.php:522
 #: dt-login/login-template.php:529
 msgid "Home"
 msgstr "Gida"
 
-#: dt-core/configuration/config-site-defaults.php:517
+#: dt-core/configuration/config-site-defaults.php:523
 msgid "Work"
 msgstr "Aiki"
 
-#: dt-core/configuration/config-site-defaults.php:527
+#: dt-core/configuration/config-site-defaults.php:533
 msgid "Accepting new contacts"
 msgstr "Yarda da sababbin abokan hulɗa"
 
-#: dt-core/configuration/config-site-defaults.php:531
+#: dt-core/configuration/config-site-defaults.php:537
 msgid "I'm only investing in existing contacts"
 msgstr "Ina saka jari ne kawai a cikin abokan hulɗar da nake dasu"
 
-#: dt-core/configuration/config-site-defaults.php:535
+#: dt-core/configuration/config-site-defaults.php:541
 msgid "I have too many contacts"
 msgstr "Ina da lambobi da yawa"
 
@@ -2928,7 +3020,10 @@ msgid "ERROR: Invalid username/password combination."
 msgstr "KUSKure: Ingantaccen sunan mai amfani / kalmar wucewa."
 
 #: dt-core/configuration/restrict-site-access.php:261
-msgid "Reset password"
+#: dt-login/login-template.php:217 dt-login/login-template.php:263
+#, fuzzy
+#| msgid "Reset password"
+msgid "Reset Password"
 msgstr "Sake saita kalmar wucewa"
 
 #: dt-core/configuration/restrict-site-access.php:262
@@ -2941,12 +3036,14 @@ msgstr "Wani ya nemi sake saitin kalmar shiga don asusun mai zuwa:"
 
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:319
+#, php-format
 msgid "DT Site Name: %s"
 msgstr "Sunan Shafin DT:%s"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:321
 #: dt-users/user-hooks-and-config.php:390
+#, php-format
 msgid "Username: %s"
 msgstr "Sunan mai amfani:%s"
 
@@ -2960,11 +3057,6 @@ msgstr ""
 msgid "To reset your password, visit the following address:"
 msgstr "Don sake saita kalmarka ta sirri, ziyarci adireshin da ke gaba:"
 
-#: dt-core/global-functions.php:549 template-new-bulk-post.php:285
-#: template-new-post.php:149 template-new-post.php:186
-msgid "This is required"
-msgstr "Ana buƙatar wannan"
-
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
 msgstr "(babu take)"
@@ -2974,6 +3066,7 @@ msgid "Release Announcement!"
 msgstr ""
 
 #: dt-core/release-notifications.php:59
+#, php-format
 msgid "Disciple.Tools Theme Version %1$s"
 msgstr ""
 
@@ -3042,7 +3135,8 @@ msgstr "Rukuni"
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:177
-#: dt-metrics/combined/locations-list.php:171
+#: dt-metrics/combined/locations-list.php:93
+#: dt-metrics/combined/locations-list.php:178
 #: dt-metrics/groups/mapbox-maps.php:28 dt-metrics/groups/overview.php:23
 #: dt-metrics/groups/overview.php:65 dt-metrics/groups/overview.php:76
 #: dt-metrics/personal/overview.php:59 dt-metrics/records/genmap.php:153
@@ -3460,12 +3554,6 @@ msgstr ""
 msgid "Passwords do not match. Please, try again."
 msgstr ""
 
-#: dt-login/login-template.php:217 dt-login/login-template.php:263
-#, fuzzy
-#| msgid "Reset password"
-msgid "Reset Password"
-msgstr "Sake saita kalmar wucewa"
-
 #: dt-login/login-template.php:231 dt-login/login-template.php:234
 #: dt-login/login-template.php:353 dt-login/login-template.php:356
 #, fuzzy
@@ -3526,7 +3614,8 @@ msgstr "Sake saita kalmar wucewa"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:222
-#: dt-metrics/combined/locations-list.php:216
+#: dt-metrics/combined/locations-list.php:94
+#: dt-metrics/combined/locations-list.php:223
 msgid "Churches"
 msgstr "Ikklisiya"
 
@@ -3572,7 +3661,8 @@ msgstr "Jerin"
 msgid "Refresh Cached Data"
 msgstr "Sabunta bayanan da aka Saka"
 
-#: dt-mapping/mapping.php:302 dt-people-groups/people-groups-base.php:276
+#: dt-mapping/mapping.php:302 dt-metrics/combined/locations-list.php:91
+#: dt-people-groups/people-groups-base.php:276
 msgid "Population"
 msgstr "Yawan jama'a"
 
@@ -3641,10 +3731,12 @@ msgid "Number of contacts that had the active status"
 msgstr "Adadin lambobin sadarwa waɗanda ke da matsayi na aiki"
 
 #: dt-metrics/combined/critical-path.php:241
+#, php-format
 msgid "Number of contacts on %s at the end of the time range"
 msgstr "Yawan lambobin sadarwa akan %s a ƙarshen zangon lokaci"
 
 #: dt-metrics/combined/critical-path.php:243
+#, php-format
 msgid "Number of contacts where %s was set on the seeker path"
 msgstr "Adadin lambobin sadarwa inda aka saita %s akan tafarkin mai nema"
 
@@ -3662,10 +3754,12 @@ msgstr ""
 "an yi masa baftisma ta hanyar haɗi"
 
 #: dt-metrics/combined/critical-path.php:277
+#, php-format
 msgid "Generation %s Baptisms"
 msgstr "Zamani %s Baftisma"
 
 #: dt-metrics/combined/critical-path.php:278
+#, php-format
 msgid "Number of generation %s baptisms"
 msgstr "Yawan ƙarni %s baftisma"
 
@@ -3695,11 +3789,12 @@ msgid "Churches active at the end of the time range"
 msgstr "Coci-coci masu aiki a ƙarshen zangon lokaci"
 
 #: dt-metrics/combined/critical-path.php:321
-#, fuzzy
+#, fuzzy, php-format
 msgid "Generation %s Churches"
 msgstr "%Arnar %s Ikklisiya"
 
 #: dt-metrics/combined/critical-path.php:322
+#, php-format
 msgid "Number of generation %s churches at the end of the time range"
 msgstr "Yawan ƙarni %s majami'u a ƙarshen iyakar lokaci"
 
@@ -3745,6 +3840,9 @@ msgstr "Watan Layi"
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
 #: dt-notifications/notifications.php:496
+#, fuzzy, php-format
+#| msgid "%s month ago"
+#| msgid_plural "%s months ago"
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s watan da ya gabata"
@@ -3771,7 +3869,8 @@ msgstr "Babu Aikin da Aka Gano!"
 
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/daily-activity.php:90 dt-posts/custom-post-type.php:150
-#: template-new-post.php:49
+#: template-new-post.php:47
+#, php-format
 msgid "New %s"
 msgstr "Sabon %s"
 
@@ -3830,12 +3929,14 @@ msgstr "Canja wurin lambobin sadarwa yayin kewayon kwanan wata"
 
 #: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:79
 #: dt-metrics/combined/site-links.php:80
+#, php-format
 msgctxt "Seeker Path of contacts created in date range"
 msgid "%s of contacts created in date range"
 msgstr "%s na lambobin sadarwa da aka ƙirƙira a kewayon kwanan wata"
 
 #: dt-metrics/combined/site-links.php:81 dt-metrics/combined/site-links.php:82
 #: dt-metrics/combined/site-links.php:83
+#, php-format
 msgctxt "Seeker Path changes during date range"
 msgid "%s changes during date range"
 msgstr "%s canje-canje yayin kewayon kwanan wata"
@@ -4003,10 +4104,12 @@ msgid "None"
 msgstr "Babu"
 
 #: dt-metrics/personal/activity-highlights.php:60
+#, php-format
 msgid "%1$s I Changed"
 msgstr "%1$s Na Canja"
 
 #: dt-metrics/personal/activity-highlights.php:61
+#, php-format
 msgid "%1$s I Made"
 msgstr "%1$s Na Yi"
 
@@ -4015,6 +4118,7 @@ msgid "Contacts I Baptized"
 msgstr "Lambobin da Na Yi Baftisma"
 
 #: dt-metrics/personal/activity-highlights.php:63
+#, php-format
 msgid "%1$s changed by others on my %2$s"
 msgstr "%1$s wasu sun canza akan %2$s na"
 
@@ -4037,6 +4141,7 @@ msgid "Date"
 msgstr "Kwanan wata"
 
 #: dt-metrics/personal/activity-highlights.php:191
+#, php-format
 msgid "%1$d %2$s created"
 msgstr "An ƙirƙira %1$d %2$s"
 
@@ -4137,10 +4242,11 @@ msgid "Add Records"
 msgstr "Ƙara Records"
 
 #: dt-metrics/records/dynamic-records-map.php:94
+#: dt-metrics/records/dynamic-records-map.php:97
 #, fuzzy
-#| msgid "Post Type"
-msgid "Post Types"
-msgstr "Nau'in Post"
+#| msgid "Record"
+msgid "Record Types"
+msgstr "Rikodi"
 
 #: dt-metrics/records/dynamic-records-map.php:95
 #, fuzzy
@@ -4154,12 +4260,6 @@ msgstr "addu'a"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete layer?"
 msgstr "Shin kun tabbata kuna son share %s?"
-
-#: dt-metrics/records/dynamic-records-map.php:97
-#, fuzzy
-#| msgid "Record"
-msgid "Record Types"
-msgstr "Rikodi"
 
 #: dt-metrics/records/dynamic-records-map.php:99
 #: dt-notifications/notifications.php:920
@@ -4230,7 +4330,7 @@ msgid "View Record"
 msgstr "Duba Rikodi"
 
 #: dt-metrics/records/genmap.php:148 dt-metrics/records/genmap.php:152
-#: dt-posts/dt-posts.php:2687 dt-users/template-user-management.php:384
+#: dt-posts/dt-posts.php:2697 dt-users/template-user-management.php:384
 #: dt-users/users.php:175 single-template.php:127
 msgid "Status"
 msgstr "Matsayi"
@@ -4349,6 +4449,7 @@ msgid "Disconnected"
 msgstr "Haɗa %s"
 
 #: dt-metrics/records/time-charts.php:113
+#, php-format
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
 msgstr "%1$s a cikin %2$s"
@@ -4372,6 +4473,7 @@ msgid "Click here to view or reply"
 msgstr "Latsa nan don kallo ko ba da amsa"
 
 #: dt-notifications/notifications-email.php:138
+#, php-format
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
 msgstr "Sabuntawa akan %1$s # %2$s"
@@ -4389,92 +4491,121 @@ msgid "Daily Digest"
 msgstr "Daily Digest"
 
 #: dt-notifications/notifications.php:476
+#, fuzzy, php-format
+#| msgid "%s minute ago"
+#| msgid_plural "%s minutes ago"
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "Minti %s da suka wuce"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:481
+#, fuzzy, php-format
+#| msgid "%s hour ago"
+#| msgid_plural "%s hours ago"
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "Sa'a %s da suka wuce"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:486
+#, fuzzy, php-format
+#| msgid "%s day ago"
+#| msgid_plural "%s days ago"
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s rana da ta wuce"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:491
+#, fuzzy, php-format
+#| msgid "%s week ago"
+#| msgid_plural "%s weeks ago"
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "Mako %s da suka wuce"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:510
+#, fuzzy, php-format
+#| msgid "%s year ago"
+#| msgid_plural "%s years ago"
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "Shekaru %s da suka wuce"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:514
+#, fuzzy, php-format
+#| msgid "over %s year ago"
+#| msgid_plural "over %s years ago"
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "sama da %s shekara da suka wuce"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:909
+#, php-format
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
 msgstr "%s an ƙirƙire shi kuma an sanya muku."
 
 #: dt-notifications/notifications.php:911
+#, php-format
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
 msgstr "An sanya ku: %1$s."
 
 #: dt-notifications/notifications.php:917
+#, php-format
 msgctxt "user1 assigned contact1 to user2."
 msgid "%1$s assigned %2$s to %3$s."
 msgstr "An sanya %1$s %2$s zuwa %3$s."
 
 #: dt-notifications/notifications.php:921
+#, php-format
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
 msgstr "An raba %1$s %2$s tare da kai."
 
 #: dt-notifications/notifications.php:928
+#, php-format
 msgctxt "User1 mentioned you on contact1 saying: test"
 msgid "%1$s mentioned you on %2$s saying: %3$s"
 msgstr "%1$s sun ambace ka a %2$s suna cewa: %3$s"
 
 #: dt-notifications/notifications.php:935
+#, php-format
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
 msgstr "%1$s yayi sharhi akan %2$s yana cewa: %3$s"
 
 #: dt-notifications/notifications.php:939
+#, php-format
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
 msgstr "An sanya %1$s kasasshe %2$s a gare ku."
 
 #: dt-notifications/notifications.php:949
+#, php-format
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
 msgstr "An ƙara %1$s muhimmi mai mahimmanci %2$s akan %3$s."
 
 #: dt-notifications/notifications.php:952
+#, php-format
 msgctxt "@Multiplier1, an update is requested on contact1."
 msgid "@%1$s, an update is requested on %2$s."
 msgstr "@%1$s, ana neman sabuntawa akan %2$s."
 
 #: dt-notifications/notifications.php:956
+#, php-format
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
 msgstr "Bayanin lamba %1$s da aka gyara akan %2$s."
 
 #: dt-notifications/notifications.php:959
+#, php-format
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
 msgstr "%1$s ya ƙi aiki akan: %2$s."
@@ -4583,39 +4714,41 @@ msgstr "Babban wurin da wannan lambar sadarwa take."
 msgid "Locations or Address"
 msgstr "Wurare ko Adireshin"
 
-#: dt-posts/dt-posts.php:100
+#: dt-posts/dt-posts.php:101
 msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1620
-#, fuzzy
+#: dt-posts/dt-posts.php:1630
+#, fuzzy, php-format
 #| msgid "Magic Link Submission"
 msgid "%s Submission"
 msgstr "Gabatarwa Link Magic"
 
-#: dt-posts/dt-posts.php:1620
+#: dt-posts/dt-posts.php:1630
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "Magic Link"
 msgstr "Gabatarwa Link Magic"
 
-#: dt-posts/dt-posts.php:1622 dt-posts/dt-posts.php:2169
+#: dt-posts/dt-posts.php:1632 dt-posts/dt-posts.php:2179
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "Sake Aiki"
 
-#: dt-posts/dt-posts.php:2409
-msgid "Post already shared with user."
+#: dt-posts/dt-posts.php:2419
+#, fuzzy
+#| msgid "Post already shared with user."
+msgid "Record already shared with user."
 msgstr "An riga an raba Post tare da mai amfani."
 
-#: dt-posts/dt-posts.php:2688 single-template.php:174
+#: dt-posts/dt-posts.php:2698 single-template.php:174
 msgid "Details"
 msgstr "Cikakkun bayanai"
 
-#: dt-posts/dt-posts.php:2766
-#, fuzzy
+#: dt-posts/dt-posts.php:2776
+#, fuzzy, php-format
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4627,189 +4760,223 @@ msgstr ""
 "@[%1$s](%2$s) - Mai amfani %3$s ya nemi damar zuwa %4$s [%5$s](%6$s). Idan "
 "ana so, raba wannan rikodin tare da mai amfani don ba da dama."
 
-#: dt-posts/dt-posts.php:2772
+#: dt-posts/dt-posts.php:2782
 msgid "Access Request"
 msgstr "Neman Shiga"
 
 #: dt-posts/posts.php:281
+#, php-format
 msgctxt "Baptized contact1"
 msgid "Baptized %s"
 msgstr "Baftisma %s"
 
 #: dt-posts/posts.php:282
-#, fuzzy
+#, fuzzy, php-format
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
 msgstr "Baftisma da %s"
 
 #: dt-posts/posts.php:284
+#, php-format
 msgctxt "Did not baptize contact1"
 msgid "Did not baptize %s"
 msgstr "Bai yi baftisma ba %s"
 
 #: dt-posts/posts.php:285
+#, php-format
 msgctxt "Not baptized by contact1"
 msgid "Not baptized by %s"
 msgstr "Ba a yi masa baftisma ta %s"
 
 #: dt-posts/posts.php:289
+#, php-format
 msgctxt "contact1 added to members"
 msgid "%s added to members"
 msgstr "an ƙara %s ga mambobi"
 
 #: dt-posts/posts.php:290
+#, php-format
 msgctxt "Added to group group1"
 msgid "Added to group %s"
 msgstr "Ara a cikin rukuni %s"
 
 #: dt-posts/posts.php:292
+#, php-format
 msgctxt "Removed contact1 from group"
 msgid "Removed %s from group"
 msgstr "An cire %s daga rukuni"
 
 #: dt-posts/posts.php:293
+#, php-format
 msgctxt "Removed from group group1"
 msgid "Removed from group %s"
 msgstr "An cire daga rukuni %s"
 
 #: dt-posts/posts.php:298
+#, php-format
 msgctxt "Coaching contact1"
 msgid "Coaching %s"
 msgstr "Koyawa %s"
 
 #: dt-posts/posts.php:299
+#, php-format
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
 msgstr "Manajan %s"
 
 #: dt-posts/posts.php:301
+#, php-format
 msgctxt "No longer coaching contact1"
 msgid "No longer coaching %s"
 msgstr "Ba a ƙara koyawa %s"
 
 #: dt-posts/posts.php:302
+#, php-format
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
 msgstr "Ba a horar da shi ta %s ba"
 
 #: dt-posts/posts.php:306
+#, php-format
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
 msgstr "-Asa-kashi %s"
 
 #: dt-posts/posts.php:307
+#, php-format
 msgctxt "Sub-assigned on contact1"
 msgid "Sub-assigned on %s"
 msgstr "Assignedasƙantacce akan %s"
 
 #: dt-posts/posts.php:309
+#, php-format
 msgctxt "Removed sub-assigned contact1"
 msgid "Removed sub-assigned %s"
 msgstr "An cire ƙananan ƙananan %s"
 
 #: dt-posts/posts.php:310
+#, php-format
 msgctxt "No longer sub-assigned on contact1"
 msgid "No longer sub-assigned on %s"
 msgstr "Ba a ƙara sanyawa cikin %s ba"
 
 #: dt-posts/posts.php:314
+#, php-format
 msgctxt "Shaikh added as people group on contact1"
 msgid "%1$s added as people group on %2$s"
 msgstr "An ƙara %1$s azaman rukunin mutane akan %2$s"
 
 #: dt-posts/posts.php:315
+#, php-format
 msgctxt "Shaikh added to people groups"
 msgid "%s added to people groups"
 msgstr "an ƙara %s ga ƙungiyoyin mutane"
 
 #: dt-posts/posts.php:317
+#, php-format
 msgctxt "Shaikh removed from people groups on contact1"
 msgid "%1$s removed from people groups on %2$s"
 msgstr "An cire %1$s daga ƙungiyoyin mutane akan %2$s"
 
 #: dt-posts/posts.php:318
+#, php-format
 msgctxt "Shaikh removed from people groups"
 msgid "%s removed from people groups"
 msgstr "an cire %s daga ƙungiyoyin mutane"
 
 #: dt-posts/posts.php:322
+#, php-format
 msgctxt "contact1 added as leader on group1"
 msgid "%1$s added as leader on %2$s"
 msgstr "An ƙara %1$s azaman jagora akan %2$s"
 
 #: dt-posts/posts.php:323
+#, php-format
 msgctxt "contact1 added to leaders"
 msgid "%s added to leaders"
 msgstr "an ƙara %s ga shugabanni"
 
 #: dt-posts/posts.php:325
+#, php-format
 msgctxt "contact1 removed from leaders on group1"
 msgid "%1$s removed from leaders on %2$s"
 msgstr "An cire %1$s daga shugabannin akan %2$s"
 
 #: dt-posts/posts.php:326
+#, php-format
 msgctxt "contact1 removed from leaders"
 msgid "%s removed from leaders"
 msgstr "an cire %s daga shugabannin"
 
 #: dt-posts/posts.php:330
+#, php-format
 msgctxt "contact1 added as coach on group1"
 msgid "%1$s added as coach on %2$s"
 msgstr "An ƙara %1$s azaman koci akan %2$s"
 
 #: dt-posts/posts.php:331
+#, php-format
 msgctxt "contact1 added to coaches"
 msgid "%s added to coaches"
 msgstr "an ƙara %s ga masu horarwa"
 
 #: dt-posts/posts.php:333
+#, php-format
 msgctxt "contact1 removed from coaches on group2"
 msgid "%1$s removed from coaches on %2$s"
 msgstr "An cire %1$s daga masu koyawa akan %2$s"
 
 #: dt-posts/posts.php:334
+#, php-format
 msgctxt "contact1 removed from coaches"
 msgid "%s removed from coaches"
 msgstr "An cire %s daga masu koyawa"
 
 #: dt-posts/posts.php:338
+#, php-format
 msgctxt "group2 added to child groups"
 msgid "%s added to child groups"
 msgstr "an ƙara %s ga ƙungiyoyin yara"
 
 #: dt-posts/posts.php:339
+#, php-format
 msgctxt "group1 added to parent groups"
 msgid "%s added to parent groups"
 msgstr "an ƙara %s ga rukunin iyaye"
 
 #: dt-posts/posts.php:341
+#, php-format
 msgctxt "group2 removed from child groups"
 msgid "%s removed from child groups"
 msgstr "An cire %s daga ƙungiyoyin yara"
 
 #: dt-posts/posts.php:342
+#, php-format
 msgctxt "group1 removed from parent groups"
 msgid "%s removed from parent groups"
 msgstr "An cire %s daga rukunin iyaye"
 
 #: dt-posts/posts.php:347 dt-posts/posts.php:348
+#, php-format
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
 msgstr "an ƙara %s ga ƙungiyoyin tsara"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
+#, php-format
 msgctxt "group1 removed from peer groups"
 msgid "%s removed from peer groups"
 msgstr "An cire %s daga ƙungiyoyin ƙwararru"
 
 #: dt-posts/posts.php:356 dt-posts/posts.php:357 dt-posts/posts.php:365
 #: dt-posts/posts.php:369
+#, php-format
 msgctxt "Connected to contact1"
 msgid "Connected to %s"
 msgstr "Haɗa zuwa %s"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Milestone1 added to Milestones"
 #| msgid "%1$s added to %2$s"
 msgctxt "Contact1 added to [field]"
@@ -4818,12 +4985,13 @@ msgstr "An ƙara %1$s zuwa %2$s"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
+#, php-format
 msgctxt "Removed connection to contact1"
 msgid "Removed connection to %s"
 msgstr "Cire haɗin haɗi zuwa %s"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Milestone1 removed from Milestones"
 #| msgid "%1$s removed from %2$s"
 msgctxt "contact1 removed from [field]"
@@ -4831,7 +4999,7 @@ msgid "%1$s removed from %2$s"
 msgstr "An cire %1$s daga %2$s"
 
 #: dt-posts/posts.php:416
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Total in January"
 #| msgid "%1$s in %2$s"
 msgctxt "User Select: User1"
@@ -4843,36 +5011,42 @@ msgid "Nobody"
 msgstr "Babu kowa"
 
 #: dt-posts/posts.php:421 dt-posts/posts.php:426
+#, php-format
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "%1$s ya canza zuwa %2$s"
 
 #: dt-posts/posts.php:434 dt-posts/posts.php:445
+#, php-format
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
 msgstr "An cire %1$s daga %2$s"
 
 #: dt-posts/posts.php:437 dt-posts/posts.php:448
+#, php-format
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
 msgstr "An ƙara %1$s zuwa %2$s"
 
 #: dt-posts/posts.php:470
+#, php-format
 msgid "%s removed"
 msgstr "an cire %s"
 
 #: dt-posts/posts.php:478 dt-posts/posts.php:491
+#, php-format
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
 msgstr "An cire %1$s daga wurare"
 
 #: dt-posts/posts.php:481 dt-posts/posts.php:498
+#, php-format
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "An ƙara %1$s zuwa wurare"
 
 #: dt-posts/posts.php:512
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Milestone1 removed from Milestones"
 #| msgid "%1$s removed from %2$s"
 msgctxt "link1 removed from Social Links"
@@ -4880,7 +5054,7 @@ msgid "%1$s removed from %2$s links"
 msgstr "An cire %1$s daga %2$s"
 
 #: dt-posts/posts.php:515
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Milestone1 added to Milestones"
 #| msgid "%1$s added to %2$s"
 msgctxt "link1 added to Social Links"
@@ -4908,21 +5082,25 @@ msgid "not invalidated"
 msgstr "ba a warware shi ba"
 
 #: dt-posts/posts.php:566
+#, php-format
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
 msgstr "An ƙara %1$s: %2$s"
 
 #: dt-posts/posts.php:568
+#, php-format
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
 msgstr "An sabunta %1$s daga %2$s zuwa %3$s"
 
 #: dt-posts/posts.php:570
+#, php-format
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "An share %1$s: %2$s"
 
 #: dt-posts/posts.php:574
+#, php-format
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "Sunan ya canza zuwa:%s"
@@ -4933,6 +5111,7 @@ msgid "Created from Demo Plugin"
 msgstr "Irƙira daga Demo Plugin"
 
 #: dt-posts/posts.php:583
+#, php-format
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr "%s ya ƙi aiki"
@@ -4943,21 +5122,24 @@ msgid "A user"
 msgstr "Mai amfani"
 
 #: dt-posts/posts.php:586
+#, php-format
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr "%s yarda aiki"
 
 #: dt-posts/posts.php:591
+#, php-format
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "An raba tare da %s"
 
 #: dt-posts/posts.php:593
+#, php-format
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "Ba a raba shi tare da %s"
 
-#: dt-posts/posts.php:2522
+#: dt-posts/posts.php:2527
 #, fuzzy
 #| msgid "Remove"
 msgid "Removed User"
@@ -4968,6 +5150,7 @@ msgid "Bulk Send App"
 msgstr "Babban Aika App"
 
 #: dt-reports/magic-url-bulk-send.php:38
+#, php-format
 msgid "Select all the %1$s to whom you want to send app links."
 msgstr "Zaɓi duk %1$s ga wanda kuke son aika hanyoyin haɗin yanar gizo."
 
@@ -5024,6 +5207,7 @@ msgid "Link key is no longer valid or has expired."
 msgstr ""
 
 #: dt-reports/magic-url-landing-page.php:39
+#, php-format
 msgid "Please %s, or locate a more recent key, or request a new one."
 msgstr ""
 
@@ -5118,6 +5302,7 @@ msgid "User Status"
 msgstr "Halin Mai amfani"
 
 #: dt-users/mapbox-coverage-map.php:75
+#, php-format
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
 msgstr "Userara mai amfani zuwa:%s"
@@ -5400,6 +5585,7 @@ msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "Lokaci daga sanyawa zuwa ƙoƙari na tuntuɓar lambobi 10 na ƙarshe"
 
 #: dt-users/user-hooks-and-config.php:196
+#, php-format
 msgid ""
 "Welcome %1$s, this is your personal contact record. Feel free to update the "
 "fields and @mention me or other users"
@@ -5409,6 +5595,7 @@ msgstr ""
 
 #: dt-users/user-hooks-and-config.php:312
 #: dt-users/user-hooks-and-config.php:350
+#, php-format
 msgid "[%s] Login Details"
 msgstr "[%s] Bayanin shiga"
 
@@ -5417,14 +5604,17 @@ msgid "To set your password, visit the following address:"
 msgstr "Don saita kalmar sirrinku, ziyarci adireshin da ke gaba:"
 
 #: dt-users/user-hooks-and-config.php:346
+#, php-format
 msgid "To log in click here: %s"
 msgstr "Don shiga danna nan: %s"
 
 #: dt-users/user-hooks-and-config.php:388
+#, php-format
 msgid "Hi %s,"
 msgstr "Sannu %s,"
 
 #: dt-users/user-hooks-and-config.php:389
+#, php-format
 msgctxt ""
 "You've been invited to join Awesome Site at https://awesome_site.disciple."
 "tools"
@@ -5472,16 +5662,19 @@ msgid "Add User"
 msgstr "Userara Mai amfani"
 
 #: dt-users/user-management.php:180
+#, php-format
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
 msgstr "An karɓi %1$s a kan %2$s bayan %3$s kwanakin"
 
 #: dt-users/user-management.php:181
+#, php-format
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
 msgstr "%1$s suna jiran Contactoƙarin Saduwa na kwanakin %2$s"
 
 #: dt-users/user-management.php:182
+#, php-format
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
 msgstr "An yi ƙoƙarin tuntuɓar %1$s a kan %2$s bayan %3$s kwanakin"
@@ -5528,13 +5721,14 @@ msgid "Go"
 msgstr ""
 
 #: dt-users/user-management.php:232
-#, fuzzy
+#, fuzzy, php-format
 #| msgctxt "Showing 30 items matching bob"
 #| msgid "Showing %1$s items matching %2$s"
 msgid "Showing %1$s of %2$s"
 msgstr "Nuna abubuwan %1$s daidai da %2$s"
 
 #: dt-users/user-management.php:353
+#, php-format
 msgid "%s days since last update"
 msgstr "Kwanaki %s tun ɗaukakawa ta ƙarshe"
 
@@ -5559,6 +5753,7 @@ msgid "Logged In"
 msgstr "Shiga ciki"
 
 #: dt-users/user-metrics.php:119
+#, php-format
 msgctxt "Declined assignment on Bob"
 msgid "Declined assignment on %s"
 msgstr "Rage aiki akan %s"
@@ -5597,6 +5792,7 @@ msgid "Failed to add user to site."
 msgstr "Ba a yi nasarar ƙara mai amfani zuwa rukunin yanar gizo ba."
 
 #: dt-users/users.php:540
+#, php-format
 msgctxt "These are archived comments for contact John Doe"
 msgid "These are archived comments for %1$s"
 msgstr "Waɗannan sharhi ne da aka adana don %1$s"
@@ -5611,11 +5807,13 @@ msgid "System Email"
 msgstr "Imel na Tsarin"
 
 #: dt-workflows/tasks.php:82
+#, php-format
 msgctxt "You set a reminder for today on contact1"
 msgid "You set a reminder for today on %1$s"
 msgstr "Ka saita tunatarwa don yau akan %1$s"
 
 #: dt-workflows/tasks.php:86
+#, php-format
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "Kun sanya wannan aikin akan %1$s: %2$s"
@@ -5647,6 +5845,7 @@ msgid "See what browser you are using."
 msgstr "Duba irin burauzar da kuke amfani da ita."
 
 #: single-template.php:99 single-template.php:107
+#, php-format
 msgid "This %s needs an update."
 msgstr "Wannan %s yana buƙatar ɗaukakawa."
 
@@ -5662,7 +5861,8 @@ msgstr "Gyara dukkan bayanan filayen"
 msgid "Show Hidden Tiles"
 msgstr ""
 
-#: single-template.php:408
+#: single-template.php:409
+#, php-format
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Shin kun tabbata kuna son share %s?"
@@ -5672,6 +5872,7 @@ msgid "Open Modal"
 msgstr "Bude Modal"
 
 #: template-merge-post-details.php:121
+#, php-format
 msgid "Merge Duplicate %s"
 msgstr "Haɗa Kwafin %s"
 
@@ -5706,6 +5907,7 @@ msgid "Updated"
 msgstr "An sabunta"
 
 #: template-new-bulk-post.php:85
+#, php-format
 msgid "New Bulk %s"
 msgstr "Sabon Girma %s"
 
@@ -5713,7 +5915,8 @@ msgstr "Sabon Girma %s"
 msgid "Choose which fields to display across new bulk records"
 msgstr "Zaɓi waɗanne filayen don nunawa a cikin sabbin bayanai masu girma"
 
-#: template-new-bulk-post.php:145 template-new-post.php:68
+#: template-new-bulk-post.php:145 template-new-post.php:66
+#, php-format
 msgid "Select the %s type:"
 msgstr "Zaɓi nau'in %s:"
 
@@ -5721,32 +5924,15 @@ msgstr "Zaɓi nau'in %s:"
 msgid "Add New Row"
 msgstr "Ƙara Sabon Layi"
 
-#: template-new-bulk-post.php:276 template-new-post.php:178
-msgid "Create Tag"
-msgstr "Tagirƙiri Tag"
-
-#: template-new-bulk-post.php:277 template-new-post.php:179
-msgid "Create a tag and apply it to this record."
-msgstr "Irƙiri alama kuma yi amfani da shi zuwa wannan rikodin."
-
-#: template-new-bulk-post.php:281 template-new-bulk-post.php:283
-#: template-new-post.php:183 template-new-post.php:185
-msgid "Tag"
-msgstr "Tag"
-
-#: template-new-bulk-post.php:293 template-new-post.php:194
-msgid "Create and apply tag"
-msgstr "Irƙiri da amfani da alama"
-
-#: template-new-post.php:155
+#: template-new-post.php:153
 msgid "Show all fields"
 msgstr "Nuna duk filayen"
 
-#: template-new-post.php:158
+#: template-new-post.php:156
 msgid "Hide fields"
 msgstr "Fieldsoye filaye"
 
-#: template-new-post.php:165
+#: template-new-post.php:163
 msgid "Save and continue editing"
 msgstr "Adana kuma ci gaba da gyara"
 
@@ -5845,6 +6031,7 @@ msgid "Contact Info"
 msgstr "An canza Bayanin Saduwa"
 
 #: template-settings.php:493
+#, php-format
 msgctxt "Email will be sent to: [email]"
 msgid "Email notifications will be sent to: %s"
 msgstr ""
@@ -5956,6 +6143,14 @@ msgstr "Samun damar shiga lambobin sadarwa:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Abubuwan da aka samo:"
+
+#~ msgid "Reset password"
+#~ msgstr "Sake saita kalmar wucewa"
+
+#, fuzzy
+#~| msgid "Post Type"
+#~ msgid "Post Types"
+#~ msgstr "Nau'in Post"
 
 #~ msgctxt "input field placeholder"
 #~ msgid "Search multipliers and contacts"

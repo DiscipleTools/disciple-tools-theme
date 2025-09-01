@@ -61,7 +61,7 @@ class DT_Storage_API {
 
         // Ensure default for path_style: true for minio, false otherwise if not set
         if ( is_array( $connection ) && !array_key_exists( 'path_style', $connection ) ) {
-            $connection['path_style'] = ( isset( $connection['type'] ) && $connection['type'] === 'minio' );
+            $connection['path_style'] = isset( $connection['type'] );
         }
         return $connection;
     }
