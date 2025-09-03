@@ -901,7 +901,22 @@ class Disciple_Tools_Posts_Endpoints {
 
                     case 'image_comment':
                     case 'audio_comment':
-                        DT_Posts::add_post_comment( $post_type, $post_id, ' ', 'comment', [
+                        $comment = ' ';
+
+                        // Determine if audio comment transcriptions have been enabled.
+                        if ( ( $upload_type == 'audio_comment' ) && apply_filters( 'dt_ai_has_module_value', false, 'dt_ai_audio_comment_transcription', 'enabled', 1 ) ) {
+                            $transcription = apply_filters( 'dt_ai_transcribe_audio', [], $uploaded_file );
+
+                            if ( !empty( $transcription['html'] ) ) {
+                                $comment = $transcription['html'];
+
+                            } elseif ( !empty( $transcription['text'] ) ) {
+                                $comment = $transcription['text'];
+                            }
+                        }
+
+                        // Proceed with associated comment creation.
+                        DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'comment', [
                             'comment_meta' => [
                                 $meta_key => $uploaded_key
                             ]
