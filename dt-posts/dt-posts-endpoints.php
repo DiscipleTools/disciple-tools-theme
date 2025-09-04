@@ -909,6 +909,8 @@ class Disciple_Tools_Posts_Endpoints {
                         ], true, true );
                         break;
                     case 'audio_comment':
+                        $uploaded_file['audio_language'] = $params['audio_language'] ?? 'en';
+
                         $comment = apply_filters( 'dt_upload_audio_comment', ' ', $uploaded_file );
                         // Proceed with associated comment creation.
                         DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'comment', [

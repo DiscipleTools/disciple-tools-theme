@@ -124,6 +124,75 @@
             </div>
 
             <div class="recording-controls">
+                <select name="locale">
+                    <?php
+                    $dt_user_locale = get_user_locale( get_current_user_id() );
+                    $languages = dt_get_global_languages_list();
+                    foreach ( $languages as $code => $language ) {
+                        if ( in_array( $code, [
+                            'nl',
+                            'es',
+                            'ko',
+                            'it',
+                            'de',
+                            'th',
+                            'ru',
+                            'pt',
+                            'pl',
+                            'id',
+                            'sv',
+                            'cs',
+                            'en',
+                            'ja',
+                            'fr',
+                            'ro',
+                            'tr',
+                            'ca',
+                            'hu',
+                            'uk',
+                            'el',
+                            'bg',
+                            'sr',
+                            'mk',
+                            'lv',
+                            'sl',
+                            'hi',
+                            'gl',
+                            'da',
+                            'ur',
+                            'sk',
+                            'he',
+                            'fi',
+                            'az',
+                            'lt',
+                            'et',
+                            'nn',
+                            'cy',
+                            'pa',
+                            'fa',
+                            'eu',
+                            'vi',
+                            'bn',
+                            'ne',
+                            'mr',
+                            'be',
+                            'kk',
+                            'hy',
+                            'sw',
+                            'ta',
+                            'sq'
+                        ] ) ) {
+                            ?>
+                            <option
+                                value="<?php echo esc_html( $code ); ?>" <?php selected( $dt_user_locale === $code ) ?>>
+                                <?php echo esc_html( ! empty( $language['flag'] ) ? $language['flag'] . ' ' : '' ); ?> <?php echo esc_html( $language['native_name'] ); ?>
+                            </option>
+                            <?php
+                        }
+                    }
+                    ?>
+                </select>
+                <br>
                 <button id="start-recording-btn" class="button recording-btn start-btn">
                     <i class="mdi mdi-record"></i> <?php esc_html_e( 'Start Recording', 'disciple_tools' ) ?>
                 </button>

@@ -858,7 +858,7 @@ jQuery(document).ready(function ($) {
     ctx.fillStyle = '#6c757d';
     ctx.font = '14px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('Click "Start Recording" to begin', width / 2, height / 2 + 5);
+    ctx.fillText('Select spoken language and click "Start Recording" to begin.', width / 2, height / 2 + 5);
   }
 
   function drawVisualization(dataArray) {
@@ -1118,6 +1118,7 @@ jQuery(document).ready(function ($) {
       formData.append('audio_timestamp', new Date().toISOString());
       formData.append('audio_format', recordedAudioBlob.type);
       formData.append('audio_size', recordedAudioBlob.size.toString());
+      formData.append('audio_language', $('select[name="locale"]').val());
 
       // Show loading state
       const saveBtn = $('#save-recording-btn');
