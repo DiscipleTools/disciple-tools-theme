@@ -184,7 +184,7 @@
                         ] ) ) {
                             ?>
                             <option
-                                value="<?php echo esc_html( $code ); ?>" <?php selected( $dt_user_locale === $code ) ?>>
+                                value="<?php echo esc_html( $code ); ?>" <?php selected( substr( trim( $dt_user_locale ), 0, 2 ) === $code ) ?>>
                                 <?php echo esc_html( ! empty( $language['flag'] ) ? $language['flag'] . ' ' : '' ); ?> <?php echo esc_html( $language['native_name'] ); ?>
                             </option>
                             <?php
