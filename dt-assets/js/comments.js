@@ -858,7 +858,11 @@ jQuery(document).ready(function ($) {
     ctx.fillStyle = '#6c757d';
     ctx.font = '14px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('Select spoken language and click "Start Recording" to begin.', width / 2, height / 2 + 5);
+    ctx.fillText(
+      'Select spoken language and click "Start Recording" to begin.',
+      width / 2,
+      height / 2 + 5,
+    );
   }
 
   function drawVisualization(dataArray) {
