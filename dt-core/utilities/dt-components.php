@@ -117,19 +117,19 @@ class DT_Components
     public static function render_datetime( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         ?>
-        <dt-date <?php echo wp_kses_post( $shared_attributes ) ?>
+        <dt-datetime <?php echo wp_kses_post( $shared_attributes ) ?>
             timestamp="<?php echo esc_html( $post[$field_key]['timestamp'] ?? '' ) ?>">
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>
-        </dt-date>
+        </dt-datetime>
         <?php
     }
 
     public static function render_number( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         ?>
-        <dt-date <?php echo wp_kses_post( $shared_attributes ) ?>>
+        <dt-number <?php echo wp_kses_post( $shared_attributes ) ?>>
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>
-        </dt-date>
+        </dt-number>
         <?php
     }
 
