@@ -32,6 +32,18 @@ class DT_Magic_URL_Setup {
                 ];
             }
         }
+
+        if ( !isset( $tiles['user-apps'] ) ) {
+            if ( $post_type === 'contacts' && current_user_can( 'manage_dt' ) ) {
+                $post = DT_Posts::get_post( $post_type, get_the_ID() );
+                if ( !is_wp_error( $post ) && isset( $post['corresponds_to_user'] ) ) {
+                    $tiles['user-apps'] = [
+                        'label' => __( 'User Apps', 'disciple-tools-palm' ),
+                        'description' => __( 'User Apps available to this user contact.', 'disciple_tools' ),
+                    ];
+                }
+            }
+        }
         return $tiles;
     }
 
@@ -59,6 +71,90 @@ class DT_Magic_URL_Setup {
                         }
                     }
                 }
+            }
+        }
+
+        if ( $section === 'user-apps' ) {
+            global $wpdb;
+            $post = DT_Posts::get_post( $post_type, get_the_ID() );
+            if ( !isset( $post['corresponds_to_user'] ) ) {
+                return;
+            }
+            $user_id = $post['corresponds_to_user'];
+
+            $dt_user_meta = get_user_meta( $user_id ); // Full array of user meta data
+            $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
+            if ( !empty( $apps_list ) ) {
+                foreach ( $apps_list as $app_key => $app_value ) {
+                    $enabled = isset( $dt_user_meta[$wpdb->prefix . $app_key] );
+                    $this->add_user_app_row( $user_id, $app_key, $app_value, $enabled );
+                }
+                ?>
+                <style>
+                    .user-app-container {
+                        display: grid;
+                        grid-template-columns: 1fr auto;
+                        grid-template-areas:
+                            "name toggle"
+                            "desc toggle"
+                            "actions actions";
+                        .app-name {
+                            font-weight: bold;
+                            grid-area: name;
+                        }
+                        .app-desc {
+                            grid-area: desc;
+                        }
+                        .app-toggle {
+                            grid-area: toggle;
+                            display: flex;
+                            align-items: center;
+                            &:has(.switch-input:not(:checked)) + .app-actions {
+                                display: none;
+                            }
+                        }
+                        .app-actions {
+                            grid-area: actions;
+                            display: flex;
+                            justify-content: start;
+                            align-items: center;
+                            gap: 0.5rem;
+
+                            dt-toggle:not([checked]) ~ * {
+                                visibility: collapse;
+                            }
+                        }
+                    }
+                </style>
+                <script>
+                    function toggle_app(evt, user_id, app_key) {
+                        console.log(evt);
+                    }
+                    function app_switch(user_id = null, app_key = null) {
+                        let a = jQuery('#app_link_' + app_key);
+                        window
+                            .makeRequest('post', 'users/app_switch', { user_id, app_key })
+                            .done(function (data) {
+                                if ('removed' === data) {
+                                    a.children().hide();
+                                } else {
+                                    let u = a.data('url-base');
+                                    a.find('.app-link')
+                                        .attr('href', u + data)
+                                        .show();
+                                    a.find('.app-copy')
+                                        .attr('data-value', u + data)
+                                        .show();
+                                }
+                            })
+                            .fail(function (err) {
+                                console.log('error');
+                                console.log(err);
+                                a.empty().html(`error`);
+                            });
+                    }
+                </script>
+                <?php
             }
         }
     }
@@ -201,6 +297,48 @@ Thanks!', 'disciple_tools' );
             })
         </script>
         <?php
+    }
+
+    private function add_user_app_row( $user_id, $app_key, $app_value, $enabled = false ) {
+        $display = $app_value['settings_display'] ?? true;
+        if ( $display === true ) {
+            $app_user_key = get_user_option( $app_key, $user_id );
+            $app_url_base = trailingslashit( trailingslashit( site_url() ) . $app_value['url_base'] );
+            $app_link = false;
+            if ( $app_user_key ) {
+                $app_link = $app_url_base . $app_user_key;
+            }
+            ?>
+            <div class="user-app-container">
+                <div class="app-name"><?php echo esc_html( $app_value['label'] )?></div>
+                <div class="app-desc"><?php echo esc_html( $app_value['description'] )?></div>
+                <div class="app-toggle" data-url-base="<?php echo esc_url( $app_url_base ) ?>">
+                    <input class="switch-input" id="app_state_<?php echo esc_attr( $app_key )?>" type="checkbox" name="follow_all"
+                           onclick="app_switch('<?php echo esc_attr( $user_id )?>', '<?php echo esc_attr( $app_key )?>');"
+                        <?php echo esc_attr( $enabled ? 'checked' : '' ) ?>
+                    />
+                    <label class="switch-paddle" for="app_state_<?php echo esc_attr( $app_key )?>">
+                        <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
+                        <span class="switch-active" aria-hidden="true" style="color:white;"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
+                        <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
+                    </label>
+                </div>
+                <div class="app-actions" id="app_link_<?php echo esc_attr( $app_key )?>" data-url-base="<?php echo esc_url( $app_url_base ) ?>">
+                    <a class="app-link dt-action-button small button view"
+                       href="<?php echo esc_url( $app_link ) ?>"
+                       title="<?php esc_html_e( 'link', 'disciple_tools' ) ?>">
+                        <i class="fi-link"></i>
+                    </a>
+
+                    <a type="button" class="app-copy dt-tooltip dt-action-button small button copy_to_clipboard"
+                            data-value="<?php echo esc_url( $app_link ) ?>">
+                        <span class="tooltiptext"><?php esc_html_e( 'Copy', 'disciple_tools' ); ?></span>
+                        <img class="dt-icon" alt="copy" src="https://dtplayground.local/wp-content/themes/disciple-tools-theme/dt-assets/images/duplicate.svg">
+                    </a>
+                </div>
+            </div>
+            <?php
+        }
     }
 }
 new DT_Magic_URL_Setup();
