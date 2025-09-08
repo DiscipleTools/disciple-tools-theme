@@ -854,12 +854,14 @@ jQuery(document).ready(function ($) {
     ctx.lineTo(width, height / 2);
     ctx.stroke();*/
 
+    const description = ( $('select[name="locale"]').length > 0 ) ? window.commentsSettings?.translations?.audio_comment_descriptions?.lang_enabled : window.commentsSettings?.translations?.audio_comment_descriptions?.lang_disabled;
+
     // Draw placeholder text
     ctx.fillStyle = '#6c757d';
     ctx.font = '14px Arial';
     ctx.textAlign = 'center';
     ctx.fillText(
-      'Select spoken language and click "Start Recording" to begin.',
+      description,
       width / 2,
       height / 2 + 5,
     );
@@ -1122,7 +1124,11 @@ jQuery(document).ready(function ($) {
       formData.append('audio_timestamp', new Date().toISOString());
       formData.append('audio_format', recordedAudioBlob.type);
       formData.append('audio_size', recordedAudioBlob.size.toString());
-      formData.append('audio_language', $('select[name="locale"]').val());
+
+      const audio_language_select = $('select[name="locale"]');
+      if ( $(audio_language_select).length > 0 ) {
+        formData.append('audio_language', $(audio_language_select).val());
+      }
 
       // Show loading state
       const saveBtn = $('#save-recording-btn');
