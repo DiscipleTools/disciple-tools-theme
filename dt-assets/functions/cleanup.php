@@ -82,10 +82,9 @@ function dt_gallery_style( $css ) {
  * @return string
  */
 function dt_excerpt_more( $more ) {
-    global $post;
-
-    // Edit here if you like
-    return '<a class="excerpt-read-more" href="' . get_permalink( $post->ID ) . '" title="Read' . esc_html( get_the_title( $post->ID ) ) . '"> ... Read more &raquo; </a>';
+    $post_id = get_the_ID();
+    $title = get_the_title( $post_id );
+    return '<a class="excerpt-read-more" href="' . get_permalink( $post_id ) . '" title="Read ' . esc_html( $title ) . '"> ... Read more &raquo; </a>';
 }
 
 /**
