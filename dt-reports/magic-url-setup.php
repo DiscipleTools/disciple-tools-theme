@@ -333,7 +333,7 @@ Thanks!', 'disciple_tools' );
                     <a type="button" class="app-copy dt-tooltip dt-action-button small button copy_to_clipboard"
                             data-value="<?php echo esc_url( $app_link ) ?>">
                         <span class="tooltiptext"><?php esc_html_e( 'Copy', 'disciple_tools' ); ?></span>
-                        <img class="dt-icon" alt="copy" src="https://dtplayground.local/wp-content/themes/disciple-tools-theme/dt-assets/images/duplicate.svg">
+                        <img class="dt-icon" alt="copy" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/duplicate.svg' ) ?>">
                     </a>
                 </div>
             </div>
