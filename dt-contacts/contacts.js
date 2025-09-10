@@ -141,12 +141,11 @@ jQuery(document).ready(function ($) {
       original_contact_html += `</div>`;
       $('#original-contact').append(original_contact_html);
 
-      window.API.get_duplicates_on_post('contacts', post_id, {
-        ignore_archived: '1',
-      }).done((dups_with_data) => {
-        possible_duplicates = dups_with_data;
-        $('#duplicates-spinner').removeClass('active');
-        loadDuplicates();
+      window.API.get_duplicates_on_post('contacts', post_id)
+      .done((dups_with_data) => {
+          possible_duplicates = dups_with_data;
+          $('#duplicates-spinner').removeClass('active');
+          loadDuplicates();
       });
 
       openedOnce = true;

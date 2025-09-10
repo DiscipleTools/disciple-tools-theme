@@ -97,10 +97,14 @@ class DT_Duplicate_Checker_And_Merging {
 
     private static function query_for_duplicate_searches( $post_type, $post_id, $exact = true ){
         $post = DT_Posts::get_post( $post_type, $post_id );
-        $fields = DT_Posts::get_post_field_settings( $post_type );
+        $post_type_settings = DT_Posts::get_post_settings( $post_type );
+        $fields = $post_type_settings['fields'];
         $search_query = [];
         $exact_template = $exact ? '^' : '';
         $fields_with_values = [];
+
+        $status_field = isset( $post_type_settings['status_field']['status_key'], $post_type_settings['status_field']['archived_key'] ) ? $post_type_settings['status_field'] : [];
+
         foreach ( $post as $field_key => $field_value ){
             if ( ! isset( $fields[$field_key]['type'] ) || empty( $fields[$field_key]['type'] ) ){
                 continue;
@@ -115,13 +119,24 @@ class DT_Duplicate_Checker_And_Merging {
                     }
                     if ( !empty( $channel_queries ) ){
                         $fields_with_values[] = $field_key;
-                        $search_query[$field_key] = [];
-                        $search_query[$field_key] = $channel_queries;
+
+                        $query = [ $field_key => $channel_queries ];
+                        if ( !empty( $status_field ) ) {
+                            $query[ $status_field['status_key'] ] = [ '-' . $status_field['archived_key'] ];
+                        }
+
+                        $search_query[] = $query;
                     }
                 }
             } else if ( $field_key === 'name' && !empty( $field_value ) ){
                 $fields_with_values[] = $field_key;
-                $search_query[$field_key] = [ $exact_template . $field_value ];
+
+                $query = [ $field_key => [ $exact_template . $field_value ] ];
+                if ( !empty( $status_field ) ) {
+                    $query[ $status_field['status_key'] ] = [ '-' . $status_field['archived_key'] ];
+                }
+
+                $search_query[] = $query;
             }
         }
         return [
@@ -165,21 +180,19 @@ class DT_Duplicate_Checker_And_Merging {
         $params = $request->get_params();
         $post_id = $params['id'] ?? null;
         $post_type = $params['post_type'] ?? null;
-        $ignore_archived = isset( $params['ignore_archived'] ) && $params['ignore_archived'] === '1';
         if ( $post_id ){
-            return self::get_all_duplicates_on_post( $post_type, $post_id, [ 'ignore_archived' => $ignore_archived ] );
+            return self::get_all_duplicates_on_post( $post_type, $post_id );
         } else {
             return new WP_Error( 'get_duplicates_on_contact', 'Missing field for request', [ 'status' => 400 ] );
         }
     }
-    public static function get_all_duplicates_on_post( $post_type, $post_id, $args = [] ){
+    public static function get_all_duplicates_on_post( $post_type, $post_id ){
         if ( !DT_Posts::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
         }
 
         $post = DT_Posts::get_post( $post_type, $post_id );
-        $post_type_settings = DT_Posts::get_post_settings( $post_type );
-        $field_settings = $post_type_settings['fields'];
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
 
         $exact_query = self::query_for_duplicate_searches( $post_type, $post_id, true );
         $exact_query['fields'] = array_merge( $exact_query['fields'], [ 'overall_status', 'reason_closed' ] );
@@ -200,9 +213,6 @@ class DT_Duplicate_Checker_And_Merging {
         foreach ( $possible_duplicates as $possible_duplicate ){
             if ( $possible_duplicate['ID'] === $post_id || in_array( $possible_duplicate['ID'], $ids ) ){
                 continue; // exclude self and records already processed
-            }
-            if ( isset( $args['ignore_archived'], $post_type_settings['status_field']['status_key'], $post_type_settings['status_field']['archived_key'], $possible_duplicate[ $post_type_settings['status_field']['status_key'] ]['key'] ) && $args['ignore_archived'] === true && $possible_duplicate[ $post_type_settings['status_field']['status_key'] ]['key'] === $post_type_settings['status_field']['archived_key'] ) {
-                continue;
             }
             $ids[] = $possible_duplicate['ID'];
             $match_on = [];
