@@ -129,8 +129,8 @@ class DT_Components
         ?>
         <dt-number <?php echo wp_kses_post( $shared_attributes ) ?>
             value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>"
-            min="<?php echo $fields[$field_key]['min_option'] ?>"
-            max="<?php echo $fields[$field_key]['max_option'] ?>">
+            min="<?php echo esc_html( $fields[$field_key]['min_option'] ) ?>"
+            max="<?php echo esc_html( $fields[$field_key]['max_option'] ) ?>">
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-number>
         <?php
