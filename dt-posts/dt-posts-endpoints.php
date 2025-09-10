@@ -900,13 +900,24 @@ class Disciple_Tools_Posts_Endpoints {
                         break;
 
                     case 'image_comment':
-                    case 'audio_comment':
-                        DT_Posts::add_post_comment( $post_type, $post_id, ' ', 'comment', [
+                        $comment = apply_filters( 'dt_upload_image_comment', ' ', $uploaded_file );
+                        // Proceed with associated comment creation.
+                        DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'comment', [
                             'comment_meta' => [
                                 $meta_key => $uploaded_key
                             ]
                         ], true, true );
+                        break;
+                    case 'audio_comment':
+                        $uploaded_file['audio_language'] = $params['audio_language'] ?? 'en';
 
+                        $comment = apply_filters( 'dt_upload_audio_comment', ' ', $uploaded_file );
+                        // Proceed with associated comment creation.
+                        DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'comment', [
+                            'comment_meta' => [
+                                $meta_key => $uploaded_key
+                            ]
+                        ], true, true );
                         break;
                 }
 

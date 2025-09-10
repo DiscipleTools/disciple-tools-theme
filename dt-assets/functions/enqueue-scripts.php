@@ -185,6 +185,10 @@ function dt_site_scripts() {
                         'hide_translation' => __( 'Hide Translation', 'disciple_tools' ),
                         'reaction_title_1' => _x( '%1$s reacted with %2$s emoji', 'Bob reacted with heart emoji', 'disciple_tools' ),
                         'reaction_title_many' => _x( '%3$s and %1$s reacted with %2$s emoji', 'Bob, Bill and Ben reacted with heart emoji', 'disciple_tools' ),
+                        'audio_comment_descriptions' => [
+                            'lang_enabled' => __( 'Select spoken language and click "Start Recording" to begin.', 'disciple_tools' ),
+                            'lang_disabled' => __( 'Click "Start Recording" to begin.', 'disciple_tools' ),
+                        ],
                     ],
                     'current_user_id' => get_current_user_id(),
                     'additional_sections' => apply_filters( 'dt_comments_additional_sections', [], $post_type ),
