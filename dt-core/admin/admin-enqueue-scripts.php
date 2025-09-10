@@ -106,6 +106,9 @@ function dt_options_scripts() {
                 'current_user_id' => get_current_user_id(),
                 'theme_uri' => get_template_directory_uri(),
                 'images_uri' => disciple_tools()->admin_img_url,
+                'available_languages' => dt_get_available_languages(),
+                'site_options' => dt_get_option( 'dt_site_options' ),
+                'contacts_field_settings' => DT_Posts::get_post_field_settings( 'contacts' ),
             )
         );
         wp_register_style( 'dt_admin_css', disciple_tools()->admin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->admin_css_path . 'disciple-tools-admin-styles.css' ) );
