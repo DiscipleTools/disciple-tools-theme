@@ -101,6 +101,12 @@ function build_filters_option_list_html( $location ) {
     <label
         for="advanced-search-modal-filters-meta-<?php echo esc_attr( $location ); ?>"><?php echo esc_html__( 'Communication', 'disciple_tools' ); ?></label>
     <br>
+
+    <input type="checkbox" id="advanced-search-modal-filters-archived-<?php echo esc_attr( $location ); ?>"
+           class="advanced-search-modal-filters" checked>
+    <label
+        for="advanced-search-modal-filters-archived-<?php echo esc_attr( $location ); ?>"><?php echo esc_html__( 'Archived', 'disciple_tools' ); ?></label>
+    <br>
     <?php
 }
 ?>

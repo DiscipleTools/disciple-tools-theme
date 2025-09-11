@@ -2916,7 +2916,9 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         // Ensure status filter is captured accordingly
         $post_settings = self::get_post_settings( $post_type, false );
+        $status_archived_key = '';
         if ( ! empty( $filters['status'] ) && ! empty( $post_settings['status_field'] ) ) {
+            $status_archived_key = $post_settings['status_field']['archived_key'];
             $status_where_condition = ( $filters['status'] === 'all' ) ? 'IN (' . dt_array_to_sql( self::get_post_field_options_keys( $post_settings['fields'], $post_settings['status_field']['status_key'] ) ) . ')' : "= '" . $filters['status'] . "'";
             $extra_fields           .= 'if(adv_search_post_status.meta_value ' . $status_where_condition . ", 'Y', 'N') status_hit,";
             $extra_fields           .= 'if(adv_search_post_status.meta_value ' . $status_where_condition . ", adv_search_post_status.meta_value, '') status_hit_value,";
@@ -2979,6 +2981,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                 }
             } else {
                 $add_post = true;
+            }
+
+            // Accordingly filter posts, based on archived flag.
+            if ( !$filters['archived'] && isset( $post->status_hit_value ) && $post->status_hit_value === $status_archived_key  ) {
+                $add_post = false;
             }
 
             // Add post accordingly, based on flag!
