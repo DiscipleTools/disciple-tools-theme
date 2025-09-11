@@ -450,6 +450,7 @@ Thanks!', 'disciple_tools' );
 
                 <a class="app-link dt-action-button small button view"
                    href="<?php echo esc_url( $app_link ) ?>"
+                   target="_blank"
                    title="<?php esc_html_e( 'link', 'disciple_tools' ) ?>">
                     <i class="mdi mdi-link"></i>
                 </a>
