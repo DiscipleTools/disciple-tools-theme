@@ -373,24 +373,12 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             }
             $site_options['update_required']['enabled'] = isset( $_POST['triggers_enabled'] );
 
-            foreach ( $site_options['update_required']['options'] as $option_index => $option ){
-                if ( isset( $_POST[$option_index . '_days'] ) ){
-                    $site_options['update_required']['options'][$option_index]['days'] = sanitize_text_field( wp_unslash( $_POST[$option_index . '_days'] ) );
-                }
-                if ( isset( $_POST[$option_index . '_comment'] ) ){
-                    $site_options['update_required']['options'][$option_index]['comment'] = wp_unslash( sanitize_text_field( wp_unslash( $_POST[$option_index . '_comment'] ) ) );
-                }
-                if ( isset( $_POST[$option_index . '_translations'] ) ){
-                    $translations = [];
-                    $uploaded_translations = dt_recursive_sanitize_array( $_POST[$option_index . '_translations'] );
-                    foreach ( $uploaded_translations ?? [] as $lang_key => $translation ) {
-                        if ( !empty( $translation ) ) {
-                            $translations[$lang_key] = sanitize_text_field( wp_unslash( $translation ) );
-                        }
-                    }
-                    $site_options['update_required']['options'][$option_index]['translations'] = $translations;
-                }
+            // Capture updated trigger options.
+            if ( isset( $_POST['update_needed_triggers_options'] ) ) {
+                // phpcs:ignore
+                $site_options['update_required']['options'] = dt_recursive_sanitize_array( json_decode( wp_unslash( $_POST['update_needed_triggers_options'] ), true ) );
             }
+
             update_option( 'dt_site_options', $site_options, true );
         }
 
@@ -426,13 +414,11 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     public function update_required_options(){
-        $site_options            = dt_seeker_path_triggers_capture_pre_existing_options( dt_get_option( 'dt_site_options' ) );
-        $update_required_options = $site_options['update_required']['options'];
-        $field_options           = DT_Posts::get_post_field_settings( 'contacts' );
+        $site_options = dt_get_option( 'dt_site_options' );
         $available_languages = dt_get_available_languages();
         ?>
         <h3><?php esc_html_e( 'Contacts', 'disciple_tools' ) ?></h3>
-        <form method="post" name="update_required-form">
+        <form id="update_needed_triggers_form" method="post" name="update_required-form">
             <button type="submit" class="button-like-link" name="run_update_required" value="1"><?php esc_html_e( 'Run checker now', 'disciple_tools' ) ?></button>
             <p><?php esc_html_e( 'Change how long to wait before a contact needs an update', 'disciple_tools' ) ?></p>
 
@@ -457,70 +443,29 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
 
             <input type="hidden" name="update_required_nonce" id="update_required_nonce" value="' <?php echo esc_attr( wp_create_nonce( 'update_required' ) ) ?>'" />
 
-            <table class="widefat">
+            <table id="update_needed_triggers_table" class="widefat">
                 <thead>
                     <tr>
                         <th><?php esc_html_e( 'Status', 'disciple_tools' ) ?></th>
-                        <th><?php esc_html_e( 'Seeker Path', 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( 'Field', 'disciple_tools' ) ?></th>
+                        <th><?php esc_html_e( 'Option', 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( 'Days to wait', 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( 'Comment', 'disciple_tools' ) ?></th>
                         <th><?php esc_html_e( 'Translations', 'disciple_tools' ) ?></th>
+                        <th></th>
                     </tr>
                 </thead>
-
-                <?php
-                foreach ( $field_options['seeker_path']['default'] as $default_option_key => $default_option ) {
-                    $deleted_flag = $default_option['deleted'] ?? null;
-                    if ( ! ( isset( $deleted_flag ) && ( $deleted_flag === true ) ) ) {
-                        foreach ( $update_required_options as $option_key => $option ) {
-                            if ( $default_option_key === $option['seeker_path'] ) {
-                                ?>
-                                <tr>
-                                    <td><?php echo esc_html( $field_options['overall_status']['default'][ $option['status'] ]['label'] ?? '' ) ?></td>
-                                    <td><?php echo esc_html( $field_options['seeker_path']['default'][ $option['seeker_path'] ]['label'] ?? '_missing_' ) ?></td>
-                                    <td>
-                                        <input name="<?php echo esc_html( $option_key ) ?>_days" type="number"
-                                               value="<?php echo esc_html( $option['days'] ) ?>"/>
-                                    </td>
-                                    <td>
-                                        <textarea name="<?php echo esc_html( $option_key ) ?>_comment"
-                                                  style="width:100%"><?php echo esc_html( $option['comment'] ) ?></textarea>
-                                    </td>
-                                    <td>
-                                        <button class="button small expand_translations"
-                                                data-form_name="update_required-form"
-                                                data-source="update_needed_triggers">
-                                            <img style="height: 15px; vertical-align: middle" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>">
-                                            (<span><?php echo esc_html( count( $option['translations'] ?? [] ) ); ?></span>)
-                                        </button>
-                                        <div class="translation_container hide">
-                                            <table>
-                                                <?php foreach ( $available_languages as $lang => $val ) : ?>
-                                                    <tr>
-                                                        <td><label
-                                                                for="<?php echo esc_html( $option_key ) ?>_translations[<?php echo esc_html( $val['language'] ) ?>]"><?php echo esc_html( $val['native_name'] ) ?></label>
-                                                        </td>
-                                                        <td><input
-                                                                name="<?php echo esc_html( $option_key ) ?>_translations[<?php echo esc_html( $val['language'] ) ?>]"
-                                                                type="text"
-                                                                value="<?php echo esc_html( $option['translations'][$val['language']] ?? '' ); ?>"/>
-                                                        </td>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                            </table>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <?php
-                            }
-                        }
-                    }
-                }
-                ?>
-
+                <tbody id="update_needed_triggers_table_tbody"></tbody>
             </table>
+
+            <input id="update_needed_triggers_latest_site_options" name="update_needed_triggers_latest_site_options" type="hidden" value="<?php echo esc_attr( wp_json_encode( $site_options, JSON_PRETTY_PRINT ) ) ?>" />
+            <input id="update_needed_triggers_options" name="update_needed_triggers_options" type="hidden" />
+
             <br>
-            <span style="float:right;"><button type="submit" class="button float-right"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button> </span>
+            <span style="float:right;">
+                <button class="button float-right add-update-trigger"><?php esc_html_e( 'New Trigger', 'disciple_tools' ) ?></button>
+                <button class="button float-right save-update-triggers"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
+            </span>
         </form>
 
         <?php
