@@ -2984,7 +2984,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             }
 
             // Accordingly filter posts, based on archived flag.
-            if ( !$filters['archived'] && isset( $post->status_hit_value ) && $post->status_hit_value === $status_archived_key  ) {
+            if ( !$filters['archived'] && isset( $post->status_hit_value ) && $post->status_hit_value === $status_archived_key ) {
                 $add_post = false;
             }
 
