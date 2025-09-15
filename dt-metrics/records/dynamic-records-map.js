@@ -34,7 +34,11 @@ jQuery(document).ready(function ($) {
       body.offset = offset;
       body.limit = limit;
       body.slug = mapbox_library_api.obj.settings.menu_slug;
-      body.archived = $('#include_archived_records').hasClass('selected-select-button') ? '1' : '0';
+      body.archived = $('#include_archived_records').hasClass(
+        'selected-select-button',
+      )
+        ? '1'
+        : '0';
       let query = await window.makeRequest(
         'POST',
         mapbox_library_api.obj.settings.post_type_rest_url,
@@ -721,10 +725,10 @@ jQuery(document).ready(function ($) {
             break;
           }
           case 'include_archived_records': {
-            if ( $(this).hasClass('selected-select-button') ) {
+            if ($(this).hasClass('selected-select-button')) {
               $(this).removeClass('selected-select-button');
               $(this).addClass('empty-select-button');
-            } else if ( $(this).hasClass('empty-select-button') ) {
+            } else if ($(this).hasClass('empty-select-button')) {
               $(this).removeClass('empty-select-button');
               $(this).addClass('selected-select-button');
             }
@@ -732,10 +736,15 @@ jQuery(document).ready(function ($) {
             const map_type = $('#map-type');
             const map_type_cluster = $(map_type).find('#cluster');
             const map_type_points = $(map_type).find('#points');
-            if ( map_type_cluster && $(map_type_cluster).hasClass('selected-select-button') ) {
+            if (
+              map_type_cluster &&
+              $(map_type_cluster).hasClass('selected-select-button')
+            ) {
               $(map_type_cluster).click();
-
-            } else if ( map_type_points && $(map_type_points).hasClass('selected-select-button') ) {
+            } else if (
+              map_type_points &&
+              $(map_type_points).hasClass('selected-select-button')
+            ) {
               $(map_type_points).click();
             }
             break;
