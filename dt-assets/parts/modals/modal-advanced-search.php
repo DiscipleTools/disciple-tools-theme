@@ -103,7 +103,7 @@ function build_filters_option_list_html( $location ) {
     <br>
 
     <input type="checkbox" id="advanced-search-modal-filters-archived-<?php echo esc_attr( $location ); ?>"
-           class="advanced-search-modal-filters" checked>
+           class="advanced-search-modal-filters">
     <label
         for="advanced-search-modal-filters-archived-<?php echo esc_attr( $location ); ?>"><?php echo esc_html__( 'Archived', 'disciple_tools' ); ?></label>
     <br>
