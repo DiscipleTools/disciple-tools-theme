@@ -64,7 +64,7 @@ class DT_Magic_URL_Setup {
                 }
             }
             ?>
-                
+
             <style>
                 .single-template .section-body:has(.app-accordion) {
                     gap: 0;
@@ -459,23 +459,26 @@ Thanks!', 'disciple_tools' );
             </summary>
             <div class="app-content">
                 <div class="section-app-links <?php echo esc_attr( $meta_key ); ?>">
-                    <div class="app-content-header">
-                        <div class="app-activation">
-                            <span class="app-activation-label"><?php esc_html_e( 'App Activation', 'disciple_tools' ) ?></span>
-                            <div class="app-toggle" data-url-base="<?php echo esc_url( $app_url_base ) ?>">
-                                <input class="switch-input" id="app_state_<?php echo esc_attr( $meta_key )?>" type="checkbox" name="follow_all"
-                                       onclick="app_link_toggle(event, '<?php echo esc_attr( $user_id )?>', '<?php echo esc_attr( $meta_key )?>');"
-                                    <?php echo esc_attr( $enabled ? 'checked' : '' ) ?>
-                                />
-                                <label class="switch-paddle" for="app_state_<?php echo esc_attr( $meta_key )?>">
-                                    <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
-                                    <span class="switch-active" aria-hidden="true" style="color:white;"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
-                                    <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
-                                </label>
+                    <?php if ( $app['post_type'] === 'user' ): ?>
+                        <p><?php echo esc_html__( 'This app is not yet activated for this user. Enable the app to generate a link.', 'disciple_tools' ) ?></p>
+                        <div class="app-content-header">
+                            <div class="app-activation">
+                                <span class="app-activation-label"><?php esc_html_e( 'App Activation', 'disciple_tools' ) ?></span>
+                                <div class="app-toggle" data-url-base="<?php echo esc_url( $app_url_base ) ?>">
+                                    <input class="switch-input" id="app_state_<?php echo esc_attr( $meta_key )?>" type="checkbox" name="follow_all"
+                                           onclick="app_link_toggle(event, '<?php echo esc_attr( $user_id )?>', '<?php echo esc_attr( $meta_key )?>');"
+                                        <?php echo esc_attr( $enabled ? 'checked' : '' ) ?>
+                                    />
+                                    <label class="switch-paddle" for="app_state_<?php echo esc_attr( $meta_key )?>">
+                                        <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
+                                        <span class="switch-active" aria-hidden="true" style="color:white;"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
+                                        <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
+                                    </label>
+                                </div>
                             </div>
+                            <div class="app-language"></div>
                         </div>
-                        <div class="app-language"></div>
-                    </div>
+                    <?php endif; ?>
                     <div class="app-link-row">
                         <a data-tooltip
                            title="<?php esc_html_e( 'View', 'disciple_tools' ) ?>"
