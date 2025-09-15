@@ -122,7 +122,6 @@ class DT_Magic_URL_Setup {
                     }
 
                     .app-label {
-                        font-weight: 600;
                         flex-grow: 1;
 
                         .dt-tooltip {
