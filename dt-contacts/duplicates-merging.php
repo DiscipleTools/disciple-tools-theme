@@ -227,7 +227,7 @@ class DT_Duplicate_Checker_And_Merging {
             if ( $possible_duplicate['ID'] === $post_id || in_array( $possible_duplicate['ID'], $ids ) ){
                 continue; // exclude self and records already processed
             }
-            if ( isset( $possible_duplicate['overall_status']['key'], $possible_duplicate['reason_closed']['key'] ) && in_array( $possible_duplicate['overall_status']['key'], ['closed'] ) && in_array( $possible_duplicate['reason_closed']['key'], ['duplicate'] ) ) {
+            if ( isset( $possible_duplicate['overall_status']['key'], $possible_duplicate['reason_closed']['key'] ) && in_array( $possible_duplicate['overall_status']['key'], [ 'closed' ] ) && in_array( $possible_duplicate['reason_closed']['key'], [ 'duplicate' ] ) ) {
                 continue; // exclude merged records
             }
             $ids[] = $possible_duplicate['ID'];
