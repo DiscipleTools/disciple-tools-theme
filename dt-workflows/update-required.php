@@ -15,6 +15,11 @@ class Disciple_Tools_Update_Needed {
             wp_schedule_event( strtotime( 'today 1am' ), 'daily', 'update-required' );
         }
         add_action( 'update-required', [ $this, 'find_contacts_that_need_an_update' ] );
+
+
+        add_action( 'init', function (){
+            //            do_action( 'dt_find_contacts_that_need_an_update' );
+        } );
     }
 
     public static function find_contacts_that_need_an_update(){
@@ -61,6 +66,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     AND overall_status_field.meta_value = %s
                     AND setting_field.meta_value = %s
                     AND %d >= ( SELECT MAX( hist_time ) FROM $wpdb->dt_activity_log WHERE object_id = $wpdb->posts.ID and user_id != 0 && action = 'field_update' )
+                    AND NOT EXISTS ( SELECT 1 FROM $wpdb->comments WHERE comment_post_ID = $wpdb->posts.ID AND user_id != 0 )
                     AND $wpdb->posts.post_type = 'contacts' AND $wpdb->posts.post_status = 'publish'
                     GROUP BY $wpdb->posts.ID ORDER BY $wpdb->posts.post_date DESC LIMIT 0, 50",
                         esc_sql( $setting_field ),
@@ -112,6 +118,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     WHERE ( requires_update_field.meta_value = '' OR requires_update_field.meta_value = '0' OR requires_update_field.meta_value IS NULL )
                     AND group_status_field.meta_value = %s
                     AND %d >= ( SELECT MAX( hist_time ) FROM $wpdb->dt_activity_log WHERE object_id = $wpdb->posts.ID and user_id != 0 && action = 'field_update' )
+                    AND NOT EXISTS ( SELECT 1 FROM $wpdb->comments WHERE comment_post_ID = $wpdb->posts.ID AND user_id != 0 )
                     AND $wpdb->posts.post_type = 'groups' AND $wpdb->posts.post_status = 'publish'
                     GROUP BY $wpdb->posts.ID ORDER BY $wpdb->posts.post_date DESC LIMIT 0, 50",
                     esc_sql( $setting['status'] ),
