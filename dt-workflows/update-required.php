@@ -15,11 +15,6 @@ class Disciple_Tools_Update_Needed {
             wp_schedule_event( strtotime( 'today 1am' ), 'daily', 'update-required' );
         }
         add_action( 'update-required', [ $this, 'find_contacts_that_need_an_update' ] );
-
-
-        add_action( 'init', function (){
-            //            do_action( 'dt_find_contacts_that_need_an_update' );
-        } );
     }
 
     public static function find_contacts_that_need_an_update(){
