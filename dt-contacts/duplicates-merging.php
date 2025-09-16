@@ -97,14 +97,10 @@ class DT_Duplicate_Checker_And_Merging {
 
     private static function query_for_duplicate_searches( $post_type, $post_id, $exact = true ){
         $post = DT_Posts::get_post( $post_type, $post_id );
-        $post_type_settings = DT_Posts::get_post_settings( $post_type );
-        $fields = $post_type_settings['fields'];
+        $fields = DT_Posts::get_post_field_settings( $post_type );
         $search_query = [];
         $exact_template = $exact ? '^' : '';
         $fields_with_values = [];
-
-        $status_field = isset( $post_type_settings['status_field']['status_key'], $post_type_settings['status_field']['archived_key'] ) ? $post_type_settings['status_field'] : [];
-
         foreach ( $post as $field_key => $field_value ){
             if ( ! isset( $fields[$field_key]['type'] ) || empty( $fields[$field_key]['type'] ) ){
                 continue;
@@ -119,24 +115,13 @@ class DT_Duplicate_Checker_And_Merging {
                     }
                     if ( !empty( $channel_queries ) ){
                         $fields_with_values[] = $field_key;
-
-                        $query = [ $field_key => $channel_queries ];
-                        if ( !empty( $status_field ) ) {
-                            $query[ $status_field['status_key'] ] = [ '-' . $status_field['archived_key'] ];
-                        }
-
-                        $search_query[] = $query;
+                        $search_query[$field_key] = [];
+                        $search_query[$field_key] = $channel_queries;
                     }
                 }
             } else if ( $field_key === 'name' && !empty( $field_value ) ){
                 $fields_with_values[] = $field_key;
-
-                $query = [ $field_key => [ $exact_template . $field_value ] ];
-                if ( !empty( $status_field ) ) {
-                    $query[ $status_field['status_key'] ] = [ '-' . $status_field['archived_key'] ];
-                }
-
-                $search_query[] = $query;
+                $search_query[$field_key] = [ $exact_template . $field_value ];
             }
         }
         return [
@@ -156,6 +141,7 @@ class DT_Duplicate_Checker_And_Merging {
         if ( is_wp_error( $post ) ){
             return $post;
         }
+        global $wpdb;
         $search_query = self::query_for_duplicate_searches( $post_type, $post_id, $exact );
         $res = DT_Posts::search_viewable_post( 'contacts', [ $search_query['query'] ] );
         if ( is_wp_error( $res ) ){
@@ -170,6 +156,33 @@ class DT_Duplicate_Checker_And_Merging {
 
         //exclude already dismissed duplicates and self
         $ids = array_values( array_diff( $ids, array_merge( $dismissed, [ $post_id ] ) ) );
+
+        //ignore already merged records
+        if ( $post_type === 'contacts' && !empty( $ids ) ) {
+
+            // phpcs:disable
+            // WordPress.WP.PreparedSQL.NotPrepared
+            $ids_sql = dt_array_to_sql( $ids );
+            $sql = "
+            SELECT DISTINCT p.ID as post_id
+            FROM $wpdb->posts p
+            WHERE p.ID IN ( $ids_sql )
+            AND p.post_type = 'contacts'
+            AND NOT EXISTS (
+                SELECT 1
+                FROM $wpdb->postmeta pm
+                WHERE pm.post_id = p.ID
+                AND pm.meta_key = 'reason_closed'
+                AND pm.meta_value = 'duplicate'
+            )
+            ";
+
+            $filtered_ids = $wpdb->get_results($sql, ARRAY_A);
+
+            // Update the ids array with only the filtered results
+            $ids = array_column($filtered_ids, 'post_id');
+            // phpcs:enable
+        }
 
         return [
             'ids' => $ids
@@ -213,6 +226,9 @@ class DT_Duplicate_Checker_And_Merging {
         foreach ( $possible_duplicates as $possible_duplicate ){
             if ( $possible_duplicate['ID'] === $post_id || in_array( $possible_duplicate['ID'], $ids ) ){
                 continue; // exclude self and records already processed
+            }
+            if ( isset( $possible_duplicate['overall_status']['key'], $possible_duplicate['reason_closed']['key'] ) && in_array( $possible_duplicate['overall_status']['key'], ['closed'] ) && in_array( $possible_duplicate['reason_closed']['key'], ['duplicate'] ) ) {
+                continue; // exclude merged records
             }
             $ids[] = $possible_duplicate['ID'];
             $match_on = [];
