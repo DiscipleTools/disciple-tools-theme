@@ -124,6 +124,7 @@
             </div>
 
             <div class="recording-controls">
+                <?php do_action( 'dt_upload_audio_comment_languages' ); ?>
                 <button id="start-recording-btn" class="button recording-btn start-btn">
                     <i class="mdi mdi-record"></i> <?php esc_html_e( 'Start Recording', 'disciple_tools' ) ?>
                 </button>

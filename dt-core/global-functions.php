@@ -621,6 +621,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 case 'date':
                     DT_Components::render_date( $field_key, $fields, $post, $params );
                     break;
+                case 'datetime':
+                    DT_Components::render_datetime( $field_key, $fields, $post, $params );
+                    break;
+                case 'number':
+                    DT_Components::render_number( $field_key, $fields, $post, $params );
+                    break;
                 case 'key_select':
                     DT_Components::render_key_select( $field_key, $fields, $post, $params );
                     break;
@@ -1112,7 +1118,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 'as_IN' => [ 'label' => 'Assamese (India)', 'native_name' => 'অসমীয়া / Ôxômiya (India)', 'flag' => '🇮🇳', 'rtl' => false ],
                 'asa' => [ 'label' => 'Asu', 'native_name' => 'Kipare, Casu', 'flag' => '🇹🇿', 'rtl' => false ],
                 'asa_TZ' => [ 'label' => 'Asu (Tanzania)', 'native_name' => 'Kipare, Casu (Tanzania)', 'flag' => '🇹🇿', 'rtl' => false ],
-                'az' => [ 'label' => 'Azerbaijani', 'native_name' => 'AzəRbaycan Dili', 'flag' => '🇦🇿', 'rtl' => true ],
+                'az' => [ 'label' => 'Azerbaijani', 'native_name' => 'AzəRbaycan Dili', 'flag' => '🇦🇿', 'rtl' => false ],
                 'az_Cyrl' => [ 'label' => 'Azerbaijani (Cyrillic)', 'native_name' => 'Азәрбајҹан Дили (Kiril)', 'flag' => '🇷🇺', 'rtl' => false ],
                 'az_Cyrl_AZ' => [ 'label' => 'Azerbaijani (Cyrillic, Azerbaijan)', 'native_name' => 'Азәрбајҹан Дили (Kiril)', 'flag' => '🇦🇿', 'rtl' => false ],
                 'az_Latn' => [ 'label' => 'Azerbaijani (Latin)', 'native_name' => 'AzəRbaycan (Latın) (Latın Dili)', 'flag' => '🇦🇿', 'rtl' => false ],
