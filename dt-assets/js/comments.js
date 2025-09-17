@@ -542,6 +542,28 @@ jQuery(document).ready(function ($) {
   /**
    * Comments and activity
    */
+  $(document).ajaxComplete(function (event, xhr, settings) {
+    if (
+      settings &&
+      settings.type &&
+      (settings.type === 'POST' || settings.type === 'DELETE')
+    ) {
+      if (!settings.url.includes('notifications')) {
+        refreshActivity();
+      }
+    }
+  });
+  $(document).ajaxSend(function (event, xhr, settings) {
+    if (
+      settings &&
+      settings.type &&
+      (settings.type === 'POST' || settings.type === 'DELETE')
+    ) {
+      if (!settings.url.includes('notifications')) {
+        $('#comments-activity-spinner.loading-spinner').addClass('active');
+      }
+    }
+  });
   $(document).on('dt:post:update', function (e) {
     refreshActivity();
   });
