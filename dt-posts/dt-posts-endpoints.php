@@ -801,12 +801,14 @@ class Disciple_Tools_Posts_Endpoints {
         $post      = ( strtolower( $request->get_param( 'post' ) ) === 'true' );
         $comment   = ( strtolower( $request->get_param( 'comment' ) ) === 'true' );
         $meta      = ( strtolower( $request->get_param( 'meta' ) ) === 'true' );
+        $archived  = ( strtolower( $request->get_param( 'archived' ) ) === 'true' );
         $status    = $request->get_param( 'status' );
 
         return DT_Posts::advanced_search( $query, $post_type, $offset, [
             'post'    => $post,
             'comment' => $comment,
             'meta'    => $meta,
+            'archived'    => $archived,
             'status'  => $status
         ] );
     }
