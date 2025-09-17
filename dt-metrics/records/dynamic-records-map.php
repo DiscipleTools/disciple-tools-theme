@@ -89,6 +89,7 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         wp_localize_script(
             'dt_mapbox_script', 'dt_mapbox_metrics', [
                 'translations' => [
+                    'show_archived' => __( 'Show Archived', 'disciple_tools' ),
                     'add_records' => [
                         'title' => __( 'Add Records', 'disciple_tools' ),
                         'post_types_title' => __( 'Record Types', 'disciple_tools' ),
