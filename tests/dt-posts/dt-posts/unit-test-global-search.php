@@ -76,6 +76,7 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
+                        'archived' => true,
                         'status' => 'all'
                     ]
                 ],
@@ -92,6 +93,7 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
+                        'archived' => true,
                         'status' => 'all'
                     ]
                 ],
@@ -108,6 +110,7 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
+                        'archived' => true,
                         'status' => 'all'
                     ]
                 ],
@@ -124,6 +127,7 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
+                        'archived' => true,
                         'status' => 'all'
                     ]
                 ],
@@ -140,6 +144,7 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
+                        'archived' => true,
                         'status' => 'all'
                     ]
                 ],
@@ -156,6 +161,7 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
+                        'archived' => true,
                         'status' => 'all'
                     ]
                 ],
@@ -172,6 +178,7 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
+                        'archived' => true,
                         'status' => 'all'
                     ]
                 ],
@@ -188,6 +195,7 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
                         'post' => true,
                         'comment' => true,
                         'meta' => false,
+                        'archived' => true,
                         'status' => 'all'
                     ]
                 ],
@@ -204,6 +212,7 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
+                        'archived' => true,
                         'status' => 'all'
                     ]
                 ],
@@ -220,6 +229,7 @@ class DT_Posts_DT_Posts_Global_Search extends WP_UnitTestCase{
                         'post' => true,
                         'comment' => true,
                         'meta' => true,
+                        'archived' => true,
                         'status' => 'all'
                     ]
                 ],
