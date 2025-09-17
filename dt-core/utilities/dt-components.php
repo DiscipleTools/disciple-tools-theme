@@ -114,6 +114,32 @@ class DT_Components
         <?php
     }
 
+    public static function render_datetime( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+        ?>
+        <dt-datetime <?php echo wp_kses_post( $shared_attributes ) ?>
+            timestamp="<?php echo esc_html( $post[$field_key]['timestamp'] ?? '' ) ?>">
+            <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        </dt-datetime>
+        <?php
+    }
+
+    public static function render_number( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+        ?>
+        <dt-number <?php echo wp_kses_post( $shared_attributes ) ?>
+            value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>"
+            <?php if ( isset( $fields[$field_key]['min_option'] ) && $fields[$field_key]['min_option'] != null ): ?>
+                min="<?php echo esc_html( $fields[$field_key]['min_option'] ) ?>"
+            <?php endif; ?>
+            <?php if ( isset( $fields[$field_key]['max_option'] ) && $fields[$field_key]['max_option'] != null ): ?>
+                max="<?php echo esc_html( $fields[$field_key]['max_option'] ) ?>"
+            <?php endif; ?>>
+            <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        </dt-number>
+        <?php
+    }
+
     public static function render_key_select( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
 

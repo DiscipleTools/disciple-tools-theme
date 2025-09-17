@@ -621,6 +621,12 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 case 'date':
                     DT_Components::render_date( $field_key, $fields, $post, $params );
                     break;
+                case 'datetime':
+                    DT_Components::render_datetime( $field_key, $fields, $post, $params );
+                    break;
+                case 'number':
+                    DT_Components::render_number( $field_key, $fields, $post, $params );
+                    break;
                 case 'key_select':
                     DT_Components::render_key_select( $field_key, $fields, $post, $params );
                     break;
