@@ -160,8 +160,6 @@ class DT_Duplicate_Checker_And_Merging {
         //ignore already merged records
         if ( $post_type === 'contacts' && !empty( $ids ) ) {
 
-            // phpcs:disable
-            // WordPress.WP.PreparedSQL.NotPrepared
             $ids_sql = dt_array_to_sql( $ids );
             $sql = "
             SELECT DISTINCT p.ID as post_id
@@ -177,11 +175,10 @@ class DT_Duplicate_Checker_And_Merging {
             )
             ";
 
-            $filtered_ids = $wpdb->get_results($sql, ARRAY_A);
+            $filtered_ids = $wpdb->get_results( $sql, ARRAY_A ); //phpcs:ignore
 
             // Update the ids array with only the filtered results
-            $ids = array_column($filtered_ids, 'post_id');
-            // phpcs:enable
+            $ids = array_column( $filtered_ids, 'post_id' );
         }
 
         return [
