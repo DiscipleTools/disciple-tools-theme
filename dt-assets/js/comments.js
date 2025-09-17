@@ -564,6 +564,12 @@ jQuery(document).ready(function ($) {
       }
     }
   });
+  $(document).on('dt:post:update', function (e) {
+    refreshActivity();
+  });
+  $(document).on('dt:post:delete', function (e) {
+    refreshActivity();
+  });
 
   let refreshActivity = () => {
     get_all();
