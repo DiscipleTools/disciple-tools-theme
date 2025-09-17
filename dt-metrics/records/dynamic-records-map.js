@@ -34,9 +34,7 @@ jQuery(document).ready(function ($) {
       body.offset = offset;
       body.limit = limit;
       body.slug = mapbox_library_api.obj.settings.menu_slug;
-      body.archived = $('#archivedToggle').is(':checked')
-        ? '1'
-        : '0';
+      body.archived = $('#archivedToggle').is(':checked') ? '1' : '0';
       let query = await window.makeRequest(
         'POST',
         mapbox_library_api.obj.settings.post_type_rest_url,
