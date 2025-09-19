@@ -331,6 +331,8 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     $translations[$code]['site_default'] = $site_default_locale === $code;
                     $translations[$code]['english_name'] = $translations[$code]['label'];
                     $translations[$code]['language'] = $code;
+                    $root_lang = explode( '_', $code )[0];
+                    $translations[$code]['root_name'] = $translations[$root_lang]['label'];
                     if ( !$code_as_key ){
                         $available_translations[] = $translations[$code];
                     } else {
