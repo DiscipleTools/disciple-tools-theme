@@ -564,6 +564,12 @@ jQuery(document).ready(function ($) {
       }
     }
   });
+  $(document).on('dt:post:update', function (e) {
+    refreshActivity();
+  });
+  $(document).on('dt:post:delete', function (e) {
+    refreshActivity();
+  });
 
   let refreshActivity = () => {
     get_all();
@@ -854,11 +860,18 @@ jQuery(document).ready(function ($) {
     ctx.lineTo(width, height / 2);
     ctx.stroke();*/
 
+    const description =
+      $('select[name="locale"]').length > 0
+        ? window.commentsSettings?.translations?.audio_comment_descriptions
+            ?.lang_enabled
+        : window.commentsSettings?.translations?.audio_comment_descriptions
+            ?.lang_disabled;
+
     // Draw placeholder text
     ctx.fillStyle = '#6c757d';
     ctx.font = '14px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('Click "Start Recording" to begin', width / 2, height / 2 + 5);
+    ctx.fillText(description, width / 2, height / 2 + 5);
   }
 
   function drawVisualization(dataArray) {
@@ -1118,6 +1131,11 @@ jQuery(document).ready(function ($) {
       formData.append('audio_timestamp', new Date().toISOString());
       formData.append('audio_format', recordedAudioBlob.type);
       formData.append('audio_size', recordedAudioBlob.size.toString());
+
+      const audio_language_select = $('select[name="locale"]');
+      if ($(audio_language_select).length > 0) {
+        formData.append('audio_language', $(audio_language_select).val());
+      }
 
       // Show loading state
       const saveBtn = $('#save-recording-btn');

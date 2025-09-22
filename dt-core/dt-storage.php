@@ -52,7 +52,7 @@ class DT_Storage_API {
         // New single-connection flat format
         $connection = get_option( 'dt_storage_connection', [] );
 
-        if ( empty( $connection ) && is_multisite() ) {
+        if ( is_multisite() && ( empty( $connection ) || ( empty( $connection['access_key'] ) && empty( $connection['secret_access_key'] ) && empty( $connection['region'] ) && empty( $connection['bucket'] ) && empty( $connection['endpoint'] ) ) ) ) {
             $connection = get_site_option( 'dt_storage_multisite_connection', [] );
             if ( !empty( $connection ) ) {
                 $connection = $connection;

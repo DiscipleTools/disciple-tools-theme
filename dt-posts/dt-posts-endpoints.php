@@ -801,12 +801,14 @@ class Disciple_Tools_Posts_Endpoints {
         $post      = ( strtolower( $request->get_param( 'post' ) ) === 'true' );
         $comment   = ( strtolower( $request->get_param( 'comment' ) ) === 'true' );
         $meta      = ( strtolower( $request->get_param( 'meta' ) ) === 'true' );
+        $archived  = ( strtolower( $request->get_param( 'archived' ) ) === 'true' );
         $status    = $request->get_param( 'status' );
 
         return DT_Posts::advanced_search( $query, $post_type, $offset, [
             'post'    => $post,
             'comment' => $comment,
             'meta'    => $meta,
+            'archived'    => $archived,
             'status'  => $status
         ] );
     }
@@ -900,13 +902,24 @@ class Disciple_Tools_Posts_Endpoints {
                         break;
 
                     case 'image_comment':
-                    case 'audio_comment':
-                        DT_Posts::add_post_comment( $post_type, $post_id, ' ', 'comment', [
+                        $comment = apply_filters( 'dt_upload_image_comment', ' ', $uploaded_file );
+                        // Proceed with associated comment creation.
+                        DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'comment', [
                             'comment_meta' => [
                                 $meta_key => $uploaded_key
                             ]
                         ], true, true );
+                        break;
+                    case 'audio_comment':
+                        $uploaded_file['audio_language'] = $params['audio_language'] ?? 'en';
 
+                        $comment = apply_filters( 'dt_upload_audio_comment', ' ', $uploaded_file );
+                        // Proceed with associated comment creation.
+                        DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'comment', [
+                            'comment_meta' => [
+                                $meta_key => $uploaded_key
+                            ]
+                        ], true, true );
                         break;
                 }
 

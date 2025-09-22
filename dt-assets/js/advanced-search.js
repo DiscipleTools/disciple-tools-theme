@@ -108,6 +108,9 @@ jQuery(document).ready(function ($) {
       meta: $('#advanced-search-modal-filters-meta-' + location).prop(
         'checked',
       ),
+      archived: $('#advanced-search-modal-filters-archived-' + location).prop(
+        'checked',
+      ),
       status: 'all',
     };
   }

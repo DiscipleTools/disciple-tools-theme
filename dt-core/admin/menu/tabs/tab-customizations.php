@@ -221,9 +221,6 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
     private function space_between_div_open() {
         ?>
-        <p style="margin-bottom: 50px">
-            This feature is in BETA. Please download a copy of your settings  <a target='_blank' href="<?php echo esc_url( admin_url( 'admin.php?page=dt_utilities&tab=exports' ) ); ?>">here</a>. before making any changes.
-        </p>
         <div class="top-nav-row">
         <?php
     }

@@ -24,9 +24,6 @@ function dt_start() {
     // Clean up gallery output in wp
     add_filter( 'gallery_style', 'dt_gallery_style' );
 
-    // Cleaning up excerpt
-    add_filter( 'excerpt_more', 'dt_excerpt_more' );
-
     // Removes WP sticky class in favor or foundations sticky class
     add_filter( 'post_class', 'dt_remove_sticky_class' );
 
@@ -74,19 +71,6 @@ function dt_gallery_style( $css ) {
     return preg_replace( "!<style type='text/css'>(.*?)</style>!s", '', $css );
 }
 
-/**
- * This removes the annoying […] to a Read More link
- *
- * @param $more
- *
- * @return string
- */
-function dt_excerpt_more( $more ) {
-    global $post;
-
-    // Edit here if you like
-    return '<a class="excerpt-read-more" href="' . get_permalink( $post->ID ) . '" title="Read' . esc_html( get_the_title( $post->ID ) ) . '"> ... Read more &raquo; </a>';
-}
 
 /**
  * Stop WordPress from using the sticky class (which conflicts with Foundation), and style WordPress sticky posts using the .wp-sticky class instead
