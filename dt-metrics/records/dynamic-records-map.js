@@ -701,8 +701,11 @@ jQuery(document).ready(function ($) {
       // Append additional map controls.
       let map_controls_html = `
       <div id="map_controls" class="border-left">
+          <button class="button small select-button empty-select-button"
+            id="add_records" style="width: 36px !important; height: 36px !important; padding-top: 5px !important; padding-left: 5px !important;">
+            <i class="mdi mdi-earth-plus" style="font-size: 25px;"></i>
+          </button>
           <span style="display:inline-block" class="show-closed-switch">
-              <?php echo esc_html( $archived_label ) ?>
               ${window.dt_mapbox_metrics.translations.show_archived}
               <div class="switch tiny">
                   <input class="switch-input" id="archivedToggle" type="checkbox" name="archivedToggle">
@@ -711,10 +714,6 @@ jQuery(document).ready(function ($) {
                   </label>
               </div>
           </span>
-          <button class="button small select-button empty-select-button"
-            id="add_records" style="width: 36px !important; height: 36px !important; padding-top: 5px !important; padding-left: 5px !important;">
-            <i class="mdi mdi-earth-plus" style="font-size: 25px;"></i>
-          </button>
       </div>`;
       $(legend_bar).append(map_controls_html);
 
