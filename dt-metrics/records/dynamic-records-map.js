@@ -34,6 +34,7 @@ jQuery(document).ready(function ($) {
       body.offset = offset;
       body.limit = limit;
       body.slug = mapbox_library_api.obj.settings.menu_slug;
+      body.archived = $('#archivedToggle').is(':checked') ? '1' : '0';
       let query = await window.makeRequest(
         'POST',
         mapbox_library_api.obj.settings.post_type_rest_url,
@@ -704,15 +705,41 @@ jQuery(document).ready(function ($) {
             id="add_records" style="width: 36px !important; height: 36px !important; padding-top: 5px !important; padding-left: 5px !important;">
             <i class="mdi mdi-earth-plus" style="font-size: 25px;"></i>
           </button>
+          <span style="display:inline-block" class="show-closed-switch">
+              ${window.dt_mapbox_metrics.translations.show_archived}
+              <div class="switch tiny">
+                  <input class="switch-input" id="archivedToggle" type="checkbox" name="archivedToggle">
+                  <label class="switch-paddle" for="archivedToggle">
+                      <span class="show-for-sr">${window.dt_mapbox_metrics.translations.show_archived}</span>
+                  </label>
+              </div>
+          </span>
       </div>`;
       $(legend_bar).append(map_controls_html);
 
       // Activate click event listeners for map controls.
-      $('#map_controls button').on('click', function (e) {
+      $('#map_controls button, #map_controls input').on('click', function (e) {
         let id = $(this).attr('id');
         switch (id) {
           case 'add_records': {
             mapbox_library_api.show_records_modal_add_mode();
+            break;
+          }
+          case 'archivedToggle': {
+            const map_type = $('#map-type');
+            const map_type_cluster = $(map_type).find('#cluster');
+            const map_type_points = $(map_type).find('#points');
+            if (
+              map_type_cluster &&
+              $(map_type_cluster).hasClass('selected-select-button')
+            ) {
+              $(map_type_cluster).click();
+            } else if (
+              map_type_points &&
+              $(map_type_points).hasClass('selected-select-button')
+            ) {
+              $(map_type_points).click();
+            }
             break;
           }
           default: {

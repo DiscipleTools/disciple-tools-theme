@@ -1305,6 +1305,23 @@ class Disciple_Tools_Mapping_Queries {
         $post_id_filter_sql = '';
         $shared_user_join_sql = '';
         $shared_user_condition_sql = '';
+        $post_settings = DT_Posts::get_post_settings( $post_type, false );
+        $status_field = $post_settings['status_field'] ?? [];
+        $archived = isset( $args['archived'] ) && $args['archived'] == '1';
+
+        // Determine if archive filtering should take place.
+        $field_statuses = [];
+        if ( !empty( $status_field ) ) {
+            $status_archived_key = $status_field['archived_key'];
+            $field_statuses = array_filter( DT_Posts::get_post_field_options_keys( $post_settings['fields'], $status_field['status_key'] ), function( $option ) use ( $archived, $status_archived_key ) {
+                if ( $archived ) {
+                    return true;
+                }
+
+                return $option !== $status_archived_key;
+            } );
+        }
+
         if ( isset( $args['slug'], $args['user_id'] ) && $args['slug'] === 'personal' ) {
             $post_id_filter_sql = $wpdb->prepare( "
                         SELECT api_p.ID
@@ -1330,10 +1347,12 @@ class Disciple_Tools_Mapping_Queries {
                   FROM $wpdb->dt_location_grid_meta AS lgm
                   JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
                   LEFT JOIN $wpdb->postmeta AS pm ON ( p.ID = pm.post_id )
+                  LEFT JOIN $wpdb->postmeta AS pms ON ( p.ID = pms.post_id )
                   ". $shared_user_join_sql ."
                   WHERE lgm.post_type = %s
                   ". $shared_user_condition_sql ."
                   AND (pm.meta_key = %s)" . ( !empty( $args['field_values'] ) ? " AND (pm.meta_value IN (" . dt_array_to_sql( $args['field_values'] ) . "))" : '' ) ."
+                  ". ( !empty( $field_statuses ) ? ( "AND ( pms.meta_key = '". $status_field['status_key'] ."' AND pms.meta_value IN ( ". dt_array_to_sql( $field_statuses ) ." ) )" ) : '' ) ."
                   ". $post_id_filter_sql ."
                   LIMIT %d, %d;
               ", $post_type, $args['field_key'], $offset, $limit );
@@ -1357,9 +1376,11 @@ class Disciple_Tools_Mapping_Queries {
                 SELECT DISTINCT p.post_title AS name, lgm.post_id, lgm.lng, lgm.lat
                     FROM $wpdb->dt_location_grid_meta AS lgm
                     JOIN $wpdb->posts AS p ON ( p.ID = lgm.post_id )
+                    LEFT JOIN $wpdb->postmeta AS pm ON ( p.ID = pm.post_id )
                     ". $shared_user_join_sql ."
                     WHERE lgm.post_type = %s
                     ". $shared_user_condition_sql ."
+                    ". ( !empty( $field_statuses ) ? ( "AND ( pm.meta_key = '". $status_field['status_key'] ."' AND pm.meta_value IN ( ". dt_array_to_sql( $field_statuses ) ." ) )" ) : '' ) ."
                     ". $post_id_filter_sql ."
                     LIMIT %d, %d;
                 ", $post_type, $offset, $limit );
