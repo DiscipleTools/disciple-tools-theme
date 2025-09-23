@@ -3025,6 +3025,8 @@
       '.bulk_edit_checkbox:not(#bulk_edit_master) input:checked',
     ).length;
 
+    $('#bulk_edit_delete_submit-spinner').addClass('active');
+
     if (bulk_edit_total_checked > 0) {
       let bulk_edit_delete_submit_button_span = $(
         '.bulk_edit_delete_submit_text',
