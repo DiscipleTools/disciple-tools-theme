@@ -624,6 +624,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 case 'datetime':
                     DT_Components::render_datetime( $field_key, $fields, $post, $params );
                     break;
+                case 'location':
+                    DT_Components::render_location( $field_key, $fields, $post, $params );
+                    break;
                 case 'number':
                     DT_Components::render_number( $field_key, $fields, $post, $params );
                     break;
