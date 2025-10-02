@@ -1439,6 +1439,9 @@ jQuery(document).ready(function ($) {
       '#storage_connection_test_but_content',
     );
 
+    // Hide any existing notices
+    hide_storage_connection_notice();
+
     $(storage_connection_test_but).addClass('disabled');
     $(storage_connection_test_but_spinner).addClass('loading-spinner active');
 
@@ -1449,9 +1452,16 @@ jQuery(document).ready(function ($) {
         $(storage_connection_test_but_spinner).removeClass(
           'loading-spinner active',
         );
-        $(storage_connection_test_but_content).text(
-          response?.valid ? 'Connection Successful!' : 'Connection Failed!',
-        );
+        
+        if (response?.valid) {
+          $(storage_connection_test_but_content).text('Connection Successful!');
+          show_storage_connection_notice('success', 'Storage connection test successful!');
+        } else {
+          $(storage_connection_test_but_content).text('Connection Failed!');
+          const errorMessage = response?.error_message || 'Unknown error occurred';
+          const errorCategory = response?.error_category || 'unknown';
+          show_storage_connection_notice('error', errorMessage, errorCategory);
+        }
       });
     } catch (error) {
       console.log(error);
@@ -1460,6 +1470,7 @@ jQuery(document).ready(function ($) {
         'loading-spinner active',
       );
       $(storage_connection_test_but_content).text('Connection Failed!');
+      show_storage_connection_notice('error', 'Network error: Unable to test connection');
     }
   }
 
@@ -1478,6 +1489,39 @@ jQuery(document).ready(function ($) {
         callback(data);
       },
     });
+  }
+
+  /**
+   * Storage Test Connection - Helper Functions
+   */
+
+  function show_storage_connection_notice(type, message, category = '') {
+    const notice = $('#storage-connection-notice');
+    const noticeText = notice.find('p');
+    
+    if (notice.length === 0) {
+      return;
+    }
+    
+    // Remove existing classes and add new ones
+    notice.removeClass('notice-success notice-error notice-warning notice-info')
+          .addClass(`notice-${type}`);
+    
+    // Add category-specific styling if provided
+    if (category) {
+      notice.removeClass('notice-authentication notice-permissions notice-network notice-ssl notice-configuration notice-unknown')
+            .addClass(`notice-${category}`);
+    }
+    
+    // Set the message
+    noticeText.text(message);
+    
+    // Show the notice
+    notice.show();
+  }
+
+  function hide_storage_connection_notice() {
+    $('#storage-connection-notice').hide();
   }
 
   /**

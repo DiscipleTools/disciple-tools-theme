@@ -1336,8 +1336,6 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     }
 
     public function validate_storage_connection( WP_REST_Request $request ): array {
-        return [
-            'valid' => DT_Storage_API::validate_connection_settings()
-        ];
+        return DT_Storage_API::validate_connection_settings();
     }
 }
