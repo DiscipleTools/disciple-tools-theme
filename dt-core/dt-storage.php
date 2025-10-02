@@ -347,7 +347,7 @@ class DT_Storage_API {
         ];
 
         [ $client, $bucket, $connection_id ] = self::build_client_and_config();
-        
+
         if ( !$client ) {
             $result['error_message'] = 'Unable to create S3 client. Please check your connection settings.';
             $result['error_category'] = 'configuration';
@@ -383,9 +383,9 @@ class DT_Storage_API {
         } catch ( Throwable $e ) {
             $error_message = $e->getMessage();
             $result['error_message'] = $error_message;
-            
+
             // Categorize errors based on common patterns
-            if ( strpos( $error_message, 'InvalidAccessKeyId' ) !== false || 
+            if ( strpos( $error_message, 'InvalidAccessKeyId' ) !== false ||
                  strpos( $error_message, 'SignatureDoesNotMatch' ) !== false ||
                  strpos( $error_message, 'InvalidUserID' ) !== false ) {
                 $result['error_category'] = 'authentication';
