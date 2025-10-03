@@ -141,6 +141,14 @@
                     <i class="mdi mdi-close"></i> <?php esc_html_e( 'Cancel', 'disciple_tools' ) ?>
                 </button>
             </div>
+            
+            <!-- Upload error message container -->
+            <div class="upload-error-message" style="display: none;">
+                <div class="callout alert">
+                    <i class="mdi mdi-alert-circle"></i>
+                    <span class="error-text"></span>
+                </div>
+            </div>
         </div>
 
         <div class="section-body"><!-- start collapse -->

@@ -1020,7 +1020,7 @@ class Disciple_Tools_Users
             $uploaded = DT_Storage_API::upload_file( 'users', dt_recursive_sanitize_array( $_FILES['user_profile_pic'] ), $profile_pic_key );
 
             // If successful, persist uploaded object file key.
-            if ( !empty( $uploaded ) ) {
+            if ( $uploaded['uploaded'] === true ) {
                 if ( !empty( $uploaded['uploaded_key'] ) ) {
                     update_user_meta( $current_user->ID, 'dt_user_profile_picture', $uploaded['uploaded_key'] );
                 }

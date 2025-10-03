@@ -188,6 +188,8 @@ function dt_site_scripts() {
                         'audio_comment_descriptions' => [
                             'lang_enabled' => __( 'Select spoken language and click "Start Recording" to begin.', 'disciple_tools' ),
                             'lang_disabled' => __( 'Click "Start Recording" to begin.', 'disciple_tools' ),
+                            'upload_failed_generic' => __( 'Voice recording upload failed. Please try again.', 'disciple_tools' ),
+                            'unavailable_audio' => __( 'No recording available to upload.', 'disciple_tools' ),
                         ],
                     ],
                     'current_user_id' => get_current_user_id(),

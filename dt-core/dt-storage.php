@@ -211,12 +211,20 @@ class DT_Storage_API {
             }
 
             return [
-            'uploaded_key' => $key,
-            'uploaded_thumbnail_key' => $uploaded_thumbnail_key,
-            'uploaded_large_thumbnail_key' => $uploaded_large_thumbnail_key,
+                'uploaded' => true,
+                'uploaded_key' => $key,
+                'uploaded_thumbnail_key' => $uploaded_thumbnail_key,
+                'uploaded_large_thumbnail_key' => $uploaded_large_thumbnail_key,
+                'uploaded_msg' => null
             ];
         } catch ( Throwable $e ) {
-            return false;
+            return [
+                'uploaded' => false,
+                'uploaded_key' => '',
+                'uploaded_thumbnail_key' => null,
+                'uploaded_large_thumbnail_key' => null,
+                'uploaded_msg' => $e->getMessage()
+            ];
         }
     }
 
