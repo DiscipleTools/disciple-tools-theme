@@ -1227,7 +1227,7 @@ jQuery(document).ready(function ($) {
             'user-username': username || null,
             'user-password': password || null,
             'user-optional-fields':
-              optionalValues !== {} ? optionalValues : null,
+              Object.keys(optionalValues).length > 0 ? optionalValues : null,
             corresponds_to_contact: corresponds_to_contact,
             locale: locale,
             'user-roles': roles,

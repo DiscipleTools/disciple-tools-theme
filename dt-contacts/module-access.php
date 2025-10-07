@@ -859,7 +859,6 @@ class DT_Contacts_Access extends DT_Module_Base {
                             [ 'name' => __( 'Sub-assigned to me', 'disciple_tools' ), 'field' => 'subassigned', 'id' => 'me' ],
                         ],
                         'count' => $status_counts[$status_key] ?? '',
-                        'subfilter' => 1
                     ];
                     if ( $status_key === 'active' ){
                         if ( ( $update_needed ?? 0 ) > 0 ){
