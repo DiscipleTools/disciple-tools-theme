@@ -451,8 +451,10 @@ class Disciple_Tools_Users
     public static function get_base_users_by_source() {
 
         $base_users_by_source = get_option( 'dt_base_user_by_source', [] );
-        if ( ! $base_users_by_source ) {
-            return new WP_Error( 'failed_to_get_base_users_by_source', 'Failed to get base users by source. dt_get_option( base_user_by_source ) failed.' );
+
+        if ( is_wp_error( $base_users_by_source ) ) {
+            dt_write_log( $base_users_by_source->get_error_message() );
+            return [];
         }
 
         return $base_users_by_source;
