@@ -679,7 +679,23 @@ class DT_Contacts_Base {
                     ]
                 ],
                 'query' => [
+                    'type' => [ '-user' ],
                     'sort' => '-post_date',
+                ],
+            ];
+            $filters['filters'][] = [
+                'ID' => 'users',
+                'tab' => 'default',
+                'name' => sprintf( __( 'Users', 'disciple_tools' ), $post_label_plural ),
+                'labels' =>[
+                    [
+                        'id' => 'users',
+                        'name' => sprintf( __( 'Users', 'disciple_tools' ), $post_label_plural ),
+                    ]
+                ],
+                'query' => [
+                    'type' => [ 'user' ],
+                    'sort' => 'name'
                 ],
             ];
 
