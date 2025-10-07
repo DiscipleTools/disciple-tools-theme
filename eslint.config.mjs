@@ -11,7 +11,7 @@ export default [
       sourceType: 'module',
       parser: babelParser,
       parserOptions: {
-        requireConfigFile: false
+        requireConfigFile: false,
       },
       globals: {
         // Browser globals
@@ -30,6 +30,25 @@ export default [
         localStorage: 'readonly',
         sessionStorage: 'readonly',
         location: 'readonly',
+        history: 'readonly',
+        URL: 'readonly',
+        URLSearchParams: 'readonly',
+        Event: 'readonly',
+        CustomEvent: 'readonly',
+        customElements: 'readonly',
+        FormData: 'readonly',
+        atob: 'readonly',
+        btoa: 'readonly',
+        HTMLElement: 'readonly',
+        getComputedStyle: 'readonly',
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
+        MediaRecorder: 'readonly',
+        Blob: 'readonly',
+        Audio: 'readonly',
+        File: 'readonly',
+        MutationObserver: 'readonly',
+        status: 'readonly',
         // Node globals
         process: 'readonly',
         __dirname: 'readonly',
@@ -40,7 +59,7 @@ export default [
         // Custom globals
         jQuery: 'readonly',
         Toastify: 'readonly',
-      }
+      },
     },
     rules: {
       'no-console': 'off',
@@ -51,11 +70,12 @@ export default [
       'no-restricted-syntax': [
         'error',
         {
-          message: "Please don't use _. for lodash as it conflict with underscore!",
-          selector: 'MemberExpression > Identifier[name="_"]'
-        }
-      ]
-    }
+          message:
+            "Please don't use _. for lodash as it conflict with underscore!",
+          selector: 'MemberExpression > Identifier[name="_"]',
+        },
+      ],
+    },
   },
   {
     ignores: [
@@ -70,7 +90,7 @@ export default [
       'vendor/**/*',
       '**/*.min.js',
       'cypress.config.js',
-      'cypress/**/*'
-    ]
-  }
+      'cypress/**/*',
+    ],
+  },
 ];
