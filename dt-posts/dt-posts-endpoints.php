@@ -891,6 +891,15 @@ class Disciple_Tools_Posts_Endpoints {
         // Push an uploaded file to backend storage service.
         $uploaded = DT_Storage_API::upload_file( $key_prefix, $uploaded_file, $meta_key_value );
 
+        // Handle WP_Error returns from DT_Storage_API::upload_file()
+        if ( is_wp_error( $uploaded ) ) {
+            return [
+                'uploaded' => false,
+                'uploaded_key' => '',
+                'uploaded_msg' => $uploaded->get_error_message()
+            ];
+        }
+
         // If successful, persist an uploaded object file key.
         if ( $uploaded['uploaded'] === true ) {
             if ( !empty( $uploaded['uploaded_key'] ) ) {

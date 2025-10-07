@@ -218,13 +218,16 @@ class DT_Storage_API {
                 'uploaded_msg' => null
             ];
         } catch ( Throwable $e ) {
-            return [
-                'uploaded' => false,
-                'uploaded_key' => '',
-                'uploaded_thumbnail_key' => null,
-                'uploaded_large_thumbnail_key' => null,
-                'uploaded_msg' => $e->getMessage()
-            ];
+            return new WP_Error(
+                'storage_upload_failed',
+                __( 'Something went wrong. Please try again or have an admin check the connections setting.', 'disciple_tools' ),
+                [
+                    'technical_details' => $e->getMessage(),
+                    'error_code' => $e->getCode(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine()
+                ]
+            );
         }
     }
 
