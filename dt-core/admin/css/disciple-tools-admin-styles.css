@@ -239,46 +239,7 @@ body .alert p {
     background: #fef7f7;
 }
 
-#storage-connection-notice.notice-warning {
-    border-left-color: #dba617;
-    background: #fefcf0;
-}
-
-#storage-connection-notice.notice-info {
-    border-left-color: #72aee6;
-    background: #f0f6fc;
-}
-
-/* Error category specific styling */
-#storage-connection-notice.notice-authentication {
-    border-left-color: #d63638;
-    background: #fef7f7;
-}
-
-#storage-connection-notice.notice-permissions {
-    border-left-color: #dba617;
-    background: #fefcf0;
-}
-
-#storage-connection-notice.notice-network {
-    border-left-color: #72aee6;
-    background: #f0f6fc;
-}
-
-#storage-connection-notice.notice-ssl {
-    border-left-color: #8c8f94;
-    background: #f6f7f7;
-}
-
-#storage-connection-notice.notice-configuration {
-    border-left-color: #dba617;
-    background: #fefcf0;
-}
-
-#storage-connection-notice.notice-unknown {
-    border-left-color: #8c8f94;
-    background: #f6f7f7;
-}
+/* Consolidated to two variants: success and error */
 
 #storage-connection-notice p {
     margin: 0;

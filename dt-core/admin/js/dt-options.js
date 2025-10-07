@@ -1463,8 +1463,7 @@ jQuery(document).ready(function ($) {
           $(storage_connection_test_but_content).text('Connection Failed!');
           const errorMessage =
             response?.error_message || 'Unknown error occurred';
-          const errorCategory = response?.error_category || 'unknown';
-          show_storage_connection_notice('error', errorMessage, errorCategory);
+          show_storage_connection_notice('error', errorMessage);
         }
       });
     } catch (error) {
@@ -1502,7 +1501,7 @@ jQuery(document).ready(function ($) {
    * Storage Test Connection - Helper Functions
    */
 
-  function show_storage_connection_notice(type, message, category = '') {
+  function show_storage_connection_notice(type, message) {
     const notice = $('#storage-connection-notice');
     const noticeText = notice.find('p');
 
@@ -1512,17 +1511,8 @@ jQuery(document).ready(function ($) {
 
     // Remove existing classes and add new ones
     notice
-      .removeClass('notice-success notice-error notice-warning notice-info')
+      .removeClass('notice-success notice-error notice-warning notice-info notice-authentication notice-permissions notice-network notice-ssl notice-configuration notice-unknown')
       .addClass(`notice-${type}`);
-
-    // Add category-specific styling if provided
-    if (category) {
-      notice
-        .removeClass(
-          'notice-authentication notice-permissions notice-network notice-ssl notice-configuration notice-unknown',
-        )
-        .addClass(`notice-${category}`);
-    }
 
     // Set the message
     noticeText.text(message);

@@ -125,7 +125,7 @@ class DT_Storage_API_Admin_Settings {
         ?>
         <div class="wrap">
             <h1><?php esc_html_e( 'Storage', 'disciple_tools' ); ?></h1>
-            <div id="storage-connection-notice" class="notice" style="display: none;">
+            <div id="storage-connection-notice" class="notice" style="display: none;" role="status" aria-live="polite">
                 <p></p>
             </div>
             <?php self::render_form( $current ); ?>
@@ -154,7 +154,7 @@ class DT_Storage_API_Admin_Settings {
         $base->box( 'top', 'Storage Settings' );
 
         // Add notice container
-        echo '<div id="storage-connection-notice" class="notice" style="display: none;">';
+        echo '<div id="storage-connection-notice" class="notice" style="display: none;" role="status" aria-live="polite">';
         echo '<p></p>';
         echo '</div>';
 
