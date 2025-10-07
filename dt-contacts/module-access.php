@@ -712,9 +712,8 @@ class DT_Contacts_Access extends DT_Module_Base {
 
         /**
          * Stop here if the type is not "access"
-         * If it is not set, continue since it will be set to "access" by default (see dt-contacts/base-setup.php)
          */
-        if ( isset( $fields['type'] ) && $fields['type'] !== 'access' ){
+        if ( !isset( $fields['type'] ) || $fields['type'] !== 'access' ){
             return $fields;
         }
         if ( !isset( $fields['assigned_to'] ) ){
