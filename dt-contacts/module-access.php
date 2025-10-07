@@ -712,8 +712,9 @@ class DT_Contacts_Access extends DT_Module_Base {
 
         /**
          * Stop here if the type is not "access"
+         * If it is not set, continue since it will be set to "access" by default (see dt-contacts/base-setup.php)
          */
-        if ( !isset( $fields['type'] ) || $fields['type'] !== 'access' ){
+        if ( isset( $fields['type'] ) && $fields['type'] !== 'access' ){
             return $fields;
         }
         if ( !isset( $fields['assigned_to'] ) ){
@@ -729,6 +730,21 @@ class DT_Contacts_Access extends DT_Module_Base {
                         }
                     }
                 }
+
+                // if post has sources, look for more specific base user
+                if ( isset( $fields['sources'] ) && isset( $fields['sources']['values'] ) ) {
+                    $base_user_by_source = dt_get_base_users_by_source();
+                    $post_sources = $fields['sources']['values'];
+
+                    foreach ( $post_sources as $post_source ) {
+                        if ( isset( $base_user_by_source[ $post_source['value'] ] ) ) {
+                            // if the source has a specific base user, use the first we find
+                            $base_id = $base_user_by_source[ $post_source['value'] ];
+                            break;
+                        }
+                    }
+                }
+
                 if ( !empty( $base_id ) ){
                     $fields['assigned_to'] = sprintf( 'user-%d', $base_id );
                 }
