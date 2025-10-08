@@ -251,13 +251,7 @@ body .alert p {
     color: #00a32a;
 }
 
-#storage-connection-notice.notice-error p,
-#storage-connection-notice.notice-authentication p,
-#storage-connection-notice.notice-permissions p,
-#storage-connection-notice.notice-network p,
-#storage-connection-notice.notice-ssl p,
-#storage-connection-notice.notice-configuration p,
-#storage-connection-notice.notice-unknown p {
+#storage-connection-notice.notice-error p {
     color: #1d2327;
 }
 

@@ -1511,9 +1511,7 @@ jQuery(document).ready(function ($) {
 
     // Remove existing classes and add new ones
     notice
-      .removeClass(
-        'notice-success notice-error notice-warning notice-info notice-authentication notice-permissions notice-network notice-ssl notice-configuration notice-unknown',
-      )
+      .removeClass('notice-success notice-error')
       .addClass(`notice-${type}`);
 
     // Set the message

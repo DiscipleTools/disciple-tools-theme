@@ -342,21 +342,18 @@ class DT_Storage_API {
     public static function validate_connection_settings(): array {
         $result = [
             'valid' => false,
-            'error_message' => '',
-            'error_category' => 'unknown'
+            'error_message' => ''
         ];
 
         [ $client, $bucket, $connection_id ] = self::build_client_and_config();
 
         if ( !$client ) {
             $result['error_message'] = 'Unable to create S3 client. Please check your connection settings.';
-            $result['error_category'] = 'configuration';
             return $result;
         }
 
         if ( empty( $bucket ) ) {
             $result['error_message'] = 'Bucket name is required but not provided.';
-            $result['error_category'] = 'configuration';
             return $result;
         }
 
@@ -381,28 +378,7 @@ class DT_Storage_API {
             $result['error_message'] = '';
 
         } catch ( Throwable $e ) {
-            $error_message = $e->getMessage();
-            $result['error_message'] = $error_message;
-
-            // Categorize errors based on common patterns
-            if ( strpos( $error_message, 'InvalidAccessKeyId' ) !== false ||
-                 strpos( $error_message, 'SignatureDoesNotMatch' ) !== false ||
-                 strpos( $error_message, 'InvalidUserID' ) !== false ) {
-                $result['error_category'] = 'authentication';
-            } elseif ( strpos( $error_message, 'NoSuchBucket' ) !== false ||
-                       strpos( $error_message, 'AccessDenied' ) !== false ||
-                       strpos( $error_message, 'Forbidden' ) !== false ) {
-                $result['error_category'] = 'permissions';
-            } elseif ( strpos( $error_message, 'Could not resolve host' ) !== false ||
-                       strpos( $error_message, 'Connection refused' ) !== false ||
-                       strpos( $error_message, 'timeout' ) !== false ) {
-                $result['error_category'] = 'network';
-            } elseif ( strpos( $error_message, 'SSL' ) !== false ||
-                       strpos( $error_message, 'certificate' ) !== false ) {
-                $result['error_category'] = 'ssl';
-            } else {
-                $result['error_category'] = 'unknown';
-            }
+            $result['error_message'] = $e->getMessage();
         }
 
         return $result;
