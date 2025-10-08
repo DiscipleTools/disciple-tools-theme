@@ -221,6 +221,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
      */
     public function base_user() {
         $base_user = dt_get_base_user();
+        $base_user_by_source = dt_get_base_users_by_source();
         $potential_user_list = get_users(
             [
                 'role__in' => [ 'dispatcher', 'administrator', 'dt_admin', 'multiplier', 'marketer', 'strategist' ],
@@ -229,25 +230,68 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 'number'    => '200',
             ]
         );
+        $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
+        $sources = $field_settings['sources']['default'];
 
         echo '<form method="post" name="extension_modules_form">';
         echo '<p>Base User is the catch-all account for orphaned contacts and other records to be assigned to. To be a Base User, the user must be an Administrator, Dispatcher, Multiplier, Digital Responder, or Strategist.</p>';
         echo '<hr>';
         echo '<input type="hidden" name="base_user_nonce" id="base_user_nonce" value="' . esc_attr( wp_create_nonce( 'base_user' ) ) . '" />';
 
-        echo 'Current Base User: <select name="base_user_select">';
+        echo 'Current Base User: ';
+        $this->display_user_list( 'base_user_select', $potential_user_list, $base_user->ID );
+        echo '<hr>';
+        ?>
+        <details>
+            <summary style="line-height: 2;font-size: 14px;font-weight: 400;"><?php esc_html_e( 'Assign by Source', 'disciple_tools' ) ?></summary>
 
-        echo '<option value="'. esc_attr( $base_user->ID ) . '">' . esc_attr( $base_user->display_name ) . '</option>';
-        echo '<option disabled>---</option>';
+            <table class="widefat">
+                <thead>
+                <tr>
+                    <th>Source</th>
+                    <th>User</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ( $sources as $source_key => $source_value ) : ?>
+                    <tr>
+                        <td><?php echo esc_html( $source_value['label'] ); ?></td>
+                        <td>
+                            <?php $this->display_user_list(
+                                "base_user_by_source[$source_key]",
+                                $potential_user_list,
+                                isset( $base_user_by_source[$source_key] ) ? $base_user_by_source[$source_key] : null,
+                                true
+                            ); ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </details>
+        <?php
+        echo '<hr>';
+        echo '<span style="float:right;"><button type="submit" class="button float-right">Update</button></span>';
+        echo '</form>';
+    }
 
-        foreach ( $potential_user_list as $potential_user ) {
-            echo '<option value="' . esc_attr( $potential_user->ID ) . '">' . esc_attr( $potential_user->display_name ) . '</option>';
+    public function display_user_list( $name, $users, $value, $include_default = false ) {
+        echo '<select name="' . esc_attr( $name ) . '">';
+
+        if ( $include_default ) {
+            echo '<option value=""'
+                . ( empty( $value ) ? ' selected' : '' ). '>('
+                . esc_html__( 'Base User', 'disciple_tools' )
+                . ')</option>';
+        }
+        foreach ( $users as $potential_user ) {
+            echo '<option value="' . esc_attr( $potential_user->ID ) . '"'
+                . ( $potential_user->ID == $value ? ' selected' : '' ) . '>'
+                . esc_attr( $potential_user->display_name )
+                . '</option>';
         }
 
         echo '</select>';
-
-        echo '<span style="float:right;"><button type="submit" class="button float-right">Update</button></span>';
-        echo '</form>';
     }
 
     /**
@@ -260,6 +304,14 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 if ( is_numeric( $user_id ) ) {
                     update_option( 'dt_base_user', $user_id );
                 }
+            }
+
+            if ( isset( $_POST['base_user_by_source'] ) ) {
+                $base_user_by_source = dt_recursive_sanitize_array( wp_unslash( $_POST['base_user_by_source'] ) );
+                $filtered_array = array_filter( $base_user_by_source, function ( $value ) {
+                    return !empty( $value );
+                } );
+                update_option( 'dt_base_user_by_source', $filtered_array );
             }
         }
     }

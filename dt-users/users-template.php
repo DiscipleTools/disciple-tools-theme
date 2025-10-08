@@ -199,3 +199,12 @@ function dt_user_notification_is_enabled( string $notification_name, string $cha
 function dt_get_base_user( $id_only = false ) {
     return Disciple_Tools_Users::get_base_user( $id_only );
 }
+
+/**
+ * Get base users by source
+ *
+ * @return array|false|\WP_Error|\WP_User
+ */
+function dt_get_base_users_by_source() {
+    return Disciple_Tools_Users::get_base_users_by_source();
+}

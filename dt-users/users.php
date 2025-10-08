@@ -440,6 +440,26 @@ class Disciple_Tools_Users
         return $base_user;
     }
 
+    /**
+     * Get the base users by source for the system
+     * You can call this function using dt_get_base_users_by_source()
+     *
+     * @return array|WP_Error|WP_User
+     *@since 1.75.0
+     *
+     */
+    public static function get_base_users_by_source() {
+
+        $base_users_by_source = get_option( 'dt_base_user_by_source', [] );
+
+        if ( is_wp_error( $base_users_by_source ) ) {
+            dt_write_log( $base_users_by_source->get_error_message() );
+            return [];
+        }
+
+        return $base_users_by_source;
+    }
+
 
     /**
      * @param $user_name
