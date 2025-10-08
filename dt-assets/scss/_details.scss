@@ -746,6 +746,61 @@ DT comments and activity
             height: 60px;
         }
     }
+
+    /* Upload error message styles */
+    .upload-error-message {
+        margin-top: 15px;
+        animation: slideDown 0.3s ease-out;
+        
+        .callout {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+            
+            i {
+                font-size: 18px;
+                flex-shrink: 0;
+                margin-top: 2px;
+            }
+            
+            .error-text {
+                flex: 1;
+                min-width: 0;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: pre-wrap;
+                hyphens: auto;
+            }
+        }
+        
+        .callout.alert {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            
+            i {
+                color: #dc3545;
+            }
+        }
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 }
 
 .display-fields {

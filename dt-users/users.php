@@ -1039,8 +1039,16 @@ class Disciple_Tools_Users
             $profile_pic_key = get_user_meta( $current_user->ID, 'dt_user_profile_picture', true );
             $uploaded = DT_Storage_API::upload_file( 'users', dt_recursive_sanitize_array( $_FILES['user_profile_pic'] ), $profile_pic_key );
 
+            // Handle WP_Error returns from DT_Storage_API::upload_file()
+            if ( is_wp_error( $uploaded ) ) {
+                // Log the detailed error for admin debugging
+                dt_write_log( 'Profile picture upload failed: ' . $uploaded->get_error_message() );
+                // Return error to user
+                return new WP_Error( 'profile_pic_upload_failed', 'Failed to upload profile picture. Please try again.' );
+            }
+
             // If successful, persist uploaded object file key.
-            if ( !empty( $uploaded ) ) {
+            if ( $uploaded['uploaded'] === true ) {
                 if ( !empty( $uploaded['uploaded_key'] ) ) {
                     update_user_meta( $current_user->ID, 'dt_user_profile_picture', $uploaded['uploaded_key'] );
                 }
