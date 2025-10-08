@@ -1001,14 +1001,17 @@ Thanks!';
                         <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
-                                    <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
+                                    <!--<th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
                                     <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
+                                    </th>-->
+                                    <th id="bulk_edit_master" data-id="record_picture" style="width:32px; background-image:none; cursor:default">
+                                        <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
                                     </th>
-                                    <th data-id="index" style="width:32px; background-image:none; cursor:default"></th>
 
                                     <?php $columns = [];
                                     if ( empty( $fields_to_show_in_table ) ){
-                                        $columns = DT_Posts::get_default_list_column_order( $post_type );
+                                        $columns = array_filter( DT_Posts::get_default_list_column_order( $post_type ), function( $column ){ return $column !== 'record_picture';
+                                        } );
                                     }
                                     $columns = array_unique( array_merge( $fields_to_show_in_table, $columns ) );
                                     if ( in_array( 'favorite', $columns ) ) {
