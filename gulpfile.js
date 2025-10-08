@@ -14,6 +14,7 @@ var gulp = require('gulp'),
   rename = require('gulp-rename'),
   frep = require('gulp-frep'),
   postcss = require('gulp-postcss'),
+  autoprefixer = require('autoprefixer'),
   del = require('del'),
   cssnano = require('cssnano');
 
@@ -134,11 +135,11 @@ gulp.task('styles', function () {
     }))
     .pipe(plugin.sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
-    .pipe(plugin.autoprefixer({
-      cascade: false
-    }))
+    .pipe(postcss([
+      autoprefixer({ cascade: false }),
+      cssnano()
+    ]))
     .pipe(rename({ suffix: '.min' }))
-    .pipe(postcss([cssnano()]))
     // .pipe(plugin.sourcemaps.write('.'))
     .pipe(frep(patterns))
     .pipe(gulp.dest(BUILD_DIRS.styles))
