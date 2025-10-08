@@ -350,14 +350,25 @@ class DT_Storage_API {
         return $large_thumbnail_key_name;
     }
 
-    public static function validate_connection_settings(): bool {
-        [ $client, $bucket ] = self::build_client_and_config();
+    public static function validate_connection_settings(): array {
+        $result = [
+            'valid' => false,
+            'error_message' => ''
+        ];
+
+        [ $client, $bucket, $connection_id ] = self::build_client_and_config();
+
         if ( !$client ) {
-            return false;
+            $result['error_message'] = 'Unable to create S3 client. Please check your connection settings.';
+            return $result;
+        }
+
+        if ( empty( $bucket ) ) {
+            $result['error_message'] = 'Bucket name is required but not provided.';
+            return $result;
         }
 
         try {
-
             // Attempt to upload an empty dummy file.
             $key = 'validated';
             $dummy_file = tmpfile();
@@ -374,10 +385,13 @@ class DT_Storage_API {
 
             fclose( $dummy_file );
 
+            $result['valid'] = true;
+            $result['error_message'] = '';
+
         } catch ( Throwable $e ) {
-            return false;
+            $result['error_message'] = $e->getMessage();
         }
 
-        return true;
+        return $result;
     }
 }

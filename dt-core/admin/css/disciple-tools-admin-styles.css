@@ -218,7 +218,41 @@ details.flyout .button {
 body .alert p {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
-    padding: 2px;
+}
+
+/* Storage Connection Notice Styles */
+#storage-connection-notice {
+    margin: 15px 0;
+    padding: 12px;
+    border-left: 4px solid #c3c4c7;
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+#storage-connection-notice.notice-success {
+    border-left-color: #00a32a;
+    background: #f0f8ff;
+}
+
+#storage-connection-notice.notice-error {
+    border-left-color: #d63638;
+    background: #fef7f7;
+}
+
+/* Consolidated to two variants: success and error */
+
+#storage-connection-notice p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+#storage-connection-notice.notice-success p {
+    color: #00a32a;
+}
+
+#storage-connection-notice.notice-error p {
+    color: #1d2327;
 }
 
 .alert-warning {
