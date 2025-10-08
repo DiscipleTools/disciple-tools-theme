@@ -220,7 +220,7 @@ class DT_Storage_API {
         } catch ( Throwable $e ) {
             return new WP_Error(
                 'storage_upload_failed',
-                __( 'Something went wrong. Please try again or have an admin check the connections setting.', 'disciple_tools' ),
+                __( 'Something went wrong. Please try again or have an admin check the connection settings.', 'disciple_tools' ),
                 [
                     'technical_details' => $e->getMessage(),
                     'error_code' => $e->getCode(),
