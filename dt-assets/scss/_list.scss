@@ -1,5 +1,22 @@
 #content.archive-template {
     max-width: 100%;
+    #inner-content {
+        align-content: flex-start;
+        @media screen and (max-width : #{map-get($breakpoints, large)}) {
+            padding-block: 0.25rem;
+        }
+    }
+}
+
+#list-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    @media screen and (max-width : #{map-get($breakpoints, large)}) {
+        /** Mobile Layout **/
+        #tile-list-exports { display: none; }
+    }
 }
 
 .filter {
@@ -125,6 +142,33 @@
     }
 }
 
+.list-header {
+    display: grid;
+    column-gap: 1rem;
+    grid-template:
+        "title loading . sort options"
+        "count count archived archived archived" auto / auto auto 1fr auto auto;
+
+    .section-header { grid-area: title; }
+    #list-loading { grid-area: loading; padding-inline: 1rem; }
+    #sort-menu { grid-area: sort; }
+    #more-menu { grid-area: options; }
+    .filter-result-text { grid-area: count; font-size: 0.75rem; }
+    #archived-switch { grid-area: archived; text-align: end; }
+
+    #sort-menu, #more-menu {
+        .dropdown.menu > li.is-dropdown-submenu-parent > a {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            .menu-label { display: inline; }
+            .mdi { font-size: 1.5rem; }
+            &:after { display: none; }
+        }
+    }
+}
 
 .show-closed-switch {
     display: inline-block;
@@ -239,7 +283,7 @@ table.js-list {
         gap: 0.1rem 1rem;
         align-items: center;
         grid-template:
-          "avatar name name favorite" auto / 30px 1fr 2fr 30px;
+          "img name name favorite" auto / 30px 1fr 2fr 30px;
 
         td {
             padding: 0;
@@ -280,7 +324,7 @@ table.js-list {
         }
 
         [data-id="record_picture"] {
-            grid-area: avatar;
+            grid-area: img;
             order: -3;
         }
         [data-id="name"] {
@@ -512,10 +556,16 @@ table.js-list {
 #bulk_edit_master input,
 .bulk_edit_checkbox input {
     display: none;
+    margin: auto;
+
+    @media screen and (max-width : #{map-get($breakpoints, large)}) {
+        height: 1.5rem;
+        width: 1.5rem;
+    }
 }
 
 .bulk_edit_on {
-    td.index .avatar {
+    td.index .record_picture {
         display: none;
     }
     #bulk_edit_master input,
