@@ -2,7 +2,7 @@
     max-width: 100%;
     #inner-content {
         align-content: flex-start;
-        @media screen and (max-width : #{map-get($breakpoints, large)}) {
+        @media screen and (max-width : #{map-get($breakpoints, large)-1}) {
             padding-block: 0.25rem;
         }
     }
@@ -13,7 +13,7 @@
     flex-direction: column;
     gap: 0.75rem;
 
-    @media screen and (max-width : #{map-get($breakpoints, large)}) {
+    @media screen and (max-width : #{map-get($breakpoints, large)-1}) {
         /** Mobile Layout **/
         #tile-list-exports { display: none; }
     }
@@ -268,7 +268,8 @@ table.js-list {
         }
     }
 }
-@media screen and (max-width : #{map-get($breakpoints, large)}) {
+
+@media screen and (max-width : #{map-get($breakpoints, large)-1}) {
     /** Mobile Layout **/
     .table-container {
         margin-inline: -15px;
@@ -558,7 +559,7 @@ table.js-list {
     display: none;
     margin: auto;
 
-    @media screen and (max-width : #{map-get($breakpoints, large)}) {
+    @media screen and (max-width : #{map-get($breakpoints, large)-1}) {
         height: 1.5rem;
         width: 1.5rem;
     }
