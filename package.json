@@ -10,34 +10,35 @@
   "license": "GPL-2.0-or-later",
   "homepage": "https://disciple.tools",
   "devDependencies": {
-    "@babel/eslint-parser": "^7.18.2",
-    "@babel/preset-env": "^7.24.4",
+    "@babel/eslint-parser": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
     "@disciple.tools/web-components": "^0.7.17",
-    "browser-sync": "^3.0.2",
-    "cssnano": "^6.1.2",
-    "cypress": "^14.1.0",
+    "@eslint/js": "^9.37.0",
+    "autoprefixer": "^10.4.21",
+    "browser-sync": "^3.0.3",
+    "cssnano": "^7.0.6",
+    "cypress": "^15.3.0",
     "del": "^6.1.1",
-    "eslint": "^8.18.0",
+    "eslint": "^9.37.0",
     "eslint-config-prettier": "^9.1.0",
-    "foundation-sites": "^6.7.2",
-    "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^8.0.0",
+    "foundation-sites": "^6.9.0",
+    "gulp": "^5.0.1",
     "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-frep": "^0.1.3",
     "gulp-load-plugins": "^2.0.8",
     "gulp-plumber": "^1.2.1",
     "gulp-postcss": "^10.0.0",
-    "gulp-sass": "^5.0.0",
+    "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-touch-cmd": "0.0.1",
     "gulp-uglify": "^3.0.2",
-    "husky": "^8.0.3",
-    "jquery": "^3.6.0",
-    "lint-staged": "^12.4.1",
-    "prettier": "3.2.5",
-    "sass": "^1.39.0",
-    "what-input": "^5.2.10"
+    "husky": "^9.1.7",
+    "jquery": "^3.7.1",
+    "lint-staged": "^16.2.3",
+    "prettier": "^3.6.2",
+    "sass": "^1.93.2",
+    "what-input": "^5.2.12"
   },
   "browserslist": [
     "last 2 version",
@@ -54,7 +55,7 @@
     "lint": "npx eslint",
     "prettier": "npx prettier --write .",
     "update-foundation": "npm install foundation-sites",
-    "prepare": "husky install",
+    "prepare": "husky",
     "pre-commit": "npx lint-staged",
     "cy:open": "cypress open"
   },
@@ -63,7 +64,7 @@
       "./phpcbf.sh"
     ],
     "*.js": [
-      "eslint",
+      "eslint --no-warn-ignored",
       "prettier --write --ignore-unknown"
     ]
   },
@@ -78,10 +79,10 @@
     }
   },
   "dependencies": {
-    "@babel/eslint-parser": "^7.18.2",
+    "@babel/eslint-parser": "^7.28.4",
     "babel-eslint": "^10.1.0",
-    "browserslist": "^4.17.0",
-    "dotenv": "^16.4.5",
+    "browserslist": "^4.24.3",
+    "dotenv": "^16.4.7",
     "fancy-log": "^2.0.0",
     "gulp-rename": "^2.0.0",
     "masonry-layout": "^4.2.2"

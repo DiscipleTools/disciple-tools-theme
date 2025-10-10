@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2025-07-16T11:35:31+00:00\n"
+"POT-Creation-Date: 2025-08-20T12:55:49+00:00\n"
 "PO-Revision-Date: 2025-03-05 16:00+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Tamil <https://translate.disciple.tools/projects/disciple-"
@@ -74,7 +74,9 @@ msgstr ""
 msgid "Submit Request"
 msgstr "கோரிக்கையைச் சமர்ப்பிக்கவும்"
 
-#: 403.php:55 archive-template.php:1138 dt-assets/parts/merge-details.php:64
+#: 403.php:55 archive-template.php:1235
+#: dt-assets/parts/loop-activity-comment.php:140
+#: dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
@@ -89,12 +91,12 @@ msgid "Cancel"
 msgstr "ரத்துசெய்"
 
 #: 403.php:59 archive-template.php:521 archive-template.php:616
-#: archive-template.php:803 archive-template.php:1162
+#: archive-template.php:803 archive-template.php:1259
 #: dt-assets/functions/enqueue-scripts.php:455
-#: dt-assets/parts/loop-activity-comment.php:158
-#: dt-assets/parts/loop-activity-comment.php:163
-#: dt-assets/parts/loop-activity-comment.php:206
-#: dt-assets/parts/loop-activity-comment.php:211
+#: dt-assets/parts/loop-activity-comment.php:216
+#: dt-assets/parts/loop-activity-comment.php:221
+#: dt-assets/parts/loop-activity-comment.php:264
+#: dt-assets/parts/loop-activity-comment.php:269
 #: dt-assets/parts/merge-details.php:26 dt-assets/parts/merge-details.php:31
 #: dt-assets/parts/merge-details.php:75
 #: dt-assets/parts/modals/modal-advanced-search.php:65
@@ -170,8 +172,8 @@ msgid "Advanced Search"
 msgstr "மேம்பட்ட தேடல்"
 
 #: archive-template.php:60 dt-assets/parts/loop-activity-comment.php:49
-#: dt-assets/parts/loop-activity-comment.php:99
-#: dt-assets/parts/loop-activity-comment.php:183
+#: dt-assets/parts/loop-activity-comment.php:157
+#: dt-assets/parts/loop-activity-comment.php:241
 #: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "கருத்துரைகள்"
@@ -426,12 +428,12 @@ msgstr "மேலும் விருப்பங்களைக் காண�
 msgid "See Fewer Options"
 msgstr "குறைவான விருப்பங்களைக் காண்க"
 
-#: archive-template.php:781 dt-assets/parts/loop-activity-comment.php:209
+#: archive-template.php:781 dt-assets/parts/loop-activity-comment.php:267
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "புதுப்பிப்பு"
 
-#: archive-template.php:782 archive-template.php:890
+#: archive-template.php:782 archive-template.php:987
 #: dt-assets/functions/enqueue-scripts.php:335
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
@@ -441,7 +443,7 @@ msgstr "கீழே தேர்வு செய்யவும்"
 #: dt-assets/functions/enqueue-scripts.php:218
 #: dt-assets/functions/enqueue-scripts.php:283
 #: dt-assets/functions/enqueue-scripts.php:323
-#: dt-assets/parts/loop-activity-comment.php:161 single-template.php:416
+#: dt-assets/parts/loop-activity-comment.php:219 single-template.php:416
 msgid "Delete"
 msgstr "அழி"
 
@@ -457,125 +459,129 @@ msgstr "கீழே தேர்வு செய்யவும்"
 msgid "Select all the %1$s to whom you want to message."
 msgstr "ஆப்ஸ் இணைப்புகளை அனுப்ப விரும்பும் அனைத்து %1$sஐயும் தேர்ந்தெடுக்கவும்."
 
-#: archive-template.php:837
+#: archive-template.php:846
 msgid "Message subject"
 msgstr ""
 
-#: archive-template.php:839
+#: archive-template.php:848
 msgid "A valid message subject must be entered."
 msgstr ""
 
-#: archive-template.php:841
+#: archive-template.php:850
 msgid "Message from name"
 msgstr ""
 
-#: archive-template.php:843
+#: archive-template.php:852
 msgid "A valid from name must be specified."
 msgstr ""
 
-#: archive-template.php:845
+#: archive-template.php:854
 msgid "Message reply to"
 msgstr ""
 
-#: archive-template.php:847
+#: archive-template.php:856
 msgid "A valid reply to email address must be specified."
 msgstr ""
 
-#: archive-template.php:849
+#: archive-template.php:858
 #, php-format
 msgid "Emails will be sent from: %s"
 msgstr ""
 
-#: archive-template.php:872
+#: archive-template.php:881
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
 
-#: archive-template.php:874
+#: archive-template.php:883
 msgid "Message"
 msgstr ""
 
-#: archive-template.php:876
+#: archive-template.php:885
 msgid "Please ensure a valid send message has been entered."
 msgstr ""
 
-#: archive-template.php:877 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:886 dt-reports/magic-url-bulk-send.php:58
 #: dt-reports/magic-url-setup.php:133
 msgid "Message placeholders"
 msgstr ""
 
-#: archive-template.php:880 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:917 dt-reports/magic-url-bulk-send.php:64
 #: dt-reports/magic-url-setup.php:139
 #, fuzzy
 #| msgid "Create Record"
 msgid "Name of the Record"
 msgstr "பதிவை உருவாக்கவும்"
 
-#: archive-template.php:885 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:939
+msgid "Message Placeholder Help"
+msgstr ""
+
+#: archive-template.php:982 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
 msgstr "தேர்ந்தெடுக்கப்பட்ட பதிவுகளுக்கு அனுப்பவும்"
 
-#: archive-template.php:886 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:983 dt-reports/magic-url-bulk-send.php:91
 msgid "You must select at least one record"
 msgstr "நீங்கள் குறைந்தது ஒரு பதிவையாவது தேர்ந்தெடுக்க வேண்டும்"
 
-#: archive-template.php:889 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:986 dt-reports/magic-url-bulk-send.php:94
 #: dt-reports/magic-url-setup.php:101
 msgid "Send"
 msgstr "அனுப்பு"
 
-#: archive-template.php:889 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:986 dt-reports/magic-url-bulk-send.php:94
 msgid "Links"
 msgstr "இணைப்புகள்"
 
-#: archive-template.php:894
+#: archive-template.php:991
 msgid "Ensure valid record selections have been made."
 msgstr ""
 
-#: archive-template.php:939
+#: archive-template.php:1036
 msgid "Loading..."
 msgstr "ஏற்றுகிறது ..."
 
-#: archive-template.php:944 dt-assets/functions/enqueue-scripts.php:424
+#: archive-template.php:1041 dt-assets/functions/enqueue-scripts.php:424
 msgid "Load More"
 msgstr "அதிகமாக ஏற்று"
 
-#: archive-template.php:956
+#: archive-template.php:1053
 msgid "Field Name"
 msgstr "புலத்தின் பெயர்"
 
-#: archive-template.php:1012
+#: archive-template.php:1109
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "தேட தட்டச்சு செய்க"
 
-#: archive-template.php:1021
+#: archive-template.php:1118
 #, php-format
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s உடன் அனைத்து %1$s"
 
-#: archive-template.php:1024
+#: archive-template.php:1121
 #, php-format
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$s இல்லாமல் அனைத்து %1$s"
 
-#: archive-template.php:1031
+#: archive-template.php:1128
 msgid "Filter for subassigned OR Assigned To"
 msgstr "நியமிக்கப்பட்ட அல்லது ஒதுக்கப்பட்டவருக்கான வடிகட்டி"
 
-#: archive-template.php:1040 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:1137 dt-assets/functions/enqueue-scripts.php:326
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "உருவாக்கும் தேதி"
 
-#: archive-template.php:1047 archive-template.php:1054
+#: archive-template.php:1144 archive-template.php:1151
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
-#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:971
+#: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:970
 msgid "None Set"
 msgstr "எதுவும் அமைக்கப்படவில்லை"
 
-#: archive-template.php:1068 archive-template.php:1069
+#: archive-template.php:1165 archive-template.php:1166
 #: dt-assets/functions/enqueue-scripts.php:234 dt-core/global-functions.php:713
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-users/user-management.php:196 template-settings.php:313
@@ -583,7 +589,7 @@ msgstr "எதுவும் அமைக்கப்படவில்லை"
 msgid "No"
 msgstr "இல்லை"
 
-#: archive-template.php:1075 archive-template.php:1076
+#: archive-template.php:1172 archive-template.php:1173
 #: dt-assets/functions/enqueue-scripts.php:233 dt-core/global-functions.php:714
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-users/user-management.php:195
@@ -591,29 +597,29 @@ msgstr "இல்லை"
 msgid "Yes"
 msgstr "ஆம்"
 
-#: archive-template.php:1080
+#: archive-template.php:1177
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "வரம்பு தொடக்கம்"
 
-#: archive-template.php:1083 archive-template.php:1094
+#: archive-template.php:1180 archive-template.php:1191
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "அழி"
 
-#: archive-template.php:1090
+#: archive-template.php:1187
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "வரம்பு முடிவு"
 
-#: archive-template.php:1105
+#: archive-template.php:1202
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "வடிகட்டி பெயர்"
 
-#: archive-template.php:1110
+#: archive-template.php:1207
 #, fuzzy, php-format
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -621,7 +627,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "%2$s உடன் அனைத்து %1$s"
 
-#: archive-template.php:1114
+#: archive-template.php:1211
 #, fuzzy, php-format
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -629,7 +635,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "%2$s இல்லாமல் அனைத்து %1$s"
 
-#: archive-template.php:1118
+#: archive-template.php:1215
 #, fuzzy, php-format
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -637,7 +643,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "%2$s உடன் அனைத்து %1$s"
 
-#: archive-template.php:1122
+#: archive-template.php:1219
 #, fuzzy, php-format
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -645,15 +651,15 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "%2$s இல்லாமல் அனைத்து %1$s"
 
-#: archive-template.php:1146
+#: archive-template.php:1243
 msgid "Filter Name"
 msgstr "வடிகட்டி பெயர்"
 
-#: archive-template.php:1151
+#: archive-template.php:1248
 msgid "Filter Records"
 msgstr "பதிவுகளை வடிகட்டவும்"
 
-#: archive-template.php:1155 dt-assets/functions/enqueue-scripts.php:286
+#: archive-template.php:1252 dt-assets/functions/enqueue-scripts.php:286
 #: dt-assets/functions/enqueue-scripts.php:321
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
@@ -661,7 +667,7 @@ msgstr "சேமி"
 
 #: dt-assets/functions/details-bar.php:58
 #: dt-assets/functions/details-bar.php:275
-#: dt-core/configuration/config-site-defaults.php:356
+#: dt-core/configuration/config-site-defaults.php:353
 #: dt-workflows/update-required.php:79 dt-workflows/update-required.php:128
 msgid "Update Needed"
 msgstr "புதுப்பிப்பு தேவை"
@@ -790,7 +796,7 @@ msgstr "உங்களிடம் படிக்காத அறிவிப�
 msgid "You don't have any notifications"
 msgstr "உங்களிடம் எந்த அறிவிப்புகளும் இல்லை"
 
-#: dt-assets/functions/enqueue-scripts.php:180 dt-posts/dt-posts.php:1638
+#: dt-assets/functions/enqueue-scripts.php:180 dt-posts/dt-posts.php:1658
 msgid "D.T System"
 msgstr "டி.டி சிஸ்டம்"
 
@@ -1198,52 +1204,90 @@ msgstr "உதவி"
 msgid "D.T Forum"
 msgstr "டி.டி பதிவு"
 
-#: dt-assets/parts/loop-activity-comment.php:83
+#: dt-assets/parts/loop-activity-comment.php:84
+#, fuzzy
+#| msgid "New Comments"
+msgid "Add Image Comment"
+msgstr "புதிய கருத்துகள்"
+
+#: dt-assets/parts/loop-activity-comment.php:97
+#, fuzzy
+#| msgid "Add Records"
+msgid "Record Voice Message"
+msgstr "பதிவுகளைச் சேர்க்கவும்"
+
+#: dt-assets/parts/loop-activity-comment.php:102
 msgid "Submit comment"
 msgstr "கருத்தை சமர்ப்பிக்கவும்"
 
-#: dt-assets/parts/loop-activity-comment.php:91
+#: dt-assets/parts/loop-activity-comment.php:111
+#, fuzzy
+#| msgid "Next record"
+msgid "Ready to record"
+msgstr "அடுத்த பதிவு"
+
+#: dt-assets/parts/loop-activity-comment.php:128
+#, fuzzy
+#| msgid "Create Record"
+msgid "Start Recording"
+msgstr "பதிவை உருவாக்கவும்"
+
+#: dt-assets/parts/loop-activity-comment.php:131
+msgid "Stop Recording"
+msgstr ""
+
+#: dt-assets/parts/loop-activity-comment.php:134
+msgid "Play Recording"
+msgstr ""
+
+#: dt-assets/parts/loop-activity-comment.php:137
+#, fuzzy
+#| msgid "Create Record"
+msgid "Save Recording"
+msgstr "பதிவை உருவாக்கவும்"
+
+#: dt-assets/parts/loop-activity-comment.php:149
 msgid "Showing:"
 msgstr "காண்பிக்கிறது:"
 
-#: dt-assets/parts/loop-activity-comment.php:105
+#: dt-assets/parts/loop-activity-comment.php:163
 #: dt-users/template-user-management.php:91
 msgid "Activity"
 msgstr "நடவடிக்கை"
 
-#: dt-assets/parts/loop-activity-comment.php:138
+#: dt-assets/parts/loop-activity-comment.php:196
 #: dt-assets/parts/modals/modal-record-history.php:28
 #: dt-assets/parts/modals/modal-record-history.php:36
 msgid "show all"
 msgstr "அனைத்தையும் காட்டு"
 
-#: dt-assets/parts/loop-activity-comment.php:142
+#: dt-assets/parts/loop-activity-comment.php:200
 msgid "hide all"
 msgstr "அனைத்தையும் மறைக்கவும்"
 
-#: dt-assets/parts/loop-activity-comment.php:154
+#: dt-assets/parts/loop-activity-comment.php:212
 msgid "Delete Comment:"
 msgstr "கருத்தை நீக்கு:"
 
-#: dt-assets/parts/loop-activity-comment.php:168
-#: dt-assets/parts/loop-activity-comment.php:216
+#: dt-assets/parts/loop-activity-comment.php:226
+#: dt-assets/parts/loop-activity-comment.php:274
 #: template-merge-post-details.php:105
 msgid "Sorry, something went wrong"
 msgstr "மன்னிக்கவும், ஏதோ தவறு ஏற்பட்டது"
 
-#: dt-assets/parts/loop-activity-comment.php:169
+#: dt-assets/parts/loop-activity-comment.php:227
 msgid "The comment could not be deleted."
 msgstr "கருத்தை நீக்க முடியவில்லை."
 
-#: dt-assets/parts/loop-activity-comment.php:174
+#: dt-assets/parts/loop-activity-comment.php:232
 msgid "Edit Comment:"
 msgstr "கருத்தைத் திருத்து:"
 
-#: dt-assets/parts/loop-activity-comment.php:190
+#: dt-assets/parts/loop-activity-comment.php:248
 msgid "Type of Comment"
 msgstr "கருத்து வகை"
 
-#: dt-assets/parts/loop-activity-comment.php:217
+#: dt-assets/parts/loop-activity-comment.php:275
 msgid "The comment could not be updated."
 msgstr "கருத்தை புதுப்பிக்க முடியவில்லை."
 
@@ -1852,7 +1896,7 @@ msgid "WhatsApp"
 msgstr "பகிரி"
 
 #: dt-contacts/base-setup.php:218
-#: dt-core/configuration/config-site-defaults.php:333
+#: dt-core/configuration/config-site-defaults.php:330
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
 #: dt-users/users.php:129 template-settings.php:166
@@ -1996,7 +2040,7 @@ msgid "Personal"
 msgstr "தனிப்பட்ட"
 
 #: dt-contacts/base-setup.php:372
-#: dt-core/configuration/config-site-defaults.php:336
+#: dt-core/configuration/config-site-defaults.php:333
 msgid "Web"
 msgstr "வலை"
 
@@ -2056,7 +2100,7 @@ msgid "Confirm"
 msgstr "உறுதிப்படுத்தவும்"
 
 #: dt-contacts/base-setup.php:532
-#: dt-core/configuration/config-site-defaults.php:524
+#: dt-core/configuration/config-site-defaults.php:521
 #: dt-groups/base-setup.php:607 template-settings.php:212
 msgid "Other"
 msgstr "மற்றவை"
@@ -2843,28 +2887,28 @@ msgstr "நிர்வாகி"
 msgid "Subscriber"
 msgstr "சந்தாதாரர்"
 
-#: dt-core/configuration/config-site-defaults.php:341
+#: dt-core/configuration/config-site-defaults.php:338
 msgid "Newly Assigned Contact"
 msgstr "புதிதாக ஒதுக்கப்பட்ட தொடர்பு"
 
-#: dt-core/configuration/config-site-defaults.php:346
+#: dt-core/configuration/config-site-defaults.php:343
 msgid "@Mentions"
 msgstr "குறிப்புகள்"
 
-#: dt-core/configuration/config-site-defaults.php:351
+#: dt-core/configuration/config-site-defaults.php:348
 msgid "New Comments"
 msgstr "புதிய கருத்துகள்"
 
-#: dt-core/configuration/config-site-defaults.php:361
+#: dt-core/configuration/config-site-defaults.php:358
 msgid "Contact Info Changed"
 msgstr "தொடர்பு தகவல் மாற்றப்பட்டது"
 
-#: dt-core/configuration/config-site-defaults.php:366
+#: dt-core/configuration/config-site-defaults.php:363
 #: dt-core/migrations/0012-typo-rename.php:13
 msgid "Contact Milestones and Group Health metrics"
 msgstr "மைல்கற்கள் மற்றும் குழு சுகாதார அளவீடுகளைத் தொடர்பு கொள்ளுங்கள்"
 
-#: dt-core/configuration/config-site-defaults.php:380
+#: dt-core/configuration/config-site-defaults.php:377
 msgid ""
 "This contact is active but there is no record of anybody contacting them. "
 "Please do contact them."
@@ -2872,15 +2916,15 @@ msgstr ""
 "இந்த தொடர்பு செயலில் உள்ளது, ஆனால் யாரும் அவர்களை தொடர்பு கொண்டதாக எந்த பதிவும் இல்லை. "
 "தயவுசெய்து அவர்களை தொடர்பு கொள்ளவும்."
 
-#: dt-core/configuration/config-site-defaults.php:386
+#: dt-core/configuration/config-site-defaults.php:383
 msgid "Please try connecting with this contact again."
 msgstr "இந்த தொடர்புடன் மீண்டும் இணைக்க முயற்சிக்கவும்."
 
-#: dt-core/configuration/config-site-defaults.php:392
-#: dt-core/configuration/config-site-defaults.php:398
-#: dt-core/configuration/config-site-defaults.php:404
-#: dt-core/configuration/config-site-defaults.php:410
-#: dt-core/configuration/config-site-defaults.php:416
+#: dt-core/configuration/config-site-defaults.php:389
+#: dt-core/configuration/config-site-defaults.php:395
+#: dt-core/configuration/config-site-defaults.php:401
+#: dt-core/configuration/config-site-defaults.php:407
+#: dt-core/configuration/config-site-defaults.php:413
 msgid ""
 "We haven't heard about this person in a while. Do you have an update for "
 "this contact?"
@@ -2888,110 +2932,110 @@ msgstr ""
 "இந்த நபரைப் பற்றி நாங்கள் சிறிது நேரத்தில் கேள்விப்பட்டதில்லை. இந்த தொடர்புக்கு உங்களிடம் "
 "புதுப்பிப்பு உள்ளதா?"
 
-#: dt-core/configuration/config-site-defaults.php:426
+#: dt-core/configuration/config-site-defaults.php:423
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr ""
 "இந்த குழுவைப் பற்றி நாங்கள் சிறிது நேரத்தில் கேள்விப்பட்டதில்லை. உங்களிடம் புதுப்பிப்பு "
 "உள்ளதா?"
 
-#: dt-core/configuration/config-site-defaults.php:457
+#: dt-core/configuration/config-site-defaults.php:454
 msgid "Personal Phone"
 msgstr "தனிப்பட்ட தொலைபேசி"
 
-#: dt-core/configuration/config-site-defaults.php:460
+#: dt-core/configuration/config-site-defaults.php:457
 msgid "Personal phone is private to the team, not for distribution."
 msgstr "தனிப்பட்ட தொலைபேசி அணிக்கு தனிப்பட்டது, விநியோகத்திற்காக அல்ல."
 
-#: dt-core/configuration/config-site-defaults.php:464
+#: dt-core/configuration/config-site-defaults.php:461
 msgid "Personal Email"
 msgstr "தனிப்பட்ட மின்னஞ்சல்"
 
-#: dt-core/configuration/config-site-defaults.php:467
+#: dt-core/configuration/config-site-defaults.php:464
 msgid "Personal email is private to the team, not for distribution."
 msgstr "தனிப்பட்ட மின்னஞ்சல் அணிக்கு தனிப்பட்டது, விநியோகத்திற்காக அல்ல."
 
-#: dt-core/configuration/config-site-defaults.php:471
+#: dt-core/configuration/config-site-defaults.php:468
 msgid "Personal Address"
 msgstr "தனிப்பட்ட முகவரி"
 
-#: dt-core/configuration/config-site-defaults.php:474
+#: dt-core/configuration/config-site-defaults.php:471
 msgid "Personal address is private to the team, not for distribution."
 msgstr "தனிப்பட்ட முகவரி அணிக்கு தனிப்பட்டது, விநியோகத்திற்காக அல்ல."
 
-#: dt-core/configuration/config-site-defaults.php:478
+#: dt-core/configuration/config-site-defaults.php:475
 msgid "Work Phone"
 msgstr "அலுவலக தொலைபேசி"
 
-#: dt-core/configuration/config-site-defaults.php:481
+#: dt-core/configuration/config-site-defaults.php:478
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr "பணி தொலைபேசி என்பது தொடர்புகள் மற்றும் தேடுபவர்களுக்கு விநியோகிப்பதாகும்."
 
-#: dt-core/configuration/config-site-defaults.php:485
+#: dt-core/configuration/config-site-defaults.php:482
 msgid "Work Email"
 msgstr "வேலை மின்னஞ்சல்"
 
-#: dt-core/configuration/config-site-defaults.php:488
+#: dt-core/configuration/config-site-defaults.php:485
 msgid "Work email is for distribution to contacts and seekers."
 msgstr "பணி மின்னஞ்சல் என்பது தொடர்புகள் மற்றும் தேடுபவர்களுக்கு விநியோகிப்பதற்கானது."
 
-#: dt-core/configuration/config-site-defaults.php:492
+#: dt-core/configuration/config-site-defaults.php:489
 msgid "Work Facebook"
 msgstr "பேஸ்புக் வேலை"
 
-#: dt-core/configuration/config-site-defaults.php:495
+#: dt-core/configuration/config-site-defaults.php:492
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr "பேஸ்புக் என்பது தொடர்புகள் மற்றும் தேடுபவர்களுக்கு விநியோகிப்பதாகும்."
 
-#: dt-core/configuration/config-site-defaults.php:499
+#: dt-core/configuration/config-site-defaults.php:496
 msgid "Work WhatsApp"
 msgstr "வாட்ஸ்அப் வேலை"
 
-#: dt-core/configuration/config-site-defaults.php:502
+#: dt-core/configuration/config-site-defaults.php:499
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr "பணிகள் வாட்ஸ்அப் என்பது தொடர்புகள் மற்றும் தேடுபவர்களுக்கு விநியோகிப்பதாகும்."
 
-#: dt-core/configuration/config-site-defaults.php:509
+#: dt-core/configuration/config-site-defaults.php:506
 msgid "thumbs up"
 msgstr "கட்டைவிரல்"
 
-#: dt-core/configuration/config-site-defaults.php:510
+#: dt-core/configuration/config-site-defaults.php:507
 msgid "heart"
 msgstr "இதயம்"
 
-#: dt-core/configuration/config-site-defaults.php:511
+#: dt-core/configuration/config-site-defaults.php:508
 msgid "laugh"
 msgstr "சிரிக்கவும்"
 
-#: dt-core/configuration/config-site-defaults.php:512
+#: dt-core/configuration/config-site-defaults.php:509
 msgid "wow"
 msgstr "ஆஹா"
 
-#: dt-core/configuration/config-site-defaults.php:513
+#: dt-core/configuration/config-site-defaults.php:510
 msgid "sad"
 msgstr "சோகம்"
 
-#: dt-core/configuration/config-site-defaults.php:514
+#: dt-core/configuration/config-site-defaults.php:511
 msgid "prayer"
 msgstr "பிரார்த்தனை"
 
-#: dt-core/configuration/config-site-defaults.php:522
+#: dt-core/configuration/config-site-defaults.php:519
 #: dt-login/login-template.php:529
 msgid "Home"
 msgstr "வீடு"
 
-#: dt-core/configuration/config-site-defaults.php:523
+#: dt-core/configuration/config-site-defaults.php:520
 msgid "Work"
 msgstr "வேலை"
 
-#: dt-core/configuration/config-site-defaults.php:533
+#: dt-core/configuration/config-site-defaults.php:530
 msgid "Accepting new contacts"
 msgstr "புதிய தொடர்புகளை ஏற்றுக்கொள்வது"
 
-#: dt-core/configuration/config-site-defaults.php:537
+#: dt-core/configuration/config-site-defaults.php:534
 msgid "I'm only investing in existing contacts"
 msgstr "நான் ஏற்கனவே இருக்கும் தொடர்புகளில் மட்டுமே முதலீடு செய்கிறேன்"
 
-#: dt-core/configuration/config-site-defaults.php:541
+#: dt-core/configuration/config-site-defaults.php:538
 msgid "I have too many contacts"
 msgstr "எனக்கு அதிகமான தொடர்புகள் உள்ளன"
 
@@ -4320,7 +4364,7 @@ msgid "View Record"
 msgstr "பதிவைப் பார்க்கவும்"
 
 #: dt-metrics/records/genmap.php:148 dt-metrics/records/genmap.php:152
-#: dt-posts/dt-posts.php:2697 dt-users/template-user-management.php:384
+#: dt-posts/dt-posts.php:2717 dt-users/template-user-management.php:384
 #: dt-users/users.php:175 single-template.php:127
 msgid "Status"
 msgstr "நிலை"
@@ -4709,35 +4753,35 @@ msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
 
-#: dt-posts/dt-posts.php:1630
+#: dt-posts/dt-posts.php:1650
 #, fuzzy, php-format
 #| msgid "Magic Link Submission"
 msgid "%s Submission"
 msgstr "மேஜிக் இணைப்பு சமர்ப்பிப்பு"
 
-#: dt-posts/dt-posts.php:1630
+#: dt-posts/dt-posts.php:1650
 #, fuzzy
 #| msgid "Magic Link Submission"
 msgid "Magic Link"
 msgstr "மேஜிக் இணைப்பு சமர்ப்பிப்பு"
 
-#: dt-posts/dt-posts.php:1632 dt-posts/dt-posts.php:2179
+#: dt-posts/dt-posts.php:1652 dt-posts/dt-posts.php:2199
 #, fuzzy
 #| msgid "Revert Activity"
 msgid "Revert Bot"
 msgstr "செயல்பாட்டை மாற்றவும்"
 
-#: dt-posts/dt-posts.php:2419
+#: dt-posts/dt-posts.php:2439
 #, fuzzy
 #| msgid "Post already shared with user."
 msgid "Record already shared with user."
 msgstr "இடுகை ஏற்கனவே பயனருடன் பகிரப்பட்டது."
 
-#: dt-posts/dt-posts.php:2698 single-template.php:174
+#: dt-posts/dt-posts.php:2718 single-template.php:174
 msgid "Details"
 msgstr "விவரங்கள்"
 
-#: dt-posts/dt-posts.php:2776
+#: dt-posts/dt-posts.php:2796
 #, fuzzy, php-format
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
@@ -4750,7 +4794,7 @@ msgstr ""
 "@[%1$s](%2$s) - %3$s பயனர் %4$s [%5$s](%6$s) ஐ அணுகுமாறு கோரியுள்ளார். "
 "விரும்பினால், அணுகலை வழங்க இந்த பதிவை பயனருடன் பகிரவும்."
 
-#: dt-posts/dt-posts.php:2782
+#: dt-posts/dt-posts.php:2802
 msgid "Access Request"
 msgstr "அணுகல் கோரிக்கை"
 
@@ -5806,7 +5850,7 @@ msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
 msgstr "இந்த பணியை %1$s: %2$s இல் அமைத்துள்ளீர்கள்"
 
-#: dt-workflows/workflows-triggers.php:68
+#: dt-workflows/workflows-triggers.php:73
 msgid "D.T Workflow"
 msgstr "டி.டி பணிப்பாய்வு"
 

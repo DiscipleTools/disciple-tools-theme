@@ -35,7 +35,6 @@ class DT_Contacts_Coaching extends DT_Module_Base {
 
         //hooks
         add_action( 'post_connection_added', [ $this, 'post_connection_added' ], 10, 4 );
-        add_filter( 'dt_post_create_fields', [ $this, 'dt_post_create_fields' ], 10, 2 );
 
         //list
         add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 10, 2 );
@@ -76,20 +75,6 @@ class DT_Contacts_Coaching extends DT_Module_Base {
                 }
             }
         }
-    }
-
-    //Add, remove or modify fields before the fields are processed in post create
-    public function dt_post_create_fields( $fields, $post_type ){
-        if ( $post_type === 'contacts' ){
-            //mark a new user contact as being coached be the user who added the new user.
-            if ( isset( $fields['type'] ) && $fields['type'] === 'user' ){
-                $current_user_contact = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
-                if ( $current_user_contact && !is_wp_error( $current_user_contact ) ){
-                    $fields['coached_by'] = [ 'values' => [ [ 'value' => $current_user_contact ] ] ];
-                }
-            }
-        }
-        return $fields;
     }
 
 
