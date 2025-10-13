@@ -249,10 +249,11 @@ table.js-list {
     }
     .list-header {
         grid-template:
-            "title loading sort options ."
-            "count count archived archived ." auto / auto auto auto auto 1fr;
+            "title loading archived sort options ."
+            "count count . . . ." auto / auto auto auto auto auto 1fr;
         #archived-switch {
             text-align: start;
+            align-self: center;
         }
     }
     table.js-list {
