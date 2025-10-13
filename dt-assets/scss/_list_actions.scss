@@ -1,0 +1,295 @@
+
+.list_action_section {
+    display: none;
+
+    .list-action-close-button {
+        float: right;
+        position: relative;
+    }
+}
+
+/**** Bulk Edit ****/
+#bulk_edit_master input,
+.bulk_edit_checkbox input {
+    display: none;
+    margin: auto;
+
+    @media screen and (max-width : #{map-get($breakpoints, large)-1}) {
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+}
+
+.bulk_edit_on {
+    td.index .record_picture {
+        display: none;
+    }
+    #bulk_edit_master input,
+    .bulk_edit_checkbox input {
+        display: block;
+    }
+}
+
+#bulk_edit_picker .grid-x {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+#bulk_edit_picker .cell {
+    margin-block-end: 0.66rem;
+}
+
+#bulk_edit_picker .button-group.small .button {
+    border: 1px solid #ccc;
+}
+
+#bulk_edit_picker .button-group.small .button.selected-select-button {
+    border: none;
+}
+
+#bulk_add-comment-section {
+    background: $white;
+    border: 1px solid #dcdcdc;
+    border-radius: 3px;
+    margin: 0 0 01.06667rem;
+    textarea,  select {
+        margin-bottom: 0;
+        border: none;
+    }
+    select {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+    .section-subheader {
+        padding-top: .53333rem;
+        padding-left: .5rem;
+        padding-right: .15rem;
+    }
+}
+#bulk_comment-input {
+    margin: 0;
+}
+#bulk_edit_submit,
+#bulk_edit_delete_submit {
+    width: 100%;
+}
+
+// Field picker styles
+.list_field_picker ul {
+    column-count: 1;
+    margin-bottom: 10px
+}
+
+@media screen and (min-width : 640px) {
+    .list_field_picker ul {
+        column-count: 4;
+    }
+}
+.field-search-option {
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        background-color: #f0f0f0;
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    .dt-icon,
+    img,
+    svg,
+    i {
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        flex-shrink: 0;
+        display: block;
+    }
+
+    // Add placeholder for options without icons to align text consistently
+    &.no-icon::before {
+        content: '';
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        flex-shrink: 0;
+        display: inline-block;
+    }
+
+    > span {
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.enabled-field-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    line-height: 1;
+    vertical-align: top;
+
+    // Base icon styling for all types
+    .dt-icon,
+    img,
+    svg,
+    i {
+        width: 14px;
+        height: 14px;
+        margin-right: 8px;
+        flex-shrink: 0;
+        display: block;
+    }
+
+    // Apply white filter to image icons
+    img {
+        filter: invert(100%) sepia(100%) saturate(6%) hue-rotate(105deg) brightness(102%) contrast(102%);
+    }
+
+    // Font icons need white color for visibility on colored background
+    i {
+        color: white;
+    }
+
+    // Text content styling
+    > span {
+        flex-shrink: 0;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    // Remove button styling
+    .remove-field-btn {
+        margin-left: 8px;
+        flex-shrink: 0;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        line-height: 1;
+        padding: 0;
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+        }
+    }
+}
+
+.field-selection-ui {
+    .field-search-label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .field-search-container {
+        position: relative;
+    }
+
+    .field-search-input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .field-search-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ccc;
+        border-top: none;
+        border-radius: 0 0 4px 4px;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+
+    .field-search-option-inline {
+        padding: 8px 12px;
+        cursor: pointer;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .no-fields-found {
+        padding: 8px 12px;
+        color: #666;
+        font-style: italic;
+    }
+
+    .enabled-fields-section {
+        margin-bottom: 15px;
+    }
+
+    .enabled-fields-label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .enabled-fields-container {
+        min-height: 40px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 8px;
+        background: #f9f9f9;
+    }
+
+    .no-fields-message {
+        color: #666;
+        font-style: italic;
+    }
+
+    .enabled-field-tag-inline {
+        background: #3f729b;
+        color: white;
+        padding: 0 8px;
+        margin: 2px;
+        border-radius: 3px;
+        font-size: 12px;
+    }
+
+    .remove-field-btn-inline {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+    }
+}
+
+/* Orphaned code. This seems outdated as of 2025-10-09
+// list colors
+.status--unassigned   { color: #999999; }
+.status--accepted     { color: #4CAF50; }
+.status--paused       { color: #FF9800; }
+.status--closed       { color: #333333; }
+.status--unassignable { color: #FF9800; }
+.milestone--belief    { color: #4CAF50; }
+.milestone--baptized  { color: #2196F3; }
+.milestone--baptizing { color: #2196F3; }
+.milestone--can_share { color: #4CAF50; }
+.milestone--sharing   { color: #4CAF50; }
+.milestone--in_group  { color: #4CAF50; }
+.milestone--planting  { color: #9C27B0; }
+.group-status--no_value           { color: black;   }
+.group-status--active_pre_group   { color: #FF9800; }
+.group-status--active_group       { color: #4CAF50; }
+.group-status--active_church      { color: #4CAF50; }
+.group-status--inactive_church    { color: #F43636; }
+.group-status--inactive_group     { color: #F43636; }
+.group-status--inactive_pre_group { color: #F43636; }
+*/
