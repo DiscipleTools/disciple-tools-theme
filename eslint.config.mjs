@@ -31,6 +31,7 @@ export default [
         sessionStorage: 'readonly',
         location: 'readonly',
         history: 'readonly',
+        Intl: 'readonly',
         URL: 'readonly',
         URLSearchParams: 'readonly',
         Event: 'readonly',
