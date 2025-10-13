@@ -51,6 +51,24 @@
 
         }
     }
+    @media screen and (max-width : #{map-get($breakpoints, large)-1}) {
+        /* Mobile: move list-actions to bottom of screen */
+        #inner-content {
+
+            &:has(.list_action_section[style*="display: block"]),
+            &.show-actions {
+                display: grid;
+                grid-template-rows: 0fr 1fr 1fr;
+                max-height: 100vh;
+
+                aside, main { overflow-y: auto; }
+
+                #list-actions {
+                    display: block;
+                }
+            }
+        }
+    }
 }
 
 
