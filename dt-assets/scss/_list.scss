@@ -251,6 +251,9 @@ table.js-list {
         grid-template:
             "title loading sort options ."
             "count count archived archived ." auto / auto auto auto auto 1fr;
+        #archived-switch {
+            text-align: start;
+        }
     }
     table.js-list {
         transform: rotateX(180deg);
@@ -297,6 +300,10 @@ table.js-list {
 
             .field-label, .field-value {
                 align-self: baseline;
+                body.rtl &,
+                body.rtl & ul {
+                    direction: rtl;
+                }
             }
             .field-label {
                 display: block;

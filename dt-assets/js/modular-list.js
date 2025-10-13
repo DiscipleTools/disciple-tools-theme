@@ -1173,7 +1173,7 @@
           /*if (mobile) {
             return;
           }*/
-          values_html = `<a href="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}" title="${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}">${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}</a>`;
+          values_html = `<li><a href="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}" title="${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}">${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}</a></li>`;
         } else if (field_key === 'record_picture') {
           return; // we are always including this, so skip it
         } else if (list_settings.post_type_settings.fields[field_key]) {
