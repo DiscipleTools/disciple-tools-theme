@@ -247,6 +247,11 @@ table.js-list {
         /* Rotate this and then the child opposite to get horizontal scrollbar on top */
         transform: rotateX(180deg);
     }
+    .list-header {
+        grid-template:
+            "title loading sort options ."
+            "count count archived archived ." auto / auto auto auto auto 1fr;
+    }
     table.js-list {
         transform: rotateX(180deg);
         -webkit-transform: rotateX(180deg) translateZ(0px);
