@@ -588,6 +588,12 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
 
             <aside id="list-actions" class="list-actions">
                 <div class="bordered-box" id="tile-filters">
+                    <div class="section-header">
+                        <span><?php esc_html_e( 'Actions', 'disciple_tools' ) ?></span>
+                        <button class="close-button list-action-close-button" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
                     <div class="section-body">
                         <?php
                         // Add section UI for custom menus
@@ -595,9 +601,6 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         ?>
 
                         <div id="list_column_picker" class="list_field_picker list_action_section">
-                            <button class="close-button list-action-close-button" data-close="list_column_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
-                                <span aria-hidden="true">×</span>
-                            </button>
                             <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
 
                             <div class="field-selection-ui">
@@ -667,7 +670,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                             </button>
                             <p style="font-weight:bold"><?php
                                 echo sprintf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
-                            <div class="grid-x grid-margin-x">
+                            <div class="grid-x">
                                 <?php if ( isset( $field_options['assigned_to'] ) ) : ?>
                                     <div class="cell small-12">
                                         <div class="section-subheader">

@@ -1,11 +1,46 @@
+#list-actions {
+  .bordered-box {
+    .section-header {
+      justify-content: space-between;
+      align-items: center;
 
-.list_action_section {
-    display: none;
-
-    .list-action-close-button {
-        float: right;
+      .list-action-close-button {
         position: relative;
+        font-size: 2rem;
+        right: revert;
+        top: revert;
+        color: currentColor;
+        font-weight: lighter;
+      }
     }
+
+    .section-body {
+      overflow-y: auto;
+
+      .list_action_section {
+        display: none;
+        & > .close-button { display: none; }
+      }
+
+      .grid-x {
+        flex-wrap: wrap;
+        &:not(.grid-margin-x) {
+          gap: 1rem;
+        }
+
+        > .cell {
+          flex: 1 1 200px;
+          min-width: 200px;
+          overflow: clip;
+
+          &.medium-12 {
+            flex: 1 1 100%;
+            min-width: 100%;
+          }
+        }
+      }
+    }
+  }
 }
 
 /**** Bulk Edit ****/

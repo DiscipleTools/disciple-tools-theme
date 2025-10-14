@@ -11,8 +11,8 @@
         #list-actions { display: none; }
     }
     @media screen and (min-width : #{map-get($breakpoints, large)}) {
+        /* Desktop: move list-actions to right of screen */
         #inner-content {
-            //align-content: flex-start;
             padding: 1.5rem 1rem;
             display: grid;
             grid-template-columns: 1fr 3fr 0fr;
@@ -22,7 +22,7 @@
 
             &:has(.list_action_section[style*="display: block"]),
             &.show-actions {
-                grid-template-columns: 0fr 3fr 1fr;
+                grid-template-columns: 0fr 3fr 3fr;
                 margin-inline: -1rem 0;
 
                 #list-filters {
