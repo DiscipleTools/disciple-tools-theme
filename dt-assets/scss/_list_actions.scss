@@ -333,3 +333,11 @@ table.js-list.bulk_edit_on {
 .group-status--inactive_group     { color: #F43636; }
 .group-status--inactive_pre_group { color: #F43636; }
 */
+
+/* === Bulk Send App === */
+.dt-radio.button-group label {
+  background-color: transparent;
+  color: #000000;
+  display: inline;
+  padding: 0px 20px 0px 5px;
+}
