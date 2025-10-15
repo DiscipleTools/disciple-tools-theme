@@ -46,35 +46,42 @@
 /**** Bulk Edit ****/
 #bulk_edit_master input,
 .bulk_edit_checkbox input {
+  display: none;
+  margin: auto;
+
+  @media screen and (max-width: #{map-get($breakpoints, large)-1}) {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+}
+
+table.js-list.bulk_edit_on {
+  td.index .record_picture {
     display: none;
-    margin: auto;
+  }
 
-    @media screen and (max-width : #{map-get($breakpoints, large)-1}) {
-        height: 1.5rem;
-        width: 1.5rem;
-    }
+  #bulk_edit_master input,
+  .bulk_edit_checkbox input {
+    display: block;
+  }
+
+  [data-id="name"] {
+    left: 32px;
+  }
 }
 
-.bulk_edit_on {
-    td.index .record_picture {
-        display: none;
-    }
-    #bulk_edit_master input,
-    .bulk_edit_checkbox input {
-        display: block;
-    }
-}
-
-#bulk_edit_picker .cell {
+#bulk_edit_picker {
+  .cell {
     margin-block-end: 0.66rem;
-}
+  }
 
-#bulk_edit_picker .button-group.small .button {
+  .button-group.small .button {
     border: 1px solid #ccc;
-}
+  }
 
-#bulk_edit_picker .button-group.small .button.selected-select-button {
+  .button-group.small .button.selected-select-button {
     border: none;
+  }
 }
 
 #bulk_add-comment-section {

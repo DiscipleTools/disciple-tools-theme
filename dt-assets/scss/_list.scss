@@ -3,27 +3,72 @@
 #content.archive-template {
     max-width: 100%;
     #inner-content {
-        padding: 0.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
+        --grid-gap: 0.75rem;
+        padding: var(--grid-gap);
+        display: grid;
+        grid-template-areas: "filters"
+            "actions"
+            "list";
+        grid-template-columns: 1fr;
+        grid-template-rows: min-content 0fr max-content;
+        transition: grid-template-columns 0.5s ease-in-out,
+            grid-template-rows 0.5s ease-in-out,
+            margin 0.5s ease-in-out;
 
-        #list-actions { display: none; }
+        /* General Column/Row layout - Mobile First */
+        #list-filters { grid-area: filters; }
+        main { grid-area: list; }
+        #list-actions { grid-area: actions; }
+
+        #main {
+            margin-block-start: var(--grid-gap);
+        }
+        #list-filters,
+        #list-actions {
+            overflow: hidden;
+            padding: 0 3px 3px 0; /* allow space for shadow */
+            margin: 0 -3px -3px 0;
+            & > * {
+                transition: opacity 0.5s ease-in-out, display 0.5s step-end; /* Use step-end for display to flip at the end */
+                transition-behavior: allow-discrete;
+                min-height: 60px; /* Don't squeeze height down to zero. Clip overflow at 100px. */
+            }
+        }
+
+        /* Action mode */
+        &:has(.list_action_section[style*="display: block"]),
+        &.show-actions {
+            grid-template-rows: 0fr 1fr max-content;
+
+            #list-filters {
+                overflow-y: hidden;
+                & > * { opacity: 0; display: none; }
+            }
+            #list-actions > * { opacity: 1; display: block; }
+        }
+
+        /* Default mode (filters) */
+        #list-filters > * { opacity: 1; display: block; }
+        #list-actions {
+            overflow-y: hidden;
+            & > * { opacity: 0; display: none; }
+        }
     }
+
     @media screen and (min-width : #{map-get($breakpoints, large)}) {
         /* Desktop: move list-actions to right of screen */
         #inner-content {
-            padding: 1.5rem 1rem;
-            display: grid;
+            --grid-gap: 1rem;
+            grid-template-areas: "filters list actions";
             grid-template-columns: 1fr 3fr 0fr;
-            margin-inline: 0rem -1rem; /* account for doubled gap because of 0-width column */
-            transition: grid-template-columns 0.5s ease-in-out, margin 0.5s ease-in-out;
-            gap: 1rem;
+            grid-template-rows: 1fr;
+            margin-inline: 0rem calc(var(--grid-gap) * -1); /* account for doubled gap because of 0-width column */
+            gap: var(--grid-gap);
 
             &:has(.list_action_section[style*="display: block"]),
             &.show-actions {
                 grid-template-columns: 0fr 3fr 3fr;
-                margin-inline: -1rem 0;
+                margin-inline: calc(var(--grid-gap) * -1) 0;
 
                 #list-filters {
                     & > * { opacity: 0; display: none; }
@@ -31,40 +76,12 @@
                 #list-actions > * { opacity: 1; display: block; }
             }
 
-            main { min-width: 0; }
+            #main { min-width: 0; margin-block-start: 0; }
 
             #list-filters,
             #list-actions {
-                overflow: hidden;
-                padding: 0 3px; /* allow space for shadow */
                 & > * {
-                    transition: opacity 0.5s ease-in-out, display 0.5s step-end; /* Use step-end for display to flip at the end */
-                    transition-behavior: allow-discrete;
-                    min-width: 15vw; /* 5fr is 20vw, minus some gap */
-                }
-            }
-            #list-filters > * { opacity: 1; display: block; }
-            #list-actions {
-                display: block;
-                & > * { opacity: 0; display: none; }
-            }
-
-        }
-    }
-    @media screen and (max-width : #{map-get($breakpoints, large)-1}) {
-        /* Mobile: move list-actions to bottom of screen */
-        #inner-content {
-
-            &:has(.list_action_section[style*="display: block"]),
-            &.show-actions {
-                display: grid;
-                grid-template-rows: 0fr 1fr 1fr;
-                max-height: 100vh;
-
-                aside, main { overflow-y: auto; }
-
-                #list-actions {
-                    display: block;
+                    min-width: 15vw; /* Don't squeeze width down to zero. Clip overflow at 15vw. */
                 }
             }
         }
@@ -75,11 +92,11 @@
 #list-filters {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--grid-gap);
 
     @media screen and (max-width : #{map-get($breakpoints, large)-1}) {
         /** Mobile Layout **/
-        #tile-list-exports { display: none; }
+        #tile-list-exports { display: none !important; }
     }
 }
 
