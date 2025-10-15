@@ -44,6 +44,10 @@ color:$light-gray;
     width: 100%;
 }
 
+.small-text {
+    font-size: .8rem;
+}
+
 html {
     --primary-color: #{map.get($foundation-palette, "primary")};
     --secondary-color: #{map.get($foundation-palette, "secondary")};

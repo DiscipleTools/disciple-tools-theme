@@ -1,0 +1,117 @@
+
+#list-filters {
+    display: flex;
+    flex-direction: column;
+    gap: var(--grid-gap);
+
+    @media screen and (max-width : #{map-get($breakpoints, large)-1}) {
+        /** Mobile Layout **/
+        #tile-list-exports { display: none !important; }
+    }
+}
+
+#list-filter-tabs {
+    margin-top: 10px;
+    .is-active a {
+        background-color: #3f729b;
+        color:white;
+        &:focus {
+            background-color: #3f729b;
+            color: white;
+        }
+    }
+    .accordion-title {
+        font-size: inherit;
+        font-weight: bold;
+        .tab-count-span {
+            font-weight: 100;
+            font-size: 12px;
+        }
+        padding: 0.75rem 1rem;
+    }
+}
+
+.filter {
+    border-top: 1px #E2E2E2 solid;
+    border-bottom: 1px #E2E2E2 solid;
+    padding: 0 $bordered-box-padding 10px $bordered-box-padding;
+    margin: 0 (-1 * $bordered-box-padding);
+    width: calc(100% + 2 * #{$bordered-box-padding});
+}
+
+.filter--closed {
+    padding-bottom: 0;
+}
+
+.filter__title:hover {
+    color: #2196f3;
+}
+
+.filter__title:before {
+    content: "▼";
+    float: right;
+}
+
+.filter--closed .filter__title:before {
+    content: "▶";
+    float: right;
+}
+
+.filter--closed :not(.filter__title) {
+    display: none;
+}
+
+.filter__title {
+    cursor: pointer;
+}
+
+.filter input, .list-views input {
+    margin: 0 0.2rem 0 0;
+}
+
+.typeahead__query.disabled {
+    position: relative;
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+    }
+}
+
+.filter label:hover, .list-views label:hover {
+    color: #2196f3;
+}
+
+.list-views {
+    margin-bottom: 0.5rem;
+}
+
+.list-views__sub {
+    margin-left: 20px;
+}
+
+
+.list-view {
+    cursor: pointer;
+    display: flex;
+    column-gap: 0.2rem;
+}
+
+.list-view__count {
+    float: right;
+}
+
+.list-view__text, .filter-list-name {
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    display: inline-block;
+
+    /* Required for text-overflow to do anything */
+    white-space: nowrap;
+    overflow: hidden;
+}
