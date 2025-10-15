@@ -334,6 +334,7 @@ function dt_site_scripts() {
             'empty_custom_filters' => __( 'No filters, create one below', 'disciple_tools' ),
             'empty_list' => __( 'No records found matching your filter.', 'disciple_tools' ),
             'filter_all' => sprintf( _x( 'All %s', 'All records', 'disciple_tools' ), $post_settings['label_plural'] ),
+            'split_by' => __( 'Split By', 'disciple_tools' ),
             'range_start' => __( 'start', 'disciple_tools' ),
             'range_end' => __( 'end', 'disciple_tools' ),
             'all' => __( 'All', 'disciple_tools' ),

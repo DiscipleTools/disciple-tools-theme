@@ -50,7 +50,7 @@
         }
 
         /* Default mode (filters) */
-        #list-filters > * { opacity: 1; display: block; }
+        #list-filters > *:not(template) { opacity: 1; display: block; }
         #list-actions {
             overflow-y: hidden;
             & > * { opacity: 0; display: none; }
