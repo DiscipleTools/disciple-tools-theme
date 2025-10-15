@@ -243,73 +243,6 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         <div class="custom-filters"></div>
                     </div>
                 </div>
-                <div class="bordered-box" id="tile-split-by">
-                    <div class="section-header">
-                        <?php echo esc_html( _x( 'Split By', 'Split By', 'disciple_tools' ) ) ?>
-                        <button class="section-chevron chevron_down">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                        </button>
-                        <button class="section-chevron chevron_up">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-                        </button>
-                    </div>
-                    <div class="section-body">
-                        <div style="display: flex; flex-wrap:wrap;" id="split_by_current_filter_select_labels"></div>
-                        <table>
-                            <tbody style="border: none;">
-                            <tr style="border: none;">
-                                <td style="padding:0">
-                                    <select id="split_by_current_filter_select" style="margin-bottom: 0">
-                                        <option value="" disabled selected><?php echo esc_html( _x( 'select split by field', 'disciple_tools' ) ) ?></option>
-                                        <?php
-                                        $split_by_fields = [];
-                                        foreach ( DT_Posts::get_post_settings( $post_type )['fields'] ?? [] as $key => $field ){
-                                            if ( in_array( $field['type'], [ 'multi_select', 'key_select', 'tags', 'user_select', 'location', 'boolean', 'connection' ] ) ){
-                                                if ( !isset( $field['private'] ) || !$field['private'] ){
-                                                    $split_by_fields[$key] = $field;
-                                                }
-                                            }
-                                        }
-
-                                        // Sort identified list of split by fields;
-                                        uasort( $split_by_fields, function ( $a, $b ){
-                                            if ( $a['name'] == $b['name'] ){
-                                                return 0;
-                                            }
-                                            return ( $a['name'] < $b['name'] ) ? -1 : 1;
-                                        } );
-
-                                        // Display split by fields.
-                                        foreach ( $split_by_fields as $split_by_field_key => $split_by_field ){
-                                            ?>
-                                            <option
-                                                value="<?php echo esc_attr( $split_by_field_key ) ?>"><?php echo esc_attr( sprintf( _x( '%1$s - (%2$s)', 'disciple_tools' ), $split_by_field['name'], $split_by_field_key ) ) ?></option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <button id="split_by_current_filter_button" class="button loader" style='margin-bottom: 0'><?php echo esc_html( _x( 'Go', 'disciple_tools' ) ) ?></button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <ul id="list-filter-tabs" class="accordion split-by-current-filter-accordion"
-                            data-responsive-accordion-tabs="accordion medium-tabs large-accordion"
-                            style="display: none;">
-                            <li class="accordion-item is-active" data-accordion-item data-id="split_by">
-                                <a href="#" class="accordion-title" data-id="split_by">
-                                    <?php echo esc_attr( _x( 'Summary', 'disciple_tools' ) ) ?>
-                                </a>
-                                <div class="accordion-content" data-tab-content>
-                                    <div id="split_by_current_filter_results" class="list-views"></div>
-                                </div>
-                            </li>
-                        </ul>
-                        <span id="split_by_current_filter_no_results_msg" style="display: none;margin-inline-start: 10px"><?php echo esc_attr( __( 'No results found', 'disciple_tools' ) ) ?></span>
-                    </div>
-                </div>
                 <div class="bordered-box" id="tile-list-exports">
                     <div class="section-header">
                         <?php echo esc_html( _x( 'List Exports', 'List Exports', 'disciple_tools' ) ) ?>
@@ -378,7 +311,54 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <template id="template-split-by-filter">
+                    <div class="field-select-wrapper">
+                        <select id="split_by_current_filter_select" style="margin-bottom: 0">
+                            <option value="" disabled selected><?php echo esc_html( _x( 'select split by field', 'disciple_tools' ) ) ?></option>
+                            <?php
+                            $split_by_fields = [];
+                            foreach ( DT_Posts::get_post_settings( $post_type )['fields'] ?? [] as $key => $field ){
+                                if ( in_array( $field['type'], [ 'multi_select', 'key_select', 'tags', 'user_select', 'location', 'boolean', 'connection' ] ) ){
+                                    if ( !isset( $field['private'] ) || !$field['private'] ){
+                                        $split_by_fields[$key] = $field;
+                                    }
+                                }
+                            }
 
+                            // Sort identified list of split by fields;
+                            uasort( $split_by_fields, function ( $a, $b ){
+                                if ( $a['name'] == $b['name'] ){
+                                    return 0;
+                                }
+                                return ( $a['name'] < $b['name'] ) ? -1 : 1;
+                            } );
+
+                            // Display split by fields.
+                            foreach ( $split_by_fields as $split_by_field_key => $split_by_field ){
+                                ?>
+                                <option
+                                    value="<?php echo esc_attr( $split_by_field_key ) ?>"><?php echo esc_attr( sprintf( _x( '%1$s - (%2$s)', 'disciple_tools' ), $split_by_field['name'], $split_by_field_key ) ) ?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
+
+                        <button id="split_by_current_filter_button" class="button loader" style='margin-bottom: 0'><?php echo esc_html( _x( 'Go', 'disciple_tools' ) ) ?></button>
+                    </div>
+                    <ul class="accordion split-by-current-filter-accordion"
+                        data-responsive-accordion-tabs="accordion medium-tabs large-accordion"
+                        style="display: none;">
+                        <li class="accordion-item is-active" data-accordion-item data-id="split_by">
+                            <a href="#" class="accordion-title" data-id="split_by">
+                                <?php echo esc_attr( _x( 'Summary', 'disciple_tools' ) ) ?>
+                            </a>
+                            <div class="accordion-content" data-tab-content>
+                                <div id="split_by_current_filter_results" class="list-views"></div>
+                            </div>
+                        </li>
+                    </ul>
+                    <span id="split_by_current_filter_no_results_msg" style="display: none;margin-inline-start: 10px"><?php echo esc_attr( __( 'No results found', 'disciple_tools' ) ) ?></span>
+                </template>
                 <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
             </aside>
 
