@@ -161,6 +161,7 @@
 
         .bordered-box {
             height: calc(100vh - 200px);
+            border: 0;
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
             overflow-y: auto;
