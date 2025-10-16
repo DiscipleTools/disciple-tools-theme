@@ -203,12 +203,12 @@ if ( !empty( $custom_logo_url ) ) {
 </div>
 
 <!-- MOBILE VIEW TOP LEFT SIDE MENU AREA -->
-<div data-sticky-container class="show-for-small-only">
-    <div data-sticky data-responsive-toggle='top-bar-menu' data-margin-top='0' data-sticky-on='small'>
+<div class="show-for-small-only">
+    <div data-responsive-toggle='top-bar-menu'>
         <?php // hook for nav header above menu bar
         do_action( 'dt_nav_add_before', false ) ?>
 
-        <div class='title-bar hide-on-scroll'>
+        <div class='title-bar'>
             <div class='title-bar-left'>
                 <!-- menu -->
                 <?php if ( !$dt_nav_tabs['admin']['menu']['hidden'] ?? !false ) : ?>
@@ -233,8 +233,8 @@ if ( !empty( $custom_logo_url ) ) {
                 <?php if ( isset( $dt_nav_tabs['admin']['add_new']['hidden'] ) && empty( $dt_nav_tabs['admin']['add_new']['hidden'] ) ) : ?>
                     <div class="has-submenu center-items add-buttons mobile-add-buttons">
                         <button type="button" data-toggle="mobile-add-new-dropdown">
-                            <img title="<?php echo esc_html( $dt_nav_tabs['admin']['add_new']['label'] ?? '' ); ?>" 
-                                 src="<?php echo esc_url( $dt_nav_tabs['admin']['add_new']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ); ?>" 
+                            <img title="<?php echo esc_html( $dt_nav_tabs['admin']['add_new']['label'] ?? '' ); ?>"
+                                 src="<?php echo esc_url( $dt_nav_tabs['admin']['add_new']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg' ); ?>"
                                  style="width:24px;">
                         </button>
                         <!--  /* MOBILE add menu */ -->
