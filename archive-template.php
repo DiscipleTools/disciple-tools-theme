@@ -28,6 +28,20 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
     ];
 
     get_header();
+
+    $fields_to_search = [];
+    $all_searchable_fields = $post_settings['fields'];
+    $all_searchable_fields['comment'] = [ 'name' => __( 'Comments', 'disciple_tools' ), 'type' => 'text' ];
+    if ( isset( $_COOKIE['fields_to_search'] ) ) {
+        $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
+        if ( $fields_to_search ){
+            $fields_to_search = dt_recursive_sanitize_array( $fields_to_search );
+        }
+    }
+    //order fields alphabetically by Name
+    uasort( $all_searchable_fields, function ( $a, $b ){
+        return $a['name'] <=> $b['name'];
+    });
     ?>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
         <nav role="navigation"
@@ -52,23 +66,8 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                             <span>&times;</span>
                         </div>
                     </span>
-                    <a class="advanced_search" id="advanced_search" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
+                    <a class="search-addon advanced_search" id="advanced_search" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
                         <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
-                        <?php
-                        $fields_to_search = [];
-                        $all_searchable_fields = $post_settings['fields'];
-                        $all_searchable_fields['comment'] = [ 'name' => __( 'Comments', 'disciple_tools' ), 'type' => 'text' ];
-                        if ( isset( $_COOKIE['fields_to_search'] ) ) {
-                            $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
-                            if ( $fields_to_search ){
-                                $fields_to_search = dt_recursive_sanitize_array( $fields_to_search );
-                            }
-                        }
-                        //order fields alphabetically by Name
-                        uasort( $all_searchable_fields, function ( $a, $b ){
-                            return $a['name'] <=> $b['name'];
-                        });
-                        ?>
                         <span class="badge alert advancedSearch-count" style="<?php if ( !$fields_to_search ) { echo esc_html( 'display:none' ); } ?>"><?php if ( $fields_to_search ){ echo count( $fields_to_search ); } ?></span>
                     </a>
                 </div>
@@ -127,57 +126,40 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
             </div>
         </nav>
     </div>
-    <nav  role="navigation" style="width:100%;"
+    <nav role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
         <div class="buttons-row">
-            <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
-                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
-            </a>
-            <a class="button filter-posts-mobile" data-open="filter-modal">
-                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
-            </a>
-            <?php do_action( 'archive_template_mobile_action_bar_buttons', $post_type ) ?>
-            <a class="button" id="open-search">
-                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
-            </a>
-            <?php if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) : ?>
-                <button class="button export_map_list no-margin icon-button" style="font-size:large;padding: 0.1rem 0.75rem">
-                    <i class="fi-map"></i>
-                </button>
-            <?php endif; ?>
-        </div>
-        <div class="hideable-search" style="display: none; margin-top:5px">
+            <!--<a class="button dt-green create-post-mobile" href="<?php /*echo esc_url( home_url( '/' ) . $post_type ) . '/new' */?>">
+                <img class="dt-white-icon" style="display: inline-block;" src="<?php /*echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) */?>"/>
+            </a>-->
             <div class="search-wrapper">
                 <span class="text-input-wrapper">
-                    <input class="search-input search-input--mobile" name="search" type="text" id="search-query-mobile"
-                        placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $post_settings['label_plural'] ?? $post_type ) ) ?>">
+                    <input class="search-input search-input--mobile"
+                           type="text" id="search-query-mobile" name="search"
+                           placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $post_settings['label_plural'] ?? $post_type ) ) ?>">
                     <div class="search-input__clear-button" title="<?php echo esc_html( __( 'Clear', 'disciple_tools' ) ) ?>">
                         <span>&times;</span>
                     </div>
                 </span>
-                <a class="advanced_search" id="advanced_search_mobile" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
+                <a class="search-addon advanced_search" id="advanced_search_mobile" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
                     <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
-                    <?php
-                    $fields_to_search = [];
-                    $all_searchable_fields = $post_settings['fields'];
-                    $all_searchable_fields['comment'] = [ 'name' => 'Comments', 'type' => 'text' ];
-                    if ( isset( $_COOKIE['fields_to_search'] ) ) {
-                        $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
-                        if ( $fields_to_search ){
-                            $fields_to_search = dt_recursive_sanitize_array( $fields_to_search );
-                        }
-                    }
-                    //order fields alphabetically by Name
-                    uasort( $all_searchable_fields, function ( $a, $b ){
-                        return $a['name'] <=> $b['name'];
-                    });
-                    ?>
                     <span class="badge alert advancedSearch-count" style="<?php if ( !$fields_to_search ) { echo esc_html( 'display:none' ); } ?>"><?php if ( $fields_to_search ){ echo count( $fields_to_search ); } ?></span>
                 </a>
-                <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( 'Search', 'disciple_tools' ) ?></button>
+                <button class="search-addon" id="search-mobile">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
+                </button>
             </div>
-        </div>
+            <a class="button filter-posts-mobile" data-open="filter-modal">
+                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
+            </a>
+            <?php do_action( 'archive_template_mobile_action_bar_buttons', $post_type ) ?>
 
+            <?php if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) : ?>
+                <button class="button export_map_list no-margin icon-button">
+                    <i class="fi-map"></i>
+                </button>
+            <?php endif; ?>
+        </div>
         <div id="advanced_search_picker_mobile"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
                 <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
                 <ul class="ul-no-bullets" style="">

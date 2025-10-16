@@ -115,15 +115,16 @@ table.js-list.bulk_edit_on {
 
 // Field picker styles
 .list_field_picker ul {
-    column-count: 1;
-    margin-bottom: 10px
-}
+    column-width: 160px;
+    margin-bottom: 10px;
 
-@media screen and (min-width : 640px) {
-    .list_field_picker ul {
-        column-count: 4;
+    li {
+        text-align: start;
+        text-indent: -1.2rem;
+        padding-inline-start: 1.2rem;
     }
 }
+
 .field-search-option {
     display: flex;
     align-items: center;

@@ -28,8 +28,8 @@
         #list-filters,
         #list-actions {
             overflow: hidden;
-            padding: 0 3px 3px 0; /* allow space for shadow */
-            margin: 0 -3px -3px 0;
+            padding: 3px; /* allow space for shadow */
+            margin: -3px;
             & > * {
                 transition: opacity 0.5s ease-in-out, display 0.5s step-end; /* Use step-end for display to flip at the end */
                 transition-behavior: allow-discrete;
@@ -117,6 +117,92 @@
         font-size: 60%;
     }
 }*/
+
+/* === Secondary Nav === */
+.search-wrapper {
+    display: inline-flex;
+    max-height: 30px;
+    transform: translateY(1px);
+
+    .text-input-wrapper {
+        position: relative;
+        display: inline-flex;
+        width: 200px;
+
+        input {
+            padding: 0.4em 0.75em;
+            padding-inline-end: 1.75rem;
+            max-width: 200px;
+            margin: 0 !important;
+            font: inherit;
+            height: 100%;
+            margin-right: 0;
+            display: inline-block;
+        }
+
+        .search-input__clear-button {
+            position: absolute;
+            inset-inline-end: 0;
+            inset-block: 0;
+            width: 1.75rem;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.5;
+            cursor: pointer;
+            display: none;
+        }
+
+        input:not(:placeholder-shown) + .search-input__clear-button {
+            display: flex;
+        }
+    }
+
+    .search-addon {
+        transform: none;
+        border: 1px solid #cacaca;
+        border-inline-start: 0;
+        padding: .15em .5em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+nav.second-bar.show-for-small-only {
+    .search-wrapper, .text-input-wrapper {
+        height: 3rem;
+        flex-grow: 1;
+    }
+    .search-wrapper {
+        max-height: none;
+        transform: none; // reset translateY
+        .text-input-wrapper input {
+            max-width: none;
+            max-height: none;
+            padding-inline-end: 2.5rem;
+        }
+        .search-input__clear-button {
+            font-size: 2rem;
+            width: 2.5rem;
+        }
+        .search-addon {
+            img {
+                height: 20px;
+                width: 20px;
+            }
+        }
+    }
+
+    .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 3em;
+
+        &.icon-button i {
+            font-size: 20px;
+        }
+    }
+}
 
 /* === List Layout */
 #records-table th {

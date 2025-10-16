@@ -2945,14 +2945,12 @@
   });
 
   $('.search-input--desktop').on('keyup', function (e) {
-    clearSearchButton.css({ display: this.value.length ? 'flex' : 'none' });
     if (e.keyCode === 13) {
       $('#search').trigger('click');
     }
   });
 
   $('.search-input--mobile').on('keyup', function (e) {
-    clearSearchButton.css({ display: this.value.length ? 'flex' : 'none' });
     if (e.keyCode === 13) {
       $('#search-mobile').trigger('click');
     }
@@ -2960,12 +2958,6 @@
 
   clearSearchButton.on('click', function () {
     $('.search-input').val('');
-    clearSearchButton.css({ display: 'none' });
-  });
-
-  //toggle show search input on mobile
-  $('#open-search').on('click', function () {
-    $('.hideable-search').toggle();
   });
 
   /***
