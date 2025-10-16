@@ -6,7 +6,7 @@
     max-width: 100%;
     #inner-content {
         --grid-gap: 0.75rem;
-        padding: var(--grid-gap);
+        padding: var(--grid-gap) 0.33rem;
         display: grid;
         grid-template-areas: "filters"
             "actions"
@@ -54,11 +54,28 @@
         }
     }
 
+    .create-post-mobile {
+        position: fixed;
+        inset-inline-end: 1rem;
+        inset-block-end: 1rem;
+        z-index: 1;
+        min-width: 3rem;
+        min-height: 3rem;
+        border-radius: 50%;
+        aspect-ratio: 1;
+        img {
+            height: 1.5rem;
+            width: 1.5rem;
+        }
+    }
+
     @media screen and (min-width : #{map-get($breakpoints, medium)}) {
         /* Tablet */
         #inner-content {
             gap: var(--grid-gap);
+            padding: var(--grid-gap);
         }
+        .create-post-mobile { display: none;}
     }
     @media screen and (min-width : #{map-get($breakpoints, large)}) {
         /* Desktop: move list-actions to right of screen */

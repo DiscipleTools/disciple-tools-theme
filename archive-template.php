@@ -129,9 +129,6 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
     <nav role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
         <div class="buttons-row">
-            <!--<a class="button dt-green create-post-mobile" href="<?php /*echo esc_url( home_url( '/' ) . $post_type ) . '/new' */?>">
-                <img class="dt-white-icon" style="display: inline-block;" src="<?php /*echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) */?>"/>
-            </a>-->
             <div class="search-wrapper">
                 <span class="text-input-wrapper">
                     <input class="search-input search-input--mobile"
@@ -1010,6 +1007,9 @@ Thanks!';
                 </div>
             </aside>
         </div>
+        <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
+            <img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add.svg' ) ?>"/>
+        </a>
     </div>
 
     <div class="reveal" id="filter-modal" data-reveal>
