@@ -149,9 +149,9 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                     <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
                 </button>
             </div>
-            <a class="button filter-posts-mobile" data-open="filter-modal">
-                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
-            </a>
+            <button class="button filter-posts-mobile" onclick="document.getElementById('tile-filters').classList.toggle('collapsed')">
+                <img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
+            </button>
             <?php do_action( 'archive_template_mobile_action_bar_buttons', $post_type ) ?>
 
             <?php if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) : ?>
@@ -207,7 +207,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
     <div id="content" class="archive-template">
         <div id="inner-content">
             <aside class="" id="list-filters">
-                <div class="bordered-box" id="tile-filters">
+                <div class="bordered-box collapsed" id="tile-filters">
                     <div class="section-header">
                         <?php echo esc_html( sprintf( _x( '%s Filters', 'Contacts Filters', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ) ) ?>
                         <button class="section-chevron chevron_down">
@@ -225,7 +225,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         <div class="custom-filters"></div>
                     </div>
                 </div>
-                <div class="bordered-box" id="tile-list-exports">
+                <div class="bordered-box collapsed" id="tile-list-exports">
                     <div class="section-header">
                         <?php echo esc_html( _x( 'List Exports', 'List Exports', 'disciple_tools' ) ) ?>
                         <button class="float-right" data-open="export_help_text">

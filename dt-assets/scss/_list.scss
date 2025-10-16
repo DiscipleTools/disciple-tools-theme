@@ -22,9 +22,6 @@
         main { grid-area: list; }
         #list-actions { grid-area: actions; }
 
-        #main {
-            margin-block-start: var(--grid-gap);
-        }
         #list-filters,
         #list-actions {
             overflow: hidden;
@@ -57,6 +54,12 @@
         }
     }
 
+    @media screen and (min-width : #{map-get($breakpoints, medium)}) {
+        /* Tablet */
+        #inner-content {
+            gap: var(--grid-gap);
+        }
+    }
     @media screen and (min-width : #{map-get($breakpoints, large)}) {
         /* Desktop: move list-actions to right of screen */
         #inner-content {
