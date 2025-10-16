@@ -132,3 +132,74 @@
         gap: 1rem;
     }
 }
+
+@media screen and (max-width : #{map-get($breakpoints, medium)-1}) {
+    /** Mobile Layout **/
+    #content.archive-template #inner-content #list-filters {
+        position: fixed;
+        inset-inline: 0;
+        z-index: 5;
+        background: rgba(0, 0, 0, 0.5);
+        inset-block: 0;
+        justify-content: end;
+        overscroll-behavior-y: none;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out, display 0.5s step-end;
+        transition-behavior: allow-discrete;
+
+        &:has(.bordered-box:not(.collapsed)) {
+            display: flex;
+            opacity: 1;
+            @starting-style {
+                opacity: 0;
+                .bordered-box {
+                    transform: translateY(100%);
+                }
+            }
+        }
+
+        .bordered-box {
+            height: calc(100vh - 200px);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            overflow-y: auto;
+            overscroll-behavior-y: contain;
+            transition: transform 0.5s ease-in-out;
+            &.collapsed {
+                transform: translateY(100%);
+            }
+
+            /* Replace chevron icons with X to close */
+            .section-chevron {
+                position: relative;
+                width: 30px;
+                height: 30px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0;
+                color: inherit;
+
+                img {
+                    display: none;
+                }
+
+                &::before,
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 20px; /* Adjust line width */
+                    height: 2px; /* Adjust line thickness */
+                    background-color: currentcolor;
+                    transform-origin: center;
+                }
+
+                &::before { transform: translate(-50%, -50%) rotate(45deg); }
+                &::after { transform: translate(-50%, -50%) rotate(-45deg); }
+            }
+        }
+    }
+}
