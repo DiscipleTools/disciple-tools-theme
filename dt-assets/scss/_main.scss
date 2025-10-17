@@ -673,6 +673,10 @@ POSTS & CONTENT STYLES
         padding: 1rem 0;
         margin-left: 5px;
         margin-right: 5px;
+
+        /* Makes sure the inner-content area is no less than the full height of the screen.
+         * This prevents dropdowns or other elements from being cut off on short pages */
+        min-height: 100vh;
     }
 
     article {

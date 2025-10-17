@@ -40,12 +40,6 @@ jQuery(document).ready(($) => {
   $('#wpadminbar').addClass('add');
 });
 
-/* Makes sure the inner-content area is no less than the full height of the screen.
- * This prevents dropdowns or other elements from being cut off on short pages */
-jQuery(document).ready(function () {
-  jQuery('#inner-content ').css('min-height', window.innerHeight);
-});
-
 //Hide Top Menu More button if all items are showing
 document.addEventListener('DOMContentLoaded', top_bar_menu_more_button);
 window.addEventListener('resize', top_bar_menu_more_button);
