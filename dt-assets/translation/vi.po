@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2025-08-20T12:55:49+00:00\n"
+"POT-Creation-Date: 2025-09-17T09:32:36+00:00\n"
 "PO-Revision-Date: 2024-07-20 02:59+0000\n"
 "Last-Translator: Charlie Ritchie <ritchiecharlie@gmail.com>\n"
 "Language-Team: Vietnamese <https://translate.disciple.tools/projects/"
@@ -75,7 +75,7 @@ msgid "Submit Request"
 msgstr "Gửi Yêu cầu"
 
 #: 403.php:55 archive-template.php:1235
-#: dt-assets/parts/loop-activity-comment.php:140
+#: dt-assets/parts/loop-activity-comment.php:141
 #: dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
@@ -92,11 +92,11 @@ msgstr "Huỷ"
 
 #: 403.php:59 archive-template.php:521 archive-template.php:616
 #: archive-template.php:803 archive-template.php:1259
-#: dt-assets/functions/enqueue-scripts.php:455
-#: dt-assets/parts/loop-activity-comment.php:216
-#: dt-assets/parts/loop-activity-comment.php:221
-#: dt-assets/parts/loop-activity-comment.php:264
-#: dt-assets/parts/loop-activity-comment.php:269
+#: dt-assets/functions/enqueue-scripts.php:459
+#: dt-assets/parts/loop-activity-comment.php:217
+#: dt-assets/parts/loop-activity-comment.php:222
+#: dt-assets/parts/loop-activity-comment.php:265
+#: dt-assets/parts/loop-activity-comment.php:270
 #: dt-assets/parts/merge-details.php:26 dt-assets/parts/merge-details.php:31
 #: dt-assets/parts/merge-details.php:75
 #: dt-assets/parts/modals/modal-advanced-search.php:65
@@ -123,8 +123,8 @@ msgstr "Huỷ"
 #: dt-contacts/module-access.php:456 dt-contacts/module-access.php:487
 #: dt-contacts/module-access.php:515 dt-contacts/module-access.php:606
 #: dt-contacts/module-baptisms.php:201 dt-contacts/module-baptisms.php:203
-#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:583
-#: dt-groups/base-setup.php:588 dt-reports/magic-url-bulk-send.php:34
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:586
+#: dt-groups/base-setup.php:591 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
 #: dt-users/user-initial-setup.php:82 single-template.php:418
@@ -152,8 +152,8 @@ msgid "Filters"
 msgstr "Bộ lọc"
 
 #: archive-template.php:50 archive-template.php:153 archive-template.php:695
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:819
-#: dt-core/utilities/dt-components.php:208 dt-posts/custom-post-type.php:20
+#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:825
+#: dt-core/utilities/dt-components.php:234 dt-posts/custom-post-type.php:20
 #: template-settings.php:399
 #, php-format
 msgctxt "Search 'something'"
@@ -172,8 +172,8 @@ msgid "Advanced Search"
 msgstr "Tìm kiếm Nâng cao"
 
 #: archive-template.php:60 dt-assets/parts/loop-activity-comment.php:49
-#: dt-assets/parts/loop-activity-comment.php:157
-#: dt-assets/parts/loop-activity-comment.php:241
+#: dt-assets/parts/loop-activity-comment.php:158
+#: dt-assets/parts/loop-activity-comment.php:242
 #: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "Bình luận"
@@ -339,8 +339,9 @@ msgstr "Ứng dụng Gửi Hàng loạt"
 msgid "More"
 msgstr "Thêm nữa"
 
-#: archive-template.php:497 dt-contacts/base-setup.php:324
-#: dt-users/users.php:530
+#: archive-template.php:497
+#: dt-assets/parts/modals/modal-advanced-search.php:108
+#: dt-contacts/base-setup.php:324 dt-users/users.php:530
 msgid "Archived"
 msgstr "Đã lưu trữ"
 
@@ -383,7 +384,7 @@ msgstr ""
 
 #: archive-template.php:638 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:834
+#: dt-core/global-functions.php:840
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Tìm Người dùng"
@@ -425,26 +426,26 @@ msgstr "Xem Thêm Tùy chọn"
 msgid "See Fewer Options"
 msgstr "Ẩn Bớt Tùy chọn"
 
-#: archive-template.php:781 dt-assets/parts/loop-activity-comment.php:267
+#: archive-template.php:781 dt-assets/parts/loop-activity-comment.php:268
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "Cập nhật"
 
 #: archive-template.php:782 archive-template.php:987
-#: dt-assets/functions/enqueue-scripts.php:335
+#: dt-assets/functions/enqueue-scripts.php:339
 #: dt-reports/magic-url-bulk-send.php:95
 msgid "Make Selections Below"
 msgstr "Thực hiện các Lựa chọn Bên dưới"
 
 #: archive-template.php:790 dt-assets/functions/enqueue-scripts.php:183
-#: dt-assets/functions/enqueue-scripts.php:218
-#: dt-assets/functions/enqueue-scripts.php:283
-#: dt-assets/functions/enqueue-scripts.php:323
-#: dt-assets/parts/loop-activity-comment.php:219 single-template.php:416
+#: dt-assets/functions/enqueue-scripts.php:222
+#: dt-assets/functions/enqueue-scripts.php:287
+#: dt-assets/functions/enqueue-scripts.php:327
+#: dt-assets/parts/loop-activity-comment.php:220 single-template.php:416
 msgid "Delete"
 msgstr "Xoá"
 
-#: archive-template.php:793 dt-assets/functions/enqueue-scripts.php:336
+#: archive-template.php:793 dt-assets/functions/enqueue-scripts.php:340
 msgid "Delete Selections Below"
 msgstr "Xoá các Lựa chọn Bên dưới"
 
@@ -495,12 +496,12 @@ msgid "Please ensure a valid send message has been entered."
 msgstr "Hãy đảm bảo tin nhắn hợp lệ đã được nhập."
 
 #: archive-template.php:886 dt-reports/magic-url-bulk-send.php:58
-#: dt-reports/magic-url-setup.php:133
+#: dt-reports/magic-url-setup.php:254
 msgid "Message placeholders"
 msgstr "Nội dung giữ chỗ"
 
 #: archive-template.php:917 dt-reports/magic-url-bulk-send.php:64
-#: dt-reports/magic-url-setup.php:139
+#: dt-reports/magic-url-setup.php:260
 msgid "Name of the Record"
 msgstr "Tên của bản ghi"
 
@@ -519,7 +520,7 @@ msgid "You must select at least one record"
 msgstr "Bạn phải chọn ít nhất một hồ sơ"
 
 #: archive-template.php:986 dt-reports/magic-url-bulk-send.php:94
-#: dt-reports/magic-url-setup.php:101
+#: dt-reports/magic-url-setup.php:503
 msgid "Send"
 msgstr "Gửi"
 
@@ -535,7 +536,7 @@ msgstr "Đảm bảo lựa chọn hồ sơ hợp lệ được thực hiện."
 msgid "Loading..."
 msgstr "Đang tải..."
 
-#: archive-template.php:1041 dt-assets/functions/enqueue-scripts.php:424
+#: archive-template.php:1041 dt-assets/functions/enqueue-scripts.php:428
 msgid "Load More"
 msgstr "Tải Thêm"
 
@@ -564,7 +565,7 @@ msgstr "Tất cả %1$s không có %2$s"
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Lọc theo các liên hệ gán lại HOẶC Gán cho"
 
-#: archive-template.php:1137 dt-assets/functions/enqueue-scripts.php:326
+#: archive-template.php:1137 dt-assets/functions/enqueue-scripts.php:330
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "Ngày tạo"
@@ -576,18 +577,19 @@ msgid "None Set"
 msgstr "Chưa có gì Được thiết lập"
 
 #: archive-template.php:1165 archive-template.php:1166
-#: dt-assets/functions/enqueue-scripts.php:234 dt-core/global-functions.php:713
+#: dt-assets/functions/enqueue-scripts.php:238 dt-core/global-functions.php:719
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
-#: dt-users/user-management.php:196 template-settings.php:313
-#: template-settings.php:577
+#: dt-reports/magic-url-setup.php:474 dt-users/user-management.php:196
+#: template-settings.php:313 template-settings.php:577
 msgid "No"
 msgstr "Không"
 
 #: archive-template.php:1172 archive-template.php:1173
-#: dt-assets/functions/enqueue-scripts.php:233 dt-core/global-functions.php:714
+#: dt-assets/functions/enqueue-scripts.php:237 dt-core/global-functions.php:720
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
-#: dt-posts/posts.php:460 dt-users/user-management.php:195
-#: template-settings.php:312 template-settings.php:576
+#: dt-posts/posts.php:460 dt-reports/magic-url-setup.php:473
+#: dt-users/user-management.php:195 template-settings.php:312
+#: template-settings.php:576
 msgid "Yes"
 msgstr "Có"
 
@@ -643,16 +645,16 @@ msgstr "Lọc Tên"
 msgid "Filter Records"
 msgstr "Lọc Hồ sơ"
 
-#: archive-template.php:1252 dt-assets/functions/enqueue-scripts.php:286
-#: dt-assets/functions/enqueue-scripts.php:321
+#: archive-template.php:1252 dt-assets/functions/enqueue-scripts.php:290
+#: dt-assets/functions/enqueue-scripts.php:325
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
 msgstr "Lưu"
 
 #: dt-assets/functions/details-bar.php:58
 #: dt-assets/functions/details-bar.php:275
-#: dt-core/configuration/config-site-defaults.php:353
-#: dt-workflows/update-required.php:79 dt-workflows/update-required.php:128
+#: dt-core/configuration/config-site-defaults.php:276
+#: dt-workflows/update-required.php:86 dt-workflows/update-required.php:136
 msgid "Update Needed"
 msgstr "Cần cập nhật"
 
@@ -757,13 +759,13 @@ msgstr "Đang hiển thị %1$s mục khớp với %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:122
 #: dt-assets/functions/enqueue-scripts.php:182
-#: dt-assets/functions/enqueue-scripts.php:322 template-settings.php:119
+#: dt-assets/functions/enqueue-scripts.php:326 template-settings.php:119
 #: template-settings.php:605
 msgid "Edit"
 msgstr "Chỉnh sửa"
 
 #: dt-assets/functions/enqueue-scripts.php:123
-#: dt-reports/magic-url-setup.php:98 template-settings.php:303
+#: dt-reports/magic-url-setup.php:496 template-settings.php:303
 msgid "Copy"
 msgstr "Sao chép"
 
@@ -804,181 +806,192 @@ msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s và %1$s đã tương tác bằng emoji %2$s"
 
-#: dt-assets/functions/enqueue-scripts.php:219
+#: dt-assets/functions/enqueue-scripts.php:189
+msgid "Select spoken language and click \"Start Recording\" to begin."
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:190
+#, fuzzy
+#| msgid "Create Record"
+msgid "Click \"Start Recording\" to begin."
+msgstr "Tạo Hồ sơ"
+
+#: dt-assets/functions/enqueue-scripts.php:223
 msgid "Mark as complete"
 msgstr "Đánh dấu là hoàn thành"
 
-#: dt-assets/functions/enqueue-scripts.php:220
+#: dt-assets/functions/enqueue-scripts.php:224
 msgid "No task created"
 msgstr "Chưa tạo nhiệm vụ nào"
 
-#: dt-assets/functions/enqueue-scripts.php:221
+#: dt-assets/functions/enqueue-scripts.php:225
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr "Nhắc nhở"
 
-#: dt-assets/functions/enqueue-scripts.php:222
+#: dt-assets/functions/enqueue-scripts.php:226
 msgid "No note set"
 msgstr "Chưa thiết lập ghi chú nào"
 
-#: dt-assets/functions/enqueue-scripts.php:223
+#: dt-assets/functions/enqueue-scripts.php:227
 msgid "Duplicates Detected"
 msgstr "Đã phát hiện Trùng lặp"
 
-#: dt-assets/functions/enqueue-scripts.php:224
+#: dt-assets/functions/enqueue-scripts.php:228
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
 #: dt-users/template-new-user.php:293 template-merge-post-details.php:131
 #: template-merge-post-details.php:188
 msgid "Merge"
 msgstr "Hợp nhất"
 
-#: dt-assets/functions/enqueue-scripts.php:225
+#: dt-assets/functions/enqueue-scripts.php:229
 msgid "Dismiss"
 msgstr "Hủy"
 
-#: dt-assets/functions/enqueue-scripts.php:226
+#: dt-assets/functions/enqueue-scripts.php:230
 msgid "Dismissed Duplicates"
 msgstr "Bản trùng lặp đã loại bỏ"
 
-#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/functions/enqueue-scripts.php:231
 #, php-format
 msgid "Duplicates on: %s"
 msgstr "Bản trùng lặp vào: %s"
 
-#: dt-assets/functions/enqueue-scripts.php:228
+#: dt-assets/functions/enqueue-scripts.php:232
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "Không chuyển được. Vui lòng kiểm tra cấu hình site-to-site."
 
-#: dt-assets/functions/enqueue-scripts.php:229
+#: dt-assets/functions/enqueue-scripts.php:233
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr "Cập nhật chuyển không thành công. Kiểm tra cấu hình trang với trang."
 
-#: dt-assets/functions/enqueue-scripts.php:230
+#: dt-assets/functions/enqueue-scripts.php:234
 msgid "Transfer update successful."
 msgstr "Cập nhật chuyển thành công."
 
-#: dt-assets/functions/enqueue-scripts.php:231
+#: dt-assets/functions/enqueue-scripts.php:235
 #, php-format
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "Được tạo vào %s"
 
-#: dt-assets/functions/enqueue-scripts.php:232
+#: dt-assets/functions/enqueue-scripts.php:236
 msgid "Open With"
 msgstr "Mở bằng"
 
-#: dt-assets/functions/enqueue-scripts.php:252
+#: dt-assets/functions/enqueue-scripts.php:256
 msgid "Revert Record Back To This Point"
 msgstr "Hoàn nguyên bản ghi tại đây"
 
-#: dt-assets/functions/enqueue-scripts.php:253
+#: dt-assets/functions/enqueue-scripts.php:257
 #, php-format
 msgid "Are you sure you want to revert record state back to %s?"
 msgstr "Bạn có chắc chắn muốn hoàn nguyên %s không?"
 
-#: dt-assets/functions/enqueue-scripts.php:284
+#: dt-assets/functions/enqueue-scripts.php:288
 msgid "Locations you are responsible for"
 msgstr "Các địa điểm bạn chịu trách nhiệm"
 
-#: dt-assets/functions/enqueue-scripts.php:285
+#: dt-assets/functions/enqueue-scripts.php:289
 #: dt-metrics/records/genmap.php:160
 msgid "Add"
 msgstr "Thêm"
 
-#: dt-assets/functions/enqueue-scripts.php:287 template-settings.php:296
+#: dt-assets/functions/enqueue-scripts.php:291
+#: dt-reports/magic-url-setup.php:453 template-settings.php:296
 msgid "link"
 msgstr "liên kết"
 
-#: dt-assets/functions/enqueue-scripts.php:288
+#: dt-assets/functions/enqueue-scripts.php:292
 msgid "copy"
 msgstr "sao chép"
 
-#: dt-assets/functions/enqueue-scripts.php:304
+#: dt-assets/functions/enqueue-scripts.php:308
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "Đã tìm thấy Kết quả phù hợp:"
 
-#: dt-assets/functions/enqueue-scripts.php:305
+#: dt-assets/functions/enqueue-scripts.php:309
 #, php-format
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "Loại bỏ tất cả các kết quả phù hợp dành cho %s"
 
-#: dt-assets/functions/enqueue-scripts.php:324
+#: dt-assets/functions/enqueue-scripts.php:328
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "Đang hiển thị _START_ trong _TOTAL_"
 
-#: dt-assets/functions/enqueue-scripts.php:325
+#: dt-assets/functions/enqueue-scripts.php:329
 msgid "Sorting By"
 msgstr "Sắp xếp theo"
 
-#: dt-assets/functions/enqueue-scripts.php:327
+#: dt-assets/functions/enqueue-scripts.php:331
 msgid "Date Modified"
 msgstr "Ngày chỉnh sửa"
 
-#: dt-assets/functions/enqueue-scripts.php:328
+#: dt-assets/functions/enqueue-scripts.php:332
 msgid "No filters, create one below"
 msgstr "Không có bộ lọc nào, hãy tạo một bộ lọc bên dưới"
 
-#: dt-assets/functions/enqueue-scripts.php:329
+#: dt-assets/functions/enqueue-scripts.php:333
 msgid "No records found matching your filter."
 msgstr "Không tìm thấy hồ sơ nào phù hợp với bộ lọc của bạn."
 
-#: dt-assets/functions/enqueue-scripts.php:330 dt-contacts/base-setup.php:674
-#: dt-groups/base-setup.php:1036 dt-posts/custom-post-type.php:489
+#: dt-assets/functions/enqueue-scripts.php:334 dt-contacts/base-setup.php:674
+#: dt-groups/base-setup.php:1039 dt-posts/custom-post-type.php:489
 #, php-format
 msgctxt "All records"
 msgid "All %s"
 msgstr "Tất cả %s"
 
-#: dt-assets/functions/enqueue-scripts.php:331
+#: dt-assets/functions/enqueue-scripts.php:335
 msgid "start"
 msgstr "bắt đầu"
 
-#: dt-assets/functions/enqueue-scripts.php:332
+#: dt-assets/functions/enqueue-scripts.php:336
 msgid "end"
 msgstr "kết thúc"
 
-#: dt-assets/functions/enqueue-scripts.php:333
+#: dt-assets/functions/enqueue-scripts.php:337
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/module-access.php:1169 dt-groups/base-setup.php:954
+#: dt-contacts/module-access.php:1169 dt-groups/base-setup.php:957
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-metrics/records/dynamic-records-map.php:98
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "Tất cả"
 
-#: dt-assets/functions/enqueue-scripts.php:334
+#: dt-assets/functions/enqueue-scripts.php:338
 msgid "Without"
 msgstr "Không có"
 
-#: dt-assets/functions/enqueue-scripts.php:337
+#: dt-assets/functions/enqueue-scripts.php:341
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
 msgstr "Dự kiến gửi"
 
-#: dt-assets/functions/enqueue-scripts.php:338
+#: dt-assets/functions/enqueue-scripts.php:342
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "không gửi được (có thể thiếu email hợp lệ)"
 
-#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:343
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
 msgstr "Xem hàng đợi"
 
-#: dt-assets/functions/enqueue-scripts.php:340
+#: dt-assets/functions/enqueue-scripts.php:344
 msgid "Exclude Item"
 msgstr "Loại trừ Mục"
 
-#: dt-assets/functions/enqueue-scripts.php:343
+#: dt-assets/functions/enqueue-scripts.php:347
 #, php-format
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr "Dữ liệu csv đã xuất để chứa tất cả các trường %2$s %1$s."
 
-#: dt-assets/functions/enqueue-scripts.php:344
+#: dt-assets/functions/enqueue-scripts.php:348
 #, php-format
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
@@ -988,122 +1001,122 @@ msgstr ""
 "Dữ liệu csv đã xuất để chứa các trường %2$s hiển thị %1$s được hiển thị bên "
 "dưới."
 
-#: dt-assets/functions/enqueue-scripts.php:347
-#: dt-assets/functions/enqueue-scripts.php:355
+#: dt-assets/functions/enqueue-scripts.php:351
+#: dt-assets/functions/enqueue-scripts.php:359
 msgid "Full List"
 msgstr "Toàn bộ danh sách"
 
-#: dt-assets/functions/enqueue-scripts.php:348
+#: dt-assets/functions/enqueue-scripts.php:352
 msgid "No Addresses"
 msgstr "Không có địa chỉ"
 
-#: dt-assets/functions/enqueue-scripts.php:349
+#: dt-assets/functions/enqueue-scripts.php:353
 msgid "With Additional Addresses"
 msgstr "Thêm địa chỉ"
 
-#: dt-assets/functions/enqueue-scripts.php:350
+#: dt-assets/functions/enqueue-scripts.php:354
 msgid "Open Email for Group"
 msgstr "Mở email cho Nhóm"
 
-#: dt-assets/functions/enqueue-scripts.php:351
+#: dt-assets/functions/enqueue-scripts.php:355
 msgid "Open All"
 msgstr "Mở toàn bộ"
 
-#: dt-assets/functions/enqueue-scripts.php:352
+#: dt-assets/functions/enqueue-scripts.php:356
 msgid "Show Group Addresses"
 msgstr "Hiện thị địa chỉ nhóm"
 
-#: dt-assets/functions/enqueue-scripts.php:356
+#: dt-assets/functions/enqueue-scripts.php:360
 msgid "Has No Phone Number"
 msgstr "Không có số điện thoại"
 
-#: dt-assets/functions/enqueue-scripts.php:357
+#: dt-assets/functions/enqueue-scripts.php:361
 msgid "Has Additional Phone Numbers"
 msgstr "Có thêm số điện thoại"
 
-#: dt-assets/functions/enqueue-scripts.php:361
+#: dt-assets/functions/enqueue-scripts.php:365
 msgid "Mapped Locations"
 msgstr "Vị trí Đã sử dụng"
 
-#: dt-assets/functions/enqueue-scripts.php:362
+#: dt-assets/functions/enqueue-scripts.php:366
 msgid "Contacts Without Locations"
 msgstr "Người liên hệ không có địa điểm"
 
-#: dt-assets/functions/enqueue-scripts.php:363
+#: dt-assets/functions/enqueue-scripts.php:367
 msgid "Records on zoomed map"
 msgstr "Ghi lại trên bản đồ được phóng to"
 
-#: dt-assets/functions/enqueue-scripts.php:364
+#: dt-assets/functions/enqueue-scripts.php:368
 msgid "No Zoomed Map Records Found!"
 msgstr "Không tìm thấy bản Ghi lại trên bản đồ!"
 
-#: dt-assets/functions/enqueue-scripts.php:365
+#: dt-assets/functions/enqueue-scripts.php:369
 msgid "Open Zoomed Map Records"
 msgstr "Mở bản ghi được phóng to trên bản đồ"
 
-#: dt-assets/functions/enqueue-scripts.php:366
-#: dt-assets/functions/enqueue-scripts.php:367
+#: dt-assets/functions/enqueue-scripts.php:370
+#: dt-assets/functions/enqueue-scripts.php:371
 msgid "Filtered Map"
 msgstr "Bản đồ đã lọc"
 
-#: dt-assets/functions/enqueue-scripts.php:395 dt-contacts/base-setup.php:55
+#: dt-assets/functions/enqueue-scripts.php:399 dt-contacts/base-setup.php:55
 #: dt-contacts/base-setup.php:67 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "Liên hệ"
 
-#: dt-assets/functions/enqueue-scripts.php:396
+#: dt-assets/functions/enqueue-scripts.php:400
 #, php-format
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr "%s đã tồn tại"
 
-#: dt-assets/functions/enqueue-scripts.php:443
+#: dt-assets/functions/enqueue-scripts.php:447
 msgid "File Upload"
 msgstr "Dữ liệu tải lên"
 
-#: dt-assets/functions/enqueue-scripts.php:444
+#: dt-assets/functions/enqueue-scripts.php:448
 msgid "Choose a file"
 msgstr "Chọn một tài liệu"
 
-#: dt-assets/functions/enqueue-scripts.php:445
+#: dt-assets/functions/enqueue-scripts.php:449
 msgid "or drag it here"
 msgstr "hoặc kéo vào đây"
 
-#: dt-assets/functions/enqueue-scripts.php:446
+#: dt-assets/functions/enqueue-scripts.php:450
 msgid "Successfully Uploaded!"
 msgstr "Tải lên thành công!"
 
-#: dt-assets/functions/enqueue-scripts.php:447
+#: dt-assets/functions/enqueue-scripts.php:451
 msgid "Error!"
 msgstr "Lỗi!"
 
-#: dt-assets/functions/enqueue-scripts.php:448
+#: dt-assets/functions/enqueue-scripts.php:452
 msgid "Unable to upload, please try again"
 msgstr "Không thể tải lên, vui lòng thử lại"
 
-#: dt-assets/functions/enqueue-scripts.php:449
+#: dt-assets/functions/enqueue-scripts.php:453
 msgid "Upload"
 msgstr "Tải lên"
 
-#: dt-assets/functions/enqueue-scripts.php:450
+#: dt-assets/functions/enqueue-scripts.php:454
 msgid "Delete Existing File"
 msgstr "Xóa dữ liệu đã có"
 
-#: dt-assets/functions/enqueue-scripts.php:451
+#: dt-assets/functions/enqueue-scripts.php:455
 #, fuzzy
 #| msgid "Delete Existing File"
 msgid "Replace Existing Image"
 msgstr "Xóa dữ liệu đã có"
 
-#: dt-assets/functions/enqueue-scripts.php:452
+#: dt-assets/functions/enqueue-scripts.php:456
 msgid "Are you sure you wish to delete existing file?"
 msgstr "Bạn có chắc chắn muốn xóa tài liệu này không?"
 
-#: dt-assets/functions/enqueue-scripts.php:453
+#: dt-assets/functions/enqueue-scripts.php:457
 msgid "Successfully Deleted!"
 msgstr "Đã xoá thành công!"
 
-#: dt-assets/functions/enqueue-scripts.php:454
+#: dt-assets/functions/enqueue-scripts.php:458
 msgid "Delete failed, please try again"
 msgstr "Xóa thất bại, vui lòng thử lại"
 
@@ -1180,68 +1193,68 @@ msgstr "Gửi bình luận"
 msgid "Ready to record"
 msgstr "Hồ sơ tiếp theo"
 
-#: dt-assets/parts/loop-activity-comment.php:128
+#: dt-assets/parts/loop-activity-comment.php:129
 #, fuzzy
 #| msgid "Create Record"
 msgid "Start Recording"
 msgstr "Tạo Hồ sơ"
 
-#: dt-assets/parts/loop-activity-comment.php:131
+#: dt-assets/parts/loop-activity-comment.php:132
 msgid "Stop Recording"
 msgstr ""
 
-#: dt-assets/parts/loop-activity-comment.php:134
+#: dt-assets/parts/loop-activity-comment.php:135
 msgid "Play Recording"
 msgstr ""
 
-#: dt-assets/parts/loop-activity-comment.php:137
+#: dt-assets/parts/loop-activity-comment.php:138
 #, fuzzy
 #| msgid "Create Record"
 msgid "Save Recording"
 msgstr "Tạo Hồ sơ"
 
-#: dt-assets/parts/loop-activity-comment.php:149
+#: dt-assets/parts/loop-activity-comment.php:150
 msgid "Showing:"
 msgstr "Đang hiện:"
 
-#: dt-assets/parts/loop-activity-comment.php:163
+#: dt-assets/parts/loop-activity-comment.php:164
 #: dt-users/template-user-management.php:91
 msgid "Activity"
 msgstr "Hoạt động"
 
-#: dt-assets/parts/loop-activity-comment.php:196
+#: dt-assets/parts/loop-activity-comment.php:197
 #: dt-assets/parts/modals/modal-record-history.php:28
 #: dt-assets/parts/modals/modal-record-history.php:36
 msgid "show all"
 msgstr "hiện tất cả"
 
-#: dt-assets/parts/loop-activity-comment.php:200
+#: dt-assets/parts/loop-activity-comment.php:201
 msgid "hide all"
 msgstr "ẩn tất cả"
 
-#: dt-assets/parts/loop-activity-comment.php:212
+#: dt-assets/parts/loop-activity-comment.php:213
 msgid "Delete Comment:"
 msgstr "Xóa bình luận:"
 
-#: dt-assets/parts/loop-activity-comment.php:226
-#: dt-assets/parts/loop-activity-comment.php:274
+#: dt-assets/parts/loop-activity-comment.php:227
+#: dt-assets/parts/loop-activity-comment.php:275
 #: template-merge-post-details.php:105
 msgid "Sorry, something went wrong"
 msgstr "Rất tiếc, đã xảy ra lỗi"
 
-#: dt-assets/parts/loop-activity-comment.php:227
+#: dt-assets/parts/loop-activity-comment.php:228
 msgid "The comment could not be deleted."
 msgstr "Không xóa được bình luận."
 
-#: dt-assets/parts/loop-activity-comment.php:232
+#: dt-assets/parts/loop-activity-comment.php:233
 msgid "Edit Comment:"
 msgstr "Sửa bình luận:"
 
-#: dt-assets/parts/loop-activity-comment.php:248
+#: dt-assets/parts/loop-activity-comment.php:249
 msgid "Type of Comment"
 msgstr "Loại bình luận"
 
-#: dt-assets/parts/loop-activity-comment.php:275
+#: dt-assets/parts/loop-activity-comment.php:276
 msgid "The comment could not be updated."
 msgstr "Không cập nhật được bình luận."
 
@@ -1570,23 +1583,25 @@ msgctxt "Optional Documentation"
 msgid "Read the documentation"
 msgstr "Đọc tài liệu"
 
-#: dt-assets/parts/modals/modal-help.php:143
+#: dt-assets/parts/modals/modal-help.php:143 dt-reports/magic-url-setup.php:491
 msgid "Open the link"
 msgstr "Mở liên kết"
 
-#: dt-assets/parts/modals/modal-help.php:147
+#: dt-assets/parts/modals/modal-help.php:147 dt-reports/magic-url-setup.php:499
 msgid "Copy the link to the clipboard"
 msgstr "Sao chép đường link về"
 
-#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:132
+#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
+#: dt-reports/magic-url-setup.php:508
 msgid "Send the link via email."
 msgstr "Gửi liên kết qua email."
 
-#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:182
+#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:312
+#: dt-reports/magic-url-setup.php:517
 msgid "Scan the QR code to open the magic link on a mobile device."
 msgstr "Quét mã QR để mở liên kết ma thuật trên thiết bị di động."
 
-#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:187
+#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
 msgid ""
 "Reset the security code. No data is removed. Only access. The previous link "
 "will be disabled and another one created."
@@ -1841,14 +1856,14 @@ msgid "WhatsApp"
 msgstr "WhatsApp"
 
 #: dt-contacts/base-setup.php:218
-#: dt-core/configuration/config-site-defaults.php:330
+#: dt-core/configuration/config-site-defaults.php:253
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
 #: dt-users/users.php:129 template-settings.php:166
 msgid "Email"
 msgstr "Email"
 
-#: dt-contacts/base-setup.php:227 dt-groups/base-setup.php:354
+#: dt-contacts/base-setup.php:227 dt-groups/base-setup.php:357
 #: dt-people-groups/people-groups-base.php:210 template-settings.php:190
 msgid "Address"
 msgstr "Địa chỉ"
@@ -1907,7 +1922,7 @@ msgstr "26-40 tuổi"
 msgid "Over 40 years old"
 msgstr "Trên 40 tuổi"
 
-#: dt-contacts/base-setup.php:299 dt-groups/base-setup.php:101
+#: dt-contacts/base-setup.php:299 dt-groups/base-setup.php:104
 #: dt-people-groups/people-groups-base.php:166
 msgid "Requires Update"
 msgstr "Yêu cầu cập nhật"
@@ -1923,7 +1938,7 @@ msgid ""
 "The Contact Status describes the progress in communicating with the contact."
 msgstr "Trạng thái Liên hệ mô tả tiến trình giao tiếp với liên hệ."
 
-#: dt-contacts/base-setup.php:313 dt-groups/base-setup.php:117
+#: dt-contacts/base-setup.php:313 dt-groups/base-setup.php:120
 #: dt-users/users.php:177
 msgid "Active"
 msgstr "Đang hoạt động"
@@ -1951,7 +1966,7 @@ msgstr ""
 "Người liên hệ này đã cho biết rằng họ không muốn tiếp tục hoặc bạn đã quyết "
 "định không tiếp tục với họ."
 
-#: dt-contacts/base-setup.php:332 dt-groups/base-setup.php:134
+#: dt-contacts/base-setup.php:332 dt-groups/base-setup.php:137
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "Phân công cho"
@@ -1988,7 +2003,7 @@ msgid "Personal"
 msgstr "Cá nhân"
 
 #: dt-contacts/base-setup.php:372
-#: dt-core/configuration/config-site-defaults.php:333
+#: dt-core/configuration/config-site-defaults.php:256
 msgid "Web"
 msgstr "Trang web"
 
@@ -2050,8 +2065,8 @@ msgid "Confirm"
 msgstr "Xác nhận"
 
 #: dt-contacts/base-setup.php:532
-#: dt-core/configuration/config-site-defaults.php:521
-#: dt-groups/base-setup.php:607 template-settings.php:212
+#: dt-core/configuration/config-site-defaults.php:444
+#: dt-groups/base-setup.php:610 template-settings.php:212
 msgid "Other"
 msgstr "Khác"
 
@@ -2059,12 +2074,12 @@ msgstr "Khác"
 msgid "This record might be a duplicate of: "
 msgstr "Hồ sơ này có thể là bản sao của: "
 
-#: dt-contacts/base-setup.php:629 dt-contacts/duplicates-merging.php:485
-#: dt-contacts/duplicates-merging.php:567
+#: dt-contacts/base-setup.php:629 dt-contacts/duplicates-merging.php:513
+#: dt-contacts/duplicates-merging.php:595
 msgid "Duplicate Checker"
 msgstr "Trình kiểm tra bản trùng lặp"
 
-#: dt-contacts/base-setup.php:668 dt-groups/base-setup.php:1028
+#: dt-contacts/base-setup.php:668 dt-groups/base-setup.php:1031
 #: dt-posts/custom-post-type.php:468
 msgid "Default Filters"
 msgstr "Bộ lọc Mặc định"
@@ -2075,24 +2090,24 @@ msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Tất cả %s tôi có thể xem"
 
-#: dt-contacts/base-setup.php:689 dt-groups/base-setup.php:1042
+#: dt-contacts/base-setup.php:689 dt-groups/base-setup.php:1045
 #: dt-posts/custom-post-type.php:501
 #, php-format
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "%s Ưa thích"
 
-#: dt-contacts/base-setup.php:695 dt-groups/base-setup.php:1047
+#: dt-contacts/base-setup.php:695 dt-groups/base-setup.php:1050
 #: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:507
 msgid "Favorite"
 msgstr "Ưa thích"
 
-#: dt-contacts/base-setup.php:701 dt-groups/base-setup.php:1053
+#: dt-contacts/base-setup.php:701 dt-groups/base-setup.php:1056
 #: dt-posts/custom-post-type.php:516
 msgid "My Recently Viewed"
 msgstr "Tôi Đã xem Gần đây"
 
-#: dt-contacts/base-setup.php:706 dt-groups/base-setup.php:1058
+#: dt-contacts/base-setup.php:706 dt-groups/base-setup.php:1061
 #: dt-posts/custom-post-type.php:521
 msgid "Last 30 viewed"
 msgstr "30 lần xem gần đây nhất"
@@ -2109,7 +2124,7 @@ msgstr "Người Tôi Theo sát"
 
 #: dt-contacts/base-setup.php:724 dt-contacts/module-access.php:858
 #: dt-contacts/module-access.php:881 dt-contacts/module-access.php:906
-#: dt-groups/base-setup.php:946
+#: dt-groups/base-setup.php:949
 msgid "Assigned to me"
 msgstr "Đã giao cho tôi"
 
@@ -2250,26 +2265,26 @@ msgstr "tên được biên tập lại"
 msgid "redacted"
 msgstr "được biên tập lại"
 
-#: dt-contacts/duplicates-merging.php:442
+#: dt-contacts/duplicates-merging.php:470
 #, php-format
 msgctxt "duplicate comment"
 msgid "(From Duplicate): %s"
 msgstr "(Từ liên hệ trùng lặp): %s"
 
-#: dt-contacts/duplicates-merging.php:563
+#: dt-contacts/duplicates-merging.php:591
 #, php-format
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
 msgstr "Bản ghi này là bản trùng lặp và đã được hợp nhất vào %2$s"
 
-#: dt-contacts/duplicates-merging.php:576
+#: dt-contacts/duplicates-merging.php:604
 #, php-format
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
 msgstr "%1$s đã hợp nhất %2$s vào bản ghi này"
 
 #. Template Name of the theme
-#: dt-contacts/duplicates-merging.php:588
+#: dt-contacts/duplicates-merging.php:616
 msgid "View Duplicates"
 msgstr "Xem các Liên hệ trùng lặp"
 
@@ -2846,28 +2861,28 @@ msgstr "Quản trị viên"
 msgid "Subscriber"
 msgstr "Người đăng ký"
 
-#: dt-core/configuration/config-site-defaults.php:338
+#: dt-core/configuration/config-site-defaults.php:261
 msgid "Newly Assigned Contact"
 msgstr "Liên hệ mới được chỉ định"
 
-#: dt-core/configuration/config-site-defaults.php:343
+#: dt-core/configuration/config-site-defaults.php:266
 msgid "@Mentions"
 msgstr "@Đề_cập"
 
-#: dt-core/configuration/config-site-defaults.php:348
+#: dt-core/configuration/config-site-defaults.php:271
 msgid "New Comments"
 msgstr "Bình luận mới"
 
-#: dt-core/configuration/config-site-defaults.php:358
+#: dt-core/configuration/config-site-defaults.php:281
 msgid "Contact Info Changed"
 msgstr "Thông tin liên hệ đã thay đổi"
 
-#: dt-core/configuration/config-site-defaults.php:363
+#: dt-core/configuration/config-site-defaults.php:286
 #: dt-core/migrations/0012-typo-rename.php:13
 msgid "Contact Milestones and Group Health metrics"
 msgstr "Các chỉ số sức khỏe nhóm và mốc liên hệ"
 
-#: dt-core/configuration/config-site-defaults.php:377
+#: dt-core/configuration/config-site-defaults.php:300
 msgid ""
 "This contact is active but there is no record of anybody contacting them. "
 "Please do contact them."
@@ -2875,15 +2890,15 @@ msgstr ""
 "Liên hệ này đang hoạt động nhưng không có hồ sơ về bất kỳ ai liên hệ với họ. "
 "Vui lòng liên hệ với họ."
 
-#: dt-core/configuration/config-site-defaults.php:383
+#: dt-core/configuration/config-site-defaults.php:306
 msgid "Please try connecting with this contact again."
 msgstr "Vui lòng thử kết nối lại với liên hệ này."
 
-#: dt-core/configuration/config-site-defaults.php:389
-#: dt-core/configuration/config-site-defaults.php:395
-#: dt-core/configuration/config-site-defaults.php:401
-#: dt-core/configuration/config-site-defaults.php:407
-#: dt-core/configuration/config-site-defaults.php:413
+#: dt-core/configuration/config-site-defaults.php:312
+#: dt-core/configuration/config-site-defaults.php:318
+#: dt-core/configuration/config-site-defaults.php:324
+#: dt-core/configuration/config-site-defaults.php:330
+#: dt-core/configuration/config-site-defaults.php:336
 msgid ""
 "We haven't heard about this person in a while. Do you have an update for "
 "this contact?"
@@ -2891,121 +2906,121 @@ msgstr ""
 "Chúng tôi chưa nghe tin về người này một thời gian rồi. Bạn có cập nhật gì "
 "về liên hệ này không?"
 
-#: dt-core/configuration/config-site-defaults.php:423
+#: dt-core/configuration/config-site-defaults.php:346
 msgid "We haven't heard about this group in a while. Do you have an update?"
 msgstr ""
 "Chúng tôi chưa nghe tin về nhóm này một thời gian rồi. Bạn có cập nhật gì "
 "không?"
 
-#: dt-core/configuration/config-site-defaults.php:454
+#: dt-core/configuration/config-site-defaults.php:377
 msgid "Personal Phone"
 msgstr "Điện thoại cá nhân"
 
-#: dt-core/configuration/config-site-defaults.php:457
+#: dt-core/configuration/config-site-defaults.php:380
 msgid "Personal phone is private to the team, not for distribution."
 msgstr ""
 "Chỉ có nhóm này mới xem được điện thoại cá nhân chứ không phải để cung cấp "
 "công khai."
 
-#: dt-core/configuration/config-site-defaults.php:461
+#: dt-core/configuration/config-site-defaults.php:384
 msgid "Personal Email"
 msgstr "Email cá nhân"
 
-#: dt-core/configuration/config-site-defaults.php:464
+#: dt-core/configuration/config-site-defaults.php:387
 msgid "Personal email is private to the team, not for distribution."
 msgstr ""
 "Chỉ có nhóm này mới xem được email cá nhân chứ không phải để cung cấp công "
 "khai."
 
-#: dt-core/configuration/config-site-defaults.php:468
+#: dt-core/configuration/config-site-defaults.php:391
 msgid "Personal Address"
 msgstr "Địa chỉ cá nhân"
 
-#: dt-core/configuration/config-site-defaults.php:471
+#: dt-core/configuration/config-site-defaults.php:394
 msgid "Personal address is private to the team, not for distribution."
 msgstr ""
 "Chỉ có nhóm này mới xem được địa chỉ cá nhân chứ không phải để cung cấp công "
 "khai."
 
-#: dt-core/configuration/config-site-defaults.php:475
+#: dt-core/configuration/config-site-defaults.php:398
 msgid "Work Phone"
 msgstr "Điện thoại công ty"
 
-#: dt-core/configuration/config-site-defaults.php:478
+#: dt-core/configuration/config-site-defaults.php:401
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr ""
 "Điện thoại công ty dùng để cung cấp cho người liên hệ và người tìm kiếm môn "
 "đồ."
 
-#: dt-core/configuration/config-site-defaults.php:482
+#: dt-core/configuration/config-site-defaults.php:405
 msgid "Work Email"
 msgstr "Email công ty"
 
-#: dt-core/configuration/config-site-defaults.php:485
+#: dt-core/configuration/config-site-defaults.php:408
 msgid "Work email is for distribution to contacts and seekers."
 msgstr ""
 "Email công ty dùng để cung cấp cho người liên hệ và người tìm kiếm môn đồ."
 
-#: dt-core/configuration/config-site-defaults.php:489
+#: dt-core/configuration/config-site-defaults.php:412
 msgid "Work Facebook"
 msgstr "Facebook Công ty"
 
-#: dt-core/configuration/config-site-defaults.php:492
+#: dt-core/configuration/config-site-defaults.php:415
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr ""
 "Facebook Công ty dùng để cung cấp cho người liên hệ và người tìm kiếm môn đồ."
 
-#: dt-core/configuration/config-site-defaults.php:496
+#: dt-core/configuration/config-site-defaults.php:419
 msgid "Work WhatsApp"
 msgstr "WhatsApp Công ty"
 
-#: dt-core/configuration/config-site-defaults.php:499
+#: dt-core/configuration/config-site-defaults.php:422
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr ""
 "WhatsApp Công ty dùng để cung cấp cho người liên hệ và người tìm kiếm môn đồ."
 
-#: dt-core/configuration/config-site-defaults.php:506
+#: dt-core/configuration/config-site-defaults.php:429
 msgid "thumbs up"
 msgstr "thích"
 
-#: dt-core/configuration/config-site-defaults.php:507
+#: dt-core/configuration/config-site-defaults.php:430
 msgid "heart"
 msgstr "yêu thích"
 
-#: dt-core/configuration/config-site-defaults.php:508
+#: dt-core/configuration/config-site-defaults.php:431
 msgid "laugh"
 msgstr "cười"
 
-#: dt-core/configuration/config-site-defaults.php:509
+#: dt-core/configuration/config-site-defaults.php:432
 msgid "wow"
 msgstr "ngạc nhiên"
 
-#: dt-core/configuration/config-site-defaults.php:510
+#: dt-core/configuration/config-site-defaults.php:433
 msgid "sad"
 msgstr "buồn"
 
-#: dt-core/configuration/config-site-defaults.php:511
+#: dt-core/configuration/config-site-defaults.php:434
 msgid "prayer"
 msgstr "người cầu nguyện"
 
-#: dt-core/configuration/config-site-defaults.php:519
+#: dt-core/configuration/config-site-defaults.php:442
 #: dt-login/login-template.php:529
 msgid "Home"
 msgstr "Nhà riêng"
 
-#: dt-core/configuration/config-site-defaults.php:520
+#: dt-core/configuration/config-site-defaults.php:443
 msgid "Work"
 msgstr "Chỗ làm"
 
-#: dt-core/configuration/config-site-defaults.php:530
+#: dt-core/configuration/config-site-defaults.php:453
 msgid "Accepting new contacts"
 msgstr "Chấp nhận người liên hệ mới"
 
-#: dt-core/configuration/config-site-defaults.php:534
+#: dt-core/configuration/config-site-defaults.php:457
 msgid "I'm only investing in existing contacts"
 msgstr "Tôi chỉ đầu tư vào những người liên hệ hiện có"
 
-#: dt-core/configuration/config-site-defaults.php:538
+#: dt-core/configuration/config-site-defaults.php:461
 msgid "I have too many contacts"
 msgstr "Tôi có quá nhiều người liên hệ"
 
@@ -3135,12 +3150,12 @@ msgid "Find out more"
 msgstr "Tìm hiểu thêm"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
-#: dt-groups/base-setup.php:165 dt-metrics/personal/activity-highlights.php:58
+#: dt-groups/base-setup.php:168 dt-metrics/personal/activity-highlights.php:58
 msgid "Group"
 msgstr "Nhóm"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:61
-#: dt-groups/base-setup.php:422 dt-groups/base-setup.php:606
+#: dt-groups/base-setup.php:425 dt-groups/base-setup.php:609
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:177
@@ -3153,38 +3168,38 @@ msgstr "Nhóm"
 msgid "Groups"
 msgstr "Các nhóm"
 
-#: dt-groups/base-setup.php:112
+#: dt-groups/base-setup.php:115
 msgid "Group Status"
 msgstr "Tình trạng Nhóm"
 
-#: dt-groups/base-setup.php:113
+#: dt-groups/base-setup.php:116
 msgctxt "field description"
 msgid "Set the current status of the group."
 msgstr "Đặt trạng thái hiện tại của nhóm này."
 
-#: dt-groups/base-setup.php:118
+#: dt-groups/base-setup.php:121
 msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "Nhóm này đang tích cực gặp gỡ."
 
-#: dt-groups/base-setup.php:122 dt-users/users.php:180
+#: dt-groups/base-setup.php:125 dt-users/users.php:180
 msgid "Inactive"
 msgstr "Không hoạt động"
 
-#: dt-groups/base-setup.php:123
+#: dt-groups/base-setup.php:126
 msgctxt "field description"
 msgid "The group is no longer meeting."
 msgstr "Nhóm này không còn gặp gỡ."
 
-#: dt-groups/base-setup.php:135
+#: dt-groups/base-setup.php:138
 msgid "Select the main person who is responsible for reporting on this group."
 msgstr "Chọn người chủ chốt chịu trách nhiệm báo cáo về đoàn thể này."
 
-#: dt-groups/base-setup.php:143
+#: dt-groups/base-setup.php:146
 msgid "Group Coach / Church Planter"
 msgstr "Huấn luyện nhóm / Người trồng Hội thánh"
 
-#: dt-groups/base-setup.php:144
+#: dt-groups/base-setup.php:147
 msgctxt "Optional Documentation"
 msgid ""
 "The person who planted and/or is coaching this group. Only one person can be "
@@ -3195,38 +3210,38 @@ msgstr ""
 "một người vào một đoàn thể trong khi nhiều người có thể làm người kèm cặp/"
 "người thành lập giáo hội của đoàn thể này."
 
-#: dt-groups/base-setup.php:156
+#: dt-groups/base-setup.php:159
 msgid "Group Type"
 msgstr "Loại Nhóm"
 
-#: dt-groups/base-setup.php:161
+#: dt-groups/base-setup.php:164
 msgid "Pre-Group"
 msgstr "Tiền Nhóm"
 
-#: dt-groups/base-setup.php:162
+#: dt-groups/base-setup.php:165
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
 msgstr "Một nhóm chủ yếu là người ngoại đạo."
 
-#: dt-groups/base-setup.php:166
+#: dt-groups/base-setup.php:169
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr "Một đoàn thể có 3 tín đồ trở lên nhưng không xác định là giáo hội."
 
-#: dt-groups/base-setup.php:169
+#: dt-groups/base-setup.php:172
 msgid "Church"
 msgstr "Hội thánh"
 
-#: dt-groups/base-setup.php:170
+#: dt-groups/base-setup.php:173
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
 msgstr "Một đoàn thể có 3 tín đồ trở lên và xác định là giáo hội."
 
-#: dt-groups/base-setup.php:173
+#: dt-groups/base-setup.php:176
 msgid "Team"
 msgstr "Đội nhóm"
 
-#: dt-groups/base-setup.php:174
+#: dt-groups/base-setup.php:177
 msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
@@ -3234,139 +3249,139 @@ msgstr ""
 "Một đoàn thể đặc biệt không tụ họp như một giáo hội (hay cố gắng trở thành "
 "giáo hội)."
 
-#: dt-groups/base-setup.php:188 dt-groups/base-setup.php:599
+#: dt-groups/base-setup.php:191 dt-groups/base-setup.php:602
 msgid "Church Health"
 msgstr "Tình trạng Giáo hội"
 
-#: dt-groups/base-setup.php:189
+#: dt-groups/base-setup.php:192
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "Theo dõi sự tiến bộ và tình trạng của một đoàn thể/giáo hội."
 
-#: dt-groups/base-setup.php:193
+#: dt-groups/base-setup.php:196
 msgid "Baptism"
 msgstr "Rửa tội"
 
-#: dt-groups/base-setup.php:194
+#: dt-groups/base-setup.php:197
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "Đoàn thể này đang rửa tội."
 
-#: dt-groups/base-setup.php:198
+#: dt-groups/base-setup.php:201
 msgid "Bible Study"
 msgstr "Học Kinh thánh"
 
-#: dt-groups/base-setup.php:199
+#: dt-groups/base-setup.php:202
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "Đoàn thể này đang học kinh thánh."
 
-#: dt-groups/base-setup.php:203
+#: dt-groups/base-setup.php:206
 msgid "Communion"
 msgstr "Rước lễ"
 
-#: dt-groups/base-setup.php:204
+#: dt-groups/base-setup.php:207
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "Đoàn thể này đang thực hành rước lễ."
 
-#: dt-groups/base-setup.php:208
+#: dt-groups/base-setup.php:211
 msgid "Fellowship"
 msgstr "Kết tình thân hữu"
 
-#: dt-groups/base-setup.php:209
+#: dt-groups/base-setup.php:212
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "Đoàn thể này đang kết tình thân hữu."
 
-#: dt-groups/base-setup.php:213
+#: dt-groups/base-setup.php:216
 msgid "Giving"
 msgstr "Dâng hiến"
 
-#: dt-groups/base-setup.php:214
+#: dt-groups/base-setup.php:217
 msgctxt "Optional Documentation"
 msgid "The group is giving."
 msgstr "Đoàn thể này đang dâng hiến."
 
-#: dt-groups/base-setup.php:218
+#: dt-groups/base-setup.php:221
 msgid "Prayer"
 msgstr "Lời cầu nguyện"
 
-#: dt-groups/base-setup.php:219
+#: dt-groups/base-setup.php:222
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "Đoàn thể này đang cầu nguyện."
 
-#: dt-groups/base-setup.php:223
+#: dt-groups/base-setup.php:226
 msgid "Praise"
 msgstr "Ngợi ca"
 
-#: dt-groups/base-setup.php:224
+#: dt-groups/base-setup.php:227
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "Đoàn thể này đang ngợi ca."
 
-#: dt-groups/base-setup.php:228
+#: dt-groups/base-setup.php:231
 msgid "Sharing the Gospel"
 msgstr "Chia sẻ Phúc âm"
 
-#: dt-groups/base-setup.php:229
+#: dt-groups/base-setup.php:232
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
 msgstr "Nhóm đang chia sẻ phúc âm."
 
-#: dt-groups/base-setup.php:233 dt-groups/base-setup.php:295
+#: dt-groups/base-setup.php:236 dt-groups/base-setup.php:298
 msgid "Leaders"
 msgstr "Lãnh đạo"
 
-#: dt-groups/base-setup.php:234
+#: dt-groups/base-setup.php:237
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "Nhóm có người lãnh đạo."
 
-#: dt-groups/base-setup.php:238 dt-groups/base-setup.php:400
+#: dt-groups/base-setup.php:241 dt-groups/base-setup.php:403
 msgid "Church Commitment"
 msgstr "Cam kết của Giáo hội"
 
-#: dt-groups/base-setup.php:239
+#: dt-groups/base-setup.php:242
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "Nhóm đã cam kết trở thành hội thánh."
 
-#: dt-groups/base-setup.php:248 dt-users/template-user-management.php:180
+#: dt-groups/base-setup.php:251 dt-users/template-user-management.php:180
 #: template-settings.php:444 template-settings.php:463
 msgid "Start Date"
 msgstr "Ngày bắt đầu"
 
-#: dt-groups/base-setup.php:249
+#: dt-groups/base-setup.php:252
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "Ngày mà đoàn thể này bắt đầu nhóm họp."
 
-#: dt-groups/base-setup.php:256
+#: dt-groups/base-setup.php:259
 msgid "Church Start Date"
 msgstr "Ngày thành lập Hội thánh"
 
-#: dt-groups/base-setup.php:257
+#: dt-groups/base-setup.php:260
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "Ngày mà đoàn thể này lần đầu xác định là một giáo hội."
 
-#: dt-groups/base-setup.php:265 dt-users/template-user-management.php:181
+#: dt-groups/base-setup.php:268 dt-users/template-user-management.php:181
 #: template-settings.php:450 template-settings.php:464
 msgid "End Date"
 msgstr "Ngày kết thúc"
 
-#: dt-groups/base-setup.php:266
+#: dt-groups/base-setup.php:269
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "Ngày mà đoàn thể này ngừng nhóm họp (nếu phù hợp)."
 
-#: dt-groups/base-setup.php:276 dt-metrics/records/genmap.php:157
+#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:157
 msgid "Member Count"
 msgstr "Số lượng thành viên"
 
-#: dt-groups/base-setup.php:277
+#: dt-groups/base-setup.php:280
 msgctxt "Optional Documentation"
 msgid ""
 "The number of members in this group. It will automatically be updated when "
@@ -3379,34 +3394,34 @@ msgstr ""
 "số lượng này theo cách thủ công để bao gồm những người có thể không có trong "
 "hệ thống nhưng cũng là thành viên của nhóm."
 
-#: dt-groups/base-setup.php:285 dt-groups/base-setup.php:554
-#: dt-groups/base-setup.php:598
+#: dt-groups/base-setup.php:288 dt-groups/base-setup.php:557
+#: dt-groups/base-setup.php:601
 msgid "Member List"
 msgstr "Danh sách thành viên"
 
-#: dt-groups/base-setup.php:286
+#: dt-groups/base-setup.php:289
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "Những người liên hệ là thành viên của đoàn thể này."
 
-#: dt-groups/base-setup.php:305
+#: dt-groups/base-setup.php:308
 msgid "Leader Count"
 msgstr "Số Đội trưởng"
 
-#: dt-groups/base-setup.php:313
+#: dt-groups/base-setup.php:316
 msgid "Parent Group"
 msgstr "Nhóm Cha mẹ"
 
-#: dt-groups/base-setup.php:314
+#: dt-groups/base-setup.php:317
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
 msgstr "Một đoàn thể đã thành lập nên đoàn thể này."
 
-#: dt-groups/base-setup.php:325
+#: dt-groups/base-setup.php:328
 msgid "Peer Group"
 msgstr "Nhóm Tương đồng"
 
-#: dt-groups/base-setup.php:326
+#: dt-groups/base-setup.php:329
 msgctxt "Optional Documentation"
 msgid ""
 "A related group that isn't a parent/child in relationship. It might indicate "
@@ -3415,52 +3430,52 @@ msgstr ""
 "Một đoàn thể liên quan không có quan hệ cha/con. Nó có thể biểu thị các đoàn "
 "thể đang cộng tác, chuẩn bị sáp nhập, mới chia tách, v.v."
 
-#: dt-groups/base-setup.php:337
+#: dt-groups/base-setup.php:340
 msgid "Child Group"
 msgstr "Nhóm Trẻ em"
 
-#: dt-groups/base-setup.php:338
+#: dt-groups/base-setup.php:341
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "Một đoàn thể vừa được sinh ra từ đoàn thể này."
 
-#: dt-groups/base-setup.php:373
+#: dt-groups/base-setup.php:376
 msgid "Unbelievers"
 msgstr "Người ngoại đạo"
 
-#: dt-groups/base-setup.php:374
+#: dt-groups/base-setup.php:377
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "Số người không tin Chúa trong nhóm này."
 
-#: dt-groups/base-setup.php:382
+#: dt-groups/base-setup.php:385
 msgid "Believers"
 msgstr "Tín đồ"
 
-#: dt-groups/base-setup.php:383
+#: dt-groups/base-setup.php:386
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "Số người tin Chúa trong nhóm này."
 
-#: dt-groups/base-setup.php:391
+#: dt-groups/base-setup.php:394
 msgid "Accountable"
 msgstr "Có trách nhiệm"
 
-#: dt-groups/base-setup.php:392
+#: dt-groups/base-setup.php:395
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "Số người trong nhóm chịu trách nhiệm."
 
-#: dt-groups/base-setup.php:401
+#: dt-groups/base-setup.php:404
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "Đây có phải một giáo hội không - có hay không?"
 
-#: dt-groups/base-setup.php:409
+#: dt-groups/base-setup.php:412
 msgid "Multiplying"
 msgstr "Đang nhân rộng"
 
-#: dt-groups/base-setup.php:410
+#: dt-groups/base-setup.php:413
 msgctxt "Optional Documentation"
 msgid ""
 "Number of people helping start other groups. How many members are "
@@ -3469,37 +3484,37 @@ msgstr ""
 "Số lượng người đang giúp thành lập các đoàn thể khác. Có bao nhiêu người "
 "đang nhân rộng?"
 
-#: dt-groups/base-setup.php:423
+#: dt-groups/base-setup.php:426
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "Các đoàn thể mà người liên hệ này là thành viên."
 
-#: dt-groups/base-setup.php:435
+#: dt-groups/base-setup.php:438
 msgid "Leader of Group"
 msgstr "Lãnh đạo của Nhóm"
 
-#: dt-groups/base-setup.php:445
+#: dt-groups/base-setup.php:448
 msgid "Coach of Group"
 msgstr "Huấn luyện viên của Nhóm"
 
-#: dt-groups/base-setup.php:557
+#: dt-groups/base-setup.php:560
 msgid "Create"
 msgstr "Tạo"
 
-#: dt-groups/base-setup.php:562
+#: dt-groups/base-setup.php:565
 msgid "Select"
 msgstr "Chọn"
 
-#: dt-groups/base-setup.php:567
+#: dt-groups/base-setup.php:570
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "Để thêm thành viên mới, nhấp vào 'Tạo' hoặc 'Chọn'."
 
-#: dt-groups/base-setup.php:573
+#: dt-groups/base-setup.php:576
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Thêm thành viên từ các liên hệ hiện có"
 
-#: dt-groups/base-setup.php:574
+#: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
@@ -3508,11 +3523,11 @@ msgstr ""
 "Trong trường 'Danh sách Thành viên', hãy nhập tên của một liên hệ hiện có để "
 "thêm người đó vào nhóm này."
 
-#: dt-groups/base-setup.php:602
+#: dt-groups/base-setup.php:605
 msgid "Four Fields"
 msgstr "Bốn Ô"
 
-#: dt-groups/base-setup.php:603
+#: dt-groups/base-setup.php:606
 msgctxt "Optional Documentation"
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
@@ -5103,11 +5118,11 @@ msgstr "{{ứng dụng}} sẽ được thay thế với ứng dụng đã chọn
 msgid "Configure email message"
 msgstr "Cấu hình nội dung email"
 
-#: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:136
+#: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:257
 msgid "Selected app name"
 msgstr "Tên ứng dụng đã chọn"
 
-#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:142
+#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:263
 msgid "Unique link to access the app."
 msgstr "Đường dẫn duy nhất để vào ứng dụng."
 
@@ -5145,19 +5160,7 @@ msgstr "Gửi Liên kết nhanh"
 msgid "Magic Links available on this record."
 msgstr "Liên kết nhanh có sẵn trên hồ sơ này."
 
-#: dt-reports/magic-url-setup.php:95
-msgid "View"
-msgstr "Xem"
-
-#: dt-reports/magic-url-setup.php:102
-msgid "QR code"
-msgstr "Mã QR"
-
-#: dt-reports/magic-url-setup.php:103
-msgid "Reset"
-msgstr "Cài lại"
-
-#: dt-reports/magic-url-setup.php:123
+#: dt-reports/magic-url-setup.php:236
 msgid ""
 "Hello,\n"
 "\n"
@@ -5175,21 +5178,58 @@ msgstr ""
 "\n"
 "Xin cảm ơn!"
 
-#: dt-reports/magic-url-setup.php:132
+#: dt-reports/magic-url-setup.php:248
 msgid "Add email address"
 msgstr "Thêm địa chỉ email"
 
-#: dt-reports/magic-url-setup.php:133
+#: dt-reports/magic-url-setup.php:253
 msgid "Add a note"
 msgstr "Thêm ghi chú"
 
-#: dt-reports/magic-url-setup.php:146
+#: dt-reports/magic-url-setup.php:267
 msgid "Send email with link"
 msgstr "Gửi email có liên kết"
 
-#: dt-reports/magic-url-setup.php:188
+#: dt-reports/magic-url-setup.php:329
 msgid "Delete and replace the app link"
 msgstr "Xóa và thay thế liên kết ứng dụng"
+
+#: dt-reports/magic-url-setup.php:462
+msgid ""
+"This app is not yet activated for this user. Enable the app to generate a "
+"link."
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:465 template-settings.php:265
+msgid "App Activation"
+msgstr "Kích hoạt Ứng dụng"
+
+#: dt-reports/magic-url-setup.php:472 dt-users/user-management.php:194
+#: template-settings.php:311 template-settings.php:575
+msgid "Enable"
+msgstr "Bật"
+
+#: dt-reports/magic-url-setup.php:483
+msgid "View"
+msgstr "Xem"
+
+#: dt-reports/magic-url-setup.php:512
+msgid "QR code"
+msgstr "Mã QR"
+
+#: dt-reports/magic-url-setup.php:521
+msgid "Reset"
+msgstr "Cài lại"
+
+#: dt-reports/magic-url-setup.php:526
+#, fuzzy
+#| msgid "Reset"
+msgid "Reset link"
+msgstr "Cài lại"
+
+#: dt-reports/magic-url-setup.php:528
+msgid "This app is currently disabled."
+msgstr ""
 
 #: dt-reports/reports.php:160
 msgid "Added new report"
@@ -5630,11 +5670,6 @@ msgstr "Liên hệ này vốn là một người dùng."
 msgid "View User"
 msgstr "Xem người dùng"
 
-#: dt-users/user-management.php:194 template-settings.php:311
-#: template-settings.php:575
-msgid "Enable"
-msgstr "Bật"
-
 #: dt-users/user-management.php:229
 msgid "Go"
 msgstr "Đi"
@@ -5899,10 +5934,6 @@ msgstr "Mô tả Ứng dụng"
 #: template-settings.php:264
 msgid "App Link"
 msgstr "Liên kết Ứng dụng"
-
-#: template-settings.php:265
-msgid "App Activation"
-msgstr "Kích hoạt Ứng dụng"
 
 #: template-settings.php:275
 msgid "No apps installed"
