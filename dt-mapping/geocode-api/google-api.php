@@ -248,18 +248,31 @@ if ( ! class_exists( 'Disciple_Tools_Google_Geocode_API' ) ) {
                                     Once registered, create a new project.<br>
                                 </li>
                                 <li>
+                                    In APIs & Services go to Library. Find and enable:
+                                    <ol>
+                                        <li>Maps Javascript API</li>
+                                        <li>Places API</li>
+                                        <li>Places API (New)</li>
+                                        <li>Geocoding API</li>
+                                    </ol>
+                                </li>
+                                <li>
                                     Then go to APIs & Services > Credentials and "Create Credentials" API Key. Copy this key.
                                 </li>
                                 <li>
-                                    Paste the key into the "Google API Key" field in the box above here in the Disciple.Tools Mapping Admin.
-                                </li>
+                                    Paste the key into the "Google API Key" field above.
                                 <li>
-                                    Again, in Google Cloud Console, in APIs & Services go to Library. Find and enable: (1) Maps Javascript API,
-                                    (2) Places API, and (3) GeoCoding API.
-                                </li>
-                                <li>
-                                    Lastly, in  in Credentials for the API key it is recommended in the settings of the API key to be set "None" for Application Restrictions
-                                    and "Don't restrict key" in API Restrictions.
+                                    Lastly, in Credentials for the API key:
+                                    <ol>
+                                        <li>Set "None" for Application Restrictions.</li>
+                                        <li>Choose these 4 APIs under "API restrictions":
+                                        <ol>
+                                            <li>Maps Javascript API</li>
+                                            <li>Places API</li>
+                                            <li>Places API (New)</li>
+                                            <li>Geocoding API</li>
+                                        </ol>
+                                    </ol>
                                 </li>
                             </ol>
                         </td>
