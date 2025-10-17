@@ -1155,6 +1155,20 @@ jQuery(document).ready(function ($) {
           xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
         },
         success: function (response) {
+          // Check if upload was successful
+          if (response.uploaded === false) {
+            // Display error message inline
+            displayUploadError(
+              response.uploaded_msg ||
+                window.commentsSettings?.translations
+                  ?.audio_comment_descriptions?.upload_failed_generic ||
+                'Upload failed. Please try again.',
+            );
+            saveBtn.text(originalText).prop('disabled', false);
+            return; // Don't execute success logic
+          }
+
+          // Only execute success logic if uploaded === true
           saveBtn
             .text('Uploaded!')
             .removeClass('save-btn')
@@ -1174,13 +1188,33 @@ jQuery(document).ready(function ($) {
           console.error('Upload failed:', { xhr, status, error });
           console.error('Response text:', xhr.responseText);
           saveBtn.text(originalText).prop('disabled', false);
-          alert('Upload failed. Check console for details.');
+          displayUploadError(
+            window.commentsSettings?.translations?.audio_comment_descriptions
+              ?.upload_failed_generic || 'Upload failed. Please try again.',
+          );
         },
       });
     } else {
-      console.error('No audio blob available for upload');
-      alert('No recording available to upload.');
+      const msg =
+        window.commentsSettings?.translations?.audio_comment_descriptions
+          ?.unavailable_audio || 'No audio blob available for upload.';
+      console.error(msg);
+      displayUploadError(msg);
     }
+  }
+
+  function displayUploadError(message) {
+    // Hide any existing error messages
+    $('.upload-error-message').hide();
+
+    // Show the error message with the provided text
+    $('.upload-error-message .error-text').text(message);
+    $('.upload-error-message').show();
+
+    // Auto-hide after 10 seconds
+    setTimeout(function () {
+      $('.upload-error-message').hide();
+    }, 10000);
   }
 
   function cancelRecording() {

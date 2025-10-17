@@ -548,6 +548,10 @@ jQuery(document).ready(function ($) {
       $('.js-create-record-button')
         .attr('disabled', false)
         .removeClass('alert');
+      $('.button-cancel').on('click', function () {
+        document.querySelector(`#${e.detail.field}`).value =
+          e.detail.newValue.filter((y) => !y.isNew);
+      });
       $('.reveal-after-record-create').hide();
       $('.hide-after-record-create').show();
       $('.js-create-record input[name=title]').val(newPost.label);

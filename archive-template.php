@@ -225,7 +225,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
     <div id="content" class="archive-template">
         <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
             <aside class="cell large-3 xxlarge-2" id="list-filters">
-                <div class="bordered-box">
+                <div class="bordered-box" id="tile-filters">
                     <div class="section-header">
                         <?php echo esc_html( sprintf( _x( '%s Filters', 'Contacts Filters', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ) ) ?>
                         <button class="section-chevron chevron_down">
@@ -243,8 +243,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         <div class="custom-filters"></div>
                     </div>
                 </div>
-                <br>
-                <div class="bordered-box">
+                <div class="bordered-box" id="tile-split-by">
                     <div class="section-header">
                         <?php echo esc_html( _x( 'Split By', 'Split By', 'disciple_tools' ) ) ?>
                         <button class="section-chevron chevron_down">
@@ -311,8 +310,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         <span id="split_by_current_filter_no_results_msg" style="display: none;margin-inline-start: 10px"><?php echo esc_attr( __( 'No results found', 'disciple_tools' ) ) ?></span>
                     </div>
                 </div>
-                <br>
-                <div class="bordered-box">
+                <div class="bordered-box" id="tile-list-exports">
                     <div class="section-header">
                         <?php echo esc_html( _x( 'List Exports', 'List Exports', 'disciple_tools' ) ) ?>
                         <button class="float-right" data-open="export_help_text">
@@ -386,16 +384,18 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
 
             <main id="main" class="large-9 xxlarge-10 cell padding-bottom" role="main">
                 <div class="bordered-box">
-                    <div >
-                        <span class="section-header posts-header" style="display: inline-block">
+                    <div class="list-header">
+                        <span class="section-header posts-header">
                             <?php echo esc_html( sprintf( _x( '%s List', 'Contacts List', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ) ) ?>
                         </span>
-                        <span id="list-loading-spinner" style="display: inline-block" class="loading-spinner active"></span>
-                        <span style="display: inline-block" class="filter-result-text"></span>
-                        <div class="js-sort-dropdown" style="display: inline-block">
+                        <div id="list-loading">
+                            <span id="list-loading-spinner" class="loading-spinner active"></span>
+                        </div>
+                        <span class="filter-result-text"></span>
+                        <div id="sort-menu" class="js-sort-dropdown">
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li>
-                                    <a href="#"><?php esc_html_e( 'Sort', 'disciple_tools' ); ?></a>
+                                    <a href="#"><span class="menu-label"><?php esc_html_e( 'Sort', 'disciple_tools' ); ?></span><i class="mdi mdi-sort"></i></a>
                                     <ul class="menu is-dropdown-submenu" style="min-width:220px">
                                         <li>
                                             <a href="#" class="js-sort-by" data-column-index="6" data-order="desc" data-field="post_date">
@@ -470,10 +470,10 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         // Add custom menu items
                         $dropdown_items = apply_filters( 'dt_list_action_menu_items', $dropdown_items, $post_type );
                         ?>
-                        <div class="js-sort-dropdown" style="display: inline-block">
+                        <div id="more-menu" class="js-sort-dropdown">
                             <ul class="dropdown menu" data-dropdown-menu>
                                 <li>
-                                    <a href="#"><?php esc_html_e( 'More', 'disciple_tools' ) ?></a>
+                                    <a href="#"><span class="menu-label"><?php esc_html_e( 'More', 'disciple_tools' ) ?></span><i class="mdi mdi-dots-vertical"></i></a>
                                     <ul class="menu is-dropdown-submenu" id="dropdown-submenu-items-more">
                                     <?php foreach ( $dropdown_items as $key => $value ) : ?>
                                         <?php if ( isset( $key ) && ( !isset( $value['valid_post_type'] ) || $value['valid_post_type']( $post_type ) ) ) : ?>
@@ -501,7 +501,8 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         $archived_label = sprintf( _x( 'Show %s', 'Show archived', 'disciple_tools' ), $archived_text );
                         ?>
 
-                        <span style="display:<?php echo esc_html( !$status_key || !$archived_key ? 'none' : 'inline-block' ) ?>" class="show-closed-switch">
+                        <?php if ( $status_key && $archived_key ) : ?>
+                        <span id="archived-switch" class="show-closed-switch">
                             <?php echo esc_html( $archived_label ) ?>
                             <div class="switch tiny">
                                 <input class="switch-input" id="archivedToggle" type="checkbox" name="archivedToggle">
@@ -510,6 +511,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                 </label>
                             </div>
                         </span>
+                        <?php endif; ?>
 
                     </div>
                     <?php
@@ -1001,10 +1003,9 @@ Thanks!';
                         <table class="table-remove-top-border js-list stack striped" id="records-table">
                             <thead>
                                 <tr class="table-headers dnd-moved sortable">
-                                    <th id="bulk_edit_master" class="bulk_edit_checkbox" style="width:32px; background-image:none; cursor:default">
-                                    <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
+                                    <th id="bulk_edit_master" data-id="record_picture" style="width:32px; background-image:none; cursor:default; padding-right: 10px;">
+                                        <input type="checkbox" name="bulk_send_app_id" value="" id="bulk_edit_master_checkbox">
                                     </th>
-                                    <th data-id="index" style="width:32px; background-image:none; cursor:default"></th>
 
                                     <?php $columns = [];
                                     if ( empty( $fields_to_show_in_table ) ){
@@ -1016,11 +1017,6 @@ Thanks!';
                                         <th style="width:36px; background-image:none; cursor:default"></th>
                                         <?php
                                     }
-                                    if ( DT_Storage_API::is_enabled() ):
-                                        if ( in_array( 'record_picture', $columns ) ) : ?>
-                                            <th data-id="record_picture" style="width:32px; background-image:none; cursor:default"></th>
-                                        <?php endif; ?>
-                                    <?php endif;
                                     foreach ( $columns as $field_key ):
                                         if ( ! in_array( $field_key, [ 'favorite', 'record_picture' ] ) ):
                                             if ( isset( $post_settings['fields'][$field_key]['name'] ) ) : ?>

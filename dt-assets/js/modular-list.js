@@ -1167,15 +1167,21 @@
       let row_fields_html = '';
       fields_to_show_in_table.forEach((field_key) => {
         let values_html = '';
+        let data_type = '';
         let values = [];
         if (field_key === 'name') {
-          if (mobile) {
+          /*if (mobile) {
             return;
-          }
-          values_html = `<a href="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}" title="${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}">${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}</a>`;
+          }*/
+          values_html = `<li><a href="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}" title="${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}">${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}</a></li>`;
+        } else if (field_key === 'record_picture') {
+          return; // we are always including this, so skip it
         } else if (list_settings.post_type_settings.fields[field_key]) {
           let field_settings =
             list_settings.post_type_settings.fields[field_key];
+          if (field_settings.type) {
+            data_type = field_settings.type;
+          }
           let field_value = window.lodash.get(record, field_key, false);
           if (field_key !== 'favorite' && field_settings.type === 'boolean') {
             field_value = window.lodash.get(record, field_key);
@@ -1285,77 +1291,54 @@
             return `<li>${v}</li>`;
           })
           .join('');
-        if ($(window).width() < mobile_breakpoint) {
-          row_fields_html += `
-            <td>
-              <div class="mobile-list-field-name">
-                <ul>
-                ${window.SHAREDFUNCTIONS.escapeHTML(window.lodash.get(list_settings, `post_type_settings.fields[${field_key}].name`, field_key))}
-                </ul>
-              </div>
-              <div class="mobile-list-field-value">
-                <ul style="line-height:20px" dir="auto">
-                  ${values.join(', ')}
-                </ul>
-              </div>
 
-            </td>
-          `;
+        let title = values
+          .map((val) => {
+            // replace star svg with html entity for valid title attribute
+            if (
+              val &&
+              typeof val === 'string' &&
+              val.includes('<svg') &&
+              val.includes('icon-star')
+            ) {
+              return val.includes('selected') ? '&#9734;' : '&#9733;';
+            }
+            return val;
+          })
+          .join(', ');
+
+        //exclude html tags from title
+        if (title.includes('<')) {
+          title = '';
+        }
+        const tmp_html = `
+        <td dir="auto" data-id="${field_key}" data-type="${data_type}" title="${title}">
+          <div class="field-label">
+            ${window.SHAREDFUNCTIONS.escapeHTML(window.lodash.get(list_settings, `post_type_settings.fields[${field_key}].name`, field_key))}
+          </div>
+          <div class="field-value">
+            <ul dir="auto">${values_html}</ul>
+          </div>
+        </td>`;
+
+        if (field_key === 'favorite') {
+          row_fields_html = tmp_html + row_fields_html;
         } else {
-          //this looks for the star SVG from the favorited fields and changes the value to a checkmark like other boolean fields to be used in the title element on desktop lists.
-          if (
-            values[0] ===
-            `<svg class='icon-star selected' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`
-          ) {
-            values[0] = '&#9734;';
-          }
-          if (
-            values[0] ===
-            `<svg class='icon-star' viewBox="0 0 32 32" data-id=${record.ID}><use xlink:href="${window.wpApiShare.template_dir}/dt-assets/images/star.svg#star"></use></svg>`
-          ) {
-            values[0] = '&#9733;';
-          }
-          let title = values.join(', ');
-          //exclude html tags from title
-          if (title.includes('<')) {
-            title = '';
-          }
-          let tmp_html = `
-            <td dir="auto" data-id="${field_key}" title="${title}">
-              <ul>
-                ${values_html}
-              </ul>
-            </td>
-          `;
-
-          if (field_key === 'favorite') {
-            row_fields_html = tmp_html + row_fields_html;
-          } else {
-            row_fields_html += tmp_html;
-          }
+          row_fields_html += tmp_html;
         }
       });
 
-      if (mobile) {
-        table_rows += `<tr data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
-          <td class="bulk_edit_checkbox">
-              <input class="bulk_edit_checkbox" type="checkbox" name="bulk_edit_id" value="${record.ID}">
-          </td>
-          <td>
-              <div class="mobile-list-field-name">${index + 1}.</div>
-              <div class="mobile-list-field-value">
-                  <a href="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">${window.SHAREDFUNCTIONS.escapeHTML(record.post_title)}</a>
-              </div>
-          </td>
-          ${row_fields_html}
-        `;
-      } else {
-        table_rows += `<tr class="dnd-moved" data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
-          <td class="bulk_edit_checkbox" ><input type="checkbox" name="bulk_edit_id" value="${record.ID}"></td>
-          <td style="white-space: nowrap" data-id="index" >${index + 1}.</td>
-          ${row_fields_html}
-        `;
-      }
+      const record_img =
+        record.record_picture && record.record_picture.thumb
+          ? `<img src='${record.record_picture.thumb}' class='list-image'>`
+          : `<i class='${window.SHAREDFUNCTIONS.escapeHTML(list_settings.default_icon)} medium list-image'></i>`;
+      table_rows += `<tr class="dnd-moved" data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
+        <td class="index bulk_edit_checkbox" data-id="record_picture" data-type="image">
+          <div class="record_picture">${record_img}</div>
+          <input type="checkbox" name="bulk_edit_id" value="${record.ID}">
+        </td>
+        ${row_fields_html}
+      </tr>`;
     });
     if (records.length === 0) {
       table_rows = `<tr><td colspan="10">${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.empty_list)}</td></tr>`;
@@ -3960,6 +3943,9 @@
   $('.list-action-close-button').on('click', function () {
     let section = $(this).data('close');
     $(`#${section}`).hide();
+    if (section === 'bulk_edit_picker') {
+      $('#records-table').toggleClass('bulk_edit_on');
+    }
   });
 
   /*****

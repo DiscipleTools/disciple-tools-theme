@@ -440,6 +440,26 @@ class Disciple_Tools_Users
         return $base_user;
     }
 
+    /**
+     * Get the base users by source for the system
+     * You can call this function using dt_get_base_users_by_source()
+     *
+     * @return array|WP_Error|WP_User
+     *@since 1.75.0
+     *
+     */
+    public static function get_base_users_by_source() {
+
+        $base_users_by_source = get_option( 'dt_base_user_by_source', [] );
+
+        if ( is_wp_error( $base_users_by_source ) ) {
+            dt_write_log( $base_users_by_source->get_error_message() );
+            return [];
+        }
+
+        return $base_users_by_source;
+    }
+
 
     /**
      * @param $user_name
@@ -1019,8 +1039,16 @@ class Disciple_Tools_Users
             $profile_pic_key = get_user_meta( $current_user->ID, 'dt_user_profile_picture', true );
             $uploaded = DT_Storage_API::upload_file( 'users', dt_recursive_sanitize_array( $_FILES['user_profile_pic'] ), $profile_pic_key );
 
+            // Handle WP_Error returns from DT_Storage_API::upload_file()
+            if ( is_wp_error( $uploaded ) ) {
+                // Log the detailed error for admin debugging
+                dt_write_log( 'Profile picture upload failed: ' . $uploaded->get_error_message() );
+                // Return error to user
+                return new WP_Error( 'profile_pic_upload_failed', 'Failed to upload profile picture. Please try again.' );
+            }
+
             // If successful, persist uploaded object file key.
-            if ( !empty( $uploaded ) ) {
+            if ( $uploaded['uploaded'] === true ) {
                 if ( !empty( $uploaded['uploaded_key'] ) ) {
                     update_user_meta( $current_user->ID, 'dt_user_profile_picture', $uploaded['uploaded_key'] );
                 }
