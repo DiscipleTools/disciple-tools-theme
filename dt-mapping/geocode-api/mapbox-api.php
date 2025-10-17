@@ -21,9 +21,9 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         /**
          * Mapbox GL for loading in the header
          */
-        public static $mapbox_gl_js = 'https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.js';
-        public static $mapbox_gl_css = 'https://api.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.css';
-        public static $mapbox_gl_version = '1.1.0';
+        public static $mapbox_gl_js = 'https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js';
+        public static $mapbox_gl_css = 'https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css';
+        public static $mapbox_gl_version = '2.11.0';
 
         /**
          * Mapbox Geocoder loaded in the body
