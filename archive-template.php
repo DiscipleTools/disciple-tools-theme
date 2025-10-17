@@ -28,6 +28,20 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
     ];
 
     get_header();
+
+    $fields_to_search = [];
+    $all_searchable_fields = $post_settings['fields'];
+    $all_searchable_fields['comment'] = [ 'name' => __( 'Comments', 'disciple_tools' ), 'type' => 'text' ];
+    if ( isset( $_COOKIE['fields_to_search'] ) ) {
+        $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
+        if ( $fields_to_search ){
+            $fields_to_search = dt_recursive_sanitize_array( $fields_to_search );
+        }
+    }
+    //order fields alphabetically by Name
+    uasort( $all_searchable_fields, function ( $a, $b ){
+        return $a['name'] <=> $b['name'];
+    });
     ?>
     <div data-sticky-container class="hide-for-small-only" style="z-index: 9">
         <nav role="navigation"
@@ -52,23 +66,8 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                             <span>&times;</span>
                         </div>
                     </span>
-                    <a class="advanced_search" id="advanced_search" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
+                    <a class="search-addon advanced_search" id="advanced_search" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
                         <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
-                        <?php
-                        $fields_to_search = [];
-                        $all_searchable_fields = $post_settings['fields'];
-                        $all_searchable_fields['comment'] = [ 'name' => __( 'Comments', 'disciple_tools' ), 'type' => 'text' ];
-                        if ( isset( $_COOKIE['fields_to_search'] ) ) {
-                            $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
-                            if ( $fields_to_search ){
-                                $fields_to_search = dt_recursive_sanitize_array( $fields_to_search );
-                            }
-                        }
-                        //order fields alphabetically by Name
-                        uasort( $all_searchable_fields, function ( $a, $b ){
-                            return $a['name'] <=> $b['name'];
-                        });
-                        ?>
                         <span class="badge alert advancedSearch-count" style="<?php if ( !$fields_to_search ) { echo esc_html( 'display:none' ); } ?>"><?php if ( $fields_to_search ){ echo count( $fields_to_search ); } ?></span>
                     </a>
                 </div>
@@ -127,57 +126,37 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
             </div>
         </nav>
     </div>
-    <nav  role="navigation" style="width:100%;"
+    <nav role="navigation" style="width:100%;"
           class="second-bar show-for-small-only center list-actions-bar"><!--  /* MOBILE VIEW BUTTON AREA */ -->
         <div class="buttons-row">
-            <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
-                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/circle-add.svg' ) ?>"/>
-            </a>
-            <a class="button filter-posts-mobile" data-open="filter-modal">
-                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
-            </a>
-            <?php do_action( 'archive_template_mobile_action_bar_buttons', $post_type ) ?>
-            <a class="button" id="open-search">
-                <img class="dt-white-icon" style="display: inline-block;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
-            </a>
-            <?php if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) : ?>
-                <button class="button export_map_list no-margin icon-button" style="font-size:large;padding: 0.1rem 0.75rem">
-                    <i class="fi-map"></i>
-                </button>
-            <?php endif; ?>
-        </div>
-        <div class="hideable-search" style="display: none; margin-top:5px">
             <div class="search-wrapper">
                 <span class="text-input-wrapper">
-                    <input class="search-input search-input--mobile" name="search" type="text" id="search-query-mobile"
-                        placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $post_settings['label_plural'] ?? $post_type ) ) ?>">
+                    <input class="search-input search-input--mobile"
+                           type="text" id="search-query-mobile" name="search"
+                           placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $post_settings['label_plural'] ?? $post_type ) ) ?>">
                     <div class="search-input__clear-button" title="<?php echo esc_html( __( 'Clear', 'disciple_tools' ) ) ?>">
                         <span>&times;</span>
                     </div>
                 </span>
-                <a class="advanced_search" id="advanced_search_mobile" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
+                <a class="search-addon advanced_search" id="advanced_search_mobile" title="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>">
                     <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/options.svg' ) ?>" alt="<?php esc_html_e( 'Advanced Search', 'disciple_tools' ) ?>" />
-                    <?php
-                    $fields_to_search = [];
-                    $all_searchable_fields = $post_settings['fields'];
-                    $all_searchable_fields['comment'] = [ 'name' => 'Comments', 'type' => 'text' ];
-                    if ( isset( $_COOKIE['fields_to_search'] ) ) {
-                        $fields_to_search = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_search'] ) ) ) );
-                        if ( $fields_to_search ){
-                            $fields_to_search = dt_recursive_sanitize_array( $fields_to_search );
-                        }
-                    }
-                    //order fields alphabetically by Name
-                    uasort( $all_searchable_fields, function ( $a, $b ){
-                        return $a['name'] <=> $b['name'];
-                    });
-                    ?>
                     <span class="badge alert advancedSearch-count" style="<?php if ( !$fields_to_search ) { echo esc_html( 'display:none' ); } ?>"><?php if ( $fields_to_search ){ echo count( $fields_to_search ); } ?></span>
                 </a>
-                <button class="button" style="margin-bottom:0" id="search-mobile"><?php esc_html_e( 'Search', 'disciple_tools' ) ?></button>
+                <button class="search-addon" id="search-mobile">
+                    <img class="dt-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/search.svg' ) ?>"/>
+                </button>
             </div>
-        </div>
+            <button class="button filter-posts-mobile" onclick="document.getElementById('tile-filters').classList.toggle('collapsed')">
+                <img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/filter.svg?v=2' ) ?>"/>
+            </button>
+            <?php do_action( 'archive_template_mobile_action_bar_buttons', $post_type ) ?>
 
+            <?php if ( class_exists( 'DT_Mapbox_API' ) && DT_Mapbox_API::get_key() ) : ?>
+                <button class="button export_map_list no-margin icon-button">
+                    <i class="fi-map"></i>
+                </button>
+            <?php endif; ?>
+        </div>
         <div id="advanced_search_picker_mobile"  class="list_field_picker" style="display:none; padding:20px; border-radius:5px; background-color:#ecf5fc;">
                 <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to search', 'disciple_tools' ); ?></p>
                 <ul class="ul-no-bullets" style="">
@@ -223,9 +202,9 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
             </div>
     </nav>
     <div id="content" class="archive-template">
-        <div id="inner-content" class="grid-x grid-margin-x grid-margin-y">
-            <aside class="cell large-3 xxlarge-2" id="list-filters">
-                <div class="bordered-box" id="tile-filters">
+        <div id="inner-content">
+            <aside class="" id="list-filters">
+                <div class="bordered-box collapsed" id="tile-filters">
                     <div class="section-header">
                         <?php echo esc_html( sprintf( _x( '%s Filters', 'Contacts Filters', 'disciple_tools' ), DT_Posts::get_post_settings( $post_type )['label_plural'] ) ) ?>
                         <button class="section-chevron chevron_down">
@@ -243,74 +222,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         <div class="custom-filters"></div>
                     </div>
                 </div>
-                <div class="bordered-box" id="tile-split-by">
-                    <div class="section-header">
-                        <?php echo esc_html( _x( 'Split By', 'Split By', 'disciple_tools' ) ) ?>
-                        <button class="section-chevron chevron_down">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                        </button>
-                        <button class="section-chevron chevron_up">
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-                        </button>
-                    </div>
-                    <div class="section-body">
-                        <div style="display: flex; flex-wrap:wrap;" id="split_by_current_filter_select_labels"></div>
-                        <table>
-                            <tbody style="border: none;">
-                            <tr style="border: none;">
-                                <td style="padding:0">
-                                    <select id="split_by_current_filter_select" style="margin-bottom: 0">
-                                        <option value="" disabled selected><?php echo esc_html( _x( 'select split by field', 'disciple_tools' ) ) ?></option>
-                                        <?php
-                                        $split_by_fields = [];
-                                        foreach ( DT_Posts::get_post_settings( $post_type )['fields'] ?? [] as $key => $field ){
-                                            if ( in_array( $field['type'], [ 'multi_select', 'key_select', 'tags', 'user_select', 'location', 'boolean', 'connection' ] ) ){
-                                                if ( !isset( $field['private'] ) || !$field['private'] ){
-                                                    $split_by_fields[$key] = $field;
-                                                }
-                                            }
-                                        }
-
-                                        // Sort identified list of split by fields;
-                                        uasort( $split_by_fields, function ( $a, $b ){
-                                            if ( $a['name'] == $b['name'] ){
-                                                return 0;
-                                            }
-                                            return ( $a['name'] < $b['name'] ) ? -1 : 1;
-                                        } );
-
-                                        // Display split by fields.
-                                        foreach ( $split_by_fields as $split_by_field_key => $split_by_field ){
-                                            ?>
-                                            <option
-                                                value="<?php echo esc_attr( $split_by_field_key ) ?>"><?php echo esc_attr( sprintf( _x( '%1$s - (%2$s)', 'disciple_tools' ), $split_by_field['name'], $split_by_field_key ) ) ?></option>
-                                            <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <button id="split_by_current_filter_button" class="button loader" style='margin-bottom: 0'><?php echo esc_html( _x( 'Go', 'disciple_tools' ) ) ?></button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <ul id="list-filter-tabs" class="accordion split-by-current-filter-accordion"
-                            data-responsive-accordion-tabs="accordion medium-tabs large-accordion"
-                            style="display: none;">
-                            <li class="accordion-item is-active" data-accordion-item data-id="split_by">
-                                <a href="#" class="accordion-title" data-id="split_by">
-                                    <?php echo esc_attr( _x( 'Summary', 'disciple_tools' ) ) ?>
-                                </a>
-                                <div class="accordion-content" data-tab-content>
-                                    <div id="split_by_current_filter_results" class="list-views"></div>
-                                </div>
-                            </li>
-                        </ul>
-                        <span id="split_by_current_filter_no_results_msg" style="display: none;margin-inline-start: 10px"><?php echo esc_attr( __( 'No results found', 'disciple_tools' ) ) ?></span>
-                    </div>
-                </div>
-                <div class="bordered-box" id="tile-list-exports">
+                <div class="bordered-box collapsed" id="tile-list-exports">
                     <div class="section-header">
                         <?php echo esc_html( _x( 'List Exports', 'List Exports', 'disciple_tools' ) ) ?>
                         <button class="float-right" data-open="export_help_text">
@@ -378,11 +290,58 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <template id="template-split-by-filter">
+                    <div class="field-select-wrapper">
+                        <select id="split_by_current_filter_select" style="margin-bottom: 0">
+                            <option value="" disabled selected><?php echo esc_html( _x( 'select split by field', 'disciple_tools' ) ) ?></option>
+                            <?php
+                            $split_by_fields = [];
+                            foreach ( DT_Posts::get_post_settings( $post_type )['fields'] ?? [] as $key => $field ){
+                                if ( in_array( $field['type'], [ 'multi_select', 'key_select', 'tags', 'user_select', 'location', 'boolean', 'connection' ] ) ){
+                                    if ( !isset( $field['private'] ) || !$field['private'] ){
+                                        $split_by_fields[$key] = $field;
+                                    }
+                                }
+                            }
 
+                            // Sort identified list of split by fields;
+                            uasort( $split_by_fields, function ( $a, $b ){
+                                if ( $a['name'] == $b['name'] ){
+                                    return 0;
+                                }
+                                return ( $a['name'] < $b['name'] ) ? -1 : 1;
+                            } );
+
+                            // Display split by fields.
+                            foreach ( $split_by_fields as $split_by_field_key => $split_by_field ){
+                                ?>
+                                <option
+                                    value="<?php echo esc_attr( $split_by_field_key ) ?>"><?php echo esc_attr( sprintf( _x( '%1$s - (%2$s)', 'disciple_tools' ), $split_by_field['name'], $split_by_field_key ) ) ?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
+
+                        <button id="split_by_current_filter_button" class="button loader" style='margin-bottom: 0'><?php echo esc_html( _x( 'Go', 'disciple_tools' ) ) ?></button>
+                    </div>
+                    <ul class="accordion split-by-current-filter-accordion"
+                        data-responsive-accordion-tabs="accordion medium-tabs large-accordion"
+                        style="display: none;">
+                        <li class="accordion-item is-active" data-accordion-item data-id="split_by">
+                            <a href="#" class="accordion-title" data-id="split_by">
+                                <?php echo esc_attr( _x( 'Summary', 'disciple_tools' ) ) ?>
+                            </a>
+                            <div class="accordion-content" data-tab-content>
+                                <div id="split_by_current_filter_results" class="list-views"></div>
+                            </div>
+                        </li>
+                    </ul>
+                    <span id="split_by_current_filter_no_results_msg" style="display: none;margin-inline-start: 10px"><?php echo esc_attr( __( 'No results found', 'disciple_tools' ) ) ?></span>
+                </template>
                 <?php do_action( 'dt_post_list_filters_sidebar', $post_type ) ?>
             </aside>
 
-            <main id="main" class="large-9 xxlarge-10 cell padding-bottom" role="main">
+            <main id="main" class="" role="main">
                 <div class="bordered-box">
                     <div class="list-header">
                         <span class="section-header posts-header">
@@ -514,488 +473,35 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                         <?php endif; ?>
 
                     </div>
+
                     <?php
-                    // Add section UI for custom menus
-                    do_action( 'dt_list_action_section', $post_type, $post_settings );
+                    $fields_to_show_in_table = [];
+                    if ( isset( $_COOKIE['fields_to_show_in_table'] ) ) {
+                        $fields_to_show_in_table = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_show_in_table'] ) ) ) );
+                        if ( $fields_to_show_in_table ){
+                            $fields_to_show_in_table = dt_recursive_sanitize_array( $fields_to_show_in_table );
+                        }
+                    }
+
+                    // Get enabled fields (either from cookie or defaults)
+                    $enabled_fields = [];
+                    if ( empty( $fields_to_show_in_table ) ) {
+                        // Use default fields if no cookie is set
+                        foreach ( $post_settings['fields'] as $field_key => $field_values ) {
+                            if ( !empty( $field_values['show_in_table'] ) && empty( $field_values['hidden'] ) ) {
+                                $enabled_fields[] = $field_key;
+                            }
+                        }
+                    } else {
+                        $enabled_fields = $fields_to_show_in_table;
+                    }
+
+                    //order fields alphabetically by Name
+                    uasort( $post_settings['fields'], function ( $a, $b ){
+                        return $a['name'] <=> $b['name'];
+                    });
+
                     ?>
-
-                    <div id="list_column_picker" class="list_field_picker list_action_section">
-                        <button class="close-button list-action-close-button" data-close="list_column_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                        <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
-                        <?php
-                        $fields_to_show_in_table = [];
-                        if ( isset( $_COOKIE['fields_to_show_in_table'] ) ) {
-                            $fields_to_show_in_table = json_decode( stripslashes( sanitize_text_field( wp_unslash( $_COOKIE['fields_to_show_in_table'] ) ) ) );
-                            if ( $fields_to_show_in_table ){
-                                $fields_to_show_in_table = dt_recursive_sanitize_array( $fields_to_show_in_table );
-                            }
-                        }
-
-                        // Get enabled fields (either from cookie or defaults)
-                        $enabled_fields = [];
-                        if ( empty( $fields_to_show_in_table ) ) {
-                            // Use default fields if no cookie is set
-                            foreach ( $post_settings['fields'] as $field_key => $field_values ) {
-                                if ( !empty( $field_values['show_in_table'] ) && empty( $field_values['hidden'] ) ) {
-                                    $enabled_fields[] = $field_key;
-                                }
-                            }
-                        } else {
-                            $enabled_fields = $fields_to_show_in_table;
-                        }
-
-                        //order fields alphabetically by Name
-                        uasort( $post_settings['fields'], function ( $a, $b ){
-                            return $a['name'] <=> $b['name'];
-                        });
-
-                        ?>
-
-                        <div class="field-selection-ui">
-                            <!-- Search input for adding fields -->
-                            <div style="margin-bottom: 15px;">
-                                <label for="field_search_input" class="field-search-label">
-                                    <?php esc_html_e( 'Add fields:', 'disciple_tools' ); ?>
-                                </label>
-                                <div class="field-search-container">
-                                    <input type="text" id="field_search_input" class="field-search-input" placeholder="<?php esc_html_e( 'Search for fields to add...', 'disciple_tools' ); ?>">
-                                    <div id="field_search_dropdown" class="field-search-dropdown">
-                                        <?php foreach ( $post_settings['fields'] as $field_key => $field_values ):
-                                            if ( !empty( $field_values['hidden'] ) ){
-                                                continue;
-                                            }
-                                            $has_icon = !empty( $field_values['icon'] ) || !empty( $field_values['font-icon'] );
-                                            $option_classes = 'field-search-option' . ( $has_icon ? '' : ' no-icon' );
-                                            ?>
-                                            <div class="<?php echo esc_attr( $option_classes ); ?> field-search-option-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>"
-                                                 data-field-name="<?php echo esc_attr( strtolower( $field_values['name'] ) ); ?>">
-                                                <?php dt_render_field_icon( $field_values ); ?>
-                                                <span><?php echo esc_html( $field_values['name'] ); ?></span>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Enabled fields display -->
-                            <div class="enabled-fields-section">
-                                <label class="enabled-fields-label">
-                                    <?php esc_html_e( 'Enabled fields:', 'disciple_tools' ); ?>
-                                </label>
-                                <div id="enabled_fields_container" class="enabled-fields-container">
-                                    <?php if ( empty( $enabled_fields ) ): ?>
-                                        <span class="no-fields-message"><?php esc_html_e( 'No fields selected', 'disciple_tools' ); ?></span>
-                                    <?php else : ?>
-                                        <?php foreach ( $enabled_fields as $field_key ): ?>
-                                            <?php if ( isset( $post_settings['fields'][$field_key] ) ): ?>
-                                                <?php
-                                                $field_settings = $post_settings['fields'][$field_key];
-                                                $has_icon = !empty( $field_settings['icon'] ) || !empty( $field_settings['font-icon'] );
-                                                $tag_classes = 'enabled-field-tag' . ( $has_icon ? '' : ' no-icon' );
-                                                ?>
-                                                <span class="<?php echo esc_attr( $tag_classes ); ?> enabled-field-tag-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>">
-                                                    <?php dt_render_field_icon( $field_settings, 'dt-icon' ); ?>
-                                                    <span><?php echo esc_html( $field_settings['name'] ); ?></span>
-                                                    <button type="button" class="remove-field-btn remove-field-btn-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>">×</button>
-                                                </span>
-                                            <?php endif; ?>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-
-                            <!-- Hidden input to store selected fields -->
-                            <input type="hidden" id="selected_fields_input" value="<?php echo esc_attr( json_encode( $enabled_fields ) ); ?>">
-
-                            <button class="button" id="save_column_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
-                            <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
-                        </div>
-                    </div>
-
-                    <form id="bulk_edit_picker" class="list_action_section">
-                        <button class="close-button list-action-close-button" data-close="bulk_edit_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                        <p style="font-weight:bold"><?php
-                        echo sprintf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
-                        <div class="grid-x grid-margin-x">
-                            <?php if ( isset( $field_options['assigned_to'] ) ) : ?>
-                            <div class="cell small-12 medium-4">
-                            <div class="section-subheader">
-                                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                                <?php echo esc_html( $field_options['assigned_to']['name'] ); ?>
-                                <button class="help-button" data-section="assigned-to-help-text">
-                                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                </button>
-                            </div>
-                            <div class="bulk_assigned_to details">
-                                <var id="bulk_assigned_to-result-container" class="result-container bulk_assigned_to-result-container"></var>
-                                <div id="bulk_assigned_to_t" name="form-bulk_assigned_to" class="scrollable-typeahead">
-                                    <div class="typeahead__container" style="margin-bottom: 0">
-                                        <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-bulk_assigned_to input-height" dir="auto"
-                                                    name="bulk_assigned_to[query]" placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
-                                                    autocomplete="off">
-                                            </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php endif; ?>
-
-                            <?php if ( $post_type == 'contacts' ) {?>
-                                <?php if ( isset( $field_options['subassigned'] ) ) : ?>
-                                    <div class="cell small-12 medium-4">
-                                        <?php $field_options['subassigned']['custom_display'] = false ?>
-                                        <?php render_field_for_display( 'subassigned', $field_options, null, false, false, 'bulk_', $field_params ); ?>
-                                    </div>
-                                    <?php endif; ?>
-                                    <?php if ( isset( $field_options['overall_status'] ) ) : ?>
-                                    <div class="cell small-12 medium-4">
-                                        <?php
-                                        $field_key = 'overall_status';
-                                        if ( isset( $field_options[$field_key]['select_cannot_be_empty'] ) ) {
-                                            unset( $field_options[$field_key]['select_cannot_be_empty'] );
-                                        }
-                                        DT_Components::render_key_select( 'overall_status', $field_options, null, $field_params );
-                                        ?>
-                                    </div>
-                                    <?php endif; ?>
-                                    <?php if ( isset( $field_options['reason_paused'] ) ) : ?>
-                                    <div class="cell small-12 medium-4" style="display:none">
-                                        <?php
-                                        render_field_for_display( 'reason_paused', $field_options, null, false, false, 'bulk_', $field_params );
-                                        ?>
-                                    </div>
-                                    <?php endif; ?>
-
-                                <?php } elseif ( $post_type == 'groups' ) {?>
-                                    <div class="cell small-12 medium-4">
-                                    <?php $field_options['coaches']['custom_display'] = false ?>
-                                    <?php
-                                    render_field_for_display( 'coaches', $field_options, null, false, false, 'bulk_' ); ?>
-                                    </div>
-                                <?php } ?>
-                            <div class="cell small-12 medium-4">
-                                <div class="section-subheader">
-                                  <?php esc_html_e( 'Share with:', 'disciple_tools' );?>
-                                </div>
-                                <div id="<?php echo esc_attr( 'bulk_share_connection' ) ?>" class="dt_typeahead">
-                                    <span id="<?php echo esc_html( 'share' ); ?>-result-container" class="result-container"></span>
-                                    <div id="<?php echo esc_html( 'share' ); ?>_t" name="form-<?php echo esc_html( 'share' ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
-                                        <div class="typeahead__container" style="margin-bottom: 0">
-                                            <div class="typeahead__field">
-                                                <span class="typeahead__query">
-                                                    <input id = "bulk_share" class="input-height" data-field="<?php echo esc_html( 'share' ); ?>"
-                                                        data-post_type="<?php echo esc_html( $post_type ) ?>"
-                                                        data-field_type="connection"
-                                                        name="share[query]"
-                                                        placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), 'Users' ) )?>"
-                                                        autocomplete="off">
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <label style="display: inline-block">
-                                        <input type="checkbox" id="bulk_share_unshare">
-                                        <?php esc_html_e( 'Unshare with selected user', 'disciple_tools' ); ?>
-                                    </label>
-                                </div>
-                            </div>
-                            <?php if ( isset( $field_options['requires_update'] ) ) : ?>
-                            <div class="cell small-12 medium-4 center-items">
-                            <span style="margin-right:5px"><?php echo esc_html( $field_options['requires_update']['name'] ); ?>:</span>
-                                    <input type="checkbox" id="update-needed-bulk" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
-                                    <label class="dt-switch" for="update-needed-bulk" style="vertical-align: top;"></label>
-                            </div>
-                            <?php endif; ?>
-                            <div class="cell small-12 medium-4 center-items">
-                            <button class="button follow" data-value=""><?php echo esc_html( __( 'Follow', 'disciple_tools' ) ) ?></button>
-                            </div>
-
-                            <div class="cell small-12 medium-12 grid-y">
-                                <div class="section-subheader">
-                                    <?php esc_html_e( 'Comments and Activity', 'disciple_tools' ) ?>
-                                </div>
-                                <div class="cell" id="bulk_add-comment-section">
-                                    <div class="auto cell">
-                                        <textarea class="mention" dir="auto" id="bulk_comment-input"
-                                                placeholder="<?php echo esc_html_x( 'Write your comment or note here', 'input field placeholder', 'disciple_tools' ) ?>"
-                                        ></textarea>
-
-                                        <?php
-                                        $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );
-                                        if ( sizeof( $sections ) > 0 ) : ?>
-                                            <div class="grid-x">
-                                                <div class="section-subheader cell shrink">
-                                                    <?php esc_html_e( 'Type:', 'disciple_tools' ) ?>
-                                                </div>
-                                                <select id="comment_type_selector" class="cell auto">
-                                                    <?php
-                                                    $section_keys = [ 'activity' ];
-                                                    foreach ( $sections as $section ) {
-                                                        if ( !in_array( $section['key'], $section_keys ) ) {
-                                                            $section_keys[] = $section['key'] ?>
-                                                            <option value="<?php echo esc_html( $section['key'] ); ?>">
-                                                            <?php echo esc_html( $section['label'] );
-                                                        }
-                                                    } ?>
-                                                </select>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <span class="cell small-12 medium-12 center">
-                                <a class="button" id="bulk_edit_seeMore">
-                                    <span class="seeMoreText"><?php esc_html_e( 'See More Options', 'disciple_tools' ); ?></span>
-                                    <span class="seeFewerText" style="display:none"><?php esc_html_e( 'See Fewer Options', 'disciple_tools' ); ?></span>
-                                </a>
-                            </span>
-                            <div id="bulk_more" class="grid-x grid-margin-x" style="display:none;">
-
-                                <?php
-                                //move multi_select fields to the end
-                                function multiselect_at_end( $a, $b ){
-                                    return ( $a['type'] ?? '' === 'multi_select' && ( $a['display'] ?? '' ) !== 'typeahead' ) ? 1 : 0;
-                                };
-                                uasort( $field_options, 'multiselect_at_end' );
-                                $already_done = [ 'subassigned', 'assigned_to', 'overall_status' ];
-                                $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
-                                foreach ( $field_options as $field_option => $value ) :
-                                    if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && in_array( $value['type'], $allowed_types )
-                                        && $value['type'] != 'communication_channel' && empty( $value['hidden'] ) ) : ?>
-                                        <div class="cell small-12 medium-<?php echo esc_attr( ( $value['type'] === 'multi_select' && ( $value['display'] ?? '' ) !== 'typeahead' ) ? '12' : '4' ) ?>">
-                                            <?php $field_options[$field_option]['custom_display'] = false;
-                                            render_field_for_display( $field_option, $field_options, null, false, false, 'bulk_' ); ?>
-                                        </div>
-                                    <?php endif;
-                                endforeach;
-                                ?>
-                            </div>
-                        </div>
-
-                        <button class="button dt-green" id="bulk_edit_submit">
-                            <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Update', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>" style="text-transform:capitalize;">
-                                <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
-                            </span>
-                            <span id="bulk_edit_submit-spinner" style="display: inline-block;" class="loading-spinner"></span>
-                        </button>
-                        <span class="list-action-event-buttons">
-                            <?php if ( current_user_can( 'delete_any_' . $post_type ) ){ ?>
-                                <button class="button" id="bulk_edit_delete_submit">
-                                    <span class="bulk_edit_delete_submit_text"
-                                          data-pretext="<?php echo esc_html__( 'Delete', 'disciple_tools' ); ?>"
-                                          data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>"
-                                          style="text-transform:capitalize;">
-                                        <?php echo esc_html( __( 'Delete Selections Below', 'disciple_tools' ) ); ?>
-                                    </span>
-                                    <span id="bulk_edit_delete_submit-spinner" style="display: inline-block;"
-                                          class="loading-spinner"></span>
-                                </button>
-                            <?php } ?>
-                        </span>
-                    </form>
-
-                    <div id="bulk_send_msg_picker" class="list_action_section">
-                        <button class="close-button list-action-close-button" data-close="bulk_send_msg_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                        <p style="font-weight:bold"><?php
-                            echo sprintf( esc_html__( 'Select all the %1$s to whom you want to message.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
-                        <div class="grid-x grid-margin-x">
-                            <div class="cell">
-                                <?php
-                                $has_twilio = class_exists( 'Disciple_Tools_Twilio_API', false ) && Disciple_Tools_Twilio_API::has_credentials() && Disciple_Tools_Twilio_API::is_enabled();
-                                $dt_site_notification_defaults = dt_get_site_notification_defaults();
-                                $default_subject = dt_get_option( 'dt_email_base_subject' );
-                                $default_message = 'Hello {{name}},
-
-Bulk send message...
-
-Thanks!';
-
-                                /**
-                                 * Filter the default message for the current post type.
-                                 *
-                                 * @param string $default_message The default message.
-                                 * @param string $post_type The post type.
-                                 * @return string The filtered default message.
-                                 */
-                                $default_message = apply_filters( 'dt_post_messaging_message_default', $default_message, $post_type );
-                                // Filter communication channels.
-                                $comms_channels = [];
-                                foreach ( $dt_site_notification_defaults['channels'] as $channel_key => $channel_value ){
-                                    if ( $channel_key === 'web' ) {
-                                        continue;
-                                    }
-
-                                    if ( !$has_twilio && $channel_key === 'sms' ) {
-                                        continue;
-                                    }
-
-                                    $comms_channels[ $channel_key ] = $channel_value;
-                                }
-                                $msg_reply_to = dt_get_option( 'dt_email_base_address_reply_to' );
-                                if ( empty( $msg_reply_to ) ) {
-                                    $msg_reply_to = dt_get_option( 'dt_email_base_address' );
-                                }
-                                ?>
-                                <label for="bulk_send_msg_subject"><?php echo esc_html__( 'Message subject', 'disciple_tools' ); ?></label>
-                                <input type="text" id="bulk_send_msg_subject" value="<?php echo esc_attr( $default_subject ); ?>" style="margin-bottom: 0"/>
-                                <span id="bulk_send_msg_subject_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid message subject must be entered.', 'disciple_tools' ); ?></span><br>
-
-                                <label for="bulk_send_msg_from_name"><?php echo esc_html__( 'Message from name', 'disciple_tools' ); ?></label>
-                                <input type="text" id="bulk_send_msg_from_name" value="<?php echo esc_attr( dt_default_email_name() ); ?>" style="margin-bottom: 0"/>
-                                <span id="bulk_send_msg_from_name_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid from name must be specified.', 'disciple_tools' ); ?></span><br>
-
-                                <label for="bulk_send_msg_reply_to"><?php echo esc_html__( 'Message reply to', 'disciple_tools' ); ?></label>
-                                <input type="text" id="bulk_send_msg_reply_to" value="<?php echo esc_attr( $msg_reply_to ); ?>" style="margin-bottom: 0"/>
-                                <span id="bulk_send_msg_reply_to_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid reply to email address must be specified.', 'disciple_tools' ); ?></span><br>
-
-                                <span><?php echo sprintf( esc_html__( 'Emails will be sent from: %s', 'disciple_tools' ), esc_html( dt_default_email_address() ) ); ?></span><br>
-
-<!--                                --><?php
-//                                if ( count( $comms_channels ) > 1 ) {
-//                                    ?>
-<!--                                    <br><label>--><?php //echo esc_html__( 'Select message send method', 'disciple_tools' ); ?><!--</label>-->
-<!--                                    --><?php
-//                                    foreach ( $comms_channels as $channel_key => $channel_value ) {
-//                                        if ( !in_array( $channel_key, [ 'web' ] ) ) {
-//                                            $method_id = 'bulk_send_msg_method_' . $channel_key;
-//                                            ?>
-<!--                                            <input type="radio" class="bulk-send-msg-method"-->
-<!--                                                   id="--><?php //echo esc_attr( $method_id ); ?><!--"-->
-<!--                                                   name="bulk_send_msg_method"-->
-<!--                                                   value="--><?php //echo esc_attr( $channel_key ); ?><!--"-->
-<!--                                                --><?php //echo( ( $channel_key === 'email' ) ? 'checked' : '' ) ?><!--/>-->
-<!--                                            <label-->
-<!--                                                for="--><?php //echo esc_attr( $method_id ); ?><!--">--><?php //echo esc_html( $channel_value['label'] ); ?><!--</label>-->
-<!--                                            --><?php
-//                                        }
-//                                    }
-//                                }
-//                                ?>
-                                <span id="bulk_send_msg_method_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><br><?php echo esc_html__( 'Please ensure a valid send method has been specified.', 'disciple_tools' ); ?></span><br>
-
-                                <label for="bulk_send_msg"><?php echo esc_html__( 'Message', 'disciple_tools' ); ?></label>
-                                <textarea type="text" id="bulk_send_msg" rows="10"><?php echo esc_textarea( $default_message ); ?></textarea>
-                                <span id="bulk_send_msg_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'Please ensure a valid send message has been entered.', 'disciple_tools' ); ?></span><br>
-                                <span><?php echo esc_html__( 'Message placeholders', 'disciple_tools' ); ?></span>
-                                <ul>
-                                    <?php
-
-                                    /**
-                                     * Filter the message placeholders for the current post type.
-                                     *
-                                     * @param array $message_placeholders The message placeholders.
-                                     * @param string $post_type The post type.
-                                     * @return array The filtered message placeholders. The array should be in the following format:
-                                     * [
-                                     *     [
-                                     *         'name' => '{{name}}', // Required
-                                     *         'description' => 'Name of the Record', // Required
-                                     *         'help' => [ // Optional
-                                     *             'id' => 'placeholder_help_text_1', // Required
-                                     *             'title' => 'Name of the Record', // Required
-                                     *             'description' => 'Description of the Record', // Required
-                                     *             'items' => [ // Optional
-                                     *                 [
-                                     *                     'title' => 'Title of the Item',
-                                     *                     'text' => 'Text of the Item',
-                                     *                 ]
-                                     *             ]
-                                     *         ]
-                                     *     ]
-                                     * ]
-                                     */
-                                    $message_placeholders = apply_filters( 'dt_post_messaging_message_placeholders', [
-                                        [
-                                            'name' => '{{name}}',
-                                            'description' => __( 'Name of the Record', 'disciple_tools' ),
-                                        ],
-                                    ], $post_type );
-                                    ?>
-
-                                    <?php foreach ( $message_placeholders as $placeholder ) : ?>
-
-                                        <li>
-                                            <span style="font-weight: bold;"><?php echo esc_html( $placeholder['name'] ); ?></span>:
-                                            <?php echo esc_html( $placeholder['description'] ); ?>
-
-                                            <?php if ( isset( $placeholder['help'] ) ) : ?>
-                                                <button class="float-right" data-open="placeholder_help_text_<?php echo esc_attr( $placeholder['help']['id'] ); ?>">
-                                                    <img class="help-icon"  style="padding-left: 5px;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" alt="help"/>
-                                                </button>
-                                            <?php endif; ?>
-                                        </li>
-
-
-                                        <?php if ( isset( $placeholder['help'] ) ) : ?>
-
-                                            <div id="placeholder_help_text_<?php echo esc_attr( $placeholder['help']['id'] ); ?>" class="large reveal" data-reveal data-v-offset="10px">
-                                                <span class="section-header"><?php esc_html_e( 'Message Placeholder Help', 'disciple_tools' ) ?></span>
-                                                <hr>
-                                                <div class="grid-x">
-
-                                                    <?php if ( isset( $placeholder['help']['title'] ) ) : ?>
-
-                                                        <div class="cell">
-                                                            <p><strong><?php echo esc_html( $placeholder['help']['title'] ); ?></strong></p>
-                                                        </div>
-
-                                                    <?php endif; ?>
-
-                                                    <?php if ( isset( $placeholder['help']['description'] ) ) : ?>
-                                                        <div class="cell">
-                                                            <p><?php echo esc_html( $placeholder['help']['description'] ); ?></p>
-                                                        </div>
-                                                    <?php endif; ?>
-
-                                                    <?php foreach ( $placeholder['help']['items'] as $item ) : ?>
-
-                                                        <div class="cell">
-                                                            <?php if ( isset( $item['title'] ) ) : ?>
-                                                                <span><strong><?php echo esc_html( $item['title'] ); ?></strong></span>:<?php echo ' '; ?>
-                                                            <?php endif; ?>
-                                                            <?php if ( isset( $item['text'] ) ) : ?>
-                                                                <span><?php echo esc_html( $item['text'] ); ?></span>
-                                                            <?php endif; ?>
-                                                        </div>
-
-                                                    <?php endforeach; ?>
-
-                                                </div>
-                                                <button class="close-button" data-close aria-label="Close modal" type="button">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                        <?php endif; ?>
-
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                            <div class="cell">
-                                <label for="bulk_send_msg_required_elements"><?php echo esc_html__( 'Send to selected records', 'disciple_tools' ); ?></label>
-                                <span id="bulk_send_msg_required_elements" style="display:none;color:red;"><?php echo esc_html__( 'You must select at least one record', 'disciple_tools' ); ?></span>
-                                <div>
-                                    <button class="button dt-green" id="bulk_send_msg_submit">
-                                        <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Send', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html__( 'Links', 'disciple_tools' ); ?>" style="text-transform:capitalize;">
-                                            <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
-                                        </span>
-                                        <span id="bulk_send_msg_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
-                                    </button><br>
-                                    <span id="bulk_send_msg_submit_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'Ensure valid record selections have been made.', 'disciple_tools' ); ?></span>
-                                </div>
-                                <span id="bulk_send_msg_submit-message"></span>
-                            </div>
-                        </div>
-                    </div>
 
                     <div style="display: flex; flex-wrap:wrap; margin: 10px 0" id="current-filters"></div>
 
@@ -1038,7 +544,474 @@ Thanks!';
                     </div>
                 </div>
             </main>
+
+            <aside id="list-actions" class="list-actions">
+                <div class="bordered-box" id="tile-filters">
+                    <div class="section-header">
+                        <span><?php esc_html_e( 'Actions', 'disciple_tools' ) ?></span>
+                        <button class="close-button list-action-close-button" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="section-body">
+                        <?php
+                        // Add section UI for custom menus
+                        do_action( 'dt_list_action_section', $post_type, $post_settings );
+                        ?>
+
+                        <div id="list_column_picker" class="list_field_picker list_action_section">
+                            <p style="font-weight:bold"><?php esc_html_e( 'Choose which fields to display as columns in the list', 'disciple_tools' ); ?></p>
+
+                            <div class="field-selection-ui">
+                                <!-- Search input for adding fields -->
+                                <div style="margin-bottom: 15px;">
+                                    <label for="field_search_input" class="field-search-label">
+                                        <?php esc_html_e( 'Add fields:', 'disciple_tools' ); ?>
+                                    </label>
+                                    <div class="field-search-container">
+                                        <input type="text" id="field_search_input" class="field-search-input" placeholder="<?php esc_html_e( 'Search for fields to add...', 'disciple_tools' ); ?>">
+                                        <div id="field_search_dropdown" class="field-search-dropdown">
+                                            <?php foreach ( $post_settings['fields'] as $field_key => $field_values ):
+                                                if ( !empty( $field_values['hidden'] ) ){
+                                                    continue;
+                                                }
+                                                $has_icon = !empty( $field_values['icon'] ) || !empty( $field_values['font-icon'] );
+                                                $option_classes = 'field-search-option' . ( $has_icon ? '' : ' no-icon' );
+                                                ?>
+                                                <div class="<?php echo esc_attr( $option_classes ); ?> field-search-option-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>"
+                                                     data-field-name="<?php echo esc_attr( strtolower( $field_values['name'] ) ); ?>">
+                                                    <?php dt_render_field_icon( $field_values ); ?>
+                                                    <span><?php echo esc_html( $field_values['name'] ); ?></span>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Enabled fields display -->
+                                <div class="enabled-fields-section">
+                                    <label class="enabled-fields-label">
+                                        <?php esc_html_e( 'Enabled fields:', 'disciple_tools' ); ?>
+                                    </label>
+                                    <div id="enabled_fields_container" class="enabled-fields-container">
+                                        <?php if ( empty( $enabled_fields ) ): ?>
+                                            <span class="no-fields-message"><?php esc_html_e( 'No fields selected', 'disciple_tools' ); ?></span>
+                                        <?php else : ?>
+                                            <?php foreach ( $enabled_fields as $field_key ): ?>
+                                                <?php if ( isset( $post_settings['fields'][$field_key] ) ): ?>
+                                                    <?php
+                                                    $field_settings = $post_settings['fields'][$field_key];
+                                                    $has_icon = !empty( $field_settings['icon'] ) || !empty( $field_settings['font-icon'] );
+                                                    $tag_classes = 'enabled-field-tag' . ( $has_icon ? '' : ' no-icon' );
+                                                    ?>
+                                                    <span class="<?php echo esc_attr( $tag_classes ); ?> enabled-field-tag-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>">
+                                                    <?php dt_render_field_icon( $field_settings, 'dt-icon' ); ?>
+                                                    <span><?php echo esc_html( $field_settings['name'] ); ?></span>
+                                                    <button type="button" class="remove-field-btn remove-field-btn-inline" data-field-key="<?php echo esc_attr( $field_key ); ?>">×</button>
+                                                </span>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+
+                                <!-- Hidden input to store selected fields -->
+                                <input type="hidden" id="selected_fields_input" value="<?php echo esc_attr( json_encode( $enabled_fields ) ); ?>">
+
+                                <button class="button" id="save_column_choices" style="display: inline-block"><?php esc_html_e( 'Apply', 'disciple_tools' ); ?></button>
+                                <a class="button clear" id="reset_column_choices" style="display: inline-block"><?php esc_html_e( 'reset to default', 'disciple_tools' ); ?></a>
+                            </div>
+                        </div>
+
+                        <form id="bulk_edit_picker" class="list_action_section">
+                            <button class="close-button list-action-close-button" data-close="bulk_edit_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <p style="font-weight:bold"><?php
+                                echo sprintf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
+                            <div class="grid-x">
+                                <?php if ( isset( $field_options['assigned_to'] ) ) : ?>
+                                    <div class="cell small-12">
+                                        <div class="section-subheader">
+                                            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
+                                            <?php echo esc_html( $field_options['assigned_to']['name'] ); ?>
+                                            <button class="help-button" data-section="assigned-to-help-text">
+                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                                            </button>
+                                        </div>
+                                        <div class="bulk_assigned_to details">
+                                            <var id="bulk_assigned_to-result-container" class="result-container bulk_assigned_to-result-container"></var>
+                                            <div id="bulk_assigned_to_t" name="form-bulk_assigned_to" class="scrollable-typeahead">
+                                                <div class="typeahead__container" style="margin-bottom: 0">
+                                                    <div class="typeahead__field">
+                                            <span class="typeahead__query">
+                                                <input class="js-typeahead-bulk_assigned_to input-height" dir="auto"
+                                                       name="bulk_assigned_to[query]" placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
+                                                       autocomplete="off">
+                                            </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if ( $post_type == 'contacts' ) {?>
+                                    <?php if ( isset( $field_options['subassigned'] ) ) : ?>
+                                        <div class="cell small-12">
+                                            <?php $field_options['subassigned']['custom_display'] = false ?>
+                                            <?php render_field_for_display( 'subassigned', $field_options, null, false, false, 'bulk_', $field_params ); ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if ( isset( $field_options['overall_status'] ) ) : ?>
+                                        <div class="cell small-12">
+                                            <?php
+                                            $field_key = 'overall_status';
+                                            if ( isset( $field_options[$field_key]['select_cannot_be_empty'] ) ) {
+                                                unset( $field_options[$field_key]['select_cannot_be_empty'] );
+                                            }
+                                            DT_Components::render_key_select( 'overall_status', $field_options, null, $field_params );
+                                            ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if ( isset( $field_options['reason_paused'] ) ) : ?>
+                                        <div class="cell small-12" style="display:none">
+                                            <?php
+                                            render_field_for_display( 'reason_paused', $field_options, null, false, false, 'bulk_', $field_params );
+                                            ?>
+                                        </div>
+                                    <?php endif; ?>
+
+                                <?php } elseif ( $post_type == 'groups' ) {?>
+                                    <div class="cell small-12">
+                                        <?php $field_options['coaches']['custom_display'] = false ?>
+                                        <?php
+                                        render_field_for_display( 'coaches', $field_options, null, false, false, 'bulk_' ); ?>
+                                    </div>
+                                <?php } ?>
+                                <div class="cell small-12">
+                                    <div class="section-subheader">
+                                        <?php esc_html_e( 'Share with:', 'disciple_tools' );?>
+                                    </div>
+                                    <div id="<?php echo esc_attr( 'bulk_share_connection' ) ?>" class="dt_typeahead">
+                                        <span id="<?php echo esc_html( 'share' ); ?>-result-container" class="result-container"></span>
+                                        <div id="<?php echo esc_html( 'share' ); ?>_t" name="form-<?php echo esc_html( 'share' ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
+                                            <div class="typeahead__container" style="margin-bottom: 0">
+                                                <div class="typeahead__field">
+                                                <span class="typeahead__query">
+                                                    <input id = "bulk_share" class="input-height" data-field="<?php echo esc_html( 'share' ); ?>"
+                                                           data-post_type="<?php echo esc_html( $post_type ) ?>"
+                                                           data-field_type="connection"
+                                                           name="share[query]"
+                                                           placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), 'Users' ) )?>"
+                                                           autocomplete="off">
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <label style="display: inline-block">
+                                            <input type="checkbox" id="bulk_share_unshare">
+                                            <?php esc_html_e( 'Unshare with selected user', 'disciple_tools' ); ?>
+                                        </label>
+                                    </div>
+                                </div>
+                                <?php if ( isset( $field_options['requires_update'] ) ) : ?>
+                                    <div class="cell small-12 center-items">
+                                        <span style="margin-right:5px"><?php echo esc_html( $field_options['requires_update']['name'] ); ?>:</span>
+                                        <input type="checkbox" id="update-needed-bulk" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
+                                        <label class="dt-switch" for="update-needed-bulk" style="vertical-align: top;"></label>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="cell small-12 center-items">
+                                    <button class="button follow" data-value=""><?php echo esc_html( __( 'Follow', 'disciple_tools' ) ) ?></button>
+                                </div>
+
+                                <div class="cell small-12 medium-12 grid-y">
+                                    <div class="section-subheader">
+                                        <?php esc_html_e( 'Comments and Activity', 'disciple_tools' ) ?>
+                                    </div>
+                                    <div class="cell" id="bulk_add-comment-section">
+                                        <div class="auto cell">
+                                        <textarea class="mention" dir="auto" id="bulk_comment-input"
+                                                  placeholder="<?php echo esc_html_x( 'Write your comment or note here', 'input field placeholder', 'disciple_tools' ) ?>"
+                                        ></textarea>
+
+                                            <?php
+                                            $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );
+                                            if ( sizeof( $sections ) > 0 ) : ?>
+                                                <div class="grid-x">
+                                                    <div class="section-subheader cell shrink">
+                                                        <?php esc_html_e( 'Type:', 'disciple_tools' ) ?>
+                                                    </div>
+                                                    <select id="comment_type_selector" class="cell auto">
+                                                        <?php
+                                                        $section_keys = [ 'activity' ];
+                                                        foreach ( $sections as $section ) {
+                                                            if ( !in_array( $section['key'], $section_keys ) ) {
+                                                                $section_keys[] = $section['key'] ?>
+                                                        <option value="<?php echo esc_html( $section['key'] ); ?>">
+                                                                <?php echo esc_html( $section['label'] );
+                                                            }
+                                                        } ?>
+                                                    </select>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="cell small-12 medium-12 center">
+                                    <a class="button" id="bulk_edit_seeMore">
+                                        <span class="seeMoreText"><?php esc_html_e( 'See More Options', 'disciple_tools' ); ?></span>
+                                        <span class="seeFewerText" style="display:none"><?php esc_html_e( 'See Fewer Options', 'disciple_tools' ); ?></span>
+                                    </a>
+                                </span>
+                                <div id="bulk_more" class="grid-x cell" style="display:none;">
+
+                                    <?php
+                                    //move multi_select fields to the end
+                                    function multiselect_at_end( $a, $b ){
+                                        return ( $a['type'] ?? '' === 'multi_select' && ( $a['display'] ?? '' ) !== 'typeahead' ) ? 1 : 0;
+                                    };
+                                    uasort( $field_options, 'multiselect_at_end' );
+                                    $already_done = [ 'subassigned', 'assigned_to', 'overall_status' ];
+                                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
+                                    foreach ( $field_options as $field_option => $value ) :
+                                        if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && in_array( $value['type'], $allowed_types )
+                                            && $value['type'] != 'communication_channel' && empty( $value['hidden'] ) ) : ?>
+                                            <div class="cell small-12">
+                                                <?php $field_options[$field_option]['custom_display'] = false;
+                                                render_field_for_display( $field_option, $field_options, null, false, false, 'bulk_' ); ?>
+                                            </div>
+                                        <?php endif;
+                                    endforeach;
+                                    ?>
+                                </div>
+                            </div>
+
+                            <button class="button dt-green" id="bulk_edit_submit">
+                            <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Update', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>" style="text-transform:capitalize;">
+                                <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
+                            </span>
+                                <span id="bulk_edit_submit-spinner" style="display: inline-block;" class="loading-spinner"></span>
+                            </button>
+                            <span class="list-action-event-buttons">
+                            <?php if ( current_user_can( 'delete_any_' . $post_type ) ){ ?>
+                                <button class="button" id="bulk_edit_delete_submit">
+                                    <span class="bulk_edit_delete_submit_text"
+                                          data-pretext="<?php echo esc_html__( 'Delete', 'disciple_tools' ); ?>"
+                                          data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>"
+                                          style="text-transform:capitalize;">
+                                        <?php echo esc_html( __( 'Delete Selections Below', 'disciple_tools' ) ); ?>
+                                    </span>
+                                    <span id="bulk_edit_delete_submit-spinner" style="display: inline-block;"
+                                          class="loading-spinner"></span>
+                                </button>
+                            <?php } ?>
+                        </span>
+                        </form>
+
+                        <div id="bulk_send_msg_picker" class="list_action_section">
+                            <button class="close-button list-action-close-button" data-close="bulk_send_msg_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <p style="font-weight:bold"><?php
+                                echo sprintf( esc_html__( 'Select all the %1$s to whom you want to message.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
+                            <div class="grid-x grid-margin-x">
+                                <div class="cell">
+                                    <?php
+                                    $has_twilio = class_exists( 'Disciple_Tools_Twilio_API', false ) && Disciple_Tools_Twilio_API::has_credentials() && Disciple_Tools_Twilio_API::is_enabled();
+                                    $dt_site_notification_defaults = dt_get_site_notification_defaults();
+                                    $default_subject = dt_get_option( 'dt_email_base_subject' );
+                                    $default_message = 'Hello {{name}},
+
+Bulk send message...
+
+Thanks!';
+
+                                    /**
+                                     * Filter the default message for the current post type.
+                                     *
+                                     * @param string $default_message The default message.
+                                     * @param string $post_type The post type.
+                                     * @return string The filtered default message.
+                                     */
+                                    $default_message = apply_filters( 'dt_post_messaging_message_default', $default_message, $post_type );
+                                    // Filter communication channels.
+                                    $comms_channels = [];
+                                    foreach ( $dt_site_notification_defaults['channels'] as $channel_key => $channel_value ){
+                                        if ( $channel_key === 'web' ) {
+                                            continue;
+                                        }
+
+                                        if ( !$has_twilio && $channel_key === 'sms' ) {
+                                            continue;
+                                        }
+
+                                        $comms_channels[ $channel_key ] = $channel_value;
+                                    }
+                                    $msg_reply_to = dt_get_option( 'dt_email_base_address_reply_to' );
+                                    if ( empty( $msg_reply_to ) ) {
+                                        $msg_reply_to = dt_get_option( 'dt_email_base_address' );
+                                    }
+                                    ?>
+                                    <label for="bulk_send_msg_subject"><?php echo esc_html__( 'Message subject', 'disciple_tools' ); ?></label>
+                                    <input type="text" id="bulk_send_msg_subject" value="<?php echo esc_attr( $default_subject ); ?>" style="margin-bottom: 0"/>
+                                    <span id="bulk_send_msg_subject_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid message subject must be entered.', 'disciple_tools' ); ?></span><br>
+
+                                    <label for="bulk_send_msg_from_name"><?php echo esc_html__( 'Message from name', 'disciple_tools' ); ?></label>
+                                    <input type="text" id="bulk_send_msg_from_name" value="<?php echo esc_attr( dt_default_email_name() ); ?>" style="margin-bottom: 0"/>
+                                    <span id="bulk_send_msg_from_name_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid from name must be specified.', 'disciple_tools' ); ?></span><br>
+
+                                    <label for="bulk_send_msg_reply_to"><?php echo esc_html__( 'Message reply to', 'disciple_tools' ); ?></label>
+                                    <input type="text" id="bulk_send_msg_reply_to" value="<?php echo esc_attr( $msg_reply_to ); ?>" style="margin-bottom: 0"/>
+                                    <span id="bulk_send_msg_reply_to_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid reply to email address must be specified.', 'disciple_tools' ); ?></span><br>
+
+                                    <span><?php echo sprintf( esc_html__( 'Emails will be sent from: %s', 'disciple_tools' ), esc_html( dt_default_email_address() ) ); ?></span><br>
+
+                                    <!--                                --><?php
+                                    //                                if ( count( $comms_channels ) > 1 ) {
+                                    //                                    ?>
+                                    <!--                                    <br><label>--><?php //echo esc_html__( 'Select message send method', 'disciple_tools' ); ?><!--</label>-->
+                                    <!--                                    --><?php
+                                    //                                    foreach ( $comms_channels as $channel_key => $channel_value ) {
+                                    //                                        if ( !in_array( $channel_key, [ 'web' ] ) ) {
+                                    //                                            $method_id = 'bulk_send_msg_method_' . $channel_key;
+                                    //                                            ?>
+                                    <!--                                            <input type="radio" class="bulk-send-msg-method"-->
+                                    <!--                                                   id="--><?php //echo esc_attr( $method_id ); ?><!--"-->
+                                    <!--                                                   name="bulk_send_msg_method"-->
+                                    <!--                                                   value="--><?php //echo esc_attr( $channel_key ); ?><!--"-->
+                                    <!--                                                --><?php //echo( ( $channel_key === 'email' ) ? 'checked' : '' ) ?><!--/>-->
+                                    <!--                                            <label-->
+                                    <!--                                                for="--><?php //echo esc_attr( $method_id ); ?><!--">--><?php //echo esc_html( $channel_value['label'] ); ?><!--</label>-->
+                                    <!--                                            --><?php
+                                    //                                        }
+                                    //                                    }
+                                    //                                }
+                                    //                                ?>
+                                    <span id="bulk_send_msg_method_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><br><?php echo esc_html__( 'Please ensure a valid send method has been specified.', 'disciple_tools' ); ?></span><br>
+
+                                    <label for="bulk_send_msg"><?php echo esc_html__( 'Message', 'disciple_tools' ); ?></label>
+                                    <textarea type="text" id="bulk_send_msg" rows="10"><?php echo esc_textarea( $default_message ); ?></textarea>
+                                    <span id="bulk_send_msg_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'Please ensure a valid send message has been entered.', 'disciple_tools' ); ?></span><br>
+                                    <span><?php echo esc_html__( 'Message placeholders', 'disciple_tools' ); ?></span>
+                                    <ul>
+                                        <?php
+
+                                        /**
+                                         * Filter the message placeholders for the current post type.
+                                         *
+                                         * @param array $message_placeholders The message placeholders.
+                                         * @param string $post_type The post type.
+                                         * @return array The filtered message placeholders. The array should be in the following format:
+                                         * [
+                                         *     [
+                                         *         'name' => '{{name}}', // Required
+                                         *         'description' => 'Name of the Record', // Required
+                                         *         'help' => [ // Optional
+                                         *             'id' => 'placeholder_help_text_1', // Required
+                                         *             'title' => 'Name of the Record', // Required
+                                         *             'description' => 'Description of the Record', // Required
+                                         *             'items' => [ // Optional
+                                         *                 [
+                                         *                     'title' => 'Title of the Item',
+                                         *                     'text' => 'Text of the Item',
+                                         *                 ]
+                                         *             ]
+                                         *         ]
+                                         *     ]
+                                         * ]
+                                         */
+                                        $message_placeholders = apply_filters( 'dt_post_messaging_message_placeholders', [
+                                            [
+                                                'name' => '{{name}}',
+                                                'description' => __( 'Name of the Record', 'disciple_tools' ),
+                                            ],
+                                        ], $post_type );
+                                        ?>
+
+                                        <?php foreach ( $message_placeholders as $placeholder ) : ?>
+
+                                            <li>
+                                                <span style="font-weight: bold;"><?php echo esc_html( $placeholder['name'] ); ?></span>:
+                                                <?php echo esc_html( $placeholder['description'] ); ?>
+
+                                                <?php if ( isset( $placeholder['help'] ) ) : ?>
+                                                    <button class="float-right" data-open="placeholder_help_text_<?php echo esc_attr( $placeholder['help']['id'] ); ?>">
+                                                        <img class="help-icon"  style="padding-left: 5px;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" alt="help"/>
+                                                    </button>
+                                                <?php endif; ?>
+                                            </li>
+
+
+                                            <?php if ( isset( $placeholder['help'] ) ) : ?>
+
+                                                <div id="placeholder_help_text_<?php echo esc_attr( $placeholder['help']['id'] ); ?>" class="large reveal" data-reveal data-v-offset="10px">
+                                                    <span class="section-header"><?php esc_html_e( 'Message Placeholder Help', 'disciple_tools' ) ?></span>
+                                                    <hr>
+                                                    <div class="grid-x">
+
+                                                        <?php if ( isset( $placeholder['help']['title'] ) ) : ?>
+
+                                                            <div class="cell">
+                                                                <p><strong><?php echo esc_html( $placeholder['help']['title'] ); ?></strong></p>
+                                                            </div>
+
+                                                        <?php endif; ?>
+
+                                                        <?php if ( isset( $placeholder['help']['description'] ) ) : ?>
+                                                            <div class="cell">
+                                                                <p><?php echo esc_html( $placeholder['help']['description'] ); ?></p>
+                                                            </div>
+                                                        <?php endif; ?>
+
+                                                        <?php foreach ( $placeholder['help']['items'] as $item ) : ?>
+
+                                                            <div class="cell">
+                                                                <?php if ( isset( $item['title'] ) ) : ?>
+                                                                    <span><strong><?php echo esc_html( $item['title'] ); ?></strong></span>:<?php echo ' '; ?>
+                                                                <?php endif; ?>
+                                                                <?php if ( isset( $item['text'] ) ) : ?>
+                                                                    <span><?php echo esc_html( $item['text'] ); ?></span>
+                                                                <?php endif; ?>
+                                                            </div>
+
+                                                        <?php endforeach; ?>
+
+                                                    </div>
+                                                    <button class="close-button" data-close aria-label="Close modal" type="button">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                            <?php endif; ?>
+
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                                <div class="cell">
+                                    <label for="bulk_send_msg_required_elements"><?php echo esc_html__( 'Send to selected records', 'disciple_tools' ); ?></label>
+                                    <span id="bulk_send_msg_required_elements" style="display:none;color:red;"><?php echo esc_html__( 'You must select at least one record', 'disciple_tools' ); ?></span>
+                                    <div>
+                                        <button class="button dt-green" id="bulk_send_msg_submit">
+                                        <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Send', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html__( 'Links', 'disciple_tools' ); ?>" style="text-transform:capitalize;">
+                                            <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
+                                        </span>
+                                            <span id="bulk_send_msg_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
+                                        </button><br>
+                                        <span id="bulk_send_msg_submit_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'Ensure valid record selections have been made.', 'disciple_tools' ); ?></span>
+                                    </div>
+                                    <span id="bulk_send_msg_submit-message"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
         </div>
+        <a class="button dt-green create-post-mobile" href="<?php echo esc_url( home_url( '/' ) . $post_type ) . '/new' ?>">
+            <img class="dt-white-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/add.svg' ) ?>"/>
+        </a>
     </div>
 
     <div class="reveal" id="filter-modal" data-reveal>
