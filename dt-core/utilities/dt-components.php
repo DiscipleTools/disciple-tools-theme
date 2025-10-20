@@ -135,7 +135,10 @@ class DT_Components
                 $hierarchy_keys = [ 'names', 'path_names', 'hierarchy', 'breadcrumbs' ];
                 foreach ( $hierarchy_keys as $h_key ) {
                     if ( isset( $item[$h_key] ) && is_array( $item[$h_key] ) ) {
-                        $parts = array_values( array_filter( $item[$h_key], function ( $p ) { return $p !== null && $p !== ''; } ) );
+                        $parts = array_values( array_filter( $item[$h_key], function ( $p ) {
+                            return $p !== null && $p !== '';
+                        } ) );
+
                         if ( !empty( $parts ) ) {
                             $item['label'] = implode( ' > ', array_reverse( $parts ) );
                             return $item;
@@ -147,7 +150,10 @@ class DT_Components
                 if ( isset( $item['label'] ) && is_string( $item['label'] ) ) {
                     $segments = preg_split( '/\s*>\s*/', $item['label'] );
                     if ( is_array( $segments ) && count( $segments ) > 1 ) {
-                        $segments = array_values( array_filter( $segments, function ( $p ) { return $p !== null && $p !== ''; } ) );
+                        $segments = array_values( array_filter( $segments, function ( $p ) {
+                            return $p !== null && $p !== '';
+                        } ) );
+
                         if ( !empty( $segments ) ) {
                             $item['label'] = implode( ' > ', array_reverse( $segments ) );
                         }
@@ -157,7 +163,10 @@ class DT_Components
                 // Very defensive: if item is a string label
                 $segments = preg_split( '/\s*>\s*/', $item );
                 if ( is_array( $segments ) && count( $segments ) > 1 ) {
-                    $segments = array_values( array_filter( $segments, function ( $p ) { return $p !== null && $p !== ''; } ) );
+                    $segments = array_values( array_filter( $segments, function ( $p ) {
+                        return $p !== null && $p !== '';
+                    } ) );
+
                     if ( !empty( $segments ) ) {
                         $item = implode( ' > ', array_reverse( $segments ) );
                     }
