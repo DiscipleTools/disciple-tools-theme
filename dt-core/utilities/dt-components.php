@@ -126,8 +126,45 @@ class DT_Components
 
     public static function render_location( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
-        $value = array_map(function ( $value ) {
-            return $value;
+
+        $value = array_map(function ( $item ) {
+
+            // Normalize labels to Country > Region > City order where possible
+            if ( is_array( $item ) ) {
+                // If there is an explicit hierarchy array, prefer it
+                $hierarchy_keys = [ 'names', 'path_names', 'hierarchy', 'breadcrumbs' ];
+                foreach ( $hierarchy_keys as $h_key ) {
+                    if ( isset( $item[$h_key] ) && is_array( $item[$h_key] ) ) {
+                        $parts = array_values( array_filter( $item[$h_key], function ( $p ) { return $p !== null && $p !== ''; } ) );
+                        if ( !empty( $parts ) ) {
+                            $item['label'] = implode( ' > ', array_reverse( $parts ) );
+                            return $item;
+                        }
+                    }
+                }
+
+                // Fallback: if label already contains a breadcrumb, reverse segments
+                if ( isset( $item['label'] ) && is_string( $item['label'] ) ) {
+                    $segments = preg_split( '/\s*>\s*/', $item['label'] );
+                    if ( is_array( $segments ) && count( $segments ) > 1 ) {
+                        $segments = array_values( array_filter( $segments, function ( $p ) { return $p !== null && $p !== ''; } ) );
+                        if ( !empty( $segments ) ) {
+                            $item['label'] = implode( ' > ', array_reverse( $segments ) );
+                        }
+                    }
+                }
+            } elseif ( is_string( $item ) ) {
+                // Very defensive: if item is a string label
+                $segments = preg_split( '/\s*>\s*/', $item );
+                if ( is_array( $segments ) && count( $segments ) > 1 ) {
+                    $segments = array_values( array_filter( $segments, function ( $p ) { return $p !== null && $p !== ''; } ) );
+                    if ( !empty( $segments ) ) {
+                        $item = implode( ' > ', array_reverse( $segments ) );
+                    }
+                }
+            }
+
+            return $item;
         }, $post[$field_key] ?? []);
         ?>
         <dt-location <?php echo wp_kses_post( $shared_attributes ) ?>
