@@ -176,7 +176,6 @@ class DT_Components
 
     public static function render_location_meta( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
-        dt_write_log($post[$field_key]);
         ?>
         <dt-location-map <?php echo wp_kses_post( $shared_attributes ) ?>
             value='<?php echo esc_html( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>'
