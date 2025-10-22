@@ -309,9 +309,9 @@ class Disciple_Tools_People_Groups
         $posts_tb_updates_count = 0;
 
         // Determine sql id starting points + sql assets.
-        $last_posts_tb_id = $wpdb->get_var( $wpdb->prepare( "SELECT MAX(ID) FROM `{$wpdb->posts}`" ) );
-        $last_postmeta_tb_id = $wpdb->get_var( $wpdb->prepare( "SELECT MAX(meta_id) FROM `{$wpdb->postmeta}`" ) );
-        $last_location_grid_meta_tb_id = $wpdb->get_var( $wpdb->prepare( "SELECT MAX(grid_meta_id) FROM `{$wpdb->dt_location_grid_meta}`" ) );
+        $last_posts_tb_id = $wpdb->get_var( "SELECT MAX(ID) FROM `{$wpdb->posts}`" );
+        $last_postmeta_tb_id = $wpdb->get_var( "SELECT MAX(meta_id) FROM `{$wpdb->postmeta}`" );
+        $last_location_grid_meta_tb_id = $wpdb->get_var( "SELECT MAX(grid_meta_id) FROM `{$wpdb->dt_location_grid_meta}`" );
 
         // Load jp and imb csv data.
         $jp_data = self::get_jp_source();
