@@ -110,11 +110,9 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
          */
         public static function get_existing_location_grid_meta_id( $post_id, $grid_id ) {
             global $wpdb;
-            dt_write_log( 'Check location_grid duplicate for post_id: ' . $post_id . ' and grid_id: ' . $grid_id );
-            $grid_meta_id = $wpdb->get_var( "
-                    SELECT grid_meta_id FROM $wpdb->dt_location_grid_meta
-                    WHERE post_id = $post_id AND  grid_id = $grid_id
-                    " );
+            $grid_meta_id = $wpdb->get_var( $wpdb->prepare(
+                "SELECT grid_meta_id FROM $wpdb->dt_location_grid_meta
+                    WHERE post_id = %s AND  grid_id = %s;", $post_id, $grid_id ) );
 
             return $grid_meta_id;
         }
