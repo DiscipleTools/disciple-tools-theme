@@ -124,6 +124,21 @@ class DT_Components
         <?php
     }
 
+    public static function render_location( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+        $value = array_map(function ( $value ) {
+            return $value;
+        }, $post[$field_key] ?? []);
+        ?>
+        <dt-location <?php echo wp_kses_post( $shared_attributes ) ?>
+            value='<?php echo esc_attr( json_encode( $value ) ) ?>'
+            filters='[{"id": "focus", "label": "Region of Focus"},
+            {"id": "all", "label": "All Locations"}]'>
+            <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        </dt-location>
+        <?php
+    }
+
     public static function render_number( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         ?>
