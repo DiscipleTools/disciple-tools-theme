@@ -290,24 +290,42 @@ class DT_Home_Apps {
     /**
      * Reorder apps
      */
-    public function reorder_apps( $app_orders ) {
+    public function reorder_apps( $ordered_ids ) {
         $apps = $this->get_all_apps();
 
-        foreach ( $app_orders as $app_id => $order ) {
-            $app_index = $this->get_app_index( $app_id );
-            if ( $app_index !== false ) {
-                $apps[$app_index]['order'] = (int) $order;
-                $apps[$app_index]['updated_at'] = current_time( 'mysql' );
+        // Create a lookup array for existing data
+        $apps_lookup = [];
+        foreach ( $apps as $app ) {
+            if ( isset( $app['id'] ) ) {
+                $apps_lookup[$app['id']] = $app;
             }
         }
 
-        // Sort by order
-        usort( $apps, function( $a, $b ) {
-            return $a['order'] <=> $b['order'];
-        });
+        // Reorder based on the provided IDs and update order values
+        $reordered_apps = [];
+        $processed_ids = [];
+
+        foreach ( $ordered_ids as $index => $app_id ) {
+            if ( isset( $apps_lookup[$app_id] ) ) {
+                $app = $apps_lookup[$app_id];
+                $app['order'] = $index + 1;
+                $app['updated_at'] = current_time( 'mysql' );
+                $reordered_apps[] = $app;
+                $processed_ids[] = $app_id;
+            }
+        }
+
+        // Add any missing items to the end to prevent data loss
+        foreach ( $apps as $app ) {
+            if ( isset( $app['id'] ) && !in_array( $app['id'], $processed_ids ) ) {
+                $app['order'] = count( $reordered_apps ) + 1;
+                $app['updated_at'] = current_time( 'mysql' );
+                $reordered_apps[] = $app;
+            }
+        }
 
         // Save
-        $result = update_option( $this->option_name, $apps );
+        $result = update_option( $this->option_name, $reordered_apps );
 
         if ( $result ) {
             return true;

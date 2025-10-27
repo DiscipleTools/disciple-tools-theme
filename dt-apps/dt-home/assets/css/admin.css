@@ -241,6 +241,118 @@
     border-color: #545b62 !important;
 }
 
+/* Drag and Drop Styles */
+.sortable-table {
+    position: relative;
+}
+
+.sortable-table tr[draggable="true"] {
+    cursor: move;
+    transition: opacity 0.2s ease;
+}
+
+.sortable-table tr[draggable="true"]:hover {
+    background-color: #f8f9fa;
+}
+
+.sortable-table tr[draggable="true"].dragging {
+    opacity: 0.7;
+    background-color: #f8f9fa;
+}
+
+.drag-handle {
+    cursor: grab !important;
+    background-color: #f9f9f9 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    border: 1px solid #ddd !important;
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
+}
+
+.drag-handle:hover {
+    background-color: #e9ecef !important;
+    cursor: grab !important;
+}
+
+.drag-handle:active {
+    cursor: grabbing !important;
+}
+
+.drag-icon {
+    font-size: 14px;
+    color: #666;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.drag-icon:hover {
+    color: #333;
+}
+
+.drag-placeholder {
+    height: 2px !important;
+    background-color: #007cba !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.drag-placeholder td {
+    height: 2px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background-color: #007cba !important;
+}
+
+/* Visual feedback during drag operations */
+.sortable-table tbody tr.drop-indicator-top {
+    border-bottom: 4px solid #007cba;
+}
+
+.sortable-table tbody tr.drop-indicator-bottom {
+    border-bottom: 4px solid #007cba;
+}
+
+/* Status indicators for drag and drop */
+.sortable-message {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 14px 28px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.25rem;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Disable text selection during drag */
+.sortable-table tr[draggable="true"] * {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .dt-home-admin-container {
@@ -282,5 +394,24 @@
     .edit-form-container .form-table th {
         border-bottom: none;
         padding-bottom: 5px;
+    }
+    
+    /* Mobile drag and drop adjustments */
+    .drag-handle {
+        width: 30px !important;
+        min-width: 30px !important;
+        max-width: 30px !important;
+    }
+    
+    .drag-icon {
+        font-size: 12px;
+    }
+    
+    .sortable-message {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        font-size: 1rem;
+        padding: 12px 20px;
     }
 }

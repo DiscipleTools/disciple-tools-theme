@@ -34,6 +34,10 @@ class DT_Home_Admin {
 
         // Admin scripts and styles
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_assets' ] );
+
+        // AJAX handlers for drag and drop reordering
+        add_action( 'wp_ajax_dt_home_reorder_apps', [ $this, 'handle_app_reorder' ] );
+        add_action( 'wp_ajax_dt_home_reorder_videos', [ $this, 'handle_video_reorder' ] );
     }
 
     /**
@@ -89,6 +93,7 @@ class DT_Home_Admin {
             <form method="post" action="">
                 <?php wp_nonce_field( 'dt_home_screen_settings', 'dt_home_screen_nonce' ); ?>
                 <input type="hidden" name="dt_home_screen_settings" value="1">
+                <?php wp_nonce_field( 'dt_home_admin_nonce', 'dt_home_admin_nonce' ); ?>
 
                 <div class="dt-home-admin-container">
                     <!-- General Settings -->
@@ -511,9 +516,10 @@ class DT_Home_Admin {
             <?php if ( empty( $apps ) ) : ?>
                 <p><?php esc_html_e( 'No apps found.', 'disciple_tools' ); ?></p>
             <?php else : ?>
-                <table class="wp-list-table widefat fixed striped">
+                <table class="wp-list-table widefat fixed striped sortable-table" data-type="apps">
                     <thead>
                         <tr>
+                            <th style="width: 40px; text-align: center;"><?php esc_html_e( '⋮⋮', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Title', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Description', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'URL', 'disciple_tools' ); ?></th>
@@ -523,7 +529,10 @@ class DT_Home_Admin {
                     </thead>
                     <tbody>
                         <?php foreach ( $apps as $app ) : ?>
-                            <tr>
+                            <tr draggable="true" data-app-id="<?php echo esc_attr( $app['id'] ); ?>" style="cursor: move;">
+                                <td class="drag-handle" style="text-align: center; cursor: grab; background-color: #f9f9f9;">
+                                    <span class="drag-icon" style="font-size: 14px; color: #666;">⋮⋮</span>
+                                </td>
                                 <td>
                                     <strong><?php echo esc_html( $app['title'] ); ?></strong>
                                     <br>
@@ -622,9 +631,10 @@ class DT_Home_Admin {
             <?php if ( empty( $videos ) ) : ?>
                 <p><?php esc_html_e( 'No training videos found.', 'disciple_tools' ); ?></p>
             <?php else : ?>
-                <table class="wp-list-table widefat fixed striped">
+                <table class="wp-list-table widefat fixed striped sortable-table" data-type="videos">
                     <thead>
                         <tr>
+                            <th style="width: 40px; text-align: center;"><?php esc_html_e( '⋮⋮', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Title', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Description', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Duration', 'disciple_tools' ); ?></th>
@@ -635,7 +645,10 @@ class DT_Home_Admin {
                     </thead>
                     <tbody>
                         <?php foreach ( $videos as $video ) : ?>
-                            <tr>
+                            <tr draggable="true" data-video-id="<?php echo esc_attr( $video['id'] ); ?>" style="cursor: move;">
+                                <td class="drag-handle" style="text-align: center; cursor: grab; background-color: #f9f9f9;">
+                                    <span class="drag-icon" style="font-size: 14px; color: #666;">⋮⋮</span>
+                                </td>
                                 <td>
                                     <strong><?php echo esc_html( $video['title'] ); ?></strong>
                                 </td>
@@ -872,6 +885,66 @@ class DT_Home_Admin {
             </div>
         </div>
         <?php
+    }
+
+    /**
+     * Handle AJAX request for reordering apps
+     */
+    public function handle_app_reorder() {
+        // Verify nonce
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ?? '' ) ), 'dt_home_admin_nonce' ) ) {
+            wp_die( json_encode( [ 'success' => false, 'message' => 'Security check failed.' ] ) );
+        }
+
+        // Check permissions
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            wp_die( json_encode( [ 'success' => false, 'message' => 'Insufficient permissions.' ] ) );
+        }
+
+        $ordered_ids = isset( $_GET['ordered_ids'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_GET['ordered_ids'] ) ) ) : [];
+
+        if ( empty( $ordered_ids ) ) {
+            wp_die( json_encode( [ 'success' => false, 'message' => 'No ordered IDs provided.' ] ) );
+        }
+
+        $apps_manager = DT_Home_Apps::instance();
+        $result = $apps_manager->reorder_apps( $ordered_ids );
+
+        if ( is_wp_error( $result ) ) {
+            wp_die( json_encode( [ 'success' => false, 'message' => $result->get_error_message() ] ) );
+        }
+
+        wp_die( json_encode( [ 'success' => true, 'message' => 'Apps reordered successfully.' ] ) );
+    }
+
+    /**
+     * Handle AJAX request for reordering training videos
+     */
+    public function handle_video_reorder() {
+        // Verify nonce
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ?? '' ) ), 'dt_home_admin_nonce' ) ) {
+            wp_die( json_encode( [ 'success' => false, 'message' => 'Security check failed.' ] ) );
+        }
+
+        // Check permissions
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            wp_die( json_encode( [ 'success' => false, 'message' => 'Insufficient permissions.' ] ) );
+        }
+
+        $ordered_ids = isset( $_GET['ordered_ids'] ) ? explode( ',', sanitize_text_field( wp_unslash( $_GET['ordered_ids'] ) ) ) : [];
+
+        if ( empty( $ordered_ids ) ) {
+            wp_die( json_encode( [ 'success' => false, 'message' => 'No ordered IDs provided.' ] ) );
+        }
+
+        $training_manager = DT_Home_Training::instance();
+        $result = $training_manager->reorder_videos( $ordered_ids );
+
+        if ( is_wp_error( $result ) ) {
+            wp_die( json_encode( [ 'success' => false, 'message' => $result->get_error_message() ] ) );
+        }
+
+        wp_die( json_encode( [ 'success' => true, 'message' => 'Videos reordered successfully.' ] ) );
     }
 }
 

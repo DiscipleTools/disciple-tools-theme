@@ -244,24 +244,42 @@ class DT_Home_Training {
     /**
      * Reorder videos
      */
-    public function reorder_videos( $video_orders ) {
+    public function reorder_videos( $ordered_ids ) {
         $videos = $this->get_all_videos();
 
-        foreach ( $video_orders as $video_id => $order ) {
-            $video_index = $this->get_video_index( $video_id );
-            if ( $video_index !== false ) {
-                $videos[$video_index]['order'] = (int) $order;
-                $videos[$video_index]['updated_at'] = current_time( 'mysql' );
+        // Create a lookup array for existing data
+        $videos_lookup = [];
+        foreach ( $videos as $video ) {
+            if ( isset( $video['id'] ) ) {
+                $videos_lookup[$video['id']] = $video;
             }
         }
 
-        // Sort by order
-        usort( $videos, function( $a, $b ) {
-            return $a['order'] <=> $b['order'];
-        });
+        // Reorder based on the provided IDs and update order values
+        $reordered_videos = [];
+        $processed_ids = [];
+
+        foreach ( $ordered_ids as $index => $video_id ) {
+            if ( isset( $videos_lookup[$video_id] ) ) {
+                $video = $videos_lookup[$video_id];
+                $video['order'] = $index + 1;
+                $video['updated_at'] = current_time( 'mysql' );
+                $reordered_videos[] = $video;
+                $processed_ids[] = $video_id;
+            }
+        }
+
+        // Add any missing items to the end to prevent data loss
+        foreach ( $videos as $video ) {
+            if ( isset( $video['id'] ) && !in_array( $video['id'], $processed_ids ) ) {
+                $video['order'] = count( $reordered_videos ) + 1;
+                $video['updated_at'] = current_time( 'mysql' );
+                $reordered_videos[] = $video;
+            }
+        }
 
         // Save
-        $result = update_option( $this->option_name, $videos );
+        $result = update_option( $this->option_name, $reordered_videos );
 
         if ( $result ) {
             return true;

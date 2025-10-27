@@ -350,4 +350,294 @@ jQuery(document).ready(function ($) {
   window.DT_Home_Admin = {
     showNotice: showNotice,
   };
+
+  /**
+   * SortableTable class for drag & drop reordering
+   */
+  class SortableTable {
+    constructor(selector, config) {
+      this.table = document.querySelector(selector);
+      this.config = config;
+      this.draggedRow = null;
+      this.placeholder = null;
+
+      if (this.table) {
+        this.init();
+      }
+    }
+
+    init() {
+      this.addDragHandles();
+      this.bindEvents();
+      console.log('SortableTable: Initialization complete');
+    }
+
+    addDragHandles() {
+      const tbody = this.table.querySelector('tbody');
+
+      if (!tbody) return;
+
+      // Make rows draggable and ensure drag handles are properly configured
+      const rows = tbody.querySelectorAll('tr');
+
+      rows.forEach((row, index) => {
+        // Make the entire row draggable
+        row.draggable = true;
+        row.style.cursor = 'move';
+
+        // The drag handles are already in the HTML, just ensure they have proper styling
+        const dragHandle = row.querySelector('.drag-handle');
+        if (dragHandle) {
+          dragHandle.style.cursor = 'grab';
+          dragHandle.addEventListener('mousedown', () => {
+            dragHandle.style.cursor = 'grabbing';
+          });
+          dragHandle.addEventListener('mouseup', () => {
+            dragHandle.style.cursor = 'grab';
+          });
+        }
+      });
+    }
+
+    bindEvents() {
+      const tbody = this.table.querySelector('tbody');
+      if (!tbody) return;
+
+      tbody.addEventListener('dragstart', this.handleDragStart.bind(this));
+      tbody.addEventListener('dragover', this.handleDragOver.bind(this));
+      tbody.addEventListener('dragenter', this.handleDragEnter.bind(this));
+      tbody.addEventListener('drop', this.handleDrop.bind(this));
+      tbody.addEventListener('dragend', this.handleDragEnd.bind(this));
+    }
+
+    handleDragStart(e) {
+      // Check if we're dragging a table row
+      if (e.target.tagName.toLowerCase() === 'tr') {
+        this.draggedRow = e.target;
+
+        // Add visual feedback to the dragged row
+        e.target.classList.add('dragging');
+        e.target.style.opacity = '0.5';
+
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', e.target.outerHTML);
+      } else {
+        // Prevent drag if not initiated from a row
+        e.preventDefault();
+      }
+    }
+
+    handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+
+      if (!this.draggedRow) return;
+
+      // Remove any existing drop indicators
+      this.clearDropIndicators();
+
+      const afterElement = this.getDragAfterElement(e.clientY);
+      
+      if (afterElement) {
+        // Add drop indicator above the target element
+        afterElement.classList.add('drop-indicator-top');
+      } else {
+        // Add drop indicator at the bottom of the table
+        const tbody = this.table.querySelector('tbody');
+        const lastRow = tbody.querySelector('tr:last-child');
+        if (lastRow) {
+          lastRow.classList.add('drop-indicator-bottom');
+        }
+      }
+    }
+
+    handleDragEnter(e) {
+      e.preventDefault();
+    }
+
+    handleDrop(e) {
+      e.preventDefault();
+
+      if (!this.draggedRow) return;
+
+      // Clear all drop indicators
+      this.clearDropIndicators();
+
+      // Find the target position
+      const afterElement = this.getDragAfterElement(e.clientY);
+      const tbody = this.table.querySelector('tbody');
+      
+      if (!tbody) return;
+
+      // Move the dragged row to the new position
+      if (afterElement) {
+        tbody.insertBefore(this.draggedRow, afterElement);
+      } else {
+        tbody.appendChild(this.draggedRow);
+      }
+
+      // Reset styles
+      this.draggedRow.style.opacity = '';
+      this.draggedRow.classList.remove('dragging');
+
+      this.updateOrder();
+    }
+
+    handleDragEnd(e) {
+      // Clean up
+      if (this.draggedRow) {
+        this.draggedRow.style.opacity = '';
+        this.draggedRow.classList.remove('dragging');
+      }
+
+      // Clear all drop indicators
+      this.clearDropIndicators();
+
+      this.draggedRow = null;
+    }
+
+    getDragAfterElement(y) {
+      const tbody = this.table.querySelector('tbody');
+      const draggableElements = [...tbody.querySelectorAll('tr:not(.dragging)')];
+
+      return draggableElements.reduce((closest, child) => {
+        if (child === this.draggedRow) return closest;
+
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    clearDropIndicators() {
+      const tbody = this.table.querySelector('tbody');
+      if (tbody) {
+        const indicators = tbody.querySelectorAll('.drop-indicator-top, .drop-indicator-bottom');
+        indicators.forEach(indicator => {
+          indicator.classList.remove('drop-indicator-top', 'drop-indicator-bottom');
+        });
+      }
+    }
+
+    updateOrder() {
+      const tbody = this.table.querySelector('tbody');
+      const rows = tbody.querySelectorAll('tr:not(.dragging)');
+      const orderedIds = [];
+      
+      rows.forEach((row, index) => {
+        if (this.config.type === 'apps') {
+          // For apps, look for data-app-id attribute
+          const appId = row.getAttribute('data-app-id');
+          if (appId) {
+            orderedIds.push(appId);
+          }
+        } else if (this.config.type === 'videos') {
+          // For videos, look for data-video-id attribute
+          const videoId = row.getAttribute('data-video-id');
+          if (videoId) {
+            orderedIds.push(videoId);
+          }
+        }
+      });
+      
+      this.sendOrderUpdate(orderedIds);
+    }
+
+    sendOrderUpdate(orderedIds) {
+      // Use GET request with query parameters (AJAX)
+      const params = new URLSearchParams();
+      params.append('ordered_ids', orderedIds.join(','));
+      params.append('nonce', $('input[name="dt_home_admin_nonce"]').val());
+      const url = `${this.config.endpoint}&${params.toString()}`;
+
+      // Show a loading message
+      this.showMessage('Saving order...', 'success');
+
+      fetch(url, {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          this.showMessage('Order saved!', 'success');
+        } else {
+          this.showMessage('Failed to save order.', 'error');
+        }
+      })
+      .catch(() => {
+        this.showMessage('Failed to save order.', 'error');
+      });
+    }
+
+    showMessage(text, type) {
+      // Create or update message element
+      let messageEl = document.querySelector('.sortable-message');
+      if (!messageEl) {
+        messageEl = document.createElement('div');
+        messageEl.className = 'sortable-message';
+        messageEl.style.position = 'fixed';
+        messageEl.style.bottom = '20px';
+        messageEl.style.right = '20px';
+        messageEl.style.top = '';
+        messageEl.style.padding = '14px 28px';
+        messageEl.style.borderRadius = '6px';
+        messageEl.style.color = 'white';
+        messageEl.style.fontWeight = 'bold';
+        messageEl.style.fontSize = '1.25rem';
+        messageEl.style.zIndex = '9999';
+        document.body.appendChild(messageEl);
+      }
+
+      messageEl.textContent = text;
+      messageEl.style.backgroundColor = type === 'success' ? '#46b450' : '#dc3232';
+      messageEl.style.display = 'block';
+
+      // Auto-hide after 3 seconds
+      setTimeout(() => {
+        messageEl.style.display = 'none';
+      }, 3000);
+    }
+  }
+
+  // Initialize drag and drop functionality
+  function initializeDragAndDrop() {
+    // Check if we're on the home screen admin page
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+    const tab = urlParams.get('tab');
+
+    if (page === 'dt_options' && tab === 'home_screen') {
+      // Wait a bit for the DOM to fully load
+      setTimeout(() => {
+        // Find apps table
+        const appsTable = document.querySelector('table[data-type="apps"]');
+        if (appsTable) {
+          new SortableTable('table[data-type="apps"]', {
+            type: 'apps',
+            endpoint: ajaxurl + '?action=dt_home_reorder_apps'
+          });
+        }
+
+        // Find videos table
+        const videosTable = document.querySelector('table[data-type="videos"]');
+        if (videosTable) {
+          new SortableTable('table[data-type="videos"]', {
+            type: 'videos',
+            endpoint: ajaxurl + '?action=dt_home_reorder_videos'
+          });
+        }
+      }, 100);
+    }
+  }
+
+  // Initialize drag and drop when document is ready
+  initializeDragAndDrop();
 });
