@@ -437,7 +437,7 @@ jQuery(document).ready(function ($) {
       this.clearDropIndicators();
 
       const afterElement = this.getDragAfterElement(e.clientY);
-      
+
       if (afterElement) {
         // Add drop indicator above the target element
         afterElement.classList.add('drop-indicator-top');
@@ -466,7 +466,7 @@ jQuery(document).ready(function ($) {
       // Find the target position
       const afterElement = this.getDragAfterElement(e.clientY);
       const tbody = this.table.querySelector('tbody');
-      
+
       if (!tbody) return;
 
       // Move the dragged row to the new position
@@ -498,28 +498,38 @@ jQuery(document).ready(function ($) {
 
     getDragAfterElement(y) {
       const tbody = this.table.querySelector('tbody');
-      const draggableElements = [...tbody.querySelectorAll('tr:not(.dragging)')];
+      const draggableElements = [
+        ...tbody.querySelectorAll('tr:not(.dragging)'),
+      ];
 
-      return draggableElements.reduce((closest, child) => {
-        if (child === this.draggedRow) return closest;
+      return draggableElements.reduce(
+        (closest, child) => {
+          if (child === this.draggedRow) return closest;
 
-        const box = child.getBoundingClientRect();
-        const offset = y - box.top - box.height / 2;
+          const box = child.getBoundingClientRect();
+          const offset = y - box.top - box.height / 2;
 
-        if (offset < 0 && offset > closest.offset) {
-          return { offset: offset, element: child };
-        } else {
-          return closest;
-        }
-      }, { offset: Number.NEGATIVE_INFINITY }).element;
+          if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+          } else {
+            return closest;
+          }
+        },
+        { offset: Number.NEGATIVE_INFINITY },
+      ).element;
     }
 
     clearDropIndicators() {
       const tbody = this.table.querySelector('tbody');
       if (tbody) {
-        const indicators = tbody.querySelectorAll('.drop-indicator-top, .drop-indicator-bottom');
-        indicators.forEach(indicator => {
-          indicator.classList.remove('drop-indicator-top', 'drop-indicator-bottom');
+        const indicators = tbody.querySelectorAll(
+          '.drop-indicator-top, .drop-indicator-bottom',
+        );
+        indicators.forEach((indicator) => {
+          indicator.classList.remove(
+            'drop-indicator-top',
+            'drop-indicator-bottom',
+          );
         });
       }
     }
@@ -528,7 +538,7 @@ jQuery(document).ready(function ($) {
       const tbody = this.table.querySelector('tbody');
       const rows = tbody.querySelectorAll('tr:not(.dragging)');
       const orderedIds = [];
-      
+
       rows.forEach((row, index) => {
         if (this.config.type === 'apps') {
           // For apps, look for data-app-id attribute
@@ -544,7 +554,7 @@ jQuery(document).ready(function ($) {
           }
         }
       });
-      
+
       this.sendOrderUpdate(orderedIds);
     }
 
@@ -565,16 +575,16 @@ jQuery(document).ready(function ($) {
           'X-Requested-With': 'XMLHttpRequest',
         },
       })
-      .then(response => {
-        if (response.ok) {
-          this.showMessage('Order saved!', 'success');
-        } else {
+        .then((response) => {
+          if (response.ok) {
+            this.showMessage('Order saved!', 'success');
+          } else {
+            this.showMessage('Failed to save order.', 'error');
+          }
+        })
+        .catch(() => {
           this.showMessage('Failed to save order.', 'error');
-        }
-      })
-      .catch(() => {
-        this.showMessage('Failed to save order.', 'error');
-      });
+        });
     }
 
     showMessage(text, type) {
@@ -597,7 +607,8 @@ jQuery(document).ready(function ($) {
       }
 
       messageEl.textContent = text;
-      messageEl.style.backgroundColor = type === 'success' ? '#46b450' : '#dc3232';
+      messageEl.style.backgroundColor =
+        type === 'success' ? '#46b450' : '#dc3232';
       messageEl.style.display = 'block';
 
       // Auto-hide after 3 seconds
@@ -622,7 +633,7 @@ jQuery(document).ready(function ($) {
         if (appsTable) {
           new SortableTable('table[data-type="apps"]', {
             type: 'apps',
-            endpoint: ajaxurl + '?action=dt_home_reorder_apps'
+            endpoint: ajaxurl + '?action=dt_home_reorder_apps',
           });
         }
 
@@ -631,7 +642,7 @@ jQuery(document).ready(function ($) {
         if (videosTable) {
           new SortableTable('table[data-type="videos"]', {
             type: 'videos',
-            endpoint: ajaxurl + '?action=dt_home_reorder_videos'
+            endpoint: ajaxurl + '?action=dt_home_reorder_videos',
           });
         }
       }, 100);
