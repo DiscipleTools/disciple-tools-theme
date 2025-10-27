@@ -123,7 +123,7 @@ class DT_Home_Apps {
         $updated_apps = [];
         $processed_ids = [];
 
-        foreach( get_option( $this->option_name, [] ) as $app ) {
+        foreach ( get_option( $this->option_name, [] ) as $app ) {
             if ( empty( $app['id'] ) || in_array( $app['id'], $processed_ids ) ) {
                 continue;
             }
@@ -132,7 +132,7 @@ class DT_Home_Apps {
             $processed_ids[] = $app['id'];
         }
 
-        foreach( $this->coded_apps as $app ) {
+        foreach ( $this->coded_apps as $app ) {
             if ( empty( $app['id'] ) || in_array( $app['id'], $processed_ids ) ) {
                 continue;
             }

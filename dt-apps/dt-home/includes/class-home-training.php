@@ -1,7 +1,7 @@
 <?php
 /**
  * Home Screen Training Videos Management
- * 
+ *
  * Handles CRUD operations for training videos in the Home Screen.
  */
 
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Class DT_Home_Training
- * 
+ *
  * Manages training videos for the Home Screen.
  */
 class DT_Home_Training {
@@ -65,7 +65,7 @@ class DT_Home_Training {
                     'updated_at' => current_time( 'mysql' )
                 ]
             ];
-            
+
             update_option( $this->option_name, $default_videos );
         }
     }
@@ -128,7 +128,7 @@ class DT_Home_Training {
         $video_id = sanitize_title( $video_data['title'] );
         $original_id = $video_id;
         $counter = 1;
-        
+
         // Ensure unique ID
         while ( $this->get_video( $video_id ) !== null ) {
             $video_id = $original_id . '-' . $counter;
@@ -157,10 +157,10 @@ class DT_Home_Training {
         // Add to videos array
         $videos = $this->get_all_videos();
         $videos[] = $new_video;
-        
+
         // Save
         $result = update_option( $this->option_name, $videos );
-        
+
         if ( $result ) {
             return $new_video;
         } else {
@@ -174,7 +174,7 @@ class DT_Home_Training {
     public function update_video( $video_id, $video_data ) {
         $videos = $this->get_all_videos();
         $video_index = $this->get_video_index( $video_id );
-        
+
         if ( $video_index === false ) {
             return new WP_Error( 'video_not_found', __( 'Video not found.', 'disciple_tools' ) );
         }
@@ -208,7 +208,7 @@ class DT_Home_Training {
 
         // Save
         $result = update_option( $this->option_name, $videos );
-        
+
         if ( $result ) {
             return $videos[$video_index];
         } else {
@@ -222,7 +222,7 @@ class DT_Home_Training {
     public function delete_video( $video_id ) {
         $videos = $this->get_all_videos();
         $video_index = $this->get_video_index( $video_id );
-        
+
         if ( $video_index === false ) {
             return new WP_Error( 'video_not_found', __( 'Video not found.', 'disciple_tools' ) );
         }
@@ -233,7 +233,7 @@ class DT_Home_Training {
 
         // Save
         $result = update_option( $this->option_name, $videos );
-        
+
         if ( $result ) {
             return true;
         } else {
@@ -246,7 +246,7 @@ class DT_Home_Training {
      */
     public function reorder_videos( $video_orders ) {
         $videos = $this->get_all_videos();
-        
+
         foreach ( $video_orders as $video_id => $order ) {
             $video_index = $this->get_video_index( $video_id );
             if ( $video_index !== false ) {
@@ -262,7 +262,7 @@ class DT_Home_Training {
 
         // Save
         $result = update_option( $this->option_name, $videos );
-        
+
         if ( $result ) {
             return true;
         } else {
@@ -302,7 +302,7 @@ class DT_Home_Training {
      */
     public function get_videos_for_frontend() {
         $videos = $this->get_enabled_videos();
-        
+
         // Sort by order
         usort( $videos, function( $a, $b ) {
             return $a['order'] <=> $b['order'];
@@ -331,13 +331,13 @@ class DT_Home_Training {
     public function get_categories() {
         $videos = $this->get_all_videos();
         $categories = [];
-        
+
         foreach ( $videos as $video ) {
             if ( isset( $video['category'] ) && ! empty( $video['category'] ) ) {
                 $categories[] = $video['category'];
             }
         }
-        
+
         return array_unique( $categories );
     }
 

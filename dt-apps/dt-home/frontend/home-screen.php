@@ -1,7 +1,7 @@
 <?php
 /**
  * Home Screen Dashboard Template
- * 
+ *
  * Main frontend template for the Home Screen magic link app.
  * Displays a personalized dashboard with apps and training videos.
  */

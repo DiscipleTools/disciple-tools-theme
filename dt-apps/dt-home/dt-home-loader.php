@@ -1,7 +1,7 @@
 <?php
 /**
  * DT Home Screen Loader
- * 
+ *
  * Main loader file for the Home Screen magic link app.
  * This file should be included in the theme to load the Home Screen functionality.
  */

@@ -692,11 +692,11 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         $params = $request->get_params();
 
         // Debug logging
-        error_log('DT Home Screen REST endpoint called');
-        error_log('Request params: ' . print_r($params, true));
+        error_log( 'DT Home Screen REST endpoint called' );
+        error_log( 'Request params: ' . print_r( $params, true ) );
 
         if ( ! isset( $params['parts'], $params['action'] ) ) {
-            error_log('Missing parameters - parts: ' . (isset($params['parts']) ? 'yes' : 'no') . ', action: ' . (isset($params['action']) ? 'yes' : 'no'));
+            error_log( 'Missing parameters - parts: ' . ( isset( $params['parts'] ) ? 'yes' : 'no' ) . ', action: ' . ( isset( $params['action'] ) ? 'yes' : 'no' ) );
             return new WP_Error( __METHOD__, 'Missing parameters', [ 'status' => 400 ] );
         }
 
@@ -711,7 +711,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             $apps_manager = DT_Home_Apps::instance();
             $apps = $apps_manager->get_apps_for_frontend();
 
-            error_log('Apps found: ' . count($apps));
+            error_log( 'Apps found: ' . count( $apps ) );
 
             return [
                 'success' => true,
@@ -724,7 +724,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             $training_manager = DT_Home_Training::instance();
             $training_videos = $training_manager->get_videos_for_frontend();
 
-            error_log('Training videos found: ' . count($training_videos));
+            error_log( 'Training videos found: ' . count( $training_videos ) );
 
             return [
                 'success' => true,
@@ -740,8 +740,8 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             $apps = $apps_manager->get_apps_for_frontend();
             $training_videos = $training_manager->get_videos_for_frontend();
 
-            error_log('Apps found: ' . count($apps));
-            error_log('Training videos found: ' . count($training_videos));
+            error_log( 'Apps found: ' . count( $apps ) );
+            error_log( 'Training videos found: ' . count( $training_videos ) );
 
             return [
                 'success' => true,

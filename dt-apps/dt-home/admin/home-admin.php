@@ -66,17 +66,17 @@ class DT_Home_Admin {
         }
 
         // Handle form submissions
-        if ( isset( $_POST['dt_home_screen_settings'] ) && wp_verify_nonce( $_POST['dt_home_screen_nonce'], 'dt_home_screen_settings' ) ) {
+        if ( isset( $_POST['dt_home_screen_settings'] ) && isset( $_POST['dt_home_screen_nonce'] ) && wp_verify_nonce( wp_unslash( $_POST['dt_home_screen_nonce'] ), 'dt_home_screen_settings' ) ) {
             $this->handle_settings_save();
         }
 
         // Handle apps management
-        if ( isset( $_POST['dt_home_app_action'] ) && wp_verify_nonce( $_POST['dt_home_app_nonce'], 'dt_home_app_action' ) ) {
+        if ( isset( $_POST['dt_home_app_action'] ) && isset( $_POST['dt_home_app_nonce'] ) && wp_verify_nonce( wp_unslash( $_POST['dt_home_app_nonce'] ), 'dt_home_app_action' ) ) {
             $this->handle_app_action();
         }
 
         // Handle training videos management
-        if ( isset( $_POST['dt_home_video_action'] ) && wp_verify_nonce( $_POST['dt_home_video_nonce'], 'dt_home_video_action' ) ) {
+        if ( isset( $_POST['dt_home_video_action'] ) && isset( $_POST['dt_home_video_nonce'] ) && wp_verify_nonce( wp_unslash( $_POST['dt_home_video_nonce'] ), 'dt_home_video_action' ) ) {
             $this->handle_video_action();
         }
 
@@ -159,10 +159,10 @@ class DT_Home_Admin {
                         $apps = $apps_manager->get_all_apps();
                         $videos = $training_manager->get_all_videos();
                         ?>
-                        <p><strong>Apps (<?php echo count($apps); ?>):</strong></p>
-                        <pre><?php print_r($apps); ?></pre>
-                        <p><strong>Videos (<?php echo count($videos); ?>):</strong></p>
-                        <pre><?php print_r($videos); ?></pre>
+                        <p><strong>Apps (<?php echo count( $apps ); ?>):</strong></p>
+                        <pre><?php print_r( $apps ); ?></pre>
+                        <p><strong>Videos (<?php echo count( $videos ); ?>):</strong></p>
+                        <pre><?php print_r( $videos ); ?></pre>
                     </div>
                     -- Debug Info -->
 
@@ -258,8 +258,8 @@ class DT_Home_Admin {
      */
     private function handle_settings_save() {
         $settings = [
-            'title' => sanitize_text_field( $_POST['home_screen_title'] ?? '' ),
-            'description' => sanitize_textarea_field( $_POST['home_screen_description'] ?? '' ),
+            'title' => sanitize_text_field( wp_unslash( $_POST['home_screen_title'] ?? '' ) ),
+            'description' => sanitize_textarea_field( wp_unslash( $_POST['home_screen_description'] ?? '' ) ),
             'enable_training_videos' => isset( $_POST['enable_training_videos'] ) ? 1 : 0,
             'enable_quick_actions' => isset( $_POST['enable_quick_actions'] ) ? 1 : 0,
         ];
@@ -303,17 +303,17 @@ class DT_Home_Admin {
      * Handle app actions (create, update, delete)
      */
     private function handle_app_action() {
-        $action = sanitize_text_field( $_POST['dt_home_app_action'] );
+        $action = sanitize_text_field( wp_unslash( $_POST['dt_home_app_action'] ?? '' ) );
         $apps_manager = DT_Home_Apps::instance();
 
         switch ( $action ) {
             case 'create':
                 $app_data = [
-                    'title' => sanitize_text_field( $_POST['app_title'] ?? '' ),
-                    'description' => sanitize_textarea_field( $_POST['app_description'] ?? '' ),
-                    'url' => esc_url_raw( $_POST['app_url'] ?? '#' ),
-                    'icon' => sanitize_text_field( $_POST['app_icon'] ?? 'mdi mdi-apps' ),
-                    'color' => sanitize_hex_color( $_POST['app_color'] ?? '#667eea' ),
+                    'title' => sanitize_text_field( wp_unslash( $_POST['app_title'] ?? '' ) ),
+                    'description' => sanitize_textarea_field( wp_unslash( $_POST['app_description'] ?? '' ) ),
+                    'url' => esc_url_raw( wp_unslash( $_POST['app_url'] ?? '#' ) ),
+                    'icon' => sanitize_text_field( wp_unslash( $_POST['app_icon'] ?? 'mdi mdi-apps' ) ),
+                    'color' => sanitize_hex_color( wp_unslash( $_POST['app_color'] ?? '#667eea' ) ),
                     'enabled' => isset( $_POST['app_enabled'] )
                 ];
 
@@ -330,13 +330,13 @@ class DT_Home_Admin {
                 break;
 
             case 'update':
-                $app_id = sanitize_text_field( $_POST['app_id'] ?? '' );
+                $app_id = sanitize_text_field( wp_unslash( $_POST['app_id'] ?? '' ) );
                 $app_data = [
-                    'title' => sanitize_text_field( $_POST['app_title'] ?? '' ),
-                    'description' => sanitize_textarea_field( $_POST['app_description'] ?? '' ),
-                    'url' => esc_url_raw( $_POST['app_url'] ?? '#' ),
-                    'icon' => sanitize_text_field( $_POST['app_icon'] ?? 'mdi mdi-apps' ),
-                    'color' => sanitize_hex_color( $_POST['app_color'] ?? '#667eea' ),
+                    'title' => sanitize_text_field( wp_unslash( $_POST['app_title'] ?? '' ) ),
+                    'description' => sanitize_textarea_field( wp_unslash( $_POST['app_description'] ?? '' ) ),
+                    'url' => esc_url_raw( wp_unslash( $_POST['app_url'] ?? '#' ) ),
+                    'icon' => sanitize_text_field( wp_unslash( $_POST['app_icon'] ?? 'mdi mdi-apps' ) ),
+                    'color' => sanitize_hex_color( wp_unslash( $_POST['app_color'] ?? '#667eea' ) ),
                     'enabled' => isset( $_POST['app_enabled'] )
                 ];
 
@@ -353,7 +353,7 @@ class DT_Home_Admin {
                 break;
 
             case 'delete':
-                $app_id = sanitize_text_field( $_POST['app_id'] ?? '' );
+                $app_id = sanitize_text_field( wp_unslash( $_POST['app_id'] ?? '' ) );
                 $result = $apps_manager->delete_app( $app_id );
                 if ( is_wp_error( $result ) ) {
                     add_action( 'admin_notices', function() use ( $result ) {
@@ -372,17 +372,17 @@ class DT_Home_Admin {
      * Handle video actions (create, update, delete)
      */
     private function handle_video_action() {
-        $action = sanitize_text_field( $_POST['dt_home_video_action'] );
+        $action = sanitize_text_field( wp_unslash( $_POST['dt_home_video_action'] ?? '' ) );
         $training_manager = DT_Home_Training::instance();
 
         switch ( $action ) {
             case 'create':
                 $video_data = [
-                    'title' => sanitize_text_field( $_POST['video_title'] ?? '' ),
-                    'description' => sanitize_textarea_field( $_POST['video_description'] ?? '' ),
-                    'video_url' => esc_url_raw( $_POST['video_url'] ?? '' ),
-                    'duration' => sanitize_text_field( $_POST['video_duration'] ?? '' ),
-                    'category' => sanitize_text_field( $_POST['video_category'] ?? 'general' ),
+                    'title' => sanitize_text_field( wp_unslash( $_POST['video_title'] ?? '' ) ),
+                    'description' => sanitize_textarea_field( wp_unslash( $_POST['video_description'] ?? '' ) ),
+                    'video_url' => esc_url_raw( wp_unslash( $_POST['video_url'] ?? '' ) ),
+                    'duration' => sanitize_text_field( wp_unslash( $_POST['video_duration'] ?? '' ) ),
+                    'category' => sanitize_text_field( wp_unslash( $_POST['video_category'] ?? 'general' ) ),
                     'enabled' => isset( $_POST['video_enabled'] )
                 ];
 
@@ -399,13 +399,13 @@ class DT_Home_Admin {
                 break;
 
             case 'update':
-                $video_id = sanitize_text_field( $_POST['video_id'] ?? '' );
+                $video_id = sanitize_text_field( wp_unslash( $_POST['video_id'] ?? '' ) );
                 $video_data = [
-                    'title' => sanitize_text_field( $_POST['video_title'] ?? '' ),
-                    'description' => sanitize_textarea_field( $_POST['video_description'] ?? '' ),
-                    'video_url' => esc_url_raw( $_POST['video_url'] ?? '' ),
-                    'duration' => sanitize_text_field( $_POST['video_duration'] ?? '' ),
-                    'category' => sanitize_text_field( $_POST['video_category'] ?? 'general' ),
+                    'title' => sanitize_text_field( wp_unslash( $_POST['video_title'] ?? '' ) ),
+                    'description' => sanitize_textarea_field( wp_unslash( $_POST['video_description'] ?? '' ) ),
+                    'video_url' => esc_url_raw( wp_unslash( $_POST['video_url'] ?? '' ) ),
+                    'duration' => sanitize_text_field( wp_unslash( $_POST['video_duration'] ?? '' ) ),
+                    'category' => sanitize_text_field( wp_unslash( $_POST['video_category'] ?? 'general' ) ),
                     'enabled' => isset( $_POST['video_enabled'] )
                 ];
 
@@ -422,7 +422,7 @@ class DT_Home_Admin {
                 break;
 
             case 'delete':
-                $video_id = sanitize_text_field( $_POST['video_id'] ?? '' );
+                $video_id = sanitize_text_field( wp_unslash( $_POST['video_id'] ?? '' ) );
                 $result = $training_manager->delete_video( $video_id );
                 if ( is_wp_error( $result ) ) {
                     add_action( 'admin_notices', function() use ( $result ) {
