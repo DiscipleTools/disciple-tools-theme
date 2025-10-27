@@ -203,7 +203,7 @@ class DT_Home_Training {
         if ( isset( $video_data['order'] ) ) {
             $videos[$video_index]['order'] = (int) $video_data['order'];
         }
-        
+
         $videos[$video_index]['updated_at'] = current_time( 'mysql' );
 
         // Save

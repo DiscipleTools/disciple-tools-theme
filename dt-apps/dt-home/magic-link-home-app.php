@@ -752,7 +752,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             ];
         }
     }
-
 }
 
 DT_Home_Magic_Link_App::instance();

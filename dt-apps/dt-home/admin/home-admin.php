@@ -66,17 +66,17 @@ class DT_Home_Admin {
         }
 
         // Handle form submissions
-        if ( isset( $_POST['dt_home_screen_settings'] ) && isset( $_POST['dt_home_screen_nonce'] ) && wp_verify_nonce( wp_unslash( $_POST['dt_home_screen_nonce'] ), 'dt_home_screen_settings' ) ) {
+        if ( isset( $_POST['dt_home_screen_settings'] ) && isset( $_POST['dt_home_screen_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_home_screen_nonce'] ) ), 'dt_home_screen_settings' ) ) {
             $this->handle_settings_save();
         }
 
         // Handle apps management
-        if ( isset( $_POST['dt_home_app_action'] ) && isset( $_POST['dt_home_app_nonce'] ) && wp_verify_nonce( wp_unslash( $_POST['dt_home_app_nonce'] ), 'dt_home_app_action' ) ) {
+        if ( isset( $_POST['dt_home_app_action'] ) && isset( $_POST['dt_home_app_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_home_app_nonce'] ) ), 'dt_home_app_action' ) ) {
             $this->handle_app_action();
         }
 
         // Handle training videos management
-        if ( isset( $_POST['dt_home_video_action'] ) && isset( $_POST['dt_home_video_nonce'] ) && wp_verify_nonce( wp_unslash( $_POST['dt_home_video_nonce'] ), 'dt_home_video_action' ) ) {
+        if ( isset( $_POST['dt_home_video_action'] ) && isset( $_POST['dt_home_video_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_home_video_nonce'] ) ), 'dt_home_video_action' ) ) {
             $this->handle_video_action();
         }
 
@@ -257,6 +257,11 @@ class DT_Home_Admin {
      * Handle settings form submission
      */
     private function handle_settings_save() {
+        // Verify nonce first
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_home_screen_nonce'] ?? '' ) ), 'dt_home_screen_settings' ) ) {
+            wp_die( esc_html__( 'Security check failed. Please try again.', 'disciple_tools' ) );
+        }
+
         $settings = [
             'title' => sanitize_text_field( wp_unslash( $_POST['home_screen_title'] ?? '' ) ),
             'description' => sanitize_textarea_field( wp_unslash( $_POST['home_screen_description'] ?? '' ) ),
@@ -303,6 +308,11 @@ class DT_Home_Admin {
      * Handle app actions (create, update, delete)
      */
     private function handle_app_action() {
+        // Verify nonce first
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_home_app_nonce'] ?? '' ) ), 'dt_home_app_action' ) ) {
+            wp_die( esc_html__( 'Security check failed. Please try again.', 'disciple_tools' ) );
+        }
+
         $action = sanitize_text_field( wp_unslash( $_POST['dt_home_app_action'] ?? '' ) );
         $apps_manager = DT_Home_Apps::instance();
 
@@ -372,6 +382,11 @@ class DT_Home_Admin {
      * Handle video actions (create, update, delete)
      */
     private function handle_video_action() {
+        // Verify nonce first
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_home_video_nonce'] ?? '' ) ), 'dt_home_video_action' ) ) {
+            wp_die( esc_html__( 'Security check failed. Please try again.', 'disciple_tools' ) );
+        }
+
         $action = sanitize_text_field( wp_unslash( $_POST['dt_home_video_action'] ?? '' ) );
         $training_manager = DT_Home_Training::instance();
 
