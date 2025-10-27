@@ -349,12 +349,31 @@ class DT_Home_Apps {
     public function get_apps_for_frontend() {
         $apps = $this->get_enabled_apps();
 
+        // Enrich coded magic-link app urls.
+        $enriched_apps = [];
+        foreach ( $apps as $app ) {
+            if ( $app['creation_type'] == 'coded' ) {
+                $app_meta = $app['magic_link_meta'] ?? [];
+                if ( $app_meta['post_type'] === 'user' ) {
+                    $app_ml_root = $app_meta['root'] ?? '';
+                    $app_ml_type = $app_meta['type'] ?? '';
+                    $meta_key = DT_Magic_URL::get_public_key_meta_key( $app_ml_root, $app_ml_type );
+                    $magic_url_key = get_user_option( $meta_key, get_current_user_id() );
+                    if ( !empty( $magic_url_key ) ) {
+                        $app['url'] = DT_Magic_URL::get_link_url( $app_ml_root, $app_ml_type, $magic_url_key );
+                    }
+                }
+            }
+
+            $enriched_apps[] = $app;
+        }
+
         // Sort by order
-        usort( $apps, function( $a, $b ) {
+        usort( $enriched_apps, function( $a, $b ) {
             return $a['order'] <=> $b['order'];
         });
 
-        return $apps;
+        return $enriched_apps;
     }
 
     /**

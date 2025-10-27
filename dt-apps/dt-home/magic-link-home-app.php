@@ -404,9 +404,9 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     if (data.success && data.apps) {
                         console.log('Displaying apps:', data.apps);
                         // Debug: Log each app's icon value
-                        data.apps.forEach(function(app, index) {
+                        /*data.apps.forEach(function(app, index) {
                             console.log('App ' + index + ' icon:', app.icon, 'color:', app.color);
-                        });
+                        });*/
                         displayApps(data.apps);
                     } else {
                         console.log('Failed to load apps - response:', data);
@@ -441,12 +441,12 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                             </div>
                         `;
 
-                        console.log('Generated HTML for app "' + app.title + '":', appHtml);
+                        //console.log('Generated HTML for app "' + app.title + '":', appHtml);
                         html += appHtml;
                     });
                 }
 
-                console.log('Final HTML being inserted:', html);
+                //console.log('Final HTML being inserted:', html);
                 $('#apps-grid').html(html);
             }
 
@@ -552,13 +552,13 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 const iframe = embedContainer.querySelector('iframe');
                 const videoId = cardElement.getAttribute('data-video-id');
                 const videoUrl = cardElement.getAttribute('data-video-url');
-                
+
                 if (thumbnailContainer.style.display !== 'none') {
                     // Switch to embedded player
                     thumbnailContainer.style.display = 'none';
                     embedContainer.style.display = 'block';
                     cardElement.classList.add('playing');
-                    
+
                     // Set up the iframe source
                     if (videoId) {
                         // YouTube video
