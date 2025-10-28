@@ -312,10 +312,10 @@ class DT_Home_Admin {
         wp_enqueue_media();
         wp_enqueue_style( 'wp-color-picker' );
         wp_enqueue_script( 'wp-color-picker' );
-        
+
         // Enqueue lodash
         wp_enqueue_script( 'lodash', 'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js', [], '4.17.21', true );
-        
+
         // jQuery UI dialog styles (used by icon selector dialog)
         wp_enqueue_style( 'wp-jquery-ui-dialog' );
 
@@ -323,7 +323,7 @@ class DT_Home_Admin {
         // Ensure dt-options loads before our script so we can call its functions
         wp_enqueue_script( 'dt-options', get_template_directory_uri() . '/dt-core/admin/js/dt-options.js', [ 'jquery', 'jquery-ui-dialog', 'lodash' ], '1.0.0', true );
         wp_enqueue_script( 'dt-home-admin-script', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/admin.js', [ 'jquery', 'dt-options' ], '1.0.0', true );
-        
+
         // Localize the dt-options script with required data
         wp_localize_script(
             'dt-options', 'dt_admin_scripts', [
