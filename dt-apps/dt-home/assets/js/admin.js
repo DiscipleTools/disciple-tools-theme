@@ -56,6 +56,12 @@ jQuery(document).ready(function ($) {
    * Set up event handlers
    */
   function setupEventHandlers() {
+    // Handle icon input changes for live preview
+    $(document).on('input', 'input[name="app_icon"]', function () {
+      updateIconPreview($(this));
+    });
+
+    // Let dt-options.js handle all icon button clicks - no custom handling needed
     // Handle settings changes
     $('#enable_training_videos').on('change', function () {
       const isEnabled = $(this).is(':checked');
@@ -152,10 +158,13 @@ jQuery(document).ready(function ($) {
     const $appRow = $(`.edit-app[data-app-id="${appId}"]`).closest('tr');
     const appData = {
       id: appId,
-      title: $appRow.find('td:first strong').text(),
-      description: $appRow.find('td:nth-child(2)').text(),
-      url: $appRow.find('td:nth-child(3)').text(),
-      icon: $appRow.find('td:first small').text(),
+      title: $appRow.find('td:nth-child(2) strong').text(), // Title is now in 2nd column
+      description: $appRow.find('td:nth-child(3)').text(), // Description is now in 3rd column
+      url: $appRow.find('td:nth-child(5)').text(), // URL is now in 5th column
+      icon:
+        $appRow.find('td:nth-child(4) i').attr('class') ||
+        $appRow.find('td:nth-child(4) img').attr('src') ||
+        '', // Icon is now in 4th column
       color: '#667eea', // Default color, could be stored in data attribute
       enabled: $appRow.find('.status-enabled').length > 0,
     };
@@ -211,15 +220,55 @@ jQuery(document).ready(function ($) {
   }
 
   /**
+   * Update icon preview
+   */
+  function updateIconPreview($input) {
+    const iconValue = $input.val();
+
+    // Look for wrapper in the same table row (for nested table structure)
+    let $wrapper = $input.closest('tr').find('.field-icon-wrapper');
+
+    // If not found, look in the parent table row
+    if ($wrapper.length === 0) {
+      $wrapper = $input
+        .closest('table')
+        .closest('tr')
+        .find('.field-icon-wrapper');
+    }
+
+    // If still not found, look in the entire form
+    if ($wrapper.length === 0) {
+      const formName = $input.closest('form').attr('name');
+      $wrapper = $(`form[name="${formName}"] .field-icon-wrapper`);
+    }
+
+    if ($wrapper.length) {
+      if (iconValue && iconValue.trim().toLowerCase().startsWith('mdi')) {
+        $wrapper.html(
+          `<i class="${iconValue} field-icon" style="font-size: 20px; vertical-align: middle;"></i>`,
+        );
+      } else if (iconValue && iconValue.trim()) {
+        $wrapper.html(
+          `<img src="${iconValue}" class="field-icon" style="width: 20px; height: 20px; vertical-align: middle;" />`,
+        );
+      } else {
+        $wrapper.html(
+          '<i class="mdi mdi-apps field-icon" style="font-size: 20px; vertical-align: middle;"></i>',
+        );
+      }
+    }
+  }
+
+  /**
    * Create app edit form
    */
   function createAppEditForm(appData) {
     return $(`
             <tr class="edit-form-row" style="background-color: #f0f8ff; border: 2px solid #667eea;">
-                <td colspan="5">
+                <td colspan="6">
                     <div class="edit-form-container" style="padding: 20px;">
                         <h4 style="margin-top: 0; color: #667eea;">Edit App: ${appData.title}</h4>
-                        <form method="post" class="app-edit-form">
+                        <form method="post" class="app-edit-form" name="dt_home_app_form_edit_${appData.id}">
                             <input type="hidden" name="dt_home_app_nonce" value="${$('input[name="dt_home_app_nonce"]').val()}">
                             <input type="hidden" name="dt_home_app_action" value="update">
                             <input type="hidden" name="app_id" value="${appData.id}">
@@ -238,7 +287,35 @@ jQuery(document).ready(function ($) {
                                 </tr>
                                 <tr>
                                     <th scope="row">Icon</th>
-                                    <td><input type="text" name="app_icon" value="${appData.icon}" class="regular-text" /></td>
+                                    <td>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <span class="field-icon-wrapper">
+                                                            ${
+                                                              appData.icon &&
+                                                              appData.icon
+                                                                .trim()
+                                                                .toLowerCase()
+                                                                .startsWith(
+                                                                  'mdi',
+                                                                )
+                                                                ? `<i class="${appData.icon} field-icon" style="font-size: 20px; vertical-align: middle;"></i>`
+                                                                : `<img src="${appData.icon}" class="field-icon" style="width: 20px; height: 20px; vertical-align: middle;" />`
+                                                            }
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="app_icon" value="${appData.icon}" class="regular-text" />
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="button change-icon-button" data-form="dt_home_app_form_edit_${appData.id}" data-icon-input="app_icon">Change Icon</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Color</th>

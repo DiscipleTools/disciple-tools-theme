@@ -95,6 +95,9 @@ class DT_Home_Admin {
                 <input type="hidden" name="dt_home_screen_settings" value="1">
                 <?php wp_nonce_field( 'dt_home_admin_nonce', 'dt_home_admin_nonce' ); ?>
 
+                <!-- Icon Selector Dialog -->
+                <?php include get_template_directory() . '/dt-core/admin/menu/tabs/dialog-icon-selector.php'; ?>
+
                 <div class="dt-home-admin-container">
                     <!-- General Settings -->
                     <div class="dt-home-section">
@@ -305,8 +308,34 @@ class DT_Home_Admin {
             return;
         }
 
+        // Enqueue required dependencies
+        wp_enqueue_media();
+        wp_enqueue_style( 'wp-color-picker' );
+        wp_enqueue_script( 'wp-color-picker' );
+        
+        // Enqueue lodash
+        wp_enqueue_script( 'lodash', 'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js', [], '4.17.21', true );
+        
+        // jQuery UI dialog styles (used by icon selector dialog)
+        wp_enqueue_style( 'wp-jquery-ui-dialog' );
+
         wp_enqueue_style( 'dt-home-admin-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/admin.css', [], '1.0.0' );
-        wp_enqueue_script( 'dt-home-admin-script', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/admin.js', [ 'jquery' ], '1.0.0', true );
+        // Ensure dt-options loads before our script so we can call its functions
+        wp_enqueue_script( 'dt-options', get_template_directory_uri() . '/dt-core/admin/js/dt-options.js', [ 'jquery', 'jquery-ui-dialog', 'lodash' ], '1.0.0', true );
+        wp_enqueue_script( 'dt-home-admin-script', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/admin.js', [ 'jquery', 'dt-options' ], '1.0.0', true );
+        
+        // Localize the dt-options script with required data
+        wp_localize_script(
+            'dt-options', 'dt_admin_scripts', [
+                'site_url'  => site_url(),
+                'nonce'     => wp_create_nonce( 'wp_rest' ),
+                'rest_root' => esc_url_raw( rest_url() ),
+                'upload'    => [
+                    'title'      => __( 'Upload Icon', 'disciple_tools' ),
+                    'button_txt' => __( 'Upload', 'disciple_tools' )
+                ]
+            ]
+        );
     }
 
     /**
@@ -464,7 +493,7 @@ class DT_Home_Admin {
         ?>
         <div class="add-app-form-container">
             <h4><?php esc_html_e( 'Add New App', 'disciple_tools' ); ?></h4>
-            <form method="post" class="app-form">
+            <form method="post" class="app-form" name="dt_home_app_form_create">
                 <?php wp_nonce_field( 'dt_home_app_action', 'dt_home_app_nonce' ); ?>
                 <input type="hidden" name="dt_home_app_action" value="create">
 
@@ -483,7 +512,10 @@ class DT_Home_Admin {
                     </tr>
                     <tr>
                         <th scope="row"><?php esc_html_e( 'Icon', 'disciple_tools' ); ?></th>
-                        <td><input type="text" name="app_icon" class="regular-text" value="mdi mdi-apps" placeholder="mdi mdi-apps" /></td>
+                        <td>
+                            <input type="text" name="app_icon" class="regular-text" value="mdi mdi-apps" placeholder="mdi mdi-apps" />
+                                            <button type="button" class="button change-icon-button" data-form="dt_home_app_form_create" data-icon-input="app_icon"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
+                        </td>
                     </tr>
                     <tr>
                         <th scope="row"><?php esc_html_e( 'Color', 'disciple_tools' ); ?></th>
@@ -522,6 +554,7 @@ class DT_Home_Admin {
                             <th style="width: 40px; text-align: center;"><?php esc_html_e( '⋮⋮', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Title', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Description', 'disciple_tools' ); ?></th>
+                            <th style="text-align: center;"><?php esc_html_e( 'Icon', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'URL', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Status', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Actions', 'disciple_tools' ); ?></th>
@@ -535,10 +568,17 @@ class DT_Home_Admin {
                                 </td>
                                 <td>
                                     <strong><?php echo esc_html( $app['title'] ); ?></strong>
-                                    <br>
-                                    <small><?php echo esc_html( $app['icon'] ); ?></small>
                                 </td>
                                 <td><?php echo esc_html( $app['description'] ); ?></td>
+                                <td>
+                                    <?php if ( !empty( $app['icon'] ) ) : ?>
+                                        <?php if ( strpos( $app['icon'], 'mdi ' ) === 0 ) : ?>
+                                            <i class="<?php echo esc_attr( $app['icon'] ); ?>" style="font-size: 20px; vertical-align: middle;"></i>
+                                        <?php else : ?>
+                                            <img src="<?php echo esc_attr( $app['icon'] ); ?>" style="width: 20px; height: 20px; vertical-align: middle;" />
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?php echo esc_html( $app['url'] ); ?></td>
                                 <td>
                                     <span class="status-<?php echo $app['enabled'] ? 'enabled' : 'disabled'; ?>">
@@ -710,7 +750,10 @@ class DT_Home_Admin {
                         </tr>
                         <tr>
                             <th scope="row"><?php esc_html_e( 'Icon', 'disciple_tools' ); ?></th>
-                            <td><input type="text" name="app_icon" class="regular-text" value="mdi mdi-apps" placeholder="mdi mdi-apps" /></td>
+                            <td>
+                                <input type="text" name="app_icon" class="regular-text" value="mdi mdi-apps" placeholder="mdi mdi-apps" />
+                                <button type="button" class="button change-icon-button" data-form="dt_home_app_form_create" data-icon-input="app_icon"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
+                            </td>
                         </tr>
                         <tr>
                             <th scope="row"><?php esc_html_e( 'Color', 'disciple_tools' ); ?></th>

@@ -294,6 +294,28 @@
     color: #333;
 }
 
+/* Icon preview styling */
+.field-icon-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.field-icon {
+    vertical-align: middle;
+}
+
+/* Icon selector button styling */
+.change-icon-button {
+    margin-left: 10px;
+}
+
+/* Apps table icon column styling */
+.apps-list-container table td:nth-child(4) {
+    text-align: center;
+    width: 60px;
+}
+
 .drag-placeholder {
     height: 2px !important;
     background-color: #007cba !important;
