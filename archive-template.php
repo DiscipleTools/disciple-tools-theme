@@ -857,193 +857,191 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                             </button>
                             <p style="font-weight:bold"><?php
                                 echo sprintf( esc_html__( 'Select all the %1$s to whom you want to message.', 'disciple_tools' ), esc_html( $post_type ) );?></p>
-                            <div class="grid-x grid-margin-x">
-                                <div class="cell">
-                                    <?php
-                                    $has_twilio = class_exists( 'Disciple_Tools_Twilio_API', false ) && Disciple_Tools_Twilio_API::has_credentials() && Disciple_Tools_Twilio_API::is_enabled();
-                                    $dt_site_notification_defaults = dt_get_site_notification_defaults();
-                                    $default_subject = dt_get_option( 'dt_email_base_subject' );
-                                    $default_message = 'Hello {{name}},
+                            <div class="cell">
+                                <?php
+                                $has_twilio = class_exists( 'Disciple_Tools_Twilio_API', false ) && Disciple_Tools_Twilio_API::has_credentials() && Disciple_Tools_Twilio_API::is_enabled();
+                                $dt_site_notification_defaults = dt_get_site_notification_defaults();
+                                $default_subject = dt_get_option( 'dt_email_base_subject' );
+                                $default_message = 'Hello {{name}},
 
 Bulk send message...
 
 Thanks!';
 
+                                /**
+                                 * Filter the default message for the current post type.
+                                 *
+                                 * @param string $default_message The default message.
+                                 * @param string $post_type The post type.
+                                 * @return string The filtered default message.
+                                 */
+                                $default_message = apply_filters( 'dt_post_messaging_message_default', $default_message, $post_type );
+                                // Filter communication channels.
+                                $comms_channels = [];
+                                foreach ( $dt_site_notification_defaults['channels'] as $channel_key => $channel_value ){
+                                    if ( $channel_key === 'web' ) {
+                                        continue;
+                                    }
+
+                                    if ( !$has_twilio && $channel_key === 'sms' ) {
+                                        continue;
+                                    }
+
+                                    $comms_channels[ $channel_key ] = $channel_value;
+                                }
+                                $msg_reply_to = dt_get_option( 'dt_email_base_address_reply_to' );
+                                if ( empty( $msg_reply_to ) ) {
+                                    $msg_reply_to = dt_get_option( 'dt_email_base_address' );
+                                }
+                                ?>
+                                <label for="bulk_send_msg_subject"><?php echo esc_html__( 'Message subject', 'disciple_tools' ); ?></label>
+                                <input type="text" id="bulk_send_msg_subject" value="<?php echo esc_attr( $default_subject ); ?>" style="margin-bottom: 0"/>
+                                <span id="bulk_send_msg_subject_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid message subject must be entered.', 'disciple_tools' ); ?></span><br>
+
+                                <label for="bulk_send_msg_from_name"><?php echo esc_html__( 'Message from name', 'disciple_tools' ); ?></label>
+                                <input type="text" id="bulk_send_msg_from_name" value="<?php echo esc_attr( dt_default_email_name() ); ?>" style="margin-bottom: 0"/>
+                                <span id="bulk_send_msg_from_name_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid from name must be specified.', 'disciple_tools' ); ?></span><br>
+
+                                <label for="bulk_send_msg_reply_to"><?php echo esc_html__( 'Message reply to', 'disciple_tools' ); ?></label>
+                                <input type="text" id="bulk_send_msg_reply_to" value="<?php echo esc_attr( $msg_reply_to ); ?>" style="margin-bottom: 0"/>
+                                <span id="bulk_send_msg_reply_to_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid reply to email address must be specified.', 'disciple_tools' ); ?></span><br>
+
+                                <span><?php echo sprintf( esc_html__( 'Emails will be sent from: %s', 'disciple_tools' ), esc_html( dt_default_email_address() ) ); ?></span><br>
+
+                                <!--                                --><?php
+                                //                                if ( count( $comms_channels ) > 1 ) {
+                                //                                    ?>
+                                <!--                                    <br><label>--><?php //echo esc_html__( 'Select message send method', 'disciple_tools' ); ?><!--</label>-->
+                                <!--                                    --><?php
+                                //                                    foreach ( $comms_channels as $channel_key => $channel_value ) {
+                                //                                        if ( !in_array( $channel_key, [ 'web' ] ) ) {
+                                //                                            $method_id = 'bulk_send_msg_method_' . $channel_key;
+                                //                                            ?>
+                                <!--                                            <input type="radio" class="bulk-send-msg-method"-->
+                                <!--                                                   id="--><?php //echo esc_attr( $method_id ); ?><!--"-->
+                                <!--                                                   name="bulk_send_msg_method"-->
+                                <!--                                                   value="--><?php //echo esc_attr( $channel_key ); ?><!--"-->
+                                <!--                                                --><?php //echo( ( $channel_key === 'email' ) ? 'checked' : '' ) ?><!--/>-->
+                                <!--                                            <label-->
+                                <!--                                                for="--><?php //echo esc_attr( $method_id ); ?><!--">--><?php //echo esc_html( $channel_value['label'] ); ?><!--</label>-->
+                                <!--                                            --><?php
+                                //                                        }
+                                //                                    }
+                                //                                }
+                                //                                ?>
+                                <span id="bulk_send_msg_method_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><br><?php echo esc_html__( 'Please ensure a valid send method has been specified.', 'disciple_tools' ); ?></span><br>
+
+                                <label for="bulk_send_msg"><?php echo esc_html__( 'Message', 'disciple_tools' ); ?></label>
+                                <textarea type="text" id="bulk_send_msg" rows="10"><?php echo esc_textarea( $default_message ); ?></textarea>
+                                <span id="bulk_send_msg_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'Please ensure a valid send message has been entered.', 'disciple_tools' ); ?></span><br>
+                                <span><?php echo esc_html__( 'Message placeholders', 'disciple_tools' ); ?></span>
+                                <ul>
+                                    <?php
+
                                     /**
-                                     * Filter the default message for the current post type.
+                                     * Filter the message placeholders for the current post type.
                                      *
-                                     * @param string $default_message The default message.
+                                     * @param array $message_placeholders The message placeholders.
                                      * @param string $post_type The post type.
-                                     * @return string The filtered default message.
+                                     * @return array The filtered message placeholders. The array should be in the following format:
+                                     * [
+                                     *     [
+                                     *         'name' => '{{name}}', // Required
+                                     *         'description' => 'Name of the Record', // Required
+                                     *         'help' => [ // Optional
+                                     *             'id' => 'placeholder_help_text_1', // Required
+                                     *             'title' => 'Name of the Record', // Required
+                                     *             'description' => 'Description of the Record', // Required
+                                     *             'items' => [ // Optional
+                                     *                 [
+                                     *                     'title' => 'Title of the Item',
+                                     *                     'text' => 'Text of the Item',
+                                     *                 ]
+                                     *             ]
+                                     *         ]
+                                     *     ]
+                                     * ]
                                      */
-                                    $default_message = apply_filters( 'dt_post_messaging_message_default', $default_message, $post_type );
-                                    // Filter communication channels.
-                                    $comms_channels = [];
-                                    foreach ( $dt_site_notification_defaults['channels'] as $channel_key => $channel_value ){
-                                        if ( $channel_key === 'web' ) {
-                                            continue;
-                                        }
-
-                                        if ( !$has_twilio && $channel_key === 'sms' ) {
-                                            continue;
-                                        }
-
-                                        $comms_channels[ $channel_key ] = $channel_value;
-                                    }
-                                    $msg_reply_to = dt_get_option( 'dt_email_base_address_reply_to' );
-                                    if ( empty( $msg_reply_to ) ) {
-                                        $msg_reply_to = dt_get_option( 'dt_email_base_address' );
-                                    }
+                                    $message_placeholders = apply_filters( 'dt_post_messaging_message_placeholders', [
+                                        [
+                                            'name' => '{{name}}',
+                                            'description' => __( 'Name of the Record', 'disciple_tools' ),
+                                        ],
+                                    ], $post_type );
                                     ?>
-                                    <label for="bulk_send_msg_subject"><?php echo esc_html__( 'Message subject', 'disciple_tools' ); ?></label>
-                                    <input type="text" id="bulk_send_msg_subject" value="<?php echo esc_attr( $default_subject ); ?>" style="margin-bottom: 0"/>
-                                    <span id="bulk_send_msg_subject_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid message subject must be entered.', 'disciple_tools' ); ?></span><br>
 
-                                    <label for="bulk_send_msg_from_name"><?php echo esc_html__( 'Message from name', 'disciple_tools' ); ?></label>
-                                    <input type="text" id="bulk_send_msg_from_name" value="<?php echo esc_attr( dt_default_email_name() ); ?>" style="margin-bottom: 0"/>
-                                    <span id="bulk_send_msg_from_name_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid from name must be specified.', 'disciple_tools' ); ?></span><br>
+                                    <?php foreach ( $message_placeholders as $placeholder ) : ?>
 
-                                    <label for="bulk_send_msg_reply_to"><?php echo esc_html__( 'Message reply to', 'disciple_tools' ); ?></label>
-                                    <input type="text" id="bulk_send_msg_reply_to" value="<?php echo esc_attr( $msg_reply_to ); ?>" style="margin-bottom: 0"/>
-                                    <span id="bulk_send_msg_reply_to_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'A valid reply to email address must be specified.', 'disciple_tools' ); ?></span><br>
-
-                                    <span><?php echo sprintf( esc_html__( 'Emails will be sent from: %s', 'disciple_tools' ), esc_html( dt_default_email_address() ) ); ?></span><br>
-
-                                    <!--                                --><?php
-                                    //                                if ( count( $comms_channels ) > 1 ) {
-                                    //                                    ?>
-                                    <!--                                    <br><label>--><?php //echo esc_html__( 'Select message send method', 'disciple_tools' ); ?><!--</label>-->
-                                    <!--                                    --><?php
-                                    //                                    foreach ( $comms_channels as $channel_key => $channel_value ) {
-                                    //                                        if ( !in_array( $channel_key, [ 'web' ] ) ) {
-                                    //                                            $method_id = 'bulk_send_msg_method_' . $channel_key;
-                                    //                                            ?>
-                                    <!--                                            <input type="radio" class="bulk-send-msg-method"-->
-                                    <!--                                                   id="--><?php //echo esc_attr( $method_id ); ?><!--"-->
-                                    <!--                                                   name="bulk_send_msg_method"-->
-                                    <!--                                                   value="--><?php //echo esc_attr( $channel_key ); ?><!--"-->
-                                    <!--                                                --><?php //echo( ( $channel_key === 'email' ) ? 'checked' : '' ) ?><!--/>-->
-                                    <!--                                            <label-->
-                                    <!--                                                for="--><?php //echo esc_attr( $method_id ); ?><!--">--><?php //echo esc_html( $channel_value['label'] ); ?><!--</label>-->
-                                    <!--                                            --><?php
-                                    //                                        }
-                                    //                                    }
-                                    //                                }
-                                    //                                ?>
-                                    <span id="bulk_send_msg_method_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><br><?php echo esc_html__( 'Please ensure a valid send method has been specified.', 'disciple_tools' ); ?></span><br>
-
-                                    <label for="bulk_send_msg"><?php echo esc_html__( 'Message', 'disciple_tools' ); ?></label>
-                                    <textarea type="text" id="bulk_send_msg" rows="10"><?php echo esc_textarea( $default_message ); ?></textarea>
-                                    <span id="bulk_send_msg_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'Please ensure a valid send message has been entered.', 'disciple_tools' ); ?></span><br>
-                                    <span><?php echo esc_html__( 'Message placeholders', 'disciple_tools' ); ?></span>
-                                    <ul>
-                                        <?php
-
-                                        /**
-                                         * Filter the message placeholders for the current post type.
-                                         *
-                                         * @param array $message_placeholders The message placeholders.
-                                         * @param string $post_type The post type.
-                                         * @return array The filtered message placeholders. The array should be in the following format:
-                                         * [
-                                         *     [
-                                         *         'name' => '{{name}}', // Required
-                                         *         'description' => 'Name of the Record', // Required
-                                         *         'help' => [ // Optional
-                                         *             'id' => 'placeholder_help_text_1', // Required
-                                         *             'title' => 'Name of the Record', // Required
-                                         *             'description' => 'Description of the Record', // Required
-                                         *             'items' => [ // Optional
-                                         *                 [
-                                         *                     'title' => 'Title of the Item',
-                                         *                     'text' => 'Text of the Item',
-                                         *                 ]
-                                         *             ]
-                                         *         ]
-                                         *     ]
-                                         * ]
-                                         */
-                                        $message_placeholders = apply_filters( 'dt_post_messaging_message_placeholders', [
-                                            [
-                                                'name' => '{{name}}',
-                                                'description' => __( 'Name of the Record', 'disciple_tools' ),
-                                            ],
-                                        ], $post_type );
-                                        ?>
-
-                                        <?php foreach ( $message_placeholders as $placeholder ) : ?>
-
-                                            <li>
-                                                <span style="font-weight: bold;"><?php echo esc_html( $placeholder['name'] ); ?></span>:
-                                                <?php echo esc_html( $placeholder['description'] ); ?>
-
-                                                <?php if ( isset( $placeholder['help'] ) ) : ?>
-                                                    <button class="float-right" data-open="placeholder_help_text_<?php echo esc_attr( $placeholder['help']['id'] ); ?>">
-                                                        <img class="help-icon"  style="padding-left: 5px;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" alt="help"/>
-                                                    </button>
-                                                <?php endif; ?>
-                                            </li>
-
+                                        <li>
+                                            <span style="font-weight: bold;"><?php echo esc_html( $placeholder['name'] ); ?></span>:
+                                            <?php echo esc_html( $placeholder['description'] ); ?>
 
                                             <?php if ( isset( $placeholder['help'] ) ) : ?>
-
-                                                <div id="placeholder_help_text_<?php echo esc_attr( $placeholder['help']['id'] ); ?>" class="large reveal" data-reveal data-v-offset="10px">
-                                                    <span class="section-header"><?php esc_html_e( 'Message Placeholder Help', 'disciple_tools' ) ?></span>
-                                                    <hr>
-                                                    <div class="grid-x">
-
-                                                        <?php if ( isset( $placeholder['help']['title'] ) ) : ?>
-
-                                                            <div class="cell">
-                                                                <p><strong><?php echo esc_html( $placeholder['help']['title'] ); ?></strong></p>
-                                                            </div>
-
-                                                        <?php endif; ?>
-
-                                                        <?php if ( isset( $placeholder['help']['description'] ) ) : ?>
-                                                            <div class="cell">
-                                                                <p><?php echo esc_html( $placeholder['help']['description'] ); ?></p>
-                                                            </div>
-                                                        <?php endif; ?>
-
-                                                        <?php foreach ( $placeholder['help']['items'] as $item ) : ?>
-
-                                                            <div class="cell">
-                                                                <?php if ( isset( $item['title'] ) ) : ?>
-                                                                    <span><strong><?php echo esc_html( $item['title'] ); ?></strong></span>:<?php echo ' '; ?>
-                                                                <?php endif; ?>
-                                                                <?php if ( isset( $item['text'] ) ) : ?>
-                                                                    <span><?php echo esc_html( $item['text'] ); ?></span>
-                                                                <?php endif; ?>
-                                                            </div>
-
-                                                        <?php endforeach; ?>
-
-                                                    </div>
-                                                    <button class="close-button" data-close aria-label="Close modal" type="button">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-
+                                                <button class="float-right" data-open="placeholder_help_text_<?php echo esc_attr( $placeholder['help']['id'] ); ?>">
+                                                    <img class="help-icon"  style="padding-left: 5px;" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>" alt="help"/>
+                                                </button>
                                             <?php endif; ?>
+                                        </li>
 
-                                        <?php endforeach; ?>
-                                    </ul>
+
+                                        <?php if ( isset( $placeholder['help'] ) ) : ?>
+
+                                            <div id="placeholder_help_text_<?php echo esc_attr( $placeholder['help']['id'] ); ?>" class="large reveal" data-reveal data-v-offset="10px">
+                                                <span class="section-header"><?php esc_html_e( 'Message Placeholder Help', 'disciple_tools' ) ?></span>
+                                                <hr>
+                                                <div class="grid-x">
+
+                                                    <?php if ( isset( $placeholder['help']['title'] ) ) : ?>
+
+                                                        <div class="cell">
+                                                            <p><strong><?php echo esc_html( $placeholder['help']['title'] ); ?></strong></p>
+                                                        </div>
+
+                                                    <?php endif; ?>
+
+                                                    <?php if ( isset( $placeholder['help']['description'] ) ) : ?>
+                                                        <div class="cell">
+                                                            <p><?php echo esc_html( $placeholder['help']['description'] ); ?></p>
+                                                        </div>
+                                                    <?php endif; ?>
+
+                                                    <?php foreach ( $placeholder['help']['items'] as $item ) : ?>
+
+                                                        <div class="cell">
+                                                            <?php if ( isset( $item['title'] ) ) : ?>
+                                                                <span><strong><?php echo esc_html( $item['title'] ); ?></strong></span>:<?php echo ' '; ?>
+                                                            <?php endif; ?>
+                                                            <?php if ( isset( $item['text'] ) ) : ?>
+                                                                <span><?php echo esc_html( $item['text'] ); ?></span>
+                                                            <?php endif; ?>
+                                                        </div>
+
+                                                    <?php endforeach; ?>
+
+                                                </div>
+                                                <button class="close-button" data-close aria-label="Close modal" type="button">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+
+                                        <?php endif; ?>
+
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                            <div class="cell">
+                                <label for="bulk_send_msg_required_elements"><?php echo esc_html__( 'Send to selected records', 'disciple_tools' ); ?></label>
+                                <span id="bulk_send_msg_required_elements" style="display:none;color:red;"><?php echo esc_html__( 'You must select at least one record', 'disciple_tools' ); ?></span>
+                                <div>
+                                    <button class="button dt-green" id="bulk_send_msg_submit">
+                                    <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Send', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html__( 'Links', 'disciple_tools' ); ?>" style="text-transform:capitalize;">
+                                        <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
+                                    </span>
+                                        <span id="bulk_send_msg_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
+                                    </button><br>
+                                    <span id="bulk_send_msg_submit_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'Ensure valid record selections have been made.', 'disciple_tools' ); ?></span>
                                 </div>
-                                <div class="cell">
-                                    <label for="bulk_send_msg_required_elements"><?php echo esc_html__( 'Send to selected records', 'disciple_tools' ); ?></label>
-                                    <span id="bulk_send_msg_required_elements" style="display:none;color:red;"><?php echo esc_html__( 'You must select at least one record', 'disciple_tools' ); ?></span>
-                                    <div>
-                                        <button class="button dt-green" id="bulk_send_msg_submit">
-                                        <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Send', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html__( 'Links', 'disciple_tools' ); ?>" style="text-transform:capitalize;">
-                                            <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
-                                        </span>
-                                            <span id="bulk_send_msg_submit-spinner" style="display: inline-block" class="loading-spinner"></span>
-                                        </button><br>
-                                        <span id="bulk_send_msg_submit_support_text" style="display: none; font-style: italic; font-size: 11px; color: #ff0000;"><?php echo esc_html__( 'Ensure valid record selections have been made.', 'disciple_tools' ); ?></span>
-                                    </div>
-                                    <span id="bulk_send_msg_submit-message"></span>
-                                </div>
+                                <span id="bulk_send_msg_submit-message"></span>
                             </div>
                         </div>
                     </div>
