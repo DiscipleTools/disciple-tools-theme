@@ -146,9 +146,9 @@
     addFieldOption(key = '', label = '') {
       const optionIndex = $('.field-option-row').length;
       const optionHtml = `
-                <div class="field-option-row" style="margin-bottom: 10px;">
-                    <input type="text" placeholder="Option key" name="option_keys[]" value="${window.dt_admin_shared.escape(key)}" style="width: 200px; margin-right: 10px;">
-                    <input type="text" placeholder="Option label" name="option_labels[]" value="${window.dt_admin_shared.escape(label)}" style="width: 200px; margin-right: 10px;">
+                <div class="field-option-row">
+                    <input type="text" placeholder="Option key" name="option_keys[]" value="${window.dt_admin_shared.escape(key)}">
+                    <input type="text" placeholder="Option label" name="option_labels[]" value="${window.dt_admin_shared.escape(label)}">
                     <button type="button" class="button remove-option-btn">Remove</button>
                 </div>
             `;
