@@ -954,7 +954,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
             ?>
             <p id="description">
                 The site link system is built to easily connect Disciple.Tools systems together, but can be extended to provide token validation
-                for other system integrations. Please refer to our <a href="https://github.com/DiscipleTools/disciple-tools-theme/wiki">developer wiki</a> for more information.
+                for other system integrations. Please refer to our <a href="https://developers.disciple.tools/theme-core/authentication/site-to-site-link" target="_blank">developer wiki</a> for more information.
             </p>
             <?php
         }
