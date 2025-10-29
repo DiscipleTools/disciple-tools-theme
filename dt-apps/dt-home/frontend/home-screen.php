@@ -351,6 +351,9 @@ $settings = wp_parse_args( $settings, [
     <div class="home-screen-container">
         <!-- Header Section -->
         <div class="home-screen-header">
+            <div class="header-controls">
+                <!-- Theme toggle will be added here by JavaScript -->
+            </div>
             <h1><?php echo esc_html( $settings['title'] ); ?></h1>
             <p><?php echo esc_html( $settings['description'] ); ?></p>
         </div>

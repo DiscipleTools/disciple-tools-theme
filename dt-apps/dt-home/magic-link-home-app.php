@@ -112,12 +112,14 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         wp_enqueue_style( 'material-font-icons-css', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css', [], '7.4.47' );
 
         // Enqueue home screen specific styles
-        wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.1' );
-        // JavaScript is handled in footer_javascript() method
+        wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.2' );
+        
+        // Enqueue theme toggle JavaScript
+        wp_enqueue_script( 'dt-home-theme-toggle', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/theme-toggle.js', [], '1.0.0', true );
     }
 
     public function dt_magic_url_base_allowed_js( $allowed_js ) {
-        // @todo add or remove js files with this filter
+        $allowed_js[] = 'dt-home-theme-toggle';
         return $allowed_js;
     }
 
@@ -312,12 +314,137 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 console.log('Home Screen initialized');
                 console.log('jsObject:', jsObject);
 
+                // Initialize theme system
+                initializeTheme();
+
                 // Initialize collapsible sections
                 initializeCollapsibleSections();
 
                 // Load apps and training content
                 loadApps();
                 loadTrainingVideos();
+            });
+
+            /**
+             * Initialize theme system
+             */
+            function initializeTheme() {
+                // Apply initial theme based on saved preference or system preference
+                const savedTheme = localStorage.getItem('dt-home-theme');
+                const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+                
+                // Apply theme to body
+                document.body.classList.remove('theme-light', 'theme-dark');
+                document.body.classList.add(`theme-${initialTheme}`);
+                
+                // Set CSS custom properties
+                const root = document.documentElement;
+                if (initialTheme === 'dark') {
+                    root.style.setProperty('--theme-mode', 'dark');
+                    root.style.setProperty('--body-background-color', '#1a1a1a');
+                    root.style.setProperty('--text-color', '#f5f5f5');
+                    root.style.setProperty('--surface-0', '#2a2a2a');
+                    root.style.setProperty('--surface-1', '#1a1a1a');
+                    root.style.setProperty('--surface-2', '#333333');
+                    root.style.setProperty('--primary-color', '#4a9eff');
+                    root.style.setProperty('--border-color', '#404040');
+                    root.style.setProperty('--shadow-color', 'rgba(0,0,0,0.3)');
+                } else {
+                    root.style.setProperty('--theme-mode', 'light');
+                    root.style.setProperty('--body-background-color', '#e2e2e2');
+                    root.style.setProperty('--text-color', '#0a0a0a');
+                    root.style.setProperty('--surface-0', '#e2e2e2');
+                    root.style.setProperty('--surface-1', 'hsla(0, 0%, 90%, 1)');
+                    root.style.setProperty('--surface-2', '#c2bfbf');
+                    root.style.setProperty('--primary-color', '#667eea');
+                    root.style.setProperty('--border-color', '#e1e5e9');
+                    root.style.setProperty('--shadow-color', 'rgba(0,0,0,0.1)');
+                }
+                
+                // Also set on document root for broader compatibility
+                document.documentElement.style.setProperty('--theme-mode', initialTheme);
+                
+                // Force body background color change
+                document.body.style.backgroundColor = initialTheme === 'dark' ? '#1a1a1a' : '#e2e2e2';
+                
+                // Apply direct styles for initial theme
+                applyDirectStyles(initialTheme);
+                
+                console.log('Theme initialized:', initialTheme);
+            }
+
+            /**
+             * Apply direct styles to elements
+             */
+            function applyDirectStyles(theme) {
+                const container = document.querySelector('.home-screen-container');
+                const content = document.querySelector('.home-screen-content');
+                const appCards = document.querySelectorAll('.app-card');
+                const appTitles = document.querySelectorAll('.app-title');
+                const sectionTitles = document.querySelectorAll('.section-title');
+                const sectionToggles = document.querySelectorAll('.section-toggle');
+                
+                if (theme === 'dark') {
+                    // Dark mode styles
+                    if (container) {
+                        container.style.backgroundColor = '#1a1a1a';
+                        container.style.color = '#f5f5f5';
+                    }
+                    if (content) {
+                        content.style.backgroundColor = '#1a1a1a';
+                        content.style.color = '#f5f5f5';
+                    }
+                    appCards.forEach(card => {
+                        card.style.setProperty('background-color', '#1a1a1a', 'important');
+                        card.style.setProperty('border-color', '#404040', 'important');
+                        card.style.setProperty('color', '#f5f5f5', 'important');
+                        card.style.setProperty('box-shadow', '0 1px 3px rgba(0,0,0,0.3)', 'important');
+                    });
+                    appTitles.forEach(title => {
+                        title.style.color = '#f5f5f5';
+                    });
+                    sectionTitles.forEach(title => {
+                        title.style.color = '#f5f5f5';
+                    });
+                    sectionToggles.forEach(toggle => {
+                        toggle.style.color = '#4a9eff';
+                    });
+                } else {
+                    // Light mode styles
+                    if (container) {
+                        container.style.backgroundColor = 'hsla(0, 0%, 90%, 1)';
+                        container.style.color = '#0a0a0a';
+                    }
+                    if (content) {
+                        content.style.backgroundColor = 'hsla(0, 0%, 90%, 1)';
+                        content.style.color = '#0a0a0a';
+                    }
+                    appCards.forEach(card => {
+                        card.style.setProperty('background-color', 'hsla(0, 0%, 90%, 1)', 'important');
+                        card.style.setProperty('border-color', '#e1e5e9', 'important');
+                        card.style.setProperty('color', '#0a0a0a', 'important');
+                        card.style.setProperty('box-shadow', '0 1px 3px rgba(0,0,0,0.1)', 'important');
+                    });
+                    appTitles.forEach(title => {
+                        title.style.color = '#0a0a0a';
+                    });
+                    sectionTitles.forEach(title => {
+                        title.style.color = '#0a0a0a';
+                    });
+                    sectionToggles.forEach(toggle => {
+                        toggle.style.color = '#667eea';
+                    });
+                }
+            }
+
+            /**
+             * Listen for theme changes from the toggle component
+             */
+            document.addEventListener('theme-changed', function(event) {
+                console.log('Theme changed to:', event.detail.theme);
+                // Apply direct styles when theme changes
+                applyDirectStyles(event.detail.theme);
             });
 
             /**
@@ -454,6 +581,17 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
                 //console.log('Final HTML being inserted:', html);
                 $('#apps-grid').html(html);
+                
+                // Reapply theme styles to newly loaded app cards
+                const currentTheme = document.body.classList.contains('theme-dark') ? 'dark' : 'light';
+                console.log('Reapplying theme styles after apps loaded:', currentTheme);
+                
+                // Use theme toggle instance if available, otherwise fall back to local function
+                if (window.themeToggleInstance) {
+                    window.themeToggleInstance.reapplyStyles();
+                } else {
+                    applyDirectStyles(currentTheme);
+                }
             }
 
             /**

@@ -1,11 +1,131 @@
 /* Home Screen Frontend Styles */
 
+/* CSS Variables for Theme Support */
+:root {
+    --theme-mode: light;
+    --body-background-color: #e2e2e2;
+    --text-color: #0a0a0a;
+    --surface-0: #e2e2e2;
+    --surface-1: hsla(0, 0%, 90%, 1);
+    --surface-2: #c2bfbf;
+    --primary-color: #667eea;
+    --border-color: #e1e5e9;
+    --shadow-color: rgba(0,0,0,0.1);
+}
+
+/* Dark Mode Variables */
+.theme-dark {
+    --body-background-color: #1a1a1a;
+    --text-color: #f5f5f5;
+    --surface-0: #2a2a2a;
+    --surface-1: #1a1a1a;
+    --surface-2: #333333;
+    --primary-color: #4a9eff;
+    --border-color: #404040;
+    --shadow-color: rgba(0,0,0,0.3);
+}
+
+/* Global smooth transitions for theme changes */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Body theme support */
+body {
+    background-color: var(--body-background-color) !important;
+    color: var(--text-color);
+}
+
+/* Dark mode specific overrides */
+.theme-dark body {
+    background-color: var(--body-background-color) !important;
+}
+
+.theme-dark .home-screen-container {
+    background: var(--surface-1) !important;
+    color: var(--text-color) !important;
+}
+
+.theme-dark .home-screen-content {
+    background: var(--surface-1) !important;
+    color: var(--text-color) !important;
+}
+
+.theme-dark .section-header {
+    border-bottom-color: var(--border-color) !important;
+}
+
+.theme-dark .training-section,
+.theme-dark .quick-actions-section {
+    border-top-color: var(--border-color) !important;
+}
+
+.theme-dark .app-card {
+    background: var(--surface-1) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-color) !important;
+    box-shadow: 0 1px 3px var(--shadow-color) !important;
+}
+
+/* More specific selectors for app cards */
+body.theme-dark .app-card {
+    background: var(--surface-1) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-color) !important;
+    box-shadow: 0 1px 3px var(--shadow-color) !important;
+}
+
+body.theme-dark .home-screen-container {
+    background: var(--surface-1) !important;
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .home-screen-content {
+    background: var(--surface-1) !important;
+    color: var(--text-color) !important;
+}
+
+.theme-dark .app-card:hover {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 2px 8px var(--shadow-color) !important;
+}
+
+.theme-dark .app-title {
+    color: var(--text-color) !important;
+}
+
+.theme-dark .section-title {
+    color: var(--text-color) !important;
+}
+
+.theme-dark .section-toggle {
+    color: var(--primary-color) !important;
+}
+
+/* More specific selectors for text elements */
+body.theme-dark .app-title {
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .section-title {
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .section-toggle {
+    color: var(--primary-color) !important;
+}
+
+body.theme-dark .app-card:hover {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 2px 8px var(--shadow-color) !important;
+}
+
 .home-screen-container {
     max-width: 1200px;
     margin: 0 auto;
-    background: white;
+    background: var(--surface-1);
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px var(--shadow-color);
     overflow: hidden;
 }
 
@@ -14,6 +134,59 @@
     color: white;
     padding: 2rem;
     text-align: center;
+    position: relative;
+}
+
+/* Header Controls for Theme Toggle */
+.header-controls {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Theme Toggle Button Styles */
+.theme-toggle-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.theme-toggle-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.theme-toggle-button:active {
+    transform: scale(0.95);
+}
+
+.theme-toggle-button.transitioning {
+    opacity: 0.7;
+    transform: scale(0.95);
+}
+
+.theme-icon {
+    color: white;
+    font-size: 24px;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-button:hover .theme-icon {
+    color: #fff;
+    transform: scale(1.1);
 }
 
 .home-screen-header h1 {
@@ -61,22 +234,22 @@
 }
 
 .app-card {
-    background: white !important;
-    border: 1px solid #e1e5e9 !important;
+    background: var(--surface-1) !important;
+    border: 1px solid var(--border-color) !important;
     border-radius: 16px !important;
     padding: 0.5rem 0.25rem !important;
     text-align: center !important;
     transition: all 0.2s ease !important;
     cursor: pointer !important;
     text-decoration: none !important;
-    color: inherit !important;
+    color: var(--text-color) !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
     min-height: 60px !important;
     aspect-ratio: 1 !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 1px 3px var(--shadow-color) !important;
     width: 60px !important;
     height: 60px !important;
     max-width: 60px !important;
@@ -85,16 +258,16 @@
 
 .app-card:hover {
     transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    border-color: #667eea;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    border-color: var(--primary-color);
     text-decoration: none;
-    color: inherit;
+    color: var(--text-color);
 }
 
 .app-icon {
     font-size: 1.2rem;
     margin-bottom: 0.1rem;
-    color: #667eea;
+    color: var(--primary-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -114,7 +287,7 @@
     font-size: 0.6rem;
     font-weight: 500;
     margin-bottom: 0;
-    color: #2c3e50;
+    color: var(--text-color);
     line-height: 1.0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -138,7 +311,7 @@
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #2c3e50;
+    color: var(--text-color);
 }
 
 .loading-spinner {
@@ -194,12 +367,12 @@
     justify-content: space-between;
     font-size: 1.5rem;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--text-color);
 }
 
 .section-toggle {
     font-size: 1.2rem;
-    color: #667eea;
+    color: var(--primary-color);
     cursor: pointer;
     padding: 0.25rem;
     border-radius: 4px;
