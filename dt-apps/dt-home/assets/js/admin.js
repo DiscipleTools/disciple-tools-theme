@@ -100,6 +100,12 @@ jQuery(document).ready(function ($) {
       showEditVideoForm(videoId);
     });
 
+    // Handle role selection toggle
+    $(document).on('change', 'input[name="app_user_roles_type"]', function () {
+      const isSpecificRoles = $(this).val() === 'support_specific_roles';
+      $('.app-roles-selection').toggle(isSpecificRoles);
+    });
+
     // Handle cancel edit buttons
     $(document).on('click', '.cancel-edit', function (e) {
       e.preventDefault();
@@ -167,6 +173,8 @@ jQuery(document).ready(function ($) {
         '', // Icon is now in 4th column
       color: '#667eea', // Default color, could be stored in data attribute
       enabled: $appRow.find('.status-enabled').length > 0,
+      user_roles_type: $appRow.data('user-roles-type') || 'support_all_roles',
+      roles: $appRow.data('roles') || [],
     };
 
     // Create edit form
@@ -174,6 +182,9 @@ jQuery(document).ready(function ($) {
 
     // Insert after the app row
     $appRow.after(editForm);
+
+    // Load roles for the edit form
+    loadRolesForEditForm(editForm, appData.roles);
 
     // Scroll to the form
     $('html, body').animate(
@@ -197,10 +208,11 @@ jQuery(document).ready(function ($) {
     );
     const videoData = {
       id: videoId,
-      title: $videoRow.find('td:first strong').text(),
-      description: $videoRow.find('td:nth-child(2)').text(),
-      duration: $videoRow.find('td:nth-child(3)').text(),
-      category: $videoRow.find('td:nth-child(4)').text().toLowerCase(),
+      title: $videoRow.find('td:nth-child(2) strong').text(), // Title is in 2nd column
+      description: $videoRow.find('td:nth-child(3)').text(), // Description is in 3rd column
+      duration: $videoRow.find('td:nth-child(4)').text(), // Duration is in 4th column
+      category: $videoRow.find('td:nth-child(5)').text().toLowerCase(), // Category is in 5th column
+      video_url: $videoRow.data('video-url') || '', // Video URL from data attribute
       enabled: $videoRow.find('.status-enabled').length > 0,
     };
 
@@ -263,9 +275,12 @@ jQuery(document).ready(function ($) {
    * Create app edit form
    */
   function createAppEditForm(appData) {
+    const userRolesType = appData.user_roles_type || 'support_all_roles';
+    const selectedRoles = appData.roles || [];
+
     return $(`
             <tr class="edit-form-row" style="background-color: #f0f8ff; border: 2px solid #667eea;">
-                <td colspan="6">
+                <td colspan="8">
                     <div class="edit-form-container" style="padding: 20px;">
                         <h4 style="margin-top: 0; color: #667eea;">Edit App: ${appData.title}</h4>
                         <form method="post" class="app-edit-form" name="dt_home_app_form_edit_${appData.id}">
@@ -325,6 +340,28 @@ jQuery(document).ready(function ($) {
                                     <th scope="row">Enabled</th>
                                     <td><input type="checkbox" name="app_enabled" ${appData.enabled ? 'checked' : ''} /></td>
                                 </tr>
+                                <tr>
+                                    <th scope="row">User Access</th>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="app_user_roles_type" value="support_all_roles" ${userRolesType === 'support_all_roles' ? 'checked' : ''} />
+                                            All roles have access
+                                        </label>
+                                        <br>
+                                        <label>
+                                            <input type="radio" name="app_user_roles_type" value="support_specific_roles" ${userRolesType === 'support_specific_roles' ? 'checked' : ''} />
+                                            Limit access by role
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="app-roles-selection" style="display: ${userRolesType === 'support_specific_roles' ? 'table-row' : 'none'};">
+                                    <th scope="row">Select Roles</th>
+                                    <td>
+                                        <div class="roles-checkboxes" style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+                                            <p><em>Loading roles...</em></p>
+                                        </div>
+                                    </td>
+                                </tr>
                             </table>
                             <p class="submit">
                                 <input type="submit" class="button button-primary" value="Update App" />
@@ -338,12 +375,39 @@ jQuery(document).ready(function ($) {
   }
 
   /**
+   * Load roles for edit form
+   */
+  function loadRolesForEditForm(container, selectedRoles = []) {
+    // This would typically make an AJAX call to get roles
+    // For now, we'll use a simple approach with the roles from the page
+    const rolesContainer = container.find('.roles-checkboxes');
+
+    // Get roles from the add form (they should be available)
+    const addFormRoles = $('.add-app-form .roles-checkboxes').html();
+    if (addFormRoles) {
+      rolesContainer.html(addFormRoles);
+
+      // Enable all checkboxes in the edit form (they might be disabled from the add form)
+      rolesContainer.find('input[type="checkbox"]').prop('disabled', false);
+
+      // Check the appropriate roles
+      selectedRoles.forEach((role) => {
+        rolesContainer.find(`input[value="${role}"]`).prop('checked', true);
+      });
+    } else {
+      rolesContainer.html(
+        '<p><em>Unable to load roles. Please refresh the page.</em></p>',
+      );
+    }
+  }
+
+  /**
    * Create video edit form
    */
   function createVideoEditForm(videoData) {
     return $(`
             <tr class="edit-form-row" style="background-color: #f0f8ff; border: 2px solid #667eea;">
-                <td colspan="6">
+                <td colspan="7">
                     <div class="edit-form-container" style="padding: 20px;">
                         <h4 style="margin-top: 0; color: #667eea;">Edit Video: ${videoData.title}</h4>
                         <form method="post" class="video-edit-form">
@@ -361,7 +425,7 @@ jQuery(document).ready(function ($) {
                                 </tr>
                                 <tr>
                                     <th scope="row">Video URL</th>
-                                    <td><input type="url" name="video_url" value="" class="regular-text" placeholder="https://youtube.com/watch?v=..." /></td>
+                                    <td><input type="url" name="video_url" value="${videoData.video_url}" class="regular-text" placeholder="https://youtube.com/watch?v=..." /></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Duration</th>

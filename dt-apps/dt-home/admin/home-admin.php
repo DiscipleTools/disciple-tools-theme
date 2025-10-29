@@ -154,6 +154,20 @@ class DT_Home_Admin {
                                     <label for="enable_quick_actions"><?php esc_html_e( 'Show quick actions section on home screen', 'disciple_tools' ); ?></label>
                                 </td>
                             </tr>
+                            <tr>
+                                <th scope="row">
+                                    <label for="enable_roles_permissions"><?php esc_html_e( 'Enable Role-Based Access', 'disciple_tools' ); ?></label>
+                                </th>
+                                <td>
+                                    <input type="checkbox"
+                                           id="enable_roles_permissions"
+                                           name="enable_roles_permissions"
+                                           value="1"
+                                           <?php checked( $settings['enable_roles_permissions'] ?? true ); ?> />
+                                    <label for="enable_roles_permissions"><?php esc_html_e( 'Enable role-based access control for apps', 'disciple_tools' ); ?></label>
+                                    <p class="description"><?php esc_html_e( 'When enabled, you can restrict app access to specific user roles.', 'disciple_tools' ); ?></p>
+                                </td>
+                            </tr>
                         </table>
                     </div>
 
@@ -275,6 +289,7 @@ class DT_Home_Admin {
             'description' => sanitize_textarea_field( wp_unslash( $_POST['home_screen_description'] ?? '' ) ),
             'enable_training_videos' => isset( $_POST['enable_training_videos'] ) ? 1 : 0,
             'enable_quick_actions' => isset( $_POST['enable_quick_actions'] ) ? 1 : 0,
+            'enable_roles_permissions' => isset( $_POST['enable_roles_permissions'] ) ? 1 : 0,
         ];
 
         update_option( 'dt_home_screen_settings', $settings );
@@ -293,6 +308,7 @@ class DT_Home_Admin {
             'description' => __( 'Your personalized dashboard for apps and training.', 'disciple_tools' ),
             'enable_training_videos' => 1,
             'enable_quick_actions' => 1,
+            'enable_roles_permissions' => 1,
         ];
 
         $settings = get_option( 'dt_home_screen_settings', $defaults );
@@ -358,7 +374,9 @@ class DT_Home_Admin {
                     'url' => esc_url_raw( wp_unslash( $_POST['app_url'] ?? '#' ) ),
                     'icon' => sanitize_text_field( wp_unslash( $_POST['app_icon'] ?? 'mdi mdi-apps' ) ),
                     'color' => sanitize_hex_color( wp_unslash( $_POST['app_color'] ?? '#667eea' ) ),
-                    'enabled' => isset( $_POST['app_enabled'] )
+                    'enabled' => isset( $_POST['app_enabled'] ),
+                    'user_roles_type' => sanitize_text_field( wp_unslash( $_POST['app_user_roles_type'] ?? 'support_all_roles' ) ),
+                    'roles' => isset( $_POST['app_roles'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['app_roles'] ) ) : []
                 ];
 
                 $result = $apps_manager->create_app( $app_data );
@@ -381,7 +399,9 @@ class DT_Home_Admin {
                     'url' => esc_url_raw( wp_unslash( $_POST['app_url'] ?? '#' ) ),
                     'icon' => sanitize_text_field( wp_unslash( $_POST['app_icon'] ?? 'mdi mdi-apps' ) ),
                     'color' => sanitize_hex_color( wp_unslash( $_POST['app_color'] ?? '#667eea' ) ),
-                    'enabled' => isset( $_POST['app_enabled'] )
+                    'enabled' => isset( $_POST['app_enabled'] ),
+                    'user_roles_type' => sanitize_text_field( wp_unslash( $_POST['app_user_roles_type'] ?? 'support_all_roles' ) ),
+                    'roles' => isset( $_POST['app_roles'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['app_roles'] ) ) : []
                 ];
 
                 $result = $apps_manager->update_app( $app_id, $app_data );
@@ -525,6 +545,38 @@ class DT_Home_Admin {
                         <th scope="row"><?php esc_html_e( 'Enabled', 'disciple_tools' ); ?></th>
                         <td><input type="checkbox" name="app_enabled" checked /></td>
                     </tr>
+                    <tr>
+                        <th scope="row"><?php esc_html_e( 'User Access', 'disciple_tools' ); ?></th>
+                        <td>
+                            <label>
+                                <input type="radio" name="app_user_roles_type" value="support_all_roles" checked />
+                                <?php esc_html_e( 'All roles have access', 'disciple_tools' ); ?>
+                            </label>
+                            <br>
+                            <label>
+                                <input type="radio" name="app_user_roles_type" value="support_specific_roles" />
+                                <?php esc_html_e( 'Limit access by role', 'disciple_tools' ); ?>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr class="app-roles-selection" style="display: none;">
+                        <th scope="row"><?php esc_html_e( 'Select Roles', 'disciple_tools' ); ?></th>
+                        <td>
+                            <?php
+                            $roles_permissions = DT_Home_Roles_Permissions::instance();
+                            $dt_roles = $roles_permissions->get_dt_roles_and_permissions();
+                            ksort( $dt_roles );
+                            ?>
+                            <div class="roles-checkboxes" style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+                                <?php foreach ( $dt_roles as $role_key => $role_data ) : ?>
+                                    <label style="display: block; margin-bottom: 5px;">
+                                        <input type="checkbox" name="app_roles[]" value="<?php echo esc_attr( $role_key ); ?>" />
+                                        <?php echo esc_html( $role_data['label'] ?? $role_key ); ?>
+                                    </label>
+                                <?php endforeach; ?>
+                            </div>
+                        </td>
+                    </tr>
                 </table>
 
                 <p class="submit">
@@ -556,13 +608,17 @@ class DT_Home_Admin {
                             <th><?php esc_html_e( 'Description', 'disciple_tools' ); ?></th>
                             <th style="text-align: center;"><?php esc_html_e( 'Icon', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'URL', 'disciple_tools' ); ?></th>
+                            <th style="text-align: center;"><?php esc_html_e( 'Access', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Status', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Actions', 'disciple_tools' ); ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ( $apps as $app ) : ?>
-                            <tr draggable="true" data-app-id="<?php echo esc_attr( $app['id'] ); ?>" style="cursor: move;">
+                            <tr draggable="true" data-app-id="<?php echo esc_attr( $app['id'] ); ?>" 
+                                data-user-roles-type="<?php echo esc_attr( $app['user_roles_type'] ?? 'support_all_roles' ); ?>"
+                                data-roles="<?php echo esc_attr( json_encode( $app['roles'] ?? [] ) ); ?>"
+                                style="cursor: move;">
                                 <td class="drag-handle" style="text-align: center; cursor: grab; background-color: #f9f9f9;">
                                     <span class="drag-icon" style="font-size: 14px; color: #666;">⋮⋮</span>
                                 </td>
@@ -580,6 +636,24 @@ class DT_Home_Admin {
                                     <?php endif; ?>
                                 </td>
                                 <td><?php echo esc_html( $app['url'] ); ?></td>
+                                <td style="text-align: center;">
+                                    <?php if ( isset( $app['user_roles_type'] ) && $app['user_roles_type'] === 'support_specific_roles' ) : ?>
+                                        <i class="mdi mdi-eye-lock-outline" style="font-size: 16px; color: #f39c12;" title="<?php esc_attr_e( 'Limited to specific roles', 'disciple_tools' ); ?>"></i>
+                                        <small style="display: block; margin-top: 2px;">
+                                            <?php 
+                                            $roles_count = count( $app['roles'] ?? [] );
+                                            if ( $roles_count > 0 ) {
+                                                echo sprintf( _n( '%d role', '%d roles', $roles_count, 'disciple_tools' ), $roles_count );
+                                            } else {
+                                                echo esc_html__( 'No roles selected', 'disciple_tools' );
+                                            }
+                                            ?>
+                                        </small>
+                                    <?php else : ?>
+                                        <i class="mdi mdi-eye" style="font-size: 16px; color: #27ae60;" title="<?php esc_attr_e( 'All roles have access', 'disciple_tools' ); ?>"></i>
+                                        <small style="display: block; margin-top: 2px;"><?php esc_html_e( 'All roles', 'disciple_tools' ); ?></small>
+                                    <?php endif; ?>
+                                </td>
                                 <td>
                                     <span class="status-<?php echo $app['enabled'] ? 'enabled' : 'disabled'; ?>">
                                         <?php echo $app['enabled'] ? esc_html__( 'Enabled', 'disciple_tools' ) : esc_html__( 'Disabled', 'disciple_tools' ); ?>
@@ -685,7 +759,7 @@ class DT_Home_Admin {
                     </thead>
                     <tbody>
                         <?php foreach ( $videos as $video ) : ?>
-                            <tr draggable="true" data-video-id="<?php echo esc_attr( $video['id'] ); ?>" style="cursor: move;">
+                            <tr draggable="true" data-video-id="<?php echo esc_attr( $video['id'] ); ?>" data-video-url="<?php echo esc_attr( $video['video_url'] ?? '' ); ?>" style="cursor: move;">
                                 <td class="drag-handle" style="text-align: center; cursor: grab; background-color: #f9f9f9;">
                                     <span class="drag-icon" style="font-size: 14px; color: #666;">⋮⋮</span>
                                 </td>

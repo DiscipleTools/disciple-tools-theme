@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Include required classes
 require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-apps.php';
 require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-training.php';
+require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-roles-permissions.php';
+require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-migration.php';
 
 /**
  * Class DT_Home_Magic_Link_App
@@ -425,7 +427,11 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             function displayApps(apps) {
                 let html = '';
 
-                if (apps.length === 0) {
+                // Safety check: ensure apps is an array
+                if (!Array.isArray(apps)) {
+                    console.error('Apps is not an array:', apps);
+                    html = '<div class="app-card"><div class="app-title">Error loading apps.</div></div>';
+                } else if (apps.length === 0) {
                     html = '<div class="app-card"><div class="app-title">No apps available.</div></div>';
                 } else {
                     apps.forEach(function(app) {
@@ -707,9 +713,9 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
         // Handle different actions
         if ( $action === 'get_apps' ) {
-            // Get apps only
+            // Get apps only (filtered by user permissions)
             $apps_manager = DT_Home_Apps::instance();
-            $apps = $apps_manager->get_apps_for_frontend();
+            $apps = $apps_manager->get_apps_for_user( $user_id );
 
             error_log( 'Apps found: ' . count( $apps ) );
 
@@ -737,7 +743,8 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             $apps_manager = DT_Home_Apps::instance();
             $training_manager = DT_Home_Training::instance();
 
-            $apps = $apps_manager->get_apps_for_frontend();
+            // Get apps filtered by user permissions
+            $apps = $apps_manager->get_apps_for_user( $user_id );
             $training_videos = $training_manager->get_videos_for_frontend();
 
             error_log( 'Apps found: ' . count( $apps ) );

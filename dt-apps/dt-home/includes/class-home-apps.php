@@ -187,9 +187,22 @@ class DT_Home_Apps {
             $counter++;
         }
 
+        // Generate slug for permission key
+        $slug = sanitize_title( $app_data['title'] );
+        $original_slug = $slug;
+        $slug_counter = 1;
+        
+        // Ensure unique slug
+        $existing_apps = $this->get_all_apps();
+        while ( $this->slug_exists( $slug, $existing_apps ) ) {
+            $slug = $original_slug . '-' . $slug_counter;
+            $slug_counter++;
+        }
+
         // Prepare app data
         $new_app = [
             'id' => $app_id,
+            'slug' => $slug,
             'creation_type' => 'custom',
             'title' => sanitize_text_field( $app_data['title'] ),
             'description' => sanitize_textarea_field( $app_data['description'] ?? '' ),
@@ -197,6 +210,8 @@ class DT_Home_Apps {
             'icon' => sanitize_text_field( $app_data['icon'] ?? 'mdi mdi-apps' ),
             'color' => sanitize_hex_color( $app_data['color'] ?? '#667eea' ),
             'enabled' => isset( $app_data['enabled'] ) ? (bool) $app_data['enabled'] : true,
+            'user_roles_type' => sanitize_text_field( $app_data['user_roles_type'] ?? 'support_all_roles' ),
+            'roles' => is_array( $app_data['roles'] ?? [] ) ? array_map( 'sanitize_text_field', $app_data['roles'] ) : [],
             'order' => $this->get_next_order(),
             'created_at' => current_time( 'mysql' ),
             'updated_at' => current_time( 'mysql' )
@@ -248,6 +263,12 @@ class DT_Home_Apps {
         }
         if ( isset( $app_data['order'] ) ) {
             $apps[$app_index]['order'] = (int) $app_data['order'];
+        }
+        if ( isset( $app_data['user_roles_type'] ) ) {
+            $apps[$app_index]['user_roles_type'] = sanitize_text_field( $app_data['user_roles_type'] );
+        }
+        if ( isset( $app_data['roles'] ) ) {
+            $apps[$app_index]['roles'] = is_array( $app_data['roles'] ) ? array_map( 'sanitize_text_field', $app_data['roles'] ) : [];
         }
 
         $apps[$app_index]['updated_at'] = current_time( 'mysql' );
@@ -392,6 +413,33 @@ class DT_Home_Apps {
         });
 
         return $enriched_apps;
+    }
+
+    /**
+     * Check if slug exists in apps array
+     */
+    private function slug_exists( $slug, $apps ) {
+        foreach ( $apps as $app ) {
+            if ( isset( $app['slug'] ) && $app['slug'] === $slug ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get apps filtered by user permissions
+     */
+    public function get_apps_for_user( $user_id = 0 ) {
+        $apps = $this->get_apps_for_frontend();
+        
+        // If roles permissions is not available, return all apps
+        if ( !class_exists( 'DT_Home_Roles_Permissions' ) ) {
+            return $apps;
+        }
+        
+        $roles_permissions = DT_Home_Roles_Permissions::instance();
+        return $roles_permissions->filter_apps_by_permissions( $apps, $user_id );
     }
 
     /**
