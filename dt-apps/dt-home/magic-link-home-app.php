@@ -113,7 +113,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
         // Enqueue home screen specific styles
         wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.2' );
-        
+
         // Enqueue theme toggle JavaScript
         wp_enqueue_script( 'dt-home-theme-toggle', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/theme-toggle.js', [], '1.0.0', true );
     }
