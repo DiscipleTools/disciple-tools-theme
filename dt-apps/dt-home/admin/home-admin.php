@@ -640,10 +640,10 @@ class DT_Home_Admin {
                                     <?php if ( isset( $app['user_roles_type'] ) && $app['user_roles_type'] === 'support_specific_roles' ) : ?>
                                         <i class="mdi mdi-eye-lock-outline" style="font-size: 16px; color: #f39c12;" title="<?php esc_attr_e( 'Limited to specific roles', 'disciple_tools' ); ?>"></i>
                                         <small style="display: block; margin-top: 2px;">
-                                            <?php 
+                                            <?php
                                             $roles_count = count( $app['roles'] ?? [] );
                                             if ( $roles_count > 0 ) {
-                                                echo sprintf( _n( '%d role', '%d roles', $roles_count, 'disciple_tools' ), $roles_count );
+                                                echo esc_html( sprintf( _n( '%d role', '%d roles', $roles_count, 'disciple_tools' ), $roles_count ) );
                                             } else {
                                                 echo esc_html__( 'No roles selected', 'disciple_tools' );
                                             }

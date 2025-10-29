@@ -191,7 +191,6 @@ class DT_Home_Apps {
         $slug = sanitize_title( $app_data['title'] );
         $original_slug = $slug;
         $slug_counter = 1;
-        
         // Ensure unique slug
         $existing_apps = $this->get_all_apps();
         while ( $this->slug_exists( $slug, $existing_apps ) ) {
@@ -432,12 +431,11 @@ class DT_Home_Apps {
      */
     public function get_apps_for_user( $user_id = 0 ) {
         $apps = $this->get_apps_for_frontend();
-        
         // If roles permissions is not available, return all apps
         if ( !class_exists( 'DT_Home_Roles_Permissions' ) ) {
             return $apps;
         }
-        
+
         $roles_permissions = DT_Home_Roles_Permissions::instance();
         return $roles_permissions->filter_apps_by_permissions( $apps, $user_id );
     }

@@ -102,7 +102,7 @@ class DT_Home_Migration {
         $migration_version = get_option( 'dt_home_migration_version', '0.0.0' );
         $apps_manager = DT_Home_Apps::instance();
         $apps = $apps_manager->get_all_apps();
-        
+
         $migrated_apps = 0;
         foreach ( $apps as $app ) {
             if ( isset( $app['slug'] ) && isset( $app['user_roles_type'] ) && isset( $app['roles'] ) ) {

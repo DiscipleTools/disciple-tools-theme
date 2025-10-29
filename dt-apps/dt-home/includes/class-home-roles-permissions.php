@@ -18,7 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class DT_Home_Roles_Permissions {
 
     private static $_instance = null;
-    
     public const CAPABILITIES_SOURCE = 'Home Screen';
     public const OPTION_KEY_CUSTOM_ROLES = 'dt_custom_roles';
     public const OPTION_KEY_USE_CAPABILITIES = 'dt_home_use_capabilities';
@@ -360,7 +359,6 @@ class DT_Home_Roles_Permissions {
         }
 
         $dt_custom_roles = get_option( self::OPTION_KEY_CUSTOM_ROLES, [] );
-        
         $filtered_apps = array_filter( $apps, function( $app ) use ( $user_id, $dt_custom_roles ) {
             try {
                 return $this->has_permission( $app, $user_id, $dt_custom_roles );
@@ -369,16 +367,14 @@ class DT_Home_Roles_Permissions {
                 return false; // Exclude app if there's an error
             }
         });
-        
         // Reindex the array to ensure it's a proper indexed array (not associative)
         $filtered_apps = array_values( $filtered_apps );
-        
         // Debug: Ensure we return an array
         if ( !is_array( $filtered_apps ) ) {
             error_log( 'ERROR: filter_apps_by_permissions did not return an array. Type: ' . gettype( $filtered_apps ) );
             return [];
         }
-        
+
         return $filtered_apps;
     }
 }
