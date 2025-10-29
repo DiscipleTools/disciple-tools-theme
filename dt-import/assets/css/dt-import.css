@@ -1243,11 +1243,12 @@
     gap: 10px;
     align-items: center;
     margin-bottom: 10px;
+    flex-wrap: wrap; /* allow wrapping to avoid overflow */
 }
 
 .field-option-row input[type="text"] {
-    flex: 1;
-    min-width: 150px;
+    flex: 1 1 180px; /* grow but also shrink as needed */
+    min-width: 0; /* prevent long content from enforcing width */
 }
 
 .field-option-row .remove-option-btn {
@@ -1255,6 +1256,30 @@
     font-size: 12px;
     height: auto;
     line-height: 1.4;
+    white-space: nowrap;
+}
+
+/* Keep the create-field form within modal width */
+.dt-import-modal .modal-content table.form-table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+}
+
+.dt-import-modal .modal-content table.form-table th,
+.dt-import-modal .modal-content table.form-table td {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .field-option-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .field-option-row .remove-option-btn {
+        align-self: flex-start;
+    }
 }
 
 .add-option-btn {

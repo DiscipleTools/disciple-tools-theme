@@ -458,4 +458,21 @@ abstract class DT_Magic_Url_Base {
         }
         return $apps_list;
     }
+
+    /**
+     * Sets a cookie to prevent caching of the page by WPEngine
+     */
+    public function prevent_page_caching() {
+        // Problem: WPEngine caches pages heavily if users aren't logged in.
+        //   They don't provide any programmatic way to exclude pages from caching besides contacting
+        //   support to set up exclusions.
+        // See https://wpengine.com/support/cache/#Cache_Exclusions
+        // Solution: They exclude pages that have a cookie starting with wordress_
+        //   presumably to prevent caching when a user is logged in and a user cookie is set.
+        //   This hacks on that exception a little to set a random cookie starting with wordpress_
+        //   so that the magic link doesn't get cached.
+        if ( ! isset( $_COOKIE['wordpress_skipwpecache'] ) ) {
+            setcookie( 'wordpress_skipwpecache', '1', time() + WEEK_IN_SECONDS );
+        }
+    }
 }
