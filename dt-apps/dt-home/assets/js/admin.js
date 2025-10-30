@@ -171,7 +171,7 @@ jQuery(document).ready(function ($) {
         $appRow.find('td:nth-child(4) i').attr('class') ||
         $appRow.find('td:nth-child(4) img').attr('src') ||
         '', // Icon is now in 4th column
-      color: '#667eea', // Default color, could be stored in data attribute
+      color: $appRow.data('color') || '#667eea',
       enabled: $appRow.find('.status-enabled').length > 0,
       user_roles_type: $appRow.data('user-roles-type') || 'support_all_roles',
       roles: $appRow.data('roles') || [],

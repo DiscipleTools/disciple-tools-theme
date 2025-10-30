@@ -618,6 +618,7 @@ class DT_Home_Admin {
                             <tr draggable="true" data-app-id="<?php echo esc_attr( $app['id'] ); ?>" 
                                 data-user-roles-type="<?php echo esc_attr( $app['user_roles_type'] ?? 'support_all_roles' ); ?>"
                                 data-roles="<?php echo esc_attr( json_encode( $app['roles'] ?? [] ) ); ?>"
+                                data-color="<?php echo esc_attr( $app['color'] ?? '#667eea' ); ?>"
                                 style="cursor: move;">
                                 <td class="drag-handle" style="text-align: center; cursor: grab; background-color: #f9f9f9;">
                                     <span class="drag-icon" style="font-size: 14px; color: #666;">⋮⋮</span>

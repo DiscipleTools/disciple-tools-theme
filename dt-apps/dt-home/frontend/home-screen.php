@@ -59,7 +59,7 @@ $settings = wp_parse_args( $settings, [
 .app-icon {
     font-size: 1.4rem !important;
     margin-bottom: 0.2rem !important;
-    color: #667eea !important;
+    color: #667eea;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
