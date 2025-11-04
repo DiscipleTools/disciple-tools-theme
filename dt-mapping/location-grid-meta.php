@@ -102,6 +102,22 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $grid_meta_id ), ARRAY_A );
         }
 
+        /**
+         * Check if a location grid meta record exists for a given post id and grid id.
+         * @param $post_id
+         * @param $latitude
+         * @param $longitude
+         * @return string|null
+         */
+        public static function get_existing_grid_id_by_lat_lng( $post_id, $latitude, $longitude ) {
+            global $wpdb;
+            $grid_meta_id = $wpdb->get_var( $wpdb->prepare(
+                "SELECT grid_meta_id FROM $wpdb->dt_location_grid_meta
+                    WHERE post_id = %s AND lat = %s AND lng = %s;", $post_id, $latitude, $longitude ) );
+
+            return $grid_meta_id;
+        }
+
         public static function add_location_grid_meta( $post_id, array $location_grid_meta, $postmeta_id_location_grid = null ) {
             global $wpdb;
             $geocoder = new Location_Grid_Geocoder();
@@ -119,6 +135,14 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 } else {
                     return new WP_Error( __METHOD__, 'Invalid lng or lat. Unable to retrieve grid_id' );
                 }
+            }
+
+            // If the post already has a location_grid meta record for this lat/lng,
+            // don't duplicate it. Just return the existing grid_meta_id.
+            $grid_meta_id = self::get_existing_grid_id_by_lat_lng( $post_id, $location_grid_meta['lat'], $location_grid_meta['lng'] );
+            if ( isset( $grid_meta_id ) ) {
+                dt_write_log( 'Location lat/lng already exists for post_id: ' . $post_id . ' and lat,lng: ' . $location_grid_meta['lat'] . ',lng: ' . $location_grid_meta['lng'] );
+                return $grid_meta_id;
             }
 
             if ( !$postmeta_id_location_grid ) {
