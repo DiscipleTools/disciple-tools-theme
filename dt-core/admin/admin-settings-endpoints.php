@@ -528,6 +528,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
 
         if ( isset( $params['roles'] ) && current_user_can( 'edit_roles' ) ){
             $roles = $params['roles'];
+            $changes = $params['changes'] ?? [];
 
             // Fetch existing roles and permissions.
             $existing_roles_permissions = Disciple_Tools_Roles::get_dt_roles_and_permissions();
@@ -543,14 +544,25 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     continue;
                 }
 
+                // Only focus on actual role changes.
+                if ( !isset( $changes[ $role ] ) ) {
+                    continue;
+                }
+
                 // Sync updated custom role with existing settings.
                 $updated_custom_role = [];
                 $existing_role = $existing_roles_permissions[$role] ?? [];
                 $updated_custom_role['label'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['label'] ?? '' ) : $role;
                 $updated_custom_role['description'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['description'] ?? '' ) : '';
                 $updated_custom_role['slug'] = $role;
-                $updated_custom_role['is_editable'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['is_editable'] ?? false ) : true;
-                $updated_custom_role['custom'] = isset( $existing_roles_permissions[$role] ) ? ( $existing_role['custom'] ?? false ) : true;
+
+                if ( isset( $existing_role['is_editable'] ) ) {
+                    $updated_custom_role['is_editable'] = $existing_role['is_editable'];
+                }
+
+                if ( isset( $existing_role['custom'] ) ) {
+                    $updated_custom_role['custom'] = $existing_role['custom'];
+                }
 
                 // Identify capabilities selection states.
                 $updated_capabilities = ( isset( $existing_custom_roles[$role]['capabilities'] ) && is_array( $existing_custom_roles[$role]['capabilities'] ) ) ? $existing_custom_roles[$role]['capabilities'] : [];
