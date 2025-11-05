@@ -38,7 +38,7 @@ class DT_Home_Admin {
         // AJAX handlers for drag and drop reordering
         add_action( 'wp_ajax_dt_home_reorder_apps', [ $this, 'handle_app_reorder' ] );
         add_action( 'wp_ajax_dt_home_reorder_videos', [ $this, 'handle_video_reorder' ] );
-        
+
         // AJAX handler for refreshing apps and videos data
         add_action( 'wp_ajax_dt_home_refresh_data', [ $this, 'handle_refresh_data' ] );
     }
@@ -833,8 +833,8 @@ class DT_Home_Admin {
                         <th scope="row"><?php esc_html_e( 'Type', 'disciple_tools' ); ?></th>
                         <td>
                             <select name="app_type" id="app_type" required>
-                                <option value="link"><?php esc_html_e('Link', 'disciple_tools') ?></option>
-                                <option value="app"><?php esc_html_e('App', 'disciple_tools') ?></option>
+                                <option value="link"><?php esc_html_e( 'Link', 'disciple_tools' ) ?></option>
+                                <option value="app"><?php esc_html_e( 'App', 'disciple_tools' ) ?></option>
                             </select>
                         </td>
                     </tr>
@@ -1146,8 +1146,8 @@ class DT_Home_Admin {
                             <th scope="row"><?php esc_html_e( 'Type', 'disciple_tools' ); ?></th>
                             <td>
                                 <select style="min-width: 100%;" name="app_type" id="app_type" required>
-                                    <option value="link"><?php esc_html_e('Link', 'disciple_tools') ?></option>
-                                    <option value="app"><?php esc_html_e('App', 'disciple_tools') ?></option>
+                                    <option value="link"><?php esc_html_e( 'Link', 'disciple_tools' ) ?></option>
+                                    <option value="app"><?php esc_html_e( 'App', 'disciple_tools' ) ?></option>
                                 </select>
                             </td>
                         </tr>

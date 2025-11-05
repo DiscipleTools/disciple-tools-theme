@@ -1915,7 +1915,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         $this->hard_switch_to_default_dt_text_domain();
 
         // Route between Apps (default) and Training view via ?view= param
-        $view = isset($_GET['view']) ? strtolower( sanitize_text_field( wp_unslash( $_GET['view'] ) ) ) : 'apps';
+        $view = isset( $_GET['view'] ) ? strtolower( sanitize_text_field( wp_unslash( $_GET['view'] ) ) ) : 'apps';
         if ( $view === 'training' ) {
             $template = get_template_directory() . '/dt-apps/dt-home/frontend/training-screen.php';
             if ( file_exists( $template ) ) {
