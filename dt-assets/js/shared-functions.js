@@ -315,28 +315,30 @@ jQuery(document).on('click', '.help-button-tile', function () {
         if (typeof field.default === 'object' && field.default !== null) {
           let list_html = ``;
           let first_field_option = true;
-          Object.entries(field.default).forEach(([field_key, field_options]) => {
-            if (Object.prototype.hasOwnProperty.call(field_options, 'icon')) {
-              if (first_field_option) {
-                list_html += `<ul class="help-modal-icon">`;
-                first_field_option = false;
+          Object.entries(field.default).forEach(
+            ([field_key, field_options]) => {
+              if (Object.prototype.hasOwnProperty.call(field_options, 'icon')) {
+                if (first_field_option) {
+                  list_html += `<ul class="help-modal-icon">`;
+                  first_field_option = false;
+                }
+                list_html += `<li><img src="${window.SHAREDFUNCTIONS.escapeHTML(field_options.icon)}">`;
+              } else {
+                if (first_field_option) {
+                  list_html += `<ul>`;
+                  first_field_option = false;
+                }
+                list_html += `<li>`;
               }
-              list_html += `<li><img src="${window.SHAREDFUNCTIONS.escapeHTML(field_options.icon)}">`;
-            } else {
-              if (first_field_option) {
-                list_html += `<ul>`;
-                first_field_option = false;
-              }
-              list_html += `<li>`;
-            }
-            list_html += `<strong>${window.SHAREDFUNCTIONS.escapeHTML(
-              field_options.label,
-            )}</strong> ${window.SHAREDFUNCTIONS.escapeHTML(
-              !field_options.description
-                ? ''
-                : '- ' + field_options.description,
-            )}</li>`;
-          });
+              list_html += `<strong>${window.SHAREDFUNCTIONS.escapeHTML(
+                field_options.label,
+              )}</strong> ${window.SHAREDFUNCTIONS.escapeHTML(
+                !field_options.description
+                  ? ''
+                  : '- ' + field_options.description,
+              )}</li>`;
+            },
+          );
           list_html += `</ul>`;
           html += list_html;
         }
