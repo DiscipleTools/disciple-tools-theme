@@ -55,8 +55,7 @@ body {
     border-bottom-color: var(--border-color) !important;
 }
 
-.theme-dark .training-section,
-.theme-dark .quick-actions-section {
+.theme-dark .training-section {
     border-top-color: var(--border-color) !important;
 }
 
@@ -82,6 +81,59 @@ body.theme-dark .home-screen-container {
 
 body.theme-dark .home-screen-content {
     background: var(--surface-1) !important;
+    color: var(--text-color) !important;
+}
+
+/* Dark theme overrides for header table */
+.theme-dark .home-screen-header {
+    background: transparent !important;
+    color: var(--text-color) !important;
+}
+
+.theme-dark .header-table {
+    color: var(--text-color) !important;
+}
+
+.theme-dark .header-content-cell {
+    color: var(--text-color) !important;
+}
+
+.theme-dark .header-controls-cell {
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .home-screen-header {
+    background: transparent !important;
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .header-table {
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .header-content-cell {
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .header-controls-cell {
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .home-screen-header h1 {
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .home-screen-header p {
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .theme-icon,
+body.theme-dark .dt-menu-icon {
+    color: var(--text-color) !important;
+}
+
+.theme-dark .theme-icon,
+.theme-dark .dt-menu-icon {
     color: var(--text-color) !important;
 }
 
@@ -130,42 +182,162 @@ body.theme-dark .app-card:hover {
 }
 
 .home-screen-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 2rem;
-    text-align: center;
+    background: transparent;
+    color: var(--text-color);
+    padding: 1.5rem 2rem;
     position: relative;
 }
 
-/* Header Controls for Theme Toggle */
+/* Header Table Layout */
+.header-table,
+.header-table tbody,
+.header-table tr,
+.header-table th,
+.header-table td {
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    border-color: transparent !important;
+    border-width: 0 !important;
+}
+
+.header-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    color: var(--text-color) !important;
+    border: none !important;
+}
+
+.header-table tbody {
+    border: none !important;
+    border-color: transparent !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+.header-table tr {
+    border: none !important;
+    border-color: transparent !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+.header-table th,
+.header-table td {
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+.header-table td,
+.header-table td.header-content-cell,
+table.header-table td.header-content-cell,
+.header-table .header-content-cell {
+    vertical-align: top !important;
+    width: auto !important;
+    padding: 0 !important;
+    color: var(--text-color) !important;
+    border: none !important;
+    margin: 0 !important;
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+.header-table td.header-controls-cell,
+table.header-table td.header-controls-cell,
+.header-table .header-controls-cell {
+    vertical-align: top !important;
+    text-align: right !important;
+    width: 1% !important;
+    padding: 0 !important;
+    padding-left: 2rem !important;
+    white-space: nowrap !important;
+    color: var(--text-color) !important;
+    border: none !important;
+    margin: 0 !important;
+    background-color: transparent !important;
+    background: transparent !important;
+}
+
+/* Fallback selectors */
+.header-content-cell,
+td.header-content-cell {
+    vertical-align: top !important;
+    width: auto !important;
+    padding: 0 !important;
+    color: var(--text-color) !important;
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.header-controls-cell,
+td.header-controls-cell {
+    vertical-align: top !important;
+    text-align: right !important;
+    width: 1% !important;
+    padding: 0 !important;
+    padding-left: 2rem !important;
+    white-space: nowrap !important;
+    color: var(--text-color) !important;
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* Header Controls for Theme Toggle and Menu */
 .header-controls {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: flex-end !important;
+    gap: 0.75rem !important;
+    position: relative !important;
+    flex-wrap: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+/* Ensure menu button container is also relative for floating menu positioning */
+.menu-toggle-button {
+    position: relative;
 }
 
 /* Theme Toggle Button Styles */
 .theme-toggle-button {
-    background: rgba(255, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    /* Remove any default button styles */
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: none !important;
+    background-size: none !important;
+}
+
+.theme-toggle-button::before,
+.theme-toggle-button::after {
+    display: none !important;
+    content: none !important;
 }
 
 .theme-toggle-button:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: var(--surface-2) !important;
+    border-color: var(--primary-color) !important;
     transform: scale(1.05);
 }
 
@@ -179,26 +351,294 @@ body.theme-dark .app-card:hover {
 }
 
 .theme-icon {
-    color: white;
-    font-size: 24px;
-    transition: all 0.3s ease;
+    color: var(--text-color) !important;
+    font-size: 24px !important;
+    transition: all 0.3s ease !important;
+    /* Ensure icon is properly displayed */
+    display: inline-block !important;
+    line-height: 1 !important;
+    position: relative !important;
+    z-index: 1 !important;
 }
 
 .theme-toggle-button:hover .theme-icon {
-    color: #fff;
+    color: var(--primary-color) !important;
     transform: scale(1.1);
+}
+
+/* Dark theme specific styles for theme toggle button */
+body.theme-dark .theme-toggle-button,
+.theme-dark .theme-toggle-button {
+    border-color: var(--border-color) !important;
+    background: transparent !important;
+}
+
+body.theme-dark .theme-toggle-button:hover,
+.theme-dark .theme-toggle-button:hover {
+    background: var(--surface-2) !important;
+    border-color: var(--primary-color) !important;
+}
+
+body.theme-dark .theme-icon,
+.theme-dark .theme-icon {
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .theme-toggle-button:hover .theme-icon,
+.theme-dark .theme-toggle-button:hover .theme-icon {
+    color: var(--primary-color) !important;
+}
+
+/* Light theme specific styles for theme toggle button */
+body.theme-light .theme-toggle-button,
+.theme-light .theme-toggle-button {
+    border-color: var(--border-color) !important;
+    background: transparent !important;
+}
+
+body.theme-light .theme-toggle-button:hover,
+.theme-light .theme-toggle-button:hover {
+    background: var(--surface-2) !important;
+    border-color: var(--primary-color) !important;
+}
+
+body.theme-light .theme-icon,
+.theme-light .theme-icon {
+    color: var(--text-color) !important;
+}
+
+body.theme-light .theme-toggle-button:hover .theme-icon,
+.theme-light .theme-toggle-button:hover .theme-icon {
+    color: var(--primary-color) !important;
+}
+
+/* Menu Toggle Button Styles */
+.menu-toggle-button {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    /* Remove any default button styles that might add icons */
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    /* Remove any background images or pseudo-elements */
+    background-image: none !important;
+    background-size: none !important;
+    /* Ensure no pseudo-elements create duplicate icons */
+}
+
+.menu-toggle-button::before,
+.menu-toggle-button::after {
+    display: none !important;
+    content: none !important;
+}
+
+.menu-toggle-button:hover {
+    background: var(--surface-2) !important;
+    border-color: var(--primary-color) !important;
+    transform: scale(1.05);
+}
+
+.menu-toggle-button:active {
+    transform: scale(0.95);
+}
+
+.dt-menu-icon {
+    color: var(--text-color) !important;
+    font-size: 24px !important;
+    transition: all 0.3s ease !important;
+    /* Ensure icon is properly displayed */
+    display: inline-block !important;
+    line-height: 1 !important;
+    /* Prevent any icon duplication */
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.menu-toggle-button:hover .dt-menu-icon {
+    color: var(--primary-color) !important;
+    transform: scale(1.1);
+}
+
+/* Dark theme specific styles for menu toggle button */
+body.theme-dark .menu-toggle-button,
+.theme-dark .menu-toggle-button {
+    border-color: var(--border-color) !important;
+    background: transparent !important;
+}
+
+body.theme-dark .menu-toggle-button:hover,
+.theme-dark .menu-toggle-button:hover {
+    background: var(--surface-2) !important;
+    border-color: var(--primary-color) !important;
+}
+
+body.theme-dark .dt-menu-icon,
+.theme-dark .dt-menu-icon {
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .menu-toggle-button:hover .dt-menu-icon,
+.theme-dark .menu-toggle-button:hover .dt-menu-icon {
+    color: var(--primary-color) !important;
+}
+
+/* Light theme specific styles for menu toggle button */
+body.theme-light .menu-toggle-button,
+.theme-light .menu-toggle-button {
+    border-color: var(--border-color) !important;
+    background: transparent !important;
+}
+
+body.theme-light .menu-toggle-button:hover,
+.theme-light .menu-toggle-button:hover {
+    background: var(--surface-2) !important;
+    border-color: var(--primary-color) !important;
+}
+
+body.theme-light .dt-menu-icon,
+.theme-light .dt-menu-icon {
+    color: var(--text-color) !important;
+}
+
+body.theme-light .menu-toggle-button:hover .dt-menu-icon,
+.theme-light .menu-toggle-button:hover .dt-menu-icon {
+    color: var(--primary-color) !important;
+}
+
+/* Floating Menu */
+.floating-menu {
+    position: fixed !important;
+    display: none !important; /* Hidden by default, shown only when active */
+    flex-direction: column !important;
+    background: var(--surface-1) !important;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px var(--shadow-color) !important;
+    min-width: 220px !important;
+    max-width: 280px !important;
+    z-index: 1000 !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-10px) !important;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease !important;
+    padding: 0.5rem 0 !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+}
+
+.floating-menu.active {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    pointer-events: auto !important;
+}
+
+.menu-item {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+    padding: 1rem 1.5rem !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+    text-decoration: none !important;
+    font-size: 0.95rem !important;
+    font-family: inherit !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    text-align: left !important;
+    box-sizing: border-box !important;
+    justify-content: flex-start !important;
+    line-height: 1.5 !important;
+}
+
+.menu-item:last-child {
+    border-bottom: none !important;
+}
+
+/* Theme-aware menu item colors */
+.menu-item {
+    color: var(--text-color) !important;
+}
+
+body.theme-dark .menu-item,
+.theme-dark .menu-item {
+    color: var(--text-color) !important;
+}
+
+body.theme-light .menu-item,
+.theme-light .menu-item {
+    color: var(--text-color) !important;
+}
+
+.menu-item i {
+    font-size: 20px;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-item span {
+    flex: 1;
+}
+
+.menu-item:hover {
+    background: var(--surface-2);
+    color: var(--primary-color);
+}
+
+.menu-item:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: -2px;
+}
+
+.menu-item.active {
+    background: var(--surface-2);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Backdrop for floating menu */
+.menu-backdrop {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    z-index: 999; /* one less than menu */
 }
 
 .home-screen-header h1 {
     margin: 0;
-    font-size: 2.5rem;
-    font-weight: 300;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+    text-align: left;
+    flex: 0 1 auto;
 }
 
 .home-screen-header p {
-    margin: 0.5rem 0 0 0;
-    opacity: 0.9;
-    font-size: 1.1rem;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text-color);
+    opacity: 0.85;
+    text-align: left;
 }
 
 .home-screen-content {
@@ -302,9 +742,8 @@ body.theme-dark .app-card:hover {
 }
 
 .training-section {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid #e1e5e9;
+    margin-top: 0;
+    padding-top: 0;
 }
 
 .section-title {
@@ -335,11 +774,6 @@ body.theme-dark .app-card:hover {
     padding: 2rem;
 }
 
-.quick-actions-section {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid #e1e5e9;
-}
 
 /* Collapsible Sections */
 .collapsible-section {
@@ -561,33 +995,48 @@ body.theme-dark .app-card:hover {
 /* Responsive Design */
 @media (max-width: 768px) {
     .home-screen-header {
-        padding: 1.5rem;
+        padding: 1rem 1.5rem;
     }
-    
+
     .home-screen-header h1 {
-        font-size: 2rem;
+        font-size: 1.25rem;
     }
-    
+
+    .home-screen-header p {
+        font-size: 0.85rem;
+    }
+
+    .theme-toggle-button,
+    .menu-toggle-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .theme-icon,
+    .dt-menu-icon {
+        font-size: 20px;
+    }
+
     .home-screen-content {
         padding: 1.5rem;
     }
-    
+
     .apps-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .video-modal-overlay {
         padding: 1rem;
     }
-    
+
     .video-modal {
         max-height: 95vh;
     }
-    
+
     .video-modal-header {
         padding: 1rem;
     }
-    
+
     .video-modal-header h3 {
         font-size: 1.1rem;
     }
@@ -597,18 +1046,511 @@ body.theme-dark .app-card:hover {
     .video-preview {
         height: 100px;
     }
-    
+
     .video-play-overlay {
         width: 40px;
         height: 40px;
         font-size: 1.2rem;
     }
-    
+
     .video-modal-overlay {
         padding: 0.5rem;
     }
-    
+
     .video-modal-header {
         padding: 0.75rem;
+    }
+}
+
+/* Training Video Card Styles */
+.training-card {
+    background: var(--surface-1) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    box-shadow: 0 2px 8px var(--shadow-color) !important;
+}
+
+.training-card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px var(--shadow-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.training-card.playing {
+    box-shadow: 0 4px 16px var(--shadow-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Video Info Header - Title and Duration on same line */
+.training-video-info {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0.75rem 1rem !important;
+    background: var(--surface-2) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    gap: 1rem !important;
+}
+
+.training-video-title-text {
+    flex: 1 !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    color: var(--text-color) !important;
+    margin: 0 !important;
+    text-align: left !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.training-video-duration-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 0.25rem 0.5rem !important;
+    background: var(--surface-1) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    color: var(--text-color) !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+}
+
+/* Thumbnail Container with Splash Screen */
+.training-video-thumbnail-container {
+    position: relative !important;
+    width: 100% !important;
+    padding-bottom: 56.25% !important; /* 16:9 aspect ratio */
+    background: #000 !important;
+    overflow: hidden !important;
+    border-radius: 0 0 12px 12px !important;
+}
+
+.training-video-thumbnail {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 0 !important;
+}
+
+.training-video-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: background 0.3s ease !important;
+    z-index: 2 !important;
+}
+
+.training-card:hover .training-video-overlay {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+.training-play-button {
+    width: 60px !important;
+    height: 60px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: var(--primary-color) !important;
+    font-size: 1.75rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    border: 3px solid rgba(255, 255, 255, 0.8) !important;
+}
+
+.training-card:hover .training-play-button {
+    transform: scale(1.1) !important;
+    background: white !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Old duration position (hidden when new structure is used) */
+.training-video-duration {
+    display: none !important;
+}
+
+/* Old title position (hidden when new structure is used) */
+.training-video-title {
+    display: none !important;
+}
+
+/* Embedded Video Container */
+.training-video-embed {
+    position: relative !important;
+    width: 100% !important;
+    padding-bottom: 56.25% !important; /* 16:9 aspect ratio */
+    background: #000 !important;
+    border-radius: 0 0 12px 12px !important;
+    overflow: hidden !important;
+}
+
+.training-video-embed iframe {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
+    border-radius: 0 0 12px 12px !important;
+}
+
+.training-video-external-link {
+    position: absolute !important;
+    top: 0.75rem !important;
+    right: 0.75rem !important;
+    z-index: 10 !important;
+}
+
+.external-link-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: white !important;
+    padding: 0.4rem 0.6rem !important;
+    border-radius: 6px !important;
+    text-decoration: none !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    backdrop-filter: blur(4px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.external-link-button:hover {
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: white !important;
+    text-decoration: none !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.external-link-button i {
+    font-size: 0.9rem !important;
+}
+
+/* Training Grid */
+.training-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+    gap: 1.5rem !important;
+    margin-bottom: 2rem !important;
+    padding: 0 !important;
+    grid-auto-rows: 1fr !important;
+}
+
+.training-grid .training-card {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+@media (max-width: 768px) {
+    .training-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    .training-card {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .training-play-button {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1.5rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .training-video-info {
+        padding: 0.5rem 0.75rem !important;
+    }
+
+    .training-video-title-text {
+        font-size: 0.85rem !important;
+    }
+
+    .training-video-duration-badge {
+        font-size: 0.7rem !important;
+        padding: 0.2rem 0.4rem !important;
+    }
+
+    .external-link-button span {
+        display: none !important;
+    }
+}
+
+/* Invite Modal Styles */
+.invite-modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.35) !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+}
+
+.invite-modal-content {
+    background: var(--surface-1, #fff) !important;
+    color: var(--text-color, #000) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18) !important;
+    min-width: 320px !important;
+    max-width: 95vw !important;
+    width: 100% !important;
+    max-width: 400px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+.theme-dark .invite-modal-content,
+.invite-modal-content.theme-dark {
+    background: var(--surface-1, #2a2a2a) !important;
+    color: var(--text-color, #f5f5f5) !important;
+}
+
+.invite-modal-header {
+    padding: 20px 20px 0 20px !important;
+}
+
+.invite-modal-title {
+    margin: 0 !important;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: var(--text-color, #000) !important;
+    margin-bottom: 0 !important;
+}
+
+.theme-dark .invite-modal-title,
+.invite-modal-content.theme-dark .invite-modal-title {
+    color: var(--text-color, #f5f5f5) !important;
+}
+
+.invite-modal-separator {
+    height: 1px !important;
+    background: var(--border-color, #e1e5e9) !important;
+    margin-top: 12px !important;
+    margin-bottom: 0 !important;
+}
+
+.theme-dark .invite-modal-separator,
+.invite-modal-content.theme-dark .invite-modal-separator {
+    background: var(--border-color, #404040) !important;
+}
+
+.invite-modal-body {
+    padding: 20px !important;
+    flex: 1 !important;
+}
+
+.invite-explanation-text {
+    margin: 0 0 20px 0 !important;
+    color: var(--text-color, #666) !important;
+    line-height: 1.5 !important;
+    font-size: 0.95rem !important;
+}
+
+.theme-dark .invite-explanation-text,
+.invite-modal-content.theme-dark .invite-explanation-text {
+    color: var(--text-color, #ffffff) !important;
+}
+
+.invite-share-link-container {
+    display: flex !important;
+    gap: 10px !important;
+    align-items: center !important;
+    margin-bottom: 20px !important;
+}
+
+.invite-url-input {
+    flex: 1 !important;
+    padding: 10px 12px !important;
+    border: 1px solid var(--border-color, #e1e5e9) !important;
+    border-radius: 6px !important;
+    font-size: 0.9rem !important;
+    font-family: inherit !important;
+    background: var(--surface-0, #fff) !important;
+    color: var(--text-color, #000) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+}
+
+.theme-dark .invite-url-input,
+.invite-modal-content.theme-dark .invite-url-input {
+    background: var(--surface-0, #2a2a2a) !important;
+    border-color: var(--border-color, #404040) !important;
+    color: var(--text-color, #f5f5f5) !important;
+}
+
+.invite-url-input:focus {
+    outline: 2px solid var(--primary-color, #667eea) !important;
+    outline-offset: -1px !important;
+}
+
+.invite-copy-button {
+    flex-shrink: 0 !important;
+    padding: 10px 20px !important;
+    background: var(--primary-color, #667eea) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    font-family: inherit !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+}
+
+.invite-copy-button:hover {
+    background: var(--primary-color, #5568d3) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+}
+
+.invite-copy-button:active {
+    transform: translateY(0) !important;
+}
+
+.invite-copy-button:focus {
+    outline: 2px solid var(--primary-color, #667eea) !important;
+    outline-offset: 2px !important;
+}
+
+.theme-dark .invite-copy-button,
+.invite-modal-content.theme-dark .invite-copy-button {
+    background: var(--primary-color, #4a9eff) !important;
+}
+
+.theme-dark .invite-copy-button:hover,
+.invite-modal-content.theme-dark .invite-copy-button:hover {
+    background: #3a8eef !important;
+}
+
+.invite-success-message {
+    color: #4caf50 !important;
+    font-size: 0.875rem !important;
+    margin-top: 10px !important;
+    display: none !important;
+    font-weight: 500 !important;
+}
+
+.invite-success-message.show {
+    display: block !important;
+    animation: fadeIn 0.3s ease !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.invite-modal-footer {
+    display: flex !important;
+    justify-content: flex-end !important;
+    padding: 0 20px 20px 20px !important;
+    gap: 10px !important;
+}
+
+.invite-close-button {
+    padding: 10px 20px !important;
+    background: var(--surface-2, #f5f5f5) !important;
+    color: var(--text-color, #000) !important;
+    border: 1px solid var(--border-color, #e1e5e9) !important;
+    border-radius: 6px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    font-family: inherit !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.invite-close-button:hover {
+    background: var(--surface-2, #e5e5e5) !important;
+    border-color: var(--border-color, #d1d5d9) !important;
+}
+
+.invite-close-button:focus {
+    outline: 2px solid var(--primary-color, #667eea) !important;
+    outline-offset: 2px !important;
+}
+
+.theme-dark .invite-close-button,
+.invite-modal-content.theme-dark .invite-close-button {
+    background: var(--surface-2, #333333) !important;
+    border-color: var(--border-color, #404040) !important;
+    color: var(--text-color, #f5f5f5) !important;
+}
+
+.theme-dark .invite-close-button:hover,
+.invite-modal-content.theme-dark .invite-close-button:hover {
+    background: var(--surface-2, #3a3a3a) !important;
+}
+
+/* Responsive adjustments for invite modal */
+@media (max-width: 480px) {
+    .invite-modal-content {
+        min-width: 280px !important;
+        max-width: 95vw !important;
+    }
+
+    .invite-modal-header,
+    .invite-modal-body,
+    .invite-modal-footer {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    .invite-share-link-container {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .invite-url-input {
+        width: 100% !important;
+    }
+
+    .invite-copy-button {
+        width: 100% !important;
     }
 }

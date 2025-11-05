@@ -45,6 +45,7 @@ class DT_Home_Apps {
                 [
                     'id' => 'sample-app-1',
                     'creation_type' => 'custom',
+                    'type' => 'link',
                     'title' => 'Sample App',
                     'description' => 'This is a sample app that demonstrates the Home Screen functionality.',
                     'url' => '#',
@@ -58,6 +59,7 @@ class DT_Home_Apps {
                 [
                     'id' => 'sample-app-2',
                     'creation_type' => 'custom',
+                    'type' => 'link',
                     'title' => 'Settings',
                     'description' => 'Access your account settings and preferences.',
                     'url' => admin_url( 'admin.php?page=dt_options&tab=home_screen' ),
@@ -95,6 +97,7 @@ class DT_Home_Apps {
                 $this->coded_apps[ $app_type ] = [
                     'id' => $app_type,
                     'creation_type' => 'coded',
+                    'type' => 'app',
                     'title' => $app['label'] ?? '',
                     'description' => $app['description'] ?? '',
                     'url' => trailingslashit( trailingslashit( site_url() ) . $app['url_base'] ),
@@ -203,6 +206,7 @@ class DT_Home_Apps {
             'id' => $app_id,
             'slug' => $slug,
             'creation_type' => 'custom',
+            'type' => sanitize_text_field( $app_data['type'] ?? 'link' ),
             'title' => sanitize_text_field( $app_data['title'] ),
             'description' => sanitize_textarea_field( $app_data['description'] ?? '' ),
             'url' => esc_url_raw( $app_data['url'] ?? '#' ),
@@ -242,6 +246,9 @@ class DT_Home_Apps {
         }
 
         // Update fields
+        if ( isset( $app_data['type'] ) ) {
+            $apps[$app_index]['type'] = sanitize_text_field( $app_data['type'] );
+        }
         if ( isset( $app_data['title'] ) ) {
             $apps[$app_index]['title'] = sanitize_text_field( $app_data['title'] );
         }
@@ -382,6 +389,28 @@ class DT_Home_Apps {
     }
 
     /**
+     * Determine app type based on app properties
+     *
+     * @param array $app The app data array
+     * @return string Either 'app' or 'link'
+     */
+    private function determine_app_type( $app ) {
+        // If type property exists and is valid, use it
+        if ( isset( $app['type'] ) && ( $app['type'] === 'app' || $app['type'] === 'link' ) ) {
+            return $app['type'];
+        }
+
+        // If type is missing or invalid, use fallback logic
+        // If creation_type is 'coded', default to 'app'
+        if ( isset( $app['creation_type'] ) && $app['creation_type'] === 'coded' ) {
+            return 'app';
+        }
+
+        // All other cases default to 'link'
+        return 'link';
+    }
+
+    /**
      * Get apps for frontend display
      */
     public function get_apps_for_frontend() {
@@ -402,6 +431,9 @@ class DT_Home_Apps {
                     }
                 }
             }
+
+            // Determine and set type property
+            $app['type'] = $this->determine_app_type( $app );
 
             $enriched_apps[] = $app;
         }

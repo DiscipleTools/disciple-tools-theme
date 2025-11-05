@@ -76,15 +76,15 @@
 .add-new-app-btn,
 .add-new-video-btn {
     margin-bottom: 20px;
-    background: #667eea !important;
+    /*background: #667eea !important;
     border-color: #667eea !important;
-    color: #fff !important;
+    color: #fff !important;*/
 }
 
 .add-new-app-btn:hover,
 .add-new-video-btn:hover {
-    background: #5a6fd8 !important;
-    border-color: #5a6fd8 !important;
+    /*background: #5a6fd8 !important;
+    border-color: #5a6fd8 !important;*/
 }
 
 .add-app-form,
@@ -380,55 +380,55 @@
     .dt-home-admin-container {
         max-width: 100%;
     }
-    
+
     .dt-home-section {
         padding: 15px;
     }
-    
+
     .dt-home-section .form-table th,
     .dt-home-section .form-table td {
         display: block;
         width: 100%;
         padding: 10px 0;
     }
-    
+
     .dt-home-section .form-table th {
         border-bottom: none;
         padding-bottom: 5px;
     }
-    
+
     .wp-list-table {
         font-size: 14px;
     }
-    
+
     .wp-list-table th,
     .wp-list-table td {
         padding: 8px 4px;
     }
-    
+
     .edit-form-container .form-table th,
     .edit-form-container .form-table td {
         display: block;
         width: 100%;
         padding: 10px 0;
     }
-    
+
     .edit-form-container .form-table th {
         border-bottom: none;
         padding-bottom: 5px;
     }
-    
+
     /* Mobile drag and drop adjustments */
     .drag-handle {
         width: 30px !important;
         min-width: 30px !important;
         max-width: 30px !important;
     }
-    
+
     .drag-icon {
         font-size: 12px;
     }
-    
+
     .sortable-message {
         bottom: 10px;
         right: 10px;

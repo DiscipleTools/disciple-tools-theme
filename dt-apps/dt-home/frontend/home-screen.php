@@ -17,32 +17,56 @@ $user_name = $user->display_name ?: $user->user_login;
 $settings = get_option( 'dt_home_screen_settings', [
     'title' => __( 'Welcome to your Home Screen', 'disciple_tools' ),
     'description' => __( 'Your personalized dashboard for apps and training.', 'disciple_tools' ),
-    'enable_training_videos' => 1,
-    'enable_quick_actions' => 1,
 ] );
 
 // Ensure we have all settings with defaults
 $settings = wp_parse_args( $settings, [
     'title' => __( 'Welcome to your Home Screen', 'disciple_tools' ),
     'description' => __( 'Your personalized dashboard for apps and training.', 'disciple_tools' ),
-    'enable_training_videos' => 1,
-    'enable_quick_actions' => 1,
 ] );
 ?>
 
 <div id="custom-style"></div>
 <style>
+/* CSS Variables for theme-aware app cards */
+:root {
+    --app-card-bg: #ffffff;
+    --app-card-border: #e1e5e9;
+    --app-card-text: #0a0a0a;
+    --app-card-shadow: rgba(0,0,0,0.1);
+    --app-card-hover-border: #667eea;
+}
+
+/* Support theme class on html element for early initialization */
+html.theme-dark,
+.theme-dark {
+    --app-card-bg: #2a2a2a;
+    --app-card-border: #404040;
+    --app-card-text: #f5f5f5;
+    --app-card-shadow: rgba(0,0,0,0.3);
+    --app-card-hover-border: #4a9eff;
+}
+
+body.theme-dark,
+html.theme-dark body {
+    --app-card-bg: #2a2a2a;
+    --app-card-border: #404040;
+    --app-card-text: #f5f5f5;
+    --app-card-shadow: rgba(0,0,0,0.3);
+    --app-card-hover-border: #4a9eff;
+}
+
 /* Balanced iPhone-style app cards */
 .app-card {
-    background: white !important;
-    border: 1px solid #e1e5e9 !important;
+    background: var(--app-card-bg, #ffffff) !important;
+    border: 1px solid var(--app-card-border, #e1e5e9) !important;
+    color: var(--app-card-text, #0a0a0a) !important;
     border-radius: 16px !important;
     padding: 0.5rem !important;
     text-align: center !important;
     transition: all 0.2s ease !important;
     cursor: pointer !important;
     text-decoration: none !important;
-    color: inherit !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -53,7 +77,16 @@ $settings = wp_parse_args( $settings, [
     max-height: 70px !important;
     min-height: 70px !important;
     aspect-ratio: 1 !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 1px 3px var(--app-card-shadow, rgba(0,0,0,0.1)) !important;
+}
+
+/* Dark mode styles for app cards (backup for theme-dark class) */
+.theme-dark .app-card,
+body.theme-dark .app-card {
+    background: var(--app-card-bg, #2a2a2a) !important;
+    border-color: var(--app-card-border, #404040) !important;
+    color: var(--app-card-text, #f5f5f5) !important;
+    box-shadow: 0 1px 3px var(--app-card-shadow, rgba(0,0,0,0.3)) !important;
 }
 
 .app-icon {
@@ -82,6 +115,12 @@ $settings = wp_parse_args( $settings, [
     max-width: 100% !important;
     display: block !important;
     text-align: center !important;
+}
+
+/* Dark mode styles for app titles */
+.theme-dark .app-title,
+body.theme-dark .app-title {
+    color: #f5f5f5 !important;
 }
 
 .apps-grid {
@@ -351,11 +390,25 @@ $settings = wp_parse_args( $settings, [
     <div class="home-screen-container">
         <!-- Header Section -->
         <div class="home-screen-header">
-            <div class="header-controls">
-                <!-- Theme toggle will be added here by JavaScript -->
-            </div>
-            <h1><?php echo esc_html( $settings['title'] ); ?></h1>
-            <p><?php echo esc_html( $settings['description'] ); ?></p>
+            <table class="header-table">
+                <tr>
+                    <td class="header-content-cell">
+                        <h1><?php echo esc_html( $settings['title'] ); ?></h1>
+                        <p><?php echo esc_html( $settings['description'] ); ?></p>
+                    </td>
+                    <td class="header-controls-cell">
+                        <div class="header-controls">
+                            <!-- Theme toggle will be added here by JavaScript -->
+                            <button type="button" class="menu-toggle-button" id="menu-toggle-button" aria-label="<?php esc_attr_e( 'Toggle menu', 'disciple_tools' ); ?>" title="<?php esc_attr_e( 'Toggle menu', 'disciple_tools' ); ?>">
+                                <i class="mdi mdi-menu dt-menu-icon" id="menu-icon"></i>
+                            </button>
+                            <div class="floating-menu" id="floating-menu">
+                                <!-- Menu items will be added here later -->
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <!-- Main Content -->
@@ -383,63 +436,30 @@ $settings = wp_parse_args( $settings, [
                 </div>
             </div>
 
-            <!-- Training Videos Section -->
-            <?php if ( $settings['enable_training_videos'] ) : ?>
-            <div class="training-section collapsible-section">
-                <div class="section-header" onclick="toggleSection('training')">
-                    <h2 class="section-title">
-                        <i class="mdi mdi-play-circle" style="margin-right: 0.5rem;"></i>
-                        <?php esc_html_e( 'Training Videos', 'disciple_tools' ); ?>
-                        <span class="section-toggle" id="training-toggle">
-                            <i class="mdi mdi-chevron-down"></i>
-                        </span>
-                    </h2>
-                </div>
-                
-                <div class="section-content" id="training-content">
-                    <div class="training-grid" id="training-grid">
-                        <!-- Training videos will be loaded dynamically -->
-                        <div class="training-card loading-card">
-                            <div class="loading-spinner"></div>
-                            <p><?php esc_html_e( 'Loading training videos...', 'disciple_tools' ); ?></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
+            <!-- Training Videos Section removed: now lives on separate view (?view=training) -->
 
-            <!-- Quick Actions Section -->
-            <?php if ( $settings['enable_quick_actions'] ) : ?>
-            <div class="quick-actions-section collapsible-section">
-                <div class="section-header" onclick="toggleSection('quick-actions')">
+            <!-- Your Links Section -->
+            <div class="links-section collapsible-section">
+                <div class="section-header" onclick="toggleSection('links')">
                     <h2 class="section-title">
-                        <i class="mdi mdi-lightning-bolt" style="margin-right: 0.5rem;"></i>
-                        <?php esc_html_e( 'Quick Actions', 'disciple_tools' ); ?>
-                        <span class="section-toggle" id="quick-actions-toggle">
+                        <i class="mdi mdi-link" style="margin-right: 0.5rem;"></i>
+                        <?php esc_html_e( 'Your Links', 'disciple_tools' ); ?>
+                        <span class="section-toggle" id="links-toggle">
                             <i class="mdi mdi-chevron-right"></i>
                         </span>
                     </h2>
                 </div>
                 
-                <div class="section-content collapsed" id="quick-actions-content">
-                    <div class="apps-grid" id="quick-actions-grid">
-                        <div class="app-card" onclick="window.location.href='<?php echo esc_url( admin_url( 'admin.php?page=dt_options&tab=home_screen' ) ); ?>'">
-                            <div class="app-icon">
-                                <i class="mdi mdi-cog"></i>
-                            </div>
-                            <div class="app-title"><?php esc_html_e( 'Settings', 'disciple_tools' ); ?></div>
-                        </div>
-                        
-                        <div class="app-card" onclick="window.location.href='<?php echo esc_url( wp_logout_url( home_url() ) ); ?>'">
-                            <div class="app-icon">
-                                <i class="mdi mdi-logout"></i>
-                            </div>
-                            <div class="app-title"><?php esc_html_e( 'Logout', 'disciple_tools' ); ?></div>
+                <div class="section-content collapsed" id="links-content">
+                    <div class="links-list" id="links-list">
+                        <!-- Links will be loaded dynamically -->
+                        <div class="loading-spinner" style="text-align: center; padding: 2rem;">
+                            <p><?php esc_html_e( 'Loading links...', 'disciple_tools' ); ?></p>
                         </div>
                     </div>
                 </div>
             </div>
-            <?php endif; ?>
+
         </div>
     </div>
 </div>

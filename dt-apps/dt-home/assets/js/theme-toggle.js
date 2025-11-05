@@ -64,6 +64,7 @@ class ThemeToggle {
   createToggleButton() {
     // Create the toggle button element
     const toggleButton = document.createElement('button');
+    toggleButton.type = 'button'; // Ensure it's a button, not a submit button
     toggleButton.className = 'theme-toggle-button';
     toggleButton.setAttribute(
       'aria-label',
@@ -86,10 +87,16 @@ class ThemeToggle {
         : 'mdi mdi-white-balance-sunny theme-icon';
     toggleButton.appendChild(icon);
 
-    // Add to the header controls
+    // Add to the header controls (insert at the beginning so menu button stays on the right)
     const headerControls = document.querySelector('.header-controls');
     if (headerControls) {
-      headerControls.appendChild(toggleButton);
+      // Insert before the first child (menu button) to maintain order: theme toggle -> menu button
+      const firstChild = headerControls.firstElementChild;
+      if (firstChild) {
+        headerControls.insertBefore(toggleButton, firstChild);
+      } else {
+        headerControls.appendChild(toggleButton);
+      }
     }
   }
 
@@ -101,9 +108,16 @@ class ThemeToggle {
   }
 
   applyTheme() {
+    // Update the html element class for early theme detection
+    const html = document.documentElement;
+    html.classList.remove('theme-light', 'theme-dark');
+    html.classList.add(`theme-${this.currentTheme}`);
+
     // Update the document body class for theme detection
-    document.body.classList.remove('theme-light', 'theme-dark');
-    document.body.classList.add(`theme-${this.currentTheme}`);
+    if (document.body) {
+      document.body.classList.remove('theme-light', 'theme-dark');
+      document.body.classList.add(`theme-${this.currentTheme}`);
+    }
 
     // Update CSS custom properties on the root element
     const root = document.documentElement;
@@ -117,6 +131,12 @@ class ThemeToggle {
       root.style.setProperty('--primary-color', '#4a9eff');
       root.style.setProperty('--border-color', '#404040');
       root.style.setProperty('--shadow-color', 'rgba(0,0,0,0.3)');
+      // App card CSS variables for dark mode
+      root.style.setProperty('--app-card-bg', '#2a2a2a');
+      root.style.setProperty('--app-card-border', '#404040');
+      root.style.setProperty('--app-card-text', '#f5f5f5');
+      root.style.setProperty('--app-card-shadow', 'rgba(0,0,0,0.3)');
+      root.style.setProperty('--app-card-hover-border', '#4a9eff');
     } else {
       root.style.setProperty('--theme-mode', 'light');
       root.style.setProperty('--body-background-color', '#e2e2e2');
@@ -127,6 +147,12 @@ class ThemeToggle {
       root.style.setProperty('--primary-color', '#667eea');
       root.style.setProperty('--border-color', '#e1e5e9');
       root.style.setProperty('--shadow-color', 'rgba(0,0,0,0.1)');
+      // App card CSS variables for light mode
+      root.style.setProperty('--app-card-bg', '#ffffff');
+      root.style.setProperty('--app-card-border', '#e1e5e9');
+      root.style.setProperty('--app-card-text', '#0a0a0a');
+      root.style.setProperty('--app-card-shadow', 'rgba(0,0,0,0.1)');
+      root.style.setProperty('--app-card-hover-border', '#667eea');
     }
 
     // Also set on document root for broader compatibility
@@ -349,8 +375,11 @@ class ThemeToggle {
 
 // Initialize theme toggle when DOM is ready
 document.addEventListener('DOMContentLoaded', function () {
-  // Only initialize if we're on the home screen
-  if (document.querySelector('.home-screen-container')) {
+  // Initialize on apps or training views
+  if (
+    document.querySelector('.home-screen-container') ||
+    document.querySelector('.training-screen-container')
+  ) {
     try {
       console.log('Initializing theme toggle...');
       window.themeToggleInstance = new ThemeToggle();

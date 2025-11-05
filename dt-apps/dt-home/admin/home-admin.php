@@ -38,6 +38,9 @@ class DT_Home_Admin {
         // AJAX handlers for drag and drop reordering
         add_action( 'wp_ajax_dt_home_reorder_apps', [ $this, 'handle_app_reorder' ] );
         add_action( 'wp_ajax_dt_home_reorder_videos', [ $this, 'handle_video_reorder' ] );
+        
+        // AJAX handler for refreshing apps and videos data
+        add_action( 'wp_ajax_dt_home_refresh_data', [ $this, 'handle_refresh_data' ] );
     }
 
     /**
@@ -90,13 +93,37 @@ class DT_Home_Admin {
         <div class="wrap">
             <h2><?php esc_html_e( 'Home Screen Settings', 'disciple_tools' ); ?></h2>
 
-            <form method="post" action="">
+            <form method="post" action="" id="dt-home-settings-form">
                 <?php wp_nonce_field( 'dt_home_screen_settings', 'dt_home_screen_nonce' ); ?>
                 <input type="hidden" name="dt_home_screen_settings" value="1">
                 <?php wp_nonce_field( 'dt_home_admin_nonce', 'dt_home_admin_nonce' ); ?>
 
                 <!-- Icon Selector Dialog -->
                 <?php include get_template_directory() . '/dt-core/admin/menu/tabs/dialog-icon-selector.php'; ?>
+
+                <!-- App Edit Modal Dialog -->
+                <div id="dt-app-edit-dialog" style="display: none;" title="<?php esc_attr_e( 'Edit App', 'disciple_tools' ); ?>">
+                    <form id="dt-app-edit-form" name="dt-app-edit-form" method="post" action="" class="app-edit-form">
+                        <?php wp_nonce_field( 'dt_home_app_action', 'dt_home_app_nonce' ); ?>
+                        <input type="hidden" name="dt_home_app_action" value="update">
+                        <input type="hidden" name="app_id" id="app-edit-id" value="">
+                        <div id="dt-app-edit-form-content">
+                            <!-- Form content will be dynamically inserted here -->
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Video Edit Modal Dialog -->
+                <div id="dt-video-edit-dialog" style="display: none;" title="<?php esc_attr_e( 'Edit Video', 'disciple_tools' ); ?>">
+                    <form id="dt-video-edit-form" name="dt-video-edit-form" method="post" action="" class="video-edit-form">
+                        <?php wp_nonce_field( 'dt_home_video_action', 'dt_home_video_nonce' ); ?>
+                        <input type="hidden" name="dt_home_video_action" value="update">
+                        <input type="hidden" name="video_id" id="video-edit-id" value="">
+                        <div id="dt-video-edit-form-content">
+                            <!-- Form content will be dynamically inserted here -->
+                        </div>
+                    </form>
+                </div>
 
                 <div class="dt-home-admin-container">
                     <!-- General Settings -->
@@ -130,32 +157,6 @@ class DT_Home_Admin {
                             </tr>
                             <tr>
                                 <th scope="row">
-                                    <label for="enable_training_videos"><?php esc_html_e( 'Enable Training Videos', 'disciple_tools' ); ?></label>
-                                </th>
-                                <td>
-                                    <input type="checkbox"
-                                           id="enable_training_videos"
-                                           name="enable_training_videos"
-                                           value="1"
-                                           <?php checked( $settings['enable_training_videos'] ); ?> />
-                                    <label for="enable_training_videos"><?php esc_html_e( 'Show training videos section on home screen', 'disciple_tools' ); ?></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <label for="enable_quick_actions"><?php esc_html_e( 'Enable Quick Actions', 'disciple_tools' ); ?></label>
-                                </th>
-                                <td>
-                                    <input type="checkbox"
-                                           id="enable_quick_actions"
-                                           name="enable_quick_actions"
-                                           value="1"
-                                           <?php checked( $settings['enable_quick_actions'] ); ?> />
-                                    <label for="enable_quick_actions"><?php esc_html_e( 'Show quick actions section on home screen', 'disciple_tools' ); ?></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
                                     <label for="enable_roles_permissions"><?php esc_html_e( 'Enable Role-Based Access', 'disciple_tools' ); ?></label>
                                 </th>
                                 <td>
@@ -169,6 +170,11 @@ class DT_Home_Admin {
                                 </td>
                             </tr>
                         </table>
+
+                        <!-- Save Settings Button -->
+                        <p class="submit">
+                            <input type="submit" name="submit" id="save-settings-top" class="button" value="<?php esc_attr_e( 'Save Settings', 'disciple_tools' ); ?>" />
+                        </p>
                     </div>
 
                     <!-- Debug Info --
@@ -194,7 +200,7 @@ class DT_Home_Admin {
                         <p><?php esc_html_e( 'Manage the apps that appear on the home screen.', 'disciple_tools' ); ?></p>
 
                         <div class="apps-management">
-                            <button type="button" class="button button-secondary add-new-app-btn">
+                            <button type="button" class="button add-new-app-btn">
                                 <i class="mdi mdi-plus" style="margin-right: 5px;"></i>
                                 <?php esc_html_e( 'Add New App', 'disciple_tools' ); ?>
                             </button>
@@ -215,7 +221,7 @@ class DT_Home_Admin {
                         <p><?php esc_html_e( 'Manage the training videos that appear on the home screen.', 'disciple_tools' ); ?></p>
 
                         <div class="training-management">
-                            <button type="button" class="button button-secondary add-new-video-btn">
+                            <button type="button" class="button add-new-video-btn">
                                 <i class="mdi mdi-plus" style="margin-right: 5px;"></i>
                                 <?php esc_html_e( 'Add New Training Video', 'disciple_tools' ); ?>
                             </button>
@@ -232,7 +238,9 @@ class DT_Home_Admin {
 
                     <!-- Save Button -->
                     <div class="dt-home-section">
-                        <?php submit_button( __( 'Save Settings', 'disciple_tools' ), 'primary', 'submit', false ); ?>
+                        <p class="submit">
+                            <input type="submit" name="submit" id="save-settings-bottom" class="button" value="<?php esc_attr_e( 'Save Settings', 'disciple_tools' ); ?>" />
+                        </p>
                     </div>
                 </div>
             </form>
@@ -271,6 +279,265 @@ class DT_Home_Admin {
                 padding: 15px;
                 margin-top: 10px;
             }
+
+            /* Modal dialog styles to prevent horizontal scrollbars */
+            #dt-app-edit-dialog {
+                overflow-x: hidden;
+            }
+
+            #dt-app-edit-dialog .ui-dialog-content {
+                overflow-x: hidden !important;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+
+            #dt-app-edit-form-content {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            #dt-app-edit-form-content .form-table {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            #dt-app-edit-form-content .form-table th,
+            #dt-app-edit-form-content .form-table td {
+                padding: 8px 10px;
+                box-sizing: border-box;
+            }
+
+            #dt-app-edit-form-content .form-table th {
+                width: 150px;
+                min-width: 150px;
+            }
+
+            #dt-app-edit-form-content .form-table td {
+                width: auto;
+            }
+
+            #dt-app-edit-form-content input[type="text"],
+            #dt-app-edit-form-content input[type="url"],
+            #dt-app-edit-form-content textarea,
+            #dt-app-edit-form-content select {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            #dt-app-edit-form-content .large-text {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            /* Video Edit Modal Dialog Styles */
+            #dt-video-edit-dialog {
+                overflow-x: hidden;
+            }
+
+            #dt-video-edit-dialog .ui-dialog-content {
+                overflow-x: hidden !important;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+
+            #dt-video-edit-form-content {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            #dt-video-edit-form-content .form-table {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            #dt-video-edit-form-content .form-table th,
+            #dt-video-edit-form-content .form-table td {
+                padding: 8px 10px;
+                box-sizing: border-box;
+            }
+
+            #dt-video-edit-form-content .form-table th {
+                width: 150px;
+                min-width: 150px;
+            }
+
+            #dt-video-edit-form-content .form-table td {
+                width: auto;
+            }
+
+            #dt-video-edit-form-content input[type="text"],
+            #dt-video-edit-form-content input[type="url"],
+            #dt-video-edit-form-content textarea,
+            #dt-video-edit-form-content select {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            #dt-video-edit-form-content .large-text {
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            /* Add Form Styles - Consistent Field Widths and Alignment */
+            .add-app-form-container .form-table,
+            .add-video-form-container .form-table {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .add-app-form-container .form-table th,
+            .add-video-form-container .form-table th {
+                width: 150px;
+                min-width: 150px;
+                padding: 10px 15px 10px 0;
+                vertical-align: top;
+            }
+
+            .add-app-form-container .form-table td,
+            .add-video-form-container .form-table td {
+                padding: 10px 0;
+                width: auto;
+            }
+
+            /* Consistent input widths */
+            .add-app-form-container input[type="text"],
+            .add-app-form-container input[type="url"],
+            .add-app-form-container textarea,
+            .add-app-form-container select,
+            .add-video-form-container input[type="text"],
+            .add-video-form-container input[type="url"],
+            .add-video-form-container textarea,
+            .add-video-form-container select {
+                width: 100% !important;
+                max-width: 400px !important;
+                box-sizing: border-box;
+            }
+
+            /* Override WordPress regular-text class width */
+            .add-app-form-container .regular-text,
+            .add-video-form-container .regular-text {
+                width: 100% !important;
+                max-width: 400px !important;
+            }
+
+            /* Color input - make it wider but consistent */
+            .add-app-form-container input[type="color"] {
+                width: 80px;
+                height: 35px;
+                padding: 2px;
+                box-sizing: border-box;
+                cursor: pointer;
+            }
+
+            /* Icon field with button - use flexbox for alignment */
+            .add-app-form-container .icon-field-wrapper {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .add-app-form-container .icon-field-wrapper input[type="text"] {
+                flex: 1;
+                min-width: 0;
+                max-width: none;
+            }
+
+            .add-app-form-container .icon-field-wrapper .button {
+                flex-shrink: 0;
+            }
+
+            /* Checkbox and radio button alignment */
+            .add-app-form-container input[type="checkbox"],
+            .add-video-form-container input[type="checkbox"] {
+                width: auto;
+                margin-right: 5px;
+            }
+
+            .add-app-form-container label,
+            .add-video-form-container label {
+                display: inline-flex;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+
+            .add-app-form-container .radio-group label,
+            .add-video-form-container .radio-group label {
+                display: block;
+                margin-bottom: 8px;
+            }
+
+            /* Description textarea - make it consistent width */
+            .add-app-form-container textarea.large-text,
+            .add-video-form-container textarea.large-text {
+                width: 100%;
+                max-width: 400px;
+                min-height: 80px;
+                box-sizing: border-box;
+            }
+
+            /* Submit button area */
+            .add-app-form-container .submit,
+            .add-video-form-container .submit {
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid #ddd;
+            }
+
+            .add-app-form-container .submit .button,
+            .add-video-form-container .submit .button {
+                margin-right: 10px;
+            }
+
+            /* Ensure row borders extend fully across both tables */
+            .sortable-table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            .sortable-table tbody tr {
+                border-bottom: 1px solid #dcdcde;
+            }
+
+            .sortable-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .sortable-table tbody td,
+            .sortable-table tbody th {
+                border-bottom: none;
+                padding: 8px 10px;
+            }
+
+            .sortable-table thead th {
+                border-bottom: 1px solid #dcdcde;
+            }
+
+            /* Drag and drop visual feedback */
+            .sortable-table tbody tr.dragging {
+                opacity: 0.5;
+                background-color: #f0f0f1;
+            }
+
+            /* Highlight bottom border of row above the drop position */
+            .sortable-table tbody tr.drop-indicator-bottom {
+                border-bottom: 2px solid #2271b1 !important;
+            }
+
+            /* Highlight top border of first row when dropping at the top */
+            .sortable-table tbody tr.drop-indicator-first {
+                border-top: 2px solid #2271b1 !important;
+            }
+
+            /* Highlight bottom border of last row when dropping at the end */
+            .sortable-table tbody tr.drop-indicator-last {
+                border-bottom: 2px solid #2271b1 !important;
+            }
         </style>
         <?php
     }
@@ -287,10 +554,14 @@ class DT_Home_Admin {
         $settings = [
             'title' => sanitize_text_field( wp_unslash( $_POST['home_screen_title'] ?? '' ) ),
             'description' => sanitize_textarea_field( wp_unslash( $_POST['home_screen_description'] ?? '' ) ),
-            'enable_training_videos' => isset( $_POST['enable_training_videos'] ) ? 1 : 0,
-            'enable_quick_actions' => isset( $_POST['enable_quick_actions'] ) ? 1 : 0,
             'enable_roles_permissions' => isset( $_POST['enable_roles_permissions'] ) ? 1 : 0,
         ];
+
+        // Merge with existing settings to preserve any other settings that might exist
+        $existing_settings = get_option( 'dt_home_screen_settings', [] );
+
+        // Use existing settings as base and merge new settings into them (new settings override existing)
+        $settings = wp_parse_args( $settings, $existing_settings );
 
         update_option( 'dt_home_screen_settings', $settings );
 
@@ -306,8 +577,6 @@ class DT_Home_Admin {
         $defaults = [
             'title' => __( 'Welcome to your Home Screen', 'disciple_tools' ),
             'description' => __( 'Your personalized dashboard for apps and training.', 'disciple_tools' ),
-            'enable_training_videos' => 1,
-            'enable_quick_actions' => 1,
             'enable_roles_permissions' => 1,
         ];
 
@@ -352,6 +621,36 @@ class DT_Home_Admin {
                 ]
             ]
         );
+
+        // Localize the dt-home-admin-script with apps data, videos data and roles
+        $apps_manager = DT_Home_Apps::instance();
+        $apps = $apps_manager->get_all_apps();
+
+        $training_manager = DT_Home_Training::instance();
+        $videos = $training_manager->get_all_videos();
+
+        $roles_permissions = DT_Home_Roles_Permissions::instance();
+        $dt_roles = $roles_permissions->get_dt_roles_and_permissions();
+        ksort( $dt_roles );
+
+        wp_localize_script(
+            'dt-home-admin-script',
+            'dtHomeAdmin',
+            [
+                'apps' => $apps,
+                'videos' => $videos,
+                'roles' => $dt_roles,
+                'nonce' => wp_create_nonce( 'dt_home_admin_nonce' ),
+                'ajax_url' => admin_url( 'admin-ajax.php' ),
+                'strings' => [
+                    'edit_app' => __( 'Edit App', 'disciple_tools' ),
+                    'update_app' => __( 'Update App', 'disciple_tools' ),
+                    'edit_video' => __( 'Edit Video', 'disciple_tools' ),
+                    'update_video' => __( 'Update Video', 'disciple_tools' ),
+                    'cancel' => __( 'Cancel', 'disciple_tools' ),
+                ]
+            ]
+        );
     }
 
     /**
@@ -369,6 +668,7 @@ class DT_Home_Admin {
         switch ( $action ) {
             case 'create':
                 $app_data = [
+                    'type' => sanitize_text_field( wp_unslash( $_POST['app_type'] ?? 'link' ) ),
                     'title' => sanitize_text_field( wp_unslash( $_POST['app_title'] ?? '' ) ),
                     'description' => sanitize_textarea_field( wp_unslash( $_POST['app_description'] ?? '' ) ),
                     'url' => esc_url_raw( wp_unslash( $_POST['app_url'] ?? '#' ) ),
@@ -394,6 +694,7 @@ class DT_Home_Admin {
             case 'update':
                 $app_id = sanitize_text_field( wp_unslash( $_POST['app_id'] ?? '' ) );
                 $app_data = [
+                    'type' => sanitize_text_field( wp_unslash( $_POST['app_type'] ?? 'link' ) ),
                     'title' => sanitize_text_field( wp_unslash( $_POST['app_title'] ?? '' ) ),
                     'description' => sanitize_textarea_field( wp_unslash( $_POST['app_description'] ?? '' ) ),
                     'url' => esc_url_raw( wp_unslash( $_POST['app_url'] ?? '#' ) ),
@@ -418,6 +719,16 @@ class DT_Home_Admin {
 
             case 'delete':
                 $app_id = sanitize_text_field( wp_unslash( $_POST['app_id'] ?? '' ) );
+
+                // Check if app is a coded app - prevent deletion
+                $app = $apps_manager->get_app( $app_id );
+                if ( $app && isset( $app['creation_type'] ) && $app['creation_type'] === 'coded' ) {
+                    add_action( 'admin_notices', function() {
+                        echo '<div class="notice notice-error"><p>' . esc_html__( 'Coded apps cannot be deleted.', 'disciple_tools' ) . '</p></div>';
+                    });
+                    break;
+                }
+
                 $result = $apps_manager->delete_app( $app_id );
                 if ( is_wp_error( $result ) ) {
                     add_action( 'admin_notices', function() use ( $result ) {
@@ -519,8 +830,17 @@ class DT_Home_Admin {
 
                 <table class="form-table">
                     <tr>
+                        <th scope="row"><?php esc_html_e( 'Type', 'disciple_tools' ); ?></th>
+                        <td>
+                            <select name="app_type" id="app_type" required>
+                                <option value="link"><?php esc_html_e('Link', 'disciple_tools') ?></option>
+                                <option value="app"><?php esc_html_e('App', 'disciple_tools') ?></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <th scope="row"><?php esc_html_e( 'Title', 'disciple_tools' ); ?></th>
-                        <td><input type="text" name="app_title" required class="regular-text" /></td>
+                        <td><input type="text" name="app_title" required /></td>
                     </tr>
                     <tr>
                         <th scope="row"><?php esc_html_e( 'Description', 'disciple_tools' ); ?></th>
@@ -533,8 +853,10 @@ class DT_Home_Admin {
                     <tr>
                         <th scope="row"><?php esc_html_e( 'Icon', 'disciple_tools' ); ?></th>
                         <td>
-                            <input type="text" name="app_icon" class="regular-text" value="mdi mdi-apps" placeholder="mdi mdi-apps" />
-                                            <button type="button" class="button change-icon-button" data-form="dt_home_app_form_create" data-icon-input="app_icon"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
+                            <div class="icon-field-wrapper">
+                                <input type="text" name="app_icon" value="mdi mdi-apps" placeholder="mdi mdi-apps" />
+                                <button type="button" class="button change-icon-button" data-form="" data-icon-input="app_icon"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -548,15 +870,16 @@ class DT_Home_Admin {
                     <tr>
                         <th scope="row"><?php esc_html_e( 'User Access', 'disciple_tools' ); ?></th>
                         <td>
-                            <label>
-                                <input type="radio" name="app_user_roles_type" value="support_all_roles" checked />
-                                <?php esc_html_e( 'All roles have access', 'disciple_tools' ); ?>
-                            </label>
-                            <br>
-                            <label>
-                                <input type="radio" name="app_user_roles_type" value="support_specific_roles" />
-                                <?php esc_html_e( 'Limit access by role', 'disciple_tools' ); ?>
-                            </label>
+                            <div class="radio-group">
+                                <label>
+                                    <input type="radio" name="app_user_roles_type" value="support_all_roles" checked />
+                                    <?php esc_html_e( 'All roles have access', 'disciple_tools' ); ?>
+                                </label>
+                                <label>
+                                    <input type="radio" name="app_user_roles_type" value="support_specific_roles" />
+                                    <?php esc_html_e( 'Limit access by role', 'disciple_tools' ); ?>
+                                </label>
+                            </div>
                         </td>
                     </tr>
                     <tr class="app-roles-selection" style="display: none;">
@@ -580,7 +903,7 @@ class DT_Home_Admin {
                 </table>
 
                 <p class="submit">
-                    <input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Add App', 'disciple_tools' ); ?>" />
+                    <input type="submit" class="button" value="<?php esc_attr_e( 'Add App', 'disciple_tools' ); ?>" />
                     <button type="button" class="button cancel-add-form"><?php esc_html_e( 'Cancel', 'disciple_tools' ); ?></button>
                 </p>
             </form>
@@ -607,7 +930,6 @@ class DT_Home_Admin {
                             <th><?php esc_html_e( 'Title', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Description', 'disciple_tools' ); ?></th>
                             <th style="text-align: center;"><?php esc_html_e( 'Icon', 'disciple_tools' ); ?></th>
-                            <th><?php esc_html_e( 'URL', 'disciple_tools' ); ?></th>
                             <th style="text-align: center;"><?php esc_html_e( 'Access', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Status', 'disciple_tools' ); ?></th>
                             <th><?php esc_html_e( 'Actions', 'disciple_tools' ); ?></th>
@@ -615,7 +937,7 @@ class DT_Home_Admin {
                     </thead>
                     <tbody>
                         <?php foreach ( $apps as $app ) : ?>
-                            <tr draggable="true" data-app-id="<?php echo esc_attr( $app['id'] ); ?>" 
+                            <tr draggable="true" data-app-id="<?php echo esc_attr( $app['id'] ); ?>"
                                 data-user-roles-type="<?php echo esc_attr( $app['user_roles_type'] ?? 'support_all_roles' ); ?>"
                                 data-roles="<?php echo esc_attr( json_encode( $app['roles'] ?? [] ) ); ?>"
                                 data-color="<?php echo esc_attr( $app['color'] ?? '#667eea' ); ?>"
@@ -629,14 +951,15 @@ class DT_Home_Admin {
                                 <td><?php echo esc_html( $app['description'] ); ?></td>
                                 <td>
                                     <?php if ( !empty( $app['icon'] ) ) : ?>
-                                        <?php if ( strpos( $app['icon'], 'mdi ' ) === 0 ) : ?>
-                                            <i class="<?php echo esc_attr( $app['icon'] ); ?>" style="font-size: 20px; vertical-align: middle;"></i>
+                                        <?php
+                                        $app_color = $app['color'] ?? '#667eea';
+                                        if ( strpos( $app['icon'], 'mdi ' ) === 0 ) : ?>
+                                            <i class="<?php echo esc_attr( $app['icon'] ); ?>" style="font-size: 20px; vertical-align: middle; color: <?php echo esc_attr( $app_color ); ?>;"></i>
                                         <?php else : ?>
-                                            <img src="<?php echo esc_attr( $app['icon'] ); ?>" style="width: 20px; height: 20px; vertical-align: middle;" />
+                                            <img src="<?php echo esc_attr( $app['icon'] ); ?>" style="width: 20px; height: 20px; vertical-align: middle; filter: drop-shadow(0 0 2px <?php echo esc_attr( $app_color ); ?>);" />
                                         <?php endif; ?>
                                     <?php endif; ?>
                                 </td>
-                                <td><?php echo esc_html( $app['url'] ); ?></td>
                                 <td style="text-align: center;">
                                     <?php if ( isset( $app['user_roles_type'] ) && $app['user_roles_type'] === 'support_specific_roles' ) : ?>
                                         <i class="mdi mdi-eye-lock-outline" style="font-size: 16px; color: #f39c12;" title="<?php esc_attr_e( 'Limited to specific roles', 'disciple_tools' ); ?>"></i>
@@ -664,12 +987,20 @@ class DT_Home_Admin {
                                     <a href="#" class="button button-small edit-app" data-app-id="<?php echo esc_attr( $app['id'] ); ?>">
                                         <?php esc_html_e( 'Edit', 'disciple_tools' ); ?>
                                     </a>
-                                    <form method="post" style="display: inline;">
-                                        <?php wp_nonce_field( 'dt_home_app_action', 'dt_home_app_nonce' ); ?>
-                                        <input type="hidden" name="dt_home_app_action" value="delete">
-                                        <input type="hidden" name="app_id" value="<?php echo esc_attr( $app['id'] ); ?>">
-                                        <input type="submit" class="button button-small button-link-delete" value="<?php esc_attr_e( 'Delete', 'disciple_tools' ); ?>" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to delete this app?', 'disciple_tools' ); ?>')">
-                                    </form>
+                                    <?php
+                                    $is_coded_app = isset( $app['creation_type'] ) && $app['creation_type'] === 'coded';
+                                    if ( ! $is_coded_app ) : ?>
+                                        <form method="post" style="display: inline;">
+                                            <?php wp_nonce_field( 'dt_home_app_action', 'dt_home_app_nonce' ); ?>
+                                            <input type="hidden" name="dt_home_app_action" value="delete">
+                                            <input type="hidden" name="app_id" value="<?php echo esc_attr( $app['id'] ); ?>">
+                                            <input type="submit" class="button button-small button-link-delete" value="<?php esc_attr_e( 'Delete', 'disciple_tools' ); ?>" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to delete this app?', 'disciple_tools' ); ?>')">
+                                        </form>
+                                    <?php else : ?>
+                                        <button type="button" class="button button-small button-link-delete" disabled style="opacity: 0.5; cursor: not-allowed;" title="<?php esc_attr_e( 'Coded apps cannot be deleted', 'disciple_tools' ); ?>">
+                                            <?php esc_html_e( 'Delete', 'disciple_tools' ); ?>
+                                        </button>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -711,7 +1042,7 @@ class DT_Home_Admin {
                     <tr>
                         <th scope="row"><?php esc_html_e( 'Category', 'disciple_tools' ); ?></th>
                         <td>
-                            <select name="video_category" class="regular-text">
+                            <select name="video_category">
                                 <option value="general"><?php esc_html_e( 'General', 'disciple_tools' ); ?></option>
                                 <option value="basics"><?php esc_html_e( 'Basics', 'disciple_tools' ); ?></option>
                                 <option value="advanced"><?php esc_html_e( 'Advanced', 'disciple_tools' ); ?></option>
@@ -726,7 +1057,7 @@ class DT_Home_Admin {
                 </table>
 
                 <p class="submit">
-                    <input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Add Video', 'disciple_tools' ); ?>" />
+                    <input type="submit" class="button" value="<?php esc_attr_e( 'Add Video', 'disciple_tools' ); ?>" />
                     <button type="button" class="button cancel-add-form"><?php esc_html_e( 'Cancel', 'disciple_tools' ); ?></button>
                 </p>
             </form>
@@ -812,6 +1143,15 @@ class DT_Home_Admin {
 
                     <table class="form-table">
                         <tr>
+                            <th scope="row"><?php esc_html_e( 'Type', 'disciple_tools' ); ?></th>
+                            <td>
+                                <select style="min-width: 100%;" name="app_type" id="app_type" required>
+                                    <option value="link"><?php esc_html_e('Link', 'disciple_tools') ?></option>
+                                    <option value="app"><?php esc_html_e('App', 'disciple_tools') ?></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
                             <th scope="row"><?php esc_html_e( 'Title', 'disciple_tools' ); ?></th>
                             <td><input type="text" name="app_title" required class="regular-text" /></td>
                         </tr>
@@ -827,7 +1167,7 @@ class DT_Home_Admin {
                             <th scope="row"><?php esc_html_e( 'Icon', 'disciple_tools' ); ?></th>
                             <td>
                                 <input type="text" name="app_icon" class="regular-text" value="mdi mdi-apps" placeholder="mdi mdi-apps" />
-                                <button type="button" class="button change-icon-button" data-form="dt_home_app_form_create" data-icon-input="app_icon"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
+                                <button type="button" class="button change-icon-button" data-form="" data-icon-input="app_icon"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
                             </td>
                         </tr>
                         <tr>
@@ -841,7 +1181,7 @@ class DT_Home_Admin {
                     </table>
 
                     <p class="submit">
-                        <input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Add App', 'disciple_tools' ); ?>" />
+                        <input type="submit" class="button" value="<?php esc_attr_e( 'Add App', 'disciple_tools' ); ?>" />
                     </p>
                 </form>
             </div>
@@ -948,7 +1288,7 @@ class DT_Home_Admin {
                     </table>
 
                     <p class="submit">
-                        <input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Add Video', 'disciple_tools' ); ?>" />
+                        <input type="submit" class="button" value="<?php esc_attr_e( 'Add Video', 'disciple_tools' ); ?>" />
                     </p>
                 </form>
             </div>
@@ -1063,6 +1403,34 @@ class DT_Home_Admin {
         }
 
         wp_die( json_encode( [ 'success' => true, 'message' => 'Videos reordered successfully.' ] ) );
+    }
+
+    /**
+     * Handle AJAX request for refreshing apps and videos data
+     */
+    public function handle_refresh_data() {
+        // Verify nonce
+        if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ?? '' ) ), 'dt_home_admin_nonce' ) ) {
+            wp_send_json_error( [ 'message' => 'Security check failed.' ] );
+        }
+
+        // Check permissions
+        if ( ! current_user_can( 'manage_dt' ) ) {
+            wp_send_json_error( [ 'message' => 'Insufficient permissions.' ] );
+        }
+
+        // Get fresh apps and videos data
+        $apps_manager = DT_Home_Apps::instance();
+        $apps = $apps_manager->get_all_apps();
+
+        $training_manager = DT_Home_Training::instance();
+        $videos = $training_manager->get_all_videos();
+
+        // Return the data
+        wp_send_json_success( [
+            'apps' => $apps,
+            'videos' => $videos,
+        ] );
     }
 }
 
