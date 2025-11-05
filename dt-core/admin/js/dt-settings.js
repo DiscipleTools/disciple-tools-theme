@@ -76,13 +76,14 @@ jQuery(document).ready(function ($) {
       `dt-admin-settings/`,
     );
 
-  window.API.update_roles = (post_type, roles) =>
+  window.API.update_roles = (post_type, roles, changes) =>
     makeRequest(
       'POST',
       `update-roles`,
       {
         post_type: post_type,
         roles: roles,
+        changes: changes,
       },
       `dt-admin-settings/`,
     );
@@ -1839,6 +1840,29 @@ jQuery(document).ready(function ($) {
     event.preventDefault();
   });
 
+  // Toggle roles-capabilities change log
+  let roles_capabilities_changes = {};
+  $(document).on('change', '.roles-settings-capability', function (e) {
+    let role_key = $(e.target).data('role_key');
+    let capability_key = $(e.target).data('capability_key');
+
+    if (role_key && capability_key) {
+      // Prepare space, if required.
+      if (!roles_capabilities_changes[role_key]) {
+        roles_capabilities_changes[role_key] = [];
+      }
+
+      // Toggle capability changes, to be used further downstream to determine roles & capabilities to be processed.
+      if (roles_capabilities_changes[role_key].includes(capability_key)) {
+        roles_capabilities_changes[role_key] = roles_capabilities_changes[
+          role_key
+        ].filter((e) => e !== capability_key);
+      } else {
+        roles_capabilities_changes[role_key].push(capability_key);
+      }
+    }
+  });
+
   // Update Roles & Permissions
   $(document).on('click', '#roles_settings_update_but', function (e) {
     e.preventDefault();
@@ -1868,7 +1892,7 @@ jQuery(document).ready(function ($) {
     });
 
     // Dispatch update endpoint api request.
-    window.API.update_roles(post_type, roles)
+    window.API.update_roles(post_type, roles, roles_capabilities_changes)
       .promise()
       .then(function (data) {
         button_icon.removeClass('active');

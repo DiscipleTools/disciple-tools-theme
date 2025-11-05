@@ -3942,9 +3942,14 @@
 
   $('.list-action-close-button').on('click', function () {
     let section = $(this).data('close');
-    $(`#${section}`).hide();
-    if (section === 'bulk_edit_picker') {
-      $('#records-table').toggleClass('bulk_edit_on');
+    if (section) {
+      $(`#${section}`).hide();
+      if (section === 'bulk_edit_picker') {
+        $('#records-table').toggleClass('bulk_edit_on');
+      }
+    } else {
+      $('#list-actions .list_action_section').hide();
+      $('#records-table').removeClass('bulk_edit_on');
     }
   });
 
