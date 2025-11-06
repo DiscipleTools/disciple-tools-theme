@@ -419,6 +419,12 @@ class DT_Home_Apps {
         // Enrich coded magic-link app urls.
         $enriched_apps = [];
         foreach ( $apps as $app ) {
+            // Ensure creation_type is set
+            if ( ! isset( $app['creation_type'] ) ) {
+                // Default to 'custom' if not set
+                $app['creation_type'] = 'custom';
+            }
+            
             if ( $app['creation_type'] == 'coded' ) {
                 $app_meta = $app['magic_link_meta'] ?? [];
                 if ( $app_meta['post_type'] === 'user' ) {

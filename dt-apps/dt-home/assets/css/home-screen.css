@@ -1554,3 +1554,465 @@ body.theme-light .menu-item,
         width: 100% !important;
     }
 }
+
+/* Launcher Bottom Navigation Styles */
+:root {
+    --launcher-bottom-nav-height: 60px;
+    --max-bottom-width: 800px;
+}
+
+/* Launcher Bottom Nav Container */
+.launcher-bottom-nav {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: var(--launcher-bottom-nav-height, 60px) !important;
+    width: 100% !important;
+    z-index: 1000 !important;
+    background-color: var(--surface-0, #ffffff) !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.launcher-bottom-nav .nav-container {
+    height: var(--launcher-bottom-nav-height, 60px) !important;
+    width: 100% !important;
+    max-width: var(--max-bottom-width, 800px) !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-evenly !important;
+    padding: 0 1rem !important;
+}
+
+/* Nav Items */
+.launcher-bottom-nav button.nav-item {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 10px !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    color: var(--text-color, #0a0a0a) !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.launcher-bottom-nav a.nav-item {
+    text-decoration: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 10px !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    color: var(--text-color, #0a0a0a) !important;
+    transition: all 0.2s ease !important;
+}
+
+.launcher-bottom-nav .nav-item i {
+    font-size: 30px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.launcher-bottom-nav .nav-item:hover {
+    color: var(--primary-color, #667eea) !important;
+}
+
+/* Home Button (Circular, Elevated) */
+.launcher-bottom-nav .nav-item-home {
+    background-color: var(--primary-color, #667eea) !important;
+    color: var(--text-color-inverse, #ffffff) !important;
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    position: relative !important;
+    top: -1rem !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.2s ease !important;
+}
+
+.launcher-bottom-nav .nav-item-home i {
+    font-size: 40px !important;
+    height: 60px !important;
+}
+
+.launcher-bottom-nav .nav-item-home:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Dark Mode Support for Launcher Nav */
+.theme-dark .launcher-bottom-nav,
+body.theme-dark .launcher-bottom-nav {
+    background-color: var(--surface-0, #2a2a2a) !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.theme-dark .launcher-bottom-nav .nav-item,
+body.theme-dark .launcher-bottom-nav .nav-item {
+    color: var(--text-color, #f5f5f5) !important;
+}
+
+.theme-dark .launcher-bottom-nav .nav-item:hover,
+body.theme-dark .launcher-bottom-nav .nav-item:hover {
+    color: var(--primary-color, #4a9eff) !important;
+}
+
+.theme-dark .launcher-bottom-nav .nav-item-home,
+body.theme-dark .launcher-bottom-nav .nav-item-home {
+    background-color: var(--primary-color, #4a9eff) !important;
+    color: var(--text-color-inverse, #ffffff) !important;
+}
+
+/* Apps Selector (Slide-up Menu) */
+.launcher-apps-selector {
+    background-color: var(--surface-0, #ffffff) !important;
+    padding-bottom: var(--launcher-bottom-nav-height, 60px) !important;
+    position: fixed !important;
+    bottom: -40vh !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 999 !important;
+    transition: bottom 0.3s ease-in-out !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1) !important;
+    max-height: 40vh !important;
+    overflow-y: auto !important;
+}
+
+.launcher-apps-selector.open {
+    bottom: 0 !important;
+}
+
+.launcher-apps-selector ul,
+.launcher-apps-selector li {
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+.launcher-apps-selector ul {
+    margin: 0 auto !important;
+    max-width: var(--max-bottom-width, 800px) !important;
+    padding: 1rem 0 !important;
+}
+
+.launcher-apps-selector li {
+    width: 100% !important;
+}
+
+.launcher-apps-selector li a {
+    text-decoration: none !important;
+    color: var(--text-color, #0a0a0a) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+    transition: all 0.2s ease !important;
+    border-bottom: 1px solid var(--border-color, #e1e5e9) !important;
+}
+
+.launcher-apps-selector li:last-child a {
+    border-bottom: none !important;
+}
+
+.launcher-apps-selector li a:hover {
+    background-color: var(--surface-2, #f1f3f5) !important;
+    color: var(--primary-color, #667eea) !important;
+}
+
+.launcher-apps-selector li a img {
+    height: 1.5rem !important;
+    width: 1.5rem !important;
+    object-fit: contain !important;
+}
+
+.launcher-apps-selector li a i.mdi {
+    font-size: 1.5rem !important;
+    width: 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.launcher-apps-selector li a .name {
+    flex: 1 !important;
+    font-size: 0.9rem !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Dark Mode Support for Apps Selector */
+.theme-dark .launcher-apps-selector,
+body.theme-dark .launcher-apps-selector {
+    background-color: var(--surface-0, #2a2a2a) !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.theme-dark .launcher-apps-selector li a,
+body.theme-dark .launcher-apps-selector li a {
+    color: var(--text-color, #f5f5f5) !important;
+    border-bottom-color: var(--border-color, #404040) !important;
+}
+
+.theme-dark .launcher-apps-selector li a:hover,
+body.theme-dark .launcher-apps-selector li a:hover {
+    background-color: var(--surface-2, #333333) !important;
+    color: var(--primary-color, #4a9eff) !important;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 800px) {
+    .launcher-apps-selector ul {
+        margin: 0 !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+}
+
+/* Body padding to prevent content overlap with launcher nav */
+body:has(.launcher-bottom-nav) {
+    padding-bottom: var(--launcher-bottom-nav-height, 60px) !important;
+}
+
+/* Ensure content doesn't overlap with launcher nav */
+#wrapper:has(.launcher-bottom-nav) {
+    padding-bottom: var(--launcher-bottom-nav-height, 60px) !important;
+}
+
+/* ============================================
+   Wrapper-Specific Launcher Nav Styles
+   These use different class names to avoid conflicts
+   with legacy launcher nav elements in iframe content
+   ============================================ */
+
+/* Wrapper Launcher Bottom Nav Container */
+.dt-launcher-bottom-nav {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: var(--launcher-bottom-nav-height, 60px) !important;
+    width: 100% !important;
+    z-index: 1000 !important;
+    background-color: var(--surface-0, #ffffff) !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.dt-launcher-bottom-nav .nav-container {
+    height: var(--launcher-bottom-nav-height, 60px) !important;
+    width: 100% !important;
+    max-width: var(--max-bottom-width, 800px) !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-evenly !important;
+    padding: 0 1rem !important;
+}
+
+/* Wrapper Nav Items */
+.dt-launcher-bottom-nav button.nav-item {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 10px !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    color: var(--text-color, #0a0a0a) !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+}
+
+.dt-launcher-bottom-nav a.nav-item {
+    text-decoration: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 10px !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    color: var(--text-color, #0a0a0a) !important;
+    transition: all 0.2s ease !important;
+}
+
+.dt-launcher-bottom-nav .nav-item i {
+    font-size: 30px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.dt-launcher-bottom-nav .nav-item:hover {
+    color: var(--primary-color, #667eea) !important;
+}
+
+/* Wrapper Home Button (Circular, Elevated) */
+.dt-launcher-bottom-nav .nav-item-home {
+    background-color: var(--primary-color, #667eea) !important;
+    color: var(--text-color-inverse, #ffffff) !important;
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    position: relative !important;
+    top: -1rem !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.2s ease !important;
+}
+
+.dt-launcher-bottom-nav .nav-item-home i {
+    font-size: 40px !important;
+    height: 60px !important;
+}
+
+.dt-launcher-bottom-nav .nav-item-home:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Dark Mode Support for Wrapper Launcher Nav */
+.theme-dark .dt-launcher-bottom-nav,
+body.theme-dark .dt-launcher-bottom-nav {
+    background-color: var(--surface-0, #2a2a2a) !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.theme-dark .dt-launcher-bottom-nav .nav-item,
+body.theme-dark .dt-launcher-bottom-nav .nav-item {
+    color: var(--text-color, #f5f5f5) !important;
+}
+
+.theme-dark .dt-launcher-bottom-nav .nav-item:hover,
+body.theme-dark .dt-launcher-bottom-nav .nav-item:hover {
+    color: var(--primary-color, #4a9eff) !important;
+}
+
+.theme-dark .dt-launcher-bottom-nav .nav-item-home,
+body.theme-dark .dt-launcher-bottom-nav .nav-item-home {
+    background-color: var(--primary-color, #4a9eff) !important;
+    color: var(--text-color-inverse, #ffffff) !important;
+}
+
+/* Wrapper Apps Selector (Slide-up Menu) */
+.dt-launcher-apps-selector {
+    background-color: var(--surface-0, #ffffff) !important;
+    padding-bottom: var(--launcher-bottom-nav-height, 60px) !important;
+    position: fixed !important;
+    bottom: -40vh !important;
+    left: 0 !important;
+    right: 0 !important;
+    max-height: 40vh !important;
+    overflow-y: auto !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1) !important;
+    transition: bottom 0.3s ease !important;
+    z-index: 999 !important;
+}
+
+.dt-launcher-apps-selector.open {
+    bottom: 0 !important;
+}
+
+.dt-launcher-apps-selector ul,
+.dt-launcher-apps-selector li {
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+.dt-launcher-apps-selector ul {
+    margin: 0 auto !important;
+    max-width: var(--max-bottom-width, 800px) !important;
+    padding: 1rem 0 !important;
+}
+
+.dt-launcher-apps-selector li {
+    width: 100% !important;
+}
+
+.dt-launcher-apps-selector li a {
+    text-decoration: none !important;
+    color: var(--text-color, #0a0a0a) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+    border-bottom: 1px solid var(--border-color, #e1e5e9) !important;
+}
+
+.dt-launcher-apps-selector li:last-child a {
+    border-bottom: none !important;
+}
+
+.dt-launcher-apps-selector li a:hover {
+    background-color: var(--surface-2, #f1f3f5) !important;
+    color: var(--primary-color, #667eea) !important;
+}
+
+.dt-launcher-apps-selector li a img {
+    height: 1.5rem !important;
+    width: 1.5rem !important;
+    object-fit: contain !important;
+}
+
+.dt-launcher-apps-selector li a i.mdi {
+    font-size: 1.5rem !important;
+    width: 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.dt-launcher-apps-selector li a .name {
+    flex: 1 !important;
+    font-size: 0.9rem !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Dark Mode Support for Wrapper Apps Selector */
+.theme-dark .dt-launcher-apps-selector,
+body.theme-dark .dt-launcher-apps-selector {
+    background-color: var(--surface-0, #2a2a2a) !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.theme-dark .dt-launcher-apps-selector li a,
+body.theme-dark .dt-launcher-apps-selector li a {
+    color: var(--text-color, #f5f5f5) !important;
+    border-bottom-color: var(--border-color, #404040) !important;
+}
+
+.theme-dark .dt-launcher-apps-selector li a:hover,
+body.theme-dark .dt-launcher-apps-selector li a:hover {
+    background-color: var(--surface-2, #333333) !important;
+    color: var(--primary-color, #4a9eff) !important;
+}
+
+/* Responsive Adjustments for Wrapper */
+@media screen and (max-width: 800px) {
+    .dt-launcher-apps-selector ul {
+        margin: 0 !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+}

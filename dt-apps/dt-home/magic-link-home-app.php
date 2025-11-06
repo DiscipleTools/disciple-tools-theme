@@ -8,6 +8,7 @@ require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-ap
 require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-training.php';
 require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-roles-permissions.php';
 require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-migration.php';
+require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-helpers.php';
 
 /**
  * Class DT_Home_Magic_Link_App
@@ -84,6 +85,13 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         add_filter( 'dt_settings_apps_list', [ $this, 'dt_settings_apps_list' ], 10, 1 );
         add_action( 'rest_api_init', [ $this, 'add_endpoints' ] );
 
+        // Add launcher nav to other app-type magic link apps (not home screen)
+        // These hooks need to run on ALL magic link pages, not just home screen
+        // Check for launcher parameter first (before head renders)
+        add_action( 'dt_blank_head', [ $this, 'maybe_show_launcher_wrapper' ], 5 );
+        add_action( 'dt_blank_head', [ $this, 'maybe_enqueue_launcher_nav_css' ], 10 );
+        add_action( 'dt_blank_footer', [ $this, 'maybe_include_launcher_nav' ], 10 );
+
         /**
          * tests if other URL
          */
@@ -111,8 +119,8 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         // Enqueue Material Design Icons for magic link apps
         wp_enqueue_style( 'material-font-icons-css', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css', [], '7.4.47' );
 
-        // Enqueue home screen specific styles
-        wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.2' );
+        // Enqueue home screen specific styles (includes launcher nav styles)
+        wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.3' );
 
         // Enqueue theme toggle JavaScript
         wp_enqueue_script( 'dt-home-theme-toggle', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/theme-toggle.js', [], '1.0.0', true );
@@ -130,6 +138,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
     public function dt_magic_url_base_allowed_css( $allowed_css ) {
         // @todo add or remove css files with this filter
         $allowed_css[] = 'material-font-icons-css';
+        $allowed_css[] = 'dt-home-style'; // Include launcher nav styles for other magic link apps
 
         return $allowed_css;
     }
@@ -1539,9 +1548,40 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     apps.forEach(function(app) {
                         // Trim title to max 15 characters with ellipsis
                         const trimmedTitle = app.title.length > 15 ? app.title.substring(0, 15) + '...' : app.title;
+                        
+                        // Determine app type: if type exists use it, otherwise use fallback logic
+                        let appType = app.type;
+                        if (!appType || (appType !== 'app' && appType !== 'link')) {
+                            // Fallback logic: if creation_type is 'coded', default to 'app', otherwise 'link'
+                            appType = (app.creation_type === 'coded') ? 'app' : 'link';
+                        }
+                        
+                        // App-type apps navigate in same tab with launcher parameter, link-type apps open in new tab
+                        let onClickHandler = '';
+                        if (appType === 'app') {
+                            // Check if app is cross-domain (different domain than current)
+                            const currentHost = window.location.hostname;
+                            const appUrlObj = new URL(app.url, window.location.origin);
+                            const appHost = appUrlObj.hostname;
+                            const isCrossDomain = appHost !== currentHost && appHost !== window.location.hostname;
+                            
+                            if (isCrossDomain) {
+                                // For cross-domain apps, use WordPress wrapper URL with app URL as parameter
+                                const wrapperUrl = '<?php echo esc_js( dt_home_magic_url( '' ) ); ?>' + '?launcher=1&app_url=' + encodeURIComponent(app.url);
+                                onClickHandler = `onclick="window.location.href = '${wrapperUrl}'; return false;"`;
+                            } else {
+                                // For same-domain apps, add launcher=1 parameter
+                                const separator = app.url.includes('?') ? '&' : '?';
+                                const appUrlWithLauncher = app.url + separator + 'launcher=1';
+                                onClickHandler = `onclick="window.location.href = '${appUrlWithLauncher}'; return false;"`;
+                            }
+                        } else {
+                            // Open in new tab (link-type)
+                            onClickHandler = `onclick="window.open('${app.url}', '_blank'); return false;"`;
+                        }
 
                         const appHtml = `
-                            <div class="app-card" onclick="window.open('${app.url}', '_blank')" title="${app.title}">
+                            <div class="app-card" ${onClickHandler} title="${app.title}">
                                 <div class="app-icon" style="color: ${app.color || '#667eea'}">
                                     <i class="${app.icon}"></i>
                                 </div>
@@ -1910,6 +1950,263 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         return true;
     }
 
+    /**
+     * Check if launcher=1 parameter is present in the URL
+     *
+     * @return bool True if launcher parameter is present, false otherwise
+     */
+    private function has_launcher_parameter() {
+        return isset( $_GET['launcher'] ) && $_GET['launcher'] === '1';
+    }
+    
+    /**
+     * Get target app URL without launcher parameter
+     * For cross-domain custom apps, gets the app URL from the app_url parameter
+     *
+     * @return string The target app URL without launcher parameter
+     */
+    private function get_target_app_url() {
+        // Check if app_url parameter is present (for cross-domain custom apps)
+        if ( isset( $_GET['app_url'] ) && ! empty( $_GET['app_url'] ) ) {
+            $app_url = esc_url_raw( wp_unslash( $_GET['app_url'] ) );
+            error_log( 'DT Home: Using app_url parameter for cross-domain app: ' . $app_url );
+            return $app_url;
+        }
+        
+        // Get current URL and remove launcher parameter
+        // This handles coded apps and same-domain custom apps
+        $current_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $url_parts = parse_url( $current_url );
+        $query_params = [];
+        if ( ! empty( $url_parts['query'] ) ) {
+            parse_str( $url_parts['query'], $query_params );
+        }
+        
+        // Remove launcher and app_url parameters
+        unset( $query_params['launcher'] );
+        unset( $query_params['app_url'] );
+        
+        // Rebuild URL
+        $target_url = $url_parts['scheme'] . '://' . $url_parts['host'];
+        if ( ! empty( $url_parts['port'] ) ) {
+            $target_url .= ':' . $url_parts['port'];
+        }
+        $target_url .= $url_parts['path'];
+        
+        if ( ! empty( $query_params ) ) {
+            $target_url .= '?' . http_build_query( $query_params );
+        }
+        
+        return $target_url;
+    }
+    
+    /**
+     * Check if current page is an app-type app (not home screen)
+     *
+     * @return bool True if on an app-type app page, false otherwise
+     */
+    private function is_app_type_page() {
+        // Debug logging
+        error_log( 'DT Home: is_app_type_page() called' );
+        
+        // Check for launcher parameter first - if present, always show launcher
+        // This handles both coded apps and custom apps (including cross-domain)
+        if ( $this->has_launcher_parameter() ) {
+            error_log( 'DT Home: launcher=1 parameter detected, returning true' );
+            return true;
+        }
+        
+        // Get current URL path
+        $url_path = dt_get_url_path();
+        error_log( 'DT Home: Current URL path: ' . $url_path );
+        
+        // Parse URL path manually to extract root/type
+        // Magic link URL format: /{root}/{type}/{key}/{action}
+        $url_parts = explode( '/', trim( $url_path, '/' ) );
+        error_log( 'DT Home: URL parts array: ' . print_r( $url_parts, true ) );
+        
+        if ( count( $url_parts ) < 3 ) {
+            error_log( 'DT Home: URL path too short, returning false' );
+            return false;
+        }
+        
+        $current_root = $url_parts[0] ?? '';
+        $current_type = $url_parts[1] ?? '';
+        
+        error_log( 'DT Home: Parsed root: ' . $current_root . ', type: ' . $current_type );
+        
+        // If we're on the home screen itself, return false
+        if ( $current_root === 'smart_links' && $current_type === 'home_screen' ) {
+            // Check if there's an action in the URL (e.g., /app/{slug})
+            $action = $url_parts[3] ?? '';
+            if ( empty( $action ) || ! str_starts_with( $action, 'app/' ) ) {
+                error_log( 'DT Home: On home screen (no action or action not app/*), returning false' );
+                return false; // We're on the home screen
+            }
+        }
+        
+        // Get all registered magic link apps
+        $apps_manager = DT_Home_Apps::instance();
+        $apps = $apps_manager->get_apps_for_user( get_current_user_id() );
+        
+        error_log( 'DT Home: Checking ' . count( $apps ) . ' apps' );
+        error_log( 'DT Home: Current URL root: ' . $current_root . ', type: ' . $current_type );
+        
+        // Get current full URL for comparison
+        $current_full_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        // Remove launcher parameter for comparison
+        $current_full_url_no_launcher = remove_query_arg( 'launcher', $current_full_url );
+        
+        // Check if current URL matches a registered app-type app
+        foreach ( $apps as $app ) {
+            // Only check app-type apps
+            if ( ! isset( $app['type'] ) || $app['type'] !== 'app' ) {
+                continue;
+            }
+            
+            // For coded apps, check if URL matches magic_link_meta
+            if ( isset( $app['magic_link_meta'] ) && ! empty( $app['magic_link_meta'] ) ) {
+                // Check if current URL matches this app's root/type
+                $app_meta = $app['magic_link_meta'];
+                $app_root = $app_meta['root'] ?? '';
+                $app_type = $app_meta['type'] ?? '';
+                
+                error_log( 'DT Home: Checking coded app - root: ' . $app_root . ', type: ' . $app_type . ', title: ' . ( $app['title'] ?? 'not set' ) );
+                
+                if ( $current_root === $app_root && $current_type === $app_type ) {
+                    // Make sure it's not the home screen app
+                    if ( $current_root === 'smart_links' && $current_type === 'home_screen' ) {
+                        error_log( 'DT Home: Matched but it\'s home screen app, skipping' );
+                        continue;
+                    }
+                    error_log( 'DT Home: MATCH FOUND! This is a coded app-type page: ' . ( $app['title'] ?? 'unknown' ) );
+                    return true;
+                }
+            } else {
+                // For custom apps (no magic_link_meta), check if URL matches the app's stored URL
+                $app_url = $app['url'] ?? '';
+                if ( ! empty( $app_url ) ) {
+                    // Remove launcher parameter from app URL for comparison
+                    $app_url_no_launcher = remove_query_arg( 'launcher', $app_url );
+                    
+                    error_log( 'DT Home: Checking custom app - app URL: ' . $app_url_no_launcher . ', current URL: ' . $current_full_url_no_launcher . ', title: ' . ( $app['title'] ?? 'not set' ) );
+                    
+                    // Check if current URL matches the app's URL (compare paths and domains)
+                    $app_url_parts = parse_url( $app_url_no_launcher );
+                    $current_url_parts = parse_url( $current_full_url_no_launcher );
+                    
+                    // Compare paths (normalize by removing leading/trailing slashes)
+                    $app_path = trim( $app_url_parts['path'] ?? '', '/' );
+                    $current_path = trim( $current_url_parts['path'] ?? '', '/' );
+                    
+                    // Compare domains
+                    $app_host = $app_url_parts['host'] ?? '';
+                    $current_host = $current_url_parts['host'] ?? '';
+                    
+                    if ( ! empty( $app_path ) && ! empty( $current_path ) ) {
+                        // Check if paths match (exact match or current path starts with app path)
+                        if ( $app_path === $current_path || strpos( $current_path, $app_path ) === 0 ) {
+                            // Also check if hosts match (or app URL is relative)
+                            if ( empty( $app_host ) || $app_host === $current_host ) {
+                                error_log( 'DT Home: MATCH FOUND! This is a custom app-type page: ' . ( $app['title'] ?? 'unknown' ) );
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        error_log( 'DT Home: No match found, returning false' );
+        return false;
+    }
+
+    /**
+     * Maybe show launcher wrapper page (if launcher=1 parameter is present)
+     * This is called via dt_blank_head hook (early priority)
+     */
+    public function maybe_show_launcher_wrapper() {
+        // Check if launcher parameter is present - if so, show wrapper page instead
+        if ( $this->has_launcher_parameter() ) {
+            error_log( 'DT Home: launcher=1 detected in dt_blank_head, showing wrapper page' );
+            $this->show_launcher_wrapper();
+            // show_launcher_wrapper() will exit, so this won't continue
+        }
+    }
+    
+    /**
+     * Maybe enqueue launcher nav CSS for other magic link apps
+     * This is called via dt_blank_head hook
+     */
+    public function maybe_enqueue_launcher_nav_css() {
+        error_log( 'DT Home: maybe_enqueue_launcher_nav_css() called' );
+        error_log( 'DT Home: Current REQUEST_URI: ' . ( $_SERVER['REQUEST_URI'] ?? 'not set' ) );
+        error_log( 'DT Home: Current HTTP_HOST: ' . ( $_SERVER['HTTP_HOST'] ?? 'not set' ) );
+        
+        // Only enqueue if we're on an app-type app page (not home screen)
+        if ( $this->is_app_type_page() ) {
+            error_log( 'DT Home: Enqueuing launcher nav CSS' );
+            // Ensure CSS is enqueued for other magic link apps
+            if ( ! wp_style_is( 'dt-home-style', 'enqueued' ) ) {
+                wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.3' );
+            }
+            if ( ! wp_style_is( 'material-font-icons-css', 'enqueued' ) ) {
+                wp_enqueue_style( 'material-font-icons-css', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css', [], '7.4.47' );
+            }
+        } else {
+            error_log( 'DT Home: Not an app-type page, skipping CSS enqueue' );
+        }
+    }
+
+    /**
+     * Maybe include launcher nav in footer (for other app-type apps)
+     * This is called via dt_blank_footer hook
+     */
+    public function maybe_include_launcher_nav() {
+        error_log( 'DT Home: maybe_include_launcher_nav() called' );
+        
+        // Don't include launcher nav if we're showing the wrapper (it's already included there)
+        if ( $this->has_launcher_parameter() ) {
+            error_log( 'DT Home: launcher=1 detected, skipping footer nav (wrapper already shown)' );
+            return;
+        }
+        
+        // Only include if we're on an app-type app page (not home screen)
+        if ( $this->is_app_type_page() ) {
+            error_log( 'DT Home: Including launcher nav' );
+            $this->include_launcher_nav();
+        } else {
+            error_log( 'DT Home: Not an app-type page, skipping launcher nav inclusion' );
+        }
+    }
+    
+    /**
+     * Show launcher wrapper page with iframe
+     */
+    private function show_launcher_wrapper() {
+        $target_app_url = $this->get_target_app_url();
+        error_log( 'DT Home: Showing launcher wrapper for URL: ' . $target_app_url );
+        
+        // Get all apps for the apps selector
+        $apps_manager = DT_Home_Apps::instance();
+        $apps = $apps_manager->get_apps_for_user( get_current_user_id() );
+        
+        // Output complete HTML page
+        $target_app_url = $this->get_target_app_url();
+        
+        // Include wrapper template
+        $wrapper_path = get_template_directory() . '/dt-apps/dt-home/frontend/partials/launcher-wrapper.php';
+        if ( file_exists( $wrapper_path ) ) {
+            // Set variables for template
+            $target_app_url = $this->get_target_app_url();
+            include $wrapper_path;
+            die(); // Stop all further processing
+        } else {
+            error_log( 'DT Home: ERROR - Launcher wrapper template not found at: ' . $wrapper_path );
+            die( 'Launcher wrapper template not found' );
+        }
+    }
+
     public function body() {
         // Revert back to dt translations
         $this->hard_switch_to_default_dt_text_domain();
@@ -1926,6 +2223,27 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
         // Fallback/default: apps view
         include get_template_directory() . '/dt-apps/dt-home/frontend/home-screen.php';
+    }
+    
+    /**
+     * Include launcher bottom nav partial
+     */
+    private function include_launcher_nav() {
+        error_log( 'DT Home: include_launcher_nav() called' );
+        // Get all apps for the apps selector
+        $apps_manager = DT_Home_Apps::instance();
+        $apps = $apps_manager->get_apps_for_user( get_current_user_id() );
+        
+        error_log( 'DT Home: Found ' . count( $apps ) . ' apps for launcher nav' );
+        
+        // Include the launcher nav partial
+        $partial_path = get_template_directory() . '/dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php';
+        if ( file_exists( $partial_path ) ) {
+            error_log( 'DT Home: Including launcher nav partial from: ' . $partial_path );
+            include $partial_path;
+        } else {
+            error_log( 'DT Home: ERROR - Launcher nav partial not found at: ' . $partial_path );
+        }
     }
 
     /**
