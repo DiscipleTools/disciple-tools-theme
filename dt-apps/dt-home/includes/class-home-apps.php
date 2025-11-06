@@ -424,7 +424,7 @@ class DT_Home_Apps {
                 // Default to 'custom' if not set
                 $app['creation_type'] = 'custom';
             }
-            
+
             if ( $app['creation_type'] == 'coded' ) {
                 $app_meta = $app['magic_link_meta'] ?? [];
                 if ( $app_meta['post_type'] === 'user' ) {

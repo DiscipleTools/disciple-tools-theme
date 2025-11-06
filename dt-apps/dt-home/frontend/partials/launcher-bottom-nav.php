@@ -27,12 +27,12 @@ $filtered_apps = array_filter( $apps, function ( $app ) {
     if ( ! isset( $app['type'] ) || $app['type'] !== 'app' ) {
         return false;
     }
-    
+
     // For coded apps, must have magic_link_meta
     if ( isset( $app['creation_type'] ) && $app['creation_type'] === 'coded' ) {
         return isset( $app['magic_link_meta'] ) && ! empty( $app['magic_link_meta'] );
     }
-    
+
     // For custom apps, just need to be app-type (they may not have magic_link_meta)
     return true;
 });
@@ -121,7 +121,7 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
                 $app_url .= $separator . 'launcher=1';
             }
         }
-        
+
         // Get app name/title
         $app_name = $app['title'] ?? $app['name'] ?? 'App';
         $app_icon = $app['icon'] ?? 'mdi mdi-apps';

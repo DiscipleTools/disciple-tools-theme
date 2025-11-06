@@ -19,6 +19,10 @@ require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-he
 // Get all apps for the apps selector
 $apps_manager = DT_Home_Apps::instance();
 $apps = $apps_manager->get_apps_for_user( get_current_user_id() );
+
+// Enqueue stylesheets properly
+wp_enqueue_style( 'material-font-icons-css', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css', [], '7.4.47' );
+wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.3' );
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -26,8 +30,16 @@ $apps = $apps_manager->get_apps_for_user( get_current_user_id() );
     <meta charset="<?php bloginfo( 'charset' ); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php esc_html_e( 'App Launcher', 'disciple_tools' ); ?></title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css' ); ?>?v=1.0.3">
+    <?php
+    wp_head();
+    // Explicitly print stylesheets for standalone template
+    // Use wp_styles()->do_items() to ensure stylesheets are output
+    global $wp_styles;
+    if ( isset( $wp_styles ) ) {
+        $wp_styles->do_items( 'material-font-icons-css' );
+        $wp_styles->do_items( 'dt-home-style' );
+    }
+    ?>
     <style>
         * {
             margin: 0;
