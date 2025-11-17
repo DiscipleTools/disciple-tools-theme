@@ -316,6 +316,11 @@ class MenuToggle {
     const baseUrl = url.pathname + url.search;
     const separator = url.search ? '&' : '?';
 
+    const logoutUrl =
+      (window.dtHomeMenuToggleSettings &&
+        window.dtHomeMenuToggleSettings.logoutUrl) ||
+      '/wp-login.php?action=logout';
+
     // Create menu items
     const menuItems = [
       {
@@ -350,8 +355,12 @@ class MenuToggle {
         label: 'Logout',
         icon: 'mdi-logout',
         action: () => {
-          // Placeholder - do nothing for now
-          console.log('Logout clicked - placeholder');
+          if (!logoutUrl) {
+            console.warn('Logout URL not set');
+            return;
+          }
+          const targetWindow = window.top || window;
+          targetWindow.location.href = logoutUrl;
         },
         active: false,
       },

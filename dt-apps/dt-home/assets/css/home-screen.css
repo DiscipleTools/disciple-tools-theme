@@ -47,7 +47,7 @@ body {
 }
 
 .theme-dark .home-screen-content {
-    background: var(--surface-1) !important;
+    background: transparent !important;
     color: var(--text-color) !important;
 }
 
@@ -80,7 +80,7 @@ body.theme-dark .home-screen-container {
 }
 
 body.theme-dark .home-screen-content {
-    background: var(--surface-1) !important;
+    background: transparent !important;
     color: var(--text-color) !important;
 }
 
@@ -175,9 +175,9 @@ body.theme-dark .app-card:hover {
 .home-screen-container {
     max-width: 1200px;
     margin: 0 auto;
-    background: var(--surface-1);
-    border-radius: 8px;
-    box-shadow: 0 2px 10px var(--shadow-color);
+    background: transparent !important;
+    /*border-radius: 8px;
+    box-shadow: 0 2px 10px var(--shadow-color);*/
     overflow: hidden;
 }
 

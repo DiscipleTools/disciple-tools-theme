@@ -45,10 +45,21 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
     console.log('DT Home Launcher Nav: Script loaded');
     console.log('DT Home Launcher Nav: Filtered apps count:', <?php echo count( $filtered_apps ); ?>);
     
+    function getLauncherSelector() {
+        return document.querySelector('<?php echo '.' . esc_js( $selector_class ); ?>');
+    }
+    
     function toggleAppsSelector() {
-        var selector = document.querySelector('<?php echo '.' . esc_js( $selector_class ); ?>');
+        var selector = getLauncherSelector();
         if (selector) {
             selector.classList.toggle('open');
+        }
+    }
+    
+    function closeAppsSelector() {
+        var selector = getLauncherSelector();
+        if (selector) {
+            selector.classList.remove('open');
         }
     }
     
@@ -75,7 +86,7 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
     
     // Close apps selector when clicking outside
     document.addEventListener('click', function(event) {
-        var selector = document.querySelector('<?php echo '.' . esc_js( $selector_class ); ?>');
+        var selector = getLauncherSelector();
         var appsButton = document.querySelector('<?php echo '.' . esc_js( $nav_class ); ?> .nav-item[onclick*="toggleAppsSelector"]');
         
         if (selector && appsButton) {
@@ -83,9 +94,35 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
             var isClickOnAppsButton = appsButton.contains(event.target);
             
             if (!isClickInsideSelector && !isClickOnAppsButton && selector.classList.contains('open')) {
-                selector.classList.remove('open');
+                closeAppsSelector();
             }
         }
+    });
+    
+    document.addEventListener('click', function(event) {
+        var link = event.target.closest('.launcher-app-link');
+        if (!link) {
+            return;
+        }
+        
+        event.preventDefault();
+        event.stopPropagation();
+        closeAppsSelector();
+        
+        var iframe = document.getElementById('launcher-app-iframe');
+        var iframeUrl = link.getAttribute('data-app-url') || link.getAttribute('href');
+        
+        if (iframe && iframeUrl && iframeUrl !== '#') {
+            iframe.setAttribute('src', iframeUrl);
+            return false;
+        }
+        
+        var fallbackUrl = link.getAttribute('data-launcher-url') || link.getAttribute('href');
+        if (fallbackUrl && fallbackUrl !== '#') {
+            window.location.href = fallbackUrl;
+        }
+        
+        return false;
     });
 </script>
 <div class="<?php echo esc_attr( $nav_class ); ?>">
@@ -97,7 +134,7 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
         <a href="<?php echo esc_url( dt_home_magic_url( '' ) ); ?>" class="nav-item nav-item-home" aria-label="<?php esc_attr_e( 'Home', 'disciple_tools' ); ?>">
             <i class="mdi mdi-home"></i>
         </a>
-        <a href="<?php echo esc_url( dt_home_magic_url( 'logout' ) ); ?>" class="nav-item" aria-label="<?php esc_attr_e( 'Log Out', 'disciple_tools' ); ?>">
+        <a href="<?php echo esc_url( dt_home_get_logout_url() ); ?>" class="nav-item nav-item-logout" aria-label="<?php esc_attr_e( 'Log Out', 'disciple_tools' ); ?>">
             <i class="mdi mdi-logout"></i>
             <?php esc_html_e( 'Log Out', 'disciple_tools' ); ?>
         </a>
@@ -108,18 +145,27 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
     <ul>
     <?php foreach ( $filtered_apps as $app ): ?>
         <?php
-        // Get the app URL - use magic URL helper for coded apps, otherwise use stored URL
-        // Add launcher=1 parameter for app-type apps
-        $app_url = '';
+        // Build base app URL without launcher parameters
+        $base_app_url = '';
         if ( isset( $app['creation_type'] ) && $app['creation_type'] === 'coded' ) {
-            $app_url = dt_home_get_app_magic_url( $app, '', true ); // Add launcher parameter
+            $base_app_url = dt_home_get_app_magic_url( $app, '', false );
         } else {
-            $app_url = $app['url'] ?? '#';
-            // Add launcher parameter to non-coded app URLs too
-            if ( $app_url !== '#' ) {
-                $separator = strpos( $app_url, '?' ) !== false ? '&' : '?';
-                $app_url .= $separator . 'launcher=1';
-            }
+            $base_app_url = $app['url'] ?? '#';
+        }
+
+        // Fallback launcher URL (adds launcher=1 so page reload falls back to wrapper)
+        $launcher_url = $base_app_url === '#'
+            ? '#'
+            : add_query_arg( 'launcher', '1', $base_app_url );
+
+        // Iframe target URL (adds launcher_iframe=1 so nested request is detected)
+        $iframe_app_url = $base_app_url === '#'
+            ? '#'
+            : add_query_arg( 'launcher_iframe', '1', $base_app_url );
+
+        if ( $base_app_url === '#' ) {
+            $launcher_url = '#';
+            $iframe_app_url = '#';
         }
 
         // Get app name/title
@@ -128,10 +174,10 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
         $app_color = $app['color'] ?? '#667eea';
         ?>
         <li>
-            <a href="<?php echo esc_url( $app_url ); ?>" 
+            <a href="<?php echo esc_url( $launcher_url ); ?>" 
                class="launcher-app-link" 
-               data-app-url="<?php echo esc_attr( $app_url ); ?>"
-               onclick="event.preventDefault(); event.stopPropagation(); var selector = document.querySelector('<?php echo '.' . esc_js( $selector_class ); ?>'); if(selector) selector.classList.remove('open'); window.location.href = '<?php echo esc_js( $app_url ); ?>'; return false;">
+               data-app-url="<?php echo esc_attr( $iframe_app_url ); ?>"
+               data-launcher-url="<?php echo esc_attr( $launcher_url ); ?>">
                 <?php if ( str_starts_with( $app_icon, 'http' ) || str_starts_with( $app_icon, '/' ) ): ?>
                     <img src="<?php echo esc_url( $app_icon ); ?>" alt="<?php echo esc_attr( $app_name ); ?>" style="color: <?php echo esc_attr( $app_color ); ?>;" />
                 <?php else : ?>

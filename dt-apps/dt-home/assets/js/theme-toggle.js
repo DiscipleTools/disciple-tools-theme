@@ -227,7 +227,7 @@ class ThemeToggle {
         container.style.color = '#f5f5f5';
       }
       if (content) {
-        content.style.backgroundColor = '#1a1a1a';
+        //content.style.backgroundColor = '#1a1a1a';
         content.style.color = '#f5f5f5';
       }
       appCards.forEach((card, index) => {
@@ -267,22 +267,14 @@ class ThemeToggle {
         container.style.color = '#0a0a0a';
       }
       if (content) {
-        content.style.backgroundColor = 'hsla(0, 0%, 90%, 1)';
+        //content.style.backgroundColor = 'hsla(0, 0%, 90%, 1)';
         content.style.color = '#0a0a0a';
       }
       appCards.forEach((card) => {
-        card.style.setProperty(
-          'background-color',
-          'hsla(0, 0%, 90%, 1)',
-          'important',
-        );
-        card.style.setProperty('border-color', '#e1e5e9', 'important');
-        card.style.setProperty('color', '#0a0a0a', 'important');
-        card.style.setProperty(
-          'box-shadow',
-          '0 1px 3px rgba(0,0,0,0.1)',
-          'important',
-        );
+        card.style.removeProperty('background-color');
+        card.style.removeProperty('border-color');
+        card.style.removeProperty('color');
+        card.style.removeProperty('box-shadow');
       });
       appTitles.forEach((title) => {
         title.style.color = '#0a0a0a';

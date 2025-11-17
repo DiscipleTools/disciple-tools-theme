@@ -127,6 +127,17 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
         // Enqueue menu toggle JavaScript
         wp_enqueue_script( 'dt-home-menu-toggle', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/menu-toggle.js', [], '1.0.0', true );
+
+        // Pass logout URL to menu toggle script
+        if ( function_exists( 'dt_home_get_logout_url' ) ) {
+            wp_localize_script(
+                'dt-home-menu-toggle',
+                'dtHomeMenuToggleSettings',
+                [
+                    'logoutUrl' => dt_home_get_logout_url(),
+                ]
+            );
+        }
     }
 
     public function dt_magic_url_base_allowed_js( $allowed_js ) {
@@ -184,9 +195,9 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             .home-screen-container {
                 max-width: 1200px;
                 margin: 0 auto;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                background: transparent !important;
+                /*border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);*/
                 overflow: hidden;
             }
 
@@ -1185,7 +1196,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 const savedTheme = localStorage.getItem('dt-home-theme');
                 const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
                 const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
-                
+
                 // Set CSS variables immediately on root
                 const root = document.documentElement;
                 if (initialTheme === 'dark') {
@@ -1205,7 +1216,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     root.style.setProperty('--app-card-shadow', 'rgba(0,0,0,0.1)');
                     root.style.setProperty('--app-card-hover-border', '#667eea');
                 }
-                
+
                 // Also set on body when it becomes available
                 if (document.body) {
                     document.body.classList.remove('theme-light', 'theme-dark');
@@ -1359,7 +1370,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                         container.style.color = '#f5f5f5';
                     }
                     if (content) {
-                        content.style.backgroundColor = '#1a1a1a';
+                        //content.style.backgroundColor = '#1a1a1a';
                         content.style.color = '#f5f5f5';
                     }
                     appCards.forEach(card => {
@@ -1384,7 +1395,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                         container.style.color = '#0a0a0a';
                     }
                     if (content) {
-                        content.style.backgroundColor = 'hsla(0, 0%, 90%, 1)';
+                        //content.style.backgroundColor = 'hsla(0, 0%, 90%, 1)';
                         content.style.color = '#0a0a0a';
                     }
                     appCards.forEach(card => {
@@ -1502,7 +1513,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                         // Split apps into apps and links arrays based on type property
                         const appsArray = [];
                         const linksArray = [];
-                        
+
                         data.apps.forEach(function(app) {
                             // Determine type: if type exists use it, otherwise use fallback logic
                             let appType = app.type;
@@ -1510,14 +1521,14 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                                 // Fallback logic: if creation_type is 'coded', default to 'app', otherwise 'link'
                                 appType = (app.creation_type === 'coded') ? 'app' : 'link';
                             }
-                            
+
                             if (appType === 'link') {
                                 linksArray.push(app);
                             } else {
                                 appsArray.push(app);
                             }
                         });
-                        
+
                         // Display apps and links separately
                         displayApps(appsArray);
                         displayLinks(linksArray);
@@ -1548,14 +1559,14 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     apps.forEach(function(app) {
                         // Trim title to max 15 characters with ellipsis
                         const trimmedTitle = app.title.length > 15 ? app.title.substring(0, 15) + '...' : app.title;
-                        
+
                         // Determine app type: if type exists use it, otherwise use fallback logic
                         let appType = app.type;
                         if (!appType || (appType !== 'app' && appType !== 'link')) {
                             // Fallback logic: if creation_type is 'coded', default to 'app', otherwise 'link'
                             appType = (app.creation_type === 'coded') ? 'app' : 'link';
                         }
-                        
+
                         // App-type apps navigate in same tab with launcher parameter, link-type apps open in new tab
                         let onClickHandler = '';
                         if (appType === 'app') {
@@ -1564,7 +1575,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                             const appUrlObj = new URL(app.url, window.location.origin);
                             const appHost = appUrlObj.hostname;
                             const isCrossDomain = appHost !== currentHost && appHost !== window.location.hostname;
-                            
+
                             if (isCrossDomain) {
                                 // For cross-domain apps, use WordPress wrapper URL with app URL as parameter
                                 const wrapperUrl = '<?php echo esc_js( dt_home_magic_url( '' ) ); ?>' + '?launcher=1&app_url=' + encodeURIComponent(app.url);
@@ -1637,7 +1648,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                                 iconColor = link.color;
                             }
                         }
-                        
+
                         // Determine icon display: image or icon class
                         let iconHtml = '';
                         if (link.icon && (link.icon.startsWith('http') || link.icon.startsWith('/'))) {
@@ -1710,14 +1721,14 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 textArea.style.opacity = '0';
                 document.body.appendChild(textArea);
                 textArea.select();
-                
+
                 try {
                     document.execCommand('copy');
                     showCopyFeedback(button, originalIcon, originalClass);
                 } catch (err) {
                     console.error('Fallback copy failed:', err);
                 }
-                
+
                 document.body.removeChild(textArea);
             }
 
@@ -1960,6 +1971,29 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
     }
 
     /**
+     * Determine if the current request is being loaded inside the launcher iframe.
+     *
+     * @return bool
+     */
+    private function is_launcher_iframe_request() {
+        if ( isset( $_GET['launcher_iframe'] ) && $_GET['launcher_iframe'] === '1' ) {
+            error_log( 'DT Home: Detected launcher_iframe query parameter.' );
+            return true;
+        }
+
+        $sec_fetch_dest = isset( $_SERVER['HTTP_SEC_FETCH_DEST'] )
+            ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['HTTP_SEC_FETCH_DEST'] ) ) )
+            : '';
+
+        if ( $sec_fetch_dest === 'iframe' ) {
+            error_log( 'DT Home: Detected Sec-Fetch-Dest: iframe header.' );
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Get target app URL without launcher parameter
      * For cross-domain custom apps, gets the app URL from the app_url parameter
      *
@@ -2013,6 +2047,11 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
     private function is_app_type_page() {
         // Debug logging
         error_log( 'DT Home: is_app_type_page() called' );
+
+        if ( $this->is_launcher_iframe_request() ) {
+            error_log( 'DT Home: Request identified as launcher iframe. Treating as non app-type page.' );
+            return false;
+        }
 
         // Check for launcher parameter first - if present, always show launcher
         // This handles both coded apps and custom apps (including cross-domain)
@@ -2155,6 +2194,11 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         error_log( 'DT Home: Current REQUEST_URI: ' . $request_uri );
         error_log( 'DT Home: Current HTTP_HOST: ' . $http_host );
 
+        if ( $this->is_launcher_iframe_request() ) {
+            error_log( 'DT Home: Detected launcher iframe request, skipping launcher nav CSS enqueue.' );
+            return;
+        }
+
         // Only enqueue if we're on an app-type app page (not home screen)
         if ( $this->is_app_type_page() ) {
             error_log( 'DT Home: Enqueuing launcher nav CSS' );
@@ -2176,6 +2220,11 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
      */
     public function maybe_include_launcher_nav() {
         error_log( 'DT Home: maybe_include_launcher_nav() called' );
+
+        if ( $this->is_launcher_iframe_request() ) {
+            error_log( 'DT Home: Detected launcher iframe request, skipping launcher nav inclusion.' );
+            return;
+        }
 
         // Don't include launcher nav if we're showing the wrapper (it's already included there)
         if ( $this->has_launcher_parameter() ) {

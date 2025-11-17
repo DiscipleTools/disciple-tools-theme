@@ -50,6 +50,16 @@ function dt_home_magic_url( $action = '', $key = '' ) {
 }
 
 /**
+ * Get the canonical logout URL that redirects users to the WP login page.
+ *
+ * @return string
+ */
+function dt_home_get_logout_url() {
+    $redirect = wp_login_url();
+    return wp_logout_url( $redirect );
+}
+
+/**
  * Get magic URL for a specific app (only for coded apps)
  *
  * @param array $app The app data array

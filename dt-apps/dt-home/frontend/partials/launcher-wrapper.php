@@ -20,6 +20,9 @@ require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-he
 $apps_manager = DT_Home_Apps::instance();
 $apps = $apps_manager->get_apps_for_user( get_current_user_id() );
 
+// Mark iframe requests so nested pages can detect they are inside the launcher
+$iframe_target_app_url = add_query_arg( 'launcher_iframe', '1', $target_app_url );
+
 // Enqueue stylesheets properly
 wp_enqueue_style( 'material-font-icons-css', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css', [], '7.4.47' );
 wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.3' );
@@ -83,7 +86,7 @@ wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-h
         <div class="launcher-iframe-container">
             <iframe 
                 id="launcher-app-iframe" 
-                src="<?php echo esc_url( $target_app_url ); ?>" 
+                src="<?php echo esc_url( $iframe_target_app_url ); ?>" 
                 title="<?php esc_attr_e( 'App Content', 'disciple_tools' ); ?>"
                 allowfullscreen>
             </iframe>
