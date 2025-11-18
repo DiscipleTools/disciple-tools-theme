@@ -85,12 +85,13 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         add_filter( 'dt_settings_apps_list', [ $this, 'dt_settings_apps_list' ], 10, 1 );
         add_action( 'rest_api_init', [ $this, 'add_endpoints' ] );
 
-        // Add launcher nav to other app-type magic link apps (not home screen)
-        // These hooks need to run on ALL magic link pages, not just home screen
-        // Check for launcher parameter first (before head renders)
-        add_action( 'dt_blank_head', [ $this, 'maybe_show_launcher_wrapper' ], 5 );
-        add_action( 'dt_blank_head', [ $this, 'maybe_enqueue_launcher_nav_css' ], 10 );
-        add_action( 'dt_blank_footer', [ $this, 'maybe_include_launcher_nav' ], 10 );
+        if ( $this->should_register_launcher_hooks() ) {
+            // Add launcher nav to other app-type magic link apps (not home screen)
+            // Check for launcher parameter first (before head renders)
+            add_action( 'dt_blank_head', [ $this, 'maybe_show_launcher_wrapper' ], 5 );
+            add_action( 'dt_blank_head', [ $this, 'maybe_enqueue_launcher_nav_css' ], 10 );
+            add_action( 'dt_blank_footer', [ $this, 'maybe_include_launcher_nav' ], 10 );
+        }
 
         /**
          * tests if other URL
@@ -1968,6 +1969,25 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
      */
     private function has_launcher_parameter() {
         return isset( $_GET['launcher'] ) && $_GET['launcher'] === '1';
+    }
+
+    /**
+     * Determine if launcher hooks should run for current request.
+     *
+     * Hooks are only needed when viewing the home screen app or when the
+     * special launcher query parameter is present (so the wrapper can take over).
+     *
+     * @return bool
+     */
+    private function should_register_launcher_hooks() {
+        if ( $this->has_launcher_parameter() ) {
+            return true;
+        }
+
+        $url_path = trim( dt_get_url_path(), '/' );
+        $home_path = trim( $this->root . '/' . $this->type, '/' );
+
+        return str_starts_with( $url_path, $home_path );
     }
 
     /**
