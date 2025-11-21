@@ -57,12 +57,20 @@ html.theme-dark body {
 }
 
 /* Balanced iPhone-style app cards */
+.app-card-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 90px !important;
+}
+
 .app-card {
     background: var(--app-card-bg, #ffffff) !important;
     border: 1px solid var(--app-card-border, #e1e5e9) !important;
     color: var(--app-card-text, #0a0a0a) !important;
-    border-radius: 16px !important;
-    padding: 0.5rem !important;
+    border-radius: 24px !important;
+    padding: 0.7rem !important;
     text-align: center !important;
     transition: all 0.2s ease !important;
     cursor: pointer !important;
@@ -71,13 +79,14 @@ html.theme-dark body {
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 70px !important;
-    height: 70px !important;
-    max-width: 70px !important;
-    max-height: 70px !important;
-    min-height: 70px !important;
+    width: 90px !important;
+    height: 90px !important;
+    max-width: 90px !important;
+    max-height: 90px !important;
+    min-height: 90px !important;
     aspect-ratio: 1 !important;
     box-shadow: 0 1px 3px var(--app-card-shadow, rgba(0,0,0,0.1)) !important;
+    margin-bottom: 0.5rem !important;
 }
 
 /* Dark mode styles for app cards (backup for theme-dark class) */
@@ -90,29 +99,31 @@ body.theme-dark .app-card {
 }
 
 .app-icon {
-    font-size: 1.4rem !important;
-    margin-bottom: 0.2rem !important;
-    color: #667eea;
+    font-size: 2.5rem !important;
+    margin-bottom: 0 !important;
+    color: #0a0a0a !important; /* Black default for light mode - JavaScript will override with theme-aware defaults or custom colors */
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 32px !important;
-    height: 32px !important;
-    border-radius: 8px !important;
-    background: rgba(102, 126, 234, 0.1) !important;
+    width: 56px !important;
+    height: 56px !important;
     transition: all 0.2s ease !important;
 }
 
+/* Note: Dark mode colors are handled by JavaScript to preserve custom colors */
+
 .app-title {
-    font-size: 0.65rem !important;
+    font-size: 0.75rem !important;
     font-weight: 500 !important;
-    margin-bottom: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     color: #2c3e50 !important;
-    line-height: 1.1 !important;
+    line-height: 1.2 !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
-    max-width: 100% !important;
+    max-width: 90px !important;
+    width: 100% !important;
     display: block !important;
     text-align: center !important;
 }
@@ -125,8 +136,8 @@ body.theme-dark .app-title {
 
 .apps-grid {
     display: grid !important;
-    grid-template-columns: repeat(6, 1fr) !important;
-    gap: 0.8rem 0.1rem !important; /* Row gap 0.8rem, Column gap 0.1rem */
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 2.5rem 1rem !important; /* Increased row and column gap spacing */
     margin-bottom: 2rem !important;
     max-width: none !important;
     margin-left: 0 !important;
@@ -134,21 +145,17 @@ body.theme-dark .app-title {
     justify-content: start !important;
 }
 
-@media (max-width: 1200px) {
-    .apps-grid {
-        grid-template-columns: repeat(5, 1fr) !important;
-    }
-}
-
 @media (max-width: 768px) {
     .apps-grid {
         grid-template-columns: repeat(4, 1fr) !important;
+        gap: 1rem 0.5rem !important; /* Reduced gap spacing for mobile */
     }
 }
 
 @media (max-width: 480px) {
     .apps-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 0.75rem 0.4rem !important; /* Further reduced gap spacing for smaller mobile */
     }
 }
 
@@ -385,6 +392,36 @@ body.theme-dark .app-title {
         font-size: 0.9rem !important;
     }
 }
+
+/* Home Screen Container - Narrower width on desktop, full width on mobile */
+.home-screen-container {
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Desktop: Narrower max-width for better readability */
+@media (min-width: 768px) {
+    .home-screen-container {
+        max-width: 480px !important;
+    }
+}
+
+/* Larger desktop screens: Slightly wider but still narrow */
+@media (min-width: 1024px) {
+    .home-screen-container {
+        max-width: 520px !important;
+    }
+}
+
+/* Mobile: Full width (no max-width constraint) */
+@media (max-width: 767px) {
+    .home-screen-container {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+}
 </style>
 <div id="wrapper">
     <div class="home-screen-container">
@@ -414,24 +451,17 @@ body.theme-dark .app-title {
         <!-- Main Content -->
         <div class="home-screen-content">
             <!-- Apps Section -->
-            <div class="apps-section collapsible-section">
-                <div class="section-header" onclick="toggleSection('apps')">
-                    <h2 class="section-title">
-                        <i class="mdi mdi-apps" style="margin-right: 0.5rem;"></i>
-                        <?php esc_html_e( 'Your Apps', 'disciple_tools' ); ?>
-                        <span class="section-toggle" id="apps-toggle">
-                            <i class="mdi mdi-chevron-down"></i>
-                        </span>
-                    </h2>
-                </div>
+            <div class="apps-section">
+                <h2 class="section-title">
+                    <i class="mdi mdi-apps" style="margin-right: 0.5rem;"></i>
+                    <?php esc_html_e( 'Your Apps', 'disciple_tools' ); ?>
+                </h2>
                 
-                <div class="section-content" id="apps-content">
-                    <div class="apps-grid" id="apps-grid">
-                        <!-- Apps will be loaded dynamically -->
-                        <div class="app-card loading-card">
-                            <div class="loading-spinner"></div>
-                            <p><?php esc_html_e( 'Loading apps...', 'disciple_tools' ); ?></p>
-                        </div>
+                <div class="apps-grid" id="apps-grid">
+                    <!-- Apps will be loaded dynamically -->
+                    <div class="app-card loading-card">
+                        <div class="loading-spinner"></div>
+                        <p><?php esc_html_e( 'Loading apps...', 'disciple_tools' ); ?></p>
                     </div>
                 </div>
             </div>
@@ -439,23 +469,16 @@ body.theme-dark .app-title {
             <!-- Training Videos Section removed: now lives on separate view (?view=training) -->
 
             <!-- Your Links Section -->
-            <div class="links-section collapsible-section">
-                <div class="section-header" onclick="toggleSection('links')">
-                    <h2 class="section-title">
-                        <i class="mdi mdi-link" style="margin-right: 0.5rem;"></i>
-                        <?php esc_html_e( 'Your Links', 'disciple_tools' ); ?>
-                        <span class="section-toggle" id="links-toggle">
-                            <i class="mdi mdi-chevron-right"></i>
-                        </span>
-                    </h2>
-                </div>
+            <div class="links-section">
+                <h2 class="section-title">
+                    <i class="mdi mdi-link" style="margin-right: 0.5rem;"></i>
+                    <?php esc_html_e( 'Your Links', 'disciple_tools' ); ?>
+                </h2>
                 
-                <div class="section-content collapsed" id="links-content">
-                    <div class="links-list" id="links-list">
-                        <!-- Links will be loaded dynamically -->
-                        <div class="loading-spinner" style="text-align: center; padding: 2rem;">
-                            <p><?php esc_html_e( 'Loading links...', 'disciple_tools' ); ?></p>
-                        </div>
+                <div class="links-list" id="links-list">
+                    <!-- Links will be loaded dynamically -->
+                    <div class="loading-spinner" style="text-align: center; padding: 2rem;">
+                        <p><?php esc_html_e( 'Loading links...', 'disciple_tools' ); ?></p>
                     </div>
                 </div>
             </div>
@@ -557,29 +580,8 @@ function loadTrainingVideos() {
     }
 }
 
-// Function to toggle section visibility
-function toggleSection(sectionName) {
-    const content = document.getElementById(sectionName + '-content');
-    const toggle = document.getElementById(sectionName + '-toggle');
-    
-    if (content && toggle) {
-        content.classList.toggle('collapsed');
-        const isCollapsed = content.classList.contains('collapsed');
-        toggle.innerHTML = isCollapsed ? '<i class="mdi mdi-chevron-right"></i>' : '<i class="mdi mdi-chevron-down"></i>';
-        
-        // Load training videos when section is expanded
-        if (sectionName === 'training' && !isCollapsed) {
-            loadTrainingVideos();
-        }
-    }
-}
-
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Load training videos if section is already expanded
-    const trainingContent = document.getElementById('training-content');
-    if (trainingContent && !trainingContent.classList.contains('collapsed')) {
-        loadTrainingVideos();
-    }
+    // Any initialization code can go here
 });
 </script>

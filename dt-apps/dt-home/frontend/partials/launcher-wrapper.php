@@ -25,7 +25,7 @@ $iframe_target_app_url = add_query_arg( 'launcher_iframe', '1', $target_app_url 
 
 // Enqueue stylesheets properly
 wp_enqueue_style( 'material-font-icons-css', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css', [], '7.4.47' );
-wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.3' );
+wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.19' );
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>

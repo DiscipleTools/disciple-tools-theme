@@ -51,9 +51,6 @@ body {
     color: var(--text-color) !important;
 }
 
-.theme-dark .section-header {
-    border-bottom-color: var(--border-color) !important;
-}
 
 .theme-dark .training-section {
     border-top-color: var(--border-color) !important;
@@ -150,9 +147,6 @@ body.theme-dark .dt-menu-icon {
     color: var(--text-color) !important;
 }
 
-.theme-dark .section-toggle {
-    color: var(--primary-color) !important;
-}
 
 /* More specific selectors for text elements */
 body.theme-dark .app-title {
@@ -163,9 +157,6 @@ body.theme-dark .section-title {
     color: var(--text-color) !important;
 }
 
-body.theme-dark .section-toggle {
-    color: var(--primary-color) !important;
-}
 
 body.theme-dark .app-card:hover {
     border-color: var(--primary-color) !important;
@@ -173,12 +164,35 @@ body.theme-dark .app-card:hover {
 }
 
 .home-screen-container {
-    max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
     background: transparent !important;
     /*border-radius: 8px;
     box-shadow: 0 2px 10px var(--shadow-color);*/
     overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Desktop: Narrower max-width for better readability */
+@media (min-width: 768px) {
+    .home-screen-container {
+        max-width: 480px;
+    }
+}
+
+/* Larger desktop screens: Slightly wider but still narrow */
+@media (min-width: 1024px) {
+    .home-screen-container {
+        max-width: 520px;
+    }
+}
+
+/* Mobile: Full width (no max-width constraint) */
+@media (max-width: 767px) {
+    .home-screen-container {
+        max-width: 100%;
+        width: 100%;
+    }
 }
 
 .home-screen-header {
@@ -625,8 +639,8 @@ body.theme-light .menu-item,
 
 .home-screen-header h1 {
     margin: 0;
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 2rem;
+    font-weight: 800;
     color: var(--text-color);
     text-align: left;
     flex: 0 1 auto;
@@ -645,39 +659,50 @@ body.theme-light .menu-item,
     padding: 2rem;
 }
 
+/* Reduce padding on desktop to prevent cropping */
+@media (min-width: 768px) {
+    .home-screen-content {
+        padding: 1.5rem;
+    }
+}
+
 .apps-grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 0.75rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5rem 1rem;
     margin-bottom: 2rem;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
 }
 
-@media (max-width: 1200px) {
-    .apps-grid {
-        grid-template-columns: repeat(6, 1fr);
-    }
-}
-
 @media (max-width: 768px) {
     .apps-grid {
         grid-template-columns: repeat(4, 1fr);
+        gap: 1rem 0.5rem; /* Reduced gap spacing for mobile */
     }
 }
 
 @media (max-width: 480px) {
     .apps-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.75rem 0.4rem; /* Further reduced gap spacing for smaller mobile */
     }
+}
+
+.app-card-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 90px !important;
 }
 
 .app-card {
     background: var(--surface-1) !important;
     border: 1px solid var(--border-color) !important;
-    border-radius: 16px !important;
-    padding: 0.5rem 0.25rem !important;
+    border-radius: 24px !important;
+    padding: 0.7rem !important;
     text-align: center !important;
     transition: all 0.2s ease !important;
     cursor: pointer !important;
@@ -687,13 +712,14 @@ body.theme-light .menu-item,
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    min-height: 60px !important;
+    min-height: 90px !important;
     aspect-ratio: 1 !important;
     box-shadow: 0 1px 3px var(--shadow-color) !important;
-    width: 60px !important;
-    height: 60px !important;
-    max-width: 60px !important;
-    max-height: 60px !important;
+    width: 90px !important;
+    height: 90px !important;
+    max-width: 90px !important;
+    max-height: 90px !important;
+    margin-bottom: 0.5rem !important;
 }
 
 .app-card:hover {
@@ -705,34 +731,35 @@ body.theme-light .menu-item,
 }
 
 .app-icon {
-    font-size: 1.2rem;
-    margin-bottom: 0.1rem;
-    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 0;
+    color: #0a0a0a; /* Black default for light mode - inline styles will override this */
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: rgba(102, 126, 234, 0.1);
+    width: 56px;
+    height: 56px;
     transition: all 0.2s ease;
 }
 
 .app-card:hover .app-icon {
-    background: rgba(102, 126, 234, 0.2);
     transform: scale(1.05);
 }
 
+/* Note: Dark mode colors are handled by JavaScript to preserve custom colors */
+
 .app-title {
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     font-weight: 500;
-    margin-bottom: 0;
+    margin: 0;
+    padding: 0;
     color: var(--text-color);
-    line-height: 1.0;
+    line-height: 1.2;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 100%;
+    max-width: 90px;
+    width: 100%;
     display: block;
     text-align: center;
 }
@@ -776,77 +803,13 @@ body.theme-light .menu-item,
 
 
 /* Collapsible Sections */
-.collapsible-section {
-    margin-bottom: 1.5rem;
-}
-
-.section-header {
-    cursor: pointer;
-    padding: 1rem 0;
-    border-bottom: 1px solid #e1e5e9;
-    transition: all 0.3s ease;
-}
-
-.section-header:hover {
-    background: rgba(102, 126, 234, 0.05);
-    border-radius: 8px;
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
 .section-title {
-    margin: 0;
+    margin: 0 0 1rem 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-size: 1.75rem;
+    font-weight: 700;
     color: var(--text-color);
-}
-
-.section-toggle {
-    font-size: 1.2rem;
-    color: var(--primary-color);
-    cursor: pointer;
-    padding: 0.25rem;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 1rem;
-    min-width: 24px;
-    height: 24px;
-}
-
-.section-toggle:hover {
-    background: rgba(102, 126, 234, 0.1);
-    transform: scale(1.1);
-}
-
-.section-content {
-    overflow: hidden;
-    transition: all 0.3s ease;
-    max-height: 2000px;
-    opacity: 1;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-}
-
-.section-content.collapsed {
-    max-height: 0 !important;
-    opacity: 0;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    margin: 0 !important;
-    display: none;
-}
-
-.section-content.expanded {
-    max-height: 2000px;
-    opacity: 1;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
 }
 
 .video-duration {
@@ -999,7 +962,7 @@ body.theme-light .menu-item,
     }
 
     .home-screen-header h1 {
-        font-size: 1.25rem;
+        font-size: 1.75rem;
     }
 
     .home-screen-header p {
@@ -1254,16 +1217,17 @@ body.theme-light .menu-item,
 /* Training Grid */
 .training-grid {
     display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+    grid-template-columns: 1fr !important;
     gap: 1.5rem !important;
     margin-bottom: 2rem !important;
     padding: 0 !important;
-    grid-auto-rows: 1fr !important;
+    width: 100% !important;
 }
 
 .training-grid .training-card {
     width: 100% !important;
-    height: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
 }
 
 @media (max-width: 768px) {
@@ -1633,8 +1597,8 @@ body.theme-light .menu-item,
 
 /* Home Button (Circular, Elevated) */
 .launcher-bottom-nav .nav-item-home {
-    background-color: var(--primary-color, #667eea) !important;
-    color: var(--text-color-inverse, #ffffff) !important;
+    background-color: #4a5fc7 !important; /* Dark blue color */
+    color: #ffffff !important; /* Explicit white color */
     width: 60px !important;
     height: 60px !important;
     border-radius: 50% !important;
@@ -1647,11 +1611,21 @@ body.theme-light .menu-item,
 .launcher-bottom-nav .nav-item-home i {
     font-size: 40px !important;
     height: 60px !important;
+    opacity: 1 !important;
+    transition: opacity 0.2s ease !important;
+    color: #ffffff !important; /* Explicit white color for icon */
 }
 
 .launcher-bottom-nav .nav-item-home:hover {
+    background-color: #4a5fc7 !important; /* Keep dark blue on hover */
+    color: #ffffff !important; /* Keep white text on hover */
     transform: scale(1.05) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.launcher-bottom-nav .nav-item-home:hover i {
+    opacity: 0.7 !important; /* Slightly transparent on hover */
+    color: #ffffff !important; /* Keep white color */
 }
 
 /* Dark Mode Support for Launcher Nav */
@@ -1673,8 +1647,25 @@ body.theme-dark .launcher-bottom-nav .nav-item:hover {
 
 .theme-dark .launcher-bottom-nav .nav-item-home,
 body.theme-dark .launcher-bottom-nav .nav-item-home {
-    background-color: var(--primary-color, #4a9eff) !important;
-    color: var(--text-color-inverse, #ffffff) !important;
+    background-color: #3a4fb8 !important; /* Dark blue color for dark mode */
+    color: #ffffff !important; /* Explicit white color */
+}
+
+.theme-dark .launcher-bottom-nav .nav-item-home i,
+body.theme-dark .launcher-bottom-nav .nav-item-home i {
+    color: #ffffff !important; /* Explicit white color for icon */
+}
+
+.theme-dark .launcher-bottom-nav .nav-item-home:hover,
+body.theme-dark .launcher-bottom-nav .nav-item-home:hover {
+    background-color: #3a4fb8 !important; /* Keep dark blue on hover */
+    color: #ffffff !important; /* Keep white text on hover */
+}
+
+.theme-dark .launcher-bottom-nav .nav-item-home:hover i,
+body.theme-dark .launcher-bottom-nav .nav-item-home:hover i {
+    opacity: 0.7 !important; /* Slightly transparent on hover in dark mode */
+    color: #ffffff !important; /* Keep white color */
 }
 
 /* Apps Selector (Slide-up Menu) */
@@ -1870,8 +1861,8 @@ body:has(.launcher-bottom-nav) {
 
 /* Wrapper Home Button (Circular, Elevated) */
 .dt-launcher-bottom-nav .nav-item-home {
-    background-color: var(--primary-color, #667eea) !important;
-    color: var(--text-color-inverse, #ffffff) !important;
+    background-color: #4a5fc7 !important; /* Dark blue color */
+    color: #ffffff !important; /* Explicit white color */
     width: 60px !important;
     height: 60px !important;
     border-radius: 50% !important;
@@ -1884,11 +1875,21 @@ body:has(.launcher-bottom-nav) {
 .dt-launcher-bottom-nav .nav-item-home i {
     font-size: 40px !important;
     height: 60px !important;
+    opacity: 1 !important;
+    transition: opacity 0.2s ease !important;
+    color: #ffffff !important; /* Explicit white color for icon */
 }
 
 .dt-launcher-bottom-nav .nav-item-home:hover {
+    background-color: #4a5fc7 !important; /* Keep dark blue on hover */
+    color: #ffffff !important; /* Keep white text on hover */
     transform: scale(1.05) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dt-launcher-bottom-nav .nav-item-home:hover i {
+    opacity: 0.7 !important; /* Slightly transparent on hover */
+    color: #ffffff !important; /* Keep white color */
 }
 
 /* Dark Mode Support for Wrapper Launcher Nav */
@@ -1910,8 +1911,25 @@ body.theme-dark .dt-launcher-bottom-nav .nav-item:hover {
 
 .theme-dark .dt-launcher-bottom-nav .nav-item-home,
 body.theme-dark .dt-launcher-bottom-nav .nav-item-home {
-    background-color: var(--primary-color, #4a9eff) !important;
-    color: var(--text-color-inverse, #ffffff) !important;
+    background-color: #3a4fb8 !important; /* Dark blue color for dark mode */
+    color: #ffffff !important; /* Explicit white color */
+}
+
+.theme-dark .dt-launcher-bottom-nav .nav-item-home i,
+body.theme-dark .dt-launcher-bottom-nav .nav-item-home i {
+    color: #ffffff !important; /* Explicit white color for icon */
+}
+
+.theme-dark .dt-launcher-bottom-nav .nav-item-home:hover,
+body.theme-dark .dt-launcher-bottom-nav .nav-item-home:hover {
+    background-color: #3a4fb8 !important; /* Keep dark blue on hover */
+    color: #ffffff !important; /* Keep white text on hover */
+}
+
+.theme-dark .dt-launcher-bottom-nav .nav-item-home:hover i,
+body.theme-dark .dt-launcher-bottom-nav .nav-item-home:hover i {
+    opacity: 0.7 !important; /* Slightly transparent on hover in dark mode */
+    color: #ffffff !important; /* Keep white color */
 }
 
 /* Wrapper Apps Selector (Slide-up Menu) */

@@ -16,6 +16,9 @@ jQuery(document).ready(function ($) {
   function initializeAdmin() {
     console.log('Initializing home screen admin...');
 
+    // Apply theme-aware icon colors
+    applyAdminIconColors();
+
     // Set up form validation
     setupFormValidation();
 
@@ -33,6 +36,53 @@ jQuery(document).ready(function ($) {
         .fail(function () {
           console.error('Data refresh failed, but continuing...');
         });
+    }
+  }
+
+  /**
+   * Apply theme-aware icon colors to admin table icons
+   * Uses system preference (prefers-color-scheme) to determine default colors
+   * Custom colors override defaults, same logic as frontend
+   */
+  function applyAdminIconColors() {
+    // Detect system preference for dark/light mode
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const defaultColor = prefersDark ? '#ffffff' : '#0a0a0a'; // White for dark, black for light
+
+    // Find all admin app icons
+    const adminIcons = document.querySelectorAll('.admin-app-icon');
+
+    adminIcons.forEach(function (icon) {
+      const hasCustomColor =
+        icon.getAttribute('data-has-custom-color') === 'true';
+
+      if (!hasCustomColor) {
+        // Apply theme-aware default color
+        icon.style.setProperty('color', defaultColor, 'important');
+      } else {
+        // Use custom color if specified
+        const customColor = icon.getAttribute('data-custom-color');
+        if (customColor) {
+          icon.style.setProperty('color', customColor, 'important');
+        }
+      }
+    });
+
+    // Listen for system preference changes
+    if (window.matchMedia) {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      mediaQuery.addEventListener('change', function (e) {
+        const newDefaultColor = e.matches ? '#ffffff' : '#0a0a0a';
+        adminIcons.forEach(function (icon) {
+          const hasCustomColor =
+            icon.getAttribute('data-has-custom-color') === 'true';
+          if (!hasCustomColor) {
+            icon.style.setProperty('color', newDefaultColor, 'important');
+          }
+        });
+      });
     }
   }
 
@@ -92,6 +142,12 @@ jQuery(document).ready(function ($) {
               'videos',
             );
           }
+
+          // Reapply icon colors after data refresh
+          setTimeout(function () {
+            applyAdminIconColors();
+          }, 100);
+
           return response;
         } else {
           console.error(

@@ -121,7 +121,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         wp_enqueue_style( 'material-font-icons-css', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css', [], '7.4.47' );
 
         // Enqueue home screen specific styles (includes launcher nav styles)
-        wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.3' );
+        wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.19' );
 
         // Enqueue theme toggle JavaScript
         wp_enqueue_script( 'dt-home-theme-toggle', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/theme-toggle.js', [], '1.0.0', true );
@@ -194,9 +194,33 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             }
 
             .home-screen-container {
-                max-width: 1200px;
+                width: 100%;
                 margin: 0 auto;
                 background: transparent !important;
+                box-sizing: border-box;
+            }
+
+            /* Desktop: Narrower max-width for better readability */
+            @media (min-width: 768px) {
+                .home-screen-container {
+                    max-width: 480px;
+                }
+            }
+
+            /* Larger desktop screens: Slightly wider but still narrow */
+            @media (min-width: 1024px) {
+                .home-screen-container {
+                    max-width: 520px;
+                }
+            }
+
+            /* Mobile: Full width (no max-width constraint) */
+            @media (max-width: 767px) {
+                .home-screen-container {
+                    max-width: 100%;
+                    width: 100%;
+                }
+            }
                 /*border-radius: 8px;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);*/
                 overflow: hidden;
@@ -417,8 +441,8 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
             .home-screen-header h1 {
                 margin: 0;
-                font-size: 1.5rem;
-                font-weight: 700;
+                font-size: 2rem;
+                font-weight: 800;
                 text-align: left;
             }
 
@@ -621,19 +645,20 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 font-size: 0.9rem !important;
             }
 
-            /* Training Grid */
+            /* Training Grid - One video per line with increased width */
             .training-grid {
                 display: grid !important;
-                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+                grid-template-columns: 1fr !important;
                 gap: 1.5rem !important;
                 margin-bottom: 2rem !important;
                 padding: 0 !important;
-                grid-auto-rows: 1fr !important;
+                width: 100% !important;
             }
 
             .training-grid .training-card {
                 width: 100% !important;
-                height: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
             }
 
             @media (max-width: 768px) {
@@ -994,8 +1019,12 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             .app-icon {
                 font-size: 3rem;
                 margin-bottom: 1rem;
-                color: #667eea;
+                color: #0a0a0a; /* Black default for light mode - JavaScript will override with theme-aware defaults or custom colors */
+                border-radius: 0 !important;
+                background: transparent !important;
             }
+
+            /* Note: Dark mode colors are handled by JavaScript to preserve custom colors */
 
             .app-title {
                 font-size: 1.2rem;
@@ -1022,9 +1051,9 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             }
 
             .section-title {
-                font-size: 1.5rem;
-                font-weight: 600;
-                margin-bottom: 1rem;
+                font-size: 1.75rem;
+                font-weight: 700;
+                margin-bottom: 2rem;
                 color: #2c3e50;
             }
 
@@ -1418,12 +1447,46 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             }
 
             /**
+             * Update icon colors when theme changes (only for icons without custom colors)
+             * Handles both app icons and link icons
+             */
+            function updateIconColorsForTheme(theme) {
+                const defaultColor = theme === 'dark' ? '#ffffff' : '#0a0a0a';
+                
+                // Update app icons
+                const appIcons = document.querySelectorAll('.app-icon');
+                appIcons.forEach(icon => {
+                    // Only update icons that don't have custom colors
+                    const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
+                    if (!hasCustomColor) {
+                        // Set inline style to override CSS default
+                        icon.style.setProperty('color', defaultColor, 'important');
+                    }
+                    // Icons with custom colors are left unchanged
+                });
+                
+                // Update link icons (same logic for consistency)
+                const linkIcons = document.querySelectorAll('.link-item__icon i');
+                linkIcons.forEach(icon => {
+                    // Only update icons that don't have custom colors
+                    const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
+                    if (!hasCustomColor) {
+                        // Set inline style to override CSS default
+                        icon.style.setProperty('color', defaultColor, 'important');
+                    }
+                    // Icons with custom colors are left unchanged
+                });
+            }
+
+            /**
              * Listen for theme changes from the toggle component
              */
             document.addEventListener('theme-changed', function(event) {
                 console.log('Theme changed to:', event.detail.theme);
                 // Apply direct styles when theme changes
                 applyDirectStyles(event.detail.theme);
+                // Update icon colors for theme change
+                updateIconColorsForTheme(event.detail.theme);
             });
 
             /**
@@ -1553,13 +1616,13 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 // Safety check: ensure apps is an array
                 if (!Array.isArray(apps)) {
                     console.error('Apps is not an array:', apps);
-                    html = '<div class="app-card"><div class="app-title">Error loading apps.</div></div>';
+                    html = '<div class="app-card-wrapper"><div class="app-card"><div class="app-icon"><i class="mdi mdi-alert"></i></div></div><div class="app-title">Error loading apps.</div></div>';
                 } else if (apps.length === 0) {
-                    html = '<div class="app-card"><div class="app-title">No apps available.</div></div>';
+                    html = '<div class="app-card-wrapper"><div class="app-card"><div class="app-icon"><i class="mdi mdi-information"></i></div></div><div class="app-title">No apps available.</div></div>';
                 } else {
                     apps.forEach(function(app) {
-                        // Trim title to max 15 characters with ellipsis
-                        const trimmedTitle = app.title.length > 15 ? app.title.substring(0, 15) + '...' : app.title;
+                        // Trim title to max 12 characters with ellipsis to fit under card
+                        const trimmedTitle = app.title.length > 12 ? app.title.substring(0, 12) + '...' : app.title;
 
                         // Determine app type: if type exists use it, otherwise use fallback logic
                         let appType = app.type;
@@ -1592,10 +1655,29 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                             onClickHandler = `onclick="window.open('${app.url}', '_blank'); return false;"`;
                         }
 
+                        // Determine default icon color based on theme
+                        // Custom colors override defaults
+                        let iconColor = null;
+                        const hasCustomColor = app.color && app.color.trim() !== '';
+                        
+                        if (hasCustomColor) {
+                            // Use custom color if specified
+                            iconColor = app.color.trim();
+                        } else {
+                            // Use theme-aware default if no custom color
+                            const isDarkMode = document.body.classList.contains('theme-dark') || 
+                                             document.documentElement.classList.contains('theme-dark') ||
+                                             document.body.classList.contains('dark') ||
+                                             document.documentElement.classList.contains('dark');
+                            iconColor = isDarkMode ? '#ffffff' : '#0a0a0a';
+                        }
+
                         const appHtml = `
-                            <div class="app-card" ${onClickHandler} title="${app.title}">
-                                <div class="app-icon" style="color: ${app.color || '#667eea'}">
-                                    <i class="${app.icon}"></i>
+                            <div class="app-card-wrapper">
+                                <div class="app-card" ${onClickHandler} title="${app.title}">
+                                    <div class="app-icon" style="color: ${iconColor};" data-has-custom-color="${hasCustomColor}">
+                                        <i class="${app.icon}"></i>
+                                    </div>
                                 </div>
                                 <div class="app-title">${trimmedTitle}</div>
                             </div>
@@ -1609,6 +1691,27 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 //console.log('Final HTML being inserted:', html);
                 $('#apps-grid').html(html);
 
+                // Ensure icon colors are correctly applied after HTML insertion
+                // This handles theme-aware defaults and preserves custom colors
+                setTimeout(function() {
+                    const appIcons = document.querySelectorAll('#apps-grid .app-icon');
+                    appIcons.forEach(function(icon) {
+                        const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
+                        const currentColor = icon.style.color;
+                        
+                        if (!hasCustomColor) {
+                            // Apply theme-aware default for icons without custom colors
+                            const isDarkMode = document.body.classList.contains('theme-dark') || 
+                                             document.documentElement.classList.contains('theme-dark');
+                            const defaultColor = isDarkMode ? '#ffffff' : '#0a0a0a';
+                            icon.style.setProperty('color', defaultColor, 'important');
+                        } else if (currentColor) {
+                            // Ensure custom color is preserved with important flag
+                            icon.style.setProperty('color', currentColor, 'important');
+                        }
+                    });
+                }, 100);
+
                 // Reapply theme styles to newly loaded app cards
                 const currentTheme = document.body.classList.contains('theme-dark') ? 'dark' : 'light';
                 console.log('Reapplying theme styles after apps loaded:', currentTheme);
@@ -1619,6 +1722,23 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 } else {
                     applyDirectStyles(currentTheme);
                 }
+                
+                // Re-apply icon colors after theme styles are reapplied
+                setTimeout(function() {
+                    const appIcons = document.querySelectorAll('#apps-grid .app-icon');
+                    appIcons.forEach(function(icon) {
+                        const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
+                        
+                        if (!hasCustomColor) {
+                            // Apply theme-aware default
+                            const isDarkMode = document.body.classList.contains('theme-dark') || 
+                                             document.documentElement.classList.contains('theme-dark');
+                            const defaultColor = isDarkMode ? '#ffffff' : '#0a0a0a';
+                            icon.style.setProperty('color', defaultColor, 'important');
+                        }
+                        // Custom colors are already set inline, so they should be preserved
+                    });
+                }, 200);
             }
 
             /**
@@ -1640,14 +1760,27 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                         const safeUrlAttr = (link.url || '#').replace(/"/g, '&quot;');
                         const safeTitle = (link.title || 'Link').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
                         const safeIcon = link.icon || 'mdi mdi-link';
-                        // Sanitize color: ensure it's a valid hex color or default to blue
-                        let iconColor = '#4a90e2'; // Default to blue
-                        if (link.color) {
+                        
+                        // Determine default icon color based on theme (same logic as apps)
+                        // Custom colors override defaults
+                        let iconColor = null;
+                        const hasCustomColor = link.color && typeof link.color === 'string' && link.color.trim() !== '';
+                        
+                        if (hasCustomColor) {
                             // Validate hex color format (#rrggbb or #rgb)
                             const hexColorPattern = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-                            if (hexColorPattern.test(link.color)) {
-                                iconColor = link.color;
+                            if (hexColorPattern.test(link.color.trim())) {
+                                iconColor = link.color.trim();
                             }
+                        }
+                        
+                        // If no valid custom color, use theme-aware default
+                        if (!iconColor) {
+                            const isDarkMode = document.body.classList.contains('theme-dark') || 
+                                             document.documentElement.classList.contains('theme-dark') ||
+                                             document.body.classList.contains('dark') ||
+                                             document.documentElement.classList.contains('dark');
+                            iconColor = isDarkMode ? '#ffffff' : '#0a0a0a';
                         }
 
                         // Determine icon display: image or icon class
@@ -1656,8 +1789,8 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                             const safeIconUrl = link.icon.replace(/"/g, '&quot;');
                             iconHtml = `<img src="${safeIconUrl}" alt="${safeTitle}" />`;
                         } else {
-                            // Apply color to icon using inline style (color is already sanitized)
-                            iconHtml = `<i class="${safeIcon}" aria-hidden="true" style="color: ${iconColor};"></i>`;
+                            // Apply color to icon using inline style with data attribute for theme updates
+                            iconHtml = `<i class="${safeIcon}" aria-hidden="true" style="color: ${iconColor};" data-has-custom-color="${hasCustomColor}"></i>`;
                         }
 
                         const linkHtml = `
@@ -1682,6 +1815,27 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 }
 
                 $('#links-list').html(html);
+                
+                // Ensure icon colors are correctly applied after HTML insertion (same as apps)
+                // This handles theme-aware defaults and preserves custom colors
+                setTimeout(function() {
+                    const linkIcons = document.querySelectorAll('#links-list .link-item__icon i');
+                    linkIcons.forEach(function(icon) {
+                        const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
+                        const currentColor = icon.style.color;
+                        
+                        if (!hasCustomColor) {
+                            // Apply theme-aware default for icons without custom colors
+                            const isDarkMode = document.body.classList.contains('theme-dark') || 
+                                             document.documentElement.classList.contains('theme-dark');
+                            const defaultColor = isDarkMode ? '#ffffff' : '#0a0a0a';
+                            icon.style.setProperty('color', defaultColor, 'important');
+                        } else if (currentColor) {
+                            // Ensure custom color is preserved with important flag
+                            icon.style.setProperty('color', currentColor, 'important');
+                        }
+                    });
+                }, 100);
             }
 
             /**
@@ -2224,7 +2378,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             error_log( 'DT Home: Enqueuing launcher nav CSS' );
             // Ensure CSS is enqueued for other magic link apps
             if ( ! wp_style_is( 'dt-home-style', 'enqueued' ) ) {
-                wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.3' );
+                wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.19' );
             }
             if ( ! wp_style_is( 'material-font-icons-css', 'enqueued' ) ) {
                 wp_enqueue_style( 'material-font-icons-css', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css', [], '7.4.47' );
