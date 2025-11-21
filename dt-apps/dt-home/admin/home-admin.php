@@ -955,7 +955,7 @@ class DT_Home_Admin {
                                         // Check if custom color is set
                                         $has_custom_color = !empty( $app['color'] ) && is_string( $app['color'] ) && trim( $app['color'] ) !== '';
                                         $app_color = $has_custom_color ? $app['color'] : '#0a0a0a'; // Default to black (light mode default)
-                                        
+
                                         if ( strpos( $app['icon'], 'mdi ' ) === 0 ) : ?>
                                             <i class="<?php echo esc_attr( $app['icon'] ); ?> admin-app-icon" 
                                                style="font-size: 20px; vertical-align: middle; color: <?php echo esc_attr( $app_color ); ?>;" 
