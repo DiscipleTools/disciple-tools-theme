@@ -1688,7 +1688,6 @@
       search_query,
       new_filter_labels,
     );
-    $('#filter-modal').foundation('close');
     if (window.Foundation.MediaQuery.only('small')) {
       $('#tile-filters').addClass('collapsed');
     }
