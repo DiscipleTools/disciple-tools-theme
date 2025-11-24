@@ -96,14 +96,6 @@ class Disciple_Tools_Migration_0062 extends Disciple_Tools_Migration {
         // Verify migration completed flag exists if old plugin was installed
         $completed = get_option( self::MIGRATION_FLAG, false );
 
-        // If old plugin is installed, migration should have run
-        // Migration should have completed (even if no data to migrate)
-        // We don't throw exception here as migration may legitimately have no data
-        if ( $this->is_old_plugin_installed() ) {
-            // Plugin detected - migration should have completed
-            // This is informational only, no action needed
-        }
-
         // Verify new options exist (they may be empty, which is OK)
         $apps = get_option( self::NEW_APPS_OPTION, [] );
         $trainings = get_option( self::NEW_TRAININGS_OPTION, [] );
