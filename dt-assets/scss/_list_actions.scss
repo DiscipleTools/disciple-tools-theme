@@ -115,15 +115,16 @@ table.js-list.bulk_edit_on {
 
 // Field picker styles
 .list_field_picker ul {
-    column-count: 1;
-    margin-bottom: 10px
-}
+    column-width: 160px;
+    margin-bottom: 10px;
 
-@media screen and (min-width : 640px) {
-    .list_field_picker ul {
-        column-count: 4;
+    li {
+        text-align: start;
+        text-indent: -1.2rem;
+        padding-inline-start: 1.2rem;
     }
 }
+
 .field-search-option {
     display: flex;
     align-items: center;
@@ -333,3 +334,11 @@ table.js-list.bulk_edit_on {
 .group-status--inactive_group     { color: #F43636; }
 .group-status--inactive_pre_group { color: #F43636; }
 */
+
+/* === Bulk Send App === */
+.dt-radio.button-group label {
+  background-color: transparent;
+  color: #000000;
+  display: inline;
+  padding: 0px 20px 0px 5px;
+}
