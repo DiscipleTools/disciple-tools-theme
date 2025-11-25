@@ -27,6 +27,7 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_filter( 'dt_custom_tiles_after_combine', [ $this, 'dt_custom_tiles_after_combine' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
+        add_action( 'dt_record_after_details_section', [ $this, 'dt_record_after_details_section' ], 10, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
         // hooks
@@ -461,6 +462,7 @@ class DT_Groups_Base extends DT_Module_Base {
         self::display_health_metrics_tile( $section, $post_type );
         self::display_four_fields_tile( $section, $post_type );
         self::display_group_relationships_tile( $section, $post_type );
+        // Note: genmap tile is rendered separately via dt_record_after_details_section hook
     }
 
     private function display_health_metrics_tile( $section, $post_type ) {
@@ -595,6 +597,56 @@ class DT_Groups_Base extends DT_Module_Base {
         <?php }
     }
 
+    private function display_group_genmap_tile( $section, $post_type ) {
+        if ( $post_type !== 'groups' || $section !== 'genmap' ) {
+            return;
+        }
+        $post_id = get_the_ID();
+        ?>
+        <div id="group-genmap-tile"
+             class="group-genmap-tile"
+             data-post-id="<?php echo esc_attr( $post_id ); ?>"
+             data-post-type="<?php echo esc_attr( $post_type ); ?>">
+            <div class="group-genmap-message" aria-live="polite">
+                <?php esc_html_e( 'Loading map…', 'disciple_tools' ); ?>
+            </div>
+            <div class="group-genmap-chart" role="region"
+                 aria-label="<?php esc_attr_e( 'Group generational map', 'disciple_tools' ); ?>">
+            </div>
+        </div>
+        <?php
+    }
+
+    public function dt_record_after_details_section( $post_type, $dt_post ) {
+        if ( $post_type !== 'groups' ) {
+            return;
+        }
+        $tiles = DT_Posts::get_post_tiles( $post_type );
+        if ( !isset( $tiles['genmap'] ) || ( isset( $tiles['genmap']['hidden'] ) && $tiles['genmap']['hidden'] ) ) {
+            return;
+        }
+        $post_id = get_the_ID();
+        ?>
+        <section id="genmap" class="small-12 cell bordered-box">
+            <h3 class="section-header">
+                <?php echo esc_html( $tiles['genmap']['label'] ?? __( 'Generational Map', 'disciple_tools' ) ); ?>
+                <button class="help-button-tile" data-tile="genmap">
+                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                </button>
+                <button class="section-chevron chevron_down">
+                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                </button>
+                <button class="section-chevron chevron_up">
+                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                </button>
+            </h3>
+            <div class="section-body grid-y">
+                <?php self::display_group_genmap_tile( 'genmap', $post_type ); ?>
+            </div>
+        </section>
+        <?php
+    }
+
     public function dt_details_additional_tiles( $tiles, $post_type = '' ){
 
         if ( $post_type === 'groups' ){
@@ -606,6 +658,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     'description' => " Zúme article on 4 Fields: https://zume.training/four-fields-tool \r\n\r\n" . _x( 'There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:', 'Optional Documentation', 'disciple_tools' ),
                 ];
             }
+            $tiles['genmap'] = [ 'label' => __( 'Generational Map', 'disciple_tools' ) ];
             $tiles['groups'] = [ 'label' => __( 'Groups', 'disciple_tools' ) ];
             $tiles['other'] = [ 'label' => __( 'Other', 'disciple_tools' ) ];
         }
@@ -1124,6 +1177,57 @@ class DT_Groups_Base extends DT_Module_Base {
                 'jquery',
                 'details'
             ], filemtime( get_theme_file_path() . '/dt-groups/groups.js' ), true );
+
+            wp_enqueue_script( 'orgchart_js', 'https://cdnjs.cloudflare.com/ajax/libs/orgchart/3.7.0/js/jquery.orgchart.min.js', [
+                'jquery',
+            ], '3.7.0', true );
+
+            $css_file_name = 'dt-metrics/common/jquery.orgchart.custom.css';
+            $css_uri = get_template_directory_uri() . "/$css_file_name";
+            $css_dir = get_template_directory() . "/$css_file_name";
+            if ( file_exists( $css_dir ) ) {
+                wp_enqueue_style( 'orgchart_css', $css_uri, [], filemtime( $css_dir ) );
+            }
+
+            $genmap_script_handle = 'dt_groups_genmap';
+            wp_enqueue_script(
+                $genmap_script_handle,
+                get_template_directory_uri() . '/dt-groups/genmap-tile.js',
+                [
+                    'jquery',
+                    'orgchart_js',
+                    'shared-functions',
+                ],
+                filemtime( get_theme_file_path() . '/dt-groups/genmap-tile.js' ),
+                true
+            );
+
+            $field_settings = DT_Posts::get_post_field_settings( 'groups' );
+            $post_settings = DT_Posts::get_post_settings( 'groups' );
+            $status_key = $post_settings['status_field']['status_key'] ?? 'group_status';
+            $archived_key = $post_settings['status_field']['archived_key'] ?? '';
+            $status_defaults = $field_settings[ $status_key ]['default'] ?? [];
+            $status_colors = [];
+            foreach ( $status_defaults as $status_id => $status_option ) {
+                if ( isset( $status_option['color'] ) ) {
+                    $status_colors[ $status_id ] = $status_option['color'];
+                }
+            }
+
+            wp_localize_script( $genmap_script_handle, 'dtGroupGenmap', [
+                'statusField' => [
+                    'key' => $status_key,
+                    'archived_key' => $archived_key,
+                    'colors' => $status_colors,
+                ],
+                'strings' => [
+                    'loading' => __( 'Loading map…', 'disciple_tools' ),
+                    'error' => __( 'Unable to load generational map.', 'disciple_tools' ),
+                    'empty' => __( 'No child groups to display.', 'disciple_tools' ),
+                ],
+                'recordUrlBase' => trailingslashit( site_url() ),
+                'postType' => $this->post_type,
+            ] );
         }
     }
 }

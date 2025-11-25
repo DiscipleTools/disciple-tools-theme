@@ -305,7 +305,7 @@ function dt_display_tile( $tile, $post ): bool {
                             <?php
                             foreach ( $tiles as $tile_key => $tile_options ){
                                 $class = '';
-                                if ( in_array( $tile_key, [ 'details', 'status' ] ) ){
+                                if ( in_array( $tile_key, [ 'details', 'status', 'genmap' ] ) ){
                                     continue;
                                 }
                                 if ( ( isset( $tile_options['hidden'] ) && $tile_options['hidden'] ) ) {
