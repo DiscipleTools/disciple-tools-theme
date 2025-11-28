@@ -37,34 +37,7 @@ class DT_Home_Training {
     private function initialize_default_videos() {
         $videos = $this->get_all_videos();
         if ( empty( $videos ) ) {
-            $default_videos = [
-                [
-                    'id' => 'sample-video-1',
-                    'title' => 'Getting Started',
-                    'description' => 'Learn the basics of using Disciple.Tools effectively.',
-                    'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', // Sample URL
-                    'thumbnail_url' => '',
-                    'duration' => '5:30',
-                    'category' => 'basics',
-                    'enabled' => true,
-                    'order' => 1,
-                    'created_at' => current_time( 'mysql' ),
-                    'updated_at' => current_time( 'mysql' )
-                ],
-                [
-                    'id' => 'sample-video-2',
-                    'title' => 'Advanced Features',
-                    'description' => 'Explore advanced features and customization options.',
-                    'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', // Sample URL
-                    'thumbnail_url' => '',
-                    'duration' => '8:15',
-                    'category' => 'advanced',
-                    'enabled' => true,
-                    'order' => 2,
-                    'created_at' => current_time( 'mysql' ),
-                    'updated_at' => current_time( 'mysql' )
-                ]
-            ];
+            $default_videos = [];
 
             update_option( $this->option_name, $default_videos );
         }

@@ -80,11 +80,6 @@ function dt_home_get_app_magic_url( $app, $action = '', $with_launcher = false )
 
     $app_meta = $app['magic_link_meta'];
 
-    // Only handle user post_type for now
-    if ( empty( $app_meta['post_type'] ) || $app_meta['post_type'] !== 'user' ) {
-        return '';
-    }
-
     $app_ml_root = $app_meta['root'] ?? '';
     $app_ml_type = $app_meta['type'] ?? '';
 
@@ -92,11 +87,44 @@ function dt_home_get_app_magic_url( $app, $action = '', $with_launcher = false )
         return '';
     }
 
-    // Get user's magic URL key
-    $meta_key = DT_Magic_URL::get_public_key_meta_key( $app_ml_root, $app_ml_type );
-    $magic_url_key = get_user_option( $meta_key, get_current_user_id() );
+    $magic_url_key = '';
 
-    if ( empty( $magic_url_key ) ) {
+    // Handle user post_type
+    if ( isset( $app_meta['post_type'] ) && $app_meta['post_type'] === 'user' ) {
+        // Get user's magic URL key
+        $meta_key = DT_Magic_URL::get_public_key_meta_key( $app_ml_root, $app_ml_type );
+        $magic_url_key = get_user_option( $meta_key, get_current_user_id() );
+
+        if ( empty( $magic_url_key ) ) {
+            return '';
+        }
+    } elseif (
+        isset( $app_meta['root'], $app_meta['post_type'] )
+        && 'templates' === strtolower( (string) $app_meta['root'] )
+        && in_array( $app_meta['post_type'], [ 'contacts' ], true )
+    ) {
+        // Handle template post_type (contacts)
+        $post_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
+
+        if ( ! empty( $post_id ) ) {
+            $post = DT_Posts::get_post( $app_meta['post_type'], $post_id );
+            $meta_key = $app_meta['meta_key'] ?? '';
+
+            if ( ! is_wp_error( $post ) && ! empty( $post ) && ! empty( $meta_key ) ) {
+                if ( isset( $post[ $meta_key ] ) && ! empty( $post[ $meta_key ] ) ) {
+                    $magic_url_key = $post[ $meta_key ];
+                } else {
+                    $magic_url_key = dt_create_unique_key();
+                    update_post_meta( $post_id, $meta_key, $magic_url_key );
+                }
+            }
+        }
+
+        if ( empty( $magic_url_key ) ) {
+            return '';
+        }
+    } else {
+        // Unsupported post_type
         return '';
     }
 

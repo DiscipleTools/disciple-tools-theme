@@ -41,36 +41,7 @@ class DT_Home_Apps {
     private function initialize_default_apps() {
         $apps = $this->get_all_apps();
         if ( empty( $apps ) ) {
-            $default_apps = [
-                [
-                    'id' => 'sample-app-1',
-                    'creation_type' => 'custom',
-                    'type' => 'link',
-                    'title' => 'Sample App',
-                    'description' => 'This is a sample app that demonstrates the Home Screen functionality.',
-                    'url' => '#',
-                    'icon' => 'mdi mdi-apps',
-                    'color' => null,
-                    'enabled' => true,
-                    'order' => 1,
-                    'created_at' => current_time( 'mysql' ),
-                    'updated_at' => current_time( 'mysql' )
-                ],
-                [
-                    'id' => 'sample-app-2',
-                    'creation_type' => 'custom',
-                    'type' => 'link',
-                    'title' => 'Settings',
-                    'description' => 'Access your account settings and preferences.',
-                    'url' => admin_url( 'admin.php?page=dt_options&tab=home_screen' ),
-                    'icon' => 'mdi mdi-cog',
-                    'color' => null,
-                    'enabled' => true,
-                    'order' => 2,
-                    'created_at' => current_time( 'mysql' ),
-                    'updated_at' => current_time( 'mysql' )
-                ]
-            ];
+            $default_apps = [];
 
             update_option( $this->option_name, $default_apps );
         }
@@ -90,7 +61,14 @@ class DT_Home_Apps {
     private function load_magic_link_apps() {
         foreach ( apply_filters( 'dt_magic_url_register_types', [] ) as $coded_app ) {
             foreach ( $coded_app as $app_type => $app ) {
-                if ( empty( $app['meta']['show_in_home_apps'] ) ) {
+                $is_home_app = ! empty( $app['meta']['show_in_home_apps'] );
+                $is_template = (
+                    isset( $app['root'], $app['post_type'] )
+                    && 'templates' === strtolower( (string) $app['root'] )
+                    && 'contacts' === $app['post_type']
+                );
+
+                if ( ! $is_home_app && ! $is_template ) {
                     continue;
                 }
 
@@ -111,7 +89,8 @@ class DT_Home_Apps {
                     'magic_link_meta' => [
                         'post_type' => $app['post_type'],
                         'root' => $app['root'],
-                        'type' => $app['type']
+                        'type' => $app['type'],
+                        'meta_key' => $app['meta_key']
                     ]
                 ];
             }
@@ -427,13 +406,43 @@ class DT_Home_Apps {
 
             if ( $app['creation_type'] == 'coded' ) {
                 $app_meta = $app['magic_link_meta'] ?? [];
+                $app_ml_root = $app_meta['root'] ?? '';
+                $app_ml_type = $app_meta['type'] ?? '';
+
                 if ( $app_meta['post_type'] === 'user' ) {
-                    $app_ml_root = $app_meta['root'] ?? '';
-                    $app_ml_type = $app_meta['type'] ?? '';
                     $meta_key = DT_Magic_URL::get_public_key_meta_key( $app_ml_root, $app_ml_type );
                     $magic_url_key = get_user_option( $meta_key, get_current_user_id() );
                     if ( !empty( $magic_url_key ) ) {
                         $app['url'] = DT_Magic_URL::get_link_url( $app_ml_root, $app_ml_type, $magic_url_key );
+                    }
+                } elseif (
+                    isset( $app_meta['root'], $app_meta['post_type'] )
+                    && 'templates' === strtolower( (string) $app_meta['root'] )
+                    && in_array( $app_meta['post_type'], [ 'contacts' ], true )
+                ) {
+                    $post_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
+
+                    if ( ! empty( $post_id ) ) {
+                        $post = DT_Posts::get_post( $app_meta['post_type'], $post_id );
+                        $meta_key = $app_meta['meta_key'] ?? '';
+
+                        // Ensure meta_key is set - if not, construct it from root and type
+                        if ( empty( $meta_key ) && ! empty( $app_ml_root ) && ! empty( $app_ml_type ) ) {
+                            $meta_key = $app_ml_root . '_' . $app_ml_type . '_magic_key';
+                        }
+
+                        if ( ! is_wp_error( $post ) && ! empty( $post ) && ! empty( $meta_key ) ) {
+                            if ( isset( $post[ $meta_key ] ) && ! empty( $post[ $meta_key ] ) ) {
+                                $magic_url_key = $post[ $meta_key ];
+                            } else {
+                                $magic_url_key = dt_create_unique_key();
+                                update_post_meta( $post_id, $meta_key, $magic_url_key );
+                            }
+
+                            if ( ! empty( $magic_url_key ) ) {
+                                $app['url'] = DT_Magic_URL::get_link_url( $app_ml_root, $app_ml_type, $magic_url_key );
+                            }
+                        }
                     }
                 }
             }

@@ -147,8 +147,38 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
         <?php
         // Build base app URL without launcher parameters
         $base_app_url = '';
-        if ( isset( $app['creation_type'] ) && $app['creation_type'] === 'coded' ) {
-            $base_app_url = dt_home_get_app_magic_url( $app, '', false );
+        
+        // Check if URL already contains a magic key (pattern: /templates/{type}/{64-char-hex-key} or similar)
+        $has_magic_key = false;
+        if ( isset( $app['url'] ) && ! empty( trim( $app['url'] ) ) && $app['url'] !== '#' ) {
+            // Check if URL matches magic link pattern (contains root/type/key structure)
+            $url_parts = parse_url( $app['url'] );
+            $path = $url_parts['path'] ?? '';
+            // Magic link URLs typically have at least 3 path segments: /root/type/key
+            $path_segments = array_filter( explode( '/', trim( $path, '/' ) ) );
+            if ( count( $path_segments ) >= 3 ) {
+                // Likely has a magic key (third segment is usually 64+ char hash)
+                $potential_key = end( $path_segments );
+                if ( strlen( $potential_key ) >= 32 && ctype_xdigit( $potential_key ) ) {
+                    $has_magic_key = true;
+                }
+            }
+        }
+        
+        // Always prefer URL from get_apps_for_frontend() if it exists and has a magic key
+        if ( $has_magic_key ) {
+            $base_app_url = $app['url'];
+        } elseif ( isset( $app['url'] ) && ! empty( trim( $app['url'] ) ) && $app['url'] !== '#' ) {
+            // Use existing URL even if we can't confirm it has a magic key
+            $base_app_url = $app['url'];
+        } elseif ( isset( $app['creation_type'] ) && $app['creation_type'] === 'coded' ) {
+            // Fallback: try to generate it for coded apps
+            $generated_url = dt_home_get_app_magic_url( $app, '', false );
+            if ( ! empty( $generated_url ) && $generated_url !== '#' ) {
+                $base_app_url = $generated_url;
+            } else {
+                $base_app_url = $app['url'] ?? '#';
+            }
         } else {
             $base_app_url = $app['url'] ?? '#';
         }

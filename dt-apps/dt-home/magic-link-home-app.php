@@ -20,8 +20,8 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
     public $page_title = 'Home Screen';
     public $page_description = 'Your personalized dashboard for apps and training.';
-    public $root = 'smart_links';
-    public $type = 'home_screen';
+    public $root = 'apps';
+    public $type = 'launcher';
     public $post_type = 'user';
     private $meta_key = '';
 
@@ -1452,7 +1452,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
              */
             function updateIconColorsForTheme(theme) {
                 const defaultColor = theme === 'dark' ? '#ffffff' : '#0a0a0a';
-                
+
                 // Update app icons
                 const appIcons = document.querySelectorAll('.app-icon');
                 appIcons.forEach(icon => {
@@ -1464,7 +1464,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     }
                     // Icons with custom colors are left unchanged
                 });
-                
+
                 // Update link icons (same logic for consistency)
                 const linkIcons = document.querySelectorAll('.link-item__icon i');
                 linkIcons.forEach(icon => {
@@ -1659,13 +1659,13 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                         // Custom colors override defaults
                         let iconColor = null;
                         const hasCustomColor = app.color && app.color.trim() !== '';
-                        
+
                         if (hasCustomColor) {
                             // Use custom color if specified
                             iconColor = app.color.trim();
                         } else {
                             // Use theme-aware default if no custom color
-                            const isDarkMode = document.body.classList.contains('theme-dark') || 
+                            const isDarkMode = document.body.classList.contains('theme-dark') ||
                                              document.documentElement.classList.contains('theme-dark') ||
                                              document.body.classList.contains('dark') ||
                                              document.documentElement.classList.contains('dark');
@@ -1698,10 +1698,10 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     appIcons.forEach(function(icon) {
                         const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
                         const currentColor = icon.style.color;
-                        
+
                         if (!hasCustomColor) {
                             // Apply theme-aware default for icons without custom colors
-                            const isDarkMode = document.body.classList.contains('theme-dark') || 
+                            const isDarkMode = document.body.classList.contains('theme-dark') ||
                                              document.documentElement.classList.contains('theme-dark');
                             const defaultColor = isDarkMode ? '#ffffff' : '#0a0a0a';
                             icon.style.setProperty('color', defaultColor, 'important');
@@ -1722,16 +1722,16 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 } else {
                     applyDirectStyles(currentTheme);
                 }
-                
+
                 // Re-apply icon colors after theme styles are reapplied
                 setTimeout(function() {
                     const appIcons = document.querySelectorAll('#apps-grid .app-icon');
                     appIcons.forEach(function(icon) {
                         const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
-                        
+
                         if (!hasCustomColor) {
                             // Apply theme-aware default
-                            const isDarkMode = document.body.classList.contains('theme-dark') || 
+                            const isDarkMode = document.body.classList.contains('theme-dark') ||
                                              document.documentElement.classList.contains('theme-dark');
                             const defaultColor = isDarkMode ? '#ffffff' : '#0a0a0a';
                             icon.style.setProperty('color', defaultColor, 'important');
@@ -1760,12 +1760,12 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                         const safeUrlAttr = (link.url || '#').replace(/"/g, '&quot;');
                         const safeTitle = (link.title || 'Link').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
                         const safeIcon = link.icon || 'mdi mdi-link';
-                        
+
                         // Determine default icon color based on theme (same logic as apps)
                         // Custom colors override defaults
                         let iconColor = null;
                         const hasCustomColor = link.color && typeof link.color === 'string' && link.color.trim() !== '';
-                        
+
                         if (hasCustomColor) {
                             // Validate hex color format (#rrggbb or #rgb)
                             const hexColorPattern = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
@@ -1773,10 +1773,10 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                                 iconColor = link.color.trim();
                             }
                         }
-                        
+
                         // If no valid custom color, use theme-aware default
                         if (!iconColor) {
-                            const isDarkMode = document.body.classList.contains('theme-dark') || 
+                            const isDarkMode = document.body.classList.contains('theme-dark') ||
                                              document.documentElement.classList.contains('theme-dark') ||
                                              document.body.classList.contains('dark') ||
                                              document.documentElement.classList.contains('dark');
@@ -1815,7 +1815,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 }
 
                 $('#links-list').html(html);
-                
+
                 // Ensure icon colors are correctly applied after HTML insertion (same as apps)
                 // This handles theme-aware defaults and preserves custom colors
                 setTimeout(function() {
@@ -1823,10 +1823,10 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     linkIcons.forEach(function(icon) {
                         const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
                         const currentColor = icon.style.color;
-                        
+
                         if (!hasCustomColor) {
                             // Apply theme-aware default for icons without custom colors
-                            const isDarkMode = document.body.classList.contains('theme-dark') || 
+                            const isDarkMode = document.body.classList.contains('theme-dark') ||
                                              document.documentElement.classList.contains('theme-dark');
                             const defaultColor = isDarkMode ? '#ffffff' : '#0a0a0a';
                             icon.style.setProperty('color', defaultColor, 'important');
@@ -2254,7 +2254,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         error_log( 'DT Home: Parsed root: ' . $current_root . ', type: ' . $current_type );
 
         // If we're on the home screen itself, return false
-        if ( $current_root === 'smart_links' && $current_type === 'home_screen' ) {
+        if ( $current_root === 'apps' && $current_type === 'launcher' ) {
             // Check if there's an action in the URL (e.g., /app/{slug})
             $action = $url_parts[3] ?? '';
             if ( empty( $action ) || ! str_starts_with( $action, 'app/' ) ) {
@@ -2298,7 +2298,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
                 if ( $current_root === $app_root && $current_type === $app_type ) {
                     // Make sure it's not the home screen app
-                    if ( $current_root === 'smart_links' && $current_type === 'home_screen' ) {
+                    if ( $current_root === 'apps' && $current_type === 'launcher' ) {
                         error_log( 'DT Home: Matched but it\'s home screen app, skipping' );
                         continue;
                     }

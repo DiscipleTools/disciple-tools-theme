@@ -85,6 +85,9 @@ class Disciple_Tools_Migration_0062 extends Disciple_Tools_Migration {
             // Mark as completed even if no data to migrate
             update_option( self::MIGRATION_FLAG, true );
         }
+
+        // 8. Deactivate old plugin to prevent conflicts
+        $this->deactivate_old_plugin();
     }
 
     public function down() {
@@ -110,17 +113,41 @@ class Disciple_Tools_Migration_0062 extends Disciple_Tools_Migration {
 
     /**
      * Check if old plugin is installed
+     * Works for both single-site and multisite installations
      *
      * @return bool
      */
     private function is_old_plugin_installed(): bool {
-        // Check if plugin file exists
+        // Load plugin helper functions if not already loaded
+        if ( !function_exists( 'get_plugins' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+
+        // Check if plugin file exists in standard plugins directory
         $plugin_file = WP_PLUGIN_DIR . '/' . self::OLD_PLUGIN_FILE;
         if ( !file_exists( $plugin_file ) ) {
+            // On multisite, also check network plugins directory (though unlikely)
+            if ( is_multisite() && defined( 'WPMU_PLUGIN_DIR' ) ) {
+                $mu_plugin_file = WPMU_PLUGIN_DIR . '/' . basename( self::OLD_PLUGIN_FILE );
+                if ( !file_exists( $mu_plugin_file ) ) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        // Verify it's actually a registered plugin by checking get_plugins()
+        // This works for both single-site and multisite
+        $all_plugins = get_plugins();
+        $plugin_key = self::OLD_PLUGIN_FILE;
+        
+        // Check if plugin exists in the plugins list
+        if ( !isset( $all_plugins[ $plugin_key ] ) ) {
             return false;
         }
 
-        // Plugin is considered "installed" if file exists
+        // Plugin is considered "installed" if file exists and is registered
         // We can migrate even if inactive, as data persists in options
         return true;
     }
@@ -132,6 +159,56 @@ class Disciple_Tools_Migration_0062 extends Disciple_Tools_Migration {
      */
     private function is_migration_completed(): bool {
         return get_option( self::MIGRATION_FLAG, false ) === true;
+    }
+
+    /**
+     * Deactivate old plugin to prevent conflicts with new theme-based implementation
+     * Works for both single-site and multisite installations
+     *
+     * @return void
+     */
+    private function deactivate_old_plugin(): void {
+        // Load plugin helper functions if not already loaded
+        if ( !function_exists( 'deactivate_plugins' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+
+        // Check if plugin file exists before attempting deactivation
+        $plugin_file = WP_PLUGIN_DIR . '/' . self::OLD_PLUGIN_FILE;
+        if ( !file_exists( $plugin_file ) ) {
+            return; // Plugin not found, nothing to deactivate
+        }
+
+        // Determine if plugin is network-active (multisite) or site-active
+        $network_wide = false;
+        if ( is_multisite() ) {
+            // Check if plugin is network-activated
+            if ( function_exists( 'is_plugin_active_for_network' ) ) {
+                $network_wide = is_plugin_active_for_network( self::OLD_PLUGIN_FILE );
+            }
+        }
+
+        // Check if plugin is currently active (network or site level)
+        $is_active = false;
+        if ( $network_wide ) {
+            $is_active = true; // Already confirmed above
+        } else {
+            if ( function_exists( 'is_plugin_active' ) ) {
+                $is_active = is_plugin_active( self::OLD_PLUGIN_FILE );
+            }
+        }
+
+        // Only deactivate if plugin is currently active
+        if ( $is_active && function_exists( 'deactivate_plugins' ) ) {
+            try {
+                // Deactivate plugin
+                // $network_wide parameter: true for network deactivation, false for site deactivation
+                deactivate_plugins( self::OLD_PLUGIN_FILE, false, $network_wide );
+            } catch ( Exception $e ) {
+                // Log error but don't fail migration
+                error_log( 'DT Home Migration: Failed to deactivate old plugin: ' . $e->getMessage() );
+            }
+        }
     }
 
     /**
