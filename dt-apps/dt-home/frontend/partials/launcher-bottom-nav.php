@@ -147,15 +147,15 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
         <?php
         // Build base app URL without launcher parameters
         $base_app_url = '';
-        
+
         // Check if URL already contains a magic key (pattern: /templates/{type}/{64-char-hex-key} or similar)
         $has_magic_key = false;
         if ( isset( $app['url'] ) && ! empty( trim( $app['url'] ) ) && $app['url'] !== '#' ) {
             // Check if URL matches magic link pattern (contains root/type/key structure)
             $url_parts = parse_url( $app['url'] );
-            $path = $url_parts['path'] ?? '';
+            $url_path = $url_parts['path'] ?? '';
             // Magic link URLs typically have at least 3 path segments: /root/type/key
-            $path_segments = array_filter( explode( '/', trim( $path, '/' ) ) );
+            $path_segments = array_filter( explode( '/', trim( $url_path, '/' ) ) );
             if ( count( $path_segments ) >= 3 ) {
                 // Likely has a magic key (third segment is usually 64+ char hash)
                 $potential_key = end( $path_segments );
@@ -164,7 +164,7 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
                 }
             }
         }
-        
+
         // Always prefer URL from get_apps_for_frontend() if it exists and has a magic key
         if ( $has_magic_key ) {
             $base_app_url = $app['url'];

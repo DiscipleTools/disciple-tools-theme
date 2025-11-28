@@ -141,7 +141,7 @@ class Disciple_Tools_Migration_0062 extends Disciple_Tools_Migration {
         // This works for both single-site and multisite
         $all_plugins = get_plugins();
         $plugin_key = self::OLD_PLUGIN_FILE;
-        
+
         // Check if plugin exists in the plugins list
         if ( !isset( $all_plugins[ $plugin_key ] ) ) {
             return false;
