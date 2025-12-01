@@ -28,6 +28,7 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( 'dt_custom_tiles_after_combine', [ $this, 'dt_custom_tiles_after_combine' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'dt_record_after_details_section', [ $this, 'dt_record_after_details_section' ], 10, 2 );
+        add_action( 'dt_record_footer', [ $this, 'dt_record_footer' ], 10, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
         // hooks
@@ -613,6 +614,7 @@ class DT_Groups_Base extends DT_Module_Base {
             <div class="group-genmap-chart" role="region"
                  aria-label="<?php esc_attr_e( 'Group generational map', 'disciple_tools' ); ?>">
             </div>
+            <div id="group-genmap-details" class="group-genmap-details" style="display: none;"></div>
         </div>
         <?php
     }
@@ -645,6 +647,12 @@ class DT_Groups_Base extends DT_Module_Base {
             </div>
         </section>
         <?php
+    }
+
+    public function dt_record_footer( $post_type, $post_id ) {
+        if ( $post_type === 'groups' ) {
+            get_template_part( 'dt-assets/parts/modals/modal', 'template-metrics' );
+        }
     }
 
     public function dt_details_additional_tiles( $tiles, $post_type = '' ){
@@ -1224,6 +1232,15 @@ class DT_Groups_Base extends DT_Module_Base {
                     'loading' => __( 'Loading map…', 'disciple_tools' ),
                     'error' => __( 'Unable to load generational map.', 'disciple_tools' ),
                     'empty' => __( 'No child groups to display.', 'disciple_tools' ),
+                    'details' => [
+                        'open' => __( 'Open', 'disciple_tools' ),
+                        'add' => __( 'Add', 'disciple_tools' ),
+                    ],
+                    'modal' => [
+                        'add_child_title' => __( 'Add Child To', 'disciple_tools' ),
+                        'add_child_name_title' => __( 'Name', 'disciple_tools' ),
+                        'add_child_but' => __( 'Add Child', 'disciple_tools' ),
+                    ],
                 ],
                 'recordUrlBase' => trailingslashit( site_url() ),
                 'postType' => $this->post_type,

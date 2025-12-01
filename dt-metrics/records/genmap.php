@@ -98,7 +98,13 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             // Ensure empty hits on personal based slugs, still ensure user node is accessible.
             if ( ( $focus_id !== 0 ) && empty( $generated_genmap['children'] ) ) {
                 $generated_genmap['shared'] = 1;
-                $generated_genmap['name'] = $user->display_name;
+                // For groups, use the post title; for contacts, use user display name
+                if ( $post_type === 'groups' ) {
+                    $group_post = get_post( $focus_id );
+                    $generated_genmap['name'] = $group_post ? $group_post->post_title : $user->display_name;
+                } else {
+                    $generated_genmap['name'] = $user->display_name;
+                }
             }
 
             return [
