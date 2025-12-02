@@ -42,9 +42,6 @@ error_log( 'DT Home Launcher Nav: Total apps: ' . count( $apps ) );
 error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_apps ) );
 ?>
 <script type="application/javascript">
-    console.log('DT Home Launcher Nav: Script loaded');
-    console.log('DT Home Launcher Nav: Filtered apps count:', <?php echo count( $filtered_apps ); ?>);
-    
     function getLauncherSelector() {
         return document.querySelector('<?php echo '.' . esc_js( $selector_class ); ?>');
     }
@@ -67,13 +64,6 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
     function checkLauncherNav() {
         var launcherNav = document.querySelector('<?php echo '.' . esc_js( $nav_class ); ?>');
         var appsSelector = document.querySelector('<?php echo '.' . esc_js( $selector_class ); ?>');
-        console.log('DT Home Launcher Nav: Launcher nav element exists:', launcherNav !== null);
-        console.log('DT Home Launcher Nav: Apps selector exists:', appsSelector !== null);
-        if (launcherNav) {
-            console.log('DT Home Launcher Nav: Launcher nav is in DOM');
-        } else {
-            console.log('DT Home Launcher Nav: WARNING - Launcher nav NOT found in DOM!');
-        }
     }
     
     // Run check immediately and after DOM ready

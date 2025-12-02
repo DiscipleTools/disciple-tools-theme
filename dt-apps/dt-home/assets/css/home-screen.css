@@ -782,9 +782,9 @@ body.theme-light .menu-item,
 
 .loading-spinner {
     display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid #f3f3f3;
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(102, 126, 234, 0.2);
     border-top: 3px solid #667eea;
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -796,9 +796,26 @@ body.theme-light .menu-item,
 }
 
 .loading-card {
-    grid-column: 1 / -1;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 2rem;
+    width: 100%;
+}
+
+/* For apps grid, span all columns */
+.apps-grid .loading-card {
+    grid-column: 1 / -1;
+}
+
+/* For links list, ensure full width */
+.links-list .loading-card {
+    width: 100%;
+}
+
+/* For training grid, span all columns */
+.training-grid .loading-card {
+    grid-column: 1 / -1;
 }
 
 

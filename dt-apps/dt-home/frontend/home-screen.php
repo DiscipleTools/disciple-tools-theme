@@ -459,9 +459,8 @@ body.theme-dark .app-title {
                 
                 <div class="apps-grid" id="apps-grid">
                     <!-- Apps will be loaded dynamically -->
-                    <div class="app-card loading-card">
+                    <div class="loading-card">
                         <div class="loading-spinner"></div>
-                        <p><?php esc_html_e( 'Loading apps...', 'disciple_tools' ); ?></p>
                     </div>
                 </div>
             </div>
@@ -477,8 +476,8 @@ body.theme-dark .app-title {
                 
                 <div class="links-list" id="links-list">
                     <!-- Links will be loaded dynamically -->
-                    <div class="loading-spinner" style="text-align: center; padding: 2rem;">
-                        <p><?php esc_html_e( 'Loading links...', 'disciple_tools' ); ?></p>
+                    <div class="loading-card">
+                        <div class="loading-spinner"></div>
                     </div>
                 </div>
             </div>

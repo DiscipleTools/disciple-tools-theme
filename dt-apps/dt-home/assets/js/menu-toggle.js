@@ -443,12 +443,6 @@ class MenuToggle {
   }
 
   openMenu() {
-    console.log('openMenu called, current state:', {
-      isMenuOpen: this.isMenuOpen,
-      hasActiveClass: this.floatingMenu.classList.contains('active'),
-      ariaHidden: this.floatingMenu.getAttribute('aria-hidden'),
-    });
-
     this.isMenuOpen = true;
 
     // Change icon from hamburger to close - explicitly set className to ensure clean state
@@ -457,7 +451,6 @@ class MenuToggle {
 
     // Ensure menu items are created if not already
     if (!this.floatingMenu.children.length) {
-      console.log('Creating menu items...');
       this.createMenuItems();
     }
 
@@ -476,13 +469,6 @@ class MenuToggle {
     this.floatingMenu.style.pointerEvents = 'auto';
     this.floatingMenu.style.display = 'flex';
     this.floatingMenu.style.flexDirection = 'column';
-
-    console.log('Menu opened, styles applied:', {
-      className: this.floatingMenu.className,
-      computedOpacity: window.getComputedStyle(this.floatingMenu).opacity,
-      computedVisibility: window.getComputedStyle(this.floatingMenu).visibility,
-      computedDisplay: window.getComputedStyle(this.floatingMenu).display,
-    });
 
     // Create backdrop to close on outside click (covers the page)
     this.createBackdrop();
@@ -591,13 +577,6 @@ class MenuToggle {
     menu.style.visibility = '';
     menu.style.display = '';
     menu.style.opacity = '';
-
-    console.log('Menu positioned at:', {
-      left,
-      top,
-      width: menuWidth,
-      height: menuHeight,
-    });
   }
 
   createBackdrop() {
@@ -630,9 +609,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.training-screen-container')
   ) {
     try {
-      console.log('Initializing menu toggle...');
       window.menuToggleInstance = new MenuToggle();
-      console.log('Menu toggle initialized successfully');
     } catch (error) {
       console.error('Error initializing menu toggle:', error);
     }

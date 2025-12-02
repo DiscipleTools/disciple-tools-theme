@@ -46,9 +46,8 @@ $settings = wp_parse_args( $settings, [
                 </div>
                 <div class="section-content expanded" id="training-content">
                     <div class="training-grid" id="training-grid">
-                        <div class="training-card loading-card">
+                        <div class="loading-card">
                             <div class="loading-spinner"></div>
-                            <p><?php esc_html_e( 'Loading training videos...', 'disciple_tools' ); ?></p>
                         </div>
                     </div>
                 </div>

@@ -176,30 +176,6 @@ class ThemeToggle {
 
     // Dispatch custom event for other components
     this.dispatchThemeChangeEvent();
-
-    console.log('Theme applied:', this.currentTheme);
-
-    // Debug: Log current CSS variable values
-    const computedStyle = getComputedStyle(document.documentElement);
-    console.log('CSS Variables:', {
-      '--surface-1': computedStyle.getPropertyValue('--surface-1'),
-      '--text-color': computedStyle.getPropertyValue('--text-color'),
-      '--border-color': computedStyle.getPropertyValue('--border-color'),
-      '--primary-color': computedStyle.getPropertyValue('--primary-color'),
-    });
-
-    // Debug: Check if body class is applied
-    console.log('Body classes:', document.body.className);
-
-    // Debug: Check computed styles of the container
-    const container = document.querySelector('.home-screen-container');
-    if (container) {
-      const containerStyle = getComputedStyle(container);
-      console.log('Container computed styles:', {
-        backgroundColor: containerStyle.backgroundColor,
-        color: containerStyle.color,
-      });
-    }
   }
 
   applyDirectStyles() {
@@ -210,15 +186,6 @@ class ThemeToggle {
     const appTitles = document.querySelectorAll('.app-title');
     const sectionTitles = document.querySelectorAll('.section-title');
     const sectionToggles = document.querySelectorAll('.section-toggle');
-
-    console.log('Found elements:', {
-      container: !!container,
-      content: !!content,
-      appCards: appCards.length,
-      appTitles: appTitles.length,
-      sectionTitles: sectionTitles.length,
-      sectionToggles: sectionToggles.length,
-    });
 
     if (this.currentTheme === 'dark') {
       // Dark mode styles
@@ -239,17 +206,6 @@ class ThemeToggle {
           '0 1px 3px rgba(0,0,0,0.3)',
           'important',
         );
-
-        // Debug: Log the first card's computed styles
-        if (index === 0) {
-          const computedStyle = getComputedStyle(card);
-          console.log('First app card computed styles:', {
-            backgroundColor: computedStyle.backgroundColor,
-            borderColor: computedStyle.borderColor,
-            color: computedStyle.color,
-            boxShadow: computedStyle.boxShadow,
-          });
-        }
       });
       appTitles.forEach((title) => {
         title.style.color = '#f5f5f5';
@@ -318,13 +274,6 @@ class ThemeToggle {
   async toggleTheme() {
     if (this.isTransitioning) return;
 
-    console.log(
-      'Toggling theme from',
-      this.currentTheme,
-      'to',
-      this.currentTheme === 'light' ? 'dark' : 'light',
-    );
-
     this.isTransitioning = true;
 
     // Add transition class for smooth animation
@@ -360,7 +309,6 @@ class ThemeToggle {
 
   // Public method to reapply styles (useful when new elements are added)
   reapplyStyles() {
-    console.log('Reapplying theme styles to all elements');
     this.applyDirectStyles();
   }
 }
@@ -373,9 +321,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.training-screen-container')
   ) {
     try {
-      console.log('Initializing theme toggle...');
       window.themeToggleInstance = new ThemeToggle();
-      console.log('Theme toggle initialized successfully');
     } catch (error) {
       console.error('Error initializing theme toggle:', error);
     }

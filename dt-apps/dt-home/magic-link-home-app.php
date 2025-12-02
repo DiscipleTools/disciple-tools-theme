@@ -1059,9 +1059,9 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
             .loading-spinner {
                 display: inline-block;
-                width: 20px;
-                height: 20px;
-                border: 3px solid #f3f3f3;
+                width: 32px;
+                height: 32px;
+                border: 3px solid rgba(102, 126, 234, 0.2);
                 border-top: 3px solid #667eea;
                 border-radius: 50%;
                 animation: spin 1s linear infinite;
@@ -1297,9 +1297,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
              * Initialize home screen
              */
             jQuery(document).ready(function($) {
-                console.log('Home Screen initialized');
-                console.log('jsObject:', jsObject);
-
                 // Initialize theme system
                 initializeTheme();
 
@@ -1328,7 +1325,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     // Determine current view from URL (?view=apps|training)
                     const params = new URLSearchParams(window.location.search);
                     const view = (params.get('view') || 'apps').toLowerCase();
-                    console.log('Detected view:', view);
 
                     if (view === 'training') {
                         loadTrainingVideos();
@@ -1403,8 +1399,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
                 // Apply direct styles for initial theme
                 applyDirectStyles(initialTheme);
-
-                console.log('Theme initialized:', initialTheme);
             }
 
             /**
@@ -1507,7 +1501,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
              * Listen for theme changes from the toggle component
              */
             document.addEventListener('theme-changed', function(event) {
-                console.log('Theme changed to:', event.detail.theme);
                 // Apply direct styles when theme changes
                 applyDirectStyles(event.detail.theme);
                 // Update icon colors for theme change
@@ -1579,8 +1572,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
              * Load apps from the server
              */
             function loadApps() {
-                console.log('Loading apps...');
-
                 // Use REST API endpoint
                 $.ajax({
                     type: "GET",
@@ -1596,9 +1587,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     }
                 })
                 .done(function (data) {
-                    console.log('Apps response:', data);
                     if (data.success && data.apps) {
-                        console.log('Displaying apps:', data.apps);
                         // Split apps into apps and links arrays based on type property
                         const appsArray = [];
                         const linksArray = [];
@@ -1622,12 +1611,10 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                         displayApps(appsArray);
                         displayLinks(linksArray);
                     } else {
-                        console.log('Failed to load apps - response:', data);
                         showError('Failed to load apps: ' + (data.message || 'Unknown error'));
                     }
                 })
                 .fail(function (e) {
-                    console.log('Error loading apps:', e);
                     showError('Error loading apps: ' + e.statusText);
                 });
             }
@@ -1947,7 +1934,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
                 // Reapply theme styles to newly loaded app cards
                 const currentTheme = document.body.classList.contains('theme-dark') ? 'dark' : 'light';
-                console.log('Reapplying theme styles after apps loaded:', currentTheme);
 
                 // Use theme toggle instance if available, otherwise fall back to local function
                 if (window.themeToggleInstance) {
@@ -2139,8 +2125,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
              * Load training videos from the server
              */
             function loadTrainingVideos() {
-                console.log('Loading training videos...');
-
                 // Use REST API endpoint
                 $.ajax({
                     type: "GET",
@@ -2156,17 +2140,13 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     }
                 })
                 .done(function (data) {
-                    console.log('Training videos response:', data);
                     if (data.success && data.training_videos) {
-                        console.log('Displaying training videos:', data.training_videos);
                         displayTrainingVideos(data.training_videos);
                     } else {
-                        console.log('Failed to load training videos - response:', data);
                         showError('Failed to load training videos: ' + (data.message || 'Unknown error'));
                     }
                 })
                 .fail(function (e) {
-                    console.log('Error loading training videos:', e);
                     showError('Error loading training videos: ' + e.statusText);
                 });
             }
