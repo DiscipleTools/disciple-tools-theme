@@ -2496,7 +2496,7 @@ class Disciple_Tools_Posts
                         }
                     }
                 } elseif ( isset( $field_settings[$key] ) && $field_settings[$key]['type'] == 'key_select' && ( !isset( $field_settings[$key]['private'] ) || !$field_settings[$key]['private'] ) ) {
-                    if ( empty( $value[0]['value'] ) ) {
+                    if ( $value[0]['value'] === '' ) {
                         unset( $fields[$key] );
                         continue;
                     }
