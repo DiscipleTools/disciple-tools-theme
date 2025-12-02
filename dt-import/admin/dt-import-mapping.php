@@ -534,13 +534,13 @@ class DT_CSV_Import_Mapping {
         $values = [];
 
         foreach ( $csv_data as $row ) {
-            if ( isset( $row[$column_index] ) && !empty( trim( $row[$column_index] ) ) ) {
+            if ( isset( $row[$column_index] ) && trim( $row[$column_index] ) !== '' ) {
                 $value = trim( $row[$column_index] );
 
                 // For multi-value fields, split by semicolon
                 $split_values = DT_CSV_Import_Utilities::split_multi_value( $value );
                 foreach ( $split_values as $split_value ) {
-                    if ( !empty( $split_value ) ) {
+                    if ( trim( $split_value ) !== '' ) {
                         $values[$split_value] = $split_value;
                     }
                 }

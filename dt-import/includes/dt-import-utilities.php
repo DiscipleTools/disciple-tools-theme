@@ -89,7 +89,7 @@ class DT_CSV_Import_Utilities {
                 break;
             }
 
-            if ( isset( $row[$column_index] ) && !empty( trim( $row[$column_index] ) ) ) {
+            if ( isset( $row[$column_index] ) && trim( $row[$column_index] ) !== '' ) {
                 $samples[] = trim( $row[$column_index] );
                 $row_count++;
             }
@@ -329,7 +329,7 @@ class DT_CSV_Import_Utilities {
      * Split multi-value string (semicolon separated by default)
      */
     public static function split_multi_value( $value, $separator = ';' ) {
-        if ( empty( $value ) ) {
+        if ( $value === '' ) {
             return [];
         }
 
