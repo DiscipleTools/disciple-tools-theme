@@ -298,7 +298,7 @@ class Disciple_Tools_Migration_0062 extends Disciple_Tools_Migration {
             'color' => null,
             'enabled' => !( isset( $old_app['is_hidden'] ) && $old_app['is_hidden'] == 1 ),
             'user_roles_type' => sanitize_text_field( $old_app['user_roles_type'] ?? 'support_all_roles' ),
-            'roles' => is_array( $old_app['roles'] ?? [] ) ? array_map( 'sanitize_text_field', $old_app['roles'] ) : [],
+            'roles' => is_array( $old_app['roles'] ?? [] ) ? array_map( 'sanitize_text_field', $old_app['roles'] ?? [] ) : [],
             'order' => isset( $old_app['sort'] ) ? (int) $old_app['sort'] : 999,
             'created_at' => current_time( 'mysql' ),
             'updated_at' => current_time( 'mysql' )

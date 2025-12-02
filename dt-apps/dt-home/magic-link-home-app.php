@@ -1284,7 +1284,12 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     'welcome' => __( 'Welcome to your Home Screen', 'disciple_tools' ),
                     'apps' => __( 'Your Apps', 'disciple_tools' ),
                     'training' => __( 'Training Videos', 'disciple_tools' ),
-                    'loading' => __( 'Loading...', 'disciple_tools' )
+                    'loading' => __( 'Loading...', 'disciple_tools' ),
+                    'login_title' => __( 'Login Required', 'disciple_tools' ),
+                    'login_message' => __( 'Please log in to access your Home Screen.', 'disciple_tools' ),
+                    'username_label' => __( 'Username or Email', 'disciple_tools' ),
+                    'password_label' => __( 'Password', 'disciple_tools' ),
+                    'login_button' => __( 'Log In', 'disciple_tools' )
                 ]
             ] ) ?>][0];
 
@@ -1301,16 +1306,36 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 // Initialize collapsible sections (no-ops if elements missing)
                 initializeCollapsibleSections();
 
-                // Determine current view from URL (?view=apps|training)
-                const params = new URLSearchParams(window.location.search);
-                const view = (params.get('view') || 'apps').toLowerCase();
-                console.log('Detected view:', view);
-
-                if (view === 'training') {
-                    loadTrainingVideos();
+                // Check for login errors in URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const loginError = urlParams.get('login') === 'failed' || urlParams.get('error') === 'incorrect_password';
+                
+                // Check authentication before loading content
+                if (jsObject.user_id === 0) {
+                    // User not authenticated - show login modal
+                    showLoginModal();
+                    
+                    // If there's a login error, show it
+                    if (loginError) {
+                        setTimeout(() => {
+                            showLoginError('Invalid username or password. Please try again.');
+                        }, 100);
+                    }
+                    
+                    // Don't load apps/links until authenticated
                 } else {
-                    // default to apps
-                    loadApps();
+                    // User authenticated - proceed with normal flow
+                    // Determine current view from URL (?view=apps|training)
+                    const params = new URLSearchParams(window.location.search);
+                    const view = (params.get('view') || 'apps').toLowerCase();
+                    console.log('Detected view:', view);
+
+                    if (view === 'training') {
+                        loadTrainingVideos();
+                    } else {
+                        // default to apps
+                        loadApps();
+                    }
                 }
             });
 
@@ -1605,6 +1630,214 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     console.log('Error loading apps:', e);
                     showError('Error loading apps: ' + e.statusText);
                 });
+            }
+
+            /**
+             * Show login modal for unauthenticated users
+             */
+            function showLoginModal() {
+                // Check if modal already exists
+                if (document.getElementById('dt-home-login-modal')) {
+                    return;
+                }
+
+                // Hide loading spinners and section titles
+                const appsSection = document.querySelector('.apps-section');
+                const linksSection = document.querySelector('.links-section');
+                
+                if (appsSection) {
+                    appsSection.style.display = 'none';
+                }
+                if (linksSection) {
+                    linksSection.style.display = 'none';
+                }
+
+                // Create modal overlay
+                const modalOverlay = document.createElement('div');
+                modalOverlay.id = 'dt-home-login-modal';
+                modalOverlay.className = 'dt-home-login-modal-overlay';
+                modalOverlay.setAttribute('role', 'dialog');
+                modalOverlay.setAttribute('aria-labelledby', 'dt-home-login-modal-title');
+                modalOverlay.setAttribute('aria-modal', 'true');
+
+                // Detect dark mode
+                const isDark = document.body.classList.contains('theme-dark') || 
+                               document.documentElement.classList.contains('theme-dark');
+                const themeClass = isDark ? ' theme-dark' : '';
+
+                // Create modal HTML
+                modalOverlay.innerHTML = `
+                    <div class="dt-home-login-modal-content${themeClass}">
+                        <div class="dt-home-login-modal-header">
+                            <h2 id="dt-home-login-modal-title" class="dt-home-login-modal-title">
+                                ${jsObject.translations.login_title || 'Login Required'}
+                            </h2>
+                            <div class="dt-home-login-modal-separator"></div>
+                        </div>
+                        <div class="dt-home-login-modal-body">
+                            <p class="dt-home-login-explanation-text">
+                                ${jsObject.translations.login_message || 'Please log in to access your Home Screen.'}
+                            </p>
+                            <form id="dt-home-login-form" class="dt-home-login-form">
+                                <div class="dt-home-login-error" id="dt-home-login-error" style="display: none;"></div>
+                                <div class="dt-home-login-field">
+                                    <label for="dt-home-login-username">${jsObject.translations.username_label || 'Username or Email'}</label>
+                                    <input 
+                                        type="text" 
+                                        id="dt-home-login-username" 
+                                        name="username" 
+                                        class="dt-home-login-input"
+                                        required 
+                                        autocomplete="username"
+                                        aria-label="Username or Email Address"
+                                    />
+                                </div>
+                                <div class="dt-home-login-field">
+                                    <label for="dt-home-login-password">${jsObject.translations.password_label || 'Password'}</label>
+                                    <input 
+                                        type="password" 
+                                        id="dt-home-login-password" 
+                                        name="password" 
+                                        class="dt-home-login-input"
+                                        required 
+                                        autocomplete="current-password"
+                                        aria-label="Password"
+                                    />
+                                </div>
+                                <div class="dt-home-login-actions">
+                                    <button 
+                                        type="submit" 
+                                        class="dt-home-login-submit-button"
+                                        id="dt-home-login-submit"
+                                    >
+                                        <span class="dt-home-login-submit-text">${jsObject.translations.login_button || 'Log In'}</span>
+                                        <span class="dt-home-login-spinner" style="display: none;">
+                                            <i class="mdi mdi-loading mdi-spin"></i>
+                                        </span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                `;
+
+                // Append to body
+                document.body.appendChild(modalOverlay);
+
+                // Bind form submission
+                const loginForm = document.getElementById('dt-home-login-form');
+                if (loginForm) {
+                    loginForm.addEventListener('submit', handleLoginSubmit);
+                }
+
+                // Focus username field for accessibility
+                setTimeout(() => {
+                    const usernameField = document.getElementById('dt-home-login-username');
+                    if (usernameField) {
+                        usernameField.focus();
+                    }
+                }, 100);
+            }
+
+            /**
+             * Handle login form submission
+             */
+            function handleLoginSubmit(e) {
+                e.preventDefault();
+
+                const username = document.getElementById('dt-home-login-username').value;
+                const password = document.getElementById('dt-home-login-password').value;
+                const errorDiv = document.getElementById('dt-home-login-error');
+                const submitButton = document.getElementById('dt-home-login-submit');
+                const submitText = submitButton.querySelector('.dt-home-login-submit-text');
+                const spinner = submitButton.querySelector('.dt-home-login-spinner');
+
+                // Hide previous errors
+                errorDiv.style.display = 'none';
+                errorDiv.textContent = '';
+
+                // Validate inputs
+                if (!username || !password) {
+                    showLoginError('Please enter both username and password.');
+                    return;
+                }
+
+                // Show loading state
+                submitButton.disabled = true;
+                submitText.style.display = 'none';
+                spinner.style.display = 'inline-block';
+
+                // Submit login via fetch - WordPress will set cookies on success
+                const loginUrl = '<?php echo esc_url( wp_login_url() ); ?>';
+                const formData = new URLSearchParams();
+                formData.append('log', username);
+                formData.append('pwd', password);
+                formData.append('rememberme', 'forever');
+                formData.append('redirect_to', window.location.href);
+                formData.append('wp-submit', 'Log In');
+
+                fetch(loginUrl, {
+                    method: 'POST',
+                    credentials: 'include', // Important: include cookies
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData,
+                    redirect: 'manual' // Don't follow redirects automatically
+                })
+                .then(response => {
+                    // WordPress login redirects on success (3xx status)
+                    // On failure, returns 200 with error page
+                    if (response.status >= 300 && response.status < 400) {
+                        // Redirect detected - likely success
+                        // Wait a moment for cookies to be set, then reload
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 300);
+                        return;
+                    }
+
+                    // Check response for error indicators
+                    return response.text().then(html => {
+                        // Check for WordPress login error indicators
+                        const hasError = html.includes('incorrect_password') || 
+                                        html.includes('invalid_username') ||
+                                        html.includes('ERROR') ||
+                                        html.toLowerCase().includes('error') ||
+                                        html.includes('Lost your password');
+
+                        if (hasError) {
+                            // Login failed
+                            showLoginError('Invalid username or password. Please try again.');
+                            submitButton.disabled = false;
+                            submitText.style.display = 'inline';
+                            spinner.style.display = 'none';
+                        } else {
+                            // No clear error - might be success, reload to check
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 300);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Login error:', error);
+                    // On error, try reloading anyway (cookie might be set)
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 300);
+                });
+            }
+
+            /**
+             * Show login error message
+             */
+            function showLoginError(message) {
+                const errorDiv = document.getElementById('dt-home-login-error');
+                if (errorDiv) {
+                    errorDiv.textContent = message;
+                    errorDiv.style.display = 'block';
+                }
             }
 
             /**

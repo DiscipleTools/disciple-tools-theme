@@ -20,7 +20,7 @@ class InviteModal {
     this.escapeHandler = null;
 
     // Generate share URL
-    this.shareUrl = window.location.href + '/share';
+    this.shareUrl = window.location.href;
 
     // Bind escape handler to instance
     this.escapeHandler = this.handleEscape.bind(this);
