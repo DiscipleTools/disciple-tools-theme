@@ -27,7 +27,7 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_filter( 'dt_custom_tiles_after_combine', [ $this, 'dt_custom_tiles_after_combine' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
-        add_action( 'dt_record_after_details_section', [ $this, 'dt_record_after_details_section' ], 10, 2 );
+        add_action( 'dt_record_bottom_after_tiles', [ $this, 'dt_record_bottom_after_tiles' ], 10, 2 );
         add_action( 'dt_record_footer', [ $this, 'dt_record_footer' ], 10, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
@@ -614,36 +614,48 @@ class DT_Groups_Base extends DT_Module_Base {
             <div class="group-genmap-chart" role="region"
                  aria-label="<?php esc_attr_e( 'Group generational map', 'disciple_tools' ); ?>">
             </div>
-            <div id="group-genmap-details" class="group-genmap-details" style="display: none;"></div>
         </div>
         <?php
     }
 
-    public function dt_record_after_details_section( $post_type, $dt_post ) {
+    private static $genmap_rendered = false;
+
+    public function dt_record_bottom_after_tiles( $post_type, $dt_post ) {
         if ( $post_type !== 'groups' ) {
+            return;
+        }
+        // Prevent double rendering
+        if ( self::$genmap_rendered ) {
             return;
         }
         $tiles = DT_Posts::get_post_tiles( $post_type );
         if ( !isset( $tiles['genmap'] ) || ( isset( $tiles['genmap']['hidden'] ) && $tiles['genmap']['hidden'] ) ) {
             return;
         }
+        self::$genmap_rendered = true;
         $post_id = get_the_ID();
         ?>
-        <section id="genmap" class="small-12 cell bordered-box">
-            <h3 class="section-header">
-                <?php echo esc_html( $tiles['genmap']['label'] ?? __( 'Generational Map', 'disciple_tools' ) ); ?>
-                <button class="help-button-tile" data-tile="genmap">
-                    <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                </button>
-                <button class="section-chevron chevron_down">
-                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                </button>
-                <button class="section-chevron chevron_up">
-                    <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-                </button>
-            </h3>
-            <div class="section-body grid-y">
-                <?php self::display_group_genmap_tile( 'genmap', $post_type ); ?>
+        <section id="genmap" class="custom-tile-section small-12 cell grid-item">
+            <div class="bordered-box" id="genmap-tile">
+                <h3 class="section-header">
+                    <?php echo esc_html( $tiles['genmap']['label'] ?? __( 'Generational Map', 'disciple_tools' ) ); ?>
+                    <button class="help-button-tile" data-tile="genmap">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
+                    <button class="group-genmap-layout-toggle" id="group-genmap-layout-toggle" aria-label="<?php esc_attr_e( 'Toggle layout', 'disciple_tools' ); ?>" style="display: none;">
+                        <i class="mdi mdi-align-vertical-top group-genmap-layout-icon-switch-to-vertical" style="font-size: 18px;"></i>
+                        <i class="mdi mdi-align-horizontal-left group-genmap-layout-icon-switch-to-horizontal" style="font-size: 18px; display: none;"></i>
+                    </button>
+                    <button class="section-chevron chevron_down">
+                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                    </button>
+                    <button class="section-chevron chevron_up">
+                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                    </button>
+                </h3>
+                <div class="section-body grid-y">
+                    <?php self::display_group_genmap_tile( 'genmap', $post_type ); ?>
+                </div>
             </div>
         </section>
         <?php
@@ -652,6 +664,15 @@ class DT_Groups_Base extends DT_Module_Base {
     public function dt_record_footer( $post_type, $post_id ) {
         if ( $post_type === 'groups' ) {
             get_template_part( 'dt-assets/parts/modals/modal', 'template-metrics' );
+            ?>
+            <div class="reveal" id="group-genmap-details-modal" data-reveal data-reset-on-close>
+                <h3 id="group-genmap-details-modal-title"></h3>
+                <div id="group-genmap-details-modal-content"></div>
+                <button class="close-button" data-close aria-label="<?php esc_attr_e( 'Close', 'disciple_tools' ); ?>" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php
         }
     }
 
