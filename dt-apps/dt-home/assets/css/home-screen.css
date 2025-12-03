@@ -8,7 +8,7 @@
     --surface-0: #e2e2e2;
     --surface-1: hsla(0, 0%, 90%, 1);
     --surface-2: #c2bfbf;
-    --primary-color: #667eea;
+    --primary-color: #3f729b;
     --border-color: #e1e5e9;
     --shadow-color: rgba(0,0,0,0.1);
 }
@@ -1614,7 +1614,7 @@ body.theme-light .menu-item,
 
 /* Home Button (Circular, Elevated) */
 .launcher-bottom-nav .nav-item-home {
-    background-color: #4a5fc7 !important; /* Dark blue color */
+    background-color: var(--primary-color); /* Dark blue color */
     color: #ffffff !important; /* Explicit white color */
     width: 60px !important;
     height: 60px !important;
@@ -1634,7 +1634,7 @@ body.theme-light .menu-item,
 }
 
 .launcher-bottom-nav .nav-item-home:hover {
-    background-color: #4a5fc7 !important; /* Keep dark blue on hover */
+    background-color: var(--primary-color); /* Keep dark blue on hover */
     color: #ffffff !important; /* Keep white text on hover */
     transform: scale(1.05) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
@@ -1878,7 +1878,7 @@ body:has(.launcher-bottom-nav) {
 
 /* Wrapper Home Button (Circular, Elevated) */
 .dt-launcher-bottom-nav .nav-item-home {
-    background-color: #4a5fc7 !important; /* Dark blue color */
+    background-color: var(--primary-color); /* Dark blue color */
     color: #ffffff !important; /* Explicit white color */
     width: 60px !important;
     height: 60px !important;
@@ -1898,7 +1898,7 @@ body:has(.launcher-bottom-nav) {
 }
 
 .dt-launcher-bottom-nav .nav-item-home:hover {
-    background-color: #4a5fc7 !important; /* Keep dark blue on hover */
+    background-color: var(--primary-color); /* Keep dark blue on hover */
     color: #ffffff !important; /* Keep white text on hover */
     transform: scale(1.05) !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
