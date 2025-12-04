@@ -554,6 +554,13 @@
     if (!list_settings.filters.tabs) {
       return;
     }
+    list_settings.filters.tabs.push({
+      key: 'split_by',
+      label: list_settings.translations.split_by,
+      order: 98, // right before Custom Filters
+    });
+    list_settings.filters.tabs.sort((a, b) => (a.order || 0) - (b.order || 0));
+
     let selected_tab = $('.accordion-item.is-active').data('id');
     let selected_filter = $('.js-list-view:checked').data('id');
     let html = ``;
@@ -565,7 +572,20 @@
           <span class="tab-count-span" data-tab="${window.SHAREDFUNCTIONS.escapeHTML(tab.key)}">
               ${Number.isInteger(tab.count) ? `(${window.SHAREDFUNCTIONS.escapeHTML(tab.count)})` : ``}
           </span>
-        </a>
+        </a>`;
+
+      if (tab.key === 'split_by') {
+        const split_by_content = document
+          .getElementById('template-split-by-filter')
+          .cloneNode(true);
+        html += `
+        <div class="accordion-content" data-tab-content>
+            ${split_by_content.innerHTML}
+        </div>
+        </li>
+        `;
+      } else {
+        html += `
         <div class="accordion-content" data-tab-content>
           <div class="list-views">
             ${list_settings.filters.filters
@@ -589,6 +609,7 @@
         </div>
       </li>
       `;
+      }
     });
     filter_accordions.html(html);
 
@@ -1667,6 +1688,9 @@
       search_query,
       new_filter_labels,
     );
+    if (window.Foundation.MediaQuery.only('small')) {
+      $('#tile-filters').addClass('collapsed');
+    }
   });
 
   $(document).on('click', '.current-filter-label-button', function () {
@@ -2924,14 +2948,12 @@
   });
 
   $('.search-input--desktop').on('keyup', function (e) {
-    clearSearchButton.css({ display: this.value.length ? 'flex' : 'none' });
     if (e.keyCode === 13) {
       $('#search').trigger('click');
     }
   });
 
   $('.search-input--mobile').on('keyup', function (e) {
-    clearSearchButton.css({ display: this.value.length ? 'flex' : 'none' });
     if (e.keyCode === 13) {
       $('#search-mobile').trigger('click');
     }
@@ -2939,12 +2961,6 @@
 
   clearSearchButton.on('click', function () {
     $('.search-input').val('');
-    clearSearchButton.css({ display: 'none' });
-  });
-
-  //toggle show search input on mobile
-  $('#open-search').on('click', function () {
-    $('.hideable-search').toggle();
   });
 
   /***
@@ -4098,7 +4114,7 @@
               html += `
                     <label class="list-view">
                       <input class="js-list-view-split-by" type="radio" name="split_by_list_view" ${option_selected ? 'checked' : ''} value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_id="${window.SHAREDFUNCTIONS.escapeHTML(field_id)}" data-field_option_id="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}" data-field_option_label="${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}" autocomplete="off">
-                      <span>${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}</span>
+                      <span class="list-view__text">${window.SHAREDFUNCTIONS.escapeHTML(option_id_label)}</span>
                       <span class="list-view__count js-list-view-count" data-value="${window.SHAREDFUNCTIONS.escapeHTML(option_id)}">${window.SHAREDFUNCTIONS.escapeHTML(result['count'])}</span>
                     </label>
                     `;

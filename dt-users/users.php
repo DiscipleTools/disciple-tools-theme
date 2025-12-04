@@ -401,6 +401,10 @@ class Disciple_Tools_Users
         }
     }
 
+    public static function get_user_for_contact( $contact_id ){
+        return get_post_meta( $contact_id, 'corresponds_to_user', true );
+    }
+
 
     /**
      * Get the base user for the system

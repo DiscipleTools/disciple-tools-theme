@@ -368,28 +368,46 @@ class DT_Storage_API {
             return $result;
         }
 
+        $temp_path = tempnam( sys_get_temp_dir(), 'dt-storage-validate' );
+        if ( empty( $temp_path ) ) {
+            $result['error_message'] = 'Unable to create temporary file for validation.';
+            return $result;
+        }
+
+        $write_ok = file_put_contents( $temp_path, self::generate_random_string( 24 ) );
+        if ( $write_ok === false ) {
+            @unlink( $temp_path );
+            $result['error_message'] = 'Unable to write to temporary file for validation.';
+            return $result;
+        }
+
+        $body_handle = fopen( $temp_path, 'r' );
+        if ( $body_handle === false ) {
+            @unlink( $temp_path );
+            $result['error_message'] = 'Unable to read temporary file for validation.';
+            return $result;
+        }
+
         try {
             // Attempt to upload an empty dummy file.
             $key = 'validated';
-            $dummy_file = tmpfile();
-            fwrite( $dummy_file, self::generate_random_string( 24 ) );
-            rewind( $dummy_file );
-            $dummy_file_metadata = stream_get_meta_data( $dummy_file );
-
             $client->putObject([
                 'Bucket' => $bucket,
                 'Key' => $key,
-                'Body' => fopen( $dummy_file_metadata['uri'], 'r' ),
+                'Body' => $body_handle,
                 'ContentType' => 'text/plain'
             ]);
-
-            fclose( $dummy_file );
 
             $result['valid'] = true;
             $result['error_message'] = '';
 
         } catch ( Throwable $e ) {
             $result['error_message'] = $e->getMessage();
+        } finally {
+            if ( is_resource( $body_handle ) ) {
+                fclose( $body_handle );
+            }
+            @unlink( $temp_path );
         }
 
         return $result;
