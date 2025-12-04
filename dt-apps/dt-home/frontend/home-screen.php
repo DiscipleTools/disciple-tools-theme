@@ -110,6 +110,15 @@ body.theme-dark .app-card {
     transition: all 0.2s ease !important;
 }
 
+.app-icon img {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    width: 56px !important;
+    height: 56px !important;
+    object-fit: contain !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)) !important;
+}
+
 /* Note: Dark mode colors are handled by JavaScript to preserve custom colors */
 
 .app-title {

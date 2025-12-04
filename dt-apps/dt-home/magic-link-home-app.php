@@ -1024,6 +1024,15 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 background: transparent !important;
             }
 
+            .app-icon img {
+                max-width: 100% !important;
+                max-height: 100% !important;
+                width: 100% !important;
+                height: auto !important;
+                object-fit: contain !important;
+                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)) !important;
+            }
+
             /* Note: Dark mode colors are handled by JavaScript to preserve custom colors */
 
             .app-title {
@@ -1085,7 +1094,11 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 align-items: center !important;
                 padding: 16px !important;
                 border-radius: 12px !important;
-                background-color: var(--dt-tile-background-color, #ffffff) !important;
+                background-color: var(--app-card-bg, #ffffff) !important;
+                border-top: 1px solid var(--app-card-border, #e1e5e9) !important;
+                border-bottom: 1px solid var(--app-card-border, #e1e5e9) !important;
+                border-right: 1px solid var(--app-card-border, #e1e5e9) !important;
+                border-left: none !important;
                 box-shadow: var(--shadow-0, 0 4px 12px rgba(0, 0, 0, 0.08)) !important;
                 transition: all 0.3s ease !important;
                 position: relative !important;
@@ -1196,7 +1209,10 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             /* Dark mode styles for links */
             .theme-dark .link-item,
             body.theme-dark .link-item {
-                background-color: var(--surface-1, #2a2a2a) !important;
+                background-color: var(--app-card-bg, #2a2a2a) !important;
+                border-top-color: var(--app-card-border, #404040) !important;
+                border-bottom-color: var(--app-card-border, #404040) !important;
+                border-right-color: var(--app-card-border, #404040) !important;
             }
 
             .theme-dark .link-item__title,
@@ -1468,13 +1484,14 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             /**
              * Update icon colors when theme changes (only for icons without custom colors)
              * Handles both app icons and link icons
+             * Note: Image icons are skipped as they have their own colors
              */
             function updateIconColorsForTheme(theme) {
                 const defaultColor = theme === 'dark' ? '#ffffff' : '#0a0a0a';
 
-                // Update app icons
-                const appIcons = document.querySelectorAll('.app-icon');
-                appIcons.forEach(icon => {
+                // Update app icons (only <i> tags, skip <img> tags)
+                const appIconElements = document.querySelectorAll('.app-icon i');
+                appIconElements.forEach(icon => {
                     // Only update icons that don't have custom colors
                     const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
                     if (!hasCustomColor) {
@@ -1875,28 +1892,41 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                             onClickHandler = `onclick="window.open('${app.url}', '_blank'); return false;"`;
                         }
 
-                        // Determine default icon color based on theme
-                        // Custom colors override defaults
-                        let iconColor = null;
-                        const hasCustomColor = app.color && app.color.trim() !== '';
-
-                        if (hasCustomColor) {
-                            // Use custom color if specified
-                            iconColor = app.color.trim();
+                        // Determine icon display: image or icon class
+                        let iconHtml = '';
+                        const isImageIcon = app.icon && (app.icon.startsWith('http') || app.icon.startsWith('/'));
+                        
+                        if (isImageIcon) {
+                            // Render image icon
+                            const safeIconUrl = app.icon.replace(/"/g, '&quot;');
+                            const safeTitle = trimmedTitle.replace(/"/g, '&quot;');
+                            iconHtml = `<img src="${safeIconUrl}" alt="${safeTitle}" />`;
                         } else {
-                            // Use theme-aware default if no custom color
-                            const isDarkMode = document.body.classList.contains('theme-dark') ||
-                                             document.documentElement.classList.contains('theme-dark') ||
-                                             document.body.classList.contains('dark') ||
-                                             document.documentElement.classList.contains('dark');
-                            iconColor = isDarkMode ? '#ffffff' : '#0a0a0a';
+                            // Render icon class with color support
+                            // Determine default icon color based on theme
+                            // Custom colors override defaults
+                            let iconColor = null;
+                            const hasCustomColor = app.color && app.color.trim() !== '';
+
+                            if (hasCustomColor) {
+                                // Use custom color if specified
+                                iconColor = app.color.trim();
+                            } else {
+                                // Use theme-aware default if no custom color
+                                const isDarkMode = document.body.classList.contains('theme-dark') ||
+                                                 document.documentElement.classList.contains('theme-dark') ||
+                                                 document.body.classList.contains('dark') ||
+                                                 document.documentElement.classList.contains('dark');
+                                iconColor = isDarkMode ? '#ffffff' : '#0a0a0a';
+                            }
+                            iconHtml = `<i class="${app.icon}" style="color: ${iconColor};" data-has-custom-color="${hasCustomColor}"></i>`;
                         }
 
                         const appHtml = `
                             <div class="app-card-wrapper">
                                 <div class="app-card" ${onClickHandler} title="${app.title}">
-                                    <div class="app-icon" style="color: ${iconColor};" data-has-custom-color="${hasCustomColor}">
-                                        <i class="${app.icon}"></i>
+                                    <div class="app-icon">
+                                        ${iconHtml}
                                     </div>
                                 </div>
                                 <div class="app-title">${trimmedTitle}</div>
@@ -1913,9 +1943,10 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
                 // Ensure icon colors are correctly applied after HTML insertion
                 // This handles theme-aware defaults and preserves custom colors
+                // Note: Only applies to <i> tags, not <img> tags
                 setTimeout(function() {
-                    const appIcons = document.querySelectorAll('#apps-grid .app-icon');
-                    appIcons.forEach(function(icon) {
+                    const appIconElements = document.querySelectorAll('#apps-grid .app-icon i');
+                    appIconElements.forEach(function(icon) {
                         const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
                         const currentColor = icon.style.color;
 
@@ -1944,8 +1975,9 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
                 // Re-apply icon colors after theme styles are reapplied
                 setTimeout(function() {
-                    const appIcons = document.querySelectorAll('#apps-grid .app-icon');
-                    appIcons.forEach(function(icon) {
+                    // Only update <i> tags, skip <img> tags
+                    const appIconElements = document.querySelectorAll('#apps-grid .app-icon i');
+                    appIconElements.forEach(function(icon) {
                         const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
 
                         if (!hasCustomColor) {

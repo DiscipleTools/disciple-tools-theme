@@ -18,7 +18,8 @@ class DT_Home_Apps {
 
     private static $_instance = null;
     private $option_name = 'dt_home_screen_apps';
-    private $coded_apps = [];
+    private $ml_apps = [];
+    private $home_apps = [];
 
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
@@ -53,6 +54,7 @@ class DT_Home_Apps {
     public function on_init() {
         // This is where we can safely apply filters after all classes are loaded
         $this->load_magic_link_apps();
+        $this->load_home_apps();
     }
 
     /**
@@ -72,7 +74,7 @@ class DT_Home_Apps {
                     continue;
                 }
 
-                $this->coded_apps[ $app_type ] = [
+                $this->ml_apps[ $app_type ] = [
                     'id' => $app_type,
                     'creation_type' => 'coded',
                     'type' => 'app',
@@ -98,6 +100,48 @@ class DT_Home_Apps {
     }
 
     /**
+     * Load Home Apps
+     */
+    private function load_home_apps() {
+        $filtered_apps = apply_filters( 'dt_home_apps', [] );
+
+        foreach ( $filtered_apps as $app ) {
+            // Skip if is_hidden is explicitly set to true
+            if ( isset( $app['is_hidden'] ) && $app['is_hidden'] === true ) {
+                continue;
+            }
+
+            // Validate required fields
+            if ( empty( $app['slug'] ) || empty( $app['name'] ) ) {
+                continue;
+            }
+
+            // Process and validate type
+            $app_type = trim( strtolower( $app['type'] ?? 'link' ) );
+            if ( $app_type !== 'app' && $app_type !== 'link' ) {
+                continue;
+            }
+
+            $slug = $app['slug'];
+            $this->home_apps[ $slug ] = [
+                'id' => $slug,
+                'slug' => $slug,
+                'creation_type' => 'coded',
+                'type' => $app_type,
+                'title' => $app['name'],
+                'description' => '',
+                'url' => $app['url'] ?? '#',
+                'icon' => $app['icon'] ?? 'mdi mdi-apps',
+                'color' => null,
+                'enabled' => !( $app['is_hidden'] ?? false ),
+                'order' => $app['sort'] ?? $this->get_next_order(),
+                'created_at' => current_time( 'mysql' ),
+                'updated_at' => current_time( 'mysql' )
+            ];
+        }
+    }
+
+    /**
      * Get all apps
      */
     public function get_all_apps() {
@@ -114,7 +158,7 @@ class DT_Home_Apps {
             $processed_ids[] = $app['id'];
         }
 
-        foreach ( $this->coded_apps as $app ) {
+        foreach ( $this->ml_apps as $app ) {
             if ( empty( $app['id'] ) || in_array( $app['id'], $processed_ids ) ) {
                 continue;
             }
@@ -122,6 +166,29 @@ class DT_Home_Apps {
             $updated_apps[] = $app;
             $processed_ids[] = $app['id'];
         }
+
+        foreach ( $this->home_apps as $app ) {
+            if ( empty( $app['id'] ) || in_array( $app['id'], $processed_ids ) ) {
+                continue;
+            }
+
+            $updated_apps[] = $app;
+            $processed_ids[] = $app['id'];
+        }
+
+        // Normalize type field for all apps
+        foreach ( $updated_apps as &$app ) {
+            // Normalize type: trim whitespace and convert to lowercase
+            if ( isset( $app['type'] ) ) {
+                $app['type'] = trim( strtolower( $app['type'] ) );
+            }
+
+            // Validate type is 'app' or 'link', use fallback if invalid
+            if ( ! isset( $app['type'] ) || ( $app['type'] !== 'app' && $app['type'] !== 'link' ) ) {
+                $app['type'] = $this->determine_app_type( $app );
+            }
+        }
+        unset( $app ); // Break reference
 
         return $updated_apps;
     }
@@ -409,7 +476,7 @@ class DT_Home_Apps {
                 $app_ml_root = $app_meta['root'] ?? '';
                 $app_ml_type = $app_meta['type'] ?? '';
 
-                if ( $app_meta['post_type'] === 'user' ) {
+                if ( isset( $app_meta['post_type'] ) && $app_meta['post_type'] === 'user' ) {
                     $meta_key = DT_Magic_URL::get_public_key_meta_key( $app_ml_root, $app_ml_type );
                     $magic_url_key = get_user_option( $meta_key, get_current_user_id() );
                     if ( !empty( $magic_url_key ) ) {
