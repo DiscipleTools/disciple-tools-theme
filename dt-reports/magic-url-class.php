@@ -354,9 +354,9 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * and that they match the expected values
          *
          * @param WP_REST_Request $request
-         * @return bool
+         * @return bool|array
          */
-        public function verify_rest_endpoint_permissions_on_post( WP_REST_Request $request ){
+        public function verify_rest_endpoint_permissions_on_post( WP_REST_Request $request, $return_parts = false ){
             $params = $request->get_params();
             if ( !isset( $params['parts']['meta_key'], $params['parts']['public_key'], $params['parts']['post_id'], $params['parts']['type'], $params['parts']['root'] ) ){
                 return false;
@@ -374,7 +374,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             if ( (int) $parts['post_id'] !== (int) $params['parts']['post_id'] ){
                 return false;
             }
-            return true;
+            return $return_parts ? $parts : true;
         }
 
         public function get_post_id( string $meta_key, string $public_key ){
