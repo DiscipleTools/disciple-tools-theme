@@ -250,24 +250,6 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                         return false;
                     }
                     $elements['meta_key'] = $types[$elements['type']]['meta_key'];
-
-                    if ( 'user' === $types[$elements['type']]['post_type'] ) {
-                        // if user
-                        $user_id = self::get_user_id( $elements['meta_key'], $parts[2] );
-                        if ( ! $user_id ){ // fail if no post id for public key
-                            self::redirect_to_expired_landing_page();
-                        } else {
-                            $elements['post_id'] = $user_id;
-                        }
-                    } else {
-                        // get post_id
-                        $post_id = self::get_post_id( $elements['meta_key'], $parts[2] );
-                        if ( ! $post_id ){ // fail if no post id for public key
-                            self::redirect_to_expired_landing_page();
-                        } else {
-                            $elements['post_id'] = $post_id;
-                        }
-                    }
                 }
                 if ( isset( $parts[3] ) && ! empty( $parts[3] ) ){
                     $elements['action'] = $parts[3];
@@ -283,11 +265,6 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 $instance_id = $types[ $elements['type'] ]['instance_id'];
                 if ( ! empty( $instance_id ) ) {
                     $elements['instance_id'] = $instance_id;
-                }
-
-                // Wider callout to ensure link is still valid.
-                if ( apply_filters( 'dt_magic_link_continue', true, $elements ) === false ) {
-                    self::redirect_to_expired_landing_page();
                 }
 
                 return $elements;
@@ -377,9 +354,9 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
          * and that they match the expected values
          *
          * @param WP_REST_Request $request
-         * @return bool
+         * @return bool|array
          */
-        public function verify_rest_endpoint_permissions_on_post( WP_REST_Request $request ){
+        public function verify_rest_endpoint_permissions_on_post( WP_REST_Request $request, $return_parts = false ){
             $params = $request->get_params();
             if ( !isset( $params['parts']['meta_key'], $params['parts']['public_key'], $params['parts']['post_id'], $params['parts']['type'], $params['parts']['root'] ) ){
                 return false;
@@ -397,7 +374,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             if ( (int) $parts['post_id'] !== (int) $params['parts']['post_id'] ){
                 return false;
             }
-            return true;
+            return $return_parts ? $parts : true;
         }
 
         public function get_post_id( string $meta_key, string $public_key ){
