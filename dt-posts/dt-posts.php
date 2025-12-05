@@ -1594,9 +1594,9 @@ class DT_Posts extends Disciple_Tools_Posts {
      *
      * @return array|null|object|WP_Error
      */
-    public static function get_post_activity( string $post_type, int $post_id, array $args = [] ) {
+    public static function get_post_activity( string $post_type, int $post_id, array $args = [], $check_permissions = true ) {
         global $wpdb;
-        if ( !self::can_view( $post_type, $post_id ) ) {
+        if ( $check_permissions && !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'No permissions to read: ' . $post_type, [ 'status' => 403 ] );
         }
 
