@@ -396,7 +396,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
         public static function is_active_mapbox_key() : array {
             $key = self::get_key();
-            
+
             if ( empty( $key ) ) {
                 return [
                     'success' => false,
@@ -404,10 +404,10 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     'error_type' => 'missing_token'
                 ];
             }
-            
+
             $url = self::$mapbox_endpoint . 'Denver.json?access_token=' . $key;
             $response = wp_remote_get( esc_url_raw( $url ) );
-            
+
             // Check for WordPress HTTP errors
             if ( is_wp_error( $response ) ) {
                 return [
@@ -416,12 +416,12 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     'error_type' => 'network_error'
                 ];
             }
-            
+
             // Get HTTP response code
             $http_code = wp_remote_retrieve_response_code( $response );
             $body = wp_remote_retrieve_body( $response );
             $data_result = json_decode( $body, true );
-            
+
             // Success case
             if ( $http_code === 200 && isset( $data_result['features'] ) && ! empty( $data_result['features'] ) ) {
                 return [
@@ -429,11 +429,11 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     'message' => ''
                 ];
             }
-            
+
             // Error cases based on HTTP status code
             $error_message = isset( $data_result['message'] ) ? $data_result['message'] : 'Unknown error';
             $server_url = home_url( '', 'https' );
-            
+
             switch ( $http_code ) {
                 case 401:
                     return [
@@ -442,7 +442,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         'error_type' => 'unauthorized',
                         'api_message' => $error_message
                     ];
-                    
+
                 case 403:
                     return [
                         'success' => false,
@@ -451,7 +451,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         'api_message' => $error_message,
                         'server_url' => $server_url
                     ];
-                    
+
                 case 429:
                     return [
                         'success' => false,
@@ -459,7 +459,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                         'error_type' => 'rate_limit',
                         'api_message' => $error_message
                     ];
-                    
+
                 default:
                     return [
                         'success' => false,
@@ -499,13 +499,13 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     $message = 'Please add a Mapbox API Token';
                 } else {
                     $message = $mapbox_key_active_state['message'];
-                    
+
                     // Add server URL information for 403 errors
                     if ( isset( $mapbox_key_active_state['error_type'] ) && $mapbox_key_active_state['error_type'] === 'forbidden' && isset( $mapbox_key_active_state['server_url'] ) ) {
                         $message .= '<br><br><strong>Your server URL:</strong> <code>' . esc_html( $mapbox_key_active_state['server_url'] ) . '</code>';
                         $message .= '<br><br>To fix this, add the above URL to your Mapbox token\'s allowed URL list in your <a href="https://account.mapbox.com/access-tokens/" target="_blank">Mapbox account settings</a>.';
                     }
-                    
+
                     // Add API message details if available and different from main message
                     if ( isset( $mapbox_key_active_state['api_message'] ) && ! empty( $mapbox_key_active_state['api_message'] ) && $mapbox_key_active_state['api_message'] !== $mapbox_key_active_state['message'] ) {
                         $message .= '<br><br><em>API Response: ' . esc_html( $mapbox_key_active_state['api_message'] ) . '</em>';
