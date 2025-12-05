@@ -396,20 +396,77 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
         public static function is_active_mapbox_key() : array {
             $key = self::get_key();
+            
+            if ( empty( $key ) ) {
+                return [
+                    'success' => false,
+                    'message' => 'No Mapbox API token provided',
+                    'error_type' => 'missing_token'
+                ];
+            }
+            
             $url = self::$mapbox_endpoint . 'Denver.json?access_token=' . $key;
             $response = wp_remote_get( esc_url_raw( $url ) );
-            $data_result = json_decode( wp_remote_retrieve_body( $response ), true );
-
-            if ( isset( $data_result['features'] ) && ! empty( $data_result['features'] ) ) {
+            
+            // Check for WordPress HTTP errors
+            if ( is_wp_error( $response ) ) {
+                return [
+                    'success' => false,
+                    'message' => 'Network error: ' . $response->get_error_message(),
+                    'error_type' => 'network_error'
+                ];
+            }
+            
+            // Get HTTP response code
+            $http_code = wp_remote_retrieve_response_code( $response );
+            $body = wp_remote_retrieve_body( $response );
+            $data_result = json_decode( $body, true );
+            
+            // Success case
+            if ( $http_code === 200 && isset( $data_result['features'] ) && ! empty( $data_result['features'] ) ) {
                 return [
                     'success' => true,
                     'message' => ''
                 ];
-            } else {
-                return [
-                    'success' => false,
-                    'message' => ( isset( $data_result['message'] ) && ! empty( $data_result['message'] ) ) ? $data_result['message'] : ''
-                ];
+            }
+            
+            // Error cases based on HTTP status code
+            $error_message = isset( $data_result['message'] ) ? $data_result['message'] : 'Unknown error';
+            $server_url = home_url( '', 'https' );
+            
+            switch ( $http_code ) {
+                case 401:
+                    return [
+                        'success' => false,
+                        'message' => 'Invalid or expired Mapbox access token. Please check your token.',
+                        'error_type' => 'unauthorized',
+                        'api_message' => $error_message
+                    ];
+                    
+                case 403:
+                    return [
+                        'success' => false,
+                        'message' => 'Mapbox token is valid but access is restricted. The current server URL may not be included in the token\'s allowed URL list.',
+                        'error_type' => 'forbidden',
+                        'api_message' => $error_message,
+                        'server_url' => $server_url
+                    ];
+                    
+                case 429:
+                    return [
+                        'success' => false,
+                        'message' => 'Rate limit exceeded. Please try again later.',
+                        'error_type' => 'rate_limit',
+                        'api_message' => $error_message
+                    ];
+                    
+                default:
+                    return [
+                        'success' => false,
+                        'message' => 'Could not verify Mapbox token. HTTP ' . $http_code . ': ' . $error_message,
+                        'error_type' => 'api_error',
+                        'api_message' => $error_message
+                    ];
             }
         }
 
@@ -441,8 +498,18 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 if ( empty( $key ) ) {
                     $message = 'Please add a Mapbox API Token';
                 } else {
-                    $message = 'Could not connect to the Mapbox API or could not verify the token';
-                    $message .= ! empty( $mapbox_key_active_state['message'] ) ? ' - ' . $mapbox_key_active_state['message'] : '';
+                    $message = $mapbox_key_active_state['message'];
+                    
+                    // Add server URL information for 403 errors
+                    if ( isset( $mapbox_key_active_state['error_type'] ) && $mapbox_key_active_state['error_type'] === 'forbidden' && isset( $mapbox_key_active_state['server_url'] ) ) {
+                        $message .= '<br><br><strong>Your server URL:</strong> <code>' . esc_html( $mapbox_key_active_state['server_url'] ) . '</code>';
+                        $message .= '<br><br>To fix this, add the above URL to your Mapbox token\'s allowed URL list in your <a href="https://account.mapbox.com/access-tokens/" target="_blank">Mapbox account settings</a>.';
+                    }
+                    
+                    // Add API message details if available and different from main message
+                    if ( isset( $mapbox_key_active_state['api_message'] ) && ! empty( $mapbox_key_active_state['api_message'] ) && $mapbox_key_active_state['api_message'] !== $mapbox_key_active_state['message'] ) {
+                        $message .= '<br><br><em>API Response: ' . esc_html( $mapbox_key_active_state['api_message'] ) . '</em>';
+                    }
                 }
             }
             ?>
@@ -470,7 +537,7 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     <tr>
                         <td>
                             <p id="reachable_source" class="<?php echo esc_attr( $status_class ) ?>">
-                                <?php echo esc_html( $message ); ?>
+                                <?php echo wp_kses_post( $message ); ?>
                             </p>
                         </td>
                     </tr>
