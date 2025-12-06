@@ -28,6 +28,7 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( 'dt_custom_tiles_after_combine', [ $this, 'dt_custom_tiles_after_combine' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
+        add_action( 'dt_record_footer', [ $this, 'dt_record_footer' ], 10, 2 );
 
         // hooks
         add_action( 'post_connection_added', [ $this, 'post_connection_added' ], 10, 4 );
@@ -461,6 +462,90 @@ class DT_Groups_Base extends DT_Module_Base {
         self::display_health_metrics_tile( $section, $post_type );
         self::display_four_fields_tile( $section, $post_type );
         self::display_group_relationships_tile( $section, $post_type );
+        self::display_genmap_tile( $section, $post_type );
+    }
+
+    private static function display_genmap_tile( $section, $post_type ) {
+        if ( $post_type !== 'groups' || $section !== 'genmap' ) {
+            return;
+        }
+
+        $post_id = get_the_ID();
+        $post = DT_Posts::get_post( 'groups', $post_id );
+        if ( is_wp_error( $post ) ) {
+            return;
+        }
+
+        $parent_groups = $post['parent_groups'] ?? [];
+        $child_groups = $post['child_groups'] ?? [];
+        ?>
+        <div class="genmap-ancestry">
+            <!-- Parent Groups -->
+            <div class="genmap-section">
+                <div class="genmap-section-label"><?php esc_html_e( 'Parent', 'disciple_tools' ); ?></div>
+                <div class="genmap-nodes">
+                    <?php if ( empty( $parent_groups ) ) : ?>
+                        <span class="genmap-node genmap-node-empty">
+                            <span class="genmap-node-label"><?php esc_html_e( 'None', 'disciple_tools' ); ?></span>
+                        </span>
+                    <?php else : ?>
+                        <?php foreach ( $parent_groups as $parent ) : ?>
+                            <a href="<?php echo esc_url( site_url( '/groups/' . $parent['ID'] ) ); ?>" class="genmap-node genmap-node-parent">
+                                <span class="genmap-node-label"><?php echo esc_html( $parent['post_title'] ); ?></span>
+                            </a>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Current Group (highlighted) -->
+            <div class="genmap-section genmap-current">
+                <div class="genmap-connector genmap-connector-up"></div>
+                <div class="genmap-node genmap-node-current">
+                    <span class="genmap-node-label"><?php echo esc_html( $post['title'] ); ?></span>
+                </div>
+                <div class="genmap-connector genmap-connector-down"></div>
+            </div>
+
+            <!-- Child Groups -->
+            <div class="genmap-section">
+                <div class="genmap-section-label"><?php esc_html_e( 'Children', 'disciple_tools' ); ?></div>
+                <div class="genmap-nodes genmap-nodes-children">
+                    <?php if ( empty( $child_groups ) ) : ?>
+                        <span class="genmap-node genmap-node-empty">
+                            <span class="genmap-node-label"><?php esc_html_e( 'None', 'disciple_tools' ); ?></span>
+                        </span>
+                    <?php else : ?>
+                        <?php
+                        $display_limit = 5;
+                        $displayed = 0;
+                        foreach ( $child_groups as $child ) :
+                            if ( $displayed < $display_limit ) : ?>
+                                <a href="<?php echo esc_url( site_url( '/groups/' . $child['ID'] ) ); ?>" class="genmap-node genmap-node-child">
+                                    <span class="genmap-node-label"><?php echo esc_html( $child['post_title'] ); ?></span>
+                                </a>
+                            <?php
+                            endif;
+                            $displayed++;
+                        endforeach;
+                        if ( count( $child_groups ) > $display_limit ) : ?>
+                            <span class="genmap-node genmap-node-more">
+                                <span class="genmap-node-label">+<?php echo esc_html( count( $child_groups ) - $display_limit ); ?></span>
+                            </span>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Full Tree Button -->
+        <div class="genmap-actions">
+            <button type="button" class="button hollow genmap-view-tree-btn" data-post-id="<?php echo esc_attr( $post_id ); ?>">
+                <i class="mdi mdi-file-tree"></i>
+                <?php esc_html_e( 'View Generational Tree', 'disciple_tools' ); ?>
+            </button>
+        </div>
+        <?php
     }
 
     private function display_health_metrics_tile( $section, $post_type ) {
@@ -607,9 +692,54 @@ class DT_Groups_Base extends DT_Module_Base {
                 ];
             }
             $tiles['groups'] = [ 'label' => __( 'Groups', 'disciple_tools' ) ];
+            $tiles['genmap'] = [ 'label' => __( 'Generational Map', 'disciple_tools' ) ];
             $tiles['other'] = [ 'label' => __( 'Other', 'disciple_tools' ) ];
         }
         return $tiles;
+    }
+
+    public function dt_record_footer( $post_type, $post_id ) {
+        if ( $post_type !== 'groups' ) {
+            return;
+        }
+        ?>
+        <!-- Generational Map Modal -->
+        <div class="reveal large" id="genmap-modal" data-reveal data-close-on-click="true" data-close-on-esc="true">
+            <div class="genmap-modal-header">
+                <h3><?php esc_html_e( 'Generational Tree', 'disciple_tools' ); ?></h3>
+                <div class="genmap-modal-controls">
+                    <button type="button" class="button hollow small genmap-zoom-in" title="<?php esc_attr_e( 'Zoom In', 'disciple_tools' ); ?>">
+                        <i class="mdi mdi-magnify-plus"></i>
+                    </button>
+                    <button type="button" class="button hollow small genmap-zoom-out" title="<?php esc_attr_e( 'Zoom Out', 'disciple_tools' ); ?>">
+                        <i class="mdi mdi-magnify-minus"></i>
+                    </button>
+                    <button type="button" class="button hollow small genmap-zoom-reset" title="<?php esc_attr_e( 'Reset Zoom', 'disciple_tools' ); ?>">
+                        <i class="mdi mdi-backup-restore"></i>
+                    </button>
+                    <span class="genmap-layout-toggle">
+                        <label class="genmap-layout-label">
+                            <input type="checkbox" id="genmap-layout-toggle" />
+                            <span><?php esc_html_e( 'Vertical', 'disciple_tools' ); ?></span>
+                        </label>
+                    </span>
+                </div>
+            </div>
+            <div class="genmap-modal-body">
+                <div id="genmap-tree-container">
+                    <div class="genmap-loading">
+                        <span class="loading-spinner active"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="genmap-modal-footer">
+                <div id="genmap-details-panel"></div>
+            </div>
+            <button class="close-button" data-close aria-label="<?php esc_attr_e( 'Close', 'disciple_tools' ); ?>" type="button">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <?php
     }
 
     public function dt_custom_tiles_after_combine( $tile_options, $post_type = '' ){
@@ -1124,6 +1254,62 @@ class DT_Groups_Base extends DT_Module_Base {
                 'jquery',
                 'details'
             ], filemtime( get_theme_file_path() . '/dt-groups/groups.js' ), true );
+
+            // Enqueue orgchart library for genmap visualization
+            wp_enqueue_script( 'orgchart_js', 'https://cdnjs.cloudflare.com/ajax/libs/orgchart/3.7.0/js/jquery.orgchart.min.js', [
+                'jquery',
+            ], '3.7.0', true );
+
+            // Enqueue orgchart custom styles
+            $css_file_name = 'dt-metrics/common/jquery.orgchart.custom.css';
+            $css_uri = get_template_directory_uri() . "/$css_file_name";
+            $css_dir = get_template_directory() . "/$css_file_name";
+            wp_enqueue_style( 'orgchart_css', $css_uri, [], filemtime( $css_dir ) );
+
+            // Enqueue genmap tile script
+            $js_file_name = 'dt-groups/genmap-tile.js';
+            $js_uri = get_template_directory_uri() . "/$js_file_name";
+            $js_dir = get_template_directory() . "/$js_file_name";
+            wp_enqueue_script( 'dt_groups_genmap', $js_uri, [
+                'jquery',
+                'orgchart_js',
+                'shared-functions'
+            ], filemtime( $js_dir ), true );
+
+            // Get post settings for status colors
+            $post_settings = DT_Posts::get_post_settings( 'groups' );
+            $status_colors = [];
+            if ( isset( $post_settings['fields']['group_status']['default'] ) ) {
+                foreach ( $post_settings['fields']['group_status']['default'] as $key => $status ) {
+                    $status_colors[ $key ] = $status['color'] ?? '#366184';
+                }
+            }
+
+            wp_localize_script( 'dt_groups_genmap', 'dtGroupsGenmap', [
+                'root' => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' ),
+                'post_id' => get_the_ID(),
+                'site_url' => esc_url_raw( site_url() ),
+                'status_colors' => $status_colors,
+                'translations' => [
+                    'loading' => __( 'Loading...', 'disciple_tools' ),
+                    'no_data' => __( 'No generational data found', 'disciple_tools' ),
+                    'status' => __( 'Status', 'disciple_tools' ),
+                    'type' => __( 'Type', 'disciple_tools' ),
+                    'members' => __( 'Members', 'disciple_tools' ),
+                    'view_record' => __( 'View Record', 'disciple_tools' ),
+                    'add_child' => __( 'Add Child Group', 'disciple_tools' ),
+                    'gen' => __( 'Gen', 'disciple_tools' ),
+                ]
+            ] );
+
+            // Enqueue genmap tile styles
+            $genmap_css_file = 'dt-groups/genmap-tile.css';
+            $genmap_css_uri = get_template_directory_uri() . "/$genmap_css_file";
+            $genmap_css_dir = get_template_directory() . "/$genmap_css_file";
+            if ( file_exists( $genmap_css_dir ) ) {
+                wp_enqueue_style( 'dt_groups_genmap_css', $genmap_css_uri, [], filemtime( $genmap_css_dir ) );
+            }
         }
     }
 }
