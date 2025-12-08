@@ -639,7 +639,7 @@ class DT_Home_Admin {
     /**
      * Handle settings form submission
      */
-    private function handle_settings_save() {        
+    private function handle_settings_save() {
         // Verify nonce first
         if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_home_screen_nonce'] ?? '' ) ), 'dt_home_screen_settings' ) ) {
             wp_die( esc_html__( 'Security check failed. Please try again.', 'disciple_tools' ) );
@@ -647,17 +647,17 @@ class DT_Home_Admin {
 
         // Check if registration is enabled (if not, invite_others checkbox will be disabled and won't submit)
         $registration_enabled = function_exists( 'dt_can_users_register' ) && dt_can_users_register();
-        
+
         $settings = [
             'title' => sanitize_text_field( wp_unslash( $_POST['home_screen_title'] ?? '' ) ),
             'description' => sanitize_textarea_field( wp_unslash( $_POST['home_screen_description'] ?? '' ) ),
             'enable_roles_permissions' => isset( $_POST['enable_roles_permissions'] ) ? 1 : 0,
         ];
-        
+
         // Handle require_login (checkbox sends "1" when checked, "0" when unchecked via hidden field)
         $require_login_post = isset( $_POST['require_login'] ) ? sanitize_text_field( wp_unslash( $_POST['require_login'] ) ) : '';
         $settings['require_login'] = ( $require_login_post === '1' ) ? 1 : 0;
-        
+
         // Only update invite_others if registration is enabled (checkbox will be enabled and can submit)
         // If registration is disabled, the checkbox is disabled and won't be in POST, so preserve existing value
         if ( $registration_enabled ) {
@@ -671,7 +671,7 @@ class DT_Home_Admin {
 
         // Merge: existing settings as base, new settings override (array_merge ensures new values take precedence)
         $settings = array_merge( $existing_settings, $settings );
-        
+
         // Ensure invite_others is stored as integer (preserve existing if not updated)
         if ( isset( $settings['invite_others'] ) ) {
             $settings['invite_others'] = (int) $settings['invite_others'];
@@ -698,17 +698,17 @@ class DT_Home_Admin {
 
         $settings = get_option( 'dt_home_screen_settings', $defaults );
         $settings = wp_parse_args( $settings, $defaults );
-        
+
         // Ensure invite_others is an integer (0 or 1)
         if ( isset( $settings['invite_others'] ) ) {
             $settings['invite_others'] = (int) $settings['invite_others'];
         }
-        
+
         // Ensure require_login is an integer (0 or 1)
         if ( isset( $settings['require_login'] ) ) {
             $settings['require_login'] = (int) $settings['require_login'];
         }
-        
+
         return $settings;
     }
 
