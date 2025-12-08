@@ -12,7 +12,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
-    "@disciple.tools/web-components": "^0.8.2",
+    "@disciple.tools/web-components": "^0.8.3",
     "@eslint/js": "^9.37.0",
     "autoprefixer": "^10.4.21",
     "browser-sync": "^3.0.3",
