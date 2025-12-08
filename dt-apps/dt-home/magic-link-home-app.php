@@ -113,6 +113,11 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         add_filter( 'dt_magic_url_base_allowed_js', [ $this, 'dt_magic_url_base_allowed_js' ], 10, 1 );
         add_action( 'wp_enqueue_scripts', [ $this, 'wp_enqueue_scripts' ], 100 );
 
+        // Add redirect hooks for WordPress login/registration
+        add_filter( 'login_redirect', [ $this, 'redirect_to_home_after_login' ], 10, 3 );
+        add_action( 'user_register', [ $this, 'redirect_to_home_after_registration' ], 10, 1 );
+        add_filter( 'register_url', [ $this, 'add_redirect_to_registration_url' ], 10, 1 );
+
         // REST API endpoints are registered in add_endpoints() method
     }
 
@@ -129,13 +134,14 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         // Enqueue menu toggle JavaScript
         wp_enqueue_script( 'dt-home-menu-toggle', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/menu-toggle.js', [], '1.0.0', true );
 
-        // Pass logout URL to menu toggle script
+        // Pass logout URL and invite settings to menu toggle script
         if ( function_exists( 'dt_home_get_logout_url' ) ) {
             wp_localize_script(
                 'dt-home-menu-toggle',
                 'dtHomeMenuToggleSettings',
                 [
                     'logoutUrl' => dt_home_get_logout_url(),
+                    'inviteEnabled' => function_exists( 'homescreen_invite_users_enabled' ) ? homescreen_invite_users_enabled() : false,
                 ]
             );
         }
@@ -1296,6 +1302,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 'nonce'                   => wp_create_nonce( 'wp_rest' ),
                 'parts'                   => $this->parts,
                 'user_id'                 => get_current_user_id(),
+                'invite_enabled'          => function_exists( 'homescreen_invite_users_enabled' ) ? homescreen_invite_users_enabled() : false,
                 'translations'            => [
                     'welcome' => __( 'Welcome to your Home Screen', 'disciple_tools' ),
                     'apps' => __( 'Your Apps', 'disciple_tools' ),
@@ -1319,35 +1326,27 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 // Initialize collapsible sections (no-ops if elements missing)
                 initializeCollapsibleSections();
 
-                // Check for login errors in URL parameters
-                const urlParams = new URLSearchParams(window.location.search);
-                const loginError = urlParams.get('login') === 'failed' || urlParams.get('error') === 'incorrect_password';
-                
                 // Check authentication before loading content
+                // If user is not authenticated, they will be redirected by PHP before this JavaScript runs
                 if (jsObject.user_id === 0) {
-                    // User not authenticated - show login modal
-                    showLoginModal();
-                    
-                    // If there's a login error, show it
-                    if (loginError) {
-                        setTimeout(() => {
-                            showLoginError('Invalid username or password. Please try again.');
-                        }, 100);
-                    }
-                    
-                    // Don't load apps/links until authenticated
-                } else {
-                    // User authenticated - proceed with normal flow
-                    // Determine current view from URL (?view=apps|training)
-                    const params = new URLSearchParams(window.location.search);
-                    const view = (params.get('view') || 'apps').toLowerCase();
+                    // This should not happen as PHP redirects unauthenticated users
+                    // But as a fallback, redirect to login
+                    const currentUrl = window.location.href;
+                    const loginUrl = '<?php echo esc_url( wp_login_url() ); ?>';
+                    window.location.href = loginUrl + '?redirect_to=' + encodeURIComponent(currentUrl);
+                    return;
+                }
 
-                    if (view === 'training') {
-                        loadTrainingVideos();
-                    } else {
-                        // default to apps
-                        loadApps();
-                    }
+                // User authenticated - proceed with normal flow
+                // Determine current view from URL (?view=apps|training)
+                const params = new URLSearchParams(window.location.search);
+                const view = (params.get('view') || 'apps').toLowerCase();
+
+                if (view === 'training') {
+                    loadTrainingVideos();
+                } else {
+                    // default to apps
+                    loadApps();
                 }
             });
 
@@ -1636,213 +1635,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 });
             }
 
-            /**
-             * Show login modal for unauthenticated users
-             */
-            function showLoginModal() {
-                // Check if modal already exists
-                if (document.getElementById('dt-home-login-modal')) {
-                    return;
-                }
-
-                // Hide loading spinners and section titles
-                const appsSection = document.querySelector('.apps-section');
-                const linksSection = document.querySelector('.links-section');
-                
-                if (appsSection) {
-                    appsSection.style.display = 'none';
-                }
-                if (linksSection) {
-                    linksSection.style.display = 'none';
-                }
-
-                // Create modal overlay
-                const modalOverlay = document.createElement('div');
-                modalOverlay.id = 'dt-home-login-modal';
-                modalOverlay.className = 'dt-home-login-modal-overlay';
-                modalOverlay.setAttribute('role', 'dialog');
-                modalOverlay.setAttribute('aria-labelledby', 'dt-home-login-modal-title');
-                modalOverlay.setAttribute('aria-modal', 'true');
-
-                // Detect dark mode
-                const isDark = document.body.classList.contains('theme-dark') || 
-                               document.documentElement.classList.contains('theme-dark');
-                const themeClass = isDark ? ' theme-dark' : '';
-
-                // Create modal HTML
-                modalOverlay.innerHTML = `
-                    <div class="dt-home-login-modal-content${themeClass}">
-                        <div class="dt-home-login-modal-header">
-                            <h2 id="dt-home-login-modal-title" class="dt-home-login-modal-title">
-                                ${jsObject.translations.login_title || 'Login Required'}
-                            </h2>
-                            <div class="dt-home-login-modal-separator"></div>
-                        </div>
-                        <div class="dt-home-login-modal-body">
-                            <p class="dt-home-login-explanation-text">
-                                ${jsObject.translations.login_message || 'Please log in to access your Home Screen.'}
-                            </p>
-                            <form id="dt-home-login-form" class="dt-home-login-form">
-                                <div class="dt-home-login-error" id="dt-home-login-error" style="display: none;"></div>
-                                <div class="dt-home-login-field">
-                                    <label for="dt-home-login-username">${jsObject.translations.username_label || 'Username or Email'}</label>
-                                    <input 
-                                        type="text" 
-                                        id="dt-home-login-username" 
-                                        name="username" 
-                                        class="dt-home-login-input"
-                                        required 
-                                        autocomplete="username"
-                                        aria-label="Username or Email Address"
-                                    />
-                                </div>
-                                <div class="dt-home-login-field">
-                                    <label for="dt-home-login-password">${jsObject.translations.password_label || 'Password'}</label>
-                                    <input 
-                                        type="password" 
-                                        id="dt-home-login-password" 
-                                        name="password" 
-                                        class="dt-home-login-input"
-                                        required 
-                                        autocomplete="current-password"
-                                        aria-label="Password"
-                                    />
-                                </div>
-                                <div class="dt-home-login-actions">
-                                    <button 
-                                        type="submit" 
-                                        class="dt-home-login-submit-button"
-                                        id="dt-home-login-submit"
-                                    >
-                                        <span class="dt-home-login-submit-text">${jsObject.translations.login_button || 'Log In'}</span>
-                                        <span class="dt-home-login-spinner" style="display: none;">
-                                            <i class="mdi mdi-loading mdi-spin"></i>
-                                        </span>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                `;
-
-                // Append to body
-                document.body.appendChild(modalOverlay);
-
-                // Bind form submission
-                const loginForm = document.getElementById('dt-home-login-form');
-                if (loginForm) {
-                    loginForm.addEventListener('submit', handleLoginSubmit);
-                }
-
-                // Focus username field for accessibility
-                setTimeout(() => {
-                    const usernameField = document.getElementById('dt-home-login-username');
-                    if (usernameField) {
-                        usernameField.focus();
-                    }
-                }, 100);
-            }
-
-            /**
-             * Handle login form submission
-             */
-            function handleLoginSubmit(e) {
-                e.preventDefault();
-
-                const username = document.getElementById('dt-home-login-username').value;
-                const password = document.getElementById('dt-home-login-password').value;
-                const errorDiv = document.getElementById('dt-home-login-error');
-                const submitButton = document.getElementById('dt-home-login-submit');
-                const submitText = submitButton.querySelector('.dt-home-login-submit-text');
-                const spinner = submitButton.querySelector('.dt-home-login-spinner');
-
-                // Hide previous errors
-                errorDiv.style.display = 'none';
-                errorDiv.textContent = '';
-
-                // Validate inputs
-                if (!username || !password) {
-                    showLoginError('Please enter both username and password.');
-                    return;
-                }
-
-                // Show loading state
-                submitButton.disabled = true;
-                submitText.style.display = 'none';
-                spinner.style.display = 'inline-block';
-
-                // Submit login via fetch - WordPress will set cookies on success
-                const loginUrl = '<?php echo esc_url( wp_login_url() ); ?>';
-                const formData = new URLSearchParams();
-                formData.append('log', username);
-                formData.append('pwd', password);
-                formData.append('rememberme', 'forever');
-                formData.append('redirect_to', window.location.href);
-                formData.append('wp-submit', 'Log In');
-
-                fetch(loginUrl, {
-                    method: 'POST',
-                    credentials: 'include', // Important: include cookies
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: formData,
-                    redirect: 'manual' // Don't follow redirects automatically
-                })
-                .then(response => {
-                    // WordPress login redirects on success (3xx status)
-                    // On failure, returns 200 with error page
-                    if (response.status >= 300 && response.status < 400) {
-                        // Redirect detected - likely success
-                        // Wait a moment for cookies to be set, then reload
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 300);
-                        return;
-                    }
-
-                    // Check response for error indicators
-                    return response.text().then(html => {
-                        // Check for WordPress login error indicators
-                        const hasError = html.includes('incorrect_password') || 
-                                        html.includes('invalid_username') ||
-                                        html.includes('ERROR') ||
-                                        html.toLowerCase().includes('error') ||
-                                        html.includes('Lost your password');
-
-                        if (hasError) {
-                            // Login failed
-                            showLoginError('Invalid username or password. Please try again.');
-                            submitButton.disabled = false;
-                            submitText.style.display = 'inline';
-                            spinner.style.display = 'none';
-                        } else {
-                            // No clear error - might be success, reload to check
-                            setTimeout(() => {
-                                window.location.reload();
-                            }, 300);
-                        }
-                    });
-                })
-                .catch(error => {
-                    console.error('Login error:', error);
-                    // On error, try reloading anyway (cookie might be set)
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 300);
-                });
-            }
-
-            /**
-             * Show login error message
-             */
-            function showLoginError(message) {
-                const errorDiv = document.getElementById('dt-home-login-error');
-                if (errorDiv) {
-                    errorDiv.textContent = message;
-                    errorDiv.style.display = 'block';
-                }
-            }
 
             /**
              * Display apps in the grid with new icon button layout
@@ -2688,6 +2480,14 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
     }
 
     public function body() {
+        // Check if user is authenticated, redirect to WordPress login if not and require_login is enabled
+        if ( ! is_user_logged_in() && function_exists( 'homescreen_require_login' ) && homescreen_require_login() ) {
+            $current_url = dt_get_url_path();
+            $login_url = wp_login_url( $current_url );
+            wp_redirect( $login_url );
+            exit;
+        }
+
         // Revert back to dt translations
         $this->hard_switch_to_default_dt_text_domain();
 
@@ -2703,6 +2503,75 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
         // Fallback/default: apps view
         include get_template_directory() . '/dt-apps/dt-home/frontend/home-screen.php';
+    }
+
+    /**
+     * Redirect to dt-home after successful login
+     *
+     * @param string $redirect_to The redirect destination URL.
+     * @param string $requested_redirect_to The requested redirect destination URL passed as a parameter.
+     * @param WP_User|WP_Error $user WP_User object if login was successful, WP_Error object otherwise.
+     * @return string The redirect URL.
+     */
+    public function redirect_to_home_after_login( $redirect_to, $requested_redirect_to, $user ) {
+        // If there's an error, don't redirect
+        if ( is_wp_error( $user ) ) {
+            return $redirect_to;
+        }
+
+        // If redirect_to points to dt-home, use it
+        if ( ! empty( $requested_redirect_to ) && strpos( $requested_redirect_to, 'apps/launcher' ) !== false ) {
+            return $requested_redirect_to;
+        }
+
+        // Check if user was coming from dt-home before login
+        $referer = wp_get_referer();
+        if ( $referer && strpos( $referer, 'apps/launcher' ) !== false ) {
+            return $referer;
+        }
+
+        return $redirect_to;
+    }
+
+    /**
+     * Redirect to dt-home after successful registration
+     *
+     * @param int $user_id The newly registered user ID.
+     */
+    public function redirect_to_home_after_registration( $user_id ) {
+        // Check if registration came from dt-home
+        $referer = wp_get_referer();
+        if ( $referer && strpos( $referer, 'apps/launcher' ) !== false ) {
+            // Set auth cookie and redirect
+            wp_set_current_user( $user_id );
+            wp_set_auth_cookie( $user_id );
+
+            // Get the magic link URL for the newly registered user
+            $magic_key = get_user_option( $this->meta_key, $user_id );
+            if ( empty( $magic_key ) ) {
+                // Generate magic key if it doesn't exist
+                $magic_key = dt_create_unique_key();
+                update_user_option( $user_id, $this->meta_key, $magic_key );
+            }
+
+            $home_url = DT_Magic_URL::get_link_url( $this->root, $this->type, $magic_key );
+            wp_safe_redirect( $home_url );
+            exit;
+        }
+    }
+
+    /**
+     * Add redirect_to parameter to registration URL if coming from dt-home
+     *
+     * @param string $url The registration URL.
+     * @return string The modified registration URL.
+     */
+    public function add_redirect_to_registration_url( $url ) {
+        $referer = wp_get_referer();
+        if ( $referer && strpos( $referer, 'apps/launcher' ) !== false ) {
+            return add_query_arg( 'redirect_to', urlencode( $referer ), $url );
+        }
+        return $url;
     }
 
     /**

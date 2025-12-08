@@ -144,3 +144,41 @@ function dt_home_get_app_magic_url( $app, $action = '', $with_launcher = false )
 
     return $url;
 }
+
+/**
+ * Check if users can invite others to the home screen
+ *
+ * This function checks both:
+ * 1. Whether user registration is enabled (via dt_can_users_register())
+ * 2. Whether the "Allow users to invite others" setting is enabled
+ *
+ * @return bool True if users can invite others, false otherwise.
+ */
+function homescreen_invite_users_enabled() {
+    // Check if user registration is enabled
+    if ( ! function_exists( 'dt_can_users_register' ) ) {
+        return false;
+    }
+
+    if ( ! dt_can_users_register() ) {
+        return false;
+    }
+
+    // Check if invite others setting is enabled (defaults to true)
+    // The setting is stored in dt_home_screen_settings array
+    $settings = get_option( 'dt_home_screen_settings', [] );
+    $invite_others = isset( $settings['invite_others'] ) ? $settings['invite_others'] : true;
+    return (bool) $invite_others;
+}
+
+/**
+ * Check if login is required to access the home screen
+ *
+ * @return bool True if login is required, false otherwise.
+ */
+function homescreen_require_login() {
+    // The setting is stored in dt_home_screen_settings array
+    $settings = get_option( 'dt_home_screen_settings', [] );
+    $require_login = isset( $settings['require_login'] ) ? $settings['require_login'] : true;
+    return (bool) $require_login;
+}

@@ -259,12 +259,16 @@ jQuery(document).ready(function ($) {
       const enableRolesPermissions = $('#enable_roles_permissions').is(
         ':checked',
       );
+      const inviteOthers = $('#invite_others').is(':checked');
+      const requireLogin = $('#require_login').is(':checked');
 
       console.log('Form validation passed, submitting form');
       console.log('Extracted form data:', {
         title: titleValue,
         description: descriptionValue,
         enable_roles_permissions: enableRolesPermissions,
+        invite_others: inviteOthers,
+        require_login: requireLogin,
         dt_home_screen_settings: $form
           .find('input[name="dt_home_screen_settings"]')
           .val(),
@@ -311,10 +315,36 @@ jQuery(document).ready(function ($) {
         $form.append($checkboxField);
       }
 
+      // Handle invite_others (checkbox)
+      // Remove any existing hidden fields first (both the one we added and any existing ones)
+      $form.find('input[name="invite_others"]').remove();
+      // Add hidden field with value 0 (default), then override with 1 if checked
+      const $inviteOthersField = $('<input>').attr({
+        type: 'hidden',
+        name: 'invite_others',
+        value: inviteOthers ? '1' : '0',
+      });
+      $form.append($inviteOthersField);
+
+      // Handle require_login (checkbox)
+      // Remove any existing hidden fields first
+      $form.find('input[name="require_login"]').remove();
+      // Add hidden field with value 0 (default), then override with 1 if checked
+      const $requireLoginField = $('<input>').attr({
+        type: 'hidden',
+        name: 'require_login',
+        value: requireLogin ? '1' : '0',
+      });
+      $form.append($requireLoginField);
+
       console.log('Added hidden fields to form. Form now contains:', {
         title: $form.find('input[name="home_screen_title"]').length,
         description: $form.find('input[name="home_screen_description"]').length,
-        checkbox: $form.find('input[name="enable_roles_permissions"]').length,
+        enable_roles_permissions: $form.find(
+          'input[name="enable_roles_permissions"]',
+        ).length,
+        invite_others: $form.find('input[name="invite_others"]').length,
+        require_login: $form.find('input[name="require_login"]').length,
       });
 
       // Show loading state on all submit buttons

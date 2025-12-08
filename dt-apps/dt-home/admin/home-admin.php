@@ -169,7 +169,101 @@ class DT_Home_Admin {
                                     <p class="description"><?php esc_html_e( 'When enabled, you can restrict app access to specific user roles.', 'disciple_tools' ); ?></p>
                                 </td>
                             </tr>
+                            <tr>
+                                <th scope="row">
+                                    <label for="invite_others"><?php esc_html_e( 'Allow users to invite others', 'disciple_tools' ); ?></label>
+                                </th>
+                                <td>
+                                    <?php
+                                    $registration_enabled = function_exists( 'dt_can_users_register' ) && dt_can_users_register();
+                                    // Get invite_others setting, default to 1 (true) if not set
+                                    $invite_others_value = isset( $settings['invite_others'] ) ? (int) $settings['invite_others'] : 1;
+                                    $invite_others_enabled = (bool) $invite_others_value;
+                                    ?>
+                                    <input type="checkbox"
+                                           id="invite_others"
+                                           name="invite_others"
+                                           value="1"
+                                           <?php checked( $invite_others_enabled, true ); ?>
+                                           <?php disabled( ! $registration_enabled ); ?> />
+                                    <label for="invite_others"><?php esc_html_e( 'Allow users to invite others', 'disciple_tools' ); ?></label>
+                                    <p class="description">
+                                        <?php if ( $registration_enabled ) : ?>
+                                            <?php esc_html_e( 'When enabled, users can share an invite link to allow others to register and access their own Home Screen.', 'disciple_tools' ); ?>
+                                        <?php else : ?>
+                                            <?php
+                                            if ( is_multisite() ) {
+                                                $settings_link = network_admin_url( 'settings.php' );
+                                                $settings_text = __( 'Network Settings', 'disciple_tools' );
+                                            } else {
+                                                $settings_link = admin_url( 'options-general.php' );
+                                                $settings_text = __( 'General Settings', 'disciple_tools' );
+                                            }
+                                            ?>
+                                            <strong style="color: #d63638;">
+                                                <?php esc_html_e( 'User registration must be enabled to use this feature.', 'disciple_tools' ); ?>
+                                            </strong>
+                                            <br>
+                                            <?php
+                                            printf(
+                                                esc_html__( 'To enable user registration, visit %s.', 'disciple_tools' ),
+                                                '<a href="' . esc_url( $settings_link ) . '">' . esc_html( $settings_text ) . '</a>'
+                                            );
+                                            ?>
+                                        <?php endif; ?>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    <label for="require_login"><?php esc_html_e( 'Require users to login', 'disciple_tools' ); ?></label>
+                                </th>
+                                <td>
+                                    <?php
+                                    // Get require_login setting, default to 1 (true) if not set
+                                    $require_login_value = isset( $settings['require_login'] ) ? (int) $settings['require_login'] : 1;
+                                    $require_login_enabled = (bool) $require_login_value;
+                                    ?>
+                                    <input type="checkbox"
+                                           id="require_login"
+                                           name="require_login"
+                                           value="1"
+                                           <?php checked( $require_login_enabled, true ); ?> />
+                                    <label for="require_login"><?php esc_html_e( 'Require users to login to access the home screen magic link?', 'disciple_tools' ); ?></label>
+                                    <p class="description">
+                                        <?php esc_html_e( 'When enabled, users must be logged in to access their Home Screen. When disabled, magic links can be accessed without login.', 'disciple_tools' ); ?>
+                                    </p>
+                                </td>
+                            </tr>
                         </table>
+
+                        <!-- Registration Status Info -->
+                        <div class="registration-status" style="margin-top: 20px; padding: 15px; background: #f0f6fc; border-left: 4px solid #2271b1; border-radius: 4px;">
+                            <p style="margin: 0;">
+                                <strong><?php esc_html_e( 'User Registration Status:', 'disciple_tools' ); ?></strong>
+                                <?php
+                                if ( $registration_enabled ) {
+                                    echo '<span style="color: #00a32a; font-weight: 600;">' . esc_html__( 'Enabled', 'disciple_tools' ) . '</span>';
+                                } else {
+                                    echo '<span style="color: #d63638; font-weight: 600;">' . esc_html__( 'Disabled', 'disciple_tools' ) . '</span>';
+                                }
+                                ?>
+                                <br>
+                                <?php
+                                if ( is_multisite() ) {
+                                    $settings_link = network_admin_url( 'settings.php' );
+                                    $settings_text = __( 'Network Settings', 'disciple_tools' );
+                                } else {
+                                    $settings_link = admin_url( 'options-general.php' );
+                                    $settings_text = __( 'General Settings', 'disciple_tools' );
+                                }
+                                printf(
+                                    esc_html__( 'To change registration settings, visit %s.', 'disciple_tools' ),
+                                    '<a href="' . esc_url( $settings_link ) . '">' . esc_html( $settings_text ) . '</a>'
+                                );
+                                ?>
+                            </p>
+                        </div>
 
                         <!-- Save Settings Button -->
                         <p class="submit">
@@ -545,23 +639,43 @@ class DT_Home_Admin {
     /**
      * Handle settings form submission
      */
-    private function handle_settings_save() {
+    private function handle_settings_save() {        
         // Verify nonce first
         if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_home_screen_nonce'] ?? '' ) ), 'dt_home_screen_settings' ) ) {
             wp_die( esc_html__( 'Security check failed. Please try again.', 'disciple_tools' ) );
         }
 
+        // Check if registration is enabled (if not, invite_others checkbox will be disabled and won't submit)
+        $registration_enabled = function_exists( 'dt_can_users_register' ) && dt_can_users_register();
+        
         $settings = [
             'title' => sanitize_text_field( wp_unslash( $_POST['home_screen_title'] ?? '' ) ),
             'description' => sanitize_textarea_field( wp_unslash( $_POST['home_screen_description'] ?? '' ) ),
             'enable_roles_permissions' => isset( $_POST['enable_roles_permissions'] ) ? 1 : 0,
         ];
+        
+        // Handle require_login (checkbox sends "1" when checked, "0" when unchecked via hidden field)
+        $require_login_post = isset( $_POST['require_login'] ) ? sanitize_text_field( wp_unslash( $_POST['require_login'] ) ) : '';
+        $settings['require_login'] = ( $require_login_post === '1' ) ? 1 : 0;
+        
+        // Only update invite_others if registration is enabled (checkbox will be enabled and can submit)
+        // If registration is disabled, the checkbox is disabled and won't be in POST, so preserve existing value
+        if ( $registration_enabled ) {
+            // Checkbox sends "1" when checked, nothing when unchecked
+            $invite_others_post = isset( $_POST['invite_others'] ) ? sanitize_text_field( wp_unslash( $_POST['invite_others'] ) ) : '';
+            $settings['invite_others'] = ( $invite_others_post === '1' ) ? 1 : 0;
+        }
 
         // Merge with existing settings to preserve any other settings that might exist
         $existing_settings = get_option( 'dt_home_screen_settings', [] );
 
-        // Use existing settings as base and merge new settings into them (new settings override existing)
-        $settings = wp_parse_args( $settings, $existing_settings );
+        // Merge: existing settings as base, new settings override (array_merge ensures new values take precedence)
+        $settings = array_merge( $existing_settings, $settings );
+        
+        // Ensure invite_others is stored as integer (preserve existing if not updated)
+        if ( isset( $settings['invite_others'] ) ) {
+            $settings['invite_others'] = (int) $settings['invite_others'];
+        }
 
         update_option( 'dt_home_screen_settings', $settings );
 
@@ -578,10 +692,24 @@ class DT_Home_Admin {
             'title' => __( 'Welcome to your Home Screen', 'disciple_tools' ),
             'description' => __( 'Your personalized dashboard for apps and training.', 'disciple_tools' ),
             'enable_roles_permissions' => 1,
+            'invite_others' => 1, // Default to true
+            'require_login' => 1, // Default to true
         ];
 
         $settings = get_option( 'dt_home_screen_settings', $defaults );
-        return wp_parse_args( $settings, $defaults );
+        $settings = wp_parse_args( $settings, $defaults );
+        
+        // Ensure invite_others is an integer (0 or 1)
+        if ( isset( $settings['invite_others'] ) ) {
+            $settings['invite_others'] = (int) $settings['invite_others'];
+        }
+        
+        // Ensure require_login is an integer (0 or 1)
+        if ( isset( $settings['require_login'] ) ) {
+            $settings['require_login'] = (int) $settings['require_login'];
+        }
+        
+        return $settings;
     }
 
     /**

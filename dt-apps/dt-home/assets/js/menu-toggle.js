@@ -321,6 +321,14 @@ class MenuToggle {
         window.dtHomeMenuToggleSettings.logoutUrl) ||
       '/wp-login.php?action=logout';
 
+    // Check if invite is enabled (from dtHomeMenuToggleSettings)
+    // Parse the value as it may be 1/0 (integer) or "1"/"0" (string) from wp_localize_script
+    const inviteEnabled =
+      window.dtHomeMenuToggleSettings &&
+      (window.dtHomeMenuToggleSettings.inviteEnabled === true ||
+        window.dtHomeMenuToggleSettings.inviteEnabled === 1 ||
+        window.dtHomeMenuToggleSettings.inviteEnabled === '1');
+
     // Create menu items
     const menuItems = [
       {
@@ -341,7 +349,11 @@ class MenuToggle {
         },
         active: currentView === 'training',
       },
-      {
+    ];
+
+    // Only add invite menu item if invite is enabled
+    if (inviteEnabled) {
+      menuItems.push({
         id: 'menu-invite',
         label: 'Invite',
         icon: 'mdi-account-plus',
@@ -349,22 +361,24 @@ class MenuToggle {
           this.openInviteModal();
         },
         active: false,
+      });
+    }
+
+    // Add logout menu item
+    menuItems.push({
+      id: 'menu-logout',
+      label: 'Logout',
+      icon: 'mdi-logout',
+      action: () => {
+        if (!logoutUrl) {
+          console.warn('Logout URL not set');
+          return;
+        }
+        const targetWindow = window.top || window;
+        targetWindow.location.href = logoutUrl;
       },
-      {
-        id: 'menu-logout',
-        label: 'Logout',
-        icon: 'mdi-logout',
-        action: () => {
-          if (!logoutUrl) {
-            console.warn('Logout URL not set');
-            return;
-          }
-          const targetWindow = window.top || window;
-          targetWindow.location.href = logoutUrl;
-        },
-        active: false,
-      },
-    ];
+      active: false,
+    });
 
     // Clear existing menu items
     this.floatingMenu.innerHTML = '';
@@ -449,10 +463,9 @@ class MenuToggle {
     // Include dt-menu-icon class for theme color support, but set explicitly to avoid overlay
     this.menuIcon.className = 'mdi mdi-close dt-menu-icon';
 
-    // Ensure menu items are created if not already
-    if (!this.floatingMenu.children.length) {
-      this.createMenuItems();
-    }
+    // Always recreate menu items when opening menu to ensure invite_enabled is checked with latest jsObject
+    // This ensures that if jsObject wasn't available during initialization, we still get the correct menu items
+    this.createMenuItems();
 
     // Position floating menu relative to the button (align right, below)
     this.positionMenu();
