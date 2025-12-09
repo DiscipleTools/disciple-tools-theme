@@ -114,6 +114,66 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
         
         return false;
     });
+    
+    /**
+     * Apply theme-aware icon colors to launcher navigation icons
+     * Matches the logic used in home screen app icons
+     * Only initialize once (check if function already exists)
+     */
+    if (typeof applyLauncherNavIconColors === 'undefined') {
+        window.applyLauncherNavIconColors = function() {
+            const launcherIcons = document.querySelectorAll('.launcher-apps-selector .launcher-app-link i, .dt-launcher-apps-selector .launcher-app-link i');
+            
+            launcherIcons.forEach(function(icon) {
+                const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
+                
+                if (!hasCustomColor) {
+                    // Apply theme-aware default (matches home screen logic)
+                    const isDarkMode = document.body.classList.contains('theme-dark') ||
+                                     document.documentElement.classList.contains('theme-dark') ||
+                                     document.body.classList.contains('dark') ||
+                                     document.documentElement.classList.contains('dark');
+                    const defaultColor = isDarkMode ? '#ffffff' : '#0a0a0a';
+                    icon.style.setProperty('color', defaultColor, 'important');
+                }
+                // If has custom color, it's already set via inline style from PHP
+            });
+        };
+        
+        // Run on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', window.applyLauncherNavIconColors);
+        } else {
+            // DOM already loaded
+            setTimeout(window.applyLauncherNavIconColors, 100);
+        }
+        
+        // Re-run when theme changes (listen for theme toggle events)
+        document.addEventListener('themeChanged', window.applyLauncherNavIconColors);
+        
+        // Also listen for class changes on body/html (fallback for theme changes)
+        if (typeof MutationObserver !== 'undefined') {
+            const themeObserver = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && 
+                        (mutation.attributeName === 'class' || mutation.target === document.body || mutation.target === document.documentElement)) {
+                        window.applyLauncherNavIconColors();
+                    }
+                });
+            });
+            
+            // Observe body and html for class changes
+            if (document.body) {
+                themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+            }
+            themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        }
+    }
+    
+    // Run immediately for icons already in DOM
+    if (typeof window.applyLauncherNavIconColors !== 'undefined') {
+        setTimeout(window.applyLauncherNavIconColors, 50);
+    }
 </script>
 <div class="<?php echo esc_attr( $nav_class ); ?>">
     <div class="nav-container">
@@ -191,7 +251,22 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
         // Get app name/title
         $app_name = $app['title'] ?? $app['name'] ?? 'App';
         $app_icon = $app['icon'] ?? 'mdi mdi-apps';
-        $app_color = $app['color'] ?? '#667eea';
+        
+        // Check if app has a custom color (empty string or #cccccc means no custom color)
+        // Match the logic used in home screen JavaScript: app.color && app.color.trim() !== ''
+        $has_custom_color = !empty( $app['color'] ) && 
+                           is_string( $app['color'] ) && 
+                           trim( $app['color'] ) !== '' && 
+                           trim( $app['color'] ) !== '#cccccc';
+        
+        if ( $has_custom_color ) {
+            $app_color = trim( $app['color'] );
+            $color_style = 'style="color: ' . esc_attr( $app_color ) . ';"';
+        } else {
+            // No custom color - don't set inline style, let JavaScript/CSS handle theme-aware defaults
+            $app_color = null;
+            $color_style = '';
+        }
         ?>
         <li>
             <a href="<?php echo esc_url( $launcher_url ); ?>" 
@@ -199,11 +274,15 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
                data-app-url="<?php echo esc_attr( $iframe_app_url ); ?>"
                data-launcher-url="<?php echo esc_attr( $launcher_url ); ?>">
                 <?php if ( str_starts_with( $app_icon, 'http' ) || str_starts_with( $app_icon, '/' ) ): ?>
-                    <img src="<?php echo esc_url( $app_icon ); ?>" alt="<?php echo esc_attr( $app_name ); ?>" style="color: <?php echo esc_attr( $app_color ); ?>;" />
+                    <img src="<?php echo esc_url( $app_icon ); ?>" 
+                         alt="<?php echo esc_attr( $app_name ); ?>" 
+                         <?php echo $color_style; ?>
+                         data-has-custom-color="<?php echo $has_custom_color ? 'true' : 'false'; ?>" />
                 <?php else : ?>
                     <i class="<?php echo esc_attr( $app_icon ); ?>" 
                        aria-hidden="true"
-                       style="color: <?php echo esc_attr( $app_color ); ?>;"></i>
+                       <?php echo $color_style; ?>
+                       data-has-custom-color="<?php echo $has_custom_color ? 'true' : 'false'; ?>"></i>
                 <?php endif; ?>
                 <span class="name"><?php echo esc_html( $app_name ); ?></span>
             </a>

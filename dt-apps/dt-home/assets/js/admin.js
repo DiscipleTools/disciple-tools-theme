@@ -198,6 +198,68 @@ jQuery(document).ready(function ($) {
       updateIconPreview($(this));
     });
 
+    // Handle color reset button for add form
+    $(document).on('click', '#add-app-reset-color', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const $colorInput = $('#add-app-color');
+      const $description = $('#add-app-color-description');
+
+      // Check if elements exist
+      if ($colorInput.length === 0) {
+        console.error('Add form color input not found');
+        return;
+      }
+
+      // Set color to placeholder (represents "no custom color")
+      $colorInput.val('#cccccc');
+
+      // Force update the color input display (some browsers need this)
+      // Set the value attribute directly as well for better browser compatibility
+      if ($colorInput[0]) {
+        $colorInput[0].setAttribute('value', '#cccccc');
+        // Use setTimeout to ensure the browser has time to update the visual display
+        setTimeout(function () {
+          $colorInput[0].dispatchEvent(new Event('input', { bubbles: true }));
+          $colorInput[0].dispatchEvent(new Event('change', { bubbles: true }));
+        }, 10);
+      }
+
+      // Also trigger jQuery events for compatibility
+      setTimeout(function () {
+        $colorInput.trigger('input').trigger('change');
+      }, 10);
+
+      // Update description
+      if ($description.length > 0) {
+        $description.text(
+          'Using default theme-aware color. The icon will automatically switch between black (light mode) and white (dark mode). Set a custom color to override.',
+        );
+      }
+
+      console.log('Add form color reset to default (#cccccc)');
+    });
+
+    // Handle color input changes in add form to update description
+    $(document).on('input change', '#add-app-color', function () {
+      const $colorInput = $(this);
+      const $description = $('#add-app-color-description');
+      const currentColor = $colorInput.val().toLowerCase();
+
+      if (currentColor === '#cccccc' || currentColor === 'cccccc') {
+        // Using default (placeholder)
+        $description.text(
+          'Using default theme-aware color. The icon will automatically switch between black (light mode) and white (dark mode). Set a custom color to override.',
+        );
+      } else {
+        // Custom color is set
+        $description.text(
+          'Custom color is set. Click "Reset to Default" to use the theme-aware color (black in light mode, white in dark mode).',
+        );
+      }
+    });
+
     // Custom handler for add form icon button to prevent auto-submission
     // This prevents page refresh when selecting an icon during app creation
     $(document).on(
@@ -347,8 +409,8 @@ jQuery(document).ready(function ($) {
         require_login: $form.find('input[name="require_login"]').length,
       });
 
-      // Show loading state on all submit buttons
-      $('#save-settings-top, #save-settings-bottom').each(function () {
+      // Show loading state on submit button
+      $('#save-settings-top').each(function () {
         const $btn = $(this);
         const originalText = $btn.val();
         $btn.data('original-text', originalText);
@@ -383,20 +445,11 @@ jQuery(document).ready(function ($) {
       return true;
     }
 
-    // Handle top Save Settings button click
+    // Handle Save Settings button click
     $(document).on('click', '#save-settings-top', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      console.log('Top Save Settings button clicked');
-      saveSettingsForm();
-      return false;
-    });
-
-    // Handle bottom Save Settings button click
-    $(document).on('click', '#save-settings-bottom', function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log('Bottom Save Settings button clicked');
+      console.log('Save Settings button clicked');
       saveSettingsForm();
       return false;
     });
@@ -543,21 +596,42 @@ jQuery(document).ready(function ($) {
       openEditModal();
     }
 
-    // If a refresh is in progress, wait for it to complete
-    if (refreshInProgress && refreshPromise) {
-      console.log('Waiting for refresh to complete...');
-      refreshPromise
-        .then(function () {
-          findAndOpenApp();
-        })
-        .fail(function () {
-          // Even if refresh fails, try to find the app with current data
-          findAndOpenApp();
-        });
-    } else {
-      // No refresh in progress, proceed immediately
-      findAndOpenApp();
+    // Always ensure we have fresh data before opening the modal
+    // This prevents showing stale data after a save operation
+    function ensureFreshDataAndOpen() {
+      if (refreshInProgress && refreshPromise) {
+        // Refresh is already in progress, wait for it
+        console.log('Refresh in progress, waiting for completion...');
+        refreshPromise
+          .then(function () {
+            console.log('Refresh completed, opening modal...');
+            findAndOpenApp();
+          })
+          .fail(function () {
+            console.warn('Refresh failed, but proceeding with current data...');
+            // Even if refresh fails, try to find the app with current data
+            findAndOpenApp();
+          });
+      } else {
+        // No refresh in progress, trigger one to ensure fresh data
+        console.log(
+          'No refresh in progress, triggering refresh to ensure fresh data...',
+        );
+        refreshHomeAdminData()
+          .then(function () {
+            console.log('Refresh completed, opening modal with fresh data...');
+            findAndOpenApp();
+          })
+          .fail(function () {
+            console.warn('Refresh failed, but proceeding with current data...');
+            // Even if refresh fails, try to find the app with current data
+            findAndOpenApp();
+          });
+      }
     }
+
+    // Always ensure fresh data before opening
+    ensureFreshDataAndOpen();
   }
 
   /**
@@ -749,7 +823,22 @@ jQuery(document).ready(function ($) {
         </tr>
         <tr>
           <th scope="row" style="width: 150px;">Color</th>
-          <td><input type="color" name="app_color" id="app-edit-color" value="${escapeHtml(appData.color || '#667eea')}" /></td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <input type="color" name="app_color" id="app-edit-color" value="${escapeHtml(appData.color && appData.color.trim() !== '' ? appData.color : '#cccccc')}" style="flex-shrink: 0;" />
+              <button type="button" class="button button-small reset-color-button" id="app-edit-reset-color" style="flex-shrink: 0;">
+                Reset to Default
+              </button>
+            </div>
+            <input type="hidden" name="app_color_original" id="app-edit-color-original" value="${escapeHtml(appData.color || '')}" />
+            <p class="description" id="app-edit-color-description" style="margin-top: 5px;">
+              ${
+                appData.color && appData.color.trim() !== ''
+                  ? 'Custom color is set. Click "Reset to Default" to use the theme-aware color (black in light mode, white in dark mode).'
+                  : 'Using default theme-aware color. The icon will automatically switch between black (light mode) and white (dark mode). Set a custom color to override.'
+              }
+            </p>
+          </td>
         </tr>
         <tr>
           <th scope="row" style="width: 150px;">Enabled</th>
@@ -793,6 +882,9 @@ jQuery(document).ready(function ($) {
 
     // Set up role selection toggle
     setupRoleSelectionToggle();
+
+    // Set up color reset button
+    setupColorResetButton();
   }
 
   /**
@@ -847,6 +939,82 @@ jQuery(document).ready(function ($) {
     $('input[name="app_user_roles_type"]').on('change', function () {
       const isSpecificRoles = $(this).val() === 'support_specific_roles';
       $('.app-roles-selection').toggle(isSpecificRoles);
+    });
+  }
+
+  /**
+   * Setup color reset button handler
+   */
+  function setupColorResetButton() {
+    // Use delegated handlers to ensure they work even if elements are recreated
+    // Remove existing handlers first
+    $(document).off('click', '#app-edit-reset-color');
+    $(document).off('input change', '#app-edit-color');
+
+    // Handle reset button click using delegated handler
+    $(document).on('click', '#app-edit-reset-color', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const $colorInput = $('#app-edit-color');
+      const $description = $('#app-edit-color-description');
+
+      // Check if elements exist
+      if ($colorInput.length === 0) {
+        console.error('Color input not found');
+        return;
+      }
+
+      // Set color to placeholder (represents "no custom color")
+      $colorInput.val('#cccccc');
+
+      // Force update the color input display (some browsers need this)
+      // Set the value attribute directly as well for better browser compatibility
+      if ($colorInput[0]) {
+        $colorInput[0].setAttribute('value', '#cccccc');
+        // Use setTimeout to ensure the browser has time to update the visual display
+        setTimeout(function () {
+          $colorInput[0].dispatchEvent(new Event('input', { bubbles: true }));
+          $colorInput[0].dispatchEvent(new Event('change', { bubbles: true }));
+        }, 10);
+      }
+
+      // Also trigger jQuery events for compatibility
+      setTimeout(function () {
+        $colorInput.trigger('input').trigger('change');
+      }, 10);
+
+      // Update description
+      if ($description.length > 0) {
+        $description.text(
+          'Using default theme-aware color. The icon will automatically switch between black (light mode) and white (dark mode). Set a custom color to override.',
+        );
+      }
+
+      console.log('Color reset to default (#cccccc)');
+    });
+
+    // Handle color input changes to update description
+    $(document).on('input change', '#app-edit-color', function () {
+      const $colorInput = $(this);
+      const $description = $('#app-edit-color-description');
+      const currentColor = $colorInput.val().toLowerCase().trim();
+
+      if (currentColor === '#cccccc' || currentColor === 'cccccc') {
+        // Using default (placeholder)
+        if ($description.length > 0) {
+          $description.text(
+            'Using default theme-aware color. The icon will automatically switch between black (light mode) and white (dark mode). Set a custom color to override.',
+          );
+        }
+      } else {
+        // Custom color is set
+        if ($description.length > 0) {
+          $description.text(
+            'Custom color is set. Click "Reset to Default" to use the theme-aware color (black in light mode, white in dark mode).',
+          );
+        }
+      }
     });
   }
 
@@ -963,31 +1131,100 @@ jQuery(document).ready(function ($) {
                   });
 
                   // Add all form fields from the form content div (with values preserved)
+                  // IMPORTANT: Use a more comprehensive selector to find ALL inputs, including those in hidden rows
+                  // jQuery's .find() will find elements even if their parent has display:none
                   if ($formContent.length > 0) {
-                    $formContent
-                      .find('input, textarea, select')
-                      .each(function () {
-                        const $field = $(this);
-                        const $clonedField = $field.clone(true, true);
+                    // Find all inputs, textareas, and selects, including those in hidden containers
+                    const $allFields = $formContent.find(
+                      'input, textarea, select',
+                    );
 
-                        // For select elements, preserve the selected option
-                        if ($field.is('select')) {
-                          const selectedValue = $field.val();
-                          $clonedField.val(selectedValue);
+                    console.log(
+                      'Found form fields for reconstruction:',
+                      $allFields.length,
+                    );
+                    console.log(
+                      'Checkboxes found:',
+                      $allFields.filter(':checkbox').length,
+                    );
+                    console.log(
+                      'Checked checkboxes:',
+                      $allFields.filter(':checkbox:checked').length,
+                    );
+
+                    $allFields.each(function () {
+                      const $field = $(this);
+                      const fieldName = $field.attr('name');
+                      const fieldType = $field.attr('type');
+
+                      // Skip if field has no name (not a form field)
+                      if (!fieldName) {
+                        return;
+                      }
+
+                      const $clonedField = $field.clone(true, true);
+
+                      // For select elements, preserve the selected option
+                      if ($field.is('select')) {
+                        const selectedValue = $field.val();
+                        $clonedField.val(selectedValue);
+                      }
+
+                      // For checkboxes, preserve checked state and ensure they're included
+                      if ($field.is(':checkbox')) {
+                        const isChecked = $field.is(':checked');
+                        $clonedField.prop('checked', isChecked);
+                        // Ensure unchecked checkboxes are still included if they're part of an array (like app_roles[])
+                        // For array checkboxes, we need to include them even if unchecked, but only if they were checked
+                        // Actually, HTML form behavior: unchecked checkboxes don't submit, which is correct
+                        // But we need to ensure checked ones are included
+                        if (isChecked) {
+                          console.log(
+                            'Including checked checkbox:',
+                            fieldName,
+                            $field.val(),
+                          );
                         }
+                      }
 
-                        // For checkboxes, preserve checked state
-                        if ($field.is(':checkbox')) {
-                          $clonedField.prop('checked', $field.is(':checked'));
+                      // For radio buttons, preserve checked state
+                      if ($field.is(':radio')) {
+                        const isChecked = $field.is(':checked');
+                        $clonedField.prop('checked', isChecked);
+                        // Only include the checked radio button (standard HTML behavior)
+                        if (!isChecked) {
+                          return; // Skip unchecked radio buttons
                         }
+                      }
 
-                        // For radio buttons, preserve checked state
-                        if ($field.is(':radio')) {
-                          $clonedField.prop('checked', $field.is(':checked'));
-                        }
+                      // For color inputs, explicitly preserve the current value
+                      if ($field.is('input[type="color"]')) {
+                        const currentValue = $field.val();
+                        $clonedField.val(currentValue);
+                        // Also set the value attribute to ensure it's preserved
+                        $clonedField.attr('value', currentValue);
+                        console.log(
+                          'Color input cloned with value:',
+                          fieldName,
+                          currentValue,
+                        );
+                      }
 
-                        $formElement.append($clonedField);
-                      });
+                      $formElement.append($clonedField);
+                    });
+
+                    console.log(
+                      'Form reconstructed with fields:',
+                      $formElement.find('input, textarea, select').length,
+                    );
+                    console.log(
+                      'Reconstructed checkboxes:',
+                      $formElement.find(':checkbox').length,
+                    );
+                    console.log(
+                      'Reconstructed checked checkboxes:',
+                      $formElement.find(':checkbox:checked').length,
+                    );
                   }
 
                   // Temporarily add form to body for submission (hidden)
@@ -1045,6 +1282,50 @@ jQuery(document).ready(function ($) {
 
               // Submit the form using native DOM submit (this will cause a page reload)
               const formDomElement = $formElement[0];
+
+              // Debug: Log form data before submission
+              if (formDomElement) {
+                const formData = new FormData(formDomElement);
+                const rolesData = [];
+                let submittedColor = '';
+                for (const [key, value] of formData.entries()) {
+                  if (key === 'app_roles[]') {
+                    rolesData.push(value);
+                  }
+                  if (key === 'app_color') {
+                    submittedColor = value;
+                  }
+                }
+                console.log(
+                  'Form submission - User roles type:',
+                  $formElement
+                    .find('input[name="app_user_roles_type"]:checked')
+                    .val(),
+                );
+                console.log('Form submission - Selected roles:', rolesData);
+                console.log('Form submission - Color value:', submittedColor);
+                console.log(
+                  'Form submission - Color input current value:',
+                  $formElement.find('#app-edit-color').val(),
+                );
+                console.log(
+                  'Form submission - Total form fields:',
+                  $formElement.find('input, textarea, select').length,
+                );
+
+                // Ensure color input value is properly set before submission
+                const $colorInput = $formElement.find('#app-edit-color');
+                if ($colorInput.length > 0) {
+                  const currentColorValue = $colorInput.val();
+                  // Make sure the value attribute matches the current value
+                  $colorInput.attr('value', currentColorValue);
+                  console.log(
+                    'Ensured color input value is set to:',
+                    currentColorValue,
+                  );
+                }
+              }
+
               if (
                 formDomElement &&
                 typeof formDomElement.submit === 'function'

@@ -1009,15 +1009,19 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             }
 
             /* Dark mode styles for app cards (backup for theme-dark class) */
-            .theme-dark .app-card,
-            body.theme-dark .app-card {
+            /* Support both html.theme-dark and body.theme-dark for early initialization */
+            /* Scoped to .apps-grid to match CSS file selector structure */
+            html.theme-dark .apps-grid .app-card,
+            .theme-dark .apps-grid .app-card,
+            body.theme-dark .apps-grid .app-card {
                 background: var(--app-card-bg, #2a2a2a) !important;
                 border-color: var(--app-card-border, #404040) !important;
                 color: var(--app-card-text, #f5f5f5) !important;
             }
 
-            .theme-dark .app-card:hover,
-            body.theme-dark .app-card:hover {
+            html.theme-dark .apps-grid .app-card:hover,
+            .theme-dark .apps-grid .app-card:hover,
+            body.theme-dark .apps-grid .app-card:hover {
                 box-shadow: 0 4px 20px var(--app-card-shadow, rgba(0,0,0,0.3)) !important;
                 border-color: var(--app-card-hover-border, #4a9eff) !important;
             }

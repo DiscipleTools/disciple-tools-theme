@@ -329,13 +329,6 @@ class DT_Home_Admin {
                             </div>
                         </div>
                     </div>
-
-                    <!-- Save Button -->
-                    <div class="dt-home-section">
-                        <p class="submit">
-                            <input type="submit" name="submit" id="save-settings-bottom" class="button" value="<?php esc_attr_e( 'Save Settings', 'disciple_tools' ); ?>" />
-                        </p>
-                    </div>
                 </div>
             </form>
         </div>
@@ -795,13 +788,25 @@ class DT_Home_Admin {
 
         switch ( $action ) {
             case 'create':
+                // Handle color: if empty or #cccccc (placeholder), set to empty string (no custom color)
+                // Use empty string instead of null to ensure it's preserved in WordPress options
+                $submitted_color = sanitize_text_field( wp_unslash( $_POST['app_color'] ?? '#667eea' ) );
+                $color_value = '';
+                if ( ! empty( $submitted_color ) && $submitted_color !== '#cccccc' ) {
+                    $color_value = sanitize_hex_color( $submitted_color );
+                    // If sanitize_hex_color returns empty (invalid), set to empty string
+                    if ( empty( $color_value ) ) {
+                        $color_value = '';
+                    }
+                }
+                
                 $app_data = [
                     'type' => sanitize_text_field( wp_unslash( $_POST['app_type'] ?? 'link' ) ),
                     'title' => sanitize_text_field( wp_unslash( $_POST['app_title'] ?? '' ) ),
                     'description' => sanitize_textarea_field( wp_unslash( $_POST['app_description'] ?? '' ) ),
                     'url' => esc_url_raw( wp_unslash( $_POST['app_url'] ?? '#' ) ),
                     'icon' => sanitize_text_field( wp_unslash( $_POST['app_icon'] ?? 'mdi mdi-apps' ) ),
-                    'color' => sanitize_hex_color( wp_unslash( $_POST['app_color'] ?? '#667eea' ) ),
+                    'color' => $color_value,
                     'enabled' => isset( $_POST['app_enabled'] ),
                     'user_roles_type' => sanitize_text_field( wp_unslash( $_POST['app_user_roles_type'] ?? 'support_all_roles' ) ),
                     'roles' => isset( $_POST['app_roles'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['app_roles'] ) ) : []
@@ -821,17 +826,73 @@ class DT_Home_Admin {
 
             case 'update':
                 $app_id = sanitize_text_field( wp_unslash( $_POST['app_id'] ?? '' ) );
+                
+                // Get the original app to check its current color state
+                $original_app = $apps_manager->get_app( $app_id );
+                $original_color = $original_app['color'] ?? '';
+                
+                // Get submitted color and original color from form
+                $submitted_color = sanitize_text_field( wp_unslash( $_POST['app_color'] ?? '' ) );
+                $form_original_color = sanitize_text_field( wp_unslash( $_POST['app_color_original'] ?? '' ) );
+                
+                // Debug logging (remove in production)
+                error_log( 'DT Home: App color update - Submitted: ' . $submitted_color . ', Original: ' . ( $original_color ?: 'empty' ) . ', Form Original: ' . $form_original_color );
+                
+                // Determine if we should update the color
+                // If original had no color (empty string) and submitted is #cccccc (placeholder), don't update
+                // Otherwise, update the color
+                // Use empty string instead of null to ensure it's preserved in WordPress options
+                $should_update_color = true;
+                $color_to_save = '';
+                
+                if ( empty( $original_color ) || trim( $original_color ) === '' ) {
+                    // App originally had no color
+                    if ( $submitted_color === '#cccccc' || empty( $submitted_color ) ) {
+                        // User didn't change it (still placeholder or empty), don't update
+                        $should_update_color = false;
+                    } else {
+                        // User set a color, update it
+                        $color_to_save = sanitize_hex_color( $submitted_color );
+                        // If sanitization fails, set to empty string
+                        if ( empty( $color_to_save ) ) {
+                            $color_to_save = '';
+                        }
+                    }
+                } else {
+                    // App originally had a color
+                    if ( ! empty( $submitted_color ) ) {
+                        if ( $submitted_color === '#cccccc' && $original_color !== '#cccccc' ) {
+                            // User set it to placeholder and original was different, clear the color (use default)
+                            $color_to_save = '';
+                        } else {
+                            // Update with submitted color (including if it's #cccccc and original was also #cccccc)
+                            $color_to_save = sanitize_hex_color( $submitted_color );
+                            // If sanitization fails, set to empty string
+                            if ( empty( $color_to_save ) ) {
+                                $color_to_save = '';
+                            }
+                        }
+                    } else {
+                        // Submitted is empty, set to empty string (user cleared it)
+                        $color_to_save = '';
+                    }
+                }
+                
                 $app_data = [
                     'type' => sanitize_text_field( wp_unslash( $_POST['app_type'] ?? 'link' ) ),
                     'title' => sanitize_text_field( wp_unslash( $_POST['app_title'] ?? '' ) ),
                     'description' => sanitize_textarea_field( wp_unslash( $_POST['app_description'] ?? '' ) ),
                     'url' => esc_url_raw( wp_unslash( $_POST['app_url'] ?? '#' ) ),
                     'icon' => sanitize_text_field( wp_unslash( $_POST['app_icon'] ?? 'mdi mdi-apps' ) ),
-                    'color' => sanitize_hex_color( wp_unslash( $_POST['app_color'] ?? '#667eea' ) ),
                     'enabled' => isset( $_POST['app_enabled'] ),
                     'user_roles_type' => sanitize_text_field( wp_unslash( $_POST['app_user_roles_type'] ?? 'support_all_roles' ) ),
                     'roles' => isset( $_POST['app_roles'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['app_roles'] ) ) : []
                 ];
+                
+                // Only include color in update if it should be updated
+                if ( $should_update_color ) {
+                    $app_data['color'] = $color_to_save;
+                }
 
                 $result = $apps_manager->update_app( $app_id, $app_data );
                 if ( is_wp_error( $result ) ) {
@@ -989,7 +1050,17 @@ class DT_Home_Admin {
                     </tr>
                     <tr>
                         <th scope="row"><?php esc_html_e( 'Color', 'disciple_tools' ); ?></th>
-                        <td><input type="color" name="app_color" value="#667eea" /></td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <input type="color" name="app_color" id="add-app-color" value="#cccccc" style="flex-shrink: 0;" />
+                                <button type="button" class="button button-small reset-color-button" id="add-app-reset-color" style="flex-shrink: 0;">
+                                    <?php esc_html_e( 'Reset to Default', 'disciple_tools' ); ?>
+                                </button>
+                            </div>
+                            <p class="description" id="add-app-color-description" style="margin-top: 5px;">
+                                <?php esc_html_e( 'Using default theme-aware color. The icon will automatically switch between black (light mode) and white (dark mode). Set a custom color to override.', 'disciple_tools' ); ?>
+                            </p>
+                        </td>
                     </tr>
                     <tr>
                         <th scope="row"><?php esc_html_e( 'Enabled', 'disciple_tools' ); ?></th>

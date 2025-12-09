@@ -82,7 +82,7 @@ class DT_Home_Apps {
                     'description' => $app['description'] ?? '',
                     'url' => trailingslashit( trailingslashit( site_url() ) . $app['url_base'] ),
                     'icon' => $app['meta']['icon'] ?? 'mdi mdi-apps',
-                    'color' => null,
+                    'color' => '', // Empty string represents "no custom color" (preserved in WordPress options)
                     'enabled' => true,
                     'order' => $this->get_next_order(),
                     'created_at' => current_time( 'mysql' ),
@@ -132,7 +132,7 @@ class DT_Home_Apps {
                 'description' => '',
                 'url' => $app['url'] ?? '#',
                 'icon' => $app['icon'] ?? 'mdi mdi-apps',
-                'color' => null,
+                'color' => '', // Empty string represents "no custom color" (preserved in WordPress options)
                 'enabled' => !( $app['is_hidden'] ?? false ),
                 'order' => $app['sort'] ?? $this->get_next_order(),
                 'created_at' => current_time( 'mysql' ),
@@ -257,7 +257,7 @@ class DT_Home_Apps {
             'description' => sanitize_textarea_field( $app_data['description'] ?? '' ),
             'url' => esc_url_raw( $app_data['url'] ?? '#' ),
             'icon' => sanitize_text_field( $app_data['icon'] ?? 'mdi mdi-apps' ),
-            'color' => sanitize_hex_color( $app_data['color'] ?? null ),
+            'color' => ! empty( $app_data['color'] ) ? sanitize_hex_color( $app_data['color'] ) : '', // Empty string for no custom color
             'enabled' => isset( $app_data['enabled'] ) ? (bool) $app_data['enabled'] : true,
             'user_roles_type' => sanitize_text_field( $app_data['user_roles_type'] ?? 'support_all_roles' ),
             'roles' => is_array( $app_data['roles'] ?? [] ) ? array_map( 'sanitize_text_field', $app_data['roles'] ) : [],
@@ -308,7 +308,15 @@ class DT_Home_Apps {
             $apps[$app_index]['icon'] = sanitize_text_field( $app_data['icon'] );
         }
         if ( isset( $app_data['color'] ) ) {
-            $apps[$app_index]['color'] = sanitize_hex_color( $app_data['color'] );
+            // Handle empty string (no custom color) vs valid hex color
+            // Use empty string instead of null to ensure it's preserved in WordPress options
+            if ( $app_data['color'] === '' || $app_data['color'] === null ) {
+                $apps[$app_index]['color'] = '';
+            } else {
+                $sanitized_color = sanitize_hex_color( $app_data['color'] );
+                // If sanitization returns empty (invalid color), set to empty string
+                $apps[$app_index]['color'] = ! empty( $sanitized_color ) ? $sanitized_color : '';
+            }
         }
         if ( isset( $app_data['enabled'] ) ) {
             $apps[$app_index]['enabled'] = (bool) $app_data['enabled'];

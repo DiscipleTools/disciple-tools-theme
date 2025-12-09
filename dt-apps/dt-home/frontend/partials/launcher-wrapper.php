@@ -80,6 +80,57 @@ wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-h
             display: block;
         }
     </style>
+    <script>
+        /**
+         * Apply theme-aware icon colors to launcher navigation icons
+         * Matches the logic used in home screen app icons
+         */
+        function applyLauncherNavIconColors() {
+            const launcherIcons = document.querySelectorAll('.launcher-apps-selector .launcher-app-link i, .dt-launcher-apps-selector .launcher-app-link i');
+            
+            launcherIcons.forEach(function(icon) {
+                const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
+                
+                if (!hasCustomColor) {
+                    // Apply theme-aware default (matches home screen logic)
+                    const isDarkMode = document.body.classList.contains('theme-dark') ||
+                                     document.documentElement.classList.contains('theme-dark') ||
+                                     document.body.classList.contains('dark') ||
+                                     document.documentElement.classList.contains('dark');
+                    const defaultColor = isDarkMode ? '#ffffff' : '#0a0a0a';
+                    icon.style.setProperty('color', defaultColor, 'important');
+                }
+                // If has custom color, it's already set via inline style from PHP
+            });
+        }
+
+        // Run on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', applyLauncherNavIconColors);
+        } else {
+            // DOM already loaded
+            setTimeout(applyLauncherNavIconColors, 100);
+        }
+
+        // Re-run when theme changes (listen for theme toggle events)
+        document.addEventListener('themeChanged', applyLauncherNavIconColors);
+        
+        // Also listen for class changes on body/html (fallback for theme changes)
+        const themeObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && 
+                    (mutation.attributeName === 'class' || mutation.target === document.body || mutation.target === document.documentElement)) {
+                    applyLauncherNavIconColors();
+                }
+            });
+        });
+        
+        // Observe body and html for class changes
+        if (document.body) {
+            themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        }
+        themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    </script>
 </head>
 <body>
     <div class="launcher-wrapper">
