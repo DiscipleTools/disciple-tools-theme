@@ -351,7 +351,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function process_base_user() {
         if ( isset( $_POST['base_user_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['base_user_nonce'] ) ), 'base_user' ) ) {
             if ( isset( $_POST['base_user_select'] ) ) {
-                $base_user_data = wp_unslash( $_POST['base_user_select'] );
+                $base_user_data = sanitize_text_field( wp_unslash( $_POST['base_user_select'] ) );
                 // dt-users-connection component returns JSON string
                 if ( is_string( $base_user_data ) ) {
                     $user_id = $this->parse_user_selection_json( $base_user_data );
