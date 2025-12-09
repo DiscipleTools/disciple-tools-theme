@@ -222,14 +222,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function base_user() {
         $base_user = dt_get_base_user();
         $base_user_by_source = dt_get_base_users_by_source();
-        $potential_user_list = get_users(
-            [
-                'role__in' => [ 'dispatcher', 'administrator', 'dt_admin', 'multiplier', 'marketer', 'strategist' ],
-                'order'    => 'ASC',
-                'orderby'  => 'display_name',
-                'number'    => '200',
-            ]
-        );
         $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
         $sources = $field_settings['sources']['default'];
 
@@ -238,10 +230,22 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         echo '<hr>';
         echo '<input type="hidden" name="base_user_nonce" id="base_user_nonce" value="' . esc_attr( wp_create_nonce( 'base_user' ) ) . '" />';
 
-        echo 'Current Base User: ';
-        $this->display_user_list( 'base_user_select', $potential_user_list, $base_user->ID );
-        echo '<hr>';
+        echo '<label for="base_user_select">Current Base User:</label>';
+        $base_user_value = json_encode( [
+            [
+                'id' => $base_user->ID,
+                'label' => $base_user->display_name,
+                'avatar' => get_avatar_url( $base_user->ID )
+            ]
+        ]);
         ?>
+        <dt-users-connection
+            id="base_user_select"
+            name="base_user_select"
+            value='<?php echo esc_attr( $base_user_value ); ?>'
+            placeholder="<?php esc_html_e( 'Search users', 'disciple_tools' ); ?>"
+        ></dt-users-connection>
+        <hr>
         <details>
             <summary style="line-height: 2;font-size: 14px;font-weight: 400;"><?php esc_html_e( 'Assign by Source', 'disciple_tools' ) ?></summary>
 
@@ -257,12 +261,27 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     <tr>
                         <td><?php echo esc_html( $source_value['label'] ); ?></td>
                         <td>
-                            <?php $this->display_user_list(
-                                "base_user_by_source[$source_key]",
-                                $potential_user_list,
-                                isset( $base_user_by_source[$source_key] ) ? $base_user_by_source[$source_key] : null,
-                                true
-                            ); ?>
+                            <?php
+                            $source_user_id = isset( $base_user_by_source[$source_key] ) ? $base_user_by_source[$source_key] : null;
+                            $source_user_value = '[]';
+                            if ( $source_user_id ) {
+                                $source_user = get_userdata( $source_user_id );
+                                if ( $source_user ) {
+                                    $source_user_value = json_encode( [
+                                        [
+                                            'id' => $source_user->ID,
+                                            'label' => $source_user->display_name,
+                                            'avatar' => get_avatar_url( $source_user->ID )
+                                        ]
+                                    ]);
+                                }
+                            }
+                            ?>
+                            <dt-users-connection
+                                name="base_user_by_source[<?php echo esc_attr( $source_key ); ?>]"
+                                value='<?php echo esc_attr( $source_user_value ); ?>'
+                                placeholder="<?php esc_html_e( 'Base User', 'disciple_tools' ); ?>"
+                            ></dt-users-connection>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -300,18 +319,46 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function process_base_user() {
         if ( isset( $_POST['base_user_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['base_user_nonce'] ) ), 'base_user' ) ) {
             if ( isset( $_POST['base_user_select'] ) ) {
-                $user_id = sanitize_key( wp_unslash( $_POST['base_user_select'] ) );
-                if ( is_numeric( $user_id ) ) {
-                    update_option( 'dt_base_user', $user_id );
+                $base_user_data = $_POST['base_user_select'];
+                // dt-users-connection component returns JSON string
+                if ( is_string( $base_user_data ) ) {
+                    $base_user_array = json_decode( stripslashes( $base_user_data ), true );
+                    if ( is_array( $base_user_array ) && ! empty( $base_user_array ) ) {
+                        $user_id = absint( $base_user_array[0]['id'] );
+                        if ( $user_id > 0 ) {
+                            update_option( 'dt_base_user', $user_id );
+                        }
+                    }
+                } else {
+                    // Fallback for old format or direct user ID
+                    $user_id = sanitize_key( wp_unslash( $base_user_data ) );
+                    if ( is_numeric( $user_id ) ) {
+                        update_option( 'dt_base_user', $user_id );
+                    }
                 }
             }
 
             if ( isset( $_POST['base_user_by_source'] ) ) {
                 $base_user_by_source = dt_recursive_sanitize_array( wp_unslash( $_POST['base_user_by_source'] ) );
-                $filtered_array = array_filter( $base_user_by_source, function ( $value ) {
-                    return !empty( $value );
-                } );
-                update_option( 'dt_base_user_by_source', $filtered_array );
+                $processed_sources = [];
+
+                foreach ( $base_user_by_source as $source_key => $source_value ) {
+                    if ( is_string( $source_value ) && ! empty( $source_value ) ) {
+                        // dt-users-connection component returns JSON string
+                        $source_user_array = json_decode( stripslashes( $source_value ), true );
+                        if ( is_array( $source_user_array ) && ! empty( $source_user_array ) ) {
+                            $user_id = absint( $source_user_array[0]['id'] );
+                            if ( $user_id > 0 ) {
+                                $processed_sources[$source_key] = $user_id;
+                            }
+                        }
+                    } elseif ( is_numeric( $source_value ) ) {
+                        // Fallback for old format
+                        $processed_sources[$source_key] = absint( $source_value );
+                    }
+                }
+
+                update_option( 'dt_base_user_by_source', $processed_sources );
             }
         }
     }
