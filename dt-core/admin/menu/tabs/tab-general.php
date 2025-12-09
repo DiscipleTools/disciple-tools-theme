@@ -952,7 +952,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     }
 
     private function display_contact_modules(){
-        $modules = dt_get_option( 'dt_post_type_modules' )
+        $modules = dt_get_option( 'dt_post_type_modules' );
 
         ?>
         <form method="post" >
