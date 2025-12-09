@@ -251,14 +251,14 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
         // Get app name/title
         $app_name = $app['title'] ?? $app['name'] ?? 'App';
         $app_icon = $app['icon'] ?? 'mdi mdi-apps';
-        
+
         // Check if app has a custom color (empty string or #cccccc means no custom color)
         // Match the logic used in home screen JavaScript: app.color && app.color.trim() !== ''
-        $has_custom_color = !empty( $app['color'] ) && 
-                           is_string( $app['color'] ) && 
-                           trim( $app['color'] ) !== '' && 
+        $has_custom_color = !empty( $app['color'] ) &&
+                           is_string( $app['color'] ) &&
+                           trim( $app['color'] ) !== '' &&
                            trim( $app['color'] ) !== '#cccccc';
-        
+
         if ( $has_custom_color ) {
             $app_color = trim( $app['color'] );
             $color_style = 'style="color: ' . esc_attr( $app_color ) . ';"';
@@ -269,19 +269,19 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
         }
         ?>
         <li>
-            <a href="<?php echo esc_url( $launcher_url ); ?>" 
-               class="launcher-app-link" 
+            <a href="<?php echo esc_url( $launcher_url ); ?>"
+               class="launcher-app-link"
                data-app-url="<?php echo esc_attr( $iframe_app_url ); ?>"
                data-launcher-url="<?php echo esc_attr( $launcher_url ); ?>">
                 <?php if ( str_starts_with( $app_icon, 'http' ) || str_starts_with( $app_icon, '/' ) ): ?>
-                    <img src="<?php echo esc_url( $app_icon ); ?>" 
-                         alt="<?php echo esc_attr( $app_name ); ?>" 
-                         <?php echo $color_style; ?>
+                    <img src="<?php echo esc_url( $app_icon ); ?>"
+                         alt="<?php echo esc_attr( $app_name ); ?>"
+                         <?php echo wp_kses( $color_style, [ 'style' => [] ] ); ?>
                          data-has-custom-color="<?php echo $has_custom_color ? 'true' : 'false'; ?>" />
                 <?php else : ?>
-                    <i class="<?php echo esc_attr( $app_icon ); ?>" 
+                    <i class="<?php echo esc_attr( $app_icon ); ?>"
                        aria-hidden="true"
-                       <?php echo $color_style; ?>
+                       <?php echo wp_kses( $color_style, [ 'style' => [] ] ); ?>
                        data-has-custom-color="<?php echo $has_custom_color ? 'true' : 'false'; ?>"></i>
                 <?php endif; ?>
                 <span class="name"><?php echo esc_html( $app_name ); ?></span>

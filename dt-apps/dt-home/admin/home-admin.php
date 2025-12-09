@@ -799,7 +799,7 @@ class DT_Home_Admin {
                         $color_value = '';
                     }
                 }
-                
+
                 $app_data = [
                     'type' => sanitize_text_field( wp_unslash( $_POST['app_type'] ?? 'link' ) ),
                     'title' => sanitize_text_field( wp_unslash( $_POST['app_title'] ?? '' ) ),
@@ -826,25 +826,25 @@ class DT_Home_Admin {
 
             case 'update':
                 $app_id = sanitize_text_field( wp_unslash( $_POST['app_id'] ?? '' ) );
-                
+
                 // Get the original app to check its current color state
                 $original_app = $apps_manager->get_app( $app_id );
                 $original_color = $original_app['color'] ?? '';
-                
+
                 // Get submitted color and original color from form
                 $submitted_color = sanitize_text_field( wp_unslash( $_POST['app_color'] ?? '' ) );
                 $form_original_color = sanitize_text_field( wp_unslash( $_POST['app_color_original'] ?? '' ) );
-                
+
                 // Debug logging (remove in production)
                 error_log( 'DT Home: App color update - Submitted: ' . $submitted_color . ', Original: ' . ( $original_color ?: 'empty' ) . ', Form Original: ' . $form_original_color );
-                
+
                 // Determine if we should update the color
                 // If original had no color (empty string) and submitted is #cccccc (placeholder), don't update
                 // Otherwise, update the color
                 // Use empty string instead of null to ensure it's preserved in WordPress options
                 $should_update_color = true;
                 $color_to_save = '';
-                
+
                 if ( empty( $original_color ) || trim( $original_color ) === '' ) {
                     // App originally had no color
                     if ( $submitted_color === '#cccccc' || empty( $submitted_color ) ) {
@@ -877,7 +877,7 @@ class DT_Home_Admin {
                         $color_to_save = '';
                     }
                 }
-                
+
                 $app_data = [
                     'type' => sanitize_text_field( wp_unslash( $_POST['app_type'] ?? 'link' ) ),
                     'title' => sanitize_text_field( wp_unslash( $_POST['app_title'] ?? '' ) ),
@@ -888,7 +888,7 @@ class DT_Home_Admin {
                     'user_roles_type' => sanitize_text_field( wp_unslash( $_POST['app_user_roles_type'] ?? 'support_all_roles' ) ),
                     'roles' => isset( $_POST['app_roles'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['app_roles'] ) ) : []
                 ];
-                
+
                 // Only include color in update if it should be updated
                 if ( $should_update_color ) {
                     $app_data['color'] = $color_to_save;
