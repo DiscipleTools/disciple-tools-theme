@@ -231,13 +231,18 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         echo '<input type="hidden" name="base_user_nonce" id="base_user_nonce" value="' . esc_attr( wp_create_nonce( 'base_user' ) ) . '" />';
 
         echo '<label for="base_user_select">Current Base User:</label>';
-        $base_user_value = json_encode( [
-            [
-                'id' => $base_user->ID,
-                'label' => $base_user->display_name,
-                'avatar' => get_avatar_url( $base_user->ID )
-            ]
-        ]);
+        // Check if base_user is valid before accessing properties
+        if ( $base_user && ! is_wp_error( $base_user ) && isset( $base_user->ID ) ) {
+            $base_user_value = json_encode( [
+                [
+                    'id' => $base_user->ID,
+                    'label' => $base_user->display_name,
+                    'avatar' => get_avatar_url( $base_user->ID )
+                ]
+            ]);
+        } else {
+            $base_user_value = '[]';
+        }
         ?>
         <dt-users-connection
             id="base_user_select"
@@ -294,23 +299,50 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         echo '</form>';
     }
 
-    public function display_user_list( $name, $users, $value, $include_default = false ) {
-        echo '<select name="' . esc_attr( $name ) . '">';
-
-        if ( $include_default ) {
-            echo '<option value=""'
-                . ( empty( $value ) ? ' selected' : '' ). '>('
-                . esc_html__( 'Base User', 'disciple_tools' )
-                . ')</option>';
-        }
-        foreach ( $users as $potential_user ) {
-            echo '<option value="' . esc_attr( $potential_user->ID ) . '"'
-                . ( $potential_user->ID == $value ? ' selected' : '' ) . '>'
-                . esc_attr( $potential_user->display_name )
-                . '</option>';
+    /**
+     * Helper method to parse and validate user selection from JSON format.
+     *
+     * @param string $json_data JSON string from dt-users-connection component
+     * @return int|null Valid user ID or null if invalid
+     */
+    private function parse_user_selection_json( $json_data ) {
+        if ( ! is_string( $json_data ) || empty( $json_data ) ) {
+            return null;
         }
 
-        echo '</select>';
+        // Properly sanitize the JSON string
+        $sanitized_json = sanitize_text_field( wp_unslash( $json_data ) );
+        $user_array = json_decode( $sanitized_json, true );
+
+        // Check for JSON decode errors
+        if ( json_last_error() !== JSON_ERROR_NONE ) {
+            return null;
+        }
+
+        // Validate array structure
+        if ( ! is_array( $user_array ) || empty( $user_array ) ) {
+            return null;
+        }
+
+        // Check if first element has required 'id' field
+        if ( ! isset( $user_array[0]['id'] ) ) {
+            return null;
+        }
+
+        $user_id = absint( $user_array[0]['id'] );
+
+        // Validate user ID is positive and user exists
+        if ( $user_id <= 0 ) {
+            return null;
+        }
+
+        // Verify user exists in WordPress
+        $user = get_userdata( $user_id );
+        if ( ! $user ) {
+            return null;
+        }
+
+        return $user_id;
     }
 
     /**
@@ -319,21 +351,22 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
     public function process_base_user() {
         if ( isset( $_POST['base_user_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['base_user_nonce'] ) ), 'base_user' ) ) {
             if ( isset( $_POST['base_user_select'] ) ) {
-                $base_user_data = $_POST['base_user_select'];
+                $base_user_data = wp_unslash( $_POST['base_user_select'] );
                 // dt-users-connection component returns JSON string
                 if ( is_string( $base_user_data ) ) {
-                    $base_user_array = json_decode( stripslashes( $base_user_data ), true );
-                    if ( is_array( $base_user_array ) && ! empty( $base_user_array ) ) {
-                        $user_id = absint( $base_user_array[0]['id'] );
-                        if ( $user_id > 0 ) {
-                            update_option( 'dt_base_user', $user_id );
-                        }
+                    $user_id = $this->parse_user_selection_json( $base_user_data );
+                    if ( $user_id ) {
+                        update_option( 'dt_base_user', $user_id );
                     }
                 } else {
                     // Fallback for old format or direct user ID
-                    $user_id = sanitize_key( wp_unslash( $base_user_data ) );
-                    if ( is_numeric( $user_id ) ) {
-                        update_option( 'dt_base_user', $user_id );
+                    $user_id = absint( $base_user_data );
+                    if ( $user_id > 0 ) {
+                        // Verify user exists before updating
+                        $user = get_userdata( $user_id );
+                        if ( $user ) {
+                            update_option( 'dt_base_user', $user_id );
+                        }
                     }
                 }
             }
@@ -345,16 +378,20 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                 foreach ( $base_user_by_source as $source_key => $source_value ) {
                     if ( is_string( $source_value ) && ! empty( $source_value ) ) {
                         // dt-users-connection component returns JSON string
-                        $source_user_array = json_decode( stripslashes( $source_value ), true );
-                        if ( is_array( $source_user_array ) && ! empty( $source_user_array ) ) {
-                            $user_id = absint( $source_user_array[0]['id'] );
-                            if ( $user_id > 0 ) {
-                                $processed_sources[$source_key] = $user_id;
-                            }
+                        $user_id = $this->parse_user_selection_json( $source_value );
+                        if ( $user_id ) {
+                            $processed_sources[$source_key] = $user_id;
                         }
                     } elseif ( is_numeric( $source_value ) ) {
                         // Fallback for old format
-                        $processed_sources[$source_key] = absint( $source_value );
+                        $user_id = absint( $source_value );
+                        if ( $user_id > 0 ) {
+                            // Verify user exists before adding
+                            $user = get_userdata( $user_id );
+                            if ( $user ) {
+                                $processed_sources[$source_key] = $user_id;
+                            }
+                        }
                     }
                 }
 
