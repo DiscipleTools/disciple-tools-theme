@@ -828,8 +828,22 @@ if ( ! class_exists( 'Location_Grid_Geocoder' ) ) {
         public function mapbox_get_country_by_coordinates( $longitude, $latitude ) {
             $country_code = false;
             if ( get_option( 'dt_mapbox_api_key' ) ) {
-                $url         = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $longitude . ',' . $latitude . '.json?types=country&access_token=' . get_option( 'dt_mapbox_api_key' );
-                $data_result = @file_get_contents( $url );
+                $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $longitude . ',' . $latitude . '.json?types=country&access_token=' . get_option( 'dt_mapbox_api_key' );
+
+                $server_url = home_url( '', 'https' );
+                $server_url = rtrim( $server_url, '/' );
+                $args = [
+                    'headers' => [
+                        'Referer' => $server_url
+                    ]
+                ];
+                $response = wp_remote_get( esc_url_raw( $url ), $args );
+
+                if ( is_wp_error( $response ) ) {
+                    return false;
+                }
+
+                $data_result = wp_remote_retrieve_body( $response );
                 if ( ! $data_result ) {
                     return false;
                 }
