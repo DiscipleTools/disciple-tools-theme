@@ -621,6 +621,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                     <div class="field-settings-table-child-toggle">
                                         <?php foreach ( $field_settings as $key => $value ) : ?>
                                             <?php if ( $key === 'default' && !empty( $field_settings['default'] ) && is_array( $field_settings['default'] ) ) : ?>
+                                                <?php $i = 0 ?>
                                                 <?php foreach ( $value as $k => $v ) {
                                                     $label = 'default blank';
                                                     if ( isset( $v['label'] ) && !empty( $v['label'] ) ) {
@@ -634,6 +635,15 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                         <span class="edit-icon" data-modal="edit-field-option" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>" data-field-option-key="<?php echo esc_attr( $k ); ?>"></span>
                                                     </div>
                                                     <?php
+                                                    $i++;
+                                                    if ( $i > 100 ) {
+                                                        ?>
+                                                        <div class="field-settings-table-field-option">
+                                                            <span class="field-name-content" style="color: red;">Too many field options</span>
+                                                        </div>
+                                                        <?php
+                                                        break;
+                                                    }
                                                 }
                                             endif; ?>
                                         <?php endforeach; ?>
