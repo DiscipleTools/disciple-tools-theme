@@ -46,6 +46,25 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         }
 
         /**
+         * Get request arguments with Referer header for Mapbox API calls
+         * This ensures URL restrictions work correctly with server-side requests
+         *
+         * @return array Request arguments array with Referer header
+         */
+        private static function get_mapbox_request_args() {
+            // Get and normalize the server URL for Referer header
+            $server_url = home_url( '', 'https' );
+            // Remove trailing slash for consistency
+            $server_url = rtrim( $server_url, '/' );
+
+            return [
+                'headers' => [
+                    'Referer' => $server_url
+                ]
+            ];
+        }
+
+        /**
          * Geocoder Scripts for Echo
          */
         public static function geocoder_scripts() {
@@ -77,7 +96,8 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             }
 
             /** @link https://codex.wordpress.org/Function_Reference/wp_remote_get */
-            $response = wp_remote_get( esc_url_raw( $url ) );
+            $args = self::get_mapbox_request_args();
+            $response = wp_remote_get( esc_url_raw( $url ), $args );
             $data_result = wp_remote_retrieve_body( $response );
 
             if ( ! $data_result ) {
@@ -138,9 +158,9 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     break;
             }
 
-
             /** @link https://codex.wordpress.org/Function_Reference/wp_remote_get */
-            $response = wp_remote_get( esc_url_raw( $url ) );
+            $args = self::get_mapbox_request_args();
+            $response = wp_remote_get( esc_url_raw( $url ), $args );
             $data_result = wp_remote_retrieve_body( $response );
 
             if ( ! $data_result ) {
@@ -150,8 +170,9 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         }
 
         public static function reverse_lookup( $longitude, $latitude ) {
-            $url         = self::$mapbox_endpoint  . $longitude . ',' . $latitude . '.json?access_token=' . self::get_key();
-            $response = wp_remote_get( esc_url_raw( $url ) );
+            $url = self::$mapbox_endpoint . $longitude . ',' . $latitude . '.json?access_token=' . self::get_key();
+            $args = self::get_mapbox_request_args();
+            $response = wp_remote_get( esc_url_raw( $url ), $args );
             $data_result = wp_remote_retrieve_body( $response );
 
             if ( ! $data_result ) {
@@ -171,11 +192,19 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
         public static function get_country_by_coordinates( $longitude, $latitude ) {
             $country_code = false;
             if ( self::get_key() ) {
-                $url         = self::$mapbox_endpoint  . $longitude . ',' . $latitude . '.json?types=country&access_token=' . self::get_key();
-                $data_result = @file_get_contents( $url );
+                $url = self::$mapbox_endpoint . $longitude . ',' . $latitude . '.json?types=country&access_token=' . self::get_key();
+                $args = self::get_mapbox_request_args();
+                $response = wp_remote_get( esc_url_raw( $url ), $args );
+
+                if ( is_wp_error( $response ) ) {
+                    return false;
+                }
+
+                $data_result = wp_remote_retrieve_body( $response );
                 if ( ! $data_result ) {
                     return false;
                 }
+
                 $data = json_decode( $data_result, true );
 
                 if ( isset( $data['features'][0]['properties']['short_code'] ) ) {
@@ -405,8 +434,16 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 ];
             }
 
+            // Get normalized server URL for error reporting
+            $server_url = home_url( '', 'https' );
+            $server_url = rtrim( $server_url, '/' );
+            $referer_url = $server_url;
+
             $url = self::$mapbox_endpoint . 'Denver.json?access_token=' . $key;
-            $response = wp_remote_get( esc_url_raw( $url ) );
+
+            // Set Referer header to match the site URL so Mapbox can validate URL restrictions
+            $args = self::get_mapbox_request_args();
+            $response = wp_remote_get( esc_url_raw( $url ), $args );
 
             // Check for WordPress HTTP errors
             if ( is_wp_error( $response ) ) {
@@ -432,7 +469,6 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
 
             // Error cases based on HTTP status code
             $error_message = isset( $data_result['message'] ) ? $data_result['message'] : 'Unknown error';
-            $server_url = home_url( '', 'https' );
 
             switch ( $http_code ) {
                 case 401:
@@ -444,12 +480,18 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                     ];
 
                 case 403:
+                    // Build detailed error message for URL restriction issues
+                    $message = 'Mapbox token is valid but access is restricted. ';
+                    $message .= 'This may be due to URL restrictions on your token. ';
+                    $message .= 'The request was sent with Referer header: ' . $referer_url;
+
                     return [
                         'success' => false,
-                        'message' => 'Mapbox token is valid but access is restricted. The current server URL may not be included in the token\'s allowed URL list.',
+                        'message' => $message,
                         'error_type' => 'forbidden',
                         'api_message' => $error_message,
-                        'server_url' => $server_url
+                        'server_url' => $server_url,
+                        'referer_sent' => $referer_url
                     ];
 
                 case 429:
@@ -500,15 +542,41 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
                 } else {
                     $message = $mapbox_key_active_state['message'];
 
-                    // Add server URL information for 403 errors
-                    if ( isset( $mapbox_key_active_state['error_type'] ) && $mapbox_key_active_state['error_type'] === 'forbidden' && isset( $mapbox_key_active_state['server_url'] ) ) {
-                        $message .= '<br><br><strong>Your server URL:</strong> <code>' . esc_html( $mapbox_key_active_state['server_url'] ) . '</code>';
-                        $message .= '<br><br>To fix this, add the above URL to your Mapbox token\'s allowed URL list in your <a href="https://account.mapbox.com/access-tokens/" target="_blank">Mapbox account settings</a>.';
-                    }
+                    // Add detailed information for 403 errors (URL restrictions)
+                    if ( isset( $mapbox_key_active_state['error_type'] ) && $mapbox_key_active_state['error_type'] === 'forbidden' ) {
+                        $message .= '<br><br><strong>Debugging Information:</strong>';
+                        $message .= '<br><strong>Site URL detected:</strong> <code>' . esc_html( $mapbox_key_active_state['server_url'] ?? 'N/A' ) . '</code>';
 
-                    // Add API message details if available and different from main message
-                    if ( isset( $mapbox_key_active_state['api_message'] ) && ! empty( $mapbox_key_active_state['api_message'] ) && $mapbox_key_active_state['api_message'] !== $mapbox_key_active_state['message'] ) {
-                        $message .= '<br><br><em>API Response: ' . esc_html( $mapbox_key_active_state['api_message'] ) . '</em>';
+                        if ( isset( $mapbox_key_active_state['referer_sent'] ) ) {
+                            $message .= '<br><strong>Referer header sent:</strong> <code>' . esc_html( $mapbox_key_active_state['referer_sent'] ) . '</code>';
+                        }
+
+                        $message .= '<br><br><strong>To fix this:</strong>';
+                        $message .= '<ol style="margin-left: 20px;">';
+                        $message .= '<li>Go to your <a href="https://account.mapbox.com/access-tokens/" target="_blank">Mapbox account settings</a></li>';
+                        $message .= '<li>Find your access token and click to edit it</li>';
+                        $message .= '<li>In the "URL restrictions" section, add the URL shown above</li>';
+
+                        // Special note for local development URLs
+                        if ( isset( $mapbox_key_active_state['referer_sent'] ) ) {
+                            $referer = $mapbox_key_active_state['referer_sent'];
+                            if ( strpos( $referer, 'localhost' ) !== false || strpos( $referer, '.local' ) !== false || strpos( $referer, '127.0.0.1' ) !== false ) {
+                                $message .= '<li><strong>Note:</strong> You\'re using a local development URL. Mapbox URL restrictions may not work with localhost or .local domains. Consider using a token without URL restrictions for local development, or use a tool like ngrok to create a public URL for testing.</li>';
+                            }
+                        }
+
+                        $message .= '<li>Save your changes and test again</li>';
+                        $message .= '</ol>';
+
+                        // Add API message if available
+                        if ( isset( $mapbox_key_active_state['api_message'] ) && ! empty( $mapbox_key_active_state['api_message'] ) ) {
+                            $message .= '<br><br><em>Mapbox API Response: ' . esc_html( $mapbox_key_active_state['api_message'] ) . '</em>';
+                        }
+                    } else {
+                        // Add API message details for other error types if available
+                        if ( isset( $mapbox_key_active_state['api_message'] ) && ! empty( $mapbox_key_active_state['api_message'] ) && $mapbox_key_active_state['api_message'] !== $mapbox_key_active_state['message'] ) {
+                            $message .= '<br><br><em>API Response: ' . esc_html( $mapbox_key_active_state['api_message'] ) . '</em>';
+                        }
                     }
                 }
             }
