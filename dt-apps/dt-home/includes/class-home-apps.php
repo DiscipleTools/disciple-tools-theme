@@ -546,7 +546,7 @@ class DT_Home_Apps {
             // Merge back with coded app customizations
             $final_db_apps = $custom_apps_only;
             foreach ( $db_apps as $db_app ) {
-                if ( ! empty( $db_app['id'] ) && ( isset( $db_app['creation_type'] ) && $db_app['creation_type'] === 'coded' ) || in_array( $db_app['id'], $coded_app_ids ) ) {
+                if ( ! empty( $db_app['id'] ) && ( ( isset( $db_app['creation_type'] ) && $db_app['creation_type'] === 'coded' ) || in_array( $db_app['id'], $coded_app_ids ) ) ) {
                     // Check if we already have this customization
                     $exists = false;
                     foreach ( $final_db_apps as $final_app ) {
