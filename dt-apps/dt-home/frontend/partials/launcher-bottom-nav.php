@@ -269,8 +269,8 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
         }
         ?>
         <li>
-            <a href="<?php echo esc_url( $launcher_url ); ?>"
-               class="launcher-app-link"
+            <a href="<?php echo esc_url( $launcher_url ); ?>" 
+               class="launcher-app-link" 
                data-app-url="<?php echo esc_attr( $iframe_app_url ); ?>"
                data-launcher-url="<?php echo esc_attr( $launcher_url ); ?>">
                 <?php if ( str_starts_with( $app_icon, 'http' ) || str_starts_with( $app_icon, '/' ) ): ?>
@@ -279,7 +279,7 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
                          <?php echo wp_kses( $color_style, [ 'style' => [] ] ); ?>
                          data-has-custom-color="<?php echo $has_custom_color ? 'true' : 'false'; ?>" />
                 <?php else : ?>
-                    <i class="<?php echo esc_attr( $app_icon ); ?>"
+                    <i class="<?php echo esc_attr( $app_icon ); ?>" 
                        aria-hidden="true"
                        <?php echo wp_kses( $color_style, [ 'style' => [] ] ); ?>
                        data-has-custom-color="<?php echo $has_custom_color ? 'true' : 'false'; ?>"></i>

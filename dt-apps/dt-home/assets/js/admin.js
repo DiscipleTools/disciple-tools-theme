@@ -774,12 +774,14 @@ jQuery(document).ready(function ($) {
     const userRolesType = appData.user_roles_type || 'support_all_roles';
     const selectedRoles = appData.roles || [];
     const appType = appData.type || 'link';
+    const isCodedApp = appData.creation_type === 'coded';
 
     // Set app ID in hidden field
     $('#app-edit-id').val(appData.id);
 
     // Build form HTML
     const formHtml = `
+      ${isCodedApp ? '<div class="notice notice-info" style="margin: 0 0 15px 0; padding: 10px;"><p><strong>Coded App:</strong> This app is managed by a plugin. Title, Description, and URL are set by the plugin and cannot be changed. You can customize the icon, color, visibility, and access settings.</p></div>' : ''}
       <table class="form-table" style="width: 100%; box-sizing: border-box;">
         <tr>
           <th scope="row" style="width: 150px;">Type</th>
@@ -792,15 +794,36 @@ jQuery(document).ready(function ($) {
         </tr>
         <tr>
           <th scope="row" style="width: 150px;">Title</th>
-          <td><input type="text" name="app_title" id="app-edit-title" value="${escapeHtml(appData.title || '')}" required class="regular-text" style="width: 100%; max-width: 100%; box-sizing: border-box;" /></td>
+          <td>
+            ${
+              isCodedApp
+                ? `<div style="padding: 8px 12px; background-color: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; color: #666; font-style: italic;">${escapeHtml(appData.title || '')}</div>
+                 <input type="hidden" name="app_title" id="app-edit-title" value="${escapeHtml(appData.title || '')}" />`
+                : `<input type="text" name="app_title" id="app-edit-title" value="${escapeHtml(appData.title || '')}" required class="regular-text" style="width: 100%; max-width: 100%; box-sizing: border-box;" />`
+            }
+          </td>
         </tr>
         <tr>
           <th scope="row" style="width: 150px;">Description</th>
-          <td><textarea name="app_description" id="app-edit-description" rows="3" class="large-text" style="width: 100%; max-width: 100%; box-sizing: border-box;">${escapeHtml(appData.description || '')}</textarea></td>
+          <td>
+            ${
+              isCodedApp
+                ? `<div style="padding: 8px 12px; background-color: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; color: #666; font-style: italic; min-height: 60px;">${escapeHtml(appData.description || '') || '<em>No description</em>'}</div>
+                 <input type="hidden" name="app_description" id="app-edit-description" value="${escapeHtml(appData.description || '')}" />`
+                : `<textarea name="app_description" id="app-edit-description" rows="3" class="large-text" style="width: 100%; max-width: 100%; box-sizing: border-box;">${escapeHtml(appData.description || '')}</textarea>`
+            }
+          </td>
         </tr>
         <tr>
           <th scope="row" style="width: 150px;">URL</th>
-          <td><input type="url" name="app_url" id="app-edit-url" value="${escapeHtml(appData.url || '#')}" class="regular-text" style="width: 100%; max-width: 100%; box-sizing: border-box;" /></td>
+          <td>
+            ${
+              isCodedApp
+                ? `<div style="padding: 8px 12px; background-color: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; color: #666; font-style: italic; word-break: break-all;">${escapeHtml(appData.url || '#')}</div>
+                 <input type="hidden" name="app_url" id="app-edit-url" value="${escapeHtml(appData.url || '#')}" />`
+                : `<input type="url" name="app_url" id="app-edit-url" value="${escapeHtml(appData.url || '#')}" class="regular-text" style="width: 100%; max-width: 100%; box-sizing: border-box;" />`
+            }
+          </td>
         </tr>
         <tr>
           <th scope="row" style="width: 150px;">Icon</th>

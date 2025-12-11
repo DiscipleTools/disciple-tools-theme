@@ -195,7 +195,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         <style>
             body {
                 background-color: #f8f9fa;
-                padding: 1em;
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             }
 
@@ -234,7 +233,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
             .home-screen-header {
                 background: transparent;
-                padding: 1.5rem 2rem;
+                padding: 1.5rem;
             }
 
             .header-table,
@@ -460,7 +459,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             }
 
             .home-screen-content {
-                padding: 2rem;
+                padding: 1.5rem;
             }
 
             /* Training Video Card Inline Styles */

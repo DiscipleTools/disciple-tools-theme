@@ -827,8 +827,9 @@ class DT_Home_Admin {
             case 'update':
                 $app_id = sanitize_text_field( wp_unslash( $_POST['app_id'] ?? '' ) );
 
-                // Get the original app to check its current color state
+                // Get the original app to check if it's a coded app and its current color state
                 $original_app = $apps_manager->get_app( $app_id );
+                $is_coded_app = isset( $original_app['creation_type'] ) && $original_app['creation_type'] === 'coded';
                 $original_color = $original_app['color'] ?? '';
 
                 // Get submitted color and original color from form
@@ -878,20 +879,40 @@ class DT_Home_Admin {
                     }
                 }
 
+                // Build app data - for coded apps, exclude title, description, and url
                 $app_data = [
                     'type' => sanitize_text_field( wp_unslash( $_POST['app_type'] ?? 'link' ) ),
-                    'title' => sanitize_text_field( wp_unslash( $_POST['app_title'] ?? '' ) ),
-                    'description' => sanitize_textarea_field( wp_unslash( $_POST['app_description'] ?? '' ) ),
-                    'url' => esc_url_raw( wp_unslash( $_POST['app_url'] ?? '#' ) ),
                     'icon' => sanitize_text_field( wp_unslash( $_POST['app_icon'] ?? 'mdi mdi-apps' ) ),
                     'enabled' => isset( $_POST['app_enabled'] ),
                     'user_roles_type' => sanitize_text_field( wp_unslash( $_POST['app_user_roles_type'] ?? 'support_all_roles' ) ),
                     'roles' => isset( $_POST['app_roles'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['app_roles'] ) ) : []
                 ];
 
-                // Only include color in update if it should be updated
-                if ( $should_update_color ) {
-                    $app_data['color'] = $color_to_save;
+                // Only include title, description, and url for non-coded apps
+                if ( ! $is_coded_app ) {
+                    $app_data['title'] = sanitize_text_field( wp_unslash( $_POST['app_title'] ?? '' ) );
+                    $app_data['description'] = sanitize_textarea_field( wp_unslash( $_POST['app_description'] ?? '' ) );
+                    $app_data['url'] = esc_url_raw( wp_unslash( $_POST['app_url'] ?? '#' ) );
+                }
+
+                // Handle color update
+                // Always include color if it's in the form data, especially for coded apps
+                if ( isset( $_POST['app_color'] ) ) {
+                    if ( $should_update_color ) {
+                        $app_data['color'] = $color_to_save;
+                    } else {
+                        // Even if $should_update_color is false, if color is in POST, we should include it
+                        // This handles cases where reset button was clicked or color was changed
+                        $submitted_color_check = sanitize_text_field( wp_unslash( $_POST['app_color'] ?? '' ) );
+                        if ( $submitted_color_check === '#cccccc' || empty( $submitted_color_check ) ) {
+                            // User reset or cleared color - save as empty string
+                            $app_data['color'] = '';
+                        } else {
+                            // User set a color - save it
+                            $sanitized = sanitize_hex_color( $submitted_color_check );
+                            $app_data['color'] = ! empty( $sanitized ) ? $sanitized : '';
+                        }
+                    }
                 }
 
                 $result = $apps_manager->update_app( $app_id, $app_data );

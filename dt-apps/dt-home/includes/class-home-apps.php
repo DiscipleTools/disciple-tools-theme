@@ -143,41 +143,103 @@ class DT_Home_Apps {
 
     /**
      * Get all apps
+     *
+     * Merges coded apps with their customizations from the database.
+     * For coded apps, only customization fields (type, icon, color, enabled, order, user_roles_type, roles)
+     * are stored in the database and merged back into the coded app.
      */
     public function get_all_apps() {
 
-        $updated_apps = [];
-        $processed_ids = [];
+        // Step 1: Load coded apps first (these are the base)
+        $coded_apps = [];
+        $coded_app_ids = [];
 
-        foreach ( get_option( $this->option_name, [] ) as $app ) {
-            if ( empty( $app['id'] ) || in_array( $app['id'], $processed_ids ) ) {
-                continue;
-            }
-
-            $updated_apps[] = $app;
-            $processed_ids[] = $app['id'];
-        }
-
+        // Collect all coded apps
         foreach ( $this->ml_apps as $app ) {
-            if ( empty( $app['id'] ) || in_array( $app['id'], $processed_ids ) ) {
-                continue;
+            if ( ! empty( $app['id'] ) ) {
+                $coded_apps[ $app['id'] ] = $app;
+                $coded_app_ids[] = $app['id'];
             }
-
-            $updated_apps[] = $app;
-            $processed_ids[] = $app['id'];
         }
 
         foreach ( $this->home_apps as $app ) {
-            if ( empty( $app['id'] ) || in_array( $app['id'], $processed_ids ) ) {
+            if ( ! empty( $app['id'] ) && ! isset( $coded_apps[ $app['id'] ] ) ) {
+                $coded_apps[ $app['id'] ] = $app;
+                $coded_app_ids[] = $app['id'];
+            }
+        }
+
+        // Step 2: Load database apps and separate into customizations and full custom apps
+        $db_apps = get_option( $this->option_name, [] );
+        $customizations = []; // Customizations for coded apps (keyed by app ID)
+        $custom_apps = []; // Full custom apps (non-coded)
+
+        foreach ( $db_apps as $db_app ) {
+            if ( empty( $db_app['id'] ) ) {
                 continue;
             }
 
-            $updated_apps[] = $app;
-            $processed_ids[] = $app['id'];
+            // Check if this is a customization entry for a coded app
+            $is_customization = (
+                isset( $db_app['creation_type'] ) && $db_app['creation_type'] === 'coded'
+            ) || in_array( $db_app['id'], $coded_app_ids );
+
+            if ( $is_customization ) {
+                // This is a customization entry - store it for merging
+                $customizations[ $db_app['id'] ] = $db_app;
+            } else {
+                // This is a full custom app (non-coded)
+                $custom_apps[] = $db_app;
+            }
         }
 
-        // Normalize type field for all apps
-        foreach ( $updated_apps as &$app ) {
+        // Step 3: Merge customizations into coded apps
+        $merged_apps = [];
+        foreach ( $coded_apps as $app_id => $coded_app ) {
+            $merged_app = $coded_app;
+
+            // If there's a customization entry, merge only customization fields
+            if ( isset( $customizations[ $app_id ] ) ) {
+                $customization = $customizations[ $app_id ];
+
+                // Merge only customization fields (don't overwrite title, description, url, magic_link_meta, etc.)
+                if ( isset( $customization['type'] ) ) {
+                    $merged_app['type'] = $customization['type'];
+                }
+                if ( isset( $customization['icon'] ) ) {
+                    $merged_app['icon'] = $customization['icon'];
+                }
+                if ( isset( $customization['color'] ) ) {
+                    $merged_app['color'] = $customization['color'];
+                }
+                if ( isset( $customization['enabled'] ) ) {
+                    $merged_app['enabled'] = $customization['enabled'];
+                }
+                if ( isset( $customization['order'] ) ) {
+                    // Ensure order is cast to integer for proper sorting
+                    $merged_app['order'] = (int) $customization['order'];
+                }
+                if ( isset( $customization['user_roles_type'] ) ) {
+                    $merged_app['user_roles_type'] = $customization['user_roles_type'];
+                }
+                if ( isset( $customization['roles'] ) ) {
+                    $merged_app['roles'] = $customization['roles'];
+                }
+                if ( isset( $customization['updated_at'] ) ) {
+                    $merged_app['updated_at'] = $customization['updated_at'];
+                }
+            }
+
+            $merged_apps[] = $merged_app;
+        }
+
+        // Step 4: Add full custom apps (non-coded)
+        foreach ( $custom_apps as $custom_app ) {
+            $merged_apps[] = $custom_app;
+        }
+
+        // Step 5: Normalize type field for all apps
+        foreach ( $merged_apps as &$app ) {
             // Normalize type: trim whitespace and convert to lowercase
             if ( isset( $app['type'] ) ) {
                 $app['type'] = trim( strtolower( $app['type'] ) );
@@ -187,10 +249,22 @@ class DT_Home_Apps {
             if ( ! isset( $app['type'] ) || ( $app['type'] !== 'app' && $app['type'] !== 'link' ) ) {
                 $app['type'] = $this->determine_app_type( $app );
             }
+
+            // Ensure order field exists (default to 0 if missing)
+            if ( ! isset( $app['order'] ) ) {
+                $app['order'] = 0;
+            }
         }
         unset( $app ); // Break reference
 
-        return $updated_apps;
+        // Step 6: Sort apps by order field
+        usort( $merged_apps, function( $a, $b ) {
+            $order_a = isset( $a['order'] ) ? (int) $a['order'] : 0;
+            $order_b = isset( $b['order'] ) ? (int) $b['order'] : 0;
+            return $order_a <=> $order_b;
+        });
+
+        return $merged_apps;
     }
 
     /**
@@ -208,9 +282,15 @@ class DT_Home_Apps {
      */
     public function get_app( $app_id ) {
         $apps = $this->get_all_apps();
+        // Normalize app_id to string for comparison (handles both string and integer IDs)
+        $app_id_normalized = (string) $app_id;
         foreach ( $apps as $app ) {
-            if ( isset( $app['id'] ) && $app['id'] === $app_id ) {
-                return $app;
+            if ( isset( $app['id'] ) ) {
+                // Normalize app ID to string for comparison
+                $app_id_in_array = (string) $app['id'];
+                if ( $app_id_in_array === $app_id_normalized ) {
+                    return $app;
+                }
             }
         }
         return null;
@@ -282,6 +362,9 @@ class DT_Home_Apps {
 
     /**
      * Update existing app
+     *
+     * For coded apps, only saves customization fields (type, icon, color, enabled, order, user_roles_type, roles).
+     * For custom apps, saves all fields.
      */
     public function update_app( $app_id, $app_data ) {
         $apps = $this->get_all_apps();
@@ -291,55 +374,201 @@ class DT_Home_Apps {
             return new WP_Error( 'app_not_found', __( 'App not found.', 'disciple_tools' ) );
         }
 
-        // Update fields
-        if ( isset( $app_data['type'] ) ) {
-            $apps[$app_index]['type'] = sanitize_text_field( $app_data['type'] );
+        $app = $apps[$app_index];
+        $is_coded_app = isset( $app['creation_type'] ) && $app['creation_type'] === 'coded';
+
+        // For coded apps, remove title, description, and url from $app_data if present
+        // (they shouldn't be there, but we'll be defensive)
+        if ( $is_coded_app ) {
+            unset( $app_data['title'] );
+            unset( $app_data['description'] );
+            unset( $app_data['url'] );
         }
-        if ( isset( $app_data['title'] ) ) {
-            $apps[$app_index]['title'] = sanitize_text_field( $app_data['title'] );
-        }
-        if ( isset( $app_data['description'] ) ) {
-            $apps[$app_index]['description'] = sanitize_textarea_field( $app_data['description'] );
-        }
-        if ( isset( $app_data['url'] ) ) {
-            $apps[$app_index]['url'] = esc_url_raw( $app_data['url'] );
-        }
-        if ( isset( $app_data['icon'] ) ) {
-            $apps[$app_index]['icon'] = sanitize_text_field( $app_data['icon'] );
-        }
-        if ( isset( $app_data['color'] ) ) {
-            // Handle empty string (no custom color) vs valid hex color
-            // Use empty string instead of null to ensure it's preserved in WordPress options
-            if ( $app_data['color'] === '' || $app_data['color'] === null ) {
-                $apps[$app_index]['color'] = '';
-            } else {
-                $sanitized_color = sanitize_hex_color( $app_data['color'] );
-                // If sanitization returns empty (invalid color), set to empty string
-                $apps[$app_index]['color'] = ! empty( $sanitized_color ) ? $sanitized_color : '';
+
+        // Load existing database apps
+        $db_apps = get_option( $this->option_name, [] );
+
+        if ( $is_coded_app ) {
+            // For coded apps, save only customization fields
+            // Find or create customization entry in database
+            $customization_index = false;
+            foreach ( $db_apps as $index => $db_app ) {
+                if ( isset( $db_app['id'] ) && $db_app['id'] === $app_id ) {
+                    $customization_index = $index;
+                    break;
+                }
             }
-        }
-        if ( isset( $app_data['enabled'] ) ) {
-            $apps[$app_index]['enabled'] = (bool) $app_data['enabled'];
-        }
-        if ( isset( $app_data['order'] ) ) {
-            $apps[$app_index]['order'] = (int) $app_data['order'];
-        }
-        if ( isset( $app_data['user_roles_type'] ) ) {
-            $apps[$app_index]['user_roles_type'] = sanitize_text_field( $app_data['user_roles_type'] );
-        }
-        if ( isset( $app_data['roles'] ) ) {
-            $apps[$app_index]['roles'] = is_array( $app_data['roles'] ) ? array_map( 'sanitize_text_field', $app_data['roles'] ) : [];
-        }
 
-        $apps[$app_index]['updated_at'] = current_time( 'mysql' );
+            // Prepare customization entry (only customization fields)
+            $customization = [
+                'id' => $app_id,
+                'creation_type' => 'coded',
+                'updated_at' => current_time( 'mysql' )
+            ];
 
-        // Save
-        $result = update_option( $this->option_name, $apps );
+            // Add only customization fields that are being updated
+            if ( isset( $app_data['type'] ) ) {
+                $customization['type'] = sanitize_text_field( $app_data['type'] );
+            }
+            if ( isset( $app_data['icon'] ) ) {
+                $customization['icon'] = sanitize_text_field( $app_data['icon'] );
+            }
+            if ( isset( $app_data['color'] ) ) {
+                // Handle empty string (no custom color) vs valid hex color
+                if ( $app_data['color'] === '' || $app_data['color'] === null ) {
+                    $customization['color'] = '';
+                } else {
+                    $sanitized_color = sanitize_hex_color( $app_data['color'] );
+                    $customization['color'] = ! empty( $sanitized_color ) ? $sanitized_color : '';
+                }
+            }
+            if ( isset( $app_data['enabled'] ) ) {
+                $customization['enabled'] = (bool) $app_data['enabled'];
+            }
+            if ( isset( $app_data['order'] ) ) {
+                $customization['order'] = (int) $app_data['order'];
+            }
+            if ( isset( $app_data['user_roles_type'] ) ) {
+                $customization['user_roles_type'] = sanitize_text_field( $app_data['user_roles_type'] );
+            }
+            if ( isset( $app_data['roles'] ) ) {
+                $customization['roles'] = is_array( $app_data['roles'] ) ? array_map( 'sanitize_text_field', $app_data['roles'] ) : [];
+            }
 
-        if ( $result ) {
-            return $apps[$app_index];
+            // Update or add customization entry
+            if ( $customization_index !== false ) {
+                // Merge with existing customization (preserve any existing fields, especially order)
+                // Preserve order from existing customization if not being updated
+                if ( ! isset( $customization['order'] ) && isset( $db_apps[$customization_index]['order'] ) ) {
+                    $customization['order'] = (int) $db_apps[$customization_index]['order'];
+                }
+                $db_apps[$customization_index] = array_merge( $db_apps[$customization_index], $customization );
+            } else {
+                // Add new customization entry - preserve order from merged app if not in $app_data
+                if ( ! isset( $customization['order'] ) && isset( $app['order'] ) ) {
+                    $customization['order'] = (int) $app['order'];
+                }
+                $db_apps[] = $customization;
+            }
+
+            // Save only the database apps (customizations + custom apps)
+            $result = update_option( $this->option_name, $db_apps );
+
+            if ( $result ) {
+                // Return the merged app (coded app + customizations)
+                return $this->get_app( $app_id );
+            } else {
+                return new WP_Error( 'save_failed', __( 'Failed to update app.', 'disciple_tools' ) );
+            }
         } else {
-            return new WP_Error( 'save_failed', __( 'Failed to update app.', 'disciple_tools' ) );
+            // For custom apps, save all fields (existing behavior)
+            if ( isset( $app_data['type'] ) ) {
+                $apps[$app_index]['type'] = sanitize_text_field( $app_data['type'] );
+            }
+            if ( isset( $app_data['title'] ) ) {
+                $apps[$app_index]['title'] = sanitize_text_field( $app_data['title'] );
+            }
+            if ( isset( $app_data['description'] ) ) {
+                $apps[$app_index]['description'] = sanitize_textarea_field( $app_data['description'] );
+            }
+            if ( isset( $app_data['url'] ) ) {
+                $apps[$app_index]['url'] = esc_url_raw( $app_data['url'] );
+            }
+            if ( isset( $app_data['icon'] ) ) {
+                $apps[$app_index]['icon'] = sanitize_text_field( $app_data['icon'] );
+            }
+            if ( isset( $app_data['color'] ) ) {
+                // Handle empty string (no custom color) vs valid hex color
+                if ( $app_data['color'] === '' || $app_data['color'] === null ) {
+                    $apps[$app_index]['color'] = '';
+                } else {
+                    $sanitized_color = sanitize_hex_color( $app_data['color'] );
+                    $apps[$app_index]['color'] = ! empty( $sanitized_color ) ? $sanitized_color : '';
+                }
+            }
+            if ( isset( $app_data['enabled'] ) ) {
+                $apps[$app_index]['enabled'] = (bool) $app_data['enabled'];
+            }
+            if ( isset( $app_data['order'] ) ) {
+                $apps[$app_index]['order'] = (int) $app_data['order'];
+            }
+            if ( isset( $app_data['user_roles_type'] ) ) {
+                $apps[$app_index]['user_roles_type'] = sanitize_text_field( $app_data['user_roles_type'] );
+            }
+            if ( isset( $app_data['roles'] ) ) {
+                $apps[$app_index]['roles'] = is_array( $app_data['roles'] ) ? array_map( 'sanitize_text_field', $app_data['roles'] ) : [];
+            }
+
+            $apps[$app_index]['updated_at'] = current_time( 'mysql' );
+
+            // For custom apps, we need to save only custom apps (not coded app customizations)
+            // Filter out coded app customizations and save only custom apps
+            $db_apps = get_option( $this->option_name, [] );
+            $coded_app_ids = [];
+            foreach ( $this->ml_apps as $ml_app ) {
+                if ( ! empty( $ml_app['id'] ) ) {
+                    $coded_app_ids[] = $ml_app['id'];
+                }
+            }
+            foreach ( $this->home_apps as $home_app ) {
+                if ( ! empty( $home_app['id'] ) ) {
+                    $coded_app_ids[] = $home_app['id'];
+                }
+            }
+
+            // Remove coded app customizations from db_apps
+            $custom_apps_only = [];
+            foreach ( $db_apps as $db_app ) {
+                if ( empty( $db_app['id'] ) ) {
+                    continue;
+                }
+                // Keep if it's not a coded app customization
+                if ( ! ( isset( $db_app['creation_type'] ) && $db_app['creation_type'] === 'coded' ) && ! in_array( $db_app['id'], $coded_app_ids ) ) {
+                    $custom_apps_only[] = $db_app;
+                }
+            }
+
+            // Update the custom app in the array
+            $custom_app_index = false;
+            foreach ( $custom_apps_only as $index => $custom_app ) {
+                if ( isset( $custom_app['id'] ) && $custom_app['id'] === $app_id ) {
+                    $custom_app_index = $index;
+                    break;
+                }
+            }
+
+            if ( $custom_app_index !== false ) {
+                $custom_apps_only[$custom_app_index] = $apps[$app_index];
+            } else {
+                $custom_apps_only[] = $apps[$app_index];
+            }
+
+            // Merge back with coded app customizations
+            $final_db_apps = $custom_apps_only;
+            foreach ( $db_apps as $db_app ) {
+                if ( ! empty( $db_app['id'] ) && ( isset( $db_app['creation_type'] ) && $db_app['creation_type'] === 'coded' ) || in_array( $db_app['id'], $coded_app_ids ) ) {
+                    // Check if we already have this customization
+                    $exists = false;
+                    foreach ( $final_db_apps as $final_app ) {
+                        if ( isset( $final_app['id'] ) && $final_app['id'] === $db_app['id'] ) {
+                            $exists = true;
+                            break;
+                        }
+                    }
+                    if ( ! $exists ) {
+                        $final_db_apps[] = $db_app;
+                    }
+                }
+            }
+
+            // Save
+            $result = update_option( $this->option_name, $final_db_apps );
+
+            if ( $result ) {
+                return $apps[$app_index];
+            } else {
+                return new WP_Error( 'save_failed', __( 'Failed to update app.', 'disciple_tools' ) );
+            }
         }
     }
 
@@ -420,9 +649,15 @@ class DT_Home_Apps {
      */
     private function get_app_index( $app_id ) {
         $apps = $this->get_all_apps();
+        // Normalize app_id to string for comparison (handles both string and integer IDs)
+        $app_id_normalized = (string) $app_id;
         foreach ( $apps as $index => $app ) {
-            if ( isset( $app['id'] ) && $app['id'] === $app_id ) {
-                return $index;
+            if ( isset( $app['id'] ) ) {
+                // Normalize app ID to string for comparison
+                $app_id_in_array = (string) $app['id'];
+                if ( $app_id_in_array === $app_id_normalized ) {
+                    return $index;
+                }
             }
         }
         return false;
