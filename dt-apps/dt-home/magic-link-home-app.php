@@ -151,12 +151,12 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         // Start with empty array to prevent theme JS from loading
         // This eliminates conflicts and reduces page load size
         $allowed_js = [];
-        
+
         // Only add scripts needed for home screen functionality
         $allowed_js[] = 'jquery'; // Required for $.ajax() calls to load apps and training videos
         $allowed_js[] = 'dt-home-theme-toggle';
         $allowed_js[] = 'dt-home-menu-toggle';
-        
+
         return $allowed_js;
     }
 
@@ -164,11 +164,11 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         // Start with empty array to prevent theme CSS from loading
         // This eliminates the need for most !important declarations
         $allowed_css = [];
-        
+
         // Only add styles needed for home screen functionality
         $allowed_css[] = 'material-font-icons-css';
         $allowed_css[] = 'dt-home-style'; // Includes launcher nav styles for other magic link apps
-        
+
         return $allowed_css;
     }
 
