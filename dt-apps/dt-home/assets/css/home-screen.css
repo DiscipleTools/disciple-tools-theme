@@ -1,5 +1,67 @@
 /* Home Screen Frontend Styles */
 
+/* Minimal CSS Reset - Required since theme CSS is blocked */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+ul, ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-weight: inherit;
+}
+
+p {
+    margin: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
 /* CSS Variables for Theme Support */
 :root {
     --theme-mode: light;
@@ -32,14 +94,14 @@
 
 /* Body theme support */
 body {
-    background-color: var(--body-background-color) !important;
+    background-color: var(--body-background-color);
     color: var(--text-color);
 }
 
 /* Dark mode specific overrides */
 /* Note: .theme-dark body is kept for cases where theme-dark class is on html element */
 .theme-dark body {
-    background-color: var(--body-background-color) !important;
+    background-color: var(--body-background-color);
 }
 
 /* Consolidated dark mode selectors - using body.theme-dark for higher specificity */
@@ -61,16 +123,16 @@ body.theme-dark .training-section {
 /* Support both html.theme-dark and body.theme-dark for early initialization */
 html.theme-dark .apps-grid .app-card,
 body.theme-dark .apps-grid .app-card {
-    background: var(--app-card-bg, #2a2a2a) !important;
-    border-color: var(--app-card-border, #404040) !important;
-    color: var(--app-card-text, #f5f5f5) !important;
-    box-shadow: 0 1px 3px var(--app-card-shadow, rgba(0,0,0,0.3)) !important;
+    background: var(--app-card-bg, #2a2a2a);
+    border-color: var(--app-card-border, #404040);
+    color: var(--app-card-text, #f5f5f5);
+    box-shadow: 0 1px 3px var(--app-card-shadow, rgba(0,0,0,0.3));
 }
 
 html.theme-dark .apps-grid .app-card:hover,
 body.theme-dark .apps-grid .app-card:hover {
-    border-color: var(--app-card-hover-border, #4a9eff) !important;
-    box-shadow: 0 2px 8px var(--app-card-shadow, rgba(0,0,0,0.3)) !important;
+    border-color: var(--app-card-hover-border, #4a9eff);
+    box-shadow: 0 2px 8px var(--app-card-shadow, rgba(0,0,0,0.3));
 }
 
 body.theme-dark .home-screen-header {
@@ -114,7 +176,7 @@ body.theme-dark .section-title {
 .home-screen-container {
     width: 100%;
     margin: 0 auto;
-    background: transparent !important;
+    background: transparent;
     /*border-radius: 8px;
     box-shadow: 0 2px 10px var(--shadow-color);*/
     overflow: hidden;
@@ -158,7 +220,7 @@ body.theme-dark .section-title {
 .home-screen-container .home-screen-header .header-table td {
     background-color: transparent;
     background: transparent;
-    border: none !important;
+    border: none;
     border-color: transparent;
     border-width: 0;
 }
@@ -168,11 +230,11 @@ body.theme-dark .section-title {
     border-collapse: collapse;
     border-spacing: 0;
     color: var(--text-color);
-    border: none !important;
+    border: none;
 }
 
 .home-screen-container .home-screen-header .header-table tbody {
-    border: none !important;
+    border: none;
     border-color: transparent;
     border-top: none;
     border-bottom: none;
@@ -181,7 +243,7 @@ body.theme-dark .section-title {
 }
 
 .home-screen-container .home-screen-header .header-table tr {
-    border: none !important;
+    border: none;
     border-color: transparent;
     border-top: none;
     border-bottom: none;
@@ -191,10 +253,10 @@ body.theme-dark .section-title {
 
 .home-screen-container .home-screen-header .header-table th,
 .home-screen-container .home-screen-header .header-table td {
-    border-top: none !important;
-    border-bottom: none !important;
-    border-left: none !important;
-    border-right: none !important;
+    border-top: none;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
 }
 
 /* Scoped to home-screen-container for higher specificity */
@@ -206,7 +268,7 @@ body.theme-dark .section-title {
     width: auto;
     padding: 0;
     color: var(--text-color);
-    border: none !important;
+    border: none;
     margin: 0;
     background-color: transparent;
     background: transparent;
@@ -222,7 +284,7 @@ body.theme-dark .section-title {
     padding-left: 2rem;
     white-space: nowrap;
     color: var(--text-color);
-    border: none !important;
+    border: none;
     margin: 0;
     background-color: transparent;
     background: transparent;
@@ -237,7 +299,7 @@ body.theme-dark .section-title {
     color: var(--text-color);
     background-color: transparent;
     background: transparent;
-    border: none !important;
+    border: none;
 }
 
 .home-screen-container .home-screen-header .header-controls-cell,
@@ -251,7 +313,7 @@ body.theme-dark .section-title {
     color: var(--text-color);
     background-color: transparent;
     background: transparent;
-    border: none !important;
+    border: none;
 }
 
 /* Header Controls for Theme Toggle and Menu - Scoped for higher specificity */
@@ -485,11 +547,11 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
 }
 
 .home-screen-container .floating-menu.active {
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateY(0) !important;
-    pointer-events: auto !important;
+    display: flex !important; /* Critical: Layout requirement */
+    opacity: 1 !important; /* Critical: Display state */
+    visibility: visible !important; /* Critical: Display state */
+    transform: translateY(0); /* Animation state - no need for !important */
+    pointer-events: auto !important; /* Critical: Interaction state */
 }
 
 .home-screen-container .menu-item {
@@ -554,6 +616,11 @@ body.theme-light .menu-item {
     background: var(--surface-2);
     color: var(--primary-color);
     font-weight: 600;
+}
+
+/* Remove focus outline from active item - it already has visual indication */
+.menu-item.active:focus {
+    outline: none;
 }
 
 /* Backdrop for floating menu */
@@ -624,7 +691,7 @@ body.theme-light .menu-item {
 .home-screen-container .apps-grid .app-card {
     background: var(--app-card-bg, #ffffff); /* Use --app-card-bg to match inline styles, white fallback */
     border: 1px solid var(--app-card-border, #e1e5e9);
-    border-radius: 24px !important;
+    border-radius: 24px;
     padding: 0.6rem;
     text-align: center;
     transition: all 0.2s ease;
@@ -1215,7 +1282,7 @@ body.theme-light .menu-item {
     left: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    background: rgba(0, 0, 0, 0.35) !important;
+    background: rgba(0, 0, 0, 0.35);
     z-index: 9999 !important;
     display: flex !important;
     align-items: center;
@@ -1322,16 +1389,16 @@ body.theme-dark .invite-url-input,
 }
 
 .invite-url-input:focus {
-    outline: 2px solid var(--primary-color, #667eea) !important;
-    outline-offset: -1px !important;
+    outline: 2px solid var(--primary-color, #667eea);
+    outline-offset: -1px;
 }
 
 .invite-copy-button {
     flex-shrink: 0;
     padding: 10px 20px;
-    background: var(--primary-color, #667eea) !important;
-    color: #fff !important;
-    border: none !important;
+    background: var(--primary-color, #667eea);
+    color: #fff;
+    border: none;
     border-radius: 6px;
     font-size: 0.9rem;
     font-weight: 600;
@@ -1342,18 +1409,18 @@ body.theme-dark .invite-url-input,
 }
 
 .invite-copy-button:hover {
-    background: var(--primary-color, #5568d3) !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+    background: var(--primary-color, #5568d3);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
 .invite-copy-button:active {
-    transform: translateY(0) !important;
+    transform: translateY(0);
 }
 
 .invite-copy-button:focus {
-    outline: 2px solid var(--primary-color, #667eea) !important;
-    outline-offset: 2px !important;
+    outline: 2px solid var(--primary-color, #667eea);
+    outline-offset: 2px;
 }
 
 body.theme-dark .invite-copy-button,
@@ -1363,19 +1430,19 @@ body.theme-dark .invite-copy-button,
 
 body.theme-dark .invite-copy-button:hover,
 .invite-modal-content.theme-dark .invite-copy-button:hover {
-    background: #3a8eef !important;
+    background: #3a8eef;
 }
 
 .invite-success-message {
-    color: #4caf50 !important;
+    color: #4caf50;
     font-size: 0.875rem;
     margin-top: 10px;
-    display: none !important;
+    display: none;
     font-weight: 500;
 }
 
 .invite-success-message.show {
-    display: block !important;
+    display: block;
     animation: fadeIn 0.3s ease;
 }
 
@@ -1391,7 +1458,7 @@ body.theme-dark .invite-copy-button:hover,
 }
 
 .invite-modal-footer {
-    display: flex !important;
+    display: flex;
     justify-content: flex-end;
     padding: 0 20px 20px 20px;
     gap: 10px;
@@ -1399,9 +1466,9 @@ body.theme-dark .invite-copy-button:hover,
 
 .invite-close-button {
     padding: 10px 20px;
-    background: var(--surface-2, #f5f5f5) !important;
-    color: var(--text-color, #000) !important;
-    border: 1px solid var(--border-color, #e1e5e9) !important;
+    background: var(--surface-2, #f5f5f5);
+    color: var(--text-color, #000);
+    border: 1px solid var(--border-color, #e1e5e9);
     border-radius: 6px;
     font-size: 0.9rem;
     font-weight: 500;
@@ -1411,13 +1478,13 @@ body.theme-dark .invite-copy-button:hover,
 }
 
 .invite-close-button:hover {
-    background: var(--surface-2, #e5e5e5) !important;
-    border-color: var(--border-color, #d1d5d9) !important;
+    background: var(--surface-2, #e5e5e5);
+    border-color: var(--border-color, #d1d5d9);
 }
 
 .invite-close-button:focus {
-    outline: 2px solid var(--primary-color, #667eea) !important;
-    outline-offset: 2px !important;
+    outline: 2px solid var(--primary-color, #667eea);
+    outline-offset: 2px;
 }
 
 body.theme-dark .invite-close-button,
@@ -1435,28 +1502,28 @@ body.theme-dark .invite-close-button:hover,
 /* Responsive adjustments for invite modal */
 @media (max-width: 480px) {
     .invite-modal-content {
-        min-width: 280px !important;
-        max-width: 95vw !important;
+        min-width: 280px;
+        max-width: 95vw;
     }
 
     .invite-modal-header,
     .invite-modal-body,
     .invite-modal-footer {
-        padding-left: 16px !important;
-        padding-right: 16px !important;
+        padding-left: 16px;
+        padding-right: 16px;
     }
 
     .invite-share-link-container {
-        flex-direction: column !important;
-        gap: 8px !important;
+        flex-direction: column;
+        gap: 8px;
     }
 
     .invite-url-input {
-        width: 100% !important;
+        width: 100%;
     }
 
     .invite-copy-button {
-        width: 100% !important;
+        width: 100%;
     }
 }
 
@@ -1468,68 +1535,68 @@ body.theme-dark .invite-close-button:hover,
 
 /* Launcher Bottom Nav Container */
 .launcher-bottom-nav {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: var(--launcher-bottom-nav-height, 60px) !important;
-    width: 100% !important;
-    z-index: 1000 !important;
-    background-color: var(--surface-0, #ffffff) !important;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    position: fixed !important; /* Critical: Must stay fixed */
+    bottom: 0 !important; /* Critical: Must stay at bottom */
+    left: 0 !important; /* Critical: Must span full width */
+    right: 0 !important; /* Critical: Must span full width */
+    height: var(--launcher-bottom-nav-height, 60px);
+    width: 100%;
+    z-index: 1000 !important; /* Critical: Must stay above content */
+    background-color: var(--surface-0, #ffffff);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    display: flex !important; /* Critical: Layout requirement */
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .launcher-bottom-nav .nav-container {
-    height: var(--launcher-bottom-nav-height, 60px) !important;
-    width: 100% !important;
-    max-width: var(--max-bottom-width, 800px) !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-evenly !important;
-    padding: 0 1rem !important;
+    height: var(--launcher-bottom-nav-height, 60px);
+    width: 100%;
+    max-width: var(--max-bottom-width, 800px);
+    display: flex !important; /* Critical: Layout requirement */
+    flex-direction: row !important; /* Critical: Layout requirement */
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 0 1rem;
 }
 
 /* Nav Items */
 .launcher-bottom-nav button.nav-item {
-    background: none !important;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    cursor: pointer !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-size: 10px !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    color: var(--text-color, #0a0a0a) !important;
-    text-decoration: none !important;
-    transition: all 0.2s ease !important;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: flex !important; /* Critical: Layout requirement */
+    flex-direction: column !important; /* Critical: Layout requirement */
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-color, #0a0a0a);
+    text-decoration: none;
+    transition: all 0.2s ease;
 }
 
 .launcher-bottom-nav a.nav-item {
-    text-decoration: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-size: 10px !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    color: var(--text-color, #0a0a0a) !important;
-    transition: all 0.2s ease !important;
+    text-decoration: none;
+    display: flex !important; /* Critical: Layout requirement */
+    flex-direction: column !important; /* Critical: Layout requirement */
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-color, #0a0a0a);
+    transition: all 0.2s ease;
 }
 
 .launcher-bottom-nav .nav-item i {
-    font-size: 30px !important;
-    height: 40px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    font-size: 30px;
+    height: 40px;
+    display: flex !important; /* Critical: Layout requirement */
+    align-items: center;
+    justify-content: center;
 }
 
 .launcher-bottom-nav .nav-item:hover {
@@ -1539,160 +1606,160 @@ body.theme-dark .invite-close-button:hover,
 /* Home Button (Circular, Elevated) */
 .launcher-bottom-nav .nav-item-home {
     background-color: var(--primary-color); /* Dark blue color */
-    color: #ffffff !important; /* Explicit white color */
-    width: 60px !important;
-    height: 60px !important;
-    border-radius: 50% !important;
-    position: relative !important;
-    top: -1rem !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
-    transition: all 0.2s ease !important;
+    color: #ffffff; /* Explicit white color */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: relative !important; /* Critical: Positioning requirement */
+    top: -1rem !important; /* Critical: Positioning requirement */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
 }
 
 .launcher-bottom-nav .nav-item-home i {
-    font-size: 40px !important;
-    height: 60px !important;
-    opacity: 1 !important;
-    transition: opacity 0.2s ease !important;
-    color: #ffffff !important; /* Explicit white color for icon */
+    font-size: 40px;
+    height: 60px;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+    color: #ffffff; /* Explicit white color for icon */
 }
 
 .launcher-bottom-nav .nav-item-home:hover {
     background-color: var(--primary-color); /* Keep dark blue on hover */
-    color: #ffffff !important; /* Keep white text on hover */
-    transform: scale(1.05) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    color: #ffffff; /* Keep white text on hover */
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .launcher-bottom-nav .nav-item-home:hover i {
-    opacity: 0.7 !important; /* Slightly transparent on hover */
-    color: #ffffff !important; /* Keep white color */
+    opacity: 0.7; /* Slightly transparent on hover */
+    color: #ffffff; /* Keep white color */
 }
 
 /* Dark Mode Support for Launcher Nav */
 body.theme-dark .launcher-bottom-nav {
-    background-color: var(--surface-0, #2a2a2a) !important;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3) !important;
+    background-color: var(--surface-0, #2a2a2a);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
 }
 
 body.theme-dark .launcher-bottom-nav .nav-item {
-    color: var(--text-color, #f5f5f5) !important;
+    color: var(--text-color, #f5f5f5);
 }
 
 body.theme-dark .launcher-bottom-nav .nav-item:hover {
-    color: var(--primary-color, #4a9eff) !important;
+    color: var(--primary-color, #4a9eff);
 }
 
 body.theme-dark .launcher-bottom-nav .nav-item-home {
-    background-color: #3a4fb8 !important; /* Dark blue color for dark mode */
-    color: #ffffff !important; /* Explicit white color */
+    background-color: #3a4fb8; /* Dark blue color for dark mode */
+    color: #ffffff; /* Explicit white color */
 }
 
 body.theme-dark .launcher-bottom-nav .nav-item-home i {
-    color: #ffffff !important; /* Explicit white color for icon */
+    color: #ffffff; /* Explicit white color for icon */
 }
 
 body.theme-dark .launcher-bottom-nav .nav-item-home:hover {
-    background-color: #3a4fb8 !important; /* Keep dark blue on hover */
-    color: #ffffff !important; /* Keep white text on hover */
+    background-color: #3a4fb8; /* Keep dark blue on hover */
+    color: #ffffff; /* Keep white text on hover */
 }
 
 body.theme-dark .launcher-bottom-nav .nav-item-home:hover i {
-    opacity: 0.7 !important; /* Slightly transparent on hover in dark mode */
-    color: #ffffff !important; /* Keep white color */
+    opacity: 0.7; /* Slightly transparent on hover in dark mode */
+    color: #ffffff; /* Keep white color */
 }
 
 /* Apps Selector (Slide-up Menu) */
 .launcher-apps-selector {
-    background-color: var(--surface-0, #ffffff) !important;
-    padding-bottom: var(--launcher-bottom-nav-height, 60px) !important;
-    position: fixed !important;
-    bottom: -40vh !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    z-index: 999 !important;
-    transition: bottom 0.3s ease-in-out !important;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1) !important;
-    max-height: 40vh !important;
-    overflow-y: auto !important;
+    background-color: var(--surface-0, #ffffff);
+    padding-bottom: var(--launcher-bottom-nav-height, 60px);
+    position: fixed !important; /* Critical: Must overlay content */
+    bottom: -40vh !important; /* Critical: Positioning requirement */
+    left: 0 !important; /* Critical: Positioning requirement */
+    right: 0 !important; /* Critical: Positioning requirement */
+    width: 100%;
+    z-index: 999 !important; /* Critical: Must be above nav */
+    transition: bottom 0.3s ease-in-out;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    max-height: 40vh;
+    overflow-y: auto;
 }
 
 .launcher-apps-selector.open {
-    bottom: 0 !important;
+    bottom: 0 !important; /* Critical: Positioning requirement */
 }
 
 .launcher-apps-selector ul,
 .launcher-apps-selector li {
-    margin: 0 !important;
-    padding: 0 !important;
-    list-style: none !important;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .launcher-apps-selector ul {
-    margin: 0 auto !important;
-    max-width: var(--max-bottom-width, 800px) !important;
-    padding: 1rem 0 !important;
+    margin: 0 auto;
+    max-width: var(--max-bottom-width, 800px);
+    padding: 1rem 0;
 }
 
 .launcher-apps-selector li {
-    width: 100% !important;
+    width: 100%;
 }
 
 .launcher-apps-selector li a {
-    text-decoration: none !important;
-    color: var(--text-color, #0a0a0a) !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    padding: 0.75rem 1rem !important;
-    transition: all 0.2s ease !important;
-    border-bottom: 1px solid var(--border-color, #e1e5e9) !important;
+    text-decoration: none;
+    color: var(--text-color, #0a0a0a);
+    display: flex !important; /* Critical: Layout requirement */
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--border-color, #e1e5e9);
 }
 
 .launcher-apps-selector li:last-child a {
-    border-bottom: none !important;
+    border-bottom: none;
 }
 
 .launcher-apps-selector li a:hover {
-    background-color: var(--surface-2, #f1f3f5) !important;
-    color: var(--primary-color, #667eea) !important;
+    background-color: var(--surface-2, #f1f3f5);
+    color: var(--primary-color, #667eea);
 }
 
 .launcher-apps-selector li a img {
-    height: 1.5rem !important;
-    width: 1.5rem !important;
-    object-fit: contain !important;
+    height: 1.5rem;
+    width: 1.5rem;
+    object-fit: contain;
 }
 
 .launcher-apps-selector li a i.mdi {
-    font-size: 1.5rem !important;
-    width: 1.5rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    font-size: 1.5rem;
+    width: 1.5rem;
+    display: flex !important; /* Critical: Layout requirement */
+    align-items: center;
+    justify-content: center;
 }
 
 /* Theme-aware default icon colors for launcher nav (fallback if JavaScript hasn't applied) */
 .launcher-apps-selector li a i:not([data-has-custom-color="true"]) {
-    color: var(--app-card-text, #0a0a0a) !important;
+    color: var(--app-card-text, #0a0a0a);
 }
 
 html.theme-dark .launcher-apps-selector li a i:not([data-has-custom-color="true"]),
 body.theme-dark .launcher-apps-selector li a i:not([data-has-custom-color="true"]) {
-    color: var(--app-card-text, #f5f5f5) !important;
+    color: var(--app-card-text, #f5f5f5);
 }
 
 .launcher-apps-selector li a .name {
-    flex: 1 !important;
-    font-size: 0.9rem !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    flex: 1;
+    font-size: 0.9rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Dark Mode Support for Apps Selector */
 body.theme-dark .launcher-apps-selector {
     background-color: var(--surface-0, #2a2a2a);
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
 }
 
 body.theme-dark .launcher-apps-selector li a {
@@ -1708,20 +1775,20 @@ body.theme-dark .launcher-apps-selector li a:hover {
 /* Responsive Adjustments */
 @media screen and (max-width: 800px) {
     .launcher-apps-selector ul {
-        margin: 0 !important;
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
+        margin: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }
 
 /* Body padding to prevent content overlap with launcher nav */
 body:has(.launcher-bottom-nav) {
-    padding-bottom: var(--launcher-bottom-nav-height, 60px) !important;
+    padding-bottom: var(--launcher-bottom-nav-height, 60px);
 }
 
 /* Ensure content doesn't overlap with launcher nav */
 #wrapper:has(.launcher-bottom-nav) {
-    padding-bottom: var(--launcher-bottom-nav-height, 60px) !important;
+    padding-bottom: var(--launcher-bottom-nav-height, 60px);
 }
 
 /* ============================================
@@ -1732,111 +1799,111 @@ body:has(.launcher-bottom-nav) {
 
 /* Wrapper Launcher Bottom Nav Container */
 .dt-launcher-bottom-nav {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: var(--launcher-bottom-nav-height, 60px) !important;
-    width: 100% !important;
-    z-index: 1000 !important;
-    background-color: var(--surface-0, #ffffff) !important;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    position: fixed !important; /* Critical: Must stay fixed */
+    bottom: 0 !important; /* Critical: Must stay at bottom */
+    left: 0 !important; /* Critical: Must span full width */
+    right: 0 !important; /* Critical: Must span full width */
+    height: var(--launcher-bottom-nav-height, 60px);
+    width: 100%;
+    z-index: 1000 !important; /* Critical: Must stay above content */
+    background-color: var(--surface-0, #ffffff);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    display: flex !important; /* Critical: Layout requirement */
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .dt-launcher-bottom-nav .nav-container {
-    height: var(--launcher-bottom-nav-height, 60px) !important;
-    width: 100% !important;
-    max-width: var(--max-bottom-width, 800px) !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-evenly !important;
-    padding: 0 1rem !important;
+    height: var(--launcher-bottom-nav-height, 60px);
+    width: 100%;
+    max-width: var(--max-bottom-width, 800px);
+    display: flex !important; /* Critical: Layout requirement */
+    flex-direction: row !important; /* Critical: Layout requirement */
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 0 1rem;
 }
 
 /* Wrapper Nav Items */
 .dt-launcher-bottom-nav button.nav-item {
-    background: none !important;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    cursor: pointer !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-size: 10px !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    color: var(--text-color, #0a0a0a) !important;
-    text-decoration: none !important;
-    transition: all 0.2s ease !important;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: flex !important; /* Critical: Layout requirement */
+    flex-direction: column !important; /* Critical: Layout requirement */
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-color, #0a0a0a);
+    text-decoration: none;
+    transition: all 0.2s ease;
 }
 
 .dt-launcher-bottom-nav a.nav-item {
-    text-decoration: none !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    font-size: 10px !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    color: var(--text-color, #0a0a0a) !important;
-    transition: all 0.2s ease !important;
+    text-decoration: none;
+    display: flex !important; /* Critical: Layout requirement */
+    flex-direction: column !important; /* Critical: Layout requirement */
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-color, #0a0a0a);
+    transition: all 0.2s ease;
 }
 
 .dt-launcher-bottom-nav .nav-item i {
-    font-size: 30px !important;
-    height: 40px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    font-size: 30px;
+    height: 40px;
+    display: flex !important; /* Critical: Layout requirement */
+    align-items: center;
+    justify-content: center;
 }
 
 .dt-launcher-bottom-nav .nav-item:hover {
-    color: var(--primary-color, #667eea) !important;
+    color: var(--primary-color, #667eea);
 }
 
 /* Wrapper Home Button (Circular, Elevated) */
 .dt-launcher-bottom-nav .nav-item-home {
     background-color: var(--primary-color); /* Dark blue color */
-    color: #ffffff !important; /* Explicit white color */
-    width: 60px !important;
-    height: 60px !important;
-    border-radius: 50% !important;
-    position: relative !important;
-    top: -1rem !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
-    transition: all 0.2s ease !important;
+    color: #ffffff; /* Explicit white color */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: relative !important; /* Critical: Positioning requirement */
+    top: -1rem !important; /* Critical: Positioning requirement */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
 }
 
 .dt-launcher-bottom-nav .nav-item-home i {
-    font-size: 40px !important;
-    height: 60px !important;
-    opacity: 1 !important;
-    transition: opacity 0.2s ease !important;
-    color: #ffffff !important; /* Explicit white color for icon */
+    font-size: 40px;
+    height: 60px;
+    opacity: 1;
+    transition: opacity 0.2s ease;
+    color: #ffffff; /* Explicit white color for icon */
 }
 
 .dt-launcher-bottom-nav .nav-item-home:hover {
     background-color: var(--primary-color); /* Keep dark blue on hover */
-    color: #ffffff !important; /* Keep white text on hover */
-    transform: scale(1.05) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    color: #ffffff; /* Keep white text on hover */
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .dt-launcher-bottom-nav .nav-item-home:hover i {
-    opacity: 0.7 !important; /* Slightly transparent on hover */
-    color: #ffffff !important; /* Keep white color */
+    opacity: 0.7; /* Slightly transparent on hover */
+    color: #ffffff; /* Keep white color */
 }
 
 /* Dark Mode Support for Wrapper Launcher Nav */
 body.theme-dark .dt-launcher-bottom-nav {
     background-color: var(--surface-0, #2a2a2a);
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
 }
 
 body.theme-dark .dt-launcher-bottom-nav .nav-item {
@@ -1848,113 +1915,113 @@ body.theme-dark .dt-launcher-bottom-nav .nav-item:hover {
 }
 
 body.theme-dark .dt-launcher-bottom-nav .nav-item-home {
-    background-color: #3a4fb8 !important; /* Dark blue color for dark mode */
-    color: #ffffff !important; /* Explicit white color */
+    background-color: #3a4fb8; /* Dark blue color for dark mode */
+    color: #ffffff; /* Explicit white color */
 }
 
 body.theme-dark .dt-launcher-bottom-nav .nav-item-home i {
-    color: #ffffff !important; /* Explicit white color for icon */
+    color: #ffffff; /* Explicit white color for icon */
 }
 
 body.theme-dark .dt-launcher-bottom-nav .nav-item-home:hover {
-    background-color: #3a4fb8 !important; /* Keep dark blue on hover */
-    color: #ffffff !important; /* Keep white text on hover */
+    background-color: #3a4fb8; /* Keep dark blue on hover */
+    color: #ffffff; /* Keep white text on hover */
 }
 
 body.theme-dark .dt-launcher-bottom-nav .nav-item-home:hover i {
-    opacity: 0.7 !important; /* Slightly transparent on hover in dark mode */
-    color: #ffffff !important; /* Keep white color */
+    opacity: 0.7; /* Slightly transparent on hover in dark mode */
+    color: #ffffff; /* Keep white color */
 }
 
 /* Wrapper Apps Selector (Slide-up Menu) */
 .dt-launcher-apps-selector {
-    background-color: var(--surface-0, #ffffff) !important;
-    padding-bottom: var(--launcher-bottom-nav-height, 60px) !important;
-    position: fixed !important;
-    bottom: -40vh !important;
-    left: 0 !important;
-    right: 0 !important;
-    max-height: 40vh !important;
-    overflow-y: auto !important;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1) !important;
-    transition: bottom 0.3s ease !important;
-    z-index: 999 !important;
+    background-color: var(--surface-0, #ffffff);
+    padding-bottom: var(--launcher-bottom-nav-height, 60px);
+    position: fixed !important; /* Critical: Must overlay content */
+    bottom: -40vh !important; /* Critical: Positioning requirement */
+    left: 0 !important; /* Critical: Positioning requirement */
+    right: 0 !important; /* Critical: Positioning requirement */
+    max-height: 40vh;
+    overflow-y: auto;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    transition: bottom 0.3s ease;
+    z-index: 999 !important; /* Critical: Must be above nav */
 }
 
 .dt-launcher-apps-selector.open {
-    bottom: 0 !important;
+    bottom: 0 !important; /* Critical: Positioning requirement */
 }
 
 .dt-launcher-apps-selector ul,
 .dt-launcher-apps-selector li {
-    margin: 0 !important;
-    padding: 0 !important;
-    list-style: none !important;
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 .dt-launcher-apps-selector ul {
-    margin: 0 auto !important;
-    max-width: var(--max-bottom-width, 800px) !important;
-    padding: 1rem 0 !important;
+    margin: 0 auto;
+    max-width: var(--max-bottom-width, 800px);
+    padding: 1rem 0;
 }
 
 .dt-launcher-apps-selector li {
-    width: 100% !important;
+    width: 100%;
 }
 
 .dt-launcher-apps-selector li a {
-    text-decoration: none !important;
-    color: var(--text-color, #0a0a0a) !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    padding: 0.75rem 1rem !important;
-    border-bottom: 1px solid var(--border-color, #e1e5e9) !important;
+    text-decoration: none;
+    color: var(--text-color, #0a0a0a);
+    display: flex !important; /* Critical: Layout requirement */
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color, #e1e5e9);
 }
 
 .dt-launcher-apps-selector li:last-child a {
-    border-bottom: none !important;
+    border-bottom: none;
 }
 
 .dt-launcher-apps-selector li a:hover {
-    background-color: var(--surface-2, #f1f3f5) !important;
-    color: var(--primary-color, #667eea) !important;
+    background-color: var(--surface-2, #f1f3f5);
+    color: var(--primary-color, #667eea);
 }
 
 .dt-launcher-apps-selector li a img {
-    height: 1.5rem !important;
-    width: 1.5rem !important;
-    object-fit: contain !important;
+    height: 1.5rem;
+    width: 1.5rem;
+    object-fit: contain;
 }
 
 .dt-launcher-apps-selector li a i.mdi {
-    font-size: 1.5rem !important;
-    width: 1.5rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    font-size: 1.5rem;
+    width: 1.5rem;
+    display: flex !important; /* Critical: Layout requirement */
+    align-items: center;
+    justify-content: center;
 }
 
 /* Theme-aware default icon colors for wrapper launcher nav (fallback if JavaScript hasn't applied) */
 .dt-launcher-apps-selector li a i:not([data-has-custom-color="true"]) {
-    color: var(--app-card-text, #0a0a0a) !important;
+    color: var(--app-card-text, #0a0a0a);
 }
 
 html.theme-dark .dt-launcher-apps-selector li a i:not([data-has-custom-color="true"]),
 body.theme-dark .dt-launcher-apps-selector li a i:not([data-has-custom-color="true"]) {
-    color: var(--app-card-text, #f5f5f5) !important;
+    color: var(--app-card-text, #f5f5f5);
 }
 
 .dt-launcher-apps-selector li a .name {
-    flex: 1 !important;
-    font-size: 0.9rem !important;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    flex: 1;
+    font-size: 0.9rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 /* Dark Mode Support for Wrapper Apps Selector */
 body.theme-dark .dt-launcher-apps-selector {
     background-color: var(--surface-0, #2a2a2a);
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
 }
 
 body.theme-dark .dt-launcher-apps-selector li a {
@@ -1970,9 +2037,9 @@ body.theme-dark .dt-launcher-apps-selector li a:hover {
 /* Responsive Adjustments for Wrapper */
 @media screen and (max-width: 800px) {
     .dt-launcher-apps-selector ul {
-        margin: 0 !important;
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
+        margin: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 }
 

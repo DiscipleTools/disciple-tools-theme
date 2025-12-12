@@ -306,9 +306,12 @@ class MenuToggle {
   }
 
   createMenuItems() {
-    // Get current view from URL
-    const params = new URLSearchParams(window.location.search);
-    const currentView = (params.get('view') || 'apps').toLowerCase();
+    // Get current view from URL - always read fresh from current location
+    // Use window.location.href to ensure we get the most up-to-date URL
+    const currentUrl = new URL(window.location.href);
+    const viewParam = currentUrl.searchParams.get('view');
+    // Trim whitespace and convert to lowercase for reliable comparison
+    const currentView = (viewParam ? viewParam.trim() : 'apps').toLowerCase();
 
     // Build base URL without view parameter
     const url = new URL(window.location.href);
@@ -330,6 +333,10 @@ class MenuToggle {
         window.dtHomeMenuToggleSettings.inviteEnabled === '1');
 
     // Create menu items
+    // Ensure only one view is active at a time
+    const isAppsView = currentView === 'apps';
+    const isTrainingView = currentView === 'training';
+    
     const menuItems = [
       {
         id: 'menu-apps',
@@ -338,7 +345,7 @@ class MenuToggle {
         action: () => {
           window.location.href = baseUrl + separator + 'view=apps';
         },
-        active: currentView === 'apps',
+        active: isAppsView, // Only true when currentView is exactly 'apps'
       },
       {
         id: 'menu-training',
@@ -347,7 +354,7 @@ class MenuToggle {
         action: () => {
           window.location.href = baseUrl + separator + 'view=training';
         },
-        active: currentView === 'training',
+        active: isTrainingView, // Only true when currentView is exactly 'training'
       },
     ];
 
@@ -395,8 +402,11 @@ class MenuToggle {
         <span>${item.label}</span>
       `;
 
+      // Explicitly set active state - ensure only the current view is active
       if (item.active) {
         menuItem.classList.add('active');
+      } else {
+        menuItem.classList.remove('active');
       }
 
       menuItem.addEventListener('click', (e) => {
@@ -486,10 +496,12 @@ class MenuToggle {
     // Create backdrop to close on outside click (covers the page)
     this.createBackdrop();
 
-    // Focus first item for keyboard users
-    const firstItem = this.floatingMenu.querySelector('.menu-item');
-    if (firstItem) {
-      firstItem.focus();
+    // Focus the active menu item (or first item if none active) for keyboard users
+    // This prevents the first item from always getting a focus outline
+    const activeItem = this.floatingMenu.querySelector('.menu-item.active');
+    const itemToFocus = activeItem || this.floatingMenu.querySelector('.menu-item');
+    if (itemToFocus) {
+      itemToFocus.focus();
     }
 
     // Update aria-label

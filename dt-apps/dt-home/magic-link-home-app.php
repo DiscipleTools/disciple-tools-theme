@@ -148,16 +148,27 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
     }
 
     public function dt_magic_url_base_allowed_js( $allowed_js ) {
+        // Start with empty array to prevent theme JS from loading
+        // This eliminates conflicts and reduces page load size
+        $allowed_js = [];
+        
+        // Only add scripts needed for home screen functionality
+        $allowed_js[] = 'jquery'; // Required for $.ajax() calls to load apps and training videos
         $allowed_js[] = 'dt-home-theme-toggle';
         $allowed_js[] = 'dt-home-menu-toggle';
+        
         return $allowed_js;
     }
 
     public function dt_magic_url_base_allowed_css( $allowed_css ) {
-        // @todo add or remove css files with this filter
+        // Start with empty array to prevent theme CSS from loading
+        // This eliminates the need for most !important declarations
+        $allowed_css = [];
+        
+        // Only add styles needed for home screen functionality
         $allowed_css[] = 'material-font-icons-css';
-        $allowed_css[] = 'dt-home-style'; // Include launcher nav styles for other magic link apps
-
+        $allowed_css[] = 'dt-home-style'; // Includes launcher nav styles for other magic link apps
+        
         return $allowed_css;
     }
 
@@ -193,8 +204,9 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
     public function header_style() {
         ?>
         <style>
+            /* Base body styles - CSS reset is now in home-screen.css */
             body {
-                background-color: #f8f9fa;
+                background-color: var(--body-background-color, #e2e2e2);
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             }
 
@@ -994,7 +1006,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 background: var(--app-card-bg, #ffffff) !important;
                 border: 1px solid var(--app-card-border, #e1e5e9) !important;
                 color: var(--app-card-text, #0a0a0a) !important;
-                border-radius: 8px !important;
+                border-radius: 24px !important;
                 padding: 1.5rem !important;
                 text-align: center !important;
                 transition: all 0.3s ease !important;
