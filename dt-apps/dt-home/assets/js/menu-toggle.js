@@ -336,7 +336,7 @@ class MenuToggle {
     // Ensure only one view is active at a time
     const isAppsView = currentView === 'apps';
     const isTrainingView = currentView === 'training';
-    
+
     const menuItems = [
       {
         id: 'menu-apps',
@@ -499,7 +499,8 @@ class MenuToggle {
     // Focus the active menu item (or first item if none active) for keyboard users
     // This prevents the first item from always getting a focus outline
     const activeItem = this.floatingMenu.querySelector('.menu-item.active');
-    const itemToFocus = activeItem || this.floatingMenu.querySelector('.menu-item');
+    const itemToFocus =
+      activeItem || this.floatingMenu.querySelector('.menu-item');
     if (itemToFocus) {
       itemToFocus.focus();
     }
