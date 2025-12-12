@@ -135,40 +135,24 @@ body.theme-dark .apps-grid .app-card:hover {
     box-shadow: 0 2px 8px var(--app-card-shadow, rgba(0,0,0,0.3));
 }
 
+/* Consolidated dark mode header styles */
 body.theme-dark .home-screen-header {
     background: transparent;
-    color: var(--text-color);
 }
 
-body.theme-dark .home-screen-header h1 {
-    color: var(--text-color);
-}
-
+body.theme-dark .home-screen-header,
+body.theme-dark .home-screen-header h1,
 body.theme-dark .home-screen-header p {
     color: var(--text-color);
 }
 
-body.theme-dark .header-table {
-    color: var(--text-color);
-}
-
-body.theme-dark .header-content-cell {
-    color: var(--text-color);
-}
-
-body.theme-dark .header-controls-cell {
-    color: var(--text-color);
-}
-
+/* Consolidated dark mode text color overrides */
+body.theme-dark .header-table,
+body.theme-dark .header-content-cell,
+body.theme-dark .header-controls-cell,
 body.theme-dark .theme-icon,
-body.theme-dark .dt-menu-icon {
-    color: var(--text-color);
-}
-
-body.theme-dark .app-title {
-    color: var(--text-color);
-}
-
+body.theme-dark .dt-menu-icon,
+body.theme-dark .app-title,
 body.theme-dark .section-title {
     color: var(--text-color);
 }
@@ -581,14 +565,7 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     border-bottom: none;
 }
 
-/* Theme-aware menu item colors */
-body.theme-dark .menu-item {
-    color: var(--text-color);
-}
-
-body.theme-light .menu-item {
-    color: var(--text-color);
-}
+/* Theme-aware menu item colors - redundant since .menu-item already uses var(--text-color) */
 
 .menu-item i {
     font-size: 20px;
