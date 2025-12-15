@@ -21,16 +21,19 @@ $selector_class = isset( $is_wrapper_context ) && $is_wrapper_context ? 'dt-laun
 require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-helpers.php';
 
 // Filter apps to only show app-type apps
-// Include both coded apps (with magic_link_meta) and custom apps (without magic_link_meta)
+// Include coded apps (both magic link apps with magic_link_meta and home apps without magic_link_meta)
+// and custom apps (without magic_link_meta)
 $filtered_apps = array_filter( $apps, function ( $app ) {
     // Must be app-type
     if ( ! isset( $app['type'] ) || $app['type'] !== 'app' ) {
         return false;
     }
 
-    // For coded apps, must have magic_link_meta
+    // For coded apps with type='app', allow both:
+    // - Magic link apps (have magic_link_meta)
+    // - Home apps (don't have magic_link_meta, but are still valid app-type apps)
     if ( isset( $app['creation_type'] ) && $app['creation_type'] === 'coded' ) {
-        return isset( $app['magic_link_meta'] ) && ! empty( $app['magic_link_meta'] );
+        return true; // Allow all coded apps with type='app'
     }
 
     // For custom apps, just need to be app-type (they may not have magic_link_meta)
@@ -288,6 +291,8 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
             </a>
         </li>
     <?php endforeach; ?>
+    <!-- Dummy spacer item to ensure last app is fully visible above nav bar -->
+    <li class="launcher-apps-spacer" style="height: calc(var(--launcher-bottom-nav-height, 58px) + 2rem); pointer-events: none; visibility: hidden;" aria-hidden="true"></li>
     </ul>
 </div>
 

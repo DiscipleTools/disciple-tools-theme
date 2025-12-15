@@ -1,7 +1,5 @@
 /* Home Screen Frontend Styles */
-
-/* Minimal CSS Reset - Required since theme CSS is blocked */
-*, *::before, *::after {
+*, *::before, *::after { /* Minimal CSS Reset - Required since theme CSS is blocked */
     box-sizing: border-box;
 }
 
@@ -74,9 +72,7 @@ table {
     --border-color: #e1e5e9;
     --shadow-color: rgba(0,0,0,0.1);
 }
-
-/* Dark Mode Variables */
-.theme-dark {
+.theme-dark { /* Dark Mode Variables */
     --body-background-color: #1a1a1a;
     --text-color: #f5f5f5;
     --surface-0: #2a2a2a;
@@ -86,41 +82,30 @@ table {
     --border-color: #404040;
     --shadow-color: rgba(0,0,0,0.3);
 }
-
-/* Global smooth transitions for theme changes */
-* {
+* { /* Global smooth transitions for theme changes */
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
-
-/* Body theme support */
-body {
+body { /* Body theme support */
     background-color: var(--body-background-color);
     color: var(--text-color);
 }
 
-/* Dark mode specific overrides */
-/* Note: .theme-dark body is kept for cases where theme-dark class is on html element */
-.theme-dark body {
+.theme-dark body { /* Dark mode overrides - for html element support */
     background-color: var(--body-background-color);
 }
-
-/* Consolidated dark mode selectors - using body.theme-dark for higher specificity */
 body.theme-dark .home-screen-container {
     background: var(--surface-1);
     color: var(--text-color);
 }
-
 body.theme-dark .home-screen-content {
     background: transparent;
     color: var(--text-color);
 }
-
 body.theme-dark .training-section {
     border-top-color: var(--border-color);
 }
 
-/* Dark mode app card styles - scoped to apps-grid for higher specificity */
-/* Support both html.theme-dark and body.theme-dark for early initialization */
+/* Dark mode app cards - support html.theme-dark and body.theme-dark */
 html.theme-dark .apps-grid .app-card,
 body.theme-dark .apps-grid .app-card {
     background: var(--app-card-bg, #2a2a2a);
@@ -134,19 +119,14 @@ body.theme-dark .apps-grid .app-card:hover {
     border-color: var(--app-card-hover-border, #4a9eff);
     box-shadow: 0 2px 8px var(--app-card-shadow, rgba(0,0,0,0.3));
 }
-
-/* Consolidated dark mode header styles */
 body.theme-dark .home-screen-header {
     background: transparent;
+    color: var(--text-color);
 }
-
-body.theme-dark .home-screen-header,
 body.theme-dark .home-screen-header h1,
 body.theme-dark .home-screen-header p {
     color: var(--text-color);
 }
-
-/* Consolidated dark mode text color overrides */
 body.theme-dark .header-table,
 body.theme-dark .header-content-cell,
 body.theme-dark .header-controls-cell,
@@ -156,32 +136,24 @@ body.theme-dark .app-title,
 body.theme-dark .section-title {
     color: var(--text-color);
 }
-
 .home-screen-container {
     width: 100%;
     margin: 0 auto;
     background: transparent;
-    /*border-radius: 8px;
-    box-shadow: 0 2px 10px var(--shadow-color);*/
     overflow: hidden;
     box-sizing: border-box;
 }
 
-/* Desktop: Narrower max-width for better readability */
 @media (min-width: 768px) {
     .home-screen-container {
         max-width: 480px;
     }
 }
-
-/* Larger desktop screens: Slightly wider but still narrow */
 @media (min-width: 1024px) {
     .home-screen-container {
         max-width: 520px;
     }
 }
-
-/* Mobile: Full width (no max-width constraint) */
 @media (max-width: 767px) {
     .home-screen-container {
         max-width: 100%;
@@ -196,111 +168,43 @@ body.theme-dark .section-title {
     position: relative;
 }
 
-/* Header Table Layout - Scoped to home-screen-container for higher specificity */
-.home-screen-container .home-screen-header .header-table,
-.home-screen-container .home-screen-header .header-table tbody,
-.home-screen-container .home-screen-header .header-table tr,
-.home-screen-container .home-screen-header .header-table th,
-.home-screen-container .home-screen-header .header-table td {
-    background-color: transparent;
+/* Header Table Styles */
+.header-table,
+.header-table tbody,
+.header-table tr,
+.header-table th,
+.header-table td {
     background: transparent;
     border: none;
-    border-color: transparent;
-    border-width: 0;
 }
 
-.home-screen-container .home-screen-header .header-table {
+.header-table {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
     color: var(--text-color);
-    border: none;
 }
 
-.home-screen-container .home-screen-header .header-table tbody {
-    border: none;
-    border-color: transparent;
-    border-top: none;
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-}
-
-.home-screen-container .home-screen-header .header-table tr {
-    border: none;
-    border-color: transparent;
-    border-top: none;
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-}
-
-.home-screen-container .home-screen-header .header-table th,
-.home-screen-container .home-screen-header .header-table td {
-    border-top: none;
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-}
-
-/* Scoped to home-screen-container for higher specificity */
-.home-screen-container .home-screen-header .header-table td,
-.home-screen-container .home-screen-header .header-table td.header-content-cell,
-.home-screen-container .home-screen-header table.header-table td.header-content-cell,
-.home-screen-container .home-screen-header .header-table .header-content-cell {
+.header-table td {
     vertical-align: top;
-    width: auto;
+    margin: 0;
     padding: 0;
     color: var(--text-color);
-    border: none;
-    margin: 0;
-    background-color: transparent;
-    background: transparent;
 }
 
-.home-screen-container .home-screen-header .header-table td.header-controls-cell,
-.home-screen-container .home-screen-header table.header-table td.header-controls-cell,
-.home-screen-container .home-screen-header .header-table .header-controls-cell {
-    vertical-align: top;
+.header-table .header-content-cell,
+.header-table td.header-content-cell {
+    width: auto;
+}
+
+.header-table .header-controls-cell,
+.header-table td.header-controls-cell {
     text-align: right;
     width: 1%;
-    padding: 0;
     padding-left: 2rem;
     white-space: nowrap;
-    color: var(--text-color);
-    border: none;
-    margin: 0;
-    background-color: transparent;
-    background: transparent;
 }
 
-/* Fallback selectors - scoped for higher specificity */
-.home-screen-container .home-screen-header .header-content-cell,
-.home-screen-container .home-screen-header td.header-content-cell {
-    vertical-align: top;
-    width: auto;
-    padding: 0;
-    color: var(--text-color);
-    background-color: transparent;
-    background: transparent;
-    border: none;
-}
-
-.home-screen-container .home-screen-header .header-controls-cell,
-.home-screen-container .home-screen-header td.header-controls-cell {
-    vertical-align: top;
-    text-align: right;
-    width: 1%;
-    padding: 0;
-    padding-left: 2rem;
-    white-space: nowrap;
-    color: var(--text-color);
-    background-color: transparent;
-    background: transparent;
-    border: none;
-}
-
-/* Header Controls for Theme Toggle and Menu - Scoped for higher specificity */
 .home-screen-container .home-screen-header .header-controls {
     display: flex;
     align-items: flex-start;
@@ -311,109 +215,10 @@ body.theme-dark .section-title {
     flex-shrink: 0;
 }
 
-/* Ensure menu button container is also relative for floating menu positioning */
 .menu-toggle-button {
     position: relative;
 }
-
-/* Theme Toggle Button Styles */
-.home-screen-container .theme-toggle-button {
-    background: transparent;
-    border: 1px solid var(--border-color);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-    white-space: nowrap;
-    /* Remove any default button styles */
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    background-image: none;
-    background-size: none;
-}
-
-.home-screen-container .theme-toggle-button::before,
-.home-screen-container .theme-toggle-button::after {
-    display: none !important;
-    content: none !important;
-}
-
-.home-screen-container .theme-toggle-button:hover {
-    background: var(--surface-2);
-    border-color: var(--primary-color);
-    transform: scale(1.05);
-}
-
-.home-screen-container .theme-toggle-button:active {
-    transform: scale(0.95);
-}
-
-.home-screen-container .theme-toggle-button.transitioning {
-    opacity: 0.7;
-    transform: scale(0.95);
-}
-
-.home-screen-container .theme-icon {
-    color: var(--text-color);
-    font-size: 24px;
-    transition: all 0.3s ease;
-    /* Ensure icon is properly displayed */
-    display: inline-block;
-    line-height: 1;
-    position: relative;
-    z-index: 1;
-}
-
-.home-screen-container .theme-toggle-button:hover .theme-icon {
-    color: var(--primary-color);
-    transform: scale(1.1);
-}
-
-/* Dark theme specific styles for theme toggle button */
-body.theme-dark .home-screen-container .theme-toggle-button {
-    border-color: var(--border-color);
-    background: transparent;
-}
-
-body.theme-dark .home-screen-container .theme-toggle-button:hover {
-    background: var(--surface-2);
-    border-color: var(--primary-color);
-}
-
-body.theme-dark .home-screen-container .theme-icon {
-    color: var(--text-color);
-}
-
-body.theme-dark .home-screen-container .theme-toggle-button:hover .theme-icon {
-    color: var(--primary-color);
-}
-
-/* Light theme specific styles for theme toggle button */
-body.theme-light .home-screen-container .theme-toggle-button {
-    border-color: var(--border-color);
-    background: transparent;
-}
-
-body.theme-light .home-screen-container .theme-toggle-button:hover {
-    background: var(--surface-2);
-    border-color: var(--primary-color);
-}
-
-body.theme-light .home-screen-container .theme-icon {
-    color: var(--text-color);
-}
-
-body.theme-light .home-screen-container .theme-toggle-button:hover .theme-icon {
-    color: var(--primary-color);
-}
-
-/* Menu Toggle Button Styles */
+.home-screen-container .theme-toggle-button,
 .home-screen-container .menu-toggle-button {
     background: transparent;
     border: 1px solid var(--border-color);
@@ -425,93 +230,85 @@ body.theme-light .home-screen-container .theme-toggle-button:hover .theme-icon {
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    position: relative;
     flex-shrink: 0;
     white-space: nowrap;
-    /* Remove any default button styles that might add icons */
     appearance: none !important;
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
-    /* Remove any background images or pseudo-elements */
     background-image: none;
     background-size: none;
-    /* Ensure no pseudo-elements create duplicate icons */
 }
 
+.home-screen-container .theme-toggle-button::before,
+.home-screen-container .theme-toggle-button::after,
 .home-screen-container .menu-toggle-button::before,
 .home-screen-container .menu-toggle-button::after {
     display: none !important;
     content: none !important;
 }
 
+.home-screen-container .theme-toggle-button:hover,
 .home-screen-container .menu-toggle-button:hover {
     background: var(--surface-2);
     border-color: var(--primary-color);
     transform: scale(1.05);
 }
 
+.home-screen-container .theme-toggle-button:active,
 .home-screen-container .menu-toggle-button:active {
     transform: scale(0.95);
 }
 
+.home-screen-container .menu-toggle-button {
+    position: relative;
+}
+
+.home-screen-container .theme-toggle-button.transitioning {
+    opacity: 0.7;
+    transform: scale(0.95);
+}
+
+.home-screen-container .theme-icon,
 .home-screen-container .dt-menu-icon {
     color: var(--text-color);
     font-size: 24px;
     transition: all 0.3s ease;
-    /* Ensure icon is properly displayed */
     display: inline-block;
     line-height: 1;
-    /* Prevent any icon duplication */
     position: relative;
     z-index: 1;
 }
 
+.home-screen-container .theme-toggle-button:hover .theme-icon,
 .home-screen-container .menu-toggle-button:hover .dt-menu-icon {
     color: var(--primary-color);
     transform: scale(1.1);
 }
 
-/* Dark theme specific styles for menu toggle button */
+body.theme-dark .home-screen-container .theme-toggle-button,
 body.theme-dark .home-screen-container .menu-toggle-button {
     border-color: var(--border-color);
     background: transparent;
 }
 
+body.theme-dark .home-screen-container .theme-toggle-button:hover,
 body.theme-dark .home-screen-container .menu-toggle-button:hover {
     background: var(--surface-2);
     border-color: var(--primary-color);
 }
 
+body.theme-dark .home-screen-container .theme-icon,
 body.theme-dark .home-screen-container .dt-menu-icon {
     color: var(--text-color);
 }
 
+body.theme-dark .home-screen-container .theme-toggle-button:hover .theme-icon,
 body.theme-dark .home-screen-container .menu-toggle-button:hover .dt-menu-icon {
     color: var(--primary-color);
 }
 
-/* Light theme specific styles for menu toggle button */
-body.theme-light .home-screen-container .menu-toggle-button {
-    border-color: var(--border-color);
-    background: transparent;
-}
-
-body.theme-light .home-screen-container .menu-toggle-button:hover {
-    background: var(--surface-2);
-    border-color: var(--primary-color);
-}
-
-body.theme-light .home-screen-container .dt-menu-icon {
-    color: var(--text-color);
-}
-
-body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon {
-    color: var(--primary-color);
-}
-
-/* Floating Menu */
 .home-screen-container .floating-menu {
-    position: fixed !important;
+    position: fixed !important; /* Critical: Must stay fixed */
     display: none; /* Hidden by default, shown only when active */
     flex-direction: column;
     background: var(--surface-1);
@@ -520,7 +317,7 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     box-shadow: 0 4px 12px var(--shadow-color);
     min-width: 220px;
     max-width: 280px;
-    z-index: 1000 !important;
+    z-index: 1000 !important; /* Critical: Must stay above content */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
@@ -534,7 +331,7 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     display: flex !important; /* Critical: Layout requirement */
     opacity: 1 !important; /* Critical: Display state */
     visibility: visible !important; /* Critical: Display state */
-    transform: translateY(0); /* Animation state - no need for !important */
+    transform: translateY(0);
     pointer-events: auto !important; /* Critical: Interaction state */
 }
 
@@ -565,8 +362,6 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     border-bottom: none;
 }
 
-/* Theme-aware menu item colors - redundant since .menu-item already uses var(--text-color) */
-
 .menu-item i {
     font-size: 20px;
     width: 24px;
@@ -595,12 +390,10 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     font-weight: 600;
 }
 
-/* Remove focus outline from active item - it already has visual indication */
 .menu-item.active:focus {
     outline: none;
 }
 
-/* Backdrop for floating menu */
 .menu-backdrop {
     position: fixed;
     inset: 0;
@@ -629,34 +422,14 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
 .home-screen-content {
     padding: 1.5rem;
 }
-
 .home-screen-container .apps-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
     gap: 1.5rem 1rem;
-    margin-bottom: 2rem;
+    margin: 0 auto 2rem;
     max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
-@media (max-width: 768px) {
-    .home-screen-container .apps-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
-        gap: 1rem 0.75rem; /* Reduced gap spacing for mobile */
-    }
-}
-
-@media (max-width: 480px) {
-    .home-screen-container .apps-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
-        gap: 0.75rem 0.5rem; /* Further reduced gap spacing for smaller mobile */
-    }
-}
-
-/* App card styles scoped to home-screen-container and apps-grid for higher specificity */
 .home-screen-container .apps-grid .app-card-wrapper {
     display: flex;
     flex-direction: column;
@@ -713,8 +486,6 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     transform: scale(1.05);
 }
 
-/* Note: Dark mode colors are handled by JavaScript to preserve custom colors */
-
 .apps-grid .app-title {
     font-size: 0.75rem;
     font-weight: 500;
@@ -730,11 +501,6 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     display: block;
     text-align: center;
 }
-
-.app-description {
-    display: none; /* Hide description for compact icon button layout */
-}
-
 .training-section {
     margin-top: 0;
     padding-top: 0;
@@ -779,96 +545,18 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
 .links-list .loading-card {
     width: 100%;
 }
-
-/* For training grid, span all columns */
-.training-grid .loading-card {
+.training-grid .loading-card { /* For training grid, span all columns */
     grid-column: 1 / -1;
 }
-
-
-/* Collapsible Sections */
-/* Section title scoped to home-screen-container for higher specificity */
-.home-screen-container .home-screen-content .section-title {
-    margin: 0 0 1rem 0;
+.home-screen-container .home-screen-content .section-title { /* Section title scoped for higher specificity */
+    margin: 0 0 1rem;
     display: flex;
     align-items: center;
     font-size: 1.75rem;
     font-weight: 700;
     color: var(--text-color);
 }
-
-.video-duration {
-    font-size: 0.8rem;
-    color: #6c757d;
-    margin-top: 0.5rem;
-    font-style: italic;
-}
-
-/* Video Preview Styles */
-.video-card {
-    position: relative;
-    overflow: hidden;
-}
-
-.video-preview {
-    position: relative;
-    width: 100%;
-    height: 120px;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 0.75rem;
-    background: #f8f9fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.video-thumbnail {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.video-card:hover .video-thumbnail {
-    transform: scale(1.05);
-}
-
-.video-icon-fallback {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background: rgba(102, 126, 234, 0.1);
-    color: #667eea;
-    font-size: 3rem;
-}
-
-.video-play-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.video-card:hover .video-play-overlay {
-    opacity: 1;
-}
-
-/* Video Modal Styles */
-.video-modal-overlay {
+.video-modal-overlay { /* Video Modal Styles */
     position: fixed;
     top: 0;
     left: 0;
@@ -939,79 +627,7 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     height: 100%;
     border: none;
 }
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .home-screen-header {
-        padding: 1rem 1.5rem;
-    }
-
-    .home-screen-header h1 {
-        font-size: 1.75rem;
-    }
-
-    .home-screen-header p {
-        font-size: 0.85rem;
-    }
-
-    .theme-toggle-button,
-    .menu-toggle-button {
-        width: 36px;
-        height: 36px;
-    }
-
-    .theme-icon,
-    .dt-menu-icon {
-        font-size: 20px;
-    }
-
-    .home-screen-content {
-        padding: 1.5rem;
-    }
-
-    .apps-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .video-modal-overlay {
-        padding: 1rem;
-    }
-
-    .video-modal {
-        max-height: 95vh;
-    }
-
-    .video-modal-header {
-        padding: 1rem;
-    }
-
-    .video-modal-header h3 {
-        font-size: 1.1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .video-preview {
-        height: 100px;
-    }
-
-    .video-play-overlay {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-    }
-
-    .video-modal-overlay {
-        padding: 0.5rem;
-    }
-
-    .video-modal-header {
-        padding: 0.75rem;
-    }
-}
-
-/* Training Video Card Styles */
-.home-screen-container .training-card {
+.training-card { /* Training Video Card Styles */
     background: var(--surface-1);
     border: 1px solid var(--border-color);
     border-radius: 12px;
@@ -1027,7 +643,7 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     box-shadow: 0 2px 8px var(--shadow-color);
 }
 
-.home-screen-container .training-card:hover {
+.training-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px var(--shadow-color);
     border-color: var(--primary-color);
@@ -1037,9 +653,7 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     box-shadow: 0 4px 16px var(--shadow-color);
     border-color: var(--primary-color);
 }
-
-/* Video Info Header - Title and Duration on same line */
-.home-screen-container .training-video-info {
+.training-video-info { /* Video Info Header - Title and Duration on same line */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1076,7 +690,7 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
 }
 
 /* Thumbnail Container with Splash Screen */
-.home-screen-container .training-video-thumbnail-container {
+.training-video-thumbnail-container {
     position: relative;
     width: 100%;
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
@@ -1085,7 +699,7 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     border-radius: 0 0 12px 12px;
 }
 
-.home-screen-container .training-video-thumbnail {
+.training-video-thumbnail {
     position: absolute;
     top: 0;
     left: 0;
@@ -1095,7 +709,7 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     border-radius: 0;
 }
 
-.home-screen-container .training-video-overlay {
+.training-video-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -1109,11 +723,11 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     z-index: 2;
 }
 
-.home-screen-container .training-card:hover .training-video-overlay {
+.training-card:hover .training-video-overlay {
     background: rgba(0, 0, 0, 0.5);
 }
 
-.home-screen-container .training-play-button {
+.training-play-button {
     width: 60px;
     height: 60px;
     background: rgba(255, 255, 255, 0.95);
@@ -1128,24 +742,14 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     border: 3px solid rgba(255, 255, 255, 0.8);
 }
 
-.home-screen-container .training-card:hover .training-play-button {
+.training-card:hover .training-play-button {
     transform: scale(1.1);
     background: white;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
-/* Old duration position (hidden when new structure is used) */
-.home-screen-container .training-video-duration {
-    display: none;
-}
-
-/* Old title position (hidden when new structure is used) */
-.home-screen-container .training-video-title {
-    display: none;
-}
-
 /* Embedded Video Container */
-.home-screen-container .training-video-embed {
+.training-video-embed {
     position: relative;
     width: 100%;
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
@@ -1154,7 +758,7 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     overflow: hidden;
 }
 
-.home-screen-container .training-video-embed iframe {
+.training-video-embed iframe {
     position: absolute;
     top: 0;
     left: 0;
@@ -1164,14 +768,14 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     border-radius: 0 0 12px 12px;
 }
 
-.home-screen-container .training-video-external-link {
+.training-video-external-link {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
     z-index: 10;
 }
 
-.home-screen-container .external-link-button {
+.external-link-button {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
@@ -1187,7 +791,7 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.home-screen-container .external-link-button:hover {
+.external-link-button:hover {
     background: rgba(0, 0, 0, 0.9);
     color: white;
     text-decoration: none;
@@ -1195,12 +799,12 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.home-screen-container .external-link-button i {
+.external-link-button i {
     font-size: 0.9rem;
 }
 
 /* Training Grid */
-.home-screen-container .training-grid {
+.training-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -1209,47 +813,10 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     width: 100%;
 }
 
-.home-screen-container .training-grid .training-card {
+.training-grid .training-card {
     width: 100%;
     max-width: 100%;
     height: auto;
-}
-
-@media (max-width: 768px) {
-    .home-screen-container .training-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .home-screen-container .training-card {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .home-screen-container .training-play-button {
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .home-screen-container .training-video-info {
-        padding: 0.5rem 0.75rem;
-    }
-
-    .home-screen-container .training-video-title-text {
-        font-size: 0.85rem;
-    }
-
-    .home-screen-container .training-video-duration-badge {
-        font-size: 0.7rem;
-        padding: 0.2rem 0.4rem;
-    }
-
-    .home-screen-container .external-link-button span {
-        display: none;
-    }
 }
 
 /* Invite Modal Styles */
@@ -1283,6 +850,7 @@ body.theme-light .home-screen-container .menu-toggle-button:hover .dt-menu-icon 
     position: relative;
 }
 
+/* Dark mode styles for invite modal */
 body.theme-dark .invite-modal-content,
 .invite-modal-content.theme-dark {
     background: var(--surface-1, #2a2a2a);
@@ -1302,37 +870,29 @@ body.theme-dark .invite-modal-content,
 }
 
 body.theme-dark .invite-modal-title,
-.invite-modal-content.theme-dark .invite-modal-title {
+.invite-modal-content.theme-dark .invite-modal-title,
+body.theme-dark .invite-explanation-text,
+.invite-modal-content.theme-dark .invite-explanation-text {
     color: var(--text-color, #f5f5f5);
 }
-
 .invite-modal-separator {
     height: 1px;
     background: var(--border-color, #e1e5e9);
-    margin-top: 12px;
-    margin-bottom: 0;
+    margin: 12px 0 0;
 }
-
 body.theme-dark .invite-modal-separator,
 .invite-modal-content.theme-dark .invite-modal-separator {
     background: var(--border-color, #404040);
 }
-
 .invite-modal-body {
     padding: 20px;
     flex: 1;
 }
-
 .invite-explanation-text {
-    margin: 0 0 20px 0;
-    color: var(--text-color, #666);
-    line-height: 1.5;
+    margin-bottom: 20px;
     font-size: 0.95rem;
-}
-
-body.theme-dark .invite-explanation-text,
-.invite-modal-content.theme-dark .invite-explanation-text {
-    color: var(--text-color, #ffffff);
+    line-height: 1.5;
+    color: var(--text-color, #666);
 }
 
 .invite-share-link-container {
@@ -1476,47 +1036,22 @@ body.theme-dark .invite-close-button:hover,
     background: var(--surface-2, #3a3a3a);
 }
 
-/* Responsive adjustments for invite modal */
-@media (max-width: 480px) {
-    .invite-modal-content {
-        min-width: 280px;
-        max-width: 95vw;
-    }
-
-    .invite-modal-header,
-    .invite-modal-body,
-    .invite-modal-footer {
-        padding-left: 16px;
-        padding-right: 16px;
-    }
-
-    .invite-share-link-container {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .invite-url-input {
-        width: 100%;
-    }
-
-    .invite-copy-button {
-        width: 100%;
-    }
-}
+/* Responsive adjustments for invite modal - moved to consolidated media queries */
 
 /* Launcher Bottom Navigation Styles */
 :root {
-    --launcher-bottom-nav-height: 60px;
+    --launcher-bottom-nav-height: 58px; /* Slightly reduced from 60px while maintaining label visibility */
     --max-bottom-width: 800px;
 }
 
-/* Launcher Bottom Nav Container */
-.launcher-bottom-nav {
+.launcher-bottom-nav, /* Launcher Bottom Nav Container */
+.dt-launcher-bottom-nav {
     position: fixed !important; /* Critical: Must stay fixed */
     bottom: 0 !important; /* Critical: Must stay at bottom */
     left: 0 !important; /* Critical: Must span full width */
     right: 0 !important; /* Critical: Must span full width */
-    height: var(--launcher-bottom-nav-height, 60px);
+    height: var(--launcher-bottom-nav-height, 58px);
+    min-height: 86px !important; /* Ensure container is tall enough for elevated button (58px nav + 28px for -1.75rem) */
     width: 100%;
     z-index: 1000 !important; /* Critical: Must stay above content */
     background-color: var(--surface-0, #ffffff);
@@ -1525,10 +1060,13 @@ body.theme-dark .invite-close-button:hover,
     align-items: center;
     justify-content: center;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: visible !important; /* Critical: Allow home button to extend beyond container */
 }
 
-.launcher-bottom-nav .nav-container {
-    height: var(--launcher-bottom-nav-height, 60px);
+.launcher-bottom-nav .nav-container,
+.dt-launcher-bottom-nav .nav-container {
+    height: var(--launcher-bottom-nav-height, 58px);
+    min-height: 86px !important; /* Ensure container is tall enough for elevated button */
     width: 100%;
     max-width: var(--max-bottom-width, 800px);
     display: flex !important; /* Critical: Layout requirement */
@@ -1536,10 +1074,10 @@ body.theme-dark .invite-close-button:hover,
     align-items: center;
     justify-content: space-evenly;
     padding: 0 1rem;
+    overflow: visible !important; /* Critical: Allow home button to extend beyond container */
 }
-
-/* Nav Items */
-.launcher-bottom-nav button.nav-item {
+.launcher-bottom-nav button.nav-item, /* Nav Items */
+.dt-launcher-bottom-nav button.nav-item {
     background: none;
     border: none;
     padding: 0;
@@ -1549,46 +1087,52 @@ body.theme-dark .invite-close-button:hover,
     flex-direction: column !important; /* Critical: Layout requirement */
     align-items: center;
     justify-content: center;
-    font-size: 10px;
+    font-size: 9px; /* Reduced from 10px to fit 58px nav bar */
+    line-height: 1.2; /* Tighter line-height for compact display */
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: var(--text-color, #0a0a0a);
     text-decoration: none;
     transition: all 0.2s ease;
+    gap: 2px; /* Small gap between icon and text */
 }
 
-.launcher-bottom-nav a.nav-item {
+.launcher-bottom-nav a.nav-item,
+.dt-launcher-bottom-nav a.nav-item {
     text-decoration: none;
     display: flex !important; /* Critical: Layout requirement */
     flex-direction: column !important; /* Critical: Layout requirement */
     align-items: center;
     justify-content: center;
-    font-size: 10px;
+    font-size: 9px; /* Reduced from 10px to fit 58px nav bar */
+    line-height: 1.2; /* Tighter line-height for compact display */
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: var(--text-color, #0a0a0a);
     transition: all 0.2s ease;
+    gap: 2px; /* Small gap between icon and text */
 }
 
-.launcher-bottom-nav .nav-item i {
-    font-size: 30px;
-    height: 40px;
+.launcher-bottom-nav .nav-item i,
+.dt-launcher-bottom-nav .nav-item i {
+    font-size: 28px; /* Reduced from 30px to fit 58px nav bar */
+    height: 36px; /* Reduced from 40px to fit 58px nav bar */
     display: flex !important; /* Critical: Layout requirement */
     align-items: center;
     justify-content: center;
 }
 
-.launcher-bottom-nav .nav-item:hover {
+.launcher-bottom-nav .nav-item:hover,
+.dt-launcher-bottom-nav .nav-item:hover {
     color: var(--primary-color, #667eea);
 }
-
-/* Home Button (Circular, Elevated) */
-.launcher-bottom-nav .nav-item-home {
+.launcher-bottom-nav .nav-item-home, /* Home Button (Circular, Elevated) */
+.dt-launcher-bottom-nav .nav-item-home {
     background-color: var(--primary-color); /* Dark blue color */
     color: #ffffff; /* Explicit white color */
     width: 60px;
     height: 60px;
     border-radius: 50%;
     position: relative !important; /* Critical: Positioning requirement */
-    top: -1rem !important; /* Critical: Positioning requirement */
+    top: -1.75rem !important; /* Critical: Positioning requirement - elevated to show full circle */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     transition: all 0.2s ease;
 }
@@ -1601,55 +1145,57 @@ body.theme-dark .invite-close-button:hover,
     color: #ffffff; /* Explicit white color for icon */
 }
 
-.launcher-bottom-nav .nav-item-home:hover {
+.launcher-bottom-nav .nav-item-home:hover,
+.dt-launcher-bottom-nav .nav-item-home:hover {
     background-color: var(--primary-color); /* Keep dark blue on hover */
     color: #ffffff; /* Keep white text on hover */
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.launcher-bottom-nav .nav-item-home:hover i {
+.launcher-bottom-nav .nav-item-home:hover i,
+.dt-launcher-bottom-nav .nav-item-home:hover i {
     opacity: 0.7; /* Slightly transparent on hover */
     color: #ffffff; /* Keep white color */
 }
-
-/* Dark Mode Support for Launcher Nav */
-body.theme-dark .launcher-bottom-nav {
+body.theme-dark .launcher-bottom-nav, /* Dark Mode Support for Launcher Nav */
+body.theme-dark .dt-launcher-bottom-nav {
     background-color: var(--surface-0, #2a2a2a);
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
 }
 
-body.theme-dark .launcher-bottom-nav .nav-item {
+body.theme-dark .launcher-bottom-nav .nav-item,
+body.theme-dark .dt-launcher-bottom-nav .nav-item {
     color: var(--text-color, #f5f5f5);
 }
-
-body.theme-dark .launcher-bottom-nav .nav-item:hover {
+body.theme-dark .launcher-bottom-nav .nav-item:hover,
+body.theme-dark .dt-launcher-bottom-nav .nav-item:hover {
     color: var(--primary-color, #4a9eff);
 }
-
-body.theme-dark .launcher-bottom-nav .nav-item-home {
-    background-color: #3a4fb8; /* Dark blue color for dark mode */
-    color: #ffffff; /* Explicit white color */
+body.theme-dark .launcher-bottom-nav .nav-item-home,
+body.theme-dark .dt-launcher-bottom-nav .nav-item-home {
+    background-color: #3a4fb8; /* Dark blue for dark mode */
+    color: #ffffff;
+}
+body.theme-dark .launcher-bottom-nav .nav-item-home i,
+body.theme-dark .dt-launcher-bottom-nav .nav-item-home i {
+    color: #ffffff;
+}
+body.theme-dark .launcher-bottom-nav .nav-item-home:hover,
+body.theme-dark .dt-launcher-bottom-nav .nav-item-home:hover {
+    background-color: #3a4fb8;
+    color: #ffffff;
+}
+body.theme-dark .launcher-bottom-nav .nav-item-home:hover i,
+body.theme-dark .dt-launcher-bottom-nav .nav-item-home:hover i {
+    opacity: 0.7;
+    color: #ffffff;
 }
 
-body.theme-dark .launcher-bottom-nav .nav-item-home i {
-    color: #ffffff; /* Explicit white color for icon */
-}
-
-body.theme-dark .launcher-bottom-nav .nav-item-home:hover {
-    background-color: #3a4fb8; /* Keep dark blue on hover */
-    color: #ffffff; /* Keep white text on hover */
-}
-
-body.theme-dark .launcher-bottom-nav .nav-item-home:hover i {
-    opacity: 0.7; /* Slightly transparent on hover in dark mode */
-    color: #ffffff; /* Keep white color */
-}
-
-/* Apps Selector (Slide-up Menu) */
-.launcher-apps-selector {
+.launcher-apps-selector, /* Apps Selector (Slide-up Menu) */
+.dt-launcher-apps-selector {
     background-color: var(--surface-0, #ffffff);
-    padding-bottom: var(--launcher-bottom-nav-height, 60px);
+    padding-bottom: calc(var(--launcher-bottom-nav-height, 58px) + 0.5rem); /* Extra padding to ensure last item is visible */
     position: fixed !important; /* Critical: Must overlay content */
     bottom: -40vh !important; /* Critical: Positioning requirement */
     left: 0 !important; /* Critical: Positioning requirement */
@@ -1662,290 +1208,31 @@ body.theme-dark .launcher-bottom-nav .nav-item-home:hover i {
     overflow-y: auto;
 }
 
-.launcher-apps-selector.open {
-    bottom: 0 !important; /* Critical: Positioning requirement */
-}
-
-.launcher-apps-selector ul,
-.launcher-apps-selector li {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.launcher-apps-selector ul {
-    margin: 0 auto;
-    max-width: var(--max-bottom-width, 800px);
-    padding: 1rem 0;
-}
-
-.launcher-apps-selector li {
-    width: 100%;
-}
-
-.launcher-apps-selector li a {
-    text-decoration: none;
-    color: var(--text-color, #0a0a0a);
-    display: flex !important; /* Critical: Layout requirement */
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    transition: all 0.2s ease;
-    border-bottom: 1px solid var(--border-color, #e1e5e9);
-}
-
-.launcher-apps-selector li:last-child a {
-    border-bottom: none;
-}
-
-.launcher-apps-selector li a:hover {
-    background-color: var(--surface-2, #f1f3f5);
-    color: var(--primary-color, #667eea);
-}
-
-.launcher-apps-selector li a img {
-    height: 1.5rem;
-    width: 1.5rem;
-    object-fit: contain;
-}
-
-.launcher-apps-selector li a i.mdi {
-    font-size: 1.5rem;
-    width: 1.5rem;
-    display: flex !important; /* Critical: Layout requirement */
-    align-items: center;
-    justify-content: center;
-}
-
-/* Theme-aware default icon colors for launcher nav (fallback if JavaScript hasn't applied) */
-.launcher-apps-selector li a i:not([data-has-custom-color="true"]) {
-    color: var(--app-card-text, #0a0a0a);
-}
-
-html.theme-dark .launcher-apps-selector li a i:not([data-has-custom-color="true"]),
-body.theme-dark .launcher-apps-selector li a i:not([data-has-custom-color="true"]) {
-    color: var(--app-card-text, #f5f5f5);
-}
-
-.launcher-apps-selector li a .name {
-    flex: 1;
-    font-size: 0.9rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-/* Dark Mode Support for Apps Selector */
-body.theme-dark .launcher-apps-selector {
-    background-color: var(--surface-0, #2a2a2a);
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
-}
-
-body.theme-dark .launcher-apps-selector li a {
-    color: var(--text-color, #f5f5f5);
-    border-bottom-color: var(--border-color, #404040);
-}
-
-body.theme-dark .launcher-apps-selector li a:hover {
-    background-color: var(--surface-2, #333333);
-    color: var(--primary-color, #4a9eff);
-}
-
-/* Responsive Adjustments */
-@media screen and (max-width: 800px) {
-    .launcher-apps-selector ul {
-        margin: 0;
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-}
-
-/* Body padding to prevent content overlap with launcher nav */
-body:has(.launcher-bottom-nav) {
-    padding-bottom: var(--launcher-bottom-nav-height, 60px);
-}
-
-/* Ensure content doesn't overlap with launcher nav */
-#wrapper:has(.launcher-bottom-nav) {
-    padding-bottom: var(--launcher-bottom-nav-height, 60px);
-}
-
-/* ============================================
-   Wrapper-Specific Launcher Nav Styles
-   These use different class names to avoid conflicts
-   with legacy launcher nav elements in iframe content
-   ============================================ */
-
-/* Wrapper Launcher Bottom Nav Container */
-.dt-launcher-bottom-nav {
-    position: fixed !important; /* Critical: Must stay fixed */
-    bottom: 0 !important; /* Critical: Must stay at bottom */
-    left: 0 !important; /* Critical: Must span full width */
-    right: 0 !important; /* Critical: Must span full width */
-    height: var(--launcher-bottom-nav-height, 60px);
-    width: 100%;
-    z-index: 1000 !important; /* Critical: Must stay above content */
-    background-color: var(--surface-0, #ffffff);
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    display: flex !important; /* Critical: Layout requirement */
-    align-items: center;
-    justify-content: center;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-.dt-launcher-bottom-nav .nav-container {
-    height: var(--launcher-bottom-nav-height, 60px);
-    width: 100%;
-    max-width: var(--max-bottom-width, 800px);
-    display: flex !important; /* Critical: Layout requirement */
-    flex-direction: row !important; /* Critical: Layout requirement */
-    align-items: center;
-    justify-content: space-evenly;
-    padding: 0 1rem;
-}
-
-/* Wrapper Nav Items */
-.dt-launcher-bottom-nav button.nav-item {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    display: flex !important; /* Critical: Layout requirement */
-    flex-direction: column !important; /* Critical: Layout requirement */
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: var(--text-color, #0a0a0a);
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.dt-launcher-bottom-nav a.nav-item {
-    text-decoration: none;
-    display: flex !important; /* Critical: Layout requirement */
-    flex-direction: column !important; /* Critical: Layout requirement */
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: var(--text-color, #0a0a0a);
-    transition: all 0.2s ease;
-}
-
-.dt-launcher-bottom-nav .nav-item i {
-    font-size: 30px;
-    height: 40px;
-    display: flex !important; /* Critical: Layout requirement */
-    align-items: center;
-    justify-content: center;
-}
-
-.dt-launcher-bottom-nav .nav-item:hover {
-    color: var(--primary-color, #667eea);
-}
-
-/* Wrapper Home Button (Circular, Elevated) */
-.dt-launcher-bottom-nav .nav-item-home {
-    background-color: var(--primary-color); /* Dark blue color */
-    color: #ffffff; /* Explicit white color */
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    position: relative !important; /* Critical: Positioning requirement */
-    top: -1rem !important; /* Critical: Positioning requirement */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    transition: all 0.2s ease;
-}
-
-.dt-launcher-bottom-nav .nav-item-home i {
-    font-size: 40px;
-    height: 60px;
-    opacity: 1;
-    transition: opacity 0.2s ease;
-    color: #ffffff; /* Explicit white color for icon */
-}
-
-.dt-launcher-bottom-nav .nav-item-home:hover {
-    background-color: var(--primary-color); /* Keep dark blue on hover */
-    color: #ffffff; /* Keep white text on hover */
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.dt-launcher-bottom-nav .nav-item-home:hover i {
-    opacity: 0.7; /* Slightly transparent on hover */
-    color: #ffffff; /* Keep white color */
-}
-
-/* Dark Mode Support for Wrapper Launcher Nav */
-body.theme-dark .dt-launcher-bottom-nav {
-    background-color: var(--surface-0, #2a2a2a);
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
-}
-
-body.theme-dark .dt-launcher-bottom-nav .nav-item {
-    color: var(--text-color, #f5f5f5);
-}
-
-body.theme-dark .dt-launcher-bottom-nav .nav-item:hover {
-    color: var(--primary-color, #4a9eff);
-}
-
-body.theme-dark .dt-launcher-bottom-nav .nav-item-home {
-    background-color: #3a4fb8; /* Dark blue color for dark mode */
-    color: #ffffff; /* Explicit white color */
-}
-
-body.theme-dark .dt-launcher-bottom-nav .nav-item-home i {
-    color: #ffffff; /* Explicit white color for icon */
-}
-
-body.theme-dark .dt-launcher-bottom-nav .nav-item-home:hover {
-    background-color: #3a4fb8; /* Keep dark blue on hover */
-    color: #ffffff; /* Keep white text on hover */
-}
-
-body.theme-dark .dt-launcher-bottom-nav .nav-item-home:hover i {
-    opacity: 0.7; /* Slightly transparent on hover in dark mode */
-    color: #ffffff; /* Keep white color */
-}
-
-/* Wrapper Apps Selector (Slide-up Menu) */
-.dt-launcher-apps-selector {
-    background-color: var(--surface-0, #ffffff);
-    padding-bottom: var(--launcher-bottom-nav-height, 60px);
-    position: fixed !important; /* Critical: Must overlay content */
-    bottom: -40vh !important; /* Critical: Positioning requirement */
-    left: 0 !important; /* Critical: Positioning requirement */
-    right: 0 !important; /* Critical: Positioning requirement */
-    max-height: 40vh;
-    overflow-y: auto;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    transition: bottom 0.3s ease;
-    z-index: 999 !important; /* Critical: Must be above nav */
-}
-
+.launcher-apps-selector.open,
 .dt-launcher-apps-selector.open {
     bottom: 0 !important; /* Critical: Positioning requirement */
 }
 
-.dt-launcher-apps-selector ul,
+.launcher-apps-selector li,
 .dt-launcher-apps-selector li {
     margin: 0;
     padding: 0;
     list-style: none;
 }
-
+.launcher-apps-selector ul,
 .dt-launcher-apps-selector ul {
     margin: 0 auto;
+    padding: 1rem 0 calc(var(--launcher-bottom-nav-height, 58px) + 2rem) 0; /* Extra bottom padding to ensure last item is fully visible above nav bar */
     max-width: var(--max-bottom-width, 800px);
-    padding: 1rem 0;
+    list-style: none;
 }
 
+.launcher-apps-selector li,
 .dt-launcher-apps-selector li {
     width: 100%;
 }
 
+.launcher-apps-selector li a,
 .dt-launcher-apps-selector li a {
     text-decoration: none;
     color: var(--text-color, #0a0a0a);
@@ -1953,24 +1240,40 @@ body.theme-dark .dt-launcher-bottom-nav .nav-item-home:hover i {
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
     border-bottom: 1px solid var(--border-color, #e1e5e9);
 }
 
+.launcher-apps-selector li:last-child a,
 .dt-launcher-apps-selector li:last-child a {
     border-bottom: none;
 }
 
+.launcher-apps-selector li.launcher-apps-spacer,
+.dt-launcher-apps-selector li.launcher-apps-spacer {
+    height: calc(var(--launcher-bottom-nav-height, 58px) + 2rem);
+    min-height: calc(var(--launcher-bottom-nav-height, 58px) + 2rem);
+    pointer-events: none;
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.launcher-apps-selector li a:hover,
 .dt-launcher-apps-selector li a:hover {
     background-color: var(--surface-2, #f1f3f5);
     color: var(--primary-color, #667eea);
 }
 
+.launcher-apps-selector li a img,
 .dt-launcher-apps-selector li a img {
     height: 1.5rem;
     width: 1.5rem;
     object-fit: contain;
 }
 
+.launcher-apps-selector li a i.mdi,
 .dt-launcher-apps-selector li a i.mdi {
     font-size: 1.5rem;
     width: 1.5rem;
@@ -1979,44 +1282,156 @@ body.theme-dark .dt-launcher-bottom-nav .nav-item-home:hover i {
     justify-content: center;
 }
 
-/* Theme-aware default icon colors for wrapper launcher nav (fallback if JavaScript hasn't applied) */
+.launcher-apps-selector li a i:not([data-has-custom-color="true"]), /* Theme-aware default icon colors (fallback if JS hasn't applied) */
 .dt-launcher-apps-selector li a i:not([data-has-custom-color="true"]) {
     color: var(--app-card-text, #0a0a0a);
 }
 
+html.theme-dark .launcher-apps-selector li a i:not([data-has-custom-color="true"]),
+body.theme-dark .launcher-apps-selector li a i:not([data-has-custom-color="true"]),
 html.theme-dark .dt-launcher-apps-selector li a i:not([data-has-custom-color="true"]),
 body.theme-dark .dt-launcher-apps-selector li a i:not([data-has-custom-color="true"]) {
     color: var(--app-card-text, #f5f5f5);
 }
 
+.launcher-apps-selector li a .name,
 .dt-launcher-apps-selector li a .name {
     flex: 1;
     font-size: 0.9rem;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
-
-/* Dark Mode Support for Wrapper Apps Selector */
+body.theme-dark .launcher-apps-selector, /* Dark Mode Support for Apps Selector */
 body.theme-dark .dt-launcher-apps-selector {
     background-color: var(--surface-0, #2a2a2a);
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
 }
 
+body.theme-dark .launcher-apps-selector li a,
 body.theme-dark .dt-launcher-apps-selector li a {
     color: var(--text-color, #f5f5f5);
     border-bottom-color: var(--border-color, #404040);
 }
 
+body.theme-dark .launcher-apps-selector li a:hover,
 body.theme-dark .dt-launcher-apps-selector li a:hover {
     background-color: var(--surface-2, #333333);
     color: var(--primary-color, #4a9eff);
 }
+body:has(.launcher-bottom-nav), /* Body padding to prevent content overlap with launcher nav */
+body:has(.dt-launcher-bottom-nav) {
+    padding-bottom: var(--launcher-bottom-nav-height, 58px);
+}
+#wrapper:has(.launcher-bottom-nav), /* Ensure content doesn't overlap with launcher nav */
+#wrapper:has(.dt-launcher-bottom-nav) {
+    padding-bottom: var(--launcher-bottom-nav-height, 58px);
+}
 
-/* Responsive Adjustments for Wrapper */
-@media screen and (max-width: 800px) {
+@media (max-width: 800px) { /* Tablet and below */
+    .launcher-apps-selector ul,
     .dt-launcher-apps-selector ul {
         margin: 0;
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding: 0 1rem;
+    }
+}
+@media (max-width: 768px) { /* Tablet and below */
+    .home-screen-container .apps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+        gap: 1rem 0.75rem;
+    }
+    .home-screen-header {
+        padding: 1rem 1.5rem;
+    }
+    .home-screen-header h1 {
+        font-size: 1.75rem;
+    }
+    .home-screen-header p {
+        font-size: 0.85rem;
+    }
+    .theme-toggle-button,
+    .menu-toggle-button {
+        width: 36px;
+        height: 36px;
+    }
+    .theme-icon,
+    .dt-menu-icon {
+        font-size: 20px;
+    }
+    .home-screen-content {
+        padding: 1.5rem;
+    }
+    .video-modal-overlay {
+        padding: 1rem;
+    }
+    .video-modal {
+        max-height: 95vh;
+    }
+    .video-modal-header {
+        padding: 1rem;
+    }
+    .video-modal-header h3 {
+        font-size: 1.1rem;
+    }
+    .training-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .training-card {
+        width: 100%;
+    }
+    .training-play-button {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+}
+@media (max-width: 480px) { /* Mobile */
+    .home-screen-container .apps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+        gap: 0.75rem 0.5rem;
+    }
+    .video-modal-overlay {
+        padding: 0.5rem;
+    }
+    .video-modal-header {
+        padding: 0.75rem;
+    }
+    .training-video-info {
+        padding: 0.5rem 0.75rem;
+    }
+    .training-video-title-text {
+        font-size: 0.85rem;
+    }
+    .training-video-duration-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+    .home-screen-container .external-link-button span {
+        display: none;
+    }
+    .invite-modal-content {
+        min-width: 280px;
+        max-width: 95vw;
+    }
+    .invite-modal-header {
+        padding: 20px 16px 0 16px;
+    }
+    .invite-modal-body {
+        padding: 20px 16px;
+    }
+    .invite-modal-footer {
+        padding: 0 16px 20px 16px;
+    }
+    .invite-share-link-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .invite-url-input {
+        width: 100%;
+    }
+    .invite-copy-button {
+        width: 100%;
     }
 }
 

@@ -180,8 +180,8 @@ function createTrainingVideoCard(video) {
                     <i class="mdi mdi-play"></i>
                 </div>
             </div>
-            <div class="training-video-duration">${duration}</div>
-            <div class="training-video-title">${title}</div>
+            <div class="training-video-duration-badge">${duration}</div>
+            <div class="training-video-title-text">${title}</div>
         </div>
     `;
 }
