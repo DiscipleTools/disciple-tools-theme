@@ -276,6 +276,17 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         }
 
         update_option( $modules_option_name, $modules );
+
+        // When people_groups_module is enabled, also enable the peoplegroups tab
+        if ( isset( $modules_to_update['people_groups_module'] ) && !empty( $modules_to_update['people_groups_module'] ) ) {
+            $custom_post_types = get_option( 'dt_custom_post_types', [] );
+            if ( !isset( $custom_post_types['peoplegroups'] ) ) {
+                $custom_post_types['peoplegroups'] = [];
+            }
+            $custom_post_types['peoplegroups']['hidden'] = false;
+            update_option( 'dt_custom_post_types', $custom_post_types );
+        }
+
         return true;
     }
 
