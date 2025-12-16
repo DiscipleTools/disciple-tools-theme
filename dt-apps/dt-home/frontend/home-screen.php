@@ -11,7 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 $user = wp_get_current_user();
-$user_name = $user->display_name ?: $user->user_login;
 
 // Get admin settings
 $settings = get_option( 'dt_home_screen_settings', [
@@ -128,96 +127,3 @@ html.theme-dark body {
 
 <!-- Success Messages -->
 <div id="success" style="display: none; color: #155724; background: #d4edda; padding: 1rem; margin: 1rem 0; border-radius: 4px; border: 1px solid #c3e6cb;"></div>
-
-<script>
-/**
- * Training Video Management
- * Handles video embedding, thumbnails, and click-through functionality
- */
-
-// Function to extract YouTube video ID from URL
-function getYouTubeVideoId(url) {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-}
-
-// Function to extract Vimeo video ID from URL
-function getVimeoVideoId(url) {
-    const regExp = /vimeo\.com\/(\d+)/;
-    const match = url.match(regExp);
-    return match ? match[1] : null;
-}
-
-// Function to get video thumbnail URL
-function getVideoThumbnail(videoUrl, type = 'youtube') {
-    if (type === 'youtube') {
-        const videoId = getYouTubeVideoId(videoUrl);
-        if (videoId) {
-            return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-        }
-    } else if (type === 'vimeo') {
-        const videoId = getVimeoVideoId(videoUrl);
-        if (videoId) {
-            // Note: Vimeo requires API call for thumbnails, using placeholder for now
-            return `https://vumbnail.com/${videoId}.jpg`;
-        }
-    }
-    return null;
-}
-
-// Function to create training video card HTML
-function createTrainingVideoCard(video) {
-    const thumbnailUrl = getVideoThumbnail(video.url, video.type || 'youtube');
-    const duration = video.duration || '0:00';
-    const title = video.title || 'Training Video';
-    
-    return `
-        <div class="training-card" onclick="openVideoInNewTab('${video.url}')">
-            <img src="${thumbnailUrl}" alt="${title}" class="training-video-thumbnail" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDIwMCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTUwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik04MCA2MEwxMjAgOTBMMTgwIDYwVjkwSDEyMFY2MEg4MFoiIGZpbGw9IiM2Njc5RUEiLz4KPC9zdmc+'" />
-            <div class="training-video-overlay">
-                <div class="training-play-button">
-                    <i class="mdi mdi-play"></i>
-                </div>
-            </div>
-            <div class="training-video-duration-badge">${duration}</div>
-            <div class="training-video-title-text">${title}</div>
-        </div>
-    `;
-}
-
-// Function to open video in new tab
-function openVideoInNewTab(videoUrl) {
-    window.open(videoUrl, '_blank', 'noopener,noreferrer');
-}
-
-// Function to load training videos
-function loadTrainingVideos() {
-    // This would typically make an AJAX call to get video data
-    // For now, we'll use placeholder data
-    const trainingVideos = [
-        {
-            title: 'Getting Started with Disciple Tools',
-            url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            duration: '5:30',
-            type: 'youtube'
-        },
-        {
-            title: 'Advanced Features Tutorial',
-            url: 'https://vimeo.com/123456789',
-            duration: '8:15',
-            type: 'vimeo'
-        }
-    ];
-    
-    const trainingGrid = document.getElementById('training-grid');
-    if (trainingGrid) {
-        trainingGrid.innerHTML = trainingVideos.map(createTrainingVideoCard).join('');
-    }
-}
-
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Any initialization code can go here
-});
-</script>
