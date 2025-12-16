@@ -86,7 +86,7 @@ wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-h
          * Matches the logic used in home screen app icons
          */
         function applyLauncherNavIconColors() {
-            const launcherIcons = document.querySelectorAll('.launcher-apps-selector .launcher-app-link i, .dt-launcher-apps-selector .launcher-app-link i');
+            const launcherIcons = document.querySelectorAll('.dt-launcher-apps-selector .launcher-app-link i');
             
             launcherIcons.forEach(function(icon) {
                 const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';

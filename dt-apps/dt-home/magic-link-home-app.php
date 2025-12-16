@@ -392,28 +392,24 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             /* Training section, section-title, and loading spinner styles moved to home-screen.css */
 
             /* Launcher Bottom Navigation - Critical overflow fix for home button */
-            .launcher-bottom-nav,
             .dt-launcher-bottom-nav {
-                overflow: visible !important; /* Critical: Allow home button to extend beyond container */
-                min-height: 86px !important; /* Ensure container is tall enough for elevated button (58px nav + 28px for -1.75rem) */
+                overflow: visible !important;
+                min-height: 86px !important;
             }
 
-            .launcher-bottom-nav .nav-container,
             .dt-launcher-bottom-nav .nav-container {
-                overflow: visible !important; /* Critical: Allow home button to extend beyond container */
-                min-height: 86px !important; /* Ensure container is tall enough for elevated button */
+                overflow: visible !important;
+                min-height: 86px !important;
             }
 
-            /* Home button positioning - ensure full circle is visible */
-            .launcher-bottom-nav .nav-item-home,
             .dt-launcher-bottom-nav .nav-item-home {
                 background-color: var(--primary-color, #667eea) !important;
-                color: #ffffff !important;
+                color: var(--nav-text-white, #ffffff) !important;
                 width: 60px !important;
                 height: 60px !important;
                 border-radius: 50% !important;
                 position: relative !important;
-                top: -1.75rem !important; /* Elevate button above nav bar */
+                top: -1.75rem !important;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
             }
 

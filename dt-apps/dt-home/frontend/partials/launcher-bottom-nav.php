@@ -13,9 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-// Use wrapper-specific class names if in wrapper context
-$nav_class = isset( $is_wrapper_context ) && $is_wrapper_context ? 'dt-launcher-bottom-nav' : 'launcher-bottom-nav';
-$selector_class = isset( $is_wrapper_context ) && $is_wrapper_context ? 'dt-launcher-apps-selector' : 'launcher-apps-selector';
+// Always use dt- prefixed class names (non-prefixed versions removed from CSS)
+$nav_class = 'dt-launcher-bottom-nav';
+$selector_class = 'dt-launcher-apps-selector';
 
 // Include helper functions
 require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-helpers.php';
@@ -125,7 +125,7 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
      */
     if (typeof applyLauncherNavIconColors === 'undefined') {
         window.applyLauncherNavIconColors = function() {
-            const launcherIcons = document.querySelectorAll('.launcher-apps-selector .launcher-app-link i, .dt-launcher-apps-selector .launcher-app-link i');
+            const launcherIcons = document.querySelectorAll('.dt-launcher-apps-selector .launcher-app-link i');
             
             launcherIcons.forEach(function(icon) {
                 const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
