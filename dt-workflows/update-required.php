@@ -33,14 +33,14 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
     protected function run_action() {
         global $wpdb;
         $user_locale = get_user_locale();
-        $site_options           = dt_get_option( 'dt_site_options' );
+        $site_options = dt_get_option( 'dt_site_options' );
         $update_needed_settings = $site_options['update_required'];
         if ( $update_needed_settings['enabled'] === true ) {
             wp_set_current_user( 0 ); // to keep the update needed notifications from coming from a specific user.
             $current_user = wp_get_current_user();
             $current_user->add_cap( 'access_contacts' );
             $current_user->add_cap( 'dt_all_access_contacts' );
-            $field_options           = DT_Posts::get_post_field_settings( 'contacts' );
+            $field_options = DT_Posts::get_post_field_settings( 'contacts' );
             foreach ( $update_needed_settings['options'] as $setting ) {
 
                 $setting_status = $setting['status'] ?? null;
@@ -49,7 +49,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
 
                 $deleted_flag = $field_options[ $setting_field ]['default'][ $setting_option ]['deleted'] ?? null;
                 if ( ! ( isset( $deleted_flag ) && ( $deleted_flag === true ) ) && isset( $setting_status, $setting_field, $setting_option ) ) {
-                    $date                 = time() - $setting['days'] * 24 * 60 * 60; // X days in seconds
+                    $date = time() - $setting['days'] * 24 * 60 * 60; // X days in seconds
                     $contacts_need_update = $wpdb->get_results( $wpdb->prepare( "
                     SELECT $wpdb->posts.ID
                     FROM $wpdb->posts
@@ -70,7 +70,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                         $date
                     ), OBJECT );
                     foreach ( $contacts_need_update as $contact ) {
-                        $user_name    = ( '@' . dt_get_assigned_name( $contact->ID, true ) . ' ' ) ?? '';
+                        $user_name = ( '@' . dt_get_assigned_name( $contact->ID, true ) . ' ' ) ?? '';
                         $comment_html = null;
 
                         if ( isset( $setting['comment_translations'][$user_locale] ) && !empty( $setting['comment_translations'][$user_locale] ) ) {
@@ -104,7 +104,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
             $current_user->add_cap( 'update_any_groups' );
 
             foreach ( $group_update_needed_settings['options'] as $setting ) {
-                $date                 = time() - $setting['days'] * 24 * 60 * 60; // X days in seconds
+                $date = time() - $setting['days'] * 24 * 60 * 60; // X days in seconds
                 $groups_need_update = $wpdb->get_results( $wpdb->prepare( "
                     SELECT $wpdb->posts.ID
                     FROM $wpdb->posts
@@ -120,7 +120,7 @@ class Disciple_Tools_Update_Needed_Async extends Disciple_Tools_Async_Task {
                     $date
                 ), OBJECT );
                 foreach ( $groups_need_update as $group ) {
-                    $user_name    = ( '@' . dt_get_assigned_name( $group->ID, true ) . ' ' ) ?? '';
+                    $user_name = ( '@' . dt_get_assigned_name( $group->ID, true ) . ' ' ) ?? '';
                     $comment_html = null;
 
                     if ( isset( $setting['comment_translations'][$user_locale] ) && !empty( $setting['comment_translations'][$user_locale] ) ) {
