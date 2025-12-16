@@ -94,6 +94,7 @@ class DT_Groups_Base extends DT_Module_Base {
             $expected_roles['dt_admin']['permissions']['view_any_groups'] = true;
             $expected_roles['dt_admin']['permissions']['list_all_groups'] = true;
             $expected_roles['dt_admin']['permissions']['update_any_groups'] = true;
+            $expected_roles['dt_admin']['permissions']['delete_any_groups'] = true;
         }
 
         return $expected_roles;

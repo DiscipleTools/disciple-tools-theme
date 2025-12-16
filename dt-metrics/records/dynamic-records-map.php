@@ -30,10 +30,11 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
 
         $this->title = __( 'Maps', 'disciple_tools' );
 
-        // Build post types array, ignoring some for now.
-        // TODO: Only select post types with valid location field types!
+        // Build post types array, excluding post types that don't have valid location field types.
+        // Use array_diff() to exclude post types that shouldn't appear in the map interface.
+        // Example: array_diff( $post_types, [ 'post_type_to_exclude' ] )
         $post_types = DT_Posts::get_post_types();
-        $post_types = array_values( array_diff( $post_types, [ 'peoplegroups' ] ) );
+        $post_types = array_values( array_diff( $post_types, [] ) );
         $this->post_types = $post_types;
         $this->post_type_options = [];
         foreach ( $post_types as $post_type ){

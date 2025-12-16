@@ -22,7 +22,7 @@ jQuery(document).ready(function ($) {
     let tile_id = tile.attr('id');
     if (tile_id && tile_id.includes('-tile')) {
       if (collapsed_tiles.includes(tile_id)) {
-        collapsed_tiles = window.lodash.pull(collapsed_tiles, tile_id);
+        collapsed_tiles = collapsed_tiles.filter((id) => id !== tile_id);
       } else {
         collapsed_tiles.push(tile_id);
       }
@@ -65,7 +65,7 @@ function makeRequest(type, url, data, base = 'dt/v1/') {
     },
   };
 
-  if (data && !window.lodash.isEmpty(data)) {
+  if (data && Object.keys(data).length > 0) {
     options.data = type === 'GET' ? data : JSON.stringify(data);
   }
 
@@ -82,7 +82,7 @@ function makeRequestOnPosts(type, url, data) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiShare.nonce);
     },
   };
-  if (data && !window.lodash.isEmpty(data)) {
+  if (data && Object.keys(data).length > 0) {
     options.data = type === 'GET' ? data : JSON.stringify(data);
   }
   return jQuery.ajax(options);
@@ -232,10 +232,7 @@ window.API = {
 };
 
 function handleAjaxError(err) {
-  if (
-    window.lodash.get(err, 'statusText') !== 'abortPromise' &&
-    err.responseText
-  ) {
+  if (err?.statusText !== 'abortPromise' && err.responseText) {
     console.trace('error');
     console.log(err);
     // jQuery("#errors").append(err.responseText)
@@ -259,7 +256,7 @@ jQuery(document)
       }
     }
 
-    if (window.lodash.get(xhr, 'responseJSON.data.status') === 401) {
+    if (xhr?.responseJSON?.data?.status === 401) {
       window.location.reload();
     }
   })
@@ -298,7 +295,7 @@ jQuery(document).on('click', '.help-button-tile', function () {
       jQuery('#help-modal-field-description').empty();
     }
     let order = window.wpApiShare.tiles[section]['order'] || [];
-    window.lodash.forOwn(window.post_type_fields, (field, field_key) => {
+    Object.entries(window.post_type_fields).forEach(([field_key, field]) => {
       if (field.tile === section && !order.includes(field_key)) {
         order.push(field_key);
       }
@@ -315,31 +312,33 @@ jQuery(document).on('click', '.help-button-tile', function () {
         html += field_name;
         html += `<p>${window.SHAREDFUNCTIONS.escapeHTML(field.description)}</p>`;
 
-        if (window.lodash.isObject(field.default)) {
+        if (typeof field.default === 'object' && field.default !== null) {
           let list_html = ``;
           let first_field_option = true;
-          window.lodash.forOwn(field.default, (field_options, field_key) => {
-            if (Object.prototype.hasOwnProperty.call(field_options, 'icon')) {
-              if (first_field_option) {
-                list_html += `<ul class="help-modal-icon">`;
-                first_field_option = false;
+          Object.entries(field.default).forEach(
+            ([field_key, field_options]) => {
+              if (Object.prototype.hasOwnProperty.call(field_options, 'icon')) {
+                if (first_field_option) {
+                  list_html += `<ul class="help-modal-icon">`;
+                  first_field_option = false;
+                }
+                list_html += `<li><img src="${window.SHAREDFUNCTIONS.escapeHTML(field_options.icon)}">`;
+              } else {
+                if (first_field_option) {
+                  list_html += `<ul>`;
+                  first_field_option = false;
+                }
+                list_html += `<li>`;
               }
-              list_html += `<li><img src="${window.SHAREDFUNCTIONS.escapeHTML(field_options.icon)}">`;
-            } else {
-              if (first_field_option) {
-                list_html += `<ul>`;
-                first_field_option = false;
-              }
-              list_html += `<li>`;
-            }
-            list_html += `<strong>${window.SHAREDFUNCTIONS.escapeHTML(
-              field_options.label,
-            )}</strong> ${window.SHAREDFUNCTIONS.escapeHTML(
-              !field_options.description
-                ? ''
-                : '- ' + field_options.description,
-            )}</li>`;
-          });
+              list_html += `<strong>${window.SHAREDFUNCTIONS.escapeHTML(
+                field_options.label,
+              )}</strong> ${window.SHAREDFUNCTIONS.escapeHTML(
+                !field_options.description
+                  ? ''
+                  : '- ' + field_options.description,
+              )}</li>`;
+            },
+          );
           list_html += `</ul>`;
           html += list_html;
         }
@@ -371,9 +370,9 @@ jQuery(document).on('click', '.help-button-field', function () {
     } else {
       jQuery('#help-modal-field-description').empty();
     }
-    if (window.lodash.isObject(field.default)) {
+    if (typeof field.default === 'object' && field.default !== null) {
       let html = `<ul>`;
-      window.lodash.forOwn(field.default, (field_options, field_key) => {
+      Object.entries(field.default).forEach(([field_key, field_options]) => {
         html += `<li><strong>${window.SHAREDFUNCTIONS.escapeHTML(
           field_options.label,
         )}</strong> ${window.SHAREDFUNCTIONS.escapeHTML(
@@ -568,7 +567,7 @@ window.TYPEAHEADS = {
                 avatar: item.avatar,
               });
               jQuery('#share-result-container').html(
-                window.lodash.get(err, 'responseJSON.message'),
+                err?.responseJSON?.message,
               );
             });
           },

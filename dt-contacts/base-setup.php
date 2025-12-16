@@ -96,6 +96,11 @@ class DT_Contacts_Base {
             }
         }
 
+
+        if ( isset( $expected_roles['dt_admin'] ) ){
+            $expected_roles['dt_admin']['permissions']['delete_any_contacts'] = true;
+        }
+
         $expected_roles['administrator']['permissions']['dt_all_admin_contacts'] = true;
         $expected_roles['administrator']['permissions']['delete_any_contacts'] = true;
 

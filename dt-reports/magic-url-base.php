@@ -39,7 +39,6 @@ abstract class DT_Magic_Url_Base {
         // fail if not valid url
         $this->parts = $this->magic->parse_url_parts();
         if ( !$this->parts ){
-
             return;
         }
 
@@ -47,6 +46,32 @@ abstract class DT_Magic_Url_Base {
         if ( $this->type !== $this->parts['type'] ){
             return;
         }
+        if ( !empty( $this->parts['public_key'] ) ){
+            if ( $this->parts['post_type'] === 'user' ){
+                // if user
+                $user_id = $this->magic->get_user_id( $this->parts['meta_key'], $this->parts['public_key'] );
+                if ( ! $user_id ){ // fail if no post id for public key
+                    $this->magic->redirect_to_expired_landing_page();
+                } else {
+                    $this->parts['post_id'] = $user_id;
+                }
+            } else {
+                // get post_id
+                $post_id = $this->magic->get_post_id( $this->parts['meta_key'], $this->parts['public_key'] );
+                if ( ! $post_id ){ // fail if no post id for public key
+                    $this->magic->redirect_to_expired_landing_page();
+                } else {
+                    $this->parts['post_id'] = $post_id;
+                }
+            }
+        }
+
+
+        // Wider callout to ensure link is still valid.
+        if ( apply_filters( 'dt_magic_link_continue', true, $this->parts ) === false ) {
+            $this->magic->redirect_to_expired_landing_page();
+        }
+
 
         // register url and access
         add_filter( 'dt_blank_access', [ $this, '_has_access' ] ); // gives access once above tests are passed

@@ -188,7 +188,7 @@
                 <div class="dt-import-initial-content">
                     <h2>Step 1: Select Record Type</h2>
                     <p>Choose the type of records you want to import from your CSV file.</p>
-                    
+
                     <div class="post-type-grid">
                         <!-- Post type cards will be dynamically populated -->
                     </div>
@@ -214,7 +214,7 @@
                 <div class="dt-import-step-content">
                     <h2>${window.dt_admin_shared.escape(dtImport.translations.uploadCsv)}</h2>
                     <p>Upload a CSV file containing ${window.dt_admin_shared.escape(this.getPostTypeLabel())} data.</p>
-                    
+
                     <div class="file-upload-section">
                         <div class="file-upload-area">
                             <div class="upload-icon">
@@ -226,7 +226,7 @@
                             </div>
                         </div>
                         <input type="file" id="csv-file-input" accept=".csv" style="display: none;">
-                        
+
                         <div class="file-info" style="display: none;">
                             <div class="file-details">
                                 <h4></h4>
@@ -488,20 +488,20 @@
                 <div class="dt-import-step-content">
                     <h2>${window.dt_admin_shared.escape(dtImport.translations.mapFields)}</h2>
                     <p>Map each CSV column to the appropriate field in Disciple.Tools.</p>
-                    
+
                     <div class="name-field-warning" style="display: none;">
                         <div class="notice notice-error">
                             <p><strong><i class="mdi mdi-alert"></i> Name Field Required</strong></p>
                             <p>The name field is required for all imports. Please map at least one CSV column to the name field before proceeding.</p>
                         </div>
                     </div>
-                    
+
                     <div class="mapping-container">
                         <div class="mapping-columns">
                             ${columnsHtml}
                         </div>
                     </div>
-                    
+
                     <div class="mapping-summary" style="display: none;">
                         <h3>Mapping Summary</h3>
                         <div class="summary-stats"></div>
@@ -631,12 +631,12 @@
                             : ''
                         }
                     </div>
-                    
+
                     <div class="sample-data">
                         <strong>Sample data:</strong>
                         <ul>${sampleDataHtml}</ul>
                     </div>
-                    
+
                     <div class="mapping-controls">
                         <label>Map to field:</label>
                         <select class="field-mapping-select" data-column-index="${window.dt_admin_shared.escape(columnIndex)}">
@@ -644,7 +644,7 @@
                             ${this.getFieldOptions(finalSelectedField)}
                             <option value="create_new">+ Create New Field</option>
                         </select>
-                        
+
                         <div class="field-specific-options" style="display: none;"></div>
                     </div>
                 </div>
@@ -1271,7 +1271,7 @@
                 <div class="dt-import-step-content">
                     <h2>${window.dt_admin_shared.escape(dtImport.translations.previewImport)}</h2>
                     <p>Review the data before importing ${window.dt_admin_shared.escape(previewData.total_rows)} records.</p>
-                    
+
                     ${
                       previewData.is_estimated
                         ? `
@@ -1281,7 +1281,7 @@
                     `
                         : ''
                     }
-                    
+
                     <div class="preview-stats">
                         <div class="stat-card">
                             <h3>${window.dt_admin_shared.escape(previewData.total_rows)}</h3>
@@ -1306,7 +1306,7 @@
                             <p>Errors</p>
                         </div>
                     </div>
-                    
+
                     ${
                       previewData.is_estimated
                         ? `
@@ -1314,7 +1314,7 @@
                     `
                         : ''
                     }
-                    
+
                     ${
                       totalErrors > 0
                         ? `
@@ -1327,7 +1327,7 @@
                     `
                         : ''
                     }
-                    
+
                     ${
                       totalWarnings > 0
                         ? `
@@ -1340,7 +1340,7 @@
                     `
                         : ''
                     }
-                    
+
                     <div class="preview-table-container">
                         ${this.createPreviewTable(previewData.rows)}
                     </div>
@@ -1592,7 +1592,7 @@
                             : ''
                         }
                     </div>
-                    
+
                     ${
                       results.imported_records &&
                       results.imported_records.length > 0
@@ -1629,7 +1629,7 @@
                     `
                         : ''
                     }
-                    
+
                     ${
                       results.errors && results.errors.length > 0
                         ? `
@@ -1648,7 +1648,7 @@
                     `
                         : ''
                     }
-                    
+
                     <div class="results-actions">
                         <button type="button" class="button button-primary" onclick="location.reload()">
                             Start New Import

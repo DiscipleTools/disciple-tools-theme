@@ -1382,7 +1382,7 @@ jQuery(document).ready(function ($) {
                 option_html += `
                 <label>
                   <input type="checkbox" value="${key}" class="add-records-div-content-post-type-field-values-checkbox" />
-                  ${window.lodash.escape(option['label'])}
+                  ${window.lodash.escape(option['label'] || option)}
                 </label>`;
               });
 

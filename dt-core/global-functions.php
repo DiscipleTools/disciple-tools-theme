@@ -645,6 +645,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 case 'textarea':
                     DT_Components::render_textarea( $field_key, $fields, $post, $params );
                     break;
+                case 'location_meta':
+                    DT_Components::render_location_meta( $field_key, $fields, $post, $params );
+                    break;
                 default:
                     $is_legacy = true;
                     break;
@@ -702,11 +705,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                         </div>
 
                     <?php endif; ?>
-                    <?php if ( ( $field_type === 'location' || 'location_meta' === $field_type ) && DT_Mapbox_API::get_key() && !$is_empty_post ) : ?>
-                        <button data-list-class="<?php echo esc_html( $field_key ) ?>" class="add-button" id="new-mapbox-search" type="button" <?php echo esc_html( $disabled ); ?>>
-                            <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
-                        </button>
-                    <?php endif ?>
                 </div>
                 <?php
                 // render fields
@@ -794,42 +792,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
                         <div class="input-group-button">
                             <button id="<?php echo esc_html( $display_field_id ); ?>-clear-button" class="button alert clear-date-button" data-inputid="<?php echo esc_html( $display_field_id ); ?>" title="Delete Date" type="button" <?php echo esc_html( $disabled ); ?>>x</button>
-                        </div>
-                    </div>
-                <?php elseif ( $field_type === 'location_meta' ) : ?>
-                    <?php if ( DT_Mapbox_API::get_key() && $is_empty_post ) : // test if Mapbox key is present ?>
-                        <div id="mapbox-autocomplete" class="mapbox-autocomplete input-group" data-autosubmit="false">
-                            <input id="mapbox-search" type="text" class="input-group-field" name="mapbox_search" placeholder="Search Location" autocomplete="off" dir="auto" <?php echo esc_html( $disabled ); ?>/>
-                            <div class="input-group-button">
-                                <button id="mapbox-spinner-button" class="button hollow" style="display:none;" <?php echo esc_html( $disabled ); ?>><span class="loading-spinner active"></span></button>
-                                <button id="mapbox-clear-autocomplete" class="button alert input-height delete-button-style mapbox-delete-button" style="display:none;" type="button" <?php echo esc_html( $disabled ); ?>>&times;</button>
-                            </div>
-                            <div id="mapbox-autocomplete-list" class="mapbox-autocomplete-items"></div>
-                        </div>
-                        <script>
-                            jQuery(document).ready(function(){
-                                window.write_input_widget()
-                            })
-                        </script>
-                    <?php elseif ( DT_Mapbox_API::get_key() ) : // test if Mapbox key is present ?>
-                        <div id="mapbox-wrapper"></div>
-                    <?php endif; ?>
-                <?php elseif ( $field_type === 'location' ) :?>
-                    <div class="dt_location_grid" data-id="<?php echo esc_html( $field_key ); ?>">
-                        <var id="<?php echo esc_html( $field_key ); ?>-result-container" class="result-container"></var>
-                        <div id="<?php echo esc_html( $field_key ); ?>_t" name="form-<?php echo esc_html( $field_key ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
-                            <div class="typeahead__container">
-                                <div class="typeahead__field">
-                                    <span class="typeahead__query">
-                                        <input class="js-typeahead-<?php echo esc_html( $display_field_id ); ?> input-height"
-                                               data-field="<?php echo esc_html( $field_key ); ?>"
-                                               data-field_type="location"
-                                               name="<?php echo esc_html( $field_key ); ?>[query]"
-                                               placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) )?>"
-                                               autocomplete="off" <?php echo esc_html( $disabled ); ?>/>
-                                    </span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 <?php elseif ( $field_type === 'user_select' ) : ?>
