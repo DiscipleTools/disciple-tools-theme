@@ -158,6 +158,11 @@ class Disciple_Tools
         require_once( 'dt-reports/magic-url-setup.php' );
         require_once( 'dt-reports/magic-url-bulk-send.php' );
 
+        /**
+         * dt-apps - Home Screen Magic Link App
+         */
+        require_once( 'dt-apps/dt-home/dt-home-loader.php' );
+
 
         /**
          * User Groups & Multi Roles

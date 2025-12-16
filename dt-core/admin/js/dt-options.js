@@ -91,7 +91,7 @@ jQuery(document).ready(function ($) {
     });
   });
 
-  $('.change-icon-button').click(function (e) {
+  $(document).on('click', '.change-icon-button', function (e) {
     e.preventDefault();
 
     // Fetch handle to key workflow elements

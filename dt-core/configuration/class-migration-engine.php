@@ -12,7 +12,7 @@ if ( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Migration_Engine
 {
 
-    public static $migration_number = 61;
+    public static $migration_number = 62;
 
     protected static $migrations = null;
 
