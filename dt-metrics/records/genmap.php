@@ -230,6 +230,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         }
 
         // Build query string with optional group_type field
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $group_type_select and $group_type_union_select are safe SQL fragments
         $query_sql = "
                 SELECT
                   a.ID         as id,
