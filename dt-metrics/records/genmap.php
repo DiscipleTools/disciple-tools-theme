@@ -221,14 +221,23 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         // Determine archived meta values.
         $status_key = $filters['status_key'] ?? '';
 
-        // Prepare sql shape to be executed.
-        $prepared_query = $wpdb->prepare( "
+        // Add group_type field for groups post type
+        $group_type_select = '';
+        $group_type_union_select = '';
+        if ( $post_type === 'groups' ) {
+            $group_type_select = ", ( SELECT p_type.meta_value FROM $wpdb->postmeta as p_type WHERE ( p_type.post_id = a.ID ) AND ( p_type.meta_key = 'group_type' ) ) as group_type";
+            $group_type_union_select = ", ( SELECT u_type.meta_value FROM $wpdb->postmeta as u_type WHERE ( u_type.post_id = p." . $select_id . " ) AND ( u_type.meta_key = 'group_type' ) ) as group_type";
+        }
+
+        // Build query string with optional group_type field
+        $query_sql = "
                 SELECT
                   a.ID         as id,
                   0            as parent_id,
                   a.post_title as name,
                   ( SELECT p_status.meta_value FROM $wpdb->postmeta as p_status WHERE ( p_status.post_id = a.ID ) AND ( p_status.meta_key = %s ) ) as status,
                   ( SELECT EXISTS( SELECT p_shared.user_id FROM $wpdb->dt_share as p_shared WHERE p_shared.user_id = %d AND p_shared.post_id = a.ID ) ) as shared
+                  $group_type_select
                 FROM $wpdb->posts as a
                 WHERE a.post_type = %s
                 AND a.ID %1s IN (
@@ -250,9 +259,12 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                   (SELECT sub.post_title FROM $wpdb->posts as sub WHERE sub.ID = p.%1s ) as name,
                   ( SELECT u_status.meta_value FROM $wpdb->postmeta as u_status WHERE ( u_status.post_id = p.%1s ) AND ( u_status.meta_key = %s ) ) as status,
                   ( SELECT EXISTS( SELECT u_shared.user_id FROM $wpdb->dt_share as u_shared WHERE u_shared.user_id = %d AND u_shared.post_id = p.%1s ) ) as shared
+                  $group_type_union_select
                 FROM $wpdb->p2p as p
                 WHERE p.p2p_type = %s;
-            ", $status_key, $user->ID, $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $select_id, $status_key, $user->ID, $select_id, $p2p_type );
+            ";
+
+        $prepared_query = $wpdb->prepare( $query_sql, $status_key, $user->ID, $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $select_id, $status_key, $user->ID, $select_id, $p2p_type );
 
         //phpcs:disable
         return $wpdb->get_results( $prepared_query, ARRAY_A );
@@ -311,7 +323,8 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
             'name' => ( ( $shared === 1 ) || ( $gen === 0 ) ) ? ( $menu_data['items'][ $parent_id ]['name'] ?? 'SYSTEM' ) : '',
             'status' => $menu_data['items'][ $parent_id ]['status'] ?? '',
             'shared' => $shared,
-            'content' => 'Gen ' . $gen
+            'content' => 'Gen ' . $gen,
+            'group_type' => $menu_data['items'][ $parent_id ]['group_type'] ?? ''
         ];
 
         // Ensure to exclude non-shared generations.

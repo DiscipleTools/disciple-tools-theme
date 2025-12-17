@@ -129,7 +129,8 @@
     const layoutToggle = $('#group-genmap-layout-toggle');
     const currentLayout = getDefaultLayout();
 
-    // Show toggle only on desktop
+    // Show toggle only on desktop and only for legacy orgchart (not D3)
+    // D3 visualization will hide it when rendering
     if (!isMobileView()) {
       layoutToggle.show();
       updateLayoutToggleIcon(currentLayout);
@@ -197,7 +198,24 @@
         const sanitizedGenmap = sanitizeNode(genmap);
         // Store genmap data for layout switching
         wrapper.data('currentGenmapData', sanitizedGenmap);
-        renderChart(wrapper, sanitizedGenmap, currentLayout);
+
+        // Phase 3: Use D3.js visualization - check stored preference or default
+        // Store preference in wrapper data so layout toggle can access it
+        let useD3Visualization = wrapper.data('useD3Visualization');
+        if (useD3Visualization === undefined) {
+          // Default to D3.js visualization
+          useD3Visualization = true;
+          wrapper.data('useD3Visualization', useD3Visualization);
+        }
+
+        // Store current layout for tile size management (even for D3)
+        wrapper.data('currentLayout', currentLayout);
+
+        if (useD3Visualization && typeof d3 !== 'undefined') {
+          renderD3Chart(wrapper, sanitizedGenmap);
+        } else {
+          renderChart(wrapper, sanitizedGenmap, currentLayout);
+        }
       })
       .fail(() => {
         setMessage(wrapper, 'error');
@@ -412,19 +430,1211 @@
       sanitized.isNonShared = true;
     }
 
+    // Map status to statusColor - matching legacy flow behavior
+    // The API returns only 'status' property (e.g., "active"), we need to map it to statusColor
+    // using dtGroupGenmap.statusField.colors object
     const archivedKey = window.dtGroupGenmap?.statusField?.archived_key || '';
     const colors = window.dtGroupGenmap?.statusField?.colors || {};
-    if (sanitized.status && colors[sanitized.status]) {
-      sanitized.statusColor = colors[sanitized.status];
-    } else if (
-      sanitized.status &&
-      archivedKey &&
-      sanitized.status === archivedKey
-    ) {
-      sanitized.statusColor = '#808080';
+
+    // Always compute statusColor from status property (matching legacy flow)
+    // This ensures statusColor is set before data flows to D3 visualization
+    if (sanitized.status) {
+      // Direct lookup in colors object - status value should match the key
+      if (colors[sanitized.status]) {
+        sanitized.statusColor = colors[sanitized.status];
+      } else if (archivedKey && sanitized.status === archivedKey) {
+        // Handle archived/inactive status with grey color
+        sanitized.statusColor = '#808080';
+      } else {
+        // Fallback to getStatusColor helper which handles defaults
+        sanitized.statusColor = getStatusColor(sanitized.status);
+      }
+    } else {
+      // No status provided - use default color
+      sanitized.statusColor = getStatusColor(null);
     }
 
     return sanitized;
+  }
+
+  /**
+   * Phase 2: Data Transformation Functions for D3.js
+   *
+   * These functions transform the API response into D3 hierarchy format
+   * and add computed properties for visualization.
+   */
+
+  /**
+   * Ellipsize a name to fit within node display
+   * @param {string} name - The full name
+   * @param {number} maxLength - Maximum characters (default: 15)
+   * @returns {string} - Ellipsized name
+   */
+  function ellipsizeName(name, maxLength = 15) {
+    if (!name || typeof name !== 'string') {
+      return '';
+    }
+    if (name.length <= maxLength) {
+      return name;
+    }
+    return name.substring(0, maxLength - 3) + '...';
+  }
+
+  /**
+   * Get group type icon path
+   * @param {string} groupType - The group type key (e.g., 'church', 'group', 'pre-group', 'team')
+   * @returns {string} - Icon path URL
+   */
+  function getGroupTypeIcon(groupType) {
+    const icons = window.dtGroupGenmap?.groupTypeIcons || {};
+    return icons[groupType] || icons['group'] || '';
+  }
+
+  /**
+   * Get status color for a node
+   * @param {string} status - The status key
+   * @returns {string} - Color hex code
+   */
+  function getStatusColor(status) {
+    const colors = window.dtGroupGenmap?.statusField?.colors || {};
+    const archivedKey = window.dtGroupGenmap?.statusField?.archived_key || '';
+
+    if (status && colors[status]) {
+      return colors[status];
+    } else if (status && archivedKey && status === archivedKey) {
+      return '#808080';
+    }
+    return '#3f729b'; // Default blue
+  }
+
+  /**
+   * Enhance node data with computed properties for D3 visualization
+   * @param {Object} node - The node data from API
+   * @param {number} generation - Current generation level (0 = root)
+   * @returns {Object} - Enhanced node data
+   */
+  function enhanceNodeData(node, generation = 0) {
+    if (!node || typeof node !== 'object') {
+      return null;
+    }
+
+    const enhanced = {
+      ...node,
+      // Preserve original data
+      originalName: node.name || '',
+      originalStatus: node.status || '',
+      originalShared: node.shared ?? 1,
+
+      // Computed properties
+      generation: generation,
+      collapsed: false, // Default: expanded
+      _children: null, // For collapse/expand functionality
+
+      // Visual properties
+      nodeSize: {
+        width: 60,
+        height: 40,
+      },
+
+      // Display properties
+      displayName: ellipsizeName(node.name || '', 15),
+
+      // Status and color - ensure statusColor is computed from status
+      statusColor:
+        node.statusColor ||
+        (() => {
+          const colors = window.dtGroupGenmap?.statusField?.colors || {};
+          const archivedKey =
+            window.dtGroupGenmap?.statusField?.archived_key || '';
+          if (node.status && colors[node.status]) {
+            return colors[node.status];
+          } else if (
+            node.status &&
+            archivedKey &&
+            node.status === archivedKey
+          ) {
+            return '#808080';
+          }
+          return getStatusColor(node.status);
+        })(),
+
+      // Note: iconPath removed - icons will be in popover (Phase 5)
+
+      // Shared/private flag
+      isNonShared: String(node.shared ?? '1') === '0',
+
+      // Recursively enhance children
+      children: Array.isArray(node.children)
+        ? node.children
+            .map((child) => enhanceNodeData(child, generation + 1))
+            .filter((child) => !!child)
+        : [],
+    };
+
+    // If node is non-shared, update display name
+    if (enhanced.isNonShared) {
+      enhanced.displayName = '.......';
+      enhanced.iconPath = '';
+    }
+
+    return enhanced;
+  }
+
+  /**
+   * Transform genmap data to D3 hierarchy format
+   * @param {Object} genmapData - The genmap data from API
+   * @returns {Object|null} - D3 hierarchy root node or null
+   */
+  function transformToD3Hierarchy(genmapData) {
+    // Check if D3.js is available
+    if (typeof d3 === 'undefined' || !d3.hierarchy) {
+      console.warn('D3.js is not loaded. Cannot transform to D3 hierarchy.');
+      return null;
+    }
+
+    if (!genmapData || typeof genmapData !== 'object') {
+      return null;
+    }
+
+    // Enhance the data with computed properties
+    const enhancedData = enhanceNodeData(genmapData, 0);
+
+    if (!enhancedData) {
+      return null;
+    }
+
+    // Create D3 hierarchy
+    // Note: D3.hierarchy expects children to be in a 'children' property
+    // Our data already has this structure, so we can use it directly
+    const root = d3.hierarchy(enhancedData, (d) => {
+      // Return children array, or null if no children (D3 expects null for leaf nodes)
+      return d.children && d.children.length > 0 ? d.children : null;
+    });
+
+    // Add computed properties to each node in the hierarchy
+    root.each((node) => {
+      // Ensure each node has the enhanced properties
+      if (!node.data.nodeSize) {
+        node.data.nodeSize = { width: 60, height: 40 };
+      }
+      if (!node.data.displayName) {
+        node.data.displayName = ellipsizeName(node.data.name || '', 15);
+      }
+      // Always ensure statusColor is set - compute from status if missing
+      // This ensures status colors are properly applied even if sanitizeNode didn't set it
+      if (!node.data.statusColor) {
+        if (node.data.status) {
+          const colors = window.dtGroupGenmap?.statusField?.colors || {};
+          const archivedKey =
+            window.dtGroupGenmap?.statusField?.archived_key || '';
+
+          if (colors[node.data.status]) {
+            node.data.statusColor = colors[node.data.status];
+          } else if (archivedKey && node.data.status === archivedKey) {
+            node.data.statusColor = '#808080';
+          } else {
+            node.data.statusColor = getStatusColor(node.data.status);
+          }
+        } else {
+          // No status - use default
+          node.data.statusColor = getStatusColor(null);
+        }
+      }
+      // Note: iconPath removed - icons will be in popover (Phase 5)
+      if (node.data.isNonShared) {
+        node.data.displayName = '.......';
+      }
+
+      // Initialize collapse state
+      if (node.children && node.children.length > 0) {
+        node.data.collapsed = false;
+        node.data._children = null;
+      }
+    });
+
+    return root;
+  }
+
+  /**
+   * Phase 3: D3 Tree Visualization Core
+   *
+   * Functions for creating and rendering the D3.js tree visualization
+   */
+
+  /**
+   * Phase 4: Collapse/Expand Functionality
+   *
+   * Functions for collapsing and expanding tree branches
+   */
+
+  /**
+   * Phase 5: Popover Implementation
+   *
+   * Functions for displaying lightweight popover with group details, icons, and actions
+   */
+
+  /**
+   * Show popover for a selected node
+   * @param {jQuery} wrapper - jQuery wrapper element
+   * @param {Object} nodeData - D3 node data
+   * @param {Event} event - Click event
+   */
+  function showGenmapPopover(wrapper, nodeData, event) {
+    // Remove any existing popover
+    hideGenmapPopover(wrapper);
+
+    // Get container and SVG for positioning
+    const container = wrapper.find('.group-genmap-chart');
+    const svg = wrapper.data('d3Svg');
+    if (!container.length || !svg || !svg.node()) {
+      return;
+    }
+
+    // Get node position in SVG coordinates
+    const nodeGroup = d3.select(event.currentTarget);
+    const transform = nodeGroup.attr('transform');
+    const match = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+    if (!match) {
+      return;
+    }
+
+    const nodeX = parseFloat(match[2]); // Vertical position
+    const nodeY = parseFloat(match[1]); // Horizontal position
+
+    // Get SVG bounding box
+    const svgRect = svg.node().getBoundingClientRect();
+
+    // Get current zoom transform
+    const zoomTransform = d3.zoomTransform(svg.node());
+
+    // Calculate node position in screen coordinates (accounting for zoom/pan)
+    const screenX = nodeY * zoomTransform.k + zoomTransform.x + svgRect.left;
+    const screenY = nodeX * zoomTransform.k + zoomTransform.y + svgRect.top;
+
+    // Create popover element
+    const popover = jQuery('<div class="genmap-popover"></div>');
+
+    // Build popover content
+    const content = buildPopoverContent(nodeData);
+    popover.html(content);
+
+    // Append to body for better positioning (relative to viewport)
+    jQuery('body').append(popover);
+
+    // Get popover dimensions
+    const popoverWidth = popover.outerWidth() || 250;
+    const popoverHeight = popover.outerHeight() || 200;
+
+    // Position popover above the node (centered horizontally)
+    let left = screenX - popoverWidth / 2;
+    let top = screenY - popoverHeight - 15; // 15px above node
+
+    // Ensure popover stays within viewport bounds
+    const viewportWidth = jQuery(window).width();
+    const viewportHeight = jQuery(window).height();
+    const padding = 10;
+
+    // Adjust horizontal position if needed
+    if (left < padding) {
+      left = padding;
+    } else if (left + popoverWidth > viewportWidth - padding) {
+      left = viewportWidth - popoverWidth - padding;
+    }
+
+    // Adjust vertical position if needed (show below if not enough space above)
+    if (top < padding) {
+      top = screenY + 50; // Show below node instead
+    } else if (top + popoverHeight > viewportHeight - padding) {
+      top = viewportHeight - popoverHeight - padding;
+    }
+
+    popover.css({
+      left: left + 'px',
+      top: top + 'px',
+      position: 'fixed', // Use fixed positioning relative to viewport
+    });
+
+    // Store popover reference
+    wrapper.data('genmapPopover', popover);
+
+    // Bind event handlers
+    bindPopoverEvents(wrapper, nodeData, popover);
+  }
+
+  /**
+   * Build popover HTML content
+   * @param {Object} nodeData - D3 node data
+   * @returns {string} HTML content
+   */
+  function buildPopoverContent(nodeData) {
+    const data = nodeData.data;
+    const strings = window.dtGroupGenmap?.strings || {};
+    const detailsStrings = strings.details || {};
+    const groupTypes = window.dtGroupGenmap?.groupTypes || {};
+    const groupTypeIcons = window.dtGroupGenmap?.groupTypeIcons || {};
+    const recordUrlBase = window.dtGroupGenmap?.recordUrlBase || '';
+    const postType = window.dtGroupGenmap?.postType || 'groups';
+
+    // Get group type label and icon
+    const groupType = data.group_type || '';
+    const groupTypeLabel = groupTypes[groupType] || groupType || '';
+    const groupTypeIcon = groupTypeIcons[groupType] || '';
+
+    // Get status label (we have status key, but need label - for now use key)
+    const status = data.status || '';
+
+    // Build HTML with header containing title and close button
+    let html = '<div class="popover-header">';
+    html += `<h4>${window.lodash.escape(data.name || '')}</h4>`;
+    html += '<button class="popover-close" aria-label="Close">&times;</button>';
+    html += '</div>';
+
+    // Group type with icon
+    if (groupTypeLabel) {
+      html += '<div class="popover-field">';
+      html += '<strong>Type:</strong>';
+      if (groupTypeIcon) {
+        html += `<span><img src="${window.lodash.escape(groupTypeIcon)}" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;" />${window.lodash.escape(groupTypeLabel)}</span>`;
+      } else {
+        html += `<span>${window.lodash.escape(groupTypeLabel)}</span>`;
+      }
+      html += '</div>';
+    }
+
+    // Status with color indicator
+    if (status) {
+      const statusColor = data.statusColor || '#3f729b';
+      html += '<div class="popover-field">';
+      html += '<strong>Status:</strong>';
+      html += `<span><span style="display: inline-block; width: 12px; height: 12px; background-color: ${statusColor}; border-radius: 2px; margin-right: 6px; vertical-align: middle;"></span>${window.lodash.escape(status)}</span>`;
+      html += '</div>';
+    }
+
+    // Generation
+    if (data.content) {
+      html += '<div class="popover-field">';
+      html += '<strong>Generation:</strong>';
+      html += `<span>${window.lodash.escape(data.content)}</span>`;
+      html += '</div>';
+    }
+
+    // Actions
+    html += '<div class="popover-actions">';
+
+    // Open button
+    const openUrl = `${recordUrlBase}${postType}/${data.id}`;
+    html += `<a href="${openUrl}" target="_blank" class="popover-button">${window.lodash.escape(detailsStrings.open || 'Open')}</a>`;
+
+    // Add Child button (only if node has children capability)
+    html += `<button class="popover-button secondary genmap-popover-add-child" data-post-type="${postType}" data-post-id="${data.id}" data-post-name="${window.lodash.escape(data.name || '')}">${window.lodash.escape(detailsStrings.add || 'Add')}</button>`;
+
+    // Collapse/Expand button (only if node has children)
+    if (
+      (nodeData.children && nodeData.children.length > 0) ||
+      (nodeData._children && nodeData._children.length > 0)
+    ) {
+      const isCollapsed = nodeData.data.collapsed || false;
+      const collapseText = isCollapsed ? 'Expand' : 'Collapse';
+      html += `<button class="popover-button secondary genmap-popover-collapse" data-node-id="${data.id}">${collapseText}</button>`;
+    }
+
+    html += '</div>';
+
+    return html;
+  }
+
+  /**
+   * Bind event handlers for popover
+   * @param {jQuery} wrapper - jQuery wrapper element
+   * @param {Object} nodeData - D3 node data
+   * @param {jQuery} popover - Popover jQuery element
+   */
+  function bindPopoverEvents(wrapper, nodeData, popover) {
+    // Close button
+    popover.on('click', '.popover-close', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      hideGenmapPopover(wrapper);
+    });
+
+    // Add Child button
+    popover.on('click', '.genmap-popover-add-child', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const button = jQuery(this);
+      displayAddChildModal(
+        button.data('post-type'),
+        button.data('post-id'),
+        button.data('post-name'),
+      );
+      hideGenmapPopover(wrapper);
+    });
+
+    // Collapse/Expand button
+    popover.on('click', '.genmap-popover-collapse', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const currentWrapper = jQuery(TILE_SELECTOR);
+      const treeData = currentWrapper.data('d3Root');
+      const linksGroup = currentWrapper.data('d3LinksGroup');
+      const nodesGroup = currentWrapper.data('d3NodesGroup');
+      const svg = currentWrapper.data('d3Svg');
+      const zoomBehavior = currentWrapper.data('d3Zoom');
+      const container = currentWrapper.find('.group-genmap-chart');
+      const containerWidth = container.width() || 800;
+      const containerHeight = parseInt(container.css('height')) || 400;
+
+      if (treeData && linksGroup && nodesGroup && svg && zoomBehavior) {
+        toggleNodeCollapse(
+          nodeData,
+          currentWrapper,
+          treeData,
+          linksGroup,
+          nodesGroup,
+          svg,
+          zoomBehavior,
+          containerWidth,
+          containerHeight,
+        );
+        hideGenmapPopover(currentWrapper);
+      }
+    });
+
+    // Close popover when clicking outside (use setTimeout to avoid immediate closure)
+    setTimeout(function () {
+      jQuery(document).one('click', function (e) {
+        if (popover.length && !popover[0].contains(e.target)) {
+          // Check if click is not on a node
+          const clickedNode = jQuery(e.target).closest('.node');
+          if (!clickedNode.length) {
+            hideGenmapPopover(wrapper);
+          }
+        }
+      });
+    }, 100);
+  }
+
+  /**
+   * Hide popover
+   * @param {jQuery} wrapper - jQuery wrapper element
+   */
+  function hideGenmapPopover(wrapper) {
+    const popover = wrapper.data('genmapPopover');
+    if (popover) {
+      popover.remove();
+      wrapper.data('genmapPopover', null);
+    }
+  }
+
+  /**
+   * Toggle node collapse/expand state
+   * @param {Object} node - D3 hierarchy node
+   * @param {jQuery} wrapper - jQuery wrapper element
+   * @param {Object} treeData - Current tree data
+   * @param {Object} linksGroup - D3 links group selection
+   * @param {Object} nodesGroup - D3 nodes group selection
+   * @param {Object} svg - D3 SVG selection
+   * @param {Object} zoomBehavior - D3 zoom behavior
+   * @param {number} containerWidth - Container width
+   * @param {number} containerHeight - Container height
+   */
+  function toggleNodeCollapse(
+    node,
+    wrapper,
+    treeData,
+    linksGroup,
+    nodesGroup,
+    svg,
+    zoomBehavior,
+    containerWidth,
+    containerHeight,
+  ) {
+    if (!node.children && !node._children) {
+      return; // No children to collapse/expand
+    }
+
+    // Toggle collapse state
+    if (node.children) {
+      // Collapse: move children to _children
+      node._children = node.children;
+      node.children = null;
+      node.data.collapsed = true;
+    } else {
+      // Expand: restore children from _children
+      node.children = node._children;
+      node._children = null;
+      node.data.collapsed = false;
+    }
+
+    // Update tree layout with new structure
+    updateD3Tree(
+      wrapper,
+      treeData,
+      linksGroup,
+      nodesGroup,
+      svg,
+      zoomBehavior,
+      containerWidth,
+      containerHeight,
+    );
+  }
+
+  /**
+   * Update D3 tree after collapse/expand
+   * @param {jQuery} wrapper - jQuery wrapper element
+   * @param {Object} root - D3 hierarchy root node
+   * @param {Object} linksGroup - D3 links group selection
+   * @param {Object} nodesGroup - D3 nodes group selection
+   * @param {Object} svg - D3 SVG selection
+   * @param {Object} zoomBehavior - D3 zoom behavior
+   * @param {number} containerWidth - Container width
+   * @param {number} containerHeight - Container height
+   */
+  function updateD3Tree(
+    wrapper,
+    root,
+    linksGroup,
+    nodesGroup,
+    svg,
+    zoomBehavior,
+    containerWidth,
+    containerHeight,
+  ) {
+    // Recreate tree layout with updated structure
+    const tree = createD3TreeLayout(100, 80);
+    const treeData = tree(root);
+
+    // Update links
+    const links = treeData.links();
+    const linkPath = d3
+      .linkVertical()
+      .x((d) => d.y)
+      .y((d) => d.x);
+
+    // Update existing links and add new ones
+    const linkUpdate = linksGroup.selectAll('.link').data(links, (d) => {
+      return d.source.data.id + '-' + d.target.data.id;
+    });
+
+    // Remove old links
+    linkUpdate.exit().remove();
+
+    // Add new links
+    const linkEnter = linkUpdate
+      .enter()
+      .append('path')
+      .attr('class', 'link')
+      .attr('fill', 'none')
+      .attr('stroke', (d) => d.source.data.statusColor || '#999')
+      .attr('stroke-width', 2)
+      .attr('opacity', 0.6)
+      .style('transition', 'opacity 0.2s');
+
+    // Update all links
+    linkUpdate.merge(linkEnter).attr('d', linkPath);
+
+    // Update nodes
+    const nodes = treeData.descendants();
+    const nodeUpdate = nodesGroup
+      .selectAll('.node')
+      .data(nodes, (d) => d.data.id);
+
+    // Remove old nodes (and their children)
+    const nodeExit = nodeUpdate.exit();
+    nodeExit.selectAll('*').remove();
+    nodeExit.remove();
+
+    // Add new nodes
+    const nodeEnter = nodeUpdate
+      .enter()
+      .append('g')
+      .attr('class', 'node')
+      .attr('transform', (d) => `translate(${d.y},${d.x})`);
+
+    // Add rectangle for new nodes
+    nodeEnter
+      .append('rect')
+      .attr('width', 60)
+      .attr('height', 40)
+      .attr('x', -30)
+      .attr('y', -20)
+      .attr('rx', 4)
+      .attr('fill', (d) => {
+        // Ensure statusColor is computed from status property (matching legacy flow)
+        if (!d.data.statusColor && d.data.status) {
+          const colors = window.dtGroupGenmap?.statusField?.colors || {};
+          const archivedKey =
+            window.dtGroupGenmap?.statusField?.archived_key || '';
+
+          if (colors[d.data.status]) {
+            d.data.statusColor = colors[d.data.status];
+          } else if (archivedKey && d.data.status === archivedKey) {
+            d.data.statusColor = '#808080';
+          } else {
+            d.data.statusColor = getStatusColor(d.data.status);
+          }
+        } else if (!d.data.statusColor) {
+          d.data.statusColor = getStatusColor(null);
+        }
+        return d.data.statusColor || '#3f729b';
+      })
+      .style('fill', (d) => {
+        // Use style() to ensure it overrides CSS - ensure statusColor is set
+        if (!d.data.statusColor && d.data.status) {
+          const colors = window.dtGroupGenmap?.statusField?.colors || {};
+          const archivedKey =
+            window.dtGroupGenmap?.statusField?.archived_key || '';
+
+          if (colors[d.data.status]) {
+            d.data.statusColor = colors[d.data.status];
+          } else if (archivedKey && d.data.status === archivedKey) {
+            d.data.statusColor = '#808080';
+          } else {
+            d.data.statusColor = getStatusColor(d.data.status);
+          }
+        } else if (!d.data.statusColor) {
+          d.data.statusColor = getStatusColor(null);
+        }
+        return d.data.statusColor || '#3f729b';
+      })
+      .attr('stroke', (d) => {
+        // Ensure statusColor is set
+        if (!d.data.statusColor && d.data.status) {
+          d.data.statusColor = getStatusColor(d.data.status);
+        }
+        return d.data.status ===
+          (window.dtGroupGenmap?.statusField?.archived_key || 'inactive')
+          ? '#666'
+          : '#2a4d6b';
+      })
+      .attr('stroke-width', 1);
+
+    // Note: Group type icons and collapse/expand buttons removed - will be shown in popover (Phase 5)
+
+    // Add text group for new nodes
+    const textGroupEnter = nodeEnter
+      .append('g')
+      .attr('class', 'node-text-group')
+      .attr('clip-path', 'url(#node-text-clip)');
+
+    textGroupEnter
+      .append('text')
+      .attr('x', 0)
+      .attr('y', -8)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .attr('font-size', '10px')
+      .attr('font-weight', '500')
+      .attr('fill', '#333')
+      .attr('class', 'node-title')
+      .text((d) => {
+        const name = d.data.displayName || '';
+        return name.length > 10 ? name.substring(0, 7) + '...' : name;
+      });
+
+    textGroupEnter
+      .append('text')
+      .attr('x', 0)
+      .attr('y', 8)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .attr('font-size', '9px')
+      .attr('fill', '#ffffff')
+      .attr('font-weight', '600')
+      .attr('class', 'node-generation')
+      .attr('opacity', 0.9)
+      .text((d) => {
+        if (d.data.content && d.data.content.startsWith('Gen ')) {
+          return d.data.content;
+        }
+        const gen = d.data.generation !== undefined ? d.data.generation : 0;
+        return `Gen ${gen}`;
+      });
+
+    // Update existing nodes (position and collapse indicator)
+    const nodeUpdateMerged = nodeUpdate.merge(nodeEnter);
+
+    // Update node positions with transition
+    nodeUpdateMerged
+      .transition()
+      .duration(300)
+      .attr('transform', (d) => `translate(${d.y},${d.x})`);
+
+    // Note: Collapse indicators removed - will be in popover (Phase 5)
+
+    // Update link positions with transition
+    linkUpdate.merge(linkEnter).transition().duration(300).attr('d', linkPath);
+
+    // Re-bind click handlers for node selection and popover
+    nodeUpdateMerged.on('click', function (event, d) {
+      if (d.data.isNonShared) {
+        return;
+      }
+
+      nodesGroup.selectAll('.node').classed('selected', false);
+      d3.select(this).classed('selected', true);
+      wrapper.data('selectedNode', d);
+
+      // Show popover
+      showGenmapPopover(wrapper, d, event);
+    });
+
+    // Store updated tree data
+    wrapper.data('d3Root', treeData);
+  }
+
+  /**
+   * Setup SVG container for D3 visualization
+   * @param {jQuery} container - jQuery element for the chart container
+   * @param {string} layout - Current layout ('t2b' for vertical/smaller tile, 'l2r' for horizontal/larger tile)
+   * @returns {Object} - Object with svg, zoomContainer, linksGroup, nodesGroup
+   */
+  function setupSVGContainer(container, layout = 'l2r') {
+    // Determine height based on layout/tile size
+    // Smaller tile (t2b/medium-6): taller height for better vertical space utilization
+    // Larger tile (l2r/small-12): standard height
+    const baseHeight = layout === 't2b' ? 600 : 400;
+
+    // Ensure container has proper styling
+    container.css({
+      width: '100%',
+      minHeight: baseHeight + 'px',
+      height: baseHeight + 'px',
+      position: 'relative',
+      overflow: 'hidden',
+      background: '#f9f9f9',
+    });
+
+    // Get container dimensions - use parent width if container doesn't have explicit width
+    const parentWidth = container.parent().width() || window.innerWidth;
+    const containerWidth = container.width() || parentWidth;
+    const containerHeight = baseHeight;
+
+    // Clear container
+    container.empty();
+    container.addClass('group-genmap-chart--d3');
+
+    // Create SVG element
+    const svg = d3
+      .select(container[0])
+      .append('svg')
+      .attr('width', containerWidth)
+      .attr('height', containerHeight)
+      .attr('class', 'genmap-svg')
+      .style('display', 'block')
+      .style('cursor', 'move');
+
+    // Create zoom container (g element that will be transformed)
+    const zoomContainer = svg.append('g').attr('class', 'zoom-container');
+
+    // Create groups for links and nodes (order matters - links should be behind nodes)
+    const linksGroup = zoomContainer.append('g').attr('class', 'links');
+    const nodesGroup = zoomContainer.append('g').attr('class', 'nodes');
+
+    return {
+      svg,
+      zoomContainer,
+      linksGroup,
+      nodesGroup,
+      containerWidth,
+      containerHeight,
+    };
+  }
+
+  /**
+   * Setup zoom and pan functionality
+   * @param {Object} svg - D3 SVG selection
+   * @param {Object} zoomContainer - D3 zoom container selection
+   * @param {Function} onZoom - Callback function when zoom/pan occurs
+   * @returns {Object} - D3 zoom behavior
+   */
+  function setupZoom(svg, zoomContainer, onZoom) {
+    const zoom = d3
+      .zoom()
+      .scaleExtent([0.1, 3]) // Min zoom: 10%, Max zoom: 300%
+      .filter((event) => {
+        // Allow zoom/pan on mouse wheel, drag, and touch
+        // Prevent zoom on double-click
+        if (event.type === 'dblclick') {
+          return false;
+        }
+        // Allow all other interactions
+        return true;
+      })
+      .on('zoom', (event) => {
+        // Apply transform to zoom container
+        zoomContainer.attr('transform', event.transform);
+
+        // Close popover on zoom/pan
+        const wrapper = jQuery(TILE_SELECTOR);
+        if (wrapper.length) {
+          hideGenmapPopover(wrapper);
+        }
+
+        if (onZoom) {
+          onZoom(event);
+        }
+      });
+
+    // Apply zoom behavior to SVG
+    // D3-zoom automatically handles:
+    // - Mouse wheel for zoom
+    // - Mouse drag for pan
+    // - Touch pinch for zoom (mobile)
+    // - Touch drag for pan (mobile)
+    svg.call(zoom);
+
+    return zoom;
+  }
+
+  /**
+   * Auto-fit tree to viewport
+   * @param {Object} svg - D3 SVG selection
+   * @param {Object} zoom - D3 zoom behavior
+   * @param {Object} root - D3 hierarchy root node
+   * @param {number} containerWidth - Container width
+   * @param {number} containerHeight - Container height
+   * @param {number} nodeWidth - Horizontal spacing between nodes
+   * @param {number} nodeHeight - Vertical spacing between nodes
+   */
+  function fitToViewport(
+    svg,
+    zoom,
+    root,
+    containerWidth,
+    containerHeight,
+    nodeWidth = 100,
+    nodeHeight = 80,
+  ) {
+    if (!root || !root.descendants().length) {
+      return;
+    }
+
+    // Calculate tree bounds
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+
+    root.descendants().forEach((d) => {
+      if (d.x < minX) minX = d.x;
+      if (d.x > maxX) maxX = d.x;
+      if (d.y < minY) minY = d.y;
+      if (d.y > maxY) maxY = d.y;
+    });
+
+    // Calculate tree dimensions
+    const treeWidth = maxY - minY;
+    const treeHeight = maxX - minX;
+
+    // Add padding
+    const padding = 40;
+    const targetWidth = containerWidth - padding * 2;
+    const targetHeight = containerHeight - padding * 2;
+
+    // Calculate scale to fit
+    const scaleX = targetWidth / treeWidth;
+    const scaleY = targetHeight / treeHeight;
+    const scale = Math.min(scaleX, scaleY, 1); // Don't zoom in beyond 100%
+
+    // Calculate translation to center
+    const translateX = (containerWidth - treeWidth * scale) / 2 - minY * scale;
+    const translateY = padding - minX * scale;
+
+    // Apply transform
+    svg.call(
+      zoom.transform,
+      d3.zoomIdentity.translate(translateX, translateY).scale(scale),
+    );
+  }
+
+  /**
+   * Create D3 tree layout
+   * @param {number} nodeWidth - Horizontal spacing between nodes (default: 100)
+   * @param {number} nodeHeight - Vertical spacing between nodes (default: 80)
+   * @returns {Object} - D3 tree layout
+   */
+  function createD3TreeLayout(nodeWidth = 100, nodeHeight = 80) {
+    const tree = d3
+      .tree()
+      .nodeSize([nodeHeight, nodeWidth]) // [height, width] for vertical layout
+      .separation((a, b) => {
+        // Separation function: siblings get 1, different parents get more space
+        return a.parent === b.parent ? 1 : 1.2;
+      });
+
+    return tree;
+  }
+
+  /**
+   * Render D3 tree visualization
+   * @param {jQuery} wrapper - jQuery wrapper element
+   * @param {Object} genmapData - Genmap data from API
+   */
+  function renderD3Chart(wrapper, genmapData) {
+    // Check if D3.js is available
+    if (typeof d3 === 'undefined') {
+      console.error('D3.js is not loaded. Cannot render D3 chart.');
+      setMessage(wrapper, 'error');
+      return;
+    }
+
+    if (!genmapData || typeof genmapData !== 'object') {
+      setMessage(wrapper, 'empty');
+      return;
+    }
+
+    // Transform data to D3 hierarchy
+    const root = transformToD3Hierarchy(genmapData);
+    if (!root) {
+      setMessage(wrapper, 'error');
+      return;
+    }
+
+    // Get container
+    const container = wrapper.find('.group-genmap-chart');
+    if (!container.length) {
+      setMessage(wrapper, 'error');
+      return;
+    }
+
+    // Get current layout for determining container height
+    const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
+
+    // Setup SVG container with layout-aware height
+    const {
+      svg,
+      zoomContainer,
+      linksGroup,
+      nodesGroup,
+      containerWidth,
+      containerHeight,
+    } = setupSVGContainer(container, currentLayout);
+
+    // Create tree layout
+    const tree = createD3TreeLayout(100, 80); // 100px horizontal, 80px vertical spacing
+    const treeData = tree(root);
+
+    // Setup zoom and pan
+    const zoomBehavior = setupZoom(svg, zoomContainer);
+
+    // Add clipping path for text overflow protection (create once per SVG)
+    const defs = svg.append('defs');
+    defs
+      .append('clipPath')
+      .attr('id', 'node-text-clip')
+      .append('rect')
+      .attr('x', -28) // Leave 2px padding on each side (60px width - 4px = 56px)
+      .attr('y', -18) // Leave 2px padding on top/bottom (40px height - 4px = 36px)
+      .attr('width', 56)
+      .attr('height', 36);
+
+    // Store references for later use (collapse/expand, popover, etc.)
+    wrapper.data('d3Svg', svg);
+    wrapper.data('d3Zoom', zoomBehavior);
+    wrapper.data('d3Root', treeData);
+    wrapper.data('d3LinksGroup', linksGroup);
+    wrapper.data('d3NodesGroup', nodesGroup);
+    wrapper.data('d3ZoomContainer', zoomContainer);
+
+    // Render links (edges) - Phase 4 will implement full rendering
+    // D3 v7 API: Use d3.link() with curve for curved paths
+    // For vertical layout, we use linkVertical() without curve, or link() with proper curve
+    const links = treeData.links();
+
+    // Create link generator with curve for smooth paths
+    const linkPath = d3
+      .linkVertical()
+      .x((d) => d.y) // Horizontal position
+      .y((d) => d.x); // Vertical position
+
+    // Render links with enhanced styling
+    linksGroup
+      .selectAll('.link')
+      .data(links)
+      .enter()
+      .append('path')
+      .attr('class', 'link')
+      .attr('d', linkPath)
+      .attr('fill', 'none')
+      .attr('stroke', (d) => {
+        // Use parent node's status color for link, or default gray
+        return d.source.data.statusColor || '#999';
+      })
+      .attr('stroke-width', 2)
+      .attr('opacity', 0.6)
+      .style('transition', 'opacity 0.2s');
+
+    // Render nodes - Phase 4 will implement full node rendering
+    // For now, we'll create basic nodes
+    const nodes = treeData.descendants();
+    const nodeGroup = nodesGroup
+      .selectAll('.node')
+      .data(nodes, (d) => d.data.id)
+      .enter()
+      .append('g')
+      .attr('class', 'node')
+      .attr('transform', (d) => `translate(${d.y},${d.x})`);
+
+    // Add node rectangle with status color
+    nodeGroup
+      .append('rect')
+      .attr('width', 60)
+      .attr('height', 40)
+      .attr('x', -30) // Center horizontally
+      .attr('y', -20) // Center vertically
+      .attr('rx', 4)
+      .attr('fill', (d) => {
+        // statusColor should already be set by sanitizeNode, but ensure it's computed if missing
+        // This is a safety check - statusColor should be set during data sanitization
+        if (!d.data.statusColor) {
+          if (d.data.status) {
+            const colors = window.dtGroupGenmap?.statusField?.colors || {};
+            const archivedKey =
+              window.dtGroupGenmap?.statusField?.archived_key || '';
+
+            if (colors[d.data.status]) {
+              d.data.statusColor = colors[d.data.status];
+            } else if (archivedKey && d.data.status === archivedKey) {
+              d.data.statusColor = '#808080';
+            } else {
+              d.data.statusColor = getStatusColor(d.data.status);
+            }
+          } else {
+            d.data.statusColor = getStatusColor(null);
+          }
+        }
+
+        // Use computed status color, fallback to default blue
+        return d.data.statusColor || '#3f729b';
+      })
+      .style('fill', (d) => {
+        // Use style() instead of attr() to ensure it overrides CSS
+        // statusColor should already be set, but ensure it's computed if missing
+        if (!d.data.statusColor && d.data.status) {
+          const colors = window.dtGroupGenmap?.statusField?.colors || {};
+          const archivedKey =
+            window.dtGroupGenmap?.statusField?.archived_key || '';
+
+          if (colors[d.data.status]) {
+            d.data.statusColor = colors[d.data.status];
+          } else if (archivedKey && d.data.status === archivedKey) {
+            d.data.statusColor = '#808080';
+          } else {
+            d.data.statusColor = getStatusColor(d.data.status);
+          }
+        }
+        return d.data.statusColor || '#3f729b';
+      })
+      .attr('stroke', (d) => {
+        // Ensure statusColor is set
+        if (!d.data.statusColor && d.data.status) {
+          d.data.statusColor = getStatusColor(d.data.status);
+        }
+        const color = d.data.statusColor || '#3f729b';
+        // Lighten stroke for archived/inactive
+        return d.data.status ===
+          (window.dtGroupGenmap?.statusField?.archived_key || 'inactive')
+          ? '#666'
+          : '#2a4d6b';
+      })
+      .attr('stroke-width', 1);
+
+    // Note: Group type icons and collapse/expand buttons removed - will be shown in popover (Phase 5)
+
+    // Add node text container with clipping for proper text truncation
+    const textGroup = nodeGroup
+      .append('g')
+      .attr('class', 'node-text-group')
+      .attr('clip-path', 'url(#node-text-clip)');
+
+    // Add node title (ellipsized name) - with padding from edges
+    textGroup
+      .append('text')
+      .attr('x', 0)
+      .attr('y', -8)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .attr('font-size', '10px') // Slightly smaller to ensure fit
+      .attr('font-weight', '500')
+      .attr('fill', '#333')
+      .attr('class', 'node-title')
+      .text((d) => {
+        // Use displayName which is already ellipsized, but ensure it fits with padding
+        const name = d.data.displayName || '';
+        // Truncate to 10 chars max to ensure fit with 2px padding on each side
+        if (name.length > 10) {
+          return name.substring(0, 7) + '...';
+        }
+        return name;
+      });
+
+    // Add generation indicator (Gen X) - improved visibility
+    textGroup
+      .append('text')
+      .attr('x', 0)
+      .attr('y', 8)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .attr('font-size', '9px')
+      .attr('fill', '#ffffff') // White for better visibility on colored backgrounds
+      .attr('font-weight', '600') // Slightly bolder
+      .attr('class', 'node-generation')
+      .attr('opacity', 0.9) // Slight transparency for subtle effect
+      .text((d) => {
+        // Use content field if available (e.g., "Gen 0", "Gen 1"), otherwise calculate from generation
+        if (d.data.content && d.data.content.startsWith('Gen ')) {
+          return d.data.content;
+        }
+        const gen = d.data.generation !== undefined ? d.data.generation : 0;
+        return `Gen ${gen}`;
+      });
+
+    // Add click handler for node selection and popover display
+    nodeGroup.on('click', function (event, d) {
+      // Prevent clicks on non-shared nodes
+      if (d.data.isNonShared) {
+        return;
+      }
+
+      // Regular node click for selection/popover
+      // Remove previous selection
+      nodesGroup.selectAll('.node').classed('selected', false);
+
+      // Add selection to current node
+      d3.select(this).classed('selected', true);
+
+      // Store selected node for popover
+      wrapper.data('selectedNode', d);
+
+      // Show popover
+      showGenmapPopover(wrapper, d, event);
+    });
+
+    // Auto-fit to viewport
+    fitToViewport(
+      svg,
+      zoomBehavior,
+      treeData,
+      containerWidth,
+      containerHeight,
+      100,
+      80,
+    );
+
+    // Show layout toggle button and update icon based on current layout
+    const layoutToggle = $('#group-genmap-layout-toggle');
+    if (layoutToggle.length && !isMobileView()) {
+      layoutToggle.show();
+      const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
+      updateLayoutToggleIcon(currentLayout);
+      // Ensure section width matches layout
+      updateSectionWidth(currentLayout);
+    }
+
+    // Mark as ready
+    container.addClass('group-genmap-chart--ready');
+    setMessage(wrapper, 'ready');
   }
 
   function setMessage(wrapper, state) {
@@ -531,7 +1741,7 @@
       switchToVerticalIcon.show();
       switchToHorizontalIcon.hide();
     } else {
-      // Currently vertical, show icon to switch to horizontal
+      // Currently vertical (t2b), show icon to switch to horizontal
       switchToVerticalIcon.hide();
       switchToHorizontalIcon.show();
     }
@@ -782,14 +1992,39 @@
     },
   );
 
-  // Layout toggle handler
+  // Layout toggle handler - toggles tile container size and layout
   jQuery(document).on('click', '#group-genmap-layout-toggle', function () {
     const wrapper = jQuery(TILE_SELECTOR);
     if (!wrapper.length) {
       return;
     }
-    const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
-    const newLayout = currentLayout === 'l2r' ? 't2b' : 'l2r';
-    switchLayout(wrapper, newLayout);
+
+    // Check if D3 visualization is active
+    const useD3Visualization = wrapper.data('useD3Visualization');
+
+    if (useD3Visualization && typeof d3 !== 'undefined') {
+      // D3 visualization: Toggle tile container size and re-render with new height
+      const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
+      const newLayout = currentLayout === 'l2r' ? 't2b' : 'l2r';
+
+      wrapper.data('currentLayout', newLayout);
+      saveLayoutPreference(newLayout);
+      updateLayoutToggleIcon(newLayout);
+      updateSectionWidth(newLayout);
+
+      // Re-render D3 chart with new container height based on layout
+      const genmapData = wrapper.data('currentGenmapData');
+      if (genmapData) {
+        // Small delay to ensure CSS changes are applied before re-rendering
+        setTimeout(() => {
+          renderD3Chart(wrapper, genmapData);
+        }, 100);
+      }
+    } else {
+      // Legacy orgchart: Toggle layout and tile container size
+      const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
+      const newLayout = currentLayout === 'l2r' ? 't2b' : 'l2r';
+      switchLayout(wrapper, newLayout);
+    }
   });
 })(jQuery);
