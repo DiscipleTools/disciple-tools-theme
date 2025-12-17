@@ -265,9 +265,9 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                 WHERE p.p2p_type = %s;
             ";
 
+        //phpcs:disable
         $prepared_query = $wpdb->prepare( $query_sql, $status_key, $user->ID, $post_type, $not_from, $p2p_type, $not_to, $p2p_type, $select_id, $select_parent_id, $select_id, $select_id, $status_key, $user->ID, $select_id, $p2p_type );
 
-        //phpcs:disable
         return $wpdb->get_results( $prepared_query, ARRAY_A );
         //phpcs:enable
     }
