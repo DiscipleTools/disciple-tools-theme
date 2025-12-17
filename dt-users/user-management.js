@@ -85,8 +85,6 @@ jQuery(document).ready(function ($) {
     $('#status_chart_div').html(spinner);
     $('#activity').html(spinner);
     $('#day_activity_chart').html(spinner);
-    $('#mapbox-wrapper').html(spinner);
-    $('#location-grid-meta-results').html(spinner);
     $('#profile_loading').addClass('active');
 
     $('#status-select').val('');
@@ -107,6 +105,9 @@ jQuery(document).ready(function ($) {
       typeahead.label.container.empty();
       typeahead.adjustInputSize();
     }
+    const userLocations = document.getElementById('location_grid_meta');
+    userLocations.removeEventListener('change', handleLocationChangeEvent);
+    userLocations.addEventListener('change', handleLocationChangeEvent);
 
     /* details */
     window
@@ -145,6 +146,9 @@ jQuery(document).ready(function ($) {
           $('#workload_status').val(
             window.SHAREDFUNCTIONS.escapeHTML(details.workload_status),
           );
+          userLocations.reset();
+          userLocations.value = details.user_location.location_grid_meta;
+          userLocations.open = false;
 
           setup_user_roles(details);
 
@@ -1369,3 +1373,67 @@ jQuery(document).ready(function ($) {
     return select;
   }
 });
+
+function handleLocationChangeEvent(event) {
+  const details = event.detail;
+  if (details) {
+    const { field, newValue, oldValue } = details;
+    const component = event.target.tagName.toLowerCase();
+    const valueDiff = window.DtWebComponents.ComponentService.valueArrayDiff(
+      oldValue,
+      newValue,
+    );
+
+    const request = {
+      type: 'POST',
+      url: 'users/user_location',
+      data: null,
+    };
+    if (component === 'dt-location-map') {
+      if (valueDiff.value2.length && !valueDiff.value1.length) {
+        // added value
+        request.type = 'POST';
+        request.url = 'users/user_location';
+        request.data = {
+          user_id: window.current_user_lookup,
+          user_location: {
+            location_grid_meta: valueDiff.value2,
+          },
+        };
+      } else if (valueDiff.value1.length && !valueDiff.value2.length) {
+        // removed value
+        request.type = 'DELETE';
+        request.url = 'users/user_location';
+        request.data = {
+          user_id: window.current_user_lookup,
+          user_location: {
+            location_grid_meta: [
+              {
+                grid_meta_id: valueDiff.value1[0].grid_meta_id,
+              },
+            ],
+          },
+        };
+      }
+    }
+
+    event.target.removeAttribute('saved');
+    event.target.setAttribute('loading', true);
+
+    window
+      .makeRequest(request.type, request.url, request.data)
+      .done((response) => {
+        event.target.removeAttribute('loading');
+        event.target.setAttribute('error', '');
+        event.target.setAttribute('saved', true);
+
+        event.target.value = response.user_location.location_grid_meta;
+      })
+      .catch((err) => {
+        console.error(err);
+        event.target.removeAttribute('loading');
+        event.target.setAttribute('invalid', true); // this isn't hooked up yet
+        event.target.setAttribute('error', err.message || err.toString());
+      });
+  }
+}

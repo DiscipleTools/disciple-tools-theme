@@ -100,7 +100,7 @@ $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
                                 <div class="cell medium-4">
 
                                     <!-- User Status -->
-                                    <div class="bordered-box">
+                                    <div class="bordered-box" style="--dt-label-font-size: 1.2rem; --dt-label-font-weight: 300;">
                                         <h4><?php esc_html_e( 'User Status', 'disciple_tools' ); ?></h4>
                                         <select id="user_status" class="select-field">
                                             <option></option>
@@ -121,8 +121,12 @@ $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
 
                                         <!-- Locations -->
                                         <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
-                                            <h4><?php esc_html_e( 'Location Responsibility', 'disciple_tools' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( 'add', 'disciple_tools' ) ?></a></h4>
-                                            <div id="mapbox-wrapper"></div>
+                                            <?php DT_Components::render_location_meta( 'location_grid_meta', [
+                                                'location_grid_meta' => [
+                                                    'name' => __( 'Location Responsibility', 'disciple_tools' ),
+                                                    'type'        => 'location_meta',
+                                                ]
+                                            ], null ) ?>
                                         <?php else : ?>
                                             <h4><?php esc_html_e( 'Location Responsibility', 'disciple_tools' ) ?></h4>
                                             <div class="location_grid">
