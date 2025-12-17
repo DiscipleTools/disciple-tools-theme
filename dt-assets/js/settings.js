@@ -1,6 +1,12 @@
 jQuery(document).ready(function () {
   window.current_user_lookup = window.wpApiSettingsPage.current_user_id;
-  load_locations();
+
+  const componentService = new window.DtWebComponents.ComponentService(
+    'users',
+    window.current_user_lookup,
+    window.wpApiSettingsPage.nonce,
+  );
+  componentService.attachLoadEvents();
 
   const locationElements = document.querySelectorAll(
     'dt-location, dt-location-map',
@@ -91,11 +97,28 @@ function handleLocationChangeEvent(event) {
       url: 'users/user_location',
       data: null,
     };
-    if (component === 'dt-location-map') {
+    if (component === 'dt-location') {
       if (valueDiff.value2.length && !valueDiff.value1.length) {
         // added value
-        request.type = 'POST';
-        request.url = 'users/user_location';
+        request.data = {
+          grid_id: valueDiff.value2[0].id,
+        };
+      } else if (valueDiff.value1.length && !valueDiff.value2.length) {
+        // removed value
+        request.type = 'DELETE';
+        request.data = {
+          grid_id: valueDiff.value1[0].id,
+        };
+      } else if (valueDiff.value2.length) {
+        const item = valueDiff.value2[0];
+        request.data = { grid_id: item.id };
+        if (item.delete) {
+          request.type = 'DELETE';
+        }
+      }
+    } else if (component === 'dt-location-map') {
+      if (valueDiff.value2.length && !valueDiff.value1.length) {
+        // added value
         request.data = {
           user_id: window.wpApiSettingsPage.current_user_id,
           user_location: {
@@ -105,7 +128,6 @@ function handleLocationChangeEvent(event) {
       } else if (valueDiff.value1.length && !valueDiff.value2.length) {
         // removed value
         request.type = 'DELETE';
-        request.url = 'users/user_location';
         request.data = {
           user_id: window.wpApiSettingsPage.current_user_id,
           user_location: {
@@ -129,7 +151,9 @@ function handleLocationChangeEvent(event) {
         event.target.setAttribute('error', '');
         event.target.setAttribute('saved', true);
 
-        event.target.value = response.user_location.location_grid_meta;
+        if (response.user_location) {
+          event.target.value = response.user_location.location_grid_meta;
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -139,153 +163,6 @@ function handleLocationChangeEvent(event) {
       });
   }
 }
-
-function load_locations() {
-  window
-    .makeRequest('GET', `user/my`)
-    .done((data) => {
-      if (typeof window.dtMapbox !== 'undefined') {
-        window.dtMapbox.post_type = 'user';
-        window.write_results_box();
-      } else {
-        //locations
-        let typeahead = window.Typeahead['.js-typeahead-location_grid'];
-        if (typeahead) {
-          typeahead.items = [];
-          typeahead.comparedItems = [];
-          typeahead.label.container.empty();
-          typeahead.adjustInputSize();
-        }
-        if (typeof data.locations.location_grid !== 'undefined') {
-          data.locations.location_grid.forEach((location) => {
-            typeahead.addMultiselectItemLayout({
-              ID: location.id.toString(),
-              name: location.label,
-            });
-          });
-        }
-      }
-    })
-    .catch((e) => {
-      console.log('error in locations');
-      console.log(e);
-    });
-}
-
-if (typeof window.dtMapbox === 'undefined') {
-  let typeaheadTotals = {};
-  if (!window.Typeahead['.js-typeahead-location_grid']) {
-    jQuery.typeahead({
-      input: '.js-typeahead-location_grid',
-      minLength: 0,
-      accent: true,
-      searchOnFocus: true,
-      maxItem: 20,
-      dropdownFilter: [
-        {
-          key: 'group',
-          value: 'focus',
-          template: window.SHAREDFUNCTIONS.escapeHTML(
-            window.wpApiShare.translations.regions_of_focus,
-          ),
-          all: window.SHAREDFUNCTIONS.escapeHTML(
-            window.wpApiShare.translations.all_locations,
-          ),
-        },
-      ],
-      source: {
-        focus: {
-          display: 'name',
-          ajax: {
-            url:
-              window.wpApiShare.root +
-              'dt/v1/mapping_module/search_location_grid_by_name',
-            data: {
-              s: '{{query}}',
-              filter: function () {
-                const { dropdown } =
-                  window.Typeahead['.js-typeahead-location_grid'].filters;
-                const value = dropdown?.value ?? 'all';
-                return value;
-              },
-            },
-            beforeSend: function (xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-            },
-            callback: {
-              done: function (data) {
-                if (typeof window.typeaheadTotals !== 'undefined') {
-                  window.typeaheadTotals.field = data.total;
-                }
-                return data.location_grid;
-              },
-            },
-          },
-        },
-      },
-      display: 'name',
-      templateValue: '{{name}}',
-      dynamic: true,
-      multiselect: {
-        matchOn: ['ID'],
-        data: function () {
-          return [];
-        },
-        callback: {
-          onCancel: function (node, item) {
-            delete_location_grid(item.ID);
-          },
-        },
-      },
-      callback: {
-        onClick: function (node, a, item, event) {
-          add_location_grid(item.ID);
-        },
-        onReady() {
-          this.filters.dropdown = {
-            key: 'group',
-            value: 'focus',
-            template: window.SHAREDFUNCTIONS.escapeHTML(
-              window.wpApiShare.translations.regions_of_focus,
-            ),
-          };
-          this.container
-            .removeClass('filter')
-            .find('.' + this.options.selector.filterButton)
-            .html(
-              window.SHAREDFUNCTIONS.escapeHTML(
-                window.wpApiShare.translations.regions_of_focus,
-              ),
-            );
-        },
-        onResult: function (node, query, result, resultCount) {
-          resultCount = typeaheadTotals.location_grid;
-          let text = window.TYPEAHEADS.typeaheadHelpText(
-            resultCount,
-            query,
-            result,
-          );
-          jQuery('#location_grid-result-container').html(text);
-        },
-        onHideLayout: function () {
-          jQuery('#location_grid-result-container').html('');
-        },
-      },
-    });
-  }
-}
-let add_location_grid = (value) => {
-  let data = {
-    grid_id: value,
-  };
-  return window.makeRequest('POST', `users/user_location`, data);
-};
-let delete_location_grid = (value) => {
-  let data = {
-    grid_id: value,
-  };
-  return window.makeRequest('DELETE', `users/user_location`, data);
-};
 
 let update_user = (key, value) => {
   let data = {

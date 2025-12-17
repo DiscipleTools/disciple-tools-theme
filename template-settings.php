@@ -346,25 +346,13 @@ $user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
                                     ]
                                 ], $user_location ) ?>
                             <?php else : ?>
-                                <div class="section-subheader cell">
-                                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                                    <?php esc_html_e( 'Locations you are willing to be responsible for', 'disciple_tools' ) ?>
-                                </div>
-                                <div class="location_grid">
-                                    <var id="location_grid-result-container" class="result-container"></var>
-                                    <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
-                                        <div class="typeahead__container">
-                                            <div class="typeahead__field">
-                                                <span class="typeahead__query">
-                                                    <input class="js-typeahead-location_grid input-height"
-                                                           name="location_grid[query]"
-                                                           placeholder="<?php esc_html_e( 'Search Locations', 'disciple_tools' ) ?>"
-                                                           autocomplete="off">
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php DT_Components::render_location( 'location_grid', [
+                                    'location_grid' => [
+                                        'name' => __( 'Locations you are willing to be responsible for', 'disciple_tools' ),
+                                        'type'        => 'location',
+                                        'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
+                                    ]
+                                ], $user_location ) ?>
                             <?php endif; ?>
 
 
