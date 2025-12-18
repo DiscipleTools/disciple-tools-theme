@@ -27,6 +27,8 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_filter( 'dt_custom_tiles_after_combine', [ $this, 'dt_custom_tiles_after_combine' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
+        add_action( 'dt_record_bottom_after_tiles', [ $this, 'dt_record_bottom_after_tiles' ], 10, 2 );
+        add_action( 'dt_record_footer', [ $this, 'dt_record_footer' ], 10, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
         // hooks
@@ -462,6 +464,7 @@ class DT_Groups_Base extends DT_Module_Base {
         self::display_health_metrics_tile( $section, $post_type );
         self::display_four_fields_tile( $section, $post_type );
         self::display_group_relationships_tile( $section, $post_type );
+        // Note: genmap tile is rendered separately via dt_record_after_details_section hook
     }
 
     private function display_health_metrics_tile( $section, $post_type ) {
@@ -596,6 +599,84 @@ class DT_Groups_Base extends DT_Module_Base {
         <?php }
     }
 
+    private function display_group_genmap_tile( $section, $post_type ) {
+        if ( $post_type !== 'groups' || $section !== 'genmap' ) {
+            return;
+        }
+        $post_id = get_the_ID();
+        ?>
+        <div id="group-genmap-tile"
+             class="group-genmap-tile"
+             data-post-id="<?php echo esc_attr( $post_id ); ?>"
+             data-post-type="<?php echo esc_attr( $post_type ); ?>">
+            <div class="group-genmap-message" aria-live="polite">
+                <?php esc_html_e( 'Loading map…', 'disciple_tools' ); ?>
+            </div>
+            <div class="group-genmap-chart" role="region"
+                 aria-label="<?php esc_attr_e( 'Group generational map', 'disciple_tools' ); ?>">
+            </div>
+        </div>
+        <?php
+    }
+
+    private static $genmap_rendered = false;
+
+    public function dt_record_bottom_after_tiles( $post_type, $dt_post ) {
+        if ( $post_type !== 'groups' ) {
+            return;
+        }
+        // Prevent double rendering
+        if ( self::$genmap_rendered ) {
+            return;
+        }
+        $tiles = DT_Posts::get_post_tiles( $post_type );
+        if ( !isset( $tiles['genmap'] ) || ( isset( $tiles['genmap']['hidden'] ) && $tiles['genmap']['hidden'] ) ) {
+            return;
+        }
+        self::$genmap_rendered = true;
+        $post_id = get_the_ID();
+        ?>
+        <section id="genmap" class="custom-tile-section small-12 cell grid-item">
+            <div class="bordered-box" id="genmap-tile">
+                <h3 class="section-header">
+                    <?php echo esc_html( $tiles['genmap']['label'] ?? __( 'Generational Map', 'disciple_tools' ) ); ?>
+                    <button class="help-button-tile" data-tile="genmap">
+                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
+                    </button>
+                    <button class="group-genmap-layout-toggle" id="group-genmap-layout-toggle" aria-label="<?php esc_attr_e( 'Toggle layout', 'disciple_tools' ); ?>" style="display: none;">
+                        <i class="mdi mdi-align-vertical-top group-genmap-layout-icon-switch-to-vertical" style="font-size: 18px;"></i>
+                        <i class="mdi mdi-align-horizontal-left group-genmap-layout-icon-switch-to-horizontal" style="font-size: 18px; display: none;"></i>
+                    </button>
+                    <button class="section-chevron chevron_down">
+                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
+                    </button>
+                    <button class="section-chevron chevron_up">
+                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
+                    </button>
+                </h3>
+                <div class="section-body grid-y">
+                    <?php self::display_group_genmap_tile( 'genmap', $post_type ); ?>
+                </div>
+            </div>
+        </section>
+        <?php
+    }
+
+    public function dt_record_footer( $post_type, $post_id ) {
+        if ( $post_type === 'groups' ) {
+            get_template_part( 'dt-assets/parts/modals/modal', 'template-metrics' );
+            ?>
+            <div class="reveal" id="group-genmap-details-modal" data-reveal data-reset-on-close>
+                <h3 id="group-genmap-details-modal-title"></h3>
+                <div id="group-genmap-details-modal-content"></div>
+                <button class="close-button" data-close aria-label="<?php esc_attr_e( 'Close', 'disciple_tools' ); ?>" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php
+        }
+    }
+
     public function dt_details_additional_tiles( $tiles, $post_type = '' ){
 
         if ( $post_type === 'groups' ){
@@ -607,6 +688,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     'description' => " Zúme article on 4 Fields: https://zume.training/four-fields-tool \r\n\r\n" . _x( 'There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:', 'Optional Documentation', 'disciple_tools' ),
                 ];
             }
+            $tiles['genmap'] = [ 'label' => __( 'Generational Map', 'disciple_tools' ) ];
             $tiles['groups'] = [ 'label' => __( 'Groups', 'disciple_tools' ) ];
             $tiles['other'] = [ 'label' => __( 'Other', 'disciple_tools' ) ];
         }
@@ -1125,6 +1207,108 @@ class DT_Groups_Base extends DT_Module_Base {
                 'jquery',
                 'details'
             ], filemtime( get_theme_file_path() . '/dt-groups/groups.js' ), true );
+
+            // Legacy orgchart library (kept for comparison during migration)
+            wp_enqueue_script( 'orgchart_js', 'https://cdnjs.cloudflare.com/ajax/libs/orgchart/3.7.0/js/jquery.orgchart.min.js', [
+                'jquery',
+            ], '3.7.0', true );
+
+            $css_file_name = 'dt-metrics/common/jquery.orgchart.custom.css';
+            $css_uri = get_template_directory_uri() . "/$css_file_name";
+            $css_dir = get_template_directory() . "/$css_file_name";
+            if ( file_exists( $css_dir ) ) {
+                wp_enqueue_style( 'orgchart_css', $css_uri, [], filemtime( $css_dir ) );
+            }
+
+            // D3.js library for new genmap visualization
+            wp_enqueue_script( 'd3', 'https://d3js.org/d3.v7.min.js', [], '7.8.5', true );
+
+            // D3.js genmap styles
+            $d3_css_file_name = 'dt-groups/genmap-d3.css';
+            $d3_css_uri = get_template_directory_uri() . "/$d3_css_file_name";
+            $d3_css_dir = get_template_directory() . "/$d3_css_file_name";
+            if ( file_exists( $d3_css_dir ) ) {
+                wp_enqueue_style( 'genmap_d3_css', $d3_css_uri, [], filemtime( $d3_css_dir ) );
+            }
+
+            $genmap_script_handle = 'dt_groups_genmap';
+            wp_enqueue_script(
+                $genmap_script_handle,
+                get_template_directory_uri() . '/dt-groups/genmap-tile.js',
+                [
+                    'jquery',
+                    'orgchart_js', // Keep for now during migration
+                    'd3', // Add D3.js dependency
+                    'shared-functions',
+                ],
+                filemtime( get_theme_file_path() . '/dt-groups/genmap-tile.js' ),
+                true
+            );
+
+            $field_settings = DT_Posts::get_post_field_settings( 'groups' );
+            $post_settings = DT_Posts::get_post_settings( 'groups' );
+            $status_key = $post_settings['status_field']['status_key'] ?? 'group_status';
+            $archived_key = $post_settings['status_field']['archived_key'] ?? '';
+            $status_defaults = $field_settings[ $status_key ]['default'] ?? [];
+            $status_colors = [];
+            foreach ( $status_defaults as $status_id => $status_option ) {
+                if ( isset( $status_option['color'] ) ) {
+                    $status_colors[ $status_id ] = $status_option['color'];
+                }
+            }
+
+            // Prepare group type icons mapping
+            $group_type_icons = [];
+            $group_type_labels = [];
+            if ( isset( $field_settings['group_type']['default'] ) ) {
+                foreach ( $field_settings['group_type']['default'] as $type_key => $type_option ) {
+                    $group_type_labels[ $type_key ] = $type_option['label'] ?? '';
+                    // Map group types to appropriate icons
+                    switch ( $type_key ) {
+                        case 'church':
+                            $group_type_icons[ $type_key ] = get_template_directory_uri() . '/dt-assets/images/circle-square-triangle.svg?v=2';
+                            break;
+                        case 'group':
+                            $group_type_icons[ $type_key ] = get_template_directory_uri() . '/dt-assets/images/group-type.svg?v=2';
+                            break;
+                        case 'pre-group':
+                            $group_type_icons[ $type_key ] = get_template_directory_uri() . '/dt-assets/images/group-type.svg?v=2';
+                            break;
+                        case 'team':
+                            $group_type_icons[ $type_key ] = get_template_directory_uri() . '/dt-assets/images/group-type.svg?v=2';
+                            break;
+                        default:
+                            $group_type_icons[ $type_key ] = get_template_directory_uri() . '/dt-assets/images/group-type.svg?v=2';
+                            break;
+                    }
+                }
+            }
+
+            wp_localize_script( $genmap_script_handle, 'dtGroupGenmap', [
+                'statusField' => [
+                    'key' => $status_key,
+                    'archived_key' => $archived_key,
+                    'colors' => $status_colors,
+                ],
+                'groupTypes' => $group_type_labels,
+                'groupTypeIcons' => $group_type_icons,
+                'strings' => [
+                    'loading' => __( 'Loading map…', 'disciple_tools' ),
+                    'error' => __( 'Unable to load generational map.', 'disciple_tools' ),
+                    'empty' => __( 'No child groups to display.', 'disciple_tools' ),
+                    'details' => [
+                        'open' => __( 'Open', 'disciple_tools' ),
+                        'add' => __( 'Add', 'disciple_tools' ),
+                    ],
+                    'modal' => [
+                        'add_child_title' => __( 'Add Child To', 'disciple_tools' ),
+                        'add_child_name_title' => __( 'Name', 'disciple_tools' ),
+                        'add_child_but' => __( 'Add Child', 'disciple_tools' ),
+                    ],
+                ],
+                'recordUrlBase' => trailingslashit( site_url() ),
+                'postType' => $this->post_type,
+            ] );
         }
     }
 }

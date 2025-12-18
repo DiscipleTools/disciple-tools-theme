@@ -1,0 +1,400 @@
+/**
+ * D3.js Genmap Visualization Styles
+ * 
+ * Styles for the new D3.js-based generational map visualization
+ * replacing the jQuery OrgChart implementation.
+ */
+
+/* SVG Container */
+.group-genmap-chart {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+.group-genmap-chart svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Zoom Container */
+.group-genmap-chart .zoom-container {
+    cursor: move;
+}
+
+/* Links (Tree Edges) */
+.group-genmap-chart .link {
+    fill: none;
+    stroke: #999;
+    stroke-width: 2px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.group-genmap-chart .link:hover {
+    opacity: 1;
+    stroke-width: 3px;
+}
+
+/* Nodes */
+.group-genmap-chart .node {
+    cursor: pointer;
+}
+
+.group-genmap-chart .node rect {
+    /* fill is set dynamically by D3 based on status color - do not set here */
+    stroke: #2a4d6b;
+    stroke-width: 1px;
+    rx: 4px;
+    transition: all 0.2s;
+}
+
+.group-genmap-chart .node:hover rect {
+    stroke-width: 2px;
+    stroke: #eed936;
+    filter: brightness(1.1);
+}
+
+.group-genmap-chart .node.selected rect {
+    stroke: #eed936;
+    stroke-width: 2px;
+    stroke-dasharray: 4, 2;
+    box-shadow: 0 0 0 2px rgba(238, 217, 54, 0.3);
+}
+
+/* Node Text */
+.group-genmap-chart .node text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    fill: #333;
+    pointer-events: none;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+
+/* Node Title - truncated text */
+.group-genmap-chart .node .node-title {
+    font-size: 11px;
+    font-weight: 500;
+    fill: #333;
+    max-width: 56px; /* Slightly less than node width for padding */
+}
+
+/* Node Generation Text */
+.group-genmap-chart .node .node-generation {
+    font-size: 9px;
+    fill: #ffffff; /* White for better visibility on colored backgrounds */
+    font-weight: 600;
+    opacity: 0.9;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Subtle shadow for readability */
+}
+
+/* Node Type Icon */
+.group-genmap-chart .node .node-type-icon {
+    pointer-events: none;
+    filter: brightness(0) invert(1); /* Make icon white for visibility */
+    opacity: 0.9;
+}
+
+/* Collapse/Expand Indicator - positioned above node */
+.group-genmap-chart .node .node-collapse-group {
+    pointer-events: all;
+}
+
+.group-genmap-chart .node .node-collapse-indicator {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.group-genmap-chart .node .node-collapse-indicator:hover {
+    fill: #f0f0f0;
+    stroke: #3f729b;
+    stroke-width: 2;
+    transform: scale(1.1);
+}
+
+.group-genmap-chart .node .node-collapse-icon {
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Group type icon - positioned above node */
+.group-genmap-chart .node .node-type-icon {
+    pointer-events: none;
+}
+
+/* Node Icons */
+.group-genmap-chart .node image {
+    pointer-events: none;
+}
+
+/* Collapse/Expand Indicators */
+.group-genmap-chart .node-collapse-indicator {
+    font-size: 10px;
+    fill: #666;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    pointer-events: none;
+}
+
+.group-genmap-chart .node-collapse-count {
+    font-size: 9px;
+    fill: #999;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    pointer-events: none;
+}
+
+/* Private/Non-shared Nodes */
+.group-genmap-chart .node.private rect {
+    fill: #808080;
+    opacity: 0.6;
+}
+
+.group-genmap-chart .node.private text {
+    fill: #666;
+}
+
+/* Popover Styles */
+.genmap-popover {
+    position: absolute;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    min-width: 200px;
+    max-width: 300px;
+    z-index: 1000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    pointer-events: auto;
+}
+
+.genmap-popover::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 20px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #ffffff;
+}
+
+.genmap-popover::after {
+    content: '';
+    position: absolute;
+    top: -7px;
+    left: 20px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #ddd;
+}
+
+.genmap-popover .popover-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 0 0 8px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.genmap-popover h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    flex: 1;
+    padding-right: 8px;
+}
+
+.genmap-popover .popover-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    line-height: 1;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+.genmap-popover .popover-close:hover {
+    color: #333;
+}
+
+.genmap-popover .popover-field {
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.genmap-popover .popover-field strong {
+    color: #666;
+    font-size: 12px;
+    min-width: 60px;
+}
+
+.genmap-popover .popover-field span {
+    color: #333;
+    font-size: 13px;
+}
+
+.genmap-popover .popover-actions {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 8px;
+}
+
+.genmap-popover .popover-button {
+    flex: 1;
+    padding: 6px 12px;
+    background: #3f729b;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 0.2s;
+}
+
+.genmap-popover .popover-button:hover {
+    background: #2a4d6b;
+}
+
+.genmap-popover .popover-button.secondary {
+    background: #6c757d;
+}
+
+.genmap-popover .popover-button.secondary:hover {
+    background: #5a6268;
+}
+
+.genmap-popover .popover-button i {
+    font-size: 14px;
+}
+
+/* Loading State */
+.group-genmap-chart.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.group-genmap-chart.loading::before {
+    content: '';
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3f729b;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.group-genmap-chart.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 14px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 767px) {
+    .group-genmap-chart {
+        min-height: 300px;
+    }
+    
+    .group-genmap-chart .node text {
+        font-size: 10px;
+    }
+    
+    .genmap-popover {
+        min-width: 180px;
+        max-width: 250px;
+        font-size: 12px;
+        padding: 10px;
+    }
+    
+    .genmap-popover .popover-button {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+}
+
+/* Zoom Controls (Optional) */
+.genmap-zoom-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.genmap-zoom-controls button {
+    width: 32px;
+    height: 32px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #333;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.genmap-zoom-controls button:hover {
+    background: #f5f5f5;
+    border-color: #3f729b;
+}
+
+.genmap-zoom-controls button:active {
+    transform: scale(0.95);
+}
+
+/* Accessibility */
+.group-genmap-chart:focus {
+    outline: 2px solid #3f729b;
+    outline-offset: 2px;
+}
+
+.group-genmap-chart .node:focus {
+    outline: 2px solid #eed936;
+    outline-offset: 2px;
+}
