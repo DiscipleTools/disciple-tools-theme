@@ -29,6 +29,9 @@ class DT_Home_Training {
     public function __construct() {
         // Initialize with default videos if none exist
         $this->initialize_default_videos();
+
+        // Register filter hook for external code
+        add_filter( 'dt_home_screen_training_videos', [ $this, 'filter_home_screen_training_videos' ] );
     }
 
     /**
@@ -300,6 +303,18 @@ class DT_Home_Training {
         });
 
         return $videos;
+    }
+
+    /**
+     * Filter callback for dt_home_screen_training_videos
+     *
+     * Returns all training videos when external code calls apply_filters('dt_home_screen_training_videos', []).
+     *
+     * @param array $default_value Default value passed to apply_filters
+     * @return array All training videos
+     */
+    public function filter_home_screen_training_videos( $default_value ) {
+        return $this->get_videos_for_frontend();
     }
 
     /**
