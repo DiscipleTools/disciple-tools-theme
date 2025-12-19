@@ -645,6 +645,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 case 'textarea':
                     DT_Components::render_textarea( $field_key, $fields, $post, $params );
                     break;
+                case 'boolean':
+                    DT_Components::render_toggle( $field_key, $fields, $post, $params );
+                    break;
                 case 'location_meta':
                     DT_Components::render_location_meta( $field_key, $fields, $post, $params );
                     break;
