@@ -103,7 +103,7 @@ class Disciple_Tools
          * Prepare variables
          */
         $this->token = 'disciple_tools';
-        $this->version = '1.76.1';
+        $this->version = '1.76.3';
 
         $this->theme_url = get_template_directory_uri() . '/';
         $this->theme_path = get_template_directory() . '/';
@@ -157,6 +157,11 @@ class Disciple_Tools
         require_once( 'dt-reports/magic-url-endpoints.php' );
         require_once( 'dt-reports/magic-url-setup.php' );
         require_once( 'dt-reports/magic-url-bulk-send.php' );
+
+        /**
+         * dt-apps - Home Screen Magic Link App
+         */
+        require_once( 'dt-apps/dt-home/dt-home-loader.php' );
 
 
         /**
