@@ -426,9 +426,12 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $site_options['update_required']['enabled'] = isset( $_POST['triggers_enabled'] );
 
             // Capture updated trigger options.
-            if ( isset( $_POST['update_needed_triggers_options'] ) ) {
+            if ( isset( $_POST['update_needed_triggers_options'] ) && !empty( $_POST['update_needed_triggers_options'] ) ) {
                 // phpcs:ignore
-                $site_options['update_required']['options'] = dt_recursive_sanitize_array( json_decode( wp_unslash( $_POST['update_needed_triggers_options'] ), true ) );
+                $decoded_options = json_decode( wp_unslash( $_POST['update_needed_triggers_options'] ), true );
+                if ( is_array( $decoded_options ) ) {
+                    $site_options['update_required']['options'] = dt_recursive_sanitize_array( $decoded_options );
+                }
             }
 
             update_option( 'dt_site_options', $site_options, true );
