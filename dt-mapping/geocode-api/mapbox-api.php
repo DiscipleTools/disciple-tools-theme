@@ -332,6 +332,36 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             }
         }
 
+        public static function load_mapbox_search_widget_users() {
+            if ( ! class_exists( 'Disciple_Tools_Users' ) ) {
+                return;
+            }
+            if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox-users-search-widget.js' ) ) {
+
+                wp_enqueue_script( 'mapbox-search-widget', trailingslashit( get_stylesheet_directory_uri() ) . 'dt-mapping/geocode-api/mapbox-users-search-widget.js', [ 'jquery', 'mapbox-gl', 'shared-functions' ], filemtime( get_template_directory() . '/dt-mapping/geocode-api/mapbox-users-search-widget.js' ), true );
+                wp_localize_script(
+                    'mapbox-search-widget', 'dtMapbox', array(
+                        'post_type' => 'user',
+                        'user_id' => get_current_user_id(),
+                        'user_location' => Disciple_Tools_Users::get_user_location( get_current_user_id() ),
+                        'map_key' => self::get_key(),
+                        'google_map_key' => ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ) ? Disciple_Tools_Google_Geocode_API::get_key() : false,
+                        'spinner_url' => get_stylesheet_directory_uri() . '/spinner.svg',
+                        'theme_uri' => get_stylesheet_directory_uri(),
+                        'translations' => array(
+                            'add' => __( 'add', 'disciple_tools' )
+                        )
+                    )
+                );
+                add_action( 'wp_head', [ 'DT_Mapbox_API', 'mapbox_search_widget_css' ] );
+
+                // load Google Geocoder if key is present.
+                if ( Disciple_Tools_Google_Geocode_API::get_key() ){
+                    Disciple_Tools_Google_Geocode_API::load_google_geocoding_scripts();
+                }
+            }
+        }
+
         public static function mapbox_search_widget_css() {
             /* Added these few style classes inline vers css file. */
             ?>
