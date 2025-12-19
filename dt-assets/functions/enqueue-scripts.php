@@ -241,10 +241,6 @@ function dt_site_scripts() {
                 ]
             ]);
 
-            if ( DT_Mapbox_API::get_key() ) {
-                DT_Mapbox_API::load_mapbox_search_widget();
-            }
-
             dt_theme_enqueue_script( 'dt-record-history', 'dt-assets/js/record-history.js', [
                 'jquery',
                 'lodash',
@@ -382,8 +378,6 @@ function dt_site_scripts() {
             'default_icon' => apply_filters( 'dt_record_icon', null, $post_type, null ),
         ) );
         if ( DT_Mapbox_API::get_key() ){
-            DT_Mapbox_API::load_mapbox_search_widget();
-            $dependencies[] = 'mapbox-search-widget';
             $dependencies[] = 'mapbox-gl';
         }
     }
@@ -396,8 +390,6 @@ function dt_site_scripts() {
         ];
         $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){
-            DT_Mapbox_API::load_mapbox_search_widget();
-            $dependencies[] = 'mapbox-search-widget';
             $dependencies[] = 'mapbox-gl';
         }
     }
