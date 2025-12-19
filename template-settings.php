@@ -36,6 +36,7 @@ $contact_fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
  */
 $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
+$user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
 ?>
 
 <?php get_header(); ?>
@@ -337,28 +338,21 @@ $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
                             <!-- Locations -->
                             <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
-                                <strong><?php esc_html_e( 'Locations you are willing to be responsible for', 'disciple_tools' ) ?><a class="button clear float-right" id="new-mapbox-search"><?php esc_html_e( 'add', 'disciple_tools' ) ?></a></strong>
-                                <div id="mapbox-wrapper"></div>
+                                <?php DT_Components::render_location_meta( 'location_grid_meta', [
+                                    'location_grid_meta' => [
+                                        'name' => __( 'Locations you are willing to be responsible for', 'disciple_tools' ),
+                                        'type'        => 'location_meta',
+                                        'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
+                                    ]
+                                ], $user_location ) ?>
                             <?php else : ?>
-                                <div class="section-subheader cell">
-                                    <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/location.svg' ?>">
-                                    <?php esc_html_e( 'Locations you are willing to be responsible for', 'disciple_tools' ) ?>
-                                </div>
-                                <div class="location_grid">
-                                    <var id="location_grid-result-container" class="result-container"></var>
-                                    <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
-                                        <div class="typeahead__container">
-                                            <div class="typeahead__field">
-                                                <span class="typeahead__query">
-                                                    <input class="js-typeahead-location_grid input-height"
-                                                           name="location_grid[query]"
-                                                           placeholder="<?php esc_html_e( 'Search Locations', 'disciple_tools' ) ?>"
-                                                           autocomplete="off">
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php DT_Components::render_location( 'location_grid', [
+                                    'location_grid' => [
+                                        'name' => __( 'Locations you are willing to be responsible for', 'disciple_tools' ),
+                                        'type'        => 'location',
+                                        'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
+                                    ]
+                                ], $user_location ) ?>
                             <?php endif; ?>
 
 
