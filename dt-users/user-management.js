@@ -5,6 +5,13 @@ jQuery(document).ready(function ($) {
   );
 
   window.open_user_modal = (user_id) => {
+    const componentService = new window.DtWebComponents.ComponentService(
+      'users',
+      window.current_user_lookup,
+      window.wpApiShare.nonce,
+    );
+    componentService.attachLoadEvents();
+
     // Reset email password button.
     let button_icon = $('#reset_user_pwd_email_icon');
     button_icon.removeClass('active');
@@ -97,17 +104,21 @@ jQuery(document).ready(function ($) {
       $('#magic_link_apps').show();
     }
 
-    //clear the locations typeahead of previous values when the modal is opened
-    let typeahead = window.Typeahead['.js-typeahead-location_grid'];
-    if (typeahead) {
-      typeahead.items = [];
-      typeahead.comparedItems = [];
-      typeahead.label.container.empty();
-      typeahead.adjustInputSize();
+    const userLocationsMeta = document.getElementById('location_grid_meta');
+    if (userLocationsMeta) {
+      userLocationsMeta.removeEventListener(
+        'change',
+        handleLocationChangeEvent,
+      );
+      userLocationsMeta.addEventListener('change', handleLocationChangeEvent);
+      userLocationsMeta.reset();
     }
-    const userLocations = document.getElementById('location_grid_meta');
-    userLocations.removeEventListener('change', handleLocationChangeEvent);
-    userLocations.addEventListener('change', handleLocationChangeEvent);
+    const userLocations = document.getElementById('location_grid');
+    if (userLocations) {
+      userLocations.removeEventListener('change', handleLocationChangeEvent);
+      userLocations.addEventListener('change', handleLocationChangeEvent);
+      userLocations.reset();
+    }
 
     /* details */
     window
@@ -126,11 +137,20 @@ jQuery(document).ready(function ($) {
           );
           $('#update_display_name').val(details.display_name);
           $('#user_email').html(details.user_email);
-          (details.languages || []).forEach((l) => {
-            $(`#${l}`)
-              .addClass('selected-select-button')
-              .removeClass('empty-select-button');
-          });
+          if (details.languages) {
+            const languages =
+              typeof details.languages === 'object' &&
+              !Array.isArray(details.languages)
+                ? Object.values(details.languages)
+                : details.languages;
+            if (Array.isArray(languages)) {
+              for (const language of languages) {
+                $(`#${language}`)
+                  .removeClass('empty-select-button')
+                  .addClass('selected-select-button');
+              }
+            }
+          }
 
           $('#gender').val(details.gender);
           $('#description').val(details.description);
@@ -146,9 +166,6 @@ jQuery(document).ready(function ($) {
           $('#workload_status').val(
             window.SHAREDFUNCTIONS.escapeHTML(details.workload_status),
           );
-          userLocations.reset();
-          userLocations.value = details.user_location.location_grid_meta;
-          userLocations.open = false;
 
           setup_user_roles(details);
 
@@ -173,32 +190,14 @@ jQuery(document).ready(function ($) {
           $('#update_needed_list').html(update_needed_list_html);
 
           //locations
-          if (typeof window.dtMapbox !== 'undefined') {
-            window.dtMapbox.post_type = 'users';
-            window.dtMapbox.user_id = user_id;
-            window.dtMapbox.user_location = details.user_location;
-            window.write_results_box();
-
-            $('#new-mapbox-search').on('click', function () {
-              window.dtMapbox.post_type = 'users';
-              window.dtMapbox.user_id = user_id;
-              window.dtMapbox.user_location = details.user_location;
-              window.write_input_widget();
-            });
-          } else {
-            //locations
-            if (typeahead) {
-              typeahead.items = [];
-              typeahead.comparedItems = [];
-              typeahead.label.container.empty();
-              typeahead.adjustInputSize();
-            }
-            (details.user_location.location_grid || []).forEach((location) => {
-              typeahead.addMultiselectItemLayout({
-                ID: location.id.toString(),
-                name: location.label,
-              });
-            });
+          if (userLocationsMeta) {
+            userLocationsMeta.reset();
+            userLocationsMeta.value = details.user_location.location_grid_meta;
+            userLocationsMeta.open = false;
+          } else if (userLocations) {
+            userLocations.reset();
+            userLocations.value = details.user_location.location_grid;
+            userLocations.open = false;
           }
         }
       })
@@ -766,121 +765,6 @@ jQuery(document).ready(function ($) {
     );
   };
 
-  /**
-   * Locations
-   */
-  if (
-    typeof window.dtMapbox === 'undefined' &&
-    $('.js-typeahead-location_grid').length
-  ) {
-    let typeaheadTotals = {};
-    if (!window.Typeahead['.js-typeahead-location_grid']) {
-      $.typeahead({
-        input: '.js-typeahead-location_grid',
-        minLength: 0,
-        accent: true,
-        searchOnFocus: true,
-        maxItem: 20,
-        dropdownFilter: [
-          {
-            key: 'group',
-            value: 'focus',
-            template: window.SHAREDFUNCTIONS.escapeHTML(
-              window.wpApiShare.translations.regions_of_focus,
-            ),
-            all: window.SHAREDFUNCTIONS.escapeHTML(
-              window.wpApiShare.translations.all_locations,
-            ),
-          },
-        ],
-        source: {
-          focus: {
-            display: 'name',
-            ajax: {
-              url:
-                window.wpApiShare.root +
-                'dt/v1/mapping_module/search_location_grid_by_name',
-              data: {
-                s: '{{query}}',
-                filter: function () {
-                  return window.lodash.get(
-                    window.Typeahead['.js-typeahead-location_grid'].filters
-                      .dropdown,
-                    'value',
-                    'all',
-                  );
-                },
-              },
-              beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-              },
-              callback: {
-                done: function (data) {
-                  if (typeof window.typeaheadTotals !== 'undefined') {
-                    window.typeaheadTotals.field = data.total;
-                  }
-                  return data.location_grid;
-                },
-              },
-            },
-          },
-        },
-        display: 'name',
-        templateValue: '{{name}}',
-        dynamic: true,
-        multiselect: {
-          matchOn: ['ID'],
-          data: function () {
-            return [];
-          },
-          callback: {
-            onCancel: function (node, item) {
-              update_user(
-                window.current_user_lookup,
-                'remove_location',
-                item.ID,
-              );
-            },
-          },
-        },
-        callback: {
-          onClick: function (node, a, item, event) {
-            update_user(window.current_user_lookup, 'add_location', item.ID);
-          },
-          onReady() {
-            this.filters.dropdown = {
-              key: 'group',
-              value: 'focus',
-              template: window.SHAREDFUNCTIONS.escapeHTML(
-                window.wpApiShare.translations.regions_of_focus,
-              ),
-            };
-            this.container
-              .removeClass('filter')
-              .find('.' + this.options.selector.filterButton)
-              .html(
-                window.SHAREDFUNCTIONS.escapeHTML(
-                  window.wpApiShare.translations.regions_of_focus,
-                ),
-              );
-          },
-          onResult: function (node, query, result, resultCount) {
-            resultCount = typeaheadTotals.location_grid;
-            let text = window.TYPEAHEADS.typeaheadHelpText(
-              resultCount,
-              query,
-              result,
-            );
-            $('#location_grid-result-container').html(text);
-          },
-          onHideLayout: function () {
-            $('#location_grid-result-container').html('');
-          },
-        },
-      });
-    }
-  }
-
   $('textarea.text-input, input.text-input').change(function () {
     const id = $(this).attr('id');
     const val = $(this).val();
@@ -1388,12 +1272,34 @@ function handleLocationChangeEvent(event) {
       type: 'POST',
       url: 'users/user_location',
       data: null,
+      base: 'dt/v1',
     };
-    if (component === 'dt-location-map') {
+    if (component === 'dt-location') {
+      request.base = 'user-management/v1';
+      request.url =
+        'user?user=' + encodeURIComponent(window.current_user_lookup);
+
       if (valueDiff.value2.length && !valueDiff.value1.length) {
         // added value
-        request.type = 'POST';
-        request.url = 'users/user_location';
+        request.data = {
+          add_location: valueDiff.value2[0].id,
+        };
+      } else if (valueDiff.value1.length && !valueDiff.value2.length) {
+        // removed value
+        request.data = {
+          remove_location: valueDiff.value1[0].id,
+        };
+      } else if (valueDiff.value2.length) {
+        const item = valueDiff.value2[0];
+        if (item.delete) {
+          request.data = { remove_location: item.id };
+        } else {
+          request.data = { add_location: item.id };
+        }
+      }
+    } else if (component === 'dt-location-map') {
+      if (valueDiff.value2.length && !valueDiff.value1.length) {
+        // added value
         request.data = {
           user_id: window.current_user_lookup,
           user_location: {
@@ -1403,7 +1309,6 @@ function handleLocationChangeEvent(event) {
       } else if (valueDiff.value1.length && !valueDiff.value2.length) {
         // removed value
         request.type = 'DELETE';
-        request.url = 'users/user_location';
         request.data = {
           user_id: window.current_user_lookup,
           user_location: {
@@ -1421,15 +1326,18 @@ function handleLocationChangeEvent(event) {
     event.target.setAttribute('loading', true);
 
     window
-      .makeRequest(request.type, request.url, request.data)
+      .makeRequest(request.type, request.url, request.data, request.base)
       .done((response) => {
         event.target.removeAttribute('loading');
         event.target.setAttribute('error', '');
         event.target.setAttribute('saved', true);
 
-        event.target.value = response.user_location.location_grid_meta;
+        if (field === 'location_grid_meta') {
+          event.target.value = response.user_location.location_grid_meta;
+        }
       })
-      .catch((err) => {
+      .catch((res) => {
+        const err = res.responseJSON;
         console.error(err);
         event.target.removeAttribute('loading');
         event.target.setAttribute('invalid', true); // this isn't hooked up yet

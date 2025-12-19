@@ -128,22 +128,12 @@ $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
                                                 ]
                                             ], null ) ?>
                                         <?php else : ?>
-                                            <h4><?php esc_html_e( 'Location Responsibility', 'disciple_tools' ) ?></h4>
-                                            <div class="location_grid">
-                                                <var id="location_grid-result-container" class="result-container"></var>
-                                                <div id="location_grid_t" name="form-location_grid" class="scrollable-typeahead typeahead-margin-when-active">
-                                                    <div class="typeahead__container">
-                                                        <div class="typeahead__field">
-                                                    <span class="typeahead__query">
-                                                        <input class="js-typeahead-location_grid input-height"
-                                                               name="location_grid[query]"
-                                                               placeholder="<?php esc_html_e( 'Search Locations', 'disciple_tools' ) ?>"
-                                                               autocomplete="off">
-                                                    </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <?php DT_Components::render_location( 'location_grid', [
+                                                'location_grid' => [
+                                                    'name' => __( 'Location Responsibility', 'disciple_tools' ),
+                                                    'type'        => 'location',
+                                                ]
+                                            ], null ) ?>
                                         <?php endif; ?>
 
                                         <h4 class="" style="margin-top:30px">

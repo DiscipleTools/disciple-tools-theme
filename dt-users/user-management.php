@@ -204,7 +204,11 @@ class DT_User_Management
 
             if ( DT_Mapbox_API::get_key() ){
                 DT_Mapbox_API::load_mapbox_header_scripts();
-                DT_Mapbox_API::load_mapbox_search_widget_users();
+
+                // load Google Geocoder if key is present.
+                if ( class_exists( 'Disciple_Tools_Google_Geocode_API' ) && Disciple_Tools_Google_Geocode_API::get_key() ){
+                    Disciple_Tools_Google_Geocode_API::load_google_geocoding_scripts();
+                }
             }
         }
 
