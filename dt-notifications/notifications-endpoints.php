@@ -239,15 +239,15 @@ class Disciple_Tools_Notifications_Endpoints
         if ( !function_exists( 'dt_has_unread_release' ) || !function_exists( 'dt_mark_release_notification_read' ) ) {
             return new WP_Error( 'function_not_found', 'Release notification functions not found', [ 'status' => 500 ] );
         }
-        
+
         $unread_release = dt_has_unread_release();
         if ( !$unread_release ) {
             return new WP_Error( 'no_unread_release', 'No unread release', [ 'status' => 404 ] );
         }
-        
+
         // Mark as read
         dt_mark_release_notification_read( $unread_release['version'] );
-        
+
         return [
             'success' => true,
             'version' => $unread_release['version'],
