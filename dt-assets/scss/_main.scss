@@ -391,6 +391,34 @@ html[dir="rtl"] #top-bar-menu {
     top: 0;
     margin-left:10px;
 }
+
+// Release notification red dot indicator
+.release-notification-dot {
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    width: 8px;
+    height: 8px;
+    background-color: #ff0000;
+    border-radius: 50%;
+    border: 1px solid #ffffff;
+    display: inline-block;
+    z-index: 10;
+}
+
+.notifications-menu-item {
+    position: relative;
+}
+
+// Release announcement item in notification dropdown
+.release-announcement-row {
+    background-color: #f0f8ff;
+    border-left: 3px solid #3e729a;
+    
+    &:hover {
+        background-color: #e0f0ff;
+    }
+}
 .top-bar .is-submenu-item {
     background-color: #3f729b;
     text-align: left;

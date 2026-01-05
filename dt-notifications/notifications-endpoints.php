@@ -107,6 +107,16 @@ class Disciple_Tools_Notifications_Endpoints
                 ],
             ]
         );
+
+        register_rest_route(
+            $namespace, '/release/open_modal', [
+                [
+                    'methods'  => WP_REST_Server::CREATABLE,
+                    'callback' => [ $this, 'open_release_modal' ],
+                    'permission_callback' => '__return_true',
+                ],
+            ]
+        );
     }
 
     /**
@@ -216,5 +226,31 @@ class Disciple_Tools_Notifications_Endpoints
         } else {
             return new WP_Error( 'notification_param_error', 'Please provide a valid array', [ 'status' => 400 ] );
         }
+    }
+
+    /**
+     * Open release modal and mark as read
+     *
+     * @access public
+     * @since  0.1.0
+     * @return array|WP_Error
+     */
+    public function open_release_modal() {
+        if ( !function_exists( 'dt_has_unread_release' ) || !function_exists( 'dt_mark_release_notification_read' ) ) {
+            return new WP_Error( 'function_not_found', 'Release notification functions not found', [ 'status' => 500 ] );
+        }
+        
+        $unread_release = dt_has_unread_release();
+        if ( !$unread_release ) {
+            return new WP_Error( 'no_unread_release', 'No unread release', [ 'status' => 404 ] );
+        }
+        
+        // Mark as read
+        dt_mark_release_notification_read( $unread_release['version'] );
+        
+        return [
+            'success' => true,
+            'version' => $unread_release['version'],
+        ];
     }
 }
