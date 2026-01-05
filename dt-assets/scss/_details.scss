@@ -999,6 +999,89 @@ select.color-select {
     }
 
 }
+
+// Fix for connection fields squishing on smaller screens (Issue #2812)
+// 
+// APPROACH: Use width constraints to prevent overlap after resize completes.
+// This allows dropdowns to be fully visible without clipping.
+//
+// IMPORTANT: Web components (dt-connection, dt-tags, dt-multi-select) should render
+// their dropdown menus outside the grid container to avoid clipping. The dropdown
+// should be rendered at the document body level or in a portal container, positioned
+// absolutely relative to the viewport or a higher-level container. This ensures:
+// 1. Dropdowns are not clipped by parent overflow constraints
+// 2. Dropdowns can extend beyond the grid cell boundaries
+// 3. Fields remain properly constrained within their cells
+//
+// TRADE-OFF: Brief overlaps may occur during active window resizing, but fields
+// will correctly position themselves once resize completes. This is acceptable
+// as it ensures dropdowns remain fully functional and visible.
+//
+#contact-status {
+    // Ensure section doesn't clip dropdowns - allows absolutely positioned dropdowns to escape
+    overflow: visible;
+    
+    .grid-x {
+        // No overflow clipping - allows dropdowns to escape while width constraints prevent overlap
+        // Ensure grid container itself doesn't exceed section width
+        max-width: 100%;
+        box-sizing: border-box;
+        // Create positioning context for absolutely positioned dropdowns
+        position: relative;
+        
+        .cell {
+            // Flex/grid constraints to prevent overflow
+            min-width: 0; // Critical: Allows flex items to shrink below their content size
+            max-width: 100%; // Prevents cells from exceeding container (accounts for grid-margin-x margins)
+            box-sizing: border-box; // Includes padding in width calculation
+            // Note: Don't set width: 100% here as it conflicts with Foundation's responsive grid classes
+            // Foundation handles width via classes like small-12 medium-4, we just constrain max-width
+            // Additional constraint: Ensure cell + margins don't exceed container
+            flex-shrink: 1; // Allow cells to shrink if needed to fit container
+            
+            // Layout optimization for resize performance
+            contain: layout; // Optimizes layout recalculation during resize, reduces flicker
+            
+            // Ensure web components respect cell width and don't overflow
+            // These constraints prevent overlap after resize completes
+            dt-connection,
+            dt-tags,
+            dt-multi-select {
+                display: block; // Ensures proper block-level behavior
+                min-width: 0; // Allows immediate shrinking during resize when space is constrained
+                width: 100% !important; // Force full width of cell - prevents overflow
+                max-width: 100% !important; // Never exceeds cell width - prevents horizontal overflow
+                box-sizing: border-box; // Includes padding/border in width calculation
+                // Create positioning context for dropdown
+                position: relative;
+                z-index: 1;
+                // Note: Web component's internal .field-container already handles text overflow
+                // with text-overflow: ellipsis, so no additional overflow clipping needed
+                //
+                // WEB COMPONENT UPDATE REQUIRED:
+                // The dropdown menu (.option-list) should be rendered outside this grid container
+                // to avoid clipping. Consider:
+                // - Rendering dropdown at document.body level
+                // - Using a portal/teleport pattern
+                // - Positioning dropdown relative to viewport or a higher-level container
+                // - Calculating position based on the input field's getBoundingClientRect()
+            }
+        }
+    }
+    
+    // Additional responsive handling for very small screens
+    // Ensures fields take full width on mobile to prevent any overlap
+    @media screen and (max-width : #{map-get($breakpoints, medium)}) {
+        .grid-x {
+            .cell {
+                flex-basis: 100% !important; // More reliable than width during flex resize
+                flex: 0 0 100% !important; // Prevents flex shrinking/growing issues during resize
+                width: 100% !important; // Force full width on small screens
+            }
+        }
+    }
+}
+
 .single-template .section-body {
     gap: 0.8rem;
 }
