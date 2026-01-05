@@ -91,6 +91,7 @@
             &.show-actions {
                 grid-template-columns: 0fr 3fr 3fr;
                 margin-inline: calc(var(--grid-gap) * -1) 0;
+                grid-template-rows: 1fr;
 
                 #list-filters {
                     & > * { opacity: 0; display: none; }
