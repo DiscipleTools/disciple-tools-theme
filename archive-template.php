@@ -26,7 +26,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
             'disable_color' => true,
         ]
     ];
-    //comment
+    //commen
 
     get_header();
 
