@@ -506,10 +506,8 @@ msgid "Name of the Record"
 msgstr "Nom de la fiche"
 
 #: archive-template.php:941
-#, fuzzy
-#| msgid "Message placeholders"
 msgid "Message Placeholder Help"
-msgstr "Espaces réservés du message"
+msgstr "Aide sur les espaces réservés"
 
 #: archive-template.php:984 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
@@ -804,25 +802,19 @@ msgstr "%3$s et %1$s ont réagi à l'émoticône %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:189
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr ""
+msgstr "Sélectionnez la langue parlée et cliquez sur « Démarrer l'enregistrement » pour commencer."
 
 #: dt-assets/functions/enqueue-scripts.php:190
-#, fuzzy
-#| msgid "Create Record"
 msgid "Click \"Start Recording\" to begin."
-msgstr "Créer une fiche"
+msgstr "Cliquez sur « Démarrer l'enregistrement » pour commencer."
 
 #: dt-assets/functions/enqueue-scripts.php:191
-#, fuzzy
-#| msgid "Unable to upload, please try again"
 msgid "Voice recording upload failed. Please try again."
-msgstr "Impossible de télécharger, veuillez réessayer"
+msgstr "Échec du téléversement de l'enregistrement vocal. Veuillez réessayer."
 
 #: dt-assets/functions/enqueue-scripts.php:192
-#, fuzzy
-#| msgid "No Records Available"
 msgid "No recording available to upload."
-msgstr "Aucune fiche disponible"
+msgstr "Aucun enregistrement disponible à téléverser."
 
 #: dt-assets/functions/enqueue-scripts.php:225
 msgid "Mark as complete"
@@ -1181,46 +1173,36 @@ msgid "D.T Forum"
 msgstr "Forum D.T"
 
 #: dt-assets/parts/loop-activity-comment.php:84
-#, fuzzy
-#| msgid "New Comments"
 msgid "Add Image Comment"
-msgstr "Nouveaux commentaires"
+msgstr "Ajouter un commentaire avec image"
 
 #: dt-assets/parts/loop-activity-comment.php:97
-#, fuzzy
-#| msgid "Records changes"
 msgid "Record Voice Message"
-msgstr "Changements de fiches"
+msgstr "Enregistrer un message vocal"
 
 #: dt-assets/parts/loop-activity-comment.php:102
 msgid "Submit comment"
 msgstr "Envoyer un commentaire"
 
 #: dt-assets/parts/loop-activity-comment.php:111
-#, fuzzy
-#| msgid "Next record"
 msgid "Ready to record"
-msgstr "Fiche suivante"
+msgstr "Prêt à enregistrer"
 
 #: dt-assets/parts/loop-activity-comment.php:129
-#, fuzzy
-#| msgid "Create Record"
 msgid "Start Recording"
-msgstr "Créer une fiche"
+msgstr "Démarrer l'enregistrement"
 
 #: dt-assets/parts/loop-activity-comment.php:132
 msgid "Stop Recording"
-msgstr ""
+msgstr "Arrêter l'enregistrement"
 
 #: dt-assets/parts/loop-activity-comment.php:135
 msgid "Play Recording"
-msgstr ""
+msgstr "Lire l'enregistrement"
 
 #: dt-assets/parts/loop-activity-comment.php:138
-#, fuzzy
-#| msgid "Create Record"
 msgid "Save Recording"
-msgstr "Créer une fiche"
+msgstr "Enregistrer l'enregistrement"
 
 #: dt-assets/parts/loop-activity-comment.php:158
 msgid "Showing:"
@@ -2703,7 +2685,7 @@ msgstr "Par qui ce contact a-t-il été baptisé et quand ?"
 
 #: dt-contacts/module-coaching.php:46
 msgid "Is Coaching"
-msgstr "Entraine d'autres"
+msgstr "Accompagne d'autres"
 
 #: dt-contacts/module-coaching.php:47
 msgctxt "Optional Documentation"
@@ -2712,7 +2694,7 @@ msgstr "Qui ce contact encadre"
 
 #: dt-contacts/module-coaching.php:56
 msgid "Coached by"
-msgstr "Entraîné par"
+msgstr "Accompagné par"
 
 #: dt-contacts/module-coaching.php:57
 msgctxt "Optional Documentation"
@@ -2722,7 +2704,7 @@ msgstr "Qui encadre ce contact"
 #: dt-contacts/module-coaching.php:94 dt-contacts/module-coaching.php:104
 #: dt-contacts/module-coaching.php:114 dt-contacts/module-coaching.php:115
 msgid "Coached by me"
-msgstr "Entrainé par moi"
+msgstr "Accompagné par moi"
 
 #: dt-contacts/module-faith.php:43 dt-metrics/combined/site-links.php:80
 #: dt-metrics/combined/site-links.php:83
@@ -2786,7 +2768,7 @@ msgstr "Croyant"
 
 #: dt-contacts/module-faith.php:109
 msgid "Leader"
-msgstr "Leadeur"
+msgstr "Dirigeant"
 
 #: dt-contacts/user-module.php:42
 msgid "Corresponds to user"
@@ -3223,7 +3205,7 @@ msgstr ""
 
 #: dt-groups/base-setup.php:146
 msgid "Group Coach / Church Planter"
-msgstr "Entraîneur de groupe / planteur d'église"
+msgstr "Accompagnateur de groupe / planteur d'église"
 
 #: dt-groups/base-setup.php:147
 msgctxt "Optional Documentation"
@@ -3232,9 +3214,9 @@ msgid ""
 "assigned to a group while multiple people can be coaches / church planters "
 "of this group."
 msgstr ""
-"La personne qui a planté et / ou coache ce groupe. Une seule personne peut "
+"La personne qui a planté et / ou accompagne ce groupe. Une seule personne peut "
 "être affectée à un groupe tandis que plusieurs personnes peuvent être "
-"entraîneurs / planteurs d'églises de ce groupe."
+"accompagnateurs / planteurs d'églises de ce groupe."
 
 #: dt-groups/base-setup.php:159
 msgid "Group Type"
@@ -3350,7 +3332,7 @@ msgstr "Le groupe loue."
 
 #: dt-groups/base-setup.php:231
 msgid "Sharing the Gospel"
-msgstr "Partage de l'Evangile"
+msgstr "Partage de l'Évangile"
 
 #: dt-groups/base-setup.php:232
 msgctxt "Optional Documentation"
@@ -3448,7 +3430,7 @@ msgstr "Un groupe qui a fondé ce groupe."
 
 #: dt-groups/base-setup.php:328
 msgid "Peer Group"
-msgstr "Groupe Proche"
+msgstr "Groupe pair"
 
 #: dt-groups/base-setup.php:329
 msgctxt "Optional Documentation"
@@ -3462,7 +3444,7 @@ msgstr ""
 
 #: dt-groups/base-setup.php:340
 msgid "Child Group"
-msgstr "Groupe enfants"
+msgstr "Groupe enfant"
 
 #: dt-groups/base-setup.php:341
 msgctxt "Optional Documentation"
@@ -3525,7 +3507,7 @@ msgstr "Chef de Groupe"
 
 #: dt-groups/base-setup.php:448
 msgid "Coach of Group"
-msgstr "Entraîneur de groupe"
+msgstr "Accompagnateur de groupe"
 
 #: dt-groups/base-setup.php:560
 msgid "Create"
@@ -4791,7 +4773,7 @@ msgstr "Entaîne %s"
 #, php-format
 msgctxt "Coached by contact1"
 msgid "Coached by %s"
-msgstr "Entraîné par %s"
+msgstr "Accompagné par %s"
 
 #: dt-posts/posts.php:301
 #, php-format
@@ -5248,14 +5230,12 @@ msgid "Reset"
 msgstr "Réinitialiser"
 
 #: dt-reports/magic-url-setup.php:526
-#, fuzzy
-#| msgid "Reset"
 msgid "Reset link"
-msgstr "Réinitialiser"
+msgstr "Réinitialiser le lien"
 
 #: dt-reports/magic-url-setup.php:528
 msgid "This app is currently disabled."
-msgstr ""
+msgstr "Cette application est actuellement désactivée."
 
 #: dt-reports/reports.php:160
 msgid "Added new report"
