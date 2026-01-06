@@ -33,7 +33,7 @@
         > .cell {
           flex: 1 1 200px;
           min-width: 200px;
-          overflow: clip;
+          overflow-x: clip;
 
           &.medium-12 {
             flex: 1 1 100%;
