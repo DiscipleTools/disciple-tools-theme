@@ -167,11 +167,6 @@ function dt_release_modal() {
             jQuery( '#' + desiredVisibleTabName ).removeClass('dt-hide-content');
         });
 
-        // Add red dot indicator to bell icon (only if it doesn't already exist)
-        if ( jQuery('.notifications-menu-item .release-notification-dot').length === 0 ) {
-            jQuery('.notifications-menu-item').append('<span class="release-notification-dot"></span>');
-        }
-
         // Store release version for use in notifications.js
         window.dtReleaseNotification = {
             version: '<?php echo esc_js( $show_notification_for_theme_version ); ?>',

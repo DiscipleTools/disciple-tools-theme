@@ -82,34 +82,13 @@ const notification_group_header = (record_title) => `
 </div>
 `;
 
-const release_notification_template = (version) => {
-  return `
-    <div class="cell release-notification-item" id="release-notification-item">
-      <div class="grid-x grid-padding-x grid-padding-y bottom-border notification-row unread-notification-row release-announcement-row">
-        <div class="auto cell">
-          <strong>${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiNotifications?.translations?.['release-announcement'] || 'Release Announcement!')}</strong><br>
-          <span>${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiNotifications?.translations?.['new-version-available'] || 'A new version of Disciple.Tools is available')} - ${window.SHAREDFUNCTIONS.escapeHTML(version)}</span>
-        </div>
-        <div class="small-2 medium-1 cell padding-5 grid-x align-center align-middle" style="padding-right: 2rem;">
-          <button class="button small release-notification-button" style="border-radius:100px; margin: 0;" onclick="open_release_modal()">
-            ${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiNotifications?.translations?.['view'] || 'View')}
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-};
-
 function open_release_modal() {
   return window
     .makeRequest('post', 'release/open_modal')
     .done((data) => {
       if (data && data.success !== false) {
-        // Remove red dot indicator
-        jQuery('.release-notification-dot').remove();
-
-        // Remove release notification item from dropdown
-        jQuery('#release-notification-item').remove();
+        // Remove release notification icon from navbar
+        jQuery('.release-notification-nav-item').remove();
 
         // Update the global flag
         if (window.dtReleaseNotification) {
@@ -220,18 +199,6 @@ function get_notifications(all, reset, dropdown = false, limit = 20) {
     .done((data) => {
       if (reset) {
         jQueryElements.notificationList.empty();
-
-        // Prepend release announcement item if there's an unread release (only in dropdown)
-        if (
-          dropdown &&
-          window.dtReleaseNotification &&
-          window.dtReleaseNotification.hasUnread
-        ) {
-          const releaseItem = release_notification_template(
-            window.dtReleaseNotification.version,
-          );
-          jQueryElements.notificationList.prepend(releaseItem);
-        }
       }
 
       if (data) {
@@ -265,16 +232,9 @@ function get_notifications(all, reset, dropdown = false, limit = 20) {
         (all === false && (new_offset === 0 || !new_offset))
       ) {
         // determines if this is the first query (offset 0) and there is nothing returned.
-        // Only show empty message if there's no release notification either
-        if (
-          !dropdown ||
-          !window.dtReleaseNotification ||
-          !window.dtReleaseNotification.hasUnread
-        ) {
-          jQueryElements.notificationList.html(
-            `<div class="cell center empty-notification-message">${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiNotifications.translations['no-notifications'])}</div>`,
-          );
-        }
+        jQueryElements.notificationList.html(
+          `<div class="cell center empty-notification-message">${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiNotifications.translations['no-notifications'])}</div>`,
+        );
         jQueryElements.nextAll && jQueryElements.nextAll.hide();
         jQueryElements.nextNew && jQueryElements.nextNew.hide();
       } else {
