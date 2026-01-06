@@ -52,13 +52,9 @@ class DT_Home_Apps {
      * Called on init hook to handle filter timing
      */
     public function on_init() {
-        // This is where we can safely apply filters after all classes are loaded
+        // This is where we can safely load apps after all classes are loaded
         $this->load_magic_link_apps();
         $this->load_home_apps();
-
-        // Register filter hooks for external code
-        add_filter( 'dt_home_screen_apps', [ $this, 'filter_home_screen_apps' ] );
-        add_filter( 'dt_home_screen_links', [ $this, 'filter_home_screen_links' ] );
     }
 
     /**
@@ -705,8 +701,11 @@ class DT_Home_Apps {
 
     /**
      * Get apps for frontend display
+     *
+     * @param string|null $type Optional. Filter by app type: 'app', 'link', or null for all apps.
+     * @return array Array of apps for frontend display
      */
-    public function get_apps_for_frontend() {
+    public function get_apps_for_frontend( $type = null ) {
         $apps = $this->get_enabled_apps();
 
         // Enrich coded magic-link app urls.
@@ -767,6 +766,16 @@ class DT_Home_Apps {
             $enriched_apps[] = $app;
         }
 
+        // If type is specified, filter by type
+        if ( $type !== null ) {
+            $type_normalized = strtolower( trim( $type ) );
+            if ( $type_normalized === 'app' || $type_normalized === 'link' ) {
+                $enriched_apps = array_filter( $enriched_apps, function( $app ) use ( $type_normalized ) {
+                    return isset( $app['type'] ) && strtolower( trim( $app['type'] ) ) === $type_normalized;
+                });
+            }
+        }
+
         // Sort by order
         usort( $enriched_apps, function( $a, $b ) {
             return $a['order'] <=> $b['order'];
@@ -799,38 +808,6 @@ class DT_Home_Apps {
 
         $roles_permissions = DT_Home_Roles_Permissions::instance();
         return $roles_permissions->filter_apps_by_permissions( $apps, $user_id );
-    }
-
-    /**
-     * Filter callback for dt_home_screen_apps
-     *
-     * Returns only apps of type 'app' when external code calls apply_filters('dt_home_screen_apps', []).
-     *
-     * @param array $default_value Default value passed to apply_filters
-     * @return array Filtered apps of type 'app'
-     */
-    public function filter_home_screen_apps( $default_value ) {
-        $apps = $this->get_apps_for_frontend();
-        $filtered = array_filter( $apps, function( $app ) {
-            return isset( $app['type'] ) && strtolower( trim( $app['type'] ) ) === 'app';
-        });
-        return $filtered;
-    }
-
-    /**
-     * Filter callback for dt_home_screen_links
-     *
-     * Returns only apps of type 'link' when external code calls apply_filters('dt_home_screen_links', []).
-     *
-     * @param array $default_value Default value passed to apply_filters
-     * @return array Filtered apps of type 'link'
-     */
-    public function filter_home_screen_links( $default_value ) {
-        $apps = $this->get_apps_for_frontend();
-        $filtered = array_filter( $apps, function( $app ) {
-            return isset( $app['type'] ) && strtolower( trim( $app['type'] ) ) === 'link';
-        });
-        return $filtered;
     }
 
     /**
