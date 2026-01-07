@@ -813,34 +813,34 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                             
                                             <!-- Scrollable options container -->
                                             <div class="bulk-edit-field-dropdown-options" role="listbox">
-                                                <?php 
+                                                <?php
                                                 // Build list of available fields (excluding already visible ones)
                                                 $already_visible = [ 'assigned_to', 'subassigned', 'overall_status', 'coaches', 'share', 'requires_update', 'follow', 'comments' ];
                                                 if ( $post_type == 'contacts' ) {
                                                     $already_visible[] = 'reason_paused';
                                                 }
-                                                
+
                                                 // Sort fields alphabetically by name
                                                 uasort( $field_options, function ( $a, $b ) {
                                                     return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
                                                 });
-                                                
+
                                                 $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
-                                                
+
                                                 $available_fields_count = 0;
                                                 foreach ( $field_options as $field_key => $field_values ):
                                                     if ( in_array( $field_key, $already_visible ) ) {
                                                         continue;
                                                     }
-                                                    if ( empty( $field_values['hidden'] ) 
-                                                         && isset( $field_values['type'] ) 
+                                                    if ( empty( $field_values['hidden'] )
+                                                         && isset( $field_values['type'] )
                                                          && in_array( $field_values['type'], $allowed_types )
                                                          && $field_values['type'] != 'communication_channel' ) :
                                                         $available_fields_count++;
                                                         $has_icon = !empty( $field_values['icon'] ) || !empty( $field_values['font-icon'] );
                                                         $option_classes = 'bulk-edit-field-search-option' . ( $has_icon ? '' : ' no-icon' );
                                                         ?>
-                                                        <div class="<?php echo esc_attr( $option_classes ); ?>" 
+                                                        <div class="<?php echo esc_attr( $option_classes ); ?>"
                                                              role="option"
                                                              tabindex="-1"
                                                              data-field-key="<?php echo esc_attr( $field_key ); ?>"
@@ -852,15 +852,15 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                                     <?php endif;
                                                 endforeach; ?>
                                             </div>
-                                            
+
                                             <!-- Field count display -->
                                             <div class="bulk-edit-field-dropdown-footer">
                                                 <span class="bulk-edit-field-count-text">
-                                                    <?php 
-                                                    echo sprintf( 
-                                                        esc_html( _n( '%d field available', '%d fields available', $available_fields_count, 'disciple_tools' ) ), 
-                                                        $available_fields_count 
-                                                    ); 
+                                                    <?php
+                                                    echo sprintf(
+                                                        esc_html( _n( '%d field available', '%d fields available', $available_fields_count, 'disciple_tools' ) ),
+                                                        esc_html( $available_fields_count )
+                                                    );
                                                     ?>
                                                 </span>
                                             </div>

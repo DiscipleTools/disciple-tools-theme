@@ -55,7 +55,7 @@ class DT_Components
 
         $hide_label = isset( $params['hide_label'] ) && $params['hide_label'] === true;
         $label_attr = $hide_label ? '' : 'label="' . esc_attr( $fields[$field_key]['name'] ) . '"';
-        
+
         $shared_attributes = '
               id="' . esc_attr( $display_field_id ) . '"
               name="' . esc_attr( $field_key ) . '"
