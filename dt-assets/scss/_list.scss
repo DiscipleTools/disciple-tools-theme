@@ -307,7 +307,8 @@ table.js-list {
     }
 
     tr {
-        -webkit-transform: translateZ(0px)
+        -webkit-transform: translateZ(0px);
+        transform: translateZ(0px);
     }
 
     td, th {
@@ -616,6 +617,349 @@ table.js-list {
 
     .confirm-filter-records {
         margin: 5px 0 5px 0;
+    }
+}
+
+/* === Bulk Edit Field Selection === */
+#bulk_edit_dynamic_fields_section {
+    margin-top: 20px;
+    padding-top: 20px;
+    // border-top: 1px solid #e0e0e0;
+}
+
+// Bulk Edit Field Selection Dropdown
+.bulk-edit-field-select-wrapper {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.bulk-edit-field-select-trigger {
+    width: 100%;
+    padding: 10px 12px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        border-color: #999;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: #0073aa;
+        box-shadow: 0 0 0 1px #0073aa;
+    }
+
+    &[aria-expanded="true"] {
+        border-color: #0073aa;
+        box-shadow: 0 0 0 1px #0073aa;
+
+        .bulk-edit-field-select-arrow {
+            transform: rotate(180deg);
+        }
+    }
+
+    .bulk-edit-field-select-text {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0; // Allow text truncation
+
+        .bulk-edit-field-select-placeholder {
+            color: #999;
+        }
+
+        .bulk-edit-field-select-selected {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+
+            .bulk-edit-field-icon {
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+
+                img, .dt-icon {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+
+            > span:last-child {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+    }
+
+    .bulk-edit-field-select-count {
+        color: #666;
+        font-size: 12px;
+        margin-left: 8px;
+        flex-shrink: 0;
+    }
+
+    .bulk-edit-field-select-arrow {
+        margin-left: 8px;
+        flex-shrink: 0;
+        transition: transform 0.2s;
+        transform: rotate(0deg);
+        font-size: 10px;
+        color: #666;
+    }
+}
+
+.bulk-edit-field-search-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    max-height: 300px;
+    overflow: hidden;
+
+    .bulk-edit-field-dropdown-search {
+        position: sticky;
+        top: 0;
+        background: white;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 8px;
+        z-index: 1;
+
+        .bulk-edit-field-dropdown-search-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 14px;
+
+            &:focus {
+                outline: none;
+                border-color: #0073aa;
+                box-shadow: 0 0 0 1px #0073aa;
+            }
+        }
+    }
+
+    .bulk-edit-field-dropdown-loading {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .bulk-edit-field-dropdown-options {
+        overflow-y: auto;
+        flex: 1;
+        max-height: calc(300px - 60px); // Account for search and footer
+    }
+
+    .bulk-edit-field-search-option {
+        padding: 10px 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 1px solid #f0f0f0;
+        transition: background-color 0.15s;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &:hover,
+        &.highlighted {
+            background-color: #f0f7fc;
+        }
+
+        &.highlighted {
+            outline: 2px solid #0073aa;
+            outline-offset: -2px;
+        }
+
+        &.no-icon {
+            padding-left: 12px;
+        }
+
+        img, .dt-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        > span {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        &:focus {
+            outline: 2px solid #0073aa;
+            outline-offset: -2px;
+        }
+    }
+
+    .bulk-edit-field-dropdown-footer {
+        position: sticky;
+        bottom: 0;
+        background: #f9f9f9;
+        border-top: 1px solid #e0e0e0;
+        padding: 8px 12px;
+        font-size: 12px;
+        color: #666;
+        text-align: center;
+    }
+
+    .bulk-edit-field-dropdown-no-results {
+        padding: 20px;
+        text-align: center;
+    }
+}
+
+.bulk-edit-field-wrapper {
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fafafa;
+}
+
+.bulk-edit-field-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    .section-subheader {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        flex: 1;
+    }
+}
+
+.bulk-edit-remove-field-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    color: #ff4444;
+    transition: color 0.2s, transform 0.2s;
+
+    i.mdi {
+        font-size: 24px;
+        line-height: 1;
+    }
+
+    &:hover {
+        color: #cc0000;
+        transform: scale(1.1);
+    }
+
+    &:focus {
+        outline: 2px solid #ff4444;
+        outline-offset: 2px;
+        border-radius: 2px;
+    }
+}
+
+.bulk-edit-field-input-container {
+    margin-top: 10px;
+    
+    // Hide labels from web components since we show our own header
+    dt-text label,
+    dt-textarea label,
+    dt-multi-select label,
+    dt-key-select label,
+    dt-date label,
+    dt-datetime label,
+    dt-number label,
+    dt-tags label,
+    dt-user-select label,
+    dt-connection label,
+    dt-location label {
+        display: none !important;
+    }
+}
+
+.bulk-edit-field-actions {
+    margin-top: 15px;
+}
+
+.bulk-edit-selected-fields-container {
+    margin-top: 15px;
+}
+
+.bulk-edit-field-loading {
+    padding: 10px;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}
+
+/* === Bulk Edit Action Buttons === */
+.bulk-edit-no-selection-message {
+    padding: 15px;
+    text-align: center;
+    color: #666;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.bulk-edit-action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    align-items: center;
+    
+    .button {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        
+        i.mdi {
+            font-size: 18px;
+            line-height: 1;
+        }
+    }
+    
+    .bulk-edit-delete-btn {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+        
+        &:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+        
+        &:focus {
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
+        }
     }
 }
 

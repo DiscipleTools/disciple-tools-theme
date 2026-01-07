@@ -94,6 +94,9 @@
     get_filter_counts(old_filters);
 
     reset_sorting_in_table_header(current_filter);
+
+    // Initialize bulk edit button visibility
+    bulk_edit_count();
   }
 
   function get_current_filter(urlCustomFilter, cachedFilter) {
@@ -1064,6 +1067,575 @@
       list_settings.post_type,
     );
     window.location.reload();
+  });
+
+  // ============================================
+  // Bulk Edit Field Selection Dropdown
+  // ============================================
+
+  // Store original dropdown content for restoration
+  let bulkEditOriginalDropdownContent = '';
+  if ($('.bulk-edit-field-dropdown-options').length) {
+    bulkEditOriginalDropdownContent = $(
+      '.bulk-edit-field-dropdown-options',
+    ).html();
+  }
+  let bulkEditSelectedFields = [];
+  let bulkEditHighlightedIndex = -1;
+  let bulkEditAvailableFieldsCount = 0;
+
+  // Initialize available fields count
+  function updateBulkEditFieldCount() {
+    const options = $('.bulk-edit-field-search-option:visible');
+    bulkEditAvailableFieldsCount = options.length;
+    const countText = $('.bulk-edit-field-count-text');
+    if (countText.length) {
+      const count = bulkEditAvailableFieldsCount;
+      const text =
+        count === 1
+          ? list_settings?.translations?.field_available || '1 field available'
+          : (
+              list_settings?.translations?.fields_available ||
+              `${count} fields available`
+            ).replace('{count}', count);
+      countText.text(text);
+    }
+  }
+
+  // Initialize field count on page load
+  if ($('.bulk-edit-field-dropdown-options').length) {
+    updateBulkEditFieldCount();
+  }
+
+  // Button click toggles dropdown
+  $('#bulk_edit_field_select_trigger').on('click', function (e) {
+    e.stopPropagation();
+    toggleBulkEditFieldDropdown();
+  });
+
+  // Search input filters options (only when dropdown is open)
+  $('#bulk_edit_field_search_input').on('input', function () {
+    const searchTerm = $(this).val().toLowerCase();
+    filterBulkEditFieldDropdown(searchTerm);
+    bulkEditHighlightedIndex = -1; // Reset highlight on search
+  });
+
+  // Focus search input when dropdown opens
+  function focusBulkEditSearchInput() {
+    setTimeout(() => {
+      $('#bulk_edit_field_search_input').focus();
+    }, 100);
+  }
+
+  function toggleBulkEditFieldDropdown() {
+    const dropdown = $('#bulk_edit_field_search_dropdown');
+    const trigger = $('#bulk_edit_field_select_trigger');
+    const isOpen = dropdown.is(':visible');
+
+    if (isOpen) {
+      closeBulkEditFieldDropdown();
+    } else {
+      openBulkEditFieldDropdown();
+    }
+  }
+
+  function openBulkEditFieldDropdown() {
+    const dropdown = $('#bulk_edit_field_search_dropdown');
+    const trigger = $('#bulk_edit_field_select_trigger');
+
+    // Show dropdown
+    dropdown.show();
+    trigger.attr('aria-expanded', 'true');
+
+    // Reset search and show all available fields
+    $('#bulk_edit_field_search_input').val('');
+    filterBulkEditFieldDropdown('');
+    updateBulkEditFieldCount();
+
+    // Focus search input
+    focusBulkEditSearchInput();
+  }
+
+  function closeBulkEditFieldDropdown() {
+    const dropdown = $('#bulk_edit_field_search_dropdown');
+    const trigger = $('#bulk_edit_field_select_trigger');
+
+    dropdown.hide();
+    trigger.attr('aria-expanded', 'false');
+    $('#bulk_edit_field_search_input').val('');
+    bulkEditHighlightedIndex = -1;
+    $('.bulk-edit-field-search-option').removeClass('highlighted');
+  }
+
+  function filterBulkEditFieldDropdown(searchTerm) {
+    const dropdown = $('#bulk_edit_field_search_dropdown');
+    const optionsContainer = $('.bulk-edit-field-dropdown-options');
+    const noResults = $('.bulk-edit-field-dropdown-no-results');
+    const selectedFieldKeys = bulkEditSelectedFields.map((f) => f.fieldKey);
+
+    // Restore original content if needed
+    if (!optionsContainer.find('.bulk-edit-field-search-option').length) {
+      optionsContainer.html(bulkEditOriginalDropdownContent);
+    }
+
+    let visibleCount = 0;
+    optionsContainer.find('.bulk-edit-field-search-option').each(function () {
+      const fieldKey = $(this).data('field-key');
+      const fieldName = $(this).data('field-name') || '';
+      const fieldDisplayName = $(this).find('span').text().toLowerCase();
+      const isSelected = selectedFieldKeys.includes(fieldKey);
+      const matchesSearch =
+        searchTerm.length === 0 ||
+        fieldName.includes(searchTerm) ||
+        fieldDisplayName.includes(searchTerm);
+
+      if (!isSelected && matchesSearch) {
+        $(this).show();
+        visibleCount++;
+      } else {
+        $(this).hide();
+      }
+    });
+
+    // Show/hide no results message
+    if (visibleCount === 0 && searchTerm.length > 0) {
+      noResults.show();
+      optionsContainer.hide();
+    } else {
+      noResults.hide();
+      optionsContainer.show();
+    }
+
+    updateBulkEditFieldCount();
+  }
+
+  // Keyboard navigation within dropdown
+  $('#bulk_edit_field_search_dropdown').on('keydown', function (e) {
+    const dropdown = $(this);
+    const options = dropdown.find('.bulk-edit-field-search-option:visible');
+    const searchInput = $('#bulk_edit_field_search_input');
+
+    // If focus is on search input, handle navigation
+    if (document.activeElement === searchInput[0]) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (options.length > 0) {
+          bulkEditHighlightedIndex = 0;
+          highlightBulkEditOption(options, bulkEditHighlightedIndex);
+          searchInput.blur();
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        closeBulkEditFieldDropdown();
+      }
+      return;
+    }
+
+    // Navigation when focus is on options
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        bulkEditHighlightedIndex = Math.min(
+          options.length - 1,
+          bulkEditHighlightedIndex + 1,
+        );
+        highlightBulkEditOption(options, bulkEditHighlightedIndex);
+        break;
+
+      case 'ArrowUp':
+        e.preventDefault();
+        bulkEditHighlightedIndex = Math.max(0, bulkEditHighlightedIndex - 1);
+        highlightBulkEditOption(options, bulkEditHighlightedIndex);
+        break;
+
+      case 'Enter':
+        e.preventDefault();
+        if (bulkEditHighlightedIndex >= 0 && options.length > 0) {
+          options.eq(bulkEditHighlightedIndex).click();
+        } else {
+          // If nothing highlighted, select first visible option
+          if (options.length > 0) {
+            options.first().click();
+          }
+        }
+        break;
+
+      case 'Escape':
+        e.preventDefault();
+        closeBulkEditFieldDropdown();
+        break;
+
+      case 'Home':
+        e.preventDefault();
+        bulkEditHighlightedIndex = 0;
+        highlightBulkEditOption(options, bulkEditHighlightedIndex);
+        break;
+
+      case 'End':
+        e.preventDefault();
+        bulkEditHighlightedIndex = options.length - 1;
+        highlightBulkEditOption(options, bulkEditHighlightedIndex);
+        break;
+    }
+  });
+
+  function highlightBulkEditOption(options, index) {
+    options.removeClass('highlighted');
+    if (index >= 0 && index < options.length) {
+      const option = options.eq(index);
+      option.addClass('highlighted');
+      option.attr('tabindex', '0');
+      option.focus();
+      scrollToHighlightedOption(option);
+    }
+  }
+
+  function scrollToHighlightedOption(option) {
+    const optionsContainer = $('.bulk-edit-field-dropdown-options');
+    const containerTop = optionsContainer.offset().top;
+    const containerBottom = containerTop + optionsContainer.height();
+    const optionTop = option.offset().top;
+    const optionBottom = optionTop + option.height();
+
+    if (optionBottom > containerBottom) {
+      optionsContainer.scrollTop(
+        optionsContainer.scrollTop() + (optionBottom - containerBottom) + 10,
+      );
+    } else if (optionTop < containerTop) {
+      optionsContainer.scrollTop(
+        optionsContainer.scrollTop() - (containerTop - optionTop) - 10,
+      );
+    }
+  }
+
+  // Click outside closes dropdown
+  $(document).on('click', function (e) {
+    if (!$(e.target).closest('.bulk-edit-field-select-wrapper').length) {
+      closeBulkEditFieldDropdown();
+    }
+  });
+
+  // Add field when clicking on dropdown option
+  $(document).on('click', '.bulk-edit-field-search-option', function () {
+    const fieldKey = $(this).data('field-key');
+    const fieldType = $(this).data('field-type');
+    const fieldName = $(this).find('span').text();
+    const fieldIcon = $(this).find('.dt-icon, img').first();
+
+    // Check if field is already selected
+    if (bulkEditSelectedFields.some((f) => f.fieldKey === fieldKey)) {
+      return;
+    }
+
+    // Add to selected fields array
+    bulkEditSelectedFields.push({
+      fieldKey: fieldKey,
+      fieldType: fieldType,
+      fieldName: fieldName,
+      cleared: false,
+    });
+
+    // Render the field
+    renderBulkEditField(fieldKey, fieldType, fieldName, fieldIcon);
+
+    // Update hidden input
+    updateBulkEditSelectedFieldsInput();
+
+    // Update button to show last selected field
+    updateBulkEditButtonText(fieldName, fieldIcon);
+
+    // Update update button state based on field selection
+    updateBulkEditButtonState();
+
+    // Clear search and close dropdown
+    $('#bulk_edit_field_search_input').val('');
+    closeBulkEditFieldDropdown();
+
+    // Refresh dropdown to hide selected field (if reopened)
+    filterBulkEditFieldDropdown('');
+  });
+
+  function updateBulkEditButtonText(fieldName, fieldIconElement) {
+    const trigger = $('#bulk_edit_field_select_trigger');
+    const placeholder = trigger.find('.bulk-edit-field-select-placeholder');
+    const selected = trigger.find('.bulk-edit-field-select-selected');
+    const count = trigger.find('.bulk-edit-field-select-count');
+
+    // Hide placeholder, show selected field
+    placeholder.hide();
+    selected.show();
+
+    // Update selected field text and icon
+    const iconContainer = selected.find('.bulk-edit-field-icon');
+    const textContainer = selected
+      .children('span')
+      .not('.bulk-edit-field-icon');
+    if (fieldIconElement && fieldIconElement.length) {
+      iconContainer.html(fieldIconElement.clone());
+    } else {
+      iconContainer.html('');
+    }
+    if (textContainer.length) {
+      textContainer.text(fieldName);
+    } else {
+      // Fallback: append text span if it doesn't exist
+      selected.append(`<span>${fieldName}</span>`);
+    }
+
+    // Update count
+    const remainingCount =
+      bulkEditAvailableFieldsCount - bulkEditSelectedFields.length;
+    if (remainingCount > 0) {
+      count.text(` (${remainingCount} available)`).show();
+    } else {
+      count.hide();
+    }
+  }
+
+  function renderBulkEditField(
+    fieldKey,
+    fieldType,
+    fieldName,
+    fieldIconElement,
+  ) {
+    const container = $('#bulk_edit_selected_fields_container');
+    const template = $('#bulk_edit_field_template').html();
+    const wrapper = $(template);
+
+    // Set field key
+    wrapper.attr('data-field-key', fieldKey);
+    wrapper.find('.bulk-edit-field-name').text(fieldName);
+    wrapper
+      .find('.bulk-edit-remove-field-btn')
+      .attr('data-field-key', fieldKey);
+    wrapper.find('.bulk-edit-clear-field-btn').attr('data-field-key', fieldKey);
+    wrapper
+      .find('.bulk-edit-restore-field-btn')
+      .attr('data-field-key', fieldKey);
+
+    // Set icon
+    const iconContainer = wrapper.find('.bulk-edit-field-icon');
+    if (fieldIconElement && fieldIconElement.length) {
+      iconContainer.html(fieldIconElement.clone());
+    } else {
+      iconContainer.html(
+        '<div style="width: 20px; display: inline-block;"></div>',
+      );
+    }
+
+    // Render field input based on type
+    const inputContainer = wrapper.find('.bulk-edit-field-input-container');
+    renderBulkEditFieldInput(fieldKey, fieldType, inputContainer);
+
+    // Show clear button for fields that support clearing
+    if (supportsFieldClearing(fieldType)) {
+      wrapper.find('.bulk-edit-clear-field-btn').show();
+    }
+
+    // Append to container
+    container.append(wrapper);
+  }
+
+  function renderBulkEditFieldInput(fieldKey, fieldType, container) {
+    // Show loading state
+    container.html(
+      '<div class="bulk-edit-field-loading"><div class="loading-spinner active" style="margin: 10px auto;"></div><p style="text-align: center; color: #999; margin-top: 5px;">Loading field input...</p></div>',
+    );
+
+    // Make AJAX call to get field HTML
+    $.ajax({
+      url: `${window.wpApiShare.root}dt-posts/v2/${list_settings.post_type}/render-field-html`,
+      method: 'GET',
+      data: {
+        field_key: fieldKey,
+        field_id_prefix: 'bulk_',
+      },
+      headers: {
+        'X-WP-Nonce': window.wpApiShare.nonce,
+      },
+      success: function (response) {
+        if (response && response.html) {
+          container.html(response.html);
+
+          // Initialize field-specific handlers
+          initializeBulkEditFieldHandlers(fieldKey, fieldType);
+        } else {
+          console.error('Field loading error: Invalid response', response);
+          container.html(
+            '<div class="alert-box alert">Error loading field input: Invalid response from server</div>',
+          );
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error('Field loading AJAX error:', {
+          status: status,
+          error: error,
+          responseText: xhr.responseText,
+          statusCode: xhr.status,
+        });
+
+        let errorMessage = 'Error loading field input';
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          errorMessage += ': ' + xhr.responseJSON.message;
+        } else if (xhr.status === 0) {
+          errorMessage += ': Network error or server unavailable';
+        } else if (xhr.status === 403) {
+          errorMessage += ': Permission denied';
+        } else if (xhr.status === 404) {
+          errorMessage += ': Field not found';
+        } else if (xhr.status === 400) {
+          errorMessage += ': Invalid request';
+        }
+
+        container.html(`<div class="alert-box alert">${errorMessage}</div>`);
+      },
+    });
+  }
+
+  function initializeBulkEditFieldHandlers(fieldKey, fieldType) {
+    // Initialize typeaheads, date pickers, etc. based on field type
+    // This will hook into existing field initialization code
+    // Most field types should auto-initialize, but we may need to trigger specific handlers
+    if (fieldType === 'user_select') {
+      // User select typeahead should auto-initialize via existing handlers
+    } else if (fieldType === 'connection') {
+      // Connection typeahead should auto-initialize
+    } else if (fieldType === 'date' || fieldType === 'datetime') {
+      // Date pickers should auto-initialize
+    }
+    // Add other field type initializations as needed
+  }
+
+  // Remove field when clicking X button
+  $(document).on('click', '.bulk-edit-remove-field-btn', function () {
+    const fieldKey = $(this).data('field-key');
+
+    // Remove from selected fields array
+    bulkEditSelectedFields = bulkEditSelectedFields.filter(
+      (f) => f.fieldKey !== fieldKey,
+    );
+
+    // Remove field wrapper from DOM
+    $(`.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`).remove();
+
+    // Update hidden input
+    updateBulkEditSelectedFieldsInput();
+
+    // Update button text to show last selected field or placeholder
+    updateBulkEditButtonAfterRemove();
+
+    // Update update button state based on field selection
+    updateBulkEditButtonState();
+
+    // Refresh dropdown to show the field again (if open)
+    if ($('#bulk_edit_field_search_dropdown').is(':visible')) {
+      const searchTerm = $('#bulk_edit_field_search_input').val().toLowerCase();
+      filterBulkEditFieldDropdown(searchTerm);
+    }
+  });
+
+  function updateBulkEditButtonAfterRemove() {
+    const trigger = $('#bulk_edit_field_select_trigger');
+    const placeholder = trigger.find('.bulk-edit-field-select-placeholder');
+    const selected = trigger.find('.bulk-edit-field-select-selected');
+    const count = trigger.find('.bulk-edit-field-select-count');
+
+    if (bulkEditSelectedFields.length === 0) {
+      // No fields selected, show placeholder
+      placeholder.show();
+      selected.hide();
+      count.hide();
+    } else {
+      // Show last selected field
+      const lastField =
+        bulkEditSelectedFields[bulkEditSelectedFields.length - 1];
+      const fieldOption = $(
+        `.bulk-edit-field-search-option[data-field-key="${lastField.fieldKey}"]`,
+      );
+      const fieldIcon = fieldOption.find('.dt-icon, img').first();
+      updateBulkEditButtonText(lastField.fieldName, fieldIcon);
+    }
+  }
+
+  function updateBulkEditSelectedFieldsInput() {
+    const fieldKeys = bulkEditSelectedFields.map((f) => f.fieldKey);
+    $('#bulk_edit_selected_fields_input').val(JSON.stringify(fieldKeys));
+  }
+
+  function supportsFieldClearing(fieldType) {
+    // Fields that support clearing/unsetting
+    const clearableTypes = [
+      'connection',
+      'multi_select',
+      'tags',
+      'user_select',
+      'date',
+      'datetime',
+      'location',
+      'location_meta',
+      'text',
+      'textarea',
+      'number',
+      'key_select',
+    ];
+    return clearableTypes.includes(fieldType);
+  }
+
+  // Clear/unset field value
+  $(document).on('click', '.bulk-edit-clear-field-btn', function () {
+    const fieldKey = $(this).data('field-key');
+    const fieldWrapper = $(
+      `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
+    );
+    const fieldData = bulkEditSelectedFields.find(
+      (f) => f.fieldKey === fieldKey,
+    );
+
+    if (!fieldData) return;
+
+    // Mark field as cleared
+    fieldData.cleared = true;
+
+    // Clear the input visually
+    const inputContainer = fieldWrapper.find(
+      '.bulk-edit-field-input-container',
+    );
+    inputContainer.html(
+      '<div class="alert-box secondary" style="margin: 0;">Field will be cleared/unset</div>',
+    );
+
+    // Hide clear button, show restore button
+    $(this).hide();
+    fieldWrapper.find('.bulk-edit-restore-field-btn').show();
+  });
+
+  // Restore field value (undo clear)
+  $(document).on('click', '.bulk-edit-restore-field-btn', function () {
+    const fieldKey = $(this).data('field-key');
+    const fieldWrapper = $(
+      `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
+    );
+    const fieldData = bulkEditSelectedFields.find(
+      (f) => f.fieldKey === fieldKey,
+    );
+
+    if (!fieldData) return;
+
+    // Remove cleared flag
+    fieldData.cleared = false;
+
+    // Re-render field input
+    const inputContainer = fieldWrapper.find(
+      '.bulk-edit-field-input-container',
+    );
+    renderBulkEditFieldInput(fieldKey, fieldData.fieldType, inputContainer);
+
+    // Show clear button, hide restore button
+    $(this).hide();
+    fieldWrapper.find('.bulk-edit-clear-field-btn').show();
+
+    // Update update button state (field is no longer cleared)
+    updateBulkEditButtonState();
   });
 
   archivedSwitch.on('click', function () {
@@ -2993,10 +3565,7 @@
     $('#records-table').toggleClass('bulk_edit_on');
   });
 
-  $('#bulk_edit_seeMore').on('click', function () {
-    $('#bulk_more').toggle();
-    $('#bulk_edit_seeMore').children().toggle();
-  });
+  // Old bulk_edit_seeMore handler removed - replaced with dynamic field selection
 
   function bulk_edit_checkbox_event() {
     $('tbody tr td.bulk_edit_checkbox').on('click', function (e) {
@@ -3136,6 +3705,43 @@
       updatePayload[key] = multiSelectUpdatePayload[key];
     });
 
+    // Process dynamically selected fields
+    if (
+      typeof bulkEditSelectedFields !== 'undefined' &&
+      bulkEditSelectedFields.length > 0
+    ) {
+      bulkEditSelectedFields.forEach(function (fieldData) {
+        const fieldKey = fieldData.fieldKey;
+        const fieldType = fieldData.fieldType;
+
+        // Skip if field is marked as cleared
+        if (fieldData.cleared) {
+          updatePayload[fieldKey] = getClearedFieldValue(fieldType);
+          return;
+        }
+
+        // Collect value from field input
+        const fieldWrapper = $(
+          `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
+        );
+        const fieldValue = collectFieldValue(fieldKey, fieldType, fieldWrapper);
+
+        if (fieldValue !== null && fieldValue !== undefined) {
+          // Handle multi-select fields specially
+          if (fieldType === 'multi_select' || fieldType === 'tags') {
+            if (!updatePayload[fieldKey]) {
+              updatePayload[fieldKey] = { values: [] };
+            }
+            if (fieldValue.values) {
+              updatePayload[fieldKey].values = fieldValue.values;
+            }
+          } else {
+            updatePayload[fieldKey] = fieldValue;
+          }
+        }
+      });
+    }
+
     shareInput.each(function () {
       sharePayload = $(this).data('bulk_key_share');
     });
@@ -3156,6 +3762,125 @@
     process(queue, 10, do_each, do_done, updatePayload, shares, commentPayload);
   }
 
+  function collectFieldValue(fieldKey, fieldType, fieldWrapper) {
+    // Collect value based on field type
+    const input = fieldWrapper.find(`#bulk_${fieldKey}`);
+
+    switch (fieldType) {
+      case 'text':
+      case 'textarea':
+      case 'number':
+        return input.val() || '';
+
+      case 'date':
+      case 'datetime':
+        return input.val() || null;
+
+      case 'key_select':
+        return input.val() || null;
+
+      case 'user_select': {
+        // Get from typeahead result container
+        const resultContainer = fieldWrapper.find(
+          `#bulk_${fieldKey}-result-container`,
+        );
+        const selected = resultContainer.data('selected');
+        if (selected && selected.id) {
+          return selected.id;
+        }
+        return null;
+      }
+
+      case 'connection': {
+        // Get from typeahead result container
+        const resultContainer = fieldWrapper.find(
+          `#bulk_${fieldKey}-result-container`,
+        );
+        const selected = resultContainer.data('selected') || [];
+        if (Array.isArray(selected) && selected.length > 0) {
+          return {
+            values: selected.map((v) => ({
+              value: typeof v === 'object' ? v.id || v.value : v,
+            })),
+          };
+        }
+        return null;
+      }
+
+      case 'multi_select':
+      case 'tags': {
+        // Get from multi-select component
+        const multiSelectData = fieldWrapper
+          .find(`#bulk_${fieldKey}`)
+          .data('bulk_key_' + fieldKey);
+        if (multiSelectData && multiSelectData.values) {
+          return multiSelectData;
+        }
+        return null;
+      }
+
+      case 'location':
+      case 'location_meta': {
+        // Get location data
+        const locationData = fieldWrapper
+          .find(`#bulk_${fieldKey}`)
+          .data('bulk_key_' + fieldKey);
+        return locationData || null;
+      }
+
+      default:
+        // Try to get from data attribute as fallback
+        const dataValue = fieldWrapper
+          .find(`#bulk_${fieldKey}`)
+          .data('bulk_key_' + fieldKey);
+        return dataValue || null;
+    }
+  }
+
+  function getClearedFieldValue(fieldType) {
+    // Return appropriate cleared value based on field type
+    switch (fieldType) {
+      case 'connection':
+      case 'tags':
+      case 'location':
+        // Return empty array - will clear all existing values
+        return { values: [] };
+
+      case 'multi_select':
+      case 'location_meta':
+        // Use force_values to clear all values
+        return { values: [], force_values: true };
+
+      case 'date':
+      case 'datetime':
+      case 'text':
+      case 'textarea':
+      case 'number':
+      case 'key_select':
+      case 'user_select':
+        // Return empty string to reset field value
+        return '';
+
+      default:
+        return null;
+    }
+  }
+
+  function updateBulkEditButtonState() {
+    const updateButton = $('#bulk_edit_submit');
+    const hasSelectedFields =
+      bulkEditSelectedFields && bulkEditSelectedFields.length > 0;
+    const hasSelectedRecords =
+      $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length > 0;
+
+    // Enable update button only if both records and fields are selected
+    if (hasSelectedRecords && hasSelectedFields) {
+      updateButton.prop('disabled', false);
+    } else {
+      updateButton.prop('disabled', true);
+    }
+  }
+
   function bulk_edit_count() {
     let bulk_edit_total_checked = $(
       '.bulk_edit_checkbox:not(#bulk_edit_master) input:checked',
@@ -3164,8 +3889,14 @@
     let bulk_edit_delete_submit_button_text = $(
       '.bulk_edit_delete_submit_text',
     );
+    let noSelectionMessage = $('#bulk_edit_no_selection_message');
+    let actionButtons = $('#bulk_edit_action_buttons');
 
     if (bulk_edit_total_checked == 0) {
+      // Hide buttons, show instruction message
+      noSelectionMessage.show();
+      actionButtons.hide();
+
       bulk_edit_submit_button_text.text(
         `${list_settings.translations.make_selections_below}`,
       );
@@ -3176,6 +3907,10 @@
         );
       }
     } else {
+      // Show buttons, hide instruction message
+      noSelectionMessage.hide();
+      actionButtons.show();
+
       bulk_edit_submit_button_text.each(function (index) {
         let pretext = $(this).data('pretext');
         let posttext = $(this).data('posttext');
@@ -3189,6 +3924,9 @@
           $(this).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`);
         });
       }
+
+      // Update update button state based on field selection
+      updateBulkEditButtonState();
     }
   }
 

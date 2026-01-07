@@ -53,10 +53,13 @@ class DT_Components
             $post_type = 'postType=' . esc_attr( $post['post_type'] );
         }
 
+        $hide_label = isset( $params['hide_label'] ) && $params['hide_label'] === true;
+        $label_attr = $hide_label ? '' : 'label="' . esc_attr( $fields[$field_key]['name'] ) . '"';
+        
         $shared_attributes = '
               id="' . esc_attr( $display_field_id ) . '"
               name="' . esc_attr( $field_key ) . '"
-              label="' . esc_attr( $fields[$field_key]['name'] ) . '"
+              ' . $label_attr . '
               ' . esc_html( $post_type ?? '' ) . '
               ' . esc_html( $icon ) . '
               ' . esc_html( $required_tag ) . '
