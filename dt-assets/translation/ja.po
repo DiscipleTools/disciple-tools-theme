@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2025-10-17T15:27:16+00:00\n"
+"POT-Creation-Date: 2025-12-02T12:46:53+00:00\n"
 "PO-Revision-Date: 2025-03-05 15:59+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Japanese <https://translate.disciple.tools/projects/disciple-"
@@ -71,7 +71,7 @@ msgstr "記録の所有者にアクセス申請が通知されます。続行し
 msgid "Submit Request"
 msgstr "申請を提出"
 
-#: 403.php:55 archive-template.php:1231
+#: 403.php:55 archive-template.php:1202
 #: dt-assets/parts/loop-activity-comment.php:141
 #: dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
@@ -87,9 +87,9 @@ msgstr "申請を提出"
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: 403.php:59 archive-template.php:523 archive-template.php:618
-#: archive-template.php:805 archive-template.php:1255
-#: dt-assets/functions/enqueue-scripts.php:461
+#: 403.php:59 archive-template.php:552 archive-template.php:627
+#: archive-template.php:814 archive-template.php:1226
+#: dt-assets/functions/enqueue-scripts.php:462
 #: dt-assets/parts/loop-activity-comment.php:225
 #: dt-assets/parts/loop-activity-comment.php:230
 #: dt-assets/parts/loop-activity-comment.php:273
@@ -138,17 +138,24 @@ msgstr "エピック404-見つかりません"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "探していたページが見つからなかったか、削除されました"
 
-#: archive-template.php:39
+#: archive-template.php:34 dt-assets/parts/loop-activity-comment.php:49
+#: dt-assets/parts/loop-activity-comment.php:166
+#: dt-assets/parts/loop-activity-comment.php:250
+#: dt-assets/parts/modals/modal-advanced-search.php:96
+msgid "Comments"
+msgstr "コメント"
+
+#: archive-template.php:53
 #, php-format
 msgctxt "Create New record"
 msgid "Create New %s"
 msgstr "新しい%sを作成する"
 
-#: archive-template.php:43
+#: archive-template.php:57
 msgid "Filters"
 msgstr "フィルター"
 
-#: archive-template.php:50 archive-template.php:153 archive-template.php:697
+#: archive-template.php:64 archive-template.php:136 archive-template.php:706
 #: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:828
 #: dt-core/utilities/dt-components.php:249 dt-posts/custom-post-type.php:20
 #: template-settings.php:399
@@ -157,110 +164,91 @@ msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "%sを検索"
 
-#: archive-template.php:51 archive-template.php:154
+#: archive-template.php:65 archive-template.php:137
 #: dt-mapping/geocode-api/mapbox-api.php:293
 msgid "Clear"
 msgstr "消去"
 
-#: archive-template.php:55 archive-template.php:56 archive-template.php:158
-#: archive-template.php:159 dt-assets/functions/menu.php:57
+#: archive-template.php:69 archive-template.php:70 archive-template.php:141
+#: archive-template.php:142 dt-assets/functions/menu.php:57
 #: dt-assets/parts/modals/modal-advanced-search.php:2
 msgid "Advanced Search"
 msgstr "高度な検索"
 
-#: archive-template.php:60 dt-assets/parts/loop-activity-comment.php:49
-#: dt-assets/parts/loop-activity-comment.php:166
-#: dt-assets/parts/loop-activity-comment.php:250
-#: dt-assets/parts/modals/modal-advanced-search.php:96
-msgid "Comments"
-msgstr "コメント"
-
-#: archive-template.php:77 archive-template.php:177
-#: dt-users/user-management.php:230
+#: archive-template.php:76 dt-users/user-management.php:230
 msgid "Search"
 msgstr "探す"
 
-#: archive-template.php:86 archive-template.php:182
+#: archive-template.php:85 archive-template.php:161
 msgid "Choose which fields to search"
 msgstr "検索する欄を選んでください"
 
-#: archive-template.php:95 archive-template.php:191
+#: archive-template.php:94 archive-template.php:170
 msgid "Search All Fields"
 msgstr "すべてのフィールドを検索"
 
-#: archive-template.php:105 archive-template.php:201
+#: archive-template.php:104 archive-template.php:180
 msgid "Communication Channels"
 msgstr "コミュニケーションチャンネル"
 
-#: archive-template.php:125 archive-template.php:221 archive-template.php:612
+#: archive-template.php:124 archive-template.php:200 archive-template.php:621
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "適用する"
 
-#: archive-template.php:126 archive-template.php:222 archive-template.php:613
+#: archive-template.php:125 archive-template.php:201 archive-template.php:622
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "デフォルトにリセット"
 
-#: archive-template.php:230
+#: archive-template.php:209
 #, fuzzy, php-format
 msgctxt "Contacts Filters"
 msgid "%s Filters"
 msgstr "％sフィルター"
 
-#: archive-template.php:241
+#: archive-template.php:220
 msgid "Create custom filter"
 msgstr "カスタムフィルターの作成"
 
-#: archive-template.php:248
-msgctxt "Split By"
-msgid "Split By"
-msgstr ""
-
-#: archive-template.php:310
-#, fuzzy
-#| msgid "No duplicates found."
-msgid "No results found"
-msgstr "重複は見つかりませんでした。"
-
-#: archive-template.php:315
+#: archive-template.php:227
 msgctxt "List Exports"
 msgid "List Exports"
 msgstr ""
 
-#: archive-template.php:327 archive-template.php:350
+#: archive-template.php:239 archive-template.php:262
 #, fuzzy
 #| msgid "List"
 msgid "CSV List"
 msgstr "リスト"
 
-#: archive-template.php:331 archive-template.php:354
+#: archive-template.php:243 archive-template.php:266
 msgid "BCC Email List"
 msgstr ""
 
-#: archive-template.php:332
+#: archive-template.php:244
 #, fuzzy
 #| msgid "Phone"
 msgid "Phone List"
 msgstr "電話"
 
-#: archive-template.php:337 archive-template.php:362
+#: archive-template.php:249 archive-template.php:274
 #, fuzzy
 #| msgid "List"
 msgid "Map List"
 msgstr "リスト"
 
-#: archive-template.php:346
+#: archive-template.php:258
 msgid "List Exports Help"
 msgstr ""
 
-#: archive-template.php:351
+#: archive-template.php:263
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
 
-#: archive-template.php:355
+#: archive-template.php:267
 msgid ""
 "Using the current filter, the available emails are grouped by 50 and can be "
 "launched into your default email client by group. Many email providers put a "
@@ -270,172 +258,192 @@ msgid ""
 "email should be handled through bulk email providers."
 msgstr ""
 
-#: archive-template.php:358
+#: archive-template.php:270
 #, fuzzy
 #| msgid "Member List"
 msgid "Phone Number List"
 msgstr "メンバーリスト"
 
-#: archive-template.php:359
+#: archive-template.php:271
 msgid ""
 "Using the current filter, this is intended for copy pasting a list of "
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
 
-#: archive-template.php:363
+#: archive-template.php:275
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
 
-#: archive-template.php:389
+#: archive-template.php:339
+#, fuzzy
+#| msgid "No duplicates found."
+msgid "No results found"
+msgstr "重複は見つかりませんでした。"
+
+#: archive-template.php:348
 #, fuzzy, php-format
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "％sリスト"
 
-#: archive-template.php:398
+#: archive-template.php:357
 msgid "Sort"
 msgstr "ソート"
 
-#: archive-template.php:403
+#: archive-template.php:362
 msgid "Newest"
 msgstr "最新"
 
-#: archive-template.php:408
+#: archive-template.php:367
 msgid "Oldest"
 msgstr "最古"
 
-#: archive-template.php:413
+#: archive-template.php:372
 msgid "Most recently modified"
 msgstr "最近変更された"
 
-#: archive-template.php:418
+#: archive-template.php:377
 msgid "Least recently modified"
 msgstr "最近変更されていない"
 
-#: archive-template.php:428 template-new-bulk-post.php:89
+#: archive-template.php:387 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "田畑"
 
-#: archive-template.php:435
+#: archive-template.php:394
 msgid "Bulk Edit"
 msgstr "一括編集"
 
-#: archive-template.php:442
+#: archive-template.php:401
 #, fuzzy
 #| msgid "Bulk Send App"
 msgid "Bulk Send Message"
 msgstr "一括送信アプリ"
 
-#: archive-template.php:476 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:435 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
 msgid "More"
 msgstr "より多い"
 
-#: archive-template.php:497
+#: archive-template.php:456
 #: dt-assets/parts/modals/modal-advanced-search.php:108
-#: dt-contacts/base-setup.php:324 dt-users/users.php:550
+#: dt-contacts/base-setup.php:324 dt-users/users.php:554
 msgid "Archived"
 msgstr "アーカイブ"
 
-#: archive-template.php:501
+#: archive-template.php:460
 #, fuzzy, php-format
 #| msgid "New %s"
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "新しい％s"
 
-#: archive-template.php:526
+#: archive-template.php:538
+msgid "Loading..."
+msgstr "読み込んでいます..."
+
+#: archive-template.php:543 dt-assets/functions/enqueue-scripts.php:431
+msgid "Load More"
+msgstr "もっと読み込む"
+
+#: archive-template.php:551
+#, fuzzy
+#| msgid "Locations"
+msgid "Actions"
+msgstr "場所"
+
+#: archive-template.php:563
 msgid "Choose which fields to display as columns in the list"
 msgstr "リストの列として表示するフィールドを選択します"
 
-#: archive-template.php:560
+#: archive-template.php:569
 #, fuzzy
 #| msgid "Hide fields"
 msgid "Add fields:"
 msgstr "入力欄を隠す"
 
-#: archive-template.php:563
+#: archive-template.php:572
 msgid "Search for fields to add..."
 msgstr ""
 
-#: archive-template.php:585
+#: archive-template.php:594
 #, fuzzy
 #| msgid "Updated fields"
 msgid "Enabled fields:"
 msgstr "更新されたフィールド"
 
-#: archive-template.php:589
+#: archive-template.php:598
 msgid "No fields selected"
 msgstr ""
 
-#: archive-template.php:622
+#: archive-template.php:631
 #, fuzzy, php-format
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr "更新するすべての％1 $をリストから選択し、以下で更新します"
 
-#: archive-template.php:640 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
 #: dt-core/global-functions.php:843
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "ユーザーの検索"
 
-#: archive-template.php:685
+#: archive-template.php:694
 msgid "Share with:"
 msgstr "と共有する："
 
-#: archive-template.php:705
+#: archive-template.php:714
 #, fuzzy
 #| msgctxt "message"
 #| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "％sと共有されていません"
 
-#: archive-template.php:717 dt-assets/functions/details-bar.php:199
+#: archive-template.php:726 dt-assets/functions/details-bar.php:199
 #: dt-posts/custom-post-type.php:217
 msgid "Follow"
 msgstr "フォローする"
 
-#: archive-template.php:722 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:731 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "コメントとアクティビティ"
 
-#: archive-template.php:727 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:736 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "ここにコメントやメモを書いてください"
 
-#: archive-template.php:735 dt-assets/parts/loop-activity-comment.php:59
+#: archive-template.php:744 dt-assets/parts/loop-activity-comment.php:59
 msgid "Type:"
 msgstr "タイプ："
 
-#: archive-template.php:755 dt-users/template-new-user.php:127
+#: archive-template.php:764 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "その他のオプションを見る"
 
-#: archive-template.php:756 dt-users/template-new-user.php:130
+#: archive-template.php:765 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "より少ないオプションを参照してください"
 
-#: archive-template.php:783 dt-assets/parts/loop-activity-comment.php:276
+#: archive-template.php:792 dt-assets/parts/loop-activity-comment.php:276
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "更新"
 
-#: archive-template.php:784 archive-template.php:989
-#: dt-assets/functions/enqueue-scripts.php:341
-#: dt-reports/magic-url-bulk-send.php:95
+#: archive-template.php:793 archive-template.php:997
+#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-reports/magic-url-bulk-send.php:94
 msgid "Make Selections Below"
 msgstr "以下から選択する"
 
-#: archive-template.php:792 dt-assets/functions/enqueue-scripts.php:183
+#: archive-template.php:801 dt-assets/functions/enqueue-scripts.php:183
 #: dt-assets/functions/enqueue-scripts.php:224
 #: dt-assets/functions/enqueue-scripts.php:289
 #: dt-assets/functions/enqueue-scripts.php:329
@@ -443,141 +451,133 @@ msgstr "以下から選択する"
 msgid "Delete"
 msgstr "削除"
 
-#: archive-template.php:795 dt-assets/functions/enqueue-scripts.php:342
+#: archive-template.php:804 dt-assets/functions/enqueue-scripts.php:343
 #, fuzzy
 #| msgid "Make Selections Below"
 msgid "Delete Selections Below"
 msgstr "以下から選択する"
 
-#: archive-template.php:809
+#: archive-template.php:818
 #, fuzzy, php-format
 #| msgid "Select all the %1$s to whom you want to send app links."
 msgid "Select all the %1$s to whom you want to message."
 msgstr "アプリリンクを送信したいすべての%1$sを選択する。"
 
-#: archive-template.php:848
+#: archive-template.php:856
 msgid "Message subject"
 msgstr ""
 
-#: archive-template.php:850
+#: archive-template.php:858
 msgid "A valid message subject must be entered."
 msgstr ""
 
-#: archive-template.php:852
+#: archive-template.php:860
 msgid "Message from name"
 msgstr ""
 
-#: archive-template.php:854
+#: archive-template.php:862
 msgid "A valid from name must be specified."
 msgstr ""
 
-#: archive-template.php:856
+#: archive-template.php:864
 msgid "Message reply to"
 msgstr ""
 
-#: archive-template.php:858
+#: archive-template.php:866
 msgid "A valid reply to email address must be specified."
 msgstr ""
 
-#: archive-template.php:860
+#: archive-template.php:868
 #, php-format
 msgid "Emails will be sent from: %s"
 msgstr ""
 
-#: archive-template.php:883
+#: archive-template.php:891
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
 
-#: archive-template.php:885
+#: archive-template.php:893
 msgid "Message"
 msgstr ""
 
-#: archive-template.php:887
+#: archive-template.php:895
 msgid "Please ensure a valid send message has been entered."
 msgstr ""
 
-#: archive-template.php:888 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:896 dt-reports/magic-url-bulk-send.php:57
 #: dt-reports/magic-url-setup.php:254
 msgid "Message placeholders"
 msgstr ""
 
-#: archive-template.php:919 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:927 dt-reports/magic-url-bulk-send.php:63
 #: dt-reports/magic-url-setup.php:260
 #, fuzzy
 #| msgid "Create Record"
 msgid "Name of the Record"
 msgstr "レコードを作成する"
 
-#: archive-template.php:941
+#: archive-template.php:949
 msgid "Message Placeholder Help"
 msgstr ""
 
-#: archive-template.php:984 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:992 dt-reports/magic-url-bulk-send.php:89
 msgid "Send to selected records"
 msgstr "選択した記録に送信"
 
-#: archive-template.php:985 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:993 dt-reports/magic-url-bulk-send.php:90
 msgid "You must select at least one record"
 msgstr "少なくとも 1 つの記録を選択する必要があります"
 
-#: archive-template.php:988 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:996 dt-reports/magic-url-bulk-send.php:93
 #: dt-reports/magic-url-setup.php:503
 msgid "Send"
 msgstr "送信"
 
-#: archive-template.php:988 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:996 dt-reports/magic-url-bulk-send.php:93
 msgid "Links"
 msgstr "リンク"
 
-#: archive-template.php:993
+#: archive-template.php:1001
 msgid "Ensure valid record selections have been made."
 msgstr ""
 
-#: archive-template.php:1032
-msgid "Loading..."
-msgstr "読み込んでいます..."
-
-#: archive-template.php:1037 dt-assets/functions/enqueue-scripts.php:430
-msgid "Load More"
-msgstr "もっと読み込む"
-
-#: archive-template.php:1049
+#: archive-template.php:1020
 msgid "Field Name"
 msgstr "フィールド名"
 
-#: archive-template.php:1105
+#: archive-template.php:1076
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "検索するタイプ"
 
-#: archive-template.php:1114
+#: archive-template.php:1085
 #, php-format
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "%2$s中の全ての%1$s"
 
-#: archive-template.php:1117
+#: archive-template.php:1088
 #, php-format
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "%2$sを含まない全ての%1$s"
 
-#: archive-template.php:1124
+#: archive-template.php:1095
 msgid "Filter for subassigned OR Assigned To"
 msgstr "サブアサインまたはアサイン先のフィルター"
 
-#: archive-template.php:1133 dt-assets/functions/enqueue-scripts.php:332
+#: archive-template.php:1104 dt-assets/functions/enqueue-scripts.php:332
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "作成日"
 
-#: archive-template.php:1140 archive-template.php:1147
+#: archive-template.php:1111 archive-template.php:1118
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:970
 msgid "None Set"
 msgstr "設定なし"
 
-#: archive-template.php:1161 archive-template.php:1162
+#: archive-template.php:1132 archive-template.php:1133
 #: dt-assets/functions/enqueue-scripts.php:240 dt-core/global-functions.php:722
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-reports/magic-url-setup.php:474 dt-users/user-management.php:196
@@ -585,7 +585,7 @@ msgstr "設定なし"
 msgid "No"
 msgstr "番号"
 
-#: archive-template.php:1168 archive-template.php:1169
+#: archive-template.php:1139 archive-template.php:1140
 #: dt-assets/functions/enqueue-scripts.php:239 dt-core/global-functions.php:723
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-reports/magic-url-setup.php:473
@@ -594,29 +594,29 @@ msgstr "番号"
 msgid "Yes"
 msgstr "はい"
 
-#: archive-template.php:1173
+#: archive-template.php:1144
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "レンジスタート"
 
-#: archive-template.php:1176 archive-template.php:1187
+#: archive-template.php:1147 archive-template.php:1158
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "晴れ"
 
-#: archive-template.php:1183
+#: archive-template.php:1154
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "レンジエンド"
 
-#: archive-template.php:1198
+#: archive-template.php:1169
 #, fuzzy
 #| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "フィルタ名"
 
-#: archive-template.php:1203
+#: archive-template.php:1174
 #, fuzzy, php-format
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -624,7 +624,7 @@ msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "%2$s中の全ての%1$s"
 
-#: archive-template.php:1207
+#: archive-template.php:1178
 #, fuzzy, php-format
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -632,7 +632,7 @@ msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "%2$sを含まない全ての%1$s"
 
-#: archive-template.php:1211
+#: archive-template.php:1182
 #, fuzzy, php-format
 #| msgctxt "All Contacts with Is Coaching"
 #| msgid "All %1$s with %2$s"
@@ -640,7 +640,7 @@ msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "%2$s中の全ての%1$s"
 
-#: archive-template.php:1215
+#: archive-template.php:1186
 #, fuzzy, php-format
 #| msgctxt "All Contacts without Is Coaching"
 #| msgid "All %1$s without %2$s"
@@ -648,15 +648,15 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "%2$sを含まない全ての%1$s"
 
-#: archive-template.php:1239
+#: archive-template.php:1210
 msgid "Filter Name"
 msgstr "フィルタ名"
 
-#: archive-template.php:1244
+#: archive-template.php:1215
 msgid "Filter Records"
 msgstr "フィルターレコード"
 
-#: archive-template.php:1248 dt-assets/functions/enqueue-scripts.php:292
+#: archive-template.php:1219 dt-assets/functions/enqueue-scripts.php:292
 #: dt-assets/functions/enqueue-scripts.php:327
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
@@ -971,14 +971,18 @@ msgid "All %s"
 msgstr "すべての％s"
 
 #: dt-assets/functions/enqueue-scripts.php:337
+msgid "Split By"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:338
 msgid "start"
 msgstr "開始"
 
-#: dt-assets/functions/enqueue-scripts.php:338
+#: dt-assets/functions/enqueue-scripts.php:339
 msgid "end"
 msgstr "終わり"
 
-#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:340
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/module-access.php:1183 dt-groups/base-setup.php:957
 #: dt-metrics/personal/activity-highlights.php:56
@@ -987,36 +991,36 @@ msgstr "終わり"
 msgid "All"
 msgstr "すべて"
 
-#: dt-assets/functions/enqueue-scripts.php:340
+#: dt-assets/functions/enqueue-scripts.php:341
 msgid "Without"
 msgstr "含まない"
 
-#: dt-assets/functions/enqueue-scripts.php:343
+#: dt-assets/functions/enqueue-scripts.php:344
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:344
+#: dt-assets/functions/enqueue-scripts.php:345
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "送信されませんでした (有効な電子メールがない可能性があります)"
 
-#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:346
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:346
+#: dt-assets/functions/enqueue-scripts.php:347
 msgid "Exclude Item"
 msgstr "アイテムを除外"
 
-#: dt-assets/functions/enqueue-scripts.php:349
+#: dt-assets/functions/enqueue-scripts.php:350
 #, php-format
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:350
+#: dt-assets/functions/enqueue-scripts.php:351
 #, php-format
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
@@ -1024,147 +1028,147 @@ msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:353
-#: dt-assets/functions/enqueue-scripts.php:361
+#: dt-assets/functions/enqueue-scripts.php:354
+#: dt-assets/functions/enqueue-scripts.php:362
 #, fuzzy
 #| msgctxt "Contacts List"
 #| msgid "%s List"
 msgid "Full List"
 msgstr "％sリスト"
 
-#: dt-assets/functions/enqueue-scripts.php:354
+#: dt-assets/functions/enqueue-scripts.php:355
 #, fuzzy
 #| msgid "Address"
 msgid "No Addresses"
 msgstr "住所"
 
-#: dt-assets/functions/enqueue-scripts.php:355
+#: dt-assets/functions/enqueue-scripts.php:356
 msgid "With Additional Addresses"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:356
+#: dt-assets/functions/enqueue-scripts.php:357
 msgid "Open Email for Group"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:357
+#: dt-assets/functions/enqueue-scripts.php:358
 #, fuzzy
 #| msgid "Open Modal"
 msgid "Open All"
 msgstr "モーダルを開く"
 
-#: dt-assets/functions/enqueue-scripts.php:358
+#: dt-assets/functions/enqueue-scripts.php:359
 msgid "Show Group Addresses"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:362
+#: dt-assets/functions/enqueue-scripts.php:363
 msgid "Has No Phone Number"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:363
+#: dt-assets/functions/enqueue-scripts.php:364
 msgid "Has Additional Phone Numbers"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:367
+#: dt-assets/functions/enqueue-scripts.php:368
 #, fuzzy
 #| msgid "Used Locations"
 msgid "Mapped Locations"
 msgstr "使用場所"
 
-#: dt-assets/functions/enqueue-scripts.php:368
+#: dt-assets/functions/enqueue-scripts.php:369
 #, fuzzy
 #| msgctxt "Reason Paused label"
 #| msgid "Contact on vacation"
 msgid "Contacts Without Locations"
 msgstr "休暇中のお問い合わせ"
 
-#: dt-assets/functions/enqueue-scripts.php:369
+#: dt-assets/functions/enqueue-scripts.php:370
 #, fuzzy
 #| msgid "Add Records"
 msgid "Records on zoomed map"
 msgstr "記録を追加"
 
-#: dt-assets/functions/enqueue-scripts.php:370
+#: dt-assets/functions/enqueue-scripts.php:371
 msgid "No Zoomed Map Records Found!"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:371
+#: dt-assets/functions/enqueue-scripts.php:372
 msgid "Open Zoomed Map Records"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:372
 #: dt-assets/functions/enqueue-scripts.php:373
+#: dt-assets/functions/enqueue-scripts.php:374
 #, fuzzy
 #| msgid "Filter Name"
 msgid "Filtered Map"
 msgstr "フィルタ名"
 
-#: dt-assets/functions/enqueue-scripts.php:401 dt-contacts/base-setup.php:55
+#: dt-assets/functions/enqueue-scripts.php:402 dt-contacts/base-setup.php:55
 #: dt-contacts/base-setup.php:67 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "連絡先"
 
-#: dt-assets/functions/enqueue-scripts.php:402
+#: dt-assets/functions/enqueue-scripts.php:403
 #, php-format
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:449
+#: dt-assets/functions/enqueue-scripts.php:450
 msgid "File Upload"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:450
+#: dt-assets/functions/enqueue-scripts.php:451
 #, fuzzy
 #| msgid "Choose an option:"
 msgid "Choose a file"
 msgstr "オプションを選択："
 
-#: dt-assets/functions/enqueue-scripts.php:451
+#: dt-assets/functions/enqueue-scripts.php:452
 msgid "or drag it here"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:452
+#: dt-assets/functions/enqueue-scripts.php:453
 msgid "Successfully Uploaded!"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:453
+#: dt-assets/functions/enqueue-scripts.php:454
 msgid "Error!"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:454
+#: dt-assets/functions/enqueue-scripts.php:455
 #, fuzzy
 #| msgid "Unable to update"
 msgid "Unable to upload, please try again"
 msgstr "更新できません"
 
-#: dt-assets/functions/enqueue-scripts.php:455
+#: dt-assets/functions/enqueue-scripts.php:456
 msgid "Upload"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:456
+#: dt-assets/functions/enqueue-scripts.php:457
 #, fuzzy
 #| msgid "Delete Filter"
 msgid "Delete Existing File"
 msgstr "フィルタを削除"
 
-#: dt-assets/functions/enqueue-scripts.php:457
+#: dt-assets/functions/enqueue-scripts.php:458
 #, fuzzy
 #| msgid "Delete Filter"
 msgid "Replace Existing Image"
 msgstr "フィルタを削除"
 
-#: dt-assets/functions/enqueue-scripts.php:458
+#: dt-assets/functions/enqueue-scripts.php:459
 #, fuzzy
 #| msgctxt "Are you sure you want to delete name?"
 #| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete existing file?"
 msgstr "％sを削除してもよろしいですか？"
 
-#: dt-assets/functions/enqueue-scripts.php:459
+#: dt-assets/functions/enqueue-scripts.php:460
 msgid "Successfully Deleted!"
 msgstr ""
 
-#: dt-assets/functions/enqueue-scripts.php:460
+#: dt-assets/functions/enqueue-scripts.php:461
 #, fuzzy
 #| msgid "Delete and replace the app link"
 msgid "Delete failed, please try again"
@@ -5183,7 +5187,7 @@ msgstr "一括送信アプリ"
 msgid "Select all the %1$s to whom you want to send app links."
 msgstr "アプリリンクを送信したいすべての%1$sを選択する。"
 
-#: dt-reports/magic-url-bulk-send.php:43
+#: dt-reports/magic-url-bulk-send.php:42
 msgid ""
 "Hello {{name}},\n"
 "\n"
@@ -5194,33 +5198,33 @@ msgid ""
 "Thanks!"
 msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:51
+#: dt-reports/magic-url-bulk-send.php:50
 msgid "Configure email subject"
 msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:54
+#: dt-reports/magic-url-bulk-send.php:53
 msgid "{{app}} will be replaced with the selected app name."
 msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:56
+#: dt-reports/magic-url-bulk-send.php:55
 msgid "Configure email message"
 msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:257
+#: dt-reports/magic-url-bulk-send.php:60 dt-reports/magic-url-setup.php:257
 #, fuzzy
 #| msgid "Select app to email"
 msgid "Selected app name"
 msgstr "メールするアプリを選択"
 
-#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:263
+#: dt-reports/magic-url-bulk-send.php:66 dt-reports/magic-url-setup.php:263
 msgid "Unique link to access the app."
 msgstr ""
 
-#: dt-reports/magic-url-bulk-send.php:72
+#: dt-reports/magic-url-bulk-send.php:71
 msgid "Select app to email"
 msgstr "メールするアプリを選択"
 
-#: dt-reports/magic-url-bulk-send.php:73
+#: dt-reports/magic-url-bulk-send.php:72
 msgid "You must select an app"
 msgstr "アプリを選択する必要があります"
 
@@ -5831,26 +5835,26 @@ msgstr "割り当てる権限がありません"
 msgid "Insufficient permissions"
 msgstr "不十分な権限"
 
-#: dt-users/users.php:503
+#: dt-users/users.php:507
 msgid "Email already exists and is a user on this site"
 msgstr "メールはすでに存在し、このサイトのユーザーです"
 
-#: dt-users/users.php:509
+#: dt-users/users.php:513
 msgid "Failed to add user to site."
 msgstr "サイトへのユーザーの追加に失敗しました。"
 
-#: dt-users/users.php:560
+#: dt-users/users.php:564
 #, php-format
 msgctxt "These are archived comments for contact John Doe"
 msgid "These are archived comments for %1$s"
 msgstr "これらは %1$s のアーカイブされたコメントです"
 
-#: dt-users/users.php:740
+#: dt-users/users.php:744
 msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "カスタムフィルター"
 
-#: dt-users/users.php:1347 template-settings.php:169 template-settings.php:653
+#: dt-users/users.php:1351 template-settings.php:169 template-settings.php:653
 msgid "System Email"
 msgstr "システムメール"
 
