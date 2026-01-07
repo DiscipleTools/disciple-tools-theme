@@ -43,9 +43,9 @@ msgid "Permission denied"
 msgstr "طلب الاذن مرفوض"
 
 #: 403.php:35
-#, fuzzy, php-format
+#, php-format
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr "عذرًا ، ليس لديك إذن لعرض٪ 1 $ s بالمعرف٪ 2 $ s."
+msgstr "عذرًا، ليس لديك إذن لعرض %1$s بالمعرف %2$s."
 
 #: 403.php:36
 msgid "Request permission from your administrator."
@@ -140,10 +140,10 @@ msgid "The page you were looking for was not found or was deleted"
 msgstr "الصفحة التي كنت تبحث عنها غير موجودة أو تم حذفها"
 
 #: archive-template.php:39
-#, fuzzy, php-format
+#, php-format
 msgctxt "Create New record"
 msgid "Create New %s"
-msgstr "قم بإنشاء٪ s جديدة"
+msgstr "إنشاء %s جديد"
 
 #: archive-template.php:43
 msgid "Filters"
@@ -228,26 +228,20 @@ msgid "List Exports"
 msgstr "قائمة الصادرات"
 
 #: archive-template.php:327 archive-template.php:350
-#, fuzzy
-#| msgid "List"
 msgid "CSV List"
-msgstr "قائمة"
+msgstr "قائمة CSV"
 
 #: archive-template.php:331 archive-template.php:354
 msgid "BCC Email List"
 msgstr "قائمة النسخ الخفية للبريد الإلكتروني"
 
 #: archive-template.php:332
-#, fuzzy
-#| msgid "Phone"
 msgid "Phone List"
-msgstr "رقم الهاتف"
+msgstr "قائمة أرقام الهاتف"
 
 #: archive-template.php:337 archive-template.php:362
-#, fuzzy
-#| msgid "List"
 msgid "Map List"
-msgstr "قائمة"
+msgstr "قائمة الخرائط"
 
 #: archive-template.php:346
 msgid "List Exports Help"
@@ -270,12 +264,17 @@ msgid ""
 "provider. The BCC email tool is meant to assist small group emails. Bulk "
 "email should be handled through bulk email providers."
 msgstr ""
+"باستخدام عامل التصفية الحالي، يتم تجميع رسائل البريد الإلكتروني المتاحة في "
+"مجموعات من 50 ويمكن تشغيلها في برنامج البريد الإلكتروني الافتراضي حسب المجموعة. "
+"يضع العديد من مزودي البريد الإلكتروني حدًا أقصى 50 على رسائل النسخ الخفية. "
+"يمكنك فتح جميع المجموعات دفعة واحدة باستخدام زر \"فتح الكل\". إذا كانت القائمة "
+"كبيرة جدًا، فقد ينبه ذلك مزود البريد الإلكتروني الخاص بك. أداة البريد الإلكتروني "
+"للنسخ الخفية مخصصة للمساعدة في رسائل البريد الإلكتروني للمجموعات الصغيرة. يجب "
+"التعامل مع البريد الإلكتروني الجماعي من خلال مزودي البريد الإلكتروني الجماعي."
 
 #: archive-template.php:358
-#, fuzzy
-#| msgid "Member List"
 msgid "Phone Number List"
-msgstr "قائمة الأعضاء"
+msgstr "قائمة أرقام الهاتف"
 
 #: archive-template.php:359
 msgid ""
@@ -283,18 +282,22 @@ msgid ""
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
+"باستخدام عامل التصفية الحالي، يمكنك نسخ ولصق قائمة من الأرقام في تطبيق "
+"المراسلة، مثل WhatsApp أو Signal، وغيرها. هذه طريقة سريعة لبدء محادثة جماعية."
 
 #: archive-template.php:363
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
+"باستخدام عامل التصفية الحالي، يتم إنشاء خريطة نقاط أساسية للمواقع المعروفة "
+"للأشخاص المدرجين."
 
 #: archive-template.php:389
-#, fuzzy, php-format
+#, php-format
 msgctxt "Contacts List"
 msgid "%s List"
-msgstr "قائمة جهات الاتصال"
+msgstr "قائمة %s"
 
 #: archive-template.php:398
 msgid "Sort"
@@ -325,10 +328,8 @@ msgid "Bulk Edit"
 msgstr "التحرير بالجملة"
 
 #: archive-template.php:442
-#, fuzzy
-#| msgid "Bulk Send App"
 msgid "Bulk Send Message"
-msgstr "تطبيق الإرسال الجماعي"
+msgstr "إرسال رسالة جماعية"
 
 #: archive-template.php:476 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
@@ -342,35 +343,30 @@ msgid "Archived"
 msgstr "محفوظ في الأرشيف"
 
 #: archive-template.php:501
-#, fuzzy, php-format
-#| msgid "New %s"
+#, php-format
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "%s جديد"
+msgstr "عرض %s"
 
 #: archive-template.php:526
 msgid "Choose which fields to display as columns in the list"
 msgstr "اختر المجالات المراد عرضها كأعمدة في القائمة"
 
 #: archive-template.php:560
-#, fuzzy
-#| msgid "Hide fields"
 msgid "Add fields:"
-msgstr "أخف الحقول"
+msgstr "أضف حقولاً:"
 
 #: archive-template.php:563
 msgid "Search for fields to add..."
-msgstr ""
+msgstr "ابحث عن حقول لإضافتها..."
 
 #: archive-template.php:585
-#, fuzzy
-#| msgid "Updated fields"
 msgid "Enabled fields:"
-msgstr "الخانات المُحدّثة"
+msgstr "الحقول المُفعَّلة:"
 
 #: archive-template.php:589
 msgid "No fields selected"
-msgstr ""
+msgstr "لم يتم تحديد حقول"
 
 #: archive-template.php:622
 #, php-format
@@ -390,11 +386,8 @@ msgid "Share with:"
 msgstr "شارك مع:"
 
 #: archive-template.php:705
-#, fuzzy
-#| msgctxt "message"
-#| msgid "Unshared with %s"
 msgid "Unshare with selected user"
-msgstr "لم يتم مشاركته مع %s"
+msgstr "إلغاء المشاركة مع المستخدم المحدد"
 
 #: archive-template.php:717 dt-assets/functions/details-bar.php:199
 #: dt-posts/custom-post-type.php:217
@@ -445,82 +438,68 @@ msgid "Delete"
 msgstr "حذف"
 
 #: archive-template.php:795 dt-assets/functions/enqueue-scripts.php:342
-#, fuzzy
-#| msgid "Make Selections Below"
 msgid "Delete Selections Below"
-msgstr "قم بإجراء التحديدات أدناه"
+msgstr "احذف التحديدات أدناه"
 
 #: archive-template.php:809
-#, fuzzy, php-format
-#| msgid "Select all the %1$s to whom you want to send app links."
+#, php-format
 msgid "Select all the %1$s to whom you want to message."
-msgstr "حدد جميع %1$s الذين تريد إرسال روابط التطبيق إليهم."
+msgstr "حدد جميع %1$s الذين تريد إرسال رسالة إليهم."
 
 #: archive-template.php:848
 msgid "Message subject"
-msgstr ""
+msgstr "موضوع الرسالة"
 
 #: archive-template.php:850
 msgid "A valid message subject must be entered."
-msgstr ""
+msgstr "يجب إدخال موضوع رسالة صالح."
 
 #: archive-template.php:852
-#, fuzzy
 msgid "Message from name"
-msgstr ""
-"باستخدام عامل التصفية الحالي، يتم تجميع كل 50 رسالة/بريد إلكترونية متاحة "
-"سوياـ ويمكن تشغيلها في عميل البريد الإلكتروني الافتراضي الخاص بك حسب "
-"المجموعة. يضع العديد من موفري خدمة البريد الإلكتروني حدًا يبلغ 50 لرسائل "
-"البريد الإلكتروني الخاصة بنسخة مخفية. يمكنك فتح جميع المجموعات مرة واحدة "
-"باستخدام الزر \"فتح الكل\". إذا كانت القائمة كبيرة جدًا، فقد يؤدي ذلك إلى "
-"تنبيه مزود البريد الإلكتروني الخاص بك. تهدف أداة البريد الإلكتروني BCC إلى "
-"مساعدة رسائل البريد الإلكتروني للمجموعات الصغيرة. يجب التعامل مع البريد "
-"الإلكتروني المجمع من خلال موفري البريد الإلكتروني المجمع."
+msgstr "اسم المرسل"
 
 #: archive-template.php:854
 msgid "A valid from name must be specified."
-msgstr ""
+msgstr "يجب تحديد اسم مرسل صالح."
 
 #: archive-template.php:856
 msgid "Message reply to"
-msgstr ""
+msgstr "الرد على الرسالة"
 
 #: archive-template.php:858
 msgid "A valid reply to email address must be specified."
-msgstr ""
+msgstr "يجب تحديد عنوان بريد إلكتروني صالح للرد."
 
 #: archive-template.php:860
 #, php-format
 msgid "Emails will be sent from: %s"
-msgstr ""
+msgstr "سيتم إرسال رسائل البريد الإلكتروني من: %s"
 
 #: archive-template.php:883
 msgid "Please ensure a valid send method has been specified."
-msgstr ""
+msgstr "يرجى التأكد من تحديد طريقة إرسال صالحة."
 
 #: archive-template.php:885
 msgid "Message"
-msgstr ""
+msgstr "رسالة"
 
 #: archive-template.php:887
 msgid "Please ensure a valid send message has been entered."
-msgstr ""
+msgstr "يرجى التأكد من إدخال رسالة إرسال صالحة."
 
 #: archive-template.php:888 dt-reports/magic-url-bulk-send.php:58
 #: dt-reports/magic-url-setup.php:254
 msgid "Message placeholders"
-msgstr ""
+msgstr "العناصر النائبة للرسالة"
 
 #: archive-template.php:919 dt-reports/magic-url-bulk-send.php:64
 #: dt-reports/magic-url-setup.php:260
-#, fuzzy
-#| msgid "Create Record"
 msgid "Name of the Record"
-msgstr "إنشاء سجل"
+msgstr "اسم السجل"
 
 #: archive-template.php:941
 msgid "Message Placeholder Help"
-msgstr ""
+msgstr "مساعدة العناصر النائبة للرسالة"
 
 #: archive-template.php:984 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
@@ -541,7 +520,7 @@ msgstr "الروابط"
 
 #: archive-template.php:993
 msgid "Ensure valid record selections have been made."
-msgstr ""
+msgstr "تأكد من إجراء تحديدات سجلات صالحة."
 
 #: archive-template.php:1032
 msgid "Loading..."
@@ -620,43 +599,33 @@ msgid "Range End"
 msgstr "نهاية المدى"
 
 #: archive-template.php:1198
-#, fuzzy
-#| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
-msgstr "اسم التصفية"
+msgstr "التصفية حسب القيمة"
 
 #: archive-template.php:1203
-#, fuzzy, php-format
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
+#, php-format
 msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
-msgstr "جميع %1$s مع %2$s"
+msgstr "جميع %1$s مع قيمة مفلترة في %2$s"
 
 #: archive-template.php:1207
-#, fuzzy, php-format
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
+#, php-format
 msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
-msgstr "جميع %1$s من دون %2$s"
+msgstr "جميع %1$s من دون قيمة مفلترة في %2$s"
 
 #: archive-template.php:1211
-#, fuzzy, php-format
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
+#, php-format
 msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
-msgstr "جميع %1$s مع %2$s"
+msgstr "جميع %1$s مع أي قيمة في %2$s"
 
 #: archive-template.php:1215
-#, fuzzy, php-format
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
+#, php-format
 msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
-msgstr "جميع %1$s من دون %2$s"
+msgstr "جميع %1$s بدون قيمة في %2$s"
 
 #: archive-template.php:1239
 msgid "Filter Name"
@@ -684,16 +653,16 @@ msgid "Admin Actions"
 msgstr "إجراءات المسؤول"
 
 #: dt-assets/functions/details-bar.php:74 single-template.php:408
-#, fuzzy, php-format
+#, php-format
 msgctxt "Delete Contact"
 msgid "Delete %s"
-msgstr "حذف اتصال"
+msgstr "حذف %s"
 
 #: dt-assets/functions/details-bar.php:79
 #, php-format
 msgctxt "View Contact History"
 msgid "View %s History"
-msgstr ""
+msgstr "عرض تاريخ %s"
 
 #: dt-assets/functions/details-bar.php:87
 #, php-format
@@ -707,11 +676,9 @@ msgid "Previous record"
 msgstr "التسجيل السابق"
 
 #: dt-assets/functions/details-bar.php:121
-#, fuzzy
-#| msgid "Record Hits:"
 msgctxt "the picture of the record"
 msgid "Record Picture"
-msgstr "مرات الضغط على السجل:"
+msgstr "صورة السجل"
 
 #: dt-assets/functions/details-bar.php:153
 #: dt-assets/functions/details-bar.php:329
@@ -740,10 +707,8 @@ msgid "Share"
 msgstr "شارك"
 
 #: dt-assets/functions/details-bar.php:301
-#, fuzzy
-#| msgid "Record Hits:"
 msgid "Record Picture"
-msgstr "مرات الضغط على السجل:"
+msgstr "صورة السجل"
 
 #: dt-assets/functions/enqueue-scripts.php:116
 #: dt-metrics/records/date-range-activity.php:111
@@ -773,10 +738,10 @@ msgid "Showing %s items. Type to find more."
 msgstr "أظهر عناصر %s. اكتب لتجد المزيد."
 
 #: dt-assets/functions/enqueue-scripts.php:121
-#, fuzzy, php-format
+#, php-format
 msgctxt "Showing 30 items matching bob"
 msgid "Showing %1$s items matching %2$s"
-msgstr "إظهار العناصر 3D التي تطابق BOB"
+msgstr "عرض %1$s عنصر مطابق لـ %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:122
 #: dt-assets/functions/enqueue-scripts.php:182
@@ -788,12 +753,12 @@ msgstr "تغيير"
 #: dt-assets/functions/enqueue-scripts.php:123
 #: dt-reports/magic-url-setup.php:496 template-settings.php:303
 msgid "Copy"
-msgstr ""
+msgstr "نسخ"
 
 #: dt-assets/functions/enqueue-scripts.php:124
 #, php-format
 msgid "Copied: %s"
-msgstr ""
+msgstr "تم النسخ: %s"
 
 #: dt-assets/functions/enqueue-scripts.php:145
 msgid "You don't have any unread notifications"
@@ -829,25 +794,19 @@ msgstr "%3$s و %1$s تفاعل برمز %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:189
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr ""
+msgstr "اختر اللغة المنطوقة وانقر على \"بدء التسجيل\" للبدء."
 
 #: dt-assets/functions/enqueue-scripts.php:190
-#, fuzzy
-#| msgid "Create Record"
 msgid "Click \"Start Recording\" to begin."
-msgstr "إنشاء سجل"
+msgstr "انقر على \"بدء التسجيل\" للبدء."
 
 #: dt-assets/functions/enqueue-scripts.php:191
-#, fuzzy
-#| msgid "Unable to update"
 msgid "Voice recording upload failed. Please try again."
-msgstr "غير قادر على التحديث"
+msgstr "فشل تحميل التسجيل الصوتي. يرجى المحاولة مرة أخرى."
 
 #: dt-assets/functions/enqueue-scripts.php:192
-#, fuzzy
-#| msgid "No Data Available"
 msgid "No recording available to upload."
-msgstr "لا توجد بيانات متاحة"
+msgstr "لا يوجد تسجيل متاح للتحميل."
 
 #: dt-assets/functions/enqueue-scripts.php:225
 msgid "Mark as complete"
@@ -855,12 +814,12 @@ msgstr "تم اللقاء"
 
 #: dt-assets/functions/enqueue-scripts.php:226
 msgid "No task created"
-msgstr "تم إنشاء جهة اتصال جديدة"
+msgstr "لم يتم إنشاء مهمة"
 
 #: dt-assets/functions/enqueue-scripts.php:227
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
-msgstr "الجنس"
+msgstr "تذكير"
 
 #: dt-assets/functions/enqueue-scripts.php:228
 msgid "No note set"
@@ -886,9 +845,9 @@ msgid "Dismissed Duplicates"
 msgstr "التكرارات المرفوضة"
 
 #: dt-assets/functions/enqueue-scripts.php:233
-#, fuzzy, php-format
+#, php-format
 msgid "Duplicates on: %s"
-msgstr "التكرارات على:٪ s"
+msgstr "التكرارات على: %s"
 
 #: dt-assets/functions/enqueue-scripts.php:234
 msgid "Transfer failed. Check site-to-site configuration."
@@ -914,14 +873,12 @@ msgstr "الفتح بواسطة"
 
 #: dt-assets/functions/enqueue-scripts.php:258
 msgid "Revert Record Back To This Point"
-msgstr ""
+msgstr "إعادة السجل إلى هذه النقطة"
 
 #: dt-assets/functions/enqueue-scripts.php:259
-#, fuzzy, php-format
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
+#, php-format
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "هل أنت متأكد أنك تريد حذف %s؟"
+msgstr "هل أنت متأكد أنك تريد إرجاع حالة السجل إلى %s؟"
 
 #: dt-assets/functions/enqueue-scripts.php:290
 msgid "Locations you are responsible for"
@@ -1004,7 +961,7 @@ msgstr "من دون"
 #: dt-assets/functions/enqueue-scripts.php:343
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
-msgstr ""
+msgstr "مجدولة للإرسال"
 
 #: dt-assets/functions/enqueue-scripts.php:344
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
@@ -1014,7 +971,7 @@ msgstr "غير المُرسلة ( لا يوجد بريد إلكتروني صال
 #: dt-assets/functions/enqueue-scripts.php:345
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
-msgstr ""
+msgstr "عرض قائمة الانتظار"
 
 #: dt-assets/functions/enqueue-scripts.php:346
 msgid "Exclude Item"
@@ -1024,7 +981,7 @@ msgstr "استبعاد العنصر"
 #, php-format
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
-msgstr ""
+msgstr "بيانات CSV المُصدَّرة تحتوي على جميع حقول %1$s البالغ عددها %2$s."
 
 #: dt-assets/functions/enqueue-scripts.php:350
 #, php-format
@@ -1032,81 +989,65 @@ msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
-msgstr ""
+msgstr "بيانات CSV المُصدَّرة تحتوي على %2$s حقول %1$s المرئية أدناه."
 
 #: dt-assets/functions/enqueue-scripts.php:353
 #: dt-assets/functions/enqueue-scripts.php:361
-#, fuzzy
-#| msgctxt "Contacts List"
-#| msgid "%s List"
 msgid "Full List"
-msgstr "قائمة جهات الاتصال"
+msgstr "القائمة الكاملة"
 
 #: dt-assets/functions/enqueue-scripts.php:354
-#, fuzzy
-#| msgid "Address"
 msgid "No Addresses"
-msgstr "العنوان"
+msgstr "بدون عناوين"
 
 #: dt-assets/functions/enqueue-scripts.php:355
 msgid "With Additional Addresses"
-msgstr ""
+msgstr "مع عناوين إضافية"
 
 #: dt-assets/functions/enqueue-scripts.php:356
 msgid "Open Email for Group"
-msgstr ""
+msgstr "فتح البريد الإلكتروني للمجموعة"
 
 #: dt-assets/functions/enqueue-scripts.php:357
-#, fuzzy
-#| msgid "Open Modal"
 msgid "Open All"
-msgstr "فتح النموذج"
+msgstr "فتح الكل"
 
 #: dt-assets/functions/enqueue-scripts.php:358
 msgid "Show Group Addresses"
-msgstr ""
+msgstr "عرض عناوين المجموعة"
 
 #: dt-assets/functions/enqueue-scripts.php:362
 msgid "Has No Phone Number"
-msgstr ""
+msgstr "بدون رقم هاتف"
 
 #: dt-assets/functions/enqueue-scripts.php:363
 msgid "Has Additional Phone Numbers"
-msgstr ""
+msgstr "مع أرقام هاتف إضافية"
 
 #: dt-assets/functions/enqueue-scripts.php:367
-#, fuzzy
-#| msgid "Used Locations"
 msgid "Mapped Locations"
-msgstr "المواقع المستعملة"
+msgstr "المواقع المُحددة على الخريطة"
 
 #: dt-assets/functions/enqueue-scripts.php:368
-#, fuzzy
-#| msgctxt "Reason Paused label"
-#| msgid "Contact on vacation"
 msgid "Contacts Without Locations"
-msgstr "تم تغيير معلومات جهة الاتصال"
+msgstr "جهات اتصال بدون مواقع"
 
 #: dt-assets/functions/enqueue-scripts.php:369
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records on zoomed map"
-msgstr "إضافة السجلات"
+msgstr "السجلات على الخريطة المُكبَّرة"
 
 #: dt-assets/functions/enqueue-scripts.php:370
 msgid "No Zoomed Map Records Found!"
-msgstr ""
+msgstr "لم يتم العثور على سجلات في الخريطة المُكبَّرة!"
 
 #: dt-assets/functions/enqueue-scripts.php:371
 msgid "Open Zoomed Map Records"
-msgstr ""
+msgstr "فتح سجلات الخريطة المُكبَّرة"
 
 #: dt-assets/functions/enqueue-scripts.php:372
 #: dt-assets/functions/enqueue-scripts.php:373
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Filtered Map"
-msgstr "اسم التصفية"
+msgstr "الخريطة المُصفاة"
 
 #: dt-assets/functions/enqueue-scripts.php:401 dt-contacts/base-setup.php:55
 #: dt-contacts/base-setup.php:67 dt-metrics/personal/activity-highlights.php:57
@@ -1117,68 +1058,55 @@ msgstr "جهة اتصال"
 #, php-format
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
-msgstr ""
+msgstr "%s موجود بالفعل"
 
 #: dt-assets/functions/enqueue-scripts.php:449
 msgid "File Upload"
-msgstr ""
+msgstr "تحميل ملف"
 
 #: dt-assets/functions/enqueue-scripts.php:450
-#, fuzzy
-#| msgid "Choose an option:"
 msgid "Choose a file"
-msgstr "حدد خيارًا:"
+msgstr "اختر ملفًا"
 
 #: dt-assets/functions/enqueue-scripts.php:451
 msgid "or drag it here"
-msgstr ""
+msgstr "أو اسحبه هنا"
 
 #: dt-assets/functions/enqueue-scripts.php:452
 msgid "Successfully Uploaded!"
-msgstr ""
+msgstr "تم التحميل بنجاح!"
 
 #: dt-assets/functions/enqueue-scripts.php:453
 msgid "Error!"
-msgstr ""
+msgstr "خطأ!"
 
 #: dt-assets/functions/enqueue-scripts.php:454
-#, fuzzy
-#| msgid "Unable to update"
 msgid "Unable to upload, please try again"
-msgstr "غير قادر على التحديث"
+msgstr "تعذر التحميل، يرجى المحاولة مرة أخرى"
 
 #: dt-assets/functions/enqueue-scripts.php:455
 msgid "Upload"
-msgstr ""
+msgstr "تحميل"
 
 #: dt-assets/functions/enqueue-scripts.php:456
-#, fuzzy
-#| msgid "Delete Filter"
 msgid "Delete Existing File"
-msgstr "مسح الفلتر"
+msgstr "حذف الملف الحالي"
 
 #: dt-assets/functions/enqueue-scripts.php:457
-#, fuzzy
-#| msgid "Delete Filter"
 msgid "Replace Existing Image"
-msgstr "مسح الفلتر"
+msgstr "استبدال الصورة الحالية"
 
 #: dt-assets/functions/enqueue-scripts.php:458
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete existing file?"
-msgstr "هل أنت متأكد أنك تريد حذف %s؟"
+msgstr "هل أنت متأكد أنك تريد حذف الملف الحالي؟"
 
 #: dt-assets/functions/enqueue-scripts.php:459
 msgid "Successfully Deleted!"
-msgstr ""
+msgstr "تم الحذف بنجاح!"
 
 #: dt-assets/functions/enqueue-scripts.php:460
-#, fuzzy
-#| msgid "Delete and replace the app link"
 msgid "Delete failed, please try again"
-msgstr "حذف واستبدال رابط التطبيق"
+msgstr "فشل الحذف، يرجى المحاولة مرة أخرى"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:27
 msgid "Menu"
@@ -1229,52 +1157,40 @@ msgid "Help"
 msgstr "المساعدة"
 
 #: dt-assets/functions/menu.php:106
-#, fuzzy
-#| msgid "D.T Record"
 msgid "D.T Forum"
-msgstr "سجل D.T"
+msgstr "منتدى D.T"
 
 #: dt-assets/parts/loop-activity-comment.php:84
-#, fuzzy
-#| msgid "New Comments"
 msgid "Add Image Comment"
-msgstr "تعليقات جديدة"
+msgstr "إضافة تعليق بصورة"
 
 #: dt-assets/parts/loop-activity-comment.php:97
-#, fuzzy
-#| msgid "Add Records"
 msgid "Record Voice Message"
-msgstr "إضافة السجلات"
+msgstr "تسجيل رسالة صوتية"
 
 #: dt-assets/parts/loop-activity-comment.php:102
 msgid "Submit comment"
 msgstr "تقديم تعليق"
 
 #: dt-assets/parts/loop-activity-comment.php:111
-#, fuzzy
-#| msgid "Next record"
 msgid "Ready to record"
-msgstr "التسجيل التالي"
+msgstr "جاهز للتسجيل"
 
 #: dt-assets/parts/loop-activity-comment.php:129
-#, fuzzy
-#| msgid "Create Record"
 msgid "Start Recording"
-msgstr "إنشاء سجل"
+msgstr "بدء التسجيل"
 
 #: dt-assets/parts/loop-activity-comment.php:132
 msgid "Stop Recording"
-msgstr ""
+msgstr "إيقاف التسجيل"
 
 #: dt-assets/parts/loop-activity-comment.php:135
 msgid "Play Recording"
-msgstr ""
+msgstr "تشغيل التسجيل"
 
 #: dt-assets/parts/loop-activity-comment.php:138
-#, fuzzy
-#| msgid "Create Record"
 msgid "Save Recording"
-msgstr "إنشاء سجل"
+msgstr "حفظ التسجيل"
 
 #: dt-assets/parts/loop-activity-comment.php:158
 msgid "Showing:"
@@ -1410,14 +1326,6 @@ msgstr ""
 "أسرع والاحتفاظ بعدد المرات التي تم فيها تنفيذ كل إجراء."
 
 #: dt-assets/parts/modals/modal-help.php:15
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid ""
-#| "For example, If you click the 'No Answer' button 4 times, we will log "
-#| "that you attempted to reach this contact 4 times, but they did not "
-#| "answer.\n"
-#| "                This action will also change the 'Seeker Path' to "
-#| "'Contact Attempted'."
 msgctxt "Optional Documentation"
 msgid ""
 "For example, If you click the 'No Answer' button 4 times, we will log that "
@@ -1644,14 +1552,12 @@ msgid "Read the documentation"
 msgstr "اقرأ الوثائق"
 
 #: dt-assets/parts/modals/modal-help.php:143 dt-reports/magic-url-setup.php:491
-#, fuzzy
-#| msgid "Open With"
 msgid "Open the link"
-msgstr "الفتح بواسطة"
+msgstr "فتح الرابط"
 
 #: dt-assets/parts/modals/modal-help.php:147 dt-reports/magic-url-setup.php:499
 msgid "Copy the link to the clipboard"
-msgstr ""
+msgstr "نسخ الرابط إلى الحافظة"
 
 #: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
 #: dt-reports/magic-url-setup.php:508
@@ -1722,23 +1628,18 @@ msgid "Create and apply tag"
 msgstr "إنشاء وتطبيق الوسم"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
-#, fuzzy, php-format
-#| msgid "Record Hits:"
+#, php-format
 msgctxt "Record History"
 msgid "%s Record History"
-msgstr "مرات الضغط على السجل:"
+msgstr "سِجِل تاريخ %s"
 
 #: dt-assets/parts/modals/modal-record-history.php:16
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Filter To Date"
-msgstr "اسم التصفية"
+msgstr "تصفية حسب التاريخ"
 
 #: dt-assets/parts/modals/modal-record-history.php:22
-#, fuzzy
-#| msgid "Create custom filter"
 msgid "select date to filter by"
-msgstr "إنشاء مرشح مُخصص"
+msgstr "اختر تاريخًا للتصفية"
 
 #: dt-assets/parts/modals/modal-revert.php:4
 msgid "Revert Activity"
@@ -1917,8 +1818,6 @@ msgid "Viber"
 msgstr "فايبر"
 
 #: dt-contacts/base-setup.php:211
-#, fuzzy
-#| msgid "Whatsapp"
 msgid "WhatsApp"
 msgstr "واتس آب"
 
@@ -1944,10 +1843,10 @@ msgid "Other Social Links"
 msgstr "روابط اجتماعية أخرى"
 
 #: dt-contacts/base-setup.php:261
-#, fuzzy, php-format
+#, php-format
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "اتصالات بالسِجِلاَّت الأخرى"
+msgstr "اتصالات بـ%s آخرين"
 
 #: dt-contacts/base-setup.php:262
 msgctxt "Optional Documentation"
@@ -2095,10 +1994,10 @@ msgid "Archive %s"
 msgstr "حفظ %s في الأرشيف"
 
 #: dt-contacts/base-setup.php:440
-#, fuzzy, php-format
+#, php-format
 msgctxt "Change Record Type"
 msgid "Change %s Type"
-msgstr "تغيير نوع السِّجِل"
+msgstr "تغيير نوع %s"
 
 #: dt-contacts/base-setup.php:446
 msgid "See duplicates"
@@ -2173,10 +2072,8 @@ msgid "Last 30 viewed"
 msgstr "آخر 30 عرض"
 
 #: dt-contacts/base-setup.php:729
-#, fuzzy
-#| msgid "Assigned Contacts"
 msgid "My Assigned Contacts"
-msgstr "جهات الاتصال المعينة"
+msgstr "جهات الاتصال المُسندة لي"
 
 #: dt-contacts/base-setup.php:739
 msgid "My Follow-Up"
@@ -2296,9 +2193,9 @@ msgid "Minor transfer error."
 msgstr "خطأ بسيط في النقل"
 
 #: dt-contacts/contacts-transfer.php:479
-#, fuzzy, php-format
+#, php-format
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "تم نقل جهة الاتصال هذه إلى٪ s لمزيد من المتابعة."
+msgstr "تم نقل جهة الاتصال هذه إلى %s لمزيد من المتابعة."
 
 #: dt-contacts/contacts-transfer.php:623
 msgid "Contact transferred from site"
@@ -2306,9 +2203,8 @@ msgstr "جهة اتصال منقولة من موقع"
 
 #: dt-contacts/contacts-transfer.php:626 dt-contacts/contacts-transfer.php:641
 #: dt-contacts/contacts-transfer.php:671 dt-contacts/contacts-transfer.php:885
-#, fuzzy
 msgid "Transfer Bot"
-msgstr "نقل بوت"
+msgstr "روبوت النقل"
 
 #: dt-contacts/contacts-transfer.php:633
 msgid "ALERT: Possible duplicate contact from a previous transfer."
@@ -2333,16 +2229,16 @@ msgid "(From Duplicate): %s"
 msgstr "(من التكرار): %s"
 
 #: dt-contacts/duplicates-merging.php:591
-#, fuzzy, php-format
+#, php-format
 msgctxt "This record duplicated and was merged into Contact2"
 msgid "This record is a duplicate and was merged into %2$s"
-msgstr "تم تكرار هذا السجل وتم دمجه في جهة الإتصال 2"
+msgstr "هذا السجل مكرر وتم دمجه في %2$s"
 
 #: dt-contacts/duplicates-merging.php:604
-#, fuzzy, php-format
+#, php-format
 msgctxt "User1 merged Contact1 into this record"
 msgid "%1$s merged %2$s into this record"
-msgstr "المستخدم 1 دَمَجَ جهة الإتصال1 في هذا السجل"
+msgstr "%1$s دمج %2$s في هذا السجل"
 
 #. Template Name of the theme
 #: dt-contacts/duplicates-merging.php:616
@@ -2667,10 +2563,10 @@ msgid "Decline"
 msgstr "رفض"
 
 #: dt-contacts/module-access.php:960
-#, fuzzy, php-format
+#, php-format
 msgctxt "All records"
 msgid "Follow-Up %s"
-msgstr "متابعة جميع السجلات"
+msgstr "متابعة %s"
 
 #: dt-contacts/module-access.php:968
 msgid "All Follow-Up"
@@ -2718,7 +2614,7 @@ msgstr "تم تعميده من"
 #: dt-contacts/module-baptisms.php:62
 msgctxt "Optional Documentation"
 msgid "Who baptized this contact"
-msgstr "نقل جهة الاتصال هذه إلى: "
+msgstr "من قام بتعميد جهة الاتصال هذه"
 
 #: dt-contacts/module-baptisms.php:71 dt-contacts/module-faith.php:73
 msgid "Baptized"
@@ -3059,15 +2955,15 @@ msgstr "لدي الكثير من جهات الاتصال"
 
 #: dt-core/configuration/restrict-site-access.php:249
 msgid "Check your email for the confirmation link, then visit the"
-msgstr ""
+msgstr "تحقق من بريدك الإلكتروني للحصول على رابط التأكيد، ثم قم بزيارة"
 
 #: dt-core/configuration/restrict-site-access.php:253
 msgid "Login Page"
-msgstr ""
+msgstr "صفحة تسجيل الدخول"
 
 #: dt-core/configuration/restrict-site-access.php:254
 msgid "login page"
-msgstr ""
+msgstr "صفحة تسجيل الدخول"
 
 #: dt-core/configuration/restrict-site-access.php:257
 msgid "ERROR: Invalid username/password combination."
@@ -3075,8 +2971,6 @@ msgstr "خطأ: تركيبة اسم مستخدم / كلمة مرور غير صا
 
 #: dt-core/configuration/restrict-site-access.php:261
 #: dt-login/login-template.php:217 dt-login/login-template.php:263
-#, fuzzy
-#| msgid "Reset password"
 msgid "Reset Password"
 msgstr "إعادة تعيين كلمة المرور"
 
@@ -3090,9 +2984,9 @@ msgstr "هناك من طلب تغيير كلمة السر للحساب التا�
 
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:319
-#, fuzzy, php-format
+#, php-format
 msgid "DT Site Name: %s"
-msgstr "المترجمون:٪ s: اسم الموقع."
+msgstr "اسم موقع DT: %s"
 
 #. translators: %s: User login.
 #: dt-core/configuration/restrict-site-access.php:321
@@ -3113,7 +3007,7 @@ msgstr "من أجل تغيير كلمة السر يمكنك زيارة هذا ا
 msgid ""
 "Something went wrong. Please try again or have an admin check the connection "
 "settings."
-msgstr ""
+msgstr "حدث خطأ ما. يرجى المحاولة مرة أخرى أو اطلب من المشرف التحقق من إعدادات الاتصال."
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3121,67 +3015,67 @@ msgstr "(بدون عنوان)"
 
 #: dt-core/release-notifications.php:58
 msgid "Release Announcement!"
-msgstr ""
+msgstr "إعلان الإصدار!"
 
 #: dt-core/release-notifications.php:59
 #, php-format
 msgid "Disciple.Tools Theme Version %1$s"
-msgstr ""
+msgstr "إصدار قالب Disciple.Tools %1$s"
 
 #: dt-core/release-notifications.php:65
 msgid "Theme News"
-msgstr ""
+msgstr "أخبار القالب"
 
 #: dt-core/release-notifications.php:67 dt-core/release-notifications.php:76
 msgid "Other News"
-msgstr ""
+msgstr "أخبار أخرى"
 
 #: dt-core/release-notifications.php:68
 msgid "Get Involved"
-msgstr ""
+msgstr "شارك معنا"
 
 #: dt-core/release-notifications.php:80
 msgid "Other news not available."
-msgstr ""
+msgstr "لا تتوفر أخبار أخرى."
 
 #: dt-core/release-notifications.php:95
 msgid "Freely given, but not cheap"
-msgstr ""
+msgstr "مجاني، لكنه ليس رخيصاً"
 
 #: dt-core/release-notifications.php:97
 msgid ""
 "Disciple.Tools relies on contributions for continued development and "
 "maintenance. Will you join the team?"
-msgstr ""
+msgstr "يعتمد Disciple.Tools على المساهمات لمواصلة التطوير والصيانة. هل ستنضم إلى الفريق؟"
 
 #: dt-core/release-notifications.php:99
 msgid "Give"
-msgstr ""
+msgstr "تبرع"
 
 #: dt-core/release-notifications.php:103 dt-core/release-notifications.php:107
 msgid "Translate"
-msgstr ""
+msgstr "ترجم"
 
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:735
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
-msgstr ""
+msgstr "ترجم Disciple.Tools إلى لغتك أو ساعد في تحسين الترجمة."
 
 #: dt-core/release-notifications.php:112
 msgid "Build or Document"
-msgstr ""
+msgstr "ابنِ أو وثِّق"
 
 #: dt-core/release-notifications.php:114
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
-msgstr ""
+msgstr "اجعل Disciple.Tools أفضل من خلال بناء ميزة أو مساعدتنا في تحسين التوثيق."
 
 #: dt-core/release-notifications.php:116
 msgid "Find out more"
-msgstr ""
+msgstr "اعرف المزيد"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
 #: dt-groups/base-setup.php:168 dt-metrics/personal/activity-highlights.php:58
@@ -3452,14 +3346,13 @@ msgid "Peer Group"
 msgstr "مجموعة النظراء"
 
 #: dt-groups/base-setup.php:329
-#, fuzzy
 msgctxt "Optional Documentation"
 msgid ""
 "A related group that isn't a parent/child in relationship. It might indicate "
 "groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
-"مجموعة ذات صلة ليست من علاقة اصلية / فرعية. قد يشير إلى المجموعات التي "
-"تتعاون ، على وشك الاندماج ، والانقسام مؤخرًا ، وما إلى ذلك."
+"مجموعة ذات صلة ليست من علاقة أصلية/فرعية. قد يشير إلى المجموعات التي "
+"تتعاون، على وشك الاندماج، أو انقسمت مؤخرًا، وما إلى ذلك."
 
 #: dt-groups/base-setup.php:340
 msgid "Child Group"
@@ -3517,7 +3410,7 @@ msgstr ""
 #: dt-groups/base-setup.php:426
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
-msgstr "يحتاج هذا المتصل إلى تحديث"
+msgstr "المجموعات التي ينتمي إليها هذا الشخص."
 
 #: dt-groups/base-setup.php:438
 msgid "Leader of Group"
@@ -3571,81 +3464,71 @@ msgstr ""
 msgid ""
 "Your password reset link appears to be invalid. Please request a new link "
 "below."
-msgstr ""
+msgstr "يبدو أن رابط إعادة تعيين كلمة المرور غير صالح. يرجى طلب رابط جديد أدناه."
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
-msgstr ""
+msgstr "انتهت صلاحية رابط إعادة تعيين كلمة المرور. يرجى طلب رابط جديد أدناه."
 
 #: dt-login/login-template.php:84 dt-login/login-template.php:109
-#, fuzzy
-#| msgid "Password"
 msgid "Get New Password"
-msgstr "كلمه المرور"
+msgstr "الحصول على كلمة مرور جديدة"
 
 #: dt-login/login-template.php:98 dt-login/login-template.php:488
-#, fuzzy
-#| msgid "Add email address"
 msgid "Email Address"
-msgstr "إضافة عنوان البريد الإلكتروني"
+msgstr "عنوان البريد الإلكتروني"
 
 #: dt-login/login-template.php:112
 msgid ""
 "Your password reset email has been sent. Check your email or junk mail for "
 "the link to reset your password."
 msgstr ""
+"تم إرسال بريد إعادة تعيين كلمة المرور. تحقق من بريدك الإلكتروني أو البريد "
+"غير المرغوب فيه للعثور على رابط إعادة تعيين كلمة المرور."
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
-msgstr ""
+msgstr "البريد الإلكتروني أو كلمة المرور مفقودة."
 
 #: dt-login/login-template.php:164 dt-login/login-template.php:244
 #: dt-login/login-template.php:365
 msgid "Passwords do not match. Please, try again."
-msgstr ""
+msgstr "كلمات المرور غير متطابقة. يرجى المحاولة مرة أخرى."
 
 #: dt-login/login-template.php:231 dt-login/login-template.php:234
 #: dt-login/login-template.php:353 dt-login/login-template.php:356
-#, fuzzy
-#| msgid "Password"
 msgid "Password Required"
-msgstr "كلمه المرور"
+msgstr "كلمة المرور مطلوبة"
 
 #: dt-login/login-template.php:241 dt-login/login-template.php:362
-#, fuzzy
-#| msgid "Reset password"
 msgid "Re-enter Password"
-msgstr "إعادة تعيين كلمة المرور"
+msgstr "أعد إدخال كلمة المرور"
 
 #: dt-login/login-template.php:312 dt-login/login-template.php:374
 #: dt-login/login-template.php:545
-#, fuzzy
-#| msgid "Registered"
 msgid "Register"
-msgstr "مسجل"
+msgstr "تسجيل"
 
 #: dt-login/login-template.php:340 dt-users/template-new-user.php:88
 msgid "There are some errors in your form."
 msgstr "هناك بعض الأخطاء في النموذج الخاص بك."
 
 #: dt-login/login-template.php:345
-#, fuzzy
-#| msgid "Display Name"
 msgid "Display Name (optional)"
-msgstr "اسم العرض"
+msgstr "الاسم المعروض (اختياري)"
 
 #: dt-login/login-template.php:456
 msgid "User action confirmed."
-msgstr ""
+msgstr "تم تأكيد إجراء المستخدم."
 
 #: dt-login/login-template.php:466 dt-login/login-template.php:491
 #: dt-login/login-template.php:537
 msgid "Login"
-msgstr ""
+msgstr "تسجيل الدخول"
 
 #: dt-login/login-template.php:472
 msgid "Username or password does not match. Try again."
-msgstr ""
+msgstr "اسم المستخدم أو كلمة المرور غير صحيحة. حاول مرة أخرى."
 
 #: dt-login/login-template.php:489 dt-users/template-new-user.php:121
 #: dt-users/template-new-user.php:122 template-settings.php:661
@@ -3654,13 +3537,11 @@ msgstr "كلمه المرور"
 
 #: dt-login/login-template.php:490
 msgid "Remember Me"
-msgstr ""
+msgstr "تذكرني"
 
 #: dt-login/login-template.php:552
-#, fuzzy
-#| msgid "Reset password"
 msgid "Lost Password"
-msgstr "إعادة تعيين كلمة المرور"
+msgstr "نسيت كلمة المرور"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:222
@@ -3925,10 +3806,8 @@ msgid "New %s"
 msgstr "%s جديد"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Simple Map"
-msgstr "اسم التصفية"
+msgstr "خريطة بسيطة"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3944,7 +3823,7 @@ msgstr "الخرائط المدمجة"
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
-msgstr ""
+msgstr "لعرض هذه الخريطة، يلزم وجود مفتاح Mapbox؛ انقر هنا للإضافة."
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -3955,10 +3834,8 @@ msgid "Transferred Contacts"
 msgstr "جهات الاتصال المنقولة"
 
 #: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
-#, fuzzy
-#| msgid "Accept"
 msgid "Access"
-msgstr "قبول"
+msgstr "الوصول"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4126,7 +4003,7 @@ msgstr "الفرق"
 
 #: dt-metrics/groups/overview.php:75 dt-metrics/personal/overview.php:67
 msgid "Active Group Health Metrics"
-msgstr "ال"
+msgstr "مقاييس صحة المجموعات النشطة"
 
 #: dt-metrics/groups/overview.php:77
 msgid "generations"
@@ -4138,11 +4015,11 @@ msgstr "جيل"
 
 #: dt-metrics/metrics.php:79
 msgid "Genmap"
-msgstr ""
+msgstr "خريطة الأجيال"
 
 #: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
-msgstr ""
+msgstr "الخرائط"
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4221,24 +4098,18 @@ msgid "stats as of"
 msgstr "احصائيات اعتبارًا من"
 
 #: dt-metrics/records/date-range-activity.php:43
-#, fuzzy
-#| msgid "Activity Log"
 msgid "Activity Logs"
-msgstr "سجل النشاط"
+msgstr "سجلات النشاط"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
-#, fuzzy
-#| msgid "Record"
 msgid "Record Type"
-msgstr "تسجيل"
+msgstr "نوع السجل"
 
 #: dt-metrics/records/date-range-activity.php:103
-#, fuzzy
-#| msgid "Activity"
 msgid "Any Activity"
-msgstr "النشاط"
+msgstr "أي نشاط"
 
 #: dt-metrics/records/date-range-activity.php:104
 #: dt-metrics/records/time-charts.php:108
@@ -4246,53 +4117,43 @@ msgid "Total"
 msgstr "الإجمالي"
 
 #: dt-metrics/records/date-range-activity.php:105
-#, fuzzy
-#| msgid "Date Ranges"
 msgid "Date Range"
-msgstr "النطاقات الزمنية"
+msgstr "النطاق الزمني"
 
 #: dt-metrics/records/date-range-activity.php:106
-#, fuzzy
-#| msgid "Custom"
 msgid "Custom Range"
-msgstr "تصفية مخصّصة"
+msgstr "نطاق مخصص"
 
 #: dt-metrics/records/date-range-activity.php:107
 msgid "Reload"
-msgstr ""
+msgstr "إعادة تحميل"
 
 #: dt-metrics/records/date-range-activity.php:108
 #: dt-metrics/records/select-tags-charts.php:91
 #: dt-metrics/records/time-charts.php:122
 msgid "Title"
-msgstr ""
+msgstr "العنوان"
 
 #: dt-metrics/records/date-range-activity.php:109
-#, fuzzy
-#| msgid "No Activity Detected!"
 msgid "Time Activity Recorded"
-msgstr "لم يتم اكتشاف نشاط!"
+msgstr "وقت تسجيل النشاط"
 
 #: dt-metrics/records/date-range-activity.php:110
-#, fuzzy
-#| msgid "Old Value"
 msgid "New Value"
-msgstr "القيمة القديمة"
+msgstr "القيمة الجديدة"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "True"
-msgstr ""
+msgstr "صحيح"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "False"
-msgstr ""
+msgstr "خطأ"
 
 #: dt-metrics/records/dynamic-records-map.php:92
 #: dt-metrics/records/genmap.php:136
-#, fuzzy
-#| msgid "Archived"
 msgid "Show Archived"
-msgstr "محفوظ في الأرشيف"
+msgstr "إظهار المؤرشف"
 
 #: dt-metrics/records/dynamic-records-map.php:94 template-new-bulk-post.php:264
 msgid "Add Records"
@@ -4300,23 +4161,16 @@ msgstr "إضافة السجلات"
 
 #: dt-metrics/records/dynamic-records-map.php:95
 #: dt-metrics/records/dynamic-records-map.php:98
-#, fuzzy
-#| msgid "Record"
 msgid "Record Types"
-msgstr "تسجيل"
+msgstr "أنواع السجلات"
 
 #: dt-metrics/records/dynamic-records-map.php:96
-#, fuzzy
-#| msgid "prayer"
 msgid "Layer"
-msgstr "الصلاة"
+msgstr "الطبقة"
 
 #: dt-metrics/records/dynamic-records-map.php:97
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete layer?"
-msgstr "هل أنت متأكد أنك تريد حذف %s؟"
+msgstr "هل أنت متأكد أنك تريد حذف الطبقة؟"
 
 #: dt-metrics/records/dynamic-records-map.php:100
 #: dt-notifications/notifications.php:920
@@ -4329,40 +4183,32 @@ msgid "System"
 msgstr "النظام"
 
 #: dt-metrics/records/genmap.php:23
-#, fuzzy
-#| msgid "Group Generation Tree"
 msgid "GenMapper Trees"
-msgstr "شجرة جيل المجموعة"
+msgstr "أشجار خريطة الأجيال"
 
 #: dt-metrics/records/genmap.php:137
-#, fuzzy
-#| msgid "prayer"
 msgid "Data Layers"
-msgstr "الصلاة"
+msgstr "طبقات البيانات"
 
 #: dt-metrics/records/genmap.php:138
 msgid "Node Color"
-msgstr ""
+msgstr "لون العقدة"
 
 #: dt-metrics/records/genmap.php:139
-#, fuzzy
-#| msgid "Default Filters"
 msgid "Default"
-msgstr "المُرَشِّحَات الافتراضية"
+msgstr "افتراضي"
 
 #: dt-metrics/records/genmap.php:140
 msgid "Add Data Layer"
-msgstr ""
+msgstr "إضافة طبقة بيانات"
 
 #: dt-metrics/records/genmap.php:141
-#, fuzzy
-#| msgid "Show all fields"
 msgid "Show as icons"
-msgstr "أظهر كل الحقول"
+msgstr "عرض كرموز"
 
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
-msgstr ""
+msgstr "اختر حقل طبقة البيانات للالتقاط"
 
 #: dt-metrics/records/genmap.php:143
 msgid "Highlight Active"
@@ -4399,105 +4245,80 @@ msgid "Coaches"
 msgstr "المدربين"
 
 #: dt-metrics/records/genmap.php:156
-#, fuzzy
-#| msgid "Type:"
 msgid "Type"
-msgstr "نوع:"
+msgstr "النوع"
 
 #: dt-metrics/records/genmap.php:159
-#, fuzzy
-#| msgid "Open With"
 msgid "Open"
-msgstr "الفتح بواسطة"
+msgstr "فتح"
 
 #: dt-metrics/records/genmap.php:161
 msgid "Focus"
-msgstr ""
+msgstr "التركيز"
 
 #: dt-metrics/records/genmap.php:162
 msgid "Hide"
-msgstr ""
+msgstr "إخفاء"
 
 #: dt-metrics/records/genmap.php:165
-#, fuzzy
-#| msgid "Child Group"
 msgid "Add Child To"
-msgstr "المجموعات الفرعية"
+msgstr "إضافة فرع إلى"
 
 #: dt-metrics/records/genmap.php:167
 msgid "Add Child"
-msgstr ""
+msgstr "إضافة فرع"
 
 #: dt-metrics/records/genmap.php:168
 msgid "Focus On Node"
-msgstr ""
+msgstr "التركيز على العقدة"
 
 #: dt-metrics/records/genmap.php:169
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
-msgstr "هل أنت متأكد أنك تريد حذف %s؟"
+msgstr "هل أنت متأكد أنك تريد التركيز على العقدة؟"
 
 #: dt-metrics/records/genmap.php:173
 msgid "Infinite Loops"
-msgstr ""
+msgstr "حلقات لا نهائية"
 
 #: dt-metrics/records/select-tags-charts.php:32
-#, fuzzy
-#| msgid "Fields over Time Charts"
 msgid "Simple Chart"
-msgstr "خانات الرسوم البيانية بمرور الوقت"
+msgstr "رسم بياني بسيط"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
 "This chart shows the total number for each field value at the end of the "
 "selected date."
-msgstr ""
+msgstr "يُظهر هذا الرسم البياني العدد الإجمالي لكل قيمة حقل في نهاية التاريخ المحدد."
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records"
-msgstr "إضافة السجلات"
+msgstr "السجلات"
 
 #: dt-metrics/records/select-tags-charts.php:92
 #: dt-metrics/records/time-charts.php:123
-#, fuzzy
-#| msgid "No Data Available"
 msgid "No Records Available"
-msgstr "لا توجد بيانات متاحة"
+msgstr "لا توجد سجلات متاحة"
 
 #: dt-metrics/records/time-charts.php:41
-#, fuzzy
-#| msgid "Advanced Search"
 msgid "Advanced Charts"
-msgstr "البحث المتقدم"
+msgstr "الرسوم البيانية المتقدمة"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
 msgstr "تمت إضافته"
 
 #: dt-metrics/records/time-charts.php:110
-#, fuzzy
-#| msgid "Delete"
 msgid "Deleted"
-msgstr "حذف"
+msgstr "تم حذفه"
 
 #: dt-metrics/records/time-charts.php:111
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Connected"
-msgstr "متصل %s"
+msgstr "متصل"
 
 #: dt-metrics/records/time-charts.php:112
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Disconnected"
-msgstr "متصل %s"
+msgstr "غير متصل"
 
 #: dt-metrics/records/time-charts.php:113
 #, php-format
@@ -4514,10 +4335,8 @@ msgid "Single cumulative totals"
 msgstr "الإجماليات التراكمية الفردية"
 
 #: dt-metrics/records/time-charts.php:118
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records changes"
-msgstr "إضافة السجلات"
+msgstr "تغييرات السجلات"
 
 #: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
@@ -4687,11 +4506,11 @@ msgstr "مجموعات بشرية"
 
 #: dt-people-groups/people-groups-base.php:184
 msgid "Contacts Total"
-msgstr ""
+msgstr "إجمالي جهات الاتصال"
 
 #: dt-people-groups/people-groups-base.php:203
 msgid "Groups Total"
-msgstr ""
+msgstr "إجمالي المجموعات"
 
 #: dt-people-groups/people-groups-base.php:218
 #: dt-posts/custom-post-type.php:186
@@ -4700,19 +4519,19 @@ msgstr "اخر تعديل"
 
 #: dt-people-groups/people-groups-base.php:283
 msgid "People Group Code"
-msgstr ""
+msgstr "رمز المجموعة البشرية"
 
 #: dt-people-groups/people-groups-base.php:290
 msgid "People ID"
-msgstr ""
+msgstr "معرف الشعب"
 
 #: dt-people-groups/people-groups-base.php:297
 msgid "Primary Language"
-msgstr ""
+msgstr "اللغة الرئيسية"
 
 #: dt-people-groups/people-groups-base.php:304
 msgid "Country"
-msgstr ""
+msgstr "البلد"
 
 #: dt-people-groups/people-groups-base.php:316
 msgctxt "Optional Documentation"
@@ -4730,7 +4549,7 @@ msgstr "روابط"
 
 #: dt-people-groups/people-groups-base.php:347
 msgid "Joshua Project"
-msgstr ""
+msgstr "مشروع جوشوا"
 
 #: dt-people-groups/people-groups-post-type.php:204
 msgid "Add/Update People Group"
@@ -4750,7 +4569,7 @@ msgstr "يمكن إدخال اسم المجموعة البشرية هنا"
 
 #: dt-posts/custom-post-type.php:179
 msgid "Picture"
-msgstr ""
+msgstr "صورة"
 
 #: dt-posts/custom-post-type.php:209
 msgid "Tags"
@@ -4766,12 +4585,9 @@ msgid "Un-Follow"
 msgstr "عدم المتابعة"
 
 #: dt-posts/custom-post-type.php:248
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid "The general location where this contact is located."
 msgctxt "Optional Documentation"
 msgid "The general location where this record is located."
-msgstr "الموقع العام الذي توجد فيه جهة الاتصال هذه."
+msgstr "الموقع العام الذي يوجد فيه هذا السجل."
 
 #: dt-posts/custom-post-type.php:256
 msgid "Locations or Address"
@@ -4780,31 +4596,24 @@ msgstr "المواقع أو العنوان"
 #: dt-posts/dt-posts.php:101
 msgid ""
 "This record was automatically updated rather than creating a new record."
-msgstr ""
+msgstr "تم تحديث هذا السجل تلقائيًا بدلاً من إنشاء سجل جديد."
 
 #: dt-posts/dt-posts.php:1650
-#, fuzzy, php-format
-#| msgid "Magic Link Submission"
+#, php-format
 msgid "%s Submission"
-msgstr "إرسال الرابط السحري"
+msgstr "إرسال %s"
 
 #: dt-posts/dt-posts.php:1650
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Link"
-msgstr "إرسال الرابط السحري"
+msgstr "الرابط السحري"
 
 #: dt-posts/dt-posts.php:1652 dt-posts/dt-posts.php:2199
-#, fuzzy
-#| msgid "Revert Activity"
 msgid "Revert Bot"
-msgstr "إعادة النشاط"
+msgstr "روبوت الاستعادة"
 
 #: dt-posts/dt-posts.php:2439
-#, fuzzy
-#| msgid "Post already shared with user."
 msgid "Record already shared with user."
-msgstr "تمت مشاركة المنشور مع المستخدم"
+msgstr "تمت مشاركة السجل مع المستخدم بالفعل."
 
 #: dt-posts/dt-posts.php:2718 single-template.php:174
 msgid "Details"
@@ -5039,12 +4848,10 @@ msgid "Connected to %s"
 msgstr "يتواصل مع %s"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
-#, fuzzy, php-format
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
+#, php-format
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
-msgstr "%1$s أضيف ل %2$s"
+msgstr "%1$s أُضيف إلى %2$s"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
@@ -5054,20 +4861,16 @@ msgid "Removed connection to %s"
 msgstr "توقف الاتصال مع %s "
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
-#, fuzzy, php-format
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
+#, php-format
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
-msgstr "%1$s تغيرمن %2$s"
+msgstr "تمت إزالة %1$s من %2$s"
 
 #: dt-posts/posts.php:416
-#, fuzzy, php-format
-#| msgctxt "Total in January"
-#| msgid "%1$s in %2$s"
+#, php-format
 msgctxt "User Select: User1"
 msgid "%1$s: %2$s"
-msgstr "%1$s في %2$s"
+msgstr "%1$s: %2$s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -5092,15 +4895,15 @@ msgid "%1$s added to %2$s"
 msgstr "%1$s أضيف ل %2$s"
 
 #: dt-posts/posts.php:470
-#, fuzzy, php-format
+#, php-format
 msgid "%s removed"
-msgstr "٪ s تمت إزالتها"
+msgstr "تمت إزالة %s"
 
 #: dt-posts/posts.php:478 dt-posts/posts.php:491
-#, fuzzy, php-format
+#, php-format
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
-msgstr "تمت إزالة %s من المواقع"
+msgstr "تمت إزالة %1$s من المواقع"
 
 #: dt-posts/posts.php:481 dt-posts/posts.php:498
 #, php-format
@@ -5109,20 +4912,16 @@ msgid "%1$s added to locations"
 msgstr "تمت إضافة %1$s إلى المواقع"
 
 #: dt-posts/posts.php:512
-#, fuzzy, php-format
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
+#, php-format
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
-msgstr "%1$s تغيرمن %2$s"
+msgstr "تمت إزالة %1$s من روابط %2$s"
 
 #: dt-posts/posts.php:515
-#, fuzzy, php-format
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
+#, php-format
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
-msgstr "%1$s أضيف ل %2$s"
+msgstr "تمت إضافة %1$s إلى روابط %2$s"
 
 #: dt-posts/posts.php:536
 msgctxt "message"
@@ -5203,10 +5002,8 @@ msgid "Unshared with %s"
 msgstr "لم يتم مشاركته مع %s"
 
 #: dt-posts/posts.php:2527
-#, fuzzy
-#| msgid "Remove"
 msgid "Removed User"
-msgstr "إزالة"
+msgstr "مستخدم مُزال"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
@@ -5227,28 +5024,33 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"مرحبًا {{name}}،\n"
+"\n"
+"يرجى النقر على الزر أدناه للوصول إلى تطبيقك.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"شكرًا!"
 
 #: dt-reports/magic-url-bulk-send.php:51
 msgid "Configure email subject"
-msgstr ""
+msgstr "تكوين موضوع البريد الإلكتروني"
 
 #: dt-reports/magic-url-bulk-send.php:54
 msgid "{{app}} will be replaced with the selected app name."
-msgstr ""
+msgstr "سيتم استبدال {{app}} باسم التطبيق المحدد."
 
 #: dt-reports/magic-url-bulk-send.php:56
 msgid "Configure email message"
-msgstr ""
+msgstr "تكوين رسالة البريد الإلكتروني"
 
 #: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:257
-#, fuzzy
-#| msgid "Select app to email"
 msgid "Selected app name"
-msgstr "حدد التطبيق لإرساله عبر البريد الإلكتروني"
+msgstr "اسم التطبيق المحدد"
 
 #: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:263
 msgid "Unique link to access the app."
-msgstr ""
+msgstr "رابط فريد للوصول إلى التطبيق."
 
 #: dt-reports/magic-url-bulk-send.php:72
 msgid "Select app to email"
@@ -5260,35 +5062,29 @@ msgstr "يجب عليك تحديد التطبيق"
 
 #: dt-reports/magic-url-landing-page.php:29
 #: dt-reports/magic-url-landing-page.php:33
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Invalid Link"
-msgstr "إرسال الرابط السحري"
+msgstr "رابط غير صالح"
 
 #: dt-reports/magic-url-landing-page.php:38
 msgid "Link key is no longer valid or has expired."
-msgstr ""
+msgstr "مفتاح الرابط لم يعد صالحًا أو انتهت صلاحيته."
 
 #: dt-reports/magic-url-landing-page.php:39
 #, php-format
 msgid "Please %s, or locate a more recent key, or request a new one."
-msgstr ""
+msgstr "يرجى %s، أو العثور على مفتاح أحدث، أو طلب مفتاح جديد."
 
 #: dt-reports/magic-url-landing-page.php:39
 msgid "login"
-msgstr ""
+msgstr "تسجيل الدخول"
 
 #: dt-reports/magic-url-setup.php:30
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Links"
-msgstr "إرسال الرابط السحري"
+msgstr "الروابط السحرية"
 
 #: dt-reports/magic-url-setup.php:31
-#, fuzzy
-#| msgid "Apps available on this record."
 msgid "Magic Links available on this record."
-msgstr "التطبيقات المتاحة في هذا السجل."
+msgstr "الروابط السحرية المتاحة في هذا السجل."
 
 #: dt-reports/magic-url-setup.php:236
 msgid ""
@@ -5300,6 +5096,13 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"مرحبًا،\n"
+"\n"
+"يرجى النقر على الزر أدناه للوصول إلى تطبيقك.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"شكرًا!"
 
 #: dt-reports/magic-url-setup.php:248
 msgid "Add email address"
@@ -5321,7 +5124,7 @@ msgstr "حذف واستبدال رابط التطبيق"
 msgid ""
 "This app is not yet activated for this user. Enable the app to generate a "
 "link."
-msgstr ""
+msgstr "لم يتم تفعيل هذا التطبيق لهذا المستخدم بعد. قم بتمكين التطبيق لإنشاء رابط."
 
 #: dt-reports/magic-url-setup.php:465 template-settings.php:265
 msgid "App Activation"
@@ -5333,28 +5136,24 @@ msgid "Enable"
 msgstr "تمكين"
 
 #: dt-reports/magic-url-setup.php:483
-#, fuzzy
-#| msgid "View User"
 msgid "View"
-msgstr "عرض المُستخدِم"
+msgstr "عرض"
 
 #: dt-reports/magic-url-setup.php:512
 msgid "QR code"
-msgstr ""
+msgstr "رمز QR"
 
 #: dt-reports/magic-url-setup.php:521
 msgid "Reset"
-msgstr ""
+msgstr "إعادة تعيين"
 
 #: dt-reports/magic-url-setup.php:526
-#, fuzzy
-#| msgid "Open With"
 msgid "Reset link"
-msgstr "الفتح بواسطة"
+msgstr "إعادة تعيين الرابط"
 
 #: dt-reports/magic-url-setup.php:528
 msgid "This app is currently disabled."
-msgstr ""
+msgstr "هذا التطبيق معطل حاليًا."
 
 #: dt-reports/reports.php:160
 msgid "Added new report"
@@ -5390,10 +5189,10 @@ msgid "User Status"
 msgstr "الحالة"
 
 #: dt-users/mapbox-coverage-map.php:75
-#, fuzzy, php-format
+#, php-format
 msgctxt "Add user to: France"
 msgid "Add user to: %s"
-msgstr "أضف المستخدم إلى:"
+msgstr "أضف المستخدم إلى: %s"
 
 #: dt-users/mapbox-coverage-map.php:78
 msgid "Responsibility Coverage"
@@ -5557,16 +5356,12 @@ msgid "Travel or Away Dates"
 msgstr "تواريخ السفر او الغياب"
 
 #: dt-users/template-user-management.php:191
-#, fuzzy
-#| msgid "Users"
 msgid "User Apps"
-msgstr "المستخدم"
+msgstr "تطبيقات المستخدم"
 
 #: dt-users/template-user-management.php:197
-#, fuzzy
-#| msgid "App Activation"
 msgid "Activation"
-msgstr "تفعيل التطبيق"
+msgstr "التفعيل"
 
 #: dt-users/template-user-management.php:212
 msgid "User Profile"
@@ -5582,10 +5377,8 @@ msgid "Edit User"
 msgstr "تعديل المستخدم"
 
 #: dt-users/template-user-management.php:225
-#, fuzzy
-#| msgid "Password"
 msgid "Email Password Reset"
-msgstr "كلمه المرور"
+msgstr "إرسال بريد إعادة تعيين كلمة المرور"
 
 #: dt-users/template-user-management.php:288 dt-users/users.php:147
 #: template-settings.php:159
@@ -5733,16 +5526,12 @@ msgid "User Language"
 msgstr "لغة المستخدم"
 
 #: dt-users/user-initial-setup.php:44
-#, fuzzy
-#| msgid "Invite User"
 msgid "Initial User Setup!"
-msgstr "دعوة المستخدم"
+msgstr "الإعداد الأولي للمستخدم!"
 
 #: dt-users/user-initial-setup.php:52
-#, fuzzy
-#| msgid "User Language"
 msgid "Default Language"
-msgstr "لغة المستخدم"
+msgstr "اللغة الافتراضية"
 
 #: dt-users/user-management.php:136
 msgid "Add User"
@@ -5752,7 +5541,7 @@ msgstr "إضافة مستخدم"
 #, php-format
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "%1$s  علّق على %2$s قائلا:  %3$s"
+msgstr "تم قبول %1$s في %2$s بعد %3$s أيام"
 
 #: dt-users/user-management.php:181
 #, php-format
@@ -5800,14 +5589,12 @@ msgstr "عرض المُستخدِم"
 
 #: dt-users/user-management.php:229
 msgid "Go"
-msgstr ""
+msgstr "انتقل"
 
 #: dt-users/user-management.php:232
-#, fuzzy, php-format
-#| msgctxt "Showing 30 items matching bob"
-#| msgid "Showing %1$s items matching %2$s"
+#, php-format
 msgid "Showing %1$s of %2$s"
-msgstr "إظهار العناصر 3D التي تطابق BOB"
+msgstr "إظهار %1$s من %2$s"
 
 #: dt-users/user-management.php:353
 #, php-format
@@ -5842,11 +5629,11 @@ msgstr "مهمة مرفوضة في %s"
 
 #: dt-users/users.php:124
 msgid "ID"
-msgstr ""
+msgstr "المُعرِّف"
 
 #: dt-users/users.php:154
 msgid "Locale"
-msgstr ""
+msgstr "اللغة المحلية"
 
 #: dt-users/users.php:178
 msgid "Away"
@@ -5939,7 +5726,7 @@ msgstr "عدل كل حقول التفاصيل"
 
 #: single-template.php:386
 msgid "Show Hidden Tiles"
-msgstr ""
+msgstr "إظهار البلاطات المخفية"
 
 #: single-template.php:409
 #, php-format
@@ -6100,16 +5887,14 @@ msgid "No Travel Scheduled"
 msgstr "لم يتم تحديد موعد سفر"
 
 #: template-settings.php:489
-#, fuzzy
-#| msgid "Contact Info Changed"
 msgid "Contact Info"
-msgstr "تم تغيير معلومات جهة الاتصال"
+msgstr "معلومات جهة الاتصال"
 
 #: template-settings.php:493
 #, php-format
 msgctxt "Email will be sent to: [email]"
 msgid "Email notifications will be sent to: %s"
-msgstr ""
+msgstr "سيتم إرسال إشعارات البريد الإلكتروني إلى: %s"
 
 #: template-settings.php:510
 msgid "Email preferences"
@@ -6153,26 +5938,19 @@ msgid "edit image on gravatar.com"
 msgstr "تغيير الصورة بحسب gravatar.com"
 
 #: template-settings.php:637
-#, fuzzy
-#| msgid ""
-#| "Disciple Tools System does not store images. For profile images we use "
-#| "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
-#| "suggest not using a personal photo, but instead choose a cartoon, "
-#| "abstract, or alias photo to represent you."
 msgid ""
 "Disciple Tools System does not store images. All media assets will be placed "
 "within specified media connection storage service. If you have security "
 "concerns, we suggest not using a personal photo, but instead choose a "
 "cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"لا يقوم نظام Disciple Tools بتخزين الصور. بالنسبة لصور الملف الشخصي ، نستخدم "
-"Gravatar (الصورة الرمزية المعترف بها عالميًا). إذا كانت لديك مخاوف أمنية ، "
-"نقترح عدم استخدام صورة شخصية ، ولكن بدلاً من ذلك اختر صورة كرتونية أو مجردة "
-"أو اسم مستعار لتمثيلك."
+"لا يقوم نظام Disciple Tools بتخزين الصور. سيتم وضع جميع الوسائط ضمن خدمة "
+"تخزين الوسائط المحددة. إذا كانت لديك مخاوف أمنية، نقترح عدم استخدام صورة "
+"شخصية، ولكن بدلاً من ذلك اختر صورة كرتونية أو مجردة أو اسم مستعار لتمثيلك."
 
 #: template-settings.php:638
 msgid "Upload new profile image"
-msgstr ""
+msgstr "رفع صورة ملف شخصي جديدة"
 
 #: template-settings.php:648 template-settings.php:649
 msgid "Username cannot be changed"
@@ -6219,8 +5997,7 @@ msgstr "التكرارات التي تم إيجادها:"
 #~ msgid "Reset password"
 #~ msgstr "إعادة تعيين كلمة المرور"
 
-#, fuzzy
-#~| msgid "Post Type"
+
 #~ msgid "Post Types"
 #~ msgstr "نوع المنشور"
 
@@ -6294,22 +6071,15 @@ msgstr "التكرارات التي تم إيجادها:"
 #~ msgid "Groups Maps"
 #~ msgstr "خرائط المجموعات"
 
-#, fuzzy
 #~| msgid "Add Records"
 #~ msgid "Records Map"
 #~ msgstr "إضافة السجلات"
-
-#, fuzzy
 #~| msgid "Metrics"
 #~ msgid "Dynamic Metrics"
-#~ msgstr "المقاييس"
 
-#, fuzzy
 #~| msgid "Daily Activity"
-#~ msgid "Field Activity"
 #~ msgstr "النشاط"
 
-#, fuzzy
 #~| msgid "All cumulative totals"
 #~ msgid "Field Cumulative Values"
 #~ msgstr "جميع الإجماليات التراكمية"
@@ -6317,17 +6087,14 @@ msgstr "التكرارات التي تم إيجادها:"
 #~ msgid "No Answer"
 #~ msgstr "لا يوجد إجابة"
 
-#, fuzzy
 #~| msgid "No"
 #~ msgid "No."
 #~ msgstr "لا"
 
-#, fuzzy
 #~| msgid "Generation"
 #~ msgid "Generation Map"
 #~ msgstr "جيل"
 
-#, fuzzy
 #~| msgid "List"
 #~ msgid "Map List Filter"
 #~ msgstr "قائمة"
@@ -6346,17 +6113,14 @@ msgstr "التكرارات التي تم إيجادها:"
 #~ msgid "Assigned to: %s"
 #~ msgstr "تم تعيين %s  لمتابعته"
 
-#, fuzzy
 #~| msgid "Generation"
 #~ msgid "Generate"
 #~ msgstr "جيل"
 
-#, fuzzy
 #~| msgid "show all"
 #~ msgid "Show All"
 #~ msgstr "عرض الكل"
 
-#, fuzzy
 #~| msgid "Lost your password"
 #~ msgid "Lost your password?"
 #~ msgstr "فقدت كلمة المرور الخاصة بك"

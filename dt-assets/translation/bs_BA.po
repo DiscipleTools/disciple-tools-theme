@@ -356,24 +356,20 @@ msgid "Choose which fields to display as columns in the list"
 msgstr "Odaberite koja polja će se prikazati kao kolone na listi"
 
 #: archive-template.php:560
-#, fuzzy
-#| msgid "Hide fields"
 msgid "Add fields:"
-msgstr "Sakrij polja"
+msgstr "Dodaj polja:"
 
 #: archive-template.php:563
 msgid "Search for fields to add..."
-msgstr ""
+msgstr "Pretražite polja za dodavanje..."
 
 #: archive-template.php:585
-#, fuzzy
-#| msgid "Updated fields"
 msgid "Enabled fields:"
-msgstr "Ažurirana polja"
+msgstr "Omogućena polja:"
 
 #: archive-template.php:589
 msgid "No fields selected"
-msgstr ""
+msgstr "Nema odabranih polja"
 
 #: archive-template.php:622
 #, php-format
@@ -506,10 +502,8 @@ msgid "Name of the Record"
 msgstr "Naziv zapisa"
 
 #: archive-template.php:941
-#, fuzzy
-#| msgid "Message placeholders"
 msgid "Message Placeholder Help"
-msgstr "Mjesto za poruke"
+msgstr "Pomoć za rezervirana mjesta u porukama"
 
 #: archive-template.php:984 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
@@ -686,11 +680,9 @@ msgid "Previous record"
 msgstr "Prethodni zapis"
 
 #: dt-assets/functions/details-bar.php:121
-#, fuzzy
-#| msgid "Record Hits:"
 msgctxt "the picture of the record"
 msgid "Record Picture"
-msgstr "Rekordni hitovi:"
+msgstr "Slika zapisa"
 
 #: dt-assets/functions/details-bar.php:153
 #: dt-assets/functions/details-bar.php:329
@@ -719,10 +711,8 @@ msgid "Share"
 msgstr "Podijelite"
 
 #: dt-assets/functions/details-bar.php:301
-#, fuzzy
-#| msgid "Record Hits:"
 msgid "Record Picture"
-msgstr "Rekordni hitovi:"
+msgstr "Slika zapisa"
 
 #: dt-assets/functions/enqueue-scripts.php:116
 #: dt-metrics/records/date-range-activity.php:111
@@ -808,25 +798,19 @@ msgstr "%3$s i %1$s su reagirali s %2$s emoji"
 
 #: dt-assets/functions/enqueue-scripts.php:189
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr ""
+msgstr "Odaberite govorni jezik i kliknite \"Započni snimanje\" za početak."
 
 #: dt-assets/functions/enqueue-scripts.php:190
-#, fuzzy
-#| msgid "Create Record"
 msgid "Click \"Start Recording\" to begin."
-msgstr "Napravi zapis"
+msgstr "Kliknite \"Započni snimanje\" za početak."
 
 #: dt-assets/functions/enqueue-scripts.php:191
-#, fuzzy
-#| msgid "Unable to upload, please try again"
 msgid "Voice recording upload failed. Please try again."
-msgstr "Nije moguće podignuti, pokušajte ponovo"
+msgstr "Prijenos glasovnog snimka nije uspio. Pokušajte ponovo."
 
 #: dt-assets/functions/enqueue-scripts.php:192
-#, fuzzy
-#| msgid "No Records Available"
 msgid "No recording available to upload."
-msgstr "Nema dostupnih zapisa"
+msgstr "Nema dostupnog snimka za prijenos."
 
 #: dt-assets/functions/enqueue-scripts.php:225
 msgid "Mark as complete"
@@ -1115,10 +1099,8 @@ msgid "Delete Existing File"
 msgstr "Izbriši postojeći fajl"
 
 #: dt-assets/functions/enqueue-scripts.php:457
-#, fuzzy
-#| msgid "Delete Existing File"
 msgid "Replace Existing Image"
-msgstr "Izbriši postojeći fajl"
+msgstr "Zamijeni postojeću sliku"
 
 #: dt-assets/functions/enqueue-scripts.php:458
 msgid "Are you sure you wish to delete existing file?"
@@ -1185,46 +1167,36 @@ msgid "D.T Forum"
 msgstr "D.T forum"
 
 #: dt-assets/parts/loop-activity-comment.php:84
-#, fuzzy
-#| msgid "New Comments"
 msgid "Add Image Comment"
-msgstr "Novi komentari"
+msgstr "Dodaj komentar sa slikom"
 
 #: dt-assets/parts/loop-activity-comment.php:97
-#, fuzzy
-#| msgid "Records changes"
 msgid "Record Voice Message"
-msgstr "Promjene zapisa"
+msgstr "Snimi glasovnu poruku"
 
 #: dt-assets/parts/loop-activity-comment.php:102
 msgid "Submit comment"
 msgstr "Podnesite komentar"
 
 #: dt-assets/parts/loop-activity-comment.php:111
-#, fuzzy
-#| msgid "Next record"
 msgid "Ready to record"
-msgstr "Sljedeći zapis"
+msgstr "Spremno za snimanje"
 
 #: dt-assets/parts/loop-activity-comment.php:129
-#, fuzzy
-#| msgid "Create Record"
 msgid "Start Recording"
-msgstr "Napravi zapis"
+msgstr "Započni snimanje"
 
 #: dt-assets/parts/loop-activity-comment.php:132
 msgid "Stop Recording"
-msgstr ""
+msgstr "Zaustavi snimanje"
 
 #: dt-assets/parts/loop-activity-comment.php:135
 msgid "Play Recording"
-msgstr ""
+msgstr "Pusti snimku"
 
 #: dt-assets/parts/loop-activity-comment.php:138
-#, fuzzy
-#| msgid "Create Record"
 msgid "Save Recording"
-msgstr "Napravi zapis"
+msgstr "Sačuvaj snimku"
 
 #: dt-assets/parts/loop-activity-comment.php:158
 msgid "Showing:"
@@ -2118,10 +2090,8 @@ msgid "Last 30 viewed"
 msgstr "Zadnjih 30 pregledanih"
 
 #: dt-contacts/base-setup.php:729
-#, fuzzy
-#| msgid "Assigned Contacts"
 msgid "My Assigned Contacts"
-msgstr "Dodijeljeni kontakti"
+msgstr "Moji dodijeljeni kontakti"
 
 #: dt-contacts/base-setup.php:739
 msgid "My Follow-Up"
@@ -2598,7 +2568,7 @@ msgstr "Dispečeri"
 
 #: dt-contacts/module-access.php:563
 msgid "Digital Responders"
-msgstr "Osoba za digitalno odgovaranje"
+msgstr "Digitalni operateri"
 
 #: dt-contacts/module-access.php:570
 msgid "Assign To"
@@ -2850,7 +2820,7 @@ msgstr "Upravitelj korisnika"
 
 #: dt-core/configuration/class-roles.php:118
 msgid "Disciple.Tools Admin"
-msgstr "Učenik. Admin Alata"
+msgstr "Disciple.Tools administrator"
 
 #: dt-core/configuration/class-roles.php:125
 msgid "Administrator"
@@ -3065,6 +3035,8 @@ msgid ""
 "Something went wrong. Please try again or have an admin check the connection "
 "settings."
 msgstr ""
+"Nešto je pošlo po zlu. Pokušajte ponovo ili zamolite administratora da "
+"provjeri postavke veze."
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3875,10 +3847,8 @@ msgid "New %s"
 msgstr "Novo %s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#, fuzzy
-#| msgid "Filtered Map"
 msgid "Simple Map"
-msgstr "Filtrirana karta"
+msgstr "Jednostavna mapa"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3905,10 +3875,8 @@ msgid "Transferred Contacts"
 msgstr "Preneseni kontakti"
 
 #: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
-#, fuzzy
-#| msgid "Accept"
 msgid "Access"
-msgstr "Prihvati"
+msgstr "Pristup"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4092,7 +4060,7 @@ msgstr "Generacijska mapa"
 
 #: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
-msgstr ""
+msgstr "Mape"
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4171,10 +4139,8 @@ msgid "stats as of"
 msgstr "Statistika od"
 
 #: dt-metrics/records/date-range-activity.php:43
-#, fuzzy
-#| msgid "Activity Log"
 msgid "Activity Logs"
-msgstr "Dnevnik aktivnosti"
+msgstr "Dnevnici aktivnosti"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
@@ -4258,40 +4224,32 @@ msgid "System"
 msgstr "Sistem"
 
 #: dt-metrics/records/genmap.php:23
-#, fuzzy
-#| msgid "Generational Trees"
 msgid "GenMapper Trees"
-msgstr "Generacijsko drvo"
+msgstr "GenMapper stabla"
 
 #: dt-metrics/records/genmap.php:137
-#, fuzzy
-#| msgid "Layer"
 msgid "Data Layers"
-msgstr "Sloj"
+msgstr "Slojevi podataka"
 
 #: dt-metrics/records/genmap.php:138
 msgid "Node Color"
-msgstr ""
+msgstr "Boja čvora"
 
 #: dt-metrics/records/genmap.php:139
-#, fuzzy
-#| msgid "Default Filters"
 msgid "Default"
-msgstr "Zadani filtri"
+msgstr "Zadano"
 
 #: dt-metrics/records/genmap.php:140
 msgid "Add Data Layer"
-msgstr ""
+msgstr "Dodaj sloj podataka"
 
 #: dt-metrics/records/genmap.php:141
-#, fuzzy
-#| msgid "Show all fields"
 msgid "Show as icons"
-msgstr "Prikaži sva polja"
+msgstr "Prikaži kao ikone"
 
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
-msgstr ""
+msgstr "odaberite polje sloja podataka za snimanje"
 
 #: dt-metrics/records/genmap.php:143
 msgid "Highlight Active"
@@ -4364,16 +4322,16 @@ msgid "Infinite Loops"
 msgstr "Beskonačne petlje"
 
 #: dt-metrics/records/select-tags-charts.php:32
-#, fuzzy
-#| msgid "Field Charts"
 msgid "Simple Chart"
-msgstr "Polja"
+msgstr "Jednostavni grafikon"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
 "This chart shows the total number for each field value at the end of the "
 "selected date."
 msgstr ""
+"Ovaj grafikon pokazuje ukupan broj za svaku vrijednost polja na kraju "
+"odabranog datuma."
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
@@ -4386,10 +4344,8 @@ msgid "No Records Available"
 msgstr "Nema dostupnih zapisa"
 
 #: dt-metrics/records/time-charts.php:41
-#, fuzzy
-#| msgid "Advanced Search"
 msgid "Advanced Charts"
-msgstr "Napredna pretraga"
+msgstr "Napredni grafikoni"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
@@ -4681,10 +4637,8 @@ msgid "Revert Bot"
 msgstr "Vrati bot"
 
 #: dt-posts/dt-posts.php:2439
-#, fuzzy
-#| msgid "Post already shared with user."
 msgid "Record already shared with user."
-msgstr "Objava je već podijeljena sa korisnikom."
+msgstr "Zapis je već podijeljen sa korisnikom."
 
 #: dt-posts/dt-posts.php:2718 single-template.php:174
 msgid "Details"
@@ -5196,6 +5150,8 @@ msgid ""
 "This app is not yet activated for this user. Enable the app to generate a "
 "link."
 msgstr ""
+"Ova aplikacija još nije aktivirana za ovog korisnika. Omogućite aplikaciju "
+"za generiranje linka."
 
 #: dt-reports/magic-url-setup.php:465 template-settings.php:265
 msgid "App Activation"
@@ -5219,14 +5175,12 @@ msgid "Reset"
 msgstr "Resetovati"
 
 #: dt-reports/magic-url-setup.php:526
-#, fuzzy
-#| msgid "Reset"
 msgid "Reset link"
-msgstr "Resetovati"
+msgstr "Resetiraj link"
 
 #: dt-reports/magic-url-setup.php:528
 msgid "This app is currently disabled."
-msgstr ""
+msgstr "Ova aplikacija je trenutno onemogućena."
 
 #: dt-reports/reports.php:160
 msgid "Added new report"
@@ -6029,10 +5983,8 @@ msgstr ""
 "predstavljati."
 
 #: template-settings.php:638
-#, fuzzy
-#| msgid "upload new profile image"
 msgid "Upload new profile image"
-msgstr "Postavite novu sliku profila"
+msgstr "Učitaj novu sliku profila"
 
 #: template-settings.php:648 template-settings.php:649
 msgid "Username cannot be changed"

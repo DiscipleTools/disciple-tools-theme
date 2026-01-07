@@ -216,50 +216,44 @@ msgstr "কাস্টম ফিল্টার তৈরি করুন"
 #: archive-template.php:248
 msgctxt "Split By"
 msgid "Split By"
-msgstr ""
+msgstr "বিভক্ত করুন"
 
 #: archive-template.php:310
-#, fuzzy
-#| msgid "No duplicates found."
 msgid "No results found"
-msgstr "কোনও সদৃশ পাওয়া যায় নি।"
+msgstr "কোনও ফলাফল পাওয়া যায়নি"
 
 #: archive-template.php:315
 msgctxt "List Exports"
 msgid "List Exports"
-msgstr ""
+msgstr "তালিকা রপ্তানি"
 
 #: archive-template.php:327 archive-template.php:350
-#, fuzzy
-#| msgid "List"
 msgid "CSV List"
-msgstr "তালিকা"
+msgstr "CSV তালিকা"
 
 #: archive-template.php:331 archive-template.php:354
 msgid "BCC Email List"
-msgstr ""
+msgstr "BCC ইমেইল তালিকা"
 
 #: archive-template.php:332
-#, fuzzy
-#| msgid "Phone"
 msgid "Phone List"
-msgstr "ফোন"
+msgstr "ফোন তালিকা"
 
 #: archive-template.php:337 archive-template.php:362
-#, fuzzy
-#| msgid "List"
 msgid "Map List"
-msgstr "তালিকা"
+msgstr "মানচিত্র তালিকা"
 
 #: archive-template.php:346
 msgid "List Exports Help"
-msgstr ""
+msgstr "তালিকা রপ্তানি সহায়তা"
 
 #: archive-template.php:351
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
+"বর্তমান ফিল্টার ব্যবহার করে, এটি মৌলিক তথ্য রপ্তানি করে অন্যান্য অ্যাপ্লিকেশনে "
+"ব্যবহার করার একটি সহজ উপায়।"
 
 #: archive-template.php:355
 msgid ""
@@ -270,12 +264,16 @@ msgid ""
 "provider. The BCC email tool is meant to assist small group emails. Bulk "
 "email should be handled through bulk email providers."
 msgstr ""
+"বর্তমান ফিল্টার ব্যবহার করে, উপলব্ধ ইমেইলগুলি ৫০টি করে গ্রুপ করা হয় এবং আপনার "
+"ডিফল্ট ইমেইল ক্লায়েন্টে গ্রুপ হিসাবে চালু করা যায়। অনেক ইমেইল প্রদানকারী BCC "
+"ইমেইলে ৫০টির সীমা রাখে। \"সব খুলুন\" বোতাম ব্যবহার করে আপনি একসাথে সব গ্রুপ খুলতে "
+"পারেন। তালিকা অনেক বড় হলে, এটি আপনার ইমেইল প্রদানকারীকে সতর্ক করতে পারে। BCC "
+"ইমেইল টুলটি ছোট গ্রুপ ইমেইলে সহায়তা করার জন্য। বাল্ক ইমেইল বাল্ক ইমেইল "
+"প্রদানকারীদের মাধ্যমে পরিচালনা করা উচিত।"
 
 #: archive-template.php:358
-#, fuzzy
-#| msgid "Member List"
 msgid "Phone Number List"
-msgstr "সদস্য তালিকা"
+msgstr "ফোন নম্বর তালিকা"
 
 #: archive-template.php:359
 msgid ""
@@ -283,12 +281,16 @@ msgid ""
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
+"বর্তমান ফিল্টার ব্যবহার করে, এটি একটি মেসেজিং অ্যাপে (WhatsApp, Signal ইত্যাদি) "
+"নম্বরের তালিকা কপি পেস্ট করার জন্য। এটি গ্রুপ কথোপকথন শুরু করার একটি দ্রুত উপায়।"
 
 #: archive-template.php:363
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
+"বর্তমান ফিল্টার ব্যবহার করে, এটি তালিকাভুক্ত ব্যক্তিদের পরিচিত অবস্থানের একটি "
+"মৌলিক পয়েন্ট মানচিত্র তৈরি করে।"
 
 #: archive-template.php:389
 #, php-format
@@ -325,8 +327,6 @@ msgid "Bulk Edit"
 msgstr "বাল্ক এডিট"
 
 #: archive-template.php:442
-#, fuzzy
-#| msgid "Bulk Send App"
 msgid "Bulk Send Message"
 msgstr "বাল্ক সেন্ড অ্যাপ"
 
@@ -342,43 +342,38 @@ msgid "Archived"
 msgstr "আর্কাইভকৃত"
 
 #: archive-template.php:501
-#, fuzzy, php-format
-#| msgid "New %s"
+#, php-format
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "নতুন %s"
+msgstr "%s দেখান"
 
 #: archive-template.php:526
 msgid "Choose which fields to display as columns in the list"
 msgstr "তালিকার কলাম হিসাবে কোন ক্ষেত্রগুলি প্রদর্শিত হবে তা চয়ন করুন"
 
 #: archive-template.php:560
-#, fuzzy
-#| msgid "Hide fields"
 msgid "Add fields:"
-msgstr "ফিল্ডসমূহ লুকান"
+msgstr "ক্ষেত্র যোগ করুন:"
 
 #: archive-template.php:563
 msgid "Search for fields to add..."
-msgstr ""
+msgstr "যোগ করতে ক্ষেত্র খুঁজুন..."
 
 #: archive-template.php:585
-#, fuzzy
-#| msgid "Updated fields"
 msgid "Enabled fields:"
-msgstr "আপডেট করা ক্ষেত্র"
+msgstr "সক্রিয় ক্ষেত্রসমূহ:"
 
 #: archive-template.php:589
 msgid "No fields selected"
-msgstr ""
+msgstr "কোনো ক্ষেত্র নির্বাচন করা হয়নি"
 
 #: archive-template.php:622
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
-"আপনি তালিকা থেকে আপডেট করতে চান এমন সমস্ত % 1 $ গুলি নির্বাচন করুন এবং তাদের "
-"নীচে আপডেট করুন"
+"আপনি তালিকা থেকে আপডেট করতে চান এমন সমস্ত %1$s নির্বাচন করুন এবং নীচে তাদের "
+"আপডেট করুন"
 
 #: archive-template.php:640 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -392,9 +387,6 @@ msgid "Share with:"
 msgstr "সঙ্গে ভাগ:"
 
 #: archive-template.php:705
-#, fuzzy
-#| msgctxt "message"
-#| msgid "Unshared with %s"
 msgid "Unshare with selected user"
 msgstr "শেয়ার করা হয়নি %s"
 
@@ -447,73 +439,68 @@ msgid "Delete"
 msgstr "মুছে ফেলুন"
 
 #: archive-template.php:795 dt-assets/functions/enqueue-scripts.php:342
-#, fuzzy
-#| msgid "Make Selections Below"
 msgid "Delete Selections Below"
-msgstr "নীচে নির্বাচন করুন"
+msgstr "নীচে নির্বাচিতগুলি মুছুন"
 
 #: archive-template.php:809
-#, fuzzy, php-format
-#| msgid "Select all the %1$s to whom you want to send app links."
+#, php-format
 msgid "Select all the %1$s to whom you want to message."
-msgstr "আপনি যাদের কাছে অ্যাপ লিঙ্ক পাঠাতে চান তাদের সমস্ত %1$s নির্বাচন করুন৷"
+msgstr "আপনি যাদের কাছে বার্তা পাঠাতে চান তাদের সমস্ত %1$s নির্বাচন করুন।"
 
 #: archive-template.php:848
 msgid "Message subject"
-msgstr ""
+msgstr "বার্তার বিষয়"
 
 #: archive-template.php:850
 msgid "A valid message subject must be entered."
-msgstr ""
+msgstr "একটি বৈধ বার্তার বিষয় প্রবেশ করাতে হবে।"
 
 #: archive-template.php:852
 msgid "Message from name"
-msgstr ""
+msgstr "প্রেরকের নাম"
 
 #: archive-template.php:854
 msgid "A valid from name must be specified."
-msgstr ""
+msgstr "একটি বৈধ প্রেরকের নাম নির্দিষ্ট করতে হবে।"
 
 #: archive-template.php:856
 msgid "Message reply to"
-msgstr ""
+msgstr "উত্তর দিন"
 
 #: archive-template.php:858
 msgid "A valid reply to email address must be specified."
-msgstr ""
+msgstr "একটি বৈধ উত্তরের ইমেইল ঠিকানা নির্দিষ্ট করতে হবে।"
 
 #: archive-template.php:860
 #, php-format
 msgid "Emails will be sent from: %s"
-msgstr ""
+msgstr "ইমেইল পাঠানো হবে: %s থেকে"
 
 #: archive-template.php:883
 msgid "Please ensure a valid send method has been specified."
-msgstr ""
+msgstr "অনুগ্রহ করে একটি বৈধ পাঠানোর পদ্ধতি নির্দিষ্ট করা নিশ্চিত করুন।"
 
 #: archive-template.php:885
 msgid "Message"
-msgstr ""
+msgstr "বার্তা"
 
 #: archive-template.php:887
 msgid "Please ensure a valid send message has been entered."
-msgstr ""
+msgstr "অনুগ্রহ করে একটি বৈধ বার্তা প্রবেশ করানো নিশ্চিত করুন।"
 
 #: archive-template.php:888 dt-reports/magic-url-bulk-send.php:58
 #: dt-reports/magic-url-setup.php:254
 msgid "Message placeholders"
-msgstr ""
+msgstr "বার্তার প্লেসহোল্ডার"
 
 #: archive-template.php:919 dt-reports/magic-url-bulk-send.php:64
 #: dt-reports/magic-url-setup.php:260
-#, fuzzy
-#| msgid "Create Record"
 msgid "Name of the Record"
-msgstr "রেকর্ড তৈরি করুন"
+msgstr "রেকর্ডের নাম"
 
 #: archive-template.php:941
 msgid "Message Placeholder Help"
-msgstr ""
+msgstr "বার্তার প্লেসহোল্ডার সহায়তা"
 
 #: archive-template.php:984 dt-reports/magic-url-bulk-send.php:90
 msgid "Send to selected records"
@@ -534,7 +521,7 @@ msgstr "লিঙ্ক"
 
 #: archive-template.php:993
 msgid "Ensure valid record selections have been made."
-msgstr ""
+msgstr "বৈধ রেকর্ড নির্বাচন করা হয়েছে তা নিশ্চিত করুন।"
 
 #: archive-template.php:1032
 msgid "Loading..."
@@ -554,10 +541,10 @@ msgid "Type to search"
 msgstr "অনুসন্ধান করতে টাইপ করুন"
 
 #: archive-template.php:1114
-#, fuzzy, php-format
+#, php-format
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
-msgstr "%2$s সহ সমস্ত 1%$s"
+msgstr "%2$s সহ সমস্ত %1$s"
 
 #: archive-template.php:1117
 #, php-format
@@ -613,43 +600,33 @@ msgid "Range End"
 msgstr "পরিসর শেষ"
 
 #: archive-template.php:1198
-#, fuzzy
-#| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "নাম ফিল্টার করুন"
 
 #: archive-template.php:1203
-#, fuzzy, php-format
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
+#, php-format
 msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
-msgstr "%2$s সহ সমস্ত 1%$s"
+msgstr "%2$s এ ফিল্টার করা মান সহ সমস্ত %1$s"
 
 #: archive-template.php:1207
-#, fuzzy, php-format
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
+#, php-format
 msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
-msgstr "%2$s ছাড়া সব %1$s"
+msgstr "%2$s এ ফিল্টার করা মান ছাড়া সমস্ত %1$s"
 
 #: archive-template.php:1211
-#, fuzzy, php-format
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
+#, php-format
 msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
-msgstr "%2$s সহ সমস্ত 1%$s"
+msgstr "%2$s এ যেকোনো মান সহ সমস্ত %1$s"
 
 #: archive-template.php:1215
-#, fuzzy, php-format
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
+#, php-format
 msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
-msgstr "%2$s ছাড়া সব %1$s"
+msgstr "%2$s এ কোনো মান ছাড়া সমস্ত %1$s"
 
 #: archive-template.php:1239
 msgid "Filter Name"
@@ -686,7 +663,7 @@ msgstr "%s মুছুন"
 #, php-format
 msgctxt "View Contact History"
 msgid "View %s History"
-msgstr ""
+msgstr "%s এর ইতিহাস দেখুন"
 
 #: dt-assets/functions/details-bar.php:87
 #, php-format
@@ -700,11 +677,9 @@ msgid "Previous record"
 msgstr "আগের রেকর্ড"
 
 #: dt-assets/functions/details-bar.php:121
-#, fuzzy
-#| msgid "Record Hits:"
 msgctxt "the picture of the record"
 msgid "Record Picture"
-msgstr "রেকর্ড হিট:"
+msgstr "রেকর্ডের ছবি"
 
 #: dt-assets/functions/details-bar.php:153
 #: dt-assets/functions/details-bar.php:329
@@ -733,10 +708,8 @@ msgid "Share"
 msgstr "শেয়ার করুন"
 
 #: dt-assets/functions/details-bar.php:301
-#, fuzzy
-#| msgid "Record Hits:"
 msgid "Record Picture"
-msgstr "রেকর্ড হিট:"
+msgstr "রেকর্ডের ছবি"
 
 #: dt-assets/functions/enqueue-scripts.php:116
 #: dt-metrics/records/date-range-activity.php:111
@@ -781,12 +754,12 @@ msgstr "সম্পাদন করুন"
 #: dt-assets/functions/enqueue-scripts.php:123
 #: dt-reports/magic-url-setup.php:496 template-settings.php:303
 msgid "Copy"
-msgstr ""
+msgstr "অনুলিপি"
 
 #: dt-assets/functions/enqueue-scripts.php:124
 #, php-format
 msgid "Copied: %s"
-msgstr ""
+msgstr "অনুলিপি করা হয়েছে: %s"
 
 #: dt-assets/functions/enqueue-scripts.php:145
 msgid "You don't have any unread notifications"
@@ -822,25 +795,19 @@ msgstr "%3$s এবং %1$s %2$s ইমোজি দিয়ে প্রতিক
 
 #: dt-assets/functions/enqueue-scripts.php:189
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr ""
+msgstr "কথ্য ভাষা নির্বাচন করুন এবং শুরু করতে \"রেকর্ডিং শুরু করুন\" ক্লিক করুন।"
 
 #: dt-assets/functions/enqueue-scripts.php:190
-#, fuzzy
-#| msgid "Create Record"
 msgid "Click \"Start Recording\" to begin."
-msgstr "রেকর্ড তৈরি করুন"
+msgstr "শুরু করতে \"রেকর্ডিং শুরু করুন\" ক্লিক করুন।"
 
 #: dt-assets/functions/enqueue-scripts.php:191
-#, fuzzy
-#| msgid "Unable to update"
 msgid "Voice recording upload failed. Please try again."
-msgstr "আপডেট করতে অক্ষম"
+msgstr "ভয়েস রেকর্ডিং আপলোড ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।"
 
 #: dt-assets/functions/enqueue-scripts.php:192
-#, fuzzy
-#| msgid "No Data Available"
 msgid "No recording available to upload."
-msgstr "কোন তথ্য নেই"
+msgstr "আপলোড করার জন্য কোনো রেকর্ডিং নেই।"
 
 #: dt-assets/functions/enqueue-scripts.php:225
 msgid "Mark as complete"
@@ -907,14 +874,12 @@ msgstr "সঙ্গে খোলা"
 
 #: dt-assets/functions/enqueue-scripts.php:258
 msgid "Revert Record Back To This Point"
-msgstr ""
+msgstr "রেকর্ড এই অবস্থায় ফিরিয়ে আনুন"
 
 #: dt-assets/functions/enqueue-scripts.php:259
-#, fuzzy, php-format
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
+#, php-format
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "আপনি কি$s মুছে ফেলার বিষয়ে নিশ্চিত?"
+msgstr "আপনি কি রেকর্ডের অবস্থা %s এ ফিরিয়ে আনতে চান?"
 
 #: dt-assets/functions/enqueue-scripts.php:290
 msgid "Locations you are responsible for"
@@ -997,7 +962,7 @@ msgstr "ছাড়া"
 #: dt-assets/functions/enqueue-scripts.php:343
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
-msgstr ""
+msgstr "পাঠানোর জন্য নির্ধারিত"
 
 #: dt-assets/functions/enqueue-scripts.php:344
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
@@ -1007,7 +972,7 @@ msgstr "পাঠানো হয়নি (সম্ভবত বৈধ ইম�
 #: dt-assets/functions/enqueue-scripts.php:345
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
-msgstr ""
+msgstr "সারি দেখুন"
 
 #: dt-assets/functions/enqueue-scripts.php:346
 msgid "Exclude Item"
@@ -1017,7 +982,7 @@ msgstr "আইটেম বাদ"
 #, php-format
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
-msgstr ""
+msgstr "রপ্তানিকৃত CSV ডেটাতে সমস্ত %2$s %1$s ক্ষেত্র থাকবে।"
 
 #: dt-assets/functions/enqueue-scripts.php:350
 #, php-format
@@ -1026,80 +991,65 @@ msgctxt ""
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr ""
+"রপ্তানিকৃত CSV ডেটাতে নীচে দেখানো %2$s দৃশ্যমান %1$s ক্ষেত্র থাকবে।"
 
 #: dt-assets/functions/enqueue-scripts.php:353
 #: dt-assets/functions/enqueue-scripts.php:361
-#, fuzzy
-#| msgctxt "Contacts List"
-#| msgid "%s List"
 msgid "Full List"
-msgstr "%s তালিকা"
+msgstr "সম্পূর্ণ তালিকা"
 
 #: dt-assets/functions/enqueue-scripts.php:354
-#, fuzzy
-#| msgid "Address"
 msgid "No Addresses"
-msgstr "ঠিকানা"
+msgstr "কোনো ঠিকানা নেই"
 
 #: dt-assets/functions/enqueue-scripts.php:355
 msgid "With Additional Addresses"
-msgstr ""
+msgstr "অতিরিক্ত ঠিকানা সহ"
 
 #: dt-assets/functions/enqueue-scripts.php:356
 msgid "Open Email for Group"
-msgstr ""
+msgstr "গ্রুপের জন্য ইমেইল খুলুন"
 
 #: dt-assets/functions/enqueue-scripts.php:357
-#, fuzzy
-#| msgid "Open Modal"
 msgid "Open All"
-msgstr "মোডাল খুলুন"
+msgstr "সব খুলুন"
 
 #: dt-assets/functions/enqueue-scripts.php:358
 msgid "Show Group Addresses"
-msgstr ""
+msgstr "গ্রুপের ঠিকানা দেখান"
 
 #: dt-assets/functions/enqueue-scripts.php:362
 msgid "Has No Phone Number"
-msgstr ""
+msgstr "ফোন নম্বর নেই"
 
 #: dt-assets/functions/enqueue-scripts.php:363
 msgid "Has Additional Phone Numbers"
-msgstr ""
+msgstr "অতিরিক্ত ফোন নম্বর আছে"
 
 #: dt-assets/functions/enqueue-scripts.php:367
-#, fuzzy
-#| msgid "Used Locations"
 msgid "Mapped Locations"
-msgstr "অবস্থানগুলি ব্যবহৃত"
+msgstr "মানচিত্রিত অবস্থান"
 
 #: dt-assets/functions/enqueue-scripts.php:368
-#, fuzzy
-#| msgctxt "Reason Paused label"
-#| msgid "Contact on vacation"
 msgid "Contacts Without Locations"
-msgstr "পরিচিতি ছুটিতে আছে"
+msgstr "অবস্থান ছাড়া পরিচিতি"
 
 #: dt-assets/functions/enqueue-scripts.php:369
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records on zoomed map"
-msgstr "রেকর্ড যোগ করুন"
+msgstr "জুম করা মানচিত্রে রেকর্ড"
 
 #: dt-assets/functions/enqueue-scripts.php:370
 msgid "No Zoomed Map Records Found!"
-msgstr ""
+msgstr "জুম করা মানচিত্রে কোনো রেকর্ড পাওয়া যায়নি!"
 
 #: dt-assets/functions/enqueue-scripts.php:371
 msgid "Open Zoomed Map Records"
-msgstr ""
+msgstr "জুম করা মানচিত্রের রেকর্ড খুলুন"
 
 #: dt-assets/functions/enqueue-scripts.php:372
 #: dt-assets/functions/enqueue-scripts.php:373
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Filtered Map"
-msgstr "নাম ফিল্টার করুন"
+msgstr "ফিল্টার করা মানচিত্র"
 
 #: dt-assets/functions/enqueue-scripts.php:401 dt-contacts/base-setup.php:55
 #: dt-contacts/base-setup.php:67 dt-metrics/personal/activity-highlights.php:57
@@ -1110,68 +1060,55 @@ msgstr "পরিচিতি"
 #, php-format
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
-msgstr ""
+msgstr "%s ইতিমধ্যে বিদ্যমান"
 
 #: dt-assets/functions/enqueue-scripts.php:449
 msgid "File Upload"
-msgstr ""
+msgstr "ফাইল আপলোড"
 
 #: dt-assets/functions/enqueue-scripts.php:450
-#, fuzzy
-#| msgid "Choose an option:"
 msgid "Choose a file"
-msgstr "একটি বিকল্প নির্বাচন করুন:"
+msgstr "একটি ফাইল নির্বাচন করুন"
 
 #: dt-assets/functions/enqueue-scripts.php:451
 msgid "or drag it here"
-msgstr ""
+msgstr "অথবা এখানে টেনে আনুন"
 
 #: dt-assets/functions/enqueue-scripts.php:452
 msgid "Successfully Uploaded!"
-msgstr ""
+msgstr "সফলভাবে আপলোড হয়েছে!"
 
 #: dt-assets/functions/enqueue-scripts.php:453
 msgid "Error!"
-msgstr ""
+msgstr "ত্রুটি!"
 
 #: dt-assets/functions/enqueue-scripts.php:454
-#, fuzzy
-#| msgid "Unable to update"
 msgid "Unable to upload, please try again"
-msgstr "আপডেট করতে অক্ষম"
+msgstr "আপলোড করতে অক্ষম, অনুগ্রহ করে আবার চেষ্টা করুন"
 
 #: dt-assets/functions/enqueue-scripts.php:455
 msgid "Upload"
-msgstr ""
+msgstr "আপলোড"
 
 #: dt-assets/functions/enqueue-scripts.php:456
-#, fuzzy
-#| msgid "Delete Filter"
 msgid "Delete Existing File"
-msgstr "ফিল্টার মুছে ফেলুন"
+msgstr "বিদ্যমান ফাইল মুছুন"
 
 #: dt-assets/functions/enqueue-scripts.php:457
-#, fuzzy
-#| msgid "Delete Filter"
 msgid "Replace Existing Image"
-msgstr "ফিল্টার মুছে ফেলুন"
+msgstr "বিদ্যমান ছবি প্রতিস্থাপন করুন"
 
 #: dt-assets/functions/enqueue-scripts.php:458
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete existing file?"
-msgstr "আপনি কি$s মুছে ফেলার বিষয়ে নিশ্চিত?"
+msgstr "আপনি কি নিশ্চিত যে বিদ্যমান ফাইল মুছতে চান?"
 
 #: dt-assets/functions/enqueue-scripts.php:459
 msgid "Successfully Deleted!"
-msgstr ""
+msgstr "সফলভাবে মুছে ফেলা হয়েছে!"
 
 #: dt-assets/functions/enqueue-scripts.php:460
-#, fuzzy
-#| msgid "Delete and replace the app link"
 msgid "Delete failed, please try again"
-msgstr "অ্যাপ লিঙ্কটি মুছুন এবং প্রতিস্থাপন করুন"
+msgstr "মুছে ফেলা ব্যর্থ হয়েছে, অনুগ্রহ করে আবার চেষ্টা করুন"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:27
 msgid "Menu"
@@ -1222,20 +1159,14 @@ msgid "Help"
 msgstr "সাহায্য"
 
 #: dt-assets/functions/menu.php:106
-#, fuzzy
-#| msgid "D.T Record"
 msgid "D.T Forum"
 msgstr "ডি.টি. রেকর্ড"
 
 #: dt-assets/parts/loop-activity-comment.php:84
-#, fuzzy
-#| msgid "New Comments"
 msgid "Add Image Comment"
 msgstr "নতুন মন্তব্য"
 
 #: dt-assets/parts/loop-activity-comment.php:97
-#, fuzzy
-#| msgid "Add Records"
 msgid "Record Voice Message"
 msgstr "রেকর্ড যোগ করুন"
 
@@ -1244,30 +1175,24 @@ msgid "Submit comment"
 msgstr "মন্তব্য দিন"
 
 #: dt-assets/parts/loop-activity-comment.php:111
-#, fuzzy
-#| msgid "Next record"
 msgid "Ready to record"
 msgstr "পরবর্তী রেকর্ড"
 
 #: dt-assets/parts/loop-activity-comment.php:129
-#, fuzzy
-#| msgid "Create Record"
 msgid "Start Recording"
-msgstr "রেকর্ড তৈরি করুন"
+msgstr "রেকর্ডিং শুরু করুন"
 
 #: dt-assets/parts/loop-activity-comment.php:132
 msgid "Stop Recording"
-msgstr ""
+msgstr "রেকর্ডিং বন্ধ করুন"
 
 #: dt-assets/parts/loop-activity-comment.php:135
 msgid "Play Recording"
-msgstr ""
+msgstr "রেকর্ডিং চালান"
 
 #: dt-assets/parts/loop-activity-comment.php:138
-#, fuzzy
-#| msgid "Create Record"
 msgid "Save Recording"
-msgstr "রেকর্ড তৈরি করুন"
+msgstr "রেকর্ডিং সংরক্ষণ করুন"
 
 #: dt-assets/parts/loop-activity-comment.php:158
 msgid "Showing:"
@@ -1403,9 +1328,6 @@ msgstr ""
 "করতে এবং প্রতিটি কর্ম কতবার করা হয়েছে তার একটি হিসাব রাখতে এখানে রাখবে।"
 
 #: dt-assets/parts/modals/modal-help.php:15
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid ""
 #| "For example, If you click the 'No Answer' button 4 times, we will log "
 #| "that you attempted to reach this contact 4 times, but they did not "
 #| "answer.\n"
@@ -1532,7 +1454,7 @@ msgid ""
 "Some of the types of notifications cannot be adjusted because they are "
 "required by the system."
 msgstr ""
-"কিছু ধরণের নোটিফিকেশান সমুহু সামঞ্জস্য করা যায় না কারণ সেগুলি সিস্টেমের প্রয়োজনীয়।"
+"কিছু ধরনের নোটিফিকেশান সামঞ্জস্য করা যায় না কারণ সিস্টেমের জন্য সেগুলি প্রয়োজন।"
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
@@ -1643,14 +1565,12 @@ msgid "Read the documentation"
 msgstr "নথিপত্রাদি পাঠ করুন"
 
 #: dt-assets/parts/modals/modal-help.php:143 dt-reports/magic-url-setup.php:491
-#, fuzzy
-#| msgid "Open With"
 msgid "Open the link"
-msgstr "সঙ্গে খোলা"
+msgstr "লিঙ্কটি খুলুন"
 
 #: dt-assets/parts/modals/modal-help.php:147 dt-reports/magic-url-setup.php:499
 msgid "Copy the link to the clipboard"
-msgstr ""
+msgstr "লিঙ্কটি ক্লিপবোর্ডে অনুলিপি করুন"
 
 #: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
 #: dt-reports/magic-url-setup.php:508
@@ -1721,23 +1641,18 @@ msgid "Create and apply tag"
 msgstr "ট্যাগ তৈরি এবং প্রয়োগ করুন"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
-#, fuzzy, php-format
-#| msgid "Record Hits:"
+#, php-format
 msgctxt "Record History"
 msgid "%s Record History"
-msgstr "রেকর্ড হিট:"
+msgstr "%s রেকর্ড ইতিহাস"
 
 #: dt-assets/parts/modals/modal-record-history.php:16
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Filter To Date"
-msgstr "নাম ফিল্টার করুন"
+msgstr "তারিখ পর্যন্ত ফিল্টার করুন"
 
 #: dt-assets/parts/modals/modal-record-history.php:22
-#, fuzzy
-#| msgid "Create custom filter"
 msgid "select date to filter by"
-msgstr "কাস্টম ফিল্টার তৈরি করুন"
+msgstr "ফিল্টার করার জন্য তারিখ নির্বাচন করুন"
 
 #: dt-assets/parts/modals/modal-revert.php:4
 msgid "Revert Activity"
@@ -1918,8 +1833,6 @@ msgid "Viber"
 msgstr "ভাইবার"
 
 #: dt-contacts/base-setup.php:211
-#, fuzzy
-#| msgid "Whatsapp"
 msgid "WhatsApp"
 msgstr "হোয়াটসঅ্যাপ"
 
@@ -1945,10 +1858,10 @@ msgid "Other Social Links"
 msgstr "অন্যান্য সোশাল লিংকসমূহ"
 
 #: dt-contacts/base-setup.php:261
-#, fuzzy, php-format
+#, php-format
 msgctxt "connections to other records"
 msgid "Connections to other %s"
-msgstr "অন্যান্য$s এর সাথে সংযোগ রয়েছে"
+msgstr "অন্যান্য %s এর সাথে সংযোগসমূহ"
 
 #: dt-contacts/base-setup.php:262
 msgctxt "Optional Documentation"
@@ -2152,10 +2065,10 @@ msgid "Default Filters"
 msgstr "ডিফল্ট ফিল্টার"
 
 #: dt-contacts/base-setup.php:678
-#, fuzzy, php-format
+#, php-format
 msgctxt "All records I can view"
 msgid "All %s I can view"
-msgstr "সমস্ত$s আমি দেখতে পারি"
+msgstr "সমস্ত %s আমি দেখতে পারি"
 
 #: dt-contacts/base-setup.php:705 dt-groups/base-setup.php:1045
 #: dt-posts/custom-post-type.php:501
@@ -2180,8 +2093,6 @@ msgid "Last 30 viewed"
 msgstr "সর্বশেষ 30 বার দেখা হয়েছে"
 
 #: dt-contacts/base-setup.php:729
-#, fuzzy
-#| msgid "Assigned Contacts"
 msgid "My Assigned Contacts"
 msgstr "নিয়জিত পরিচিতসমুহু"
 
@@ -2201,10 +2112,10 @@ msgid "Sub-assigned to me"
 msgstr "আমার কাছে সাব-এসাইনড"
 
 #: dt-contacts/base-setup.php:761
-#, fuzzy, php-format
+#, php-format
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "সংযুক্ত$s"
+msgstr "সংযুক্ত %s"
 
 #: dt-contacts/base-setup.php:785 dt-contacts/base-setup.php:793
 #: dt-contacts/base-setup.php:829 dt-contacts/base-setup.php:830
@@ -2304,9 +2215,9 @@ msgid "Minor transfer error."
 msgstr "সামান্য স্থানান্তর ত্রুটি।"
 
 #: dt-contacts/contacts-transfer.php:479
-#, fuzzy, php-format
+#, php-format
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "এই যোগাযোগটি আরও ফলোআপের জন্য$s এ স্থানান্তরিত হয়েছিল।"
+msgstr "এই পরিচিতিটি আরও ফলোআপের জন্য %s এ স্থানান্তরিত হয়েছে।"
 
 #: dt-contacts/contacts-transfer.php:623
 msgid "Contact transferred from site"
@@ -2852,8 +2763,6 @@ msgid "Please update contact details on your profile page instead of here."
 msgstr "এখানে পরিবর্তে আপনার প্রোফাইল পৃষ্ঠায় যোগাযোগের বিবরণ আপডেট করুন."
 
 #: dt-contacts/user-module.php:73
-#, fuzzy
-#| msgid "Settings"
 msgid "Profile Settings"
 msgstr "বিন্যাস"
 
@@ -3071,15 +2980,15 @@ msgstr "আমার অনেক বেশী পরিচিতি হয়ে�
 
 #: dt-core/configuration/restrict-site-access.php:249
 msgid "Check your email for the confirmation link, then visit the"
-msgstr ""
+msgstr "নিশ্চিতকরণ লিঙ্কের জন্য আপনার ইমেইল দেখুন, তারপর যান"
 
 #: dt-core/configuration/restrict-site-access.php:253
 msgid "Login Page"
-msgstr ""
+msgstr "লগইন পৃষ্ঠা"
 
 #: dt-core/configuration/restrict-site-access.php:254
 msgid "login page"
-msgstr ""
+msgstr "লগইন পৃষ্ঠা"
 
 #: dt-core/configuration/restrict-site-access.php:257
 msgid "ERROR: Invalid username/password combination."
@@ -3087,8 +2996,6 @@ msgstr "ত্রুটি: অবৈধ ইউজার নাম / পাস�
 
 #: dt-core/configuration/restrict-site-access.php:261
 #: dt-login/login-template.php:217 dt-login/login-template.php:263
-#, fuzzy
-#| msgid "Reset password"
 msgid "Reset Password"
 msgstr "পাসওয়ার্ড পরিবর্তন করুন"
 
@@ -3126,6 +3033,8 @@ msgid ""
 "Something went wrong. Please try again or have an admin check the connection "
 "settings."
 msgstr ""
+"কিছু ভুল হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন অথবা একজন প্রশাসককে সংযোগ সেটিংস "
+"পরীক্ষা করতে বলুন।"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3133,46 +3042,48 @@ msgstr "(কোনো শিরোনাম নেই)"
 
 #: dt-core/release-notifications.php:58
 msgid "Release Announcement!"
-msgstr ""
+msgstr "রিলিজ ঘোষণা!"
 
 #: dt-core/release-notifications.php:59
 #, php-format
 msgid "Disciple.Tools Theme Version %1$s"
-msgstr ""
+msgstr "Disciple.Tools থিম সংস্করণ %1$s"
 
 #: dt-core/release-notifications.php:65
 msgid "Theme News"
-msgstr ""
+msgstr "থিম সংবাদ"
 
 #: dt-core/release-notifications.php:67 dt-core/release-notifications.php:76
 msgid "Other News"
-msgstr ""
+msgstr "অন্যান্য সংবাদ"
 
 #: dt-core/release-notifications.php:68
 msgid "Get Involved"
-msgstr ""
+msgstr "যুক্ত হন"
 
 #: dt-core/release-notifications.php:80
 msgid "Other news not available."
-msgstr ""
+msgstr "অন্যান্য সংবাদ উপলব্ধ নেই।"
 
 #: dt-core/release-notifications.php:95
 msgid "Freely given, but not cheap"
-msgstr ""
+msgstr "বিনামূল্যে দেওয়া, কিন্তু সস্তা নয়"
 
 #: dt-core/release-notifications.php:97
 msgid ""
 "Disciple.Tools relies on contributions for continued development and "
 "maintenance. Will you join the team?"
 msgstr ""
+"Disciple.Tools অব্যাহত উন্নয়ন এবং রক্ষণাবেক্ষণের জন্য অবদানের উপর নির্ভর করে। "
+"আপনি কি দলে যোগ দেবেন?"
 
 #: dt-core/release-notifications.php:99
 msgid "Give"
-msgstr ""
+msgstr "দান করুন"
 
 #: dt-core/release-notifications.php:103 dt-core/release-notifications.php:107
 msgid "Translate"
-msgstr ""
+msgstr "অনুবাদ করুন"
 
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:735
@@ -3180,20 +3091,23 @@ msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
 msgstr ""
+"Disciple.Tools আপনার ভাষায় অনুবাদ করুন অথবা অনুবাদ উন্নত করতে সাহায্য করুন।"
 
 #: dt-core/release-notifications.php:112
 msgid "Build or Document"
-msgstr ""
+msgstr "তৈরি করুন বা ডকুমেন্ট করুন"
 
 #: dt-core/release-notifications.php:114
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
 msgstr ""
+"একটি ফিচার তৈরি করে অথবা ডকুমেন্টেশন উন্নত করতে সাহায্য করে Disciple.Tools "
+"আরও ভালো করুন।"
 
 #: dt-core/release-notifications.php:116
 msgid "Find out more"
-msgstr ""
+msgstr "আরও জানুন"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
 #: dt-groups/base-setup.php:168 dt-metrics/personal/activity-highlights.php:58
@@ -3584,55 +3498,49 @@ msgid ""
 "Your password reset link appears to be invalid. Please request a new link "
 "below."
 msgstr ""
+"আপনার পাসওয়ার্ড রিসেট লিঙ্কটি অবৈধ মনে হচ্ছে। অনুগ্রহ করে নীচে একটি নতুন লিঙ্ক "
+"অনুরোধ করুন।"
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
-msgstr ""
+msgstr "আপনার পাসওয়ার্ড রিসেট লিঙ্কের মেয়াদ শেষ হয়ে গেছে। অনুগ্রহ করে নীচে একটি নতুন লিঙ্ক অনুরোধ করুন।"
 
 #: dt-login/login-template.php:84 dt-login/login-template.php:109
-#, fuzzy
-#| msgid "Password"
 msgid "Get New Password"
 msgstr "পাসওয়ার্ড"
 
 #: dt-login/login-template.php:98 dt-login/login-template.php:488
-#, fuzzy
-#| msgid "Add email address"
 msgid "Email Address"
-msgstr "ইমেল ঠিকানা যোগ করুন"
+msgstr "ইমেইল ঠিকানা"
 
 #: dt-login/login-template.php:112
 msgid ""
 "Your password reset email has been sent. Check your email or junk mail for "
 "the link to reset your password."
 msgstr ""
+"আপনার পাসওয়ার্ড রিসেট ইমেইল পাঠানো হয়েছে। আপনার পাসওয়ার্ড রিসেট করার লিঙ্কের জন্য "
+"আপনার ইমেইল বা জাঙ্ক মেইল দেখুন।"
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
-msgstr ""
+msgstr "ইমেইল বা পাসওয়ার্ড অনুপস্থিত।"
 
 #: dt-login/login-template.php:164 dt-login/login-template.php:244
 #: dt-login/login-template.php:365
 msgid "Passwords do not match. Please, try again."
-msgstr ""
+msgstr "পাসওয়ার্ড মিলছে না। অনুগ্রহ করে আবার চেষ্টা করুন।"
 
 #: dt-login/login-template.php:231 dt-login/login-template.php:234
 #: dt-login/login-template.php:353 dt-login/login-template.php:356
-#, fuzzy
-#| msgid "Password"
 msgid "Password Required"
 msgstr "পাসওয়ার্ড"
 
 #: dt-login/login-template.php:241 dt-login/login-template.php:362
-#, fuzzy
-#| msgid "Reset password"
 msgid "Re-enter Password"
 msgstr "পাসওয়ার্ড পরিবর্তন করুন"
 
 #: dt-login/login-template.php:312 dt-login/login-template.php:374
 #: dt-login/login-template.php:545
-#, fuzzy
-#| msgid "Registered"
 msgid "Register"
 msgstr "নিবন্ধিত"
 
@@ -3641,23 +3549,21 @@ msgid "There are some errors in your form."
 msgstr "আপনার ফর্মটিতে কিছু ত্রুটি রয়েছে।"
 
 #: dt-login/login-template.php:345
-#, fuzzy
-#| msgid "Display Name"
 msgid "Display Name (optional)"
-msgstr "নাম প্রদর্শণ করুন"
+msgstr "প্রদর্শন নাম (ঐচ্ছিক)"
 
 #: dt-login/login-template.php:456
 msgid "User action confirmed."
-msgstr ""
+msgstr "ব্যবহারকারীর কার্যক্রম নিশ্চিত হয়েছে।"
 
 #: dt-login/login-template.php:466 dt-login/login-template.php:491
 #: dt-login/login-template.php:537
 msgid "Login"
-msgstr ""
+msgstr "লগইন"
 
 #: dt-login/login-template.php:472
 msgid "Username or password does not match. Try again."
-msgstr ""
+msgstr "ব্যবহারকারী নাম বা পাসওয়ার্ড মেলেনি। আবার চেষ্টা করুন।"
 
 #: dt-login/login-template.php:489 dt-users/template-new-user.php:121
 #: dt-users/template-new-user.php:122 template-settings.php:661
@@ -3666,13 +3572,11 @@ msgstr "পাসওয়ার্ড"
 
 #: dt-login/login-template.php:490
 msgid "Remember Me"
-msgstr ""
+msgstr "আমাকে মনে রাখুন"
 
 #: dt-login/login-template.php:552
-#, fuzzy
-#| msgid "Reset password"
 msgid "Lost Password"
-msgstr "পাসওয়ার্ড পরিবর্তন করুন"
+msgstr "পাসওয়ার্ড হারিয়ে গেছে"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:222
@@ -3936,8 +3840,6 @@ msgid "New %s"
 msgstr "নতুন %s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Simple Map"
 msgstr "নাম ফিল্টার করুন"
 
@@ -3955,7 +3857,7 @@ msgstr "সম্মিলিত মানচিত্র"
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
-msgstr ""
+msgstr "এই মানচিত্র দেখতে একটি mapbox কী প্রয়োজন; যোগ করতে এখানে ক্লিক করুন।"
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -3966,8 +3868,6 @@ msgid "Transferred Contacts"
 msgstr "স্থানান্তরিত পরিচিতি"
 
 #: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
-#, fuzzy
-#| msgid "Accept"
 msgid "Access"
 msgstr "গ্রহণ করুন"
 
@@ -4149,11 +4049,11 @@ msgstr "প্রজন্ম"
 
 #: dt-metrics/metrics.php:79
 msgid "Genmap"
-msgstr ""
+msgstr "জেনম্যাপ"
 
 #: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
-msgstr ""
+msgstr "মানচিত্রসমূহ"
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4232,22 +4132,16 @@ msgid "stats as of"
 msgstr "হিসাবে পরিসংখ্যান"
 
 #: dt-metrics/records/date-range-activity.php:43
-#, fuzzy
-#| msgid "Activity Log"
 msgid "Activity Logs"
-msgstr "কার্য বিবরণ"
+msgstr "কার্যকলাপ লগসমূহ"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
-#, fuzzy
-#| msgid "Record"
 msgid "Record Type"
 msgstr "রেকর্ড"
 
 #: dt-metrics/records/date-range-activity.php:103
-#, fuzzy
-#| msgid "Activity"
 msgid "Any Activity"
 msgstr "কর্মকাণ্ড"
 
@@ -4257,53 +4151,43 @@ msgid "Total"
 msgstr "মোট"
 
 #: dt-metrics/records/date-range-activity.php:105
-#, fuzzy
-#| msgid "Date Ranges"
 msgid "Date Range"
 msgstr "তারিখ পরিসীমা"
 
 #: dt-metrics/records/date-range-activity.php:106
-#, fuzzy
-#| msgid "Custom"
 msgid "Custom Range"
 msgstr "কাস্টম"
 
 #: dt-metrics/records/date-range-activity.php:107
 msgid "Reload"
-msgstr ""
+msgstr "পুনরায় লোড করুন"
 
 #: dt-metrics/records/date-range-activity.php:108
 #: dt-metrics/records/select-tags-charts.php:91
 #: dt-metrics/records/time-charts.php:122
 msgid "Title"
-msgstr ""
+msgstr "শিরোনাম"
 
 #: dt-metrics/records/date-range-activity.php:109
-#, fuzzy
-#| msgid "No Activity Detected!"
 msgid "Time Activity Recorded"
-msgstr "কোন কার্যকলাপ সনাক্ত করা হয়নি!"
+msgstr "কার্যকলাপ রেকর্ড হওয়ার সময়"
 
 #: dt-metrics/records/date-range-activity.php:110
-#, fuzzy
-#| msgid "Old Value"
 msgid "New Value"
-msgstr "পূর্ব মূল্য"
+msgstr "নতুন মান"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "True"
-msgstr ""
+msgstr "সত্য"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "False"
-msgstr ""
+msgstr "মিথ্যা"
 
 #: dt-metrics/records/dynamic-records-map.php:92
 #: dt-metrics/records/genmap.php:136
-#, fuzzy
-#| msgid "Archived"
 msgid "Show Archived"
-msgstr "আর্কাইভকৃত"
+msgstr "আর্কাইভকৃত দেখান"
 
 #: dt-metrics/records/dynamic-records-map.php:94 template-new-bulk-post.php:264
 msgid "Add Records"
@@ -4311,23 +4195,16 @@ msgstr "রেকর্ড যোগ করুন"
 
 #: dt-metrics/records/dynamic-records-map.php:95
 #: dt-metrics/records/dynamic-records-map.php:98
-#, fuzzy
-#| msgid "Record"
 msgid "Record Types"
-msgstr "রেকর্ড"
+msgstr "রেকর্ডের ধরন"
 
 #: dt-metrics/records/dynamic-records-map.php:96
-#, fuzzy
-#| msgid "prayer"
 msgid "Layer"
-msgstr "প্রার্থনা"
+msgstr "স্তর"
 
 #: dt-metrics/records/dynamic-records-map.php:97
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to delete layer?"
-msgstr "আপনি কি$s মুছে ফেলার বিষয়ে নিশ্চিত?"
+msgstr "আপনি কি নিশ্চিত যে স্তরটি মুছতে চান?"
 
 #: dt-metrics/records/dynamic-records-map.php:100
 #: dt-notifications/notifications.php:920
@@ -4340,40 +4217,32 @@ msgid "System"
 msgstr "পদ্ধতি"
 
 #: dt-metrics/records/genmap.php:23
-#, fuzzy
-#| msgid "Group Generation Tree"
 msgid "GenMapper Trees"
 msgstr "দলীয় প্রজন্ম বংশতালিকা"
 
 #: dt-metrics/records/genmap.php:137
-#, fuzzy
-#| msgid "prayer"
 msgid "Data Layers"
-msgstr "প্রার্থনা"
+msgstr "ডেটা স্তরসমূহ"
 
 #: dt-metrics/records/genmap.php:138
 msgid "Node Color"
-msgstr ""
+msgstr "নোডের রং"
 
 #: dt-metrics/records/genmap.php:139
-#, fuzzy
-#| msgid "Default Filters"
 msgid "Default"
-msgstr "ডিফল্ট ফিল্টার"
+msgstr "ডিফল্ট"
 
 #: dt-metrics/records/genmap.php:140
 msgid "Add Data Layer"
-msgstr ""
+msgstr "ডেটা স্তর যোগ করুন"
 
 #: dt-metrics/records/genmap.php:141
-#, fuzzy
-#| msgid "Show all fields"
 msgid "Show as icons"
-msgstr "সমস্ত ক্ষেত্র দেখান"
+msgstr "আইকন হিসাবে দেখান"
 
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
-msgstr ""
+msgstr "ক্যাপচার করতে ডেটা স্তরের ক্ষেত্র নির্বাচন করুন"
 
 #: dt-metrics/records/genmap.php:143
 msgid "Highlight Active"
@@ -4410,79 +4279,63 @@ msgid "Coaches"
 msgstr "কোচ"
 
 #: dt-metrics/records/genmap.php:156
-#, fuzzy
-#| msgid "Type:"
 msgid "Type"
-msgstr "প্রকার:"
+msgstr "ধরন"
 
 #: dt-metrics/records/genmap.php:159
-#, fuzzy
-#| msgid "Open With"
 msgid "Open"
-msgstr "সঙ্গে খোলা"
+msgstr "খুলুন"
 
 #: dt-metrics/records/genmap.php:161
 msgid "Focus"
-msgstr ""
+msgstr "ফোকাস"
 
 #: dt-metrics/records/genmap.php:162
 msgid "Hide"
-msgstr ""
+msgstr "লুকান"
 
 #: dt-metrics/records/genmap.php:165
-#, fuzzy
-#| msgid "Child Group"
 msgid "Add Child To"
-msgstr "নবীন দল"
+msgstr "চাইল্ড যোগ করুন"
 
 #: dt-metrics/records/genmap.php:167
 msgid "Add Child"
-msgstr ""
+msgstr "চাইল্ড যোগ করুন"
 
 #: dt-metrics/records/genmap.php:168
 msgid "Focus On Node"
-msgstr ""
+msgstr "নোডে ফোকাস করুন"
 
 #: dt-metrics/records/genmap.php:169
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
-msgstr "আপনি কি$s মুছে ফেলার বিষয়ে নিশ্চিত?"
+msgstr "আপনি কি নিশ্চিত যে নোডে ফোকাস করতে চান?"
 
 #: dt-metrics/records/genmap.php:173
 msgid "Infinite Loops"
-msgstr ""
+msgstr "অসীম লুপ"
 
 #: dt-metrics/records/select-tags-charts.php:32
-#, fuzzy
-#| msgid "Fields over Time Charts"
 msgid "Simple Chart"
-msgstr "সময়ের চার্টের উপর ক্ষেত্রগুলো"
+msgstr "সাধারণ চার্ট"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
 "This chart shows the total number for each field value at the end of the "
 "selected date."
 msgstr ""
+"এই চার্টটি নির্বাচিত তারিখের শেষে প্রতিটি ক্ষেত্রের মানের মোট সংখ্যা দেখায়।"
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records"
 msgstr "রেকর্ড যোগ করুন"
 
 #: dt-metrics/records/select-tags-charts.php:92
 #: dt-metrics/records/time-charts.php:123
-#, fuzzy
-#| msgid "No Data Available"
 msgid "No Records Available"
 msgstr "কোন তথ্য নেই"
 
 #: dt-metrics/records/time-charts.php:41
-#, fuzzy
-#| msgid "Advanced Search"
 msgid "Advanced Charts"
 msgstr "উচ্চস্তরের সার্চসমূহ"
 
@@ -4491,30 +4344,22 @@ msgid "Added"
 msgstr "যোগ করা হয়েছে"
 
 #: dt-metrics/records/time-charts.php:110
-#, fuzzy
-#| msgid "Delete"
 msgid "Deleted"
 msgstr "মুছে ফেলুন"
 
 #: dt-metrics/records/time-charts.php:111
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Connected"
-msgstr "সংযুক্ত$s"
+msgstr "সংযুক্ত"
 
 #: dt-metrics/records/time-charts.php:112
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Disconnected"
-msgstr "সংযুক্ত$s"
+msgstr "সংযোগ বিচ্ছিন্ন"
 
 #: dt-metrics/records/time-charts.php:113
 #, php-format
 msgctxt "Total in January"
 msgid "%1$s in %2$s"
-msgstr "%1$s ইঞ্চি %2$s"
+msgstr "%2$s এ %1$s"
 
 #: dt-metrics/records/time-charts.php:116
 msgid "All cumulative totals"
@@ -4525,8 +4370,6 @@ msgid "Single cumulative totals"
 msgstr "একক সমষ্টিগত মোট"
 
 #: dt-metrics/records/time-charts.php:118
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records changes"
 msgstr "রেকর্ড যোগ করুন"
 
@@ -4674,11 +4517,11 @@ msgstr "লোক সম্প্রপদায়"
 
 #: dt-people-groups/people-groups-base.php:184
 msgid "Contacts Total"
-msgstr ""
+msgstr "মোট পরিচিতি"
 
 #: dt-people-groups/people-groups-base.php:203
 msgid "Groups Total"
-msgstr ""
+msgstr "মোট দল"
 
 #: dt-people-groups/people-groups-base.php:218
 #: dt-posts/custom-post-type.php:186
@@ -4687,19 +4530,19 @@ msgstr "সর্বশেষ সংশোধন"
 
 #: dt-people-groups/people-groups-base.php:283
 msgid "People Group Code"
-msgstr ""
+msgstr "লোক সম্প্রদায় কোড"
 
 #: dt-people-groups/people-groups-base.php:290
 msgid "People ID"
-msgstr ""
+msgstr "লোক আইডি"
 
 #: dt-people-groups/people-groups-base.php:297
 msgid "Primary Language"
-msgstr ""
+msgstr "প্রাথমিক ভাষা"
 
 #: dt-people-groups/people-groups-base.php:304
 msgid "Country"
-msgstr ""
+msgstr "দেশ"
 
 #: dt-people-groups/people-groups-base.php:316
 msgctxt "Optional Documentation"
@@ -4713,11 +4556,11 @@ msgstr "এই দল যে লোক সম্প্রদায়কে প্�
 
 #: dt-people-groups/people-groups-base.php:345
 msgid "Connections"
-msgstr ""
+msgstr "সংযোগসমূহ"
 
 #: dt-people-groups/people-groups-base.php:347
 msgid "Joshua Project"
-msgstr ""
+msgstr "যিহোশূয়া প্রজেক্ট"
 
 #: dt-people-groups/people-groups-post-type.php:204
 msgid "Add/Update People Group"
@@ -4737,7 +4580,7 @@ msgstr "লোক সম্প্রদায় শীরনাম এখানে
 
 #: dt-posts/custom-post-type.php:179
 msgid "Picture"
-msgstr ""
+msgstr "ছবি"
 
 #: dt-posts/custom-post-type.php:209
 msgid "Tags"
@@ -4753,9 +4596,6 @@ msgid "Un-Follow"
 msgstr "অনুসরণ না করা"
 
 #: dt-posts/custom-post-type.php:248
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid "The general location where this contact is located."
 msgctxt "Optional Documentation"
 msgid "The general location where this record is located."
 msgstr "এই পরিচিতিটি যেখানে রয়েছে সেই সাধারণ অবস্থান।"
@@ -4767,29 +4607,22 @@ msgstr "অবস্থান বা ঠিকানা"
 #: dt-posts/dt-posts.php:101
 msgid ""
 "This record was automatically updated rather than creating a new record."
-msgstr ""
+msgstr "নতুন রেকর্ড তৈরি না করে এই রেকর্ডটি স্বয়ংক্রিয়ভাবে আপডেট করা হয়েছে।"
 
 #: dt-posts/dt-posts.php:1650
-#, fuzzy, php-format
-#| msgid "Magic Link Submission"
+#, php-format
 msgid "%s Submission"
-msgstr "ম্যাজিক লিঙ্ক জমা"
+msgstr "%s জমা"
 
 #: dt-posts/dt-posts.php:1650
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Link"
-msgstr "ম্যাজিক লিঙ্ক জমা"
+msgstr "ম্যাজিক লিঙ্ক"
 
 #: dt-posts/dt-posts.php:1652 dt-posts/dt-posts.php:2199
-#, fuzzy
-#| msgid "Revert Activity"
 msgid "Revert Bot"
-msgstr "পূর্বের কর্মকাণ্ডে ফিরুন"
+msgstr "রিভার্ট বট"
 
 #: dt-posts/dt-posts.php:2439
-#, fuzzy
-#| msgid "Post already shared with user."
 msgid "Record already shared with user."
 msgstr "পোস্টটি ইতিমধ্যে ব্যবহারকারীর সাথে শেয়ার করা হয়েছে।"
 
@@ -5026,9 +4859,7 @@ msgid "Connected to %s"
 msgstr "এর সাথে সংযুক্ত %s"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
-#, fuzzy, php-format
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
+#, php-format
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
 msgstr "%1$s যোগ করা হয়েছে %2$s"
@@ -5041,20 +4872,16 @@ msgid "Removed connection to %s"
 msgstr "সংযোগ থেকে মুছে ফেলা হয়েছে %s"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
-#, fuzzy, php-format
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
+#, php-format
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
-msgstr "%1$s থেকে মুছে ফেলা %2$s"
+msgstr "%1$s %2$s থেকে সরানো হয়েছে"
 
 #: dt-posts/posts.php:416
-#, fuzzy, php-format
-#| msgctxt "Total in January"
-#| msgid "%1$s in %2$s"
+#, php-format
 msgctxt "User Select: User1"
 msgid "%1$s: %2$s"
-msgstr "%1$s ইঞ্চি %2$s"
+msgstr "%1$s: %2$s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -5090,23 +4917,19 @@ msgid "%1$s removed from locations"
 msgstr "%1$s এর অবস্থান থেকে সরিয়ে ফেলা হয়েছে"
 
 #: dt-posts/posts.php:481 dt-posts/posts.php:498
-#, fuzzy, php-format
+#, php-format
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "%s অবস্থানসমূহে যোগ করা হয়েছে"
 
 #: dt-posts/posts.php:512
-#, fuzzy, php-format
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
+#, php-format
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
 msgstr "%1$s থেকে মুছে ফেলা %2$s"
 
 #: dt-posts/posts.php:515
-#, fuzzy, php-format
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
+#, php-format
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
 msgstr "%1$s যোগ করা হয়েছে %2$s"
@@ -5190,8 +5013,6 @@ msgid "Unshared with %s"
 msgstr "শেয়ার করা হয়নি %s"
 
 #: dt-posts/posts.php:2527
-#, fuzzy
-#| msgid "Remove"
 msgid "Removed User"
 msgstr "অপসারণ"
 
@@ -5214,28 +5035,33 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"হ্যালো {{name}},\n"
+"\n"
+"আপনার অ্যাপে অ্যাক্সেস করতে অনুগ্রহ করে নীচের বোতামে ক্লিক করুন।\n"
+"\n"
+"{{link}}\n"
+"\n"
+"ধন্যবাদ!"
 
 #: dt-reports/magic-url-bulk-send.php:51
 msgid "Configure email subject"
-msgstr ""
+msgstr "ইমেইল বিষয় কনফিগার করুন"
 
 #: dt-reports/magic-url-bulk-send.php:54
 msgid "{{app}} will be replaced with the selected app name."
-msgstr ""
+msgstr "{{app}} নির্বাচিত অ্যাপের নাম দিয়ে প্রতিস্থাপিত হবে।"
 
 #: dt-reports/magic-url-bulk-send.php:56
 msgid "Configure email message"
-msgstr ""
+msgstr "ইমেইল বার্তা কনফিগার করুন"
 
 #: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:257
-#, fuzzy
-#| msgid "Select app to email"
 msgid "Selected app name"
 msgstr "ইমেল করতে অ্যাপ নির্বাচন করুন"
 
 #: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:263
 msgid "Unique link to access the app."
-msgstr ""
+msgstr "অ্যাপে অ্যাক্সেস করার জন্য অনন্য লিঙ্ক।"
 
 #: dt-reports/magic-url-bulk-send.php:72
 msgid "Select app to email"
@@ -5247,33 +5073,27 @@ msgstr "আপনাকে অবশ্যই একটি অ্যাপ ন�
 
 #: dt-reports/magic-url-landing-page.php:29
 #: dt-reports/magic-url-landing-page.php:33
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Invalid Link"
-msgstr "ম্যাজিক লিঙ্ক জমা"
+msgstr "অবৈধ লিঙ্ক"
 
 #: dt-reports/magic-url-landing-page.php:38
 msgid "Link key is no longer valid or has expired."
-msgstr ""
+msgstr "লিঙ্ক কী আর বৈধ নেই বা মেয়াদ শেষ হয়ে গেছে।"
 
 #: dt-reports/magic-url-landing-page.php:39
 #, php-format
 msgid "Please %s, or locate a more recent key, or request a new one."
-msgstr ""
+msgstr "অনুগ্রহ করে %s করুন, অথবা একটি সাম্প্রতিক কী খুঁজুন, অথবা একটি নতুন অনুরোধ করুন।"
 
 #: dt-reports/magic-url-landing-page.php:39
 msgid "login"
-msgstr ""
+msgstr "লগইন"
 
 #: dt-reports/magic-url-setup.php:30
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Links"
 msgstr "ম্যাজিক লিঙ্ক জমা"
 
 #: dt-reports/magic-url-setup.php:31
-#, fuzzy
-#| msgid "Apps available on this record."
 msgid "Magic Links available on this record."
 msgstr "এই রেকর্ডে উপলব্ধ অ্যাপস।"
 
@@ -5287,6 +5107,13 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"হ্যালো,\n"
+"\n"
+"আপনার অ্যাপে অ্যাক্সেস করতে অনুগ্রহ করে নীচের বোতামে ক্লিক করুন।\n"
+"\n"
+"{{link}}\n"
+"\n"
+"ধন্যবাদ!"
 
 #: dt-reports/magic-url-setup.php:248
 msgid "Add email address"
@@ -5309,6 +5136,8 @@ msgid ""
 "This app is not yet activated for this user. Enable the app to generate a "
 "link."
 msgstr ""
+"এই ব্যবহারকারীর জন্য এই অ্যাপটি এখনও সক্রিয় হয়নি। একটি লিঙ্ক তৈরি করতে অ্যাপটি "
+"সক্ষম করুন।"
 
 #: dt-reports/magic-url-setup.php:465 template-settings.php:265
 msgid "App Activation"
@@ -5320,28 +5149,24 @@ msgid "Enable"
 msgstr "সক্ষম করুন"
 
 #: dt-reports/magic-url-setup.php:483
-#, fuzzy
-#| msgid "View User"
 msgid "View"
 msgstr "ব্যবহারকারী দেখুন"
 
 #: dt-reports/magic-url-setup.php:512
 msgid "QR code"
-msgstr ""
+msgstr "QR কোড"
 
 #: dt-reports/magic-url-setup.php:521
 msgid "Reset"
-msgstr ""
+msgstr "রিসেট"
 
 #: dt-reports/magic-url-setup.php:526
-#, fuzzy
-#| msgid "Open With"
 msgid "Reset link"
-msgstr "সঙ্গে খোলা"
+msgstr "লিঙ্ক রিসেট করুন"
 
 #: dt-reports/magic-url-setup.php:528
 msgid "This app is currently disabled."
-msgstr ""
+msgstr "এই অ্যাপটি বর্তমানে নিষ্ক্রিয়।"
 
 #: dt-reports/reports.php:160
 msgid "Added new report"
@@ -5543,14 +5368,10 @@ msgid "Travel or Away Dates"
 msgstr "ভ্রমণের অথবা দুরে থাকার তারিখ সমূহ"
 
 #: dt-users/template-user-management.php:191
-#, fuzzy
-#| msgid "Users"
 msgid "User Apps"
 msgstr "ইউজার"
 
 #: dt-users/template-user-management.php:197
-#, fuzzy
-#| msgid "App Activation"
 msgid "Activation"
 msgstr "অ্যাপ সক্রিয়করণ"
 
@@ -5568,8 +5389,6 @@ msgid "Edit User"
 msgstr "ব্যবহারকারী সম্পাদনা করুন"
 
 #: dt-users/template-user-management.php:225
-#, fuzzy
-#| msgid "Password"
 msgid "Email Password Reset"
 msgstr "পাসওয়ার্ড"
 
@@ -5718,14 +5537,10 @@ msgid "User Language"
 msgstr "ব্যবহারকারীর ভাষা"
 
 #: dt-users/user-initial-setup.php:44
-#, fuzzy
-#| msgid "Invite User"
 msgid "Initial User Setup!"
 msgstr "ব্যবহারকারীকে আমন্ত্রণ জানান"
 
 #: dt-users/user-initial-setup.php:52
-#, fuzzy
-#| msgid "User Language"
 msgid "Default Language"
 msgstr "ব্যবহারকারীর ভাষা"
 
@@ -5785,14 +5600,12 @@ msgstr "ব্যবহারকারী দেখুন"
 
 #: dt-users/user-management.php:229
 msgid "Go"
-msgstr ""
+msgstr "যান"
 
 #: dt-users/user-management.php:232
-#, fuzzy, php-format
-#| msgctxt "Showing 30 items matching bob"
-#| msgid "Showing %1$s items matching %2$s"
+#, php-format
 msgid "Showing %1$s of %2$s"
-msgstr "%1$s আইটেম %2$s এর সাথে মেলে Showing"
+msgstr "%2$s এর মধ্যে %1$s দেখানো হচ্ছে"
 
 #: dt-users/user-management.php:353
 #, php-format
@@ -5827,11 +5640,11 @@ msgstr "%s এ নিযুক্তি বাতিল হয়েছে"
 
 #: dt-users/users.php:124
 msgid "ID"
-msgstr ""
+msgstr "আইডি"
 
 #: dt-users/users.php:154
 msgid "Locale"
-msgstr ""
+msgstr "লোকেল"
 
 #: dt-users/users.php:178
 msgid "Away"
@@ -5911,9 +5724,9 @@ msgid "See what browser you are using."
 msgstr "আপনি কোন ব্রাউজার ব্যবহার করছেন তা দেখুন।"
 
 #: single-template.php:99 single-template.php:107
-#, fuzzy, php-format
+#, php-format
 msgid "This %s needs an update."
-msgstr "এই$s এর একটি আপডেট দরকার।"
+msgstr "এই %s এর একটি আপডেট দরকার।"
 
 #: single-template.php:101 single-template.php:109
 msgid "Please provide an update by posting a comment."
@@ -5925,13 +5738,13 @@ msgstr "সমস্ত বিশদ ক্ষেত্র সম্পাদন
 
 #: single-template.php:386
 msgid "Show Hidden Tiles"
-msgstr ""
+msgstr "লুকানো টাইল দেখান"
 
 #: single-template.php:409
-#, fuzzy, php-format
+#, php-format
 msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
-msgstr "আপনি কি$s মুছে ফেলার বিষয়ে নিশ্চিত?"
+msgstr "আপনি কি %s মুছে ফেলার বিষয়ে নিশ্চিত?"
 
 #: template-merge-post-details.php:99
 msgid "Open Modal"
@@ -6087,16 +5900,14 @@ msgid "No Travel Scheduled"
 msgstr "কোনও ভ্রমণ তারিখ নেই"
 
 #: template-settings.php:489
-#, fuzzy
-#| msgid "Contact Info Changed"
 msgid "Contact Info"
-msgstr "পরিচিতির তথ্য পরিবর্তিত"
+msgstr "পরিচিতির তথ্য"
 
 #: template-settings.php:493
 #, php-format
 msgctxt "Email will be sent to: [email]"
 msgid "Email notifications will be sent to: %s"
-msgstr ""
+msgstr "ইমেইল প্রজ্ঞাপন পাঠানো হবে: %s"
 
 #: template-settings.php:510
 msgid "Email preferences"
@@ -6140,8 +5951,6 @@ msgid "edit image on gravatar.com"
 msgstr "gravatar.com এ ছবি সম্পাদনা করুন"
 
 #: template-settings.php:637
-#, fuzzy
-#| msgid ""
 #| "Disciple Tools System does not store images. For profile images we use "
 #| "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
 #| "suggest not using a personal photo, but instead choose a cartoon, "
@@ -6159,7 +5968,7 @@ msgstr ""
 
 #: template-settings.php:638
 msgid "Upload new profile image"
-msgstr ""
+msgstr "নতুন প্রোফাইল ছবি আপলোড করুন"
 
 #: template-settings.php:648 template-settings.php:649
 msgid "Username cannot be changed"
@@ -6206,7 +6015,6 @@ msgstr "প্রাপ্ত ডুপ্লিকেটসমূহ:"
 #~ msgid "Reset password"
 #~ msgstr "পাসওয়ার্ড পরিবর্তন করুন"
 
-#, fuzzy
 #~| msgid "Post Type"
 #~ msgid "Post Types"
 #~ msgstr "পোস্টের ধরণ"
@@ -6281,22 +6089,18 @@ msgstr "প্রাপ্ত ডুপ্লিকেটসমূহ:"
 #~ msgid "Groups Maps"
 #~ msgstr "গ্রুপ মানচিত্র"
 
-#, fuzzy
 #~| msgid "Add Records"
 #~ msgid "Records Map"
 #~ msgstr "রেকর্ড যোগ করুন"
 
-#, fuzzy
 #~| msgid "Metrics"
 #~ msgid "Dynamic Metrics"
 #~ msgstr "মেট্রিক্স"
 
-#, fuzzy
 #~| msgid "Daily Activity"
 #~ msgid "Field Activity"
 #~ msgstr "দৈনিক কর্মকাণ্ড"
 
-#, fuzzy
 #~| msgid "All cumulative totals"
 #~ msgid "Field Cumulative Values"
 #~ msgstr "সকল সমষ্টিগত মোট"
@@ -6304,17 +6108,14 @@ msgstr "প্রাপ্ত ডুপ্লিকেটসমূহ:"
 #~ msgid "No Answer"
 #~ msgstr "কোনও উত্তর নেই"
 
-#, fuzzy
 #~| msgid "No"
 #~ msgid "No."
 #~ msgstr "না"
 
-#, fuzzy
 #~| msgid "Generation"
 #~ msgid "Generation Map"
 #~ msgstr "প্রজন্ম"
 
-#, fuzzy
 #~| msgid "List"
 #~ msgid "Map List Filter"
 #~ msgstr "তালিকা"
@@ -6333,17 +6134,14 @@ msgstr "প্রাপ্ত ডুপ্লিকেটসমূহ:"
 #~ msgid "Assigned to: %s"
 #~ msgstr "নিয়োগ করা হয়েছেঃ %s"
 
-#, fuzzy
 #~| msgid "Generation"
 #~ msgid "Generate"
 #~ msgstr "প্রজন্ম"
 
-#, fuzzy
 #~| msgid "show all"
 #~ msgid "Show All"
 #~ msgstr "সব দেখাও"
 
-#, fuzzy
 #~| msgid "Lost your password"
 #~ msgid "Lost your password?"
 #~ msgstr "আপনার পাসওয়ার্ড হারিয়ে ফেলেছেন"
