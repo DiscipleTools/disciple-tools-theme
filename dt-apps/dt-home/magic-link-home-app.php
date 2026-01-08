@@ -89,8 +89,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             // Add launcher nav to other app-type magic link apps (not home screen)
             // Check for launcher parameter first (before head renders)
             add_action( 'dt_blank_head', [ $this, 'maybe_show_launcher_wrapper' ], 5 );
-            add_action( 'dt_blank_head', [ $this, 'maybe_enqueue_launcher_nav_css' ], 10 );
-            add_action( 'dt_blank_footer', [ $this, 'maybe_include_launcher_nav' ], 10 );
         }
 
         /**
@@ -126,7 +124,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         wp_enqueue_style( 'material-font-icons-css', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css', [], '7.4.47' );
 
         // Enqueue home screen specific styles (includes launcher nav styles)
-        wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.19' );
+        wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.1.0' );
 
         // Enqueue theme toggle JavaScript
         wp_enqueue_script( 'dt-home-theme-toggle', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/theme-toggle.js', [], '1.0.0', true );
@@ -213,51 +211,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
      */
     public function header_javascript() {
         ?>
-        <script>
-            // Initialize theme CSS variables immediately before page render
-            (function() {
-                // Get saved theme preference or system preference
-                const savedTheme = localStorage.getItem('dt-home-theme');
-                const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
-
-                // Set CSS variables immediately on root
-                const root = document.documentElement;
-                if (initialTheme === 'dark') {
-                    root.classList.add('theme-dark');
-                    root.classList.remove('theme-light');
-                    root.style.setProperty('--app-card-bg', '#2a2a2a');
-                    root.style.setProperty('--app-card-border', '#404040');
-                    root.style.setProperty('--app-card-text', '#f5f5f5');
-                    root.style.setProperty('--app-card-shadow', 'rgba(0,0,0,0.3)');
-                    root.style.setProperty('--app-card-hover-border', '#4a9eff');
-                } else {
-                    root.classList.add('theme-light');
-                    root.classList.remove('theme-dark');
-                    root.style.setProperty('--app-card-bg', '#ffffff');
-                    root.style.setProperty('--app-card-border', '#e1e5e9');
-                    root.style.setProperty('--app-card-text', '#0a0a0a');
-                    root.style.setProperty('--app-card-shadow', 'rgba(0,0,0,0.1)');
-                    root.style.setProperty('--app-card-hover-border', '#667eea');
-                }
-
-                // Also set on body when it becomes available
-                if (document.body) {
-                    document.body.classList.remove('theme-light', 'theme-dark');
-                    document.body.classList.add(`theme-${initialTheme}`);
-                } else {
-                    // Wait for body to be available
-                    const observer = new MutationObserver(function(mutations) {
-                        if (document.body) {
-                            document.body.classList.remove('theme-light', 'theme-dark');
-                            document.body.classList.add(`theme-${initialTheme}`);
-                            observer.disconnect();
-                        }
-                    });
-                    observer.observe(document.documentElement, { childList: true, subtree: true });
-                }
-            })();
-        </script>
         <?php
     }
 
@@ -292,8 +245,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
              * Initialize home screen
              */
             jQuery(document).ready(function($) {
-                // Initialize theme system
-                initializeTheme();
 
                 // Check authentication before loading content
                 // If user is not authenticated, they will be redirected by PHP before this JavaScript runs
@@ -317,172 +268,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                     // default to apps
                     loadApps();
                 }
-            });
-
-            /**
-             * Initialize theme system
-             */
-            function initializeTheme() {
-                // Apply initial theme based on saved preference or system preference
-                const savedTheme = localStorage.getItem('dt-home-theme');
-                const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
-
-                // Apply theme to html element (for early initialization)
-                const html = document.documentElement;
-                html.classList.remove('theme-light', 'theme-dark');
-                html.classList.add(`theme-${initialTheme}`);
-
-                // Apply theme to body
-                if (document.body) {
-                    document.body.classList.remove('theme-light', 'theme-dark');
-                    document.body.classList.add(`theme-${initialTheme}`);
-                }
-
-                // Set CSS custom properties
-                const root = document.documentElement;
-                if (initialTheme === 'dark') {
-                    root.style.setProperty('--theme-mode', 'dark');
-                    root.style.setProperty('--body-background-color', '#1a1a1a');
-                    root.style.setProperty('--text-color', '#f5f5f5');
-                    root.style.setProperty('--surface-0', '#2a2a2a');
-                    root.style.setProperty('--surface-1', '#1a1a1a');
-                    root.style.setProperty('--surface-2', '#333333');
-                    root.style.setProperty('--primary-color', '#4a9eff');
-                    root.style.setProperty('--border-color', '#404040');
-                    root.style.setProperty('--shadow-color', 'rgba(0,0,0,0.3)');
-                    // App card CSS variables for dark mode
-                    root.style.setProperty('--app-card-bg', '#2a2a2a');
-                    root.style.setProperty('--app-card-border', '#404040');
-                    root.style.setProperty('--app-card-text', '#f5f5f5');
-                    root.style.setProperty('--app-card-shadow', 'rgba(0,0,0,0.3)');
-                    root.style.setProperty('--app-card-hover-border', '#4a9eff');
-                } else {
-                    root.style.setProperty('--theme-mode', 'light');
-                    root.style.setProperty('--body-background-color', '#e2e2e2');
-                    root.style.setProperty('--text-color', '#0a0a0a');
-                    root.style.setProperty('--surface-0', '#e2e2e2');
-                    root.style.setProperty('--surface-1', 'hsla(0, 0%, 90%, 1)');
-                    root.style.setProperty('--surface-2', '#c2bfbf');
-                    root.style.setProperty('--primary-color', '#667eea');
-                    root.style.setProperty('--border-color', '#e1e5e9');
-                    root.style.setProperty('--shadow-color', 'rgba(0,0,0,0.1)');
-                    // App card CSS variables for light mode
-                    root.style.setProperty('--app-card-bg', '#ffffff');
-                    root.style.setProperty('--app-card-border', '#e1e5e9');
-                    root.style.setProperty('--app-card-text', '#0a0a0a');
-                    root.style.setProperty('--app-card-shadow', 'rgba(0,0,0,0.1)');
-                    root.style.setProperty('--app-card-hover-border', '#667eea');
-                }
-
-                // Also set on document root for broader compatibility
-                document.documentElement.style.setProperty('--theme-mode', initialTheme);
-
-                // Force body background color change
-                document.body.style.backgroundColor = initialTheme === 'dark' ? '#1a1a1a' : '#e2e2e2';
-
-                // Apply direct styles for initial theme
-                applyDirectStyles(initialTheme);
-            }
-
-            /**
-             * Apply direct styles to elements
-             */
-            function applyDirectStyles(theme) {
-                const container = document.querySelector('.home-screen-container');
-                const content = document.querySelector('.home-screen-content');
-                const appCards = document.querySelectorAll('.app-card');
-                const appTitles = document.querySelectorAll('.app-title');
-                const sectionTitles = document.querySelectorAll('.section-title');
-
-                if (theme === 'dark') {
-                    // Dark mode styles
-                    if (container) {
-                        container.style.backgroundColor = '#1a1a1a';
-                        container.style.color = '#f5f5f5';
-                    }
-                    if (content) {
-                        //content.style.backgroundColor = '#1a1a1a';
-                        content.style.color = '#f5f5f5';
-                    }
-                    appCards.forEach(card => {
-                        card.style.setProperty('background-color', '#2a2a2a', 'important');
-                        card.style.setProperty('border-color', '#404040', 'important');
-                        card.style.setProperty('color', '#f5f5f5', 'important');
-                        card.style.setProperty('box-shadow', '0 1px 3px rgba(0,0,0,0.3)', 'important');
-                    });
-                    appTitles.forEach(title => {
-                        title.style.color = '#f5f5f5';
-                    });
-                    sectionTitles.forEach(title => {
-                        title.style.color = '#f5f5f5';
-                    });
-                } else {
-                    // Light mode styles
-                    if (container) {
-                        container.style.backgroundColor = 'hsla(0, 0%, 90%, 1)';
-                        container.style.color = '#0a0a0a';
-                    }
-                    if (content) {
-                        //content.style.backgroundColor = 'hsla(0, 0%, 90%, 1)';
-                        content.style.color = '#0a0a0a';
-                    }
-                    appCards.forEach(card => {
-                        card.style.setProperty('background-color', '#ffffff', 'important');
-                        card.style.setProperty('border-color', '#e1e5e9', 'important');
-                        card.style.setProperty('color', '#0a0a0a', 'important');
-                        card.style.setProperty('box-shadow', '0 1px 3px rgba(0,0,0,0.1)', 'important');
-                    });
-                    appTitles.forEach(title => {
-                        title.style.color = '#0a0a0a';
-                    });
-                    sectionTitles.forEach(title => {
-                        title.style.color = '#0a0a0a';
-                    });
-                }
-            }
-
-            /**
-             * Update icon colors when theme changes (only for icons without custom colors)
-             * Handles both app icons and link icons
-             * Note: Image icons are skipped as they have their own colors
-             */
-            function updateIconColorsForTheme(theme) {
-                const defaultColor = theme === 'dark' ? '#ffffff' : '#0a0a0a';
-
-                // Update app icons (only <i> tags, skip <img> tags)
-                const appIconElements = document.querySelectorAll('.app-icon i');
-                appIconElements.forEach(icon => {
-                    // Only update icons that don't have custom colors
-                    const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
-                    if (!hasCustomColor) {
-                        // Set inline style to override CSS default
-                        icon.style.setProperty('color', defaultColor, 'important');
-                    }
-                    // Icons with custom colors are left unchanged
-                });
-
-                // Update link icons (same logic for consistency)
-                const linkIcons = document.querySelectorAll('.link-item__icon i');
-                linkIcons.forEach(icon => {
-                    // Only update icons that don't have custom colors
-                    const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
-                    if (!hasCustomColor) {
-                        // Set inline style to override CSS default
-                        icon.style.setProperty('color', defaultColor, 'important');
-                    }
-                    // Icons with custom colors are left unchanged
-                });
-            }
-
-            /**
-             * Listen for theme changes from the toggle component
-             */
-            document.addEventListener('theme-changed', function(event) {
-                // Apply direct styles when theme changes
-                applyDirectStyles(event.detail.theme);
-                // Update icon colors for theme change
-                updateIconColorsForTheme(event.detail.theme);
             });
 
             /**
@@ -588,7 +373,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                         // Determine icon display: image or icon class
                         let iconHtml = '';
                         const isImageIcon = app.icon && (app.icon.startsWith('http') || app.icon.startsWith('/'));
-                        
+
                         if (isImageIcon) {
                             // Render image icon
                             const safeIconUrl = app.icon.replace(/"/g, '&quot;');
@@ -598,19 +383,12 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                             // Render icon class with color support
                             // Determine default icon color based on theme
                             // Custom colors override defaults
-                            let iconColor = null;
+                            let iconColor = 'inherit';
                             const hasCustomColor = app.color && app.color.trim() !== '';
 
                             if (hasCustomColor) {
                                 // Use custom color if specified
                                 iconColor = app.color.trim();
-                            } else {
-                                // Use theme-aware default if no custom color
-                                const isDarkMode = document.body.classList.contains('theme-dark') ||
-                                                 document.documentElement.classList.contains('theme-dark') ||
-                                                 document.body.classList.contains('dark') ||
-                                                 document.documentElement.classList.contains('dark');
-                                iconColor = isDarkMode ? '#ffffff' : '#0a0a0a';
                             }
                             iconHtml = `<i class="${app.icon}" style="color: ${iconColor};" data-has-custom-color="${hasCustomColor}"></i>`;
                         }
@@ -633,56 +411,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
                 //console.log('Final HTML being inserted:', html);
                 $('#apps-grid').html(html);
-
-                // Ensure icon colors are correctly applied after HTML insertion
-                // This handles theme-aware defaults and preserves custom colors
-                // Note: Only applies to <i> tags, not <img> tags
-                setTimeout(function() {
-                    const appIconElements = document.querySelectorAll('#apps-grid .app-icon i');
-                    appIconElements.forEach(function(icon) {
-                        const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
-                        const currentColor = icon.style.color;
-
-                        if (!hasCustomColor) {
-                            // Apply theme-aware default for icons without custom colors
-                            const isDarkMode = document.body.classList.contains('theme-dark') ||
-                                             document.documentElement.classList.contains('theme-dark');
-                            const defaultColor = isDarkMode ? '#ffffff' : '#0a0a0a';
-                            icon.style.setProperty('color', defaultColor, 'important');
-                        } else if (currentColor) {
-                            // Ensure custom color is preserved with important flag
-                            icon.style.setProperty('color', currentColor, 'important');
-                        }
-                    });
-                }, 100);
-
-                // Reapply theme styles to newly loaded app cards
-                const currentTheme = document.body.classList.contains('theme-dark') ? 'dark' : 'light';
-
-                // Use theme toggle instance if available, otherwise fall back to local function
-                if (window.themeToggleInstance) {
-                    window.themeToggleInstance.reapplyStyles();
-                } else {
-                    applyDirectStyles(currentTheme);
-                }
-
-                // Re-apply icon colors after theme styles are reapplied
-                setTimeout(function() {
-                    // Only update <i> tags, skip <img> tags
-                    const appIconElements = document.querySelectorAll('#apps-grid .app-icon i');
-                    appIconElements.forEach(function(icon) {
-                        const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
-
-                        if (!hasCustomColor) {
-                            // Apply theme-aware default
-                            const isDarkMode = document.body.classList.contains('theme-dark') ||
-                                             document.documentElement.classList.contains('theme-dark');
-                            const defaultColor = isDarkMode ? '#ffffff' : '#0a0a0a';
-                            icon.style.setProperty('color', defaultColor, 'important');
-                        }
-                        // Custom colors are already set inline, so they should be preserved
-                    });
-                }, 200);
             }
 
             /**
@@ -707,7 +435,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
                         // Determine default icon color based on theme (same logic as apps)
                         // Custom colors override defaults
-                        let iconColor = null;
+                        let iconColor = 'inherit';
                         const hasCustomColor = link.color && typeof link.color === 'string' && link.color.trim() !== '';
 
                         if (hasCustomColor) {
@@ -716,15 +444,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                             if (hexColorPattern.test(link.color.trim())) {
                                 iconColor = link.color.trim();
                             }
-                        }
-
-                        // If no valid custom color, use theme-aware default
-                        if (!iconColor) {
-                            const isDarkMode = document.body.classList.contains('theme-dark') ||
-                                             document.documentElement.classList.contains('theme-dark') ||
-                                             document.body.classList.contains('dark') ||
-                                             document.documentElement.classList.contains('dark');
-                            iconColor = isDarkMode ? '#ffffff' : '#0a0a0a';
                         }
 
                         // Determine icon display: image or icon class
@@ -759,27 +478,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 }
 
                 $('#links-list').html(html);
-
-                // Ensure icon colors are correctly applied after HTML insertion (same as apps)
-                // This handles theme-aware defaults and preserves custom colors
-                setTimeout(function() {
-                    const linkIcons = document.querySelectorAll('#links-list .link-item__icon i');
-                    linkIcons.forEach(function(icon) {
-                        const hasCustomColor = icon.getAttribute('data-has-custom-color') === 'true';
-                        const currentColor = icon.style.color;
-
-                        if (!hasCustomColor) {
-                            // Apply theme-aware default for icons without custom colors
-                            const isDarkMode = document.body.classList.contains('theme-dark') ||
-                                             document.documentElement.classList.contains('theme-dark');
-                            const defaultColor = isDarkMode ? '#ffffff' : '#0a0a0a';
-                            icon.style.setProperty('color', defaultColor, 'important');
-                        } else if (currentColor) {
-                            // Ensure custom color is preserved with important flag
-                            icon.style.setProperty('color', currentColor, 'important');
-                        }
-                    });
-                }, 100);
             }
 
             /**
@@ -1028,29 +726,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
     }
 
     /**
-     * Determine if the current request is being loaded inside the launcher iframe.
-     *
-     * @return bool
-     */
-    private function is_launcher_iframe_request() {
-        if ( isset( $_GET['launcher_iframe'] ) && $_GET['launcher_iframe'] === '1' ) {
-            error_log( 'DT Home: Detected launcher_iframe query parameter.' );
-            return true;
-        }
-
-        $sec_fetch_dest = isset( $_SERVER['HTTP_SEC_FETCH_DEST'] )
-            ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['HTTP_SEC_FETCH_DEST'] ) ) )
-            : '';
-
-        if ( $sec_fetch_dest === 'iframe' ) {
-            error_log( 'DT Home: Detected Sec-Fetch-Dest: iframe header.' );
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Get target app URL without launcher parameter
      * For cross-domain custom apps, gets the app URL from the app_url parameter
      *
@@ -1097,137 +772,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
     }
 
     /**
-     * Check if current page is an app-type app (not home screen)
-     *
-     * @return bool True if on an app-type app page, false otherwise
-     */
-    private function is_app_type_page() {
-        // Debug logging
-        error_log( 'DT Home: is_app_type_page() called' );
-
-        if ( $this->is_launcher_iframe_request() ) {
-            error_log( 'DT Home: Request identified as launcher iframe. Treating as non app-type page.' );
-            return false;
-        }
-
-        // Check for launcher parameter first - if present, always show launcher
-        // This handles both coded apps and custom apps (including cross-domain)
-        if ( $this->has_launcher_parameter() ) {
-            error_log( 'DT Home: launcher=1 parameter detected, returning true' );
-            return true;
-        }
-
-        // Get current URL path
-        $url_path = dt_get_url_path();
-        error_log( 'DT Home: Current URL path: ' . $url_path );
-
-        // Parse URL path manually to extract root/type
-        // Magic link URL format: /{root}/{type}/{key}/{action}
-        $url_parts = explode( '/', trim( $url_path, '/' ) );
-        error_log( 'DT Home: URL parts array: ' . print_r( $url_parts, true ) );
-
-        if ( count( $url_parts ) < 3 ) {
-            error_log( 'DT Home: URL path too short, returning false' );
-            return false;
-        }
-
-        $current_root = $url_parts[0] ?? '';
-        $current_type = $url_parts[1] ?? '';
-
-        error_log( 'DT Home: Parsed root: ' . $current_root . ', type: ' . $current_type );
-
-        // If we're on the home screen itself, return false
-        if ( $current_root === 'apps' && $current_type === 'launcher' ) {
-            // Check if there's an action in the URL (e.g., /app/{slug})
-            $action = $url_parts[3] ?? '';
-            if ( empty( $action ) || ! str_starts_with( $action, 'app/' ) ) {
-                error_log( 'DT Home: On home screen (no action or action not app/*), returning false' );
-                return false; // We're on the home screen
-            }
-        }
-
-        // Get all registered magic link apps
-        $apps_manager = DT_Home_Apps::instance();
-        $apps = $apps_manager->get_apps_for_user( get_current_user_id() );
-
-        error_log( 'DT Home: Checking ' . count( $apps ) . ' apps' );
-        error_log( 'DT Home: Current URL root: ' . $current_root . ', type: ' . $current_type );
-
-        // Get current full URL for comparison
-        $http_host = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
-        $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
-        if ( empty( $http_host ) || empty( $request_uri ) ) {
-            return false;
-        }
-        $current_full_url = ( is_ssl() ? 'https://' : 'http://' ) . $http_host . $request_uri;
-        // Remove launcher parameter for comparison
-        $current_full_url_no_launcher = remove_query_arg( 'launcher', $current_full_url );
-
-        // Check if current URL matches a registered app-type app
-        foreach ( $apps as $app ) {
-            // Only check app-type apps
-            if ( ! isset( $app['type'] ) || $app['type'] !== 'app' ) {
-                continue;
-            }
-
-            // For coded apps, check if URL matches magic_link_meta
-            if ( isset( $app['magic_link_meta'] ) && ! empty( $app['magic_link_meta'] ) ) {
-                // Check if current URL matches this app's root/type
-                $app_meta = $app['magic_link_meta'];
-                $app_root = $app_meta['root'] ?? '';
-                $app_type = $app_meta['type'] ?? '';
-
-                error_log( 'DT Home: Checking coded app - root: ' . $app_root . ', type: ' . $app_type . ', title: ' . ( $app['title'] ?? 'not set' ) );
-
-                if ( $current_root === $app_root && $current_type === $app_type ) {
-                    // Make sure it's not the home screen app
-                    if ( $current_root === 'apps' && $current_type === 'launcher' ) {
-                        error_log( 'DT Home: Matched but it\'s home screen app, skipping' );
-                        continue;
-                    }
-                    error_log( 'DT Home: MATCH FOUND! This is a coded app-type page: ' . ( $app['title'] ?? 'unknown' ) );
-                    return true;
-                }
-            } else {
-                // For custom apps (no magic_link_meta), check if URL matches the app's stored URL
-                $app_url = $app['url'] ?? '';
-                if ( ! empty( $app_url ) ) {
-                    // Remove launcher parameter from app URL for comparison
-                    $app_url_no_launcher = remove_query_arg( 'launcher', $app_url );
-
-                    error_log( 'DT Home: Checking custom app - app URL: ' . $app_url_no_launcher . ', current URL: ' . $current_full_url_no_launcher . ', title: ' . ( $app['title'] ?? 'not set' ) );
-
-                    // Check if current URL matches the app's URL (compare paths and domains)
-                    $app_url_parts = parse_url( $app_url_no_launcher );
-                    $current_url_parts = parse_url( $current_full_url_no_launcher );
-
-                    // Compare paths (normalize by removing leading/trailing slashes)
-                    $app_path = trim( $app_url_parts['path'] ?? '', '/' );
-                    $current_path = trim( $current_url_parts['path'] ?? '', '/' );
-
-                    // Compare domains
-                    $app_host = $app_url_parts['host'] ?? '';
-                    $current_host = $current_url_parts['host'] ?? '';
-
-                    if ( ! empty( $app_path ) && ! empty( $current_path ) ) {
-                        // Check if paths match (exact match or current path starts with app path)
-                        if ( $app_path === $current_path || strpos( $current_path, $app_path ) === 0 ) {
-                            // Also check if hosts match (or app URL is relative)
-                            if ( empty( $app_host ) || $app_host === $current_host ) {
-                                error_log( 'DT Home: MATCH FOUND! This is a custom app-type page: ' . ( $app['title'] ?? 'unknown' ) );
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        error_log( 'DT Home: No match found, returning false' );
-        return false;
-    }
-
-    /**
      * Maybe show launcher wrapper page (if launcher=1 parameter is present)
      * This is called via dt_blank_head hook (early priority)
      */
@@ -1237,64 +781,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             error_log( 'DT Home: launcher=1 detected in dt_blank_head, showing wrapper page' );
             $this->show_launcher_wrapper();
             // show_launcher_wrapper() will exit, so this won't continue
-        }
-    }
-
-    /**
-     * Maybe enqueue launcher nav CSS for other magic link apps
-     * This is called via dt_blank_head hook
-     */
-    public function maybe_enqueue_launcher_nav_css() {
-        error_log( 'DT Home: maybe_enqueue_launcher_nav_css() called' );
-        $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : 'not set';
-        $http_host = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : 'not set';
-        error_log( 'DT Home: Current REQUEST_URI: ' . $request_uri );
-        error_log( 'DT Home: Current HTTP_HOST: ' . $http_host );
-
-        if ( $this->is_launcher_iframe_request() ) {
-            error_log( 'DT Home: Detected launcher iframe request, skipping launcher nav CSS enqueue.' );
-            return;
-        }
-
-        // Only enqueue if we're on an app-type app page (not home screen)
-        if ( $this->is_app_type_page() ) {
-            error_log( 'DT Home: Enqueuing launcher nav CSS' );
-            // Ensure CSS is enqueued for other magic link apps
-            if ( ! wp_style_is( 'dt-home-style', 'enqueued' ) ) {
-                wp_enqueue_style( 'dt-home-style', get_template_directory_uri() . '/dt-apps/dt-home/assets/css/home-screen.css', [], '1.0.19' );
-            }
-            if ( ! wp_style_is( 'material-font-icons-css', 'enqueued' ) ) {
-                wp_enqueue_style( 'material-font-icons-css', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css', [], '7.4.47' );
-            }
-        } else {
-            error_log( 'DT Home: Not an app-type page, skipping CSS enqueue' );
-        }
-    }
-
-    /**
-     * Maybe include launcher nav in footer (for other app-type apps)
-     * This is called via dt_blank_footer hook
-     */
-    public function maybe_include_launcher_nav() {
-        error_log( 'DT Home: maybe_include_launcher_nav() called' );
-
-        if ( $this->is_launcher_iframe_request() ) {
-            error_log( 'DT Home: Detected launcher iframe request, skipping launcher nav inclusion.' );
-            return;
-        }
-
-        // Don't include launcher nav if we're showing the wrapper (it's already included there)
-        if ( $this->has_launcher_parameter() ) {
-            error_log( 'DT Home: launcher=1 detected, skipping footer nav (wrapper already shown)' );
-            return;
-        }
-
-        // Only include if we're on an app-type app page (not home screen)
-        if ( $this->is_app_type_page() ) {
-            error_log( 'DT Home: Including launcher nav' );
-            $this->include_launcher_nav();
-        } else {
-            error_log( 'DT Home: Not an app-type page, skipping launcher nav inclusion' );
         }
     }
 
@@ -1418,27 +904,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             return add_query_arg( 'redirect_to', urlencode( $referer ), $url );
         }
         return $url;
-    }
-
-    /**
-     * Include launcher bottom nav partial
-     */
-    private function include_launcher_nav() {
-        error_log( 'DT Home: include_launcher_nav() called' );
-        // Get all apps for the apps selector
-        $apps_manager = DT_Home_Apps::instance();
-        $apps = $apps_manager->get_apps_for_user( get_current_user_id() );
-
-        error_log( 'DT Home: Found ' . count( $apps ) . ' apps for launcher nav' );
-
-        // Include the launcher nav partial
-        $partial_path = get_template_directory() . '/dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php';
-        if ( file_exists( $partial_path ) ) {
-            error_log( 'DT Home: Including launcher nav partial from: ' . $partial_path );
-            include $partial_path;
-        } else {
-            error_log( 'DT Home: ERROR - Launcher nav partial not found at: ' . $partial_path );
-        }
     }
 
     /**
