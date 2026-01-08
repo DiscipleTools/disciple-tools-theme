@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2025-10-17T15:27:16+00:00\n"
+"POT-Creation-Date: 2026-01-07T20:43:24+00:00\n"
 "PO-Revision-Date: 2025-03-05 15:59+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Greek <https://translate.disciple.tools/projects/disciple-"
@@ -14,8 +14,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.10.2\n"
-
-
 
 #. Theme Name of the theme
 #: style.css
@@ -30,9 +28,11 @@ msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 #. Description of the theme
 #: style.css
 msgid ""
-"Disciple.Tools is a coalition management system for disciple making movements."
+"Disciple.Tools is a coalition management system for disciple making "
+"movements."
 msgstr ""
-"Το Disciple.Tools είναι ένα σύστημα διαχείρισης συνασπισμών για κινήματα μαθητείας."
+"Το Disciple.Tools είναι ένα σύστημα διαχείρισης συνασπισμών για κινήματα "
+"μαθητείας."
 
 #. Author URI of the theme
 #: style.css
@@ -68,21 +68,22 @@ msgstr "Αίτημα Πρόσβασης στην Επαφή"
 msgid ""
 "Record owner to be notified of access request. Are you happy to proceed?"
 msgstr ""
-"Ο ιδιοκτήτης της εγγραφής πρέπει να ειδοποιηθεί για το αίτημα πρόσβασης. Θέλετε να προχωρήσετε;"
+"Ο ιδιοκτήτης της εγγραφής πρέπει να ειδοποιηθεί για το αίτημα πρόσβασης. "
+"Θέλετε να προχωρήσετε;"
 
 #: 403.php:52
 msgid "Submit Request"
 msgstr "Υποβολή Αιτήματος"
 
-#: 403.php:55 archive-template.php:1231
+#: 403.php:55 archive-template.php:1202
 #: dt-assets/parts/loop-activity-comment.php:141
 #: dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-assets/parts/modals/modal-new-tag.php:12 dt-contacts/base-setup.php:470
-#: dt-contacts/base-setup.php:505 dt-contacts/module-access.php:451
+#: dt-assets/parts/modals/modal-new-tag.php:12 dt-contacts/base-setup.php:475
+#: dt-contacts/base-setup.php:510 dt-contacts/module-access.php:451
 #: dt-contacts/module-access.php:482 dt-contacts/module-access.php:510
 #: dt-contacts/user-module.php:159 single-template.php:413
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
@@ -90,9 +91,9 @@ msgstr "Υποβολή Αιτήματος"
 msgid "Cancel"
 msgstr "Ακύρωση"
 
-#: 403.php:59 archive-template.php:523 archive-template.php:618
-#: archive-template.php:805 archive-template.php:1255
-#: dt-assets/functions/enqueue-scripts.php:461
+#: 403.php:59 archive-template.php:552 archive-template.php:627
+#: archive-template.php:814 archive-template.php:1226
+#: dt-assets/functions/enqueue-scripts.php:462
 #: dt-assets/parts/loop-activity-comment.php:225
 #: dt-assets/parts/loop-activity-comment.php:230
 #: dt-assets/parts/loop-activity-comment.php:273
@@ -119,12 +120,12 @@ msgstr "Ακύρωση"
 #: dt-assets/parts/modals/modal-tasks.php:54
 #: dt-assets/parts/modals/modal-template-metrics.php:8
 #: dt-assets/parts/modals/modal-template-metrics.php:13
-#: dt-contacts/base-setup.php:475 dt-contacts/base-setup.php:510
+#: dt-contacts/base-setup.php:480 dt-contacts/base-setup.php:515
 #: dt-contacts/module-access.php:456 dt-contacts/module-access.php:487
 #: dt-contacts/module-access.php:515 dt-contacts/module-access.php:606
 #: dt-contacts/module-baptisms.php:201 dt-contacts/module-baptisms.php:203
-#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:586
-#: dt-groups/base-setup.php:591 dt-reports/magic-url-bulk-send.php:34
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:587
+#: dt-groups/base-setup.php:592 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
 #: dt-users/user-initial-setup.php:82 single-template.php:418
@@ -141,280 +142,305 @@ msgstr "Σφάλμα 404 - Δεν Βρέθηκε"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "Η σελίδα που αναζητούσατε δεν βρέθηκε ή διαγράφηκε"
 
-#: archive-template.php:39
-#, php-format
-msgctxt "Create New record"
-msgid "Create New %s"
-msgstr "Δημιουργία Νέων %s"
-
-#: archive-template.php:43
-msgid "Filters"
-msgstr "Φίλτρα"
-
-#: archive-template.php:50 archive-template.php:153 archive-template.php:697
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:828
-#: dt-core/utilities/dt-components.php:249 dt-posts/custom-post-type.php:20
-#: template-settings.php:399
-#, php-format
-msgctxt "Search 'something'"
-msgid "Search %s"
-msgstr "Αναζήτηση %s"
-
-#: archive-template.php:51 archive-template.php:154
-#: dt-mapping/geocode-api/mapbox-api.php:293
-msgid "Clear"
-msgstr "Καθαρισμός"
-
-#: archive-template.php:55 archive-template.php:56 archive-template.php:158
-#: archive-template.php:159 dt-assets/functions/menu.php:57
-#: dt-assets/parts/modals/modal-advanced-search.php:2
-msgid "Advanced Search"
-msgstr "Σύνθετη αναζήτηση"
-
-#: archive-template.php:60 dt-assets/parts/loop-activity-comment.php:49
+#: archive-template.php:34 dt-assets/parts/loop-activity-comment.php:49
 #: dt-assets/parts/loop-activity-comment.php:166
 #: dt-assets/parts/loop-activity-comment.php:250
 #: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "Σχόλια"
 
-#: archive-template.php:77 archive-template.php:177
-#: dt-users/user-management.php:230
+#: archive-template.php:53
+#, php-format
+msgctxt "Create New record"
+msgid "Create New %s"
+msgstr "Δημιουργία Νέων %s"
+
+#: archive-template.php:57
+msgid "Filters"
+msgstr "Φίλτρα"
+
+#: archive-template.php:64 archive-template.php:136 archive-template.php:706
+#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:251
+#: dt-posts/custom-post-type.php:20 template-settings.php:399
+#, php-format
+msgctxt "Search 'something'"
+msgid "Search %s"
+msgstr "Αναζήτηση %s"
+
+#: archive-template.php:65 archive-template.php:137
+#: dt-mapping/geocode-api/mapbox-api.php:322
+msgid "Clear"
+msgstr "Καθαρισμός"
+
+#: archive-template.php:69 archive-template.php:70 archive-template.php:141
+#: archive-template.php:142 dt-assets/functions/menu.php:57
+#: dt-assets/parts/modals/modal-advanced-search.php:2
+msgid "Advanced Search"
+msgstr "Σύνθετη αναζήτηση"
+
+#: archive-template.php:76 dt-users/user-management.php:230
 msgid "Search"
 msgstr "Αναζήτηση"
 
-#: archive-template.php:86 archive-template.php:182
+#: archive-template.php:85 archive-template.php:161
 msgid "Choose which fields to search"
 msgstr "Επιλέξτε ποια πεδία θα αναζητήσετε"
 
-#: archive-template.php:95 archive-template.php:191
+#: archive-template.php:94 archive-template.php:170
 msgid "Search All Fields"
 msgstr "Αναζήτηση σε Ο΄λα τα Πεδία"
 
-#: archive-template.php:105 archive-template.php:201
+#: archive-template.php:104 archive-template.php:180
 msgid "Communication Channels"
 msgstr "Κανάλια Επικοινωνίας"
 
-#: archive-template.php:125 archive-template.php:221 archive-template.php:612
+#: archive-template.php:124 archive-template.php:200 archive-template.php:621
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "Εφαρμογή"
 
-#: archive-template.php:126 archive-template.php:222 archive-template.php:613
+#: archive-template.php:125 archive-template.php:201 archive-template.php:622
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "επαναφορά σε προεπιλογή"
 
-#: archive-template.php:230
+#: archive-template.php:209
 #, php-format
 msgctxt "Contacts Filters"
 msgid "%s Filters"
 msgstr "Φίλτρα %s"
 
-#: archive-template.php:241
+#: archive-template.php:220
 msgid "Create custom filter"
 msgstr "Δημιουργία προσαρμοσμένου φίλτρου"
 
-#: archive-template.php:248
-msgctxt "Split By"
-msgid "Split By"
-msgstr "Διαίρεση Κατά"
-
-#: archive-template.php:310
-msgid "No results found"
-msgstr "Δεν βρέθηκαν αποτελέσματα"
-
-#: archive-template.php:315
+#: archive-template.php:227
 msgctxt "List Exports"
 msgid "List Exports"
 msgstr "Εξαγωγές Λίστας"
 
-#: archive-template.php:327 archive-template.php:350
+#: archive-template.php:239 archive-template.php:262
 msgid "CSV List"
 msgstr "Λίστα CSV"
 
-#: archive-template.php:331 archive-template.php:354
+#: archive-template.php:243 archive-template.php:266
 msgid "BCC Email List"
 msgstr "Λίστα Κρυφών Παραληπτών Email"
 
-#: archive-template.php:332
+#: archive-template.php:244
 msgid "Phone List"
 msgstr "Λίστα Τηλεφώνων"
 
-#: archive-template.php:337 archive-template.php:362
+#: archive-template.php:249 archive-template.php:274
 msgid "Map List"
 msgstr "Λίστα Χάρτη"
 
-#: archive-template.php:346
+#: archive-template.php:258
 msgid "List Exports Help"
 msgstr "Βοήθεια Εξαγωγών Λίστας"
 
-#: archive-template.php:351
+#: archive-template.php:263
 msgid ""
-"Using the current filter, this is a simple way to export basic information and use it in other applications."
+"Using the current filter, this is a simple way to export basic information "
+"and use it in other applications."
 msgstr ""
-"Χρησιμοποιώντας το τρέχον φίλτρο, αυτός είναι ένας απλός τρόπος εξαγωγής βασικών πληροφοριών για χρήση σε άλλες εφαρμογές."
+"Χρησιμοποιώντας το τρέχον φίλτρο, αυτός είναι ένας απλός τρόπος εξαγωγής "
+"βασικών πληροφοριών για χρήση σε άλλες εφαρμογές."
 
-#: archive-template.php:355
+#: archive-template.php:267
 msgid ""
-"Using the current filter, the available emails are grouped by 50 and can be launched into your default email client by group. Many email providers put a limit of 50 on BCC emails. You can open all groups at once using the \"Open All\" button. If the list is too large, this might alert your email provider. The BCC email tool is meant to assist small group emails. Bulk email should be handled through bulk email providers."
+"Using the current filter, the available emails are grouped by 50 and can be "
+"launched into your default email client by group. Many email providers put a "
+"limit of 50 on BCC emails. You can open all groups at once using the \"Open "
+"All\" button. If the list is too large, this might alert your email "
+"provider. The BCC email tool is meant to assist small group emails. Bulk "
+"email should be handled through bulk email providers."
 msgstr ""
-"Χρησιμοποιώντας το τρέχον φίλτρο, τα διαθέσιμα email ομαδοποιούνται ανά 50 και μπορούν να ανοίξουν στον προεπιλεγμένο πελάτη email σας ανά ομάδα. Πολλοί πάροχοι email θέτουν όριο 50 στα κρυφά αντίγραφα. Μπορείτε να ανοίξετε όλες τις ομάδες ταυτόχρονα χρησιμοποιώντας το κουμπί «Άνοιγμα Όλων». Αν η λίστα είναι πολύ μεγάλη, αυτό μπορεί να ειδοποιήσει τον πάροχο email σας. Το εργαλείο κρυφών αντιγράφων προορίζεται για email μικρών ομάδων. Τα μαζικά email πρέπει να διαχειρίζονται μέσω παρόχων μαζικών email."
+"Χρησιμοποιώντας το τρέχον φίλτρο, τα διαθέσιμα email ομαδοποιούνται ανά 50 "
+"και μπορούν να ανοίξουν στον προεπιλεγμένο πελάτη email σας ανά ομάδα. "
+"Πολλοί πάροχοι email θέτουν όριο 50 στα κρυφά αντίγραφα. Μπορείτε να "
+"ανοίξετε όλες τις ομάδες ταυτόχρονα χρησιμοποιώντας το κουμπί «Άνοιγμα "
+"Όλων». Αν η λίστα είναι πολύ μεγάλη, αυτό μπορεί να ειδοποιήσει τον πάροχο "
+"email σας. Το εργαλείο κρυφών αντιγράφων προορίζεται για email μικρών "
+"ομάδων. Τα μαζικά email πρέπει να διαχειρίζονται μέσω παρόχων μαζικών email."
 
-#: archive-template.php:358
+#: archive-template.php:270
 msgid "Phone Number List"
 msgstr "Λίστα Αριθμών Τηλεφώνου"
 
-#: archive-template.php:359
+#: archive-template.php:271
 msgid ""
-"Using the current filter, this is intended for copy pasting a list of numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of starting a group conversation."
+"Using the current filter, this is intended for copy pasting a list of "
+"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
+"starting a group conversation."
 msgstr ""
-"Χρησιμοποιώντας το τρέχον φίλτρο, αυτό προορίζεται για αντιγραφή και επικόλληση λίστας αριθμών σε εφαρμογή μηνυμάτων, WhatsApp, Signal, κ.λπ. Αυτός είναι ένας γρήγορος τρόπος για να ξεκινήσετε μια ομαδική συνομιλία."
+"Χρησιμοποιώντας το τρέχον φίλτρο, αυτό προορίζεται για αντιγραφή και "
+"επικόλληση λίστας αριθμών σε εφαρμογή μηνυμάτων, WhatsApp, Signal, κ.λπ. "
+"Αυτός είναι ένας γρήγορος τρόπος για να ξεκινήσετε μια ομαδική συνομιλία."
 
-#: archive-template.php:363
+#: archive-template.php:275
 msgid ""
-"Using the current filter, this creates a basic points map of known locations of listed individuals."
+"Using the current filter, this creates a basic points map of known locations "
+"of listed individuals."
 msgstr ""
-"Χρησιμοποιώντας το τρέχον φίλτρο, αυτό δημιουργεί έναν βασικό χάρτη σημείων των γνωστών τοποθεσιών των ατόμων της λίστας."
+"Χρησιμοποιώντας το τρέχον φίλτρο, αυτό δημιουργεί έναν βασικό χάρτη σημείων "
+"των γνωστών τοποθεσιών των ατόμων της λίστας."
 
-#: archive-template.php:389
+#: archive-template.php:339
+msgid "No results found"
+msgstr "Δεν βρέθηκαν αποτελέσματα"
+
+#: archive-template.php:348
 #, php-format
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "Λίστα %s"
 
-#: archive-template.php:398
+#: archive-template.php:357
 msgid "Sort"
 msgstr "Ταξινόμηση"
 
-#: archive-template.php:403
+#: archive-template.php:362
 msgid "Newest"
 msgstr "Νεότερο"
 
-#: archive-template.php:408
+#: archive-template.php:367
 msgid "Oldest"
 msgstr "Παλαιότερο"
 
-#: archive-template.php:413
+#: archive-template.php:372
 msgid "Most recently modified"
 msgstr "Τροποποιήθηκε πιο πρόσφατα"
 
-#: archive-template.php:418
+#: archive-template.php:377
 msgid "Least recently modified"
 msgstr "Τροποποιήθηκε λιγότερο πρόσφατα"
 
-#: archive-template.php:428 template-new-bulk-post.php:89
+#: archive-template.php:387 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "Πεδία"
 
-#: archive-template.php:435
+#: archive-template.php:394
 msgid "Bulk Edit"
 msgstr "Μαζική Επεξεργασία"
 
-#: archive-template.php:442
+#: archive-template.php:401
 msgid "Bulk Send Message"
 msgstr "Μαζική Αποστολή Μηνύματος"
 
-#: archive-template.php:476 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:435 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
 msgid "More"
 msgstr "Περισσότερα"
 
-#: archive-template.php:497
+#: archive-template.php:456
 #: dt-assets/parts/modals/modal-advanced-search.php:108
-#: dt-contacts/base-setup.php:324 dt-users/users.php:550
+#: dt-contacts/base-setup.php:329 dt-users/users.php:554
 msgid "Archived"
 msgstr "Αρχειοθετημένα"
 
-#: archive-template.php:501
+#: archive-template.php:460
 #, php-format
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "Εμφάνιση %s"
 
-#: archive-template.php:526
+#: archive-template.php:538 dt-apps/dt-home/magic-link-home-app.php:282
+msgid "Loading..."
+msgstr "Φόρτωση..."
+
+#: archive-template.php:543 dt-assets/functions/enqueue-scripts.php:431
+msgid "Load More"
+msgstr "Φόρτωση Περισσότερων"
+
+#: archive-template.php:551
+msgid "Actions"
+msgstr "Ενέργειες"
+
+#: archive-template.php:563
 msgid "Choose which fields to display as columns in the list"
 msgstr "Επιλέξτε ποια πεδία θα εμφανίζονται ως στήλες στη λίστα"
 
-#: archive-template.php:560
+#: archive-template.php:569
 msgid "Add fields:"
 msgstr "Προσθήκη πεδίων:"
 
-#: archive-template.php:563
+#: archive-template.php:572
 msgid "Search for fields to add..."
 msgstr "Αναζήτηση πεδίων για προσθήκη..."
 
-#: archive-template.php:585
+#: archive-template.php:594
 msgid "Enabled fields:"
 msgstr "Ενεργοποιημένα πεδία:"
 
-#: archive-template.php:589
+#: archive-template.php:598
 msgid "No fields selected"
 msgstr "Δεν επιλέχθηκαν πεδία"
 
-#: archive-template.php:622
+#: archive-template.php:631
 #, php-format
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
-"Επιλέξτε όλα τα %1$s που θέλετε να ενημερώσετε από τη λίστα και ενημερώστε τα παρακάτω"
+"Επιλέξτε όλα τα %1$s που θέλετε να ενημερώσετε από τη λίστα και ενημερώστε "
+"τα παρακάτω"
 
-#: archive-template.php:640 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:843
+#: dt-core/global-functions.php:808
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Αναζήτηση χρηστών"
 
-#: archive-template.php:685
+#: archive-template.php:694
 msgid "Share with:"
 msgstr "Διαμοιρασμός με:"
 
-#: archive-template.php:705
+#: archive-template.php:714
 msgid "Unshare with selected user"
 msgstr "Ανάκληση διαμοιρασμού με επιλεγμένο χρήστη"
 
-#: archive-template.php:717 dt-assets/functions/details-bar.php:199
+#: archive-template.php:726 dt-assets/functions/details-bar.php:199
 #: dt-posts/custom-post-type.php:217
 msgid "Follow"
 msgstr "Να ακολουθώ"
 
-#: archive-template.php:722 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:731 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "Σχόλια και Δραστηριότητα"
 
-#: archive-template.php:727 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:736 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "Γράψτε το σχόλιο ή τη σημείωσή σας εδώ"
 
-#: archive-template.php:735 dt-assets/parts/loop-activity-comment.php:59
+#: archive-template.php:744 dt-assets/parts/loop-activity-comment.php:59
 msgid "Type:"
 msgstr "Τύπος:"
 
-#: archive-template.php:755 dt-users/template-new-user.php:127
+#: archive-template.php:764 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "Δείτε Περισσότερες Επιλογές"
 
-#: archive-template.php:756 dt-users/template-new-user.php:130
+#: archive-template.php:765 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "Δείτε Λιγότερες Επιλογές"
 
-#: archive-template.php:783 dt-assets/parts/loop-activity-comment.php:276
+#: archive-template.php:792 dt-assets/parts/loop-activity-comment.php:276
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "Ενημέρωση"
 
-#: archive-template.php:784 archive-template.php:989
-#: dt-assets/functions/enqueue-scripts.php:341
-#: dt-reports/magic-url-bulk-send.php:95
+#: archive-template.php:793 archive-template.php:997
+#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-reports/magic-url-bulk-send.php:94
 msgid "Make Selections Below"
 msgstr "Επιλέξτε Παρακάτω"
 
-#: archive-template.php:792 dt-assets/functions/enqueue-scripts.php:183
+#: archive-template.php:801 dt-assets/functions/enqueue-scripts.php:183
 #: dt-assets/functions/enqueue-scripts.php:224
 #: dt-assets/functions/enqueue-scripts.php:289
 #: dt-assets/functions/enqueue-scripts.php:329
@@ -422,145 +448,137 @@ msgstr "Επιλέξτε Παρακάτω"
 msgid "Delete"
 msgstr "Διαγραφή"
 
-#: archive-template.php:795 dt-assets/functions/enqueue-scripts.php:342
+#: archive-template.php:804 dt-assets/functions/enqueue-scripts.php:343
 msgid "Delete Selections Below"
 msgstr "Διαγραφή Παρακάτω Επιλογών"
 
-#: archive-template.php:809
+#: archive-template.php:818
 #, php-format
 msgid "Select all the %1$s to whom you want to message."
 msgstr "Επιλέξτε όλα τα %1$s στα οποία θέλετε να στείλετε μήνυμα."
 
-#: archive-template.php:848
+#: archive-template.php:856
 msgid "Message subject"
 msgstr "Θέμα μηνύματος"
 
-#: archive-template.php:850
+#: archive-template.php:858
 msgid "A valid message subject must be entered."
 msgstr "Πρέπει να εισαχθεί έγκυρο θέμα μηνύματος."
 
-#: archive-template.php:852
+#: archive-template.php:860
 msgid "Message from name"
 msgstr "Όνομα αποστολέα"
 
-#: archive-template.php:854
+#: archive-template.php:862
 msgid "A valid from name must be specified."
 msgstr "Πρέπει να καθοριστεί έγκυρο όνομα αποστολέα."
 
-#: archive-template.php:856
+#: archive-template.php:864
 msgid "Message reply to"
 msgstr "Απάντηση μηνύματος σε"
 
-#: archive-template.php:858
+#: archive-template.php:866
 msgid "A valid reply to email address must be specified."
 msgstr "Πρέπει να καθοριστεί έγκυρη διεύθυνση email απάντησης."
 
-#: archive-template.php:860
+#: archive-template.php:868
 #, php-format
 msgid "Emails will be sent from: %s"
 msgstr "Τα email θα αποσταλούν από: %s"
 
-#: archive-template.php:883
+#: archive-template.php:891
 msgid "Please ensure a valid send method has been specified."
 msgstr "Παρακαλώ βεβαιωθείτε ότι έχει καθοριστεί έγκυρη μέθοδος αποστολής."
 
-#: archive-template.php:885
+#: archive-template.php:893
 msgid "Message"
 msgstr "Μήνυμα"
 
-#: archive-template.php:887
+#: archive-template.php:895
 msgid "Please ensure a valid send message has been entered."
 msgstr "Παρακαλώ βεβαιωθείτε ότι έχει εισαχθεί έγκυρο μήνυμα αποστολής."
 
-#: archive-template.php:888 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:896 dt-reports/magic-url-bulk-send.php:57
 #: dt-reports/magic-url-setup.php:254
 msgid "Message placeholders"
 msgstr "Σύμβολα κράτησης θέσης μηνύματος"
 
-#: archive-template.php:919 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:927 dt-reports/magic-url-bulk-send.php:63
 #: dt-reports/magic-url-setup.php:260
 msgid "Name of the Record"
 msgstr "Όνομα της Εγγραφής"
 
-#: archive-template.php:941
+#: archive-template.php:949
 msgid "Message Placeholder Help"
 msgstr "Βοήθεια Συμβόλων Κράτησης Θέσης"
 
-#: archive-template.php:984 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:992 dt-reports/magic-url-bulk-send.php:89
 msgid "Send to selected records"
 msgstr "Αποστολή σε επιλεγμένες εγγραφές"
 
-#: archive-template.php:985 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:993 dt-reports/magic-url-bulk-send.php:90
 msgid "You must select at least one record"
 msgstr "Πρέπει να επιλέξετε τουλάχιστον μία εγγραφή"
 
-#: archive-template.php:988 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:996 dt-reports/magic-url-bulk-send.php:93
 #: dt-reports/magic-url-setup.php:503
 msgid "Send"
 msgstr "Αποστολή"
 
-#: archive-template.php:988 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:996 dt-reports/magic-url-bulk-send.php:93
 msgid "Links"
 msgstr "Σύνδεσμοι"
 
-#: archive-template.php:993
+#: archive-template.php:1001
 msgid "Ensure valid record selections have been made."
 msgstr "Βεβαιωθείτε ότι έχουν γίνει έγκυρες επιλογές εγγραφών."
 
-#: archive-template.php:1032
-msgid "Loading..."
-msgstr "Φόρτωση..."
-
-#: archive-template.php:1037 dt-assets/functions/enqueue-scripts.php:430
-msgid "Load More"
-msgstr "Φόρτωση Περισσότερων"
-
-#: archive-template.php:1049
+#: archive-template.php:1020
 msgid "Field Name"
 msgstr "Όνομα Πεδίου"
 
-#: archive-template.php:1105
+#: archive-template.php:1076
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Πληκτρολογήστε για αναζήτηση"
 
-#: archive-template.php:1114
+#: archive-template.php:1085
 #, php-format
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "Όλες οι %1$s με %2$s"
 
-#: archive-template.php:1117
+#: archive-template.php:1088
 #, php-format
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "Όλες οι %1$s χωρίς %2$s"
 
-#: archive-template.php:1124
+#: archive-template.php:1095
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Φίλτρο για υπανάθεση ή Ανάθεση Σε"
 
-#: archive-template.php:1133 dt-assets/functions/enqueue-scripts.php:332
+#: archive-template.php:1104 dt-assets/functions/enqueue-scripts.php:332
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "Ημερομηνία Δημιουργίας"
 
-#: archive-template.php:1140 archive-template.php:1147
+#: archive-template.php:1111 archive-template.php:1118
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:970
 msgid "None Set"
 msgstr "Δεν έχει οριστεί καμία"
 
-#: archive-template.php:1161 archive-template.php:1162
-#: dt-assets/functions/enqueue-scripts.php:240 dt-core/global-functions.php:722
+#: archive-template.php:1132 archive-template.php:1133
+#: dt-assets/functions/enqueue-scripts.php:240 dt-core/global-functions.php:723
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-reports/magic-url-setup.php:474 dt-users/user-management.php:196
 #: template-settings.php:313 template-settings.php:577
 msgid "No"
 msgstr "Όχι"
 
-#: archive-template.php:1168 archive-template.php:1169
-#: dt-assets/functions/enqueue-scripts.php:239 dt-core/global-functions.php:723
+#: archive-template.php:1139 archive-template.php:1140
+#: dt-assets/functions/enqueue-scripts.php:239 dt-core/global-functions.php:724
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-reports/magic-url-setup.php:473
 #: dt-users/user-management.php:195 template-settings.php:312
@@ -568,68 +586,245 @@ msgstr "Όχι"
 msgid "Yes"
 msgstr "Ναι"
 
-#: archive-template.php:1173
+#: archive-template.php:1144
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Αρχή Εύρους"
 
-#: archive-template.php:1176 archive-template.php:1187
+#: archive-template.php:1147 archive-template.php:1158
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "Καθαρισμός"
 
-#: archive-template.php:1183
+#: archive-template.php:1154
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Τέλος Εύρους"
 
-#: archive-template.php:1198
+#: archive-template.php:1169
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "Φιλτράρισμα Κατά Τιμή"
 
-#: archive-template.php:1203
+#: archive-template.php:1174
 #, php-format
 msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "Όλες οι %1$s με φιλτραρισμένη τιμή στο %2$s"
 
-#: archive-template.php:1207
+#: archive-template.php:1178
 #, php-format
 msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "Όλες οι %1$s χωρίς φιλτραρισμένη τιμή στο %2$s"
 
-#: archive-template.php:1211
+#: archive-template.php:1182
 #, php-format
 msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "Όλες οι %1$s με οποιαδήποτε τιμή στο %2$s"
 
-#: archive-template.php:1215
+#: archive-template.php:1186
 #, php-format
 msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "Όλες οι %1$s χωρίς τιμή στο %2$s"
 
-#: archive-template.php:1239
+#: archive-template.php:1210
 msgid "Filter Name"
 msgstr "Όνομα Φίλτρου"
 
-#: archive-template.php:1244
+#: archive-template.php:1215
 msgid "Filter Records"
 msgstr "Φιλτράρισμα Εγγραφών"
 
-#: archive-template.php:1248 dt-assets/functions/enqueue-scripts.php:292
+#: archive-template.php:1219 dt-assets/functions/enqueue-scripts.php:292
 #: dt-assets/functions/enqueue-scripts.php:327
 #: dt-users/user-initial-setup.php:79 template-settings.php:745
 msgid "Save"
 msgstr "Αποθήκευση"
 
+#: dt-apps/dt-home/frontend/home-screen.php:17
+#: dt-apps/dt-home/frontend/home-screen.php:23
+#: dt-apps/dt-home/magic-link-home-app.php:279
+msgid "Welcome to your Home Screen"
+msgstr "Καλώς ήρθατε στην Αρχική σας Οθόνη"
+
+#: dt-apps/dt-home/frontend/home-screen.php:18
+#: dt-apps/dt-home/frontend/home-screen.php:24
+msgid "Your personalized dashboard for apps and training."
+msgstr "Ο εξατομικευμένος πίνακας ελέγχου για εφαρμογές και εκπαίδευση."
+
+#: dt-apps/dt-home/frontend/home-screen.php:75
+#: dt-apps/dt-home/frontend/training-screen.php:28
+msgid "Toggle menu"
+msgstr "Εναλλαγή μενού"
+
+#: dt-apps/dt-home/frontend/home-screen.php:93
+#: dt-apps/dt-home/magic-link-home-app.php:280 template-settings.php:257
+msgid "Your Apps"
+msgstr "Οι Εφαρμογές Σας"
+
+#: dt-apps/dt-home/frontend/home-screen.php:110
+msgid "Your Links"
+msgstr "Οι Σύνδεσμοί σας"
+
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:183
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:185
+#: template-settings.php:56
+msgid "Apps"
+msgstr "Εφαρμογές"
+
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:187
+#: dt-core/configuration/config-site-defaults.php:442
+#: dt-login/login-template.php:529
+msgid "Home"
+msgstr "Σπίτι"
+
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:190
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:192
+#: dt-assets/parts/nav-offcanvas.php:66 dt-assets/parts/nav-topbar.php:187
+#: dt-users/template-no-permission.php:94
+msgid "Log Out"
+msgstr "Αποσύνδεση"
+
+#: dt-apps/dt-home/frontend/partials/launcher-wrapper.php:35
+msgid "App Launcher"
+msgstr "Εκκινητής Εφαρμογών"
+
+#: dt-apps/dt-home/frontend/partials/launcher-wrapper.php:141
+msgid "App Content"
+msgstr "Περιεχόμενο Εφαρμογής"
+
+#: dt-apps/dt-home/frontend/training-screen.php:6
+#: dt-apps/dt-home/frontend/training-screen.php:10
+msgid "Training"
+msgstr "Εκπαίδευση"
+
+#: dt-apps/dt-home/frontend/training-screen.php:7
+#: dt-apps/dt-home/frontend/training-screen.php:11
+msgid "Watch training videos and tutorials."
+msgstr "Παρακολουθήστε εκπαιδευτικά βίντεο και οδηγούς."
+
+#: dt-apps/dt-home/frontend/training-screen.php:44
+#: dt-apps/dt-home/magic-link-home-app.php:281
+msgid "Training Videos"
+msgstr "Εκπαιδευτικά Βίντεο"
+
+#: dt-apps/dt-home/includes/class-home-apps.php:305
+#: dt-apps/dt-home/includes/class-home-apps.php:807
+msgid "App title is required."
+msgstr "Απαιτείται τίτλος εφαρμογής."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:359
+msgid "Failed to save app."
+msgstr "Αποτυχία αποθήκευσης εφαρμογής."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:374
+#: dt-apps/dt-home/includes/class-home-apps.php:583
+msgid "App not found."
+msgstr "Η εφαρμογή δεν βρέθηκε."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:461
+#: dt-apps/dt-home/includes/class-home-apps.php:570
+msgid "Failed to update app."
+msgstr "Αποτυχία ενημέρωσης εφαρμογής."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:596
+msgid "Failed to delete app."
+msgstr "Αποτυχία διαγραφής εφαρμογής."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:643
+msgid "Failed to reorder apps."
+msgstr "Αποτυχία αναδιάταξης εφαρμογών."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:811
+msgid "App URL must be a valid URL."
+msgstr "Το URL της εφαρμογής πρέπει να είναι έγκυρο URL."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:815
+msgid "App color must be a valid hex color."
+msgstr "Το χρώμα της εφαρμογής πρέπει να είναι έγκυρο χρώμα hex."
+
+#: dt-apps/dt-home/includes/class-home-roles-permissions.php:73
+msgid "Access to the Home Screen dashboard"
+msgstr "Πρόσβαση στον πίνακα ελέγχου της Αρχικής Οθόνης"
+
+#: dt-apps/dt-home/includes/class-home-roles-permissions.php:83
+#, php-format
+msgid "Access to %s app"
+msgstr "Πρόσβαση στην εφαρμογή %s"
+
+#: dt-apps/dt-home/includes/class-home-training.php:93
+#: dt-apps/dt-home/includes/class-home-training.php:342
+msgid "Video title is required."
+msgstr "Απαιτείται τίτλος βίντεο."
+
+#: dt-apps/dt-home/includes/class-home-training.php:97
+#: dt-apps/dt-home/includes/class-home-training.php:346
+msgid "Video URL is required."
+msgstr "Απαιτείται URL βίντεο."
+
+#: dt-apps/dt-home/includes/class-home-training.php:140
+msgid "Failed to save video."
+msgstr "Αποτυχία αποθήκευσης βίντεο."
+
+#: dt-apps/dt-home/includes/class-home-training.php:152
+#: dt-apps/dt-home/includes/class-home-training.php:200
+msgid "Video not found."
+msgstr "Το βίντεο δεν βρέθηκε."
+
+#: dt-apps/dt-home/includes/class-home-training.php:188
+msgid "Failed to update video."
+msgstr "Αποτυχία ενημέρωσης βίντεο."
+
+#: dt-apps/dt-home/includes/class-home-training.php:213
+msgid "Failed to delete video."
+msgstr "Αποτυχία διαγραφής βίντεο."
+
+#: dt-apps/dt-home/includes/class-home-training.php:260
+msgid "Failed to reorder videos."
+msgstr "Αποτυχία αναδιάταξης βίντεο."
+
+#: dt-apps/dt-home/includes/class-home-training.php:348
+msgid "Video URL must be a valid URL."
+msgstr "Το URL του βίντεο πρέπει να είναι έγκυρο URL."
+
+#: dt-apps/dt-home/magic-link-home-app.php:64
+#: dt-assets/parts/modals/modal-new-contact.php:7
+#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
+#: dt-metrics/combined/locations-list.php:90 dt-metrics/records/genmap.php:166
+#: dt-posts/custom-post-type.php:170 dt-users/template-user-management.php:196
+#: template-settings.php:146
+msgid "Name"
+msgstr "Όνομα"
+
+#: dt-apps/dt-home/magic-link-home-app.php:283
+msgid "Login Required"
+msgstr "Απαιτείται Σύνδεση"
+
+#: dt-apps/dt-home/magic-link-home-app.php:284
+msgid "Please log in to access your Home Screen."
+msgstr "Παρακαλώ συνδεθείτε για να αποκτήσετε πρόσβαση στην Αρχική σας Οθόνη."
+
+#: dt-apps/dt-home/magic-link-home-app.php:285
+msgid "Username or Email"
+msgstr "Όνομα Χρήστη ή Email"
+
+#: dt-apps/dt-home/magic-link-home-app.php:286 dt-login/login-template.php:489
+#: dt-users/template-new-user.php:121 dt-users/template-new-user.php:122
+#: template-settings.php:661
+msgid "Password"
+msgstr "Κωδικός Πρόσβασης"
+
+#: dt-apps/dt-home/magic-link-home-app.php:287
+msgid "Log In"
+msgstr "Σύνδεση"
+
 #: dt-assets/functions/details-bar.php:58
 #: dt-assets/functions/details-bar.php:275
 #: dt-core/configuration/config-site-defaults.php:276
-#: dt-workflows/update-required.php:86 dt-workflows/update-required.php:136
+#: dt-workflows/update-required.php:88 dt-workflows/update-required.php:140
 msgid "Update Needed"
 msgstr "Χρειάζεται Ενημέρωση"
 
@@ -780,7 +975,8 @@ msgstr "Οι %3$s και %1$s αντέδρασαν με emoji %2$s"
 #: dt-assets/functions/enqueue-scripts.php:189
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Επιλέξτε γλώσσα ομιλίας και κάντε κλικ στο «Έναρξη Εγγραφής» για να ξεκινήσετε."
+"Επιλέξτε γλώσσα ομιλίας και κάντε κλικ στο «Έναρξη Εγγραφής» για να "
+"ξεκινήσετε."
 
 #: dt-assets/functions/enqueue-scripts.php:190
 msgid "Click \"Start Recording\" to begin."
@@ -842,7 +1038,8 @@ msgstr "Η μεταφορά απέτυχε. Ελέγξτε τη διαμόρφω
 #: dt-assets/functions/enqueue-scripts.php:235
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr ""
-"Η ενημέρωση μεταφοράς απέτυχε. Ελέγξτε τη διαμόρφωση από τοποθεσία σε τοποθεσία."
+"Η ενημέρωση μεταφοράς απέτυχε. Ελέγξτε τη διαμόρφωση από τοποθεσία σε "
+"τοποθεσία."
 
 #: dt-assets/functions/enqueue-scripts.php:236
 msgid "Transfer update successful."
@@ -918,181 +1115,187 @@ msgstr "Δεν υπάρχουν φίλτρα, δημιουργήστε ένα π
 msgid "No records found matching your filter."
 msgstr "Δεν βρέθηκαν εγγραφές που να ταιριάζουν στο φίλτρο σας."
 
-#: dt-assets/functions/enqueue-scripts.php:336 dt-contacts/base-setup.php:674
-#: dt-groups/base-setup.php:1039 dt-posts/custom-post-type.php:489
+#: dt-assets/functions/enqueue-scripts.php:336 dt-contacts/base-setup.php:679
+#: dt-groups/base-setup.php:1040 dt-posts/custom-post-type.php:489
 #, php-format
 msgctxt "All records"
 msgid "All %s"
 msgstr "Όλα τα %s"
 
 #: dt-assets/functions/enqueue-scripts.php:337
+msgid "Split By"
+msgstr "Διαίρεση Κατά"
+
+#: dt-assets/functions/enqueue-scripts.php:338
 msgid "start"
 msgstr "έναρξη"
 
-#: dt-assets/functions/enqueue-scripts.php:338
+#: dt-assets/functions/enqueue-scripts.php:339
 msgid "end"
 msgstr "λήγη"
 
-#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:340
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/module-access.php:1183 dt-groups/base-setup.php:957
+#: dt-contacts/module-access.php:1183 dt-groups/base-setup.php:958
 #: dt-metrics/personal/activity-highlights.php:56
-#: dt-metrics/records/dynamic-records-map.php:99
+#: dt-metrics/records/dynamic-records-map.php:100
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "Όλα"
 
-#: dt-assets/functions/enqueue-scripts.php:340
+#: dt-assets/functions/enqueue-scripts.php:341
 msgid "Without"
 msgstr "Χωρίς"
 
-#: dt-assets/functions/enqueue-scripts.php:343
+#: dt-assets/functions/enqueue-scripts.php:344
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
 msgstr "προγραμματισμένα για αποστολή"
 
-#: dt-assets/functions/enqueue-scripts.php:344
+#: dt-assets/functions/enqueue-scripts.php:345
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "δεν απεστάλησαν (πιθανώς λείπει έγκυρο email)"
 
-#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:346
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
 msgstr "Δείτε την ουρά"
 
-#: dt-assets/functions/enqueue-scripts.php:346
+#: dt-assets/functions/enqueue-scripts.php:347
 msgid "Exclude Item"
 msgstr "Εξαίρεση Στοιχείου"
 
-#: dt-assets/functions/enqueue-scripts.php:349
+#: dt-assets/functions/enqueue-scripts.php:350
 #, php-format
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr "Τα εξαγόμενα δεδομένα csv να περιέχουν όλα τα %2$s πεδία %1$s."
 
-#: dt-assets/functions/enqueue-scripts.php:350
+#: dt-assets/functions/enqueue-scripts.php:351
 #, php-format
-msgctxt "The exported csv data to contain the 6 visible Contact field(s) shown below."
+msgctxt ""
+"The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr ""
-"Τα εξαγόμενα δεδομένα csv να περιέχουν τα %2$s ορατά πεδία %1$s που εμφανίζονται παρακάτω."
+"Τα εξαγόμενα δεδομένα csv να περιέχουν τα %2$s ορατά πεδία %1$s που "
+"εμφανίζονται παρακάτω."
 
-#: dt-assets/functions/enqueue-scripts.php:353
-#: dt-assets/functions/enqueue-scripts.php:361
+#: dt-assets/functions/enqueue-scripts.php:354
+#: dt-assets/functions/enqueue-scripts.php:362
 msgid "Full List"
 msgstr "Πλήρης Λίστα"
 
-#: dt-assets/functions/enqueue-scripts.php:354
+#: dt-assets/functions/enqueue-scripts.php:355
 msgid "No Addresses"
 msgstr "Χωρίς Διευθύνσεις"
 
-#: dt-assets/functions/enqueue-scripts.php:355
+#: dt-assets/functions/enqueue-scripts.php:356
 msgid "With Additional Addresses"
 msgstr "Με Επιπλέον Διευθύνσεις"
 
-#: dt-assets/functions/enqueue-scripts.php:356
+#: dt-assets/functions/enqueue-scripts.php:357
 msgid "Open Email for Group"
 msgstr "Άνοιγμα Email για Ομάδα"
 
-#: dt-assets/functions/enqueue-scripts.php:357
+#: dt-assets/functions/enqueue-scripts.php:358
 msgid "Open All"
 msgstr "Άνοιγμα Όλων"
 
-#: dt-assets/functions/enqueue-scripts.php:358
+#: dt-assets/functions/enqueue-scripts.php:359
 msgid "Show Group Addresses"
 msgstr "Εμφάνιση Διευθύνσεων Ομάδας"
 
-#: dt-assets/functions/enqueue-scripts.php:362
+#: dt-assets/functions/enqueue-scripts.php:363
 msgid "Has No Phone Number"
 msgstr "Δεν Έχει Αριθμό Τηλεφώνου"
 
-#: dt-assets/functions/enqueue-scripts.php:363
+#: dt-assets/functions/enqueue-scripts.php:364
 msgid "Has Additional Phone Numbers"
 msgstr "Έχει Επιπλέον Αριθμούς Τηλεφώνου"
 
-#: dt-assets/functions/enqueue-scripts.php:367
+#: dt-assets/functions/enqueue-scripts.php:368
 msgid "Mapped Locations"
 msgstr "Χαρτογραφημένες Τοποθεσίες"
 
-#: dt-assets/functions/enqueue-scripts.php:368
+#: dt-assets/functions/enqueue-scripts.php:369
 msgid "Contacts Without Locations"
 msgstr "Επαφές Χωρίς Τοποθεσίες"
 
-#: dt-assets/functions/enqueue-scripts.php:369
+#: dt-assets/functions/enqueue-scripts.php:370
 msgid "Records on zoomed map"
 msgstr "Εγγραφές στον μεγεθυμένο χάρτη"
 
-#: dt-assets/functions/enqueue-scripts.php:370
+#: dt-assets/functions/enqueue-scripts.php:371
 msgid "No Zoomed Map Records Found!"
 msgstr "Δεν Βρέθηκαν Εγγραφές στον Μεγεθυμένο Χάρτη!"
 
-#: dt-assets/functions/enqueue-scripts.php:371
+#: dt-assets/functions/enqueue-scripts.php:372
 msgid "Open Zoomed Map Records"
 msgstr "Άνοιγμα Εγγραφών Μεγεθυμένου Χάρτη"
 
-#: dt-assets/functions/enqueue-scripts.php:372
 #: dt-assets/functions/enqueue-scripts.php:373
+#: dt-assets/functions/enqueue-scripts.php:374
 msgid "Filtered Map"
 msgstr "Φιλτραρισμένος Χάρτης"
 
-#: dt-assets/functions/enqueue-scripts.php:401 dt-contacts/base-setup.php:55
+#: dt-assets/functions/enqueue-scripts.php:402 dt-contacts/base-setup.php:55
 #: dt-contacts/base-setup.php:67 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "Επαφή"
 
-#: dt-assets/functions/enqueue-scripts.php:402
+#: dt-assets/functions/enqueue-scripts.php:403
 #, php-format
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr "Το %s υπάρχει ήδη"
 
-#: dt-assets/functions/enqueue-scripts.php:449
+#: dt-assets/functions/enqueue-scripts.php:450
 msgid "File Upload"
 msgstr "Μεταφόρτωση Αρχείου"
 
-#: dt-assets/functions/enqueue-scripts.php:450
+#: dt-assets/functions/enqueue-scripts.php:451
 msgid "Choose a file"
 msgstr "Επιλέξτε αρχείο"
 
-#: dt-assets/functions/enqueue-scripts.php:451
+#: dt-assets/functions/enqueue-scripts.php:452
 msgid "or drag it here"
 msgstr "ή σύρετέ το εδώ"
 
-#: dt-assets/functions/enqueue-scripts.php:452
+#: dt-assets/functions/enqueue-scripts.php:453
 msgid "Successfully Uploaded!"
 msgstr "Μεταφορτώθηκε Επιτυχώς!"
 
-#: dt-assets/functions/enqueue-scripts.php:453
+#: dt-assets/functions/enqueue-scripts.php:454
 msgid "Error!"
 msgstr "Σφάλμα!"
 
-#: dt-assets/functions/enqueue-scripts.php:454
+#: dt-assets/functions/enqueue-scripts.php:455
 msgid "Unable to upload, please try again"
 msgstr "Αδυναμία μεταφόρτωσης, παρακαλώ δοκιμάστε ξανά"
 
-#: dt-assets/functions/enqueue-scripts.php:455
+#: dt-assets/functions/enqueue-scripts.php:456
 msgid "Upload"
 msgstr "Μεταφόρτωση"
 
-#: dt-assets/functions/enqueue-scripts.php:456
+#: dt-assets/functions/enqueue-scripts.php:457
 msgid "Delete Existing File"
 msgstr "Διαγραφή Υπάρχοντος Αρχείου"
 
-#: dt-assets/functions/enqueue-scripts.php:457
+#: dt-assets/functions/enqueue-scripts.php:458
 msgid "Replace Existing Image"
 msgstr "Αντικατάσταση Υπάρχουσας Εικόνας"
 
-#: dt-assets/functions/enqueue-scripts.php:458
+#: dt-assets/functions/enqueue-scripts.php:459
 msgid "Are you sure you wish to delete existing file?"
 msgstr "Είστε σίγουροι ότι θέλετε να διαγράψετε το υπάρχον αρχείο;"
 
-#: dt-assets/functions/enqueue-scripts.php:459
+#: dt-assets/functions/enqueue-scripts.php:460
 msgid "Successfully Deleted!"
 msgstr "Διαγράφηκε Επιτυχώς!"
 
-#: dt-assets/functions/enqueue-scripts.php:460
+#: dt-assets/functions/enqueue-scripts.php:461
 msgid "Delete failed, please try again"
 msgstr "Η διαγραφή απέτυχε, παρακαλώ δοκιμάστε ξανά"
 
@@ -1130,12 +1333,12 @@ msgstr "Ρυθμίσεις"
 msgid "Admin"
 msgstr "Διαχειριστής"
 
-#: dt-assets/functions/menu.php:94 dt-contacts/base-setup.php:689
-#: dt-contacts/base-setup.php:693 dt-mapping/columns/add-users-column.php:56
+#: dt-assets/functions/menu.php:94 dt-contacts/base-setup.php:694
+#: dt-contacts/base-setup.php:698 dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:269
 #: dt-metrics/combined/locations-list.php:95
 #: dt-metrics/combined/locations-list.php:270
-#: dt-metrics/records/dynamic-records-map.php:65
+#: dt-metrics/records/dynamic-records-map.php:66
 #: dt-users/user-management.php:134 dt-users/user-management.php:231
 msgid "Users"
 msgstr "Χρήστες"
@@ -1307,16 +1510,24 @@ msgstr "Κουμπιά Γρήγορων Ενεργειών"
 #: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid ""
-"These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
+"These quick action buttons are here to aid you in updating the contact "
+"record faster and keep a count of how many times each action has be done."
 msgstr ""
-"Αυτά τα κουμπιά γρήγορων ενεργειών είναι εδώ για να σας βοηθήσουν να ενημερώνετε την εγγραφή της επαφής ταχύτερα και να μετράτε πόσες φορές έχει γίνει κάθε ενέργεια."
+"Αυτά τα κουμπιά γρήγορων ενεργειών είναι εδώ για να σας βοηθήσουν να "
+"ενημερώνετε την εγγραφή της επαφής ταχύτερα και να μετράτε πόσες φορές έχει "
+"γίνει κάθε ενέργεια."
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid ""
-"For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer. This action will also change the 'Seeker Path' to 'Contact Attempted'."
+"For example, If you click the 'No Answer' button 4 times, we will log that "
+"you attempted to reach this contact 4 times, but they did not answer. This "
+"action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"Για παράδειγμα, αν κάνετε κλικ στο κουμπί «Καμία Απάντηση» 4 φορές, θα καταγράψουμε ότι προσπαθήσατε να επικοινωνήσετε με αυτή την επαφή 4 φορές, αλλά δεν απάντησε. Αυτή η ενέργεια θα αλλάξει επίσης το «Μονοπάτι Αναζήτησης» σε «Απόπειρα Επικοινωνίας»."
+"Για παράδειγμα, αν κάνετε κλικ στο κουμπί «Καμία Απάντηση» 4 φορές, θα "
+"καταγράψουμε ότι προσπαθήσατε να επικοινωνήσετε με αυτή την επαφή 4 φορές, "
+"αλλά δεν απάντησε. Αυτή η ενέργεια θα αλλάξει επίσης το «Μονοπάτι "
+"Αναζήτησης» σε «Απόπειρα Επικοινωνίας»."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1335,23 +1546,27 @@ msgstr "Εδώ μπορείτε να καταγράφετε σημειώσεις
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid ""
-"Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
+"Type @ and the name of a user to mention them in a comment. This user will "
+"then receive a notification."
 msgstr ""
-"Πληκτρολογήστε @ και το όνομα ενός χρήστη για να τον/-ην αναφέρετε σε σχόλιο. Αυτός ο χρήστης θα λάβει στη συνέχεια μια ειδοποίηση."
+"Πληκτρολογήστε @ και το όνομα ενός χρήστη για να τον/-ην αναφέρετε σε "
+"σχόλιο. Αυτός ο χρήστης θα λάβει στη συνέχεια μια ειδοποίηση."
 
 #: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"This section also includes the history of activity, such as when the contact or group status became active etc."
+"This section also includes the history of activity, such as when the contact "
+"or group status became active etc."
 msgstr ""
-"Αυτή η ενότητα περιλαμβάνει επίσης το ιστορικό της δραστηριότητας, όπως πότε η κατάσταση της επαφής ή της ομάδας έγινε ενεργή κ.λπ."
+"Αυτή η ενότητα περιλαμβάνει επίσης το ιστορικό της δραστηριότητας, όπως πότε "
+"η κατάσταση της επαφής ή της ομάδας έγινε ενεργή κ.λπ."
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
-msgid ""
-"You can filter this section either by 'All', 'Comments', or 'Activity'."
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
-"Μπορείτε να φιλτράρετε αυτή την ενότητα είτε με βάση το «Όλα», είτε με βάση τα «Σχόλια» , είτε με βάση τη «Δραστηριότητα»."
+"Μπορείτε να φιλτράρετε αυτή την ενότητα είτε με βάση το «Όλα», είτε με βάση "
+"τα «Σχόλια» , είτε με βάση τη «Δραστηριότητα»."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:117
 msgid "Your Profile"
@@ -1365,16 +1580,20 @@ msgstr "Σε αυτό τον χώρο μπορείτε να δείτε το πρ
 #: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
 msgid ""
-"You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
+"You are not required to fill out any of these profile fields. They are "
+"optional to meet your team’s needs."
 msgstr ""
-"Δεν απαιτείται να συμπληρώσετε κανένα από αυτά τα πεδία προφίλ. Είναι προαιρετικά για να καλύψουν τις ανάγκες της ομάδας σας."
+"Δεν απαιτείται να συμπληρώσετε κανένα από αυτά τα πεδία προφίλ. Είναι "
+"προαιρετικά για να καλύψουν τις ανάγκες της ομάδας σας."
 
 #: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid ""
-"By clicking 'Edit', you will be able adjust things like the language that this system operates in."
+"By clicking 'Edit', you will be able adjust things like the language that "
+"this system operates in."
 msgstr ""
-"Κάνοντας κλικ στο «Επεξεργασία», θα μπορείτε να ρυθμίσετε πράγματα όπως η γλώσσα στην οποία λειτουργεί αυτό το σύστημα."
+"Κάνοντας κλικ στο «Επεξεργασία», θα μπορείτε να ρυθμίσετε πράγματα όπως η "
+"γλώσσα στην οποία λειτουργεί αυτό το σύστημα."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
 #: dt-users/users.php:169
@@ -1384,9 +1603,12 @@ msgstr "Τοποθεσίες"
 #: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid ""
-"These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
+"These are the areas you are responsible for. Clicking the 'Add' button will "
+"bring up a list of locations to choose from."
 msgstr ""
-"Αυτοί είναι οι τομείς για τους οποίους είστε υπεύθυνοι. Κάνοντας κλικ στο κουμπί «Προσθήκη» θα εμφανιστεί μια λίστα με τοποθεσίες από τις οποίες μπορείτε να επιλέξετε."
+"Αυτοί είναι οι τομείς για τους οποίους είστε υπεύθυνοι. Κάνοντας κλικ στο "
+"κουμπί «Προσθήκη» θα εμφανιστεί μια λίστα με τοποθεσίες από τις οποίες "
+"μπορείτε να επιλέξετε."
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
@@ -1396,9 +1618,13 @@ msgstr "Οι Ειδοποιήσεις Σας"
 #: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid ""
-"You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
+"You will receive web notifications and email notifications based on your "
+"notification preferences. To change your preference, click the toggle "
+"buttons."
 msgstr ""
-"Θα λαμβάνετε ειδοποιήσεις μέσω διαδικτύου και ειδοποιήσεις μέσω ηλεκτρονικού ταχυδρομείου ανάλογα με τις προτιμήσεις σας. Για να αλλάξετε την προτίμησή σας, κάντε κλικ στα κουμπιά εναλλαγής."
+"Θα λαμβάνετε ειδοποιήσεις μέσω διαδικτύου και ειδοποιήσεις μέσω ηλεκτρονικού "
+"ταχυδρομείου ανάλογα με τις προτιμήσεις σας. Για να αλλάξετε την προτίμησή "
+"σας, κάντε κλικ στα κουμπιά εναλλαγής."
 
 #: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
@@ -1414,16 +1640,23 @@ msgstr ""
 #: dt-assets/parts/modals/modal-help.php:78
 msgctxt "Optional Documentation"
 msgid ""
-"Some of the types of notifications cannot be adjusted because they are required by the system."
+"Some of the types of notifications cannot be adjusted because they are "
+"required by the system."
 msgstr ""
-"Ορισμένοι από τους τύπους ειδοποιήσεων δεν μπορούν να ρυθμιστούν επειδή απαιτούνται από το σύστημα."
+"Ορισμένοι από τους τύπους ειδοποιήσεων δεν μπορούν να ρυθμιστούν επειδή "
+"απαιτούνται από το σύστημα."
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid ""
-"Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Adjust whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"Ρυθμίστε αν θέλετε να βλέπετε ειδοποιήσεις σχετικά με νέα σχόλια, αλλαγές στις πληροφορίες επαφής, Ορόσημα Επαφών και μετρήσεις Υγείας Ομάδας, καθώς και αν θα λαμβάνετε ειδοποίηση για κάθε ενημέρωση που συμβαίνει στο σύστημα."
+"Ρυθμίστε αν θέλετε να βλέπετε ειδοποιήσεις σχετικά με νέα σχόλια, αλλαγές "
+"στις πληροφορίες επαφής, Ορόσημα Επαφών και μετρήσεις Υγείας Ομάδας, καθώς "
+"και αν θα λαμβάνετε ειδοποίηση για κάθε ενημέρωση που συμβαίνει στο σύστημα."
 
 #: dt-assets/parts/modals/modal-help.php:87
 msgctxt "Optional Documentation"
@@ -1433,9 +1666,12 @@ msgstr "Σελίδα Ειδοποιήσεων"
 #: dt-assets/parts/modals/modal-help.php:88
 msgctxt "Optional Documentation"
 msgid ""
-"This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
+"This Notifications Page is where you can read updates to users and groups. "
+"It displays notifications about activity on your records."
 msgstr ""
-"Σε αυτή τη Σελίδα Ειδοποιήσεων μπορείτε να διαβάσετε ενημερώσεις για χρήστες και ομάδες. Εμφανίζει ειδοποιήσεις σχετικά με τη δραστηριότητα στις εγγραφές σας."
+"Σε αυτή τη Σελίδα Ειδοποιήσεων μπορείτε να διαβάσετε ενημερώσεις για χρήστες "
+"και ομάδες. Εμφανίζει ειδοποιήσεις σχετικά με τη δραστηριότητα στις εγγραφές "
+"σας."
 
 #: dt-assets/parts/modals/modal-help.php:89
 msgctxt "Optional Documentation"
@@ -1447,14 +1683,17 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
-"Κάντε κλικ στο κουμπί «Όλα» για να εμφανιστεί η πλήρης λίστα με όλες τις ειδοποιήσεις σας."
+"Κάντε κλικ στο κουμπί «Όλα» για να εμφανιστεί η πλήρης λίστα με όλες τις "
+"ειδοποιήσεις σας."
 
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Unread' button to show the list of all of your unread notifications."
+"Click the 'Unread' button to show the list of all of your unread "
+"notifications."
 msgstr ""
-"Κάντε κλικ στο κουμπί «Μη αναγνωσμένες» για να εμφανιστεί η λίστα με όλες τις μη αναγνωσμένες ειδοποιήσεις σας."
+"Κάντε κλικ στο κουμπί «Μη αναγνωσμένες» για να εμφανιστεί η λίστα με όλες "
+"τις μη αναγνωσμένες ειδοποιήσεις σας."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
 #: template-notifications.php:66
@@ -1464,16 +1703,30 @@ msgstr "Σήμανση όλων ως αναγνωσμένων"
 #: dt-assets/parts/modals/modal-help.php:93
 msgctxt "Optional Documentation"
 msgid ""
-"If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+"If you don't want to click each filled in circle on the right side of each "
+"row to indicate the notification has been read, then click the 'Mark All as "
+"Read' link at the top to quickly adjust all the messages that they have all "
+"been read."
 msgstr ""
-"Αν δεν θέλετε να κάνετε κλικ σε κάθε συμπληρωμένο κύκλο στη δεξιά πλευρά κάθε γραμμής για να υποδείξετε ότι η ειδοποίηση έχει διαβαστεί, τότε κάντε κλικ στον σύνδεσμο «Χαρακτηρισμός Όλων ως Αναγνωσμένων» στην κορυφή για να ρυθμίσετε γρήγορα ότι έχουν διαβαστεί όλα τα μηνύματα."
+"Αν δεν θέλετε να κάνετε κλικ σε κάθε συμπληρωμένο κύκλο στη δεξιά πλευρά "
+"κάθε γραμμής για να υποδείξετε ότι η ειδοποίηση έχει διαβαστεί, τότε κάντε "
+"κλικ στον σύνδεσμο «Χαρακτηρισμός Όλων ως Αναγνωσμένων» στην κορυφή για να "
+"ρυθμίσετε γρήγορα ότι έχουν διαβαστεί όλα τα μηνύματα."
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Click the 'Settings' link to go to the notifications settings area to adjust "
+"whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"Κάντε κλικ στον σύνδεσμο «Ρυθμίσεις» για να μεταβείτε στην περιοχή των ρυθμίσεων για τις ειδοποιήσεις ώστε να για να ρυθμίσετε αν θέλετε να βλέπετε ειδοποιήσεις σχετικά με νέα σχόλια, αλλαγές στις πληροφορίες επαφής, Ορόσημα Επαφών και μετρήσεις Υγείας Ομάδας και αν θα λαμβάνετε ειδοποίηση για κάθε ενημέρωση που συμβαίνει στο σύστημα."
+"Κάντε κλικ στον σύνδεσμο «Ρυθμίσεις» για να μεταβείτε στην περιοχή των "
+"ρυθμίσεων για τις ειδοποιήσεις ώστε να για να ρυθμίσετε αν θέλετε να βλέπετε "
+"ειδοποιήσεις σχετικά με νέα σχόλια, αλλαγές στις πληροφορίες επαφής, Ορόσημα "
+"Επαφών και μετρήσεις Υγείας Ομάδας και αν θα λαμβάνετε ειδοποίηση για κάθε "
+"ενημέρωση που συμβαίνει στο σύστημα."
 
 #: dt-assets/parts/modals/modal-help.php:100
 msgctxt "Optional Documentation"
@@ -1483,9 +1736,15 @@ msgstr "Σελίδα Διπλότυπων Επαφών"
 #: dt-assets/parts/modals/modal-help.php:101
 msgctxt "Optional Documentation"
 msgid ""
-"This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
+"This Duplicate Contact Page is where you can review, decline or merge "
+"contacts that have been picked up by the system (checking against their "
+"name, email and phone) as possibly being duplicates of another already "
+"existing contact."
 msgstr ""
-"Αυτή η σελίδα διπλότυπων επαφών είναι το σημείο όπου μπορείτε να επανεξετάζετε, να απορρίπτετε ή να συγχωνεύετε επαφές που έχουν εντοπιστεί από το σύστημα (ελέγχοντας το όνομα, το email και το τηλέφωνό τους) ως πιθανώς διπλές μιας άλλης ήδη υπάρχουσας επαφής."
+"Αυτή η σελίδα διπλότυπων επαφών είναι το σημείο όπου μπορείτε να "
+"επανεξετάζετε, να απορρίπτετε ή να συγχωνεύετε επαφές που έχουν εντοπιστεί "
+"από το σύστημα (ελέγχοντας το όνομα, το email και το τηλέφωνό τους) ως "
+"πιθανώς διπλές μιας άλλης ήδη υπάρχουσας επαφής."
 
 #: dt-assets/parts/modals/modal-help.php:124
 #: dt-assets/parts/modals/modal-help.php:174
@@ -1516,26 +1775,21 @@ msgstr "Αποστολή συνδέσμου μέσω email."
 #: dt-reports/magic-url-setup.php:517
 msgid "Scan the QR code to open the magic link on a mobile device."
 msgstr ""
-"Σαρώστε τον κωδικό QR για να ανοίξετε τον μαγικό σύνδεσμο σε μια κινητή συσκευή."
+"Σαρώστε τον κωδικό QR για να ανοίξετε τον μαγικό σύνδεσμο σε μια κινητή "
+"συσκευή."
 
 #: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
 msgid ""
-"Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
+"Reset the security code. No data is removed. Only access. The previous link "
+"will be disabled and another one created."
 msgstr ""
-"Επαναφέρετε τον κωδικό ασφαλείας. Δεν αφαιρούνται δεδομένα. Μόνο η πρόσβαση. Ο προηγούμενος σύνδεσμος θα απενεργοποιηθεί και θα δημιουργηθεί ένας άλλος."
+"Επαναφέρετε τον κωδικό ασφαλείας. Δεν αφαιρούνται δεδομένα. Μόνο η πρόσβαση. "
+"Ο προηγούμενος σύνδεσμος θα απενεργοποιηθεί και θα δημιουργηθεί ένας άλλος."
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
 msgid "Create Record"
 msgstr "Δημιουργεία Εγγραφής"
-
-#: dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
-#: dt-metrics/combined/locations-list.php:90 dt-metrics/records/genmap.php:166
-#: dt-posts/custom-post-type.php:170 dt-users/template-user-management.php:196
-#: template-settings.php:146
-msgid "Name"
-msgstr "Όνομα"
 
 #: dt-assets/parts/modals/modal-new-contact.php:20
 msgid "Record Created"
@@ -1625,9 +1879,11 @@ msgstr "Αυτή η επαφή διαμοιράζεται με:"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid ""
-"Set a reminder or a task with a note and receive a notification on the due date."
+"Set a reminder or a task with a note and receive a notification on the due "
+"date."
 msgstr ""
-"Ορίστε μια υπενθύμιση ή ένα καθήκον με μια σημείωση και λάβετε μια ειδοποίηση κατά την ημερομηνία λήξης."
+"Ορίστε μια υπενθύμιση ή ένα καθήκον με μια σημείωση και λάβετε μια "
+"ειδοποίηση κατά την ημερομηνία λήξης."
 
 #: dt-assets/parts/modals/modal-tasks.php:13
 msgid "Task Type"
@@ -1648,11 +1904,6 @@ msgstr "Δημιουργία Καθήκοντος"
 #: dt-assets/parts/modals/modal-tasks.php:38
 msgid "Existing tasks for this record:"
 msgstr "Υφιστάμενα καθήκοντα για αυτή την εγγραφή:"
-
-#: dt-assets/parts/nav-offcanvas.php:66 dt-assets/parts/nav-topbar.php:187
-#: dt-users/template-no-permission.php:94
-msgid "Log Out"
-msgstr "Αποσύνδεση"
 
 #: dt-assets/parts/nav-topbar.php:88
 msgid "Theme Update Available!"
@@ -1680,7 +1931,7 @@ msgid "Mark All"
 msgstr "Επισήμανση Όλων"
 
 #: dt-contacts/base-setup.php:55 dt-contacts/base-setup.php:68
-#: dt-contacts/base-setup.php:261 dt-mapping/columns/add-contacts-column.php:59
+#: dt-contacts/base-setup.php:266 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:132
 #: dt-metrics/combined/locations-list.php:92
@@ -1692,83 +1943,83 @@ msgstr "Επισήμανση Όλων"
 msgid "Contacts"
 msgstr "Επαφές"
 
-#: dt-contacts/base-setup.php:108
+#: dt-contacts/base-setup.php:113
 msgid "Nickname"
 msgstr "Ψευδώνυμο"
 
-#: dt-contacts/base-setup.php:116
+#: dt-contacts/base-setup.php:121
 msgid "Contact Type"
 msgstr "Τύπος Επαφής"
 
-#: dt-contacts/base-setup.php:120
+#: dt-contacts/base-setup.php:125
 msgid "User"
 msgstr "Χρήστης"
 
-#: dt-contacts/base-setup.php:121
+#: dt-contacts/base-setup.php:126
 msgid "Representing a User in the system"
 msgstr "Αναπαράσταση ενός Χρήστη στο σύστημα"
 
-#: dt-contacts/base-setup.php:127
+#: dt-contacts/base-setup.php:132
 msgid "Private Contact"
 msgstr "Ιδιωτική Επαφή"
 
-#: dt-contacts/base-setup.php:129
+#: dt-contacts/base-setup.php:134
 msgid "A friend, family member or acquaintance"
 msgstr "Ένας φίλος, μέλος της οικογένειας ή γνωστός"
 
-#: dt-contacts/base-setup.php:130 dt-contacts/base-setup.php:160
+#: dt-contacts/base-setup.php:135 dt-contacts/base-setup.php:165
 msgid "Only me"
 msgstr "Μόνο εμένα"
 
-#: dt-contacts/base-setup.php:137
+#: dt-contacts/base-setup.php:142
 msgid "Standard Contact"
 msgstr "Τυπική Επαφή"
 
-#: dt-contacts/base-setup.php:139
+#: dt-contacts/base-setup.php:144
 msgid "A contact to collaborate on"
 msgstr "Μια επαφή για συνεργασία"
 
-#: dt-contacts/base-setup.php:140
+#: dt-contacts/base-setup.php:145
 msgid "Me and project leadership"
 msgstr "Εγώ και η ηγεσία του έργου"
 
-#: dt-contacts/base-setup.php:146
+#: dt-contacts/base-setup.php:151
 msgid "Connection"
 msgstr "Σύνδεση"
 
-#: dt-contacts/base-setup.php:148 dt-contacts/base-setup.php:157
+#: dt-contacts/base-setup.php:153 dt-contacts/base-setup.php:162
 msgid "Connected to a contact, or generational fruit"
 msgstr "Συνδέθηκε με επαφή, ή γενεαλογικό φρούτο"
 
-#: dt-contacts/base-setup.php:151
+#: dt-contacts/base-setup.php:156
 msgid "Collaborators"
 msgstr "Συνεργαζόμενοι"
 
-#: dt-contacts/base-setup.php:155
+#: dt-contacts/base-setup.php:160
 msgid "Private Connection"
 msgstr "Ιδιωτική Σύνδεση"
 
-#: dt-contacts/base-setup.php:184 dt-users/users.php:162
+#: dt-contacts/base-setup.php:189 dt-users/users.php:162
 msgid "Languages"
 msgstr "Γλώσσες"
 
-#: dt-contacts/base-setup.php:193 template-settings.php:179
+#: dt-contacts/base-setup.php:198 template-settings.php:179
 msgid "Phone"
 msgstr "Τηλέφωνο"
 
-#: dt-contacts/base-setup.php:201
+#: dt-contacts/base-setup.php:206
 msgid "Signal"
 msgstr "Σήμα"
 
-#: dt-contacts/base-setup.php:206
+#: dt-contacts/base-setup.php:211
 msgid "Viber"
 msgstr "Viber"
 
-#: dt-contacts/base-setup.php:211
+#: dt-contacts/base-setup.php:216
 msgid "WhatsApp"
 msgstr "WhatsApp"
 
-#: dt-contacts/base-setup.php:218
+#: dt-contacts/base-setup.php:223
 #: dt-core/configuration/config-site-defaults.php:253
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
@@ -1776,293 +2027,297 @@ msgstr "WhatsApp"
 msgid "Email"
 msgstr "Email"
 
-#: dt-contacts/base-setup.php:227 dt-groups/base-setup.php:357
+#: dt-contacts/base-setup.php:232 dt-groups/base-setup.php:358
 #: dt-people-groups/people-groups-base.php:210 template-settings.php:190
 msgid "Address"
 msgstr "Διεύθυνση"
 
-#: dt-contacts/base-setup.php:244
+#: dt-contacts/base-setup.php:249
 msgid "Facebook"
 msgstr "Facebook"
 
-#: dt-contacts/base-setup.php:252
+#: dt-contacts/base-setup.php:257
 msgid "Other Social Links"
 msgstr "Άλλοι Κοινωνικοί Σύνδεσμοι"
 
-#: dt-contacts/base-setup.php:261
+#: dt-contacts/base-setup.php:266
 #, php-format
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Συνδέσεις με άλλες %s"
 
-#: dt-contacts/base-setup.php:262
+#: dt-contacts/base-setup.php:267
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Σχέση που έχει αυτή η επαφή με άλλη επαφή στο σύστημα."
 
-#: dt-contacts/base-setup.php:273 dt-contacts/module-access.php:1189
+#: dt-contacts/base-setup.php:278 dt-contacts/module-access.php:1189
 #: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
 #: template-settings.php:714
 msgid "Gender"
 msgstr "Φύλο"
 
-#: dt-contacts/base-setup.php:276 dt-users/template-user-management.php:241
+#: dt-contacts/base-setup.php:281 dt-users/template-user-management.php:241
 msgid "Male"
 msgstr "Άρρεν"
 
-#: dt-contacts/base-setup.php:277 dt-users/template-user-management.php:242
+#: dt-contacts/base-setup.php:282 dt-users/template-user-management.php:242
 msgid "Female"
 msgstr "Θήλυ"
 
-#: dt-contacts/base-setup.php:284
+#: dt-contacts/base-setup.php:289
 msgid "Age"
 msgstr "Ηλικία"
 
-#: dt-contacts/base-setup.php:288
+#: dt-contacts/base-setup.php:293
 msgid "Under 18 years old"
 msgstr "Κάτω των 18 ετών"
 
-#: dt-contacts/base-setup.php:289
+#: dt-contacts/base-setup.php:294
 msgid "18-25 years old"
 msgstr "18-25 ετών"
 
-#: dt-contacts/base-setup.php:290
+#: dt-contacts/base-setup.php:295
 msgid "26-40 years old"
 msgstr "26-40 ετών"
 
-#: dt-contacts/base-setup.php:291
+#: dt-contacts/base-setup.php:296
 msgid "Over 40 years old"
 msgstr "Άνω των 40 ετών"
 
-#: dt-contacts/base-setup.php:299 dt-groups/base-setup.php:104
+#: dt-contacts/base-setup.php:304 dt-groups/base-setup.php:105
 #: dt-people-groups/people-groups-base.php:166
 msgid "Requires Update"
 msgstr "Απαιτείται Ενημέρωση"
 
-#: dt-contacts/base-setup.php:305 dt-contacts/module-access.php:142
+#: dt-contacts/base-setup.php:310 dt-contacts/module-access.php:142
 #: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
 msgstr "Κατάσταση Επαφής"
 
-#: dt-contacts/base-setup.php:306
+#: dt-contacts/base-setup.php:311
 msgctxt "Contact Status field description"
 msgid ""
 "The Contact Status describes the progress in communicating with the contact."
 msgstr ""
 "Η Κατάσταση Επικοινωνίας περιγράφει την πρόοδο της επικοινωνίας με την επαφή."
 
-#: dt-contacts/base-setup.php:313 dt-groups/base-setup.php:120
+#: dt-contacts/base-setup.php:318 dt-groups/base-setup.php:121
 #: dt-users/users.php:177
 msgid "Active"
 msgstr "Ενεργό"
 
-#: dt-contacts/base-setup.php:314
+#: dt-contacts/base-setup.php:319
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "Η επαφή εξελίσσεται ή/και ενημερώνεται συνεχώς."
 
-#: dt-contacts/base-setup.php:319
+#: dt-contacts/base-setup.php:324
 msgid "New Contact"
 msgstr "Νέα Επαφή"
 
-#: dt-contacts/base-setup.php:320
+#: dt-contacts/base-setup.php:325
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
 msgstr "Η επαφή είναι νέα στο σύστημα."
 
-#: dt-contacts/base-setup.php:326
+#: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
-"This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
+"This contact has made it known that they no longer want to continue or you "
+"have decided not to continue with him/her."
 msgstr ""
-"Αυτή η επαφή έχει καταστήσει γνωστό ότι δεν θέλει πλέον να συνεχίσει ή έχετε αποφασίσει να μην συνεχίσετε μαζί του/-ης."
+"Αυτή η επαφή έχει καταστήσει γνωστό ότι δεν θέλει πλέον να συνεχίσει ή έχετε "
+"αποφασίσει να μην συνεχίσετε μαζί του/-ης."
 
-#: dt-contacts/base-setup.php:332 dt-groups/base-setup.php:137
+#: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "Ανατέθηκε Σε"
 
-#: dt-contacts/base-setup.php:333
+#: dt-contacts/base-setup.php:338
 msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr ""
-"Επιλέξτε το βασικό πρόσωπο που είναι υπεύθυνο για την αναφορά αυτής της επαφής."
+"Επιλέξτε το βασικό πρόσωπο που είναι υπεύθυνο για την αναφορά αυτής της "
+"επαφής."
 
-#: dt-contacts/base-setup.php:343
+#: dt-contacts/base-setup.php:348
 msgid "Sub-assigned to"
 msgstr "Υποανατέθηκε σε"
 
-#: dt-contacts/base-setup.php:344
+#: dt-contacts/base-setup.php:349
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
 "Επαφή ή Χρήστης που βοηθά τον χρήστη με Ανάθεση να παρακολουθεί την επαφή."
 
-#: dt-contacts/base-setup.php:355
+#: dt-contacts/base-setup.php:360
 msgid "Sub-assigned on other Contacts"
 msgstr "Υπανατέθηκε σε άλλες Επαφές"
 
-#: dt-contacts/base-setup.php:356
+#: dt-contacts/base-setup.php:361
 msgid "Contacts this contacts is subassigned on"
 msgstr "Επαφές στις οποίες αυτή επαφή έχει υπανατεθεί"
 
-#: dt-contacts/base-setup.php:368 dt-contacts/base-setup.php:749
+#: dt-contacts/base-setup.php:373 dt-contacts/base-setup.php:754
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
 #: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
 msgid "Personal"
 msgstr "Προσωπικός"
 
-#: dt-contacts/base-setup.php:372
+#: dt-contacts/base-setup.php:377
 #: dt-core/configuration/config-site-defaults.php:256
 msgid "Web"
 msgstr "Διαδίκτυο"
 
-#: dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:381
 msgid "Transfer"
 msgstr "Μεταφορά"
 
-#: dt-contacts/base-setup.php:378
+#: dt-contacts/base-setup.php:383
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr ""
-"Επαφές που μεταφέρθηκαν από μια συνεργασία με έναν άλλο ιστότοπο Disciple.Tools."
+"Επαφές που μεταφέρθηκαν από μια συνεργασία με έναν άλλο ιστότοπο "
+"Disciple.Tools."
 
-#: dt-contacts/base-setup.php:391 dt-metrics/contacts/sources.php:90
+#: dt-contacts/base-setup.php:396 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:616
 msgid "Sources"
 msgstr "Πηγές"
 
-#: dt-contacts/base-setup.php:392
+#: dt-contacts/base-setup.php:397
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr ""
 "Ο ιστότοπος, η εκδήλωση ή η τοποθεσία από την οποία προήλθε αυτή η επαφή."
 
-#: dt-contacts/base-setup.php:433 dt-contacts/base-setup.php:465
+#: dt-contacts/base-setup.php:438 dt-contacts/base-setup.php:470
 #, php-format
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "Αρχειοθέτηση %s"
 
-#: dt-contacts/base-setup.php:440
+#: dt-contacts/base-setup.php:445
 #, php-format
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "Αλλαγή Τύπου %s"
 
-#: dt-contacts/base-setup.php:446
+#: dt-contacts/base-setup.php:451
 msgid "See duplicates"
 msgstr "Δείτε τα διπλότυπα"
 
-#: dt-contacts/base-setup.php:466
+#: dt-contacts/base-setup.php:471
 #, php-format
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "Είστε σίγουροι ότι θέλετε να αρχειοθετήσετε το %s;"
 
-#: dt-contacts/base-setup.php:473
+#: dt-contacts/base-setup.php:478
 msgid "Archive"
 msgstr "Αρχειοθέτηση"
 
-#: dt-contacts/base-setup.php:484 dt-contacts/module-access.php:432
+#: dt-contacts/base-setup.php:489 dt-contacts/module-access.php:432
 #: dt-contacts/module-access.php:463 dt-contacts/module-access.php:494
 msgid "Choose an option:"
 msgstr "Επιλογή εναλλακτικής:"
 
-#: dt-contacts/base-setup.php:508 dt-contacts/module-access.php:454
+#: dt-contacts/base-setup.php:513 dt-contacts/module-access.php:454
 #: dt-contacts/module-access.php:485 dt-contacts/module-access.php:513
 msgid "Confirm"
 msgstr "Επιβεβαίωση"
 
-#: dt-contacts/base-setup.php:532
+#: dt-contacts/base-setup.php:537
 #: dt-core/configuration/config-site-defaults.php:444
-#: dt-groups/base-setup.php:610 template-settings.php:212
+#: dt-groups/base-setup.php:611 template-settings.php:212
 msgid "Other"
 msgstr "Άλλο"
 
-#: dt-contacts/base-setup.php:623
+#: dt-contacts/base-setup.php:628
 msgid "This record might be a duplicate of: "
 msgstr "Αυτή η εγγραφή μπορεί να είναι αντίγραφο του:"
 
-#: dt-contacts/base-setup.php:629 dt-contacts/duplicates-merging.php:513
+#: dt-contacts/base-setup.php:634 dt-contacts/duplicates-merging.php:513
 #: dt-contacts/duplicates-merging.php:595
 msgid "Duplicate Checker"
 msgstr "Έλεγχος Διπλότυπων"
 
-#: dt-contacts/base-setup.php:668 dt-groups/base-setup.php:1031
+#: dt-contacts/base-setup.php:673 dt-groups/base-setup.php:1032
 #: dt-posts/custom-post-type.php:468
 msgid "Default Filters"
 msgstr "Προεπιλεγμένα Φίλτρα"
 
-#: dt-contacts/base-setup.php:678
+#: dt-contacts/base-setup.php:683
 #, php-format
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Όλες οι %s που μπορώ να δω"
 
-#: dt-contacts/base-setup.php:705 dt-groups/base-setup.php:1045
+#: dt-contacts/base-setup.php:710 dt-groups/base-setup.php:1046
 #: dt-posts/custom-post-type.php:501
 #, php-format
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "Αγαπημένες %s"
 
-#: dt-contacts/base-setup.php:711 dt-groups/base-setup.php:1050
+#: dt-contacts/base-setup.php:716 dt-groups/base-setup.php:1051
 #: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:507
 msgid "Favorite"
 msgstr "Αγαπημένο"
 
-#: dt-contacts/base-setup.php:717 dt-groups/base-setup.php:1056
+#: dt-contacts/base-setup.php:722 dt-groups/base-setup.php:1057
 #: dt-posts/custom-post-type.php:516
 msgid "My Recently Viewed"
 msgstr "Οι Πρόσφατες Προβολές Μου"
 
-#: dt-contacts/base-setup.php:722 dt-groups/base-setup.php:1061
+#: dt-contacts/base-setup.php:727 dt-groups/base-setup.php:1062
 #: dt-posts/custom-post-type.php:521
 msgid "Last 30 viewed"
 msgstr "Τελευταίες 30 προβολές"
 
-#: dt-contacts/base-setup.php:729
+#: dt-contacts/base-setup.php:734
 msgid "My Assigned Contacts"
 msgstr "Οι Ανατεθειμένες Επαφές Μου"
 
-#: dt-contacts/base-setup.php:739
+#: dt-contacts/base-setup.php:744
 msgid "My Follow-Up"
 msgstr "Η Παρακολούθησή Μου"
 
-#: dt-contacts/base-setup.php:740 dt-contacts/module-access.php:873
+#: dt-contacts/base-setup.php:745 dt-contacts/module-access.php:873
 #: dt-contacts/module-access.php:895 dt-contacts/module-access.php:920
-#: dt-groups/base-setup.php:949
+#: dt-groups/base-setup.php:950
 msgid "Assigned to me"
 msgstr "Ανατέθηκαν σε εμένα"
 
-#: dt-contacts/base-setup.php:741 dt-contacts/module-access.php:874
+#: dt-contacts/base-setup.php:746 dt-contacts/module-access.php:874
 #: dt-contacts/module-access.php:896 dt-contacts/module-access.php:921
 msgid "Sub-assigned to me"
 msgstr "Υπανατέθηκαν σε μένα"
 
-#: dt-contacts/base-setup.php:761
+#: dt-contacts/base-setup.php:766
 #, php-format
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "Συνδέθηκαν %s"
 
-#: dt-contacts/base-setup.php:785 dt-contacts/base-setup.php:793
-#: dt-contacts/base-setup.php:829 dt-contacts/base-setup.php:830
+#: dt-contacts/base-setup.php:790 dt-contacts/base-setup.php:798
+#: dt-contacts/base-setup.php:834 dt-contacts/base-setup.php:835
 msgid "Shared with me"
 msgstr "Έχουν διαμοιραστεί μαζί μου"
 
-#: dt-contacts/base-setup.php:833 dt-contacts/base-setup.php:834
+#: dt-contacts/base-setup.php:838 dt-contacts/base-setup.php:839
 msgid "Subassigned only"
 msgstr "Υπανατεθειμένα μόνο"
 
-#: dt-contacts/base-setup.php:987
+#: dt-contacts/base-setup.php:992
 #, php-format
 msgid "This %s is archived"
 msgstr "Αυτό το %s είναι αρχειοθετημένο"
 
-#: dt-contacts/base-setup.php:989
+#: dt-contacts/base-setup.php:994
 msgid "Restore"
 msgstr "Επαναφορά"
 
@@ -2117,9 +2372,13 @@ msgstr "Έχει ήδη μεταφερθεί σε %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
-"NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
+"NOTE: You have already transferred this contact. Transferring again might "
+"create duplicates. Do you still want to override this warning and continue "
+"with your transfer?"
 msgstr ""
-"ΣΗΜΕΙΩΣΗ: Έχετε ήδη μεταφέρει αυτή την επαφή. Η εκ νέου μεταφορά μπορεί να δημιουργήσει διπλότυπα. Θέλετε να παρακάμψετε αυτή την προειδοποίηση και να συνεχίσετε τη μεταφορά;"
+"ΣΗΜΕΙΩΣΗ: Έχετε ήδη μεταφέρει αυτή την επαφή. Η εκ νέου μεταφορά μπορεί να "
+"δημιουργήσει διπλότυπα. Θέλετε να παρακάμψετε αυτή την προειδοποίηση και να "
+"συνεχίσετε τη μεταφορά;"
 
 #: dt-contacts/contacts-transfer.php:281
 msgid "Override and Continue"
@@ -2214,9 +2473,11 @@ msgstr "Μονοπάτι Αναζήτησης"
 #: dt-contacts/module-access.php:103
 msgctxt "Seeker Path field description"
 msgid ""
-"Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
+"Set the status of your progression with the contact. These are the steps "
+"that happen in a specific order to help a contact move forward."
 msgstr ""
-"Ορίστε την κατάσταση της προόδου σας με την επαφή. Αυτά είναι τα βήματα που συμβαίνουν με συγκεκριμένη σειρά για να βοηθήσετε μια επαφή να προχωρήσει."
+"Ορίστε την κατάσταση της προόδου σας με την επαφή. Αυτά είναι τα βήματα που "
+"συμβαίνουν με συγκεκριμένη σειρά για να βοηθήσετε μια επαφή να προχωρήσει."
 
 #: dt-contacts/module-access.php:107
 msgid "Contact Attempt Needed"
@@ -2253,9 +2514,11 @@ msgstr "Μη Έτοιμο"
 #: dt-contacts/module-access.php:149
 msgctxt "Contact Status field description"
 msgid ""
-"There is not enough information to move forward with the contact at this time."
+"There is not enough information to move forward with the contact at this "
+"time."
 msgstr ""
-"Δεν υπάρχουν αρκετές πληροφορίες για να προχωρήσετε με την επαφή προς το παρόν."
+"Δεν υπάρχουν αρκετές πληροφορίες για να προχωρήσετε με την επαφή προς το "
+"παρόν."
 
 #: dt-contacts/module-access.php:153
 msgid "Dispatch Needed"
@@ -2273,9 +2536,11 @@ msgstr "Αναμονή αποδοχής"
 #: dt-contacts/module-access.php:159
 msgctxt "Contact Status field description"
 msgid ""
-"The contact has been assigned to someone, but has not yet been accepted by that person."
+"The contact has been assigned to someone, but has not yet been accepted by "
+"that person."
 msgstr ""
-"Η επαφή έχει ανατεθεί σε κάποιον, αλλά δεν έχει γίνει ακόμη αποδεκτή από το άτομο αυτό."
+"Η επαφή έχει ανατεθεί σε κάποιον, αλλά δεν έχει γίνει ακόμη αποδεκτή από το "
+"άτομο αυτό."
 
 #: dt-contacts/module-access.php:164
 msgid "Paused"
@@ -2283,8 +2548,7 @@ msgstr "Σε Παύση"
 
 #: dt-contacts/module-access.php:165
 msgctxt "Contact Status field description"
-msgid ""
-"This contact is currently on hold (i.e. on vacation or not responding)."
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "Αυτή η επαφή βρίσκεται σε αναμονή (π.χ. σε διακοπές ή δεν απαντά)."
 
 #: dt-contacts/module-access.php:180
@@ -2295,7 +2559,8 @@ msgstr "Μη Έτοιμη Αιτιολογία"
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr ""
-"Ο κύριος λόγος για τον οποίο η επαφή δεν είναι έτοιμη να εκχωρηθεί σε έναν χρήστη."
+"Ο κύριος λόγος για τον οποίο η επαφή δεν είναι έτοιμη να εκχωρηθεί σε έναν "
+"χρήστη."
 
 #: dt-contacts/module-access.php:188
 msgid "Insufficient Contact Information"
@@ -2328,9 +2593,11 @@ msgstr "Αιτιολογία Παύθηκε"
 #: dt-contacts/module-access.php:212
 msgctxt "Optional Documentation"
 msgid ""
-"A paused contact is one you are not currently interacting with but expect to in the future."
+"A paused contact is one you are not currently interacting with but expect to "
+"in the future."
 msgstr ""
-"Μια επαφή σε παύση είναι μια επαφή με την οποία δεν αλληλεπιδράτε επί του παρόντος, αλλά αναμένετε να το κάνετε στο μέλλον."
+"Μια επαφή σε παύση είναι μια επαφή με την οποία δεν αλληλεπιδράτε επί του "
+"παρόντος, αλλά αναμένετε να το κάνετε στο μέλλον."
 
 #: dt-contacts/module-access.php:216
 msgctxt "Reason Paused label"
@@ -2371,7 +2638,8 @@ msgstr "Η μπάλα είναι στο γήπεδο της επαφής"
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr ""
-"Θέλουμε να δούμε αν/πώς η επαφή ανταποκρίνεται σε αυτοματοποιημένα μηνύματα κειμένου"
+"Θέλουμε να δούμε αν/πώς η επαφή ανταποκρίνεται σε αυτοματοποιημένα μηνύματα "
+"κειμένου"
 
 #: dt-contacts/module-access.php:230
 msgid "Reason Archived"
@@ -2381,7 +2649,8 @@ msgstr "Αιτιολογία Αρχειοθετήθηκε"
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
 msgstr ""
-"Μια κλειστή επαφή είναι μια επαφή με την οποία δεν μπορείτε ή δεν επιθυμείτε να αλληλεπιδράτε."
+"Μια κλειστή επαφή είναι μια επαφή με την οποία δεν μπορείτε ή δεν επιθυμείτε "
+"να αλληλεπιδράτε."
 
 #: dt-contacts/module-access.php:235
 msgctxt "Reason Closed label"
@@ -2466,7 +2735,8 @@ msgctxt "Optional Documentation"
 msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
 msgstr ""
-"Εκστρατείες μάρκετινγκ ή δραστηριότητες πρόσβασης με τις οποίες αλληλεπίδρασε αυτή η επαφή."
+"Εκστρατείες μάρκετινγκ ή δραστηριότητες πρόσβασης με τις οποίες "
+"αλληλεπίδρασε αυτή η επαφή."
 
 #: dt-contacts/module-access.php:291
 msgid "Meeting Scheduled"
@@ -2614,9 +2884,13 @@ msgstr "Ορόσημα Πίστεως"
 #: dt-contacts/module-faith.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
+"Assign which milestones the contact has reached in their faith journey. "
+"These are points in a contact’s spiritual journey worth celebrating but can "
+"happen in any order."
 msgstr ""
-"Αναθέστε σε ποια ορόσημα έχει φτάσει η επαφή στo ταξίδι της πίστεως. Αυτά είναι σημεία στο πνευματικό ταξίδι μιας επαφής που αξίζει να γιορτάσουμε, αλλά μπορεί να συμβούν με οποιαδήποτε σειρά."
+"Αναθέστε σε ποια ορόσημα έχει φτάσει η επαφή στo ταξίδι της πίστεως. Αυτά "
+"είναι σημεία στο πνευματικό ταξίδι μιας επαφής που αξίζει να γιορτάσουμε, "
+"αλλά μπορεί να συμβούν με οποιαδήποτε σειρά."
 
 #: dt-contacts/module-faith.php:48
 msgid "Has Bible"
@@ -2713,14 +2987,16 @@ msgctxt "Step 1 of link user"
 msgid ""
 "To link to an existing user, first, find the user using the field below."
 msgstr ""
-"Για να συνδεθείτε με έναν υφιστάμενο χρήστη, βρείτε πρώτα τον χρήστη χρησιμοποιώντας το παρακάτω πεδίο."
+"Για να συνδεθείτε με έναν υφιστάμενο χρήστη, βρείτε πρώτα τον χρήστη "
+"χρησιμοποιώντας το παρακάτω πεδίο."
 
 #: dt-contacts/user-module.php:152
 msgctxt "Step 2 of link user"
 msgid ""
 "To finish the linking, merge this contact with the existing user details."
 msgstr ""
-"Για να ολοκληρώσετε τη σύνδεση, συγχωνεύστε αυτή την επαφή με τα στοιχεία του υφιστάμενου χρήστη."
+"Για να ολοκληρώσετε τη σύνδεση, συγχωνεύστε αυτή την επαφή με τα στοιχεία "
+"του υφιστάμενου χρήστη."
 
 #: dt-core/configuration/class-roles.php:81
 #: dt-core/configuration/class-roles.php:245
@@ -2774,9 +3050,11 @@ msgstr "Ορόσημα Επαφής και μετρήσεις Υγείας Ομ�
 
 #: dt-core/configuration/config-site-defaults.php:300
 msgid ""
-"This contact is active but there is no record of anybody contacting them. Please do contact them."
+"This contact is active but there is no record of anybody contacting them. "
+"Please do contact them."
 msgstr ""
-"Αυτή η επαφή είναι ενεργή, αλλά δεν υπάρχει εγγραφή που να αναφέρει ότι κάποιος επικοινώνησε μαζί τους. Παρακαλούμε επικοινωνήστε μαζί τους."
+"Αυτή η επαφή είναι ενεργή, αλλά δεν υπάρχει εγγραφή που να αναφέρει ότι "
+"κάποιος επικοινώνησε μαζί τους. Παρακαλούμε επικοινωνήστε μαζί τους."
 
 #: dt-core/configuration/config-site-defaults.php:306
 msgid "Please try connecting with this contact again."
@@ -2788,9 +3066,11 @@ msgstr "Προσπαθήστε να συνδεθείτε ξανά με αυτή 
 #: dt-core/configuration/config-site-defaults.php:330
 #: dt-core/configuration/config-site-defaults.php:336
 msgid ""
-"We haven't heard about this person in a while. Do you have an update for this contact?"
+"We haven't heard about this person in a while. Do you have an update for "
+"this contact?"
 msgstr ""
-"Έχουμε καιρό να ακούσουμε γι' αυτό το άτομο. Έχετε κάποια ενημέρωση για αυτή την επαφή;"
+"Έχουμε καιρό να ακούσουμε γι' αυτό το άτομο. Έχετε κάποια ενημέρωση για αυτή "
+"την επαφή;"
 
 #: dt-core/configuration/config-site-defaults.php:346
 msgid "We haven't heard about this group in a while. Do you have an update?"
@@ -2803,7 +3083,8 @@ msgstr "Προσωπικός Τηλεφωνικός Αριθμός"
 #: dt-core/configuration/config-site-defaults.php:380
 msgid "Personal phone is private to the team, not for distribution."
 msgstr ""
-"Ο προσωπικός τηλεφωνικός αριθμός είναι απόρρητος για την ομάδα και όχι προς διανομή."
+"Ο προσωπικός τηλεφωνικός αριθμός είναι απόρρητος για την ομάδα και όχι προς "
+"διανομή."
 
 #: dt-core/configuration/config-site-defaults.php:384
 msgid "Personal Email"
@@ -2812,7 +3093,8 @@ msgstr "Προσωπική Διεύθυνση Email"
 #: dt-core/configuration/config-site-defaults.php:387
 msgid "Personal email is private to the team, not for distribution."
 msgstr ""
-"Η προσωπική διεύθυνση email είναι απόρρητη για την ομάδα και όχι προς διανομή."
+"Η προσωπική διεύθυνση email είναι απόρρητη για την ομάδα και όχι προς "
+"διανομή."
 
 #: dt-core/configuration/config-site-defaults.php:391
 msgid "Personal Address"
@@ -2830,7 +3112,8 @@ msgstr "Τηλέφωνο Εργασίας"
 #: dt-core/configuration/config-site-defaults.php:401
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr ""
-"Το τηλέφωνο εργασίας προορίζεται για διανομή στις επαφές και στους αναζητούντες."
+"Το τηλέφωνο εργασίας προορίζεται για διανομή στις επαφές και στους "
+"αναζητούντες."
 
 #: dt-core/configuration/config-site-defaults.php:405
 msgid "Work Email"
@@ -2839,7 +3122,8 @@ msgstr "Διεύθυνση email εργασίας"
 #: dt-core/configuration/config-site-defaults.php:408
 msgid "Work email is for distribution to contacts and seekers."
 msgstr ""
-"Η διεύθυνση email εργασίας προορίζεται για διανομή στις επαφές και αναζητούντες."
+"Η διεύθυνση email εργασίας προορίζεται για διανομή στις επαφές και "
+"αναζητούντες."
 
 #: dt-core/configuration/config-site-defaults.php:412
 msgid "Work Facebook"
@@ -2848,7 +3132,8 @@ msgstr "Επαγγελματικός Λογαριασμός Facebook"
 #: dt-core/configuration/config-site-defaults.php:415
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr ""
-"Ο επαγγελματικός λογαριασμός Facebook προορίζεται για διανομή σε επαφές και αναζητούντες."
+"Ο επαγγελματικός λογαριασμός Facebook προορίζεται για διανομή σε επαφές και "
+"αναζητούντες."
 
 #: dt-core/configuration/config-site-defaults.php:419
 msgid "Work WhatsApp"
@@ -2857,7 +3142,8 @@ msgstr "Επαγγελματικός Λογαριασμός WhatsApp"
 #: dt-core/configuration/config-site-defaults.php:422
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr ""
-"Ο επαγγελματικός λογαριασμός WhatsApp προορίζεται για διανομή σε επαφές και αναζητούντες."
+"Ο επαγγελματικός λογαριασμός WhatsApp προορίζεται για διανομή σε επαφές και "
+"αναζητούντες."
 
 #: dt-core/configuration/config-site-defaults.php:429
 msgid "thumbs up"
@@ -2882,11 +3168,6 @@ msgstr "λύπη"
 #: dt-core/configuration/config-site-defaults.php:434
 msgid "prayer"
 msgstr "προσευχή"
-
-#: dt-core/configuration/config-site-defaults.php:442
-#: dt-login/login-template.php:529
-msgid "Home"
-msgstr "Σπίτι"
 
 #: dt-core/configuration/config-site-defaults.php:443
 msgid "Work"
@@ -2956,13 +3237,16 @@ msgstr ""
 #: dt-core/configuration/restrict-site-access.php:323
 msgid "To reset your password, visit the following address:"
 msgstr ""
-"Για να επαναφέρετε τον κωδικό πρόσβασής σας, επισκεφθείτε την ακόλουθη διεύθυνση:"
+"Για να επαναφέρετε τον κωδικό πρόσβασής σας, επισκεφθείτε την ακόλουθη "
+"διεύθυνση:"
 
 #: dt-core/dt-storage.php:223
 msgid ""
-"Something went wrong. Please try again or have an admin check the connection settings."
+"Something went wrong. Please try again or have an admin check the connection "
+"settings."
 msgstr ""
-"Κάτι πήγε στραβά. Παρακαλώ δοκιμάστε ξανά ή ζητήστε από έναν διαχειριστή να ελέγξει τις ρυθμίσεις σύνδεσης."
+"Κάτι πήγε στραβά. Παρακαλώ δοκιμάστε ξανά ή ζητήστε από έναν διαχειριστή να "
+"ελέγξει τις ρυθμίσεις σύνδεσης."
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -2999,9 +3283,11 @@ msgstr "Δωρεάν, αλλά όχι φτηνό"
 
 #: dt-core/release-notifications.php:97
 msgid ""
-"Disciple.Tools relies on contributions for continued development and maintenance. Will you join the team?"
+"Disciple.Tools relies on contributions for continued development and "
+"maintenance. Will you join the team?"
 msgstr ""
-"Το Disciple.Tools βασίζεται σε συνεισφορές για τη συνεχή ανάπτυξη και συντήρηση. Θα ενταχθείτε στην ομάδα;"
+"Το Disciple.Tools βασίζεται σε συνεισφορές για τη συνεχή ανάπτυξη και "
+"συντήρηση. Θα ενταχθείτε στην ομάδα;"
 
 #: dt-core/release-notifications.php:99
 msgid "Give"
@@ -3014,9 +3300,11 @@ msgstr "Μετάφραση"
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:735
 msgid ""
-"Translate Disciple.Tools into your language or help make a translation better."
+"Translate Disciple.Tools into your language or help make a translation "
+"better."
 msgstr ""
-"Μεταφράστε το Disciple.Tools στη γλώσσα σας ή βοηθήστε να βελτιωθεί μια μετάφραση."
+"Μεταφράστε το Disciple.Tools στη γλώσσα σας ή βοηθήστε να βελτιωθεί μια "
+"μετάφραση."
 
 #: dt-core/release-notifications.php:112
 msgid "Build or Document"
@@ -3024,21 +3312,23 @@ msgstr "Ανάπτυξη ή Τεκμηρίωση"
 
 #: dt-core/release-notifications.php:114
 msgid ""
-"Make Disciple.Tools better by building a feature or helping us make the documentation better."
+"Make Disciple.Tools better by building a feature or helping us make the "
+"documentation better."
 msgstr ""
-"Κάντε το Disciple.Tools καλύτερο δημιουργώντας μια λειτουργία ή βοηθώντας μας να βελτιώσουμε την τεκμηρίωση."
+"Κάντε το Disciple.Tools καλύτερο δημιουργώντας μια λειτουργία ή βοηθώντας "
+"μας να βελτιώσουμε την τεκμηρίωση."
 
 #: dt-core/release-notifications.php:116
 msgid "Find out more"
 msgstr "Μάθετε περισσότερα"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
-#: dt-groups/base-setup.php:168 dt-metrics/personal/activity-highlights.php:58
+#: dt-groups/base-setup.php:169 dt-metrics/personal/activity-highlights.php:58
 msgid "Group"
 msgstr "Ομάδα"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:61
-#: dt-groups/base-setup.php:425 dt-groups/base-setup.php:609
+#: dt-groups/base-setup.php:426 dt-groups/base-setup.php:610
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:177
@@ -3051,369 +3341,396 @@ msgstr "Ομάδα"
 msgid "Groups"
 msgstr "Ομάδες"
 
-#: dt-groups/base-setup.php:115
+#: dt-groups/base-setup.php:116
 msgid "Group Status"
 msgstr "Κατάσταση Ομάδας"
 
-#: dt-groups/base-setup.php:116
+#: dt-groups/base-setup.php:117
 msgctxt "field description"
 msgid "Set the current status of the group."
 msgstr "Ορίστε την τρέχουσα κατάσταση της ομάδας."
 
-#: dt-groups/base-setup.php:121
+#: dt-groups/base-setup.php:122
 msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "Η ομάδα συνέρχεται ενεργά."
 
-#: dt-groups/base-setup.php:125 dt-users/users.php:180
+#: dt-groups/base-setup.php:126 dt-users/users.php:180
 msgid "Inactive"
 msgstr "Ανενεργό"
 
-#: dt-groups/base-setup.php:126
+#: dt-groups/base-setup.php:127
 msgctxt "field description"
 msgid "The group is no longer meeting."
 msgstr "Η ομάδα δεν συνέρχεται πλέον."
 
-#: dt-groups/base-setup.php:138
+#: dt-groups/base-setup.php:139
 msgid "Select the main person who is responsible for reporting on this group."
 msgstr ""
-"Επιλέξτε το βασικό πρόσωπο που είναι υπεύθυνο για την υποβολή αναφορών σχετικά με αυτή την ομάδα."
+"Επιλέξτε το βασικό πρόσωπο που είναι υπεύθυνο για την υποβολή αναφορών "
+"σχετικά με αυτή την ομάδα."
 
-#: dt-groups/base-setup.php:146
+#: dt-groups/base-setup.php:147
 msgid "Group Coach / Church Planter"
 msgstr "Kαθοδηγητής Ομάδας / Ιδρυτής Εκκλησίας"
 
-#: dt-groups/base-setup.php:147
+#: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
-"The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
+"The person who planted and/or is coaching this group. Only one person can be "
+"assigned to a group while multiple people can be coaches / church planters "
+"of this group."
 msgstr ""
-"Το άτομο που δημιούργησε ή/και καθοδηγεί αυτή την ομάδα. Μόνο ένα άτομο μπορεί να ανατεθεί σε μια ομάδα, ενώ πολλά άτομα μπορούν να είναι καθοδηγητές / ιδρυτές εκκλησιών αυτής της ομάδας."
+"Το άτομο που δημιούργησε ή/και καθοδηγεί αυτή την ομάδα. Μόνο ένα άτομο "
+"μπορεί να ανατεθεί σε μια ομάδα, ενώ πολλά άτομα μπορούν να είναι "
+"καθοδηγητές / ιδρυτές εκκλησιών αυτής της ομάδας."
 
-#: dt-groups/base-setup.php:159
+#: dt-groups/base-setup.php:160
 msgid "Group Type"
 msgstr "Τύπος Ομάδας"
 
-#: dt-groups/base-setup.php:164
+#: dt-groups/base-setup.php:165
 msgid "Pre-Group"
 msgstr "Προ-Ομάδα"
 
-#: dt-groups/base-setup.php:165
+#: dt-groups/base-setup.php:166
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
 msgstr "Μια ομάδα που αποτελείται κυρίως από αλλόθρησκους."
 
-#: dt-groups/base-setup.php:169
+#: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr ""
-"Μια ομάδα που έχει 3 ή περισσότερους πιστούς αλλά δεν αναγνωρίζεται ως εκκλησία."
+"Μια ομάδα που έχει 3 ή περισσότερους πιστούς αλλά δεν αναγνωρίζεται ως "
+"εκκλησία."
 
-#: dt-groups/base-setup.php:172
+#: dt-groups/base-setup.php:173
 msgid "Church"
 msgstr "Εκκλησία"
 
-#: dt-groups/base-setup.php:173
+#: dt-groups/base-setup.php:174
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
 msgstr ""
 "Μια ομάδα που έχει 3 ή περισσότερους πιστούς και προσδιορίζεται ως εκκλησία."
 
-#: dt-groups/base-setup.php:176
+#: dt-groups/base-setup.php:177
 msgid "Team"
 msgstr "Παρέα"
 
-#: dt-groups/base-setup.php:177
+#: dt-groups/base-setup.php:178
 msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr ""
-"Μια ειδική ομάδα που δεν συνέρχεται ως εκκλησία (ή προσπαθεί να γίνει εκκλησία)."
+"Μια ειδική ομάδα που δεν συνέρχεται ως εκκλησία (ή προσπαθεί να γίνει "
+"εκκλησία)."
 
-#: dt-groups/base-setup.php:191 dt-groups/base-setup.php:602
+#: dt-groups/base-setup.php:192 dt-groups/base-setup.php:603
 msgid "Church Health"
 msgstr "Υγεία Εκκλησίας"
 
-#: dt-groups/base-setup.php:192
+#: dt-groups/base-setup.php:193
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "Παρακολουθήστε την πρόοδο και την υγεία μιας ομάδας/εκκλησίας."
 
-#: dt-groups/base-setup.php:196
+#: dt-groups/base-setup.php:197
 msgid "Baptism"
 msgstr "Βάπτιση"
 
-#: dt-groups/base-setup.php:197
+#: dt-groups/base-setup.php:198
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "Η ομάδα διενεργεί βαπτίσεις."
 
-#: dt-groups/base-setup.php:201
+#: dt-groups/base-setup.php:202
 msgid "Bible Study"
 msgstr "Μελέτη της Βίβλου"
 
-#: dt-groups/base-setup.php:202
+#: dt-groups/base-setup.php:203
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "Η ομάδα μελετά την Βίβλο."
 
-#: dt-groups/base-setup.php:206
+#: dt-groups/base-setup.php:207
 msgid "Communion"
 msgstr "Μετάληψη"
 
-#: dt-groups/base-setup.php:207
+#: dt-groups/base-setup.php:208
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "Η ομάδα πραγματοποιεί μεταλήψεις."
 
-#: dt-groups/base-setup.php:211
+#: dt-groups/base-setup.php:212
 msgid "Fellowship"
 msgstr "Συμμετοχή"
 
-#: dt-groups/base-setup.php:212
+#: dt-groups/base-setup.php:213
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "Η ομάδα δέχεται μέλη."
 
-#: dt-groups/base-setup.php:216
+#: dt-groups/base-setup.php:217
 msgid "Giving"
 msgstr "Δωρεές"
 
-#: dt-groups/base-setup.php:217
+#: dt-groups/base-setup.php:218
 msgctxt "Optional Documentation"
 msgid "The group is giving."
 msgstr "Η ομάδα κάνει δωρεές."
 
-#: dt-groups/base-setup.php:221
+#: dt-groups/base-setup.php:222
 msgid "Prayer"
 msgstr "Προσευχή"
 
-#: dt-groups/base-setup.php:222
+#: dt-groups/base-setup.php:223
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "Η ομάδα προσεύχεται."
 
-#: dt-groups/base-setup.php:226
+#: dt-groups/base-setup.php:227
 msgid "Praise"
 msgstr "Δοξολογία"
 
-#: dt-groups/base-setup.php:227
+#: dt-groups/base-setup.php:228
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "Η ομάδα δοξολογεί."
 
-#: dt-groups/base-setup.php:231
+#: dt-groups/base-setup.php:232
 msgid "Sharing the Gospel"
 msgstr "Μοιράζεται το Ευαγγέλιο"
 
-#: dt-groups/base-setup.php:232
+#: dt-groups/base-setup.php:233
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
 msgstr "Η ομάδα μοιράζεται το ευαγγέλιο."
 
-#: dt-groups/base-setup.php:236 dt-groups/base-setup.php:298
+#: dt-groups/base-setup.php:237 dt-groups/base-setup.php:299
 msgid "Leaders"
 msgstr "Επικεφαλής"
 
-#: dt-groups/base-setup.php:237
+#: dt-groups/base-setup.php:238
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "Η ομάδα έχει επικεφαλής."
 
-#: dt-groups/base-setup.php:241 dt-groups/base-setup.php:403
+#: dt-groups/base-setup.php:242 dt-groups/base-setup.php:404
 msgid "Church Commitment"
 msgstr "Δέσμευση της Εκκλησίας"
 
-#: dt-groups/base-setup.php:242
+#: dt-groups/base-setup.php:243
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "Η ομάδα έχει δεσμευτεί να είναι εκκλησία."
 
-#: dt-groups/base-setup.php:251 dt-users/template-user-management.php:180
+#: dt-groups/base-setup.php:252 dt-users/template-user-management.php:180
 #: template-settings.php:444 template-settings.php:463
 msgid "Start Date"
 msgstr "Ημερομηνία Έναρξης"
 
-#: dt-groups/base-setup.php:252
+#: dt-groups/base-setup.php:253
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "Η ημερομηνία που η ομάδα άρχισε να συνέρχεται."
 
-#: dt-groups/base-setup.php:259
+#: dt-groups/base-setup.php:260
 msgid "Church Start Date"
 msgstr "Ημερομηνία Έναρξης Εκκλησίας"
 
-#: dt-groups/base-setup.php:260
+#: dt-groups/base-setup.php:261
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "Η ημερομηνία που η ομάδα αναγνωρίστηκε για πρώτη φορά ως εκκλησία."
 
-#: dt-groups/base-setup.php:268 dt-users/template-user-management.php:181
+#: dt-groups/base-setup.php:269 dt-users/template-user-management.php:181
 #: template-settings.php:450 template-settings.php:464
 msgid "End Date"
 msgstr "Ημερομηνία Λήξης"
 
-#: dt-groups/base-setup.php:269
+#: dt-groups/base-setup.php:270
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "Η ημερομηνία που η ομάδα σταμάτησε να συνέρχεται (κατά περίπτωση)."
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:157
+#: dt-groups/base-setup.php:280 dt-metrics/records/genmap.php:157
 msgid "Member Count"
 msgstr "Αριθμός Μελών"
 
-#: dt-groups/base-setup.php:280
+#: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
-"The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
+"The number of members in this group. It will automatically be updated when "
+"new members are added or removed in the member list. Change this number "
+"manually to include people who may not be in the system but are also members "
+"of the group."
 msgstr ""
-"Ο αριθμός των μελών αυτής της ομάδας. Θα ενημερώνεται αυτόματα όταν προστίθενται ή αφαιρούνται νέα μέλη στη λίστα μελών. Αλλάξτε αυτόν τον αριθμό χειροκίνητα για να συμπεριλάβετε άτομα που μπορεί να μην είναι στο σύστημα αλλά είναι επίσης μέλη της ομάδας."
+"Ο αριθμός των μελών αυτής της ομάδας. Θα ενημερώνεται αυτόματα όταν "
+"προστίθενται ή αφαιρούνται νέα μέλη στη λίστα μελών. Αλλάξτε αυτόν τον "
+"αριθμό χειροκίνητα για να συμπεριλάβετε άτομα που μπορεί να μην είναι στο "
+"σύστημα αλλά είναι επίσης μέλη της ομάδας."
 
-#: dt-groups/base-setup.php:288 dt-groups/base-setup.php:557
-#: dt-groups/base-setup.php:601
+#: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
+#: dt-groups/base-setup.php:602
 msgid "Member List"
 msgstr "Λίστα Μελών"
 
-#: dt-groups/base-setup.php:289
+#: dt-groups/base-setup.php:290
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "Οι επαφές που είναι μέλη αυτής της ομάδας."
 
-#: dt-groups/base-setup.php:308
+#: dt-groups/base-setup.php:309
 msgid "Leader Count"
 msgstr "Αριθμός Επικεφαλής"
 
-#: dt-groups/base-setup.php:316
+#: dt-groups/base-setup.php:317
 msgid "Parent Group"
 msgstr "Ομάδα Γονέων"
 
-#: dt-groups/base-setup.php:317
+#: dt-groups/base-setup.php:318
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
 msgstr "Μια ομάδα που ίδρυσε αυτή την ο΄μαδα."
 
-#: dt-groups/base-setup.php:328
+#: dt-groups/base-setup.php:329
 msgid "Peer Group"
 msgstr "Ομάδα Συνομιλήκων"
 
-#: dt-groups/base-setup.php:329
+#: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
-"A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+"A related group that isn't a parent/child in relationship. It might indicate "
+"groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
-"Μια συγγενήςομάδα που δεν είναι γονέας/παιδί σε σχέση. Μπορεί να υποδεικνύει ομάδες που συνεργάζονται, που πρόκειται να συγχωνευθούν, που χωρίστηκαν πρόσφατα κ.λπ."
+"Μια συγγενήςομάδα που δεν είναι γονέας/παιδί σε σχέση. Μπορεί να υποδεικνύει "
+"ομάδες που συνεργάζονται, που πρόκειται να συγχωνευθούν, που χωρίστηκαν "
+"πρόσφατα κ.λπ."
 
-#: dt-groups/base-setup.php:340
+#: dt-groups/base-setup.php:341
 msgid "Child Group"
 msgstr "Ομάδα Παίδων"
 
-#: dt-groups/base-setup.php:341
+#: dt-groups/base-setup.php:342
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "Μια ομάδα που έχει προέλθει από αυτή την ομάδα."
 
-#: dt-groups/base-setup.php:376
+#: dt-groups/base-setup.php:377
 msgid "Unbelievers"
 msgstr "Αλλόθρησκοι"
 
-#: dt-groups/base-setup.php:377
+#: dt-groups/base-setup.php:378
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "Αριθμός αλλόθρησκων σε αυτή την ομάδα."
 
-#: dt-groups/base-setup.php:385
+#: dt-groups/base-setup.php:386
 msgid "Believers"
 msgstr "Πιστοί"
 
-#: dt-groups/base-setup.php:386
+#: dt-groups/base-setup.php:387
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "Αριθμός πιστών σε αυτή την ομάδα."
 
-#: dt-groups/base-setup.php:394
+#: dt-groups/base-setup.php:395
 msgid "Accountable"
 msgstr "Υπόλογος"
 
-#: dt-groups/base-setup.php:395
+#: dt-groups/base-setup.php:396
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "Αριθμός ατόμων στην ομάδα λογοδοσίας."
 
-#: dt-groups/base-setup.php:404
+#: dt-groups/base-setup.php:405
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "Είναι αυτή εκκλησία - ναι ή όχι;"
 
-#: dt-groups/base-setup.php:412
+#: dt-groups/base-setup.php:413
 msgid "Multiplying"
 msgstr "Πολλαπλασιάζεται"
 
-#: dt-groups/base-setup.php:413
+#: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
-"Number of people helping start other groups. How many members are multiplying?"
+"Number of people helping start other groups. How many members are "
+"multiplying?"
 msgstr ""
-"Αριθμός ατόμων που βοηθούν στην ίδρυση άλλων ομάδων. Πόσα μέλη πολλαπλασιάζονται;"
+"Αριθμός ατόμων που βοηθούν στην ίδρυση άλλων ομάδων. Πόσα μέλη "
+"πολλαπλασιάζονται;"
 
-#: dt-groups/base-setup.php:426
+#: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "Ομάδες των οποίων αυτή η επαφή είναι μέλος."
 
-#: dt-groups/base-setup.php:438
+#: dt-groups/base-setup.php:439
 msgid "Leader of Group"
 msgstr "Επικεφαλής της Ομάδας"
 
-#: dt-groups/base-setup.php:448
+#: dt-groups/base-setup.php:449
 msgid "Coach of Group"
 msgstr "Καθοδηγητής Ομάδας"
 
-#: dt-groups/base-setup.php:560
+#: dt-groups/base-setup.php:561
 msgid "Create"
 msgstr "Δημιουργία"
 
-#: dt-groups/base-setup.php:565
+#: dt-groups/base-setup.php:566
 msgid "Select"
 msgstr "Επιλογή"
 
-#: dt-groups/base-setup.php:570
+#: dt-groups/base-setup.php:571
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr ""
 "Για να προσθέσετε νέα μέλη, κάντε κλικ στην επιλογή «Δημιουργία» ή «Επιλογή»."
 
-#: dt-groups/base-setup.php:576
+#: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Προσθήκη μελών από υφιστάμενες επαφές"
 
-#: dt-groups/base-setup.php:577
+#: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
-"In the 'Member List' field, type the name of an existing contact to add them to this group."
+"In the 'Member List' field, type the name of an existing contact to add them "
+"to this group."
 msgstr ""
-"Στο πεδίο «Λίστα Μελών», πληκτρολογήστε το όνομα μιας υφιστάμενης επαφής για να την προσθέσετε σε αυτή την ομάδα."
+"Στο πεδίο «Λίστα Μελών», πληκτρολογήστε το όνομα μιας υφιστάμενης επαφής για "
+"να την προσθέσετε σε αυτή την ομάδα."
 
-#: dt-groups/base-setup.php:605
+#: dt-groups/base-setup.php:606
 msgid "Four Fields"
 msgstr "Τέσσερα Πεδία"
 
-#: dt-groups/base-setup.php:606
+#: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
-"There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
+"There are 5 squares in the Four Fields diagram. Starting in the top left "
+"quadrant and going clockwise and the fifth being in the middle, they stand "
+"for:"
 msgstr ""
-"Υπάρχουν 5 τετράγωνα στο διάγραμμα των τεσσάρων πεδίων. Ξεκινώντας από το πάνω αριστερό τεταρτημόριο και προχωρώντας δεξιόστροφα με το πέμπτο να βρίσκεται στη μέση, συμβολίζουν:"
+"Υπάρχουν 5 τετράγωνα στο διάγραμμα των τεσσάρων πεδίων. Ξεκινώντας από το "
+"πάνω αριστερό τεταρτημόριο και προχωρώντας δεξιόστροφα με το πέμπτο να "
+"βρίσκεται στη μέση, συμβολίζουν:"
 
 #: dt-login/login-template.php:68
 msgid ""
-"Your password reset link appears to be invalid. Please request a new link below."
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
 msgstr ""
-"Ο σύνδεσμος επαναφοράς κωδικού πρόσβασης φαίνεται να μην είναι έγκυρος. Παρακαλώ ζητήστε νέο σύνδεσμο παρακάτω."
+"Ο σύνδεσμος επαναφοράς κωδικού πρόσβασης φαίνεται να μην είναι έγκυρος. "
+"Παρακαλώ ζητήστε νέο σύνδεσμο παρακάτω."
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
 msgstr ""
-"Ο σύνδεσμος επαναφοράς κωδικού πρόσβασης έχει λήξει. Παρακαλώ ζητήστε νέο σύνδεσμο παρακάτω."
+"Ο σύνδεσμος επαναφοράς κωδικού πρόσβασης έχει λήξει. Παρακαλώ ζητήστε νέο "
+"σύνδεσμο παρακάτω."
 
 #: dt-login/login-template.php:84 dt-login/login-template.php:109
 msgid "Get New Password"
@@ -3425,9 +3742,11 @@ msgstr "Διεύθυνση Email"
 
 #: dt-login/login-template.php:112
 msgid ""
-"Your password reset email has been sent. Check your email or junk mail for the link to reset your password."
+"Your password reset email has been sent. Check your email or junk mail for "
+"the link to reset your password."
 msgstr ""
-"Το email επαναφοράς κωδικού πρόσβασης έχει σταλεί. Ελέγξτε το email σας ή τα ανεπιθύμητα για τον σύνδεσμο επαναφοράς κωδικού πρόσβασης."
+"Το email επαναφοράς κωδικού πρόσβασης έχει σταλεί. Ελέγξτε το email σας ή τα "
+"ανεπιθύμητα για τον σύνδεσμο επαναφοράς κωδικού πρόσβασης."
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
@@ -3473,11 +3792,6 @@ msgstr "Σύνδεση"
 msgid "Username or password does not match. Try again."
 msgstr "Το όνομα χρήστη ή ο κωδικός πρόσβασης δεν ταιριάζουν. Δοκιμάστε ξανά."
 
-#: dt-login/login-template.php:489 dt-users/template-new-user.php:121
-#: dt-users/template-new-user.php:122 template-settings.php:661
-msgid "Password"
-msgstr "Κωδικός Πρόσβασης"
-
 #: dt-login/login-template.php:490
 msgid "Remember Me"
 msgstr "Να με θυμάσαι"
@@ -3493,28 +3807,28 @@ msgstr "Χαμένος Κωδικός Πρόσβασης"
 msgid "Churches"
 msgstr "Εκκλησίες"
 
-#: dt-mapping/geocode-api/mapbox-api.php:288
-#: dt-mapping/geocode-api/mapbox-api.php:323
+#: dt-mapping/geocode-api/mapbox-api.php:317
+#: dt-mapping/geocode-api/mapbox-api.php:352
 #: dt-users/template-user-management.php:124 template-settings.php:340
 msgid "add"
 msgstr "προσθήκη"
 
-#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:98
+#: dt-mapping/geocode-api/mapbox-api.php:318 template-merge-post-details.php:98
 msgid "Use"
 msgstr "Χρήση"
 
-#: dt-mapping/geocode-api/mapbox-api.php:290 template-merge-post-details.php:96
+#: dt-mapping/geocode-api/mapbox-api.php:319 template-merge-post-details.php:96
 #: template-new-bulk-post.php:26 template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
 msgstr "Αναζήτηση Τοποθεσίας"
 
-#: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:97
+#: dt-mapping/geocode-api/mapbox-api.php:320 template-merge-post-details.php:97
 #: template-new-bulk-post.php:216
 msgid "Delete Location"
 msgstr "Διαγραφή Τοποθεσίας"
 
-#: dt-mapping/geocode-api/mapbox-api.php:292
+#: dt-mapping/geocode-api/mapbox-api.php:321
 msgid "Open Mapping"
 msgstr "Άνοιγμα Χαρτογράφησης"
 
@@ -3621,9 +3935,11 @@ msgstr "Βαπτίσεις"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid ""
-"Number of baptized contact with a baptism date in date range and baptized by connection"
+"Number of baptized contact with a baptism date in date range and baptized by "
+"connection"
 msgstr ""
-"Αριθμός βαπτισμένων επαφών με ημερομηνία βάπτισης στο εύρος ημερομηνιών και βαπτισμένων με σύνδεση"
+"Αριθμός βαπτισμένων επαφών με ημερομηνία βάπτισης στο εύρος ημερομηνιών και "
+"βαπτισμένων με σύνδεση"
 
 #: dt-metrics/combined/critical-path.php:277
 #, php-format
@@ -3676,9 +3992,11 @@ msgstr "Ιδρυτές Εκκλησιών"
 
 #: dt-metrics/combined/critical-path.php:333
 msgid ""
-"Number of contacts or users who have started a church and are marked as the church coach"
+"Number of contacts or users who have started a church and are marked as the "
+"church coach"
 msgstr ""
-"Αριθμός επαφών ή χρηστών που έχουν ξεκινήσει μια εκκλησία και έχουν επισημανθεί ως καθοδηγητές εκκλησίας"
+"Αριθμός επαφών ή χρηστών που έχουν ξεκινήσει μια εκκλησία και έχουν "
+"επισημανθεί ως καθοδηγητές εκκλησίας"
 
 #: dt-metrics/combined/daily-activity.php:22
 #: dt-metrics/combined/daily-activity.php:71
@@ -3720,7 +4038,8 @@ msgstr[1] "%s μήνες πριν"
 msgid ""
 "Click on a timeline day summary to display a detailed list of metrics below."
 msgstr ""
-"Κάντε κλικ σε μια σύνοψη της ημέρας του χρονοδιαγράμματος για να εμφανιστεί μια λεπτομερής λίστα των μετρήσεων παρακάτω."
+"Κάντε κλικ σε μια σύνοψη της ημέρας του χρονοδιαγράμματος για να εμφανιστεί "
+"μια λεπτομερής λίστα των μετρήσεων παρακάτω."
 
 #. Template Name of the theme
 #: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
@@ -3756,12 +4075,13 @@ msgstr "Συνδυαστικοί Χάρτες"
 
 #: dt-metrics/combined/mapbox-maps.php:62
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
-#: dt-metrics/records/dynamic-records-map.php:105
+#: dt-metrics/records/dynamic-records-map.php:106
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
 msgstr ""
-"Για να δείτε αυτόν τον χάρτη, απαιτείται κλειδί mapbox· κάντε κλικ εδώ για προσθήκη."
+"Για να δείτε αυτόν τον χάρτη, απαιτείται κλειδί mapbox· κάντε κλικ εδώ για "
+"προσθήκη."
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -3778,7 +4098,8 @@ msgstr "Πρόσβαση"
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
 msgstr ""
-"Φιλτράρισμα με βάση το εύρος ημερομηνιών και τους διαθέσιμους συνδέσμους ιστότοπου"
+"Φιλτράρισμα με βάση το εύρος ημερομηνιών και τους διαθέσιμους συνδέσμους "
+"ιστότοπου"
 
 #: dt-metrics/combined/site-links.php:73
 msgid "Date Ranges"
@@ -3880,8 +4201,7 @@ msgid "Active contacts, by source and seeker path"
 msgstr "Ενεργές επαφές, ανά πηγή και μονοπα΄τι αναζήτησης"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
-msgid ""
-"This is displaying only the contacts with an 'active' status right now."
+msgid "This is displaying only the contacts with an 'active' status right now."
 msgstr "Αυτή τη στιγμή εμφανίζονται μόνο οι επαφές με «ενεργή» κατάσταση."
 
 #: dt-metrics/contacts/sources.php:96
@@ -3890,9 +4210,11 @@ msgstr "Ενεργές επαφές, ανά πηγή και ορόσημο πί�
 
 #: dt-metrics/contacts/sources.php:98
 msgid ""
-"A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+"A contact can come from more than one source, and it can have more than one "
+"faith milestone at the same time."
 msgstr ""
-"Μια επαφή μπορεί να προέρχεται από περισσότερες από μία πηγές και μπορεί να διαθέτει περισσότερα από ένα ορόσημα πίστεως ταυτόχρονα."
+"Μια επαφή μπορεί να προέρχεται από περισσότερες από μία πηγές και μπορεί να "
+"διαθέτει περισσότερα από ένα ορόσημα πίστεως ταυτόχρονα."
 
 #: dt-metrics/counter.php:135
 msgid "First Meetings"
@@ -4088,29 +4410,29 @@ msgstr "Αληθές"
 msgid "False"
 msgstr "Ψευδές"
 
-#: dt-metrics/records/dynamic-records-map.php:92
+#: dt-metrics/records/dynamic-records-map.php:93
 #: dt-metrics/records/genmap.php:136
 msgid "Show Archived"
 msgstr "Εμφάνιση Αρχειοθετημένων"
 
-#: dt-metrics/records/dynamic-records-map.php:94 template-new-bulk-post.php:264
+#: dt-metrics/records/dynamic-records-map.php:95 template-new-bulk-post.php:264
 msgid "Add Records"
 msgstr "Προσθήκη Εγγραφών"
 
-#: dt-metrics/records/dynamic-records-map.php:95
-#: dt-metrics/records/dynamic-records-map.php:98
+#: dt-metrics/records/dynamic-records-map.php:96
+#: dt-metrics/records/dynamic-records-map.php:99
 msgid "Record Types"
 msgstr "Τύποι Εγγραφών"
 
-#: dt-metrics/records/dynamic-records-map.php:96
+#: dt-metrics/records/dynamic-records-map.php:97
 msgid "Layer"
 msgstr "Επίπεδο"
 
-#: dt-metrics/records/dynamic-records-map.php:97
+#: dt-metrics/records/dynamic-records-map.php:98
 msgid "Are you sure you wish to delete layer?"
 msgstr "Είστε σίγουροι ότι θέλετε να διαγράψετε το επίπεδο;"
 
-#: dt-metrics/records/dynamic-records-map.php:100
+#: dt-metrics/records/dynamic-records-map.php:101
 #: dt-notifications/notifications.php:920
 #: dt-notifications/notifications.php:927
 #: dt-notifications/notifications.php:934
@@ -4224,9 +4546,11 @@ msgstr "Απλό Γράφημα"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
-"This chart shows the total number for each field value at the end of the selected date."
+"This chart shows the total number for each field value at the end of the "
+"selected date."
 msgstr ""
-"Αυτό το γράφημα εμφανίζει τον συνολικό αριθμό για κάθε τιμή πεδίου στο τέλος της επιλεγμένης ημερομηνίας."
+"Αυτό το γράφημα εμφανίζει τον συνολικό αριθμό για κάθε τιμή πεδίου στο τέλος "
+"της επιλεγμένης ημερομηνίας."
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
@@ -4535,11 +4859,17 @@ msgstr "Στοιχεία"
 
 #: dt-posts/dt-posts.php:2796
 #, php-format
-msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
+msgctxt ""
+"@[user name][user_id] - User Fred has requested access to Contact [contact "
+"name][contact_id]. If desired, share this record with the user to grant "
+"access."
 msgid ""
-"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
+"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
+"desired, share this record with the user to grant access."
 msgstr ""
-"@[%1$s](%2$s) - Ο χρήστης %3$s ζήτησε πρόσβαση στον/-ην %4$s [%5$s](%6$s). Εάν επιθυμείτε, μοιραστείτε αυτή την εγγραφή με τον χρήστη για να του χορηγήσετε πρόσβαση."
+"@[%1$s](%2$s) - Ο χρήστης %3$s ζήτησε πρόσβαση στον/-ην %4$s [%5$s](%6$s). "
+"Εάν επιθυμείτε, μοιραστείτε αυτή την εγγραφή με τον χρήστη για να του "
+"χορηγήσετε πρόσβαση."
 
 #: dt-posts/dt-posts.php:2802
 msgid "Access Request"
@@ -4924,7 +5254,7 @@ msgid "Select all the %1$s to whom you want to send app links."
 msgstr ""
 "Επιλέξτε όλα τα %1$s στους οποίους θέλετε να στείλετε συνδέσμους εφαρμογών."
 
-#: dt-reports/magic-url-bulk-send.php:43
+#: dt-reports/magic-url-bulk-send.php:42
 msgid ""
 "Hello {{name}},\n"
 "\n"
@@ -4936,37 +5266,38 @@ msgid ""
 msgstr ""
 "Γεια σας {{name}},\n"
 "\n"
-"Παρακαλώ κάντε κλικ στο παρακάτω κουμπί για να αποκτήσετε πρόσβαση στην εφαρμογή σας.\n"
+"Παρακαλώ κάντε κλικ στο παρακάτω κουμπί για να αποκτήσετε πρόσβαση στην "
+"εφαρμογή σας.\n"
 "\n"
 "{{link}}\n"
 "\n"
 "Ευχαριστούμε!"
 
-#: dt-reports/magic-url-bulk-send.php:51
+#: dt-reports/magic-url-bulk-send.php:50
 msgid "Configure email subject"
 msgstr "Διαμόρφωση θέματος email"
 
-#: dt-reports/magic-url-bulk-send.php:54
+#: dt-reports/magic-url-bulk-send.php:53
 msgid "{{app}} will be replaced with the selected app name."
 msgstr "Το {{app}} θα αντικατασταθεί με το όνομα της επιλεγμένης εφαρμογής."
 
-#: dt-reports/magic-url-bulk-send.php:56
+#: dt-reports/magic-url-bulk-send.php:55
 msgid "Configure email message"
 msgstr "Διαμόρφωση μηνύματος email"
 
-#: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:257
+#: dt-reports/magic-url-bulk-send.php:60 dt-reports/magic-url-setup.php:257
 msgid "Selected app name"
 msgstr "Επιλεγμένο όνομα εφαρμογής"
 
-#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:263
+#: dt-reports/magic-url-bulk-send.php:66 dt-reports/magic-url-setup.php:263
 msgid "Unique link to access the app."
 msgstr "Μοναδικός σύνδεσμος για πρόσβαση στην εφαρμογή."
 
-#: dt-reports/magic-url-bulk-send.php:72
+#: dt-reports/magic-url-bulk-send.php:71
 msgid "Select app to email"
 msgstr "Επιλέξτε εφαρμογή για αποστολή με email"
 
-#: dt-reports/magic-url-bulk-send.php:73
+#: dt-reports/magic-url-bulk-send.php:72
 msgid "You must select an app"
 msgstr "Πρέπει να επιλέξετε μια εφαρμογή"
 
@@ -5008,7 +5339,8 @@ msgid ""
 msgstr ""
 "Γεια σας,\n"
 "\n"
-"Παρακαλώ κάντε κλικ στο παρακάτω κουμπί για να αποκτήσετε πρόσβαση στην εφαρμογή σας.\n"
+"Παρακαλώ κάντε κλικ στο παρακάτω κουμπί για να αποκτήσετε πρόσβαση στην "
+"εφαρμογή σας.\n"
 "\n"
 "{{link}}\n"
 "\n"
@@ -5032,9 +5364,11 @@ msgstr "Διαγραφή και αντικατάσταση συνδέσμου ε
 
 #: dt-reports/magic-url-setup.php:462
 msgid ""
-"This app is not yet activated for this user. Enable the app to generate a link."
+"This app is not yet activated for this user. Enable the app to generate a "
+"link."
 msgstr ""
-"Αυτή η εφαρμογή δεν έχει ενεργοποιηθεί ακόμα για αυτόν τον χρήστη. Ενεργοποιήστε την εφαρμογή για να δημιουργηθεί σύνδεσμος."
+"Αυτή η εφαρμογή δεν έχει ενεργοποιηθεί ακόμα για αυτόν τον χρήστη. "
+"Ενεργοποιήστε την εφαρμογή για να δημιουργηθεί σύνδεσμος."
 
 #: dt-reports/magic-url-setup.php:465 template-settings.php:265
 msgid "App Activation"
@@ -5112,7 +5446,8 @@ msgstr "Κάλυψη Ευθύνης"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Ο διαχειριστής πρέπει να ενεργοποιήσει την επιλογή «Προσθήκη Νέων Χρηστών» στις ρυθμίσεις του multisite:"
+"Ο διαχειριστής πρέπει να ενεργοποιήσει την επιλογή «Προσθήκη Νέων Χρηστών» "
+"στις ρυθμίσεις του multisite:"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"
@@ -5182,9 +5517,12 @@ msgstr "Ενημερώνοντας μια επαφή"
 
 #: dt-users/template-new-user.php:260
 msgid ""
-"The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data."
+"The new user will have access to all the fields and comments on this contact "
+"record. We suggest archiving the comments if they contain sensitive data."
 msgstr ""
-"Ο νέος χρήστης θα έχει πρόσβαση σε όλα τα πεδία και τα σχόλια αυτής της εγγραφής επαφής. Προτείνουμε να αρχειοθετήσετε τα σχόλια εάν περιέχουν ευαίσθητα δεδομένα."
+"Ο νέος χρήστης θα έχει πρόσβαση σε όλα τα πεδία και τα σχόλια αυτής της "
+"εγγραφής επαφής. Προτείνουμε να αρχειοθετήσετε τα σχόλια εάν περιέχουν "
+"ευαίσθητα δεδομένα."
 
 #: dt-users/template-new-user.php:267
 msgid "Continue and archive comments"
@@ -5212,9 +5550,11 @@ msgstr "Επιθυμείτε να συγχωνεύσετε πεδία από τ�
 
 #: dt-users/template-no-permission.php:92
 msgid ""
-"You are registered but an administrator needs to assign you access permissions."
+"You are registered but an administrator needs to assign you access "
+"permissions."
 msgstr ""
-"Έχετε εγγραφεί, αλλά ένας διαχειριστής πρέπει να σας εκχωρήσει δικαιώματα πρόσβασης."
+"Έχετε εγγραφεί, αλλά ένας διαχειριστής πρέπει να σας εκχωρήσει δικαιώματα "
+"πρόσβασης."
 
 #: dt-users/template-user-management.php:63
 msgid "Multiplier Name"
@@ -5248,9 +5588,11 @@ msgstr "Διαθεσιμότητα"
 
 #: dt-users/template-user-management.php:164
 msgid ""
-"Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be unavailable so the Dispatcher will know your "
+"availability to receive new contacts"
 msgstr ""
-"Ορίστε τις ημερομηνίες που δεν θα είστε διαθέσιμοι, ώστε ο Αποστολέας να γνωρίζει τη διαθεσιμότητά σας για τη λήψη νέων επαφών."
+"Ορίστε τις ημερομηνίες που δεν θα είστε διαθέσιμοι, ώστε ο Αποστολέας να "
+"γνωρίζει τη διαθεσιμότητά σας για τη λήψη νέων επαφών."
 
 #: dt-users/template-user-management.php:166
 msgid "Schedule Unavailability"
@@ -5306,9 +5648,11 @@ msgstr "Όλες οι Πηγές - επιτρέπει πρόσβασει σε ό
 #: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
-"Custom - Access own contacts and all the contacts of the selected sources below"
+"Custom - Access own contacts and all the contacts of the selected sources "
+"below"
 msgstr ""
-"Προσαρμοσμένο - Αποκτήστε πρόσβαση στις δικές σας επαφές και όλες τος επαφές των επιλεγμένων πηγών από κάτω"
+"Προσαρμοσμένο - Αποκτήστε πρόσβαση στις δικές σας επαφές και όλες τος επαφές "
+"των επιλεγμένων πηγών από κάτω"
 
 #: dt-users/template-user-management.php:346
 #: dt-users/user-hooks-and-config.php:637
@@ -5354,7 +5698,8 @@ msgstr "Ανατεθειμένο και δεν έγινε δεκτό"
 #: dt-users/template-user-management.php:449
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr ""
-"Χρόνος από την ανάθεση έως την αποδοχή της επαφής για τις τελευταίες 10 επαφές"
+"Χρόνος από την ανάθεση έως την αποδοχή της επαφής για τις τελευταίες 10 "
+"επαφές"
 
 #: dt-users/template-user-management.php:451
 msgid "Accepted with no contact attempt"
@@ -5372,9 +5717,11 @@ msgstr ""
 #: dt-users/user-hooks-and-config.php:196
 #, php-format
 msgid ""
-"Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users"
+"Welcome %1$s, this is your personal contact record. Feel free to update the "
+"fields and @mention me or other users"
 msgstr ""
-"Καλώς ήρθατε %1$s, αυτό είναι η προσωπική σας εγγραφή επαφής. Μπορείτε να ενημερώνετε τα πεδία και να με αναφέρετε ή άλλους χρήστες."
+"Καλώς ήρθατε %1$s, αυτό είναι η προσωπική σας εγγραφή επαφής. Μπορείτε να "
+"ενημερώνετε τα πεδία και να με αναφέρετε ή άλλους χρήστες."
 
 #: dt-users/user-hooks-and-config.php:312
 #: dt-users/user-hooks-and-config.php:350
@@ -5399,7 +5746,9 @@ msgstr "Χαίρετε %s,"
 
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
-msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
+msgctxt ""
+"You've been invited to join Awesome Site at https://"
+"awesome_site.disciple.tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "Έχετε προσκληθεί να συμμετάσχετε στο %1$s στο %2$s"
 
@@ -5418,7 +5767,8 @@ msgstr "Προβολή Επαφής"
 #: dt-users/user-hooks-and-config.php:594
 msgid "Add the name of the contact record this user corresponds to."
 msgstr ""
-"Προσθέστε το ΄ονομα της εγγραφής στις επαφές στην οποία αντιστοιχεί αυτός ο χρήστης."
+"Προσθέστε το ΄ονομα της εγγραφής στις επαφές στην οποία αντιστοιχεί αυτός ο "
+"χρήστης."
 
 #: dt-users/user-hooks-and-config.php:595
 msgid "Learn more."
@@ -5555,26 +5905,26 @@ msgstr "Δεν υπάρχουν δικαιώματα προς ανάθεση"
 msgid "Insufficient permissions"
 msgstr "Μη επαρκή δικαιώματα"
 
-#: dt-users/users.php:503
+#: dt-users/users.php:507
 msgid "Email already exists and is a user on this site"
 msgstr "Το email υπάρχει ήδη και είναι χρήστης σε αυτόν τον ιστότοπο"
 
-#: dt-users/users.php:509
+#: dt-users/users.php:513
 msgid "Failed to add user to site."
 msgstr "Απέτυχε η προσθήκη χρήστη στην τοποθεσία."
 
-#: dt-users/users.php:560
+#: dt-users/users.php:564
 #, php-format
 msgctxt "These are archived comments for contact John Doe"
 msgid "These are archived comments for %1$s"
 msgstr "Αυτά είναι αρχειοθετημένα σχόλια για τον/-ην %1$s"
 
-#: dt-users/users.php:740
+#: dt-users/users.php:744
 msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "Προσαρμοσμένα Φίλτρα"
 
-#: dt-users/users.php:1347 template-settings.php:169 template-settings.php:653
+#: dt-users/users.php:1351 template-settings.php:169 template-settings.php:653
 msgid "System Email"
 msgstr "Email Συστήματος"
 
@@ -5601,13 +5951,19 @@ msgstr "Εγγραφή D.T"
 #: header.php:55
 msgid "Javascript must be enabled for this site to function correctly."
 msgstr ""
-"Η Javascript πρέπει να είναι ενεργοποιημένη για τη σωστή λειτουργία αυτού του ιστότοπου."
+"Η Javascript πρέπει να είναι ενεργοποιημένη για τη σωστή λειτουργία αυτού "
+"του ιστότοπου."
 
 #: header.php:61
 msgid ""
-"You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
+"You seem to be using an out-of-date web browser. Without the most up-to-date "
+"version of your browser, this may site may not function correctly. Please "
+"note that Internet Explorer is not supported."
 msgstr ""
-"Φαίνεται ότι χρησιμοποιείτε ένα ξεπερασμένο πρόγραμμα περιήγησης στο διαδίκτυο. Χωρίς την πιο ενημερωμένη έκδοση του προγράμματος περιήγησής σας, αυτός ο ιστότοπος ενδέχεται να μην λειτουργεί σωστά. Σημειώστε ότι ο Internet Explorer δεν υποστηρίζεται."
+"Φαίνεται ότι χρησιμοποιείτε ένα ξεπερασμένο πρόγραμμα περιήγησης στο "
+"διαδίκτυο. Χωρίς την πιο ενημερωμένη έκδοση του προγράμματος περιήγησής σας, "
+"αυτός ο ιστότοπος ενδέχεται να μην λειτουργεί σωστά. Σημειώστε ότι ο "
+"Internet Explorer δεν υποστηρίζεται."
 
 #: header.php:63
 msgid "See what browser you are using."
@@ -5647,9 +6003,13 @@ msgstr "Συγχώνευση Διπλότυπων %s"
 
 #: template-merge-post-details.php:123
 msgid ""
-"When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
+"When you merge, the primary record is updated with the values you choose, "
+"and relationships to other items are shifted to the primary record; which "
+"can be switched below."
 msgstr ""
-"Κατά τη συγχώνευση, η πρωτεύουσα εγγραφή ενημερώνεται με τις τιμές που επιλέγετε και οι σχέσεις με άλλα στοιχεία μετατοπίζονται στην πρωτεύουσα εγγραφή, την οποία μπορείτε να αλλάξετε παρακάτω."
+"Κατά τη συγχώνευση, η πρωτεύουσα εγγραφή ενημερώνεται με τις τιμές που "
+"επιλέγετε και οι σχέσεις με άλλα στοιχεία μετατοπίζονται στην πρωτεύουσα "
+"εγγραφή, την οποία μπορείτε να αλλάξετε παρακάτω."
 
 #: template-merge-post-details.php:126
 msgid "Copy comments to updated primary record"
@@ -5709,10 +6069,6 @@ msgstr "Μνείες"
 msgid "Load more notifications"
 msgstr "Φόρτωση περισσότερων ειδοποιήσεων"
 
-#: template-settings.php:56
-msgid "Apps"
-msgstr "Εφαρμογές"
-
 #: template-settings.php:58 template-settings.php:332
 msgid "Multiplier Preferences"
 msgstr "Προτιμήσεις Πολλαπλασιαστή"
@@ -5732,10 +6088,6 @@ msgstr "Κοινωνικός"
 #: template-settings.php:232
 msgid "English"
 msgstr "Αγγλικά"
-
-#: template-settings.php:257
-msgid "Your Apps"
-msgstr "Οι Εφαρμογές Σας"
 
 #: template-settings.php:262
 msgid "App Name"
@@ -5767,9 +6119,11 @@ msgstr "Διαθεσιμότητα για λήψη επαφών από τον Α
 
 #: template-settings.php:434
 msgid ""
-"Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be traveling or unavailable so the Dispatcher will "
+"know your availability to receive new contacts"
 msgstr ""
-"Ορίστε τις ημερομηνίες που θα ταξιδέψετε ή δεν θα είστε διαθέσιμοι, ώστε ο Αποστολέας να γνωρίζει τη διαθεσιμότητά σας για τη λήψη νέων επαφών."
+"Ορίστε τις ημερομηνίες που θα ταξιδέψετε ή δεν θα είστε διαθέσιμοι, ώστε ο "
+"Αποστολέας να γνωρίζει τη διαθεσιμότητά σας για τη λήψη νέων επαφών."
 
 #: template-settings.php:438
 msgid "Schedule Travel or Dates Unavailable"
@@ -5820,9 +6174,16 @@ msgstr "Θα λαμβάνετε ειδοποίηση για κάθε ενημέ�
 
 #: template-settings.php:630
 msgid ""
-"Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. For profile images we use "
+"Gravatar (Globally Recognized Avatar). If you have security concerns, we "
+"suggest not using a personal photo, but instead choose a cartoon, abstract, "
+"or alias photo to represent you."
 msgstr ""
-"Το σύστημα Disciple Tools System δεν αποθηκεύει εικόνες. Για εικόνες προφίλ χρησιμοποιούμε το Gravatar (Globally Recognized Avatar). Αν έχετε ανησυχίες για την ασφάλεια, σας προτείνουμε να μην χρησιμοποιήσετε προσωπική φωτογραφία, αλλά να επιλέξετε μια φωτογραφία καρτούν, μια αφηρημένη ή μη αληθινή φωτογραφία για να σας αντιπροσωπεύει."
+"Το σύστημα Disciple Tools System δεν αποθηκεύει εικόνες. Για εικόνες προφίλ "
+"χρησιμοποιούμε το Gravatar (Globally Recognized Avatar). Αν έχετε ανησυχίες "
+"για την ασφάλεια, σας προτείνουμε να μην χρησιμοποιήσετε προσωπική "
+"φωτογραφία, αλλά να επιλέξετε μια φωτογραφία καρτούν, μια αφηρημένη ή μη "
+"αληθινή φωτογραφία για να σας αντιπροσωπεύει."
 
 #: template-settings.php:631
 msgid "edit image on gravatar.com"
@@ -5830,9 +6191,16 @@ msgstr "επεξεργασία εικόνας στο gravatar.com"
 
 #: template-settings.php:637
 msgid ""
-"Disciple Tools System does not store images. All media assets will be placed within specified media connection storage service. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. All media assets will be placed "
+"within specified media connection storage service. If you have security "
+"concerns, we suggest not using a personal photo, but instead choose a "
+"cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"Το σύστημα Disciple Tools δεν αποθηκεύει εικόνες. Όλα τα αρχεία πολυμέσων θα τοποθετηθούν στην καθορισμένη υπηρεσία αποθήκευσης σύνδεσης πολυμέσων. Αν έχετε ανησυχίες για την ασφάλεια, σας προτείνουμε να μην χρησιμοποιήσετε προσωπική φωτογραφία, αλλά να επιλέξετε ένα καρτούν, μια αφηρημένη ή ψευδώνυμη φωτογραφία για να σας αντιπροσωπεύει."
+"Το σύστημα Disciple Tools δεν αποθηκεύει εικόνες. Όλα τα αρχεία πολυμέσων θα "
+"τοποθετηθούν στην καθορισμένη υπηρεσία αποθήκευσης σύνδεσης πολυμέσων. Αν "
+"έχετε ανησυχίες για την ασφάλεια, σας προτείνουμε να μην χρησιμοποιήσετε "
+"προσωπική φωτογραφία, αλλά να επιλέξετε ένα καρτούν, μια αφηρημένη ή "
+"ψευδώνυμη φωτογραφία για να σας αντιπροσωπεύει."
 
 #: template-settings.php:638
 msgid "Upload new profile image"
@@ -5850,7 +6218,8 @@ msgstr ""
 #: template-settings.php:662
 msgid "Use this email reset form to create a new password."
 msgstr ""
-"Χρησιμοποιήστε αυτή τη φόρμα επαναφοράς μέσω email για να δημιουργήσετε έναν νέο κωδικό πρόσβασης."
+"Χρησιμοποιήστε αυτή τη φόρμα επαναφοράς μέσω email για να δημιουργήσετε έναν "
+"νέο κωδικό πρόσβασης."
 
 #: template-settings.php:664
 msgid "go to password change form"
@@ -5866,9 +6235,12 @@ msgstr "Επαφές Διπλότυπης Πρόσβασης"
 
 #: template-view-duplicates.php:27
 msgid ""
-"Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
+"Scanning for duplicates starting with the most recently modified contacts. "
+"Results are limited to ones that have less than 10 exact matches."
 msgstr ""
-"Σάρωση για διπλότυπα ξεκινώντας από τις πιο πρόσφατα τροποποιημένες επαφές. Τα αποτελέσματα περιορίζονται σε αυτές που έχουν λιγότερες από 10 ακριβείς αντιστοιχίες."
+"Σάρωση για διπλότυπα ξεκινώντας από τις πιο πρόσφατα τροποποιημένες επαφές. "
+"Τα αποτελέσματα περιορίζονται σε αυτές που έχουν λιγότερες από 10 ακριβείς "
+"αντιστοιχίες."
 
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"
@@ -5880,222 +6252,261 @@ msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Βρέθηκαν διπλότυπα:"
 
-#~ msgid "Reset password"
-#~ msgstr "Επαναφορά κωδικού πρόσβασης"
+#~ msgid "Home Screen"
+#~ msgstr "Αρχική Οθόνη"
 
-#, fuzzy
-#~ msgid "Post Types"
-#~ msgstr "Τύπος Ανάρτησης"
+#~ msgid "Home Screen Settings"
+#~ msgstr "Ρυθμίσεις Αρχικής Οθόνης"
 
-#~ msgctxt "input field placeholder"
-#~ msgid "Search multipliers and contacts"
-#~ msgstr "Αναζήτηση πολλαπλασιαστών και επαφών"
+#~ msgid "Edit App"
+#~ msgstr "Επεξεργασία Εφαρμογής"
 
-#~ msgid "Add new tag \"%s\""
-#~ msgstr "Προσθήκη νέας ετικέτας «%s»"
+#~ msgid "Edit Video"
+#~ msgstr "Επεξεργασία Βίντεο"
 
-#~ msgid "Tag \"%s\" is already being used"
-#~ msgstr "Η ετικέτα «%s» χρησιμοποιείται ήδη"
+#~ msgid "General Settings"
+#~ msgstr "Γενικές Ρυθμίσεις"
 
-#~ msgid "Add Bulk Records?"
-#~ msgstr "Προσθήκη Μαζικών Εγγραφών;"
+#~ msgid "Home Screen Title"
+#~ msgstr "Τίτλος Αρχικής Οθόνης"
 
-#~ msgid "Twitter"
-#~ msgstr "Twitter"
+#~ msgid "The main title displayed on the home screen."
+#~ msgstr "Ο κύριος τίτλος που εμφανίζεται στην αρχική οθόνη."
 
-#~ msgid "Baptism Tree"
-#~ msgstr "Δέντρο Βαπτίσεων"
+#~ msgid "Home Screen Description"
+#~ msgstr "Περιγραφή Αρχικής Οθόνης"
 
-#~ msgid "Baptism Generation Tree"
-#~ msgstr "Γενεαλογικό Δέντρο Βαπτίσεων"
+#~ msgid "A brief description shown below the title."
+#~ msgstr "Μια σύντομη περιγραφή που εμφανίζεται κάτω από τον τίτλο."
 
-#~ msgid "Coaching Tree"
-#~ msgstr "Δέντρο Καθοδηγήσεων"
+#~ msgid "Enable Role-Based Access"
+#~ msgstr "Ενεργοποίηση Πρόσβασης Βάσει Ρόλου"
 
-#~ msgid "Coaching Generation Tree"
-#~ msgstr "Γενεαλογικό Δέντρο Καθοδηγήσεων"
+#~ msgid "Enable role-based access control for apps"
+#~ msgstr "Ενεργοποίηση ελέγχου πρόσβασης βάσει ρόλου για εφαρμογές"
 
-#~ msgid "Milestones Map"
-#~ msgstr "Χάρτης Ορόσημων"
-
-#~ msgid "Milestones"
-#~ msgstr "Ορόσημα"
-
-#~ msgid "Milestones Chart"
-#~ msgstr "Διάγραμμα Ορόσημων"
-
-#~ msgid "Groups Tree"
-#~ msgstr "Δέντρο Ομάδων"
-
-#~ msgid "Group Generation Tree"
-#~ msgstr "Γενεαλογικό Δέντρο Ομάδων"
-
-#~ msgid "My Baptism Tree"
-#~ msgstr "Το Δέντρο Βάπτισής Μου"
-
-#~ msgid "My Baptism Generation Tree"
-#~ msgstr "Το Δέντρο της Γενιάς Βάπτισης Μου"
-
-#~ msgid "My Coaching Tree"
-#~ msgstr "Το Δέντρο Καθοδήγησής Μου"
-
-#~ msgid "My Coaching Generation Tree"
-#~ msgstr "Το Δέντρο Γενιάς Καθοδηγήσεών Μου"
-
-#~ msgid "Disciple"
-#~ msgstr "Μαθητευόμενος"
-
-#~ msgid "My Groups Tree"
-#~ msgstr "Το Δέντρο Ομάδων Μου"
-
-#~ msgid "My Group Generation Tree"
-#~ msgstr "Το Δέντρο Γενιάς Ομάδων Μου"
-
-#~ msgid "Contacts Maps"
-#~ msgstr "Χάρτες Επαφών"
-
-#~ msgid "Groups Maps"
-#~ msgstr "Χάρτες Ομάδων"
-
-#, fuzzy
-#~ msgid "Records Map"
-#~ msgstr "Προσθήκη Εγγραφών"
-
-#, fuzzy
-#~ msgid "Dynamic Metrics"
-#~ msgstr "Μετρήσεις"
-
-#, fuzzy
-#~ msgid "Field Activity"
-#~ msgstr "Καθημερινή Δραστηριότητα"
-
-#, fuzzy
-#~ msgid "Field Cumulative Values"
-#~ msgstr "Όλα τα σωρευτικά σύνολα"
-
-#~ msgid "No Answer"
-#~ msgstr "Καμία Απάντηση"
-
-#, fuzzy
-#~ msgid "No."
-#~ msgstr "Όχι"
-
-#, fuzzy
-#~ msgid "Generation Map"
-#~ msgstr "Γενιά"
-
-#, fuzzy
-#~ msgid "Map List Filter"
-#~ msgstr "Λίστα"
-
-#~ msgctxt "Number of emails sent. i.e. 20 sent!"
-#~ msgid "sent"
-#~ msgstr "απεστάλησαν"
-
-#~ msgid "Add optional greeting"
-#~ msgstr "Προσθήκη προαιρετικού χαιρετισμού"
-
-#~ msgid "Add short greeting to be added above the app link."
+#~ msgid "When enabled, you can restrict app access to specific user roles."
 #~ msgstr ""
-#~ "Προσθέστε σύντομο χαιρετισμό που θα προστεθεί πάνω από το σύνδεσμο της εφαρμογής."
+#~ "Όταν είναι ενεργοποιημένο, μπορείτε να περιορίσετε την πρόσβαση σε "
+#~ "εφαρμογές σε συγκεκριμένους ρόλους χρηστών."
 
-#~ msgctxt "Assigned to: User1"
-#~ msgid "Assigned to: %s"
-#~ msgstr "Ανατέθηκε σε: %s"
+#~ msgid "Allow users to invite others"
+#~ msgstr "Να επιτρέπεται στους χρήστες να προσκαλούν άλλους"
 
-#, fuzzy
-#~ msgid "Generate"
-#~ msgstr "Γενιά"
-
-#, fuzzy
-#~ msgid "Show All"
-#~ msgstr "εμφάνιση όλων"
-
-#, fuzzy
-#~ msgid "Lost your password?"
-#~ msgstr "Χάσατε τον κωδικό πρόσβασής σας"
-
-#~ msgid "Number added"
-#~ msgstr "Προστιθέμενος αριθμός"
-
-#~ msgctxt "either rtl or ltr"
-#~ msgid "ltr"
-#~ msgstr "ltr"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Default and Custom Filters Tile"
-#~ msgstr "Πλακίδιο Προεπιλεγμένων και Προσαρμοσμένων Φίλτρων"
-
-#~ msgctxt "Optional Documentation"
 #~ msgid ""
-#~ "Use these filters to focus in on the contacts or groups you are responsible for. If the default filters do not fit your needs you can create your own custom filter."
+#~ "When enabled, users can share an invite link to allow others to register "
+#~ "and access their own Home Screen."
 #~ msgstr ""
-#~ "Χρησιμοποιήστε αυτά τα φίλτρα για να εστιάσετε στις επαφές ή τις ομάδες για τις οποίες είστε υπεύθυνοι. Εάν τα προεπιλεγμένα φίλτρα δεν ανταποκρίνονται στις ανάγκες σας, μπορείτε να δημιουργήσετε το δικό σας προσαρμοσμένο φίλτρο."
+#~ "Όταν είναι ενεργοποιημένο, οι χρήστες μπορούν να μοιραστούν έναν σύνδεσμο "
+#~ "πρόσκλησης για να επιτρέψουν σε άλλους να εγγραφούν και να αποκτήσουν "
+#~ "πρόσβαση στη δική τους Αρχική Οθόνη."
 
-#~ msgctxt "Optional Documentation"
-#~ msgid "Contacts List Tile"
-#~ msgstr "Πλακίδιο Λίστας Επαφών"
+#~ msgid "Network Settings"
+#~ msgstr "Ρυθμίσεις Δικτύου"
 
-#~ msgctxt "Optional Documentation"
+#~ msgid "User registration must be enabled to use this feature."
+#~ msgstr ""
+#~ "Η εγγραφή χρηστών πρέπει να είναι ενεργοποιημένη για να χρησιμοποιήσετε "
+#~ "αυτή τη λειτουργία."
+
+#, php-format
+#~ msgid "To enable user registration, visit %s."
+#~ msgstr "Για να ενεργοποιήσετε την εγγραφή χρηστών, επισκεφθείτε %s."
+
+#~ msgid "Require users to login"
+#~ msgstr "Να απαιτείται σύνδεση χρηστών"
+
+#~ msgid "Require users to login to access the home screen magic link?"
+#~ msgstr ""
+#~ "Να απαιτείται σύνδεση χρηστών για πρόσβαση στον μαγικό σύνδεσμο της "
+#~ "αρχικής οθόνης;"
+
 #~ msgid ""
-#~ "Your list of contacts will show up here. Whenever you filter contacts, the list will also be changed in this section too. You can sort your contacts by newest, oldest, most recently modified, and least recently modified. If you have a long list of contacts they will not all load at once, so clicking the 'Load more contacts' button at the bottom of the list will allow you to load more."
+#~ "When enabled, users must be logged in to access their Home Screen. When "
+#~ "disabled, magic links can be accessed without login."
 #~ msgstr ""
-#~ "Η λίστα των επαφών σας θα εμφανιστεί εδώ. Κάθε φορά που φιλτράρετε τις επαφές, η λίστα θα αλλάζει και σε αυτό το τμήμα. Μπορείτε να ταξινομήσετε τις επαφές σας με βάση τη νεότερη, την παλαιότερη, την πιο πρόσφατα τροποποιημένη και τη λιγότερο πρόσφατα τροποποιημένη. Αν έχετε μεγάλη λίστα επαφών, δεν θα φορτωθούν όλες ταυτόχρονα, οπότε κάνοντας κλικ στο κουμπί «Φόρτωση Περισσότερων Επαφών» στο κάτω μέρος της λίστας θα σας επιτρέψει να φορτώσετε περισσότερες."
+#~ "Όταν είναι ενεργοποιημένο, οι χρήστες πρέπει να είναι συνδεδεμένοι για να "
+#~ "αποκτήσουν πρόσβαση στην Αρχική τους Οθόνη. Όταν είναι απενεργοποιημένο, "
+#~ "οι μαγικοί σύνδεσμοι είναι προσβάσιμοι χωρίς σύνδεση."
 
-#~ msgctxt "Optional Documentation"
-#~ msgid "Groups List Tile"
-#~ msgstr "Πλακίδιο Λίστας Ομάδων"
+#~ msgid "User Registration Status:"
+#~ msgstr "Κατάσταση Εγγραφής Χρηστών:"
 
-#~ msgctxt "Optional Documentation"
+#~ msgid "Enabled"
+#~ msgstr "Ενεργοποιημένο"
+
+#~ msgid "Disabled"
+#~ msgstr "Απενεργοποιημένο"
+
+#, php-format
+#~ msgid "To change registration settings, visit %s."
+#~ msgstr "Για να αλλάξετε τις ρυθμίσεις εγγραφής, επισκεφθείτε %s."
+
+#~ msgid "Save Settings"
+#~ msgstr "Αποθήκευση Ρυθμίσεων"
+
+#~ msgid "Debug Information"
+#~ msgstr "Πληροφορίες Εντοπισμού Σφαλμάτων"
+
+#~ msgid "Current apps and videos data:"
+#~ msgstr "Τρέχοντα δεδομένα εφαρμογών και βίντεο:"
+
+#~ msgid "Apps Management"
+#~ msgstr "Διαχείριση Εφαρμογών"
+
+#~ msgid "Manage the apps that appear on the home screen."
+#~ msgstr "Διαχειριστείτε τις εφαρμογές που εμφανίζονται στην αρχική οθόνη."
+
+#~ msgid "Add New App"
+#~ msgstr "Προσθήκη Νέας Εφαρμογής"
+
+#~ msgid "Training Videos Management"
+#~ msgstr "Διαχείριση Εκπαιδευτικών Βίντεο"
+
+#~ msgid "Manage the training videos that appear on the home screen."
+#~ msgstr ""
+#~ "Διαχειριστείτε τα εκπαιδευτικά βίντεο που εμφανίζονται στην αρχική οθόνη."
+
+#~ msgid "Add New Training Video"
+#~ msgstr "Προσθήκη Νέου Εκπαιδευτικού Βίντεο"
+
+#~ msgid "Security check failed. Please try again."
+#~ msgstr "Ο έλεγχος ασφαλείας απέτυχε. Παρακαλώ δοκιμάστε ξανά."
+
+#~ msgid "Home Screen settings saved successfully!"
+#~ msgstr "Οι ρυθμίσεις Αρχικής Οθόνης αποθηκεύτηκαν επιτυχώς!"
+
+#~ msgid "Upload Icon"
+#~ msgstr "Μεταφόρτωση Εικονιδίου"
+
+#~ msgid "Update App"
+#~ msgstr "Ενημέρωση Εφαρμογής"
+
+#~ msgid "Update Video"
+#~ msgstr "Ενημέρωση Βίντεο"
+
+#~ msgid "App created successfully!"
+#~ msgstr "Η εφαρμογή δημιουργήθηκε επιτυχώς!"
+
+#~ msgid "App updated successfully!"
+#~ msgstr "Η εφαρμογή ενημερώθηκε επιτυχώς!"
+
+#~ msgid "Coded apps cannot be deleted."
+#~ msgstr "Οι κωδικοποιημένες εφαρμογές δεν μπορούν να διαγραφούν."
+
+#~ msgid "App deleted successfully!"
+#~ msgstr "Η εφαρμογή διαγράφηκε επιτυχώς!"
+
+#~ msgid "Video created successfully!"
+#~ msgstr "Το βίντεο δημιουργήθηκε επιτυχώς!"
+
+#~ msgid "Video updated successfully!"
+#~ msgstr "Το βίντεο ενημερώθηκε επιτυχώς!"
+
+#~ msgid "Video deleted successfully!"
+#~ msgstr "Το βίντεο διαγράφηκε επιτυχώς!"
+
+#~ msgid "Link"
+#~ msgstr "Σύνδεσμος"
+
+#~ msgid "App"
+#~ msgstr "Εφαρμογή"
+
+#~ msgid "Description"
+#~ msgstr "Περιγραφή"
+
+#~ msgid "URL"
+#~ msgstr "URL"
+
+#~ msgid "Icon"
+#~ msgstr "Εικονίδιο"
+
+#~ msgid "Change Icon"
+#~ msgstr "Αλλαγή Εικονιδίου"
+
+#~ msgid "Color"
+#~ msgstr "Χρώμα"
+
+#~ msgid "Reset to Default"
+#~ msgstr "Επαναφορά στα Προεπιλεγμένα"
+
 #~ msgid ""
-#~ "Your list of groups will show up here. Whenever you filter groups, the list will also be changed in this section too. You can sort your groups by newest, oldest, most recently modified, and least recently modified. If you have a long list of groups they will not all load at once, so clicking the 'Load more groups' button at the bottom of the list will allow you to load more."
+#~ "Using default theme-aware color. The icon will automatically switch "
+#~ "between black (light mode) and white (dark mode). Set a custom color to "
+#~ "override."
 #~ msgstr ""
-#~ "Η λίστα των ομάδων σας θα εμφανιστεί εδώ. Κάθε φορά που φιλτράρετε τις ομάδες, η λίστα θα αλλάζει και σε αυτό το τμήμα. Μπορείτε να ταξινομήσετε τις ομάδες σας με βάση τη νεότερη, την παλαιότερη, την πιο πρόσφατα τροποποιημένη και τη λιγότερο πρόσφατα τροποποιημένη. Εάν έχετε μεγάλη λίστα ομάδων, δεν θα φορτωθούν όλες ταυτόχρονα, οπότε κάνοντας κλικ στο κουμπί «Φόρτωση Περισσότερων Ομάδων» στο κάτω μέρος της λίστας θα σας επιτρέψει να φορτώσετε περισσότερες."
+#~ "Χρησιμοποιείται προεπιλεγμένο χρώμα θέματος. Το εικονίδιο θα αλλάζει "
+#~ "αυτόματα μεταξύ μαύρου (φωτεινή λειτουργία) και λευκού (σκοτεινή "
+#~ "λειτουργία). Ορίστε προσαρμοσμένο χρώμα για αντικατάσταση."
 
-#~ msgctxt "Optional Documentation"
-#~ msgid "Closed Contacts Switch"
-#~ msgstr "Διακόπτης Κλειστών Επαφών"
+#~ msgid "User Access"
+#~ msgstr "Πρόσβαση Χρηστών"
 
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Use this toggle switch to either show or not show closed contacts in the list."
-#~ msgstr ""
-#~ "Χρησιμοποιήστε αυτόν τον διακόπτη εναλλαγής για να εμφανίζετε ή να μην εμφανίζετε κλειστές επαφές στη λίστα."
+#~ msgid "All roles have access"
+#~ msgstr "Όλοι οι ρόλοι έχουν πρόσβαση"
 
-#~ msgctxt "Optional Documentation"
-#~ msgid "Inactive Groups Switch"
-#~ msgstr "Διακόπτης Ανενεργών Ομάδας"
+#~ msgid "Limit access by role"
+#~ msgstr "Περιορισμός πρόσβασης ανά ρόλο"
 
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Use this toggle switch to either show or not show inactive groups in the list."
-#~ msgstr ""
-#~ "Χρησιμοποιήστε αυτόν τον διακόπτη εναλλαγής για να εμφανίζετε ή να μην εμφανίζετε ανενεργές ομάδες στη λίστα."
+#~ msgid "Select Roles"
+#~ msgstr "Επιλογή Ρόλων"
 
-#~ msgid "Accept Needed"
-#~ msgstr "Απαιτείται Αποδοχή"
+#~ msgid "Add App"
+#~ msgstr "Προσθήκη Εφαρμογής"
 
-#~ msgid "Last Activity"
-#~ msgstr "Τελευταία Δραστηριότητα"
+#~ msgid "Existing Apps"
+#~ msgstr "Υπάρχουσες Εφαρμογές"
 
-#~ msgid "No activity"
-#~ msgstr "Καμία δραστηριότητα"
+#~ msgid "No apps found."
+#~ msgstr "Δεν βρέθηκαν εφαρμογές."
 
-#~ msgid "Comment"
-#~ msgstr "Σχόλιο"
+#~ msgid "⋮⋮"
+#~ msgstr "⋮⋮"
 
-#~ msgid "Select All"
-#~ msgstr "Επιλογή Όλων"
+#~ msgid "Limited to specific roles"
+#~ msgstr "Περιορισμένο σε συγκεκριμένους ρόλους"
 
-#~ msgctxt "My records"
-#~ msgid "My %s"
-#~ msgstr "Οι %s Μου"
+#~ msgid "No roles selected"
+#~ msgstr "Δεν επιλέχθηκαν ρόλοι"
 
-#~ msgid "Sub-assigned"
-#~ msgstr "Υπανατέθηκε"
+#~ msgid "All roles"
+#~ msgstr "Όλοι οι ρόλοι"
 
-#~ msgid "User Role"
-#~ msgstr "Ρόλος Χρήστη"
+#~ msgid "Are you sure you want to delete this app?"
+#~ msgstr "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτή την εφαρμογή;"
 
-#~ msgid "Update %s"
-#~ msgstr "Ενημέρωση %s"
+#~ msgid "Coded apps cannot be deleted"
+#~ msgstr "Οι κωδικοποιημένες εφαρμογές δεν μπορούν να διαγραφούν"
+
+#~ msgid "Video URL"
+#~ msgstr "URL Βίντεο"
+
+#~ msgid "Duration"
+#~ msgstr "Διάρκεια"
+
+#~ msgid "Category"
+#~ msgstr "Κατηγορία"
+
+#~ msgid "General"
+#~ msgstr "Γενικά"
+
+#~ msgid "Basics"
+#~ msgstr "Βασικά"
+
+#~ msgid "Advanced"
+#~ msgstr "Για Προχωρημένους"
+
+#~ msgid "Tutorial"
+#~ msgstr "Οδηγός"
+
+#~ msgid "Add Video"
+#~ msgstr "Προσθήκη Βίντεο"
+
+#~ msgid "Existing Training Videos"
+#~ msgstr "Υπάρχοντα Εκπαιδευτικά Βίντεο"
+
+#~ msgid "No training videos found."
+#~ msgstr "Δεν βρέθηκαν εκπαιδευτικά βίντεο."
+
+#~ msgid "Are you sure you want to delete this video?"
+#~ msgstr "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτό το βίντεο;"
