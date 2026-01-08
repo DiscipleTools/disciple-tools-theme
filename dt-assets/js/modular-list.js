@@ -1070,325 +1070,177 @@
   });
 
   // ============================================
-  // Bulk Edit Field Selection Dropdown
+  // Bulk Edit Field Selection with dt-multi-select
   // ============================================
 
-  // Store original dropdown content for restoration
-  let bulkEditOriginalDropdownContent = '';
-  if ($('.bulk-edit-field-dropdown-options').length) {
-    bulkEditOriginalDropdownContent = $(
-      '.bulk-edit-field-dropdown-options',
-    ).html();
-  }
   let bulkEditSelectedFields = [];
-  let bulkEditHighlightedIndex = -1;
-  let bulkEditAvailableFieldsCount = 0;
 
-  // Initialize available fields count
-  function updateBulkEditFieldCount() {
-    const options = $('.bulk-edit-field-search-option:visible');
-    bulkEditAvailableFieldsCount = options.length;
-    const countText = $('.bulk-edit-field-count-text');
-    if (countText.length) {
-      const count = bulkEditAvailableFieldsCount;
-      const text =
-        count === 1
-          ? list_settings?.translations?.field_available || '1 field available'
-          : (
-              list_settings?.translations?.fields_available ||
-              `${count} fields available`
-            ).replace('{count}', count);
-      countText.text(text);
-    }
-  }
-
-  // Initialize field count on page load
-  if ($('.bulk-edit-field-dropdown-options').length) {
-    updateBulkEditFieldCount();
-  }
-
-  // Button click toggles dropdown
-  $('#bulk_edit_field_select_trigger').on('click', function (e) {
-    e.stopPropagation();
-    toggleBulkEditFieldDropdown();
-  });
-
-  // Search input filters options (only when dropdown is open)
-  $('#bulk_edit_field_search_input').on('input', function () {
-    const searchTerm = $(this).val().toLowerCase();
-    filterBulkEditFieldDropdown(searchTerm);
-    bulkEditHighlightedIndex = -1; // Reset highlight on search
-  });
-
-  // Focus search input when dropdown opens
-  function focusBulkEditSearchInput() {
-    setTimeout(() => {
-      $('#bulk_edit_field_search_input').focus();
-    }, 100);
-  }
-
-  function toggleBulkEditFieldDropdown() {
-    const dropdown = $('#bulk_edit_field_search_dropdown');
-    const trigger = $('#bulk_edit_field_select_trigger');
-    const isOpen = dropdown.is(':visible');
-
-    if (isOpen) {
-      closeBulkEditFieldDropdown();
-    } else {
-      openBulkEditFieldDropdown();
-    }
-  }
-
-  function openBulkEditFieldDropdown() {
-    const dropdown = $('#bulk_edit_field_search_dropdown');
-    const trigger = $('#bulk_edit_field_select_trigger');
-
-    // Show dropdown
-    dropdown.show();
-    trigger.attr('aria-expanded', 'true');
-
-    // Reset search and show all available fields
-    $('#bulk_edit_field_search_input').val('');
-    filterBulkEditFieldDropdown('');
-    updateBulkEditFieldCount();
-
-    // Focus search input
-    focusBulkEditSearchInput();
-  }
-
-  function closeBulkEditFieldDropdown() {
-    const dropdown = $('#bulk_edit_field_search_dropdown');
-    const trigger = $('#bulk_edit_field_select_trigger');
-
-    dropdown.hide();
-    trigger.attr('aria-expanded', 'false');
-    $('#bulk_edit_field_search_input').val('');
-    bulkEditHighlightedIndex = -1;
-    $('.bulk-edit-field-search-option').removeClass('highlighted');
-  }
-
-  function filterBulkEditFieldDropdown(searchTerm) {
-    const dropdown = $('#bulk_edit_field_search_dropdown');
-    const optionsContainer = $('.bulk-edit-field-dropdown-options');
-    const noResults = $('.bulk-edit-field-dropdown-no-results');
-    const selectedFieldKeys = bulkEditSelectedFields.map((f) => f.fieldKey);
-
-    // Restore original content if needed
-    if (!optionsContainer.find('.bulk-edit-field-search-option').length) {
-      optionsContainer.html(bulkEditOriginalDropdownContent);
+  // Transform field definitions to dt-multi-select format
+  // Note: We include ALL available fields (including selected ones) in options
+  // The component's built-in _filterOptions() will automatically filter out selected items from the dropdown
+  function transformFieldsForMultiSelect(fields) {
+    const alreadyVisible = [
+      'assigned_to',
+      'subassigned',
+      'overall_status',
+      'coaches',
+      'share',
+      'requires_update',
+      'follow',
+      'comments',
+    ];
+    if (list_settings.post_type === 'contacts') {
+      alreadyVisible.push('reason_paused');
     }
 
-    let visibleCount = 0;
-    optionsContainer.find('.bulk-edit-field-search-option').each(function () {
-      const fieldKey = $(this).data('field-key');
-      const fieldName = $(this).data('field-name') || '';
-      const fieldDisplayName = $(this).find('span').text().toLowerCase();
-      const isSelected = selectedFieldKeys.includes(fieldKey);
-      const matchesSearch =
-        searchTerm.length === 0 ||
-        fieldName.includes(searchTerm) ||
-        fieldDisplayName.includes(searchTerm);
+    const allowedTypes = [
+      'user_select',
+      'multi_select',
+      'key_select',
+      'date',
+      'datetime',
+      'location_meta',
+      'tags',
+      'text',
+      'textarea',
+      'number',
+    ];
 
-      if (!isSelected && matchesSearch) {
-        $(this).show();
-        visibleCount++;
-      } else {
-        $(this).hide();
-      }
-    });
-
-    // Show/hide no results message
-    if (visibleCount === 0 && searchTerm.length > 0) {
-      noResults.show();
-      optionsContainer.hide();
-    } else {
-      noResults.hide();
-      optionsContainer.show();
-    }
-
-    updateBulkEditFieldCount();
-  }
-
-  // Keyboard navigation within dropdown
-  $('#bulk_edit_field_search_dropdown').on('keydown', function (e) {
-    const dropdown = $(this);
-    const options = dropdown.find('.bulk-edit-field-search-option:visible');
-    const searchInput = $('#bulk_edit_field_search_input');
-
-    // If focus is on search input, handle navigation
-    if (document.activeElement === searchInput[0]) {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        if (options.length > 0) {
-          bulkEditHighlightedIndex = 0;
-          highlightBulkEditOption(options, bulkEditHighlightedIndex);
-          searchInput.blur();
-        }
-      } else if (e.key === 'Escape') {
-        e.preventDefault();
-        closeBulkEditFieldDropdown();
-      }
-      return;
-    }
-
-    // Navigation when focus is on options
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        bulkEditHighlightedIndex = Math.min(
-          options.length - 1,
-          bulkEditHighlightedIndex + 1,
+    return fields
+      .filter((field) => {
+        return (
+          !alreadyVisible.includes(field.field_key) &&
+          !field.hidden &&
+          allowedTypes.includes(field.field_type) &&
+          field.field_type !== 'communication_channel'
         );
-        highlightBulkEditOption(options, bulkEditHighlightedIndex);
-        break;
-
-      case 'ArrowUp':
-        e.preventDefault();
-        bulkEditHighlightedIndex = Math.max(0, bulkEditHighlightedIndex - 1);
-        highlightBulkEditOption(options, bulkEditHighlightedIndex);
-        break;
-
-      case 'Enter':
-        e.preventDefault();
-        if (bulkEditHighlightedIndex >= 0 && options.length > 0) {
-          options.eq(bulkEditHighlightedIndex).click();
-        } else {
-          // If nothing highlighted, select first visible option
-          if (options.length > 0) {
-            options.first().click();
-          }
-        }
-        break;
-
-      case 'Escape':
-        e.preventDefault();
-        closeBulkEditFieldDropdown();
-        break;
-
-      case 'Home':
-        e.preventDefault();
-        bulkEditHighlightedIndex = 0;
-        highlightBulkEditOption(options, bulkEditHighlightedIndex);
-        break;
-
-      case 'End':
-        e.preventDefault();
-        bulkEditHighlightedIndex = options.length - 1;
-        highlightBulkEditOption(options, bulkEditHighlightedIndex);
-        break;
-    }
-  });
-
-  function highlightBulkEditOption(options, index) {
-    options.removeClass('highlighted');
-    if (index >= 0 && index < options.length) {
-      const option = options.eq(index);
-      option.addClass('highlighted');
-      option.attr('tabindex', '0');
-      option.focus();
-      scrollToHighlightedOption(option);
-    }
+      })
+      .sort((a, b) => {
+        const nameA = (a.field_name || '').toLowerCase();
+        const nameB = (b.field_name || '').toLowerCase();
+        return nameA.localeCompare(nameB);
+      })
+      .map((field) => ({
+        id: field.field_key,
+        label: field.field_name,
+        color: null,
+        icon: field.icon || null,
+      }));
   }
 
-  function scrollToHighlightedOption(option) {
-    const optionsContainer = $('.bulk-edit-field-dropdown-options');
-    const containerTop = optionsContainer.offset().top;
-    const containerBottom = containerTop + optionsContainer.height();
-    const optionTop = option.offset().top;
-    const optionBottom = optionTop + option.height();
-
-    if (optionBottom > containerBottom) {
-      optionsContainer.scrollTop(
-        optionsContainer.scrollTop() + (optionBottom - containerBottom) + 10,
-      );
-    } else if (optionTop < containerTop) {
-      optionsContainer.scrollTop(
-        optionsContainer.scrollTop() - (containerTop - optionTop) - 10,
-      );
+  // Get all available fields
+  function getAllAvailableFields() {
+    if (!window.post_type_fields) {
+      return [];
     }
+
+    return Object.entries(window.post_type_fields).map(([key, value]) => ({
+      field_key: key,
+      field_name: value.name,
+      field_type: value.type,
+      hidden: value.hidden || false,
+      icon: value.icon || null,
+    }));
   }
 
-  // Click outside closes dropdown
-  $(document).on('click', function (e) {
-    if (!$(e.target).closest('.bulk-edit-field-select-wrapper').length) {
-      closeBulkEditFieldDropdown();
-    }
-  });
-
-  // Add field when clicking on dropdown option
-  $(document).on('click', '.bulk-edit-field-search-option', function () {
-    const fieldKey = $(this).data('field-key');
-    const fieldType = $(this).data('field-type');
-    const fieldName = $(this).find('span').text();
-    const fieldIcon = $(this).find('.dt-icon, img').first();
-
-    // Check if field is already selected
-    if (bulkEditSelectedFields.some((f) => f.fieldKey === fieldKey)) {
+  // Update dt-multi-select options
+  // Note: Include ALL available fields - component will auto-filter selected ones from dropdown
+  function updateFieldSelectorOptions() {
+    const fieldSelector = document.querySelector(
+      'dt-multi-select[name="bulk_edit_field_selector"]',
+    );
+    if (!fieldSelector) {
       return;
     }
 
-    // Add to selected fields array
-    bulkEditSelectedFields.push({
-      fieldKey: fieldKey,
-      fieldType: fieldType,
-      fieldName: fieldName,
-      cleared: false,
+    const allFields = getAllAvailableFields();
+    const allOptions = transformFieldsForMultiSelect(allFields);
+
+    // Set all options (component will filter out selected ones automatically)
+    fieldSelector.options = allOptions;
+  }
+
+  // Initialize dt-multi-select on page load
+  function initializeBulkEditFieldSelector() {
+    const fieldSelector = document.querySelector(
+      'dt-multi-select[name="bulk_edit_field_selector"]',
+    );
+    if (!fieldSelector) {
+      return;
+    }
+
+    // Set initial options
+    updateFieldSelectorOptions();
+    fieldSelector.value = [];
+
+    // Handle change events
+    fieldSelector.addEventListener('change', function (e) {
+      // Extract field keys from newValue (could be strings or objects with id property)
+      const selectedFieldKeys = (e.detail.newValue || []).map((v) =>
+        typeof v === 'string' ? v : v.id || v,
+      );
+      // Extract field keys from oldValue
+      const previousFieldKeys = (e.detail.oldValue || []).map((v) =>
+        typeof v === 'string' ? v : v.id || v,
+      );
+
+      // Find newly selected fields
+      const newlySelected = selectedFieldKeys.filter(
+        (key) => !previousFieldKeys.includes(key),
+      );
+
+      // Find deselected fields
+      const deselected = previousFieldKeys.filter(
+        (key) => !selectedFieldKeys.includes(key),
+      );
+
+      // Add newly selected fields
+      newlySelected.forEach((fieldKey) => {
+        const fieldData = window.post_type_fields[fieldKey];
+        if (
+          fieldData &&
+          !bulkEditSelectedFields.some((f) => f.fieldKey === fieldKey)
+        ) {
+          bulkEditSelectedFields.push({
+            fieldKey: fieldKey,
+            fieldType: fieldData.type,
+            fieldName: fieldData.name,
+            cleared: false,
+          });
+
+          // Render the field
+          renderBulkEditField(fieldKey, fieldData.type, fieldData.name, null);
+        }
+      });
+
+      // Remove deselected fields
+      deselected.forEach((fieldKey) => {
+        $(`.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`).remove();
+        bulkEditSelectedFields = bulkEditSelectedFields.filter(
+          (f) => f.fieldKey !== fieldKey,
+        );
+      });
+
+      // Update hidden input and button state
+      updateBulkEditSelectedFieldsInput();
+      updateBulkEditButtonState();
+
+      // Note: No need to update options - component auto-filters selected items from dropdown
+      // But we do need to ensure options include all fields so selected ones can be displayed as tags
+      updateFieldSelectorOptions();
     });
+  }
 
-    // Render the field
-    renderBulkEditField(fieldKey, fieldType, fieldName, fieldIcon);
-
-    // Update hidden input
-    updateBulkEditSelectedFieldsInput();
-
-    // Update button to show last selected field
-    updateBulkEditButtonText(fieldName, fieldIcon);
-
-    // Update update button state based on field selection
-    updateBulkEditButtonState();
-
-    // Clear search and close dropdown
-    $('#bulk_edit_field_search_input').val('');
-    closeBulkEditFieldDropdown();
-
-    // Refresh dropdown to hide selected field (if reopened)
-    filterBulkEditFieldDropdown('');
-  });
-
-  function updateBulkEditButtonText(fieldName, fieldIconElement) {
-    const trigger = $('#bulk_edit_field_select_trigger');
-    const placeholder = trigger.find('.bulk-edit-field-select-placeholder');
-    const selected = trigger.find('.bulk-edit-field-select-selected');
-    const count = trigger.find('.bulk-edit-field-select-count');
-
-    // Hide placeholder, show selected field
-    placeholder.hide();
-    selected.show();
-
-    // Update selected field text and icon
-    const iconContainer = selected.find('.bulk-edit-field-icon');
-    const textContainer = selected
-      .children('span')
-      .not('.bulk-edit-field-icon');
-    if (fieldIconElement && fieldIconElement.length) {
-      iconContainer.html(fieldIconElement.clone());
+  // Initialize on page load
+  if ($('dt-multi-select[name="bulk_edit_field_selector"]').length) {
+    // Wait for web components to be ready
+    if (window.customElements && window.customElements.get('dt-multi-select')) {
+      initializeBulkEditFieldSelector();
     } else {
-      iconContainer.html('');
-    }
-    if (textContainer.length) {
-      textContainer.text(fieldName);
-    } else {
-      // Fallback: append text span if it doesn't exist
-      selected.append(`<span>${fieldName}</span>`);
-    }
-
-    // Update count
-    const remainingCount =
-      bulkEditAvailableFieldsCount - bulkEditSelectedFields.length;
-    if (remainingCount > 0) {
-      count.text(` (${remainingCount} available)`).show();
-    } else {
-      count.hide();
+      // Wait for component to be defined
+      $(document).ready(function () {
+        setTimeout(initializeBulkEditFieldSelector, 100);
+      });
     }
   }
 
@@ -1521,41 +1373,23 @@
     // Update hidden input
     updateBulkEditSelectedFieldsInput();
 
-    // Update button text to show last selected field or placeholder
-    updateBulkEditButtonAfterRemove();
-
     // Update update button state based on field selection
     updateBulkEditButtonState();
 
-    // Refresh dropdown to show the field again (if open)
-    if ($('#bulk_edit_field_search_dropdown').is(':visible')) {
-      const searchTerm = $('#bulk_edit_field_search_input').val().toLowerCase();
-      filterBulkEditFieldDropdown(searchTerm);
+    // Update dt-multi-select to remove the field from selection
+    const fieldSelector = document.querySelector(
+      'dt-multi-select[name="bulk_edit_field_selector"]',
+    );
+    if (fieldSelector) {
+      const currentValue = fieldSelector.value || [];
+      fieldSelector.value = currentValue.filter((v) => {
+        const id = typeof v === 'string' ? v : v.id;
+        return id !== fieldKey;
+      });
+      // Update options to show the field again
+      updateFieldSelectorOptions();
     }
   });
-
-  function updateBulkEditButtonAfterRemove() {
-    const trigger = $('#bulk_edit_field_select_trigger');
-    const placeholder = trigger.find('.bulk-edit-field-select-placeholder');
-    const selected = trigger.find('.bulk-edit-field-select-selected');
-    const count = trigger.find('.bulk-edit-field-select-count');
-
-    if (bulkEditSelectedFields.length === 0) {
-      // No fields selected, show placeholder
-      placeholder.show();
-      selected.hide();
-      count.hide();
-    } else {
-      // Show last selected field
-      const lastField =
-        bulkEditSelectedFields[bulkEditSelectedFields.length - 1];
-      const fieldOption = $(
-        `.bulk-edit-field-search-option[data-field-key="${lastField.fieldKey}"]`,
-      );
-      const fieldIcon = fieldOption.find('.dt-icon, img').first();
-      updateBulkEditButtonText(lastField.fieldName, fieldIcon);
-    }
-  }
 
   function updateBulkEditSelectedFieldsInput() {
     const fieldKeys = bulkEditSelectedFields.map((f) => f.fieldKey);
@@ -3634,8 +3468,19 @@
    */
   let bulk_edit_submit_button = $('#bulk_edit_submit');
 
+  // Prevent form submission (button handles it via JavaScript)
+  $('#bulk_edit_picker').on('submit', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  });
+
   bulk_edit_submit_button.on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('[Bulk Edit] Button clicked - calling bulk_edit_submit()');
     bulk_edit_submit();
+    return false;
   });
 
   function bulk_edit_submit() {
@@ -3660,12 +3505,66 @@
         return;
       }
 
+      // Skip the field selector component - it's not a field to update
+      const fieldName = el.name ? el.name.trim() : null;
+      if (
+        fieldName === 'bulk_edit_field_selector' ||
+        el.id === 'bulk_edit_field_selector'
+      ) {
+        console.log(
+          '[Bulk Edit] Skipping field selector component:',
+          el.id || el.name,
+        );
+        return;
+      }
+
+      // Skip any components inside the dynamically selected fields container
+      // (they will be processed in the dynamically selected fields section)
+      if (el.closest('#bulk_edit_selected_fields_container')) {
+        return;
+      }
+
       if (el.value) {
-        updatePayload[el.name.trim()] =
+        const convertedValue =
           window.DtWebComponents.ComponentService.convertValue(
             el.tagName,
             el.value,
           );
+
+        // Only add to payload if value is not empty
+        // For array-based fields, check if values array has items
+        if (convertedValue !== null && convertedValue !== undefined) {
+          if (typeof convertedValue === 'object' && convertedValue.values) {
+            // For array-based fields, only include if there are values or force_values is true
+            if (
+              convertedValue.values.length > 0 ||
+              convertedValue.force_values === true
+            ) {
+              updatePayload[fieldName] = convertedValue;
+              console.log(
+                `[Bulk Edit] Added web component field ${fieldName}:`,
+                convertedValue,
+              );
+            } else {
+              console.log(
+                `[Bulk Edit] Skipping empty array field ${fieldName} (no values, no force_values)`,
+              );
+            }
+          } else {
+            // For simple fields, include if not empty
+            if (convertedValue !== '' && convertedValue !== null) {
+              updatePayload[fieldName] = convertedValue;
+              console.log(
+                `[Bulk Edit] Added web component field ${fieldName}:`,
+                convertedValue,
+              );
+            } else {
+              console.log(
+                `[Bulk Edit] Skipping empty simple field ${fieldName}`,
+              );
+            }
+          }
+        }
       }
     });
 
@@ -3688,10 +3587,22 @@
 
     let multiSelectUpdatePayload = {};
     multiSelectInputs.each(function () {
+      // Skip if this input is inside the dynamically selected fields container
+      if ($(this).closest('#bulk_edit_selected_fields_container').length > 0) {
+        return; // Skip - will be handled in dynamically selected fields section
+      }
+
       let inputData = $(this).data();
       $.each(inputData, function (key, value) {
         if (key.includes('bulk_key_') && value) {
           let field_key = key.replace('bulk_key_', '');
+          // Skip if this field is in dynamically selected fields (regardless of cleared status)
+          const fieldData = bulkEditSelectedFields?.find(
+            (f) => f.fieldKey === field_key,
+          );
+          if (fieldData) {
+            return; // Skip processing - will be handled in dynamically selected fields section
+          }
           if (!multiSelectUpdatePayload[field_key]) {
             multiSelectUpdatePayload[field_key] = { values: [] };
           }
@@ -3702,7 +3613,18 @@
     const multiSelectKeys = Object.keys(multiSelectUpdatePayload);
 
     multiSelectKeys.forEach((key, index) => {
-      updatePayload[key] = multiSelectUpdatePayload[key];
+      // Double-check: don't overwrite if field is cleared in dynamically selected fields
+      const fieldData = bulkEditSelectedFields?.find((f) => f.fieldKey === key);
+      if (!fieldData || !fieldData.cleared) {
+        // Also check if this field is already in updatePayload (from cleared fields)
+        if (!updatePayload[key] || !updatePayload[key].force_values) {
+          updatePayload[key] = multiSelectUpdatePayload[key];
+        }
+      } else {
+        console.log(
+          `[Bulk Edit] Skipping multiSelectUpdatePayload for cleared field: ${key}`,
+        );
+      }
     });
 
     // Process dynamically selected fields
@@ -3714,9 +3636,14 @@
         const fieldKey = fieldData.fieldKey;
         const fieldType = fieldData.fieldType;
 
-        // Skip if field is marked as cleared
+        // Skip if field is marked as cleared - set cleared value and ensure it's not overwritten
         if (fieldData.cleared) {
-          updatePayload[fieldKey] = getClearedFieldValue(fieldType);
+          const clearedValue = getClearedFieldValue(fieldType);
+          updatePayload[fieldKey] = clearedValue;
+          console.log(
+            `[Bulk Edit] Setting cleared value for ${fieldKey} (${fieldType}):`,
+            clearedValue,
+          );
           return;
         }
 
@@ -3726,18 +3653,36 @@
         );
         const fieldValue = collectFieldValue(fieldKey, fieldType, fieldWrapper);
 
+        console.log(
+          `[Bulk Edit] Collected value for ${fieldKey} (${fieldType}):`,
+          fieldValue,
+        );
+
         if (fieldValue !== null && fieldValue !== undefined) {
           // Handle multi-select fields specially
           if (fieldType === 'multi_select' || fieldType === 'tags') {
             if (!updatePayload[fieldKey]) {
               updatePayload[fieldKey] = { values: [] };
             }
-            if (fieldValue.values) {
+            if (fieldValue.values && Array.isArray(fieldValue.values)) {
               updatePayload[fieldKey].values = fieldValue.values;
+              console.log(
+                `[Bulk Edit] Added multi_select values for ${fieldKey}:`,
+                fieldValue.values,
+              );
+            } else {
+              console.log(
+                `[Bulk Edit] Warning: multi_select field ${fieldKey} has no values array:`,
+                fieldValue,
+              );
             }
           } else {
             updatePayload[fieldKey] = fieldValue;
           }
+        } else {
+          console.log(
+            `[Bulk Edit] No value collected for ${fieldKey} (${fieldType}) - field may be empty or not initialized`,
+          );
         }
       });
     }
@@ -3759,7 +3704,35 @@
         queue.push(postId);
       }
     });
-    process(queue, 10, do_each, do_done, updatePayload, shares, commentPayload);
+
+    // Log everything for debugging
+    console.log('[Bulk Edit] ========== SUBMIT DEBUG INFO ==========');
+    console.log(
+      '[Bulk Edit] Final updatePayload:',
+      JSON.stringify(updatePayload, null, 2),
+    );
+    console.log('[Bulk Edit] Queue (selected post IDs):', queue);
+    console.log('[Bulk Edit] Queue length:', queue.length);
+    console.log('[Bulk Edit] Shares:', shares);
+    console.log('[Bulk Edit] Comment payload:', commentPayload);
+    console.log('[Bulk Edit] bulkEditSelectedFields:', bulkEditSelectedFields);
+    console.log('[Bulk Edit] =======================================');
+
+    // Process the queue to update records
+    if (queue.length > 0) {
+      process(
+        queue,
+        10,
+        do_each,
+        do_done,
+        updatePayload,
+        shares,
+        commentPayload,
+      );
+    } else {
+      console.log('[Bulk Edit] No records selected - skipping update');
+      $('#bulk_edit_submit-spinner').removeClass('active');
+    }
   }
 
   function collectFieldValue(fieldKey, fieldType, fieldWrapper) {
@@ -3807,25 +3780,225 @@
         return null;
       }
 
-      case 'multi_select':
       case 'tags': {
-        // Get from multi-select component
-        const multiSelectData = fieldWrapper
-          .find(`#bulk_${fieldKey}`)
-          .data('bulk_key_' + fieldKey);
-        if (multiSelectData && multiSelectData.values) {
-          return multiSelectData;
+        // Tags use dt-tags web component
+        const tagsComponent =
+          fieldWrapper.find(`dt-tags#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-tags[name="${fieldKey}"]`)[0] ||
+          fieldWrapper.find(`dt-tags`)[0];
+
+        if (tagsComponent && tagsComponent.value) {
+          // Use ComponentService to convert the value
+          const componentValue =
+            window.DtWebComponents?.ComponentService?.convertValue(
+              tagsComponent.tagName,
+              tagsComponent.value,
+            ) || tagsComponent.value;
+
+          // Tags component returns an array of strings
+          if (Array.isArray(componentValue)) {
+            return { values: componentValue.map((v) => ({ value: v })) };
+          } else if (
+            componentValue &&
+            typeof componentValue === 'object' &&
+            componentValue.values
+          ) {
+            return componentValue;
+          }
         }
+
+        // Fallback: Get from legacy data attribute or typeahead
+        const legacyInput = fieldWrapper.find(`#bulk_${fieldKey}`);
+        if (legacyInput.length > 0) {
+          const tagsData = legacyInput.data('bulk_key_' + fieldKey);
+          if (tagsData && tagsData.values) {
+            return tagsData;
+          }
+
+          // Try typeahead
+          const typeaheadSelector = `.js-typeahead-bulk_${fieldKey}`;
+          const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
+          if (typeaheadInstance && typeaheadInstance.items) {
+            const items = typeaheadInstance.items || [];
+            if (items.length > 0) {
+              return {
+                values: items.map((item) => {
+                  const tagValue =
+                    typeof item === 'string'
+                      ? item
+                      : item.value || item.key || item;
+                  return { value: tagValue };
+                }),
+              };
+            }
+          }
+        }
+
+        return null;
+      }
+
+      case 'multi_select': {
+        // First: Try web component (dt-multi-select-button-group or dt-multi-select)
+        const buttonGroupComponent =
+          fieldWrapper.find(
+            `dt-multi-select-button-group#bulk_${fieldKey}`,
+          )[0] ||
+          fieldWrapper.find(
+            `dt-multi-select-button-group[name="${fieldKey}"]`,
+          )[0] ||
+          fieldWrapper.find(`dt-multi-select-button-group`)[0];
+        const multiSelectComponent =
+          fieldWrapper.find(`dt-multi-select#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-multi-select[name="${fieldKey}"]`)[0];
+
+        const webComponent = buttonGroupComponent || multiSelectComponent;
+
+        if (webComponent) {
+          console.log(
+            `[Bulk Edit] DEBUG: Found web component for ${fieldKey}:`,
+            webComponent.tagName,
+            webComponent.id,
+            webComponent.name,
+          );
+          console.log(
+            `[Bulk Edit] DEBUG: Component value (raw):`,
+            webComponent.value,
+          );
+
+          if (webComponent.value) {
+            // Use ComponentService to convert the value to the expected format
+            const componentValue =
+              window.DtWebComponents?.ComponentService?.convertValue(
+                webComponent.tagName,
+                webComponent.value,
+              ) || webComponent.value;
+
+            console.log(
+              `[Bulk Edit] DEBUG: Component value (converted):`,
+              componentValue,
+            );
+
+            // Handle different value formats
+            if (componentValue && typeof componentValue === 'object') {
+              if (componentValue.values) {
+                return componentValue;
+              } else if (Array.isArray(componentValue)) {
+                // If it's an array, convert to { values: [...] } format
+                return {
+                  values: componentValue.map((v) => {
+                    if (typeof v === 'string') {
+                      return { value: v };
+                    }
+                    return { value: v.value || v.key || v.id || v };
+                  }),
+                };
+              }
+            } else if (Array.isArray(webComponent.value)) {
+              // Direct array from component value property
+              return {
+                values: webComponent.value.map((v) => {
+                  if (typeof v === 'string') {
+                    return { value: v };
+                  }
+                  return { value: v.value || v.key || v.id || v };
+                }),
+              };
+            }
+          }
+        }
+
+        // Second: Collect from selected button elements (legacy button-based multi-select)
+        const selectedButtons = fieldWrapper.find('.selected-select-button');
+        if (selectedButtons.length > 0) {
+          const values = [];
+          selectedButtons.each(function () {
+            const optionKey = $(this).attr('id');
+            if (optionKey) {
+              values.push({ value: optionKey });
+            }
+          });
+          if (values.length > 0) {
+            return { values: values };
+          }
+        }
+
+        // Third: Get from legacy data attribute on input element
+        const legacyInput = fieldWrapper.find(`#bulk_${fieldKey}`);
+        if (legacyInput.length > 0) {
+          const multiSelectData = legacyInput.data('bulk_key_' + fieldKey);
+          if (multiSelectData && multiSelectData.values) {
+            return multiSelectData;
+          }
+
+          // Fourth: Get from typeahead component's internal state
+          const typeaheadSelector = `.js-typeahead-bulk_${fieldKey}`;
+          const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
+          if (typeaheadInstance && typeaheadInstance.items) {
+            const items = typeaheadInstance.items || [];
+            if (items.length > 0) {
+              const values = items.map((item) => {
+                if (typeof item === 'string') {
+                  return { value: item };
+                }
+                return { value: item.key || item.id || item.value || item };
+              });
+              return { values: values };
+            }
+          }
+        }
+
         return null;
       }
 
       case 'location':
       case 'location_meta': {
-        // Get location data
+        // Try web component (dt-location or dt-location-map)
+        const locationComponent =
+          fieldWrapper.find(`dt-location#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-location[name="${fieldKey}"]`)[0] ||
+          fieldWrapper.find(`dt-location-map#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-location-map[name="${fieldKey}"]`)[0] ||
+          fieldWrapper.find(`dt-location, dt-location-map`)[0];
+
+        if (locationComponent && locationComponent.value) {
+          // Use ComponentService to convert the value
+          const componentValue =
+            window.DtWebComponents?.ComponentService?.convertValue(
+              locationComponent.tagName,
+              locationComponent.value,
+            ) || locationComponent.value;
+
+          // Location components return location data in specific format
+          if (componentValue && typeof componentValue === 'object') {
+            if (componentValue.values) {
+              return componentValue;
+            } else if (componentValue.location_grid_meta) {
+              // dt-location-map returns location_grid_meta
+              return componentValue;
+            } else if (Array.isArray(componentValue)) {
+              return { values: componentValue };
+            }
+          }
+        }
+
+        // Fallback: Get from legacy data attribute
         const locationData = fieldWrapper
           .find(`#bulk_${fieldKey}`)
           .data('bulk_key_' + fieldKey);
-        return locationData || null;
+        if (locationData) {
+          return locationData;
+        }
+
+        // Check window.location_data for location_grid_meta
+        if (
+          fieldKey === 'location_grid_meta' &&
+          window.location_data &&
+          window.location_data.location_grid_meta
+        ) {
+          return window.location_data.location_grid_meta;
+        }
+
+        return null;
       }
 
       default:
@@ -3839,16 +4012,15 @@
 
   function getClearedFieldValue(fieldType) {
     // Return appropriate cleared value based on field type
+    // Backend requires force_values: true for array-based fields to properly clear all values
     switch (fieldType) {
       case 'connection':
       case 'tags':
       case 'location':
-        // Return empty array - will clear all existing values
-        return { values: [] };
-
       case 'multi_select':
       case 'location_meta':
-        // Use force_values to clear all values
+        // Use force_values: true to clear all values (backend requirement)
+        // Backend checks for force_values to delete all existing values before processing new ones
         return { values: [], force_values: true };
 
       case 'date':
@@ -4026,10 +4198,14 @@
     switch (event_type) {
       case 'update': {
         if (Object.keys(update).length) {
+          console.log(
+            `[Bulk Edit] Updating post ${item} with payload:`,
+            JSON.stringify(update, null, 2),
+          );
           promises.push(
             window.API.update_post(list_settings.post_type, item, update).catch(
               (err) => {
-                console.error(err);
+                console.error('[Bulk Edit] Update error:', err);
               },
             ),
           );

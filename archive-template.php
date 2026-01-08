@@ -765,113 +765,18 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                         <?php esc_html_e( 'Add Fields to Update', 'disciple_tools' ); ?>
                                     </div>
                                     
-                                    <!-- Field Selection Dropdown -->
+                                    <!-- Field Selection with dt-multi-select -->
                                     <div class="bulk-edit-field-select-wrapper" style="margin-bottom: 15px;">
-                                        <label for="bulk_edit_field_select_trigger" class="field-search-label">
+                                        <label for="bulk_edit_field_selector" class="field-search-label">
                                             <?php esc_html_e( 'Search and add fields:', 'disciple_tools' ); ?>
                                         </label>
-                                        <button type="button" 
-                                                id="bulk_edit_field_select_trigger" 
-                                                class="bulk-edit-field-select-trigger"
-                                                aria-haspopup="listbox"
-                                                aria-expanded="false">
-                                            <span class="bulk-edit-field-select-text">
-                                                <span class="bulk-edit-field-select-placeholder">
-                                                    <?php esc_html_e( 'Select a field to add...', 'disciple_tools' ); ?>
-                                                </span>
-                                                <span class="bulk-edit-field-select-selected" style="display:none;">
-                                                    <span class="bulk-edit-field-icon"></span>
-                                                    <span></span>
-                                                </span>
-                                            </span>
-                                            <span class="bulk-edit-field-select-count" style="display:none;"></span>
-                                            <span class="bulk-edit-field-select-arrow">▼</span>
-                                        </button>
-                                        
-                                        <div id="bulk_edit_field_search_dropdown" 
-                                             class="bulk-edit-field-search-dropdown" 
-                                             role="listbox"
-                                             style="display:none;">
-                                            <!-- Sticky search input at top -->
-                                            <div class="bulk-edit-field-dropdown-search">
-                                                <input type="text" 
-                                                       id="bulk_edit_field_search_input" 
-                                                       class="bulk-edit-field-dropdown-search-input" 
-                                                       placeholder="<?php esc_html_e( 'Search fields...', 'disciple_tools' ); ?>"
-                                                       autocomplete="off"
-                                                       role="searchbox"
-                                                       aria-label="<?php esc_html_e( 'Search fields', 'disciple_tools' ); ?>">
-                                            </div>
-                                            
-                                            <!-- Loading state -->
-                                            <div class="bulk-edit-field-dropdown-loading" style="display:none;">
-                                                <div class="loading-spinner active" style="margin: 20px auto;"></div>
-                                                <p style="text-align: center; color: #999; margin-top: 10px;">
-                                                    <?php esc_html_e( 'Loading fields...', 'disciple_tools' ); ?>
-                                                </p>
-                                            </div>
-                                            
-                                            <!-- Scrollable options container -->
-                                            <div class="bulk-edit-field-dropdown-options" role="listbox">
-                                                <?php
-                                                // Build list of available fields (excluding already visible ones)
-                                                $already_visible = [ 'assigned_to', 'subassigned', 'overall_status', 'coaches', 'share', 'requires_update', 'follow', 'comments' ];
-                                                if ( $post_type == 'contacts' ) {
-                                                    $already_visible[] = 'reason_paused';
-                                                }
-
-                                                // Sort fields alphabetically by name
-                                                uasort( $field_options, function ( $a, $b ) {
-                                                    return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
-                                                });
-
-                                                $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
-
-                                                $available_fields_count = 0;
-                                                foreach ( $field_options as $field_key => $field_values ):
-                                                    if ( in_array( $field_key, $already_visible ) ) {
-                                                        continue;
-                                                    }
-                                                    if ( empty( $field_values['hidden'] )
-                                                         && isset( $field_values['type'] )
-                                                         && in_array( $field_values['type'], $allowed_types )
-                                                         && $field_values['type'] != 'communication_channel' ) :
-                                                        $available_fields_count++;
-                                                        $has_icon = !empty( $field_values['icon'] ) || !empty( $field_values['font-icon'] );
-                                                        $option_classes = 'bulk-edit-field-search-option' . ( $has_icon ? '' : ' no-icon' );
-                                                        ?>
-                                                        <div class="<?php echo esc_attr( $option_classes ); ?>"
-                                                             role="option"
-                                                             tabindex="-1"
-                                                             data-field-key="<?php echo esc_attr( $field_key ); ?>"
-                                                             data-field-type="<?php echo esc_attr( $field_values['type'] ); ?>"
-                                                             data-field-name="<?php echo esc_attr( strtolower( $field_values['name'] ) ); ?>">
-                                                            <?php dt_render_field_icon( $field_values ); ?>
-                                                            <span><?php echo esc_html( $field_values['name'] ); ?></span>
-                                                        </div>
-                                                    <?php endif;
-                                                endforeach; ?>
-                                            </div>
-
-                                            <!-- Field count display -->
-                                            <div class="bulk-edit-field-dropdown-footer">
-                                                <span class="bulk-edit-field-count-text">
-                                                    <?php
-                                                    echo sprintf(
-                                                        esc_html( _n( '%d field available', '%d fields available', $available_fields_count, 'disciple_tools' ) ),
-                                                        esc_html( $available_fields_count )
-                                                    );
-                                                    ?>
-                                                </span>
-                                            </div>
-                                            
-                                            <!-- No results message (hidden by default) -->
-                                            <div class="bulk-edit-field-dropdown-no-results" style="display:none;">
-                                                <p style="padding: 12px; text-align: center; color: #999; font-style: italic; margin: 0;">
-                                                    <?php esc_html_e( 'No matching fields found', 'disciple_tools' ); ?>
-                                                </p>
-                                            </div>
-                                        </div>
+                                        <dt-multi-select
+                                            id="bulk_edit_field_selector"
+                                            name="bulk_edit_field_selector"
+                                            placeholder="<?php esc_attr_e( 'Search and add fields...', 'disciple_tools' ); ?>"
+                                            options='[]'
+                                            value='[]'>
+                                        </dt-multi-select>
                                     </div>
                                     
                                     <!-- Selected Fields Container -->
