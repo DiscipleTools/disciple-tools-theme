@@ -122,6 +122,8 @@ class HomeApp {
 
         // App-type apps navigate in same tab with launcher parameter, link-type apps open in new tab
         let onClickHandler = '';
+        let url = app.url;
+        let newTab = false;
         if (appType === 'app') {
           // Check if app is cross-domain (different domain than current)
           const currentHost = window.location.hostname;
@@ -136,15 +138,18 @@ class HomeApp {
               jsObject.dt_home_magic_url +
               '?launcher=1&app_url=' +
               encodeURIComponent(app.url);
+            url = wrapperUrl;
             onClickHandler = `onclick="window.location.href = '${wrapperUrl}'; return false;"`;
           } else {
             // For same-domain apps, add launcher=1 parameter
             const separator = app.url.includes('?') ? '&' : '?';
             const appUrlWithLauncher = app.url + separator + 'launcher=1';
+            url = appUrlWithLauncher;
             onClickHandler = `onclick="window.location.href = '${appUrlWithLauncher}'; return false;"`;
           }
         } else {
           // Open in new tab (link-type)
+          newTab = true;
           onClickHandler = `onclick="window.open('${app.url}', '_blank'); return false;"`;
         }
 
@@ -174,11 +179,11 @@ class HomeApp {
 
         const appHtml = `
                             <div class="app-card-wrapper">
-                                <div class="app-card" ${onClickHandler} title="${app.title}">
+                                <a href="${url}" target="${newTab ? '_blank' : '_self'}" class="app-card" title="${app.title}">
                                     <div class="app-icon">
                                         ${iconHtml}
                                     </div>
-                                </div>
+                                </a>
                                 <div class="app-title">${trimmedTitle}</div>
                             </div>
                         `;
