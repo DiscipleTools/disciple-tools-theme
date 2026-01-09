@@ -15,8 +15,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.10.2\n"
 
-
-
 #. Theme Name of the theme
 #: style.css
 msgid "Disciple Tools"
@@ -30,9 +28,11 @@ msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 #. Description of the theme
 #: style.css
 msgid ""
-"Disciple.Tools is a coalition management system for disciple making movements."
+"Disciple.Tools is a coalition management system for disciple making "
+"movements."
 msgstr ""
-"Disiple.Tools ji bo tevgerên çêkirina şagirtan pergalek rêveberiya koalîsyonê ye."
+"Disiple.Tools ji bo tevgerên çêkirina şagirtan pergalek rêveberiya "
+"koalîsyonê ye."
 
 #. Author URI of the theme
 #: style.css
@@ -68,7 +68,8 @@ msgstr "Daxwaza Gihîştina Qeydê bikin"
 msgid ""
 "Record owner to be notified of access request. Are you happy to proceed?"
 msgstr ""
-"Xwediyê tomarê ku ji daxwaza gihiştinê were agahdarkirin. Hûn kêfxweş in ku pêşve biçin?"
+"Xwediyê tomarê ku ji daxwaza gihiştinê were agahdarkirin. Hûn kêfxweş in ku "
+"pêşve biçin?"
 
 #: 403.php:52
 msgid "Submit Request"
@@ -240,15 +241,28 @@ msgstr "Alîkariya Derxistina Lîsteyê"
 
 #: archive-template.php:263
 msgid ""
-"Using the current filter, this is a simple way to export basic information and use it in other applications."
+"Using the current filter, this is a simple way to export basic information "
+"and use it in other applications."
 msgstr ""
-"Bi parzûna heyî, ev rêyek hêsan e ku agahiyên bingehîn derxînin û di sepanên din de bikar bînin."
+"Bi parzûna heyî, ev rêyek hêsan e ku agahiyên bingehîn derxînin û di sepanên "
+"din de bikar bînin."
 
 #: archive-template.php:267
 msgid ""
-"Using the current filter, the available emails are grouped by 50 and can be launched into your default email client by group. Many email providers put a limit of 50 on BCC emails. You can open all groups at once using the \"Open All\" button. If the list is too large, this might alert your email provider. The BCC email tool is meant to assist small group emails. Bulk email should be handled through bulk email providers."
+"Using the current filter, the available emails are grouped by 50 and can be "
+"launched into your default email client by group. Many email providers put a "
+"limit of 50 on BCC emails. You can open all groups at once using the \"Open "
+"All\" button. If the list is too large, this might alert your email "
+"provider. The BCC email tool is meant to assist small group emails. Bulk "
+"email should be handled through bulk email providers."
 msgstr ""
-"Bi parzûna heyî, e-nameyên berdest bi 50an têne kom kirin û dikarin bi komê re di xerîdarê e-nameya xweya standard de bên destpêkirin. Gelek pêşkêşkerên e-nameyê li ser e-nameyên BCC sînorek 50 datînin. Hûn dikarin hemû koman bi carekê re bi bişkoja \\\"Hemî Veke\\\" vebînin. Eger lîste pir mezin be, dibe ku ev pêşkêşkerê e-nameya we hişyar bike. Amûra e-nameya BCC ji bo alîkariya e-nameyên komên piçûk hatiye çêkirin. E-nameya girseyî divê bi pêşkêşkerên e-nameya girseyî were rêvebirin."
+"Bi parzûna heyî, e-nameyên berdest bi 50an têne kom kirin û dikarin bi komê "
+"re di xerîdarê e-nameya xweya standard de bên destpêkirin. Gelek pêşkêşkerên "
+"e-nameyê li ser e-nameyên BCC sînorek 50 datînin. Hûn dikarin hemû koman bi "
+"carekê re bi bişkoja \\\"Hemî Veke\\\" vebînin. Eger lîste pir mezin be, "
+"dibe ku ev pêşkêşkerê e-nameya we hişyar bike. Amûra e-nameya BCC ji bo "
+"alîkariya e-nameyên komên piçûk hatiye çêkirin. E-nameya girseyî divê bi "
+"pêşkêşkerên e-nameya girseyî were rêvebirin."
 
 #: archive-template.php:270
 msgid "Phone Number List"
@@ -256,15 +270,21 @@ msgstr "Lîsteya Jimareyên Telefonê"
 
 #: archive-template.php:271
 msgid ""
-"Using the current filter, this is intended for copy pasting a list of numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of starting a group conversation."
+"Using the current filter, this is intended for copy pasting a list of "
+"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
+"starting a group conversation."
 msgstr ""
-"Bi parzûna heyî, ev ji bo kopî û pêçandina lîsteyek jimaran di sepaneke peyamê de wek WhatsApp, Signal, hwd. hatiye armanc kirin. Ev rêyek bilez e ji bo destpêkirina sohbetek komê."
+"Bi parzûna heyî, ev ji bo kopî û pêçandina lîsteyek jimaran di sepaneke "
+"peyamê de wek WhatsApp, Signal, hwd. hatiye armanc kirin. Ev rêyek bilez e "
+"ji bo destpêkirina sohbetek komê."
 
 #: archive-template.php:275
 msgid ""
-"Using the current filter, this creates a basic points map of known locations of listed individuals."
+"Using the current filter, this creates a basic points map of known locations "
+"of listed individuals."
 msgstr ""
-"Bi parzûna heyî, ev nexşeyek xalên bingehîn ên cihên naskirî yên kesên navnîşkirî diafirîne."
+"Bi parzûna heyî, ev nexşeyek xalên bingehîn ên cihên naskirî yên kesên "
+"navnîşkirî diafirîne."
 
 #: archive-template.php:339
 msgid "No results found"
@@ -362,7 +382,8 @@ msgstr "Tu zevî nehatine hilbijartin"
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
-"Hemî %1$s ku hûn dixwazin ji lîsteyê nûve bikin hilbijêrin, û li jêr nûve bikin"
+"Hemî %1$s ku hûn dixwazin ji lîsteyê nûve bikin hilbijêrin, û li jêr nûve "
+"bikin"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -468,7 +489,8 @@ msgstr "E-name dê ji %s werin şandin"
 #: archive-template.php:891
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
-"Ji kerema xwe piştrast bikin ku rêbazek şandina derbasdar hatiye destnîşankirin."
+"Ji kerema xwe piştrast bikin ku rêbazek şandina derbasdar hatiye "
+"destnîşankirin."
 
 #: archive-template.php:893
 msgid "Message"
@@ -955,7 +977,8 @@ msgstr "%3$s û %1$s bi %2$s emojî re bertek nîşan dan"
 #: dt-assets/functions/enqueue-scripts.php:189
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Zimanê axaftinê hilbijêrin û li \\\"Tomarkirinê Bide Destpêkirin\\\" bikirtînin."
+"Zimanê axaftinê hilbijêrin û li \\\"Tomarkirinê Bide Destpêkirin\\\" "
+"bikirtînin."
 
 #: dt-assets/functions/enqueue-scripts.php:190
 msgid "Click \"Start Recording\" to begin."
@@ -1152,7 +1175,8 @@ msgstr "Daneyên csv yên derxistî dê hemû %2$s zeviyên %1$s bigirin."
 
 #: dt-assets/functions/enqueue-scripts.php:351
 #, php-format
-msgctxt "The exported csv data to contain the 6 visible Contact field(s) shown below."
+msgctxt ""
+"The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr "Daneyên csv yên derxistî dê %2$s zeviyên %1$s yên xuya li jêr bigirin."
@@ -1485,16 +1509,23 @@ msgstr "Bişkojkên Çalakiya Bilez"
 #: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid ""
-"These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
+"These quick action buttons are here to aid you in updating the contact "
+"record faster and keep a count of how many times each action has be done."
 msgstr ""
-"Van bişkokên çalakiyê yên bilez li vir in ku ji bo ku hûn di zûtirkirina tomara têkiliyê de nûve bikin û alîkariya we bikin ka her çalakî çend caran hatiye kirin, ji we re dibin alîkar."
+"Van bişkokên çalakiyê yên bilez li vir in ku ji bo ku hûn di zûtirkirina "
+"tomara têkiliyê de nûve bikin û alîkariya we bikin ka her çalakî çend caran "
+"hatiye kirin, ji we re dibin alîkar."
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid ""
-"For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer. This action will also change the 'Seeker Path' to 'Contact Attempted'."
+"For example, If you click the 'No Answer' button 4 times, we will log that "
+"you attempted to reach this contact 4 times, but they did not answer. This "
+"action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"Mînakî, Heke hûn 4 caran bişkoja 'Bê Bersiv' bikirtînin, em ê têkevin ku we 4 caran hewl da ku bigihîjin vê têkiliyê, lê wan bersiv neda. Di heman demê de ev çalakî dê 'Riya Lêgerînê' biguherîne 'Hewldana Têkiliyê'."
+"Mînakî, Heke hûn 4 caran bişkoja 'Bê Bersiv' bikirtînin, em ê têkevin ku we "
+"4 caran hewl da ku bigihîjin vê têkiliyê, lê wan bersiv neda. Di heman demê "
+"de ev çalakî dê 'Riya Lêgerînê' biguherîne 'Hewldana Têkiliyê'."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1513,23 +1544,27 @@ msgstr "Li vir e ku hûn dikarin ji civîn û axaftinan notan tomar bikin."
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid ""
-"Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
+"Type @ and the name of a user to mention them in a comment. This user will "
+"then receive a notification."
 msgstr ""
-"@ Û navê bikarhênerek binivîse ku di şîroveyek de behsa wan bike. Vê bikarhêner dê paşê agahdariyek bistîne."
+"@ Û navê bikarhênerek binivîse ku di şîroveyek de behsa wan bike. Vê "
+"bikarhêner dê paşê agahdariyek bistîne."
 
 #: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"This section also includes the history of activity, such as when the contact or group status became active etc."
+"This section also includes the history of activity, such as when the contact "
+"or group status became active etc."
 msgstr ""
-"Di vê beşê de di heman demê de dîroka çalakiyê jî heye, mînakî dema ku têkilî an rewşa komê çalak bû hwd."
+"Di vê beşê de di heman demê de dîroka çalakiyê jî heye, mînakî dema ku "
+"têkilî an rewşa komê çalak bû hwd."
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
-msgid ""
-"You can filter this section either by 'All', 'Comments', or 'Activity'."
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
-"Hûn dikarin vê beşê an bi 'Hemî', 'Commentsîrove', an jî 'Çalakî' parzûn bikin."
+"Hûn dikarin vê beşê an bi 'Hemî', 'Commentsîrove', an jî 'Çalakî' parzûn "
+"bikin."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:117
 msgid "Your Profile"
@@ -1543,16 +1578,20 @@ msgstr "Di vê deverê de hûn dikarin profîla bikarhênerê xwe bibînin."
 #: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
 msgid ""
-"You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
+"You are not required to fill out any of these profile fields. They are "
+"optional to meet your team’s needs."
 msgstr ""
-"Ji we ne hewce ye ku vana yek ji van qadên profîlê dagirin. Ew vebijarkî ne ku hewcedariyên tîmê we bicîh bînin."
+"Ji we ne hewce ye ku vana yek ji van qadên profîlê dagirin. Ew vebijarkî ne "
+"ku hewcedariyên tîmê we bicîh bînin."
 
 #: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid ""
-"By clicking 'Edit', you will be able adjust things like the language that this system operates in."
+"By clicking 'Edit', you will be able adjust things like the language that "
+"this system operates in."
 msgstr ""
-"Bi tikandina li ser 'Biguherîne', hûn ê karibin tiştên wekî zimanê ku ev pergalê bi kar tîne verast bikin."
+"Bi tikandina li ser 'Biguherîne', hûn ê karibin tiştên wekî zimanê ku ev "
+"pergalê bi kar tîne verast bikin."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
 #: dt-users/users.php:169
@@ -1562,9 +1601,11 @@ msgstr "Cih"
 #: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid ""
-"These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
+"These are the areas you are responsible for. Clicking the 'Add' button will "
+"bring up a list of locations to choose from."
 msgstr ""
-"Ev deverên ku hûn jê berpirsiyar in. Bişkojka 'Zêdekirin' bitikîne dê navnîşek cihên ku hûn hilbijêrin dê derxe pêş."
+"Ev deverên ku hûn jê berpirsiyar in. Bişkojka 'Zêdekirin' bitikîne dê "
+"navnîşek cihên ku hûn hilbijêrin dê derxe pêş."
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
@@ -1574,9 +1615,13 @@ msgstr "Agahdariyên We"
 #: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid ""
-"You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
+"You will receive web notifications and email notifications based on your "
+"notification preferences. To change your preference, click the toggle "
+"buttons."
 msgstr ""
-"Hûn ê li gorî vebijarkên xwe yên agahdarkirinê notifications tevn û e-nameyên agahdariyê bistînin. Ji bo ku tercîha xwe biguherînin, bişkojkên veguherînê bikirtînin."
+"Hûn ê li gorî vebijarkên xwe yên agahdarkirinê notifications tevn û e-"
+"nameyên agahdariyê bistînin. Ji bo ku tercîha xwe biguherînin, bişkojkên "
+"veguherînê bikirtînin."
 
 #: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
@@ -1591,16 +1636,23 @@ msgstr "Agahdarî Zivirandin: Tiştik dê gewr xuya bike."
 #: dt-assets/parts/modals/modal-help.php:78
 msgctxt "Optional Documentation"
 msgid ""
-"Some of the types of notifications cannot be adjusted because they are required by the system."
+"Some of the types of notifications cannot be adjusted because they are "
+"required by the system."
 msgstr ""
-"Hin celeb celeb agahdarî nayê verast kirin ji ber ku ji hêla pergalê ve hewce ne."
+"Hin celeb celeb agahdarî nayê verast kirin ji ber ku ji hêla pergalê ve "
+"hewce ne."
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid ""
-"Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Adjust whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"Ma hûn dixwazin agahdariyên li ser şîroveyên nû, guherînên agahdariya têkiliyê, Mîhengên Têkilî û pîvanên Tenduristiya Koma, û ji we re ji bo her nûvekirina ku di pergalê de çêdibe bistînin, sererast bikin."
+"Ma hûn dixwazin agahdariyên li ser şîroveyên nû, guherînên agahdariya "
+"têkiliyê, Mîhengên Têkilî û pîvanên Tenduristiya Koma, û ji we re ji bo her "
+"nûvekirina ku di pergalê de çêdibe bistînin, sererast bikin."
 
 #: dt-assets/parts/modals/modal-help.php:87
 msgctxt "Optional Documentation"
@@ -1610,9 +1662,11 @@ msgstr "Rûpela Ragihandinê"
 #: dt-assets/parts/modals/modal-help.php:88
 msgctxt "Optional Documentation"
 msgid ""
-"This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
+"This Notifications Page is where you can read updates to users and groups. "
+"It displays notifications about activity on your records."
 msgstr ""
-"Vê Ragihandina Rûpela ku hûn dikarin nûvekirinên bikarhêner û koman bixwînin. Ew agahdariyên li ser çalakiyê li ser tomarên we nîşan dide."
+"Vê Ragihandina Rûpela ku hûn dikarin nûvekirinên bikarhêner û koman "
+"bixwînin. Ew agahdariyên li ser çalakiyê li ser tomarên we nîşan dide."
 
 #: dt-assets/parts/modals/modal-help.php:89
 msgctxt "Optional Documentation"
@@ -1624,14 +1678,17 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
-"Bişkoja 'Hemî' bikirtînin da ku navnîşa tevahî ya hemî agahdariyên xwe nîşan bide."
+"Bişkoja 'Hemî' bikirtînin da ku navnîşa tevahî ya hemî agahdariyên xwe nîşan "
+"bide."
 
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Unread' button to show the list of all of your unread notifications."
+"Click the 'Unread' button to show the list of all of your unread "
+"notifications."
 msgstr ""
-"Bişkojka 'Nexwendî' bikirtînin da ku navnîşa hemî agahdariyên xweyên nexwendî nîşan bide."
+"Bişkojka 'Nexwendî' bikirtînin da ku navnîşa hemî agahdariyên xweyên "
+"nexwendî nîşan bide."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
 #: template-notifications.php:66
@@ -1641,16 +1698,29 @@ msgstr "Hemî wekî xwendî nîşan bikin"
 #: dt-assets/parts/modals/modal-help.php:93
 msgctxt "Optional Documentation"
 msgid ""
-"If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+"If you don't want to click each filled in circle on the right side of each "
+"row to indicate the notification has been read, then click the 'Mark All as "
+"Read' link at the top to quickly adjust all the messages that they have all "
+"been read."
 msgstr ""
-"Heke hûn nexwazin li her çerxa tijî dagirtî ya li rexê rastê yê her rêzê bikirtînin da ku nîşan bikin ku notification hatiye xwendin, hingê li jor li ser lînka 'Mark All as Read' bikirtînin da ku hemî peyamên ku hemî wan hene zû zû sererast bikin hatine xwendin"
+"Heke hûn nexwazin li her çerxa tijî dagirtî ya li rexê rastê yê her rêzê "
+"bikirtînin da ku nîşan bikin ku notification hatiye xwendin, hingê li jor li "
+"ser lînka 'Mark All as Read' bikirtînin da ku hemî peyamên ku hemî wan hene "
+"zû zû sererast bikin hatine xwendin"
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Click the 'Settings' link to go to the notifications settings area to adjust "
+"whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"Zencîreya 'Mîhengan' bikirtînin da ku biçin qada mîhengên agahdariyan da ku biguhezîne ka hûn dixwazin agahdariyên li ser şîroveyên nû, guherînên agahdariya têkiliyê, Mêjûyên Têkilî û pîvanên Tenduristiya Koma bibînin, û gelo hûn ê ji bo her nûvekirina ku di pergalê."
+"Zencîreya 'Mîhengan' bikirtînin da ku biçin qada mîhengên agahdariyan da ku "
+"biguhezîne ka hûn dixwazin agahdariyên li ser şîroveyên nû, guherînên "
+"agahdariya têkiliyê, Mêjûyên Têkilî û pîvanên Tenduristiya Koma bibînin, û "
+"gelo hûn ê ji bo her nûvekirina ku di pergalê."
 
 #: dt-assets/parts/modals/modal-help.php:100
 msgctxt "Optional Documentation"
@@ -1660,9 +1730,15 @@ msgstr "Rûpelê Têkiliya Duplicate"
 #: dt-assets/parts/modals/modal-help.php:101
 msgctxt "Optional Documentation"
 msgid ""
-"This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
+"This Duplicate Contact Page is where you can review, decline or merge "
+"contacts that have been picked up by the system (checking against their "
+"name, email and phone) as possibly being duplicates of another already "
+"existing contact."
 msgstr ""
-"Vê Rûpelê Têkiliya Duplicate ew e ku hûn dikarin têkiliyên ku ji hêla pergalê ve hatine hilberandin binirxînin, red bikin an jî yek bikin (dibe ku li dijî nav, e-name û têlefona wan binihêrin) wekî dibe ku duplîkên têkiliyek din a jixwe heyî bin."
+"Vê Rûpelê Têkiliya Duplicate ew e ku hûn dikarin têkiliyên ku ji hêla "
+"pergalê ve hatine hilberandin binirxînin, red bikin an jî yek bikin (dibe ku "
+"li dijî nav, e-name û têlefona wan binihêrin) wekî dibe ku duplîkên "
+"têkiliyek din a jixwe heyî bin."
 
 #: dt-assets/parts/modals/modal-help.php:124
 #: dt-assets/parts/modals/modal-help.php:174
@@ -1696,9 +1772,11 @@ msgstr "Koda QR-ê bişopînin da ku girêdana sêrbaz li ser cîhazek mobîl ve
 
 #: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
 msgid ""
-"Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
+"Reset the security code. No data is removed. Only access. The previous link "
+"will be disabled and another one created."
 msgstr ""
-"Koda ewlehiyê ji nû ve bike. Ti dane jê nayê rakirin. Tenê gihîştin. Girêdana berê dê bête neçalak kirin û yekî din dê were afirandin."
+"Koda ewlehiyê ji nû ve bike. Ti dane jê nayê rakirin. Tenê gihîştin. "
+"Girêdana berê dê bête neçalak kirin û yekî din dê were afirandin."
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
@@ -1793,9 +1871,11 @@ msgstr "Ev têkilî bi:"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid ""
-"Set a reminder or a task with a note and receive a notification on the due date."
+"Set a reminder or a task with a note and receive a notification on the due "
+"date."
 msgstr ""
-"Bîranînek an peywirek bi notekê saz bikin û di roja çêbûnê de notification bistînin."
+"Bîranînek an peywirek bi notekê saz bikin û di roja çêbûnê de notification "
+"bistînin."
 
 #: dt-assets/parts/modals/modal-tasks.php:13
 msgid "Task Type"
@@ -2035,9 +2115,11 @@ msgstr "Têkilî di pergalê de nû ye."
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
-"This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
+"This contact has made it known that they no longer want to continue or you "
+"have decided not to continue with him/her."
 msgstr ""
-"Vê têkiliyê da zanîn ku ew êdî naxwazin berdewam bikin an we biryar daye ku hûn bi wî / wê re berdewam nekin."
+"Vê têkiliyê da zanîn ku ew êdî naxwazin berdewam bikin an we biryar daye ku "
+"hûn bi wî / wê re berdewam nekin."
 
 #: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
@@ -2277,9 +2359,13 @@ msgstr "Jixwe veguhastin %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
-"NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
+"NOTE: You have already transferred this contact. Transferring again might "
+"create duplicates. Do you still want to override this warning and continue "
+"with your transfer?"
 msgstr ""
-"HIYAR:: We berê vê têkiliyê veguheztîne. Veguheztin dîsa dibe ku dubareyan çêbike. Ma hûn hîn jî dixwazin vê hişyariyê ji holê rabikin û bi veguhastina xwe berdewam bikin?"
+"HIYAR:: We berê vê têkiliyê veguheztîne. Veguheztin dîsa dibe ku dubareyan "
+"çêbike. Ma hûn hîn jî dixwazin vê hişyariyê ji holê rabikin û bi veguhastina "
+"xwe berdewam bikin?"
 
 #: dt-contacts/contacts-transfer.php:281
 msgid "Override and Continue"
@@ -2374,9 +2460,11 @@ msgstr "Riya Lêgerînê"
 #: dt-contacts/module-access.php:103
 msgctxt "Seeker Path field description"
 msgid ""
-"Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
+"Set the status of your progression with the contact. These are the steps "
+"that happen in a specific order to help a contact move forward."
 msgstr ""
-"Bi têkiliyê re rewşa pêşveçûna xwe saz bikin. Vana gavên ku bi rengek taybetî diqewimin da ku bibin alîkar ku têkiliyek pêşde here."
+"Bi têkiliyê re rewşa pêşveçûna xwe saz bikin. Vana gavên ku bi rengek "
+"taybetî diqewimin da ku bibin alîkar ku têkiliyek pêşde here."
 
 #: dt-contacts/module-access.php:107
 msgid "Contact Attempt Needed"
@@ -2413,7 +2501,8 @@ msgstr "Amade ne"
 #: dt-contacts/module-access.php:149
 msgctxt "Contact Status field description"
 msgid ""
-"There is not enough information to move forward with the contact at this time."
+"There is not enough information to move forward with the contact at this "
+"time."
 msgstr "Di vê demê de têra agahdariyê tune ku bi têkiliyê re pêş bikeve."
 
 #: dt-contacts/module-access.php:153
@@ -2432,9 +2521,11 @@ msgstr "Li benda qebûlkirinê ne"
 #: dt-contacts/module-access.php:159
 msgctxt "Contact Status field description"
 msgid ""
-"The contact has been assigned to someone, but has not yet been accepted by that person."
+"The contact has been assigned to someone, but has not yet been accepted by "
+"that person."
 msgstr ""
-"Têkilî ji kesekî re hatiye peywirdarkirin, lê hêj ji hêla wî kesî ve nehatiye qebûl kirin."
+"Têkilî ji kesekî re hatiye peywirdarkirin, lê hêj ji hêla wî kesî ve "
+"nehatiye qebûl kirin."
 
 #: dt-contacts/module-access.php:164
 msgid "Paused"
@@ -2442,8 +2533,7 @@ msgstr "Rawestandin"
 
 #: dt-contacts/module-access.php:165
 msgctxt "Contact Status field description"
-msgid ""
-"This contact is currently on hold (i.e. on vacation or not responding)."
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "Vê têkiliyê niha li bendê ye (ango di betlaneyê de ye an bersiv nade)."
 
 #: dt-contacts/module-access.php:180
@@ -2487,9 +2577,11 @@ msgstr "Sedem Pase"
 #: dt-contacts/module-access.php:212
 msgctxt "Optional Documentation"
 msgid ""
-"A paused contact is one you are not currently interacting with but expect to in the future."
+"A paused contact is one you are not currently interacting with but expect to "
+"in the future."
 msgstr ""
-"Têkiliyek rawestandî ew e ku hûn niha pê re ne têkilî ne lê hûn di pêşerojê de hêvî dikin."
+"Têkiliyek rawestandî ew e ku hûn niha pê re ne têkilî ne lê hûn di pêşerojê "
+"de hêvî dikin."
 
 #: dt-contacts/module-access.php:216
 msgctxt "Reason Paused label"
@@ -2530,7 +2622,8 @@ msgstr "Ball li meydana têkiliyê ye"
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr ""
-"Em dixwazin bibînin ka têkilî bi peyamên nivîskî yên bixweber bersiv dide / na"
+"Em dixwazin bibînin ka têkilî bi peyamên nivîskî yên bixweber bersiv dide / "
+"na"
 
 #: dt-contacts/module-access.php:230
 msgid "Reason Archived"
@@ -2625,7 +2718,8 @@ msgctxt "Optional Documentation"
 msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
 msgstr ""
-"Kampanyayên kirrûbirrê an çalakiyên gihîştinê ku vê têkiliyê bi wan re têkilî danî."
+"Kampanyayên kirrûbirrê an çalakiyên gihîştinê ku vê têkiliyê bi wan re "
+"têkilî danî."
 
 #: dt-contacts/module-access.php:291
 msgid "Meeting Scheduled"
@@ -2773,9 +2867,13 @@ msgstr "Gavên Baweriyê"
 #: dt-contacts/module-faith.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
+"Assign which milestones the contact has reached in their faith journey. "
+"These are points in a contact’s spiritual journey worth celebrating but can "
+"happen in any order."
 msgstr ""
-"Di rêwîtiya baweriya wan de kîjan qonaxên têkilî gihîştine destnîşan bikin. Van xalên di rêwîtiya giyanî ya têkiliyek de ku hêjayî pîrozbahiyê ye lê di her rêzê de dikare çêbibe."
+"Di rêwîtiya baweriya wan de kîjan qonaxên têkilî gihîştine destnîşan bikin. "
+"Van xalên di rêwîtiya giyanî ya têkiliyek de ku hêjayî pîrozbahiyê ye lê di "
+"her rêzê de dikare çêbibe."
 
 #: dt-contacts/module-faith.php:48
 msgid "Has Bible"
@@ -2841,7 +2939,8 @@ msgstr "Ev têkilî we wekî bikarhênerek temsîl dike."
 #: dt-contacts/user-module.php:73
 msgid "Please update contact details on your profile page instead of here."
 msgstr ""
-"Ji kerema xwe li şûna li vir hûrguliyên têkiliyê li ser rûpela profîla xwe nûve bikin."
+"Ji kerema xwe li şûna li vir hûrguliyên têkiliyê li ser rûpela profîla xwe "
+"nûve bikin."
 
 #: dt-contacts/user-module.php:73
 msgid "Profile Settings"
@@ -2872,14 +2971,16 @@ msgctxt "Step 1 of link user"
 msgid ""
 "To link to an existing user, first, find the user using the field below."
 msgstr ""
-"Ji bo girêdana bi bikarhênerek heyî re, yekem, bikarhênerê zeviya jêrîn bikar bînin bibînin."
+"Ji bo girêdana bi bikarhênerek heyî re, yekem, bikarhênerê zeviya jêrîn "
+"bikar bînin bibînin."
 
 #: dt-contacts/user-module.php:152
 msgctxt "Step 2 of link user"
 msgid ""
 "To finish the linking, merge this contact with the existing user details."
 msgstr ""
-"Ji bo qedandina girêdanê, vê têkiliyê bi hûrguliyên bikarhênerê heyî re bikin yek."
+"Ji bo qedandina girêdanê, vê têkiliyê bi hûrguliyên bikarhênerê heyî re "
+"bikin yek."
 
 #: dt-core/configuration/class-roles.php:81
 #: dt-core/configuration/class-roles.php:245
@@ -2933,9 +3034,11 @@ msgstr "Bi Mêjû û Mêjûyên Tenduristiya Koma Têkilî"
 
 #: dt-core/configuration/config-site-defaults.php:300
 msgid ""
-"This contact is active but there is no record of anybody contacting them. Please do contact them."
+"This contact is active but there is no record of anybody contacting them. "
+"Please do contact them."
 msgstr ""
-"Ev têkilî çalak e lê tomarek tune ku kesek pê re têkilî dayne. Ji kerema xwe bi wan re têkilî daynin."
+"Ev têkilî çalak e lê tomarek tune ku kesek pê re têkilî dayne. Ji kerema xwe "
+"bi wan re têkilî daynin."
 
 #: dt-core/configuration/config-site-defaults.php:306
 msgid "Please try connecting with this contact again."
@@ -2947,9 +3050,11 @@ msgstr "Ji kerema xwe dîsa bi vê têkiliyê re têkilî daynin."
 #: dt-core/configuration/config-site-defaults.php:330
 #: dt-core/configuration/config-site-defaults.php:336
 msgid ""
-"We haven't heard about this person in a while. Do you have an update for this contact?"
+"We haven't heard about this person in a while. Do you have an update for "
+"this contact?"
 msgstr ""
-"Demek e me li ser vî kesî nebihîstiye. Ma ji bo vê têkiliyê nûvekirinek we heye?"
+"Demek e me li ser vî kesî nebihîstiye. Ma ji bo vê têkiliyê nûvekirinek we "
+"heye?"
 
 #: dt-core/configuration/config-site-defaults.php:346
 msgid "We haven't heard about this group in a while. Do you have an update?"
@@ -3104,9 +3209,11 @@ msgstr "Ji bo vesazkirina şîfra xwe, serî li navnîşana jêrîn bidin:"
 
 #: dt-core/dt-storage.php:223
 msgid ""
-"Something went wrong. Please try again or have an admin check the connection settings."
+"Something went wrong. Please try again or have an admin check the connection "
+"settings."
 msgstr ""
-"Tiştek çewt bû. Ji kerema xwe dîsa biceribînin an jî admin mîhengên pêwendiyê kontrol bike."
+"Tiştek çewt bû. Ji kerema xwe dîsa biceribînin an jî admin mîhengên "
+"pêwendiyê kontrol bike."
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3143,9 +3250,11 @@ msgstr "Bê pere tê dayîn, lê ne erzan e"
 
 #: dt-core/release-notifications.php:97
 msgid ""
-"Disciple.Tools relies on contributions for continued development and maintenance. Will you join the team?"
+"Disciple.Tools relies on contributions for continued development and "
+"maintenance. Will you join the team?"
 msgstr ""
-"Disciple.Tools ji bo pêşkeftin û lênihêrîna domdar bi beşdariyan ve girêdayî ye. Hûn ê beşdarî tîmê bibin?"
+"Disciple.Tools ji bo pêşkeftin û lênihêrîna domdar bi beşdariyan ve girêdayî "
+"ye. Hûn ê beşdarî tîmê bibin?"
 
 #: dt-core/release-notifications.php:99
 msgid "Give"
@@ -3158,9 +3267,11 @@ msgstr "Wergerîne"
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:735
 msgid ""
-"Translate Disciple.Tools into your language or help make a translation better."
+"Translate Disciple.Tools into your language or help make a translation "
+"better."
 msgstr ""
-"Disciple.Tools bi zimanê xwe wergerînin an alîkariya çêtirkirina wergerekê bikin."
+"Disciple.Tools bi zimanê xwe wergerînin an alîkariya çêtirkirina wergerekê "
+"bikin."
 
 #: dt-core/release-notifications.php:112
 msgid "Build or Document"
@@ -3168,9 +3279,11 @@ msgstr "Çêkin an Belge bikin"
 
 #: dt-core/release-notifications.php:114
 msgid ""
-"Make Disciple.Tools better by building a feature or helping us make the documentation better."
+"Make Disciple.Tools better by building a feature or helping us make the "
+"documentation better."
 msgstr ""
-"Disciple.Tools baştir bikin bi çêkirina taybetmendiyek an alîkariya me di çêtirkirina belgeyê de."
+"Disciple.Tools baştir bikin bi çêkirina taybetmendiyek an alîkariya me di "
+"çêtirkirina belgeyê de."
 
 #: dt-core/release-notifications.php:116
 msgid "Find out more"
@@ -3229,9 +3342,13 @@ msgstr "Rahênerê Koma / Çandiniya Dêrê"
 #: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
-"The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
+"The person who planted and/or is coaching this group. Only one person can be "
+"assigned to a group while multiple people can be coaches / church planters "
+"of this group."
 msgstr ""
-"Kesê / a ku vê komê çandiye û / an jî rahêner e. Tenê yek kes dikare di komekê de were peywirdarkirin dema ku gelek kes dikarin bibin rahêner / darên vê komê."
+"Kesê / a ku vê komê çandiye û / an jî rahêner e. Tenê yek kes dikare di "
+"komekê de were peywirdarkirin dema ku gelek kes dikarin bibin rahêner / "
+"darên vê komê."
 
 #: dt-groups/base-setup.php:160
 msgid "Group Type"
@@ -3405,9 +3522,15 @@ msgstr "Count Count"
 #: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
-"The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
+"The number of members in this group. It will automatically be updated when "
+"new members are added or removed in the member list. Change this number "
+"manually to include people who may not be in the system but are also members "
+"of the group."
 msgstr ""
-"Hejmara endamên vê komê. Dema ku endamên nû di lîsteya endaman de werin zêdekirin an ji holê werin rakirin dê bixweber were nûve kirin. Vê hejmarê bi destan biguhezînin da ku mirovên ku dibe ku di pergalê de ne lê endamên komê ne jî tê de bigirin."
+"Hejmara endamên vê komê. Dema ku endamên nû di lîsteya endaman de werin "
+"zêdekirin an ji holê werin rakirin dê bixweber were nûve kirin. Vê hejmarê "
+"bi destan biguhezînin da ku mirovên ku dibe ku di pergalê de ne lê endamên "
+"komê ne jî tê de bigirin."
 
 #: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
 #: dt-groups/base-setup.php:602
@@ -3439,9 +3562,11 @@ msgstr "Koma Peer"
 #: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
-"A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+"A related group that isn't a parent/child in relationship. It might indicate "
+"groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
-"Komek pêwendîdar ku dêûbav / zarokek di têkiliyê de ne. Dibe ku ev komên ku hevkariyê dikin, dê li ber hev bibin, vê dawiyê veqetandî, hwd."
+"Komek pêwendîdar ku dêûbav / zarokek di têkiliyê de ne. Dibe ku ev komên ku "
+"hevkariyê dikin, dê li ber hev bibin, vê dawiyê veqetandî, hwd."
 
 #: dt-groups/base-setup.php:341
 msgid "Child Group"
@@ -3491,7 +3616,8 @@ msgstr "Pirbûn"
 #: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
-"Number of people helping start other groups. How many members are multiplying?"
+"Number of people helping start other groups. How many members are "
+"multiplying?"
 msgstr "Hejmara kesên ku alîkariya komên din dikin. Çiqas endam pir dibin?"
 
 #: dt-groups/base-setup.php:427
@@ -3527,9 +3653,11 @@ msgstr "Endaman ji têkiliyên heyî zêde bikin"
 #: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
-"In the 'Member List' field, type the name of an existing contact to add them to this group."
+"In the 'Member List' field, type the name of an existing contact to add them "
+"to this group."
 msgstr ""
-"Di qada 'Lîsteya Endaman' de, navê têkiliyek heyî binivîse da ku wan li vê komê zêde bike."
+"Di qada 'Lîsteya Endaman' de, navê têkiliyek heyî binivîse da ku wan li vê "
+"komê zêde bike."
 
 #: dt-groups/base-setup.php:606
 msgid "Four Fields"
@@ -3538,20 +3666,26 @@ msgstr "Çar Zevî"
 #: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
-"There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
+"There are 5 squares in the Four Fields diagram. Starting in the top left "
+"quadrant and going clockwise and the fifth being in the middle, they stand "
+"for:"
 msgstr ""
-"Di şemaya Çar Zeviyan de 5 meydan hene. Di quadranta çepê ya jorîn de dest pê dikin û li gorî demjimêrê diçin û ya pêncemîn jî di navîn de, ew ji bo:"
+"Di şemaya Çar Zeviyan de 5 meydan hene. Di quadranta çepê ya jorîn de dest "
+"pê dikin û li gorî demjimêrê diçin û ya pêncemîn jî di navîn de, ew ji bo:"
 
 #: dt-login/login-template.php:68
 msgid ""
-"Your password reset link appears to be invalid. Please request a new link below."
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
 msgstr ""
-"Girêdana nûvekirina şîfreya we xuya ye ku nederbasdar e. Ji kerema xwe li jêr girêdaneke nû bixwazin."
+"Girêdana nûvekirina şîfreya we xuya ye ku nederbasdar e. Ji kerema xwe li "
+"jêr girêdaneke nû bixwazin."
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
 msgstr ""
-"Girêdana nûvekirina şîfreya we qediya. Ji kerema xwe li jêr girêdaneke nû bixwazin."
+"Girêdana nûvekirina şîfreya we qediya. Ji kerema xwe li jêr girêdaneke nû "
+"bixwazin."
 
 #: dt-login/login-template.php:84 dt-login/login-template.php:109
 msgid "Get New Password"
@@ -3563,9 +3697,11 @@ msgstr "Navnîşana E-nameyê"
 
 #: dt-login/login-template.php:112
 msgid ""
-"Your password reset email has been sent. Check your email or junk mail for the link to reset your password."
+"Your password reset email has been sent. Check your email or junk mail for "
+"the link to reset your password."
 msgstr ""
-"E-nameya nûvekirina şîfreya we hate şandin. Ji bo girêdana nûvekirina şîfreya xwe e-nameya xwe an junk mailê kontrol bikin."
+"E-nameya nûvekirina şîfreya we hate şandin. Ji bo girêdana nûvekirina "
+"şîfreya xwe e-nameya xwe an junk mailê kontrol bikin."
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
@@ -3754,9 +3890,11 @@ msgstr "Vaftîzm"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid ""
-"Number of baptized contact with a baptism date in date range and baptized by connection"
+"Number of baptized contact with a baptism date in date range and baptized by "
+"connection"
 msgstr ""
-"Hejmara têkiliya imadkar bi tarîxa vaftîzmê re di navberê de û bi girêdanê ve imad kirin"
+"Hejmara têkiliya imadkar bi tarîxa vaftîzmê re di navberê de û bi girêdanê "
+"ve imad kirin"
 
 #: dt-metrics/combined/critical-path.php:277
 #, php-format
@@ -3809,9 +3947,11 @@ msgstr "Çandinên Dêrê"
 
 #: dt-metrics/combined/critical-path.php:333
 msgid ""
-"Number of contacts or users who have started a church and are marked as the church coach"
+"Number of contacts or users who have started a church and are marked as the "
+"church coach"
 msgstr ""
-"Hejmara têkilî an bikarhênerên ku dêr dest pê kirine û wekî rahênerê dêrê têne nîşankirin"
+"Hejmara têkilî an bikarhênerên ku dêr dest pê kirine û wekî rahênerê dêrê "
+"têne nîşankirin"
 
 #: dt-metrics/combined/daily-activity.php:22
 #: dt-metrics/combined/daily-activity.php:71
@@ -3853,7 +3993,8 @@ msgstr[1] ""
 msgid ""
 "Click on a timeline day summary to display a detailed list of metrics below."
 msgstr ""
-"Li ser kurteya rojek demjimêr bikirtînin da ku navnîşek hûrgulî ya metrîkên jêrîn nîşan bidin."
+"Li ser kurteya rojek demjimêr bikirtînin da ku navnîşek hûrgulî ya metrîkên "
+"jêrîn nîşan bidin."
 
 #. Template Name of the theme
 #: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
@@ -3894,7 +4035,8 @@ msgstr "Nexşeyên hevgirtî"
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
 msgstr ""
-"Ji bo dîtina vê nexşeyê, kilîteke mapbox hewce ye; li vir bikirtînin da ku lê zêde bikin."
+"Ji bo dîtina vê nexşeyê, kilîteke mapbox hewce ye; li vir bikirtînin da ku "
+"lê zêde bikin."
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -4012,8 +4154,7 @@ msgid "Active contacts, by source and seeker path"
 msgstr "Têkiliyên çalak, ji hêla çavkaniyê û riya lêgerînê ve"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
-msgid ""
-"This is displaying only the contacts with an 'active' status right now."
+msgid "This is displaying only the contacts with an 'active' status right now."
 msgstr "Ev niha tenê têkiliyên bi statuyek 'çalak' nîşan dide."
 
 #: dt-metrics/contacts/sources.php:96
@@ -4022,9 +4163,11 @@ msgstr "Têkiliyên çalak, ji hêla çavkanî û bawerî ve"
 
 #: dt-metrics/contacts/sources.php:98
 msgid ""
-"A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+"A contact can come from more than one source, and it can have more than one "
+"faith milestone at the same time."
 msgstr ""
-"Têkiliyek dikare ji yekê zêdetir çavkaniyê were, û ew dikare di heman demê de ji yekê zêdetir mîladek baweriyê hebe."
+"Têkiliyek dikare ji yekê zêdetir çavkaniyê were, û ew dikare di heman demê "
+"de ji yekê zêdetir mîladek baweriyê hebe."
 
 #: dt-metrics/counter.php:135
 msgid "First Meetings"
@@ -4356,9 +4499,11 @@ msgstr "Nexşeya Hêsan"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
-"This chart shows the total number for each field value at the end of the selected date."
+"This chart shows the total number for each field value at the end of the "
+"selected date."
 msgstr ""
-"Ev nexşe jimara giştî ji bo her nirxa zeviyê di dawiya roja hilbijartî de nîşan dide."
+"Ev nexşe jimara giştî ji bo her nirxa zeviyê di dawiya roja hilbijartî de "
+"nîşan dide."
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
@@ -4667,11 +4812,16 @@ msgstr "Hûrgulî"
 
 #: dt-posts/dt-posts.php:2796
 #, php-format
-msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
+msgctxt ""
+"@[user name][user_id] - User Fred has requested access to Contact [contact "
+"name][contact_id]. If desired, share this record with the user to grant "
+"access."
 msgid ""
-"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
+"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
+"desired, share this record with the user to grant access."
 msgstr ""
-"@[%1$s](%2$s) - Bikarhêner %3$s daxwaza gihîştina %4$s [%5$s](%6$s) kir. Heke bixwazin, vê tomarê bi bikarhênerê re parve bikin da ku destûr bidin."
+"@[%1$s](%2$s) - Bikarhêner %3$s daxwaza gihîştina %4$s [%5$s](%6$s) kir. "
+"Heke bixwazin, vê tomarê bi bikarhênerê re parve bikin da ku destûr bidin."
 
 #: dt-posts/dt-posts.php:2802
 msgid "Access Request"
@@ -5163,9 +5313,11 @@ msgstr "Zencîreya sepanê jêbirin û biguhezînin"
 
 #: dt-reports/magic-url-setup.php:462
 msgid ""
-"This app is not yet activated for this user. Enable the app to generate a link."
+"This app is not yet activated for this user. Enable the app to generate a "
+"link."
 msgstr ""
-"Ev sepan hêj ji bo vê bikarhêner nehatiye çalak kirin. Sepanê çalak bikin da ku girêdanekê çêbikin."
+"Ev sepan hêj ji bo vê bikarhêner nehatiye çalak kirin. Sepanê çalak bikin da "
+"ku girêdanekê çêbikin."
 
 #: dt-reports/magic-url-setup.php:465 template-settings.php:265
 msgid "App Activation"
@@ -5243,7 +5395,8 @@ msgstr "Bergirtina Berpirsyarî"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Rêvebir divê vebijarka \\\"Bikarhênerên Nû lê zêde bike\\\" di mîhengên pir malperê de çalak bike:"
+"Rêvebir divê vebijarka \\\"Bikarhênerên Nû lê zêde bike\\\" di mîhengên pir "
+"malperê de çalak bike:"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"
@@ -5313,9 +5466,11 @@ msgstr "Nûvekirina têkiliyek"
 
 #: dt-users/template-new-user.php:260
 msgid ""
-"The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data."
+"The new user will have access to all the fields and comments on this contact "
+"record. We suggest archiving the comments if they contain sensitive data."
 msgstr ""
-"Bikarhênerê nû dê bigihîje hemî qadan û şîroveyên li ser vê qeyda têkiliyê. Em pêşniyar dikin ku şîroveyan arşîv bikin heke ew daneyên hesas hene."
+"Bikarhênerê nû dê bigihîje hemî qadan û şîroveyên li ser vê qeyda têkiliyê. "
+"Em pêşniyar dikin ku şîroveyan arşîv bikin heke ew daneyên hesas hene."
 
 #: dt-users/template-new-user.php:267
 msgid "Continue and archive comments"
@@ -5343,9 +5498,11 @@ msgstr "Ma hûn dixwazin zeviyan ji qeyda kevn bi ya nû bikin yek?"
 
 #: dt-users/template-no-permission.php:92
 msgid ""
-"You are registered but an administrator needs to assign you access permissions."
+"You are registered but an administrator needs to assign you access "
+"permissions."
 msgstr ""
-"Tu qeydkirî yî lê pêdivî ye ku rêvebirek destûrên gihîştinê ji we re destnîşan bike."
+"Tu qeydkirî yî lê pêdivî ye ku rêvebirek destûrên gihîştinê ji we re "
+"destnîşan bike."
 
 #: dt-users/template-user-management.php:63
 msgid "Multiplier Name"
@@ -5379,9 +5536,11 @@ msgstr "Berdestbûnî"
 
 #: dt-users/template-user-management.php:164
 msgid ""
-"Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be unavailable so the Dispatcher will know your "
+"availability to receive new contacts"
 msgstr ""
-"Tarîxên ku hûn ne amade ne diyar bikin da ku Dispatcher hebûna we bizanibe ku têkiliyên nû bistîne"
+"Tarîxên ku hûn ne amade ne diyar bikin da ku Dispatcher hebûna we bizanibe "
+"ku têkiliyên nû bistîne"
 
 #: dt-users/template-user-management.php:166
 msgid "Schedule Unavailability"
@@ -5437,9 +5596,11 @@ msgstr "Hemî Çavkanî - gihîştina hemî têkiliyan dide"
 #: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
-"Custom - Access own contacts and all the contacts of the selected sources below"
+"Custom - Access own contacts and all the contacts of the selected sources "
+"below"
 msgstr ""
-"Custom - Têkiliyên xwe û hemî têkiliyên çavkaniyên bijartî yên jêrîn bigihînin"
+"Custom - Têkiliyên xwe û hemî têkiliyên çavkaniyên bijartî yên jêrîn "
+"bigihînin"
 
 #: dt-users/template-user-management.php:346
 #: dt-users/user-hooks-and-config.php:637
@@ -5485,7 +5646,8 @@ msgstr "Erkdar kirin û qebûl nekirin"
 #: dt-users/template-user-management.php:449
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr ""
-"Dema ji peywendîdar ve hatî diyarkirin ji bo 10 têkiliyên paşîn hatine qebûl kirin"
+"Dema ji peywendîdar ve hatî diyarkirin ji bo 10 têkiliyên paşîn hatine qebûl "
+"kirin"
 
 #: dt-users/template-user-management.php:451
 msgid "Accepted with no contact attempt"
@@ -5502,9 +5664,11 @@ msgstr "Wext ji veqetandî ji bo hewildana têkiliyê ji bo 10 têkiliyên paş�
 #: dt-users/user-hooks-and-config.php:196
 #, php-format
 msgid ""
-"Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users"
+"Welcome %1$s, this is your personal contact record. Feel free to update the "
+"fields and @mention me or other users"
 msgstr ""
-"Bi xêr hatî %1$s, ev qeyda pêwendiya weya kesane ye. Bi dilxwazî hûn qadan nûve bikin û @navê min an bikarhênerên din bikin"
+"Bi xêr hatî %1$s, ev qeyda pêwendiya weya kesane ye. Bi dilxwazî hûn qadan "
+"nûve bikin û @navê min an bikarhênerên din bikin"
 
 #: dt-users/user-hooks-and-config.php:312
 #: dt-users/user-hooks-and-config.php:350
@@ -5528,7 +5692,9 @@ msgstr "Silav %s,"
 
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
-msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
+msgctxt ""
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "Hûn hatine vexwendin ku hûn li %2$s beşdarî %1$s bibin"
 
@@ -5731,9 +5897,13 @@ msgstr "Ji bo ku vê malperê rast bixebite divê Javascript were çalak kirin."
 
 #: header.php:61
 msgid ""
-"You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
+"You seem to be using an out-of-date web browser. Without the most up-to-date "
+"version of your browser, this may site may not function correctly. Please "
+"note that Internet Explorer is not supported."
 msgstr ""
-"Wusa dixuye ku hûn geroka tevnê ya ji-rojane bikar tînin. Bêyî guhertoya gerokê ya herî rojane, dibe ku ev malper rast nexebite. Ji kerema xwe not bikin ku Internet Explorer nayê piştgirî kirin."
+"Wusa dixuye ku hûn geroka tevnê ya ji-rojane bikar tînin. Bêyî guhertoya "
+"gerokê ya herî rojane, dibe ku ev malper rast nexebite. Ji kerema xwe not "
+"bikin ku Internet Explorer nayê piştgirî kirin."
 
 #: header.php:63
 msgid "See what browser you are using."
@@ -5773,9 +5943,13 @@ msgstr "Duber %s bike yek"
 
 #: template-merge-post-details.php:123
 msgid ""
-"When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
+"When you merge, the primary record is updated with the values you choose, "
+"and relationships to other items are shifted to the primary record; which "
+"can be switched below."
 msgstr ""
-"Dema ku hûn li hev dikin, tomara seretayî bi nirxên ku hûn hildibijêrin ve tê nûve kirin, û têkiliyên bi tiştên din re vediguhezin tomara bingehîn; ku dikare li jêr were guheztin."
+"Dema ku hûn li hev dikin, tomara seretayî bi nirxên ku hûn hildibijêrin ve "
+"tê nûve kirin, û têkiliyên bi tiştên din re vediguhezin tomara bingehîn; ku "
+"dikare li jêr were guheztin."
 
 #: template-merge-post-details.php:126
 msgid "Copy comments to updated primary record"
@@ -5886,9 +6060,11 @@ msgstr "Heyîna ku ji Dispatcher têkiliyan werdigire"
 
 #: template-settings.php:434
 msgid ""
-"Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be traveling or unavailable so the Dispatcher will "
+"know your availability to receive new contacts"
 msgstr ""
-"Tarîxên ku hûn ê rêwîtiyê bikin an jî tune ne diyar bikin da ku Dabeşker hebûna we bizanibe ku têkiliyên nû bistîne"
+"Tarîxên ku hûn ê rêwîtiyê bikin an jî tune ne diyar bikin da ku Dabeşker "
+"hebûna we bizanibe ku têkiliyên nû bistîne"
 
 #: template-settings.php:438
 msgid "Schedule Travel or Dates Unavailable"
@@ -5940,9 +6116,15 @@ msgstr ""
 
 #: template-settings.php:630
 msgid ""
-"Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. For profile images we use "
+"Gravatar (Globally Recognized Avatar). If you have security concerns, we "
+"suggest not using a personal photo, but instead choose a cartoon, abstract, "
+"or alias photo to represent you."
 msgstr ""
-"Pergala Amûrên ipagirt wêneyan nagire. Ji bo wêneyên profîlê em Gravatar (Avatarê bi Gloverî Naskirî) bikar tînin. Heke fikarên we yên ewlekariyê hene, em pêşniyar dikin ku wêneyek kesane bikar neynin, lê li şûna wê wêneyek kartonî, abstrakt, an alias hilbijêrin ku we temsîl bike."
+"Pergala Amûrên ipagirt wêneyan nagire. Ji bo wêneyên profîlê em Gravatar "
+"(Avatarê bi Gloverî Naskirî) bikar tînin. Heke fikarên we yên ewlekariyê "
+"hene, em pêşniyar dikin ku wêneyek kesane bikar neynin, lê li şûna wê "
+"wêneyek kartonî, abstrakt, an alias hilbijêrin ku we temsîl bike."
 
 #: template-settings.php:631
 msgid "edit image on gravatar.com"
@@ -5950,9 +6132,15 @@ msgstr "wêneyê li ser gravatar.com biguherîne"
 
 #: template-settings.php:637
 msgid ""
-"Disciple Tools System does not store images. All media assets will be placed within specified media connection storage service. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. All media assets will be placed "
+"within specified media connection storage service. If you have security "
+"concerns, we suggest not using a personal photo, but instead choose a "
+"cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"Pergala Disciple Tools wêneyan nagire. Hemû malên medyayê dê di nav karûbarê hilanîna pêwendiya medyayê ya destnîşankirî de bêne danîn. Heke fikarên we yên ewlehiyê hene, em pêşniyar dikin ku wêneyek kesane bikar neynin, lê li şûna wê wêneyek karton, abstrakt, an alias hilbijêrin ku we temsîl bike."
+"Pergala Disciple Tools wêneyan nagire. Hemû malên medyayê dê di nav karûbarê "
+"hilanîna pêwendiya medyayê ya destnîşankirî de bêne danîn. Heke fikarên we "
+"yên ewlehiyê hene, em pêşniyar dikin ku wêneyek kesane bikar neynin, lê li "
+"şûna wê wêneyek karton, abstrakt, an alias hilbijêrin ku we temsîl bike."
 
 #: template-settings.php:638
 msgid "Upload new profile image"
@@ -5984,9 +6172,11 @@ msgstr "Têkiliyên Têketinê Dûbare bikin"
 
 #: template-view-duplicates.php:27
 msgid ""
-"Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
+"Scanning for duplicates starting with the most recently modified contacts. "
+"Results are limited to ones that have less than 10 exact matches."
 msgstr ""
-"Scanehkirina kopiyên ku bi têkiliyên herî dawî hatine guherandin dest pê dike. Encam bi yên ku kêmî 10 maçên rastîn lê hene bi sînor in."
+"Scanehkirina kopiyên ku bi têkiliyên herî dawî hatine guherandin dest pê "
+"dike. Encam bi yên ku kêmî 10 maçên rastîn lê hene bi sînor in."
 
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"

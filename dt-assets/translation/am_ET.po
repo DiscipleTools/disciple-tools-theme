@@ -5588,8 +5588,8 @@ msgstr "ሰላም %s፣"
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
 msgctxt ""
-"You've been invited to join Awesome Site at https://"
-"awesome_site.disciple.tools"
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "%1$s በ%2$s ላይ እንድትቀላቀል ተጋብዘሃል"
 

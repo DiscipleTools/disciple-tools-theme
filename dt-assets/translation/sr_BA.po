@@ -4,8 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2026-01-07T20:43:24+00:00\n"
-"PO-Revision-Date: 2025-03-05 15:59+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-01-09 14:51+0000\n"
+"Last-Translator: Anonymous <translator@disciple.tools>\n"
 "Language-Team: Serbian <https://translate.disciple.tools/projects/disciple-"
 "tools/disciple-tools-theme/sr_BA/>\n"
 "Language: sr_BA\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -3971,7 +3971,7 @@ msgstr "Prošlog meseca"
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
 #: dt-notifications/notifications.php:496
-#, php-format
+#, fuzzy, php-format
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "pre %s mesec/pre %s meeci"
@@ -4564,7 +4564,7 @@ msgid "Daily Digest"
 msgstr "Dnevni sažetak"
 
 #: dt-notifications/notifications.php:476
-#, php-format
+#, fuzzy, php-format
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "pre %s minut/pre %s minuta"
@@ -4572,7 +4572,7 @@ msgstr[1] ""
 msgstr[2] ""
 
 #: dt-notifications/notifications.php:481
-#, php-format
+#, fuzzy, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "pre %s sat/pre %s sati"
@@ -4580,7 +4580,7 @@ msgstr[1] ""
 msgstr[2] ""
 
 #: dt-notifications/notifications.php:486
-#, php-format
+#, fuzzy, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "pre %s dan/pre %s dana"
@@ -4588,7 +4588,7 @@ msgstr[1] ""
 msgstr[2] ""
 
 #: dt-notifications/notifications.php:491
-#, php-format
+#, fuzzy, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "pre %s nedelja/pre %s nedelja"
@@ -4596,7 +4596,7 @@ msgstr[1] ""
 msgstr[2] ""
 
 #: dt-notifications/notifications.php:510
-#, php-format
+#, fuzzy, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "pre %s godina/pre %s godina"
@@ -5688,8 +5688,8 @@ msgstr "Zdravo, %s,"
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
 msgctxt ""
-"You've been invited to join Awesome Site at https://"
-"awesome_site.disciple.tools"
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "Pozvani ste da se pridružite sajtu %1$s na %2$s"
 

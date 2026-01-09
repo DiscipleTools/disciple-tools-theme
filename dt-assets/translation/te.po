@@ -5607,8 +5607,8 @@ msgstr "హాయ్ %s,"
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
 msgctxt ""
-"You've been invited to join Awesome Site at https://"
-"awesome_site.disciple.tools"
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "మీరు %2$sలో %1$sలో చేరడానికి ఆహ్వానించబడ్డారు"
 

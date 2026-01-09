@@ -3234,8 +3234,8 @@ msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
 msgstr ""
-"একটি বৈশিষ্ট্য তৈরি করে বা ডকুমেন্টেশন আরও ভালো করতে আমাদের সাহায্য করে "
-"ডিসাইপল.টুলস আরও ভালো করুন।"
+"একটি বৈশিষ্ট্য তৈরি করে বা ডকুমেন্টেশন আরও ভালো করতে আমাদের সাহায্য করে ডিসাইপল."
+"টুলস আরও ভালো করুন।"
 
 #: dt-core/release-notifications.php:116
 msgid "Find out more"
@@ -5630,8 +5630,8 @@ msgstr "হাই %s,"
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
 msgctxt ""
-"You've been invited to join Awesome Site at https://"
-"awesome_site.disciple.tools"
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "আপনাকে %2$s এ %1$s এ যোগ দেওয়ার জন্য আমন্ত্রণ জানানো হয়েছে"
 

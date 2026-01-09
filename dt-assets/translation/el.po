@@ -2180,8 +2180,8 @@ msgstr "Μεταφορά"
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr ""
-"Επαφές που μεταφέρθηκαν από μια συνεργασία με έναν άλλο ιστότοπο "
-"Disciple.Tools."
+"Επαφές που μεταφέρθηκαν από μια συνεργασία με έναν άλλο ιστότοπο Disciple."
+"Tools."
 
 #: dt-contacts/base-setup.php:396 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:616
@@ -5747,8 +5747,8 @@ msgstr "Χαίρετε %s,"
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
 msgctxt ""
-"You've been invited to join Awesome Site at https://"
-"awesome_site.disciple.tools"
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "Έχετε προσκληθεί να συμμετάσχετε στο %1$s στο %2$s"
 
