@@ -288,6 +288,8 @@ jQuery(function ($) {
           case 'tags':
           case 'connection':
           case 'communication_channel':
+          case 'location_meta':
+          case 'location':
             // Disable field accordingly, based on read-only flag
             $(td)
               .find('#' + field_id)
