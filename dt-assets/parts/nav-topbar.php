@@ -101,6 +101,19 @@ if ( !empty( $custom_logo_url ) ) {
                         </li>
                     <?php endif; ?>
 
+                    <!-- Release notification icon -->
+                    <?php
+                    if ( function_exists( 'dt_has_unread_release' ) ) {
+                        $unread_release = dt_has_unread_release();
+                        if ( $unread_release ) : ?>
+                            <li class="image-menu-nav release-notification-nav-item">
+                                <a href="#" class="release-notification-icon-link" onclick="open_release_modal(); return false;" title="<?php esc_attr_e( 'New Release Available', 'disciple_tools' ); ?>">
+                                    <i class="mdi mdi-new-box release-notification-icon"></i>
+                                </a>
+                            </li>
+                        <?php endif;
+                    }
+                    ?>
 
                     <!-- profile name -->
                     <?php if ( isset( $dt_nav_tabs['admin']['profile']['hidden'] ) && empty( $dt_nav_tabs['admin']['profile']['hidden'] ) ) : ?>

@@ -143,7 +143,10 @@ function dt_site_scripts() {
             'current_user_id' => get_current_user_id(),
             'translations' => [
                 'no-unread' => __( "You don't have any unread notifications", 'disciple_tools' ),
-                'no-notifications' => __( "You don't have any notifications", 'disciple_tools' )
+                'no-notifications' => __( "You don't have any notifications", 'disciple_tools' ),
+                'release-announcement' => __( 'Release Announcement!', 'disciple_tools' ),
+                'new-version-available' => __( 'A new version of Disciple.Tools is available', 'disciple_tools' ),
+                'view' => __( 'View', 'disciple_tools' ),
             ]
         )
     );
