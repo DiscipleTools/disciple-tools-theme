@@ -107,12 +107,6 @@ class HomeApp {
         '<div class="app-card-wrapper"><div class="app-card"><div class="app-icon"><i class="mdi mdi-information"></i></div></div><div class="app-title">No apps available.</div></div>';
     } else {
       for (const app of this.apps) {
-        // Trim title to max 12 characters with ellipsis to fit under card
-        const trimmedTitle =
-          app.title.length > 12
-            ? app.title.substring(0, 12) + '...'
-            : app.title;
-
         // Determine app type: if type exists use it, otherwise use fallback logic
         let appType = app.type;
         if (!appType || (appType !== 'app' && appType !== 'link')) {
@@ -161,7 +155,7 @@ class HomeApp {
         if (isImageIcon) {
           // Render image icon
           const safeIconUrl = app.icon.replace(/"/g, '&quot;');
-          const safeTitle = trimmedTitle.replace(/"/g, '&quot;');
+          const safeTitle = app.title.replace(/"/g, '&quot;');
           iconHtml = `<img src="${safeIconUrl}" alt="${safeTitle}" />`;
         } else {
           // Render icon class with color support
@@ -178,14 +172,14 @@ class HomeApp {
         }
 
         const appHtml = `
-                            <div class="app-card-wrapper">
-                                <a href="${url}" target="${newTab ? '_blank' : '_self'}" class="app-card" title="${app.title}">
+                            <a href="${url}" target="${newTab ? '_blank' : '_self'}"  class="app-card-wrapper">
+                                <div class="app-card" title="${app.title}">
                                     <div class="app-icon">
                                         ${iconHtml}
                                     </div>
-                                </a>
-                                <div class="app-title">${trimmedTitle}</div>
-                            </div>
+                                </div>
+                                <div class="app-title">${app.title}</div>
+                            </a>
                         `;
 
         //console.log('Generated HTML for app "' + app.title + '":', appHtml);
