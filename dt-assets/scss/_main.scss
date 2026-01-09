@@ -400,13 +400,25 @@ html[dir="rtl"] #top-bar-menu {
     padding: 0.5rem;
 
     .release-notification-icon {
-        color: #ff7675; // Soft coral/salmon - easier on the eyes against blue background
+        color: white;
         font-size: 28px;
         line-height: 1;
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 1px;
+            right: -4px;
+            width: 10px;
+            height: 10px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+        }
     }
 
     &:hover .release-notification-icon {
-        color: #ff8a80; // Slightly brighter on hover
+        color: #f0f0f0;
     }
 }
 .top-bar .is-submenu-item {
