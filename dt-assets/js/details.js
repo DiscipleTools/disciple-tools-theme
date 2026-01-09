@@ -297,7 +297,6 @@ jQuery(document).ready(function ($) {
       .catch(window.handleAjaxError);
   });
 
-  /* field type: location */
   /* field type: link */
   // Clicking the plus sign next to the field label
   $('button.add-button').on('click', (e) => {
@@ -627,125 +626,6 @@ jQuery(document).ready(function ($) {
         );
         console.error(error);
       });
-  });
-
-  /* field type: location */
-  $('.dt_location_grid').each((key, el) => {
-    let field_id = $(el).data('id') || 'location_grid';
-    $.typeahead({
-      input: `.js-typeahead-${field_id}`,
-      minLength: 0,
-      accent: true,
-      searchOnFocus: true,
-      maxItem: 20,
-      dropdownFilter: [
-        {
-          key: 'group',
-          value: 'focus',
-          template: window.SHAREDFUNCTIONS.escapeHTML(
-            window.wpApiShare.translations.regions_of_focus,
-          ),
-          all: window.SHAREDFUNCTIONS.escapeHTML(
-            window.wpApiShare.translations.all_locations,
-          ),
-        },
-      ],
-      source: {
-        focus: {
-          display: 'name',
-          ajax: {
-            url:
-              window.wpApiShare.root +
-              'dt/v1/mapping_module/search_location_grid_by_name',
-            data: {
-              s: '{{query}}',
-              filter: function () {
-                return window.lodash.get(
-                  window.Typeahead[`.js-typeahead-${field_id}`].filters
-                    .dropdown,
-                  'value',
-                  'all',
-                );
-              },
-            },
-            beforeSend: function (xhr) {
-              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-            },
-            callback: {
-              done: function (data) {
-                if (typeof window.typeaheadTotals !== 'undefined') {
-                  window.typeaheadTotals.field = data.total;
-                }
-                return data.location_grid;
-              },
-            },
-          },
-        },
-      },
-      display: 'name',
-      templateValue: '{{name}}',
-      dynamic: true,
-      multiselect: {
-        matchOn: ['ID'],
-        data: function () {
-          return (post[field_id] || []).map((g) => {
-            return { ID: g.id, name: g.label };
-          });
-        },
-        callback: {
-          onCancel: function (node, item) {
-            window.API.update_post(post_type, post_id, {
-              [field_id]: { values: [{ value: item.ID, delete: true }] },
-            }).catch((err) => {
-              console.error(err);
-            });
-          },
-        },
-      },
-      callback: {
-        onClick: function (node, a, item, event) {
-          window.API.update_post(post_type, post_id, {
-            [field_id]: { values: [{ value: item.ID }] },
-          }).catch((err) => {
-            console.error(err);
-          });
-          this.addMultiselectItemLayout(item);
-          event.preventDefault();
-          this.hideLayout();
-          this.resetInput();
-          window.masonGrid.masonry('layout');
-        },
-        onReady() {
-          this.filters.dropdown = {
-            key: 'group',
-            value: 'focus',
-            template: window.SHAREDFUNCTIONS.escapeHTML(
-              window.wpApiShare.translations.regions_of_focus,
-            ),
-          };
-          this.container
-            .removeClass('filter')
-            .find('.' + this.options.selector.filterButton)
-            .html(
-              window.SHAREDFUNCTIONS.escapeHTML(
-                window.wpApiShare.translations.regions_of_focus,
-              ),
-            );
-        },
-        onResult: function (node, query, result, resultCount) {
-          resultCount = typeaheadTotals[field_id];
-          let text = window.TYPEAHEADS.typeaheadHelpText(
-            resultCount,
-            query,
-            result,
-          );
-          $(`#${field_id}-result-container`).html(text);
-        },
-        onHideLayout: function () {
-          $(`#${field_id}-result-container`).html('');
-        },
-      },
-    });
   });
 
   /**

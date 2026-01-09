@@ -289,6 +289,12 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             wp_enqueue_style( 'mapbox-gl-css', self::$mapbox_gl_css, [], self::$mapbox_gl_version );
         }
 
+        /**
+         * Load legacy location widget.
+         * Maintained only for plugins not yet updated.
+         * @return void
+         * @deprecated Use web component
+         */
         public static function load_mapbox_search_widget() {
             if ( file_exists( get_template_directory() . '/dt-mapping/geocode-api/mapbox-search-widget.js' ) ) {
                 global $post;
@@ -332,6 +338,12 @@ if ( ! class_exists( 'DT_Mapbox_API' ) ) {
             }
         }
 
+        /**
+         * Load legacy user location widget.
+         * Maintained only for plugins not yet updated.
+         * @return void
+         * @deprecated Use web component
+         */
         public static function load_mapbox_search_widget_users() {
             if ( ! class_exists( 'Disciple_Tools_Users' ) ) {
                 return;
