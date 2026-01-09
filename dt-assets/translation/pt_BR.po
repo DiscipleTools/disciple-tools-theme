@@ -15,8 +15,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Weblate 5.10.2\n"
 
-
-
 #. Theme Name of the theme
 #: style.css
 msgid "Disciple Tools"
@@ -30,9 +28,11 @@ msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 #. Description of the theme
 #: style.css
 msgid ""
-"Disciple.Tools is a coalition management system for disciple making movements."
+"Disciple.Tools is a coalition management system for disciple making "
+"movements."
 msgstr ""
-"Disciple.Tools é um sistema gerencial de coalizão para movimentos de formação de discípulos"
+"Disciple.Tools é um sistema gerencial de coalizão para movimentos de "
+"formação de discípulos"
 
 #. Author URI of the theme
 #: style.css
@@ -69,7 +69,8 @@ msgstr "Solicitar acesso ao registro"
 msgid ""
 "Record owner to be notified of access request. Are you happy to proceed?"
 msgstr ""
-"O proprietário do registro deve ser notificado sobre a solicitação de acesso. Você está feliz em continuar?"
+"O proprietário do registro deve ser notificado sobre a solicitação de "
+"acesso. Você está feliz em continuar?"
 
 #: 403.php:52
 msgid "Submit Request"
@@ -241,15 +242,28 @@ msgstr "Ajuda para Exportar Lista"
 
 #: archive-template.php:263
 msgid ""
-"Using the current filter, this is a simple way to export basic information and use it in other applications."
+"Using the current filter, this is a simple way to export basic information "
+"and use it in other applications."
 msgstr ""
-"Usando o filtro atual, esta é uma maneira simples de exportar informações básicas e usá-las em outros aplicativos."
+"Usando o filtro atual, esta é uma maneira simples de exportar informações "
+"básicas e usá-las em outros aplicativos."
 
 #: archive-template.php:267
 msgid ""
-"Using the current filter, the available emails are grouped by 50 and can be launched into your default email client by group. Many email providers put a limit of 50 on BCC emails. You can open all groups at once using the \"Open All\" button. If the list is too large, this might alert your email provider. The BCC email tool is meant to assist small group emails. Bulk email should be handled through bulk email providers."
+"Using the current filter, the available emails are grouped by 50 and can be "
+"launched into your default email client by group. Many email providers put a "
+"limit of 50 on BCC emails. You can open all groups at once using the \"Open "
+"All\" button. If the list is too large, this might alert your email "
+"provider. The BCC email tool is meant to assist small group emails. Bulk "
+"email should be handled through bulk email providers."
 msgstr ""
-"Usando o filtro atual, os e-mails disponíveis são agrupados em 50 e podem ser abertos no seu cliente de e-mail padrão por grupo. Muitos provedores de e-mail limitam a 50 destinatários em CCO. Você pode abrir todos os grupos de uma vez usando o botão \\\"Abrir Todos\\\". Se a lista for muito grande, isso pode alertar seu provedor de e-mail. A ferramenta de e-mail CCO é destinada a auxiliar e-mails de pequenos grupos. E-mails em massa devem ser enviados através de provedores de e-mail em massa."
+"Usando o filtro atual, os e-mails disponíveis são agrupados em 50 e podem "
+"ser abertos no seu cliente de e-mail padrão por grupo. Muitos provedores de "
+"e-mail limitam a 50 destinatários em CCO. Você pode abrir todos os grupos de "
+"uma vez usando o botão \\\"Abrir Todos\\\". Se a lista for muito grande, "
+"isso pode alertar seu provedor de e-mail. A ferramenta de e-mail CCO é "
+"destinada a auxiliar e-mails de pequenos grupos. E-mails em massa devem ser "
+"enviados através de provedores de e-mail em massa."
 
 #: archive-template.php:270
 msgid "Phone Number List"
@@ -257,15 +271,21 @@ msgstr "Lista de Números de Telefone"
 
 #: archive-template.php:271
 msgid ""
-"Using the current filter, this is intended for copy pasting a list of numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of starting a group conversation."
+"Using the current filter, this is intended for copy pasting a list of "
+"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
+"starting a group conversation."
 msgstr ""
-"Usando o filtro atual, isto é destinado para copiar e colar uma lista de números em um aplicativo de mensagens, WhatsApp, Signal, etc. Esta é uma maneira rápida de iniciar uma conversa em grupo."
+"Usando o filtro atual, isto é destinado para copiar e colar uma lista de "
+"números em um aplicativo de mensagens, WhatsApp, Signal, etc. Esta é uma "
+"maneira rápida de iniciar uma conversa em grupo."
 
 #: archive-template.php:275
 msgid ""
-"Using the current filter, this creates a basic points map of known locations of listed individuals."
+"Using the current filter, this creates a basic points map of known locations "
+"of listed individuals."
 msgstr ""
-"Usando o filtro atual, isto cria um mapa básico de pontos das localizações conhecidas dos indivíduos listados."
+"Usando o filtro atual, isto cria um mapa básico de pontos das localizações "
+"conhecidas dos indivíduos listados."
 
 #: archive-template.php:339
 msgid "No results found"
@@ -1153,11 +1173,13 @@ msgstr "Os dados CSV exportados conterão todos os %2$s campos de %1$s."
 
 #: dt-assets/functions/enqueue-scripts.php:351
 #, php-format
-msgctxt "The exported csv data to contain the 6 visible Contact field(s) shown below."
+msgctxt ""
+"The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr ""
-"Os dados CSV exportados conterão os %2$s campos de %1$s visíveis mostrados abaixo."
+"Os dados CSV exportados conterão os %2$s campos de %1$s visíveis mostrados "
+"abaixo."
 
 #: dt-assets/functions/enqueue-scripts.php:354
 #: dt-assets/functions/enqueue-scripts.php:362
@@ -1487,16 +1509,23 @@ msgstr "Ações rápidas"
 #: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid ""
-"These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
+"These quick action buttons are here to aid you in updating the contact "
+"record faster and keep a count of how many times each action has be done."
 msgstr ""
-"Esses botões de ação rápida estão aqui para ajudá-lo a atualizar mais rápido o registro do contato e a manter uma contagem da quantidade de vezes que cada ação foi realizada."
+"Esses botões de ação rápida estão aqui para ajudá-lo a atualizar mais rápido "
+"o registro do contato e a manter uma contagem da quantidade de vezes que "
+"cada ação foi realizada."
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid ""
-"For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer. This action will also change the 'Seeker Path' to 'Contact Attempted'."
+"For example, If you click the 'No Answer' button 4 times, we will log that "
+"you attempted to reach this contact 4 times, but they did not answer. This "
+"action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"Por exemplo, se você clicar no botão 'Sem Resposta' 4 vezes, registraremos que você tentou alcançar esse contato 4 vezes, mas ele não respondeu. Esta ação também mudará o 'Caminho do Buscador' para 'Tentativa de Contato'."
+"Por exemplo, se você clicar no botão 'Sem Resposta' 4 vezes, registraremos "
+"que você tentou alcançar esse contato 4 vezes, mas ele não respondeu. Esta "
+"ação também mudará o 'Caminho do Buscador' para 'Tentativa de Contato'."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1516,23 +1545,27 @@ msgstr ""
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid ""
-"Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
+"Type @ and the name of a user to mention them in a comment. This user will "
+"then receive a notification."
 msgstr ""
-"Digite @ e o nome de um usuário para mencioná-los em um comentário. Este usuário receberá uma notificação."
+"Digite @ e o nome de um usuário para mencioná-los em um comentário. Este "
+"usuário receberá uma notificação."
 
 #: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"This section also includes the history of activity, such as when the contact or group status became active etc."
+"This section also includes the history of activity, such as when the contact "
+"or group status became active etc."
 msgstr ""
-"Esta seção também inclui o histórico de atividade, como por exemplo, quando o status do contato ou do grupo ficou ativo etc."
+"Esta seção também inclui o histórico de atividade, como por exemplo, quando "
+"o status do contato ou do grupo ficou ativo etc."
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
-msgid ""
-"You can filter this section either by 'All', 'Comments', or 'Activity'."
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
-"Você pode também filtrar esta seção por \\\"Todos\\\", \\\"Comentários\\\" ou \\\"Atividade\\\"."
+"Você pode também filtrar esta seção por \\\"Todos\\\", \\\"Comentários\\\" "
+"ou \\\"Atividade\\\"."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:117
 msgid "Your Profile"
@@ -1546,16 +1579,20 @@ msgstr "Nesta área, você pode ver seu perfil de usuário."
 #: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
 msgid ""
-"You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
+"You are not required to fill out any of these profile fields. They are "
+"optional to meet your team’s needs."
 msgstr ""
-"Você não é obrigado a preencher qualquer um desses campos de perfil. Eles são opcionais para atender às necessidades da sua equipe."
+"Você não é obrigado a preencher qualquer um desses campos de perfil. Eles "
+"são opcionais para atender às necessidades da sua equipe."
 
 #: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid ""
-"By clicking 'Edit', you will be able adjust things like the language that this system operates in."
+"By clicking 'Edit', you will be able adjust things like the language that "
+"this system operates in."
 msgstr ""
-"Ao clicar em 'Editar', você será capaz de ajustar as coisas como a linguagem em que este sistema opera."
+"Ao clicar em 'Editar', você será capaz de ajustar as coisas como a linguagem "
+"em que este sistema opera."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
 #: dt-users/users.php:169
@@ -1565,9 +1602,11 @@ msgstr "Localizações"
 #: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid ""
-"These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
+"These are the areas you are responsible for. Clicking the 'Add' button will "
+"bring up a list of locations to choose from."
 msgstr ""
-"Estas são as áreas pelas quais você é responsável. Clicar no botão \\\"Adicionar\\\" vai mostrar uma lista de localizações para você escolher."
+"Estas são as áreas pelas quais você é responsável. Clicar no botão \\"
+"\"Adicionar\\\" vai mostrar uma lista de localizações para você escolher."
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
@@ -1577,9 +1616,13 @@ msgstr "Suas notificações"
 #: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid ""
-"You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
+"You will receive web notifications and email notifications based on your "
+"notification preferences. To change your preference, click the toggle "
+"buttons."
 msgstr ""
-"Você receberá notificações na web e notificações por e-mail com base em suas preferências de notificação. Para alterar sua preferência, clique nos botões de alternância."
+"Você receberá notificações na web e notificações por e-mail com base em suas "
+"preferências de notificação. Para alterar sua preferência, clique nos botões "
+"de alternância."
 
 #: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
@@ -1594,16 +1637,24 @@ msgstr "Notificações desligadas: A alternância aparecerá cinza."
 #: dt-assets/parts/modals/modal-help.php:78
 msgctxt "Optional Documentation"
 msgid ""
-"Some of the types of notifications cannot be adjusted because they are required by the system."
+"Some of the types of notifications cannot be adjusted because they are "
+"required by the system."
 msgstr ""
-"Alguns dos tipos de notificações não podem ser ajustados porque são exigidos pelo sistema."
+"Alguns dos tipos de notificações não podem ser ajustados porque são exigidos "
+"pelo sistema."
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid ""
-"Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Adjust whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"Ajuste se deseja ver notificações sobre novos comentários, alterações de informações de contato, marcos de contato e métricas de saúde do grupo e se você receberá uma notificação para qualquer atualização que aconteça no sistema."
+"Ajuste se deseja ver notificações sobre novos comentários, alterações de "
+"informações de contato, marcos de contato e métricas de saúde do grupo e se "
+"você receberá uma notificação para qualquer atualização que aconteça no "
+"sistema."
 
 #: dt-assets/parts/modals/modal-help.php:87
 msgctxt "Optional Documentation"
@@ -1613,9 +1664,11 @@ msgstr "Notificações"
 #: dt-assets/parts/modals/modal-help.php:88
 msgctxt "Optional Documentation"
 msgid ""
-"This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
+"This Notifications Page is where you can read updates to users and groups. "
+"It displays notifications about activity on your records."
 msgstr ""
-"Esta página de notificações é onde você pode ler atualizações para usuários e grupos. Ele exibe notificações sobre atividade em seus registros."
+"Esta página de notificações é onde você pode ler atualizações para usuários "
+"e grupos. Ele exibe notificações sobre atividade em seus registros."
 
 #: dt-assets/parts/modals/modal-help.php:89
 msgctxt "Optional Documentation"
@@ -1627,14 +1680,17 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
-"Clique no botão 'Todos' para mostrar a lista completa de todas as suas notificações."
+"Clique no botão 'Todos' para mostrar a lista completa de todas as suas "
+"notificações."
 
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Unread' button to show the list of all of your unread notifications."
+"Click the 'Unread' button to show the list of all of your unread "
+"notifications."
 msgstr ""
-"Clique no botão 'Não lido' para mostrar a lista de todas as suas notificações não lidas."
+"Clique no botão 'Não lido' para mostrar a lista de todas as suas "
+"notificações não lidas."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
 #: template-notifications.php:66
@@ -1644,16 +1700,30 @@ msgstr "Marcar tudo como lido"
 #: dt-assets/parts/modals/modal-help.php:93
 msgctxt "Optional Documentation"
 msgid ""
-"If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+"If you don't want to click each filled in circle on the right side of each "
+"row to indicate the notification has been read, then click the 'Mark All as "
+"Read' link at the top to quickly adjust all the messages that they have all "
+"been read."
 msgstr ""
-"Se você não quiser clicar em cada círculo preenchido no lado direito de cada linha para indicar que a notificação foi lida, clique no link 'Mark All as Read' na parte superior para ajustar rapidamente todas as mensagens que todos foram lidos."
+"Se você não quiser clicar em cada círculo preenchido no lado direito de cada "
+"linha para indicar que a notificação foi lida, clique no link 'Mark All as "
+"Read' na parte superior para ajustar rapidamente todas as mensagens que "
+"todos foram lidos."
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Click the 'Settings' link to go to the notifications settings area to adjust "
+"whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"Clique no link 'Configurações' para ir à área de configurações de notificações para ajustar se deseja ver notificações sobre novos comentários, alterações de informações de contato, marcos de contato e métricas de saúde do grupo e se você receberá uma notificação para qualquer atualização que acontece no sistema."
+"Clique no link 'Configurações' para ir à área de configurações de "
+"notificações para ajustar se deseja ver notificações sobre novos "
+"comentários, alterações de informações de contato, marcos de contato e "
+"métricas de saúde do grupo e se você receberá uma notificação para qualquer "
+"atualização que acontece no sistema."
 
 #: dt-assets/parts/modals/modal-help.php:100
 msgctxt "Optional Documentation"
@@ -1663,9 +1733,14 @@ msgstr "Pagina de Contatos duplicados"
 #: dt-assets/parts/modals/modal-help.php:101
 msgctxt "Optional Documentation"
 msgid ""
-"This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
+"This Duplicate Contact Page is where you can review, decline or merge "
+"contacts that have been picked up by the system (checking against their "
+"name, email and phone) as possibly being duplicates of another already "
+"existing contact."
 msgstr ""
-"Esta Página Duplicar Contato é onde você pode rever, recusar ou unir contatos que foram pegos pelo sistema (conferindo com seu nome, e-mail e telefone) como sendo possivelmente cópias de outro contato já existente."
+"Esta Página Duplicar Contato é onde você pode rever, recusar ou unir "
+"contatos que foram pegos pelo sistema (conferindo com seu nome, e-mail e "
+"telefone) como sendo possivelmente cópias de outro contato já existente."
 
 #: dt-assets/parts/modals/modal-help.php:124
 #: dt-assets/parts/modals/modal-help.php:174
@@ -1699,9 +1774,11 @@ msgstr "Scanear o QR Code para abrir o link mágico num celular"
 
 #: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
 msgid ""
-"Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
+"Reset the security code. No data is removed. Only access. The previous link "
+"will be disabled and another one created."
 msgstr ""
-"Apague o código de segurança. Nenhum dado é removido. O link anterior será desabilitado e outro será criado."
+"Apague o código de segurança. Nenhum dado é removido. O link anterior será "
+"desabilitado e outro será criado."
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
@@ -1796,9 +1873,11 @@ msgstr "Este contato é compartilhado com:"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid ""
-"Set a reminder or a task with a note and receive a notification on the due date."
+"Set a reminder or a task with a note and receive a notification on the due "
+"date."
 msgstr ""
-"Defina um lembrete ou uma tarefa com uma observação e receba uma notificação na data limite."
+"Defina um lembrete ou uma tarefa com uma observação e receba uma notificação "
+"na data limite."
 
 #: dt-assets/parts/modals/modal-tasks.php:13
 msgid "Task Type"
@@ -2038,9 +2117,11 @@ msgstr "O contato é novo no sistema"
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
-"This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
+"This contact has made it known that they no longer want to continue or you "
+"have decided not to continue with him/her."
 msgstr ""
-"Este contato informou que não deseja prosseguir ou você decidiu que não deseja mais continuar com ele/ela."
+"Este contato informou que não deseja prosseguir ou você decidiu que não "
+"deseja mais continuar com ele/ela."
 
 #: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
@@ -2060,7 +2141,8 @@ msgstr "Sub-atribuído a"
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
-"Contato ou usuário auxiliando o usuário atribuído para fazer o acompanhamento com o contato."
+"Contato ou usuário auxiliando o usuário atribuído para fazer o "
+"acompanhamento com o contato."
 
 #: dt-contacts/base-setup.php:360
 msgid "Sub-assigned on other Contacts"
@@ -2280,9 +2362,13 @@ msgstr "Já transferido para %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
-"NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
+"NOTE: You have already transferred this contact. Transferring again might "
+"create duplicates. Do you still want to override this warning and continue "
+"with your transfer?"
 msgstr ""
-"NOTA: Você já transferiu este contato. Transferir novamente pode criar duplicidades. Você ainda deseja substituir este aviso e continuar com sua transferência?"
+"NOTA: Você já transferiu este contato. Transferir novamente pode criar "
+"duplicidades. Você ainda deseja substituir este aviso e continuar com sua "
+"transferência?"
 
 #: dt-contacts/contacts-transfer.php:281
 msgid "Override and Continue"
@@ -2377,9 +2463,11 @@ msgstr "Caminho do Discípulo"
 #: dt-contacts/module-access.php:103
 msgctxt "Seeker Path field description"
 msgid ""
-"Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
+"Set the status of your progression with the contact. These are the steps "
+"that happen in a specific order to help a contact move forward."
 msgstr ""
-"Defina o status da sua progressão com o contato. Estas são as etapas que ocorrem em uma ordem específica para ajudar um contato a avançar."
+"Defina o status da sua progressão com o contato. Estas são as etapas que "
+"ocorrem em uma ordem específica para ajudar um contato a avançar."
 
 #: dt-contacts/module-access.php:107
 msgid "Contact Attempt Needed"
@@ -2416,7 +2504,8 @@ msgstr "Não está pronto"
 #: dt-contacts/module-access.php:149
 msgctxt "Contact Status field description"
 msgid ""
-"There is not enough information to move forward with the contact at this time."
+"There is not enough information to move forward with the contact at this "
+"time."
 msgstr ""
 "Não há informação suficiente para prosseguir com o contato neste momento"
 
@@ -2436,7 +2525,8 @@ msgstr "Esperando ser aceito"
 #: dt-contacts/module-access.php:159
 msgctxt "Contact Status field description"
 msgid ""
-"The contact has been assigned to someone, but has not yet been accepted by that person."
+"The contact has been assigned to someone, but has not yet been accepted by "
+"that person."
 msgstr ""
 "Este contato foi designado a alguém, mas ainda não foi aceito por essa pessoa"
 
@@ -2446,10 +2536,10 @@ msgstr "Pausado"
 
 #: dt-contacts/module-access.php:165
 msgctxt "Contact Status field description"
-msgid ""
-"This contact is currently on hold (i.e. on vacation or not responding)."
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr ""
-"Este contago está atualmente em espera (ex: de férias ou não está respondendo)"
+"Este contago está atualmente em espera (ex: de férias ou não está "
+"respondendo)"
 
 #: dt-contacts/module-access.php:180
 msgid "Reason Not Ready"
@@ -2459,7 +2549,8 @@ msgstr "Motivo Não está Pronto"
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr ""
-"O principal motivo deste contato não estar pronto a ser atribuído a um usuário"
+"O principal motivo deste contato não estar pronto a ser atribuído a um "
+"usuário"
 
 #: dt-contacts/module-access.php:188
 msgid "Insufficient Contact Information"
@@ -2492,9 +2583,11 @@ msgstr "Motivo Pausado"
 #: dt-contacts/module-access.php:212
 msgctxt "Optional Documentation"
 msgid ""
-"A paused contact is one you are not currently interacting with but expect to in the future."
+"A paused contact is one you are not currently interacting with but expect to "
+"in the future."
 msgstr ""
-"Um contato pausado é aquele com quem você não está interagindo atualmente, mas espera fazê-lo no futuro."
+"Um contato pausado é aquele com quem você não está interagindo atualmente, "
+"mas espera fazê-lo no futuro."
 
 #: dt-contacts/module-access.php:216
 msgctxt "Reason Paused label"
@@ -2629,7 +2722,8 @@ msgctxt "Optional Documentation"
 msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
 msgstr ""
-"Campanhas de marketing ou atividades de acesso com as quais este contato interagiu."
+"Campanhas de marketing ou atividades de acesso com as quais este contato "
+"interagiu."
 
 #: dt-contacts/module-access.php:291
 msgid "Meeting Scheduled"
@@ -2777,9 +2871,13 @@ msgstr "Pilares de fé"
 #: dt-contacts/module-faith.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
+"Assign which milestones the contact has reached in their faith journey. "
+"These are points in a contact’s spiritual journey worth celebrating but can "
+"happen in any order."
 msgstr ""
-"Atribua quais marcos o contato atingiu em sua jornada da fé. Esses são pontos em uma jornada espiritual do contato que vale a pena comemorar, mas podem acontecer em qualquer ordem."
+"Atribua quais marcos o contato atingiu em sua jornada da fé. Esses são "
+"pontos em uma jornada espiritual do contato que vale a pena comemorar, mas "
+"podem acontecer em qualquer ordem."
 
 #: dt-contacts/module-faith.php:48
 msgid "Has Bible"
@@ -2845,7 +2943,8 @@ msgstr "Este contato representa você como usuário"
 #: dt-contacts/user-module.php:73
 msgid "Please update contact details on your profile page instead of here."
 msgstr ""
-"Favor atualizar detalhes de contato na página do seu perfil ao invés de colocar aqui"
+"Favor atualizar detalhes de contato na página do seu perfil ao invés de "
+"colocar aqui"
 
 #: dt-contacts/user-module.php:73
 msgid "Profile Settings"
@@ -2876,14 +2975,16 @@ msgctxt "Step 1 of link user"
 msgid ""
 "To link to an existing user, first, find the user using the field below."
 msgstr ""
-"Para vincular a um usuário existente, encontre o usuário usando o campo abaixo."
+"Para vincular a um usuário existente, encontre o usuário usando o campo "
+"abaixo."
 
 #: dt-contacts/user-module.php:152
 msgctxt "Step 2 of link user"
 msgid ""
 "To finish the linking, merge this contact with the existing user details."
 msgstr ""
-"Para finalizar a vinculação, unifique esse contato com os detalhes de usuário existentes."
+"Para finalizar a vinculação, unifique esse contato com os detalhes de "
+"usuário existentes."
 
 #: dt-core/configuration/class-roles.php:81
 #: dt-core/configuration/class-roles.php:245
@@ -2937,9 +3038,11 @@ msgstr "Marcos de contato e métricas de integridade de grupo"
 
 #: dt-core/configuration/config-site-defaults.php:300
 msgid ""
-"This contact is active but there is no record of anybody contacting them. Please do contact them."
+"This contact is active but there is no record of anybody contacting them. "
+"Please do contact them."
 msgstr ""
-"Este contato está ativo, mas não há registro de alguém entrar em contato com eles. Favor entrar em contato com eles."
+"Este contato está ativo, mas não há registro de alguém entrar em contato com "
+"eles. Favor entrar em contato com eles."
 
 #: dt-core/configuration/config-site-defaults.php:306
 msgid "Please try connecting with this contact again."
@@ -2951,9 +3054,11 @@ msgstr "Favor tentar conectar-se a esse contato novamente."
 #: dt-core/configuration/config-site-defaults.php:330
 #: dt-core/configuration/config-site-defaults.php:336
 msgid ""
-"We haven't heard about this person in a while. Do you have an update for this contact?"
+"We haven't heard about this person in a while. Do you have an update for "
+"this contact?"
 msgstr ""
-"Não ouvimos falar dessa pessoa há algum tempo. Você tem uma atualização para este contato?"
+"Não ouvimos falar dessa pessoa há algum tempo. Você tem uma atualização para "
+"este contato?"
 
 #: dt-core/configuration/config-site-defaults.php:346
 msgid "We haven't heard about this group in a while. Do you have an update?"
@@ -3108,9 +3213,11 @@ msgstr "Para redefinir sua senha, visite o seguinte endereço:"
 
 #: dt-core/dt-storage.php:223
 msgid ""
-"Something went wrong. Please try again or have an admin check the connection settings."
+"Something went wrong. Please try again or have an admin check the connection "
+"settings."
 msgstr ""
-"Algo deu errado. Por favor, tente novamente ou peça a um administrador para verificar as configurações de conexão."
+"Algo deu errado. Por favor, tente novamente ou peça a um administrador para "
+"verificar as configurações de conexão."
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3147,9 +3254,11 @@ msgstr "Dado gratuitamente, mas não é barato"
 
 #: dt-core/release-notifications.php:97
 msgid ""
-"Disciple.Tools relies on contributions for continued development and maintenance. Will you join the team?"
+"Disciple.Tools relies on contributions for continued development and "
+"maintenance. Will you join the team?"
 msgstr ""
-"Disciple.Tools depende de contribuições para desenvolvimento e manutenção contínuos. Você se juntará à equipe?"
+"Disciple.Tools depende de contribuições para desenvolvimento e manutenção "
+"contínuos. Você se juntará à equipe?"
 
 #: dt-core/release-notifications.php:99
 msgid "Give"
@@ -3162,7 +3271,8 @@ msgstr "Traduzir"
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:735
 msgid ""
-"Translate Disciple.Tools into your language or help make a translation better."
+"Translate Disciple.Tools into your language or help make a translation "
+"better."
 msgstr ""
 "Traduza o Disciple.Tools para o seu idioma ou ajude a melhorar uma tradução."
 
@@ -3172,9 +3282,11 @@ msgstr "Construir ou Documentar"
 
 #: dt-core/release-notifications.php:114
 msgid ""
-"Make Disciple.Tools better by building a feature or helping us make the documentation better."
+"Make Disciple.Tools better by building a feature or helping us make the "
+"documentation better."
 msgstr ""
-"Melhore o Disciple.Tools construindo um recurso ou nos ajudando a melhorar a documentação."
+"Melhore o Disciple.Tools construindo um recurso ou nos ajudando a melhorar a "
+"documentação."
 
 #: dt-core/release-notifications.php:116
 msgid "Find out more"
@@ -3233,9 +3345,13 @@ msgstr "Coach de grupo / Plantador de igrejas"
 #: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
-"The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
+"The person who planted and/or is coaching this group. Only one person can be "
+"assigned to a group while multiple people can be coaches / church planters "
+"of this group."
 msgstr ""
-"A pessoa que plantou e/ou está orientando este grupo. Apenas uma pessoa pode ser atribuída ao grupo enquanto várias pessoas podem ser orientadores/plantadores de igreja deste grupo."
+"A pessoa que plantou e/ou está orientando este grupo. Apenas uma pessoa pode "
+"ser atribuída ao grupo enquanto várias pessoas podem ser orientadores/"
+"plantadores de igreja deste grupo."
 
 #: dt-groups/base-setup.php:160
 msgid "Group Type"
@@ -3273,7 +3389,8 @@ msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr ""
-"Um grupo especial que não se reúne como igreja (ou que tenta se tornar igreja)."
+"Um grupo especial que não se reúne como igreja (ou que tenta se tornar "
+"igreja)."
 
 #: dt-groups/base-setup.php:192 dt-groups/base-setup.php:603
 msgid "Church Health"
@@ -3410,9 +3527,15 @@ msgstr "Contagem de membro"
 #: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
-"The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
+"The number of members in this group. It will automatically be updated when "
+"new members are added or removed in the member list. Change this number "
+"manually to include people who may not be in the system but are also members "
+"of the group."
 msgstr ""
-"O número de membros neste grupo. Ele será atualizado automaticamente quando novos membros forem adicionados ou removidos da lista de membros. Altere esse número manualmente para incluir pessoas que podem não estar no sistema, mas que também são membros do grupo."
+"O número de membros neste grupo. Ele será atualizado automaticamente quando "
+"novos membros forem adicionados ou removidos da lista de membros. Altere "
+"esse número manualmente para incluir pessoas que podem não estar no sistema, "
+"mas que também são membros do grupo."
 
 #: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
 #: dt-groups/base-setup.php:602
@@ -3444,9 +3567,12 @@ msgstr "Grupo de Pares"
 #: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
-"A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+"A related group that isn't a parent/child in relationship. It might indicate "
+"groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
-"Um grupo relacionado que não é principal/secundário em relacionamento. Pode indicar grupos que colaboram, estão prestes a se unir, se separaram recentemente etc."
+"Um grupo relacionado que não é principal/secundário em relacionamento. Pode "
+"indicar grupos que colaboram, estão prestes a se unir, se separaram "
+"recentemente etc."
 
 #: dt-groups/base-setup.php:341
 msgid "Child Group"
@@ -3496,9 +3622,11 @@ msgstr "Multiplicador"
 #: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
-"Number of people helping start other groups. How many members are multiplying?"
+"Number of people helping start other groups. How many members are "
+"multiplying?"
 msgstr ""
-"Número de pessoas ajudando a iniciar outros grupos. Quantos membros estão multiplicando?"
+"Número de pessoas ajudando a iniciar outros grupos. Quantos membros estão "
+"multiplicando?"
 
 #: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
@@ -3534,9 +3662,11 @@ msgstr "Adicionar membros de contatos existentes"
 #: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
-"In the 'Member List' field, type the name of an existing contact to add them to this group."
+"In the 'Member List' field, type the name of an existing contact to add them "
+"to this group."
 msgstr ""
-"No campo \\\"Lista de Membros\\\", digite o nome de um contato existente para adicioná-lo a este grupo."
+"No campo \\\"Lista de Membros\\\", digite o nome de um contato existente "
+"para adicioná-lo a este grupo."
 
 #: dt-groups/base-setup.php:606
 msgid "Four Fields"
@@ -3545,20 +3675,27 @@ msgstr "Quatro Campos"
 #: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
-"There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
+"There are 5 squares in the Four Fields diagram. Starting in the top left "
+"quadrant and going clockwise and the fifth being in the middle, they stand "
+"for:"
 msgstr ""
-"Há 5 quadrados no diagrama de Quatro Campos. Começando no quadrante superior esquerdo e indo no sentido horário e o quinto estar no meio, eles representam:"
+"Há 5 quadrados no diagrama de Quatro Campos. Começando no quadrante superior "
+"esquerdo e indo no sentido horário e o quinto estar no meio, eles "
+"representam:"
 
 #: dt-login/login-template.php:68
 msgid ""
-"Your password reset link appears to be invalid. Please request a new link below."
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
 msgstr ""
-"Seu link de redefinição de senha parece ser inválido. Por favor, solicite um novo link abaixo."
+"Seu link de redefinição de senha parece ser inválido. Por favor, solicite um "
+"novo link abaixo."
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
 msgstr ""
-"Seu link de redefinição de senha expirou. Por favor, solicite um novo link abaixo."
+"Seu link de redefinição de senha expirou. Por favor, solicite um novo link "
+"abaixo."
 
 #: dt-login/login-template.php:84 dt-login/login-template.php:109
 msgid "Get New Password"
@@ -3570,9 +3707,11 @@ msgstr "Endereço de E-mail"
 
 #: dt-login/login-template.php:112
 msgid ""
-"Your password reset email has been sent. Check your email or junk mail for the link to reset your password."
+"Your password reset email has been sent. Check your email or junk mail for "
+"the link to reset your password."
 msgstr ""
-"Seu e-mail de redefinição de senha foi enviado. Verifique seu e-mail ou lixo eletrônico para o link de redefinição de senha."
+"Seu e-mail de redefinição de senha foi enviado. Verifique seu e-mail ou lixo "
+"eletrônico para o link de redefinição de senha."
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
@@ -3761,9 +3900,11 @@ msgstr "Batismos"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid ""
-"Number of baptized contact with a baptism date in date range and baptized by connection"
+"Number of baptized contact with a baptism date in date range and baptized by "
+"connection"
 msgstr ""
-"Número de contatos batizados com uma data de batismo no período e batizados por conexão"
+"Número de contatos batizados com uma data de batismo no período e batizados "
+"por conexão"
 
 #: dt-metrics/combined/critical-path.php:277
 #, php-format
@@ -3816,9 +3957,11 @@ msgstr "Plantadores de igrejas"
 
 #: dt-metrics/combined/critical-path.php:333
 msgid ""
-"Number of contacts or users who have started a church and are marked as the church coach"
+"Number of contacts or users who have started a church and are marked as the "
+"church coach"
 msgstr ""
-"Número de contatos ou usuários que iniciaram uma igreja e estão marcados como treinador da igreja"
+"Número de contatos ou usuários que iniciaram uma igreja e estão marcados "
+"como treinador da igreja"
 
 #: dt-metrics/combined/daily-activity.php:22
 #: dt-metrics/combined/daily-activity.php:71
@@ -3860,7 +4003,8 @@ msgstr[1] "%s meses atrás"
 msgid ""
 "Click on a timeline day summary to display a detailed list of metrics below."
 msgstr ""
-"Clique num resumo de agenda do dia para mostrar uma lista detalhada de métricas abaixo."
+"Clique num resumo de agenda do dia para mostrar uma lista detalhada de "
+"métricas abaixo."
 
 #. Template Name of the theme
 #: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
@@ -3901,7 +4045,8 @@ msgstr "Mapas Combinados"
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
 msgstr ""
-"Para visualizar este mapa, é necessária uma chave do Mapbox; clique aqui para adicionar."
+"Para visualizar este mapa, é necessária uma chave do Mapbox; clique aqui "
+"para adicionar."
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -4019,8 +4164,7 @@ msgid "Active contacts, by source and seeker path"
 msgstr "Contatos ativos, por origem e caminho do buscador"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
-msgid ""
-"This is displaying only the contacts with an 'active' status right now."
+msgid "This is displaying only the contacts with an 'active' status right now."
 msgstr "No momento, exibindo apenas os contatos com status \\\"ativo\\\"."
 
 #: dt-metrics/contacts/sources.php:96
@@ -4029,9 +4173,11 @@ msgstr "Contatos ativos, por fonte e marco da fé"
 
 #: dt-metrics/contacts/sources.php:98
 msgid ""
-"A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+"A contact can come from more than one source, and it can have more than one "
+"faith milestone at the same time."
 msgstr ""
-"Um contato pode vir de mais de uma fonte e pode ter mais de um marco de fé ao mesmo tempo."
+"Um contato pode vir de mais de uma fonte e pode ter mais de um marco de fé "
+"ao mesmo tempo."
 
 #: dt-metrics/counter.php:135
 msgid "First Meetings"
@@ -4363,9 +4509,11 @@ msgstr "Gráfico Simples"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
-"This chart shows the total number for each field value at the end of the selected date."
+"This chart shows the total number for each field value at the end of the "
+"selected date."
 msgstr ""
-"Este gráfico mostra o número total para cada valor de campo no final da data selecionada."
+"Este gráfico mostra o número total para cada valor de campo no final da data "
+"selecionada."
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
@@ -4650,7 +4798,8 @@ msgstr "Locais ou endereço"
 msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
-"Este registro foi atualizado automaticamente em vez de criar um novo registro."
+"Este registro foi atualizado automaticamente em vez de criar um novo "
+"registro."
 
 #: dt-posts/dt-posts.php:1650
 #, php-format
@@ -4675,11 +4824,17 @@ msgstr "Detalhes"
 
 #: dt-posts/dt-posts.php:2796
 #, php-format
-msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
+msgctxt ""
+"@[user name][user_id] - User Fred has requested access to Contact [contact "
+"name][contact_id]. If desired, share this record with the user to grant "
+"access."
 msgid ""
-"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
+"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
+"desired, share this record with the user to grant access."
 msgstr ""
-"@[%1$s](%2$s) - O usuário %3$s solicitou acesso ao contato %4$s [%5$s](%6$s). Se desejar, compartilhe esse registro com o usuário para conceder acesso."
+"@[%1$s](%2$s) - O usuário %3$s solicitou acesso ao contato %4$s [%5$s]"
+"(%6$s). Se desejar, compartilhe esse registro com o usuário para conceder "
+"acesso."
 
 #: dt-posts/dt-posts.php:2802
 msgid "Access Request"
@@ -5173,9 +5328,11 @@ msgstr "Excluir e substituir o link do aplicativo"
 
 #: dt-reports/magic-url-setup.php:462
 msgid ""
-"This app is not yet activated for this user. Enable the app to generate a link."
+"This app is not yet activated for this user. Enable the app to generate a "
+"link."
 msgstr ""
-"Este aplicativo ainda não está ativado para este usuário. Ative o aplicativo para gerar um link."
+"Este aplicativo ainda não está ativado para este usuário. Ative o aplicativo "
+"para gerar um link."
 
 #: dt-reports/magic-url-setup.php:465 template-settings.php:265
 msgid "App Activation"
@@ -5253,7 +5410,8 @@ msgstr "Cobertura de Responsabilidade"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Administrador deve habilitar opção \\\"Adicionar Novos Usuários\\\" nas configurações multisite"
+"Administrador deve habilitar opção \\\"Adicionar Novos Usuários\\\" nas "
+"configurações multisite"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"
@@ -5323,9 +5481,11 @@ msgstr "Melhorando um contato"
 
 #: dt-users/template-new-user.php:260
 msgid ""
-"The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data."
+"The new user will have access to all the fields and comments on this contact "
+"record. We suggest archiving the comments if they contain sensitive data."
 msgstr ""
-"O novo usuário terá acesso a todos os campos e comentários deste registro de contato. Sugerimos arquivar os comentários se contiverem dados confidenciais."
+"O novo usuário terá acesso a todos os campos e comentários deste registro de "
+"contato. Sugerimos arquivar os comentários se contiverem dados confidenciais."
 
 #: dt-users/template-new-user.php:267
 msgid "Continue and archive comments"
@@ -5353,9 +5513,11 @@ msgstr "Você deseja mesclar campos do antigo registro para o novo?"
 
 #: dt-users/template-no-permission.php:92
 msgid ""
-"You are registered but an administrator needs to assign you access permissions."
+"You are registered but an administrator needs to assign you access "
+"permissions."
 msgstr ""
-"Você está registrado mas um administrador precisa autorizar você a acessar permissões"
+"Você está registrado mas um administrador precisa autorizar você a acessar "
+"permissões"
 
 #: dt-users/template-user-management.php:63
 msgid "Multiplier Name"
@@ -5389,9 +5551,11 @@ msgstr "Disponibilidade"
 
 #: dt-users/template-user-management.php:164
 msgid ""
-"Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be unavailable so the Dispatcher will know your "
+"availability to receive new contacts"
 msgstr ""
-"Defina as datas em que você estará indisponível, para que o Expedidor saiba sua disponibilidade para receber novos contatos"
+"Defina as datas em que você estará indisponível, para que o Expedidor saiba "
+"sua disponibilidade para receber novos contatos"
 
 #: dt-users/template-user-management.php:166
 msgid "Schedule Unavailability"
@@ -5447,9 +5611,11 @@ msgstr "Todas as Fontes: Dá acesso a todos os contatos"
 #: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
-"Custom - Access own contacts and all the contacts of the selected sources below"
+"Custom - Access own contacts and all the contacts of the selected sources "
+"below"
 msgstr ""
-"Personalizado: Dá acesso a contatos próprios e a todos os contatos das fontes selecionadas abaixo"
+"Personalizado: Dá acesso a contatos próprios e a todos os contatos das "
+"fontes selecionadas abaixo"
 
 #: dt-users/template-user-management.php:346
 #: dt-users/user-hooks-and-config.php:637
@@ -5512,9 +5678,11 @@ msgstr ""
 #: dt-users/user-hooks-and-config.php:196
 #, php-format
 msgid ""
-"Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users"
+"Welcome %1$s, this is your personal contact record. Feel free to update the "
+"fields and @mention me or other users"
 msgstr ""
-"Bem vindo %1$s, este é o seu registro de contato pessoal. Fique à vontade para atualizar os campos e me @mencionar ou outros usuários"
+"Bem vindo %1$s, este é o seu registro de contato pessoal. Fique à vontade "
+"para atualizar os campos e me @mencionar ou outros usuários"
 
 #: dt-users/user-hooks-and-config.php:312
 #: dt-users/user-hooks-and-config.php:350
@@ -5538,7 +5706,9 @@ msgstr "Olá %s,"
 
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
-msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
+msgctxt ""
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "Você foi convidado a se juntar a %1$s em %2$s"
 
@@ -5743,9 +5913,13 @@ msgstr ""
 
 #: header.php:61
 msgid ""
-"You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
+"You seem to be using an out-of-date web browser. Without the most up-to-date "
+"version of your browser, this may site may not function correctly. Please "
+"note that Internet Explorer is not supported."
 msgstr ""
-"Você parece estar usando um navegador desatualizado. Sem a versão mais atualizada do seu navegador, este site pode não funcionar corretamente. Favor observar que o Internet Explorer não é suportado."
+"Você parece estar usando um navegador desatualizado. Sem a versão mais "
+"atualizada do seu navegador, este site pode não funcionar corretamente. "
+"Favor observar que o Internet Explorer não é suportado."
 
 #: header.php:63
 msgid "See what browser you are using."
@@ -5785,9 +5959,13 @@ msgstr "Mesclar Duplicidade %s"
 
 #: template-merge-post-details.php:123
 msgid ""
-"When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
+"When you merge, the primary record is updated with the values you choose, "
+"and relationships to other items are shifted to the primary record; which "
+"can be switched below."
 msgstr ""
-"Quando você mescla, o registro primário é atualizado com os valores que você escolher, e as relações com outros itens são movidos para o registro primário; o que pode ser alterado abaixo."
+"Quando você mescla, o registro primário é atualizado com os valores que você "
+"escolher, e as relações com outros itens são movidos para o registro "
+"primário; o que pode ser alterado abaixo."
 
 #: template-merge-post-details.php:126
 msgid "Copy comments to updated primary record"
@@ -5897,9 +6075,11 @@ msgstr "Disponibilidade para receber contatos do Atribuidor"
 
 #: template-settings.php:434
 msgid ""
-"Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be traveling or unavailable so the Dispatcher will "
+"know your availability to receive new contacts"
 msgstr ""
-"Defina as datas em que você estará viajando ou indisponível, para que o Expedidor saiba sua disponibilidade para receber novos contatos"
+"Defina as datas em que você estará viajando ou indisponível, para que o "
+"Expedidor saiba sua disponibilidade para receber novos contatos"
 
 #: template-settings.php:438
 msgid "Schedule Travel or Dates Unavailable"
@@ -5951,9 +6131,15 @@ msgstr ""
 
 #: template-settings.php:630
 msgid ""
-"Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. For profile images we use "
+"Gravatar (Globally Recognized Avatar). If you have security concerns, we "
+"suggest not using a personal photo, but instead choose a cartoon, abstract, "
+"or alias photo to represent you."
 msgstr ""
-"O Sistema Disciple Tools não armazena imagens. Para imagens de perfil, usamos Gravatar (Avatar Globalmente Reconhecido). Se você tiver questões de segurança, sugerimos não usar uma foto pessoal, mas escolha uma foto de desenho animado, abstrata ou de pseudônimo para representá-lo."
+"O Sistema Disciple Tools não armazena imagens. Para imagens de perfil, "
+"usamos Gravatar (Avatar Globalmente Reconhecido). Se você tiver questões de "
+"segurança, sugerimos não usar uma foto pessoal, mas escolha uma foto de "
+"desenho animado, abstrata ou de pseudônimo para representá-lo."
 
 #: template-settings.php:631
 msgid "edit image on gravatar.com"
@@ -5961,9 +6147,16 @@ msgstr "editar imagem em gravatar.com"
 
 #: template-settings.php:637
 msgid ""
-"Disciple Tools System does not store images. All media assets will be placed within specified media connection storage service. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. All media assets will be placed "
+"within specified media connection storage service. If you have security "
+"concerns, we suggest not using a personal photo, but instead choose a "
+"cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"O Sistema Disciple Tools não armazena imagens. Todos os arquivos de mídia serão colocados no serviço de armazenamento de conexão de mídia especificado. Se você tiver preocupações com segurança, sugerimos não usar uma foto pessoal, mas escolher uma foto de desenho, abstrata ou um avatar para representá-lo."
+"O Sistema Disciple Tools não armazena imagens. Todos os arquivos de mídia "
+"serão colocados no serviço de armazenamento de conexão de mídia "
+"especificado. Se você tiver preocupações com segurança, sugerimos não usar "
+"uma foto pessoal, mas escolher uma foto de desenho, abstrata ou um avatar "
+"para representá-lo."
 
 #: template-settings.php:638
 msgid "Upload new profile image"
@@ -5995,9 +6188,12 @@ msgstr "Duplicar Contatos de acesso"
 
 #: template-view-duplicates.php:27
 msgid ""
-"Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
+"Scanning for duplicates starting with the most recently modified contacts. "
+"Results are limited to ones that have less than 10 exact matches."
 msgstr ""
-"Procurando duplicados, começando com os contatos modificados mais recentemente. Os resultados são limitados àqueles com menos de 10 correspondências exatas."
+"Procurando duplicados, começando com os contatos modificados mais "
+"recentemente. Os resultados são limitados àqueles com menos de 10 "
+"correspondências exatas."
 
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"

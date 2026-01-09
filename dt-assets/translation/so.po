@@ -15,8 +15,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.14.1\n"
 
-
-
 #. Theme Name of the theme
 #: style.css
 msgid "Disciple Tools"
@@ -30,9 +28,11 @@ msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 #. Description of the theme
 #: style.css
 msgid ""
-"Disciple.Tools is a coalition management system for disciple making movements."
+"Disciple.Tools is a coalition management system for disciple making "
+"movements."
 msgstr ""
-"Disciple.Tools waa nidaam maamul iskaashi ah oo loogu talagalay dhaqdhaqaaqyada sameynta xerta."
+"Disciple.Tools waa nidaam maamul iskaashi ah oo loogu talagalay "
+"dhaqdhaqaaqyada sameynta xerta."
 
 #. Author URI of the theme
 #: style.css
@@ -68,7 +68,8 @@ msgstr "Codso Helitaanka Diiwangelinta"
 msgid ""
 "Record owner to be notified of access request. Are you happy to proceed?"
 msgstr ""
-"Mulkiilaha diiwaanka in lagu ogeysiiyo codsigiisa marin u helka. Miyaad ku faraxsan tahay inaad sii wadato?"
+"Mulkiilaha diiwaanka in lagu ogeysiiyo codsigiisa marin u helka. Miyaad ku "
+"faraxsan tahay inaad sii wadato?"
 
 #: 403.php:52
 msgid "Submit Request"
@@ -240,15 +241,29 @@ msgstr "Caawinta Liisaska Dhoofinta"
 
 #: archive-template.php:263
 msgid ""
-"Using the current filter, this is a simple way to export basic information and use it in other applications."
+"Using the current filter, this is a simple way to export basic information "
+"and use it in other applications."
 msgstr ""
-"Adiga oo isticmaalaya shaandheynta hadda, tani waa hab fudud oo lagu dhoofin karo macluumaadka aasaasiga ah laguna isticmaali karo barnaamijyo kale."
+"Adiga oo isticmaalaya shaandheynta hadda, tani waa hab fudud oo lagu dhoofin "
+"karo macluumaadka aasaasiga ah laguna isticmaali karo barnaamijyo kale."
 
 #: archive-template.php:267
 msgid ""
-"Using the current filter, the available emails are grouped by 50 and can be launched into your default email client by group. Many email providers put a limit of 50 on BCC emails. You can open all groups at once using the \"Open All\" button. If the list is too large, this might alert your email provider. The BCC email tool is meant to assist small group emails. Bulk email should be handled through bulk email providers."
+"Using the current filter, the available emails are grouped by 50 and can be "
+"launched into your default email client by group. Many email providers put a "
+"limit of 50 on BCC emails. You can open all groups at once using the \"Open "
+"All\" button. If the list is too large, this might alert your email "
+"provider. The BCC email tool is meant to assist small group emails. Bulk "
+"email should be handled through bulk email providers."
 msgstr ""
-"Adiga oo isticmaalaya shaandheynta hadda, iimaylasha la heli karo waxaa loo qaybiyay 50-50 waxaana loo soo diri karaa macmiilkaaga iimaylka caadiga ah koox koox. Bixiyeyaasha iimaylka badankood waxay xad saaran yihiin 50 iimaylka BCC. Waxaad fur kartaa dhammaan kooxaha hal mar adiga oo isticmaalaya badhanka \\\"Fur Dhamaan\\\". Haddii liiskaani aad u weyn yahay, tani waxay u soo ogeysiinaysaa bixiyaha iimaylkaaga. Qalabka iimaylka BCC waxaa loogu talagalay inuu caawiyo iimaylasha kooxda yaryar. Iimaylasha badan waa inay ka maaraan bixiyeyaasha iimaylka badan."
+"Adiga oo isticmaalaya shaandheynta hadda, iimaylasha la heli karo waxaa loo "
+"qaybiyay 50-50 waxaana loo soo diri karaa macmiilkaaga iimaylka caadiga ah "
+"koox koox. Bixiyeyaasha iimaylka badankood waxay xad saaran yihiin 50 "
+"iimaylka BCC. Waxaad fur kartaa dhammaan kooxaha hal mar adiga oo "
+"isticmaalaya badhanka \\\"Fur Dhamaan\\\". Haddii liiskaani aad u weyn "
+"yahay, tani waxay u soo ogeysiinaysaa bixiyaha iimaylkaaga. Qalabka iimaylka "
+"BCC waxaa loogu talagalay inuu caawiyo iimaylasha kooxda yaryar. Iimaylasha "
+"badan waa inay ka maaraan bixiyeyaasha iimaylka badan."
 
 #: archive-template.php:270
 msgid "Phone Number List"
@@ -256,15 +271,21 @@ msgstr "Liiska Lambarada Telefoonka"
 
 #: archive-template.php:271
 msgid ""
-"Using the current filter, this is intended for copy pasting a list of numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of starting a group conversation."
+"Using the current filter, this is intended for copy pasting a list of "
+"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
+"starting a group conversation."
 msgstr ""
-"Adiga oo isticmaalaya shaandheynta hadda, tan waxaa loogu talagalay in la koobi-dhigo liiska lambarra laguuna dhigo barnaamijka fariimaha, WhatsApp, Signal, iwm. Tani waa hab degdeg ah oo lagu bilaabo sheeko kooxeed."
+"Adiga oo isticmaalaya shaandheynta hadda, tan waxaa loogu talagalay in la "
+"koobi-dhigo liiska lambarra laguuna dhigo barnaamijka fariimaha, WhatsApp, "
+"Signal, iwm. Tani waa hab degdeg ah oo lagu bilaabo sheeko kooxeed."
 
 #: archive-template.php:275
 msgid ""
-"Using the current filter, this creates a basic points map of known locations of listed individuals."
+"Using the current filter, this creates a basic points map of known locations "
+"of listed individuals."
 msgstr ""
-"Adiga oo isticmaalaya shaandheynta hadda, tani waxay abuuraysaa khariidad dhibco aasaasi ah oo goobaha la yaqaan ee shaqsiyaadka liiska ku jira."
+"Adiga oo isticmaalaya shaandheynta hadda, tani waxay abuuraysaa khariidad "
+"dhibco aasaasi ah oo goobaha la yaqaan ee shaqsiyaadka liiska ku jira."
 
 #: archive-template.php:339
 msgid "No results found"
@@ -362,7 +383,8 @@ msgstr "Goob lama dooran"
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
-"Xulo dhammaan %1$s ee aad rabto inaad ka cusbooneysiiso liiska, oo ku cusbooneysii hoosta"
+"Xulo dhammaan %1$s ee aad rabto inaad ka cusbooneysiiso liiska, oo ku "
+"cusbooneysii hoosta"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -1017,7 +1039,8 @@ msgstr "Wareejintii way fashilantay Hubi qaabeynta goobta-ilaa-goobta."
 #: dt-assets/functions/enqueue-scripts.php:235
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr ""
-"Cusbooneysiinta wareejinta way guuldareysatay. Hubi qaabeynta goobta ilaa goobta."
+"Cusbooneysiinta wareejinta way guuldareysatay. Hubi qaabeynta goobta ilaa "
+"goobta."
 
 #: dt-assets/functions/enqueue-scripts.php:236
 msgid "Transfer update successful."
@@ -1152,11 +1175,13 @@ msgstr ""
 
 #: dt-assets/functions/enqueue-scripts.php:351
 #, php-format
-msgctxt "The exported csv data to contain the 6 visible Contact field(s) shown below."
+msgctxt ""
+"The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr ""
-"Xogta csv ee la dhoofiyay si ay u ka kooban tahay %2$s goobaha %1$s ee muuqda ee hoos ku qoran."
+"Xogta csv ee la dhoofiyay si ay u ka kooban tahay %2$s goobaha %1$s ee "
+"muuqda ee hoos ku qoran."
 
 #: dt-assets/functions/enqueue-scripts.php:354
 #: dt-assets/functions/enqueue-scripts.php:362
@@ -1486,16 +1511,24 @@ msgstr "Badhannada Waxqabadka Degdegga ah"
 #: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid ""
-"These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
+"These quick action buttons are here to aid you in updating the contact "
+"record faster and keep a count of how many times each action has be done."
 msgstr ""
-"Badhanadan ficilkan degdega ah waxay halkan u joogaan inay kaa caawiyaan inaad cusbooneysiiso diiwaanka xiriirka isla markaana aad tiriso inta jeer ee ficil kasta la qabtay."
+"Badhanadan ficilkan degdega ah waxay halkan u joogaan inay kaa caawiyaan "
+"inaad cusbooneysiiso diiwaanka xiriirka isla markaana aad tiriso inta jeer "
+"ee ficil kasta la qabtay."
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid ""
-"For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer. This action will also change the 'Seeker Path' to 'Contact Attempted'."
+"For example, If you click the 'No Answer' button 4 times, we will log that "
+"you attempted to reach this contact 4 times, but they did not answer. This "
+"action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"Tusaale ahaan, Haddii aad riixdo badhanka 'Jawaab La'aan' 4 jeer, waxaan ku qori doonnaa inaad isku dayday inaad xiriirkan la xiriirto 4 jeer, laakiin kamay jawaabin. Ficilkani wuxuu sidoo kale u beddeli doonaa 'Wadada Raadinayaha' 'Xiriirka la Isku Dayay'."
+"Tusaale ahaan, Haddii aad riixdo badhanka 'Jawaab La'aan' 4 jeer, waxaan ku "
+"qori doonnaa inaad isku dayday inaad xiriirkan la xiriirto 4 jeer, laakiin "
+"kamay jawaabin. Ficilkani wuxuu sidoo kale u beddeli doonaa 'Wadada "
+"Raadinayaha' 'Xiriirka la Isku Dayay'."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1510,28 +1543,33 @@ msgstr "2 xiriiro ayaa u baahan casriyeyn"
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
 msgstr ""
-"Halkani waa meesha aad ku duubi karto qoraallada shirarka iyo wada sheekaysiga."
+"Halkani waa meesha aad ku duubi karto qoraallada shirarka iyo wada "
+"sheekaysiga."
 
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid ""
-"Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
+"Type @ and the name of a user to mention them in a comment. This user will "
+"then receive a notification."
 msgstr ""
-"Nooca @ iyo magaca isticmaale si aad ugu sheegto faallo. Isticmaalahan ayaa markaa heli doona ogeysiis."
+"Nooca @ iyo magaca isticmaale si aad ugu sheegto faallo. Isticmaalahan ayaa "
+"markaa heli doona ogeysiis."
 
 #: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"This section also includes the history of activity, such as when the contact or group status became active etc."
+"This section also includes the history of activity, such as when the contact "
+"or group status became active etc."
 msgstr ""
-"Qeybtaan waxaa sidoo kale ku jira taariikhda waxqabadka, sida markii xiriirkii ama xaalad kooxeed ay firfircooneyd iwm."
+"Qeybtaan waxaa sidoo kale ku jira taariikhda waxqabadka, sida markii "
+"xiriirkii ama xaalad kooxeed ay firfircooneyd iwm."
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
-msgid ""
-"You can filter this section either by 'All', 'Comments', or 'Activity'."
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
-"Waxaad ku kala shaandheyn kartaa qaybtaan 'All', 'Faallooyin', ama 'Waxqabad'."
+"Waxaad ku kala shaandheyn kartaa qaybtaan 'All', 'Faallooyin', ama "
+"'Waxqabad'."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:117
 msgid "Your Profile"
@@ -1545,16 +1583,20 @@ msgstr "Aaggan waxaad ka arki kartaa cinwaankaaga isticmaale."
 #: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
 msgid ""
-"You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
+"You are not required to fill out any of these profile fields. They are "
+"optional to meet your team’s needs."
 msgstr ""
-"Looma baahna inaad buuxisid mid ka mid ah goobahan muuqaalka ah. Iyagu waa ikhtiyaari inay daboolaan baahida kooxdaada."
+"Looma baahna inaad buuxisid mid ka mid ah goobahan muuqaalka ah. Iyagu waa "
+"ikhtiyaari inay daboolaan baahida kooxdaada."
 
 #: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid ""
-"By clicking 'Edit', you will be able adjust things like the language that this system operates in."
+"By clicking 'Edit', you will be able adjust things like the language that "
+"this system operates in."
 msgstr ""
-"Gujinaya 'Wax ka beddel', waxaad awoodi doontaa inaad la qabsato waxyaabaha sida luqadda uu nidaamkani ku shaqeeyo."
+"Gujinaya 'Wax ka beddel', waxaad awoodi doontaa inaad la qabsato waxyaabaha "
+"sida luqadda uu nidaamkani ku shaqeeyo."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
 #: dt-users/users.php:169
@@ -1564,9 +1606,11 @@ msgstr "Goobaha"
 #: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid ""
-"These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
+"These are the areas you are responsible for. Clicking the 'Add' button will "
+"bring up a list of locations to choose from."
 msgstr ""
-"Kuwani waa meelaha aad ka masuulka tahay. Dhag siinta badhanka 'Add' waxay keeneysaa liiska meelaha laga kala xusho."
+"Kuwani waa meelaha aad ka masuulka tahay. Dhag siinta badhanka 'Add' waxay "
+"keeneysaa liiska meelaha laga kala xusho."
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
@@ -1576,9 +1620,13 @@ msgstr "Ogeysiiskaaga"
 #: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid ""
-"You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
+"You will receive web notifications and email notifications based on your "
+"notification preferences. To change your preference, click the toggle "
+"buttons."
 msgstr ""
-"Waxaad heli doontaa ogeysiisyada shabakadda iyo ogeysiisyada emaylka oo ku saleysan dookhaaga ogeysiiska. Si aad u bedesho doorbidkaaga, dhagsii badhamada rogrogmada."
+"Waxaad heli doontaa ogeysiisyada shabakadda iyo ogeysiisyada emaylka oo ku "
+"saleysan dookhaaga ogeysiiska. Si aad u bedesho doorbidkaaga, dhagsii "
+"badhamada rogrogmada."
 
 #: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
@@ -1593,16 +1641,24 @@ msgstr "Ogeysiisyo La Diiday: Toojintu waxay u muuqan doontaa cawl."
 #: dt-assets/parts/modals/modal-help.php:78
 msgctxt "Optional Documentation"
 msgid ""
-"Some of the types of notifications cannot be adjusted because they are required by the system."
+"Some of the types of notifications cannot be adjusted because they are "
+"required by the system."
 msgstr ""
-"Noocyada ogeysiisyada qaarkood lama hagaajin karo maxaa yeelay waxaa looga baahan yahay nidaamka."
+"Noocyada ogeysiisyada qaarkood lama hagaajin karo maxaa yeelay waxaa looga "
+"baahan yahay nidaamka."
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid ""
-"Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Adjust whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"Isku hagaaji haddii aad rabto inaad aragto ogeysiisyada ku saabsan faallooyinka cusub, isbeddelada macluumaadka xiriirka, La xiriir Milestones iyo cabbirada Caafimaadka Kooxda, iyo inaad adigu heli doontid ogeysiis wixii cusbooneysiin ah ee nidaamka ka dhaca."
+"Isku hagaaji haddii aad rabto inaad aragto ogeysiisyada ku saabsan "
+"faallooyinka cusub, isbeddelada macluumaadka xiriirka, La xiriir Milestones "
+"iyo cabbirada Caafimaadka Kooxda, iyo inaad adigu heli doontid ogeysiis "
+"wixii cusbooneysiin ah ee nidaamka ka dhaca."
 
 #: dt-assets/parts/modals/modal-help.php:87
 msgctxt "Optional Documentation"
@@ -1612,9 +1668,12 @@ msgstr "Ogeysiiska Bogga"
 #: dt-assets/parts/modals/modal-help.php:88
 msgctxt "Optional Documentation"
 msgid ""
-"This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
+"This Notifications Page is where you can read updates to users and groups. "
+"It displays notifications about activity on your records."
 msgstr ""
-"Boggan Ogeysiiska ah waa halka aad ka akhrisan karto cusbooneysiinta isticmaaleyaasha iyo kooxaha. Waxay ku soo bandhigeysaa ogeysiisyo ku saabsan waxqabadka diiwaankaaga."
+"Boggan Ogeysiiska ah waa halka aad ka akhrisan karto cusbooneysiinta "
+"isticmaaleyaasha iyo kooxaha. Waxay ku soo bandhigeysaa ogeysiisyo ku "
+"saabsan waxqabadka diiwaankaaga."
 
 #: dt-assets/parts/modals/modal-help.php:89
 msgctxt "Optional Documentation"
@@ -1626,14 +1685,17 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
-"Dhagsii badhanka 'All' si aad u muujiso liiska buuxa ee dhammaan ogeysiisyadaada."
+"Dhagsii badhanka 'All' si aad u muujiso liiska buuxa ee dhammaan "
+"ogeysiisyadaada."
 
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Unread' button to show the list of all of your unread notifications."
+"Click the 'Unread' button to show the list of all of your unread "
+"notifications."
 msgstr ""
-"Dhagsii badhanka '' Lama aqrin 'si aad u muujiso liiska dhammaan ogeysiisyadaada aan la aqrin."
+"Dhagsii badhanka '' Lama aqrin 'si aad u muujiso liiska dhammaan "
+"ogeysiisyadaada aan la aqrin."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
 #: template-notifications.php:66
@@ -1643,16 +1705,30 @@ msgstr "Dhammaan u calaamadee sida loo akhriyey"
 #: dt-assets/parts/modals/modal-help.php:93
 msgctxt "Optional Documentation"
 msgid ""
-"If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+"If you don't want to click each filled in circle on the right side of each "
+"row to indicate the notification has been read, then click the 'Mark All as "
+"Read' link at the top to quickly adjust all the messages that they have all "
+"been read."
 msgstr ""
-"Haddii aadan rabin inaad gujiso mid kasta oo ka buuxsan goobada oo ku yaal dhinaca midig ee saf kasta si aad u muujiso ogeysiiska in la akhriyey, ka dib riix xiriirka 'Mark All as Read' xagga sare si aad dhaqso ugu hagaajiso dhammaan farriimaha ay wada leeyihiin ayaa la aqriyay."
+"Haddii aadan rabin inaad gujiso mid kasta oo ka buuxsan goobada oo ku yaal "
+"dhinaca midig ee saf kasta si aad u muujiso ogeysiiska in la akhriyey, ka "
+"dib riix xiriirka 'Mark All as Read' xagga sare si aad dhaqso ugu hagaajiso "
+"dhammaan farriimaha ay wada leeyihiin ayaa la aqriyay."
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Click the 'Settings' link to go to the notifications settings area to adjust "
+"whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"Dhagsii xiriirka 'Settings' si aad ugu tagto aagga ogeysiinta aagga si aad ula qabsato haddii aad rabto inaad aragto ogeysiisyada ku saabsan faallooyinka cusub, isbeddelada macluumaadka xiriirka, La xiriir Milestones iyo cabbirada Caafimaadka Kooxda, iyo haddii aad adigu heli doonto ogeysiis wixii cusbooneysiin ah ee ka dhaca nidaamka."
+"Dhagsii xiriirka 'Settings' si aad ugu tagto aagga ogeysiinta aagga si aad "
+"ula qabsato haddii aad rabto inaad aragto ogeysiisyada ku saabsan "
+"faallooyinka cusub, isbeddelada macluumaadka xiriirka, La xiriir Milestones "
+"iyo cabbirada Caafimaadka Kooxda, iyo haddii aad adigu heli doonto ogeysiis "
+"wixii cusbooneysiin ah ee ka dhaca nidaamka."
 
 #: dt-assets/parts/modals/modal-help.php:100
 msgctxt "Optional Documentation"
@@ -1662,9 +1738,15 @@ msgstr "Bogga Xiriirka nuqul"
 #: dt-assets/parts/modals/modal-help.php:101
 msgctxt "Optional Documentation"
 msgid ""
-"This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
+"This Duplicate Contact Page is where you can review, decline or merge "
+"contacts that have been picked up by the system (checking against their "
+"name, email and phone) as possibly being duplicates of another already "
+"existing contact."
 msgstr ""
-"Boggan Xiriirka Labada Nuqul waa meesha aad dib ugu eegi karto, ku diidi karto ama aad ku milmi karto xiriirada uu soo qabtay nidaamku (hubinta magacooda, emaylkooda iyo taleefankooda) maadaama ay u egtahay inuu yahay nuqul xiriir kale oo horey u jiray."
+"Boggan Xiriirka Labada Nuqul waa meesha aad dib ugu eegi karto, ku diidi "
+"karto ama aad ku milmi karto xiriirada uu soo qabtay nidaamku (hubinta "
+"magacooda, emaylkooda iyo taleefankooda) maadaama ay u egtahay inuu yahay "
+"nuqul xiriir kale oo horey u jiray."
 
 #: dt-assets/parts/modals/modal-help.php:124
 #: dt-assets/parts/modals/modal-help.php:174
@@ -1698,9 +1780,11 @@ msgstr "Sawir koodhka QR si aad ugu furto xiriiriyaha sixirka aaladda gacanta."
 
 #: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
 msgid ""
-"Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
+"Reset the security code. No data is removed. Only access. The previous link "
+"will be disabled and another one created."
 msgstr ""
-"Dib u deji koodhka amniga. Xog lama tirtiro. Kaliya gelitaanka. Xiriiriyihii hore waa la joojin doonaa mid kalena waa la sameyn doonaa."
+"Dib u deji koodhka amniga. Xog lama tirtiro. Kaliya gelitaanka. Xiriiriyihii "
+"hore waa la joojin doonaa mid kalena waa la sameyn doonaa."
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
@@ -1795,9 +1879,11 @@ msgstr "Xiriirkan waxaa lala wadaagayaa:"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid ""
-"Set a reminder or a task with a note and receive a notification on the due date."
+"Set a reminder or a task with a note and receive a notification on the due "
+"date."
 msgstr ""
-"Calan xusuusin ama hawl qoraal ah oo aad ku hesho ogeysiis taariikhda la filayo."
+"Calan xusuusin ama hawl qoraal ah oo aad ku hesho ogeysiis taariikhda la "
+"filayo."
 
 #: dt-assets/parts/modals/modal-tasks.php:13
 msgid "Task Type"
@@ -2037,9 +2123,11 @@ msgstr "Xiriirku waa ku cusub yahay nidaamka."
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
-"This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
+"This contact has made it known that they no longer want to continue or you "
+"have decided not to continue with him/her."
 msgstr ""
-"Xidhiidhkani wuxuu u sheegay in aysan doonaynin inay sii wadaan ama aad go'aansatay inaadan la sii joogin isaga / iyada."
+"Xidhiidhkani wuxuu u sheegay in aysan doonaynin inay sii wadaan ama aad "
+"go'aansatay inaadan la sii joogin isaga / iyada."
 
 #: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
@@ -2059,7 +2147,8 @@ msgstr "Hoosaad loo xilsaaray"
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
-"La xiriir ama Isticmaalaha caawiya U-qoondeeyaha Adeegsade si uu ula socdo xiriirka."
+"La xiriir ama Isticmaalaha caawiya U-qoondeeyaha Adeegsade si uu ula socdo "
+"xiriirka."
 
 #: dt-contacts/base-setup.php:360
 msgid "Sub-assigned on other Contacts"
@@ -2089,7 +2178,8 @@ msgstr "Wareejinta"
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr ""
-"Xiriirada laga wareejiyay iskaashi lala yeesho goob kale oo Disciple.Tools ah."
+"Xiriirada laga wareejiyay iskaashi lala yeesho goob kale oo Disciple.Tools "
+"ah."
 
 #: dt-contacts/base-setup.php:396 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:616
@@ -2279,9 +2369,13 @@ msgstr "Horaa loogu wareejiyay %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
-"NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
+"NOTE: You have already transferred this contact. Transferring again might "
+"create duplicates. Do you still want to override this warning and continue "
+"with your transfer?"
 msgstr ""
-"FIIRO GAAR AH: Horeba waad u wareejisay xiriirkan. Wareejinta mar kale ayaa abuuri karta nuqullo. Wali miyaad dooneysaa inaad ka takhalusto digniintan oo aad sii wadato wareejintaada?"
+"FIIRO GAAR AH: Horeba waad u wareejisay xiriirkan. Wareejinta mar kale ayaa "
+"abuuri karta nuqullo. Wali miyaad dooneysaa inaad ka takhalusto digniintan "
+"oo aad sii wadato wareejintaada?"
 
 #: dt-contacts/contacts-transfer.php:281
 msgid "Override and Continue"
@@ -2376,9 +2470,11 @@ msgstr "Dariiqa Raadinta"
 #: dt-contacts/module-access.php:103
 msgctxt "Seeker Path field description"
 msgid ""
-"Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
+"Set the status of your progression with the contact. These are the steps "
+"that happen in a specific order to help a contact move forward."
 msgstr ""
-"Calan xaaladda horumarkaaga la xiriir. Kuwani waa tallaabooyinka ku dhaca amar qaas ah si looga caawiyo xiriiriyaha inuu horay ugu socdo."
+"Calan xaaladda horumarkaaga la xiriir. Kuwani waa tallaabooyinka ku dhaca "
+"amar qaas ah si looga caawiyo xiriiriyaha inuu horay ugu socdo."
 
 #: dt-contacts/module-access.php:107
 msgid "Contact Attempt Needed"
@@ -2415,7 +2511,8 @@ msgstr "Diyaar uma ahan"
 #: dt-contacts/module-access.php:149
 msgctxt "Contact Status field description"
 msgid ""
-"There is not enough information to move forward with the contact at this time."
+"There is not enough information to move forward with the contact at this "
+"time."
 msgstr ""
 "Ma jiro macluumaad ku filan oo horay loogu sii wado la xiriirida waqtigan."
 
@@ -2435,7 +2532,8 @@ msgstr "Sugaya in la aqbalo"
 #: dt-contacts/module-access.php:159
 msgctxt "Contact Status field description"
 msgid ""
-"The contact has been assigned to someone, but has not yet been accepted by that person."
+"The contact has been assigned to someone, but has not yet been accepted by "
+"that person."
 msgstr ""
 "Xiriirka waxaa loo xilsaaray qof, laakiin wali qofkaasi ma uusan aqbalin."
 
@@ -2445,8 +2543,7 @@ msgstr "Hakad galay"
 
 #: dt-contacts/module-access.php:165
 msgctxt "Contact Status field description"
-msgid ""
-"This contact is currently on hold (i.e. on vacation or not responding)."
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr ""
 "Xidhiidhkani hadda waa hakad (yacni fasax ama wax jawaab ah kama bixin)."
 
@@ -2491,9 +2588,11 @@ msgstr "Sababta oo Hakad gashay"
 #: dt-contacts/module-access.php:212
 msgctxt "Optional Documentation"
 msgid ""
-"A paused contact is one you are not currently interacting with but expect to in the future."
+"A paused contact is one you are not currently interacting with but expect to "
+"in the future."
 msgstr ""
-"Xiriirka hakadka ku jira waa midka aadan hada la macaamilin laakiin aad rajeyneysid mustaqbalka."
+"Xiriirka hakadka ku jira waa midka aadan hada la macaamilin laakiin aad "
+"rajeyneysid mustaqbalka."
 
 #: dt-contacts/module-access.php:216
 msgctxt "Reason Paused label"
@@ -2534,7 +2633,8 @@ msgstr "Kubaddu waxay ku jirtaa maxkamadda xiriirka"
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr ""
-"Waxaan rabnaa inaan aragno haddii / sida xiriirku uga jawaabayo farriimaha qoraalka otomaatiga ah"
+"Waxaan rabnaa inaan aragno haddii / sida xiriirku uga jawaabayo farriimaha "
+"qoraalka otomaatiga ah"
 
 #: dt-contacts/module-access.php:230
 msgid "Reason Archived"
@@ -2629,7 +2729,8 @@ msgctxt "Optional Documentation"
 msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
 msgstr ""
-"Ololeyaal suuq-geyn ah ama waxqabadyo marin-u-hel ah oo xiriirkani la falgalay."
+"Ololeyaal suuq-geyn ah ama waxqabadyo marin-u-hel ah oo xiriirkani la "
+"falgalay."
 
 #: dt-contacts/module-access.php:291
 msgid "Meeting Scheduled"
@@ -2777,9 +2878,13 @@ msgstr "Milestones aaminaad"
 #: dt-contacts/module-faith.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
+"Assign which milestones the contact has reached in their faith journey. "
+"These are points in a contact’s spiritual journey worth celebrating but can "
+"happen in any order."
 msgstr ""
-"U qoondee taqasusyada uu xiriirku ku gaadhay safarkooda iimaan. Kuwani waa dhibco xiriirka safarka ruuxiga ah ee mudan in loo dabaaldego laakiin waxay u dhici karaan si kastoo ay u kala horreeyaan."
+"U qoondee taqasusyada uu xiriirku ku gaadhay safarkooda iimaan. Kuwani waa "
+"dhibco xiriirka safarka ruuxiga ah ee mudan in loo dabaaldego laakiin waxay "
+"u dhici karaan si kastoo ay u kala horreeyaan."
 
 #: dt-contacts/module-faith.php:48
 msgid "Has Bible"
@@ -2845,7 +2950,8 @@ msgstr "Xiriirkan wuxuu ku matalayaa adigoo isticmaale ah."
 #: dt-contacts/user-module.php:73
 msgid "Please update contact details on your profile page instead of here."
 msgstr ""
-"Fadlan cusbooneysii faahfaahinta xiriirka bogga profile-kaaga halkani beddelkeed."
+"Fadlan cusbooneysii faahfaahinta xiriirka bogga profile-kaaga halkani "
+"beddelkeed."
 
 #: dt-contacts/user-module.php:73
 msgid "Profile Settings"
@@ -2876,14 +2982,16 @@ msgctxt "Step 1 of link user"
 msgid ""
 "To link to an existing user, first, find the user using the field below."
 msgstr ""
-"Si aad ugu xirto isticmaale jira, marka hore, raadi isticmaalaha adoo isticmaalaya berrinka hoose."
+"Si aad ugu xirto isticmaale jira, marka hore, raadi isticmaalaha adoo "
+"isticmaalaya berrinka hoose."
 
 #: dt-contacts/user-module.php:152
 msgctxt "Step 2 of link user"
 msgid ""
 "To finish the linking, merge this contact with the existing user details."
 msgstr ""
-"Si aad u dhamayso isku xidhka, ku milmaan xiriirkan faahfaahinta isticmaaleha jira."
+"Si aad u dhamayso isku xidhka, ku milmaan xiriirkan faahfaahinta "
+"isticmaaleha jira."
 
 #: dt-core/configuration/class-roles.php:81
 #: dt-core/configuration/class-roles.php:245
@@ -2937,9 +3045,11 @@ msgstr "La xiriir Milestones iyo qiyaasaha Caafimaadka Kooxda"
 
 #: dt-core/configuration/config-site-defaults.php:300
 msgid ""
-"This contact is active but there is no record of anybody contacting them. Please do contact them."
+"This contact is active but there is no record of anybody contacting them. "
+"Please do contact them."
 msgstr ""
-"Xiriirkani waa mid firfircoon laakiin ma jiraan wax diiwaan ah oo ku saabsan qof kasta oo la xiriiraya. Fadlan la xiriir iyaga."
+"Xiriirkani waa mid firfircoon laakiin ma jiraan wax diiwaan ah oo ku saabsan "
+"qof kasta oo la xiriiraya. Fadlan la xiriir iyaga."
 
 #: dt-core/configuration/config-site-defaults.php:306
 msgid "Please try connecting with this contact again."
@@ -2951,7 +3061,8 @@ msgstr "Fadlan isku day inaad ku xirnaato xiriirkan markale."
 #: dt-core/configuration/config-site-defaults.php:330
 #: dt-core/configuration/config-site-defaults.php:336
 msgid ""
-"We haven't heard about this person in a while. Do you have an update for this contact?"
+"We haven't heard about this person in a while. Do you have an update for "
+"this contact?"
 msgstr "Wax muddo ah kama maqalno qofkan. Ma haysaa cusbooneysiin xiriirkan?"
 
 #: dt-core/configuration/config-site-defaults.php:346
@@ -2990,7 +3101,8 @@ msgstr "Telefoonka Shaqada"
 #: dt-core/configuration/config-site-defaults.php:401
 msgid "Work phone is for distribution to contacts and seekers."
 msgstr ""
-"Telefoonka shaqada ayaa loogu talagalay in loo qaybiyo dadka lala xiriirayo iyo kuwa doonaya."
+"Telefoonka shaqada ayaa loogu talagalay in loo qaybiyo dadka lala xiriirayo "
+"iyo kuwa doonaya."
 
 #: dt-core/configuration/config-site-defaults.php:405
 msgid "Work Email"
@@ -3008,7 +3120,8 @@ msgstr "Shaqee Facebook"
 #: dt-core/configuration/config-site-defaults.php:415
 msgid "Work Facebook is for distribution to contacts and seekers."
 msgstr ""
-"Shaqada Facebook ayaa loogu talagalay in loo qaybiyo dadka lala xiriirayo iyo kuwa doonaya."
+"Shaqada Facebook ayaa loogu talagalay in loo qaybiyo dadka lala xiriirayo "
+"iyo kuwa doonaya."
 
 #: dt-core/configuration/config-site-defaults.php:419
 msgid "Work WhatsApp"
@@ -3017,7 +3130,8 @@ msgstr "Shaqee WhatsApp"
 #: dt-core/configuration/config-site-defaults.php:422
 msgid "Work WhatsApp is for distribution to contacts and seekers."
 msgstr ""
-"Work WhatsApp waxaa loogu talagalay in loo qaybiyo dadka lala xiriirayo iyo kuwa doonaya."
+"Work WhatsApp waxaa loogu talagalay in loo qaybiyo dadka lala xiriirayo iyo "
+"kuwa doonaya."
 
 #: dt-core/configuration/config-site-defaults.php:429
 msgid "thumbs up"
@@ -3111,9 +3225,11 @@ msgstr "Si aad dib ugu dhigto lambarkaaga sirta ah, booqo cinwaanka soo socda:"
 
 #: dt-core/dt-storage.php:223
 msgid ""
-"Something went wrong. Please try again or have an admin check the connection settings."
+"Something went wrong. Please try again or have an admin check the connection "
+"settings."
 msgstr ""
-"Wax baa qaldamay. Fadlan isku day mar kale ama maamule ha hubiyo dejinta xiriirka."
+"Wax baa qaldamay. Fadlan isku day mar kale ama maamule ha hubiyo dejinta "
+"xiriirka."
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3150,9 +3266,11 @@ msgstr "Si bilaash ah loo siiyay, laakiin ma aha jaban"
 
 #: dt-core/release-notifications.php:97
 msgid ""
-"Disciple.Tools relies on contributions for continued development and maintenance. Will you join the team?"
+"Disciple.Tools relies on contributions for continued development and "
+"maintenance. Will you join the team?"
 msgstr ""
-"Disciple.Tools waxay ku tiirsantahay tabarucaadka horumarinta iyo dayactirka joogtada ah. Ma ku biiri doontaa kooxda?"
+"Disciple.Tools waxay ku tiirsantahay tabarucaadka horumarinta iyo dayactirka "
+"joogtada ah. Ma ku biiri doontaa kooxda?"
 
 #: dt-core/release-notifications.php:99
 msgid "Give"
@@ -3165,7 +3283,8 @@ msgstr "Turjun"
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:735
 msgid ""
-"Translate Disciple.Tools into your language or help make a translation better."
+"Translate Disciple.Tools into your language or help make a translation "
+"better."
 msgstr ""
 "U turjun Disciple.Tools luqaddaada ama ka caawi hagaajinta turjumaadda."
 
@@ -3175,9 +3294,11 @@ msgstr "Dhis ama Diiwaangeli"
 
 #: dt-core/release-notifications.php:114
 msgid ""
-"Make Disciple.Tools better by building a feature or helping us make the documentation better."
+"Make Disciple.Tools better by building a feature or helping us make the "
+"documentation better."
 msgstr ""
-"Ka dhig Disciple.Tools mid wanaagsan adiga oo dhisaya astaan ama naga caawiya hagaajinta dukumeentiyada."
+"Ka dhig Disciple.Tools mid wanaagsan adiga oo dhisaya astaan ama naga "
+"caawiya hagaajinta dukumeentiyada."
 
 #: dt-core/release-notifications.php:116
 msgid "Find out more"
@@ -3236,9 +3357,13 @@ msgstr "Tababaraha Kooxda / Beerista Church"
 #: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
-"The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
+"The person who planted and/or is coaching this group. Only one person can be "
+"assigned to a group while multiple people can be coaches / church planters "
+"of this group."
 msgstr ""
-"Qofka beeray iyo / ama tababaraha kooxdan. Kaliya hal qof ayaa loo qoondeyn karaa koox halka dad badan ay noqon karaan tababarayaal / beeraley kiniisad kooxdan ah."
+"Qofka beeray iyo / ama tababaraha kooxdan. Kaliya hal qof ayaa loo qoondeyn "
+"karaa koox halka dad badan ay noqon karaan tababarayaal / beeraley kiniisad "
+"kooxdan ah."
 
 #: dt-groups/base-setup.php:160
 msgid "Group Type"
@@ -3257,7 +3382,8 @@ msgstr "Koox u badan gaalada."
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr ""
-"Koox haysata 3 ama in ka badan oo rumaystayaal ah laakiin aan u aqoonsanayn inay yihiin kiniisad."
+"Koox haysata 3 ama in ka badan oo rumaystayaal ah laakiin aan u aqoonsanayn "
+"inay yihiin kiniisad."
 
 #: dt-groups/base-setup.php:173
 msgid "Church"
@@ -3278,7 +3404,8 @@ msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr ""
-"Koox gaar ah oo aan u kulmin sidii kaniisad (ama isku dayaysa inay kaniisad noqoto)."
+"Koox gaar ah oo aan u kulmin sidii kaniisad (ama isku dayaysa inay kaniisad "
+"noqoto)."
 
 #: dt-groups/base-setup.php:192 dt-groups/base-setup.php:603
 msgid "Church Health"
@@ -3416,9 +3543,15 @@ msgstr "Tirinta Xubnaha"
 #: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
-"The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
+"The number of members in this group. It will automatically be updated when "
+"new members are added or removed in the member list. Change this number "
+"manually to include people who may not be in the system but are also members "
+"of the group."
 msgstr ""
-"Tirada xubnaha kooxdan. Si otomaatig ah ayaa loo cusbooneysiin doonaa markii xubno cusub lagu daro ama laga saaro liiska xubnaha. U badal lambarkan gacanta si loogu daro dadka laga yaabo inaysan ku jirin nidaamka laakiin sidoo kale xubno ka ah kooxda."
+"Tirada xubnaha kooxdan. Si otomaatig ah ayaa loo cusbooneysiin doonaa markii "
+"xubno cusub lagu daro ama laga saaro liiska xubnaha. U badal lambarkan "
+"gacanta si loogu daro dadka laga yaabo inaysan ku jirin nidaamka laakiin "
+"sidoo kale xubno ka ah kooxda."
 
 #: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
 #: dt-groups/base-setup.php:602
@@ -3450,9 +3583,12 @@ msgstr "Kooxda Faca"
 #: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
-"A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+"A related group that isn't a parent/child in relationship. It might indicate "
+"groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
-"Koox xiriir la leh oo aan waalid / ilmo xiriir wadaag ahayn. Waxa laga yaabaa inay muujiso kooxo iskaashanaya, oo qarka u saaran inay ku milmaan, dhowaan kala qaybsameen, iwm."
+"Koox xiriir la leh oo aan waalid / ilmo xiriir wadaag ahayn. Waxa laga "
+"yaabaa inay muujiso kooxo iskaashanaya, oo qarka u saaran inay ku milmaan, "
+"dhowaan kala qaybsameen, iwm."
 
 #: dt-groups/base-setup.php:341
 msgid "Child Group"
@@ -3502,9 +3638,11 @@ msgstr "Isku dhufashada"
 #: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
-"Number of people helping start other groups. How many members are multiplying?"
+"Number of people helping start other groups. How many members are "
+"multiplying?"
 msgstr ""
-"Tirada dadka ka caawinaya bilaabida kooxaha kale. Immisa xubnood ayaa tarmaya?"
+"Tirada dadka ka caawinaya bilaabida kooxaha kale. Immisa xubnood ayaa "
+"tarmaya?"
 
 #: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
@@ -3539,7 +3677,8 @@ msgstr "Kudar xubnaha xiriirada jira"
 #: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
-"In the 'Member List' field, type the name of an existing contact to add them to this group."
+"In the 'Member List' field, type the name of an existing contact to add them "
+"to this group."
 msgstr ""
 "Meesha 'Liiska Xubnaha', ku qor magaca xiriir jira si aad ugu darto kooxdan."
 
@@ -3550,20 +3689,27 @@ msgstr "Afar Goobood"
 #: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
-"There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
+"There are 5 squares in the Four Fields diagram. Starting in the top left "
+"quadrant and going clockwise and the fifth being in the middle, they stand "
+"for:"
 msgstr ""
-"Waxaa jira 5 laba jibbaaran shaxda afarta aag. Laga bilaabo bidix ee bidix ee kore isla markaana loo socdo saacad isla markaana kan shanaad uu yahay dhexda, waxay u taagan yihiin:"
+"Waxaa jira 5 laba jibbaaran shaxda afarta aag. Laga bilaabo bidix ee bidix "
+"ee kore isla markaana loo socdo saacad isla markaana kan shanaad uu yahay "
+"dhexda, waxay u taagan yihiin:"
 
 #: dt-login/login-template.php:68
 msgid ""
-"Your password reset link appears to be invalid. Please request a new link below."
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
 msgstr ""
-"Xiriiriyaha dib-u-dejinta eraygaaga sirta ah wuxuu u muuqdaa mid aan sax ahayn. Fadlan codso xiriiriye cusub hoos."
+"Xiriiriyaha dib-u-dejinta eraygaaga sirta ah wuxuu u muuqdaa mid aan sax "
+"ahayn. Fadlan codso xiriiriye cusub hoos."
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
 msgstr ""
-"Xiriiriyaha dib-u-dejinta eraygaaga sirta ah wuu dhacay. Fadlan codso xiriiriye cusub hoos."
+"Xiriiriyaha dib-u-dejinta eraygaaga sirta ah wuu dhacay. Fadlan codso "
+"xiriiriye cusub hoos."
 
 #: dt-login/login-template.php:84 dt-login/login-template.php:109
 msgid "Get New Password"
@@ -3575,9 +3721,11 @@ msgstr "Cinwaanka Iimaylka"
 
 #: dt-login/login-template.php:112
 msgid ""
-"Your password reset email has been sent. Check your email or junk mail for the link to reset your password."
+"Your password reset email has been sent. Check your email or junk mail for "
+"the link to reset your password."
 msgstr ""
-"Iimaylka dib-u-dejinta eraygaaga sirta ah waa la diray. Hubi iimaylkaaga ama qashinka fariimaha xiriiriyaha lagu dib-u-dejiyo eraygaaga sirta ah."
+"Iimaylka dib-u-dejinta eraygaaga sirta ah waa la diray. Hubi iimaylkaaga ama "
+"qashinka fariimaha xiriiriyaha lagu dib-u-dejiyo eraygaaga sirta ah."
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
@@ -3767,9 +3915,11 @@ msgstr "Baabtiisyada"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid ""
-"Number of baptized contact with a baptism date in date range and baptized by connection"
+"Number of baptized contact with a baptism date in date range and baptized by "
+"connection"
 msgstr ""
-"Tirada xiriirka la baabtiisay iyo taariikhda baabtiiska ee taariikhda u dhexeysa oo lagu baabtiisay xiriir"
+"Tirada xiriirka la baabtiisay iyo taariikhda baabtiiska ee taariikhda u "
+"dhexeysa oo lagu baabtiisay xiriir"
 
 #: dt-metrics/combined/critical-path.php:277
 #, php-format
@@ -3822,9 +3972,11 @@ msgstr "Kaniisadaha Beerta"
 
 #: dt-metrics/combined/critical-path.php:333
 msgid ""
-"Number of contacts or users who have started a church and are marked as the church coach"
+"Number of contacts or users who have started a church and are marked as the "
+"church coach"
 msgstr ""
-"Tirada dadka lala xiriirayo ama adeegsadayaasha bilaabay kaniisadda loona calaamadeeyay tababaraha kaniisadda"
+"Tirada dadka lala xiriirayo ama adeegsadayaasha bilaabay kaniisadda loona "
+"calaamadeeyay tababaraha kaniisadda"
 
 #: dt-metrics/combined/daily-activity.php:22
 #: dt-metrics/combined/daily-activity.php:71
@@ -3866,7 +4018,8 @@ msgstr[1] ""
 msgid ""
 "Click on a timeline day summary to display a detailed list of metrics below."
 msgstr ""
-"Dhagsii koobta maalinta jadwalka si aad u muujiso liis faahfaahsan oo cabbirada ah hoos."
+"Dhagsii koobta maalinta jadwalka si aad u muujiso liis faahfaahsan oo "
+"cabbirada ah hoos."
 
 #. Template Name of the theme
 #: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
@@ -3907,7 +4060,8 @@ msgstr "Khariidado isku dhafan"
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
 msgstr ""
-"Si aad u aragto khariidadan, waxaa loo baahan yahay furaha mapbox; halkan riix si aad u darto."
+"Si aad u aragto khariidadan, waxaa loo baahan yahay furaha mapbox; halkan "
+"riix si aad u darto."
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -4025,8 +4179,7 @@ msgid "Active contacts, by source and seeker path"
 msgstr "Xiriirada firfircoon, ilaha iyo dariiqa raadinta"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
-msgid ""
-"This is displaying only the contacts with an 'active' status right now."
+msgid "This is displaying only the contacts with an 'active' status right now."
 msgstr ""
 "Tani waxay muujineysaa oo keliya xiriirada leh xaalad 'firfircoon' hadda."
 
@@ -4036,9 +4189,11 @@ msgstr "Xiriiro firfircoon, asal ahaan iyo rumaysad ahaan"
 
 #: dt-metrics/contacts/sources.php:98
 msgid ""
-"A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+"A contact can come from more than one source, and it can have more than one "
+"faith milestone at the same time."
 msgstr ""
-"Xiriirku wuxuu ka imaan karaa in kabadan hal ilo, wuxuuna yeelan karaa wax kabadan hal iimaan hal mar isla waqtigaas."
+"Xiriirku wuxuu ka imaan karaa in kabadan hal ilo, wuxuuna yeelan karaa wax "
+"kabadan hal iimaan hal mar isla waqtigaas."
 
 #: dt-metrics/counter.php:135
 msgid "First Meetings"
@@ -4370,9 +4525,11 @@ msgstr "Jaantus Fudud"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
-"This chart shows the total number for each field value at the end of the selected date."
+"This chart shows the total number for each field value at the end of the "
+"selected date."
 msgstr ""
-"Jaantusku wuxuu muujinayaa tirada guud ee qiimaha goob walba dhamaadka taariikhda la doortay."
+"Jaantusku wuxuu muujinayaa tirada guud ee qiimaha goob walba dhamaadka "
+"taariikhda la doortay."
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
@@ -4682,11 +4839,17 @@ msgstr "Faahfaahin"
 
 #: dt-posts/dt-posts.php:2796
 #, php-format
-msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
+msgctxt ""
+"@[user name][user_id] - User Fred has requested access to Contact [contact "
+"name][contact_id]. If desired, share this record with the user to grant "
+"access."
 msgid ""
-"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
+"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
+"desired, share this record with the user to grant access."
 msgstr ""
-"@[%1$s](%2$s) - Isticmaalaha %3$s wuxuu codsaday marin u helka %4$s [%5$s](%6$s). Haddii aad rabto, la wadaag rikoodhkan isticmaaleha si aad u siiso marin."
+"@[%1$s](%2$s) - Isticmaalaha %3$s wuxuu codsaday marin u helka %4$s [%5$s]"
+"(%6$s). Haddii aad rabto, la wadaag rikoodhkan isticmaaleha si aad u siiso "
+"marin."
 
 #: dt-posts/dt-posts.php:2802
 msgid "Access Request"
@@ -5179,9 +5342,11 @@ msgstr "Tirtir oo bedel xiriiriyaha barnaamijka"
 
 #: dt-reports/magic-url-setup.php:462
 msgid ""
-"This app is not yet activated for this user. Enable the app to generate a link."
+"This app is not yet activated for this user. Enable the app to generate a "
+"link."
 msgstr ""
-"Barnaamijkan weli looma hawlgelin isticmaalahanThis. Hawlgeli barnaamijka si uu u sameeyo xiriiriye."
+"Barnaamijkan weli looma hawlgelin isticmaalahanThis. Hawlgeli barnaamijka si "
+"uu u sameeyo xiriiriye."
 
 #: dt-reports/magic-url-setup.php:465 template-settings.php:265
 msgid "App Activation"
@@ -5259,7 +5424,8 @@ msgstr "Daboolida Masuuliyada"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Maamulaha waa inuu hawlgeliyaa ikhtiyaarka \\\"Ku dar Isticmaalayaal Cusub\\\" dejinta goobaha badan:"
+"Maamulaha waa inuu hawlgeliyaa ikhtiyaarka \\\"Ku dar Isticmaalayaal Cusub\\"
+"\" dejinta goobaha badan:"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"
@@ -5329,9 +5495,12 @@ msgstr "Kor u qaadista xiriirka"
 
 #: dt-users/template-new-user.php:260
 msgid ""
-"The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data."
+"The new user will have access to all the fields and comments on this contact "
+"record. We suggest archiving the comments if they contain sensitive data."
 msgstr ""
-"Isticmaalaha cusubi wuxuu geli doonaa dhammaan goobaha iyo faallooyinka diiwaanka xiriirka. Waxaan kugu talineynaa inaad kaydsato faallooyinka haddii ay ku jiraan xog xasaasi ah."
+"Isticmaalaha cusubi wuxuu geli doonaa dhammaan goobaha iyo faallooyinka "
+"diiwaanka xiriirka. Waxaan kugu talineynaa inaad kaydsato faallooyinka "
+"haddii ay ku jiraan xog xasaasi ah."
 
 #: dt-users/template-new-user.php:267
 msgid "Continue and archive comments"
@@ -5359,9 +5528,11 @@ msgstr "Ma rabtaa inaad la mideeyso goobaha diiwaanka duugga ah kan cusub?"
 
 #: dt-users/template-no-permission.php:92
 msgid ""
-"You are registered but an administrator needs to assign you access permissions."
+"You are registered but an administrator needs to assign you access "
+"permissions."
 msgstr ""
-"Waa la diiwaan geliyay laakiin maamule ayaa u baahan inuu kuu xilsaaro ogolaanshaha gelitaanka."
+"Waa la diiwaan geliyay laakiin maamule ayaa u baahan inuu kuu xilsaaro "
+"ogolaanshaha gelitaanka."
 
 #: dt-users/template-user-management.php:63
 msgid "Multiplier Name"
@@ -5395,9 +5566,11 @@ msgstr "Helitaanka"
 
 #: dt-users/template-user-management.php:164
 msgid ""
-"Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be unavailable so the Dispatcher will know your "
+"availability to receive new contacts"
 msgstr ""
-"Calan taariikhaha aadan heli doonin sidaa darteed Dispatcher-ka ayaa ogaan doona helitaankaaga si uu u helo xiriiro cusub"
+"Calan taariikhaha aadan heli doonin sidaa darteed Dispatcher-ka ayaa ogaan "
+"doona helitaankaaga si uu u helo xiriiro cusub"
 
 #: dt-users/template-user-management.php:166
 msgid "Schedule Unavailability"
@@ -5453,9 +5626,11 @@ msgstr "Dhammaan ilaha - waxay siinayaan helitaanka dhammaan xiriirada"
 #: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
-"Custom - Access own contacts and all the contacts of the selected sources below"
+"Custom - Access own contacts and all the contacts of the selected sources "
+"below"
 msgstr ""
-"Custom - Helitaanka xiriiro u gaar ah iyo dhammaan xiriirada ilaha la xushay ee hoose"
+"Custom - Helitaanka xiriiro u gaar ah iyo dhammaan xiriirada ilaha la xushay "
+"ee hoose"
 
 #: dt-users/template-user-management.php:346
 #: dt-users/user-hooks-and-config.php:637
@@ -5501,7 +5676,8 @@ msgstr "Loo xilsaaray oo aan la aqbalin"
 #: dt-users/template-user-management.php:449
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr ""
-"Waqtiga laga soo bilaabo loo qoondeeyey xiriiriyaha waa la aqbalay 10kii xiriir ee ugu dambeeyay"
+"Waqtiga laga soo bilaabo loo qoondeeyey xiriiriyaha waa la aqbalay 10kii "
+"xiriir ee ugu dambeeyay"
 
 #: dt-users/template-user-management.php:451
 msgid "Accepted with no contact attempt"
@@ -5519,9 +5695,11 @@ msgstr ""
 #: dt-users/user-hooks-and-config.php:196
 #, php-format
 msgid ""
-"Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users"
+"Welcome %1$s, this is your personal contact record. Feel free to update the "
+"fields and @mention me or other users"
 msgstr ""
-"Ku soo dhawoow %1$s, kani waa diiwaankaaga xiriirka shaqsiga. Si xor ah u cusbooneysii goobaha oo @sheeg aniga ama isticmaalayaal kale"
+"Ku soo dhawoow %1$s, kani waa diiwaankaaga xiriirka shaqsiga. Si xor ah u "
+"cusbooneysii goobaha oo @sheeg aniga ama isticmaalayaal kale"
 
 #: dt-users/user-hooks-and-config.php:312
 #: dt-users/user-hooks-and-config.php:350
@@ -5545,7 +5723,9 @@ msgstr "Salaan %s,"
 
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
-msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
+msgctxt ""
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "Waxaa laguugu casuumay inaad ku biirto %1$s ee %2$s"
 
@@ -5748,9 +5928,14 @@ msgstr "Javascript waa in karti loo siiyaa si boggan ugu shaqeeyo si sax ah."
 
 #: header.php:61
 msgid ""
-"You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
+"You seem to be using an out-of-date web browser. Without the most up-to-date "
+"version of your browser, this may site may not function correctly. Please "
+"note that Internet Explorer is not supported."
 msgstr ""
-"Waxaad moodaa inaad isticmaaleyso biraawsar biraawsar waqtigiisu dhacay. Iyadoo aan lahayn nooca ugu dambeeya ee biraawsarkaaga, boggan waxaa laga yaabaa inuusan si sax ah u shaqeyn. Fadlan la soco in Internet Explorer aan la taageerin."
+"Waxaad moodaa inaad isticmaaleyso biraawsar biraawsar waqtigiisu dhacay. "
+"Iyadoo aan lahayn nooca ugu dambeeya ee biraawsarkaaga, boggan waxaa laga "
+"yaabaa inuusan si sax ah u shaqeyn. Fadlan la soco in Internet Explorer aan "
+"la taageerin."
 
 #: header.php:63
 msgid "See what browser you are using."
@@ -5790,9 +5975,13 @@ msgstr "La midow %s Nuqlaha"
 
 #: template-merge-post-details.php:123
 msgid ""
-"When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
+"When you merge, the primary record is updated with the values you choose, "
+"and relationships to other items are shifted to the primary record; which "
+"can be switched below."
 msgstr ""
-"Marka aad la midowdo, diiwaanka aasaasiga waxaa lagu cusbooneysiiyaa qiimaha aad doorato, xiriirrada waxyaalaha kale waxaa loo wareejiyaa diiwaanka aasaasiga; kaas oo lagu bedeli karo hoos."
+"Marka aad la midowdo, diiwaanka aasaasiga waxaa lagu cusbooneysiiyaa qiimaha "
+"aad doorato, xiriirrada waxyaalaha kale waxaa loo wareejiyaa diiwaanka "
+"aasaasiga; kaas oo lagu bedeli karo hoos."
 
 #: template-merge-post-details.php:126
 msgid "Copy comments to updated primary record"
@@ -5902,9 +6091,11 @@ msgstr "Helitaanka si aad uga heshid xiriirada Dispatcher"
 
 #: template-settings.php:434
 msgid ""
-"Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be traveling or unavailable so the Dispatcher will "
+"know your availability to receive new contacts"
 msgstr ""
-"Calan taariikhaha aad safri doontid ama aan la heli karin sidaa darteed Dispatcher-ka ayaa ogaan doona helitaankaaga si aad u hesho xiriiro cusub"
+"Calan taariikhaha aad safri doontid ama aan la heli karin sidaa darteed "
+"Dispatcher-ka ayaa ogaan doona helitaankaaga si aad u hesho xiriiro cusub"
 
 #: template-settings.php:438
 msgid "Schedule Travel or Dates Unavailable"
@@ -5956,9 +6147,16 @@ msgstr ""
 
 #: template-settings.php:630
 msgid ""
-"Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. For profile images we use "
+"Gravatar (Globally Recognized Avatar). If you have security concerns, we "
+"suggest not using a personal photo, but instead choose a cartoon, abstract, "
+"or alias photo to represent you."
 msgstr ""
-"Nidaamka Aaladaha Xerta ma keydiyo sawirrada. Sawirada muuqaalka waxaan u adeegsanaa Gravatar (Avatar Caalamka laga Aqoonsaday). Haddii aad ka walwalsan tahay amniga, waxaan kuu soo jeedineynaa inaadan isticmaalin sawir shaqsiyeed, laakiin taa beddelkeed ka dooro kartoon, sawir aan caadi ahayn, ama magac kale oo loo yaqaan 'alias photo' si uu kuu matalo"
+"Nidaamka Aaladaha Xerta ma keydiyo sawirrada. Sawirada muuqaalka waxaan u "
+"adeegsanaa Gravatar (Avatar Caalamka laga Aqoonsaday). Haddii aad ka "
+"walwalsan tahay amniga, waxaan kuu soo jeedineynaa inaadan isticmaalin sawir "
+"shaqsiyeed, laakiin taa beddelkeed ka dooro kartoon, sawir aan caadi ahayn, "
+"ama magac kale oo loo yaqaan 'alias photo' si uu kuu matalo"
 
 #: template-settings.php:631
 msgid "edit image on gravatar.com"
@@ -5966,9 +6164,16 @@ msgstr "wax ka beddel sawirka gravatar.com"
 
 #: template-settings.php:637
 msgid ""
-"Disciple Tools System does not store images. All media assets will be placed within specified media connection storage service. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. All media assets will be placed "
+"within specified media connection storage service. If you have security "
+"concerns, we suggest not using a personal photo, but instead choose a "
+"cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"Nidaamka Disciple Tools ma kaydiyo sawirro. Dhammaan hantida muuqaalka waxaa la dhigi doonaa adeegga kaydinta xiriirka muuqaalka ee la cayimay. Haddii aad ka walwalsan tahay amniga, waxaan kugu talineynaa inaadan isticmaalin sawir shakhsi ahaaneed, laakiin taa beddelkeed ka dooro kartoon, sawir aan cad ahayn, ama sawir magac kale oo ku matala."
+"Nidaamka Disciple Tools ma kaydiyo sawirro. Dhammaan hantida muuqaalka waxaa "
+"la dhigi doonaa adeegga kaydinta xiriirka muuqaalka ee la cayimay. Haddii "
+"aad ka walwalsan tahay amniga, waxaan kugu talineynaa inaadan isticmaalin "
+"sawir shakhsi ahaaneed, laakiin taa beddelkeed ka dooro kartoon, sawir aan "
+"cad ahayn, ama sawir magac kale oo ku matala."
 
 #: template-settings.php:638
 msgid "Upload new profile image"
@@ -6001,9 +6206,12 @@ msgstr "Nuqul Xiriirada Gaaritaanka"
 
 #: template-view-duplicates.php:27
 msgid ""
-"Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
+"Scanning for duplicates starting with the most recently modified contacts. "
+"Results are limited to ones that have less than 10 exact matches."
 msgstr ""
-"Skaan-qaadashada nuqullada oo ka bilaabmaya xiriirada ugu dhow ee wax laga beddelay. Natiijooyinka waxay ku kooban yihiin kuwa leh wax ka yar 10 ciyaar oo sax ah."
+"Skaan-qaadashada nuqullada oo ka bilaabmaya xiriirada ugu dhow ee wax laga "
+"beddelay. Natiijooyinka waxay ku kooban yihiin kuwa leh wax ka yar 10 ciyaar "
+"oo sax ah."
 
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"

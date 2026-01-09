@@ -15,8 +15,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Weblate 5.10.2\n"
 
-
-
 #. Theme Name of the theme
 #: style.css
 msgid "Disciple Tools"
@@ -30,7 +28,8 @@ msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 #. Description of the theme
 #: style.css
 msgid ""
-"Disciple.Tools is a coalition management system for disciple making movements."
+"Disciple.Tools is a coalition management system for disciple making "
+"movements."
 msgstr ""
 "Ọmọ-ẹhin.Awọn irinṣẹ jẹ eto iṣakoso iṣọpọ fun awọn ọmọ-ẹhin ṣiṣe awọn agbeka."
 
@@ -68,7 +67,8 @@ msgstr "Beere Wiwọle Igbasilẹ"
 msgid ""
 "Record owner to be notified of access request. Are you happy to proceed?"
 msgstr ""
-"Gba eni silẹ lati gba iwifunni ti ibeere wiwọle. Ṣe o ni idunnu lati tẹsiwaju?"
+"Gba eni silẹ lati gba iwifunni ti ibeere wiwọle. Ṣe o ni idunnu lati "
+"tẹsiwaju?"
 
 #: 403.php:52
 msgid "Submit Request"
@@ -240,15 +240,28 @@ msgstr "Iranlọwọ Ọna Iṣipopada Akojọ"
 
 #: archive-template.php:263
 msgid ""
-"Using the current filter, this is a simple way to export basic information and use it in other applications."
+"Using the current filter, this is a simple way to export basic information "
+"and use it in other applications."
 msgstr ""
-"Nipa lilo àlẹmọ lọwọlọwọ, eyi jẹ ọna ti o rọrun lati ṣe okeere alaye ipilẹ ki o si lo ninu awọn ohun elo miiran."
+"Nipa lilo àlẹmọ lọwọlọwọ, eyi jẹ ọna ti o rọrun lati ṣe okeere alaye ipilẹ "
+"ki o si lo ninu awọn ohun elo miiran."
 
 #: archive-template.php:267
 msgid ""
-"Using the current filter, the available emails are grouped by 50 and can be launched into your default email client by group. Many email providers put a limit of 50 on BCC emails. You can open all groups at once using the \"Open All\" button. If the list is too large, this might alert your email provider. The BCC email tool is meant to assist small group emails. Bulk email should be handled through bulk email providers."
+"Using the current filter, the available emails are grouped by 50 and can be "
+"launched into your default email client by group. Many email providers put a "
+"limit of 50 on BCC emails. You can open all groups at once using the \"Open "
+"All\" button. If the list is too large, this might alert your email "
+"provider. The BCC email tool is meant to assist small group emails. Bulk "
+"email should be handled through bulk email providers."
 msgstr ""
-"Nipa lilo àlẹmọ lọwọlọwọ, awọn imeeli ti o wa ni ṣe akojọpọ nipasẹ 50 ati pe o le bẹrẹ sinu alabara imeeli aiyipada rẹ nipasẹ ẹgbẹ. Ọpọlọpọ awọn olupese imeeli fi opin 50 si awọn imeeli BCC. O le ṣii gbogbo awọn ẹgbẹ ni ẹẹkan nipa lilo bọtini \\\"Ṣii Gbogbo\\\". Ti akojọ naa ba tobi ju, eyi le jẹ ki olupese imeeli rẹ mọ. Ọpa imeeli BCC jẹ lati ṣe iranlọwọ fun awọn imeeli ẹgbẹ kekere. Imeeli olopobobo yẹ ki o ṣe nipasẹ awọn olupese imeeli olopobobo."
+"Nipa lilo àlẹmọ lọwọlọwọ, awọn imeeli ti o wa ni ṣe akojọpọ nipasẹ 50 ati pe "
+"o le bẹrẹ sinu alabara imeeli aiyipada rẹ nipasẹ ẹgbẹ. Ọpọlọpọ awọn olupese "
+"imeeli fi opin 50 si awọn imeeli BCC. O le ṣii gbogbo awọn ẹgbẹ ni ẹẹkan "
+"nipa lilo bọtini \\\"Ṣii Gbogbo\\\". Ti akojọ naa ba tobi ju, eyi le jẹ ki "
+"olupese imeeli rẹ mọ. Ọpa imeeli BCC jẹ lati ṣe iranlọwọ fun awọn imeeli "
+"ẹgbẹ kekere. Imeeli olopobobo yẹ ki o ṣe nipasẹ awọn olupese imeeli "
+"olopobobo."
 
 #: archive-template.php:270
 msgid "Phone Number List"
@@ -256,15 +269,21 @@ msgstr "Akojọ Nọmba Foonu"
 
 #: archive-template.php:271
 msgid ""
-"Using the current filter, this is intended for copy pasting a list of numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of starting a group conversation."
+"Using the current filter, this is intended for copy pasting a list of "
+"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
+"starting a group conversation."
 msgstr ""
-"Nipa lilo àlẹmọ lọwọlọwọ, eyi jẹ ipinnu fun didakọ lẹẹmọ akojọ awọn nọmba sinu ohun elo fifiranṣẹ, WhatsApp, Signal, ati bẹbẹ lọ. Eyi jẹ ọna kiakia lati bẹrẹ ibaraẹnisọrọ ẹgbẹ kan."
+"Nipa lilo àlẹmọ lọwọlọwọ, eyi jẹ ipinnu fun didakọ lẹẹmọ akojọ awọn nọmba "
+"sinu ohun elo fifiranṣẹ, WhatsApp, Signal, ati bẹbẹ lọ. Eyi jẹ ọna kiakia "
+"lati bẹrẹ ibaraẹnisọrọ ẹgbẹ kan."
 
 #: archive-template.php:275
 msgid ""
-"Using the current filter, this creates a basic points map of known locations of listed individuals."
+"Using the current filter, this creates a basic points map of known locations "
+"of listed individuals."
 msgstr ""
-"Nipa lilo àlẹmọ lọwọlọwọ, eyi ṣẹda maapu aaye ipilẹ ti awọn ipo ti a mọ ti awọn eniyan ti a ṣe akojọ."
+"Nipa lilo àlẹmọ lọwọlọwọ, eyi ṣẹda maapu aaye ipilẹ ti awọn ipo ti a mọ ti "
+"awọn eniyan ti a ṣe akojọ."
 
 #: archive-template.php:339
 msgid "No results found"
@@ -362,7 +381,8 @@ msgstr "Ko si awọn aaye ti a yan"
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
 msgstr ""
-"Yan gbogbo %1$s ti o fẹ ṣe imudojuiwọn lati atokọ naa, ki o ṣe imudojuiwọn wọn ni isalẹ"
+"Yan gbogbo %1$s ti o fẹ ṣe imudojuiwọn lati atokọ naa, ki o ṣe imudojuiwọn "
+"wọn ni isalẹ"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -1148,7 +1168,8 @@ msgstr "Data csv ti a ṣe okeere lati ni gbogbo awọn aaye %2$s %1$s."
 
 #: dt-assets/functions/enqueue-scripts.php:351
 #, php-format
-msgctxt "The exported csv data to contain the 6 visible Contact field(s) shown below."
+msgctxt ""
+"The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr "Data csv ti a ṣe okeere lati ni awọn aaye %2$s %1$s ti o han ni isalẹ."
@@ -1481,16 +1502,23 @@ msgstr "Awọn bọtini Iṣe Awọn ọna"
 #: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid ""
-"These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
+"These quick action buttons are here to aid you in updating the contact "
+"record faster and keep a count of how many times each action has be done."
 msgstr ""
-"Awọn bọtini iṣe iyara wọnyi wa nibi lati ṣe iranlọwọ fun ọ ni mimu igbesoke igbasilẹ olubasoro yarayara ati tọju kika iye igba melo ti a ti ṣe iṣẹ kọọkan."
+"Awọn bọtini iṣe iyara wọnyi wa nibi lati ṣe iranlọwọ fun ọ ni mimu igbesoke "
+"igbasilẹ olubasoro yarayara ati tọju kika iye igba melo ti a ti ṣe iṣẹ "
+"kọọkan."
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid ""
-"For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer. This action will also change the 'Seeker Path' to 'Contact Attempted'."
+"For example, If you click the 'No Answer' button 4 times, we will log that "
+"you attempted to reach this contact 4 times, but they did not answer. This "
+"action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"Fun apẹẹrẹ, Ti o ba tẹ bọtini 'Ko si Idahun' ni igba mẹrin, a yoo gbasilẹ pe o gbiyanju lati de olubasọrọ yii ni igba mẹrin, ṣugbọn wọn ko dahun. Iṣẹ yii yoo tun yi 'Ọna Oluwadi' pada si 'Igbiyanju Kan si'."
+"Fun apẹẹrẹ, Ti o ba tẹ bọtini 'Ko si Idahun' ni igba mẹrin, a yoo gbasilẹ pe "
+"o gbiyanju lati de olubasọrọ yii ni igba mẹrin, ṣugbọn wọn ko dahun. Iṣẹ yii "
+"yoo tun yi 'Ọna Oluwadi' pada si 'Igbiyanju Kan si'."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1505,26 +1533,30 @@ msgstr "Awọn olubasọrọ 2 nilo imudojuiwọn"
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
 msgstr ""
-"Eyi ni ibiti o le ṣe igbasilẹ awọn akọsilẹ lati awọn ipade ati awọn ibaraẹnisọrọ."
+"Eyi ni ibiti o le ṣe igbasilẹ awọn akọsilẹ lati awọn ipade ati awọn "
+"ibaraẹnisọrọ."
 
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid ""
-"Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
+"Type @ and the name of a user to mention them in a comment. This user will "
+"then receive a notification."
 msgstr ""
-"Tẹ @ ati orukọ olumulo lati darukọ wọn ninu asọye kan. Olumulo yii yoo gba iwifunni lẹhinna."
+"Tẹ @ ati orukọ olumulo lati darukọ wọn ninu asọye kan. Olumulo yii yoo gba "
+"iwifunni lẹhinna."
 
 #: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"This section also includes the history of activity, such as when the contact or group status became active etc."
+"This section also includes the history of activity, such as when the contact "
+"or group status became active etc."
 msgstr ""
-"Apakan yii tun pẹlu itan-ṣiṣe ti iṣẹ, bii nigbati olubasoro tabi ipo ẹgbẹ di lọwọ ati bẹbẹ lọ."
+"Apakan yii tun pẹlu itan-ṣiṣe ti iṣẹ, bii nigbati olubasoro tabi ipo ẹgbẹ di "
+"lọwọ ati bẹbẹ lọ."
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
-msgid ""
-"You can filter this section either by 'All', 'Comments', or 'Activity'."
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
 "O le ṣe àlẹmọ apakan yii boya nipasẹ 'Gbogbo', 'Awọn asọye', tabi 'Iṣẹ-ṣiṣe'."
 
@@ -1540,16 +1572,20 @@ msgstr "Ni agbegbe yii o le wo profaili olumulo rẹ."
 #: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
 msgid ""
-"You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
+"You are not required to fill out any of these profile fields. They are "
+"optional to meet your team’s needs."
 msgstr ""
-"O ko nilo lati kun eyikeyi ninu awọn aaye profaili wọnyi. Wọn jẹ aṣayan lati pade awọn aini ẹgbẹ rẹ."
+"O ko nilo lati kun eyikeyi ninu awọn aaye profaili wọnyi. Wọn jẹ aṣayan lati "
+"pade awọn aini ẹgbẹ rẹ."
 
 #: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid ""
-"By clicking 'Edit', you will be able adjust things like the language that this system operates in."
+"By clicking 'Edit', you will be able adjust things like the language that "
+"this system operates in."
 msgstr ""
-"Nipa titẹ 'Ṣatunkọ', iwọ yoo ni anfani lati ṣatunṣe awọn nkan bii ede ti eto yii nṣiṣẹ ninu rẹ."
+"Nipa titẹ 'Ṣatunkọ', iwọ yoo ni anfani lati ṣatunṣe awọn nkan bii ede ti eto "
+"yii nṣiṣẹ ninu rẹ."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
 #: dt-users/users.php:169
@@ -1559,9 +1595,11 @@ msgstr "Awọn ipo"
 #: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid ""
-"These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
+"These are the areas you are responsible for. Clicking the 'Add' button will "
+"bring up a list of locations to choose from."
 msgstr ""
-"Iwọnyi ni awọn agbegbe ti o jẹ iduro fun. Tite bọtini 'Fikun-un' yoo mu atokọ ti awọn ipo lati yan lati."
+"Iwọnyi ni awọn agbegbe ti o jẹ iduro fun. Tite bọtini 'Fikun-un' yoo mu "
+"atokọ ti awọn ipo lati yan lati."
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
@@ -1571,9 +1609,12 @@ msgstr "Awọn iwifunni Rẹ"
 #: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid ""
-"You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
+"You will receive web notifications and email notifications based on your "
+"notification preferences. To change your preference, click the toggle "
+"buttons."
 msgstr ""
-"Iwọ yoo gba awọn iwifunni wẹẹbu ati awọn iwifunni imeeli ti o da lori awọn ayanfẹ iwifunni rẹ. Lati yi ayanfẹ rẹ pada, tẹ awọn bọtini yiyi pada."
+"Iwọ yoo gba awọn iwifunni wẹẹbu ati awọn iwifunni imeeli ti o da lori awọn "
+"ayanfẹ iwifunni rẹ. Lati yi ayanfẹ rẹ pada, tẹ awọn bọtini yiyi pada."
 
 #: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
@@ -1588,16 +1629,22 @@ msgstr "Awọn iwifunni Ti Paa: Yiyi yoo han grẹy."
 #: dt-assets/parts/modals/modal-help.php:78
 msgctxt "Optional Documentation"
 msgid ""
-"Some of the types of notifications cannot be adjusted because they are required by the system."
+"Some of the types of notifications cannot be adjusted because they are "
+"required by the system."
 msgstr ""
 "Diẹ ninu awọn oriṣi ti awọn iwifunni ko le ṣe atunṣe nitori wọn nilo eto naa."
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid ""
-"Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Adjust whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"Ṣatunṣe boya o fẹ wo awọn iwifunni nipa awọn asọye tuntun, awọn ayipada alaye alaye, Awọn maili okuta Kan si ati awọn iṣiro Ilera Ẹgbẹ, ati boya si ọ yoo gba ifitonileti fun eyikeyi imudojuiwọn ti o ṣẹlẹ ninu eto naa."
+"Ṣatunṣe boya o fẹ wo awọn iwifunni nipa awọn asọye tuntun, awọn ayipada "
+"alaye alaye, Awọn maili okuta Kan si ati awọn iṣiro Ilera Ẹgbẹ, ati boya si "
+"ọ yoo gba ifitonileti fun eyikeyi imudojuiwọn ti o ṣẹlẹ ninu eto naa."
 
 #: dt-assets/parts/modals/modal-help.php:87
 msgctxt "Optional Documentation"
@@ -1607,9 +1654,11 @@ msgstr "Oju-iwe Awọn iwifunni"
 #: dt-assets/parts/modals/modal-help.php:88
 msgctxt "Optional Documentation"
 msgid ""
-"This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
+"This Notifications Page is where you can read updates to users and groups. "
+"It displays notifications about activity on your records."
 msgstr ""
-"Oju-iwifunni yii ni ibiti o le ka awọn imudojuiwọn si awọn olumulo ati awọn ẹgbẹ. O ṣe ifihan awọn iwifunni nipa iṣẹ lori awọn igbasilẹ rẹ."
+"Oju-iwifunni yii ni ibiti o le ka awọn imudojuiwọn si awọn olumulo ati awọn "
+"ẹgbẹ. O ṣe ifihan awọn iwifunni nipa iṣẹ lori awọn igbasilẹ rẹ."
 
 #: dt-assets/parts/modals/modal-help.php:89
 msgctxt "Optional Documentation"
@@ -1625,7 +1674,8 @@ msgstr "Tẹ bọtini 'Gbogbo' lati fihan akojọ kikun ti gbogbo awọn iwifunn
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Unread' button to show the list of all of your unread notifications."
+"Click the 'Unread' button to show the list of all of your unread "
+"notifications."
 msgstr ""
 "Tẹ bọtini ‘Unread’ lati fi akojọ gbogbo awọn iwifunni ti a ko ka rẹ han."
 
@@ -1637,16 +1687,28 @@ msgstr "Samisi gbogbo rẹ bi kika"
 #: dt-assets/parts/modals/modal-help.php:93
 msgctxt "Optional Documentation"
 msgid ""
-"If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+"If you don't want to click each filled in circle on the right side of each "
+"row to indicate the notification has been read, then click the 'Mark All as "
+"Read' link at the top to quickly adjust all the messages that they have all "
+"been read."
 msgstr ""
-"Ti o ko ba fẹ lati tẹ kọọkan ti o kun ni ayika ni apa ọtun ti ila kọọkan lati tọka ifitonileti naa ti ka, lẹhinna tẹ ọna asopọ 'Mark All as Read' ni oke lati yara ṣatunṣe gbogbo awọn ifiranṣẹ ti gbogbo wọn ni ti ka."
+"Ti o ko ba fẹ lati tẹ kọọkan ti o kun ni ayika ni apa ọtun ti ila kọọkan "
+"lati tọka ifitonileti naa ti ka, lẹhinna tẹ ọna asopọ 'Mark All as Read' ni "
+"oke lati yara ṣatunṣe gbogbo awọn ifiranṣẹ ti gbogbo wọn ni ti ka."
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Click the 'Settings' link to go to the notifications settings area to adjust "
+"whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"Tẹ ọna asopọ 'Awọn eto' lati lọ si agbegbe awọn eto iwifunni lati ṣatunṣe boya o fẹ lati wo awọn iwifunni nipa awọn asọye tuntun, awọn ayipada alaye alaye, Kan si Awọn maili ati Awọn iwọn ilera Ẹgbẹ, ati boya si iwọ yoo gba ifitonileti fun eyikeyi imudojuiwọn ti o ṣẹlẹ ni awọn eto."
+"Tẹ ọna asopọ 'Awọn eto' lati lọ si agbegbe awọn eto iwifunni lati ṣatunṣe "
+"boya o fẹ lati wo awọn iwifunni nipa awọn asọye tuntun, awọn ayipada alaye "
+"alaye, Kan si Awọn maili ati Awọn iwọn ilera Ẹgbẹ, ati boya si iwọ yoo gba "
+"ifitonileti fun eyikeyi imudojuiwọn ti o ṣẹlẹ ni awọn eto."
 
 #: dt-assets/parts/modals/modal-help.php:100
 msgctxt "Optional Documentation"
@@ -1656,9 +1718,14 @@ msgstr "Pidánpidán Olubasọrọ iwe"
 #: dt-assets/parts/modals/modal-help.php:101
 msgctxt "Optional Documentation"
 msgid ""
-"This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
+"This Duplicate Contact Page is where you can review, decline or merge "
+"contacts that have been picked up by the system (checking against their "
+"name, email and phone) as possibly being duplicates of another already "
+"existing contact."
 msgstr ""
-"Oju-iwe Olubasọrọ Meji yii ni ibiti o le ṣe atunyẹwo, kọ tabi dapọ awọn olubasọrọ ti o ti gbe nipasẹ eto (ṣayẹwo si orukọ wọn, imeeli ati foonu) bi o ṣe ṣee jẹ awọn ẹda ti olubasọrọ miiran ti o wa tẹlẹ."
+"Oju-iwe Olubasọrọ Meji yii ni ibiti o le ṣe atunyẹwo, kọ tabi dapọ awọn "
+"olubasọrọ ti o ti gbe nipasẹ eto (ṣayẹwo si orukọ wọn, imeeli ati foonu) bi "
+"o ṣe ṣee jẹ awọn ẹda ti olubasọrọ miiran ti o wa tẹlẹ."
 
 #: dt-assets/parts/modals/modal-help.php:124
 #: dt-assets/parts/modals/modal-help.php:174
@@ -1692,9 +1759,11 @@ msgstr "Ṣayẹwo koodu QR lati ṣii ọna asopọ idan lori ẹrọ alagbeka 
 
 #: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
 msgid ""
-"Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
+"Reset the security code. No data is removed. Only access. The previous link "
+"will be disabled and another one created."
 msgstr ""
-"Tun koodu aabo to. Ko si data kuro. Wiwọle nikan. Ọna asopọ ti tẹlẹ yoo jẹ alaabo ati ẹda miiran."
+"Tun koodu aabo to. Ko si data kuro. Wiwọle nikan. Ọna asopọ ti tẹlẹ yoo jẹ "
+"alaabo ati ẹda miiran."
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
@@ -1789,9 +1858,11 @@ msgstr "Olubasọrọ yii ni a pin pẹlu:"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid ""
-"Set a reminder or a task with a note and receive a notification on the due date."
+"Set a reminder or a task with a note and receive a notification on the due "
+"date."
 msgstr ""
-"Ṣeto olurannileti kan tabi iṣẹ-ṣiṣe pẹlu akọsilẹ kan ati gba ifitonileti kan ni ọjọ ti o to."
+"Ṣeto olurannileti kan tabi iṣẹ-ṣiṣe pẹlu akọsilẹ kan ati gba ifitonileti kan "
+"ni ọjọ ti o to."
 
 #: dt-assets/parts/modals/modal-tasks.php:13
 msgid "Task Type"
@@ -2031,9 +2102,11 @@ msgstr "Olubasọrọ naa jẹ tuntun ninu eto naa."
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
-"This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
+"This contact has made it known that they no longer want to continue or you "
+"have decided not to continue with him/her."
 msgstr ""
-"Olubasọrọ yii ti jẹ ki o mọ pe wọn ko fẹ tẹsiwaju tabi o ti pinnu lati ma tẹsiwaju pẹlu rẹ."
+"Olubasọrọ yii ti jẹ ki o mọ pe wọn ko fẹ tẹsiwaju tabi o ti pinnu lati ma "
+"tẹsiwaju pẹlu rẹ."
 
 #: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
@@ -2053,7 +2126,8 @@ msgstr "Iha-sọtọ si"
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
-"Kan si tabi Olumulo ti n ṣe iranlọwọ fun Olumulo ti a Fi sọtọ lati tẹle pẹlu olubasoro naa."
+"Kan si tabi Olumulo ti n ṣe iranlọwọ fun Olumulo ti a Fi sọtọ lati tẹle pẹlu "
+"olubasoro naa."
 
 #: dt-contacts/base-setup.php:360
 msgid "Sub-assigned on other Contacts"
@@ -2273,9 +2347,12 @@ msgstr "Ti gbe tẹlẹ si %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
-"NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
+"NOTE: You have already transferred this contact. Transferring again might "
+"create duplicates. Do you still want to override this warning and continue "
+"with your transfer?"
 msgstr ""
-"AKIYESI: O ti gbe olubasọrọ yii tẹlẹ. Gbigbe lẹẹkansii le ṣẹda awọn ẹda-ẹda. Ṣe o tun fẹ lati fagile ikilọ yii ki o tẹsiwaju pẹlu gbigbe rẹ?"
+"AKIYESI: O ti gbe olubasọrọ yii tẹlẹ. Gbigbe lẹẹkansii le ṣẹda awọn ẹda-ẹda. "
+"Ṣe o tun fẹ lati fagile ikilọ yii ki o tẹsiwaju pẹlu gbigbe rẹ?"
 
 #: dt-contacts/contacts-transfer.php:281
 msgid "Override and Continue"
@@ -2370,9 +2447,11 @@ msgstr "Ọna oluwa"
 #: dt-contacts/module-access.php:103
 msgctxt "Seeker Path field description"
 msgid ""
-"Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
+"Set the status of your progression with the contact. These are the steps "
+"that happen in a specific order to help a contact move forward."
 msgstr ""
-"Ṣeto ipo ti ilọsiwaju rẹ pẹlu olubasọrọ. Iwọnyi ni awọn igbesẹ ti o ṣẹlẹ ni aṣẹ kan pato lati ṣe iranlọwọ fun olubasoro kan siwaju."
+"Ṣeto ipo ti ilọsiwaju rẹ pẹlu olubasọrọ. Iwọnyi ni awọn igbesẹ ti o ṣẹlẹ ni "
+"aṣẹ kan pato lati ṣe iranlọwọ fun olubasoro kan siwaju."
 
 #: dt-contacts/module-access.php:107
 msgid "Contact Attempt Needed"
@@ -2409,7 +2488,8 @@ msgstr "Ko Ṣetan"
 #: dt-contacts/module-access.php:149
 msgctxt "Contact Status field description"
 msgid ""
-"There is not enough information to move forward with the contact at this time."
+"There is not enough information to move forward with the contact at this "
+"time."
 msgstr "Alaye ti ko to lati lọ siwaju pẹlu olubasọrọ ni akoko yii."
 
 #: dt-contacts/module-access.php:153
@@ -2428,7 +2508,8 @@ msgstr "Nduro lati gba"
 #: dt-contacts/module-access.php:159
 msgctxt "Contact Status field description"
 msgid ""
-"The contact has been assigned to someone, but has not yet been accepted by that person."
+"The contact has been assigned to someone, but has not yet been accepted by "
+"that person."
 msgstr "Olubasọrọ naa ti yan si ẹnikan, ṣugbọn ko ti gba ẹni yẹn."
 
 #: dt-contacts/module-access.php:164
@@ -2437,8 +2518,7 @@ msgstr "Da duro"
 
 #: dt-contacts/module-access.php:165
 msgctxt "Contact Status field description"
-msgid ""
-"This contact is currently on hold (i.e. on vacation or not responding)."
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "Olubasọrọ yii wa ni idaduro lọwọlọwọ (bii isinmi tabi ko dahun)."
 
 #: dt-contacts/module-access.php:180
@@ -2481,9 +2561,11 @@ msgstr "Idi Ti Dẹkun"
 #: dt-contacts/module-access.php:212
 msgctxt "Optional Documentation"
 msgid ""
-"A paused contact is one you are not currently interacting with but expect to in the future."
+"A paused contact is one you are not currently interacting with but expect to "
+"in the future."
 msgstr ""
-"Olubasọrọ diduro duro jẹ ọkan ti o ko ba n ṣepọ lọwọlọwọ pẹlu ṣugbọn nireti ni ọjọ iwaju."
+"Olubasọrọ diduro duro jẹ ọkan ti o ko ba n ṣepọ lọwọlọwọ pẹlu ṣugbọn nireti "
+"ni ọjọ iwaju."
 
 #: dt-contacts/module-access.php:216
 msgctxt "Reason Paused label"
@@ -2524,7 +2606,8 @@ msgstr "Bọọlu wa ni ile-ẹjọ olubasọrọ"
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr ""
-"A fẹ lati rii boya / bawo ni olubasoro naa ṣe dahun si awọn ifọrọranṣẹ adaṣe adaṣe"
+"A fẹ lati rii boya / bawo ni olubasoro naa ṣe dahun si awọn ifọrọranṣẹ adaṣe "
+"adaṣe"
 
 #: dt-contacts/module-access.php:230
 msgid "Reason Archived"
@@ -2766,9 +2849,13 @@ msgstr "Awọn okuta igbẹkẹle Igbagbọ"
 #: dt-contacts/module-faith.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
+"Assign which milestones the contact has reached in their faith journey. "
+"These are points in a contact’s spiritual journey worth celebrating but can "
+"happen in any order."
 msgstr ""
-"Fi awọn ami-ami-ami-ami-ami-ọrọ ti o ti de si ninu irin-ajo igbagbọ wọn sọtọ Iwọnyi ni awọn aaye ninu irin-ajo ẹmí kan ti o tọ si ayẹyẹ ṣugbọn o le ṣẹlẹ ni eyikeyi aṣẹ."
+"Fi awọn ami-ami-ami-ami-ami-ọrọ ti o ti de si ninu irin-ajo igbagbọ wọn sọtọ "
+"Iwọnyi ni awọn aaye ninu irin-ajo ẹmí kan ti o tọ si ayẹyẹ ṣugbọn o le ṣẹlẹ "
+"ni eyikeyi aṣẹ."
 
 #: dt-contacts/module-faith.php:48
 msgid "Has Bible"
@@ -2926,9 +3013,11 @@ msgstr "Kan si Milestones ati awọn iwọn ilera Ẹgbẹ"
 
 #: dt-core/configuration/config-site-defaults.php:300
 msgid ""
-"This contact is active but there is no record of anybody contacting them. Please do contact them."
+"This contact is active but there is no record of anybody contacting them. "
+"Please do contact them."
 msgstr ""
-"Olubasọrọ yii n ṣiṣẹ ṣugbọn ko si igbasilẹ ti ẹnikẹni kan si wọn. Jọwọ kan si wọn."
+"Olubasọrọ yii n ṣiṣẹ ṣugbọn ko si igbasilẹ ti ẹnikẹni kan si wọn. Jọwọ kan "
+"si wọn."
 
 #: dt-core/configuration/config-site-defaults.php:306
 msgid "Please try connecting with this contact again."
@@ -2940,9 +3029,11 @@ msgstr "Jọwọ gbiyanju sisopọ pẹlu olubasọrọ yii lẹẹkansii."
 #: dt-core/configuration/config-site-defaults.php:330
 #: dt-core/configuration/config-site-defaults.php:336
 msgid ""
-"We haven't heard about this person in a while. Do you have an update for this contact?"
+"We haven't heard about this person in a while. Do you have an update for "
+"this contact?"
 msgstr ""
-"A ko tii gbọ nipa eniyan yii ni igba diẹ. Ṣe o ni imudojuiwọn fun olubasọrọ yii?"
+"A ko tii gbọ nipa eniyan yii ni igba diẹ. Ṣe o ni imudojuiwọn fun olubasọrọ "
+"yii?"
 
 #: dt-core/configuration/config-site-defaults.php:346
 msgid "We haven't heard about this group in a while. Do you have an update?"
@@ -3096,9 +3187,11 @@ msgstr "Lati tun ọrọ igbaniwọle rẹ ṣe, ṣabẹwo si adirẹsi atẹle
 
 #: dt-core/dt-storage.php:223
 msgid ""
-"Something went wrong. Please try again or have an admin check the connection settings."
+"Something went wrong. Please try again or have an admin check the connection "
+"settings."
 msgstr ""
-"Nkan kan ṣe aṣiṣe. Jọwọ gbiyanju lẹẹkansi tabi jẹ ki alakoso ṣayẹwo awọn eto asopọ."
+"Nkan kan ṣe aṣiṣe. Jọwọ gbiyanju lẹẹkansi tabi jẹ ki alakoso ṣayẹwo awọn eto "
+"asopọ."
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3135,9 +3228,11 @@ msgstr "Ti a fun ni ọfẹ, ṣugbọn kii ṣe poku"
 
 #: dt-core/release-notifications.php:97
 msgid ""
-"Disciple.Tools relies on contributions for continued development and maintenance. Will you join the team?"
+"Disciple.Tools relies on contributions for continued development and "
+"maintenance. Will you join the team?"
 msgstr ""
-"Disciple.Tools gbẹkẹle awọn ilowosi fun idagbasoke ati itọju tẹsiwaju. Ṣe o fẹ darapọ mọ ẹgbẹ naa?"
+"Disciple.Tools gbẹkẹle awọn ilowosi fun idagbasoke ati itọju tẹsiwaju. Ṣe o "
+"fẹ darapọ mọ ẹgbẹ naa?"
 
 #: dt-core/release-notifications.php:99
 msgid "Give"
@@ -3150,7 +3245,8 @@ msgstr "Túmọ̀"
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:735
 msgid ""
-"Translate Disciple.Tools into your language or help make a translation better."
+"Translate Disciple.Tools into your language or help make a translation "
+"better."
 msgstr ""
 "Túmọ̀ Disciple.Tools si ede rẹ tabi ṣe iranlọwọ lati jẹ ki itumọ dara si."
 
@@ -3160,9 +3256,11 @@ msgstr "Kọ tabi Ṣe Akosile"
 
 #: dt-core/release-notifications.php:114
 msgid ""
-"Make Disciple.Tools better by building a feature or helping us make the documentation better."
+"Make Disciple.Tools better by building a feature or helping us make the "
+"documentation better."
 msgstr ""
-"Jẹ ki Disciple.Tools dara si nipa kikọ ẹya tabi ṣe iranlọwọ fun wa lati jẹ ki akọsilẹ dara si."
+"Jẹ ki Disciple.Tools dara si nipa kikọ ẹya tabi ṣe iranlọwọ fun wa lati jẹ "
+"ki akọsilẹ dara si."
 
 #: dt-core/release-notifications.php:116
 msgid "Find out more"
@@ -3221,9 +3319,13 @@ msgstr "Ẹgbẹ Ẹlẹsin / Ijo Planter"
 #: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
-"The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
+"The person who planted and/or is coaching this group. Only one person can be "
+"assigned to a group while multiple people can be coaches / church planters "
+"of this group."
 msgstr ""
-"Eniyan ti o gbin ati / tabi n ṣe olukọni ẹgbẹ yii. Eniyan kan nikan ni a le fi si ẹgbẹ kan lakoko ti ọpọlọpọ eniyan le jẹ awọn olukọni / awọn oluka ile ijọsin ti ẹgbẹ yii."
+"Eniyan ti o gbin ati / tabi n ṣe olukọni ẹgbẹ yii. Eniyan kan nikan ni a le "
+"fi si ẹgbẹ kan lakoko ti ọpọlọpọ eniyan le jẹ awọn olukọni / awọn oluka ile "
+"ijọsin ti ẹgbẹ yii."
 
 #: dt-groups/base-setup.php:160
 msgid "Group Type"
@@ -3242,7 +3344,8 @@ msgstr "Ẹgbẹ kan ti o pọju awọn alaigbagbọ."
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr ""
-"Ẹgbẹ kan ti o ni awọn onigbagbọ 3 tabi diẹ sii ṣugbọn ko ṣe idanimọ bi ile ijọsin."
+"Ẹgbẹ kan ti o ni awọn onigbagbọ 3 tabi diẹ sii ṣugbọn ko ṣe idanimọ bi ile "
+"ijọsin."
 
 #: dt-groups/base-setup.php:173
 msgid "Church"
@@ -3399,9 +3502,15 @@ msgstr "Ẹgbẹ Ka"
 #: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
-"The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
+"The number of members in this group. It will automatically be updated when "
+"new members are added or removed in the member list. Change this number "
+"manually to include people who may not be in the system but are also members "
+"of the group."
 msgstr ""
-"Iye awọn ọmọ ẹgbẹ ninu ẹgbẹ yii. Yoo ṣe imudojuiwọn laifọwọyi nigbati a ba fi kun tabi yọ awọn ọmọ ẹgbẹ tuntun ninu atokọ ẹgbẹ. Yipada nọmba yii pẹlu ọwọ lati ṣafikun awọn eniyan ti o le ma wa ninu eto ṣugbọn tun jẹ ọmọ ẹgbẹ ti ẹgbẹ."
+"Iye awọn ọmọ ẹgbẹ ninu ẹgbẹ yii. Yoo ṣe imudojuiwọn laifọwọyi nigbati a ba "
+"fi kun tabi yọ awọn ọmọ ẹgbẹ tuntun ninu atokọ ẹgbẹ. Yipada nọmba yii pẹlu "
+"ọwọ lati ṣafikun awọn eniyan ti o le ma wa ninu eto ṣugbọn tun jẹ ọmọ ẹgbẹ "
+"ti ẹgbẹ."
 
 #: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
 #: dt-groups/base-setup.php:602
@@ -3433,9 +3542,11 @@ msgstr "Ẹgbẹ ẹlẹgbẹ"
 #: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
-"A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+"A related group that isn't a parent/child in relationship. It might indicate "
+"groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
-"Ẹgbẹ ti o jọmọ ti kii ṣe obi / ọmọ ninu ibatan. O le tọka awọn ẹgbẹ ti o ṣe ifowosowopo, ti fẹrẹ dapọ, pin laipẹ, ati bẹbẹ lọ."
+"Ẹgbẹ ti o jọmọ ti kii ṣe obi / ọmọ ninu ibatan. O le tọka awọn ẹgbẹ ti o ṣe "
+"ifowosowopo, ti fẹrẹ dapọ, pin laipẹ, ati bẹbẹ lọ."
 
 #: dt-groups/base-setup.php:341
 msgid "Child Group"
@@ -3485,9 +3596,11 @@ msgstr "Isodipupo"
 #: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
-"Number of people helping start other groups. How many members are multiplying?"
+"Number of people helping start other groups. How many members are "
+"multiplying?"
 msgstr ""
-"Nọmba ti awọn eniyan ṣe iranlọwọ bẹrẹ awọn ẹgbẹ miiran. Awọn ọmọ ẹgbẹ melo ni isodipupo?"
+"Nọmba ti awọn eniyan ṣe iranlọwọ bẹrẹ awọn ẹgbẹ miiran. Awọn ọmọ ẹgbẹ melo "
+"ni isodipupo?"
 
 #: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
@@ -3522,9 +3635,11 @@ msgstr "Ṣafikun awọn ọmọ ẹgbẹ lati awọn olubasọrọ to wa tẹl�
 #: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
-"In the 'Member List' field, type the name of an existing contact to add them to this group."
+"In the 'Member List' field, type the name of an existing contact to add them "
+"to this group."
 msgstr ""
-"Ni aaye 'Akojọ Ọmọ ẹgbẹ', tẹ orukọ ti olubasoro ti o wa tẹlẹ lati ṣafikun wọn si ẹgbẹ yii."
+"Ni aaye 'Akojọ Ọmọ ẹgbẹ', tẹ orukọ ti olubasoro ti o wa tẹlẹ lati ṣafikun "
+"wọn si ẹgbẹ yii."
 
 #: dt-groups/base-setup.php:606
 msgid "Four Fields"
@@ -3533,20 +3648,26 @@ msgstr "Awọn aaye mẹrin"
 #: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
-"There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
+"There are 5 squares in the Four Fields diagram. Starting in the top left "
+"quadrant and going clockwise and the fifth being in the middle, they stand "
+"for:"
 msgstr ""
-"Awọn onigun mẹrin 5 wa ninu apẹrẹ Awọn aaye Mẹrin. Bibẹrẹ ni igun mẹẹdogun apa osi ati lilọ ni ọna aago ati karun ti o wa ni aarin, wọn duro fun:"
+"Awọn onigun mẹrin 5 wa ninu apẹrẹ Awọn aaye Mẹrin. Bibẹrẹ ni igun mẹẹdogun "
+"apa osi ati lilọ ni ọna aago ati karun ti o wa ni aarin, wọn duro fun:"
 
 #: dt-login/login-template.php:68
 msgid ""
-"Your password reset link appears to be invalid. Please request a new link below."
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
 msgstr ""
-"Ọna asopọ atunto ọrọigbaniwọle rẹ dabi pe ko wulo. Jọwọ beere ọna asopọ tuntun ni isalẹ."
+"Ọna asopọ atunto ọrọigbaniwọle rẹ dabi pe ko wulo. Jọwọ beere ọna asopọ "
+"tuntun ni isalẹ."
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
 msgstr ""
-"Ọna asopọ atunto ọrọigbaniwọle rẹ ti pari. Jọwọ beere ọna asopọ tuntun ni isalẹ."
+"Ọna asopọ atunto ọrọigbaniwọle rẹ ti pari. Jọwọ beere ọna asopọ tuntun ni "
+"isalẹ."
 
 #: dt-login/login-template.php:84 dt-login/login-template.php:109
 msgid "Get New Password"
@@ -3558,9 +3679,11 @@ msgstr "Adirẹsi Imeeli"
 
 #: dt-login/login-template.php:112
 msgid ""
-"Your password reset email has been sent. Check your email or junk mail for the link to reset your password."
+"Your password reset email has been sent. Check your email or junk mail for "
+"the link to reset your password."
 msgstr ""
-"Ti fi imeeli atunto ọrọigbaniwọle rẹ ranṣẹ. Ṣayẹwo imeeli rẹ tabi imeeli junk fun ọna asopọ lati tun ọrọigbaniwọle rẹ ṣeto."
+"Ti fi imeeli atunto ọrọigbaniwọle rẹ ranṣẹ. Ṣayẹwo imeeli rẹ tabi imeeli "
+"junk fun ọna asopọ lati tun ọrọigbaniwọle rẹ ṣeto."
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
@@ -3749,9 +3872,11 @@ msgstr "Awọn iribomi"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid ""
-"Number of baptized contact with a baptism date in date range and baptized by connection"
+"Number of baptized contact with a baptism date in date range and baptized by "
+"connection"
 msgstr ""
-"Nọmba ti olubasọrọ ti a ti baptisi pẹlu ọjọ baptisi ni ibiti o wa ni ọjọ ati baptisi nipasẹ asopọ"
+"Nọmba ti olubasọrọ ti a ti baptisi pẹlu ọjọ baptisi ni ibiti o wa ni ọjọ ati "
+"baptisi nipasẹ asopọ"
 
 #: dt-metrics/combined/critical-path.php:277
 #, php-format
@@ -3804,9 +3929,11 @@ msgstr "Ijo Planters"
 
 #: dt-metrics/combined/critical-path.php:333
 msgid ""
-"Number of contacts or users who have started a church and are marked as the church coach"
+"Number of contacts or users who have started a church and are marked as the "
+"church coach"
 msgstr ""
-"Nọmba awọn olubasoro tabi awọn olumulo ti o ti bẹrẹ ijo kan ti o samisi bi olukọni ijo"
+"Nọmba awọn olubasoro tabi awọn olumulo ti o ti bẹrẹ ijo kan ti o samisi bi "
+"olukọni ijo"
 
 #: dt-metrics/combined/daily-activity.php:22
 #: dt-metrics/combined/daily-activity.php:71
@@ -4006,8 +4133,7 @@ msgid "Active contacts, by source and seeker path"
 msgstr "Awọn olubasọrọ ti nṣiṣe lọwọ, nipasẹ orisun ati ọna oluwa"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
-msgid ""
-"This is displaying only the contacts with an 'active' status right now."
+msgid "This is displaying only the contacts with an 'active' status right now."
 msgstr "Eyi n ṣe afihan awọn olubasọrọ nikan pẹlu ipo 'lọwọ' ni bayi."
 
 #: dt-metrics/contacts/sources.php:96
@@ -4016,9 +4142,11 @@ msgstr "Awọn olubasọrọ ti nṣiṣe lọwọ, nipasẹ orisun ati aami-ami
 
 #: dt-metrics/contacts/sources.php:98
 msgid ""
-"A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+"A contact can come from more than one source, and it can have more than one "
+"faith milestone at the same time."
 msgstr ""
-"Olubasọrọ kan le wa lati orisun diẹ sii ju ọkan lọ, ati pe o le ni ami-iṣẹlẹ igbagbọ ju ọkan lọ ni akoko kanna."
+"Olubasọrọ kan le wa lati orisun diẹ sii ju ọkan lọ, ati pe o le ni ami-iṣẹlẹ "
+"igbagbọ ju ọkan lọ ni akoko kanna."
 
 #: dt-metrics/counter.php:135
 msgid "First Meetings"
@@ -4350,7 +4478,8 @@ msgstr "Shatti Ti o Rọrun"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
-"This chart shows the total number for each field value at the end of the selected date."
+"This chart shows the total number for each field value at the end of the "
+"selected date."
 msgstr ""
 "Shatti yii ṣe afihan nọmba lapapọ fun iye aaye kọọkan ni opin ọjọ ti a yan."
 
@@ -4661,11 +4790,16 @@ msgstr "Awọn alaye"
 
 #: dt-posts/dt-posts.php:2796
 #, php-format
-msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
+msgctxt ""
+"@[user name][user_id] - User Fred has requested access to Contact [contact "
+"name][contact_id]. If desired, share this record with the user to grant "
+"access."
 msgid ""
-"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
+"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
+"desired, share this record with the user to grant access."
 msgstr ""
-"@[%1$s](%2$s) - Olumulo %3$s ti beere wiwọle si %4$s [%5$s](%6$s). Ti o ba fẹ, pin igbasilẹ yii pẹlu olumulo lati fun wiwọle."
+"@[%1$s](%2$s) - Olumulo %3$s ti beere wiwọle si %4$s [%5$s](%6$s). Ti o ba "
+"fẹ, pin igbasilẹ yii pẹlu olumulo lati fun wiwọle."
 
 #: dt-posts/dt-posts.php:2802
 msgid "Access Request"
@@ -5157,9 +5291,11 @@ msgstr "Paarẹ ati rọpo ọna asopọ app"
 
 #: dt-reports/magic-url-setup.php:462
 msgid ""
-"This app is not yet activated for this user. Enable the app to generate a link."
+"This app is not yet activated for this user. Enable the app to generate a "
+"link."
 msgstr ""
-"Ohun elo yii ko ti muu ṣiṣẹ fun olumulo yii sibẹsibẹ. Mu ohun elo ṣiṣẹ lati ṣe agbekalẹ ọna asopọ kan."
+"Ohun elo yii ko ti muu ṣiṣẹ fun olumulo yii sibẹsibẹ. Mu ohun elo ṣiṣẹ lati "
+"ṣe agbekalẹ ọna asopọ kan."
 
 #: dt-reports/magic-url-setup.php:465 template-settings.php:265
 msgid "App Activation"
@@ -5307,9 +5443,11 @@ msgstr "Igbegasoke olubasọrọ"
 
 #: dt-users/template-new-user.php:260
 msgid ""
-"The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data."
+"The new user will have access to all the fields and comments on this contact "
+"record. We suggest archiving the comments if they contain sensitive data."
 msgstr ""
-"Olumulo tuntun yoo ni iwọle si gbogbo awọn aaye ati awọn asọye lori igbasilẹ olubasọrọ yii. A daba fifipamọ awọn asọye ti wọn ba ni data ifura ninu."
+"Olumulo tuntun yoo ni iwọle si gbogbo awọn aaye ati awọn asọye lori igbasilẹ "
+"olubasọrọ yii. A daba fifipamọ awọn asọye ti wọn ba ni data ifura ninu."
 
 #: dt-users/template-new-user.php:267
 msgid "Continue and archive comments"
@@ -5337,7 +5475,8 @@ msgstr "Ṣe o fẹ lati dapọ awọn aaye lati igbasilẹ atijọ si tuntun?"
 
 #: dt-users/template-no-permission.php:92
 msgid ""
-"You are registered but an administrator needs to assign you access permissions."
+"You are registered but an administrator needs to assign you access "
+"permissions."
 msgstr ""
 "O ti forukọsilẹ ṣugbọn olutọju kan nilo lati fi awọn igbanilaaye wọle si ọ."
 
@@ -5373,9 +5512,11 @@ msgstr "Wiwa"
 
 #: dt-users/template-user-management.php:164
 msgid ""
-"Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be unavailable so the Dispatcher will know your "
+"availability to receive new contacts"
 msgstr ""
-"Ṣeto awọn ọjọ ti iwọ ko le ri ki Dispatcher yoo mọ wiwa rẹ lati gba awọn olubasọrọ tuntun"
+"Ṣeto awọn ọjọ ti iwọ ko le ri ki Dispatcher yoo mọ wiwa rẹ lati gba awọn "
+"olubasọrọ tuntun"
 
 #: dt-users/template-user-management.php:166
 msgid "Schedule Unavailability"
@@ -5431,9 +5572,11 @@ msgstr "Gbogbo Awọn orisun - n fun iraye si gbogbo awọn olubasọrọ"
 #: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
-"Custom - Access own contacts and all the contacts of the selected sources below"
+"Custom - Access own contacts and all the contacts of the selected sources "
+"below"
 msgstr ""
-"Aṣa - Wọle si awọn olubasọrọ tirẹ ati gbogbo awọn olubasọrọ ti awọn orisun ti o yan ni isalẹ"
+"Aṣa - Wọle si awọn olubasọrọ tirẹ ati gbogbo awọn olubasọrọ ti awọn orisun "
+"ti o yan ni isalẹ"
 
 #: dt-users/template-user-management.php:346
 #: dt-users/user-hooks-and-config.php:637
@@ -5495,9 +5638,11 @@ msgstr "Akoko lati sọtọ si igbiyanju olubasọrọ fun awọn olubasọrọ 
 #: dt-users/user-hooks-and-config.php:196
 #, php-format
 msgid ""
-"Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users"
+"Welcome %1$s, this is your personal contact record. Feel free to update the "
+"fields and @mention me or other users"
 msgstr ""
-"Kaabo %1$s, eyi ni igbasilẹ olubasọrọ ti ara ẹni. Lero ọfẹ lati ṣe imudojuiwọn awọn aaye ati @darukọ mi tabi awọn olumulo miiran"
+"Kaabo %1$s, eyi ni igbasilẹ olubasọrọ ti ara ẹni. Lero ọfẹ lati ṣe "
+"imudojuiwọn awọn aaye ati @darukọ mi tabi awọn olumulo miiran"
 
 #: dt-users/user-hooks-and-config.php:312
 #: dt-users/user-hooks-and-config.php:350
@@ -5521,7 +5666,9 @@ msgstr "Hi %s,"
 
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
-msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
+msgctxt ""
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "O ti pe ọ lati darapọ mọ %1$s ni %2$s"
 
@@ -5724,9 +5871,13 @@ msgstr "Javascript gbọdọ ṣiṣẹ fun aaye yii lati ṣiṣẹ ni deede."
 
 #: header.php:61
 msgid ""
-"You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
+"You seem to be using an out-of-date web browser. Without the most up-to-date "
+"version of your browser, this may site may not function correctly. Please "
+"note that Internet Explorer is not supported."
 msgstr ""
-"O dabi pe o nlo aṣawakiri wẹẹbu ti o ti di ọjọ. Laisi ẹya tuntun ti aṣàwákiri rẹ, aaye yii le ma ṣiṣẹ ni deede. Jọwọ ṣe akiyesi pe Internet Explorer ko ni atilẹyin."
+"O dabi pe o nlo aṣawakiri wẹẹbu ti o ti di ọjọ. Laisi ẹya tuntun ti "
+"aṣàwákiri rẹ, aaye yii le ma ṣiṣẹ ni deede. Jọwọ ṣe akiyesi pe Internet "
+"Explorer ko ni atilẹyin."
 
 #: header.php:63
 msgid "See what browser you are using."
@@ -5766,9 +5917,13 @@ msgstr "Dapọ Ẹda %s"
 
 #: template-merge-post-details.php:123
 msgid ""
-"When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
+"When you merge, the primary record is updated with the values you choose, "
+"and relationships to other items are shifted to the primary record; which "
+"can be switched below."
 msgstr ""
-"Nigbati o ba dapọ, igbasilẹ akọkọ ti ni imudojuiwọn pẹlu awọn iye ti o yan, ati awọn ibatan si awọn ohun miiran ti wa ni iyipada si igbasilẹ akọkọ; eyi ti o le yipada ni isalẹ."
+"Nigbati o ba dapọ, igbasilẹ akọkọ ti ni imudojuiwọn pẹlu awọn iye ti o yan, "
+"ati awọn ibatan si awọn ohun miiran ti wa ni iyipada si igbasilẹ akọkọ; eyi "
+"ti o le yipada ni isalẹ."
 
 #: template-merge-post-details.php:126
 msgid "Copy comments to updated primary record"
@@ -5878,9 +6033,11 @@ msgstr "Wiwa lati gba awọn olubasọrọ lati Dispatcher"
 
 #: template-settings.php:434
 msgid ""
-"Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be traveling or unavailable so the Dispatcher will "
+"know your availability to receive new contacts"
 msgstr ""
-"Ṣeto awọn ọjọ ti iwọ yoo rin irin-ajo tabi ko si nitorina Dispatcher yoo mọ wiwa rẹ lati gba awọn olubasọrọ tuntun"
+"Ṣeto awọn ọjọ ti iwọ yoo rin irin-ajo tabi ko si nitorina Dispatcher yoo mọ "
+"wiwa rẹ lati gba awọn olubasọrọ tuntun"
 
 #: template-settings.php:438
 msgid "Schedule Travel or Dates Unavailable"
@@ -5932,9 +6089,15 @@ msgstr ""
 
 #: template-settings.php:630
 msgid ""
-"Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. For profile images we use "
+"Gravatar (Globally Recognized Avatar). If you have security concerns, we "
+"suggest not using a personal photo, but instead choose a cartoon, abstract, "
+"or alias photo to represent you."
 msgstr ""
-"Eto Awọn irinṣẹ Ọmọ-ẹhin ko tọju awọn aworan. Fun awọn aworan profaili a lo Gravatar (Afata Ti A Ti Gba Gbigba Kariaye). Ti o ba ni awọn ifiyesi aabo, a daba pe ki o ma lo fọto ti ara ẹni, ṣugbọn dipo yan erere kan, abẹrẹ, tabi inagijẹ fọto lati ṣe aṣoju rẹ."
+"Eto Awọn irinṣẹ Ọmọ-ẹhin ko tọju awọn aworan. Fun awọn aworan profaili a lo "
+"Gravatar (Afata Ti A Ti Gba Gbigba Kariaye). Ti o ba ni awọn ifiyesi aabo, a "
+"daba pe ki o ma lo fọto ti ara ẹni, ṣugbọn dipo yan erere kan, abẹrẹ, tabi "
+"inagijẹ fọto lati ṣe aṣoju rẹ."
 
 #: template-settings.php:631
 msgid "edit image on gravatar.com"
@@ -5942,9 +6105,15 @@ msgstr "satunkọ aworan lori gravatar.com"
 
 #: template-settings.php:637
 msgid ""
-"Disciple Tools System does not store images. All media assets will be placed within specified media connection storage service. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. All media assets will be placed "
+"within specified media connection storage service. If you have security "
+"concerns, we suggest not using a personal photo, but instead choose a "
+"cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"Eto Awọn Irinṣẹ Ọmọ-ẹhin ko tọju awọn aworan. Gbogbo awọn ohun elo media yoo gbe sinu iṣẹ ibi ipamọ asopọ media ti a sọ. Ti o ba ni awọn ifiyesi aabo, a daba pe ki o ma lo fọto ti ara ẹni, ṣugbọn dipo yan ere idaraya, aṣọ, tabi fọto orukọ-oloṣere lati ṣe aṣoju rẹ."
+"Eto Awọn Irinṣẹ Ọmọ-ẹhin ko tọju awọn aworan. Gbogbo awọn ohun elo media yoo "
+"gbe sinu iṣẹ ibi ipamọ asopọ media ti a sọ. Ti o ba ni awọn ifiyesi aabo, a "
+"daba pe ki o ma lo fọto ti ara ẹni, ṣugbọn dipo yan ere idaraya, aṣọ, tabi "
+"fọto orukọ-oloṣere lati ṣe aṣoju rẹ."
 
 #: template-settings.php:638
 msgid "Upload new profile image"
@@ -5976,9 +6145,12 @@ msgstr "Awọn olubasọrọ Wiwọle meji"
 
 #: template-view-duplicates.php:27
 msgid ""
-"Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
+"Scanning for duplicates starting with the most recently modified contacts. "
+"Results are limited to ones that have less than 10 exact matches."
 msgstr ""
-"Ṣiṣayẹwo fun awọn ẹda-ẹda ti o bẹrẹ pẹlu awọn olubasọrọ ti a ṣe atunṣe laipe. Awọn abajade wa ni opin si awọn ti o ni kere ju awọn ere-kere 10 gangan."
+"Ṣiṣayẹwo fun awọn ẹda-ẹda ti o bẹrẹ pẹlu awọn olubasọrọ ti a ṣe atunṣe "
+"laipe. Awọn abajade wa ni opin si awọn ti o ni kere ju awọn ere-kere 10 "
+"gangan."
 
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"

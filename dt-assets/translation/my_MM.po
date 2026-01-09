@@ -4,8 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2026-01-07T20:43:24+00:00\n"
-"PO-Revision-Date: 2025-03-05 16:00+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-01-09 14:51+0000\n"
+"Last-Translator: Anonymous <translator@disciple.tools>\n"
 "Language-Team: Burmese <https://translate.disciple.tools/projects/disciple-"
 "tools/disciple-tools-theme/my_MM/>\n"
 "Language: my_MM\n"
@@ -13,9 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
-
-
+"X-Generator: Weblate 5.15.1\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -30,9 +28,9 @@ msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 #. Description of the theme
 #: style.css
 msgid ""
-"Disciple.Tools is a coalition management system for disciple making movements."
-msgstr ""
-"Disciple.Tools သည် တပည့်လှုပ်ရှားမှုများပြုလုပ်ရန်အတွက် ညွန့်ပေါင်းစီမံခန့်ခွဲမှုစနစ်တစ်ခုဖြစ်သည်။"
+"Disciple.Tools is a coalition management system for disciple making "
+"movements."
+msgstr "Disciple.Tools သည် တပည့်လှုပ်ရှားမှုများပြုလုပ်ရန်အတွက် ညွန့်ပေါင်းစီမံခန့်ခွဲမှုစနစ်တစ်ခုဖြစ်သည်။"
 
 #. Author URI of the theme
 #: style.css
@@ -46,8 +44,7 @@ msgstr "ခွင့်ပြုချက်ငြင်းပယ်သည်"
 #: 403.php:35
 #, php-format
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
-msgstr ""
-"ဝမ်းနည်းပါသည်၊ %1$s အား id %2$s ဖြင့်ကြည့်ရှုရန်သင့်မှာခွင့်ပြုချက်မရှိပါ။"
+msgstr "ဝမ်းနည်းပါသည်၊ %1$s အား id %2$s ဖြင့်ကြည့်ရှုရန်သင့်မှာခွင့်ပြုချက်မရှိပါ။"
 
 #: 403.php:36
 msgid "Request permission from your administrator."
@@ -68,8 +65,7 @@ msgstr "Record Access ကိုတောင်းဆိုပါ"
 #: 403.php:49
 msgid ""
 "Record owner to be notified of access request. Are you happy to proceed?"
-msgstr ""
-"ဝင်ရောက်ခွင့်တောင်းဆိုချက်ကိုအကြောင်းကြားရန်စံချိန်တင်ပိုင်ရှင်။ ရှေ့ဆက်ဖို့သင်ပျော်ရွှင်ပါသလား။"
+msgstr "ဝင်ရောက်ခွင့်တောင်းဆိုချက်ကိုအကြောင်းကြားရန်စံချိန်တင်ပိုင်ရှင်။ ရှေ့ဆက်ဖို့သင်ပျော်ရွှင်ပါသလား။"
 
 #: 403.php:52
 msgid "Submit Request"
@@ -241,15 +237,26 @@ msgstr "စာရင်းထုတ်ယူမှုများ အကူအ�
 
 #: archive-template.php:263
 msgid ""
-"Using the current filter, this is a simple way to export basic information and use it in other applications."
+"Using the current filter, this is a simple way to export basic information "
+"and use it in other applications."
 msgstr ""
-"လက်ရှိ filter ကိုအသုံးပြု၍ အခြေခံအချက်အလက်များကို ထုတ်ယူပြီး အခြားအပလီကေးရှင်းများတွင် အသုံးပြုရန် ရိုးရှင်းသောနည်းလမ်းတစ်ခုဖြစ်သည်။"
+"လက်ရှိ filter ကိုအသုံးပြု၍ အခြေခံအချက်အလက်များကို ထုတ်ယူပြီး အခြားအပလီကေးရှင်းများတွင် အသုံးပြုရန် "
+"ရိုးရှင်းသောနည်းလမ်းတစ်ခုဖြစ်သည်။"
 
 #: archive-template.php:267
 msgid ""
-"Using the current filter, the available emails are grouped by 50 and can be launched into your default email client by group. Many email providers put a limit of 50 on BCC emails. You can open all groups at once using the \"Open All\" button. If the list is too large, this might alert your email provider. The BCC email tool is meant to assist small group emails. Bulk email should be handled through bulk email providers."
+"Using the current filter, the available emails are grouped by 50 and can be "
+"launched into your default email client by group. Many email providers put a "
+"limit of 50 on BCC emails. You can open all groups at once using the \"Open "
+"All\" button. If the list is too large, this might alert your email "
+"provider. The BCC email tool is meant to assist small group emails. Bulk "
+"email should be handled through bulk email providers."
 msgstr ""
-"လက်ရှိ filter ကိုအသုံးပြု၍ ရရှိနိုင်သောအီးမေးလ်များကို ၅၀ စီအုပ်စုဖွဲ့ထားပြီး သင်၏ပုံသေအီးမေးလ်ကလိုင်းယင့်တွင် အုပ်စုလိုက်ဖွင့်နိုင်သည်။ အီးမေးလ်ဝန်ဆောင်မှုပေးသူအများစုသည် BCC အီးမေးလ်များကို ၅၀ အထိကန့်သတ်ထားသည်။ \\\"အားလုံးဖွင့်ပါ\\\" ခလုတ်ကိုအသုံးပြု၍ အုပ်စုအားလုံးကို တစ်ပြိုင်နက်ဖွင့်နိုင်သည်။ စာရင်းကြီးလွန်းပါက သင်၏အီးမေးလ်ဝန်ဆောင်မှုပေးသူက သတိပေးနိုင်သည်။ BCC အီးမေးလ်ကိရိယာသည် အုပ်စုငယ်အီးမေးလ်များအတွက် ကူညီရန်ရည်ရွယ်သည်။ အစုလိုက်အီးမေးလ်များကို အစုလိုက်အီးမေးလ်ဝန်ဆောင်မှုပေးသူများမှတဆင့် ကိုင်တွယ်သင့်သည်။"
+"လက်ရှိ filter ကိုအသုံးပြု၍ ရရှိနိုင်သောအီးမေးလ်များကို ၅၀ စီအုပ်စုဖွဲ့ထားပြီး သင်၏ပုံသေအီးမေးလ်ကလိုင်းယင့်တွင် "
+"အုပ်စုလိုက်ဖွင့်နိုင်သည်။ အီးမေးလ်ဝန်ဆောင်မှုပေးသူအများစုသည် BCC အီးမေးလ်များကို ၅၀ အထိကန့်သတ်ထားသည်။ \\"
+"\"အားလုံးဖွင့်ပါ\\\" ခလုတ်ကိုအသုံးပြု၍ အုပ်စုအားလုံးကို တစ်ပြိုင်နက်ဖွင့်နိုင်သည်။ စာရင်းကြီးလွန်းပါက "
+"သင်၏အီးမေးလ်ဝန်ဆောင်မှုပေးသူက သတိပေးနိုင်သည်။ BCC အီးမေးလ်ကိရိယာသည် အုပ်စုငယ်အီးမေးလ်များအတွက် "
+"ကူညီရန်ရည်ရွယ်သည်။ အစုလိုက်အီးမေးလ်များကို အစုလိုက်အီးမေးလ်ဝန်ဆောင်မှုပေးသူများမှတဆင့် ကိုင်တွယ်သင့်သည်။"
 
 #: archive-template.php:270
 msgid "Phone Number List"
@@ -257,13 +264,17 @@ msgstr "ဖုန်းနံပါတ်စာရင်း"
 
 #: archive-template.php:271
 msgid ""
-"Using the current filter, this is intended for copy pasting a list of numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of starting a group conversation."
+"Using the current filter, this is intended for copy pasting a list of "
+"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
+"starting a group conversation."
 msgstr ""
-"လက်ရှိ filter ကိုအသုံးပြု၍ ဖုန်းနံပါတ်စာရင်းကို WhatsApp၊ Signal စသည့် မက်ဆေ့ချ်အက်ပ်များသို့ ကူးယူထည့်သွင်းရန် ရည်ရွယ်သည်။ အုပ်စုစကားဝိုင်းစတင်ရန် လျင်မြန်သောနည်းလမ်းဖြစ်သည်။"
+"လက်ရှိ filter ကိုအသုံးပြု၍ ဖုန်းနံပါတ်စာရင်းကို WhatsApp၊ Signal စသည့် မက်ဆေ့ချ်အက်ပ်များသို့ "
+"ကူးယူထည့်သွင်းရန် ရည်ရွယ်သည်။ အုပ်စုစကားဝိုင်းစတင်ရန် လျင်မြန်သောနည်းလမ်းဖြစ်သည်။"
 
 #: archive-template.php:275
 msgid ""
-"Using the current filter, this creates a basic points map of known locations of listed individuals."
+"Using the current filter, this creates a basic points map of known locations "
+"of listed individuals."
 msgstr ""
 "လက်ရှိ filter ကိုအသုံးပြု၍ စာရင်းပါလူများ၏ သိထားသောတည်နေရာများကို အခြေခံအမှတ်မြေပုံတစ်ခု ဖန်တီးသည်။"
 
@@ -362,8 +373,7 @@ msgstr "အကွက်များမရွေးချယ်ထားပါ"
 #, php-format
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
-msgstr ""
-"စာရင်းမှသင်မွမ်းမံလိုသည့် %1$s အားလုံးကိုရွေးချယ်ပြီးအောက်ပါတို့ကိုအ‌ဆင့်မြင့်တင်ပါ"
+msgstr "စာရင်းမှသင်မွမ်းမံလိုသည့် %1$s အားလုံးကိုရွေးချယ်ပြီးအောက်ပါတို့ကိုအ‌ဆင့်မြင့်တင်ပါ"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -954,8 +964,7 @@ msgstr "%3$s နှင့် %1$s သည် %2$s ရုပ်ပြောင်�
 
 #: dt-assets/functions/enqueue-scripts.php:189
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr ""
-"ပြောဆိုသည့်ဘာသာစကားကို ရွေးချယ်ပြီး \\\"အသံဖမ်းစတင်ပါ\\\" ကိုနှိပ်၍ စတင်ပါ။"
+msgstr "ပြောဆိုသည့်ဘာသာစကားကို ရွေးချယ်ပြီး \\\"အသံဖမ်းစတင်ပါ\\\" ကိုနှိပ်၍ စတင်ပါ။"
 
 #: dt-assets/functions/enqueue-scripts.php:190
 msgid "Click \"Start Recording\" to begin."
@@ -1150,11 +1159,11 @@ msgstr "ထုတ်ယူသော csv ဒေတာတွင် %1$s အကွ�
 
 #: dt-assets/functions/enqueue-scripts.php:351
 #, php-format
-msgctxt "The exported csv data to contain the 6 visible Contact field(s) shown below."
+msgctxt ""
+"The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
-msgstr ""
-"ထုတ်ယူသော csv ဒေတာတွင် အောက်တွင်ပြထားသော မြင်နိုင်သော %1$s အကွက် %2$s ခုပါဝင်မည်။"
+msgstr "ထုတ်ယူသော csv ဒေတာတွင် အောက်တွင်ပြထားသော မြင်နိုင်သော %1$s အကွက် %2$s ခုပါဝင်မည်။"
 
 #: dt-assets/functions/enqueue-scripts.php:354
 #: dt-assets/functions/enqueue-scripts.php:362
@@ -1484,16 +1493,22 @@ msgstr "လျင်မြန်စွာလှုပ်ရှားမှုခ
 #: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid ""
-"These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
+"These quick action buttons are here to aid you in updating the contact "
+"record faster and keep a count of how many times each action has be done."
 msgstr ""
-"ဤမြန်ဆန်သောလုပ်ဆောင်ချက်ခလုတ်များသည်သင်၏အဆက်အသွယ်မှတ်တမ်းအားပိုမိုမြန်ဆန်စွာအဆင့်မြှင့်တင်ရန် နှင့် လုပ်ဆောင်မှုတစ်ခုစီကိုအကြိမ်မည်မျှပြုလုပ်သည်ကိုရေတွက်ရန် သင့်အားကူညီရန်ဤနေရာတွင်ရှိသည်။"
+"ဤမြန်ဆန်သောလုပ်ဆောင်ချက်ခလုတ်များသည်သင်၏အဆက်အသွယ်မှတ်တမ်းအားပိုမိုမြန်ဆန်စွာအဆင့်မြှင့်တင်ရန် နှင့် "
+"လုပ်ဆောင်မှုတစ်ခုစီကိုအကြိမ်မည်မျှပြုလုပ်သည်ကိုရေတွက်ရန် သင့်အားကူညီရန်ဤနေရာတွင်ရှိသည်။"
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid ""
-"For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer. This action will also change the 'Seeker Path' to 'Contact Attempted'."
+"For example, If you click the 'No Answer' button 4 times, we will log that "
+"you attempted to reach this contact 4 times, but they did not answer. This "
+"action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"ဥပမာအားဖြင့် 'အဖြေမရှိ' ခလုတ်ကို ၄ ကြိမ်နှိပ်ပါက ဤအဆက်အသွယ်ကို ၄ ကြိမ်ဆက်သွယ်ရန်ကြိုးစားခဲ့သော်လည်း မဖြေကြားခဲ့ကြောင်း မှတ်တမ်းတင်ပါမည်။ ဤလုပ်ဆောင်ချက်သည် 'ရှာသူလမ်းကြောင်း' ကို 'ဆက်သွယ်ရန်ကြိုးစားခဲ့သည်' သို့ ပြောင်းလဲပါမည်။"
+"ဥပမာအားဖြင့် 'အဖြေမရှိ' ခလုတ်ကို ၄ ကြိမ်နှိပ်ပါက ဤအဆက်အသွယ်ကို ၄ ကြိမ်ဆက်သွယ်ရန်ကြိုးစားခဲ့သော်လည်း "
+"မဖြေကြားခဲ့ကြောင်း မှတ်တမ်းတင်ပါမည်။ ဤလုပ်ဆောင်ချက်သည် 'ရှာသူလမ်းကြောင်း' ကို 'ဆက်သွယ်ရန်ကြိုးစားခဲ့သည်' "
+"သို့ ပြောင်းလဲပါမည်။"
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1507,29 +1522,28 @@ msgstr "အဆက်အသွယ်နှစ်ခုကို အဆင့်�
 #: dt-assets/parts/modals/modal-help.php:42
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
-msgstr ""
-"ဤနေရာသည်အစည်းအဝေးများနှင့်စကားဝိုင်းများမှမှတ်စုများကိုသင်မှတ်တမ်းတင်နိုင်သည့်နေရာဖြစ်သည်။"
+msgstr "ဤနေရာသည်အစည်းအဝေးများနှင့်စကားဝိုင်းများမှမှတ်စုများကိုသင်မှတ်တမ်းတင်နိုင်သည့်နေရာဖြစ်သည်။"
 
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid ""
-"Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
+"Type @ and the name of a user to mention them in a comment. This user will "
+"then receive a notification."
 msgstr ""
-"မှတ်ချက်တစ်ခုတွင်အသုံးပြုသူတို့ကိုဖော်ပြရန် @ နှင့် အသုံးပြုသူ၏အမည်ကို ရိုက်ထည့်ပါ။ ဤအသုံးပြုသူသည်အကြောင်းကြားစာကိုလက်ခံရရှိလိမ့်မည်။"
+"မှတ်ချက်တစ်ခုတွင်အသုံးပြုသူတို့ကိုဖော်ပြရန် @ နှင့် အသုံးပြုသူ၏အမည်ကို ရိုက်ထည့်ပါ။ "
+"ဤအသုံးပြုသူသည်အကြောင်းကြားစာကိုလက်ခံရရှိလိမ့်မည်။"
 
 #: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"This section also includes the history of activity, such as when the contact or group status became active etc."
-msgstr ""
-"အဆက်အသွယ်(သို့မဟုတ်)အုပ်စုအခြေအနေတက်ကြွလာသောအခါ စသည့်လှုပ်ရှားမှုသမိုင်းလည်းဤအခန်းတွင်ပါဝင်ပါသည်။"
+"This section also includes the history of activity, such as when the contact "
+"or group status became active etc."
+msgstr "အဆက်အသွယ်(သို့မဟုတ်)အုပ်စုအခြေအနေတက်ကြွလာသောအခါ စသည့်လှုပ်ရှားမှုသမိုင်းလည်းဤအခန်းတွင်ပါဝင်ပါသည်။"
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
-msgid ""
-"You can filter this section either by 'All', 'Comments', or 'Activity'."
-msgstr ""
-"သင်သည်ဤအပိုင်းကို 'All', 'Comments' သို့မဟုတ် 'Activity' ဖြင့်စစ်နိုင်သည်။"
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
+msgstr "သင်သည်ဤအပိုင်းကို 'All', 'Comments' သို့မဟုတ် 'Activity' ဖြင့်စစ်နိုင်သည်။"
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:117
 msgid "Your Profile"
@@ -1543,16 +1557,16 @@ msgstr "ဒီဧရိယာတွင်သင်၏အသုံးပြုသ
 #: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
 msgid ""
-"You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
-msgstr ""
-"ဤပရိုဖိုင်နယ်ပယ်တစ်ခုခုကိုဖြည့်ရန်သင်မလိုအပ်ပါ။ သူတို့သည်သင့်အဖွဲ့၏လိုအပ်ချက်များကိုဖြည့်ဆည်းရန်ရွေးချယ်နိုင်ကြသည်။"
+"You are not required to fill out any of these profile fields. They are "
+"optional to meet your team’s needs."
+msgstr "ဤပရိုဖိုင်နယ်ပယ်တစ်ခုခုကိုဖြည့်ရန်သင်မလိုအပ်ပါ။ သူတို့သည်သင့်အဖွဲ့၏လိုအပ်ချက်များကိုဖြည့်ဆည်းရန်ရွေးချယ်နိုင်ကြသည်။"
 
 #: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid ""
-"By clicking 'Edit', you will be able adjust things like the language that this system operates in."
-msgstr ""
-"'Edit' ကိုနှိပ်ခြင်းအားဖြင့်သင်သည်ဤစနစ်တွင်လည်ပတ်နေသောဘာသာစကားကဲ့သို့သောအရာများကိုညှိနိုင်သည်။"
+"By clicking 'Edit', you will be able adjust things like the language that "
+"this system operates in."
+msgstr "'Edit' ကိုနှိပ်ခြင်းအားဖြင့်သင်သည်ဤစနစ်တွင်လည်ပတ်နေသောဘာသာစကားကဲ့သို့သောအရာများကိုညှိနိုင်သည်။"
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
 #: dt-users/users.php:169
@@ -1562,9 +1576,11 @@ msgstr "တည်နေရာများ"
 #: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid ""
-"These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
+"These are the areas you are responsible for. Clicking the 'Add' button will "
+"bring up a list of locations to choose from."
 msgstr ""
-"ဤကားသင်တို့တာဝန်ရှိသောဒေသများဖြစ်ကြသည်။ 'Add' ခလုတ်ကိုနှိပ်ခြင်းအားဖြင့်သင်ရွေးချယ်မည့်တည်နေရာများစာရင်းပေါ်လာလိမ့်မည်။"
+"ဤကားသင်တို့တာဝန်ရှိသောဒေသများဖြစ်ကြသည်။ 'Add' "
+"ခလုတ်ကိုနှိပ်ခြင်းအားဖြင့်သင်ရွေးချယ်မည့်တည်နေရာများစာရင်းပေါ်လာလိမ့်မည်။"
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
@@ -1574,9 +1590,12 @@ msgstr "သင်၏သတိပေးချက်များ"
 #: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid ""
-"You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
+"You will receive web notifications and email notifications based on your "
+"notification preferences. To change your preference, click the toggle "
+"buttons."
 msgstr ""
-"သင်၏သတိပေးချက် ဦး စားပေးချက်များပေါ် မူတည်၍ web နှင့် email အကြောင်းကြားစာများကိုသင်ရရှိမည်ဖြစ်သည်။ သင်၏ preference ကိုပြောင်းလဲရန် toggle ခလုတ်ကိုနှိပ်ပါ။"
+"သင်၏သတိပေးချက် ဦး စားပေးချက်များပေါ် မူတည်၍ web နှင့် email "
+"အကြောင်းကြားစာများကိုသင်ရရှိမည်ဖြစ်သည်။ သင်၏ preference ကိုပြောင်းလဲရန် toggle ခလုတ်ကိုနှိပ်ပါ။"
 
 #: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
@@ -1591,16 +1610,21 @@ msgstr "အသိပေးချက်များပိတ်ထားသည်
 #: dt-assets/parts/modals/modal-help.php:78
 msgctxt "Optional Documentation"
 msgid ""
-"Some of the types of notifications cannot be adjusted because they are required by the system."
-msgstr ""
-"အချို့သောအကြောင်းကြားစာအမျိုးအစားများဟာစနစ်ကလိုအပ်သောကြောင့်ပြုပြင်ရန်မဖြစ်နိုင်ပါ။"
+"Some of the types of notifications cannot be adjusted because they are "
+"required by the system."
+msgstr "အချို့သောအကြောင်းကြားစာအမျိုးအစားများဟာစနစ်ကလိုအပ်သောကြောင့်ပြုပြင်ရန်မဖြစ်နိုင်ပါ။"
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid ""
-"Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Adjust whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"မှတ်ချက်အသစ်များ၊ ဆက်သွယ်ရန်အချက်အလက်အပြောင်းအလဲများ၊ Contact Milestones နှင့် Group Health မက်ထရစ်ခ်ျများအကြောင်းသတိပေးချက်များကိုသင်မြင်လိုခြင်းရှိမရှိကိုချိန်ညှိပါ။ စနစ်အတွင်း၌ဖြစ်ပျက်လာမည့်နောက်ဆုံးပေါ်များအတွက်သင့်အားအသိပေးချက်ကို ရရှိမည်လားဆိုသည်ကိုချိန်ညှိပါ။"
+"မှတ်ချက်အသစ်များ၊ ဆက်သွယ်ရန်အချက်အလက်အပြောင်းအလဲများ၊ Contact Milestones နှင့် Group Health "
+"မက်ထရစ်ခ်ျများအကြောင်းသတိပေးချက်များကိုသင်မြင်လိုခြင်းရှိမရှိကိုချိန်ညှိပါ။ "
+"စနစ်အတွင်း၌ဖြစ်ပျက်လာမည့်နောက်ဆုံးပေါ်များအတွက်သင့်အားအသိပေးချက်ကို ရရှိမည်လားဆိုသည်ကိုချိန်ညှိပါ။"
 
 #: dt-assets/parts/modals/modal-help.php:87
 msgctxt "Optional Documentation"
@@ -1610,9 +1634,11 @@ msgstr "အကြောင်းကြားစာ စာမျက်နှာ"
 #: dt-assets/parts/modals/modal-help.php:88
 msgctxt "Optional Documentation"
 msgid ""
-"This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
+"This Notifications Page is where you can read updates to users and groups. "
+"It displays notifications about activity on your records."
 msgstr ""
-"ဤအသိပေးချက်စာမျက်နှာသည် အသုံးပြုသူများနှင့် အုပ်စုများသို့ အပ်ဒိတ်များကို ဖတ်နိုင်သည့်နေရာဖြစ်သည်။ သင်၏မှတ်တမ်းများတွင် လှုပ်ရှားမှုအကြောင်း အသိပေးချက်များကို ပြသသည်။"
+"ဤအသိပေးချက်စာမျက်နှာသည် အသုံးပြုသူများနှင့် အုပ်စုများသို့ အပ်ဒိတ်များကို ဖတ်နိုင်သည့်နေရာဖြစ်သည်။ "
+"သင်၏မှတ်တမ်းများတွင် လှုပ်ရှားမှုအကြောင်း အသိပေးချက်များကို ပြသသည်။"
 
 #: dt-assets/parts/modals/modal-help.php:89
 msgctxt "Optional Documentation"
@@ -1623,15 +1649,14 @@ msgstr "အားလုံး / မဖတ်ရသေးသော"
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
-msgstr ""
-"သင်၏အသိပေးချက်အားလုံး၏စာရင်းအပြည့်အစုံအားလုံးကိုပြရန် 'All' ခလုတ်ကိုနှိပ်ပါ။"
+msgstr "သင်၏အသိပေးချက်အားလုံး၏စာရင်းအပြည့်အစုံအားလုံးကိုပြရန် 'All' ခလုတ်ကိုနှိပ်ပါ။"
 
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Unread' button to show the list of all of your unread notifications."
-msgstr ""
-"သင်မဖတ်ရသေးသောအသိပေးချက်အားလုံး၏စာရင်းကိုပြသရန် 'Unread' ခလုတ်ကိုနှိပ်ပါ။"
+"Click the 'Unread' button to show the list of all of your unread "
+"notifications."
+msgstr "သင်မဖတ်ရသေးသောအသိပေးချက်အားလုံး၏စာရင်းကိုပြသရန် 'Unread' ခလုတ်ကိုနှိပ်ပါ။"
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
 #: template-notifications.php:66
@@ -1641,16 +1666,27 @@ msgstr "အားလုံးဖတ်ပြီးအဖြစ်မှတ်သ
 #: dt-assets/parts/modals/modal-help.php:93
 msgctxt "Optional Documentation"
 msgid ""
-"If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+"If you don't want to click each filled in circle on the right side of each "
+"row to indicate the notification has been read, then click the 'Mark All as "
+"Read' link at the top to quickly adjust all the messages that they have all "
+"been read."
 msgstr ""
-"အကယ်၍ သင်သတိပေးချက်ကိုဖတ်ပြီးကြောင်းဖော်ပြရန်အတန်းတစ်ခုစီ၏ညာဘက်အခြမ်းတွင်ရှိသောစက်ဝိုင်းအကွက်တစ်ခုစီကိုမနှိပ်လိုပါက၊၎င်းတို့တွင်ရှိသည့်စာတိုအားလုံးကိုလျင်မြန်စွာညှိရန်ထိပ်ရှိ 'Mark All as Read' link ကိုနှိပ်ပါ။ "
+"အကယ်၍ "
+"သင်သတိပေးချက်ကိုဖတ်ပြီးကြောင်းဖော်ပြရန်အတန်းတစ်ခုစီ၏ညာဘက်အခြမ်းတွင်ရှိသောစက်ဝိုင်းအကွက်တစ်ခုစီကိုမနှိပ်လိုပါက၊"
+"၎င်းတို့တွင်ရှိသည့်စာတိုအားလုံးကိုလျင်မြန်စွာညှိရန်ထိပ်ရှိ 'Mark All as Read' link ကိုနှိပ်ပါ။ "
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Click the 'Settings' link to go to the notifications settings area to adjust "
+"whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"မှတ်ချက်အသစ်များ၊ ဆက်သွယ်မှုသတင်းအချက်အလက်အပြောင်းအလဲများ၊ ဆက်သွယ်မှုမှတ်တိုင်များနှင့် Group Health မက်ထရစ်များနှင့်သတိပေးချက်အသစ်များကိုသင်မြင်လိုမလိုကိုချိန်ညှိရန်အတွက် 'ချိန်ညှိချက်များ' link ကိုနှိပ်ပါ၊ ပြီးတော့ စနစ်ထဲမှာ ဖြစ်ပေါ်သော အသစ်မှန်သမျှ၏ အသိပေးချက်ကို သင်လက်ခံရရှိလိမ့်မည်။"
+"မှတ်ချက်အသစ်များ၊ ဆက်သွယ်မှုသတင်းအချက်အလက်အပြောင်းအလဲများ၊ ဆက်သွယ်မှုမှတ်တိုင်များနှင့် Group Health "
+"မက်ထရစ်များနှင့်သတိပေးချက်အသစ်များကိုသင်မြင်လိုမလိုကိုချိန်ညှိရန်အတွက် 'ချိန်ညှိချက်များ' link ကိုနှိပ်ပါ၊ "
+"ပြီးတော့ စနစ်ထဲမှာ ဖြစ်ပေါ်သော အသစ်မှန်သမျှ၏ အသိပေးချက်ကို သင်လက်ခံရရှိလိမ့်မည်။"
 
 #: dt-assets/parts/modals/modal-help.php:100
 msgctxt "Optional Documentation"
@@ -1660,9 +1696,14 @@ msgstr "အဆက်အသွယ် ပုံတူပွားခြင်း�
 #: dt-assets/parts/modals/modal-help.php:101
 msgctxt "Optional Documentation"
 msgid ""
-"This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
+"This Duplicate Contact Page is where you can review, decline or merge "
+"contacts that have been picked up by the system (checking against their "
+"name, email and phone) as possibly being duplicates of another already "
+"existing contact."
 msgstr ""
-"ဤ အဆက်အသွယ် ပုံတူပွား စာမျက်နှာသည်သင်ရှိပြီးသားအဆက်အသွယ်၏မိတ္တူပွားများဖြစ်နိုင်သည့်စနစ် (၎င်းတို့အမည်၊ အီးမေးလ်နှင့်ဖုန်းကိုစစ်ဆေးခြင်း) မှရွေးထားသောအဆက်အသွယ်များကိုပြန်လည်သုံးသပ်ခြင်း၊ ငြင်းပယ်ခြင်း(သို့မဟုတ်)ပေါင်းစည်းခြင်းပြုလုပ်နိုင်သည့်နေရာဖြစ်သည်။"
+"ဤ အဆက်အသွယ် ပုံတူပွား စာမျက်နှာသည်သင်ရှိပြီးသားအဆက်အသွယ်၏မိတ္တူပွားများဖြစ်နိုင်သည့်စနစ် (၎င်းတို့အမည်၊ "
+"အီးမေးလ်နှင့်ဖုန်းကိုစစ်ဆေးခြင်း) မှရွေးထားသောအဆက်အသွယ်များကိုပြန်လည်သုံးသပ်ခြင်း၊ "
+"ငြင်းပယ်ခြင်း(သို့မဟုတ်)ပေါင်းစည်းခြင်းပြုလုပ်နိုင်သည့်နေရာဖြစ်သည်။"
 
 #: dt-assets/parts/modals/modal-help.php:124
 #: dt-assets/parts/modals/modal-help.php:174
@@ -1696,9 +1737,11 @@ msgstr "မိုဘိုင်းစက်ပေါ်တွင် မှေ�
 
 #: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
 msgid ""
-"Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
+"Reset the security code. No data is removed. Only access. The previous link "
+"will be disabled and another one created."
 msgstr ""
-"လုံခြုံရေးကုဒ်ကို ပြန်လည်သတ်မှတ်ပါ။ မည်သည့်ဒေတာကိုမျှ မဖယ်ရှားပါ။ ဝင်ရောက်ခြင်းသာဖြစ်သည်။ ယခင်လင့်ခ်ကို ပိတ်ထားမည်ဖြစ်ပြီး အခြားတစ်ခုကို ဖန်တီးမည်ဖြစ်သည်။"
+"လုံခြုံရေးကုဒ်ကို ပြန်လည်သတ်မှတ်ပါ။ မည်သည့်ဒေတာကိုမျှ မဖယ်ရှားပါ။ ဝင်ရောက်ခြင်းသာဖြစ်သည်။ ယခင်လင့်ခ်ကို "
+"ပိတ်ထားမည်ဖြစ်ပြီး အခြားတစ်ခုကို ဖန်တီးမည်ဖြစ်သည်။"
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
@@ -1793,9 +1836,11 @@ msgstr ":နှင့်ဒီအဆက်အသွယ်သည်မျှဝ�
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid ""
-"Set a reminder or a task with a note and receive a notification on the due date."
+"Set a reminder or a task with a note and receive a notification on the due "
+"date."
 msgstr ""
-"သတိပေးချက်တစ်ခုသို့မဟုတ်အလုပ်တစ်ခုပါသောမှတ်စုတစ်ခုကိုသတ်မှတ်ပါ၊ပြီးတော့သတ်မှတ်ထားသောနေ့စွဲတွင်အသိပေးချက်ကိုလက်ခံရရှိပါ။"
+"သတိပေးချက်တစ်ခုသို့မဟုတ်အလုပ်တစ်ခုပါသောမှတ်စုတစ်ခုကိုသတ်မှတ်ပါ၊"
+"ပြီးတော့သတ်မှတ်ထားသောနေ့စွဲတွင်အသိပေးချက်ကိုလက်ခံရရှိပါ။"
 
 #: dt-assets/parts/modals/modal-tasks.php:13
 msgid "Task Type"
@@ -2035,9 +2080,9 @@ msgstr "စနစ်ထဲမှာအဆက်အသွယ်အသစ်ဖြ
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
-"This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
-msgstr ""
-"ဒီအဆက်အသွယ်ကသူတို့ဆက်မလုပ်ချင်တော့ကြောင်း(သို့မဟုတ်)သူ/သူမနှင့်အတူဆက်မသွားရန်ဆုံးဖြတ်ခဲ့သည်"
+"This contact has made it known that they no longer want to continue or you "
+"have decided not to continue with him/her."
+msgstr "ဒီအဆက်အသွယ်ကသူတို့ဆက်မလုပ်ချင်တော့ကြောင်း(သို့မဟုတ်)သူ/သူမနှင့်အတူဆက်မသွားရန်ဆုံးဖြတ်ခဲ့သည်"
 
 #: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
@@ -2056,8 +2101,7 @@ msgstr "တာဝန်ခွဲပေးအပ်ထားသူ"
 #: dt-contacts/base-setup.php:349
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
-msgstr ""
-"အဆက်အသွယ်ကို နောက်ဆက်တွဲလုပ်ရန် တာဝန်ပေးအပ်ထားသောအသုံးပြုသူကို ကူညီသော အဆက်အသွယ် သို့မဟုတ် အသုံးပြုသူ။"
+msgstr "အဆက်အသွယ်ကို နောက်ဆက်တွဲလုပ်ရန် တာဝန်ပေးအပ်ထားသောအသုံးပြုသူကို ကူညီသော အဆက်အသွယ် သို့မဟုတ် အသုံးပြုသူ။"
 
 #: dt-contacts/base-setup.php:360
 msgid "Sub-assigned on other Contacts"
@@ -2086,8 +2130,7 @@ msgstr "လွှဲပြောင်းခြင်း"
 #: dt-contacts/base-setup.php:383
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
-msgstr ""
-"အခြား Disciple.Tools ဆိုက်တစ်ခုနှင့် ပူးပေါင်းမှုမှ လွှဲပြောင်းလာသော အဆက်အသွယ်များ။"
+msgstr "အခြား Disciple.Tools ဆိုက်တစ်ခုနှင့် ပူးပေါင်းမှုမှ လွှဲပြောင်းလာသော အဆက်အသွယ်များ။"
 
 #: dt-contacts/base-setup.php:396 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:616
@@ -2277,9 +2320,12 @@ msgstr "%s သို့လွှဲပြောင်းပြီးဖြစ်
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
-"NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
+"NOTE: You have already transferred this contact. Transferring again might "
+"create duplicates. Do you still want to override this warning and continue "
+"with your transfer?"
 msgstr ""
-"မှတ်စု: သင်သည်ဤအဆက်အသွယ်ကိုလွှဲပြောင်းပြီးပါပြီ။ နောက်တဖန်လွှဲပြောင်းခြင်းထပ်တူဖန်တီးပေးလိမ့်မည်။ သင်သည်ဤသတိပေးချက်ကိုပယ်ဖျက်ပြီးသင်၏လွှဲပြောင်းမှုကိုဆက်လက်ပြုလုပ်လိုပါသလား။"
+"မှတ်စု: သင်သည်ဤအဆက်အသွယ်ကိုလွှဲပြောင်းပြီးပါပြီ။ နောက်တဖန်လွှဲပြောင်းခြင်းထပ်တူဖန်တီးပေးလိမ့်မည်။ "
+"သင်သည်ဤသတိပေးချက်ကိုပယ်ဖျက်ပြီးသင်၏လွှဲပြောင်းမှုကိုဆက်လက်ပြုလုပ်လိုပါသလား။"
 
 #: dt-contacts/contacts-transfer.php:281
 msgid "Override and Continue"
@@ -2374,9 +2420,11 @@ msgstr "ရှာသူလမ်းကြောင်း"
 #: dt-contacts/module-access.php:103
 msgctxt "Seeker Path field description"
 msgid ""
-"Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
+"Set the status of your progression with the contact. These are the steps "
+"that happen in a specific order to help a contact move forward."
 msgstr ""
-"အဆက်အသွယ်နှင့် သင်၏တိုးတက်မှုအခြေအနေကို သတ်မှတ်ပါ။ ဤအဆင့်များသည် အဆက်အသွယ်ရှေ့ဆက်သွားရန် ကူညီရန် သတ်မှတ်ထားသော အစီအစဉ်အတိုင်း ဖြစ်ပေါ်သော အဆင့်များဖြစ်သည်။"
+"အဆက်အသွယ်နှင့် သင်၏တိုးတက်မှုအခြေအနေကို သတ်မှတ်ပါ။ ဤအဆင့်များသည် အဆက်အသွယ်ရှေ့ဆက်သွားရန် ကူညီရန် သတ်မှတ်ထားသော "
+"အစီအစဉ်အတိုင်း ဖြစ်ပေါ်သော အဆင့်များဖြစ်သည်။"
 
 #: dt-contacts/module-access.php:107
 msgid "Contact Attempt Needed"
@@ -2413,9 +2461,9 @@ msgstr "အဆင်သင့်မဖြစ်သေးပါ"
 #: dt-contacts/module-access.php:149
 msgctxt "Contact Status field description"
 msgid ""
-"There is not enough information to move forward with the contact at this time."
-msgstr ""
-"ယခုအချိန်တွင်အဆက်အသွယ်နှင့်အတူရှေ့ဆက်ဖို့သတင်းအချက်အလက်အလုံအလောက်မရှိပါ။"
+"There is not enough information to move forward with the contact at this "
+"time."
+msgstr "ယခုအချိန်တွင်အဆက်အသွယ်နှင့်အတူရှေ့ဆက်ဖို့သတင်းအချက်အလက်အလုံအလောက်မရှိပါ။"
 
 #: dt-contacts/module-access.php:153
 msgid "Dispatch Needed"
@@ -2433,9 +2481,9 @@ msgstr "လက်ခံပေးဖို့စောင့်ဆိုင်း
 #: dt-contacts/module-access.php:159
 msgctxt "Contact Status field description"
 msgid ""
-"The contact has been assigned to someone, but has not yet been accepted by that person."
-msgstr ""
-"အဆက်အသွယ်ကိုတစ်စုံတစ် ဦး ထံအပ်နှံထားပြီးဖြစ်သော်လည်းထိုပုဂ္ဂိုလ်ကလက်ခံခြင်းမရှိသေးပါ။"
+"The contact has been assigned to someone, but has not yet been accepted by "
+"that person."
+msgstr "အဆက်အသွယ်ကိုတစ်စုံတစ် ဦး ထံအပ်နှံထားပြီးဖြစ်သော်လည်းထိုပုဂ္ဂိုလ်ကလက်ခံခြင်းမရှိသေးပါ။"
 
 #: dt-contacts/module-access.php:164
 msgid "Paused"
@@ -2443,10 +2491,8 @@ msgstr "ဆိုင်းငံ့မှု"
 
 #: dt-contacts/module-access.php:165
 msgctxt "Contact Status field description"
-msgid ""
-"This contact is currently on hold (i.e. on vacation or not responding)."
-msgstr ""
-"ယခုအဆက်အသွယ်သည်ခေတ္တဆိုင်းငံ့ထားသည် (ဆိုလိုသည်မှာ အားလပ်ရက်မှာ (သို့မဟုတ်) တုံ့ပြန်မည်မဟုတ်) ။"
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
+msgstr "ယခုအဆက်အသွယ်သည်ခေတ္တဆိုင်းငံ့ထားသည် (ဆိုလိုသည်မှာ အားလပ်ရက်မှာ (သို့မဟုတ်) တုံ့ပြန်မည်မဟုတ်) ။"
 
 #: dt-contacts/module-access.php:180
 msgid "Reason Not Ready"
@@ -2455,8 +2501,7 @@ msgstr "အကြောင်းပြချက်မဆင်သင့်မဖ
 #: dt-contacts/module-access.php:181
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
-msgstr ""
-"အဆက်အသွယ်သည်သုံးစွဲသူအားသတ်မှတ်ရန်အဆင်သင့်မဖြစ်သေးသည့်အဓိကအကြောင်းရင်း။"
+msgstr "အဆက်အသွယ်သည်သုံးစွဲသူအားသတ်မှတ်ရန်အဆင်သင့်မဖြစ်သေးသည့်အဓိကအကြောင်းရင်း။"
 
 #: dt-contacts/module-access.php:188
 msgid "Insufficient Contact Information"
@@ -2489,9 +2534,11 @@ msgstr "အကြောင်းပြချက်ဆိုင်းငံ့မ
 #: dt-contacts/module-access.php:212
 msgctxt "Optional Documentation"
 msgid ""
-"A paused contact is one you are not currently interacting with but expect to in the future."
+"A paused contact is one you are not currently interacting with but expect to "
+"in the future."
 msgstr ""
-"ခေတ္တဆိုင်းငံ့ထားသောအဆက်အသွယ်တစ်ခုသည်သင်နှင့်လက်ရှိဆက်သွယ်မှုမရှိုပါ၊သို့သော်အနာဂတ်တွင်မျှော်လင့်ထားသည့်အဆက်အသွယ်တစ်ခုဖြစ်သည်။"
+"ခေတ္တဆိုင်းငံ့ထားသောအဆက်အသွယ်တစ်ခုသည်သင်နှင့်လက်ရှိဆက်သွယ်မှုမရှိုပါ၊"
+"သို့သော်အနာဂတ်တွင်မျှော်လင့်ထားသည့်အဆက်အသွယ်တစ်ခုဖြစ်သည်။"
 
 #: dt-contacts/module-access.php:216
 msgctxt "Reason Paused label"
@@ -2531,8 +2578,7 @@ msgstr "အဆက်အသွယ်ဘက်က လုပ်ဆောင်ရ�
 #: dt-contacts/module-access.php:223
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
-msgstr ""
-"အဆက်အသွယ်သည်အလိုအလျောက်စာသားမက်ဆေ့ခ်ျများကိုတုံ့ပြန်လျှင်/မည်သို့တုံ့ပြန်သည်ကို ကျွန်ုပ်တို့ကြည့်လိုသည်"
+msgstr "အဆက်အသွယ်သည်အလိုအလျောက်စာသားမက်ဆေ့ခ်ျများကိုတုံ့ပြန်လျှင်/မည်သို့တုံ့ပြန်သည်ကို ကျွန်ုပ်တို့ကြည့်လိုသည်"
 
 #: dt-contacts/module-access.php:230
 msgid "Reason Archived"
@@ -2541,8 +2587,7 @@ msgstr "အကြောင်းပြချက်ကို သိမ်းဆ�
 #: dt-contacts/module-access.php:231
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
-msgstr ""
-"ပိတ်ထားသည့်အဆက်အသွယ်ဆိုသည်မှာသင်မဆက်သွယ်နိုင်သော(သို့)မဆက်သွယ်လိုသောဆက်သွယ်မှုဖြစ်သည်။"
+msgstr "ပိတ်ထားသည့်အဆက်အသွယ်ဆိုသည်မှာသင်မဆက်သွယ်နိုင်သော(သို့)မဆက်သွယ်လိုသောဆက်သွယ်မှုဖြစ်သည်။"
 
 #: dt-contacts/module-access.php:235
 msgctxt "Reason Closed label"
@@ -2626,8 +2671,7 @@ msgstr "စည်းရုံးလှုံ့ဆော်ရေး"
 msgctxt "Optional Documentation"
 msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
-msgstr ""
-"ဤအဆက်အသွယ်နှင့်အပြန်အလှန်ဆက်သွယ်သည့်စျေးကွက်ရှာဖွေရေးလှုပ်ရှားမှုများသို့မဟုတ်ဝင်ရောက်ခွင့်လှုပ်ရှားမှုများ"
+msgstr "ဤအဆက်အသွယ်နှင့်အပြန်အလှန်ဆက်သွယ်သည့်စျေးကွက်ရှာဖွေရေးလှုပ်ရှားမှုများသို့မဟုတ်ဝင်ရောက်ခွင့်လှုပ်ရှားမှုများ"
 
 #: dt-contacts/module-access.php:291
 msgid "Meeting Scheduled"
@@ -2775,9 +2819,13 @@ msgstr "ယုံကြည်ခြင်းသမိုင်းမှတ်တ
 #: dt-contacts/module-faith.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
+"Assign which milestones the contact has reached in their faith journey. "
+"These are points in a contact’s spiritual journey worth celebrating but can "
+"happen in any order."
 msgstr ""
-"သူတို့ရဲ့ယုံကြည်ခြင်းခရီး၌အဆက်အသွယ်ရောက်ရှိခဲ့သည့်မှတ်တိုင်များသတ်မှတ်ပါ။ ဤကားအဆက်အသွယ်ရဲ့ဝိညာဉ်ရေးရာ၌ခရီးသွားရကြိုးနပ်သည့်ကျင်းပပွဲအချက်များဖြစ်ကြပေမယ့်မည်သည့်အစီအစီစဉ်နဲ့မဆို ဖြစ်ပျက်နိုင်ပါတယ်။"
+"သူတို့ရဲ့ယုံကြည်ခြင်းခရီး၌အဆက်အသွယ်ရောက်ရှိခဲ့သည့်မှတ်တိုင်များသတ်မှတ်ပါ။ "
+"ဤကားအဆက်အသွယ်ရဲ့ဝိညာဉ်ရေးရာ၌ခရီးသွားရကြိုးနပ်သည့်ကျင်းပပွဲအချက်များဖြစ်ကြပေမယ့်မည်သည့်အစီအစီစဉ်နဲ့မဆို "
+"ဖြစ်ပျက်နိုင်ပါတယ်။"
 
 #: dt-contacts/module-faith.php:48
 msgid "Has Bible"
@@ -2842,8 +2890,7 @@ msgstr "ဤအဆက်အသွယ်သည် သင့်အား အသု�
 
 #: dt-contacts/user-module.php:73
 msgid "Please update contact details on your profile page instead of here."
-msgstr ""
-"ဤနေရာတွင်အစား သင့်ပရိုဖိုင်စာမျက်နှာတွင် အဆက်အသွယ်အသေးစိတ်အချက်အလက်များကို အပ်ဒိတ်လုပ်ပါ။"
+msgstr "ဤနေရာတွင်အစား သင့်ပရိုဖိုင်စာမျက်နှာတွင် အဆက်အသွယ်အသေးစိတ်အချက်အလက်များကို အပ်ဒိတ်လုပ်ပါ။"
 
 #: dt-contacts/user-module.php:73
 msgid "Profile Settings"
@@ -2873,15 +2920,13 @@ msgstr "ဤအဆက်အသွယ်သည်သုံးစွဲသူကိ
 msgctxt "Step 1 of link user"
 msgid ""
 "To link to an existing user, first, find the user using the field below."
-msgstr ""
-"ရှိပြီးသားအသုံးပြုသူနှင့်ချိတ်ဆက်ရန် ဦး စွာ၊ အောက်ဖော်ပြပါကွက်လပ်ကို အသုံးပြု၍ အသုံးပြုသူကိုရှာပါ။"
+msgstr "ရှိပြီးသားအသုံးပြုသူနှင့်ချိတ်ဆက်ရန် ဦး စွာ၊ အောက်ဖော်ပြပါကွက်လပ်ကို အသုံးပြု၍ အသုံးပြုသူကိုရှာပါ။"
 
 #: dt-contacts/user-module.php:152
 msgctxt "Step 2 of link user"
 msgid ""
 "To finish the linking, merge this contact with the existing user details."
-msgstr ""
-"ချိတ်ဆက်မှုကိုအပြီးသတ်ရန်၊ ယခုအဆက်အသွယ်အားရှိပြီးသားအသုံးပြုသူ၏အသေးစိတ်နှင့်ပေါင်းစည်းပါ။"
+msgstr "ချိတ်ဆက်မှုကိုအပြီးသတ်ရန်၊ ယခုအဆက်အသွယ်အားရှိပြီးသားအသုံးပြုသူ၏အသေးစိတ်နှင့်ပေါင်းစည်းပါ။"
 
 #: dt-core/configuration/class-roles.php:81
 #: dt-core/configuration/class-roles.php:245
@@ -2935,9 +2980,9 @@ msgstr "အဆက်အသွယ် မှတ်တိုင်များန�
 
 #: dt-core/configuration/config-site-defaults.php:300
 msgid ""
-"This contact is active but there is no record of anybody contacting them. Please do contact them."
-msgstr ""
-"ဤအဆက်အသွယ်သည်လုပ်ရှားနေသော်လည်းဘယ်သူကမှသူတို့ကိုဆက်သွယ်ထားသည့်မှတ်တမ်းမရှိပါ။ ကျေးဇူးပြု၍ သူတို့ကိုဆက်သွယ်ပါ။"
+"This contact is active but there is no record of anybody contacting them. "
+"Please do contact them."
+msgstr "ဤအဆက်အသွယ်သည်လုပ်ရှားနေသော်လည်းဘယ်သူကမှသူတို့ကိုဆက်သွယ်ထားသည့်မှတ်တမ်းမရှိပါ။ ကျေးဇူးပြု၍ သူတို့ကိုဆက်သွယ်ပါ။"
 
 #: dt-core/configuration/config-site-defaults.php:306
 msgid "Please try connecting with this contact again."
@@ -2949,14 +2994,13 @@ msgstr "ကျေးဇူးပြုပြီးဒီအဆက်အသွယ
 #: dt-core/configuration/config-site-defaults.php:330
 #: dt-core/configuration/config-site-defaults.php:336
 msgid ""
-"We haven't heard about this person in a while. Do you have an update for this contact?"
-msgstr ""
-"ဒီလူအကြောင်းကိုကျနော်တို့ခဏတာမကြားမိဘူး။ ဒီအဆက်အသွယ်အတွက် သင့်မှာ သတင်းတစ်ခုခုရှိပါသလား။"
+"We haven't heard about this person in a while. Do you have an update for "
+"this contact?"
+msgstr "ဒီလူအကြောင်းကိုကျနော်တို့ခဏတာမကြားမိဘူး။ ဒီအဆက်အသွယ်အတွက် သင့်မှာ သတင်းတစ်ခုခုရှိပါသလား။"
 
 #: dt-core/configuration/config-site-defaults.php:346
 msgid "We haven't heard about this group in a while. Do you have an update?"
-msgstr ""
-"ဒီအဖွဲ့အကြောင်းကိုကျွန်တော်တို့ခဏတာမကြားဘူး။ သင့်မှာသတင်းတစ်ခုခုရှိပါသလား။"
+msgstr "ဒီအဖွဲ့အကြောင်းကိုကျွန်တော်တို့ခဏတာမကြားဘူး။ သင့်မှာသတင်းတစ်ခုခုရှိပါသလား။"
 
 #: dt-core/configuration/config-site-defaults.php:377
 msgid "Personal Phone"
@@ -3004,8 +3048,7 @@ msgstr "အလုပ်ဖေ့စ်ဘွတ်ခ်"
 
 #: dt-core/configuration/config-site-defaults.php:415
 msgid "Work Facebook is for distribution to contacts and seekers."
-msgstr ""
-"အလုပ်ဖေ့စ်ဘွတ်ခ် သည်အဆက်အသွယ်များနှင့်ရှာဖွေသူများအားဖြန့်ဖြူးရန်ဖြစ်သည်။"
+msgstr "အလုပ်ဖေ့စ်ဘွတ်ခ် သည်အဆက်အသွယ်များနှင့်ရှာဖွေသူများအားဖြန့်ဖြူးရန်ဖြစ်သည်။"
 
 #: dt-core/configuration/config-site-defaults.php:419
 msgid "Work WhatsApp"
@@ -3013,8 +3056,7 @@ msgstr "အလုပ်လုပ် WhatsApp "
 
 #: dt-core/configuration/config-site-defaults.php:422
 msgid "Work WhatsApp is for distribution to contacts and seekers."
-msgstr ""
-"အလုပ် WhatsApp သည်အဆက်အသွယ်များနှင့်ရှာဖွေသူများအားဖြန့်ဖြူးရန်ဖြစ်သည်။"
+msgstr "အလုပ် WhatsApp သည်အဆက်အသွယ်များနှင့်ရှာဖွေသူများအားဖြန့်ဖြူးရန်ဖြစ်သည်။"
 
 #: dt-core/configuration/config-site-defaults.php:429
 msgid "thumbs up"
@@ -3108,9 +3150,9 @@ msgstr "သင်၏စကားဝှက်ကိုပြန်လည်သတ
 
 #: dt-core/dt-storage.php:223
 msgid ""
-"Something went wrong. Please try again or have an admin check the connection settings."
-msgstr ""
-"တစ်ခုခုမှားသွားသည်။ ထပ်စမ်းကြည့်ပါ သို့မဟုတ် admin အား ချိတ်ဆက်မှုဆက်တင်များ စစ်ဆေးခိုင်းပါ။"
+"Something went wrong. Please try again or have an admin check the connection "
+"settings."
+msgstr "တစ်ခုခုမှားသွားသည်။ ထပ်စမ်းကြည့်ပါ သို့မဟုတ် admin အား ချိတ်ဆက်မှုဆက်တင်များ စစ်ဆေးခိုင်းပါ။"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3147,9 +3189,11 @@ msgstr "အခမဲ့ပေးသော်လည်း စျေးပေါ�
 
 #: dt-core/release-notifications.php:97
 msgid ""
-"Disciple.Tools relies on contributions for continued development and maintenance. Will you join the team?"
+"Disciple.Tools relies on contributions for continued development and "
+"maintenance. Will you join the team?"
 msgstr ""
-"Disciple.Tools သည် ဆက်လက်ဖွံ့ဖြိုးတိုးတက်ရေးနှင့် ထိန်းသိမ်းရေးအတွက် ပံ့ပိုးမှုများကို မှီခိုသည်။ အဖွဲ့ထဲ ပါဝင်မလား?"
+"Disciple.Tools သည် ဆက်လက်ဖွံ့ဖြိုးတိုးတက်ရေးနှင့် ထိန်းသိမ်းရေးအတွက် ပံ့ပိုးမှုများကို မှီခိုသည်။ အဖွဲ့ထဲ "
+"ပါဝင်မလား?"
 
 #: dt-core/release-notifications.php:99
 msgid "Give"
@@ -3162,9 +3206,9 @@ msgstr "ဘာသာပြန်ပါ"
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:735
 msgid ""
-"Translate Disciple.Tools into your language or help make a translation better."
-msgstr ""
-"Disciple.Tools ကို သင်၏ဘာသာစကားသို့ ဘာသာပြန်ပါ သို့မဟုတ် ဘာသာပြန်မှုပိုကောင်းအောင် ကူညီပါ။"
+"Translate Disciple.Tools into your language or help make a translation "
+"better."
+msgstr "Disciple.Tools ကို သင်၏ဘာသာစကားသို့ ဘာသာပြန်ပါ သို့မဟုတ် ဘာသာပြန်မှုပိုကောင်းအောင် ကူညီပါ။"
 
 #: dt-core/release-notifications.php:112
 msgid "Build or Document"
@@ -3172,9 +3216,11 @@ msgstr "တည်ဆောက်ပါ သို့မဟုတ် မှတ်�
 
 #: dt-core/release-notifications.php:114
 msgid ""
-"Make Disciple.Tools better by building a feature or helping us make the documentation better."
+"Make Disciple.Tools better by building a feature or helping us make the "
+"documentation better."
 msgstr ""
-"feature တစ်ခုတည်ဆောက်ခြင်း သို့မဟုတ် မှတ်တမ်းပိုကောင်းအောင် ကူညီခြင်းဖြင့် Disciple.Tools ကို ပိုကောင်းအောင်လုပ်ပါ။"
+"feature တစ်ခုတည်ဆောက်ခြင်း သို့မဟုတ် မှတ်တမ်းပိုကောင်းအောင် ကူညီခြင်းဖြင့် Disciple.Tools ကို "
+"ပိုကောင်းအောင်လုပ်ပါ။"
 
 #: dt-core/release-notifications.php:116
 msgid "Find out more"
@@ -3233,9 +3279,12 @@ msgstr "အုပ်စုနည်းပြ / အသင်းတော် ဖ�
 #: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
-"The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
+"The person who planted and/or is coaching this group. Only one person can be "
+"assigned to a group while multiple people can be coaches / church planters "
+"of this group."
 msgstr ""
-"ဤအုပ်စုကို စတင်တည်ထောင်ခဲ့သူ နှင့်/သို့မဟုတ် လမ်းပြပေးနေသူ။ အုပ်စုတစ်ခုသို့ လူတစ်ဦးသာ တာဝန်ပေးအပ်နိုင်သော်လည်း လူအများအပြားသည် ဤအုပ်စု၏ နည်းပြများ/အသင်းတော်တည်ထောင်သူများ ဖြစ်နိုင်သည်။"
+"ဤအုပ်စုကို စတင်တည်ထောင်ခဲ့သူ နှင့်/သို့မဟုတ် လမ်းပြပေးနေသူ။ အုပ်စုတစ်ခုသို့ လူတစ်ဦးသာ တာဝန်ပေးအပ်နိုင်သော်လည်း "
+"လူအများအပြားသည် ဤအုပ်စု၏ နည်းပြများ/အသင်းတော်တည်ထောင်သူများ ဖြစ်နိုင်သည်။"
 
 #: dt-groups/base-setup.php:160
 msgid "Group Type"
@@ -3253,8 +3302,7 @@ msgstr "မယုံကြည်သူများ၊အများဆုံး
 #: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
-msgstr ""
-"ယုံကြည်သူ ၃ ဦး နှင့်အထက်ရှိသော်လည်းအသင်းတော်အဖြစ်သတ်မှတ်ခြင်းမခံရသည့်အုပ်စု။"
+msgstr "ယုံကြည်သူ ၃ ဦး နှင့်အထက်ရှိသော်လည်းအသင်းတော်အဖြစ်သတ်မှတ်ခြင်းမခံရသည့်အုပ်စု။"
 
 #: dt-groups/base-setup.php:173
 msgid "Church"
@@ -3263,8 +3311,7 @@ msgstr "အသင်းတော်"
 #: dt-groups/base-setup.php:174
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
-msgstr ""
-"ယုံကြည်သူ (၃) ဦး နှင့်အထက်ရှိပြီးအသင်းတော်အဖြစ်သတ်မှတ်ခြင်းခံရသော အုပ်စု။"
+msgstr "ယုံကြည်သူ (၃) ဦး နှင့်အထက်ရှိပြီးအသင်းတော်အဖြစ်သတ်မှတ်ခြင်းခံရသော အုပ်စု။"
 
 #: dt-groups/base-setup.php:177
 msgid "Team"
@@ -3274,8 +3321,7 @@ msgstr "အသင်းအဖွဲ့"
 msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
-msgstr ""
-"အသင်းတော်အဖြစ်မတွေ့မြင်နိုင်သေးသော ((သို့)အသင်းတော်ဖြစ်လာရန်ကြိုးစားသော) အထူးအဖွဲ့။"
+msgstr "အသင်းတော်အဖြစ်မတွေ့မြင်နိုင်သေးသော ((သို့)အသင်းတော်ဖြစ်လာရန်ကြိုးစားသော) အထူးအဖွဲ့။"
 
 #: dt-groups/base-setup.php:192 dt-groups/base-setup.php:603
 msgid "Church Health"
@@ -3412,9 +3458,14 @@ msgstr "အသင်းဝင် ရေတွက်ခြင်း"
 #: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
-"The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
+"The number of members in this group. It will automatically be updated when "
+"new members are added or removed in the member list. Change this number "
+"manually to include people who may not be in the system but are also members "
+"of the group."
 msgstr ""
-"ဒီအုပ်စုထဲမှာအဖွဲ့ဝင်အရေအတွက်။ အသင်း ၀ င်အသစ်များအားထည့်သွင်း (သို့) အသင်းဝင်စာရင်းတွင်ဖယ်ရှားသောအခါ၎င်းသည်အလိုအလျောက် update လုပ်လိမ့်မည်။ စနစ်အတွင်းမပါ ၀ င်နိုင်သော်လည်းအဖွဲ့ ၀ င်များပါ ၀ င်သူများပါ ၀ င်ရန်ဤနံပါတ်ကိုလက်ဖြင့်ပြောင်းလဲပါ။"
+"ဒီအုပ်စုထဲမှာအဖွဲ့ဝင်အရေအတွက်။ အသင်း ၀ င်အသစ်များအားထည့်သွင်း (သို့) "
+"အသင်းဝင်စာရင်းတွင်ဖယ်ရှားသောအခါ၎င်းသည်အလိုအလျောက် update လုပ်လိမ့်မည်။ စနစ်အတွင်းမပါ ၀ "
+"င်နိုင်သော်လည်းအဖွဲ့ ၀ င်များပါ ၀ င်သူများပါ ၀ င်ရန်ဤနံပါတ်ကိုလက်ဖြင့်ပြောင်းလဲပါ။"
 
 #: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
 #: dt-groups/base-setup.php:602
@@ -3446,9 +3497,11 @@ msgstr "အဆင့်တူအုပ်စု"
 #: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
-"A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+"A related group that isn't a parent/child in relationship. It might indicate "
+"groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
-"မိဘ/ကလေး ဆက်နွှယ်မှုမရှိသော ဆက်နွှယ်အုပ်စု။ ၎င်းသည် ပူးပေါင်းဆောင်ရွက်သော၊ ပေါင်းစည်းတော့မည့်၊ မကြာသေးမီက ခွဲထွက်ခဲ့သော စသည့် အုပ်စုများကို ညွှန်ပြနိုင်သည်။"
+"မိဘ/ကလေး ဆက်နွှယ်မှုမရှိသော ဆက်နွှယ်အုပ်စု။ ၎င်းသည် ပူးပေါင်းဆောင်ရွက်သော၊ ပေါင်းစည်းတော့မည့်၊ မကြာသေးမီက "
+"ခွဲထွက်ခဲ့သော စသည့် အုပ်စုများကို ညွှန်ပြနိုင်သည်။"
 
 #: dt-groups/base-setup.php:341
 msgid "Child Group"
@@ -3498,9 +3551,9 @@ msgstr "တိုးပွားစေခြင်း"
 #: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
-"Number of people helping start other groups. How many members are multiplying?"
-msgstr ""
-"အခြားအဖွဲ့များစတင်ရန်ကူညီပေးနေသူအရေအတွက်။ အဖွဲ့ဝင်ဘယ်နှစ်ယောက်တိုးပွားသနည်း။"
+"Number of people helping start other groups. How many members are "
+"multiplying?"
+msgstr "အခြားအဖွဲ့များစတင်ရန်ကူညီပေးနေသူအရေအတွက်။ အဖွဲ့ဝင်ဘယ်နှစ်ယောက်တိုးပွားသနည်း။"
 
 #: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
@@ -3535,9 +3588,9 @@ msgstr "ရှိပြီးသားအဆက်အသွယ်များမ
 #: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
-"In the 'Member List' field, type the name of an existing contact to add them to this group."
-msgstr ""
-"'အသင်းဝင်စာရင်း' အကွက်ထဲ၊ဤအုပ်စုထဲသို့ထည့်ရန်ရှိပြီးသားအဆက်အသွယ်၏အမည်ကိုရိုက်ပါ။"
+"In the 'Member List' field, type the name of an existing contact to add them "
+"to this group."
+msgstr "'အသင်းဝင်စာရင်း' အကွက်ထဲ၊ဤအုပ်စုထဲသို့ထည့်ရန်ရှိပြီးသားအဆက်အသွယ်၏အမည်ကိုရိုက်ပါ။"
 
 #: dt-groups/base-setup.php:606
 msgid "Four Fields"
@@ -3546,20 +3599,22 @@ msgstr "နယ်ပယ် လေးခု"
 #: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
-"There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
+"There are 5 squares in the Four Fields diagram. Starting in the top left "
+"quadrant and going clockwise and the fifth being in the middle, they stand "
+"for:"
 msgstr ""
-"နယ်ပယ် လေးခု ပုံ မှာ စတုရန်း ၅ ကွက်ရှိတယ်။ ဘယ်ဘက်ထိပ် အကွက် မှ စတင်ပြီးနာရီလက်တံအတိုင်းသွား၊ပြီးတော့ပဉ္စမအလယ်တွင်ရှိခြင်းသည်၎င်းတို့အတွက်ဖြစ်သည်။"
+"နယ်ပယ် လေးခု ပုံ မှာ စတုရန်း ၅ ကွက်ရှိတယ်။ ဘယ်ဘက်ထိပ် အကွက် မှ စတင်ပြီးနာရီလက်တံအတိုင်းသွား၊"
+"ပြီးတော့ပဉ္စမအလယ်တွင်ရှိခြင်းသည်၎င်းတို့အတွက်ဖြစ်သည်။"
 
 #: dt-login/login-template.php:68
 msgid ""
-"Your password reset link appears to be invalid. Please request a new link below."
-msgstr ""
-"သင်၏စကားဝှက်ပြန်လည်သတ်မှတ်လင့်ခ် မမှန်ကန်ပုံရသည်။ အောက်တွင် လင့်ခ်အသစ်တောင်းဆိုပါ။"
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
+msgstr "သင်၏စကားဝှက်ပြန်လည်သတ်မှတ်လင့်ခ် မမှန်ကန်ပုံရသည်။ အောက်တွင် လင့်ခ်အသစ်တောင်းဆိုပါ။"
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
-msgstr ""
-"သင်၏စကားဝှက်ပြန်လည်သတ်မှတ်လင့်ခ် သက်တမ်းကုန်သွားပါပြီ။ အောက်တွင် လင့်ခ်အသစ်တောင်းဆိုပါ။"
+msgstr "သင်၏စကားဝှက်ပြန်လည်သတ်မှတ်လင့်ခ် သက်တမ်းကုန်သွားပါပြီ။ အောက်တွင် လင့်ခ်အသစ်တောင်းဆိုပါ။"
 
 #: dt-login/login-template.php:84 dt-login/login-template.php:109
 msgid "Get New Password"
@@ -3571,9 +3626,11 @@ msgstr "အီးမေးလ်လိပ်စာ"
 
 #: dt-login/login-template.php:112
 msgid ""
-"Your password reset email has been sent. Check your email or junk mail for the link to reset your password."
+"Your password reset email has been sent. Check your email or junk mail for "
+"the link to reset your password."
 msgstr ""
-"သင်၏စကားဝှက်ပြန်လည်သတ်မှတ်ရန် အီးမေးလ်ပို့ပြီးပါပြီ။ စကားဝှက်ပြန်လည်သတ်မှတ်ရန် လင့်ခ်အတွက် သင်၏အီးမေးလ် သို့မဟုတ် junk mail ကိုစစ်ဆေးပါ။"
+"သင်၏စကားဝှက်ပြန်လည်သတ်မှတ်ရန် အီးမေးလ်ပို့ပြီးပါပြီ။ စကားဝှက်ပြန်လည်သတ်မှတ်ရန် လင့်ခ်အတွက် သင်၏အီးမေးလ် သို့မဟုတ် "
+"junk mail ကိုစစ်ဆေးပါ။"
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
@@ -3762,9 +3819,9 @@ msgstr "ဗတ္တိဇံများ"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid ""
-"Number of baptized contact with a baptism date in date range and baptized by connection"
-msgstr ""
-"ရက်စွဲအဆုံး၌နှစ်ခြင်းခံမည့်နှစ်ခြင်းခံပြီးသူအရေအတွက်နှင့်ဆက်သွယ်မှုဖြင့်နှစ်ခြင်းခံပြီးသူအရေအတွက်"
+"Number of baptized contact with a baptism date in date range and baptized by "
+"connection"
+msgstr "ရက်စွဲအဆုံး၌နှစ်ခြင်းခံမည့်နှစ်ခြင်းခံပြီးသူအရေအတွက်နှင့်ဆက်သွယ်မှုဖြင့်နှစ်ခြင်းခံပြီးသူအရေအတွက်"
 
 #: dt-metrics/combined/critical-path.php:277
 #, php-format
@@ -3817,9 +3874,9 @@ msgstr "အသင်းတော်ဖွဲ့စည်းခဲ့သူမျ
 
 #: dt-metrics/combined/critical-path.php:333
 msgid ""
-"Number of contacts or users who have started a church and are marked as the church coach"
-msgstr ""
-"အသင်းတော်ကိုစတင်ခဲ့ပြီးအသင်းတော်နည်းပြအဖြစ်မှတ်သားထားသောအဆက်အသွယ်(သို့မဟုတ်)အသုံးပြုသူအရေအတွက်"
+"Number of contacts or users who have started a church and are marked as the "
+"church coach"
+msgstr "အသင်းတော်ကိုစတင်ခဲ့ပြီးအသင်းတော်နည်းပြအဖြစ်မှတ်သားထားသောအဆက်အသွယ်(သို့မဟုတ်)အသုံးပြုသူအရေအတွက်"
 
 #: dt-metrics/combined/daily-activity.php:22
 #: dt-metrics/combined/daily-activity.php:71
@@ -3851,7 +3908,7 @@ msgstr "ပြီးခဲ့သည့်လ"
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
 #: dt-notifications/notifications.php:496
-#, php-format
+#, fuzzy, php-format
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "လွန်ခဲ့သော$s လက"
@@ -3859,8 +3916,7 @@ msgstr[0] "လွန်ခဲ့သော$s လက"
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
 "Click on a timeline day summary to display a detailed list of metrics below."
-msgstr ""
-"အောက်ဖော်ပြပါ မက်ထရစ်များ၏ အသေးစိတ်စာရင်းကို ပြသရန် အချိန်ဇယားရက်အကျဉ်းကို နှိပ်ပါ။"
+msgstr "အောက်ဖော်ပြပါ မက်ထရစ်များ၏ အသေးစိတ်စာရင်းကို ပြသရန် အချိန်ဇယားရက်အကျဉ်းကို နှိပ်ပါ။"
 
 #. Template Name of the theme
 #: dt-metrics/combined/daily-activity.php:86 dt-metrics/metrics.php:115
@@ -4015,24 +4071,23 @@ msgstr "အဆက်အသွယ်တစ်ခုသည်တစ်ခုထက
 
 #: dt-metrics/contacts/sources.php:94
 msgid "Active contacts, by source and seeker path"
-msgstr ""
-"တက်ကြွသောအဆက်အသွယ်များ၊ အရင်းအမြစ်နှင့်ရှာဖွေသူလမ်းကြောင်းအားဖြင့်ဖြစ်သည်"
+msgstr "တက်ကြွသောအဆက်အသွယ်များ၊ အရင်းအမြစ်နှင့်ရှာဖွေသူလမ်းကြောင်းအားဖြင့်ဖြစ်သည်"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
-msgid ""
-"This is displaying only the contacts with an 'active' status right now."
+msgid "This is displaying only the contacts with an 'active' status right now."
 msgstr "ယခုအချိန်တွင် 'active' အခြေအနေ ရှိသည့်အဆက်အသွယ်များကိုသာပြနေသည်။"
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
-msgstr ""
-"တက်ကြွသောအဆက်အသွယ်များ၊ အရင်းအမြစ်နှင့်ယုံကြည်ခြင်းသမိုင်းမှတ်တိုင် အားဖြင့်ဖြစ်သည်။"
+msgstr "တက်ကြွသောအဆက်အသွယ်များ၊ အရင်းအမြစ်နှင့်ယုံကြည်ခြင်းသမိုင်းမှတ်တိုင် အားဖြင့်ဖြစ်သည်။"
 
 #: dt-metrics/contacts/sources.php:98
 msgid ""
-"A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+"A contact can come from more than one source, and it can have more than one "
+"faith milestone at the same time."
 msgstr ""
-"အဆက်အသွယ်တစ်ခုသည်တစ်ခုထက်ပိုသောအရင်းအမြစ်မှလာနိုင်ပြီး၊၎င်းသည်တစ်ချိန်တည်း၌ယုံကြည်ခြင်းမှတ်တိုင်တစ်ခုထက် ပို၍ ရှိနိုင်သည်။"
+"အဆက်အသွယ်တစ်ခုသည်တစ်ခုထက်ပိုသောအရင်းအမြစ်မှလာနိုင်ပြီး၊၎င်းသည်တစ်ချိန်တည်း၌ယုံကြည်ခြင်းမှတ်တိုင်တစ်ခုထက် ပို၍ "
+"ရှိနိုင်သည်။"
 
 #: dt-metrics/counter.php:135
 msgid "First Meetings"
@@ -4364,9 +4419,9 @@ msgstr "ရိုးရှင်းသော ဇယား"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
-"This chart shows the total number for each field value at the end of the selected date."
-msgstr ""
-"ဤဇယားသည် ရွေးချယ်ထားသောရက်စွဲအဆုံးတွင် အကွက်တန်ဖိုးတစ်ခုစီ၏ စုစုပေါင်းကို ပြသသည်။"
+"This chart shows the total number for each field value at the end of the "
+"selected date."
+msgstr "ဤဇယားသည် ရွေးချယ်ထားသောရက်စွဲအဆုံးတွင် အကွက်တန်ဖိုးတစ်ခုစီ၏ စုစုပေါင်းကို ပြသသည်။"
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
@@ -4439,37 +4494,37 @@ msgid "Daily Digest"
 msgstr "နေ့စဉ် Digest"
 
 #: dt-notifications/notifications.php:476
-#, php-format
+#, fuzzy, php-format
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "လွန်ခဲ့သော$s မိနစ်က"
 
 #: dt-notifications/notifications.php:481
-#, php-format
+#, fuzzy, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "လွန်ခဲ့သော$s နာရီက"
 
 #: dt-notifications/notifications.php:486
-#, php-format
+#, fuzzy, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "လွန်ခဲ့သော$s နေ့က"
 
 #: dt-notifications/notifications.php:491
-#, php-format
+#, fuzzy, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "လွန်ခဲ့သော$s အပတ်က"
 
 #: dt-notifications/notifications.php:510
-#, php-format
+#, fuzzy, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "လွန်ခဲ့သော$s နှစ်က"
 
 #: dt-notifications/notifications.php:514
-#, php-format
+#, fuzzy, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "လွန်ခဲ့သောနှစ်%% ကျော်က"
@@ -4669,11 +4724,16 @@ msgstr "အသေးစိတ်"
 
 #: dt-posts/dt-posts.php:2796
 #, php-format
-msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
+msgctxt ""
+"@[user name][user_id] - User Fred has requested access to Contact [contact "
+"name][contact_id]. If desired, share this record with the user to grant "
+"access."
 msgid ""
-"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
+"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
+"desired, share this record with the user to grant access."
 msgstr ""
-"@[%1$s](%2$s) - အသုံးပြုသူ %3$s က %4$s [%5$s](%6$s) ကို ဝင်ရောက်ခွင့် တောင်းဆိုထားသည်။ လိုအပ်ပါက ဝင်ရောက်ခွင့်ပေးရန် ဤမှတ်တမ်းကို အသုံးပြုသူနှင့် မျှဝေပါ။"
+"@[%1$s](%2$s) - အသုံးပြုသူ %3$s က %4$s [%5$s](%6$s) ကို ဝင်ရောက်ခွင့် တောင်းဆိုထားသည်။ "
+"လိုအပ်ပါက ဝင်ရောက်ခွင့်ပေးရန် ဤမှတ်တမ်းကို အသုံးပြုသူနှင့် မျှဝေပါ။"
 
 #: dt-posts/dt-posts.php:2802
 msgid "Access Request"
@@ -5115,8 +5175,7 @@ msgstr "လင့်ခ်ကီးသည် မမှန်ကန်တော�
 #: dt-reports/magic-url-landing-page.php:39
 #, php-format
 msgid "Please %s, or locate a more recent key, or request a new one."
-msgstr ""
-"ကျေးဇူးပြု၍ %s လုပ်ပါ၊ သို့မဟုတ် နောက်ဆုံးပေါ်ကီးကို ရှာပါ၊ သို့မဟုတ် အသစ်တစ်ခုတောင်းဆိုပါ။"
+msgstr "ကျေးဇူးပြု၍ %s လုပ်ပါ၊ သို့မဟုတ် နောက်ဆုံးပေါ်ကီးကို ရှာပါ၊ သို့မဟုတ် အသစ်တစ်ခုတောင်းဆိုပါ။"
 
 #: dt-reports/magic-url-landing-page.php:39
 msgid "login"
@@ -5166,9 +5225,9 @@ msgstr "အက်ပ်လင့်ခ်ကို ဖျက်ပြီး အ�
 
 #: dt-reports/magic-url-setup.php:462
 msgid ""
-"This app is not yet activated for this user. Enable the app to generate a link."
-msgstr ""
-"ဤအက်ပ်ကို ဤအသုံးပြုသူအတွက် အသက်သွင်းမထားသေးပါ။ လင့်ခ်ထုတ်ရန် အက်ပ်ကို ဖွင့်ပါ။"
+"This app is not yet activated for this user. Enable the app to generate a "
+"link."
+msgstr "ဤအက်ပ်ကို ဤအသုံးပြုသူအတွက် အသက်သွင်းမထားသေးပါ။ လင့်ခ်ထုတ်ရန် အက်ပ်ကို ဖွင့်ပါ။"
 
 #: dt-reports/magic-url-setup.php:465 template-settings.php:265
 msgid "App Activation"
@@ -5316,9 +5375,11 @@ msgstr "အဆက်အသွယ်တစ်ခုကို အဆင့်မ�
 
 #: dt-users/template-new-user.php:260
 msgid ""
-"The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data."
+"The new user will have access to all the fields and comments on this contact "
+"record. We suggest archiving the comments if they contain sensitive data."
 msgstr ""
-"အသုံးပြုသူအသစ်သည် ဤအဆက်အသွယ်မှတ်တမ်းရှိ အကွက်များနှင့် မှတ်ချက်များအားလုံးသို့ ဝင်ရောက်ခွင့်ရရှိမည်ဖြစ်သည်။ အကဲဆတ်သောဒေတာများပါ၀င်ပါက မှတ်ချက်များကို သိမ်းဆည်းထားရန် အကြံပြုအပ်ပါသည်။"
+"အသုံးပြုသူအသစ်သည် ဤအဆက်အသွယ်မှတ်တမ်းရှိ အကွက်များနှင့် မှတ်ချက်များအားလုံးသို့ ဝင်ရောက်ခွင့်ရရှိမည်ဖြစ်သည်။ "
+"အကဲဆတ်သောဒေတာများပါ၀င်ပါက မှတ်ချက်များကို သိမ်းဆည်းထားရန် အကြံပြုအပ်ပါသည်။"
 
 #: dt-users/template-new-user.php:267
 msgid "Continue and archive comments"
@@ -5346,9 +5407,11 @@ msgstr "မှတ်တမ်းဟောင်းမှ ကွက်လပ်�
 
 #: dt-users/template-no-permission.php:92
 msgid ""
-"You are registered but an administrator needs to assign you access permissions."
+"You are registered but an administrator needs to assign you access "
+"permissions."
 msgstr ""
-"သင်သည် စာရင်းသွင်းထားသော်လည်း စီမံခန့်ခွဲသူတစ်ဦးသည် သင့်အား ဝင်ရောက်ခွင့်ခွင့်ပြုချက်များကို သတ်မှတ်ပေးရန် လိုအပ်သည်။"
+"သင်သည် စာရင်းသွင်းထားသော်လည်း စီမံခန့်ခွဲသူတစ်ဦးသည် သင့်အား ဝင်ရောက်ခွင့်ခွင့်ပြုချက်များကို သတ်မှတ်ပေးရန် "
+"လိုအပ်သည်။"
 
 #: dt-users/template-user-management.php:63
 msgid "Multiplier Name"
@@ -5382,7 +5445,8 @@ msgstr "ရရှိနိုင်"
 
 #: dt-users/template-user-management.php:164
 msgid ""
-"Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be unavailable so the Dispatcher will know your "
+"availability to receive new contacts"
 msgstr ""
 "သင်မရရှိနိုင်သည့်ရက်စွဲများကိုသတ်မှတ်ပါ။ ထို့ကြောင့်အဆက်အသွယ်အသစ်များရရှိရန်သင်၏ ယာဥ်ထွက်ချိန် ကြီးကြပ်သူက ကိုသိလိမ့်မည်"
 
@@ -5440,7 +5504,8 @@ msgstr "သတင်းရင်းမြစ် အားလုံး - အဆ�
 #: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
-"Custom - Access own contacts and all the contacts of the selected sources below"
+"Custom - Access own contacts and all the contacts of the selected sources "
+"below"
 msgstr ""
 "စိတ်ကြိုက် - ကိုယ်ပိုင်အဆက်အသွယ်များနှင့်အောက်ရှိရွေးချယ်ထားသောသတင်းရင်းမြစ်များ၏အဆက်အသွယ်များ ဝင်ရောက်"
 
@@ -5487,8 +5552,7 @@ msgstr "တာဝန်ပေးအပ်ခြင်းနှင့်လက်
 
 #: dt-users/template-user-management.php:449
 msgid "Time from assigned to contact accepted for the last 10 contacts"
-msgstr ""
-"တာဝန်ပေးရန်ဆက်သွယ်သည့်အချိန်မှနောက်ဆုံးဆက်သွယ်မှု (၁၀) ခုအတွက်လက်ခံခဲ့သည်"
+msgstr "တာဝန်ပေးရန်ဆက်သွယ်သည့်အချိန်မှနောက်ဆုံးဆက်သွယ်မှု (၁၀) ခုအတွက်လက်ခံခဲ့သည်"
 
 #: dt-users/template-user-management.php:451
 msgid "Accepted with no contact attempt"
@@ -5505,9 +5569,11 @@ msgstr "ပြီးခဲ့သည့်အဆက်အသွယ် ၁၀ ခ�
 #: dt-users/user-hooks-and-config.php:196
 #, php-format
 msgid ""
-"Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users"
+"Welcome %1$s, this is your personal contact record. Feel free to update the "
+"fields and @mention me or other users"
 msgstr ""
-"%1$s မှကြိုဆိုပါသည်၊ ဤသည်မှာ သင်၏ကိုယ်ရေးကိုယ်တာအဆက်အသွယ်မှတ်တမ်းဖြစ်သည်။ အကွက်များကို အပ်ဒိတ်လုပ်ပြီး ကျွန်ုပ် သို့မဟုတ် အခြားအသုံးပြုသူများကို @ mention ခေါ်ပါ။"
+"%1$s မှကြိုဆိုပါသည်၊ ဤသည်မှာ သင်၏ကိုယ်ရေးကိုယ်တာအဆက်အသွယ်မှတ်တမ်းဖြစ်သည်။ အကွက်များကို အပ်ဒိတ်လုပ်ပြီး ကျွန်ုပ် "
+"သို့မဟုတ် အခြားအသုံးပြုသူများကို @ mention ခေါ်ပါ။"
 
 #: dt-users/user-hooks-and-config.php:312
 #: dt-users/user-hooks-and-config.php:350
@@ -5531,7 +5597,9 @@ msgstr "မင်္ဂလာပါ %s၊"
 
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
-msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
+msgctxt ""
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "%2$s တွင် %1$s ပါဝင်ရန် သင့်အား ဖိတ်ကြားထားသည်။"
 
@@ -5734,9 +5802,13 @@ msgstr "ဤ site ကိုမှန်ကန်စွာအလုပ်လုပ
 
 #: header.php:61
 msgid ""
-"You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
+"You seem to be using an out-of-date web browser. Without the most up-to-date "
+"version of your browser, this may site may not function correctly. Please "
+"note that Internet Explorer is not supported."
 msgstr ""
-"သင်ဟာခေတ်နောက်ကျနေသော web browser ကိုအသုံးပြုနေပုံရသည်။ သင့်browser ၏နောက်ဆုံးပေါ်ဗားရှင်းမရှိလျှင်ဤဆိုဒ်သည်မှန်ကန်စွာအလုပ်လုပ်နိုင်မည်မဟုတ်ပါ။ ကျေးဇူးပြု၍ Internet Explorer ကမထောက်ပံ့ဘူးဆိုတာ မှတ်သားထားပါ။"
+"သင်ဟာခေတ်နောက်ကျနေသော web browser ကိုအသုံးပြုနေပုံရသည်။ သင့်browser "
+"၏နောက်ဆုံးပေါ်ဗားရှင်းမရှိလျှင်ဤဆိုဒ်သည်မှန်ကန်စွာအလုပ်လုပ်နိုင်မည်မဟုတ်ပါ။ ကျေးဇူးပြု၍ Internet Explorer "
+"ကမထောက်ပံ့ဘူးဆိုတာ မှတ်သားထားပါ။"
 
 #: header.php:63
 msgid "See what browser you are using."
@@ -5776,9 +5848,12 @@ msgstr "ပွားနေသော %s ကို ပေါင်းစည်း�
 
 #: template-merge-post-details.php:123
 msgid ""
-"When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
+"When you merge, the primary record is updated with the values you choose, "
+"and relationships to other items are shifted to the primary record; which "
+"can be switched below."
 msgstr ""
-"သင်ပေါင်းစည်းသောအခါတွင်၊ သင်ရွေးချယ်ထားသောတန်ဖိုးများနှင့်အတူ ပင်မမှတ်တမ်းကို အပ်ဒိတ်လုပ်မည်ဖြစ်ပြီး၊ အခြားအရာများနှင့် ဆက်စပ်မှုများကိုမူလမှတ်တမ်းသို့ ပြောင်းသွားပါသည်။ အောက်တွင် ပြောင်းနိုင်သည်။"
+"သင်ပေါင်းစည်းသောအခါတွင်၊ သင်ရွေးချယ်ထားသောတန်ဖိုးများနှင့်အတူ ပင်မမှတ်တမ်းကို အပ်ဒိတ်လုပ်မည်ဖြစ်ပြီး၊ "
+"အခြားအရာများနှင့် ဆက်စပ်မှုများကိုမူလမှတ်တမ်းသို့ ပြောင်းသွားပါသည်။ အောက်တွင် ပြောင်းနိုင်သည်။"
 
 #: template-merge-post-details.php:126
 msgid "Copy comments to updated primary record"
@@ -5888,9 +5963,11 @@ msgstr "ယာဉ်ထွက်ချိန်ကြီးကြပ်သူ �
 
 #: template-settings.php:434
 msgid ""
-"Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be traveling or unavailable so the Dispatcher will "
+"know your availability to receive new contacts"
 msgstr ""
-"သင်ခရီးသွားမည့် (သို့မဟုတ်) မရရှိနိုင်မည့်ရက်စွဲများကိုသတ်မှတ်ပါ၊ သို့မှသာလျှင်အဆက်အသွယ်အသစ်များကိုလက်ခံနိုင်ဖို့သင်ရရှိနိုင်မည့်ရက်စွဲကို ကြီးကြပ်သူ ကသိလိမ့်မည်"
+"သင်ခရီးသွားမည့် (သို့မဟုတ်) မရရှိနိုင်မည့်ရက်စွဲများကိုသတ်မှတ်ပါ၊ "
+"သို့မှသာလျှင်အဆက်အသွယ်အသစ်များကိုလက်ခံနိုင်ဖို့သင်ရရှိနိုင်မည့်ရက်စွဲကို ကြီးကြပ်သူ ကသိလိမ့်မည်"
 
 #: template-settings.php:438
 msgid "Schedule Travel or Dates Unavailable"
@@ -5937,14 +6014,19 @@ msgstr "အဆက်အသွယ်အားလုံးလိုက်နာပ
 #: template-settings.php:570
 msgid ""
 "You will receive a notification for any update that happens in the system."
-msgstr ""
-"စနစ်အတွင်းဖြစ်ပျက်နေသောမည်သည့် မွမ်းမံမှုမဆို အတွက် သင်သည် အသိပေးချက်ကိုလက်ခံရရှိလိမ့်မည်။"
+msgstr "စနစ်အတွင်းဖြစ်ပျက်နေသောမည်သည့် မွမ်းမံမှုမဆို အတွက် သင်သည် အသိပေးချက်ကိုလက်ခံရရှိလိမ့်မည်။"
 
 #: template-settings.php:630
 msgid ""
-"Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. For profile images we use "
+"Gravatar (Globally Recognized Avatar). If you have security concerns, we "
+"suggest not using a personal photo, but instead choose a cartoon, abstract, "
+"or alias photo to represent you."
 msgstr ""
-"Disciple Tools System သည်ပုံများကိုမသိုထားပါ။ ပရိုဖိုင်းရုပ်ပုံများအတွက်ကျွန်ုပ်တို့သည် Gravatar (Globally Recognized Avatar) ကိုအသုံးပြုသည်။ သင့်တွင်လုံခြုံရေးဆိုင်ရာစိုးရိမ်မှုများရှိပါကကျွန်ုပ်တို့ကိုယ်ပိုင်ဓာတ်ပုံမသုံးရန်အကြံပြုလိုပါသည်၊ သို့သော်အစားသင့်ကိုကိုယ်စားပြုရန်ကာတွန်း၊"
+"Disciple Tools System သည်ပုံများကိုမသိုထားပါ။ ပရိုဖိုင်းရုပ်ပုံများအတွက်ကျွန်ုပ်တို့သည် Gravatar "
+"(Globally Recognized Avatar) ကိုအသုံးပြုသည်။ "
+"သင့်တွင်လုံခြုံရေးဆိုင်ရာစိုးရိမ်မှုများရှိပါကကျွန်ုပ်တို့ကိုယ်ပိုင်ဓာတ်ပုံမသုံးရန်အကြံပြုလိုပါသည်၊ "
+"သို့သော်အစားသင့်ကိုကိုယ်စားပြုရန်ကာတွန်း၊"
 
 #: template-settings.php:631
 msgid "edit image on gravatar.com"
@@ -5952,9 +6034,14 @@ msgstr "gravatar.com ပေါ်ပုံရိပ်ကိုတည်းဖ�
 
 #: template-settings.php:637
 msgid ""
-"Disciple Tools System does not store images. All media assets will be placed within specified media connection storage service. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. All media assets will be placed "
+"within specified media connection storage service. If you have security "
+"concerns, we suggest not using a personal photo, but instead choose a "
+"cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"Disciple Tools System သည် ပုံများကို သိုလှောင်မထားပါ။ မီဒီယာပိုင်ဆိုင်မှုအားလုံးကို သတ်မှတ်ထားသော မီဒီယာချိတ်ဆက်မှု သိုလှောင်ခန်းဝန်ဆောင်မှုတွင် ထားရှိပါမည်။ လုံခြုံရေးဆိုင်ရာ စိုးရိမ်မှုများရှိပါက ကိုယ်ပိုင်ဓာတ်ပုံမသုံးရန်နှင့် ကာတွန်း၊ abstract သို့မဟုတ် alias ဓာတ်ပုံ ရွေးချယ်ရန် အကြံပြုပါသည်။"
+"Disciple Tools System သည် ပုံများကို သိုလှောင်မထားပါ။ မီဒီယာပိုင်ဆိုင်မှုအားလုံးကို သတ်မှတ်ထားသော "
+"မီဒီယာချိတ်ဆက်မှု သိုလှောင်ခန်းဝန်ဆောင်မှုတွင် ထားရှိပါမည်။ လုံခြုံရေးဆိုင်ရာ စိုးရိမ်မှုများရှိပါက "
+"ကိုယ်ပိုင်ဓာတ်ပုံမသုံးရန်နှင့် ကာတွန်း၊ abstract သို့မဟုတ် alias ဓာတ်ပုံ ရွေးချယ်ရန် အကြံပြုပါသည်။"
 
 #: template-settings.php:638
 msgid "Upload new profile image"
@@ -5986,9 +6073,11 @@ msgstr "အဆက်အသွယ်များ ဝင်ရောက်မှ�
 
 #: template-view-duplicates.php:27
 msgid ""
-"Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
+"Scanning for duplicates starting with the most recently modified contacts. "
+"Results are limited to ones that have less than 10 exact matches."
 msgstr ""
-"လတ်တလောတွင်အများဆုံးပြုပြင်ထားသောအဆက်အသွယ်များဖြင့်စတင်ပုံတူပွားများကိုရှာဖွေခြင်း။ ရလဒ် ၁၀ တိတိထက် နည်းသောရမှတ်များကိုသာကန့်သတ်ထားသည်။"
+"လတ်တလောတွင်အများဆုံးပြုပြင်ထားသောအဆက်အသွယ်များဖြင့်စတင်ပုံတူပွားများကိုရှာဖွေခြင်း။ ရလဒ် ၁၀ တိတိထက် "
+"နည်းသောရမှတ်များကိုသာကန့်သတ်ထားသည်။"
 
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"

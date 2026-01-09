@@ -4,8 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2026-01-07T20:43:24+00:00\n"
-"PO-Revision-Date: 2025-03-05 16:00+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-01-09 14:51+0000\n"
+"Last-Translator: Anonymous <translator@disciple.tools>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translate.disciple.tools/projects/disciple-tools/disciple-tools-theme/"
 "zh_Hans/>\n"
@@ -14,9 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.2\n"
-
-
+"X-Generator: Weblate 5.15.1\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -31,7 +29,8 @@ msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 #. Description of the theme
 #: style.css
 msgid ""
-"Disciple.Tools is a coalition management system for disciple making movements."
+"Disciple.Tools is a coalition management system for disciple making "
+"movements."
 msgstr "Disciple.Tools 是一个用于门徒运动的联盟管理系统。"
 
 #. Author URI of the theme
@@ -239,13 +238,23 @@ msgstr "列表导出帮助"
 
 #: archive-template.php:263
 msgid ""
-"Using the current filter, this is a simple way to export basic information and use it in other applications."
+"Using the current filter, this is a simple way to export basic information "
+"and use it in other applications."
 msgstr "使用当前筛选器，这是一种导出基本信息并在其他应用程序中使用的简单方法。"
 
 #: archive-template.php:267
 msgid ""
-"Using the current filter, the available emails are grouped by 50 and can be launched into your default email client by group. Many email providers put a limit of 50 on BCC emails. You can open all groups at once using the \"Open All\" button. If the list is too large, this might alert your email provider. The BCC email tool is meant to assist small group emails. Bulk email should be handled through bulk email providers."
-msgstr "使用当前筛选器，可用的电子邮件按50个一组分组，可以按组启动到您的默认邮件客户端。许多邮件服务商对密送邮件设置了50人的限制。您可以使用「全部打开」按钮一次打开所有组。如果列表太大，可能会触发邮件服务商的警告。密送邮件工具旨在协助小组邮件发送。批量邮件应通过批量邮件服务商处理。"
+"Using the current filter, the available emails are grouped by 50 and can be "
+"launched into your default email client by group. Many email providers put a "
+"limit of 50 on BCC emails. You can open all groups at once using the \"Open "
+"All\" button. If the list is too large, this might alert your email "
+"provider. The BCC email tool is meant to assist small group emails. Bulk "
+"email should be handled through bulk email providers."
+msgstr ""
+"使用当前筛选器，可用的电子邮件按50个一组分组，可以按组启动到您的默认邮件客户"
+"端。许多邮件服务商对密送邮件设置了50人的限制。您可以使用「全部打开」按钮一次"
+"打开所有组。如果列表太大，可能会触发邮件服务商的警告。密送邮件工具旨在协助小"
+"组邮件发送。批量邮件应通过批量邮件服务商处理。"
 
 #: archive-template.php:270
 msgid "Phone Number List"
@@ -253,12 +262,17 @@ msgstr "电话号码列表"
 
 #: archive-template.php:271
 msgid ""
-"Using the current filter, this is intended for copy pasting a list of numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of starting a group conversation."
-msgstr "使用当前筛选器，这是为了将电话号码列表复制粘贴到消息应用程序（如WhatsApp、Signal等）中。这是快速开始群聊的方法。"
+"Using the current filter, this is intended for copy pasting a list of "
+"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
+"starting a group conversation."
+msgstr ""
+"使用当前筛选器，这是为了将电话号码列表复制粘贴到消息应用程序（如WhatsApp、"
+"Signal等）中。这是快速开始群聊的方法。"
 
 #: archive-template.php:275
 msgid ""
-"Using the current filter, this creates a basic points map of known locations of listed individuals."
+"Using the current filter, this creates a basic points map of known locations "
+"of listed individuals."
 msgstr "使用当前筛选器，这将创建一个显示已知个人位置的基本点地图。"
 
 #: archive-template.php:339
@@ -1142,7 +1156,8 @@ msgstr "导出的CSV数据将包含所有 %2$s 个 %1$s 字段。"
 
 #: dt-assets/functions/enqueue-scripts.php:351
 #, php-format
-msgctxt "The exported csv data to contain the 6 visible Contact field(s) shown below."
+msgctxt ""
+"The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr "导出的CSV数据将包含下方显示的 %2$s 个可见 %1$s 字段。"
@@ -1475,14 +1490,21 @@ msgstr "快速动作按钮"
 #: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid ""
-"These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
-msgstr "这些快速操作按钮可以帮助您更快地更新联系人记录，并记录每个操作已执行了多少次。"
+"These quick action buttons are here to aid you in updating the contact "
+"record faster and keep a count of how many times each action has be done."
+msgstr ""
+"这些快速操作按钮可以帮助您更快地更新联系人记录，并记录每个操作已执行了多少"
+"次。"
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid ""
-"For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer. This action will also change the 'Seeker Path' to 'Contact Attempted'."
-msgstr "例如，如果您点击「无人接听」按钮4次，我们将记录您尝试联系该联络人4次，但他们没有接听。此操作还会将「探寻者路径」更改为「已尝试联系」。"
+"For example, If you click the 'No Answer' button 4 times, we will log that "
+"you attempted to reach this contact 4 times, but they did not answer. This "
+"action will also change the 'Seeker Path' to 'Contact Attempted'."
+msgstr ""
+"例如，如果您点击「无人接听」按钮4次，我们将记录您尝试联系该联络人4次，但他们"
+"没有接听。此操作还会将「探寻者路径」更改为「已尝试联系」。"
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1501,19 +1523,20 @@ msgstr "您可以在此处记录会议和对话的笔记。"
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid ""
-"Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
+"Type @ and the name of a user to mention them in a comment. This user will "
+"then receive a notification."
 msgstr "键入@以及要在评论中提及他们的用户名。然后，该用户将收到通知。"
 
 #: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"This section also includes the history of activity, such as when the contact or group status became active etc."
+"This section also includes the history of activity, such as when the contact "
+"or group status became active etc."
 msgstr "此部分还包括活动的历史记录，例如联系人或组的状态何时变为活动状态等。"
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
-msgid ""
-"You can filter this section either by 'All', 'Comments', or 'Activity'."
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr "您可以按“全部”，“评论”或“活动”过滤此部分。"
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:117
@@ -1528,13 +1551,15 @@ msgstr "在此区域中，您可以看到您的用户个人资料。"
 #: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
 msgid ""
-"You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
+"You are not required to fill out any of these profile fields. They are "
+"optional to meet your team’s needs."
 msgstr "您无需填写任何这些配置文件字段。它们是可选的，可以满足您团队的需求。"
 
 #: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid ""
-"By clicking 'Edit', you will be able adjust things like the language that this system operates in."
+"By clicking 'Edit', you will be able adjust things like the language that "
+"this system operates in."
 msgstr "通过单击“编辑”，您将能够调整诸如该系统使用的语言之类的内容。"
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
@@ -1545,7 +1570,8 @@ msgstr "地点"
 #: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid ""
-"These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
+"These are the areas you are responsible for. Clicking the 'Add' button will "
+"bring up a list of locations to choose from."
 msgstr "这些是您负责的领域。点击“添加”按钮将弹出一个位置列表供您选择。"
 
 #: dt-assets/parts/modals/modal-help.php:72
@@ -1556,8 +1582,12 @@ msgstr "您的通知"
 #: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid ""
-"You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
-msgstr "您将根据您的通知首选项接收网络通知和电子邮件通知。要更改您的首选项，请单击切换按钮。"
+"You will receive web notifications and email notifications based on your "
+"notification preferences. To change your preference, click the toggle "
+"buttons."
+msgstr ""
+"您将根据您的通知首选项接收网络通知和电子邮件通知。要更改您的首选项，请单击切"
+"换按钮。"
 
 #: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
@@ -1572,14 +1602,20 @@ msgstr "通知已关闭：此切换将显示为灰色。"
 #: dt-assets/parts/modals/modal-help.php:78
 msgctxt "Optional Documentation"
 msgid ""
-"Some of the types of notifications cannot be adjusted because they are required by the system."
+"Some of the types of notifications cannot be adjusted because they are "
+"required by the system."
 msgstr "某些通知类型无法调整，因为系统需要它们。"
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid ""
-"Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
-msgstr "调整是否要查看有关新评论，联系人信息更改，联系人里程碑和组运行状况指标的通知，以及是否向您发送系统中发生的任何更新的通知。"
+"Adjust whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
+msgstr ""
+"调整是否要查看有关新评论，联系人信息更改，联系人里程碑和组运行状况指标的通"
+"知，以及是否向您发送系统中发生的任何更新的通知。"
 
 #: dt-assets/parts/modals/modal-help.php:87
 msgctxt "Optional Documentation"
@@ -1589,8 +1625,11 @@ msgstr "通知页面"
 #: dt-assets/parts/modals/modal-help.php:88
 msgctxt "Optional Documentation"
 msgid ""
-"This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
-msgstr "在此通知页面上，您可以阅读用户和组的更新。它会在您的记录中显示有关活动的通知。"
+"This Notifications Page is where you can read updates to users and groups. "
+"It displays notifications about activity on your records."
+msgstr ""
+"在此通知页面上，您可以阅读用户和组的更新。它会在您的记录中显示有关活动的通"
+"知。"
 
 #: dt-assets/parts/modals/modal-help.php:89
 msgctxt "Optional Documentation"
@@ -1606,7 +1645,8 @@ msgstr "点击“全部”按钮以显示所有通知的完整列表。"
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Unread' button to show the list of all of your unread notifications."
+"Click the 'Unread' button to show the list of all of your unread "
+"notifications."
 msgstr "点击“未读”按钮以显示所有未读通知的列表。"
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
@@ -1617,15 +1657,26 @@ msgstr "标记为已读"
 #: dt-assets/parts/modals/modal-help.php:93
 msgctxt "Optional Documentation"
 msgid ""
-"If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
-msgstr "如果您不想单击每行右侧的每个实心圆圈来表示已阅读通知，请单击顶部的“将所有内容标记为已读”链接以快速调整所有已包含的消息被阅读。"
+"If you don't want to click each filled in circle on the right side of each "
+"row to indicate the notification has been read, then click the 'Mark All as "
+"Read' link at the top to quickly adjust all the messages that they have all "
+"been read."
+msgstr ""
+"如果您不想单击每行右侧的每个实心圆圈来表示已阅读通知，请单击顶部的“将所有内容"
+"标记为已读”链接以快速调整所有已包含的消息被阅读。"
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Click the 'Settings' link to go to the notifications settings area to adjust "
+"whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"单击“设置”链接转到通知设置区域，以调整是否要查看有关新评论，联系人信息更改，联系人里程碑和组运行状况指标的通知，以及是否收到有关以下内容的任何更新的通知：系统。"
+"单击“设置”链接转到通知设置区域，以调整是否要查看有关新评论，联系人信息更改，"
+"联系人里程碑和组运行状况指标的通知，以及是否收到有关以下内容的任何更新的通"
+"知：系统。"
 
 #: dt-assets/parts/modals/modal-help.php:100
 msgctxt "Optional Documentation"
@@ -1635,8 +1686,13 @@ msgstr "联系人页面重复"
 #: dt-assets/parts/modals/modal-help.php:101
 msgctxt "Optional Documentation"
 msgid ""
-"This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
-msgstr "在此重复联系人页面中，您可以查看，拒绝或合并系统已挑选的联系人（检查其姓名，电子邮件和电话），以作为与另一个现有联系人的重复。"
+"This Duplicate Contact Page is where you can review, decline or merge "
+"contacts that have been picked up by the system (checking against their "
+"name, email and phone) as possibly being duplicates of another already "
+"existing contact."
+msgstr ""
+"在此重复联系人页面中，您可以查看，拒绝或合并系统已挑选的联系人（检查其姓名，"
+"电子邮件和电话），以作为与另一个现有联系人的重复。"
 
 #: dt-assets/parts/modals/modal-help.php:124
 #: dt-assets/parts/modals/modal-help.php:174
@@ -1670,8 +1726,10 @@ msgstr "扫描二维码在移动设备上打开魔术链接。"
 
 #: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
 msgid ""
-"Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
-msgstr "重置安全代码。没有数据被删除。只能访问。上一个链接将被禁用并创建另一个链接。"
+"Reset the security code. No data is removed. Only access. The previous link "
+"will be disabled and another one created."
+msgstr ""
+"重置安全代码。没有数据被删除。只能访问。上一个链接将被禁用并创建另一个链接。"
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
@@ -1766,7 +1824,8 @@ msgstr "此联系人共享给："
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid ""
-"Set a reminder or a task with a note and receive a notification on the due date."
+"Set a reminder or a task with a note and receive a notification on the due "
+"date."
 msgstr "设置带有注释的提醒或任务，并在到期日收到通知。"
 
 #: dt-assets/parts/modals/modal-tasks.php:13
@@ -2007,7 +2066,8 @@ msgstr "该联系人是系统中的新联系人。"
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
-"This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
+"This contact has made it known that they no longer want to continue or you "
+"have decided not to continue with him/her."
 msgstr "此联系表明他们不再想要继续，或者您已决定不再与他/她继续。"
 
 #: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
@@ -2246,8 +2306,12 @@ msgstr "已转移到 %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
-"NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
-msgstr "注意：您已经转移了此联系人。再次传输可能会创建重复项。您是否仍要覆盖此警告并继续进行传输？"
+"NOTE: You have already transferred this contact. Transferring again might "
+"create duplicates. Do you still want to override this warning and continue "
+"with your transfer?"
+msgstr ""
+"注意：您已经转移了此联系人。再次传输可能会创建重复项。您是否仍要覆盖此警告并"
+"继续进行传输？"
 
 #: dt-contacts/contacts-transfer.php:281
 msgid "Override and Continue"
@@ -2342,8 +2406,10 @@ msgstr "搜寻路径"
 #: dt-contacts/module-access.php:103
 msgctxt "Seeker Path field description"
 msgid ""
-"Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
-msgstr "设置联系人的进度状态。这些是按特定顺序执行的步骤，可帮助联系人继续前进。"
+"Set the status of your progression with the contact. These are the steps "
+"that happen in a specific order to help a contact move forward."
+msgstr ""
+"设置联系人的进度状态。这些是按特定顺序执行的步骤，可帮助联系人继续前进。"
 
 #: dt-contacts/module-access.php:107
 msgid "Contact Attempt Needed"
@@ -2380,7 +2446,8 @@ msgstr "没有准备好"
 #: dt-contacts/module-access.php:149
 msgctxt "Contact Status field description"
 msgid ""
-"There is not enough information to move forward with the contact at this time."
+"There is not enough information to move forward with the contact at this "
+"time."
 msgstr "目前没有足够的信息与联系人继续前进。"
 
 #: dt-contacts/module-access.php:153
@@ -2399,7 +2466,8 @@ msgstr "等待被接受"
 #: dt-contacts/module-access.php:159
 msgctxt "Contact Status field description"
 msgid ""
-"The contact has been assigned to someone, but has not yet been accepted by that person."
+"The contact has been assigned to someone, but has not yet been accepted by "
+"that person."
 msgstr "该联系人已分配给某人，但尚未被该人接受。"
 
 #: dt-contacts/module-access.php:164
@@ -2408,8 +2476,7 @@ msgstr "已暂停"
 
 #: dt-contacts/module-access.php:165
 msgctxt "Contact Status field description"
-msgid ""
-"This contact is currently on hold (i.e. on vacation or not responding)."
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr "此联系人当前处于保留状态（即正在休假或未回复）。"
 
 #: dt-contacts/module-access.php:180
@@ -2452,7 +2519,8 @@ msgstr "原因已暂停"
 #: dt-contacts/module-access.php:212
 msgctxt "Optional Documentation"
 msgid ""
-"A paused contact is one you are not currently interacting with but expect to in the future."
+"A paused contact is one you are not currently interacting with but expect to "
+"in the future."
 msgstr "暂停的联系人是您当前未与之交互但希望在将来与之交互的联系人。"
 
 #: dt-contacts/module-access.php:216
@@ -2734,8 +2802,12 @@ msgstr "信仰里程碑"
 #: dt-contacts/module-faith.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
-msgstr "分配联系人在其信仰旅程中达到的里程碑。这些是联系人的精神之旅中值得庆祝的要点，但可以以任何顺序发生。"
+"Assign which milestones the contact has reached in their faith journey. "
+"These are points in a contact’s spiritual journey worth celebrating but can "
+"happen in any order."
+msgstr ""
+"分配联系人在其信仰旅程中达到的里程碑。这些是联系人的精神之旅中值得庆祝的要"
+"点，但可以以任何顺序发生。"
 
 #: dt-contacts/module-faith.php:48
 msgid "Has Bible"
@@ -2890,7 +2962,8 @@ msgstr "联系人里程碑和组健康指标"
 
 #: dt-core/configuration/config-site-defaults.php:300
 msgid ""
-"This contact is active but there is no record of anybody contacting them. Please do contact them."
+"This contact is active but there is no record of anybody contacting them. "
+"Please do contact them."
 msgstr "该联系人处于活动状态，但是没有任何人与他们联系的记录。请与他们联系。"
 
 #: dt-core/configuration/config-site-defaults.php:306
@@ -2903,7 +2976,8 @@ msgstr "请尝试再次与此联系人联系。"
 #: dt-core/configuration/config-site-defaults.php:330
 #: dt-core/configuration/config-site-defaults.php:336
 msgid ""
-"We haven't heard about this person in a while. Do you have an update for this contact?"
+"We haven't heard about this person in a while. Do you have an update for "
+"this contact?"
 msgstr "我们已经有一段时间没有听说这个人了。您有此联系人的最新消息吗？"
 
 #: dt-core/configuration/config-site-defaults.php:346
@@ -3058,7 +3132,8 @@ msgstr "要重置密码，请访问以下地址："
 
 #: dt-core/dt-storage.php:223
 msgid ""
-"Something went wrong. Please try again or have an admin check the connection settings."
+"Something went wrong. Please try again or have an admin check the connection "
+"settings."
 msgstr "出现问题。请重试或让管理员检查连接设置。"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
@@ -3096,7 +3171,8 @@ msgstr "免费提供，但并非廉价"
 
 #: dt-core/release-notifications.php:97
 msgid ""
-"Disciple.Tools relies on contributions for continued development and maintenance. Will you join the team?"
+"Disciple.Tools relies on contributions for continued development and "
+"maintenance. Will you join the team?"
 msgstr "Disciple.Tools 依赖捐助进行持续开发和维护。您愿意加入团队吗？"
 
 #: dt-core/release-notifications.php:99
@@ -3110,7 +3186,8 @@ msgstr "翻译"
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:735
 msgid ""
-"Translate Disciple.Tools into your language or help make a translation better."
+"Translate Disciple.Tools into your language or help make a translation "
+"better."
 msgstr "将 Disciple.Tools 翻译成您的语言或帮助改进翻译。"
 
 #: dt-core/release-notifications.php:112
@@ -3119,7 +3196,8 @@ msgstr "开发或文档"
 
 #: dt-core/release-notifications.php:114
 msgid ""
-"Make Disciple.Tools better by building a feature or helping us make the documentation better."
+"Make Disciple.Tools better by building a feature or helping us make the "
+"documentation better."
 msgstr "通过开发功能或帮助改进文档来使 Disciple.Tools 变得更好。"
 
 #: dt-core/release-notifications.php:116
@@ -3179,8 +3257,12 @@ msgstr "小组教练/教会主持人"
 #: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
-"The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
-msgstr "种植和/或指导该小组的人。只能将一个人分配到一个组中，而可以将多个人作为该组的教练/教堂主。"
+"The person who planted and/or is coaching this group. Only one person can be "
+"assigned to a group while multiple people can be coaches / church planters "
+"of this group."
+msgstr ""
+"种植和/或指导该小组的人。只能将一个人分配到一个组中，而可以将多个人作为该组的"
+"教练/教堂主。"
 
 #: dt-groups/base-setup.php:160
 msgid "Group Type"
@@ -3354,8 +3436,13 @@ msgstr "会员人数"
 #: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
-"The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
-msgstr "该组中的成员数。在成员列表中添加或删除新成员时，它将自动更新。手动更改此数字，以包括可能不在系统中但也是该组成员的人员。"
+"The number of members in this group. It will automatically be updated when "
+"new members are added or removed in the member list. Change this number "
+"manually to include people who may not be in the system but are also members "
+"of the group."
+msgstr ""
+"该组中的成员数。在成员列表中添加或删除新成员时，它将自动更新。手动更改此数"
+"字，以包括可能不在系统中但也是该组成员的人员。"
 
 #: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
 #: dt-groups/base-setup.php:602
@@ -3387,7 +3474,8 @@ msgstr "同行组"
 #: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
-"A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+"A related group that isn't a parent/child in relationship. It might indicate "
+"groups that collaborate, are about to merge, recently split, etc."
 msgstr "不是亲子关系的相关组。它可能表明正在协作，即将合并，最近分裂等的组。"
 
 #: dt-groups/base-setup.php:341
@@ -3438,7 +3526,8 @@ msgstr "相乘"
 #: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
-"Number of people helping start other groups. How many members are multiplying?"
+"Number of people helping start other groups. How many members are "
+"multiplying?"
 msgstr "帮助启动其他小组的人数。有几名成员在成倍增加？"
 
 #: dt-groups/base-setup.php:427
@@ -3474,7 +3563,8 @@ msgstr "从现有联系人添加成员"
 #: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
-"In the 'Member List' field, type the name of an existing contact to add them to this group."
+"In the 'Member List' field, type the name of an existing contact to add them "
+"to this group."
 msgstr "在“成员列表”字段中，键入现有联系人的姓名，以将其添加到该组中。"
 
 #: dt-groups/base-setup.php:606
@@ -3484,12 +3574,16 @@ msgstr "四个领域"
 #: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
-"There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
-msgstr "四场图中有5个正方形。从左上象限开始，顺时针旋转，第五个在中间，它们代表："
+"There are 5 squares in the Four Fields diagram. Starting in the top left "
+"quadrant and going clockwise and the fifth being in the middle, they stand "
+"for:"
+msgstr ""
+"四场图中有5个正方形。从左上象限开始，顺时针旋转，第五个在中间，它们代表："
 
 #: dt-login/login-template.php:68
 msgid ""
-"Your password reset link appears to be invalid. Please request a new link below."
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
 msgstr "您的密码重置链接似乎无效。请在下方申请新链接。"
 
 #: dt-login/login-template.php:70
@@ -3506,7 +3600,8 @@ msgstr "邮箱地址"
 
 #: dt-login/login-template.php:112
 msgid ""
-"Your password reset email has been sent. Check your email or junk mail for the link to reset your password."
+"Your password reset email has been sent. Check your email or junk mail for "
+"the link to reset your password."
 msgstr "您的密码重置邮件已发送。请检查您的邮箱或垃圾邮件以获取重置密码的链接。"
 
 #: dt-login/login-template.php:160
@@ -3696,7 +3791,8 @@ msgstr "洗礼"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid ""
-"Number of baptized contact with a baptism date in date range and baptized by connection"
+"Number of baptized contact with a baptism date in date range and baptized by "
+"connection"
 msgstr "受洗日期在日期范围内并通过连接受洗的受洗联系人的数量"
 
 #: dt-metrics/combined/critical-path.php:277
@@ -3750,7 +3846,8 @@ msgstr "教堂种植园主"
 
 #: dt-metrics/combined/critical-path.php:333
 msgid ""
-"Number of contacts or users who have started a church and are marked as the church coach"
+"Number of contacts or users who have started a church and are marked as the "
+"church coach"
 msgstr "已开始教会并被标记为教会教练的联系人或用户数量"
 
 #: dt-metrics/combined/daily-activity.php:22
@@ -3783,7 +3880,7 @@ msgstr "上个月"
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
 #: dt-notifications/notifications.php:496
-#, php-format
+#, fuzzy, php-format
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "％s一个月前"
@@ -3949,8 +4046,7 @@ msgid "Active contacts, by source and seeker path"
 msgstr "活动联系人，按来源和搜索者路径"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
-msgid ""
-"This is displaying only the contacts with an 'active' status right now."
+msgid "This is displaying only the contacts with an 'active' status right now."
 msgstr "现在仅显示状态为“活动”的联系人。"
 
 #: dt-metrics/contacts/sources.php:96
@@ -3959,7 +4055,8 @@ msgstr "主动联系，按来源和信念里程碑"
 
 #: dt-metrics/contacts/sources.php:98
 msgid ""
-"A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+"A contact can come from more than one source, and it can have more than one "
+"faith milestone at the same time."
 msgstr "一个联系人可以来自多个来源，并且可以同时具有多个信仰里程碑。"
 
 #: dt-metrics/counter.php:135
@@ -4292,7 +4389,8 @@ msgstr "简单图表"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
-"This chart shows the total number for each field value at the end of the selected date."
+"This chart shows the total number for each field value at the end of the "
+"selected date."
 msgstr "此图表显示所选日期结束时每个字段值的总数。"
 
 #: dt-metrics/records/select-tags-charts.php:90
@@ -4366,31 +4464,31 @@ msgid "Daily Digest"
 msgstr "每日摘要"
 
 #: dt-notifications/notifications.php:476
-#, php-format
+#, fuzzy, php-format
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "％s分钟前"
 
 #: dt-notifications/notifications.php:481
-#, php-format
+#, fuzzy, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "％s小时前"
 
 #: dt-notifications/notifications.php:486
-#, php-format
+#, fuzzy, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "％s天前"
 
 #: dt-notifications/notifications.php:491
-#, php-format
+#, fuzzy, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "％s周前"
 
 #: dt-notifications/notifications.php:510
-#, php-format
+#, fuzzy, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "％s年前"
@@ -4596,11 +4694,16 @@ msgstr "详情"
 
 #: dt-posts/dt-posts.php:2796
 #, php-format
-msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
+msgctxt ""
+"@[user name][user_id] - User Fred has requested access to Contact [contact "
+"name][contact_id]. If desired, share this record with the user to grant "
+"access."
 msgid ""
-"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
+"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
+"desired, share this record with the user to grant access."
 msgstr ""
-"@[%1$s](%2$s) - 用户 %3$s 已请求访问 %4$s [%5$s](%6$s) 。如果需要，请与该用户分享此记录以授予访问权。"
+"@[%1$s](%2$s) - 用户 %3$s 已请求访问 %4$s [%5$s](%6$s) 。如果需要，请与该用户"
+"分享此记录以授予访问权。"
 
 #: dt-posts/dt-posts.php:2802
 msgid "Access Request"
@@ -4993,7 +5096,14 @@ msgid ""
 "{{link}}\n"
 "\n"
 "Thanks!"
-msgstr "您好 {{name}}，\n\n请点击下方按钮访问您的应用。\n\n{{link}}\n\n谢谢！"
+msgstr ""
+"您好 {{name}}，\n"
+"\n"
+"请点击下方按钮访问您的应用。\n"
+"\n"
+"{{link}}\n"
+"\n"
+"谢谢！"
 
 #: dt-reports/magic-url-bulk-send.php:50
 msgid "Configure email subject"
@@ -5058,7 +5168,14 @@ msgid ""
 "{{link}}\n"
 "\n"
 "Thanks!"
-msgstr "您好，\n\n请点击下方按钮访问您的应用。\n\n{{link}}\n\n谢谢！"
+msgstr ""
+"您好，\n"
+"\n"
+"请点击下方按钮访问您的应用。\n"
+"\n"
+"{{link}}\n"
+"\n"
+"谢谢！"
 
 #: dt-reports/magic-url-setup.php:248
 msgid "Add email address"
@@ -5078,7 +5195,8 @@ msgstr "删除并替换应用链接"
 
 #: dt-reports/magic-url-setup.php:462
 msgid ""
-"This app is not yet activated for this user. Enable the app to generate a link."
+"This app is not yet activated for this user. Enable the app to generate a "
+"link."
 msgstr "此应用尚未为此用户激活。启用应用以生成链接。"
 
 #: dt-reports/magic-url-setup.php:465 template-settings.php:265
@@ -5226,8 +5344,11 @@ msgstr "升级联系人"
 
 #: dt-users/template-new-user.php:260
 msgid ""
-"The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data."
-msgstr "新用户将有权访问此联系人记录上的所有字段和评论。如果评论包含敏感数据，我们建议将其归档。"
+"The new user will have access to all the fields and comments on this contact "
+"record. We suggest archiving the comments if they contain sensitive data."
+msgstr ""
+"新用户将有权访问此联系人记录上的所有字段和评论。如果评论包含敏感数据，我们建"
+"议将其归档。"
 
 #: dt-users/template-new-user.php:267
 msgid "Continue and archive comments"
@@ -5255,7 +5376,8 @@ msgstr "您希望将旧记录中的字段合并到新记录吗？"
 
 #: dt-users/template-no-permission.php:92
 msgid ""
-"You are registered but an administrator needs to assign you access permissions."
+"You are registered but an administrator needs to assign you access "
+"permissions."
 msgstr "您已注册，但管理员需要为您分配访问权限。"
 
 #: dt-users/template-user-management.php:63
@@ -5290,7 +5412,8 @@ msgstr "可用性"
 
 #: dt-users/template-user-management.php:164
 msgid ""
-"Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be unavailable so the Dispatcher will know your "
+"availability to receive new contacts"
 msgstr "设置您不可用的日期，以便调度员知道您有空接收新联系人"
 
 #: dt-users/template-user-management.php:166
@@ -5347,7 +5470,8 @@ msgstr "所有源——给予所有联系人访问权"
 #: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
-"Custom - Access own contacts and all the contacts of the selected sources below"
+"Custom - Access own contacts and all the contacts of the selected sources "
+"below"
 msgstr "自定义——访问自己的联系人及以下所选源的全部联系人"
 
 #: dt-users/template-user-management.php:346
@@ -5410,7 +5534,8 @@ msgstr "最近的 10 个联系人中从分配到尝试联系所花的时间"
 #: dt-users/user-hooks-and-config.php:196
 #, php-format
 msgid ""
-"Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users"
+"Welcome %1$s, this is your personal contact record. Feel free to update the "
+"fields and @mention me or other users"
 msgstr "欢迎 %1$s，这是您的个人联系记录。随时更新字段并@提及我或其他用户"
 
 #: dt-users/user-hooks-and-config.php:312
@@ -5435,7 +5560,9 @@ msgstr "您好 %s，"
 
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
-msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
+msgctxt ""
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "您已受邀在 %2$s 加入 %1$s"
 
@@ -5638,8 +5765,12 @@ msgstr "必须启用Javascript，此网站才能正常运行。"
 
 #: header.php:61
 msgid ""
-"You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
-msgstr "您似乎正在使用过时的Web浏览器。如果没有最新版本的浏览器，则该网站可能无法正常运行。请注意，不支持Internet Explorer。"
+"You seem to be using an out-of-date web browser. Without the most up-to-date "
+"version of your browser, this may site may not function correctly. Please "
+"note that Internet Explorer is not supported."
+msgstr ""
+"您似乎正在使用过时的Web浏览器。如果没有最新版本的浏览器，则该网站可能无法正常"
+"运行。请注意，不支持Internet Explorer。"
 
 #: header.php:63
 msgid "See what browser you are using."
@@ -5679,8 +5810,12 @@ msgstr "合并重复的 %s"
 
 #: template-merge-post-details.php:123
 msgid ""
-"When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
-msgstr "当您合并时，主记录会使用您选择的值进行更新，并且与其他项目的关系会转移到主记录；可以在下面切换。"
+"When you merge, the primary record is updated with the values you choose, "
+"and relationships to other items are shifted to the primary record; which "
+"can be switched below."
+msgstr ""
+"当您合并时，主记录会使用您选择的值进行更新，并且与其他项目的关系会转移到主记"
+"录；可以在下面切换。"
 
 #: template-merge-post-details.php:126
 msgid "Copy comments to updated primary record"
@@ -5790,7 +5925,8 @@ msgstr "从调派者处接收联系人的可能性"
 
 #: template-settings.php:434
 msgid ""
-"Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be traveling or unavailable so the Dispatcher will "
+"know your availability to receive new contacts"
 msgstr "设置您要旅行或不可用的日期，以便调度员知道您是否有空接收新的联系人"
 
 #: template-settings.php:438
@@ -5842,9 +5978,14 @@ msgstr "您将收到系统中发生的任何更新的通知。"
 
 #: template-settings.php:630
 msgid ""
-"Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. For profile images we use "
+"Gravatar (Globally Recognized Avatar). If you have security concerns, we "
+"suggest not using a personal photo, but instead choose a cartoon, abstract, "
+"or alias photo to represent you."
 msgstr ""
-"门徒工具系统不存储图像。对于个人资料图片，我们使用Gravatar（全球公认的头像）。如果您出于安全考虑，建议您不要使用个人照片，而应选择卡通，抽象或别名照片来代表您。"
+"门徒工具系统不存储图像。对于个人资料图片，我们使用Gravatar（全球公认的头"
+"像）。如果您出于安全考虑，建议您不要使用个人照片，而应选择卡通，抽象或别名照"
+"片来代表您。"
 
 #: template-settings.php:631
 msgid "edit image on gravatar.com"
@@ -5852,9 +5993,14 @@ msgstr "在gravatar.com上编辑图像"
 
 #: template-settings.php:637
 msgid ""
-"Disciple Tools System does not store images. All media assets will be placed within specified media connection storage service. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. All media assets will be placed "
+"within specified media connection storage service. If you have security "
+"concerns, we suggest not using a personal photo, but instead choose a "
+"cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"Disciple Tools系统不存储图像。所有媒体资源将放置在指定的媒体连接存储服务中。如果您有安全顾虑，我们建议不要使用个人照片，而是选择卡通、抽象或别名照片来代表您。"
+"Disciple Tools系统不存储图像。所有媒体资源将放置在指定的媒体连接存储服务中。"
+"如果您有安全顾虑，我们建议不要使用个人照片，而是选择卡通、抽象或别名照片来代"
+"表您。"
 
 #: template-settings.php:638
 msgid "Upload new profile image"
@@ -5886,7 +6032,8 @@ msgstr "重复的访问联系人"
 
 #: template-view-duplicates.php:27
 msgid ""
-"Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
+"Scanning for duplicates starting with the most recently modified contacts. "
+"Results are limited to ones that have less than 10 exact matches."
 msgstr "从最近修改的联系人开始扫描重复的内容。结果只限于少于 10 个完全匹配的。"
 
 #: template-view-duplicates.php:30

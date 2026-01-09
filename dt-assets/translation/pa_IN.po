@@ -15,8 +15,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Weblate 5.10.2\n"
 
-
-
 #. Theme Name of the theme
 #: style.css
 msgid "Disciple Tools"
@@ -30,9 +28,9 @@ msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 #. Description of the theme
 #: style.css
 msgid ""
-"Disciple.Tools is a coalition management system for disciple making movements."
-msgstr ""
-"Disciple.Tools ਚੇਲੇ ਬਣਾਉਣ ਦੀਆਂ ਲਹਿਰਾਂ ਲਈ ਇੱਕ ਗੱਠਜੋੜ ਪ੍ਰਬੰਧਨ ਪ੍ਰਣਾਲੀ ਹੈ।"
+"Disciple.Tools is a coalition management system for disciple making "
+"movements."
+msgstr "Disciple.Tools ਚੇਲੇ ਬਣਾਉਣ ਦੀਆਂ ਲਹਿਰਾਂ ਲਈ ਇੱਕ ਗੱਠਜੋੜ ਪ੍ਰਬੰਧਨ ਪ੍ਰਣਾਲੀ ਹੈ।"
 
 #. Author URI of the theme
 #: style.css
@@ -67,8 +65,7 @@ msgstr "ਬੇਨਤੀ ਰਿਕਾਰਡ ਐਕਸੈਸ"
 #: 403.php:49
 msgid ""
 "Record owner to be notified of access request. Are you happy to proceed?"
-msgstr ""
-"ਰਿਕਾਰਡ ਮਾਲਕ ਨੂੰ ਪਹੁੰਚ ਬੇਨਤੀ ਬਾਰੇ ਸੂਚਿਤ ਕੀਤਾ ਜਾਵੇ. ਕੀ ਤੁਸੀਂ ਅੱਗੇ ਵਧਕੇ ਖੁਸ਼ ਹੋ?"
+msgstr "ਰਿਕਾਰਡ ਮਾਲਕ ਨੂੰ ਪਹੁੰਚ ਬੇਨਤੀ ਬਾਰੇ ਸੂਚਿਤ ਕੀਤਾ ਜਾਵੇ. ਕੀ ਤੁਸੀਂ ਅੱਗੇ ਵਧਕੇ ਖੁਸ਼ ਹੋ?"
 
 #: 403.php:52
 msgid "Submit Request"
@@ -240,15 +237,27 @@ msgstr "ਸੂਚੀ ਨਿਰਯਾਤ ਮਦਦ"
 
 #: archive-template.php:263
 msgid ""
-"Using the current filter, this is a simple way to export basic information and use it in other applications."
+"Using the current filter, this is a simple way to export basic information "
+"and use it in other applications."
 msgstr ""
-"ਮੌਜੂਦਾ ਫਿਲਟਰ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ, ਇਹ ਮੂਲ ਜਾਣਕਾਰੀ ਨੂੰ ਨਿਰਯਾਤ ਕਰਨ ਅਤੇ ਹੋਰ ਐਪਲੀਕੇਸ਼ਨਾਂ ਵਿੱਚ ਵਰਤਣ ਦਾ ਇੱਕ ਸਧਾਰਨ ਤਰੀਕਾ ਹੈ।"
+"ਮੌਜੂਦਾ ਫਿਲਟਰ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ, ਇਹ ਮੂਲ ਜਾਣਕਾਰੀ ਨੂੰ ਨਿਰਯਾਤ ਕਰਨ ਅਤੇ ਹੋਰ ਐਪਲੀਕੇਸ਼ਨਾਂ ਵਿੱਚ ਵਰਤਣ "
+"ਦਾ ਇੱਕ ਸਧਾਰਨ ਤਰੀਕਾ ਹੈ।"
 
 #: archive-template.php:267
 msgid ""
-"Using the current filter, the available emails are grouped by 50 and can be launched into your default email client by group. Many email providers put a limit of 50 on BCC emails. You can open all groups at once using the \"Open All\" button. If the list is too large, this might alert your email provider. The BCC email tool is meant to assist small group emails. Bulk email should be handled through bulk email providers."
+"Using the current filter, the available emails are grouped by 50 and can be "
+"launched into your default email client by group. Many email providers put a "
+"limit of 50 on BCC emails. You can open all groups at once using the \"Open "
+"All\" button. If the list is too large, this might alert your email "
+"provider. The BCC email tool is meant to assist small group emails. Bulk "
+"email should be handled through bulk email providers."
 msgstr ""
-"ਮੌਜੂਦਾ ਫਿਲਟਰ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ, ਉਪਲਬਧ ਈਮੇਲਾਂ 50 ਦੇ ਸਮੂਹਾਂ ਵਿੱਚ ਵੰਡੀਆਂ ਜਾਂਦੀਆਂ ਹਨ ਅਤੇ ਤੁਹਾਡੇ ਡਿਫੌਲਟ ਈਮੇਲ ਕਲਾਇੰਟ ਵਿੱਚ ਸਮੂਹ ਦੁਆਰਾ ਲਾਂਚ ਕੀਤੀਆਂ ਜਾ ਸਕਦੀਆਂ ਹਨ। ਬਹੁਤ ਸਾਰੇ ਈਮੇਲ ਪ੍ਰਦਾਤਾ BCC ਈਮੇਲਾਂ 'ਤੇ 50 ਦੀ ਸੀਮਾ ਲਗਾਉਂਦੇ ਹਨ। ਤੁਸੀਂ \\\"ਸਾਰੇ ਖੋਲ੍ਹੋ\\\" ਬਟਨ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਸਾਰੇ ਸਮੂਹ ਇੱਕੋ ਵਾਰ ਖੋਲ੍ਹ ਸਕਦੇ ਹੋ। ਜੇਕਰ ਸੂਚੀ ਬਹੁਤ ਵੱਡੀ ਹੈ, ਤਾਂ ਇਹ ਤੁਹਾਡੇ ਈਮੇਲ ਪ੍ਰਦਾਤਾ ਨੂੰ ਚੇਤਾਵਨੀ ਦੇ ਸਕਦੀ ਹੈ। BCC ਈਮੇਲ ਟੂਲ ਛੋਟੇ ਸਮੂਹ ਈਮੇਲਾਂ ਵਿੱਚ ਮਦਦ ਕਰਨ ਲਈ ਹੈ। ਬਲਕ ਈਮੇਲ ਬਲਕ ਈਮੇਲ ਪ੍ਰਦਾਤਾਵਾਂ ਦੁਆਰਾ ਸੰਭਾਲੀ ਜਾਣੀ ਚਾਹੀਦੀ ਹੈ।"
+"ਮੌਜੂਦਾ ਫਿਲਟਰ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ, ਉਪਲਬਧ ਈਮੇਲਾਂ 50 ਦੇ ਸਮੂਹਾਂ ਵਿੱਚ ਵੰਡੀਆਂ ਜਾਂਦੀਆਂ ਹਨ ਅਤੇ ਤੁਹਾਡੇ "
+"ਡਿਫੌਲਟ ਈਮੇਲ ਕਲਾਇੰਟ ਵਿੱਚ ਸਮੂਹ ਦੁਆਰਾ ਲਾਂਚ ਕੀਤੀਆਂ ਜਾ ਸਕਦੀਆਂ ਹਨ। ਬਹੁਤ ਸਾਰੇ ਈਮੇਲ ਪ੍ਰਦਾਤਾ BCC "
+"ਈਮੇਲਾਂ 'ਤੇ 50 ਦੀ ਸੀਮਾ ਲਗਾਉਂਦੇ ਹਨ। ਤੁਸੀਂ \\\"ਸਾਰੇ ਖੋਲ੍ਹੋ\\\" ਬਟਨ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਸਾਰੇ ਸਮੂਹ ਇੱਕੋ "
+"ਵਾਰ ਖੋਲ੍ਹ ਸਕਦੇ ਹੋ। ਜੇਕਰ ਸੂਚੀ ਬਹੁਤ ਵੱਡੀ ਹੈ, ਤਾਂ ਇਹ ਤੁਹਾਡੇ ਈਮੇਲ ਪ੍ਰਦਾਤਾ ਨੂੰ ਚੇਤਾਵਨੀ ਦੇ ਸਕਦੀ ਹੈ। "
+"BCC ਈਮੇਲ ਟੂਲ ਛੋਟੇ ਸਮੂਹ ਈਮੇਲਾਂ ਵਿੱਚ ਮਦਦ ਕਰਨ ਲਈ ਹੈ। ਬਲਕ ਈਮੇਲ ਬਲਕ ਈਮੇਲ ਪ੍ਰਦਾਤਾਵਾਂ ਦੁਆਰਾ ਸੰਭਾਲੀ "
+"ਜਾਣੀ ਚਾਹੀਦੀ ਹੈ।"
 
 #: archive-template.php:270
 msgid "Phone Number List"
@@ -256,15 +265,20 @@ msgstr "ਫੋਨ ਨੰਬਰ ਸੂਚੀ"
 
 #: archive-template.php:271
 msgid ""
-"Using the current filter, this is intended for copy pasting a list of numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of starting a group conversation."
+"Using the current filter, this is intended for copy pasting a list of "
+"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
+"starting a group conversation."
 msgstr ""
-"ਮੌਜੂਦਾ ਫਿਲਟਰ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ, ਇਹ ਨੰਬਰਾਂ ਦੀ ਸੂਚੀ ਨੂੰ ਮੈਸੇਜਿੰਗ ਐਪ, WhatsApp, Signal, ਆਦਿ ਵਿੱਚ ਕਾਪੀ ਪੇਸਟ ਕਰਨ ਲਈ ਹੈ। ਇਹ ਸਮੂਹ ਗੱਲਬਾਤ ਸ਼ੁਰੂ ਕਰਨ ਦਾ ਇੱਕ ਤੇਜ਼ ਤਰੀਕਾ ਹੈ।"
+"ਮੌਜੂਦਾ ਫਿਲਟਰ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ, ਇਹ ਨੰਬਰਾਂ ਦੀ ਸੂਚੀ ਨੂੰ ਮੈਸੇਜਿੰਗ ਐਪ, WhatsApp, Signal, ਆਦਿ "
+"ਵਿੱਚ ਕਾਪੀ ਪੇਸਟ ਕਰਨ ਲਈ ਹੈ। ਇਹ ਸਮੂਹ ਗੱਲਬਾਤ ਸ਼ੁਰੂ ਕਰਨ ਦਾ ਇੱਕ ਤੇਜ਼ ਤਰੀਕਾ ਹੈ।"
 
 #: archive-template.php:275
 msgid ""
-"Using the current filter, this creates a basic points map of known locations of listed individuals."
+"Using the current filter, this creates a basic points map of known locations "
+"of listed individuals."
 msgstr ""
-"ਮੌਜੂਦਾ ਫਿਲਟਰ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ, ਇਹ ਸੂਚੀਬੱਧ ਵਿਅਕਤੀਆਂ ਦੀਆਂ ਜਾਣੀਆਂ-ਪਛਾਣੀਆਂ ਥਾਵਾਂ ਦਾ ਮੁੱਢਲਾ ਪੁਆਇੰਟ ਨਕਸ਼ਾ ਬਣਾਉਂਦਾ ਹੈ।"
+"ਮੌਜੂਦਾ ਫਿਲਟਰ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ, ਇਹ ਸੂਚੀਬੱਧ ਵਿਅਕਤੀਆਂ ਦੀਆਂ ਜਾਣੀਆਂ-ਪਛਾਣੀਆਂ ਥਾਵਾਂ ਦਾ ਮੁੱਢਲਾ "
+"ਪੁਆਇੰਟ ਨਕਸ਼ਾ ਬਣਾਉਂਦਾ ਹੈ।"
 
 #: archive-template.php:339
 msgid "No results found"
@@ -361,8 +375,7 @@ msgstr "ਕੋਈ ਖੇਤਰ ਨਹੀਂ ਚੁਣੇ ਗਏ"
 #, php-format
 msgid ""
 "Select all the  %1$s you want to update from the list, and update them below"
-msgstr ""
-"ਉਹ ਸਾਰੇ %1$s ਚੁਣੋ ਜੋ ਤੁਸੀਂ ਸੂਚੀ ਵਿੱਚੋਂ ਅਪਡੇਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ, ਅਤੇ ਉਹਨਾਂ ਨੂੰ ਹੇਠਾਂ ਅਪਡੇਟ ਕਰੋ"
+msgstr "ਉਹ ਸਾਰੇ %1$s ਚੁਣੋ ਜੋ ਤੁਸੀਂ ਸੂਚੀ ਵਿੱਚੋਂ ਅਪਡੇਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ, ਅਤੇ ਉਹਨਾਂ ਨੂੰ ਹੇਠਾਂ ਅਪਡੇਟ ਕਰੋ"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -953,8 +966,7 @@ msgstr "%3$s ਅਤੇ %1$s ਨੇ %2$s ਇਮੋਜੀ ਨਾਲ ਪ੍ਰਤ�
 
 #: dt-assets/functions/enqueue-scripts.php:189
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr ""
-"ਬੋਲੀ ਜਾਣ ਵਾਲੀ ਭਾਸ਼ਾ ਚੁਣੋ ਅਤੇ ਸ਼ੁਰੂ ਕਰਨ ਲਈ \\\"ਰਿਕਾਰਡਿੰਗ ਸ਼ੁਰੂ ਕਰੋ\\\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।"
+msgstr "ਬੋਲੀ ਜਾਣ ਵਾਲੀ ਭਾਸ਼ਾ ਚੁਣੋ ਅਤੇ ਸ਼ੁਰੂ ਕਰਨ ਲਈ \\\"ਰਿਕਾਰਡਿੰਗ ਸ਼ੁਰੂ ਕਰੋ\\\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।"
 
 #: dt-assets/functions/enqueue-scripts.php:190
 msgid "Click \"Start Recording\" to begin."
@@ -1038,8 +1050,7 @@ msgstr "ਰਿਕਾਰਡ ਨੂੰ ਇਸ ਬਿੰਦੂ 'ਤੇ ਵਾਪਸ
 #: dt-assets/functions/enqueue-scripts.php:259
 #, php-format
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr ""
-"ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਹੋ ਕਿ ਤੁਸੀਂ ਰਿਕਾਰਡ ਸਥਿਤੀ ਨੂੰ %s 'ਤੇ ਵਾਪਸ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
+msgstr "ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਹੋ ਕਿ ਤੁਸੀਂ ਰਿਕਾਰਡ ਸਥਿਤੀ ਨੂੰ %s 'ਤੇ ਵਾਪਸ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
 
 #: dt-assets/functions/enqueue-scripts.php:290
 msgid "Locations you are responsible for"
@@ -1151,7 +1162,8 @@ msgstr "ਨਿਰਯਾਤ ਕੀਤੇ csv ਡੇਟਾ ਵਿੱਚ ਸਾਰ�
 
 #: dt-assets/functions/enqueue-scripts.php:351
 #, php-format
-msgctxt "The exported csv data to contain the 6 visible Contact field(s) shown below."
+msgctxt ""
+"The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr "ਨਿਰਯਾਤ ਕੀਤੇ csv ਡੇਟਾ ਵਿੱਚ ਹੇਠਾਂ ਦਿਖਾਏ ਗਏ %2$s ਦਿਸਣਯੋਗ %1$s ਖੇਤਰ ਹੋਣਗੇ।"
@@ -1484,16 +1496,22 @@ msgstr "ਤੇਜ਼ ਐਕਸ਼ਨ ਬਟਨ"
 #: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid ""
-"These quick action buttons are here to aid you in updating the contact record faster and keep a count of how many times each action has be done."
+"These quick action buttons are here to aid you in updating the contact "
+"record faster and keep a count of how many times each action has be done."
 msgstr ""
-"ਇਹ ਤੇਜ਼ ਐਕਸ਼ਨ ਬਟਨ ਸੰਪਰਕ ਸੰਪਰਕ ਨੂੰ ਤੇਜ਼ੀ ਨਾਲ ਅਪਡੇਟ ਕਰਨ ਵਿੱਚ ਤੁਹਾਡੀ ਸਹਾਇਤਾ ਕਰਨ ਲਈ ਹਨ ਅਤੇ ਇਹ ਦੱਸਦੇ ਹਨ ਕਿ ਹਰ ਕਾਰਵਾਈ ਕਿੰਨੀ ਵਾਰ ਕੀਤੀ ਗਈ ਹੈ."
+"ਇਹ ਤੇਜ਼ ਐਕਸ਼ਨ ਬਟਨ ਸੰਪਰਕ ਸੰਪਰਕ ਨੂੰ ਤੇਜ਼ੀ ਨਾਲ ਅਪਡੇਟ ਕਰਨ ਵਿੱਚ ਤੁਹਾਡੀ ਸਹਾਇਤਾ ਕਰਨ ਲਈ ਹਨ ਅਤੇ ਇਹ "
+"ਦੱਸਦੇ ਹਨ ਕਿ ਹਰ ਕਾਰਵਾਈ ਕਿੰਨੀ ਵਾਰ ਕੀਤੀ ਗਈ ਹੈ."
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid ""
-"For example, If you click the 'No Answer' button 4 times, we will log that you attempted to reach this contact 4 times, but they did not answer. This action will also change the 'Seeker Path' to 'Contact Attempted'."
+"For example, If you click the 'No Answer' button 4 times, we will log that "
+"you attempted to reach this contact 4 times, but they did not answer. This "
+"action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"ਉਦਾਹਰਣ ਲਈ, ਜੇਕਰ ਤੁਸੀਂ 'ਕੋਈ ਜਵਾਬ ਨਹੀਂ' ਬਟਨ 'ਤੇ 4 ਵਾਰ ਕਲਿੱਕ ਕਰਦੇ ਹੋ, ਤਾਂ ਅਸੀਂ ਲੌਗ ਕਰਾਂਗੇ ਕਿ ਤੁਸੀਂ ਇਸ ਸੰਪਰਕ ਤੱਕ 4 ਵਾਰ ਪਹੁੰਚਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ, ਪਰ ਉਨ੍ਹਾਂ ਨੇ ਜਵਾਬ ਨਹੀਂ ਦਿੱਤਾ। ਇਹ ਕਾਰਵਾਈ 'ਖੋਜਕਰਤਾ ਮਾਰਗ' ਨੂੰ 'ਸੰਪਰਕ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼' ਵਿੱਚ ਵੀ ਬਦਲ ਦੇਵੇਗੀ।"
+"ਉਦਾਹਰਣ ਲਈ, ਜੇਕਰ ਤੁਸੀਂ 'ਕੋਈ ਜਵਾਬ ਨਹੀਂ' ਬਟਨ 'ਤੇ 4 ਵਾਰ ਕਲਿੱਕ ਕਰਦੇ ਹੋ, ਤਾਂ ਅਸੀਂ ਲੌਗ ਕਰਾਂਗੇ ਕਿ "
+"ਤੁਸੀਂ ਇਸ ਸੰਪਰਕ ਤੱਕ 4 ਵਾਰ ਪਹੁੰਚਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ, ਪਰ ਉਨ੍ਹਾਂ ਨੇ ਜਵਾਬ ਨਹੀਂ ਦਿੱਤਾ। ਇਹ ਕਾਰਵਾਈ "
+"'ਖੋਜਕਰਤਾ ਮਾਰਗ' ਨੂੰ 'ਸੰਪਰਕ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼' ਵਿੱਚ ਵੀ ਬਦਲ ਦੇਵੇਗੀ।"
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1507,29 +1525,30 @@ msgstr "2 ਸੰਪਰਕਾਂ ਨੂੰ ਅਪਡੇਟ ਦੀ ਜ਼ਰੂਰ
 #: dt-assets/parts/modals/modal-help.php:42
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
-msgstr ""
-"ਇਹ ਉਹ ਥਾਂ ਹੈ ਜਿੱਥੇ ਤੁਸੀਂ ਮੀਟਿੰਗਾਂ ਅਤੇ ਗੱਲਬਾਤ ਤੋਂ ਨੋਟਸ ਰਿਕਾਰਡ ਕਰ ਸਕਦੇ ਹੋ."
+msgstr "ਇਹ ਉਹ ਥਾਂ ਹੈ ਜਿੱਥੇ ਤੁਸੀਂ ਮੀਟਿੰਗਾਂ ਅਤੇ ਗੱਲਬਾਤ ਤੋਂ ਨੋਟਸ ਰਿਕਾਰਡ ਕਰ ਸਕਦੇ ਹੋ."
 
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid ""
-"Type @ and the name of a user to mention them in a comment. This user will then receive a notification."
+"Type @ and the name of a user to mention them in a comment. This user will "
+"then receive a notification."
 msgstr ""
-"ਟਿੱਪਣੀ ਵਿੱਚ ਉਹਨਾਂ ਦਾ ਜ਼ਿਕਰ ਕਰਨ ਲਈ @ ਅਤੇ ਇੱਕ ਉਪਭੋਗਤਾ ਦਾ ਨਾਮ ਲਿਖੋ. ਇਹ ਉਪਭੋਗਤਾ ਫਿਰ ਇੱਕ ਨੋਟੀਫਿਕੇਸ਼ਨ ਪ੍ਰਾਪਤ ਕਰੇਗਾ."
+"ਟਿੱਪਣੀ ਵਿੱਚ ਉਹਨਾਂ ਦਾ ਜ਼ਿਕਰ ਕਰਨ ਲਈ @ ਅਤੇ ਇੱਕ ਉਪਭੋਗਤਾ ਦਾ ਨਾਮ ਲਿਖੋ. ਇਹ ਉਪਭੋਗਤਾ ਫਿਰ ਇੱਕ "
+"ਨੋਟੀਫਿਕੇਸ਼ਨ ਪ੍ਰਾਪਤ ਕਰੇਗਾ."
 
 #: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"This section also includes the history of activity, such as when the contact or group status became active etc."
+"This section also includes the history of activity, such as when the contact "
+"or group status became active etc."
 msgstr ""
-"ਇਸ ਭਾਗ ਵਿੱਚ ਗਤੀਵਿਧੀ ਦਾ ਇਤਿਹਾਸ ਵੀ ਸ਼ਾਮਲ ਹੈ, ਜਿਵੇਂ ਸੰਪਰਕ ਜਾਂ ਸਮੂਹ ਦੀ ਸਥਿਤੀ ਦੇ ਕਿਰਿਆਸ਼ੀਲ ਹੋਣ ਵੇਲੇ ਆਦਿ."
+"ਇਸ ਭਾਗ ਵਿੱਚ ਗਤੀਵਿਧੀ ਦਾ ਇਤਿਹਾਸ ਵੀ ਸ਼ਾਮਲ ਹੈ, ਜਿਵੇਂ ਸੰਪਰਕ ਜਾਂ ਸਮੂਹ ਦੀ ਸਥਿਤੀ ਦੇ ਕਿਰਿਆਸ਼ੀਲ "
+"ਹੋਣ ਵੇਲੇ ਆਦਿ."
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
-msgid ""
-"You can filter this section either by 'All', 'Comments', or 'Activity'."
-msgstr ""
-"ਤੁਸੀਂ ਇਸ ਭਾਗ ਨੂੰ ਜਾਂ ਤਾਂ 'ਸਾਰੇ', 'ਟਿੱਪਣੀਆਂ', ਜਾਂ 'ਗਤੀਵਿਧੀ' ਦੁਆਰਾ ਫਿਲਟਰ ਕਰ ਸਕਦੇ ਹੋ."
+msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
+msgstr "ਤੁਸੀਂ ਇਸ ਭਾਗ ਨੂੰ ਜਾਂ ਤਾਂ 'ਸਾਰੇ', 'ਟਿੱਪਣੀਆਂ', ਜਾਂ 'ਗਤੀਵਿਧੀ' ਦੁਆਰਾ ਫਿਲਟਰ ਕਰ ਸਕਦੇ ਹੋ."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:117
 msgid "Your Profile"
@@ -1543,16 +1562,20 @@ msgstr "ਇਸ ਖੇਤਰ ਵਿੱਚ ਤੁਸੀਂ ਆਪਣਾ ਉਪਭ�
 #: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
 msgid ""
-"You are not required to fill out any of these profile fields. They are optional to meet your team’s needs."
+"You are not required to fill out any of these profile fields. They are "
+"optional to meet your team’s needs."
 msgstr ""
-"ਤੁਹਾਨੂੰ ਇਹਨਾਂ ਵਿੱਚੋਂ ਕਿਸੇ ਵੀ ਪ੍ਰੋਫਾਈਲ ਖੇਤਰ ਨੂੰ ਭਰਨ ਦੀ ਜ਼ਰੂਰਤ ਨਹੀਂ ਹੈ. ਉਹ ਤੁਹਾਡੀ ਟੀਮ ਦੀਆਂ ਜ਼ਰੂਰਤਾਂ ਨੂੰ ਪੂਰਾ ਕਰਨ ਲਈ ਵਿਕਲਪਿਕ ਹਨ."
+"ਤੁਹਾਨੂੰ ਇਹਨਾਂ ਵਿੱਚੋਂ ਕਿਸੇ ਵੀ ਪ੍ਰੋਫਾਈਲ ਖੇਤਰ ਨੂੰ ਭਰਨ ਦੀ ਜ਼ਰੂਰਤ ਨਹੀਂ ਹੈ. ਉਹ ਤੁਹਾਡੀ ਟੀਮ ਦੀਆਂ ਜ਼ਰੂਰਤਾਂ "
+"ਨੂੰ ਪੂਰਾ ਕਰਨ ਲਈ ਵਿਕਲਪਿਕ ਹਨ."
 
 #: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid ""
-"By clicking 'Edit', you will be able adjust things like the language that this system operates in."
+"By clicking 'Edit', you will be able adjust things like the language that "
+"this system operates in."
 msgstr ""
-"'ਸੰਪਾਦਿਤ ਕਰੋ' ਤੇ ਕਲਿਕ ਕਰਕੇ, ਤੁਸੀਂ ਚੀਜ਼ਾਂ ਨੂੰ ਅਨੁਕੂਲ ਕਰਨ ਦੇ ਯੋਗ ਹੋਵੋਗੇ ਜਿਵੇਂ ਕਿ ਇਹ ਸਿਸਟਮ ਕੰਮ ਕਰਦਾ ਹੈ."
+"'ਸੰਪਾਦਿਤ ਕਰੋ' ਤੇ ਕਲਿਕ ਕਰਕੇ, ਤੁਸੀਂ ਚੀਜ਼ਾਂ ਨੂੰ ਅਨੁਕੂਲ ਕਰਨ ਦੇ ਯੋਗ ਹੋਵੋਗੇ ਜਿਵੇਂ ਕਿ ਇਹ ਸਿਸਟਮ ਕੰਮ ਕਰਦਾ "
+"ਹੈ."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
 #: dt-users/users.php:169
@@ -1562,9 +1585,11 @@ msgstr "ਸਥਾਨ"
 #: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid ""
-"These are the areas you are responsible for. Clicking the 'Add' button will bring up a list of locations to choose from."
+"These are the areas you are responsible for. Clicking the 'Add' button will "
+"bring up a list of locations to choose from."
 msgstr ""
-"ਇਹ ਉਹ ਖੇਤਰ ਹਨ ਜਿਨ੍ਹਾਂ ਲਈ ਤੁਸੀਂ ਜ਼ਿੰਮੇਵਾਰ ਹੋ. 'ਐਡ' ਬਟਨ ਨੂੰ ਦਬਾਉਣ ਨਾਲ ਤੁਸੀਂ ਚੁਣਨ ਲਈ ਟਿਕਾਣਿਆਂ ਦੀ ਸੂਚੀ ਲਿਆਉਣਗੇ."
+"ਇਹ ਉਹ ਖੇਤਰ ਹਨ ਜਿਨ੍ਹਾਂ ਲਈ ਤੁਸੀਂ ਜ਼ਿੰਮੇਵਾਰ ਹੋ. 'ਐਡ' ਬਟਨ ਨੂੰ ਦਬਾਉਣ ਨਾਲ ਤੁਸੀਂ ਚੁਣਨ ਲਈ ਟਿਕਾਣਿਆਂ "
+"ਦੀ ਸੂਚੀ ਲਿਆਉਣਗੇ."
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
@@ -1574,9 +1599,12 @@ msgstr "ਤੁਹਾਡੀਆਂ ਸੂਚਨਾਵਾਂ"
 #: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid ""
-"You will receive web notifications and email notifications based on your notification preferences. To change your preference, click the toggle buttons."
+"You will receive web notifications and email notifications based on your "
+"notification preferences. To change your preference, click the toggle "
+"buttons."
 msgstr ""
-"ਤੁਸੀਂ ਆਪਣੀ ਨੋਟੀਫਿਕੇਸ਼ਨ ਪਸੰਦਾਂ ਦੇ ਅਧਾਰ ਤੇ ਵੈਬ ਨੋਟੀਫਿਕੇਸ਼ਨ ਅਤੇ ਈਮੇਲ ਸੂਚਨਾ ਪ੍ਰਾਪਤ ਕਰੋਗੇ. ਆਪਣੀ ਪਸੰਦ ਨੂੰ ਬਦਲਣ ਲਈ, ਟੌਗਲ ਬਟਨ ਤੇ ਕਲਿਕ ਕਰੋ."
+"ਤੁਸੀਂ ਆਪਣੀ ਨੋਟੀਫਿਕੇਸ਼ਨ ਪਸੰਦਾਂ ਦੇ ਅਧਾਰ ਤੇ ਵੈਬ ਨੋਟੀਫਿਕੇਸ਼ਨ ਅਤੇ ਈਮੇਲ ਸੂਚਨਾ ਪ੍ਰਾਪਤ ਕਰੋਗੇ. ਆਪਣੀ ਪਸੰਦ "
+"ਨੂੰ ਬਦਲਣ ਲਈ, ਟੌਗਲ ਬਟਨ ਤੇ ਕਲਿਕ ਕਰੋ."
 
 #: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
@@ -1591,16 +1619,23 @@ msgstr "ਸੂਚਨਾਵਾਂ ਬੰਦ: ਟੌਗਲ ਸਲੇਟੀ ਦਿ�
 #: dt-assets/parts/modals/modal-help.php:78
 msgctxt "Optional Documentation"
 msgid ""
-"Some of the types of notifications cannot be adjusted because they are required by the system."
+"Some of the types of notifications cannot be adjusted because they are "
+"required by the system."
 msgstr ""
-"ਨੋਟੀਫਿਕੇਸ਼ਨ ਦੀਆਂ ਕੁਝ ਕਿਸਮਾਂ ਐਡਜਸਟ ਨਹੀਂ ਕੀਤੀਆਂ ਜਾ ਸਕਦੀਆਂ ਕਿਉਂਕਿ ਉਨ੍ਹਾਂ ਨੂੰ ਸਿਸਟਮ ਦੁਆਰਾ ਲੋੜੀਂਦੀਆਂ ਹਨ."
+"ਨੋਟੀਫਿਕੇਸ਼ਨ ਦੀਆਂ ਕੁਝ ਕਿਸਮਾਂ ਐਡਜਸਟ ਨਹੀਂ ਕੀਤੀਆਂ ਜਾ ਸਕਦੀਆਂ ਕਿਉਂਕਿ ਉਨ੍ਹਾਂ ਨੂੰ ਸਿਸਟਮ ਦੁਆਰਾ "
+"ਲੋੜੀਂਦੀਆਂ ਹਨ."
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid ""
-"Adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Adjust whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"ਵਿਵਸਥਿਤ ਕਰੋ ਕਿ ਕੀ ਤੁਸੀਂ ਨਵੀਆਂ ਟਿਪਣੀਆਂ, ਸੰਪਰਕ ਜਾਣਕਾਰੀ ਤਬਦੀਲੀਆਂ, ਸੰਪਰਕ ਮੀਲ ਪੱਥਰ ਅਤੇ ਸਮੂਹ ਸਿਹਤ ਮੈਟ੍ਰਿਕਸ ਦੇ ਬਾਰੇ ਵਿੱਚ ਨੋਟੀਫਿਕੇਸ਼ਨ ਵੇਖਣਾ ਚਾਹੁੰਦੇ ਹੋ ਜਾਂ ਨਹੀਂ, ਜਾਂ ਕੀ ਤੁਹਾਨੂੰ ਸਿਸਟਮ ਵਿੱਚ ਹੋਣ ਵਾਲੇ ਕਿਸੇ ਵੀ ਅਪਡੇਟ ਲਈ ਇੱਕ ਸੂਚਨਾ ਪ੍ਰਾਪਤ ਹੋਏਗੀ."
+"ਵਿਵਸਥਿਤ ਕਰੋ ਕਿ ਕੀ ਤੁਸੀਂ ਨਵੀਆਂ ਟਿਪਣੀਆਂ, ਸੰਪਰਕ ਜਾਣਕਾਰੀ ਤਬਦੀਲੀਆਂ, ਸੰਪਰਕ ਮੀਲ ਪੱਥਰ ਅਤੇ ਸਮੂਹ "
+"ਸਿਹਤ ਮੈਟ੍ਰਿਕਸ ਦੇ ਬਾਰੇ ਵਿੱਚ ਨੋਟੀਫਿਕੇਸ਼ਨ ਵੇਖਣਾ ਚਾਹੁੰਦੇ ਹੋ ਜਾਂ ਨਹੀਂ, ਜਾਂ ਕੀ ਤੁਹਾਨੂੰ ਸਿਸਟਮ ਵਿੱਚ ਹੋਣ "
+"ਵਾਲੇ ਕਿਸੇ ਵੀ ਅਪਡੇਟ ਲਈ ਇੱਕ ਸੂਚਨਾ ਪ੍ਰਾਪਤ ਹੋਏਗੀ."
 
 #: dt-assets/parts/modals/modal-help.php:87
 msgctxt "Optional Documentation"
@@ -1610,9 +1645,11 @@ msgstr "ਸੂਚਨਾਵਾਂ ਪੰਨਾ"
 #: dt-assets/parts/modals/modal-help.php:88
 msgctxt "Optional Documentation"
 msgid ""
-"This Notifications Page is where you can read updates to users and groups. It displays notifications about activity on your records."
+"This Notifications Page is where you can read updates to users and groups. "
+"It displays notifications about activity on your records."
 msgstr ""
-"ਇਹ ਨੋਟੀਫਿਕੇਸ਼ਨ ਪੰਨਾ ਉਹ ਹੈ ਜਿੱਥੇ ਤੁਸੀਂ ਉਪਭੋਗਤਾਵਾਂ ਅਤੇ ਸਮੂਹਾਂ ਦੇ ਅਪਡੇਟਾਂ ਨੂੰ ਪੜ੍ਹ ਸਕਦੇ ਹੋ. ਇਹ ਤੁਹਾਡੇ ਰਿਕਾਰਡਾਂ ਤੇ ਗਤੀਵਿਧੀ ਬਾਰੇ ਸੂਚਨਾਵਾਂ ਪ੍ਰਦਰਸ਼ਤ ਕਰਦਾ ਹੈ."
+"ਇਹ ਨੋਟੀਫਿਕੇਸ਼ਨ ਪੰਨਾ ਉਹ ਹੈ ਜਿੱਥੇ ਤੁਸੀਂ ਉਪਭੋਗਤਾਵਾਂ ਅਤੇ ਸਮੂਹਾਂ ਦੇ ਅਪਡੇਟਾਂ ਨੂੰ ਪੜ੍ਹ ਸਕਦੇ ਹੋ. ਇਹ ਤੁਹਾਡੇ "
+"ਰਿਕਾਰਡਾਂ ਤੇ ਗਤੀਵਿਧੀ ਬਾਰੇ ਸੂਚਨਾਵਾਂ ਪ੍ਰਦਰਸ਼ਤ ਕਰਦਾ ਹੈ."
 
 #: dt-assets/parts/modals/modal-help.php:89
 msgctxt "Optional Documentation"
@@ -1628,9 +1665,9 @@ msgstr "ਆਪਣੀਆਂ ਸਾਰੀਆਂ ਸੂਚਨਾਵਾਂ ਦੀ �
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Unread' button to show the list of all of your unread notifications."
-msgstr ""
-"ਆਪਣੀਆਂ ਨਾ ਪੜ੍ਹੀਆਂ ਹੋਈਆਂ ਨੋਟੀਫਿਕੇਸ਼ਨਾਂ ਦੀ ਸੂਚੀ ਦਿਖਾਉਣ ਲਈ 'ਅਨਰਿੱਟਡ' ਬਟਨ ਨੂੰ ਕਲਿੱਕ ਕਰੋ."
+"Click the 'Unread' button to show the list of all of your unread "
+"notifications."
+msgstr "ਆਪਣੀਆਂ ਨਾ ਪੜ੍ਹੀਆਂ ਹੋਈਆਂ ਨੋਟੀਫਿਕੇਸ਼ਨਾਂ ਦੀ ਸੂਚੀ ਦਿਖਾਉਣ ਲਈ 'ਅਨਰਿੱਟਡ' ਬਟਨ ਨੂੰ ਕਲਿੱਕ ਕਰੋ."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
 #: template-notifications.php:66
@@ -1640,16 +1677,27 @@ msgstr "ਸਾਰੇ ਪੜ੍ਹੇ ਹੋਏ ਵਜੋਂ ਮਾਰਕ ਕਰ�
 #: dt-assets/parts/modals/modal-help.php:93
 msgctxt "Optional Documentation"
 msgid ""
-"If you don't want to click each filled in circle on the right side of each row to indicate the notification has been read, then click the 'Mark All as Read' link at the top to quickly adjust all the messages that they have all been read."
+"If you don't want to click each filled in circle on the right side of each "
+"row to indicate the notification has been read, then click the 'Mark All as "
+"Read' link at the top to quickly adjust all the messages that they have all "
+"been read."
 msgstr ""
-"ਜੇ ਤੁਸੀਂ ਨੋਟੀਫਿਕੇਸ਼ਨ ਨੂੰ ਪੜ੍ਹਿਆ ਗਿਆ ਹੈ, ਇਹ ਦਰਸਾਉਣ ਲਈ ਹਰ ਕਤਾਰ ਦੇ ਸੱਜੇ ਪਾਸੇ ਦਿੱਤੇ ਗਏ ਸਾਰੇ ਸਰਕਲ ਤੇ ਕਲਿਕ ਨਹੀਂ ਕਰਨਾ ਚਾਹੁੰਦੇ, ਤਾਂ ਉਪਰਲੇ 'ਮਾਰਕ ਆਲ ਐੱਡ ਮਾਰਕ' ਲਿੰਕ 'ਤੇ ਕਲਿੱਕ ਕਰੋ ਤਾਂ ਕਿ ਸਾਰੇ ਸੁਨੇਹੇ ਜੋ ਉਨ੍ਹਾਂ ਦੇ ਕੋਲ ਹਨ, ਤੇਜ਼ੀ ਨਾਲ ਵਿਵਸਥਿਤ ਕਰੋ. ਪੜ੍ਹਿਆ ਗਿਆ ਹੈ."
+"ਜੇ ਤੁਸੀਂ ਨੋਟੀਫਿਕੇਸ਼ਨ ਨੂੰ ਪੜ੍ਹਿਆ ਗਿਆ ਹੈ, ਇਹ ਦਰਸਾਉਣ ਲਈ ਹਰ ਕਤਾਰ ਦੇ ਸੱਜੇ ਪਾਸੇ ਦਿੱਤੇ ਗਏ ਸਾਰੇ ਸਰਕਲ "
+"ਤੇ ਕਲਿਕ ਨਹੀਂ ਕਰਨਾ ਚਾਹੁੰਦੇ, ਤਾਂ ਉਪਰਲੇ 'ਮਾਰਕ ਆਲ ਐੱਡ ਮਾਰਕ' ਲਿੰਕ 'ਤੇ ਕਲਿੱਕ ਕਰੋ ਤਾਂ ਕਿ ਸਾਰੇ ਸੁਨੇਹੇ "
+"ਜੋ ਉਨ੍ਹਾਂ ਦੇ ਕੋਲ ਹਨ, ਤੇਜ਼ੀ ਨਾਲ ਵਿਵਸਥਿਤ ਕਰੋ. ਪੜ੍ਹਿਆ ਗਿਆ ਹੈ."
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Settings' link to go to the notifications settings area to adjust whether you want to see notifications about new comments, contact information changes, Contact Milestones and Group Health metrics, and whether to you will receive a notification for any update that happens in the system."
+"Click the 'Settings' link to go to the notifications settings area to adjust "
+"whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
-"ਸੂਚਨਾਵਾਂ ਸੈਟਿੰਗਾਂ ਵਾਲੇ ਖੇਤਰ ਵਿਚ ਜਾਣ ਲਈ 'ਸੈਟਿੰਗਜ਼' ਲਿੰਕ ਤੇ ਕਲਿਕ ਕਰੋ ਕਿ ਕੀ ਤੁਸੀਂ ਨਵੀਂ ਟਿੱਪਣੀਆਂ, ਸੰਪਰਕ ਜਾਣਕਾਰੀ ਤਬਦੀਲੀਆਂ, ਸੰਪਰਕ ਮੀਲ ਪੱਥਰ ਅਤੇ ਸਮੂਹ ਸਿਹਤ ਮੈਟ੍ਰਿਕਸ ਬਾਰੇ ਸੂਚਨਾਵਾਂ ਵੇਖਣਾ ਚਾਹੁੰਦੇ ਹੋ, ਜਾਂ ਕੀ ਤੁਹਾਨੂੰ ਕਿਸੇ ਅਪਡੇਟ ਲਈ ਇਕ ਨੋਟੀਫਿਕੇਸ਼ਨ ਮਿਲੇਗਾ ਜਿਸ ਵਿਚ ਵਾਪਰਨਾ ਹੈ ਸਿਸਟਮ."
+"ਸੂਚਨਾਵਾਂ ਸੈਟਿੰਗਾਂ ਵਾਲੇ ਖੇਤਰ ਵਿਚ ਜਾਣ ਲਈ 'ਸੈਟਿੰਗਜ਼' ਲਿੰਕ ਤੇ ਕਲਿਕ ਕਰੋ ਕਿ ਕੀ ਤੁਸੀਂ ਨਵੀਂ ਟਿੱਪਣੀਆਂ, "
+"ਸੰਪਰਕ ਜਾਣਕਾਰੀ ਤਬਦੀਲੀਆਂ, ਸੰਪਰਕ ਮੀਲ ਪੱਥਰ ਅਤੇ ਸਮੂਹ ਸਿਹਤ ਮੈਟ੍ਰਿਕਸ ਬਾਰੇ ਸੂਚਨਾਵਾਂ ਵੇਖਣਾ ਚਾਹੁੰਦੇ "
+"ਹੋ, ਜਾਂ ਕੀ ਤੁਹਾਨੂੰ ਕਿਸੇ ਅਪਡੇਟ ਲਈ ਇਕ ਨੋਟੀਫਿਕੇਸ਼ਨ ਮਿਲੇਗਾ ਜਿਸ ਵਿਚ ਵਾਪਰਨਾ ਹੈ ਸਿਸਟਮ."
 
 #: dt-assets/parts/modals/modal-help.php:100
 msgctxt "Optional Documentation"
@@ -1659,9 +1707,14 @@ msgstr "ਡੁਪਲਿਕੇਟ ਸੰਪਰਕ ਪੰਨਾ"
 #: dt-assets/parts/modals/modal-help.php:101
 msgctxt "Optional Documentation"
 msgid ""
-"This Duplicate Contact Page is where you can review, decline or merge contacts that have been picked up by the system (checking against their name, email and phone) as possibly being duplicates of another already existing contact."
+"This Duplicate Contact Page is where you can review, decline or merge "
+"contacts that have been picked up by the system (checking against their "
+"name, email and phone) as possibly being duplicates of another already "
+"existing contact."
 msgstr ""
-"ਇਹ ਡੁਪਲਿਕੇਟ ਸੰਪਰਕ ਪੰਨਾ ਉਹ ਥਾਂ ਹੈ ਜਿਥੇ ਤੁਸੀਂ ਉਨ੍ਹਾਂ ਸੰਪਰਕਾਂ ਦੀ ਸਮੀਖਿਆ, ਅਸਵੀਕਾਰ ਜਾਂ ਅਭੇਦ ਕਰ ਸਕਦੇ ਹੋ ਜੋ ਸਿਸਟਮ ਦੁਆਰਾ ਚੁੱਕੇ ਗਏ ਹਨ (ਉਨ੍ਹਾਂ ਦੇ ਨਾਮ, ਈਮੇਲ ਅਤੇ ਫੋਨ ਦੇ ਵਿਰੁੱਧ ਜਾਂਚ ਕਰ ਰਹੇ ਹਨ) ਸ਼ਾਇਦ ਪਹਿਲਾਂ ਤੋਂ ਮੌਜੂਦ ਕਿਸੇ ਹੋਰ ਸੰਪਰਕ ਦੇ ਡੁਪਲਿਕੇਟ ਹੋਣ."
+"ਇਹ ਡੁਪਲਿਕੇਟ ਸੰਪਰਕ ਪੰਨਾ ਉਹ ਥਾਂ ਹੈ ਜਿਥੇ ਤੁਸੀਂ ਉਨ੍ਹਾਂ ਸੰਪਰਕਾਂ ਦੀ ਸਮੀਖਿਆ, ਅਸਵੀਕਾਰ ਜਾਂ ਅਭੇਦ ਕਰ "
+"ਸਕਦੇ ਹੋ ਜੋ ਸਿਸਟਮ ਦੁਆਰਾ ਚੁੱਕੇ ਗਏ ਹਨ (ਉਨ੍ਹਾਂ ਦੇ ਨਾਮ, ਈਮੇਲ ਅਤੇ ਫੋਨ ਦੇ ਵਿਰੁੱਧ ਜਾਂਚ ਕਰ ਰਹੇ ਹਨ) ਸ਼ਾਇਦ "
+"ਪਹਿਲਾਂ ਤੋਂ ਮੌਜੂਦ ਕਿਸੇ ਹੋਰ ਸੰਪਰਕ ਦੇ ਡੁਪਲਿਕੇਟ ਹੋਣ."
 
 #: dt-assets/parts/modals/modal-help.php:124
 #: dt-assets/parts/modals/modal-help.php:174
@@ -1695,9 +1748,11 @@ msgstr "ਮੋਬਾਈਲ ਡਿਵਾਈਸ 'ਤੇ ਜਾਦੂ ਲਿੰਕ 
 
 #: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
 msgid ""
-"Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created."
+"Reset the security code. No data is removed. Only access. The previous link "
+"will be disabled and another one created."
 msgstr ""
-"ਸੁਰੱਖਿਆ ਕੋਡ ਰੀਸੈਟ ਕਰੋ। ਕੋਈ ਡਾਟਾ ਨਹੀਂ ਹਟਾਇਆ ਗਿਆ। ਸਿਰਫ਼ ਪਹੁੰਚ। ਪਿਛਲਾ ਲਿੰਕ ਅਯੋਗ ਕਰ ਦਿੱਤਾ ਜਾਵੇਗਾ ਅਤੇ ਇੱਕ ਹੋਰ ਬਣਾਇਆ ਜਾਵੇਗਾ।"
+"ਸੁਰੱਖਿਆ ਕੋਡ ਰੀਸੈਟ ਕਰੋ। ਕੋਈ ਡਾਟਾ ਨਹੀਂ ਹਟਾਇਆ ਗਿਆ। ਸਿਰਫ਼ ਪਹੁੰਚ। ਪਿਛਲਾ ਲਿੰਕ ਅਯੋਗ ਕਰ ਦਿੱਤਾ "
+"ਜਾਵੇਗਾ ਅਤੇ ਇੱਕ ਹੋਰ ਬਣਾਇਆ ਜਾਵੇਗਾ।"
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
@@ -1792,7 +1847,8 @@ msgstr "ਇਹ ਸੰਪਰਕ ਇਸ ਨਾਲ ਸਾਂਝਾ ਕੀਤਾ ਗ
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid ""
-"Set a reminder or a task with a note and receive a notification on the due date."
+"Set a reminder or a task with a note and receive a notification on the due "
+"date."
 msgstr "ਇੱਕ ਯਾਦ ਵਾਲਾ ਜਾਂ ਇੱਕ ਕੰਮ ਸੈਟ ਕਰੋ ਅਤੇ ਇੱਕ ਨਿਸ਼ਚਤ ਮਿਤੀ ਨੂੰ ਪ੍ਰਾਪਤ ਕਰੋ."
 
 #: dt-assets/parts/modals/modal-tasks.php:13
@@ -2033,9 +2089,11 @@ msgstr "ਸੰਪਰਕ ਸਿਸਟਮ ਵਿਚ ਨਵਾਂ ਹੈ."
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
-"This contact has made it known that they no longer want to continue or you have decided not to continue with him/her."
+"This contact has made it known that they no longer want to continue or you "
+"have decided not to continue with him/her."
 msgstr ""
-"ਇਸ ਸੰਪਰਕ ਨੇ ਇਹ ਜਾਣਿਆ ਹੈ ਕਿ ਉਹ ਹੁਣ ਜਾਰੀ ਨਹੀਂ ਰਹਿਣਾ ਚਾਹੁੰਦੇ ਜਾਂ ਤੁਸੀਂ ਉਸ ਨਾਲ ਜਾਰੀ ਨਾ ਰਹਿਣ ਦਾ ਫੈਸਲਾ ਕੀਤਾ ਹੈ."
+"ਇਸ ਸੰਪਰਕ ਨੇ ਇਹ ਜਾਣਿਆ ਹੈ ਕਿ ਉਹ ਹੁਣ ਜਾਰੀ ਨਹੀਂ ਰਹਿਣਾ ਚਾਹੁੰਦੇ ਜਾਂ ਤੁਸੀਂ ਉਸ ਨਾਲ ਜਾਰੀ ਨਾ ਰਹਿਣ "
+"ਦਾ ਫੈਸਲਾ ਕੀਤਾ ਹੈ."
 
 #: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
@@ -2273,9 +2331,13 @@ msgstr "ਪਹਿਲਾਂ ਹੀ %s ਨੂੰ ਟ੍ਰਾਂਸਫਰ ਕੀ�
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
-"NOTE: You have already transferred this contact. Transferring again might create duplicates. Do you still want to override this warning and continue with your transfer?"
+"NOTE: You have already transferred this contact. Transferring again might "
+"create duplicates. Do you still want to override this warning and continue "
+"with your transfer?"
 msgstr ""
-"ਨੋਟ: ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਇਸ ਸੰਪਰਕ ਨੂੰ ਤਬਦੀਲ ਕਰ ਦਿੱਤਾ ਹੈ. ਦੁਬਾਰਾ ਟ੍ਰਾਂਸਫਰ ਕਰਨਾ ਡੁਪਲਿਕੇਟ ਬਣਾ ਸਕਦਾ ਹੈ. ਕੀ ਤੁਸੀਂ ਅਜੇ ਵੀ ਇਸ ਚੇਤਾਵਨੀ ਨੂੰ ਅਣਡਿੱਠਾ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ ਅਤੇ ਆਪਣੇ ਟ੍ਰਾਂਸਫਰ ਨੂੰ ਜਾਰੀ ਰੱਖਣਾ ਚਾਹੁੰਦੇ ਹੋ?"
+"ਨੋਟ: ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਇਸ ਸੰਪਰਕ ਨੂੰ ਤਬਦੀਲ ਕਰ ਦਿੱਤਾ ਹੈ. ਦੁਬਾਰਾ ਟ੍ਰਾਂਸਫਰ ਕਰਨਾ ਡੁਪਲਿਕੇਟ ਬਣਾ "
+"ਸਕਦਾ ਹੈ. ਕੀ ਤੁਸੀਂ ਅਜੇ ਵੀ ਇਸ ਚੇਤਾਵਨੀ ਨੂੰ ਅਣਡਿੱਠਾ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ ਅਤੇ ਆਪਣੇ ਟ੍ਰਾਂਸਫਰ ਨੂੰ ਜਾਰੀ "
+"ਰੱਖਣਾ ਚਾਹੁੰਦੇ ਹੋ?"
 
 #: dt-contacts/contacts-transfer.php:281
 msgid "Override and Continue"
@@ -2370,9 +2432,11 @@ msgstr "ਭਾਲਣ ਵਾਲਾ ਮਾਰਗ"
 #: dt-contacts/module-access.php:103
 msgctxt "Seeker Path field description"
 msgid ""
-"Set the status of your progression with the contact. These are the steps that happen in a specific order to help a contact move forward."
+"Set the status of your progression with the contact. These are the steps "
+"that happen in a specific order to help a contact move forward."
 msgstr ""
-"ਸੰਪਰਕ ਦੇ ਨਾਲ ਆਪਣੀ ਤਰੱਕੀ ਦੀ ਸਥਿਤੀ ਨਿਰਧਾਰਤ ਕਰੋ. ਇਹ ਉਹ ਕਦਮ ਹਨ ਜੋ ਕਿਸੇ ਸੰਪਰਕ ਨੂੰ ਅੱਗੇ ਵਧਾਉਣ ਵਿੱਚ ਸਹਾਇਤਾ ਲਈ ਇੱਕ ਖਾਸ ਕ੍ਰਮ ਵਿੱਚ ਹੁੰਦੇ ਹਨ."
+"ਸੰਪਰਕ ਦੇ ਨਾਲ ਆਪਣੀ ਤਰੱਕੀ ਦੀ ਸਥਿਤੀ ਨਿਰਧਾਰਤ ਕਰੋ. ਇਹ ਉਹ ਕਦਮ ਹਨ ਜੋ ਕਿਸੇ ਸੰਪਰਕ ਨੂੰ ਅੱਗੇ ਵਧਾਉਣ "
+"ਵਿੱਚ ਸਹਾਇਤਾ ਲਈ ਇੱਕ ਖਾਸ ਕ੍ਰਮ ਵਿੱਚ ਹੁੰਦੇ ਹਨ."
 
 #: dt-contacts/module-access.php:107
 msgid "Contact Attempt Needed"
@@ -2409,7 +2473,8 @@ msgstr "ਤਿਆਰ ਨਹੀਂ"
 #: dt-contacts/module-access.php:149
 msgctxt "Contact Status field description"
 msgid ""
-"There is not enough information to move forward with the contact at this time."
+"There is not enough information to move forward with the contact at this "
+"time."
 msgstr "ਇਸ ਸਮੇਂ ਸੰਪਰਕ ਨਾਲ ਅੱਗੇ ਵਧਣ ਲਈ ਲੋੜੀਂਦੀ ਜਾਣਕਾਰੀ ਨਹੀਂ ਹੈ."
 
 #: dt-contacts/module-access.php:153
@@ -2428,7 +2493,8 @@ msgstr "ਸਵੀਕਾਰ ਕੀਤੇ ਜਾਣ ਦੀ ਉਡੀਕ ਹੈ"
 #: dt-contacts/module-access.php:159
 msgctxt "Contact Status field description"
 msgid ""
-"The contact has been assigned to someone, but has not yet been accepted by that person."
+"The contact has been assigned to someone, but has not yet been accepted by "
+"that person."
 msgstr ""
 "ਸੰਪਰਕ ਕਿਸੇ ਨੂੰ ਨਿਰਧਾਰਤ ਕੀਤਾ ਗਿਆ ਹੈ, ਪਰ ਅਜੇ ਤੱਕ ਉਸ ਵਿਅਕਤੀ ਦੁਆਰਾ ਸਵੀਕਾਰ ਨਹੀਂ ਕੀਤਾ ਗਿਆ ਹੈ."
 
@@ -2438,10 +2504,8 @@ msgstr "ਰੁਕਿਆ"
 
 #: dt-contacts/module-access.php:165
 msgctxt "Contact Status field description"
-msgid ""
-"This contact is currently on hold (i.e. on vacation or not responding)."
-msgstr ""
-"ਇਹ ਸੰਪਰਕ ਇਸ ਸਮੇਂ ਹੋਲਡ ਤੇ ਹੈ (ਅਰਥਾਤ ਛੁੱਟੀਆਂ ਤੇ ਹੈ ਜਾਂ ਜਵਾਬ ਨਹੀਂ ਦੇ ਰਿਹਾ)."
+msgid "This contact is currently on hold (i.e. on vacation or not responding)."
+msgstr "ਇਹ ਸੰਪਰਕ ਇਸ ਸਮੇਂ ਹੋਲਡ ਤੇ ਹੈ (ਅਰਥਾਤ ਛੁੱਟੀਆਂ ਤੇ ਹੈ ਜਾਂ ਜਵਾਬ ਨਹੀਂ ਦੇ ਰਿਹਾ)."
 
 #: dt-contacts/module-access.php:180
 msgid "Reason Not Ready"
@@ -2483,9 +2547,11 @@ msgstr "ਕਾਰਨ ਰੋਕਿਆ ਗਿਆ"
 #: dt-contacts/module-access.php:212
 msgctxt "Optional Documentation"
 msgid ""
-"A paused contact is one you are not currently interacting with but expect to in the future."
+"A paused contact is one you are not currently interacting with but expect to "
+"in the future."
 msgstr ""
-"ਇੱਕ ਵਿਰਾਮ ਸੰਪਰਕ ਉਹ ਹੁੰਦਾ ਹੈ ਜਿਸ ਨਾਲ ਤੁਸੀਂ ਵਰਤਮਾਨ ਵਿੱਚ ਇੰਟਰੈਕਟ ਨਹੀਂ ਕਰ ਰਹੇ ਪਰ ਭਵਿੱਖ ਵਿੱਚ ਉਮੀਦ ਕਰਦੇ ਹੋ."
+"ਇੱਕ ਵਿਰਾਮ ਸੰਪਰਕ ਉਹ ਹੁੰਦਾ ਹੈ ਜਿਸ ਨਾਲ ਤੁਸੀਂ ਵਰਤਮਾਨ ਵਿੱਚ ਇੰਟਰੈਕਟ ਨਹੀਂ ਕਰ ਰਹੇ ਪਰ ਭਵਿੱਖ ਵਿੱਚ "
+"ਉਮੀਦ ਕਰਦੇ ਹੋ."
 
 #: dt-contacts/module-access.php:216
 msgctxt "Reason Paused label"
@@ -2525,8 +2591,7 @@ msgstr "ਬਾਲ ਸੰਪਰਕ ਦੀ ਅਦਾਲਤ ਵਿਚ ਹੈ"
 #: dt-contacts/module-access.php:223
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
-msgstr ""
-"ਅਸੀਂ ਇਹ ਵੇਖਣਾ ਚਾਹੁੰਦੇ ਹਾਂ ਕਿ ਸੰਪਰਕ ਸਵੈਚਲਿਤ ਟੈਕਸਟ ਸੁਨੇਹਿਆਂ ਨੂੰ ਕਿਵੇਂ / ਕਿਵੇਂ ਜਵਾਬ ਦਿੰਦਾ ਹੈ"
+msgstr "ਅਸੀਂ ਇਹ ਵੇਖਣਾ ਚਾਹੁੰਦੇ ਹਾਂ ਕਿ ਸੰਪਰਕ ਸਵੈਚਲਿਤ ਟੈਕਸਟ ਸੁਨੇਹਿਆਂ ਨੂੰ ਕਿਵੇਂ / ਕਿਵੇਂ ਜਵਾਬ ਦਿੰਦਾ ਹੈ"
 
 #: dt-contacts/module-access.php:230
 msgid "Reason Archived"
@@ -2535,8 +2600,7 @@ msgstr "ਕਾਰਨ ਆਰਕਾਈਵ ਕੀਤਾ ਗਿਆ"
 #: dt-contacts/module-access.php:231
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
-msgstr ""
-"ਇੱਕ ਬੰਦ ਸੰਪਰਕ ਉਹ ਹੁੰਦਾ ਹੈ ਜਿਸ ਨਾਲ ਤੁਸੀਂ ਸੰਪਰਕ ਨਹੀਂ ਕਰ ਸਕਦੇ ਜਾਂ ਨਾ ਚਾਹੁੰਦੇ ਹੋ."
+msgstr "ਇੱਕ ਬੰਦ ਸੰਪਰਕ ਉਹ ਹੁੰਦਾ ਹੈ ਜਿਸ ਨਾਲ ਤੁਸੀਂ ਸੰਪਰਕ ਨਹੀਂ ਕਰ ਸਕਦੇ ਜਾਂ ਨਾ ਚਾਹੁੰਦੇ ਹੋ."
 
 #: dt-contacts/module-access.php:235
 msgctxt "Reason Closed label"
@@ -2620,8 +2684,7 @@ msgstr "ਮੁਹਿੰਮਾਂ"
 msgctxt "Optional Documentation"
 msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
-msgstr ""
-"ਮਾਰਕੀਟਿੰਗ ਮੁਹਿੰਮਾਂ ਜਾਂ ਐਕਸੈਸ ਗਤੀਵਿਧੀਆਂ ਜਿਨ੍ਹਾਂ ਨਾਲ ਇਸ ਸੰਪਰਕ ਨੇ ਗੱਲਬਾਤ ਕੀਤੀ."
+msgstr "ਮਾਰਕੀਟਿੰਗ ਮੁਹਿੰਮਾਂ ਜਾਂ ਐਕਸੈਸ ਗਤੀਵਿਧੀਆਂ ਜਿਨ੍ਹਾਂ ਨਾਲ ਇਸ ਸੰਪਰਕ ਨੇ ਗੱਲਬਾਤ ਕੀਤੀ."
 
 #: dt-contacts/module-access.php:291
 msgid "Meeting Scheduled"
@@ -2769,9 +2832,12 @@ msgstr "ਵਿਸ਼ਵਾਸ ਪੱਥਰ"
 #: dt-contacts/module-faith.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"Assign which milestones the contact has reached in their faith journey. These are points in a contact’s spiritual journey worth celebrating but can happen in any order."
+"Assign which milestones the contact has reached in their faith journey. "
+"These are points in a contact’s spiritual journey worth celebrating but can "
+"happen in any order."
 msgstr ""
-"ਨਿਰਧਾਰਤ ਕਰੋ ਕਿ ਉਨ੍ਹਾਂ ਦੀ ਵਿਸ਼ਵਾਸ ਯਾਤਰਾ ਵਿਚ ਕਿਹੜਾ ਮੀਲ ਪੱਥਰ ਪਹੁੰਚ ਗਿਆ ਹੈ. ਇਹ ਸੰਪਰਕ ਦੇ ਆਤਮਿਕ ਯਾਤਰਾ ਦੇ ਜਸ਼ਨ ਮਨਾਉਣ ਦੇ ਮਹੱਤਵਪੂਰਣ ਨੁਕਤੇ ਹਨ ਪਰ ਕਿਸੇ ਵੀ ਕ੍ਰਮ ਵਿੱਚ ਹੋ ਸਕਦੇ ਹਨ."
+"ਨਿਰਧਾਰਤ ਕਰੋ ਕਿ ਉਨ੍ਹਾਂ ਦੀ ਵਿਸ਼ਵਾਸ ਯਾਤਰਾ ਵਿਚ ਕਿਹੜਾ ਮੀਲ ਪੱਥਰ ਪਹੁੰਚ ਗਿਆ ਹੈ. ਇਹ ਸੰਪਰਕ ਦੇ "
+"ਆਤਮਿਕ ਯਾਤਰਾ ਦੇ ਜਸ਼ਨ ਮਨਾਉਣ ਦੇ ਮਹੱਤਵਪੂਰਣ ਨੁਕਤੇ ਹਨ ਪਰ ਕਿਸੇ ਵੀ ਕ੍ਰਮ ਵਿੱਚ ਹੋ ਸਕਦੇ ਹਨ."
 
 #: dt-contacts/module-faith.php:48
 msgid "Has Bible"
@@ -2836,8 +2902,7 @@ msgstr "ਇਹ ਸੰਪਰਕ ਤੁਹਾਨੂੰ ਉਪਭੋਗਤਾ ਵ�
 
 #: dt-contacts/user-module.php:73
 msgid "Please update contact details on your profile page instead of here."
-msgstr ""
-"ਕਿਰਪਾ ਕਰਕੇ ਇੱਥੇ ਦੀ ਬਜਾਏ ਆਪਣੇ ਪ੍ਰੋਫਾਈਲ ਪੰਨੇ 'ਤੇ ਸੰਪਰਕ ਵੇਰਵਿਆਂ ਨੂੰ ਅੱਪਡੇਟ ਕਰੋ।"
+msgstr "ਕਿਰਪਾ ਕਰਕੇ ਇੱਥੇ ਦੀ ਬਜਾਏ ਆਪਣੇ ਪ੍ਰੋਫਾਈਲ ਪੰਨੇ 'ਤੇ ਸੰਪਰਕ ਵੇਰਵਿਆਂ ਨੂੰ ਅੱਪਡੇਟ ਕਰੋ।"
 
 #: dt-contacts/user-module.php:73
 msgid "Profile Settings"
@@ -2928,9 +2993,11 @@ msgstr "ਮੀਲ ਪੱਥਰ ਅਤੇ ਸਮੂਹ ਸਿਹਤ ਮੈਟ੍�
 
 #: dt-core/configuration/config-site-defaults.php:300
 msgid ""
-"This contact is active but there is no record of anybody contacting them. Please do contact them."
+"This contact is active but there is no record of anybody contacting them. "
+"Please do contact them."
 msgstr ""
-"ਇਹ ਸੰਪਰਕ ਕਿਰਿਆਸ਼ੀਲ ਹੈ ਪਰ ਕਿਸੇ ਨਾਲ ਸੰਪਰਕ ਕਰਨ ਦਾ ਕੋਈ ਰਿਕਾਰਡ ਨਹੀਂ ਹੈ. ਕਿਰਪਾ ਕਰਕੇ ਉਹਨਾਂ ਨਾਲ ਸੰਪਰਕ ਕਰੋ."
+"ਇਹ ਸੰਪਰਕ ਕਿਰਿਆਸ਼ੀਲ ਹੈ ਪਰ ਕਿਸੇ ਨਾਲ ਸੰਪਰਕ ਕਰਨ ਦਾ ਕੋਈ ਰਿਕਾਰਡ ਨਹੀਂ ਹੈ. ਕਿਰਪਾ ਕਰਕੇ ਉਹਨਾਂ "
+"ਨਾਲ ਸੰਪਰਕ ਕਰੋ."
 
 #: dt-core/configuration/config-site-defaults.php:306
 msgid "Please try connecting with this contact again."
@@ -2942,14 +3009,13 @@ msgstr "ਕਿਰਪਾ ਕਰਕੇ ਇਸ ਸੰਪਰਕ ਨਾਲ ਦੁਬ�
 #: dt-core/configuration/config-site-defaults.php:330
 #: dt-core/configuration/config-site-defaults.php:336
 msgid ""
-"We haven't heard about this person in a while. Do you have an update for this contact?"
-msgstr ""
-"ਅਸੀਂ ਇਸ ਵਿਅਕਤੀ ਬਾਰੇ ਕੁਝ ਸਮੇਂ ਵਿੱਚ ਨਹੀਂ ਸੁਣਿਆ. ਕੀ ਤੁਹਾਡੇ ਕੋਲ ਇਸ ਸੰਪਰਕ ਲਈ ਕੋਈ ਅਪਡੇਟ ਹੈ?"
+"We haven't heard about this person in a while. Do you have an update for "
+"this contact?"
+msgstr "ਅਸੀਂ ਇਸ ਵਿਅਕਤੀ ਬਾਰੇ ਕੁਝ ਸਮੇਂ ਵਿੱਚ ਨਹੀਂ ਸੁਣਿਆ. ਕੀ ਤੁਹਾਡੇ ਕੋਲ ਇਸ ਸੰਪਰਕ ਲਈ ਕੋਈ ਅਪਡੇਟ ਹੈ?"
 
 #: dt-core/configuration/config-site-defaults.php:346
 msgid "We haven't heard about this group in a while. Do you have an update?"
-msgstr ""
-"ਅਸੀਂ ਕੁਝ ਸਮੇਂ ਵਿੱਚ ਇਸ ਸਮੂਹ ਬਾਰੇ ਨਹੀਂ ਸੁਣਿਆ. ਕੀ ਤੁਹਾਡੇ ਕੋਲ ਕੋਈ ਅਪਡੇਟ ਹੈ?"
+msgstr "ਅਸੀਂ ਕੁਝ ਸਮੇਂ ਵਿੱਚ ਇਸ ਸਮੂਹ ਬਾਰੇ ਨਹੀਂ ਸੁਣਿਆ. ਕੀ ਤੁਹਾਡੇ ਕੋਲ ਕੋਈ ਅਪਡੇਟ ਹੈ?"
 
 #: dt-core/configuration/config-site-defaults.php:377
 msgid "Personal Phone"
@@ -3099,9 +3165,11 @@ msgstr "ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈਟ ਕਰਨ ਲਈ, ਹੇ
 
 #: dt-core/dt-storage.php:223
 msgid ""
-"Something went wrong. Please try again or have an admin check the connection settings."
+"Something went wrong. Please try again or have an admin check the connection "
+"settings."
 msgstr ""
-"ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜਾਂ ਪ੍ਰਸ਼ਾਸਕ ਨੂੰ ਕਨੈਕਸ਼ਨ ਸੈਟਿੰਗਾਂ ਦੀ ਜਾਂਚ ਕਰਨ ਲਈ ਕਹੋ।"
+"ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜਾਂ ਪ੍ਰਸ਼ਾਸਕ ਨੂੰ ਕਨੈਕਸ਼ਨ ਸੈਟਿੰਗਾਂ ਦੀ ਜਾਂਚ ਕਰਨ ਲਈ "
+"ਕਹੋ।"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3138,9 +3206,11 @@ msgstr "ਮੁਫ਼ਤ ਦਿੱਤਾ ਗਿਆ, ਪਰ ਸਸਤਾ ਨਹੀ
 
 #: dt-core/release-notifications.php:97
 msgid ""
-"Disciple.Tools relies on contributions for continued development and maintenance. Will you join the team?"
+"Disciple.Tools relies on contributions for continued development and "
+"maintenance. Will you join the team?"
 msgstr ""
-"Disciple.Tools ਨਿਰੰਤਰ ਵਿਕਾਸ ਅਤੇ ਰੱਖ-ਰਖਾਅ ਲਈ ਯੋਗਦਾਨਾਂ 'ਤੇ ਨਿਰਭਰ ਕਰਦਾ ਹੈ। ਕੀ ਤੁਸੀਂ ਟੀਮ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋਗੇ?"
+"Disciple.Tools ਨਿਰੰਤਰ ਵਿਕਾਸ ਅਤੇ ਰੱਖ-ਰਖਾਅ ਲਈ ਯੋਗਦਾਨਾਂ 'ਤੇ ਨਿਰਭਰ ਕਰਦਾ ਹੈ। ਕੀ ਤੁਸੀਂ ਟੀਮ "
+"ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋਗੇ?"
 
 #: dt-core/release-notifications.php:99
 msgid "Give"
@@ -3153,7 +3223,8 @@ msgstr "ਅਨੁਵਾਦ ਕਰੋ"
 #: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
 #: template-settings.php:735
 msgid ""
-"Translate Disciple.Tools into your language or help make a translation better."
+"Translate Disciple.Tools into your language or help make a translation "
+"better."
 msgstr ""
 "Disciple.Tools ਨੂੰ ਆਪਣੀ ਭਾਸ਼ਾ ਵਿੱਚ ਅਨੁਵਾਦ ਕਰੋ ਜਾਂ ਅਨੁਵਾਦ ਨੂੰ ਬਿਹਤਰ ਬਣਾਉਣ ਵਿੱਚ ਮਦਦ ਕਰੋ।"
 
@@ -3163,9 +3234,11 @@ msgstr "ਬਣਾਓ ਜਾਂ ਦਸਤਾਵੇਜ਼ ਕਰੋ"
 
 #: dt-core/release-notifications.php:114
 msgid ""
-"Make Disciple.Tools better by building a feature or helping us make the documentation better."
+"Make Disciple.Tools better by building a feature or helping us make the "
+"documentation better."
 msgstr ""
-"ਕੋਈ ਵਿਸ਼ੇਸ਼ਤਾ ਬਣਾ ਕੇ ਜਾਂ ਦਸਤਾਵੇਜ਼ਾਂ ਨੂੰ ਬਿਹਤਰ ਬਣਾਉਣ ਵਿੱਚ ਸਾਡੀ ਮਦਦ ਕਰਕੇ Disciple.Tools ਨੂੰ ਬਿਹਤਰ ਬਣਾਓ।"
+"ਕੋਈ ਵਿਸ਼ੇਸ਼ਤਾ ਬਣਾ ਕੇ ਜਾਂ ਦਸਤਾਵੇਜ਼ਾਂ ਨੂੰ ਬਿਹਤਰ ਬਣਾਉਣ ਵਿੱਚ ਸਾਡੀ ਮਦਦ ਕਰਕੇ Disciple.Tools ਨੂੰ "
+"ਬਿਹਤਰ ਬਣਾਓ।"
 
 #: dt-core/release-notifications.php:116
 msgid "Find out more"
@@ -3224,9 +3297,12 @@ msgstr "ਸਮੂਹ ਕੋਚ / ਚਰਚ ਪਲਾਨਟਰ"
 #: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
-"The person who planted and/or is coaching this group. Only one person can be assigned to a group while multiple people can be coaches / church planters of this group."
+"The person who planted and/or is coaching this group. Only one person can be "
+"assigned to a group while multiple people can be coaches / church planters "
+"of this group."
 msgstr ""
-"ਉਹ ਵਿਅਕਤੀ ਜਿਸਨੇ ਇਸ ਸਮੂਹ ਨੂੰ ਲਾਇਆ ਅਤੇ / ਜਾਂ ਕੋਚਿੰਗ ਦੇ ਰਿਹਾ ਹੈ. ਇੱਕ ਸਮੂਹ ਨੂੰ ਸਿਰਫ ਇੱਕ ਵਿਅਕਤੀ ਨਿਰਧਾਰਤ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ ਜਦੋਂ ਕਿ ਬਹੁਤ ਸਾਰੇ ਲੋਕ ਇਸ ਸਮੂਹ ਦੇ ਕੋਚ / ਚਰਚ ਦੇ ਬਾਗਬਾਨ ਹੋ ਸਕਦੇ ਹਨ."
+"ਉਹ ਵਿਅਕਤੀ ਜਿਸਨੇ ਇਸ ਸਮੂਹ ਨੂੰ ਲਾਇਆ ਅਤੇ / ਜਾਂ ਕੋਚਿੰਗ ਦੇ ਰਿਹਾ ਹੈ. ਇੱਕ ਸਮੂਹ ਨੂੰ ਸਿਰਫ ਇੱਕ ਵਿਅਕਤੀ "
+"ਨਿਰਧਾਰਤ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ ਜਦੋਂ ਕਿ ਬਹੁਤ ਸਾਰੇ ਲੋਕ ਇਸ ਸਮੂਹ ਦੇ ਕੋਚ / ਚਰਚ ਦੇ ਬਾਗਬਾਨ ਹੋ ਸਕਦੇ ਹਨ."
 
 #: dt-groups/base-setup.php:160
 msgid "Group Type"
@@ -3244,8 +3320,7 @@ msgstr "ਇੱਕ ਸਮੂਹ ਮੁੱਖ ਤੌਰ ਤੇ ਗੈਰ-ਵਿਸ
 #: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
-msgstr ""
-"ਇੱਕ ਸਮੂਹ ਜਿਸ ਵਿੱਚ 3 ਜਾਂ ਵਧੇਰੇ ਵਿਸ਼ਵਾਸੀ ਹਨ ਪਰ ਚਰਚ ਵਜੋਂ ਪਛਾਣ ਨਹੀਂ ਕਰ ਰਹੇ."
+msgstr "ਇੱਕ ਸਮੂਹ ਜਿਸ ਵਿੱਚ 3 ਜਾਂ ਵਧੇਰੇ ਵਿਸ਼ਵਾਸੀ ਹਨ ਪਰ ਚਰਚ ਵਜੋਂ ਪਛਾਣ ਨਹੀਂ ਕਰ ਰਹੇ."
 
 #: dt-groups/base-setup.php:173
 msgid "Church"
@@ -3402,9 +3477,14 @@ msgstr "ਮੈਂਬਰ ਗਿਣਤੀ"
 #: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
-"The number of members in this group. It will automatically be updated when new members are added or removed in the member list. Change this number manually to include people who may not be in the system but are also members of the group."
+"The number of members in this group. It will automatically be updated when "
+"new members are added or removed in the member list. Change this number "
+"manually to include people who may not be in the system but are also members "
+"of the group."
 msgstr ""
-"ਇਸ ਸਮੂਹ ਵਿੱਚ ਮੈਂਬਰਾਂ ਦੀ ਗਿਣਤੀ. ਜਦੋਂ ਸਦੱਸਤਾ ਸੂਚੀ ਵਿੱਚ ਨਵੇਂ ਮੈਂਬਰ ਸ਼ਾਮਲ ਕੀਤੇ ਜਾਂ ਹਟਾਏ ਜਾਂਦੇ ਹਨ ਤਾਂ ਇਹ ਆਪਣੇ ਆਪ ਅਪਡੇਟ ਹੋ ਜਾਂਦਾ ਹੈ. ਇਸ ਨੰਬਰ ਨੂੰ ਹੱਥੀਂ ਬਦਲੋ ਉਹਨਾਂ ਲੋਕਾਂ ਨੂੰ ਸ਼ਾਮਲ ਕਰਨ ਲਈ ਜੋ ਸਿਸਟਮ ਵਿੱਚ ਨਹੀਂ ਹੋ ਸਕਦੇ ਪਰ ਸਮੂਹ ਦੇ ਮੈਂਬਰ ਵੀ ਹਨ."
+"ਇਸ ਸਮੂਹ ਵਿੱਚ ਮੈਂਬਰਾਂ ਦੀ ਗਿਣਤੀ. ਜਦੋਂ ਸਦੱਸਤਾ ਸੂਚੀ ਵਿੱਚ ਨਵੇਂ ਮੈਂਬਰ ਸ਼ਾਮਲ ਕੀਤੇ ਜਾਂ ਹਟਾਏ ਜਾਂਦੇ ਹਨ ਤਾਂ "
+"ਇਹ ਆਪਣੇ ਆਪ ਅਪਡੇਟ ਹੋ ਜਾਂਦਾ ਹੈ. ਇਸ ਨੰਬਰ ਨੂੰ ਹੱਥੀਂ ਬਦਲੋ ਉਹਨਾਂ ਲੋਕਾਂ ਨੂੰ ਸ਼ਾਮਲ ਕਰਨ ਲਈ ਜੋ ਸਿਸਟਮ ਵਿੱਚ "
+"ਨਹੀਂ ਹੋ ਸਕਦੇ ਪਰ ਸਮੂਹ ਦੇ ਮੈਂਬਰ ਵੀ ਹਨ."
 
 #: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
 #: dt-groups/base-setup.php:602
@@ -3436,9 +3516,11 @@ msgstr "ਪੀਅਰ ਸਮੂਹ"
 #: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
-"A related group that isn't a parent/child in relationship. It might indicate groups that collaborate, are about to merge, recently split, etc."
+"A related group that isn't a parent/child in relationship. It might indicate "
+"groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
-"ਇੱਕ ਸੰਬੰਧਿਤ ਸਮੂਹ ਜੋ ਰਿਸ਼ਤੇਦਾਰੀ ਵਿੱਚ ਮਾਂ-ਪਿਓ / ਬੱਚਾ ਨਹੀਂ ਹੁੰਦਾ. ਇਹ ਉਹਨਾਂ ਸਮੂਹਾਂ ਨੂੰ ਸੰਕੇਤ ਕਰ ਸਕਦਾ ਹੈ ਜੋ ਸਹਿਯੋਗ ਕਰਦੇ ਹਨ, ਅਭੇਦ ਹੋਣ ਵਾਲੇ ਹਨ, ਹਾਲ ਹੀ ਵਿੱਚ ਵਿਭਾਜਨ, ਆਦਿ."
+"ਇੱਕ ਸੰਬੰਧਿਤ ਸਮੂਹ ਜੋ ਰਿਸ਼ਤੇਦਾਰੀ ਵਿੱਚ ਮਾਂ-ਪਿਓ / ਬੱਚਾ ਨਹੀਂ ਹੁੰਦਾ. ਇਹ ਉਹਨਾਂ ਸਮੂਹਾਂ ਨੂੰ ਸੰਕੇਤ ਕਰ ਸਕਦਾ "
+"ਹੈ ਜੋ ਸਹਿਯੋਗ ਕਰਦੇ ਹਨ, ਅਭੇਦ ਹੋਣ ਵਾਲੇ ਹਨ, ਹਾਲ ਹੀ ਵਿੱਚ ਵਿਭਾਜਨ, ਆਦਿ."
 
 #: dt-groups/base-setup.php:341
 msgid "Child Group"
@@ -3488,7 +3570,8 @@ msgstr "ਗੁਣਾ"
 #: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
-"Number of people helping start other groups. How many members are multiplying?"
+"Number of people helping start other groups. How many members are "
+"multiplying?"
 msgstr ""
 "ਹੋਰ ਸਮੂਹਾਂ ਨੂੰ ਸ਼ੁਰੂ ਕਰਨ ਵਿੱਚ ਸਹਾਇਤਾ ਕਰਨ ਵਾਲੇ ਵਿਅਕਤੀਆਂ ਦੀ ਸੰਖਿਆ. ਕਿੰਨੇ ਮੈਂਬਰ ਗੁਣਾ ਕਰ ਰਹੇ ਹਨ?"
 
@@ -3525,7 +3608,8 @@ msgstr "ਮੌਜੂਦਾ ਸੰਪਰਕਾਂ ਤੋਂ ਮੈਂਬਰ ਸ�
 #: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
-"In the 'Member List' field, type the name of an existing contact to add them to this group."
+"In the 'Member List' field, type the name of an existing contact to add them "
+"to this group."
 msgstr ""
 "'ਮੈਂਬਰ ਸੂਚੀ' ਖੇਤਰ ਵਿਚ, ਇਸ ਸਮੂਹ ਵਿਚ ਸ਼ਾਮਲ ਕਰਨ ਲਈ ਕਿਸੇ ਮੌਜੂਦਾ ਸੰਪਰਕ ਦਾ ਨਾਮ ਟਾਈਪ ਕਰੋ."
 
@@ -3536,15 +3620,18 @@ msgstr "ਚਾਰ ਖੇਤਰ"
 #: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
-"There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:"
+"There are 5 squares in the Four Fields diagram. Starting in the top left "
+"quadrant and going clockwise and the fifth being in the middle, they stand "
+"for:"
 msgstr ""
-"ਫੋਰ ਫੀਲਡਜ਼ ਡਾਇਗਰਾਮ ਵਿਚ 5 ਵਰਗ ਹਨ. ਉੱਪਰਲੇ ਖੱਬੇ ਪਾਸੇ ਦੇ ਚਤੁਰਭੂਤ ਤੋਂ ਸ਼ੁਰੂ ਹੋ ਕੇ ਅਤੇ ਘੜੀ ਦੇ ਦਿਸ਼ਾ ਵੱਲ ਜਾ ਰਹੇ ਹੋ ਅਤੇ ਪੰਜਵਾਂ ਵਿਚਕਾਰ ਹੈ, ਉਹ ਇਸ ਲਈ ਖੜੇ ਹਨ:"
+"ਫੋਰ ਫੀਲਡਜ਼ ਡਾਇਗਰਾਮ ਵਿਚ 5 ਵਰਗ ਹਨ. ਉੱਪਰਲੇ ਖੱਬੇ ਪਾਸੇ ਦੇ ਚਤੁਰਭੂਤ ਤੋਂ ਸ਼ੁਰੂ ਹੋ ਕੇ ਅਤੇ ਘੜੀ ਦੇ ਦਿਸ਼ਾ ਵੱਲ "
+"ਜਾ ਰਹੇ ਹੋ ਅਤੇ ਪੰਜਵਾਂ ਵਿਚਕਾਰ ਹੈ, ਉਹ ਇਸ ਲਈ ਖੜੇ ਹਨ:"
 
 #: dt-login/login-template.php:68
 msgid ""
-"Your password reset link appears to be invalid. Please request a new link below."
-msgstr ""
-"ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਰੀਸੈਟ ਲਿੰਕ ਅਵੈਧ ਜਾਪਦਾ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਨਵੇਂ ਲਿੰਕ ਦੀ ਬੇਨਤੀ ਕਰੋ।"
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
+msgstr "ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਰੀਸੈਟ ਲਿੰਕ ਅਵੈਧ ਜਾਪਦਾ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਨਵੇਂ ਲਿੰਕ ਦੀ ਬੇਨਤੀ ਕਰੋ।"
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
@@ -3561,9 +3648,11 @@ msgstr "ਈਮੇਲ ਪਤਾ"
 
 #: dt-login/login-template.php:112
 msgid ""
-"Your password reset email has been sent. Check your email or junk mail for the link to reset your password."
+"Your password reset email has been sent. Check your email or junk mail for "
+"the link to reset your password."
 msgstr ""
-"ਤੁਹਾਡੀ ਪਾਸਵਰਡ ਰੀਸੈਟ ਈਮੇਲ ਭੇਜ ਦਿੱਤੀ ਗਈ ਹੈ। ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈਟ ਕਰਨ ਲਈ ਲਿੰਕ ਲਈ ਆਪਣੀ ਈਮੇਲ ਜਾਂ ਜੰਕ ਮੇਲ ਚੈੱਕ ਕਰੋ।"
+"ਤੁਹਾਡੀ ਪਾਸਵਰਡ ਰੀਸੈਟ ਈਮੇਲ ਭੇਜ ਦਿੱਤੀ ਗਈ ਹੈ। ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈਟ ਕਰਨ ਲਈ ਲਿੰਕ ਲਈ ਆਪਣੀ ਈਮੇਲ "
+"ਜਾਂ ਜੰਕ ਮੇਲ ਚੈੱਕ ਕਰੋ।"
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
@@ -3752,9 +3841,11 @@ msgstr "ਬਪਤਿਸਮਾ"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid ""
-"Number of baptized contact with a baptism date in date range and baptized by connection"
+"Number of baptized contact with a baptism date in date range and baptized by "
+"connection"
 msgstr ""
-"ਤਾਰੀਖ ਦੀ ਰੇਂਜ ਵਿਚ ਬਪਤਿਸਮਾ ਲੈਣ ਦੀ ਮਿਤੀ ਦੇ ਨਾਲ ਬਪਤਿਸਮਾ ਲੈਣ ਵਾਲੇ ਸੰਪਰਕ ਦੀ ਗਿਣਤੀ ਅਤੇ ਕਨੈਕਸ਼ਨ ਦੁਆਰਾ ਬਪਤਿਸਮਾ ਲਿਆ"
+"ਤਾਰੀਖ ਦੀ ਰੇਂਜ ਵਿਚ ਬਪਤਿਸਮਾ ਲੈਣ ਦੀ ਮਿਤੀ ਦੇ ਨਾਲ ਬਪਤਿਸਮਾ ਲੈਣ ਵਾਲੇ ਸੰਪਰਕ ਦੀ ਗਿਣਤੀ ਅਤੇ "
+"ਕਨੈਕਸ਼ਨ ਦੁਆਰਾ ਬਪਤਿਸਮਾ ਲਿਆ"
 
 #: dt-metrics/combined/critical-path.php:277
 #, php-format
@@ -3807,9 +3898,11 @@ msgstr "ਚਰਚ ਦੇ ਲਾਉਣ ਵਾਲੇ"
 
 #: dt-metrics/combined/critical-path.php:333
 msgid ""
-"Number of contacts or users who have started a church and are marked as the church coach"
+"Number of contacts or users who have started a church and are marked as the "
+"church coach"
 msgstr ""
-"ਉਨ੍ਹਾਂ ਸੰਪਰਕਾਂ ਜਾਂ ਉਪਭੋਗਤਾਵਾਂ ਦੀ ਗਿਣਤੀ ਜਿਨ੍ਹਾਂ ਨੇ ਚਰਚ ਦੀ ਸ਼ੁਰੂਆਤ ਕੀਤੀ ਹੈ ਅਤੇ ਚਰਚ ਦੇ ਕੋਚ ਵਜੋਂ ਮਾਰਕ ਕੀਤੇ ਗਏ ਹਨ"
+"ਉਨ੍ਹਾਂ ਸੰਪਰਕਾਂ ਜਾਂ ਉਪਭੋਗਤਾਵਾਂ ਦੀ ਗਿਣਤੀ ਜਿਨ੍ਹਾਂ ਨੇ ਚਰਚ ਦੀ ਸ਼ੁਰੂਆਤ ਕੀਤੀ ਹੈ ਅਤੇ ਚਰਚ ਦੇ ਕੋਚ ਵਜੋਂ "
+"ਮਾਰਕ ਕੀਤੇ ਗਏ ਹਨ"
 
 #: dt-metrics/combined/daily-activity.php:22
 #: dt-metrics/combined/daily-activity.php:71
@@ -4009,10 +4102,8 @@ msgid "Active contacts, by source and seeker path"
 msgstr "ਸਰਗਰਮ ਸੰਪਰਕ, ਸਰੋਤ ਅਤੇ ਸਾਧਕ ਮਾਰਗ ਦੁਆਰਾ"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
-msgid ""
-"This is displaying only the contacts with an 'active' status right now."
-msgstr ""
-"ਇਹ ਇਸ ਸਮੇਂ ਸਿਰਫ 'ਕਿਰਿਆਸ਼ੀਲ' ਸਥਿਤੀ ਵਾਲੇ ਸੰਪਰਕਾਂ ਨੂੰ ਪ੍ਰਦਰਸ਼ਤ ਕਰ ਰਿਹਾ ਹੈ."
+msgid "This is displaying only the contacts with an 'active' status right now."
+msgstr "ਇਹ ਇਸ ਸਮੇਂ ਸਿਰਫ 'ਕਿਰਿਆਸ਼ੀਲ' ਸਥਿਤੀ ਵਾਲੇ ਸੰਪਰਕਾਂ ਨੂੰ ਪ੍ਰਦਰਸ਼ਤ ਕਰ ਰਿਹਾ ਹੈ."
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
@@ -4020,9 +4111,11 @@ msgstr "ਸਰਗਰਮ ਸੰਪਰਕ, ਸਰੋਤ ਅਤੇ ਵਿਸ਼ਵ�
 
 #: dt-metrics/contacts/sources.php:98
 msgid ""
-"A contact can come from more than one source, and it can have more than one faith milestone at the same time."
+"A contact can come from more than one source, and it can have more than one "
+"faith milestone at the same time."
 msgstr ""
-"ਇੱਕ ਸੰਪਰਕ ਇੱਕ ਤੋਂ ਵੱਧ ਸਰੋਤਾਂ ਤੋਂ ਆ ਸਕਦਾ ਹੈ, ਅਤੇ ਇਸ ਵਿੱਚ ਇੱਕੋ ਸਮੇਂ ਇੱਕ ਤੋਂ ਵੱਧ ਵਿਸ਼ਵਾਸੀ ਮੀਲ ਪੱਥਰ ਹੋ ਸਕਦੇ ਹਨ."
+"ਇੱਕ ਸੰਪਰਕ ਇੱਕ ਤੋਂ ਵੱਧ ਸਰੋਤਾਂ ਤੋਂ ਆ ਸਕਦਾ ਹੈ, ਅਤੇ ਇਸ ਵਿੱਚ ਇੱਕੋ ਸਮੇਂ ਇੱਕ ਤੋਂ ਵੱਧ ਵਿਸ਼ਵਾਸੀ ਮੀਲ ਪੱਥਰ ਹੋ "
+"ਸਕਦੇ ਹਨ."
 
 #: dt-metrics/counter.php:135
 msgid "First Meetings"
@@ -4354,9 +4447,9 @@ msgstr "ਸਧਾਰਨ ਚਾਰਟ"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
-"This chart shows the total number for each field value at the end of the selected date."
-msgstr ""
-"ਇਹ ਚਾਰਟ ਚੁਣੀ ਗਈ ਮਿਤੀ ਦੇ ਅੰਤ ਵਿੱਚ ਹਰੇਕ ਖੇਤਰ ਮੁੱਲ ਲਈ ਕੁੱਲ ਸੰਖਿਆ ਦਿਖਾਉਂਦਾ ਹੈ।"
+"This chart shows the total number for each field value at the end of the "
+"selected date."
+msgstr "ਇਹ ਚਾਰਟ ਚੁਣੀ ਗਈ ਮਿਤੀ ਦੇ ਅੰਤ ਵਿੱਚ ਹਰੇਕ ਖੇਤਰ ਮੁੱਲ ਲਈ ਕੁੱਲ ਸੰਖਿਆ ਦਿਖਾਉਂਦਾ ਹੈ।"
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
@@ -4665,11 +4758,16 @@ msgstr "ਵੇਰਵਾ"
 
 #: dt-posts/dt-posts.php:2796
 #, php-format
-msgctxt "@[user name][user_id] - User Fred has requested access to Contact [contact name][contact_id]. If desired, share this record with the user to grant access."
+msgctxt ""
+"@[user name][user_id] - User Fred has requested access to Contact [contact "
+"name][contact_id]. If desired, share this record with the user to grant "
+"access."
 msgid ""
-"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If desired, share this record with the user to grant access."
+"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
+"desired, share this record with the user to grant access."
 msgstr ""
-"@  [%1$s]( %2$s) - ਉਪਭੋਗਤਾ %3$s ਨੇ %4$s [%5$s](%6$s) ਤੱਕ ਪਹੁੰਚ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਹੈ. ਜੇ ਲੋੜੀਂਦਾ ਹੈ, ਤਾਂ ਇਸ ਰਿਕਾਰਡ ਨੂੰ ਉਪਭੋਗਤਾ ਨਾਲ ਸਾਂਝਾ ਕਰਨ ਲਈ ਪਹੁੰਚ ਦਿਓ."
+"@  [%1$s]( %2$s) - ਉਪਭੋਗਤਾ %3$s ਨੇ %4$s [%5$s](%6$s) ਤੱਕ ਪਹੁੰਚ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਹੈ. ਜੇ "
+"ਲੋੜੀਂਦਾ ਹੈ, ਤਾਂ ਇਸ ਰਿਕਾਰਡ ਨੂੰ ਉਪਭੋਗਤਾ ਨਾਲ ਸਾਂਝਾ ਕਰਨ ਲਈ ਪਹੁੰਚ ਦਿਓ."
 
 #: dt-posts/dt-posts.php:2802
 msgid "Access Request"
@@ -5161,9 +5259,9 @@ msgstr "ਐਪ ਲਿੰਕ ਨੂੰ ਮਿਟਾਓ ਅਤੇ ਬਦਲੋ"
 
 #: dt-reports/magic-url-setup.php:462
 msgid ""
-"This app is not yet activated for this user. Enable the app to generate a link."
-msgstr ""
-"ਇਹ ਐਪ ਅਜੇ ਇਸ ਉਪਭੋਗਤਾ ਲਈ ਐਕਟੀਵੇਟ ਨਹੀਂ ਹੈ। ਲਿੰਕ ਤਿਆਰ ਕਰਨ ਲਈ ਐਪ ਨੂੰ ਸਮਰੱਥ ਬਣਾਓ।"
+"This app is not yet activated for this user. Enable the app to generate a "
+"link."
+msgstr "ਇਹ ਐਪ ਅਜੇ ਇਸ ਉਪਭੋਗਤਾ ਲਈ ਐਕਟੀਵੇਟ ਨਹੀਂ ਹੈ। ਲਿੰਕ ਤਿਆਰ ਕਰਨ ਲਈ ਐਪ ਨੂੰ ਸਮਰੱਥ ਬਣਾਓ।"
 
 #: dt-reports/magic-url-setup.php:465 template-settings.php:265
 msgid "App Activation"
@@ -5241,7 +5339,8 @@ msgstr "ਜ਼ਿੰਮੇਵਾਰੀ ਕਵਰੇਜ"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"ਪ੍ਰਸ਼ਾਸਕ ਨੂੰ ਮਲਟੀਸਾਈਟ ਸੈਟਿੰਗਾਂ ਵਿੱਚ \\\"ਨਵੇਂ ਉਪਭੋਗਤਾ ਸ਼ਾਮਲ ਕਰੋ\\\" ਵਿਕਲਪ ਨੂੰ ਸਮਰੱਥ ਕਰਨਾ ਚਾਹੀਦਾ ਹੈ:"
+"ਪ੍ਰਸ਼ਾਸਕ ਨੂੰ ਮਲਟੀਸਾਈਟ ਸੈਟਿੰਗਾਂ ਵਿੱਚ \\\"ਨਵੇਂ ਉਪਭੋਗਤਾ ਸ਼ਾਮਲ ਕਰੋ\\\" ਵਿਕਲਪ ਨੂੰ ਸਮਰੱਥ ਕਰਨਾ "
+"ਚਾਹੀਦਾ ਹੈ:"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"
@@ -5311,9 +5410,11 @@ msgstr "ਕਿਸੇ ਸੰਪਰਕ ਨੂੰ ਅੱਪਗ੍ਰੇਡ ਕੀ�
 
 #: dt-users/template-new-user.php:260
 msgid ""
-"The new user will have access to all the fields and comments on this contact record. We suggest archiving the comments if they contain sensitive data."
+"The new user will have access to all the fields and comments on this contact "
+"record. We suggest archiving the comments if they contain sensitive data."
 msgstr ""
-"ਨਵੇਂ ਉਪਭੋਗਤਾ ਕੋਲ ਇਸ ਸੰਪਰਕ ਰਿਕਾਰਡ 'ਤੇ ਸਾਰੇ ਖੇਤਰਾਂ ਅਤੇ ਟਿੱਪਣੀਆਂ ਤੱਕ ਪਹੁੰਚ ਹੋਵੇਗੀ। ਅਸੀਂ ਟਿੱਪਣੀਆਂ ਨੂੰ ਪੁਰਾਲੇਖ ਕਰਨ ਦਾ ਸੁਝਾਅ ਦਿੰਦੇ ਹਾਂ ਜੇਕਰ ਉਹਨਾਂ ਵਿੱਚ ਸੰਵੇਦਨਸ਼ੀਲ ਡੇਟਾ ਹੈ।"
+"ਨਵੇਂ ਉਪਭੋਗਤਾ ਕੋਲ ਇਸ ਸੰਪਰਕ ਰਿਕਾਰਡ 'ਤੇ ਸਾਰੇ ਖੇਤਰਾਂ ਅਤੇ ਟਿੱਪਣੀਆਂ ਤੱਕ ਪਹੁੰਚ ਹੋਵੇਗੀ। ਅਸੀਂ ਟਿੱਪਣੀਆਂ ਨੂੰ "
+"ਪੁਰਾਲੇਖ ਕਰਨ ਦਾ ਸੁਝਾਅ ਦਿੰਦੇ ਹਾਂ ਜੇਕਰ ਉਹਨਾਂ ਵਿੱਚ ਸੰਵੇਦਨਸ਼ੀਲ ਡੇਟਾ ਹੈ।"
 
 #: dt-users/template-new-user.php:267
 msgid "Continue and archive comments"
@@ -5341,9 +5442,9 @@ msgstr "ਕੀ ਤੁਸੀਂ ਫੀਲਡਾਂ ਨੂੰ ਪੁਰਾਣੇ �
 
 #: dt-users/template-no-permission.php:92
 msgid ""
-"You are registered but an administrator needs to assign you access permissions."
-msgstr ""
-"ਤੁਸੀਂ ਰਜਿਸਟਰਡ ਹੋ ਪਰ ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਨੂੰ ਤੁਹਾਨੂੰ ਪਹੁੰਚ ਅਨੁਮਤੀਆਂ ਦੇਣ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।"
+"You are registered but an administrator needs to assign you access "
+"permissions."
+msgstr "ਤੁਸੀਂ ਰਜਿਸਟਰਡ ਹੋ ਪਰ ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਨੂੰ ਤੁਹਾਨੂੰ ਪਹੁੰਚ ਅਨੁਮਤੀਆਂ ਦੇਣ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ।"
 
 #: dt-users/template-user-management.php:63
 msgid "Multiplier Name"
@@ -5377,9 +5478,11 @@ msgstr "ਉਪਲਬਧਤਾ"
 
 #: dt-users/template-user-management.php:164
 msgid ""
-"Set the dates you will be unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be unavailable so the Dispatcher will know your "
+"availability to receive new contacts"
 msgstr ""
-"ਤਾਰੀਖਾਂ ਸੈੱਟ ਕਰੋ ਤੁਸੀਂ ਅਣਉਪਲਬਧ ਹੋਵੋਗੇ ਤਾਂ ਜੋ ਡਿਸਪੈਚਰ ਨਵੇਂ ਸੰਪਰਕ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਤੁਹਾਡੀ ਉਪਲਬਧਤਾ ਨੂੰ ਜਾਣ ਸਕੇ"
+"ਤਾਰੀਖਾਂ ਸੈੱਟ ਕਰੋ ਤੁਸੀਂ ਅਣਉਪਲਬਧ ਹੋਵੋਗੇ ਤਾਂ ਜੋ ਡਿਸਪੈਚਰ ਨਵੇਂ ਸੰਪਰਕ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਤੁਹਾਡੀ ਉਪਲਬਧਤਾ "
+"ਨੂੰ ਜਾਣ ਸਕੇ"
 
 #: dt-users/template-user-management.php:166
 msgid "Schedule Unavailability"
@@ -5435,9 +5538,9 @@ msgstr "ਸਾਰੇ ਸਰੋਤ - ਸਾਰੇ ਸੰਪਰਕਾਂ ਤੱਕ
 #: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
-"Custom - Access own contacts and all the contacts of the selected sources below"
-msgstr ""
-"ਕਸਟਮ - ਆਪਣੇ ਖੁਦ ਦੇ ਸੰਪਰਕਾਂ ਅਤੇ ਹੇਠਾਂ ਚੁਣੇ ਸਰੋਤਾਂ ਦੇ ਸਾਰੇ ਸੰਪਰਕਾਂ ਤੱਕ ਪਹੁੰਚ ਪ੍ਰਾਪਤ ਕਰੋ"
+"Custom - Access own contacts and all the contacts of the selected sources "
+"below"
+msgstr "ਕਸਟਮ - ਆਪਣੇ ਖੁਦ ਦੇ ਸੰਪਰਕਾਂ ਅਤੇ ਹੇਠਾਂ ਚੁਣੇ ਸਰੋਤਾਂ ਦੇ ਸਾਰੇ ਸੰਪਰਕਾਂ ਤੱਕ ਪਹੁੰਚ ਪ੍ਰਾਪਤ ਕਰੋ"
 
 #: dt-users/template-user-management.php:346
 #: dt-users/user-hooks-and-config.php:637
@@ -5499,9 +5602,11 @@ msgstr "ਪਿਛਲੇ 10 ਸੰਪਰਕਾਂ ਲਈ ਸੰਪਰਕ ਦੀ �
 #: dt-users/user-hooks-and-config.php:196
 #, php-format
 msgid ""
-"Welcome %1$s, this is your personal contact record. Feel free to update the fields and @mention me or other users"
+"Welcome %1$s, this is your personal contact record. Feel free to update the "
+"fields and @mention me or other users"
 msgstr ""
-"ਜੀ ਆਇਆਂ ਨੂੰ %1$s, ਇਹ ਤੁਹਾਡਾ ਨਿੱਜੀ ਸੰਪਰਕ ਰਿਕਾਰਡ ਹੈ। ਖੇਤਰਾਂ ਨੂੰ ਅੱਪਡੇਟ ਕਰਨ ਲਈ ਬੇਝਿਜਕ ਮਹਿਸੂਸ ਕਰੋ ਅਤੇ ਮੇਰਾ ਜਾਂ ਹੋਰ ਉਪਭੋਗਤਾਵਾਂ ਦਾ ਜ਼ਿਕਰ ਕਰੋ"
+"ਜੀ ਆਇਆਂ ਨੂੰ %1$s, ਇਹ ਤੁਹਾਡਾ ਨਿੱਜੀ ਸੰਪਰਕ ਰਿਕਾਰਡ ਹੈ। ਖੇਤਰਾਂ ਨੂੰ ਅੱਪਡੇਟ ਕਰਨ ਲਈ ਬੇਝਿਜਕ ਮਹਿਸੂਸ "
+"ਕਰੋ ਅਤੇ ਮੇਰਾ ਜਾਂ ਹੋਰ ਉਪਭੋਗਤਾਵਾਂ ਦਾ ਜ਼ਿਕਰ ਕਰੋ"
 
 #: dt-users/user-hooks-and-config.php:312
 #: dt-users/user-hooks-and-config.php:350
@@ -5525,7 +5630,9 @@ msgstr "ਹੈਲੋ %s,"
 
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
-msgctxt "You've been invited to join Awesome Site at https://awesome_site.disciple.tools"
+msgctxt ""
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "ਤੁਹਾਨੂੰ %2$s 'ਤੇ %1$s ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਣ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ"
 
@@ -5728,9 +5835,13 @@ msgstr "ਇਸ ਸਾਈਟ ਨੂੰ ਸਹੀ ਤਰ੍ਹਾਂ ਕੰਮ ਕ
 
 #: header.php:61
 msgid ""
-"You seem to be using an out-of-date web browser. Without the most up-to-date version of your browser, this may site may not function correctly. Please note that Internet Explorer is not supported."
+"You seem to be using an out-of-date web browser. Without the most up-to-date "
+"version of your browser, this may site may not function correctly. Please "
+"note that Internet Explorer is not supported."
 msgstr ""
-"ਜਾਪਦਾ ਹੈ ਕਿ ਤੁਸੀਂ ਪੁਰਾਣੇ ਵੈਬ ਬ੍ਰਾ .ਜ਼ਰ ਦੀ ਵਰਤੋਂ ਕਰ ਰਹੇ ਹੋ. ਤੁਹਾਡੇ ਬ੍ਰਾ browserਜ਼ਰ ਦੇ ਬਿਲਕੁਲ ਨਵੇਂ ਵਰਜ਼ਨ ਤੋਂ ਬਿਨਾਂ, ਇਹ ਸਾਈਟ ਸਹੀ ਤਰ੍ਹਾਂ ਕੰਮ ਨਹੀਂ ਕਰ ਸਕਦੀ. ਕਿਰਪਾ ਕਰਕੇ ਯਾਦ ਰੱਖੋ ਕਿ ਇੰਟਰਨੈੱਟ ਐਕਸਪਲੋਰਰ ਸਮਰਥਤ ਨਹੀਂ ਹੈ."
+"ਜਾਪਦਾ ਹੈ ਕਿ ਤੁਸੀਂ ਪੁਰਾਣੇ ਵੈਬ ਬ੍ਰਾ .ਜ਼ਰ ਦੀ ਵਰਤੋਂ ਕਰ ਰਹੇ ਹੋ. ਤੁਹਾਡੇ ਬ੍ਰਾ browserਜ਼ਰ ਦੇ ਬਿਲਕੁਲ ਨਵੇਂ "
+"ਵਰਜ਼ਨ ਤੋਂ ਬਿਨਾਂ, ਇਹ ਸਾਈਟ ਸਹੀ ਤਰ੍ਹਾਂ ਕੰਮ ਨਹੀਂ ਕਰ ਸਕਦੀ. ਕਿਰਪਾ ਕਰਕੇ ਯਾਦ ਰੱਖੋ ਕਿ ਇੰਟਰਨੈੱਟ "
+"ਐਕਸਪਲੋਰਰ ਸਮਰਥਤ ਨਹੀਂ ਹੈ."
 
 #: header.php:63
 msgid "See what browser you are using."
@@ -5770,9 +5881,13 @@ msgstr "ਡੁਪਲੀਕੇਟ %s ਨੂੰ ਮਿਲਾਓ"
 
 #: template-merge-post-details.php:123
 msgid ""
-"When you merge, the primary record is updated with the values you choose, and relationships to other items are shifted to the primary record; which can be switched below."
+"When you merge, the primary record is updated with the values you choose, "
+"and relationships to other items are shifted to the primary record; which "
+"can be switched below."
 msgstr ""
-"ਜਦੋਂ ਤੁਸੀਂ ਅਭੇਦ ਹੋ ਜਾਂਦੇ ਹੋ, ਪ੍ਰਾਇਮਰੀ ਰਿਕਾਰਡ ਤੁਹਾਡੇ ਦੁਆਰਾ ਚੁਣੇ ਗਏ ਮੁੱਲਾਂ ਨਾਲ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾਂਦਾ ਹੈ, ਅਤੇ ਹੋਰ ਆਈਟਮਾਂ ਦੇ ਸਬੰਧ ਪ੍ਰਾਇਮਰੀ ਰਿਕਾਰਡ ਵਿੱਚ ਤਬਦੀਲ ਹੋ ਜਾਂਦੇ ਹਨ; ਜਿਸ ਨੂੰ ਹੇਠਾਂ ਬਦਲਿਆ ਜਾ ਸਕਦਾ ਹੈ।"
+"ਜਦੋਂ ਤੁਸੀਂ ਅਭੇਦ ਹੋ ਜਾਂਦੇ ਹੋ, ਪ੍ਰਾਇਮਰੀ ਰਿਕਾਰਡ ਤੁਹਾਡੇ ਦੁਆਰਾ ਚੁਣੇ ਗਏ ਮੁੱਲਾਂ ਨਾਲ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾਂਦਾ ਹੈ, "
+"ਅਤੇ ਹੋਰ ਆਈਟਮਾਂ ਦੇ ਸਬੰਧ ਪ੍ਰਾਇਮਰੀ ਰਿਕਾਰਡ ਵਿੱਚ ਤਬਦੀਲ ਹੋ ਜਾਂਦੇ ਹਨ; ਜਿਸ ਨੂੰ ਹੇਠਾਂ ਬਦਲਿਆ ਜਾ ਸਕਦਾ "
+"ਹੈ।"
 
 #: template-merge-post-details.php:126
 msgid "Copy comments to updated primary record"
@@ -5882,9 +5997,11 @@ msgstr "ਡਿਸਪੈਚਰ ਤੋਂ ਸੰਪਰਕ ਪ੍ਰਾਪਤ ਕ�
 
 #: template-settings.php:434
 msgid ""
-"Set the dates you will be traveling or unavailable so the Dispatcher will know your availability to receive new contacts"
+"Set the dates you will be traveling or unavailable so the Dispatcher will "
+"know your availability to receive new contacts"
 msgstr ""
-"ਉਹ ਤਾਰੀਖਾਂ ਸੈੱਟ ਕਰੋ ਜਿਨ੍ਹਾਂ 'ਤੇ ਤੁਸੀਂ ਯਾਤਰਾ ਕਰ ਰਹੇ ਹੋ ਜਾਂ ਅਣਉਪਲਬਧ ਹੋਵੋ ਤਾਂ ਜੋ ਡਿਸਪੈਚਰ ਨੂੰ ਤੁਹਾਡੇ ਨਵੇਂ ਸੰਪਰਕ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਉਪਲਬਧਤਾ ਬਾਰੇ ਪਤਾ ਲੱਗੇਗਾ"
+"ਉਹ ਤਾਰੀਖਾਂ ਸੈੱਟ ਕਰੋ ਜਿਨ੍ਹਾਂ 'ਤੇ ਤੁਸੀਂ ਯਾਤਰਾ ਕਰ ਰਹੇ ਹੋ ਜਾਂ ਅਣਉਪਲਬਧ ਹੋਵੋ ਤਾਂ ਜੋ ਡਿਸਪੈਚਰ ਨੂੰ ਤੁਹਾਡੇ "
+"ਨਵੇਂ ਸੰਪਰਕ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਉਪਲਬਧਤਾ ਬਾਰੇ ਪਤਾ ਲੱਗੇਗਾ"
 
 #: template-settings.php:438
 msgid "Schedule Travel or Dates Unavailable"
@@ -5931,14 +6048,19 @@ msgstr "ਸਾਰੇ ਸੰਪਰਕਾਂ ਦੀ ਪਾਲਣਾ ਕਰੋ"
 #: template-settings.php:570
 msgid ""
 "You will receive a notification for any update that happens in the system."
-msgstr ""
-"ਤੁਸੀਂ ਸਿਸਟਮ ਵਿੱਚ ਹੋਣ ਵਾਲੇ ਕਿਸੇ ਵੀ ਅਪਡੇਟ ਲਈ ਇੱਕ ਨੋਟੀਫਿਕੇਸ਼ਨ ਪ੍ਰਾਪਤ ਕਰੋਗੇ."
+msgstr "ਤੁਸੀਂ ਸਿਸਟਮ ਵਿੱਚ ਹੋਣ ਵਾਲੇ ਕਿਸੇ ਵੀ ਅਪਡੇਟ ਲਈ ਇੱਕ ਨੋਟੀਫਿਕੇਸ਼ਨ ਪ੍ਰਾਪਤ ਕਰੋਗੇ."
 
 #: template-settings.php:630
 msgid ""
-"Disciple Tools System does not store images. For profile images we use Gravatar (Globally Recognized Avatar). If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. For profile images we use "
+"Gravatar (Globally Recognized Avatar). If you have security concerns, we "
+"suggest not using a personal photo, but instead choose a cartoon, abstract, "
+"or alias photo to represent you."
 msgstr ""
-"ਚੇਲੇ ਟੂਲਸ ਸਿਸਟਮ ਚਿੱਤਰਾਂ ਨੂੰ ਸਟੋਰ ਨਹੀਂ ਕਰਦਾ. ਪ੍ਰੋਫਾਈਲ ਚਿੱਤਰਾਂ ਲਈ ਅਸੀਂ ਗ੍ਰਾਵਤਾਰ (ਵਿਸ਼ਵਵਿਆਪੀ ਤੌਰ ਤੇ ਪਛਾਣੇ ਅਵਤਾਰ) ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹਾਂ. ਜੇ ਤੁਹਾਨੂੰ ਸੁਰੱਖਿਆ ਸੰਬੰਧੀ ਚਿੰਤਾਵਾਂ ਹਨ, ਤਾਂ ਅਸੀਂ ਤੁਹਾਨੂੰ ਇੱਕ ਨਿੱਜੀ ਫੋਟੋ ਦੀ ਵਰਤੋਂ ਨਾ ਕਰਨ ਦਾ ਸੁਝਾਅ ਦਿੰਦੇ ਹਾਂ, ਪਰ ਇਸਦੀ ਬਜਾਏ ਤੁਹਾਡੀ ਪ੍ਰਤੀਨਿਧਤਾ ਕਰਨ ਲਈ ਇੱਕ ਕਾਰਟੂਨ, ਐਬਸਟਰੈਕਟ, ਜਾਂ ਉਰਫ ਫੋਟੋ ਦੀ ਚੋਣ ਕਰੋ."
+"ਚੇਲੇ ਟੂਲਸ ਸਿਸਟਮ ਚਿੱਤਰਾਂ ਨੂੰ ਸਟੋਰ ਨਹੀਂ ਕਰਦਾ. ਪ੍ਰੋਫਾਈਲ ਚਿੱਤਰਾਂ ਲਈ ਅਸੀਂ ਗ੍ਰਾਵਤਾਰ (ਵਿਸ਼ਵਵਿਆਪੀ ਤੌਰ "
+"ਤੇ ਪਛਾਣੇ ਅਵਤਾਰ) ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹਾਂ. ਜੇ ਤੁਹਾਨੂੰ ਸੁਰੱਖਿਆ ਸੰਬੰਧੀ ਚਿੰਤਾਵਾਂ ਹਨ, ਤਾਂ ਅਸੀਂ ਤੁਹਾਨੂੰ ਇੱਕ "
+"ਨਿੱਜੀ ਫੋਟੋ ਦੀ ਵਰਤੋਂ ਨਾ ਕਰਨ ਦਾ ਸੁਝਾਅ ਦਿੰਦੇ ਹਾਂ, ਪਰ ਇਸਦੀ ਬਜਾਏ ਤੁਹਾਡੀ ਪ੍ਰਤੀਨਿਧਤਾ ਕਰਨ ਲਈ ਇੱਕ "
+"ਕਾਰਟੂਨ, ਐਬਸਟਰੈਕਟ, ਜਾਂ ਉਰਫ ਫੋਟੋ ਦੀ ਚੋਣ ਕਰੋ."
 
 #: template-settings.php:631
 msgid "edit image on gravatar.com"
@@ -5946,9 +6068,15 @@ msgstr "gravatar.com 'ਤੇ ਚਿੱਤਰ ਨੂੰ ਸੋਧੋ"
 
 #: template-settings.php:637
 msgid ""
-"Disciple Tools System does not store images. All media assets will be placed within specified media connection storage service. If you have security concerns, we suggest not using a personal photo, but instead choose a cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. All media assets will be placed "
+"within specified media connection storage service. If you have security "
+"concerns, we suggest not using a personal photo, but instead choose a "
+"cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"Disciple Tools ਸਿਸਟਮ ਚਿੱਤਰ ਸਟੋਰ ਨਹੀਂ ਕਰਦਾ। ਸਾਰੀਆਂ ਮੀਡੀਆ ਸੰਪਤੀਆਂ ਨਿਰਧਾਰਤ ਮੀਡੀਆ ਕਨੈਕਸ਼ਨ ਸਟੋਰੇਜ ਸੇਵਾ ਵਿੱਚ ਰੱਖੀਆਂ ਜਾਣਗੀਆਂ। ਜੇਕਰ ਤੁਹਾਨੂੰ ਸੁਰੱਖਿਆ ਸੰਬੰਧੀ ਚਿੰਤਾਵਾਂ ਹਨ, ਤਾਂ ਅਸੀਂ ਨਿੱਜੀ ਫੋਟੋ ਦੀ ਵਰਤੋਂ ਨਾ ਕਰਨ ਦਾ ਸੁਝਾਅ ਦਿੰਦੇ ਹਾਂ, ਪਰ ਇਸ ਦੀ ਬਜਾਏ ਤੁਹਾਨੂੰ ਦਰਸਾਉਣ ਲਈ ਕਾਰਟੂਨ, ਐਬਸਟ੍ਰੈਕਟ, ਜਾਂ ਉਪਨਾਮ ਫੋਟੋ ਚੁਣੋ।"
+"Disciple Tools ਸਿਸਟਮ ਚਿੱਤਰ ਸਟੋਰ ਨਹੀਂ ਕਰਦਾ। ਸਾਰੀਆਂ ਮੀਡੀਆ ਸੰਪਤੀਆਂ ਨਿਰਧਾਰਤ ਮੀਡੀਆ "
+"ਕਨੈਕਸ਼ਨ ਸਟੋਰੇਜ ਸੇਵਾ ਵਿੱਚ ਰੱਖੀਆਂ ਜਾਣਗੀਆਂ। ਜੇਕਰ ਤੁਹਾਨੂੰ ਸੁਰੱਖਿਆ ਸੰਬੰਧੀ ਚਿੰਤਾਵਾਂ ਹਨ, ਤਾਂ ਅਸੀਂ ਨਿੱਜੀ "
+"ਫੋਟੋ ਦੀ ਵਰਤੋਂ ਨਾ ਕਰਨ ਦਾ ਸੁਝਾਅ ਦਿੰਦੇ ਹਾਂ, ਪਰ ਇਸ ਦੀ ਬਜਾਏ ਤੁਹਾਨੂੰ ਦਰਸਾਉਣ ਲਈ ਕਾਰਟੂਨ, "
+"ਐਬਸਟ੍ਰੈਕਟ, ਜਾਂ ਉਪਨਾਮ ਫੋਟੋ ਚੁਣੋ।"
 
 #: template-settings.php:638
 msgid "Upload new profile image"
@@ -5980,9 +6108,11 @@ msgstr "ਡੁਪਲਿਕੇਟ ਐਕਸੈਸ ਸੰਪਰਕ"
 
 #: template-view-duplicates.php:27
 msgid ""
-"Scanning for duplicates starting with the most recently modified contacts. Results are limited to ones that have less than 10 exact matches."
+"Scanning for duplicates starting with the most recently modified contacts. "
+"Results are limited to ones that have less than 10 exact matches."
 msgstr ""
-"ਸਭ ਤੋਂ ਤਾਜ਼ੇ ਸੋਧੇ ਹੋਏ ਸੰਪਰਕਾਂ ਨਾਲ ਸ਼ੁਰੂ ਹੋਣ ਵਾਲੀਆਂ ਡੁਪਲਿਕੇਟ ਲਈ ਸਕੈਨ ਕਰ ਰਿਹਾ ਹੈ. ਨਤੀਜੇ ਉਹਨਾਂ ਸੀਮਿਤ ਹਨ ਜਿਨ੍ਹਾਂ ਦੇ 10 ਤੋਂ ਘੱਟ ਸਹੀ ਮੈਚ ਹਨ."
+"ਸਭ ਤੋਂ ਤਾਜ਼ੇ ਸੋਧੇ ਹੋਏ ਸੰਪਰਕਾਂ ਨਾਲ ਸ਼ੁਰੂ ਹੋਣ ਵਾਲੀਆਂ ਡੁਪਲਿਕੇਟ ਲਈ ਸਕੈਨ ਕਰ ਰਿਹਾ ਹੈ. ਨਤੀਜੇ ਉਹਨਾਂ "
+"ਸੀਮਿਤ ਹਨ ਜਿਨ੍ਹਾਂ ਦੇ 10 ਤੋਂ ਘੱਟ ਸਹੀ ਮੈਚ ਹਨ."
 
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"
