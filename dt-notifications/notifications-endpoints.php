@@ -63,7 +63,9 @@ class Disciple_Tools_Notifications_Endpoints
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'mark_viewed' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function( WP_REST_Request $request ) {
+                        return $this->check_notification_permission( $request->get_param( 'notification_id' ) );
+                    },
                 ],
             ]
         );
@@ -73,7 +75,9 @@ class Disciple_Tools_Notifications_Endpoints
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'mark_all_viewed' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function( WP_REST_Request $request ) {
+                        return (int) $request->get_param( 'user_id' ) === get_current_user_id();
+                    },
                 ],
             ]
         );
@@ -103,10 +107,27 @@ class Disciple_Tools_Notifications_Endpoints
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'mark_unread' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function( WP_REST_Request $request ) {
+                        return $this->check_notification_permission( $request->get_param( 'notification_id' ) );
+                    },
                 ],
             ]
         );
+    }
+
+    /**
+     * Check if a notification belongs to the current user
+     *
+     * @param int $notification_id
+     * @return bool
+     */
+    private function check_notification_permission( $notification_id ) {
+        global $wpdb;
+        $notification = $wpdb->get_row( $wpdb->prepare(
+            "SELECT user_id FROM $wpdb->dt_notifications WHERE id = %d",
+            $notification_id
+        ) );
+        return $notification && (int) $notification->user_id === get_current_user_id();
     }
 
     /**
@@ -143,7 +164,7 @@ class Disciple_Tools_Notifications_Endpoints
      */
     public function mark_all_viewed( WP_REST_Request $request ) {
         $params = $request->get_params();
-        if ( isset( $params['user_id'] ) && $params['user_id'] == get_current_user_id() ) {
+        if ( isset( $params['user_id'] ) ) {
             $result = Disciple_Tools_Notifications::mark_all_viewed( $params['user_id'] );
             if ( $result['status'] ) {
                 return $result['rows_affected'];
