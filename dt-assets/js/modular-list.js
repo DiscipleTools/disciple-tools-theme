@@ -1160,6 +1160,30 @@
     fieldSelector.options = allOptions;
   }
 
+  // Helper function to create icon element from field data
+  function createFieldIconElement(fieldData) {
+    if (!fieldData) {
+      return $();
+    }
+
+    const icon = fieldData.icon || fieldData['font-icon'];
+    if (!icon) {
+      return $();
+    }
+
+    // Create icon element based on type
+    let iconHtml;
+    if (icon.trim().toLowerCase().startsWith('mdi')) {
+      // Font icon (Material Design Icons)
+      iconHtml = `<i class="${icon} dt-icon lightgray" style="font-size: 20px;"></i>`;
+    } else {
+      // Image icon
+      iconHtml = `<img src="${icon}" class="dt-icon lightgray">`;
+    }
+
+    return $(iconHtml);
+  }
+
   // Initialize dt-multi-select on page load
   function initializeBulkEditFieldSelector() {
     const fieldSelector = document.querySelector(
@@ -1208,8 +1232,16 @@
             cleared: false,
           });
 
+          // Create icon element from field data
+          const iconElement = createFieldIconElement(fieldData);
+
           // Render the field
-          renderBulkEditField(fieldKey, fieldData.type, fieldData.name, null);
+          renderBulkEditField(
+            fieldKey,
+            fieldData.type,
+            fieldData.name,
+            iconElement,
+          );
         }
       });
 
