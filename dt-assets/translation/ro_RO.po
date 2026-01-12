@@ -3462,7 +3462,7 @@ msgstr "Părtășia"
 #: dt-groups/base-setup.php:213
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
-msgstr "Grupul practică părtășia"
+msgstr "Grupul practică părtășia."
 
 #: dt-groups/base-setup.php:217
 msgid "Giving"
@@ -3471,7 +3471,7 @@ msgstr "Dărnicia"
 #: dt-groups/base-setup.php:218
 msgctxt "Optional Documentation"
 msgid "The group is giving."
-msgstr "Grupul practică dărnicia"
+msgstr "Grupul practică dărnicia."
 
 #: dt-groups/base-setup.php:222
 msgid "Prayer"
@@ -3480,7 +3480,7 @@ msgstr "Rugăciune"
 #: dt-groups/base-setup.php:223
 msgctxt "Optional Documentation"
 msgid "The group is praying."
-msgstr "Grupul practică rugăciunea"
+msgstr "Grupul practică rugăciunea."
 
 #: dt-groups/base-setup.php:227
 msgid "Praise"
@@ -3489,7 +3489,7 @@ msgstr "Închinarea"
 #: dt-groups/base-setup.php:228
 msgctxt "Optional Documentation"
 msgid "The group is praising."
-msgstr "Grupul practică închinarea"
+msgstr "Grupul practică închinarea."
 
 #: dt-groups/base-setup.php:232
 msgid "Sharing the Gospel"

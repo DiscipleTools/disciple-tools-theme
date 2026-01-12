@@ -1763,7 +1763,7 @@ msgstr "Skopiuj link do schowka"
 #: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
 #: dt-reports/magic-url-setup.php:508
 msgid "Send the link via email."
-msgstr "Wyślij link wiadomością e-mail"
+msgstr "Wyślij link wiadomością e-mail."
 
 #: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:312
 #: dt-reports/magic-url-setup.php:517
@@ -3069,7 +3069,7 @@ msgstr "Prywatny numer telefonu"
 
 #: dt-core/configuration/config-site-defaults.php:380
 msgid "Personal phone is private to the team, not for distribution."
-msgstr "Prywatny numer telefonu tylko do wiadomości zespołu"
+msgstr "Prywatny numer telefonu tylko do wiadomości zespołu."
 
 #: dt-core/configuration/config-site-defaults.php:384
 msgid "Personal Email"
@@ -3077,7 +3077,7 @@ msgstr "Prywatny adres mailowy"
 
 #: dt-core/configuration/config-site-defaults.php:387
 msgid "Personal email is private to the team, not for distribution."
-msgstr "Prywatny adres mailowy tylko do wiadomości zespołu"
+msgstr "Prywatny adres mailowy tylko do wiadomości zespołu."
 
 #: dt-core/configuration/config-site-defaults.php:391
 msgid "Personal Address"
@@ -3085,7 +3085,7 @@ msgstr "Adres domowy"
 
 #: dt-core/configuration/config-site-defaults.php:394
 msgid "Personal address is private to the team, not for distribution."
-msgstr "Adres domowy tylko do wiadomości zespołu"
+msgstr "Adres domowy tylko do wiadomości zespołu."
 
 #: dt-core/configuration/config-site-defaults.php:398
 msgid "Work Phone"
@@ -3093,7 +3093,7 @@ msgstr "Telefon służbowy"
 
 #: dt-core/configuration/config-site-defaults.php:401
 msgid "Work phone is for distribution to contacts and seekers."
-msgstr "Telefon służbowy dostępny dla kontaktów oraz poszukujących"
+msgstr "Telefon służbowy dostępny dla kontaktów oraz poszukujących."
 
 #: dt-core/configuration/config-site-defaults.php:405
 msgid "Work Email"
@@ -3101,7 +3101,7 @@ msgstr "Służbowy adres mailowy"
 
 #: dt-core/configuration/config-site-defaults.php:408
 msgid "Work email is for distribution to contacts and seekers."
-msgstr "Służbowy adres mailowy dostępny dla kontaktów oraz poszukujących"
+msgstr "Służbowy adres mailowy dostępny dla kontaktów oraz poszukujących."
 
 #: dt-core/configuration/config-site-defaults.php:412
 msgid "Work Facebook"
@@ -3109,7 +3109,7 @@ msgstr "Służbowy Facebook"
 
 #: dt-core/configuration/config-site-defaults.php:415
 msgid "Work Facebook is for distribution to contacts and seekers."
-msgstr "Służbowy Facebook dostępny dla kontaktów oraz poszukujących"
+msgstr "Służbowy Facebook dostępny dla kontaktów oraz poszukujących."
 
 #: dt-core/configuration/config-site-defaults.php:419
 msgid "Work WhatsApp"
@@ -3117,7 +3117,7 @@ msgstr "Służbowy WhatsApp"
 
 #: dt-core/configuration/config-site-defaults.php:422
 msgid "Work WhatsApp is for distribution to contacts and seekers."
-msgstr "Służbowy WhatsApp dostępny dla kontaktów oraz poszukujących"
+msgstr "Służbowy WhatsApp dostępny dla kontaktów oraz poszukujących."
 
 #: dt-core/configuration/config-site-defaults.php:429
 msgid "thumbs up"
@@ -3317,12 +3317,12 @@ msgstr "Status grupy"
 #: dt-groups/base-setup.php:117
 msgctxt "field description"
 msgid "Set the current status of the group."
-msgstr "Zobacz aktualny status grupy"
+msgstr "Zobacz aktualny status grupy."
 
 #: dt-groups/base-setup.php:122
 msgctxt "field description"
 msgid "The group is actively meeting."
-msgstr "Ta grupa wciąż się spotyka"
+msgstr "Ta grupa wciąż się spotyka."
 
 #: dt-groups/base-setup.php:126 dt-users/users.php:180
 msgid "Inactive"
@@ -3331,7 +3331,7 @@ msgstr "Nieaktywny"
 #: dt-groups/base-setup.php:127
 msgctxt "field description"
 msgid "The group is no longer meeting."
-msgstr "Ta grupa już się nie spotyka"
+msgstr "Ta grupa już się nie spotyka."
 
 #: dt-groups/base-setup.php:139
 msgid "Select the main person who is responsible for reporting on this group."

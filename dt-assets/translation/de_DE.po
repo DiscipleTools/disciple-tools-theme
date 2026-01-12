@@ -4642,7 +4642,7 @@ msgstr "Update bei %1$s #%2$s"
 
 #: dt-notifications/notifications-email.php:142
 msgid "Do not reply directly to this email."
-msgstr "Antworten Sie nicht direkt auf diese E-Mail"
+msgstr "Antworten Sie nicht direkt auf diese E-Mail."
 
 #: dt-notifications/notifications-scheduler.php:140 template-settings.php:520
 msgid "Hourly Digest"

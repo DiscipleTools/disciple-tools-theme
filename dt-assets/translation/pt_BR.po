@@ -47,7 +47,7 @@ msgstr "Permissão negada"
 #, php-format
 msgid "Sorry, you don't have permission to view the %1$s with id %2$s."
 msgstr ""
-"Desculpe, você não tem permissão para visualizar o item %1$s com a ID %2$s"
+"Desculpe, você não tem permissão para visualizar o item %1$s com a ID %2$s."
 
 #: 403.php:36
 msgid "Request permission from your administrator."
@@ -1039,7 +1039,7 @@ msgstr "A transferência falhou. Verifique a configuração site a site."
 #: dt-assets/functions/enqueue-scripts.php:235
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr ""
-"Transferência de atualização falhou. Verifique a configuração site-to-site"
+"Transferência de atualização falhou. Verifique a configuração site-to-site."
 
 #: dt-assets/functions/enqueue-scripts.php:236
 msgid "Transfer update successful."
@@ -1112,7 +1112,7 @@ msgstr "Não há filtros, crie um abaixo"
 
 #: dt-assets/functions/enqueue-scripts.php:335
 msgid "No records found matching your filter."
-msgstr "Nenhum resultado encontrado equivalente a seu filtro"
+msgstr "Nenhum resultado encontrado equivalente a seu filtro."
 
 #: dt-assets/functions/enqueue-scripts.php:336 dt-contacts/base-setup.php:679
 #: dt-groups/base-setup.php:1040 dt-posts/custom-post-type.php:489
@@ -1765,12 +1765,12 @@ msgstr "Copiar o link para a área de transferência"
 #: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
 #: dt-reports/magic-url-setup.php:508
 msgid "Send the link via email."
-msgstr "Enviar o link por e-mail"
+msgstr "Enviar o link por e-mail."
 
 #: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:312
 #: dt-reports/magic-url-setup.php:517
 msgid "Scan the QR code to open the magic link on a mobile device."
-msgstr "Scanear o QR Code para abrir o link mágico num celular"
+msgstr "Scanear o QR Code para abrir o link mágico num celular."
 
 #: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
 msgid ""
@@ -2103,7 +2103,7 @@ msgstr "Ativo"
 #: dt-contacts/base-setup.php:319
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
-msgstr "Este contato está em progresso e/ou continuamente sendo atualizado"
+msgstr "Este contato está em progresso e/ou continuamente sendo atualizado."
 
 #: dt-contacts/base-setup.php:324
 msgid "New Contact"
@@ -2112,7 +2112,7 @@ msgstr "Novo contato"
 #: dt-contacts/base-setup.php:325
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
-msgstr "O contato é novo no sistema"
+msgstr "O contato é novo no sistema."
 
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
@@ -2516,7 +2516,7 @@ msgstr "Envio necessário"
 #: dt-contacts/module-access.php:154
 msgctxt "Contact Status field description"
 msgid "This contact needs to be assigned to a multiplier."
-msgstr "Este contato precisa ser designado a um multiplicador"
+msgstr "Este contato precisa ser designado a um multiplicador."
 
 #: dt-contacts/module-access.php:158
 msgid "Waiting to be accepted"
@@ -2539,7 +2539,7 @@ msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr ""
 "Este contago está atualmente em espera (ex: de férias ou não está "
-"respondendo)"
+"respondendo)."
 
 #: dt-contacts/module-access.php:180
 msgid "Reason Not Ready"
@@ -2550,7 +2550,7 @@ msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr ""
 "O principal motivo deste contato não estar pronto a ser atribuído a um "
-"usuário"
+"usuário."
 
 #: dt-contacts/module-access.php:188
 msgid "Insufficient Contact Information"
@@ -2938,13 +2938,13 @@ msgstr "O registro de contato ao qual este usuário corresponde"
 
 #: dt-contacts/user-module.php:72
 msgid "This contact represents you as a user."
-msgstr "Este contato representa você como usuário"
+msgstr "Este contato representa você como usuário."
 
 #: dt-contacts/user-module.php:73
 msgid "Please update contact details on your profile page instead of here."
 msgstr ""
 "Favor atualizar detalhes de contato na página do seu perfil ao invés de "
-"colocar aqui"
+"colocar aqui."
 
 #: dt-contacts/user-module.php:73
 msgid "Profile Settings"
@@ -2952,7 +2952,7 @@ msgstr "Configurações de Perfil"
 
 #: dt-contacts/user-module.php:76
 msgid "This contact represents a user."
-msgstr "Este contato representa um usuário"
+msgstr "Este contato representa um usuário."
 
 #: dt-contacts/user-module.php:108
 msgid "Make a user from this contact"
@@ -3318,12 +3318,12 @@ msgstr "Status do grupo"
 #: dt-groups/base-setup.php:117
 msgctxt "field description"
 msgid "Set the current status of the group."
-msgstr "Defina o status atual do grupo"
+msgstr "Defina o status atual do grupo."
 
 #: dt-groups/base-setup.php:122
 msgctxt "field description"
 msgid "The group is actively meeting."
-msgstr "O grupo está se encontrando ativamente"
+msgstr "O grupo está se encontrando ativamente."
 
 #: dt-groups/base-setup.php:126 dt-users/users.php:180
 msgid "Inactive"
@@ -3332,7 +3332,7 @@ msgstr "Inativo"
 #: dt-groups/base-setup.php:127
 msgctxt "field description"
 msgid "The group is no longer meeting."
-msgstr "O grupo não está mais se encontrando"
+msgstr "O grupo não está mais se encontrando."
 
 #: dt-groups/base-setup.php:139
 msgid "Select the main person who is responsible for reporting on this group."
@@ -3471,7 +3471,7 @@ msgstr "Compartilhando o Evangelho"
 #: dt-groups/base-setup.php:233
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
-msgstr "O grupo está compartilhando do evangelho"
+msgstr "O grupo está compartilhando do evangelho."
 
 #: dt-groups/base-setup.php:237 dt-groups/base-setup.php:299
 msgid "Leaders"
@@ -3480,7 +3480,7 @@ msgstr "Líderes"
 #: dt-groups/base-setup.php:238
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
-msgstr "O grupo tem líderes"
+msgstr "O grupo tem líderes."
 
 #: dt-groups/base-setup.php:242 dt-groups/base-setup.php:404
 msgid "Church Commitment"
@@ -3489,7 +3489,7 @@ msgstr "Compromisso da Igreja"
 #: dt-groups/base-setup.php:243
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
-msgstr "O grupo se comprometeu a se tornar uma igreja"
+msgstr "O grupo se comprometeu a se tornar uma igreja."
 
 #: dt-groups/base-setup.php:252 dt-users/template-user-management.php:180
 #: template-settings.php:444 template-settings.php:463
@@ -3590,7 +3590,7 @@ msgstr "Descrentes"
 #: dt-groups/base-setup.php:378
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
-msgstr "Número de não-crentes neste grupo"
+msgstr "Número de não-crentes neste grupo."
 
 #: dt-groups/base-setup.php:386
 msgid "Believers"
@@ -3599,7 +3599,7 @@ msgstr "Crentes"
 #: dt-groups/base-setup.php:387
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
-msgstr "Numero de crentes neste grupo"
+msgstr "Numero de crentes neste grupo."
 
 #: dt-groups/base-setup.php:395
 msgid "Accountable"
@@ -3608,7 +3608,7 @@ msgstr "Prestar contas"
 #: dt-groups/base-setup.php:396
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
-msgstr "Número de pessoas no grupo de prestação de contas"
+msgstr "Número de pessoas no grupo de prestação de contas."
 
 #: dt-groups/base-setup.php:405
 msgctxt "Optional Documentation"
@@ -4779,7 +4779,7 @@ msgstr "Etiquetas"
 #: dt-posts/custom-post-type.php:210
 msgctxt "Optional Documentation"
 msgid "A useful way to group related items."
-msgstr "Uma maneira útil de agrupar itens relacionados"
+msgstr "Uma maneira útil de agrupar itens relacionados."
 
 #: dt-posts/custom-post-type.php:224
 msgid "Un-Follow"

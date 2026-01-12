@@ -50,7 +50,7 @@ msgstr "Sajnáljuk, nincs engedélye megtekinteni a %1$s-t az id %2$s-el."
 
 #: 403.php:36
 msgid "Request permission from your administrator."
-msgstr "Kérjen hozzáférést az adminisztrátorától"
+msgstr "Kérjen hozzáférést az adminisztrátorától."
 
 #: 403.php:37
 msgid "Request Record Access Permission"
@@ -1111,7 +1111,7 @@ msgstr "Nincs szűrő, hozz létre egyet alább"
 
 #: dt-assets/functions/enqueue-scripts.php:335
 msgid "No records found matching your filter."
-msgstr "Nincs a szűrőddel egyező feljegyzés"
+msgstr "Nincs a szűrőddel egyező feljegyzés."
 
 #: dt-assets/functions/enqueue-scripts.php:336 dt-contacts/base-setup.php:679
 #: dt-groups/base-setup.php:1040 dt-posts/custom-post-type.php:489
@@ -1442,7 +1442,7 @@ msgstr "Összes Mellőzése"
 
 #: dt-assets/parts/merge-details.php:19
 msgid "No duplicates found."
-msgstr "Nem található másolatok"
+msgstr "Nem található másolatok."
 
 #: dt-assets/parts/merge-details.php:36
 #, php-format
@@ -1463,7 +1463,7 @@ msgstr "kiválasztva."
 
 #: dt-assets/parts/merge-details.php:60
 msgid "Click merge to continue."
-msgstr "Kattintson az egyesítésre a folytatáshoz"
+msgstr "Kattintson az egyesítésre a folytatáshoz."
 
 #: dt-assets/parts/modals/modal-advanced-search.php:11
 msgid "Search Query..."
@@ -1538,7 +1538,7 @@ msgstr "2 névjegyet kell frissíteni"
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
 msgstr ""
-"Itt jegyezhetsz fel megjegyzéseket a találkozásokról és beszélgetésekről"
+"Itt jegyezhetsz fel megjegyzéseket a találkozásokról és beszélgetésekről."
 
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
@@ -1571,7 +1571,7 @@ msgstr "Saját Profil"
 #: dt-assets/parts/modals/modal-help.php:59
 msgctxt "Optional Documentation"
 msgid "In this area you can see your user profile."
-msgstr "Ezen a területen láthatod a felhasználói profilodat"
+msgstr "Ezen a területen láthatod a felhasználói profilodat."
 
 #: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
@@ -2041,7 +2041,7 @@ msgstr "Kapcsolatok más %s-hez"
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr ""
-"A kapcsolati személy kapcsolata más kapcsolati személlyel a rendszeren  belül"
+"A kapcsolati személy kapcsolata más kapcsolati személlyel a rendszeren  belül."
 
 #: dt-contacts/base-setup.php:278 dt-contacts/module-access.php:1189
 #: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
@@ -2093,7 +2093,7 @@ msgid ""
 "The Contact Status describes the progress in communicating with the contact."
 msgstr ""
 "A kapcsolati státusz leírja a kommunikáció előrehaladását a kapcsolati "
-"személlyel"
+"személlyel."
 
 #: dt-contacts/base-setup.php:318 dt-groups/base-setup.php:121
 #: dt-users/users.php:177
@@ -2112,7 +2112,7 @@ msgstr "Új névjegy"
 #: dt-contacts/base-setup.php:325
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
-msgstr "A névjegy új a rendszerben"
+msgstr "A névjegy új a rendszerben."
 
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
@@ -2389,7 +2389,7 @@ msgstr "Ismeretlen hiba."
 
 #: dt-contacts/contacts-transfer.php:457
 msgid "Minor transfer error."
-msgstr "Kisebb Átviteli Hiba"
+msgstr "Kisebb Átviteli Hiba."
 
 #: dt-contacts/contacts-transfer.php:479
 #, php-format
@@ -2538,7 +2538,7 @@ msgstr "Szüneteltetve"
 #: dt-contacts/module-access.php:165
 msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
-msgstr "Ez a névjegy függőben van (pl. nyaraláson van vagy nem válaszol)"
+msgstr "Ez a névjegy függőben van (pl. nyaraláson van vagy nem válaszol)."
 
 #: dt-contacts/module-access.php:180
 msgid "Reason Not Ready"
@@ -2549,7 +2549,7 @@ msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr ""
 "A fő ok, hogy a kapcsolati személy nem áll készen a felhasználóval való "
-"kapcsolódásra"
+"kapcsolódásra."
 
 #: dt-contacts/module-access.php:188
 msgid "Insufficient Contact Information"
@@ -2969,7 +2969,7 @@ msgstr "A névjegy összekötése létező felhasználóval"
 
 #: dt-contacts/user-module.php:124
 msgid "This contact already represents a user."
-msgstr "Ez a kapcsolati személy már képvisel egy felhasználót"
+msgstr "Ez a kapcsolati személy már képvisel egy felhasználót."
 
 #: dt-contacts/user-module.php:128
 msgctxt "Step 1 of link user"
@@ -2977,7 +2977,7 @@ msgid ""
 "To link to an existing user, first, find the user using the field below."
 msgstr ""
 "Létező felhasználóval történő kapcsolódás érdekében, először találd meg a "
-"felhasználót az alábbi mezőben"
+"felhasználót az alábbi mezőben."
 
 #: dt-contacts/user-module.php:152
 msgctxt "Step 2 of link user"
@@ -3175,7 +3175,7 @@ msgstr "bejelentkezési oldal"
 
 #: dt-core/configuration/restrict-site-access.php:257
 msgid "ERROR: Invalid username/password combination."
-msgstr "HIBA: Helytelen felhasználónév/jelszó kombináció"
+msgstr "HIBA: Helytelen felhasználónév/jelszó kombináció."
 
 #: dt-core/configuration/restrict-site-access.php:261
 #: dt-login/login-template.php:217 dt-login/login-template.php:263
@@ -3320,12 +3320,12 @@ msgstr "Csoport státusza"
 #: dt-groups/base-setup.php:117
 msgctxt "field description"
 msgid "Set the current status of the group."
-msgstr "Állítsd fel a csoport jelenlegi státuszát"
+msgstr "Állítsd fel a csoport jelenlegi státuszát."
 
 #: dt-groups/base-setup.php:122
 msgctxt "field description"
 msgid "The group is actively meeting."
-msgstr "A csoport aktívan találkozik"
+msgstr "A csoport aktívan találkozik."
 
 #: dt-groups/base-setup.php:126 dt-users/users.php:180
 msgid "Inactive"
@@ -3334,11 +3334,11 @@ msgstr "Inaktív"
 #: dt-groups/base-setup.php:127
 msgctxt "field description"
 msgid "The group is no longer meeting."
-msgstr "A csoport már nem találkozik"
+msgstr "A csoport már nem találkozik."
 
 #: dt-groups/base-setup.php:139
 msgid "Select the main person who is responsible for reporting on this group."
-msgstr "Válaszd ki azt a személyt, aki felelős jelentést adni a csoportról"
+msgstr "Válaszd ki azt a személyt, aki felelős jelentést adni a csoportról."
 
 #: dt-groups/base-setup.php:147
 msgid "Group Coach / Church Planter"
@@ -3366,14 +3366,14 @@ msgstr "Elő-Csoport"
 #: dt-groups/base-setup.php:166
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
-msgstr "Túlnyomó többségben nem hívőkből álló csoport"
+msgstr "Túlnyomó többségben nem hívőkből álló csoport."
 
 #: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr ""
 "Csoport, melynek 3 vagy több hívő tagja van, de nem gyülekezetként van "
-"azonosítva"
+"azonosítva."
 
 #: dt-groups/base-setup.php:173
 msgid "Church"
@@ -3384,7 +3384,7 @@ msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
 msgstr ""
 "Csoport, melynek 3 vagy több hívő tagja van, és gyülekezetként van "
-"beazonosítva"
+"beazonosítva."
 
 #: dt-groups/base-setup.php:177
 msgid "Team"
@@ -3396,7 +3396,7 @@ msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr ""
 "Különleges csoport, mely nem gyülekezetként jön össze (nem próbál "
-"gyülekezetté válni)"
+"gyülekezetté válni)."
 
 #: dt-groups/base-setup.php:192 dt-groups/base-setup.php:603
 msgid "Church Health"
@@ -3405,7 +3405,7 @@ msgstr "Gyülekezeti Egészség"
 #: dt-groups/base-setup.php:193
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
-msgstr "Kövesd nyomon a csoport/gyülekezet előrehaladását és egészségét"
+msgstr "Kövesd nyomon a csoport/gyülekezet előrehaladását és egészségét."
 
 #: dt-groups/base-setup.php:197
 msgid "Baptism"
@@ -3450,7 +3450,7 @@ msgstr "Adakozik"
 #: dt-groups/base-setup.php:218
 msgctxt "Optional Documentation"
 msgid "The group is giving."
-msgstr "A csoport adakozik"
+msgstr "A csoport adakozik."
 
 #: dt-groups/base-setup.php:222
 msgid "Prayer"
@@ -3505,7 +3505,7 @@ msgstr "Kezdés dátuma"
 #: dt-groups/base-setup.php:253
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
-msgstr "A csoport találkozásának kezdeti dátuma"
+msgstr "A csoport találkozásának kezdeti dátuma."
 
 #: dt-groups/base-setup.php:260
 msgid "Church Start Date"
@@ -3514,7 +3514,7 @@ msgstr "Gyülekezet kezdésének dátuma"
 #: dt-groups/base-setup.php:261
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
-msgstr "Annak a dátuma, mikortól a csoportból gyülekezet lett"
+msgstr "Annak a dátuma, mikortól a csoportból gyülekezet lett."
 
 #: dt-groups/base-setup.php:269 dt-users/template-user-management.php:181
 #: template-settings.php:450 template-settings.php:464
@@ -3526,7 +3526,7 @@ msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr ""
 "Annak a dátuma, amikortól a csoport megszűnt találkozni (amennyiben "
-"alkalmazható)"
+"alkalmazható)."
 
 #: dt-groups/base-setup.php:280 dt-metrics/records/genmap.php:157
 msgid "Member Count"
@@ -3553,7 +3553,7 @@ msgstr "Tagok Listája"
 #: dt-groups/base-setup.php:290
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
-msgstr "A kapcsolati személyek, akik ennek a csoportnak a tagjai"
+msgstr "A kapcsolati személyek, akik ennek a csoportnak a tagjai."
 
 #: dt-groups/base-setup.php:309
 msgid "Leader Count"
@@ -3566,7 +3566,7 @@ msgstr "Szülő Csoport"
 #: dt-groups/base-setup.php:318
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
-msgstr "Az a csoport, amely ezt a csoportot alapította"
+msgstr "Az a csoport, amely ezt a csoportot alapította."
 
 #: dt-groups/base-setup.php:329
 msgid "Peer Group"
@@ -3589,7 +3589,7 @@ msgstr "Gyermekcsoport"
 #: dt-groups/base-setup.php:342
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
-msgstr "A csoport, amely ebből a csoportból született meg"
+msgstr "A csoport, amely ebből a csoportból született meg."
 
 #: dt-groups/base-setup.php:377
 msgid "Unbelievers"
@@ -3639,7 +3639,7 @@ msgstr ""
 #: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
-msgstr "Csoportok, melyeknek a kapcsolati személy tagja"
+msgstr "Csoportok, melyeknek a kapcsolati személy tagja."
 
 #: dt-groups/base-setup.php:439
 msgid "Leader of Group"
@@ -3661,7 +3661,7 @@ msgstr "Kiválasztás"
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr ""
 "Új tagok hozzáadásához, klikkelj a \\\\\\\"létrehozás\\\\\\\" vagy \\\\\\"
-"\"választás\\\\\\\" opcióra"
+"\"választás\\\\\\\" opcióra."
 
 #: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
@@ -3745,7 +3745,7 @@ msgstr "Regisztráció"
 
 #: dt-login/login-template.php:340 dt-users/template-new-user.php:88
 msgid "There are some errors in your form."
-msgstr "Néhány hiba van a formátumodban"
+msgstr "Néhány hiba van a formátumodban."
 
 #: dt-login/login-template.php:345
 msgid "Display Name (optional)"
@@ -4165,7 +4165,7 @@ msgstr "Összes névjegy forrás és állás alapján"
 
 #: dt-metrics/contacts/sources.php:93
 msgid "A contact can come from more than one source."
-msgstr "Egy névjegy több mint egy forrásból is származhat"
+msgstr "Egy névjegy több mint egy forrásból is származhat."
 
 #: dt-metrics/contacts/sources.php:94
 msgid "Active contacts, by source and seeker path"
@@ -4173,7 +4173,7 @@ msgstr "Aktív kapcsolatok, forrás és keresői út szerint"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
-msgstr "Ez csak az éppen aktív állapotban lévő kapcsolatokat jelzi"
+msgstr "Ez csak az éppen aktív állapotban lévő kapcsolatokat jelzi."
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
@@ -5803,7 +5803,7 @@ msgstr "Eltávolít"
 
 #: dt-users/user-management.php:189
 msgid "This contact is already a user."
-msgstr "Ez a kapcsolati személy már felhasználó"
+msgstr "Ez a kapcsolati személy már felhasználó."
 
 #: dt-users/user-management.php:190
 msgid "View User"
@@ -5879,7 +5879,7 @@ msgstr "Létető e-mail cím, hozzárendelt felhasználóval"
 
 #: dt-users/users.php:513
 msgid "Failed to add user to site."
-msgstr "A felhasználó sikertelen hozzáadása az oldalhoz"
+msgstr "A felhasználó sikertelen hozzáadása az oldalhoz."
 
 #: dt-users/users.php:564
 #, php-format
@@ -5941,7 +5941,7 @@ msgstr "Ez a(z) %s frissítést igényel."
 
 #: single-template.php:101 single-template.php:109
 msgid "Please provide an update by posting a comment."
-msgstr "Kérjük biztosítson frissítést egy hozzászólás közzétételével"
+msgstr "Kérjük biztosítson frissítést egy hozzászólás közzétételével."
 
 #: single-template.php:258
 msgid "Edit all details fields"
@@ -6177,11 +6177,11 @@ msgstr "A felhasználónevet nem lehet megváltoztatni"
 
 #: template-settings.php:654
 msgid "User email can be changed by site administrator."
-msgstr "A felhasználói email címet az oldal adminisztrátora változtathatja meg"
+msgstr "A felhasználói email címet az oldal adminisztrátora változtathatja meg."
 
 #: template-settings.php:662
 msgid "Use this email reset form to create a new password."
-msgstr "Használja ezt az email visszaállító oldalt új jelszó létrehozásához"
+msgstr "Használja ezt az email visszaállító oldalt új jelszó létrehozásához."
 
 #: template-settings.php:664
 msgid "go to password change form"

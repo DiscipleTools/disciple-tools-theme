@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2026-01-07T20:43:24+00:00\n"
+"POT-Creation-Date: 2026-01-09T14:54:09+00:00\n"
 "PO-Revision-Date: 2023-02-20 08:31+0000\n"
 "Last-Translator: Mike Allbutt <mikeallbutt@gmail.com>\n"
 "Language-Team: Czech <https://translate.disciple.tools/projects/disciple-"
@@ -28,7 +28,7 @@ msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 #. Description of the theme
 #: style.css
 msgid ""
-"Disciple.Tools is a coalition management system for disciple making "
+"Disciple.Tools is a coalition management system for disciple making"
 "movements."
 msgstr "Disciple.Tools je systém řízení koalice pro hnutí učedníků."
 
@@ -90,7 +90,7 @@ msgstr "zrušení"
 
 #: 403.php:59 archive-template.php:552 archive-template.php:627
 #: archive-template.php:814 archive-template.php:1226
-#: dt-assets/functions/enqueue-scripts.php:462
+#: dt-assets/functions/enqueue-scripts.php:449
 #: dt-assets/parts/loop-activity-comment.php:225
 #: dt-assets/parts/loop-activity-comment.php:230
 #: dt-assets/parts/loop-activity-comment.php:273
@@ -127,7 +127,7 @@ msgstr "zrušení"
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
 #: dt-users/user-initial-setup.php:82 single-template.php:418
 #: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-settings.php:602
+#: template-settings.php:596
 msgid "Close"
 msgstr "Zavřít"
 
@@ -157,15 +157,15 @@ msgid "Filters"
 msgstr "Filtry"
 
 #: archive-template.php:64 archive-template.php:136 archive-template.php:706
-#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:251
-#: dt-posts/custom-post-type.php:20 template-settings.php:399
+#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:252
+#: dt-posts/custom-post-type.php:20 template-settings.php:393
 #, php-format
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "Hledat %s"
 
 #: archive-template.php:65 archive-template.php:137
-#: dt-mapping/geocode-api/mapbox-api.php:322
+#: dt-mapping/geocode-api/mapbox-api.php:328
 msgid "Clear"
 msgstr "Průhledná"
 
@@ -175,7 +175,7 @@ msgstr "Průhledná"
 msgid "Advanced Search"
 msgstr "pokročilé vyhledávání"
 
-#: archive-template.php:76 dt-users/user-management.php:230
+#: archive-template.php:76 dt-users/user-management.php:234
 msgid "Search"
 msgstr "Vyhledávání"
 
@@ -238,27 +238,27 @@ msgstr "Nápověda k exportům seznamu"
 
 #: archive-template.php:263
 msgid ""
-"Using the current filter, this is a simple way to export basic information "
+"Using the current filter, this is a simple way to export basic information"
 "and use it in other applications."
 msgstr ""
-"Pomocí aktuálního filtru lze snadno exportovat základní informace a použít "
+"Pomocí aktuálního filtru lze snadno exportovat základní informace a použít"
 "je v jiných aplikacích."
 
 #: archive-template.php:267
 msgid ""
-"Using the current filter, the available emails are grouped by 50 and can be "
-"launched into your default email client by group. Many email providers put a "
-"limit of 50 on BCC emails. You can open all groups at once using the \"Open "
-"All\" button. If the list is too large, this might alert your email "
-"provider. The BCC email tool is meant to assist small group emails. Bulk "
+"Using the current filter, the available emails are grouped by 50 and can be"
+"launched into your default email client by group. Many email providers put a"
+"limit of 50 on BCC emails. You can open all groups at once using the \"Open"
+"All\" button. If the list is too large, this might alert your email"
+"provider. The BCC email tool is meant to assist small group emails. Bulk"
 "email should be handled through bulk email providers."
 msgstr ""
-"Pomocí aktuálního filtru jsou dostupné e-maily seskupeny po 50 a lze je "
+"Pomocí aktuálního filtru jsou dostupné e-maily seskupeny po 50 a lze je"
 "otevřít ve výchozím e-mailovém klientu podle skupiny. Mnoho poskytovatelů e-"
-"mailu omezuje BCC e-maily na 50. Pomocí tlačítka \\\"Otevřít vše\\\" můžete "
-"otevřít všechny skupiny najednou. Pokud je seznam příliš velký, může to "
+"mailu omezuje BCC e-maily na 50. Pomocí tlačítka \\\"Otevřít vše\\\" můžete"
+"otevřít všechny skupiny najednou. Pokud je seznam příliš velký, může to"
 "upozornit vašeho poskytovatele e-mailu. Nástroj BCC e-mail je určen pro e-"
-"maily malých skupin. Hromadné e-maily by měly být zpracovány přes "
+"maily malých skupin. Hromadné e-maily by měly být zpracovány přes"
 "poskytovatele hromadných e-mailů."
 
 #: archive-template.php:270
@@ -267,20 +267,20 @@ msgstr "Seznam telefonních čísel"
 
 #: archive-template.php:271
 msgid ""
-"Using the current filter, this is intended for copy pasting a list of "
-"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
+"Using the current filter, this is intended for copy pasting a list of"
+"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of"
 "starting a group conversation."
 msgstr ""
-"Pomocí aktuálního filtru je toto určeno pro kopírování a vkládání seznamu "
-"čísel do aplikace pro zasílání zpráv, WhatsApp, Signal atd. Je to rychlý "
+"Pomocí aktuálního filtru je toto určeno pro kopírování a vkládání seznamu"
+"čísel do aplikace pro zasílání zpráv, WhatsApp, Signal atd. Je to rychlý"
 "způsob, jak zahájit skupinovou konverzaci."
 
 #: archive-template.php:275
 msgid ""
-"Using the current filter, this creates a basic points map of known locations "
+"Using the current filter, this creates a basic points map of known locations"
 "of listed individuals."
 msgstr ""
-"Pomocí aktuálního filtru se vytvoří základní bodová mapa známých lokalit "
+"Pomocí aktuálního filtru se vytvoří základní bodová mapa známých lokalit"
 "uvedených osob."
 
 #: archive-template.php:339
@@ -342,11 +342,11 @@ msgctxt "Show archived"
 msgid "Show %s"
 msgstr "Zobrazit %s"
 
-#: archive-template.php:538 dt-apps/dt-home/magic-link-home-app.php:282
+#: archive-template.php:538 dt-apps/dt-home/magic-link-home-app.php:238
 msgid "Loading..."
 msgstr "Načítání..."
 
-#: archive-template.php:543 dt-assets/functions/enqueue-scripts.php:431
+#: archive-template.php:543 dt-assets/functions/enqueue-scripts.php:418
 msgid "Load More"
 msgstr "Načíst další"
 
@@ -377,9 +377,9 @@ msgstr "Nebyla vybrána žádná pole"
 #: archive-template.php:631
 #, php-format
 msgid ""
-"Select all the  %1$s you want to update from the list, and update them below"
+"Select all the %1$s you want to update from the list, and update them below"
 msgstr ""
-"Vyberte všechny %1$s, které chcete aktualizovat, ze seznamu a aktualizujte "
+"Vyberte všechny %1$s, které chcete aktualizovat, ze seznamu a aktualizujte"
 "je níže"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
@@ -432,20 +432,20 @@ msgid "Update"
 msgstr "Aktualizace"
 
 #: archive-template.php:793 archive-template.php:997
-#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-assets/functions/enqueue-scripts.php:333
 #: dt-reports/magic-url-bulk-send.php:94
 msgid "Make Selections Below"
 msgstr "Proveďte výběr níže"
 
-#: archive-template.php:801 dt-assets/functions/enqueue-scripts.php:183
-#: dt-assets/functions/enqueue-scripts.php:224
-#: dt-assets/functions/enqueue-scripts.php:289
-#: dt-assets/functions/enqueue-scripts.php:329
+#: archive-template.php:801 dt-assets/functions/enqueue-scripts.php:186
+#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/functions/enqueue-scripts.php:280
+#: dt-assets/functions/enqueue-scripts.php:320
 #: dt-assets/parts/loop-activity-comment.php:228 single-template.php:416
 msgid "Delete"
 msgstr "Vymazat"
 
-#: archive-template.php:804 dt-assets/functions/enqueue-scripts.php:343
+#: archive-template.php:804 dt-assets/functions/enqueue-scripts.php:334
 msgid "Delete Selections Below"
 msgstr "Smazat výběr níže"
 
@@ -555,7 +555,7 @@ msgstr "Všechny %1$s bez %2$s"
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Filtr pro přidělené NEBO Přiřazené"
 
-#: archive-template.php:1104 dt-assets/functions/enqueue-scripts.php:332
+#: archive-template.php:1104 dt-assets/functions/enqueue-scripts.php:323
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "Datum vzniku"
@@ -567,19 +567,19 @@ msgid "None Set"
 msgstr "Žádná sada"
 
 #: archive-template.php:1132 archive-template.php:1133
-#: dt-assets/functions/enqueue-scripts.php:240 dt-core/global-functions.php:723
+#: dt-assets/functions/enqueue-scripts.php:243 dt-core/global-functions.php:723
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-reports/magic-url-setup.php:474 dt-users/user-management.php:196
-#: template-settings.php:313 template-settings.php:577
+#: template-settings.php:314 template-settings.php:571
 msgid "No"
 msgstr "Ne"
 
 #: archive-template.php:1139 archive-template.php:1140
-#: dt-assets/functions/enqueue-scripts.php:239 dt-core/global-functions.php:724
+#: dt-assets/functions/enqueue-scripts.php:242 dt-core/global-functions.php:724
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-reports/magic-url-setup.php:473
-#: dt-users/user-management.php:195 template-settings.php:312
-#: template-settings.php:576
+#: dt-users/user-management.php:195 template-settings.php:313
+#: template-settings.php:570
 msgid "Yes"
 msgstr "Ano"
 
@@ -635,15 +635,15 @@ msgstr "Název filtru"
 msgid "Filter Records"
 msgstr "Filtrovat záznamy"
 
-#: archive-template.php:1219 dt-assets/functions/enqueue-scripts.php:292
-#: dt-assets/functions/enqueue-scripts.php:327
-#: dt-users/user-initial-setup.php:79 template-settings.php:745
+#: archive-template.php:1219 dt-assets/functions/enqueue-scripts.php:283
+#: dt-assets/functions/enqueue-scripts.php:318
+#: dt-users/user-initial-setup.php:79 template-settings.php:739
 msgid "Save"
 msgstr "Uložit"
 
 #: dt-apps/dt-home/frontend/home-screen.php:17
 #: dt-apps/dt-home/frontend/home-screen.php:23
-#: dt-apps/dt-home/magic-link-home-app.php:279
+#: dt-apps/dt-home/magic-link-home-app.php:235
 msgid "Welcome to your Home Screen"
 msgstr "Vítejte na vaší domovské obrazovce"
 
@@ -658,7 +658,7 @@ msgid "Toggle menu"
 msgstr "Přepnout menu"
 
 #: dt-apps/dt-home/frontend/home-screen.php:93
-#: dt-apps/dt-home/magic-link-home-app.php:280 template-settings.php:257
+#: dt-apps/dt-home/magic-link-home-app.php:236 template-settings.php:258
 msgid "Your Apps"
 msgstr "Vaše aplikace"
 
@@ -666,30 +666,30 @@ msgstr "Vaše aplikace"
 msgid "Your Links"
 msgstr "Vaše odkazy"
 
-#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:183
-#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:185
-#: template-settings.php:56
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:45
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:47
+#: template-settings.php:57
 msgid "Apps"
 msgstr "Aplikace"
 
-#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:187
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:49
 #: dt-core/configuration/config-site-defaults.php:442
 #: dt-login/login-template.php:529
 msgid "Home"
 msgstr "Domov"
 
-#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:190
-#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:192
-#: dt-assets/parts/nav-offcanvas.php:66 dt-assets/parts/nav-topbar.php:187
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:52
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:54
+#: dt-assets/parts/nav-offcanvas.php:66 dt-assets/parts/nav-topbar.php:200
 #: dt-users/template-no-permission.php:94
 msgid "Log Out"
 msgstr "Odhlásit se"
 
-#: dt-apps/dt-home/frontend/partials/launcher-wrapper.php:35
+#: dt-apps/dt-home/frontend/partials/launcher-wrapper.php:44
 msgid "App Launcher"
 msgstr "Spouštěč aplikací"
 
-#: dt-apps/dt-home/frontend/partials/launcher-wrapper.php:141
+#: dt-apps/dt-home/frontend/partials/launcher-wrapper.php:59
 msgid "App Content"
 msgstr "Obsah aplikace"
 
@@ -704,7 +704,7 @@ msgid "Watch training videos and tutorials."
 msgstr "Sledujte výuková videa a tutoriály."
 
 #: dt-apps/dt-home/frontend/training-screen.php:44
-#: dt-apps/dt-home/magic-link-home-app.php:281
+#: dt-apps/dt-home/magic-link-home-app.php:237
 msgid "Training Videos"
 msgstr "Výuková videa"
 
@@ -791,30 +791,30 @@ msgstr "URL videa musí být platná URL adresa."
 #: dt-assets/parts/modals/modal-new-contact.php:7
 #: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
 #: dt-metrics/combined/locations-list.php:90 dt-metrics/records/genmap.php:166
-#: dt-posts/custom-post-type.php:170 dt-users/template-user-management.php:196
-#: template-settings.php:146
+#: dt-posts/custom-post-type.php:170 dt-users/template-user-management.php:190
+#: template-settings.php:147
 msgid "Name"
 msgstr "Jméno"
 
-#: dt-apps/dt-home/magic-link-home-app.php:283
+#: dt-apps/dt-home/magic-link-home-app.php:239
 msgid "Login Required"
 msgstr "Vyžadováno přihlášení"
 
-#: dt-apps/dt-home/magic-link-home-app.php:284
+#: dt-apps/dt-home/magic-link-home-app.php:240
 msgid "Please log in to access your Home Screen."
 msgstr "Pro přístup k domovské obrazovce se prosím přihlaste."
 
-#: dt-apps/dt-home/magic-link-home-app.php:285
+#: dt-apps/dt-home/magic-link-home-app.php:241
 msgid "Username or Email"
 msgstr "Uživatelské jméno nebo e-mail"
 
-#: dt-apps/dt-home/magic-link-home-app.php:286 dt-login/login-template.php:489
+#: dt-apps/dt-home/magic-link-home-app.php:242 dt-login/login-template.php:489
 #: dt-users/template-new-user.php:121 dt-users/template-new-user.php:122
-#: template-settings.php:661
+#: template-settings.php:655
 msgid "Password"
 msgstr "Heslo"
 
-#: dt-apps/dt-home/magic-link-home-app.php:287
+#: dt-apps/dt-home/magic-link-home-app.php:243
 msgid "Log In"
 msgstr "Přihlásit se"
 
@@ -889,13 +889,13 @@ msgstr "Obrázek záznamu"
 
 #: dt-assets/functions/enqueue-scripts.php:116
 #: dt-metrics/records/date-range-activity.php:111
-#: template-merge-post-details.php:103
+#: template-merge-post-details.php:106
 msgid "Regions of Focus"
 msgstr "Regiony zaměření"
 
 #: dt-assets/functions/enqueue-scripts.php:117
 #: dt-metrics/records/date-range-activity.php:112
-#: template-merge-post-details.php:104
+#: template-merge-post-details.php:107
 msgid "All Locations"
 msgstr "Všechna místa"
 
@@ -921,14 +921,14 @@ msgid "Showing %1$s items matching %2$s"
 msgstr "Zobrazeny položky %1$s odpovídající %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:122
-#: dt-assets/functions/enqueue-scripts.php:182
-#: dt-assets/functions/enqueue-scripts.php:328 template-settings.php:119
-#: template-settings.php:605
+#: dt-assets/functions/enqueue-scripts.php:185
+#: dt-assets/functions/enqueue-scripts.php:319 template-settings.php:120
+#: template-settings.php:599
 msgid "Edit"
 msgstr "Upravit"
 
 #: dt-assets/functions/enqueue-scripts.php:123
-#: dt-reports/magic-url-setup.php:496 template-settings.php:303
+#: dt-reports/magic-url-setup.php:496 template-settings.php:304
 msgid "Copy"
 msgstr "Kopírovat"
 
@@ -945,188 +945,202 @@ msgstr "Nemáte žádná nepřečtená oznámení"
 msgid "You don't have any notifications"
 msgstr "Nemáte žádná oznámení"
 
-#: dt-assets/functions/enqueue-scripts.php:180 dt-posts/dt-posts.php:1658
+#: dt-assets/functions/enqueue-scripts.php:147
+#: dt-core/release-notifications.php:80
+msgid "Release Announcement!"
+msgstr "Oznámení o vydání!"
+
+#: dt-assets/functions/enqueue-scripts.php:148
+msgid "A new version of Disciple.Tools is available"
+msgstr ""
+
+#: dt-assets/functions/enqueue-scripts.php:149
+#: dt-reports/magic-url-setup.php:483
+msgid "View"
+msgstr "Zobrazit"
+
+#: dt-assets/functions/enqueue-scripts.php:183 dt-posts/dt-posts.php:1658
 msgid "D.T System"
 msgstr "Systém D.T."
 
-#: dt-assets/functions/enqueue-scripts.php:184
+#: dt-assets/functions/enqueue-scripts.php:187
 msgid "Translate with Google Translate"
 msgstr "Přeložit pomocí Překladače Google"
 
-#: dt-assets/functions/enqueue-scripts.php:185
+#: dt-assets/functions/enqueue-scripts.php:188
 msgid "Hide Translation"
 msgstr "Skrýt překlad"
 
-#: dt-assets/functions/enqueue-scripts.php:186
+#: dt-assets/functions/enqueue-scripts.php:189
 #, php-format
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "%1$s reagoval pomocí emodži %2$s"
 
-#: dt-assets/functions/enqueue-scripts.php:187
+#: dt-assets/functions/enqueue-scripts.php:190
 #, php-format
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s a %1$s reagovali pomocí emodži %2$s"
 
-#: dt-assets/functions/enqueue-scripts.php:189
+#: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr "Vyberte mluvený jazyk a kliknutím na \\\"Začít nahrávat\\\" začněte."
 
-#: dt-assets/functions/enqueue-scripts.php:190
+#: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
 msgstr "Klikněte na \\\"Začít nahrávání\\\" pro zahájení."
 
-#: dt-assets/functions/enqueue-scripts.php:191
+#: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
 msgstr "Nahrání hlasové nahrávky se nezdařilo. Zkuste to prosím znovu."
 
-#: dt-assets/functions/enqueue-scripts.php:192
+#: dt-assets/functions/enqueue-scripts.php:195
 msgid "No recording available to upload."
 msgstr "Není k dispozici žádná nahrávka k nahrání."
 
-#: dt-assets/functions/enqueue-scripts.php:225
+#: dt-assets/functions/enqueue-scripts.php:228
 msgid "Mark as complete"
 msgstr "Označit jako dokončené"
 
-#: dt-assets/functions/enqueue-scripts.php:226
+#: dt-assets/functions/enqueue-scripts.php:229
 msgid "No task created"
 msgstr "Nebyl vytvořen žádný úkol"
 
-#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/functions/enqueue-scripts.php:230
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr "Připomínka"
 
-#: dt-assets/functions/enqueue-scripts.php:228
+#: dt-assets/functions/enqueue-scripts.php:231
 msgid "No note set"
 msgstr "Není nastavena žádná poznámka"
 
-#: dt-assets/functions/enqueue-scripts.php:229
+#: dt-assets/functions/enqueue-scripts.php:232
 msgid "Duplicates Detected"
 msgstr "Zjištěny duplikáty"
 
-#: dt-assets/functions/enqueue-scripts.php:230
+#: dt-assets/functions/enqueue-scripts.php:233
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
-#: dt-users/template-new-user.php:293 template-merge-post-details.php:131
-#: template-merge-post-details.php:188
+#: dt-users/template-new-user.php:293 template-merge-post-details.php:134
+#: template-merge-post-details.php:191
 msgid "Merge"
 msgstr "Spojit"
 
-#: dt-assets/functions/enqueue-scripts.php:231
+#: dt-assets/functions/enqueue-scripts.php:234
 msgid "Dismiss"
 msgstr "Zamítnout"
 
-#: dt-assets/functions/enqueue-scripts.php:232
+#: dt-assets/functions/enqueue-scripts.php:235
 msgid "Dismissed Duplicates"
 msgstr "Odmítnuté duplikáty"
 
-#: dt-assets/functions/enqueue-scripts.php:233
+#: dt-assets/functions/enqueue-scripts.php:236
 #, php-format
 msgid "Duplicates on: %s"
 msgstr "Duplikáty na: %s"
 
-#: dt-assets/functions/enqueue-scripts.php:234
+#: dt-assets/functions/enqueue-scripts.php:237
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "Přenos se nezdařil. Zkontrolujte konfiguraci mezi weby."
 
-#: dt-assets/functions/enqueue-scripts.php:235
+#: dt-assets/functions/enqueue-scripts.php:238
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr "Aktualizace prenosu se nezdarila. Zkontrolujte konfiguraci mezi weby."
 
-#: dt-assets/functions/enqueue-scripts.php:236
+#: dt-assets/functions/enqueue-scripts.php:239
 msgid "Transfer update successful."
 msgstr "Aktualizace přenosu proběhla úspěšně."
 
-#: dt-assets/functions/enqueue-scripts.php:237
+#: dt-assets/functions/enqueue-scripts.php:240
 #, php-format
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "Vytvořeno %s"
 
-#: dt-assets/functions/enqueue-scripts.php:238
+#: dt-assets/functions/enqueue-scripts.php:241
 msgid "Open With"
 msgstr "Otevřít s"
 
-#: dt-assets/functions/enqueue-scripts.php:258
+#: dt-assets/functions/enqueue-scripts.php:257
 msgid "Revert Record Back To This Point"
 msgstr "Vrátit záznam do tohoto stavu"
 
-#: dt-assets/functions/enqueue-scripts.php:259
+#: dt-assets/functions/enqueue-scripts.php:258
 #, php-format
 msgid "Are you sure you want to revert record state back to %s?"
 msgstr "Opravdu chcete vrátit stav záznamu zpět na %s?"
 
-#: dt-assets/functions/enqueue-scripts.php:290
+#: dt-assets/functions/enqueue-scripts.php:281
 msgid "Locations you are responsible for"
 msgstr "Místa, za která zodpovídáte"
 
-#: dt-assets/functions/enqueue-scripts.php:291
+#: dt-assets/functions/enqueue-scripts.php:282
 #: dt-metrics/records/genmap.php:160
 msgid "Add"
 msgstr "Přidat"
 
-#: dt-assets/functions/enqueue-scripts.php:293
-#: dt-reports/magic-url-setup.php:453 template-settings.php:296
+#: dt-assets/functions/enqueue-scripts.php:284
+#: dt-reports/magic-url-setup.php:453 template-settings.php:297
 msgid "link"
 msgstr "odkaz"
 
-#: dt-assets/functions/enqueue-scripts.php:294
+#: dt-assets/functions/enqueue-scripts.php:285
 msgid "copy"
 msgstr "kopírovat"
 
-#: dt-assets/functions/enqueue-scripts.php:310
+#: dt-assets/functions/enqueue-scripts.php:301
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "Nalezené shody:"
 
-#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/functions/enqueue-scripts.php:302
 #, php-format
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "Odmítnout všechny shody pro %s"
 
-#: dt-assets/functions/enqueue-scripts.php:330
+#: dt-assets/functions/enqueue-scripts.php:321
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "Zobrazeno _START_ z _TOTAL_"
 
-#: dt-assets/functions/enqueue-scripts.php:331
+#: dt-assets/functions/enqueue-scripts.php:322
 msgid "Sorting By"
 msgstr "Řazeno podle"
 
-#: dt-assets/functions/enqueue-scripts.php:333
+#: dt-assets/functions/enqueue-scripts.php:324
 msgid "Date Modified"
 msgstr "Datum změny"
 
-#: dt-assets/functions/enqueue-scripts.php:334
+#: dt-assets/functions/enqueue-scripts.php:325
 msgid "No filters, create one below"
 msgstr "Žádné filtry, vytvořte jeden níže"
 
-#: dt-assets/functions/enqueue-scripts.php:335
+#: dt-assets/functions/enqueue-scripts.php:326
 msgid "No records found matching your filter."
 msgstr "Nebyly nalezeny žádné záznamy odpovídající vašemu filtru."
 
-#: dt-assets/functions/enqueue-scripts.php:336 dt-contacts/base-setup.php:679
+#: dt-assets/functions/enqueue-scripts.php:327 dt-contacts/base-setup.php:679
 #: dt-groups/base-setup.php:1040 dt-posts/custom-post-type.php:489
 #, php-format
 msgctxt "All records"
 msgid "All %s"
 msgstr "Všechny %s"
 
-#: dt-assets/functions/enqueue-scripts.php:337
+#: dt-assets/functions/enqueue-scripts.php:328
 msgid "Split By"
 msgstr "Rozdělit podle"
 
-#: dt-assets/functions/enqueue-scripts.php:338
+#: dt-assets/functions/enqueue-scripts.php:329
 msgid "start"
 msgstr "Start"
 
-#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:330
 msgid "end"
 msgstr "konec"
 
-#: dt-assets/functions/enqueue-scripts.php:340
+#: dt-assets/functions/enqueue-scripts.php:331
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/module-access.php:1183 dt-groups/base-setup.php:958
 #: dt-metrics/personal/activity-highlights.php:56
@@ -1135,159 +1149,159 @@ msgstr "konec"
 msgid "All"
 msgstr "Všechno"
 
-#: dt-assets/functions/enqueue-scripts.php:341
+#: dt-assets/functions/enqueue-scripts.php:332
 msgid "Without"
 msgstr "Bez"
 
-#: dt-assets/functions/enqueue-scripts.php:344
+#: dt-assets/functions/enqueue-scripts.php:335
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
 msgstr "naplánováno k odeslání"
 
-#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:336
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "neodesláno (pravděpodobně chybí platný e-mail)"
 
-#: dt-assets/functions/enqueue-scripts.php:346
+#: dt-assets/functions/enqueue-scripts.php:337
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
 msgstr "Zobrazit frontu"
 
-#: dt-assets/functions/enqueue-scripts.php:347
+#: dt-assets/functions/enqueue-scripts.php:338
 msgid "Exclude Item"
 msgstr "Vyloučit položku"
 
-#: dt-assets/functions/enqueue-scripts.php:350
+#: dt-assets/functions/enqueue-scripts.php:341
 #, php-format
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr "Exportovaná data CSV budou obsahovat všech %2$s polí %1$s."
 
-#: dt-assets/functions/enqueue-scripts.php:351
+#: dt-assets/functions/enqueue-scripts.php:342
 #, php-format
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr ""
-"Exportovaná CSV data budou obsahovat %2$s viditelných polí %1$s zobrazených "
+"Exportovaná CSV data budou obsahovat %2$s viditelných polí %1$s zobrazených"
 "níže."
 
-#: dt-assets/functions/enqueue-scripts.php:354
-#: dt-assets/functions/enqueue-scripts.php:362
+#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:353
 msgid "Full List"
 msgstr "Úplný seznam"
 
-#: dt-assets/functions/enqueue-scripts.php:355
+#: dt-assets/functions/enqueue-scripts.php:346
 msgid "No Addresses"
 msgstr "Žádné adresy"
 
-#: dt-assets/functions/enqueue-scripts.php:356
+#: dt-assets/functions/enqueue-scripts.php:347
 msgid "With Additional Addresses"
 msgstr "S dalšími adresami"
 
-#: dt-assets/functions/enqueue-scripts.php:357
+#: dt-assets/functions/enqueue-scripts.php:348
 msgid "Open Email for Group"
 msgstr "Otevřít e-mail pro skupinu"
 
-#: dt-assets/functions/enqueue-scripts.php:358
+#: dt-assets/functions/enqueue-scripts.php:349
 msgid "Open All"
 msgstr "Otevřít vše"
 
-#: dt-assets/functions/enqueue-scripts.php:359
+#: dt-assets/functions/enqueue-scripts.php:350
 msgid "Show Group Addresses"
 msgstr "Zobrazit adresy skupiny"
 
-#: dt-assets/functions/enqueue-scripts.php:363
+#: dt-assets/functions/enqueue-scripts.php:354
 msgid "Has No Phone Number"
 msgstr "Nemá telefonní číslo"
 
-#: dt-assets/functions/enqueue-scripts.php:364
+#: dt-assets/functions/enqueue-scripts.php:355
 msgid "Has Additional Phone Numbers"
 msgstr "Má další telefonní čísla"
 
-#: dt-assets/functions/enqueue-scripts.php:368
+#: dt-assets/functions/enqueue-scripts.php:359
 msgid "Mapped Locations"
 msgstr "Lokality na mapě"
 
-#: dt-assets/functions/enqueue-scripts.php:369
+#: dt-assets/functions/enqueue-scripts.php:360
 msgid "Contacts Without Locations"
 msgstr "Kontakty bez lokalit"
 
-#: dt-assets/functions/enqueue-scripts.php:370
+#: dt-assets/functions/enqueue-scripts.php:361
 msgid "Records on zoomed map"
 msgstr "Záznamy na přiblížené mapě"
 
-#: dt-assets/functions/enqueue-scripts.php:371
+#: dt-assets/functions/enqueue-scripts.php:362
 msgid "No Zoomed Map Records Found!"
 msgstr "Nebyly nalezeny žádné záznamy na přiblížené mapě!"
 
-#: dt-assets/functions/enqueue-scripts.php:372
+#: dt-assets/functions/enqueue-scripts.php:363
 msgid "Open Zoomed Map Records"
 msgstr "Otevřít záznamy přiblížené mapy"
 
-#: dt-assets/functions/enqueue-scripts.php:373
-#: dt-assets/functions/enqueue-scripts.php:374
+#: dt-assets/functions/enqueue-scripts.php:364
+#: dt-assets/functions/enqueue-scripts.php:365
 msgid "Filtered Map"
 msgstr "Filtrovaná mapa"
 
-#: dt-assets/functions/enqueue-scripts.php:402 dt-contacts/base-setup.php:55
+#: dt-assets/functions/enqueue-scripts.php:391 dt-contacts/base-setup.php:55
 #: dt-contacts/base-setup.php:67 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "Kontakt"
 
-#: dt-assets/functions/enqueue-scripts.php:403
+#: dt-assets/functions/enqueue-scripts.php:392
 #, php-format
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr "%s již existuje"
 
-#: dt-assets/functions/enqueue-scripts.php:450
+#: dt-assets/functions/enqueue-scripts.php:437
 msgid "File Upload"
 msgstr "Nahrání souboru"
 
-#: dt-assets/functions/enqueue-scripts.php:451
+#: dt-assets/functions/enqueue-scripts.php:438
 msgid "Choose a file"
 msgstr "Vyberte soubor"
 
-#: dt-assets/functions/enqueue-scripts.php:452
+#: dt-assets/functions/enqueue-scripts.php:439
 msgid "or drag it here"
 msgstr "nebo jej sem přetáhněte"
 
-#: dt-assets/functions/enqueue-scripts.php:453
+#: dt-assets/functions/enqueue-scripts.php:440
 msgid "Successfully Uploaded!"
 msgstr "Úspěšně nahráno!"
 
-#: dt-assets/functions/enqueue-scripts.php:454
+#: dt-assets/functions/enqueue-scripts.php:441
 msgid "Error!"
 msgstr "Chyba!"
 
-#: dt-assets/functions/enqueue-scripts.php:455
+#: dt-assets/functions/enqueue-scripts.php:442
 msgid "Unable to upload, please try again"
 msgstr "Nelze nahrát, zkuste to prosím znovu"
 
-#: dt-assets/functions/enqueue-scripts.php:456
+#: dt-assets/functions/enqueue-scripts.php:443
 msgid "Upload"
 msgstr "Nahrát"
 
-#: dt-assets/functions/enqueue-scripts.php:457
+#: dt-assets/functions/enqueue-scripts.php:444
 msgid "Delete Existing File"
 msgstr "Smazat existující soubor"
 
-#: dt-assets/functions/enqueue-scripts.php:458
+#: dt-assets/functions/enqueue-scripts.php:445
 msgid "Replace Existing Image"
 msgstr "Nahradit existující obrázek"
 
-#: dt-assets/functions/enqueue-scripts.php:459
+#: dt-assets/functions/enqueue-scripts.php:446
 msgid "Are you sure you wish to delete existing file?"
 msgstr "Opravdu chcete smazat existující soubor?"
 
-#: dt-assets/functions/enqueue-scripts.php:460
+#: dt-assets/functions/enqueue-scripts.php:447
 msgid "Successfully Deleted!"
 msgstr "Úspěšně smazáno!"
 
-#: dt-assets/functions/enqueue-scripts.php:461
+#: dt-assets/functions/enqueue-scripts.php:448
 msgid "Delete failed, please try again"
 msgstr "Smazání se nezdařilo, zkuste to prosím znovu"
 
@@ -1299,7 +1313,7 @@ msgstr "Menu"
 msgid "Disciple.Tools"
 msgstr "Učednické. Nástroje"
 
-#: dt-assets/functions/menu.php:51 template-settings.php:54
+#: dt-assets/functions/menu.php:51 template-settings.php:55
 msgid "Profile"
 msgstr "Profil"
 
@@ -1309,14 +1323,14 @@ msgstr "Přidat nový"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:70 dt-assets/parts/nav-offcanvas.php:50
-#: dt-assets/parts/nav-topbar.php:157 template-notifications.php:33
-#: template-settings.php:60 template-settings.php:485
+#: dt-assets/parts/nav-topbar.php:170 template-notifications.php:33
+#: template-settings.php:61 template-settings.php:479
 msgid "Notifications"
 msgstr "Oznámení"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:321
+#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:334
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "Nastavení"
@@ -1331,7 +1345,7 @@ msgstr "Správce"
 #: dt-metrics/combined/locations-list.php:95
 #: dt-metrics/combined/locations-list.php:270
 #: dt-metrics/records/dynamic-records-map.php:66
-#: dt-users/user-management.php:134 dt-users/user-management.php:231
+#: dt-users/user-management.php:134 dt-users/user-management.php:235
 msgid "Users"
 msgstr "Uživatelé"
 
@@ -1400,7 +1414,7 @@ msgstr "Smazat komentář:"
 
 #: dt-assets/parts/loop-activity-comment.php:235
 #: dt-assets/parts/loop-activity-comment.php:283
-#: template-merge-post-details.php:105
+#: template-merge-post-details.php:108
 msgid "Sorry, something went wrong"
 msgstr "Pardon, něco se pokazilo"
 
@@ -1502,21 +1516,21 @@ msgstr "Tlačítka rychlé akce"
 #: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid ""
-"These quick action buttons are here to aid you in updating the contact "
+"These quick action buttons are here to aid you in updating the contact"
 "record faster and keep a count of how many times each action has be done."
 msgstr ""
-"Tato tlačítka rychlých akcí vám pomohou rychleji aktualizovat záznam "
+"Tato tlačítka rychlých akcí vám pomohou rychleji aktualizovat záznam"
 "kontaktu a sledovat, kolikrát byla každá akce provedena."
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid ""
-"For example, If you click the 'No Answer' button 4 times, we will log that "
-"you attempted to reach this contact 4 times, but they did not answer. This "
+"For example, If you click the 'No Answer' button 4 times, we will log that"
+"you attempted to reach this contact 4 times, but they did not answer. This"
 "action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"Například, pokud kliknete na tlačítko 'Bez odpovědi' 4krát, zaznamenáme, že "
-"jste se pokusili kontaktovat tuto osobu 4krát, ale neodpověděla. Tato akce "
+"Například, pokud kliknete na tlačítko 'Bez odpovědi' 4krát, zaznamenáme, že"
+"jste se pokusili kontaktovat tuto osobu 4krát, ale neodpověděla. Tato akce"
 "také změní 'Cestu hledajícího' na 'Pokus o kontakt'."
 
 #: dt-assets/parts/modals/modal-help.php:27
@@ -1536,19 +1550,19 @@ msgstr "Zde můžete zaznamenávat poznámky ze schůzek a konverzací."
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid ""
-"Type @ and the name of a user to mention them in a comment. This user will "
+"Type @ and the name of a user to mention them in a comment. This user will"
 "then receive a notification."
 msgstr ""
-"Zadejte @ a jméno uživatele, abyste je zmínili v komentáři. Tento uživatel "
+"Zadejte @ a jméno uživatele, abyste je zmínili v komentáři. Tento uživatel"
 "pak obdrží oznámení."
 
 #: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"This section also includes the history of activity, such as when the contact "
+"This section also includes the history of activity, such as when the contact"
 "or group status became active etc."
 msgstr ""
-"Tato sekce zahrnuje také historii aktivit, například kdy se stav kontaktu "
+"Tato sekce zahrnuje také historii aktivit, například kdy se stav kontaktu"
 "nebo skupiny stal aktivním atd."
 
 #: dt-assets/parts/modals/modal-help.php:45
@@ -1556,7 +1570,7 @@ msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr "Tuto sekci muzete filtrovat podle 'Vse', 'Komentare' nebo 'Aktivita'."
 
-#: dt-assets/parts/modals/modal-help.php:58 template-settings.php:117
+#: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
 msgstr "Tvůj profil"
 
@@ -1568,19 +1582,19 @@ msgstr "V této oblasti vidíte svůj uživatelský profil."
 #: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
 msgid ""
-"You are not required to fill out any of these profile fields. They are "
+"You are not required to fill out any of these profile fields. They are"
 "optional to meet your team’s needs."
 msgstr ""
-"Není nutné vyplňovat žádné z těchto polí profilu. Jsou volitelné, aby "
+"Není nutné vyplňovat žádné z těchto polí profilu. Jsou volitelné, aby"
 "vyhovovaly potřebám vašeho týmu."
 
 #: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid ""
-"By clicking 'Edit', you will be able adjust things like the language that "
+"By clicking 'Edit', you will be able adjust things like the language that"
 "this system operates in."
 msgstr ""
-"Kliknutím na 'Upravit' budete moci upravit věci, jako je jazyk, ve kterém "
+"Kliknutím na 'Upravit' budete moci upravit věci, jako je jazyk, ve kterém"
 "tento systém pracuje."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
@@ -1591,10 +1605,10 @@ msgstr "Místa"
 #: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid ""
-"These are the areas you are responsible for. Clicking the 'Add' button will "
+"These are the areas you are responsible for. Clicking the 'Add' button will"
 "bring up a list of locations to choose from."
 msgstr ""
-"To jsou oblasti, za které zodpovídáte. Kliknutím na tlačítko 'Přidat' "
+"To jsou oblasti, za které zodpovídáte. Kliknutím na tlačítko 'Přidat'"
 "zobrazíte seznam míst, ze kterých si můžete vybrat."
 
 #: dt-assets/parts/modals/modal-help.php:72
@@ -1605,12 +1619,12 @@ msgstr "Vaše oznámení"
 #: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid ""
-"You will receive web notifications and email notifications based on your "
-"notification preferences. To change your preference, click the toggle "
+"You will receive web notifications and email notifications based on your"
+"notification preferences. To change your preference, click the toggle"
 "buttons."
 msgstr ""
 "Na základě vašich předvoleb oznámení budete dostávat webová oznámení a e-"
-"mailová oznámení. Chcete-li změnit své předvolby, klikněte na přepínací "
+"mailová oznámení. Chcete-li změnit své předvolby, klikněte na přepínací"
 "tlačítka."
 
 #: dt-assets/parts/modals/modal-help.php:75
@@ -1626,20 +1640,20 @@ msgstr "Oznámení vypnuta: Přepínač bude šedý."
 #: dt-assets/parts/modals/modal-help.php:78
 msgctxt "Optional Documentation"
 msgid ""
-"Some of the types of notifications cannot be adjusted because they are "
+"Some of the types of notifications cannot be adjusted because they are"
 "required by the system."
 msgstr "Některé typy oznámení nelze upravit, protože je vyžaduje systém."
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid ""
-"Adjust whether you want to see notifications about new comments, contact "
-"information changes, Contact Milestones and Group Health metrics, and "
-"whether to you will receive a notification for any update that happens in "
+"Adjust whether you want to see notifications about new comments, contact"
+"information changes, Contact Milestones and Group Health metrics, and"
+"whether to you will receive a notification for any update that happens in"
 "the system."
 msgstr ""
-"Upravte, zda chcete zobrazit oznámení o nových komentářích, změnách "
-"kontaktních informací, milnících kontaktů a měření stavu skupiny a zda "
+"Upravte, zda chcete zobrazit oznámení o nových komentářích, změnách"
+"kontaktních informací, milnících kontaktů a měření stavu skupiny a zda"
 "chcete dostávat oznámení o všech aktualizacích, ke kterým v systému dojde."
 
 #: dt-assets/parts/modals/modal-help.php:87
@@ -1650,10 +1664,10 @@ msgstr "Stránka oznámení"
 #: dt-assets/parts/modals/modal-help.php:88
 msgctxt "Optional Documentation"
 msgid ""
-"This Notifications Page is where you can read updates to users and groups. "
+"This Notifications Page is where you can read updates to users and groups."
 "It displays notifications about activity on your records."
 msgstr ""
-"Na této stránce s oznámeními můžete číst aktualizace pro uživatele a "
+"Na této stránce s oznámeními můžete číst aktualizace pro uživatele a"
 "skupiny. Zobrazuje oznámení o aktivitě ve vašich záznamech."
 
 #: dt-assets/parts/modals/modal-help.php:89
@@ -1671,13 +1685,13 @@ msgstr ""
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Unread' button to show the list of all of your unread "
+"Click the 'Unread' button to show the list of all of your unread"
 "notifications."
 msgstr ""
-"Kliknutím na tlačítko 'Nepřečtené' zobrazíte seznam všech nepřečtených "
+"Kliknutím na tlačítko 'Nepřečtené' zobrazíte seznam všech nepřečtených"
 "oznámení."
 
-#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
+#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "označit vše jako přečtené"
@@ -1685,26 +1699,26 @@ msgstr "označit vše jako přečtené"
 #: dt-assets/parts/modals/modal-help.php:93
 msgctxt "Optional Documentation"
 msgid ""
-"If you don't want to click each filled in circle on the right side of each "
-"row to indicate the notification has been read, then click the 'Mark All as "
-"Read' link at the top to quickly adjust all the messages that they have all "
+"If you don't want to click each filled in circle on the right side of each"
+"row to indicate the notification has been read, then click the 'Mark All as"
+"Read' link at the top to quickly adjust all the messages that they have all"
 "been read."
 msgstr ""
-"Pokud nechcete kliknout na každý kroužek na pravé straně každého řádku, "
-"abyste označili, že oznámení bylo přečteno, klikněte na odkaz 'Označit vše "
+"Pokud nechcete kliknout na každý kroužek na pravé straně každého řádku,"
+"abyste označili, že oznámení bylo přečteno, klikněte na odkaz 'Označit vše"
 "jako přečtené' nahoře pro rychlou úpravu všech zpráv."
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Settings' link to go to the notifications settings area to adjust "
-"whether you want to see notifications about new comments, contact "
-"information changes, Contact Milestones and Group Health metrics, and "
-"whether to you will receive a notification for any update that happens in "
+"Click the 'Settings' link to go to the notifications settings area to adjust"
+"whether you want to see notifications about new comments, contact"
+"information changes, Contact Milestones and Group Health metrics, and"
+"whether to you will receive a notification for any update that happens in"
 "the system."
 msgstr ""
-"Kliknutím na odkaz 'Nastavení' přejdete do oblasti nastavení oznámení a "
-"upravíte, zda chcete zobrazit oznámení o nových komentářích, změnách "
+"Kliknutím na odkaz 'Nastavení' přejdete do oblasti nastavení oznámení a"
+"upravíte, zda chcete zobrazit oznámení o nových komentářích, změnách"
 "kontaktních údajů, milnících kontaktů a měření stavu skupiny."
 
 #: dt-assets/parts/modals/modal-help.php:100
@@ -1715,13 +1729,13 @@ msgstr "Duplicitní stránka kontaktu"
 #: dt-assets/parts/modals/modal-help.php:101
 msgctxt "Optional Documentation"
 msgid ""
-"This Duplicate Contact Page is where you can review, decline or merge "
-"contacts that have been picked up by the system (checking against their "
-"name, email and phone) as possibly being duplicates of another already "
+"This Duplicate Contact Page is where you can review, decline or merge"
+"contacts that have been picked up by the system (checking against their"
+"name, email and phone) as possibly being duplicates of another already"
 "existing contact."
 msgstr ""
-"Na této stránce Duplikát kontaktu můžete zkontrolovat, odmítnout nebo "
-"sloučit kontakty, které byly vyzvednuty systémem jako možné duplikáty jiného "
+"Na této stránce Duplikát kontaktu můžete zkontrolovat, odmítnout nebo"
+"sloučit kontakty, které byly vyzvednuty systémem jako možné duplikáty jiného"
 "již existujícího kontaktu."
 
 #: dt-assets/parts/modals/modal-help.php:124
@@ -1756,10 +1770,10 @@ msgstr "Naskenováním QR kódu otevřete jednorázový odkaz na mobilním zař�
 
 #: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
 msgid ""
-"Reset the security code. No data is removed. Only access. The previous link "
+"Reset the security code. No data is removed. Only access. The previous link"
 "will be disabled and another one created."
 msgstr ""
-"Resetujte bezpečnostní kód. Nejsou odstraněna žádná data. Pouze přístup. "
+"Resetujte bezpečnostní kód. Nejsou odstraněna žádná data. Pouze přístup."
 "Předchozí odkaz bude deaktivován a vytvořen další."
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
@@ -1855,10 +1869,10 @@ msgstr "Tento kontakt je sdílen s:"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid ""
-"Set a reminder or a task with a note and receive a notification on the due "
+"Set a reminder or a task with a note and receive a notification on the due"
 "date."
 msgstr ""
-"Nastavte připomínku nebo úkol s poznámkou a obdržíte oznámení v den "
+"Nastavte připomínku nebo úkol s poznámkou a obdržíte oznámení v den"
 "splatnosti."
 
 #: dt-assets/parts/modals/modal-tasks.php:13
@@ -1885,24 +1899,29 @@ msgstr "Existující úkoly pro tento záznam:"
 msgid "Theme Update Available!"
 msgstr "Aktualizace motivu k dispozici!"
 
-#: dt-assets/parts/nav-topbar.php:289 template-notifications.php:43
+#: dt-assets/parts/nav-topbar.php:110
+#, fuzzy
+msgid "New Release Available"
+msgstr "Nejsou k dispozici žádné záznamy"
+
+#: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"
 msgstr "Nový"
 
-#: dt-assets/parts/nav-topbar.php:295 template-notifications.php:50
+#: dt-assets/parts/nav-topbar.php:308 template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "Všechno"
 
-#: dt-assets/parts/nav-topbar.php:299 template-notifications.php:54
+#: dt-assets/parts/nav-topbar.php:312 template-notifications.php:54
 msgid "Unread"
 msgstr "Nepřečtený"
 
-#: dt-assets/parts/nav-topbar.php:306
+#: dt-assets/parts/nav-topbar.php:319
 msgid "See All"
 msgstr "Vidět vše"
 
-#: dt-assets/parts/nav-topbar.php:325 template-notifications.php:72
+#: dt-assets/parts/nav-topbar.php:338 template-notifications.php:72
 msgid "Mark All"
 msgstr "Označit vše"
 
@@ -1915,7 +1934,7 @@ msgstr "Označit vše"
 #: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
 #: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:172
-#: dt-users/template-user-management.php:466
+#: dt-users/template-user-management.php:460
 msgid "Contacts"
 msgstr "Kontakty"
 
@@ -1979,7 +1998,7 @@ msgstr "Soukromé připojení"
 msgid "Languages"
 msgstr "Jazyky"
 
-#: dt-contacts/base-setup.php:198 template-settings.php:179
+#: dt-contacts/base-setup.php:198 template-settings.php:180
 msgid "Phone"
 msgstr "Telefon"
 
@@ -1998,13 +2017,13 @@ msgstr "WhatsApp"
 #: dt-contacts/base-setup.php:223
 #: dt-core/configuration/config-site-defaults.php:253
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
-#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
-#: dt-users/users.php:129 template-settings.php:166
+#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:223
+#: dt-users/users.php:129 template-settings.php:167
 msgid "Email"
 msgstr "E-mail"
 
 #: dt-contacts/base-setup.php:232 dt-groups/base-setup.php:358
-#: dt-people-groups/people-groups-base.php:210 template-settings.php:190
+#: dt-people-groups/people-groups-base.php:210 template-settings.php:191
 msgid "Address"
 msgstr "Adresa"
 
@@ -2028,16 +2047,16 @@ msgid "Relationship this contact has with another contact in the system."
 msgstr "Tento kontakt má vztah s jiným kontaktem v systému."
 
 #: dt-contacts/base-setup.php:278 dt-contacts/module-access.php:1189
-#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
-#: template-settings.php:714
+#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:231
+#: template-settings.php:708
 msgid "Gender"
 msgstr "Pohlaví"
 
-#: dt-contacts/base-setup.php:281 dt-users/template-user-management.php:241
+#: dt-contacts/base-setup.php:281 dt-users/template-user-management.php:235
 msgid "Male"
 msgstr "muž"
 
-#: dt-contacts/base-setup.php:282 dt-users/template-user-management.php:242
+#: dt-contacts/base-setup.php:282 dt-users/template-user-management.php:236
 msgid "Female"
 msgstr "žena"
 
@@ -2099,10 +2118,10 @@ msgstr "Kontakt je v systému nový."
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
-"This contact has made it known that they no longer want to continue or you "
+"This contact has made it known that they no longer want to continue or you"
 "have decided not to continue with him/her."
 msgstr ""
-"Tento kontakt dal najevo, že již nechce pokračovat, nebo jste se rozhodli "
+"Tento kontakt dal najevo, že již nechce pokračovat, nebo jste se rozhodli"
 "nepokračovat s ním."
 
 #: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
@@ -2202,13 +2221,13 @@ msgstr "Potvrdit"
 
 #: dt-contacts/base-setup.php:537
 #: dt-core/configuration/config-site-defaults.php:444
-#: dt-groups/base-setup.php:611 template-settings.php:212
+#: dt-groups/base-setup.php:611 template-settings.php:213
 msgid "Other"
 msgstr "Jiné"
 
 #: dt-contacts/base-setup.php:628
-msgid "This record might be a duplicate of: "
-msgstr "Tento záznam může být duplikátem: "
+msgid "This record might be a duplicate of:"
+msgstr "Tento záznam může být duplikátem:"
 
 #: dt-contacts/base-setup.php:634 dt-contacts/duplicates-merging.php:513
 #: dt-contacts/duplicates-merging.php:595
@@ -2342,11 +2361,11 @@ msgstr "Již převedeno na %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
-"NOTE: You have already transferred this contact. Transferring again might "
-"create duplicates. Do you still want to override this warning and continue "
+"NOTE: You have already transferred this contact. Transferring again might"
+"create duplicates. Do you still want to override this warning and continue"
 "with your transfer?"
 msgstr ""
-"POZNÁMKA: Tento kontakt jste již převedli. Opětovný přenos může vytvořit "
+"POZNÁMKA: Tento kontakt jste již převedli. Opětovný přenos může vytvořit"
 "duplikáty. Stále chcete ignorovat toto varování a pokračovat v přenosu?"
 
 #: dt-contacts/contacts-transfer.php:281
@@ -2442,10 +2461,10 @@ msgstr "Cesta hledajícího"
 #: dt-contacts/module-access.php:103
 msgctxt "Seeker Path field description"
 msgid ""
-"Set the status of your progression with the contact. These are the steps "
+"Set the status of your progression with the contact. These are the steps"
 "that happen in a specific order to help a contact move forward."
 msgstr ""
-"S kontaktem nastavte stav svého pokroku. Jedná se o kroky, které se dějí v "
+"S kontaktem nastavte stav svého pokroku. Jedná se o kroky, které se dějí v"
 "konkrétním pořadí, aby pomohly kontaktu posunout se vpřed."
 
 #: dt-contacts/module-access.php:107
@@ -2483,7 +2502,7 @@ msgstr "Není připraven"
 #: dt-contacts/module-access.php:149
 msgctxt "Contact Status field description"
 msgid ""
-"There is not enough information to move forward with the contact at this "
+"There is not enough information to move forward with the contact at this"
 "time."
 msgstr "V tuto chvíli není dostatek informací pro pokračování s kontaktem."
 
@@ -2503,7 +2522,7 @@ msgstr "Čekání na přijetí"
 #: dt-contacts/module-access.php:159
 msgctxt "Contact Status field description"
 msgid ""
-"The contact has been assigned to someone, but has not yet been accepted by "
+"The contact has been assigned to someone, but has not yet been accepted by"
 "that person."
 msgstr "Kontakt byl někomu přiřazen, ale dosud nebyl přijat touto osobou."
 
@@ -2557,10 +2576,10 @@ msgstr "Důvod pozastaven"
 #: dt-contacts/module-access.php:212
 msgctxt "Optional Documentation"
 msgid ""
-"A paused contact is one you are not currently interacting with but expect to "
+"A paused contact is one you are not currently interacting with but expect to"
 "in the future."
 msgstr ""
-"Pozastavený kontakt je ten, se kterým momentálně nekomunikujete, ale "
+"Pozastavený kontakt je ten, se kterým momentálně nekomunikujete, ale"
 "očekáváte, že budete v budoucnu."
 
 #: dt-contacts/module-access.php:216
@@ -2695,7 +2714,7 @@ msgctxt "Optional Documentation"
 msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
 msgstr ""
-"Marketingové kampaně nebo přístupové aktivity, se kterými tento kontakt "
+"Marketingové kampaně nebo přístupové aktivity, se kterými tento kontakt"
 "interagoval."
 
 #: dt-contacts/module-access.php:291
@@ -2769,7 +2788,7 @@ msgid "Assign"
 msgstr "Přiřadit"
 
 #: dt-contacts/module-access.php:1188 dt-users/template-new-user.php:134
-#: template-settings.php:226
+#: template-settings.php:227
 msgid "Language"
 msgstr "Jazyk"
 
@@ -2844,12 +2863,12 @@ msgstr "Milníky ve víře"
 #: dt-contacts/module-faith.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"Assign which milestones the contact has reached in their faith journey. "
-"These are points in a contact’s spiritual journey worth celebrating but can "
+"Assign which milestones the contact has reached in their faith journey."
+"These are points in a contact’s spiritual journey worth celebrating but can"
 "happen in any order."
 msgstr ""
-"Přiřaďte, které milníky dosáhl kontakt na své duchovní cestě. Jedná se o "
-"body na duchovní cestě kontaktu, které stojí za oslavu, ale mohou se stát v "
+"Přiřaďte, které milníky dosáhl kontakt na své duchovní cestě. Jedná se o"
+"body na duchovní cestě kontaktu, které stojí za oslavu, ale mohou se stát v"
 "jakémkoli pořadí."
 
 #: dt-contacts/module-faith.php:48
@@ -2947,7 +2966,7 @@ msgctxt "Step 1 of link user"
 msgid ""
 "To link to an existing user, first, find the user using the field below."
 msgstr ""
-"Pro propojení s existujícím uživatelem nejprve najděte uživatele pomocí pole "
+"Pro propojení s existujícím uživatelem nejprve najděte uživatele pomocí pole"
 "níže."
 
 #: dt-contacts/user-module.php:152
@@ -3009,10 +3028,10 @@ msgstr "Milníky kontaktu a míra zdraví skupiny"
 
 #: dt-core/configuration/config-site-defaults.php:300
 msgid ""
-"This contact is active but there is no record of anybody contacting them. "
+"This contact is active but there is no record of anybody contacting them."
 "Please do contact them."
 msgstr ""
-"Tento kontakt je aktivní, ale neexistuje žádný záznam o tom, že by ho někdo "
+"Tento kontakt je aktivní, ale neexistuje žádný záznam o tom, že by ho někdo"
 "kontaktoval. Kontaktujte je, prosím."
 
 #: dt-core/configuration/config-site-defaults.php:306
@@ -3025,7 +3044,7 @@ msgstr "Prosím, zkuste znovu kontaktovat tohoto člověka."
 #: dt-core/configuration/config-site-defaults.php:330
 #: dt-core/configuration/config-site-defaults.php:336
 msgid ""
-"We haven't heard about this person in a while. Do you have an update for "
+"We haven't heard about this person in a while. Do you have an update for"
 "this contact?"
 msgstr ""
 "O této osobě jsme dlouho neslyšeli. Máte aktualizaci pro tento kontakt?"
@@ -3183,82 +3202,82 @@ msgstr "Chcete-li obnovit své heslo, navštivte následující adresu:"
 
 #: dt-core/dt-storage.php:223
 msgid ""
-"Something went wrong. Please try again or have an admin check the connection "
+"Something went wrong. Please try again or have an admin check the connection"
 "settings."
 msgstr ""
-"Něco se pokazilo. Zkuste to prosím znovu nebo požádejte administrátora o "
+"Něco se pokazilo. Zkuste to prosím znovu nebo požádejte administrátora o"
 "kontrolu nastavení připojení."
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
 msgstr "(bez názvu)"
 
-#: dt-core/release-notifications.php:58
-msgid "Release Announcement!"
-msgstr "Oznámení o vydání!"
-
-#: dt-core/release-notifications.php:59
+#: dt-core/release-notifications.php:81
 #, php-format
 msgid "Disciple.Tools Theme Version %1$s"
 msgstr "Disciple.Tools tematické verze %1$s"
 
-#: dt-core/release-notifications.php:65
+#: dt-core/release-notifications.php:87
 msgid "Theme News"
 msgstr "Tematické novinky"
 
-#: dt-core/release-notifications.php:67 dt-core/release-notifications.php:76
+#: dt-core/release-notifications.php:89 dt-core/release-notifications.php:98
 msgid "Other News"
 msgstr "Další novinky"
 
-#: dt-core/release-notifications.php:68
+#: dt-core/release-notifications.php:90
 msgid "Get Involved"
 msgstr "Zapojte se"
 
-#: dt-core/release-notifications.php:80
+#: dt-core/release-notifications.php:102
 msgid "Other news not available."
 msgstr "Další novinky nejsou k dispozici."
 
-#: dt-core/release-notifications.php:95
+#: dt-core/release-notifications.php:117
 msgid "Freely given, but not cheap"
 msgstr "Svobodně dáváno, ale ne lacino"
 
-#: dt-core/release-notifications.php:97
+#: dt-core/release-notifications.php:119
 msgid ""
-"Disciple.Tools relies on contributions for continued development and "
+"Disciple.Tools relies on contributions for continued development and"
 "maintenance. Will you join the team?"
 msgstr ""
-"Disciple.Tools se spoléhá na příspěvky pro pokračující vývoj a údržbu. "
+"Disciple.Tools se spoléhá na příspěvky pro pokračující vývoj a údržbu."
 "Připojíte se k týmu?"
 
-#: dt-core/release-notifications.php:99
+#: dt-core/release-notifications.php:121
 msgid "Give"
 msgstr "Darujte"
 
-#: dt-core/release-notifications.php:103 dt-core/release-notifications.php:107
+#: dt-core/release-notifications.php:125 dt-core/release-notifications.php:129
 msgid "Translate"
 msgstr "Přeložit"
 
-#: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
-#: template-settings.php:735
+#: dt-core/release-notifications.php:127 dt-users/user-initial-setup.php:68
+#: template-settings.php:729
 msgid ""
-"Translate Disciple.Tools into your language or help make a translation "
+"Translate Disciple.Tools into your language or help make a translation"
 "better."
 msgstr "Přeložte DiscipleTools do svého jazyka nebo pomozte překlad vylepšit"
 
-#: dt-core/release-notifications.php:112
+#: dt-core/release-notifications.php:134
 msgid "Build or Document"
 msgstr "Vytvořit nebo Zdokumentovat"
 
-#: dt-core/release-notifications.php:114
+#: dt-core/release-notifications.php:136
 msgid ""
-"Make Disciple.Tools better by building a feature or helping us make the "
+"Make Disciple.Tools better by building a feature or helping us make the"
 "documentation better."
 msgstr ""
 "Vylepšete Disciple.Tools tím, že vytvoříte funkci nebo vylepšením dokumentace"
 
-#: dt-core/release-notifications.php:116
+#: dt-core/release-notifications.php:138
 msgid "Find out more"
 msgstr "Zjistěte více"
+
+#: dt-core/utilities/dt-components.php:135
+msgid "Search Locations"
+msgstr "Hledat místa"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
 #: dt-groups/base-setup.php:169 dt-metrics/personal/activity-highlights.php:58
@@ -3314,12 +3333,12 @@ msgstr "Trenér skupin / zakladatel církví"
 #: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
-"The person who planted and/or is coaching this group. Only one person can be "
-"assigned to a group while multiple people can be coaches / church planters "
+"The person who planted and/or is coaching this group. Only one person can be"
+"assigned to a group while multiple people can be coaches / church planters"
 "of this group."
 msgstr ""
-"Osoba, která tuto skupinu založila nebo koučuje. Pouze jedna osoba může být "
-"přidělena do skupiny, zatímco více lidí může být trenéry / zakladateli sborů "
+"Osoba, která tuto skupinu založila nebo koučuje. Pouze jedna osoba může být"
+"přidělena do skupiny, zatímco více lidí může být trenéry / zakladateli sborů"
 "této skupiny."
 
 #: dt-groups/base-setup.php:160
@@ -3359,7 +3378,7 @@ msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr ""
-"Speciální skupina, která se neschází jako církev (ani se nesnaží stát "
+"Speciální skupina, která se neschází jako církev (ani se nesnaží stát"
 "církví)."
 
 #: dt-groups/base-setup.php:192 dt-groups/base-setup.php:603
@@ -3461,8 +3480,8 @@ msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "Skupina se zavázala být církví."
 
-#: dt-groups/base-setup.php:252 dt-users/template-user-management.php:180
-#: template-settings.php:444 template-settings.php:463
+#: dt-groups/base-setup.php:252 dt-users/template-user-management.php:174
+#: template-settings.php:438 template-settings.php:457
 msgid "Start Date"
 msgstr "Datum začátku"
 
@@ -3480,8 +3499,8 @@ msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "Datum, kdy se tato skupina poprvé označila za církev."
 
-#: dt-groups/base-setup.php:269 dt-users/template-user-management.php:181
-#: template-settings.php:450 template-settings.php:464
+#: dt-groups/base-setup.php:269 dt-users/template-user-management.php:175
+#: template-settings.php:444 template-settings.php:458
 msgid "End Date"
 msgstr "Datum ukončení"
 
@@ -3497,13 +3516,13 @@ msgstr "Počet členů"
 #: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
-"The number of members in this group. It will automatically be updated when "
-"new members are added or removed in the member list. Change this number "
-"manually to include people who may not be in the system but are also members "
+"The number of members in this group. It will automatically be updated when"
+"new members are added or removed in the member list. Change this number"
+"manually to include people who may not be in the system but are also members"
 "of the group."
 msgstr ""
-"Počet členů v této skupině. Automaticky se aktualizuje, když jsou v seznamu "
-"členů přidáni nebo odebráni noví členové. Ručně změňte toto číslo tak, aby "
+"Počet členů v této skupině. Automaticky se aktualizuje, když jsou v seznamu"
+"členů přidáni nebo odebráni noví členové. Ručně změňte toto číslo tak, aby"
 "zahrnovalo lidi, kteří možná nejsou v systému, ale jsou také členy skupiny."
 
 #: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
@@ -3536,11 +3555,11 @@ msgstr "Partnerská skupina"
 #: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
-"A related group that isn't a parent/child in relationship. It might indicate "
+"A related group that isn't a parent/child in relationship. It might indicate"
 "groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
-"Příbuzná skupina, která není nadřazená / podřízená ve vztahu. Může to "
-"znamenat skupiny, které spolupracují, chystají se sloučit, nedávno se "
+"Příbuzná skupina, která není nadřazená / podřízená ve vztahu. Může to"
+"znamenat skupiny, které spolupracují, chystají se sloučit, nedávno se"
 "rozdělily atd."
 
 #: dt-groups/base-setup.php:341
@@ -3591,10 +3610,10 @@ msgstr "Násobení"
 #: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
-"Number of people helping start other groups. How many members are "
+"Number of people helping start other groups. How many members are"
 "multiplying?"
 msgstr ""
-"Počet lidí, kteří pomáhají zakládat další skupiny. Kolik členů se "
+"Počet lidí, kteří pomáhají zakládat další skupiny. Kolik členů se"
 "multiplikuje?"
 
 #: dt-groups/base-setup.php:427
@@ -3630,10 +3649,10 @@ msgstr "Přidejte členy ze stávajících kontaktů"
 #: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
-"In the 'Member List' field, type the name of an existing contact to add them "
+"In the 'Member List' field, type the name of an existing contact to add them"
 "to this group."
 msgstr ""
-"Do pole „Seznam členů“ zadejte jméno existujícího kontaktu a přidejte jej do "
+"Do pole „Seznam členů“ zadejte jméno existujícího kontaktu a přidejte jej do"
 "této skupiny."
 
 #: dt-groups/base-setup.php:606
@@ -3643,19 +3662,19 @@ msgstr "Čtyři pole"
 #: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
-"There are 5 squares in the Four Fields diagram. Starting in the top left "
-"quadrant and going clockwise and the fifth being in the middle, they stand "
+"There are 5 squares in the Four Fields diagram. Starting in the top left"
+"quadrant and going clockwise and the fifth being in the middle, they stand"
 "for:"
 msgstr ""
-"V diagramu Čtyři pole je 5 čtverců. Začínají v levém horním kvadrantu a "
+"V diagramu Čtyři pole je 5 čtverců. Začínají v levém horním kvadrantu a"
 "pohybují se ve směru hodinových ručiček a pátý je uprostřed, představují:"
 
 #: dt-login/login-template.php:68
 msgid ""
-"Your password reset link appears to be invalid. Please request a new link "
+"Your password reset link appears to be invalid. Please request a new link"
 "below."
 msgstr ""
-"Váš odkaz pro obnovení hesla se zdá být neplatný. Požádejte prosím o nový "
+"Váš odkaz pro obnovení hesla se zdá být neplatný. Požádejte prosím o nový"
 "odkaz níže."
 
 #: dt-login/login-template.php:70
@@ -3672,10 +3691,10 @@ msgstr "E-mailová adresa"
 
 #: dt-login/login-template.php:112
 msgid ""
-"Your password reset email has been sent. Check your email or junk mail for "
+"Your password reset email has been sent. Check your email or junk mail for"
 "the link to reset your password."
 msgstr ""
-"Váš e-mail pro obnovení hesla byl odeslán. Zkontrolujte svůj e-mail nebo "
+"Váš e-mail pro obnovení hesla byl odeslán. Zkontrolujte svůj e-mail nebo"
 "nevyžádanou poštu pro odkaz k obnovení hesla."
 
 #: dt-login/login-template.php:160
@@ -3737,28 +3756,28 @@ msgstr "Ztracené heslo"
 msgid "Churches"
 msgstr "Církve"
 
-#: dt-mapping/geocode-api/mapbox-api.php:317
-#: dt-mapping/geocode-api/mapbox-api.php:352
-#: dt-users/template-user-management.php:124 template-settings.php:340
+#: dt-mapping/geocode-api/mapbox-api.php:323
+#: dt-mapping/geocode-api/mapbox-api.php:364
 msgid "add"
 msgstr "přidat"
 
-#: dt-mapping/geocode-api/mapbox-api.php:318 template-merge-post-details.php:98
+#: dt-mapping/geocode-api/mapbox-api.php:324
+#: template-merge-post-details.php:101
 msgid "Use"
 msgstr "Použití"
 
-#: dt-mapping/geocode-api/mapbox-api.php:319 template-merge-post-details.php:96
+#: dt-mapping/geocode-api/mapbox-api.php:325 template-merge-post-details.php:99
 #: template-new-bulk-post.php:26 template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
 msgstr "Hledat místo"
 
-#: dt-mapping/geocode-api/mapbox-api.php:320 template-merge-post-details.php:97
-#: template-new-bulk-post.php:216
+#: dt-mapping/geocode-api/mapbox-api.php:326
+#: template-merge-post-details.php:100 template-new-bulk-post.php:216
 msgid "Delete Location"
 msgstr "Smazat místo"
 
-#: dt-mapping/geocode-api/mapbox-api.php:321
+#: dt-mapping/geocode-api/mapbox-api.php:327
 msgid "Open Mapping"
 msgstr "Otevřete Mapování"
 
@@ -3815,7 +3834,7 @@ msgstr "Vyjití do prvního pole"
 
 #: dt-metrics/combined/critical-path.php:80
 msgid "Filter Critical Path fields"
-msgstr "Filtrujte klíčové momenty "
+msgstr "Filtrujte klíčové momenty"
 
 #: dt-metrics/combined/critical-path.php:81
 msgid "Movement Tracking"
@@ -3840,7 +3859,7 @@ msgstr "Počet kontaktů přiřazených k osobní návštěvě"
 #: dt-metrics/combined/critical-path.php:230
 #: dt-metrics/combined/mapbox-maps.php:80 dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:67 dt-metrics/personal/overview.php:64
-#: dt-users/template-user-management.php:388
+#: dt-users/template-user-management.php:382
 msgid "Active Contacts"
 msgstr "Aktivní kontakty"
 
@@ -3865,7 +3884,7 @@ msgstr "Křty"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid ""
-"Number of baptized contact with a baptism date in date range and baptized by "
+"Number of baptized contact with a baptism date in date range and baptized by"
 "connection"
 msgstr ""
 "Počet pokřtěných kontaktů s datem křtu v rozsahu dat a pokřtěni spojením"
@@ -3921,10 +3940,10 @@ msgstr "Zakladatelé církví"
 
 #: dt-metrics/combined/critical-path.php:333
 msgid ""
-"Number of contacts or users who have started a church and are marked as the "
+"Number of contacts or users who have started a church and are marked as the"
 "church coach"
 msgstr ""
-"Počet kontaktů nebo uživatelů, kteří založili církev a jsou označeni jako "
+"Počet kontaktů nebo uživatelů, kteří založili církev a jsou označeni jako"
 "trenér církve"
 
 #: dt-metrics/combined/daily-activity.php:22
@@ -3942,12 +3961,12 @@ msgid "This Week"
 msgstr "Tento týden"
 
 #: dt-metrics/combined/daily-activity.php:76
-#: dt-users/template-user-management.php:418
+#: dt-users/template-user-management.php:412
 msgid "This Month"
 msgstr "Tento měsíc"
 
 #: dt-metrics/combined/daily-activity.php:77
-#: dt-users/template-user-management.php:422
+#: dt-users/template-user-management.php:416
 msgid "Last Month"
 msgstr "Minulý měsíc"
 
@@ -3968,7 +3987,7 @@ msgstr[2] "Před %s měsíci"
 msgid ""
 "Click on a timeline day summary to display a detailed list of metrics below."
 msgstr ""
-"Klikněte na denní souhrn časové osy pro zobrazení podrobného seznamu metrik "
+"Klikněte na denní souhrn časové osy pro zobrazení podrobného seznamu metrik"
 "níže."
 
 #. Template Name of the theme
@@ -4107,7 +4126,7 @@ msgstr "Filtrovat kontakty podle časového období:"
 #: dt-metrics/personal/activity-highlights.php:54
 #: dt-metrics/records/select-tags-charts.php:89
 #: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:432
+#: dt-users/template-user-management.php:426
 msgid "All Time"
 msgstr "Pořád"
 
@@ -4137,10 +4156,10 @@ msgstr "Aktivní kontakty podle zdroje a milníku víry"
 
 #: dt-metrics/contacts/sources.php:98
 msgid ""
-"A contact can come from more than one source, and it can have more than one "
+"A contact can come from more than one source, and it can have more than one"
 "faith milestone at the same time."
 msgstr ""
-"Kontakt může pocházet z více než jednoho zdroje a může mít současně více než "
+"Kontakt může pocházet z více než jednoho zdroje a může mít současně více než"
 "jeden milník víry."
 
 #: dt-metrics/counter.php:135
@@ -4414,7 +4433,7 @@ msgid "View Record"
 msgstr "Zobrazit záznam"
 
 #: dt-metrics/records/genmap.php:148 dt-metrics/records/genmap.php:152
-#: dt-posts/dt-posts.php:2717 dt-users/template-user-management.php:384
+#: dt-posts/dt-posts.php:2717 dt-users/template-user-management.php:378
 #: dt-users/users.php:175 single-template.php:127
 msgid "Status"
 msgstr "Stav"
@@ -4473,10 +4492,10 @@ msgstr "Jednoduchý graf"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
-"This chart shows the total number for each field value at the end of the "
+"This chart shows the total number for each field value at the end of the"
 "selected date."
 msgstr ""
-"Tento graf zobrazuje celkový počet pro každou hodnotu pole na konci "
+"Tento graf zobrazuje celkový počet pro každou hodnotu pole na konci"
 "vybraného data."
 
 #: dt-metrics/records/select-tags-charts.php:90
@@ -4541,11 +4560,11 @@ msgstr "Aktualizace na %1$s #%2$s"
 msgid "Do not reply directly to this email."
 msgstr "Neodpovídejte přímo na tento e-mail."
 
-#: dt-notifications/notifications-scheduler.php:140 template-settings.php:520
+#: dt-notifications/notifications-scheduler.php:140 template-settings.php:514
 msgid "Hourly Digest"
 msgstr "Hodinový přehled"
 
-#: dt-notifications/notifications-scheduler.php:143 template-settings.php:524
+#: dt-notifications/notifications-scheduler.php:143 template-settings.php:518
 msgid "Daily Digest"
 msgstr "Denní přehled"
 
@@ -4794,14 +4813,14 @@ msgstr "Detaily"
 #: dt-posts/dt-posts.php:2796
 #, php-format
 msgctxt ""
-"@[user name][user_id] - User Fred has requested access to Contact [contact "
-"name][contact_id]. If desired, share this record with the user to grant "
+"@[user name][user_id] - User Fred has requested access to Contact [contact"
+"name][contact_id]. If desired, share this record with the user to grant"
 "access."
 msgid ""
-"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
+"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If"
 "desired, share this record with the user to grant access."
 msgstr ""
-"@  [%1$s]( %2$s) - Uživatel %3$s požádal o přístup k %4$s [%5$s](%6$s). "
+"@ [%1$s]( %2$s) - Uživatel %3$s požádal o přístup k %4$s [%5$s](%6$s)."
 "Pokud chcete, sdílejte tento záznam s uživatelem a udělejte přístup."
 
 #: dt-posts/dt-posts.php:2802
@@ -5294,24 +5313,20 @@ msgstr "Smažte a nahraďte odkaz na aplikaci"
 
 #: dt-reports/magic-url-setup.php:462
 msgid ""
-"This app is not yet activated for this user. Enable the app to generate a "
+"This app is not yet activated for this user. Enable the app to generate a"
 "link."
 msgstr ""
-"Tato aplikace zatím není pro tohoto uživatele aktivována. Povolte aplikaci "
+"Tato aplikace zatím není pro tohoto uživatele aktivována. Povolte aplikaci"
 "pro vygenerování odkazu."
 
-#: dt-reports/magic-url-setup.php:465 template-settings.php:265
+#: dt-reports/magic-url-setup.php:465 template-settings.php:266
 msgid "App Activation"
 msgstr "Aktivace aplikace"
 
 #: dt-reports/magic-url-setup.php:472 dt-users/user-management.php:194
-#: template-settings.php:311 template-settings.php:575
+#: template-settings.php:312 template-settings.php:569
 msgid "Enable"
 msgstr "Umožnit"
-
-#: dt-reports/magic-url-setup.php:483
-msgid "View"
-msgstr "Zobrazit"
 
 #: dt-reports/magic-url-setup.php:512
 msgid "QR code"
@@ -5376,7 +5391,7 @@ msgstr "Rozsah odpovědnosti"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Administrátor musí povolit možnost \\\"Přidat nové uživatele\\\" v nastavení "
+"Administrátor musí povolit možnost \\\"Přidat nové uživatele\\\" v nastavení"
 "multisite:"
 
 #: dt-users/template-new-user.php:80
@@ -5391,18 +5406,18 @@ msgstr "Kontakt pro vytvoření uživatele (volitelně)"
 msgid "Search multipliers and contacts"
 msgstr "Hledejte multiplikátory a kontakty"
 
-#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:232
+#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:226
 #: dt-users/users.php:141
 msgid "Display Name"
 msgstr "Zobrazované jméno"
 
-#: dt-users/template-new-user.php:115 template-settings.php:153
-#: template-settings.php:682
+#: dt-users/template-new-user.php:115 template-settings.php:154
+#: template-settings.php:676
 msgid "Nickname (Display Name)"
 msgstr "Přezdívka (zobrazované jméno)"
 
 #: dt-users/template-new-user.php:119 dt-users/template-new-user.php:120
-#: dt-users/users.php:135 template-settings.php:140 template-settings.php:647
+#: dt-users/users.php:135 template-settings.php:141 template-settings.php:641
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -5410,7 +5425,7 @@ msgstr "Uživatelské jméno"
 msgid "Role"
 msgstr "Role"
 
-#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:293
+#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:287
 msgid "Click here to see roles documentation"
 msgstr "Kliknutím sem zobrazíte dokumentaci rolí"
 
@@ -5419,7 +5434,7 @@ msgid "Create User"
 msgstr "Vytvořit uživatele"
 
 #: dt-users/template-new-user.php:178 dt-users/template-new-user.php:180
-#: template-settings.php:671
+#: template-settings.php:665
 msgid "First Name"
 msgstr "Jméno"
 
@@ -5430,14 +5445,14 @@ msgid "optional"
 msgstr "volitelný"
 
 #: dt-users/template-new-user.php:182 dt-users/template-new-user.php:183
-#: template-settings.php:677
+#: template-settings.php:671
 msgid "Last Name"
 msgstr "Příjmení"
 
 #: dt-users/template-new-user.php:218 dt-users/template-new-user.php:222
-#: dt-users/template-user-management.php:269
-#: dt-users/template-user-management.php:276 template-settings.php:236
-#: template-settings.php:706
+#: dt-users/template-user-management.php:263
+#: dt-users/template-user-management.php:270 template-settings.php:237
+#: template-settings.php:700
 msgid "Biography"
 msgstr "Životopis"
 
@@ -5447,10 +5462,10 @@ msgstr "Aktualizace kontaktu"
 
 #: dt-users/template-new-user.php:260
 msgid ""
-"The new user will have access to all the fields and comments on this contact "
+"The new user will have access to all the fields and comments on this contact"
 "record. We suggest archiving the comments if they contain sensitive data."
 msgstr ""
-"Nový uživatel bude mít přístup ke všem polím a komentářům k tomuto záznamu "
+"Nový uživatel bude mít přístup ke všem polím a komentářům k tomuto záznamu"
 "kontaktu. Pokud komentáře obsahují citlivá data, doporučujeme archivovat."
 
 #: dt-users/template-new-user.php:267
@@ -5479,10 +5494,10 @@ msgstr "Přejete si sloučit pole ze starého záznamu do nového?"
 
 #: dt-users/template-no-permission.php:92
 msgid ""
-"You are registered but an administrator needs to assign you access "
+"You are registered but an administrator needs to assign you access"
 "permissions."
 msgstr ""
-"Jste zaregistrováni, ale administrátor vám musí přidělit přístupová "
+"Jste zaregistrováni, ale administrátor vám musí přidělit přístupová"
 "oprávnění."
 
 #: dt-users/template-user-management.php:63
@@ -5497,156 +5512,152 @@ msgstr "Denní aktivita"
 msgid "Workload Status"
 msgstr "Stav pracovního vytížení"
 
-#: dt-users/template-user-management.php:124
-#: dt-users/template-user-management.php:127
+#: dt-users/template-user-management.php:126
+#: dt-users/template-user-management.php:133
 msgid "Location Responsibility"
 msgstr "Odpovědnost za umístění"
 
-#: dt-users/template-user-management.php:136 template-settings.php:355
-msgid "Search Locations"
-msgstr "Hledat místa"
-
-#: dt-users/template-user-management.php:147 template-settings.php:368
+#: dt-users/template-user-management.php:141 template-settings.php:362
 msgid "Languages you are comfortable speaking"
 msgstr "Jazyky, kterými mluvíte dobře"
 
-#: dt-users/template-user-management.php:163 template-settings.php:59
-#: template-settings.php:431
+#: dt-users/template-user-management.php:157 template-settings.php:60
+#: template-settings.php:425
 msgid "Availability"
 msgstr "Dostupnost"
 
-#: dt-users/template-user-management.php:164
+#: dt-users/template-user-management.php:158
 msgid ""
-"Set the dates you will be unavailable so the Dispatcher will know your "
+"Set the dates you will be unavailable so the Dispatcher will know your"
 "availability to receive new contacts"
 msgstr ""
-"Nastavte data, kdy nebudete k dispozici, aby dispečer zjistil vaši "
+"Nastavte data, kdy nebudete k dispozici, aby dispečer zjistil vaši"
 "dostupnost pro příjem nových kontaktů"
 
-#: dt-users/template-user-management.php:166
+#: dt-users/template-user-management.php:160
 msgid "Schedule Unavailability"
 msgstr "Naplánovat nedostupnost"
 
-#: dt-users/template-user-management.php:175
+#: dt-users/template-user-management.php:169
 msgid "Travel or Away Dates"
 msgstr "Cestování nebo Data kdy jsem pryč"
 
-#: dt-users/template-user-management.php:191
+#: dt-users/template-user-management.php:185
 msgid "User Apps"
 msgstr "Uzivatelske aplikace"
 
-#: dt-users/template-user-management.php:197
+#: dt-users/template-user-management.php:191
 msgid "Activation"
 msgstr "Aktivace"
 
-#: dt-users/template-user-management.php:212
+#: dt-users/template-user-management.php:206
 msgid "User Profile"
 msgstr "Uživatelský profil"
 
-#: dt-users/template-user-management.php:215
+#: dt-users/template-user-management.php:209
 #: dt-users/user-hooks-and-config.php:408
 msgid "View contact record"
 msgstr "Zobrazit záznam kontaktu"
 
-#: dt-users/template-user-management.php:220
+#: dt-users/template-user-management.php:214
 msgid "Edit User"
 msgstr "Upravit uživatele"
 
-#: dt-users/template-user-management.php:225
+#: dt-users/template-user-management.php:219
 msgid "Email Password Reset"
 msgstr "Obnoveni hesla e-mailem"
 
-#: dt-users/template-user-management.php:288 dt-users/users.php:147
-#: template-settings.php:159
+#: dt-users/template-user-management.php:282 dt-users/users.php:147
+#: template-settings.php:160
 msgid "Roles"
 msgstr "Role"
 
-#: dt-users/template-user-management.php:320
+#: dt-users/template-user-management.php:314
 msgid "Save Roles"
 msgstr "Uložit role"
 
-#: dt-users/template-user-management.php:328
+#: dt-users/template-user-management.php:322
 msgid "Access by Source"
 msgstr "Přístup podle zdroje"
 
-#: dt-users/template-user-management.php:334
+#: dt-users/template-user-management.php:328
 #: dt-users/user-hooks-and-config.php:623
 msgid "All Sources - gives access to all contacts"
 msgstr "Všechny zdroje - poskytuje přístup ke všem kontaktům"
 
-#: dt-users/template-user-management.php:340
+#: dt-users/template-user-management.php:334
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
-"Custom - Access own contacts and all the contacts of the selected sources "
+"Custom - Access own contacts and all the contacts of the selected sources"
 "below"
 msgstr ""
-"Vlastní - Přístup k vlastním kontaktům a všem kontaktům z vybraných zdrojů "
+"Vlastní - Přístup k vlastním kontaktům a všem kontaktům z vybraných zdrojů"
 "níže"
 
-#: dt-users/template-user-management.php:346
+#: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:637
 msgid "No Sources - only own contacts"
 msgstr "Žádné zdroje - pouze vlastní kontakty"
 
-#: dt-users/template-user-management.php:352
+#: dt-users/template-user-management.php:346
 msgid "Sources List"
 msgstr "Seznam zdrojů"
 
-#: dt-users/template-user-management.php:364
+#: dt-users/template-user-management.php:358
 msgid "Save Allowed Sources"
 msgstr "Uložit povolené zdroje"
 
-#: dt-users/template-user-management.php:394
+#: dt-users/template-user-management.php:388
 msgid "Updates Needed"
 msgstr "Potřebné aktualizace"
 
-#: dt-users/template-user-management.php:400
+#: dt-users/template-user-management.php:394
 msgid "Pending"
 msgstr "čekající"
 
-#: dt-users/template-user-management.php:407
+#: dt-users/template-user-management.php:401
 msgid "Unread Notifications"
 msgstr "Nepřečtená oznámení"
 
-#: dt-users/template-user-management.php:414
+#: dt-users/template-user-management.php:408
 msgid "Assignments"
 msgstr "Úkoly"
 
-#: dt-users/template-user-management.php:428
+#: dt-users/template-user-management.php:422
 msgid "This Year"
 msgstr "Tento rok"
 
-#: dt-users/template-user-management.php:446
+#: dt-users/template-user-management.php:440
 msgid "Pace"
 msgstr "Tempo"
 
-#: dt-users/template-user-management.php:447
+#: dt-users/template-user-management.php:441
 msgid "Assigned and not accepted"
 msgstr "Přiřazeno a nepřijato"
 
-#: dt-users/template-user-management.php:449
+#: dt-users/template-user-management.php:443
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr "Doba od přiřazení ke kontaktu přijata za posledních 10 kontaktů"
 
-#: dt-users/template-user-management.php:451
+#: dt-users/template-user-management.php:445
 msgid "Accepted with no contact attempt"
 msgstr "Přijato bez pokusu o kontakt"
 
-#: dt-users/template-user-management.php:453
+#: dt-users/template-user-management.php:447
 msgid "Oldest 10 update needed"
 msgstr "Je zapotřebí nejstarších 10 aktualizací"
 
-#: dt-users/template-user-management.php:455
+#: dt-users/template-user-management.php:449
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "Čas od pokusu o přiřazení ke kontaktu pro posledních 10 kontaktů"
 
 #: dt-users/user-hooks-and-config.php:196
 #, php-format
 msgid ""
-"Welcome %1$s, this is your personal contact record. Feel free to update the "
+"Welcome %1$s, this is your personal contact record. Feel free to update the"
 "fields and @mention me or other users"
 msgstr ""
-"Vítejte %1$s, toto je váš osobní záznam kontaktu. Neváhejte aktualizovat "
+"Vítejte %1$s, toto je váš osobní záznam kontaktu. Neváhejte aktualizovat"
 "pole a @zmínit mě nebo ostatní uživatele"
 
 #: dt-users/user-hooks-and-config.php:312
@@ -5672,8 +5683,8 @@ msgstr "Dobrý den, %s"
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
 msgctxt ""
-"You've been invited to join Awesome Site at https://awesome_site.disciple."
-"tools"
+"You've been invited to join Awesome Site at https://"
+"awesome_site.disciple.tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "Byli jste pozváni do %1$s na %2$s"
 
@@ -5763,16 +5774,16 @@ msgstr "Tento kontakt je již uživatelem."
 msgid "View User"
 msgstr "Zobrazit uživatele"
 
-#: dt-users/user-management.php:229
+#: dt-users/user-management.php:233
 msgid "Go"
 msgstr "Přejít"
 
-#: dt-users/user-management.php:232
+#: dt-users/user-management.php:236
 #, php-format
 msgid "Showing %1$s of %2$s"
 msgstr "Zobrazeno %1$s z %2$s"
 
-#: dt-users/user-management.php:353
+#: dt-users/user-management.php:357
 #, php-format
 msgid "%s days since last update"
 msgstr "%s dní od poslední aktualizace"
@@ -5846,7 +5857,7 @@ msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "Vlastní filtry"
 
-#: dt-users/users.php:1351 template-settings.php:169 template-settings.php:653
+#: dt-users/users.php:1351 template-settings.php:170 template-settings.php:647
 msgid "System Email"
 msgstr "E-mail systém"
 
@@ -5876,12 +5887,12 @@ msgstr "Aby tato stránka fungovala správně, musí být povolen Javascript."
 
 #: header.php:61
 msgid ""
-"You seem to be using an out-of-date web browser. Without the most up-to-date "
-"version of your browser, this may site may not function correctly. Please "
+"You seem to be using an out-of-date web browser. Without the most up-to-date"
+"version of your browser, this may site may not function correctly. Please"
 "note that Internet Explorer is not supported."
 msgstr ""
-"Zdá se, že používáte zastaralý webový prohlížeč. Bez nejaktuálnější verze "
-"prohlížeče tento web nemusí fungovat správně. Internet Explorer není "
+"Zdá se, že používáte zastaralý webový prohlížeč. Bez nejaktuálnější verze"
+"prohlížeče tento web nemusí fungovat správně. Internet Explorer není"
 "podporován."
 
 #: header.php:63
@@ -5911,42 +5922,42 @@ msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Opravdu chcete smazat %s?"
 
-#: template-merge-post-details.php:99
+#: template-merge-post-details.php:102
 msgid "Open Modal"
 msgstr "Otevřete Modal"
 
-#: template-merge-post-details.php:121
+#: template-merge-post-details.php:124
 #, php-format
 msgid "Merge Duplicate %s"
 msgstr "Sloučit duplikát %s"
 
-#: template-merge-post-details.php:123
+#: template-merge-post-details.php:126
 msgid ""
-"When you merge, the primary record is updated with the values you choose, "
-"and relationships to other items are shifted to the primary record; which "
+"When you merge, the primary record is updated with the values you choose,"
+"and relationships to other items are shifted to the primary record; which"
 "can be switched below."
 msgstr ""
-"Při sloučení se primární záznam aktualizuje hodnotami, které zvolíte, a "
-"vztahy k dalším položkám se přesunou na primární záznam; které lze přepínat "
+"Při sloučení se primární záznam aktualizuje hodnotami, které zvolíte, a"
+"vztahy k dalším položkám se přesunou na primární záznam; které lze přepínat"
 "níže."
 
-#: template-merge-post-details.php:126
+#: template-merge-post-details.php:129
 msgid "Copy comments to updated primary record"
 msgstr "Kopírovat komentáře do aktualizovaného primárního záznamu"
 
-#: template-merge-post-details.php:142
+#: template-merge-post-details.php:145
 msgid "Archiving"
 msgstr "Archivace"
 
-#: template-merge-post-details.php:150
+#: template-merge-post-details.php:153
 msgid "Use as Primary"
 msgstr "Použít jako primární"
 
-#: template-merge-post-details.php:163
+#: template-merge-post-details.php:166
 msgid "Primary"
 msgstr "Hlavní"
 
-#: template-merge-post-details.php:177
+#: template-merge-post-details.php:180
 msgid "Updated"
 msgstr "Aktualizováno"
 
@@ -5988,159 +5999,159 @@ msgstr "Zmínky"
 msgid "Load more notifications"
 msgstr "Načíst další oznámení"
 
-#: template-settings.php:58 template-settings.php:332
+#: template-settings.php:59 template-settings.php:333
 msgid "Multiplier Preferences"
 msgstr "Předvolby multiplikátoru"
 
-#: template-settings.php:67
+#: template-settings.php:68
 msgid "Invite User"
 msgstr "Pozvat uživatele"
 
-#: template-settings.php:77
+#: template-settings.php:78
 msgid "View Contact Record"
 msgstr "Zobrazit záznam kontaktu"
 
-#: template-settings.php:201
+#: template-settings.php:202
 msgid "Social"
 msgstr "Sociální sítě"
 
-#: template-settings.php:232
+#: template-settings.php:233
 msgid "English"
 msgstr "Angličtina"
 
-#: template-settings.php:262
+#: template-settings.php:263
 msgid "App Name"
 msgstr "Název aplikace"
 
-#: template-settings.php:263
+#: template-settings.php:264
 msgid "App Description"
 msgstr "Popis aplikace"
 
-#: template-settings.php:264
+#: template-settings.php:265
 msgid "App Link"
 msgstr "Odkaz na aplikaci"
 
-#: template-settings.php:275
+#: template-settings.php:276
 msgid "No apps installed"
 msgstr "Nejsou nainstalovány žádné aplikace"
 
-#: template-settings.php:340 template-settings.php:345
+#: template-settings.php:343 template-settings.php:351
 msgid "Locations you are willing to be responsible for"
 msgstr "Místa, za která jste ochotni nést odpovědnost"
 
-#: template-settings.php:389
+#: template-settings.php:383
 msgid "People Groups you wish to serve"
 msgstr "Skupiny lidí, kterým chcete sloužit"
 
-#: template-settings.php:412
+#: template-settings.php:406
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "Dostupnost pro příjem kontaktů od dispečera"
 
-#: template-settings.php:434
+#: template-settings.php:428
 msgid ""
-"Set the dates you will be traveling or unavailable so the Dispatcher will "
+"Set the dates you will be traveling or unavailable so the Dispatcher will"
 "know your availability to receive new contacts"
 msgstr ""
-"Nastavte data, kdy budete cestovat nebo nebudete k dispozici, aby dispečer "
+"Nastavte data, kdy budete cestovat nebo nebudete k dispozici, aby dispečer"
 "zjistil vaši dostupnost pro příjem nových kontaktů"
 
-#: template-settings.php:438
+#: template-settings.php:432
 msgid "Schedule Travel or Dates Unavailable"
 msgstr "Naplánujte si Cestu nebo Data kdy nebudete k dispozici"
 
-#: template-settings.php:455
+#: template-settings.php:449
 msgid "Add Unavailable dates"
 msgstr "Přidejte nedostupná data"
 
-#: template-settings.php:469
+#: template-settings.php:463
 msgid "No Travel Scheduled"
 msgstr "Žádné cesty nenaplánovány"
 
-#: template-settings.php:489
+#: template-settings.php:483
 msgid "Contact Info"
 msgstr "Kontaktní informace"
 
-#: template-settings.php:493
+#: template-settings.php:487
 #, php-format
 msgctxt "Email will be sent to: [email]"
 msgid "Email notifications will be sent to: %s"
 msgstr "E-mailová oznámení budou odeslána na: %s"
 
-#: template-settings.php:510
+#: template-settings.php:504
 msgid "Email preferences"
 msgstr "Předvolby e-mailu"
 
-#: template-settings.php:516
+#: template-settings.php:510
 msgid "Real time"
 msgstr "Reálný čas"
 
-#: template-settings.php:531
+#: template-settings.php:525
 msgid "Type of Notification"
 msgstr "Typ oznámení"
 
-#: template-settings.php:544
+#: template-settings.php:538
 msgid "required"
 msgstr "Požadované"
 
-#: template-settings.php:568
+#: template-settings.php:562
 msgid "Follow all contacts"
 msgstr "Sledujte všechny kontakty"
 
-#: template-settings.php:570
+#: template-settings.php:564
 msgid ""
 "You will receive a notification for any update that happens in the system."
 msgstr "Obdržíte oznámení o všech aktualizacích, ke kterým v systému dojde."
 
-#: template-settings.php:630
+#: template-settings.php:624
 msgid ""
-"Disciple Tools System does not store images. For profile images we use "
-"Gravatar (Globally Recognized Avatar). If you have security concerns, we "
-"suggest not using a personal photo, but instead choose a cartoon, abstract, "
+"Disciple Tools System does not store images. For profile images we use"
+"Gravatar (Globally Recognized Avatar). If you have security concerns, we"
+"suggest not using a personal photo, but instead choose a cartoon, abstract,"
 "or alias photo to represent you."
 msgstr ""
-"Systém Disciple Tools neukládá obrázky. U profilových obrázků používáme "
-"Gravatar (Globally Recognized Avatar). Pokud máte obavy o zabezpečení, "
-"doporučujeme nepoužívat osobní fotografii, ale místo toho zvolit karikaturu, "
+"Systém Disciple Tools neukládá obrázky. U profilových obrázků používáme"
+"Gravatar (Globally Recognized Avatar). Pokud máte obavy o zabezpečení,"
+"doporučujeme nepoužívat osobní fotografii, ale místo toho zvolit karikaturu,"
 "abstraktní nebo jinou fotografii, která vás bude reprezentovat."
 
-#: template-settings.php:631
+#: template-settings.php:625
 msgid "edit image on gravatar.com"
 msgstr "upravte obrázek na gravatar.com"
 
-#: template-settings.php:637
+#: template-settings.php:631
 msgid ""
-"Disciple Tools System does not store images. All media assets will be placed "
-"within specified media connection storage service. If you have security "
-"concerns, we suggest not using a personal photo, but instead choose a "
+"Disciple Tools System does not store images. All media assets will be placed"
+"within specified media connection storage service. If you have security"
+"concerns, we suggest not using a personal photo, but instead choose a"
 "cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"Systém Disciple Tools neukládá obrázky. Všechny mediální prostředky budou "
-"umístěny v určené službě připojení k úložišti médií. Pokud máte bezpečnostní "
-"obavy, doporučujeme nepoužívat osobní fotografii, ale místo toho zvolte "
+"Systém Disciple Tools neukládá obrázky. Všechny mediální prostředky budou"
+"umístěny v určené službě připojení k úložišti médií. Pokud máte bezpečnostní"
+"obavy, doporučujeme nepoužívat osobní fotografii, ale místo toho zvolte"
 "kreslený, abstraktní nebo alias obrázek, který vás bude reprezentovat."
 
-#: template-settings.php:638
+#: template-settings.php:632
 msgid "Upload new profile image"
 msgstr "Nahrát nový profilový obrázek"
 
-#: template-settings.php:648 template-settings.php:649
+#: template-settings.php:642 template-settings.php:643
 msgid "Username cannot be changed"
 msgstr "Uživatelské jméno nelze změnit"
 
-#: template-settings.php:654
+#: template-settings.php:648
 msgid "User email can be changed by site administrator."
 msgstr "E-mail uživatele může změnit správce webu."
 
-#: template-settings.php:662
+#: template-settings.php:656
 msgid "Use this email reset form to create a new password."
 msgstr ""
 "Použijte tento formulář pro obnovení hesla e-mailem k vytvoření nového hesla."
 
-#: template-settings.php:664
+#: template-settings.php:658
 msgid "go to password change form"
 msgstr "přejděte na formulář pro změnu hesla"
 
-#: template-settings.php:728
+#: template-settings.php:722
 msgid "System Language"
 msgstr "Systémový jazyk"
 
@@ -6150,10 +6161,10 @@ msgstr "Duplicitní přístup ke kontaktům"
 
 #: template-view-duplicates.php:27
 msgid ""
-"Scanning for duplicates starting with the most recently modified contacts. "
+"Scanning for duplicates starting with the most recently modified contacts."
 "Results are limited to ones that have less than 10 exact matches."
 msgstr ""
-"Hledání duplikátů počínaje naposledy upravenými kontakty. Výsledky jsou "
+"Hledání duplikátů počínaje naposledy upravenými kontakty. Výsledky jsou"
 "omezeny na ty, které mají méně než 10 přesných shod."
 
 #: template-view-duplicates.php:30
@@ -6201,17 +6212,17 @@ msgstr "Nalezeny duplikáty:"
 
 #~ msgid "When enabled, you can restrict app access to specific user roles."
 #~ msgstr ""
-#~ "Když je povoleno, můžete omezit přístup k aplikacím pro konkrétní "
+#~ "Když je povoleno, můžete omezit přístup k aplikacím pro konkrétní"
 #~ "uživatelské role."
 
 #~ msgid "Allow users to invite others"
 #~ msgstr "Povolit uživatelům zvát ostatní"
 
 #~ msgid ""
-#~ "When enabled, users can share an invite link to allow others to register "
+#~ "When enabled, users can share an invite link to allow others to register"
 #~ "and access their own Home Screen."
 #~ msgstr ""
-#~ "Když je povoleno, uživatelé mohou sdílet odkaz s pozvánkou, který umožní "
+#~ "Když je povoleno, uživatelé mohou sdílet odkaz s pozvánkou, který umožní"
 #~ "ostatním se zaregistrovat a získat přístup k vlastní domovské obrazovce."
 
 #~ msgid "Network Settings"
@@ -6229,14 +6240,14 @@ msgstr "Nalezeny duplikáty:"
 
 #~ msgid "Require users to login to access the home screen magic link?"
 #~ msgstr ""
-#~ "Vyžadovat přihlášení uživatelů pro přístup k magickému odkazu domovské "
+#~ "Vyžadovat přihlášení uživatelů pro přístup k magickému odkazu domovské"
 #~ "obrazovky?"
 
 #~ msgid ""
-#~ "When enabled, users must be logged in to access their Home Screen. When "
+#~ "When enabled, users must be logged in to access their Home Screen. When"
 #~ "disabled, magic links can be accessed without login."
 #~ msgstr ""
-#~ "Když je povoleno, uživatelé musí být přihlášeni pro přístup k domovské "
+#~ "Když je povoleno, uživatelé musí být přihlášeni pro přístup k domovské"
 #~ "obrazovce. Když je zakázáno, magické odkazy jsou přístupné bez přihlášení."
 
 #~ msgid "User Registration Status:"
@@ -6340,12 +6351,12 @@ msgstr "Nalezeny duplikáty:"
 #~ msgstr "Obnovit výchozí"
 
 #~ msgid ""
-#~ "Using default theme-aware color. The icon will automatically switch "
-#~ "between black (light mode) and white (dark mode). Set a custom color to "
+#~ "Using default theme-aware color. The icon will automatically switch"
+#~ "between black (light mode) and white (dark mode). Set a custom color to"
 #~ "override."
 #~ msgstr ""
-#~ "Používá se výchozí barva přizpůsobená motivu. Ikona se automaticky přepne "
-#~ "mezi černou (světlý režim) a bílou (tmavý režim). Pro přepsání nastavte "
+#~ "Používá se výchozí barva přizpůsobená motivu. Ikona se automaticky přepne"
+#~ "mezi černou (světlý režim) a bílou (tmavý režim). Pro přepsání nastavte"
 #~ "vlastní barvu."
 
 #~ msgid "User Access"
