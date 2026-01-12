@@ -259,7 +259,7 @@ msgstr ""
 "Bi parzûna heyî, e-nameyên berdest bi 50an têne kom kirin û dikarin bi komê "
 "re di xerîdarê e-nameya xweya standard de bên destpêkirin. Gelek pêşkêşkerên "
 "e-nameyê li ser e-nameyên BCC sînorek 50 datînin. Hûn dikarin hemû koman bi "
-"carekê re bi bişkoja \\\"Hemî Veke\\\" vebînin. Eger lîste pir mezin be, "
+"carekê re bi bişkoja \"Hemî Veke\" vebînin. Eger lîste pir mezin be, "
 "dibe ku ev pêşkêşkerê e-nameya we hişyar bike. Amûra e-nameya BCC ji bo "
 "alîkariya e-nameyên komên piçûk hatiye çêkirin. E-nameya girseyî divê bi "
 "pêşkêşkerên e-nameya girseyî were rêvebirin."
@@ -911,7 +911,7 @@ msgstr "Cihên Bikaranîn"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Tu encam bi \\\"{{lêpirsîn}}\\\" re nehat dîtin"
+msgstr "Tu encam bi \"{{lêpirsîn}}\" re nehat dîtin"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -991,13 +991,13 @@ msgstr "%3$s û %1$s bi %2$s emojî re bertek nîşan dan"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Zimanê axaftinê hilbijêrin û li \\\"Tomarkirinê Bide Destpêkirin\\\" "
+"Zimanê axaftinê hilbijêrin û li \"Tomarkirinê Bide Destpêkirin\" "
 "bikirtînin."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
 msgstr ""
-"Li \\\"Tomarkirinê Bide Destpêkirin\\\" bikirtînin da ku dest pê bikin."
+"Li \"Tomarkirinê Bide Destpêkirin\" bikirtînin da ku dest pê bikin."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5408,7 +5408,7 @@ msgstr "Bergirtina Berpirsyarî"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Rêvebir divê vebijarka \\\"Bikarhênerên Nû lê zêde bike\\\" di mîhengên pir "
+"Rêvebir divê vebijarka \"Bikarhênerên Nû lê zêde bike\" di mîhengên pir "
 "malperê de çalak bike:"
 
 #: dt-users/template-new-user.php:80

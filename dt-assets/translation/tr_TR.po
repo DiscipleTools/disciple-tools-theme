@@ -257,8 +257,8 @@ msgid ""
 msgstr ""
 "Mevcut filtreyi kullanarak, kullanılabilir e-postalar 50'ye göre "
 "gruplandırılır ve varsayılan e-posta istemcinize gruba göre başlatılabilir. "
-"Birçok e-posta sağlayıcısı, BCC e-postalarına 50 sınırlaması koyar. \\"
-"\"Hepsini Aç\\\" düğmesini kullanarak tüm grupları aynı anda açabilirsiniz. "
+"Birçok e-posta sağlayıcısı, BCC e-postalarına 50 sınırlaması koyar. "
+"\"Hepsini Aç\" düğmesini kullanarak tüm grupları aynı anda açabilirsiniz. "
 "Liste çok büyükse, bu e-posta sağlayıcınızı uyarabilir. BCC e-posta aracı, "
 "küçük grup e-postalarına yardımcı olmak için tasarlanmıştır. Toplu e-posta, "
 "toplu e-posta sağlayıcıları aracılığıyla işlenmelidir."
@@ -907,7 +907,7 @@ msgstr "Kullanılan Konumlar"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "\\\"{{query}}\\\" ile eşleşen sonuclar yok"
+msgstr "\"{{query}}\" ile eşleşen sonuclar yok"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -986,11 +986,11 @@ msgstr "%3$s ve %1$s, %2$s emojisi ile tepksi verdi"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "Konuşulan dili seçin ve başlamak için \\\"Kaydı Başlat\\\"a tıklayın."
+msgstr "Konuşulan dili seçin ve başlamak için \"Kaydı Başlat\"a tıklayın."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Başlamak için \\\"Kaydı Başlat\\\"a tıklayın."
+msgstr "Başlamak için \"Kaydı Başlat\"a tıklayın."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1570,7 +1570,7 @@ msgstr ""
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
-"Bu bölümü \\\"Tümü\\\", \\\"Yorumlar\\\" veya \\\"İşlemlar\\\" olarak "
+"Bu bölümü \"Tümü\", \"Yorumlar\" veya \"İşlemlar\" olarak "
 "filtreleyebilirsiniz."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
@@ -1611,7 +1611,7 @@ msgid ""
 "These are the areas you are responsible for. Clicking the 'Add' button will "
 "bring up a list of locations to choose from."
 msgstr ""
-"Bunlar sorumlu olduğun konumlardır. \\\"Ekle\\\" butona tıklarsan "
+"Bunlar sorumlu olduğun konumlardır. \"Ekle\" butona tıklarsan "
 "seçilebilen konum listesi açar."
 
 #: dt-assets/parts/modals/modal-help.php:72
@@ -3654,7 +3654,7 @@ msgstr "Seç"
 
 #: dt-groups/base-setup.php:571
 msgid "To add new members, click on 'Create' or 'Select'."
-msgstr "Yeni üyeleri eklemek için \\\"Oluştur\\\" veya \\\"Seç\\\" tıklayınız."
+msgstr "Yeni üyeleri eklemek için \"Oluştur\" veya \"Seç\" tıklayınız."
 
 #: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
@@ -3667,7 +3667,7 @@ msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
 "to this group."
 msgstr ""
-"'Üye Listesi\\\" alanında mevcut olan kişinin adını yazarak onu bu gruba "
+"'Üye Listesi\" alanında mevcut olan kişinin adını yazarak onu bu gruba "
 "dahil edebilirsin."
 
 #: dt-groups/base-setup.php:606
@@ -5402,7 +5402,7 @@ msgstr "Sorumluluk Kapsamı"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Yönetici, çoklu site ayarlarında \\\"Yeni Kullanıcı Ekle\\\" seçeneğini "
+"Yönetici, çoklu site ayarlarında \"Yeni Kullanıcı Ekle\" seçeneğini "
 "etkinleştirmelidir:"
 
 #: dt-users/template-new-user.php:80

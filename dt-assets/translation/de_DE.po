@@ -262,8 +262,8 @@ msgstr ""
 "Mit dem aktuellen Filter werden die verfügbaren E-Mails in Gruppen von 50 "
 "aufgeteilt und können gruppenweise in Ihrem Standard-E-Mail-Programm "
 "geöffnet werden. Viele E-Mail-Anbieter begrenzen BCC-E-Mails auf 50. Sie "
-"können alle Gruppen auf einmal öffnen, indem Sie die Schaltfläche \\\"Alle "
-"öffnen\\\" verwenden. Wenn die Liste zu groß ist, könnte dies bei Ihrem E-"
+"können alle Gruppen auf einmal öffnen, indem Sie die Schaltfläche \"Alle "
+"öffnen\" verwenden. Wenn die Liste zu groß ist, könnte dies bei Ihrem E-"
 "Mail-Anbieter eine Warnung auslösen. Das BCC-E-Mail-Tool ist für kleine "
 "Gruppen-E-Mails gedacht. Massen-E-Mails sollten über Massen-E-Mail-Anbieter "
 "versendet werden."
@@ -919,7 +919,7 @@ msgstr "Verwendete Standorte"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Keine Ergebnisse gefunden zu \\\"{{query}}\\\""
+msgstr "Keine Ergebnisse gefunden zu \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -998,13 +998,11 @@ msgstr "%3$s und %1$s haben mit dem Emoji %2$s reagiert"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr ""
-"Wählen Sie die gesprochene Sprache und klicken Sie auf \\\"Aufnahme starten\\"
-"\", um zu beginnen."
+msgstr "Wählen Sie die gesprochene Sprache und klicken Sie auf \"Aufnahme starten\", um zu beginnen."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Klicken Sie auf \\\"Aufnahme starten\\\", um zu beginnen."
+msgstr "Klicken Sie auf \"Aufnahme starten\", um zu beginnen."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1550,10 +1548,10 @@ msgid ""
 "you attempted to reach this contact 4 times, but they did not answer. This "
 "action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"Wenn Sie zum Beispiel 4 Mal auf die Schaltfläche \\\"Keine Antwort\\\" "
+"Wenn Sie zum Beispiel 4 Mal auf die Schaltfläche \"Keine Antwort\" "
 "klicken, protokollieren wir, dass Sie 4 Mal versucht haben, diesen Kontakt "
-"zu erreichen, er aber nicht geantwortet hat. Diese Aktion ändert auch den \\"
-"\"Sucherpfad\\\" in \\\"Kontaktversuch\\\"."
+"zu erreichen, er aber nicht geantwortet hat. Diese Aktion ändert auch den "
+"\"Sucherpfad\" in \"Kontaktversuch\"."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1591,8 +1589,8 @@ msgstr ""
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
-"Sie können diesen Abschnitt entweder nach „Alle\\\", „Kommentare\\\" oder "
-"„Aktivität\\\" filtern."
+"Sie können diesen Abschnitt entweder nach „Alle\", „Kommentare\" oder "
+"„Aktivität\" filtern."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
@@ -1618,7 +1616,7 @@ msgid ""
 "By clicking 'Edit', you will be able adjust things like the language that "
 "this system operates in."
 msgstr ""
-"Wenn Sie auf „Bearbeiten\\\" klicken, können Sie beispielsweise die Sprache, "
+"Wenn Sie auf „Bearbeiten\" klicken, können Sie beispielsweise die Sprache, "
 "in der dieses System arbeitet, anpassen."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
@@ -1633,7 +1631,7 @@ msgid ""
 "bring up a list of locations to choose from."
 msgstr ""
 "Dies sind die Bereiche, für die Sie verantwortlich sind. Wenn Sie auf die "
-"Schaltfläche „Hinzufügen\\\" klicken, erscheint eine Liste der Standorte, "
+"Schaltfläche „Hinzufügen\" klicken, erscheint eine Liste der Standorte, "
 "aus der Sie auswählen können."
 
 #: dt-assets/parts/modals/modal-help.php:72
@@ -1709,7 +1707,7 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
-"Klicken Sie auf die Schaltfläche „Alle\\\", um die vollständige Liste aller "
+"Klicken Sie auf die Schaltfläche „Alle\", um die vollständige Liste aller "
 "Ihrer Benachrichtigungen anzuzeigen."
 
 #: dt-assets/parts/modals/modal-help.php:91
@@ -1718,7 +1716,7 @@ msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
 msgstr ""
-"Klicken Sie auf die Schaltfläche „Ungelesen\\\", um die Liste aller Ihrer "
+"Klicken Sie auf die Schaltfläche „Ungelesen\", um die Liste aller Ihrer "
 "ungelesenen Benachrichtigungen anzuzeigen."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
@@ -1736,7 +1734,7 @@ msgid ""
 msgstr ""
 "Wenn Sie nicht auf jeden ausgefüllten Kreis auf der rechten Seite jeder "
 "Zeile klicken möchten, um anzuzeigen, dass die Benachrichtigung gelesen "
-"wurde, dann klicken Sie oben auf den Link „Alle als gelesen markieren\\\", "
+"wurde, dann klicken Sie oben auf den Link „Alle als gelesen markieren\", "
 "um alle Mitteilungen schnell dahingehend anzupassen, dass sie alle gelesen "
 "wurden."
 
@@ -1749,8 +1747,8 @@ msgid ""
 "whether to you will receive a notification for any update that happens in "
 "the system."
 msgstr ""
-"Klicken Sie auf den Link „Einstellungen\\\", um zum Bereich "
-"„Benachrichtigungseinstellungen\\\" zu gelangen und einzustellen, ob Sie "
+"Klicken Sie auf den Link „Einstellungen\", um zum Bereich "
+"„Benachrichtigungseinstellungen\" zu gelangen und einzustellen, ob Sie "
 "Benachrichtigungen über neue Kommentare, Änderungen der "
 "Kontaktinformationen, Kontaktmeilensteine und Gruppengesundheitsmetriken "
 "sehen möchten und ob Sie eine Benachrichtigung über jede Aktualisierung "
@@ -3735,8 +3733,8 @@ msgstr "Auswählen"
 #: dt-groups/base-setup.php:571
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr ""
-"Um neue Mitglieder hinzuzufügen, klicken Sie auf „Erstellen\\\" oder "
-"„Auswählen\\\"."
+"Um neue Mitglieder hinzuzufügen, klicken Sie auf „Erstellen\" oder "
+"„Auswählen\"."
 
 #: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
@@ -3935,7 +3933,7 @@ msgstr "Reichweite"
 
 #: dt-metrics/combined/critical-path.php:80
 msgid "Filter Critical Path fields"
-msgstr "Felder \\\"Kritischer Weg\\\" filtern"
+msgstr "Felder \"Kritischer Weg\" filtern"
 
 #: dt-metrics/combined/critical-path.php:81
 msgid "Movement Tracking"

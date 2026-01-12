@@ -258,7 +258,7 @@ msgstr ""
 "Gamit ang kasalukuyang filter, ang mga available na email ay naka-grupo ng50 "
 "at maaaring ilunsad sa iyong default na email client ayon sa grupo.Maraming "
 "email provider ang may limitasyon ng 50 sa BCC emails. Maaari mongbuksan ang "
-"lahat ng grupo nang sabay-sabay gamit ang \\\\\\\"Buksan Lahat\\\\\\\" na "
+"lahat ng grupo nang sabay-sabay gamit ang \"Buksan Lahat\" na "
 "button. Kung masyadong malaki ang listahan, maaaring alerto ito saiyong "
 "email provider. Ang BCC email tool ay para sa maliliit na grupo ngemail. Ang "
 "bulk email ay dapat pangasiwaan sa pamamagitan ng bulk emailproviders."
@@ -909,7 +909,7 @@ msgstr "Mga Lokasyong Ginamit"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Walang nakitang mga resultang tumutugma sa \\\\\\\"{{query}}\\\\\\\""
+msgstr "Walang nakitang mga resultang tumutugma sa \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -989,12 +989,12 @@ msgstr "Nag-react sina %3$s at %1$s nang may emoji na %2$s"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Piliin ang wikang sinasalita at i-click ang \\\\\\\"Magsimula ng Pagre-"
-"record\\\\\\\" upang magsimula."
+"Piliin ang wikang sinasalita at i-click ang \"Magsimula ng Pagre-"
+"record\" upang magsimula."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "I-click ang \\\"Magsimula ng Pagre-record\\\" upang magsimula."
+msgstr "I-click ang \"Magsimula ng Pagre-record\" upang magsimula."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5453,8 +5453,8 @@ msgstr "Saklaw ng Responsibilidad"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Dapat paganahin ng Administrator ang opsyong \\\\\\\"Magdagdag ng Mga "
-"BagongGumagamit\\\\\\\" sa mga setting na pang-multisite:"
+"Dapat paganahin ng Administrator ang opsyong \"Magdagdag ng Mga "
+"BagongGumagamit\" sa mga setting na pang-multisite:"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"

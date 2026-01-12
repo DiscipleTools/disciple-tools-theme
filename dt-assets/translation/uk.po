@@ -258,7 +258,7 @@ msgstr ""
 "За допомогою поточного фільтра доступні email-адреси групуються по 50 "
 "іможуть бути відкриті у вашому поштовому клієнті за замовчуванням. "
 "Багатопровайдерів обмежують BCC до 50 адрес. Ви можете відкрити всі групи "
-"одразуза допомогою кнопки \\\\\\\"Відкрити всі\\\\\\\". Якщо список "
+"одразуза допомогою кнопки \"Відкрити всі\". Якщо список "
 "занадтовеликий, це може викликати попередження від вашого провайдера. "
 "ІнструментBCC призначений для невеликих груп. Масові розсилки слід "
 "виконувати черезспеціалізовані сервіси."
@@ -906,7 +906,7 @@ msgstr "Використані місця"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Не знайдено результатів, які б відповідали \\\\\\\"{{query}}\\\\\\\""
+msgstr "Не знайдено результатів, які б відповідали \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -985,11 +985,11 @@ msgstr "%3$s і %1$s відреагували смайлом %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "Виберіть мову і натисніть \\\\\\\"Почати запис\\\\\\\", щоб розпочати."
+msgstr "Виберіть мову і натисніть \"Почати запис\", щоб розпочати."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Натисніть \\\\\\\"Почати запис\\\\\\\", щоб розпочати."
+msgstr "Натисніть \"Почати запис\", щоб розпочати."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5406,7 +5406,7 @@ msgstr "Покриття відповідальності"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Адміністратор має увімкнути опцію \\\\\\\"Додавати нових користувачів\\\\\\"
+"Адміністратор має увімкнути опцію \"Додавати нових користувачів"
 "\" у мультисайтових налаштуваннях:"
 
 #: dt-users/template-new-user.php:80

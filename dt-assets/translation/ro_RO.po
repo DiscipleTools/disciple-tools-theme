@@ -260,7 +260,7 @@ msgstr ""
 "Folosind filtrul curent, e-mailurile disponibile sunt grupate câte 50 și pot "
 "fi lansate în clientul dvs. de e-mail implicit pe grupuri. Mulți furnizori "
 "de e-mail impun o limită de 50 pentru e-mailurile BCC. Puteți deschide toate "
-"grupurile simultan folosind butonul \\\"Deschide tot\\\". Dacă lista este "
+"grupurile simultan folosind butonul \"Deschide tot\". Dacă lista este "
 "prea mare, acest lucru ar putea alerta furnizorul dvs. de e-mail. "
 "Instrumentul de e-mail BCC este destinat pentru e-mailuri de grup mic. E-"
 "mailurile în masă ar trebui gestionate prin furnizori de e-mail în masă."
@@ -992,12 +992,12 @@ msgstr "%3$s și %1$s au reacționat cu un emoji %2$s"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Selectați limba vorbită și faceți clic pe \\\"Începe înregistrarea\\\" "
+"Selectați limba vorbită și faceți clic pe \"Începe înregistrarea\" "
 "pentru a începe."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Faceți clic pe \\\"Începe înregistrarea\\\" pentru a începe."
+msgstr "Faceți clic pe \"Începe înregistrarea\" pentru a începe."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."

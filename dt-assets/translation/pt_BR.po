@@ -260,7 +260,7 @@ msgstr ""
 "Usando o filtro atual, os e-mails disponíveis são agrupados em 50 e podem "
 "ser abertos no seu cliente de e-mail padrão por grupo. Muitos provedores de "
 "e-mail limitam a 50 destinatários em CCO. Você pode abrir todos os grupos de "
-"uma vez usando o botão \\\"Abrir Todos\\\". Se a lista for muito grande, "
+"uma vez usando o botão \"Abrir Todos\". Se a lista for muito grande, "
 "isso pode alertar seu provedor de e-mail. A ferramenta de e-mail CCO é "
 "destinada a auxiliar e-mails de pequenos grupos. E-mails em massa devem ser "
 "enviados através de provedores de e-mail em massa."
@@ -913,7 +913,7 @@ msgstr "Locais utilizados"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Nenhum resultado encontrado equivale a \\\"{{busca}}\\\""
+msgstr "Nenhum resultado encontrado equivale a \"{{busca}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -993,11 +993,11 @@ msgstr "%3$s e %1$s reagiram com emoji de %2$s"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Selecione o idioma falado e clique em \\\"Iniciar Gravação\\\" para começar."
+"Selecione o idioma falado e clique em \"Iniciar Gravação\" para começar."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Clique em \\\"Iniciar Gravação\\\" para começar."
+msgstr "Clique em \"Iniciar Gravação\" para começar."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1580,8 +1580,8 @@ msgstr ""
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
-"Você pode também filtrar esta seção por \\\"Todos\\\", \\\"Comentários\\\" "
-"ou \\\"Atividade\\\"."
+"Você pode também filtrar esta seção por \"Todos\", \"Comentários\" "
+"ou \"Atividade\"."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
@@ -1621,8 +1621,8 @@ msgid ""
 "These are the areas you are responsible for. Clicking the 'Add' button will "
 "bring up a list of locations to choose from."
 msgstr ""
-"Estas são as áreas pelas quais você é responsável. Clicar no botão \\"
-"\"Adicionar\\\" vai mostrar uma lista de localizações para você escolher."
+"Estas são as áreas pelas quais você é responsável. Clicar no botão "
+"\"Adicionar\" vai mostrar uma lista de localizações para você escolher."
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
@@ -3672,7 +3672,7 @@ msgstr "Selecionar"
 #: dt-groups/base-setup.php:571
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr ""
-"Para adicionar novos membros, clique em \\\"Criar\\\" ou \\\"Selecionar\\\"."
+"Para adicionar novos membros, clique em \"Criar\" ou \"Selecionar\"."
 
 #: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
@@ -3685,7 +3685,7 @@ msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
 "to this group."
 msgstr ""
-"No campo \\\"Lista de Membros\\\", digite o nome de um contato existente "
+"No campo \"Lista de Membros\", digite o nome de um contato existente "
 "para adicioná-lo a este grupo."
 
 #: dt-groups/base-setup.php:606
@@ -4185,7 +4185,7 @@ msgstr "Contatos ativos, por origem e caminho do buscador"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
-msgstr "No momento, exibindo apenas os contatos com status \\\"ativo\\\"."
+msgstr "No momento, exibindo apenas os contatos com status \"ativo\"."
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
@@ -5426,7 +5426,7 @@ msgstr "Cobertura de Responsabilidade"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Administrador deve habilitar opção \\\"Adicionar Novos Usuários\\\" nas "
+"Administrador deve habilitar opção \"Adicionar Novos Usuários\" nas "
 "configurações multisite"
 
 #: dt-users/template-new-user.php:80

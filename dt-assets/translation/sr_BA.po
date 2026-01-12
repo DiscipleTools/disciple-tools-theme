@@ -259,7 +259,7 @@ msgstr ""
 "Koristeći trenutni filter, dostupne adrese e-pošte su grupisane po 50 i "
 "moguse otvoriti u vašem podrazumevanom klijentu e-pošte po grupi. "
 "Mnogiprovajderi e-pošte imaju ograničenje od 50 BCC adresa. Možete otvoriti "
-"svegrupe odjednom koristeći dugme \\\"Otvori sve\\\". Ako je lista "
+"svegrupe odjednom koristeći dugme \"Otvori sve\". Ako je lista "
 "prevelika,to može upozoriti vašeg provajdera e-pošte. BCC alat za e-poštu je "
 "namenjenza pomoć kod slanja e-pošte malim grupama. Masovno slanje e-pošte "
 "trebaobavljati preko provajdera za masovno slanje."
@@ -909,7 +909,7 @@ msgstr "Korišćene lokacije"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Nema rezultata koji se podudaraju sa \\\"{{query}}\\\""
+msgstr "Nema rezultata koji se podudaraju sa \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -989,11 +989,11 @@ msgstr "%3$s i %1$s su reagovali sa %2$s emodžijima"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Izaberite govorni jezik i kliknite \\\"Započni snimanje\\\" da biste počeli."
+"Izaberite govorni jezik i kliknite \"Započni snimanje\" da biste počeli."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Kliknite \\\"Započni snimanje\\\" da biste počeli."
+msgstr "Kliknite \"Započni snimanje\" da biste počeli."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -4156,7 +4156,7 @@ msgstr "Aktivni kontakti, prema izvoru i putu tragača"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
-msgstr "Ovo pokazuje samo kontakte koji sada imaju status \\\"aktivan\\\"."
+msgstr "Ovo pokazuje samo kontakte koji sada imaju status \"aktivan\"."
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"

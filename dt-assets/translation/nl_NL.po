@@ -260,7 +260,7 @@ msgstr ""
 "Met het huidige filter worden de beschikbare e-mails gegroepeerd per 50 en "
 "kunnen per groep worden geopend in uw standaard e-mailprogramma. Veel e-"
 "mailproviders hebben een limiet van 50 voor BCC-e-mails. U kunt alle groepen "
-"tegelijk openen met de knop \\\"Alles openen\\\". Als de lijst te groot is, "
+"tegelijk openen met de knop \"Alles openen\". Als de lijst te groot is, "
 "kan dit uw e-mailprovider waarschuwen. De BCC e-mail tool is bedoeld voor "
 "kleine groepen e-mails. Bulk e-mail moet worden afgehandeld via bulk e-"
 "mailproviders."
@@ -911,7 +911,7 @@ msgstr "Gebruikte Locaties"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Geen resultaten gevonden voor \\\"{{query}}\\\""
+msgstr "Geen resultaten gevonden voor \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -991,11 +991,11 @@ msgstr "%3$s en %1$s reageerden met %2$s emoji"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Selecteer de gesproken taal en klik op \\\"Opname starten\\\" om te beginnen."
+"Selecteer de gesproken taal en klik op \"Opname starten\" om te beginnen."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Klik op \\\"Opname starten\\\" om te beginnen."
+msgstr "Klik op \"Opname starten\" om te beginnen."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1576,8 +1576,8 @@ msgstr ""
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
-"Je kunt deze sectie filteren d.m.v. \\\"alles\\\", \\\"opmerkingen\\\" of \\"
-"\"Activiteiten\\\"."
+"Je kunt deze sectie filteren d.m.v. \"alles\", \"opmerkingen\" of "
+"\"Activiteiten\"."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
@@ -1603,7 +1603,7 @@ msgid ""
 "By clicking 'Edit', you will be able adjust things like the language that "
 "this system operates in."
 msgstr ""
-"Door op \\\"Wijzigen\\\" te klikken, kun je instellinge aanpassen zoals de "
+"Door op \"Wijzigen\" te klikken, kun je instellinge aanpassen zoals de "
 "taal waarin dit systeem opereert."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
@@ -1617,8 +1617,8 @@ msgid ""
 "These are the areas you are responsible for. Clicking the 'Add' button will "
 "bring up a list of locations to choose from."
 msgstr ""
-"Dit zijn de gebieden waar je verantwoordelijk voor bent. Door de \\\"voeg "
-"toe\\\" knop te klikken komt er een lijst tevoorschijn met locaties waaruit "
+"Dit zijn de gebieden waar je verantwoordelijk voor bent. Door de \"voeg "
+"toe\" knop te klikken komt er een lijst tevoorschijn met locaties waaruit "
 "je kunt kiezen."
 
 #: dt-assets/parts/modals/modal-help.php:72
@@ -1692,7 +1692,7 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
-"Klik op de \\\"Alles\\\" knop om de volledige lijst van al je notificaties "
+"Klik op de \"Alles\" knop om de volledige lijst van al je notificaties "
 "te tonen."
 
 #: dt-assets/parts/modals/modal-help.php:91
@@ -1701,7 +1701,7 @@ msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
 msgstr ""
-"Klik op de \\\"ongelezen\\\" knop om de lijst te tonen van al je ongelezen "
+"Klik op de \"ongelezen\" knop om de lijst te tonen van al je ongelezen "
 "notificaties."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
@@ -1718,8 +1718,8 @@ msgid ""
 "been read."
 msgstr ""
 "Als je niet elk gevulde cirkeltje aan de rechter kant van elke rij wilt "
-"aanklikken om aan te geven dat de notificatie gelezen is, klik dan op \\"
-"\"Markeer alles als Gelezen\\\" link bovenaan om snel aan te geven dat alle "
+"aanklikken om aan te geven dat de notificatie gelezen is, klik dan op "
+"\"Markeer alles als Gelezen\" link bovenaan om snel aan te geven dat alle "
 "berichten gelezen zijn."
 
 #: dt-assets/parts/modals/modal-help.php:95
@@ -1731,7 +1731,7 @@ msgid ""
 "whether to you will receive a notification for any update that happens in "
 "the system."
 msgstr ""
-"Klik op de \\\"instellingen\\\" link om naar de notificatie instellingen te "
+"Klik op de \"instellingen\" link om naar de notificatie instellingen te "
 "gaan om aan te passen of je notificaties wilt zien van nieuwe opmerkingen, "
 "Contact informatie veranderingen, Contact mijlpalen en Groep Gezondheid "
 "Statistieken en of je notificaties wilt krijgen van updates die in het "
@@ -3687,7 +3687,7 @@ msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
 "to this group."
 msgstr ""
-"In het \\\"ledenlijst\\\" veld, typ de naam van een bestaand contact om ze "
+"In het \"ledenlijst\" veld, typ de naam van een bestaand contact om ze "
 "aan deze groep toe te voegen."
 
 #: dt-groups/base-setup.php:606
@@ -5424,7 +5424,7 @@ msgstr "Verantwoordelijkheidsdekking"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Beheerder moet de optie \\\"Nieuwe gebruikers toevoegen\\\" inschakelen in "
+"Beheerder moet de optie \"Nieuwe gebruikers toevoegen\" inschakelen in "
 "multisite-instellingen:"
 
 #: dt-users/template-new-user.php:80

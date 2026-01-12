@@ -4157,7 +4157,7 @@ msgstr "Aktivni stiki po viru in iskalni poti"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
-msgstr "Trenutno so prikazani samo stiki s statusom \\\"aktiven\\\"."
+msgstr "Trenutno so prikazani samo stiki s statusom \"aktiven\"."
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
@@ -5404,7 +5404,7 @@ msgstr "Pokritost odgovornosti"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"﻿Skrbnik mora omogočiti možnost \\\"Dodaj nove uporabnike\\\" v nastavitvah "
+"﻿Skrbnik mora omogočiti možnost \"Dodaj nove uporabnike\" v nastavitvah "
 "za več strani:"
 
 #: dt-users/template-new-user.php:80

@@ -256,7 +256,7 @@ msgstr ""
 "Ta amfani da tacen yanzu, imel din da ake samu an tsara su ta rukuni na 50 "
 "kuma ana iya tura su zuwa aikace-aikacen imel na asali ta rukuni. Masu ba da "
 "imel da yawa suna sanya iyaka na 50 akan imel din BCC. Kuna iya bude duk "
-"rukunoni a lokaci guda ta amfani da maballin \\\\\\\"Bude Duka\\\\\\\". Idan "
+"rukunoni a lokaci guda ta amfani da maballin \"Bude Duka\". Idan "
 "jerin ya yi yawa, wannan zai iya jan hankalin mai ba da imel. Kayan aikin "
 "imel na BCC an yi shi don taimakawa imel din kananan kungiyoyi. Ya kamata a "
 "sarrafa imel masu yawa ta hanyar masu ba da imel masu yawa."
@@ -905,7 +905,7 @@ msgstr "Wuraren da Ake Amfani dasu"
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
 msgstr ""
-"Babu sakamakon da aka samu wanda yayi daidai da \\\\\\\"{{query}}\\\\\\\""
+"Babu sakamakon da aka samu wanda yayi daidai da \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -985,11 +985,11 @@ msgstr "%3$s da %1$s sun yi aiki tare da emoji %2$s"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Zabi harshen magana kuma danna \\\\\\\"Fara Rikodin\\\\\\\" don farawa."
+"Zabi harshen magana kuma danna \"Fara Rikodin\" don farawa."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Danna \\\\\\\"Fara Rikodin\\\\\\\" don farawa."
+msgstr "Danna \"Fara Rikodin\" don farawa."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5401,7 +5401,7 @@ msgstr "Verageaukar Nauyi"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Dole ne mai gudanarwa ya kunna zaɓin \\\\\\\"Ƙara Sabbin Masu amfani\\\\\\\" "
+"Dole ne mai gudanarwa ya kunna zaɓin \"Ƙara Sabbin Masu amfani\" "
 "a cikin saitunan da yawa:"
 
 #: dt-users/template-new-user.php:80

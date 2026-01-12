@@ -253,7 +253,7 @@ msgid ""
 msgstr ""
 "ໃຊ້ຕົວກອງປະຈຸບັນ, ອີເມວທີ່ມີຢູ່ຈະຖືກຈັດກຸ່ມເປັນ 50 "
 "ແລະສາມາດເປີດໃນໂປຣແກມອີເມວເລີ່ມຕົ້ນຂອງທ່ານເປັນກຸ່ມໄດ້. ຜູ້ໃຫ້ບໍລິການອີເມວຫຼາຍລາຍຈຳກັດ BCC ໄວ້ທີ່ 50 "
-"ອີເມວ. ທ່ານສາມາດເປີດທຸກກຸ່ມພ້ອມກັນໂດຍໃຊ້ປຸ່ມ \\\"ເປີດທັງໝົດ\\\". ຖ້າລາຍຊື່ໃຫຍ່ເກີນໄປ, "
+"ອີເມວ. ທ່ານສາມາດເປີດທຸກກຸ່ມພ້ອມກັນໂດຍໃຊ້ປຸ່ມ \"ເປີດທັງໝົດ\". ຖ້າລາຍຊື່ໃຫຍ່ເກີນໄປ, "
 "ອາດຈະເຕືອນຜູ້ໃຫ້ບໍລິການອີເມວຂອງທ່ານ. ເຄື່ອງມືອີເມວ BCC ມີໄວ້ສຳລັບຊ່ວຍສົ່ງອີເມວກຸ່ມນ້ອຍ. "
 "ອີເມວຈຳນວນຫຼາຍຄວນຈັດການຜ່ານຜູ້ໃຫ້ບໍລິການອີເມວຈຳນວນຫຼາຍ."
 
@@ -897,7 +897,7 @@ msgstr "ສະຖານທີ່ທີ່ໃຊ້ແລ້ວ"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "ບໍ່ພົບຜົນໄດ້ຮັບທີ່ກົງກັບ \\\"{{ສອບຖາມ}}\\\""
+msgstr "ບໍ່ພົບຜົນໄດ້ຮັບທີ່ກົງກັບ \"{{ສອບຖາມ}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -976,11 +976,11 @@ msgstr "%3$s ແລະ %1$s reacted ກັບ emoji %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "ເລືອກພາສາເວົ້າ ແລະກົດ \\\"ເລີ່ມບັນທຶກ\\\" ເພື່ອເລີ່ມຕົ້ນ."
+msgstr "ເລືອກພາສາເວົ້າ ແລະກົດ \"ເລີ່ມບັນທຶກ\" ເພື່ອເລີ່ມຕົ້ນ."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "ກົດ \\\"ເລີ່ມບັນທຶກ\\\" ເພື່ອເລີ່ມຕົ້ນ."
+msgstr "ກົດ \"ເລີ່ມບັນທຶກ\" ເພື່ອເລີ່ມຕົ້ນ."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5302,7 +5302,7 @@ msgstr "ຄວາມຮັບຜິດຊອບ"
 #: dt-users/template-new-user.php:16
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
-msgstr "ຜູ້ເບິ່ງແຍງລະບົບຕ້ອງເປີດໃຊ້ຕົວເລືອກ \\\"ເພີ່ມຜູ້ໃຊ້ໃໝ່\\\" ໃນການຕັ້ງຄ່າຫຼາຍເວັບໄຊ:"
+msgstr "ຜູ້ເບິ່ງແຍງລະບົບຕ້ອງເປີດໃຊ້ຕົວເລືອກ \"ເພີ່ມຜູ້ໃຊ້ໃໝ່\" ໃນການຕັ້ງຄ່າຫຼາຍເວັບໄຊ:"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"

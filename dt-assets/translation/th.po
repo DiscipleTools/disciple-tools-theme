@@ -252,7 +252,7 @@ msgid ""
 msgstr ""
 "เมื่อใช้ตัวกรองปัจจุบัน อีเมลที่มีอยู่จะถูกจัดกลุ่มทีละ 50 "
 "และสามารถเปิดในโปรแกรมอีเมลเริ่มต้นของคุณได้ ผู้ให้บริการอีเมลหลายรายจำกัด BCC ไว้ที่ 50 "
-"รายการ คุณสามารถเปิดทุกกลุ่มพร้อมกันโดยใช้ปุ่ม \\\"เปิดทั้งหมด\\\" หากรายการใหญ่เกินไป "
+"รายการ คุณสามารถเปิดทุกกลุ่มพร้อมกันโดยใช้ปุ่ม \"เปิดทั้งหมด\" หากรายการใหญ่เกินไป "
 "อาจเตือนผู้ให้บริการอีเมลของคุณ เครื่องมือ BCC มีไว้สำหรับอีเมลกลุ่มเล็ก "
 "การส่งอีเมลจำนวนมากควรใช้ผู้ให้บริการอีเมลจำนวนมาก"
 
@@ -896,7 +896,7 @@ msgstr "สถานที่ที่ใช้"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "ไม่พบผลลัพธ์ที่ตรงกับ \\\"{{query}}\\\""
+msgstr "ไม่พบผลลัพธ์ที่ตรงกับ \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -975,11 +975,11 @@ msgstr "%3$s และ %1$s ตอบด้วยอีโมจิ %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "เลือกภาษาพูดและคลิก \\\"เริ่มบันทึก\\\" เพื่อเริ่มต้น"
+msgstr "เลือกภาษาพูดและคลิก \"เริ่มบันทึก\" เพื่อเริ่มต้น"
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "คลิก \\\"เริ่มบันทึก\\\" เพื่อเริ่มต้น"
+msgstr "คลิก \"เริ่มบันทึก\" เพื่อเริ่มต้น"
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1549,7 +1549,7 @@ msgstr "ส่วนนี้ยังรวมถึงประวัติข
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
-msgstr "คุณสามารถกรองส่วนนี้ตาม \\\"ทั้งหมด\\\" \\\"ความคิดเห็น\\\" หรือ \\\"กิจกรรม\\\""
+msgstr "คุณสามารถกรองส่วนนี้ตาม \"ทั้งหมด\" \"ความคิดเห็น\" หรือ \"กิจกรรม\""
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
@@ -1654,14 +1654,14 @@ msgstr "ทั้งหมด / ยังไม่ได้อ่าน"
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
-msgstr "คลิกปุ่ม \\\"ทั้งหมด\\\" เพื่อแสดงรายการการแจ้งเตือนทั้งหมดของคุณ"
+msgstr "คลิกปุ่ม \"ทั้งหมด\" เพื่อแสดงรายการการแจ้งเตือนทั้งหมดของคุณ"
 
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
-msgstr "คลิกปุ่ม \\\"ยังไม่ได้อ่าน\\\" เพื่อแสดงรายการการแจ้งเตือนที่ยังไม่ได้อ่านทั้งหมดของคุณ"
+msgstr "คลิกปุ่ม \"ยังไม่ได้อ่าน\" เพื่อแสดงรายการการแจ้งเตือนที่ยังไม่ได้อ่านทั้งหมดของคุณ"
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
 #: template-notifications.php:66
@@ -1677,7 +1677,7 @@ msgid ""
 "been read."
 msgstr ""
 "หากคุณไม่ต้องการคลิกแต่ละช่องที่เต็มไปด้วยวงกลมทางด้านขวาของแต่ละแถวเพื่อระบุว่าได้อ่านการแจ้งเตือนแล้วให้คลิกลิงก์ "
-"\\\"ทำเครื่องหมายทั้งหมดว่าอ่านแล้ว\\\" ที่ด้านบนเพื่อปรับข้อความทั้งหมดที่มีทั้งหมดอย่างรวดเร็ว "
+"\"ทำเครื่องหมายทั้งหมดว่าอ่านแล้ว\" ที่ด้านบนเพื่อปรับข้อความทั้งหมดที่มีทั้งหมดอย่างรวดเร็ว "
 "ถูกอ่าน"
 
 #: dt-assets/parts/modals/modal-help.php:95
@@ -1689,7 +1689,7 @@ msgid ""
 "whether to you will receive a notification for any update that happens in "
 "the system."
 msgstr ""
-"คลิกลิงก์ \\\"การตั้งค่า\\\" "
+"คลิกลิงก์ \"การตั้งค่า\" "
 "เพื่อไปยังพื้นที่การตั้งค่าการแจ้งเตือนเพื่อปรับว่าคุณต้องการดูการแจ้งเตือนเกี่ยวกับความคิดเห็นใหม่การเปลี่ยนแปลงข้อมูลการติดต่อเหตุการณ์สำคัญในการติดต่อและเมตริกสุขภาพกลุ่มหรือไม่และคุณจะได้รับการแจ้งเตือนสำหรับการอัปเดตใด "
 "ๆ ที่เกิดขึ้นใน ระบบ."
 
@@ -5299,7 +5299,7 @@ msgstr "ความครอบคลุมความรับผิดชอ
 #: dt-users/template-new-user.php:16
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
-msgstr "ผู้ดูแลระบบจะต้องเปิดใช้งานตัวเลือก \\\"เพิ่มผู้ใช้ใหม่\\\" ในการตั้งค่ามัลติไซต์:"
+msgstr "ผู้ดูแลระบบจะต้องเปิดใช้งานตัวเลือก \"เพิ่มผู้ใช้ใหม่\" ในการตั้งค่ามัลติไซต์:"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"

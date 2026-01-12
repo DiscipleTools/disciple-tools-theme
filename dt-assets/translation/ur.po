@@ -256,8 +256,8 @@ msgid ""
 msgstr ""
 "موجودہ فلٹر کا استعمال کرتے ہوئے، دستیاب ای میلز کو 50 کے گروپ میں تقسیم کیا "
 "گیا ہے اور انہیں گروپ کے لحاظ سے آپ کے ڈیفالٹ ای میل کلائنٹ میں کھولا جا "
-"سکتا ہے۔ بہت سے ای میل فراہم کنندگان BCC ای میلز پر 50 کی حد رکھتے ہیں۔ آپ \\"
-"\"سب کھولیں\\\" بٹن کا استعمال کرتے ہوئے تمام گروپس کو ایک ساتھ کھول سکتے "
+"سکتا ہے۔ بہت سے ای میل فراہم کنندگان BCC ای میلز پر 50 کی حد رکھتے ہیں۔ آپ "
+"\"سب کھولیں\" بٹن کا استعمال کرتے ہوئے تمام گروپس کو ایک ساتھ کھول سکتے "
 "ہیں۔ اگر فہرست بہت بڑی ہے تو یہ آپ کے ای میل فراہم کنندہ کو الرٹ کر سکتا ہے۔ "
 "BCC ای میل ٹول چھوٹے گروپ ای میلز میں مدد کے لیے ہے۔ بلک ای میل کو بلک ای "
 "میل فراہم کنندگان کے ذریعے ہینڈل کیا جانا چاہیے۔"
@@ -907,7 +907,7 @@ msgstr "استعمال شدہ مقامات"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "\\\"{{سوال}}\\\" کے مماثل کوئی نتائج نہیں ملے۔"
+msgstr "\"{{سوال}}\" کے مماثل کوئی نتائج نہیں ملے۔"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -987,12 +987,12 @@ msgstr "%3$s اور %1$s نے %2$s ایموجی کے ساتھ رد عمل ظاہ
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"بولی جانے والی زبان منتخب کریں اور شروع کرنے کے لیے \\\"ریکارڈنگ شروع کریں\\"
+"بولی جانے والی زبان منتخب کریں اور شروع کرنے کے لیے \"ریکارڈنگ شروع کریں"
 "\" پر کلک کریں۔"
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "شروع کرنے کے لیے \\\"ریکارڈنگ شروع کریں\\\" پر کلک کریں۔"
+msgstr "شروع کرنے کے لیے \"ریکارڈنگ شروع کریں\" پر کلک کریں۔"
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5401,7 +5401,7 @@ msgstr "ذمہ داری کوریج"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"ایڈمنسٹریٹر کو ملٹی سائٹ سیٹنگز میں \\\"Add New Users\\\" آپشن کو فعال کرنا "
+"ایڈمنسٹریٹر کو ملٹی سائٹ سیٹنگز میں \"Add New Users\" آپشن کو فعال کرنا "
 "ہوگا۔"
 
 #: dt-users/template-new-user.php:80

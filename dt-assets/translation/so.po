@@ -260,7 +260,7 @@ msgstr ""
 "qaybiyay 50-50 waxaana loo soo diri karaa macmiilkaaga iimaylka caadiga ah "
 "koox. Bixiyeyaasha iimaylka badankood waxay xad saaran yihiin 50 iimaylka "
 "BCC. Waxaad fur kartaa dhammaan kooxaha hal mar adiga oo isticmaalaya "
-"badhanka \\\"Fur Dhamaan\\\". Haddii liiskaani aad u weyn yahay, tani waxay "
+"badhanka \"Fur Dhamaan\". Haddii liiskaani aad u weyn yahay, tani waxay "
 "u soo ogeysiinaysaa bixiyaha iimaylkaaga. Qalabka iimaylka BCC waxaa loogu "
 "talagalay inuu caawiyo iimaylasha kooxda yaryar. Iimaylasha badan waa inay "
 "ka maaraan bixiyeyaasha iimaylka badan."
@@ -910,7 +910,7 @@ msgstr "Goobaha la Isticmaalay"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Lama helin natiijooyin u dhigma \\\"{{query}}\\\""
+msgstr "Lama helin natiijooyin u dhigma \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -990,11 +990,11 @@ msgstr "%3$s iyo %1$s ayaa lagu falceliyay emoji %2$s"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Dooro luqadda la hadlayo oo dhagsii \\\"Bilow Duubista\\\" si aad u bilowdo."
+"Dooro luqadda la hadlayo oo dhagsii \"Bilow Duubista\" si aad u bilowdo."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Riix \\\"Bilow Duubista\\\" si aad u bilowdo."
+msgstr "Riix \"Bilow Duubista\" si aad u bilowdo."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5438,7 +5438,7 @@ msgstr "Daboolida Masuuliyada"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Maamulaha waa inuu hawlgeliyaa ikhtiyaarka \\\"Ku dar Isticmaalayaal Cusub\\"
+"Maamulaha waa inuu hawlgeliyaa ikhtiyaarka \"Ku dar Isticmaalayaal Cusub"
 "\" dejinta goobaha badan:"
 
 #: dt-users/template-new-user.php:80

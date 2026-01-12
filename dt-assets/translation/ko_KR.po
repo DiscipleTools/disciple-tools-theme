@@ -253,7 +253,7 @@ msgid ""
 msgstr ""
 "현재 필터를 사용하여 이메일은 50개씩 그룹화되어 기본 이메일 클라이언트에서 그"
 "룹별로 열 수 있습니다. 많은 이메일 제공업체에서 숨은 참조 이메일을 50개로 제"
-"한합니다. \\\"모두 열기\\\" 버튼을 사용하여 모든 그룹을 한 번에 열 수 있습니"
+"한합니다. \"모두 열기\" 버튼을 사용하여 모든 그룹을 한 번에 열 수 있습니"
 "다. 목록이 너무 크면 이메일 제공업체에서 알림이 표시될 수 있습니다. 숨은 참"
 "조 이메일 도구는 소규모 그룹 이메일을 지원하기 위한 것입니다. 대량 이메일은대"
 "량 이메일 제공업체를 통해 처리해야 합니다."
@@ -902,7 +902,7 @@ msgstr "사용한 위치"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "\\\"{{query}}\\\"에 일치하는 검색 결과가 없습니다"
+msgstr "\"{{query}}\"에 일치하는 검색 결과가 없습니다"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -981,11 +981,11 @@ msgstr "%3$s 및 %1$s님이 %2$s 이모지에 반응했습니다"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "음성 언어를 선택하고 \\\"녹음 시작\\\"을 클릭하여 시작하세요."
+msgstr "음성 언어를 선택하고 \"녹음 시작\"을 클릭하여 시작하세요."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "\\\"녹음 시작\\\"을 클릭하여 시작하세요."
+msgstr "\"녹음 시작\"을 클릭하여 시작하세요."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -3623,7 +3623,7 @@ msgid ""
 "In the 'Member List' field, type the name of an existing contact to add "
 "themto this group."
 msgstr ""
-"\\\"멤버 목록\\\" 항목에는 기존 연락처의 이름을 입력해 멤버들을 이 그룹에 추"
+"\"멤버 목록\" 항목에는 기존 연락처의 이름을 입력해 멤버들을 이 그룹에 추"
 "가합니다."
 
 #: dt-groups/base-setup.php:606
@@ -5339,7 +5339,7 @@ msgstr "책임 범위"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"관리자가 멀티사이트 설정에서 \\\"새 사용자 추가\\\" 옵션을 허용해야 합니다."
+"관리자가 멀티사이트 설정에서 \"새 사용자 추가\" 옵션을 허용해야 합니다."
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"

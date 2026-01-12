@@ -253,7 +253,7 @@ msgid ""
 msgstr ""
 "වත්මන් පෙරහන භාවිතයෙන්, ලබාගත හැකි විද්‍යුත් තැපැල් 50 බැගින් කණ්ඩායම් කර ඇති අතර කණ්ඩායම අනුව "
 "ඔබේ පෙරනිමි විද්‍යුත් තැපැල් සේවාලාභියා වෙත දියත් කළ හැක. බොහෝ විද්‍යුත් තැපැල් සපයන්නන් BCC "
-"විද්‍යුත් තැපැල් සඳහා 50ක සීමාවක් තබයි. \\\"සියල්ල විවෘත කරන්න\\\" බොත්තම භාවිතයෙන් ඔබට සියලු "
+"විද්‍යුත් තැපැල් සඳහා 50ක සීමාවක් තබයි. \"සියල්ල විවෘත කරන්න\" බොත්තම භාවිතයෙන් ඔබට සියලු "
 "කණ්ඩායම් එකවර විවෘත කළ හැක. ලැයිස්තුව ඉතා විශාල නම්, මෙය ඔබේ විද්‍යුත් තැපැල් සපයන්නාට දැනුම් "
 "දිය හැක. BCC විද්‍යුත් තැපැල් මෙවලම කුඩා කණ්ඩායම් විද්‍යුත් තැපැල් සඳහා සහාය වීමට අදහස් කරයි. "
 "තොග විද්‍යුත් තැපැල් තොග විද්‍යුත් තැපැල් සපයන්නන් හරහා හසුරුවා ගත යුතුය."
@@ -901,7 +901,7 @@ msgstr "භාවිතා කළ ස්ථාන"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "\\\"{{query}}\\\" ට ගැළපෙන ප්‍රතිඵල කිසිවක් හමු නොවිණි"
+msgstr "\"{{query}}\" ට ගැළපෙන ප්‍රතිඵල කිසිවක් හමු නොවිණි"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -980,11 +980,11 @@ msgstr "%3$s සහ %1$s %2$s ඉමොජි සමඟ ප්‍රතිචා
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "කථන භාෂාව තෝරා ආරම්භ කිරීමට \\\"පටිගත කිරීම ආරම්භ කරන්න\\\" ක්ලික් කරන්න."
+msgstr "කථන භාෂාව තෝරා ආරම්භ කිරීමට \"පටිගත කිරීම ආරම්භ කරන්න\" ක්ලික් කරන්න."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "ආරම්භ කිරීමට \\\"පටිගත කිරීම ආරම්භ කරන්න\\\" ක්ලික් කරන්න."
+msgstr "ආරම්භ කිරීමට \"පටිගත කිරීම ආරම්භ කරන්න\" ක්ලික් කරන්න."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5340,7 +5340,7 @@ msgstr "වගකීම් ආවරණය"
 #: dt-users/template-new-user.php:16
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
-msgstr "පරිපාලකයා බහුඅඩවි සැකසීම් තුළ \\\"නව පරිශීලකයින් එක් කරන්න\\\" විකල්පය සබල කළ යුතුය:"
+msgstr "පරිපාලකයා බහුඅඩවි සැකසීම් තුළ \"නව පරිශීලකයින් එක් කරන්න\" විකල්පය සබල කළ යුතුය:"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"

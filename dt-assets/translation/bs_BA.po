@@ -258,7 +258,7 @@ msgstr ""
 "Koristeći trenutni filter, dostupne e-poruke su grupisane po 50 i mogu biti "
 "grupno poslane putem vašeg odabranog klijenta e-pošte. Mnogi provajderi e-"
 "pošte postavljaju ograničenje od 50 na BCC emailove. Možete otvoriti sve "
-"grupe odjednom koristeći dugme \\\"Otvori sve\\\". Ako je lista prevelika, "
+"grupe odjednom koristeći dugme \"Otvori sve\". Ako je lista prevelika, "
 "to može upozoriti vašeg provajdera e-pošte. BCC alat za e-poštu je "
 "namijenjen za pomoć pri slanju e-pošte u malim grupama. Masovnom e-poštom "
 "treba rukovati putem provajdera masovne e-pošte."
@@ -907,7 +907,7 @@ msgstr "Korištene lokacije"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Nisu pronađeni rezultati koji se podudaraju sa \\\"{{query}}\\\""
+msgstr "Nisu pronađeni rezultati koji se podudaraju sa \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -987,11 +987,11 @@ msgstr "%3$s i %1$s su reagirali s %2$s emoji"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Odaberite govorni jezik i kliknite \\\"Započni snimanje\\\" za početak."
+"Odaberite govorni jezik i kliknite \"Započni snimanje\" za početak."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Kliknite \\\"Započni snimanje\\\" za početak."
+msgstr "Kliknite \"Započni snimanje\" za početak."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1691,7 +1691,7 @@ msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
 msgstr ""
-"Kliknite dugme \\\"Nepročitano\\\" da biste prikazali listu svih svojih "
+"Kliknite dugme \"Nepročitano\" da biste prikazali listu svih svojih "
 "nepročitanih obavijesti."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
@@ -1708,8 +1708,8 @@ msgid ""
 "been read."
 msgstr ""
 "Ako ne želite kliknuti svaki popunjeni krug s desne strane svakog reda da "
-"biste označili da je obavijest pročitana, kliknite vezu \\\"Označite sve kao "
-"pročitano\\\" na vrhu da biste brzo prilagodili sve poruke koje su pročitane."
+"biste označili da je obavijest pročitana, kliknite vezu \"Označite sve kao "
+"pročitano\" na vrhu da biste brzo prilagodili sve poruke koje su pročitane."
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
@@ -5399,7 +5399,7 @@ msgstr "Obuhvat odgovornosti"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Administrator mora omogućiti opciju \\\"Dodaj nove korisnike\\\" u "
+"Administrator mora omogućiti opciju \"Dodaj nove korisnike\" u "
 "postavkama za više lokacija:"
 
 #: dt-users/template-new-user.php:80

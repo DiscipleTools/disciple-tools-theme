@@ -262,7 +262,7 @@ msgstr ""
 "raggruppati in gruppi da 50 e possono essere mandati in gruppo al tuo client "
 "di posta elettronica predefinito. Tanti provider di posta elettronica "
 "mettono un limite di 50 per le email bcc. Puoi aprire tutti i gruppi nello "
-"stesso momento utilizzando il pulsante \\\"Apri Tutti\\\". Se l'elenco è "
+"stesso momento utilizzando il pulsante \"Apri Tutti\". Se l'elenco è "
 "troppo numeroso, il tuo provider potrebbe ricevere una segnalazione. "
 "L'intento dietro allo strumento per le email bcc è di aiutare con le email a "
 "piccoli gruppi. Le email di massa dovrebbero essere gestite dai provider di "
@@ -915,7 +915,7 @@ msgstr "Località Utilizzate"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Nessun risultato per \\\"{{query}}\\\""
+msgstr "Nessun risultato per \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -995,12 +995,12 @@ msgstr "%3$s e %1$s hanno risposto con %2$s emoji"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Scegli la lingua parlata e clicca su \\\"Inizia la Registrazione\\\" per "
+"Scegli la lingua parlata e clicca su \"Inizia la Registrazione\" per "
 "cominciare."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Clicca su \\\"Inizia La Registrazione\\\" per cominciare."
+msgstr "Clicca su \"Inizia La Registrazione\" per cominciare."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5447,7 +5447,7 @@ msgstr "Copertura di Responsabilità"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"L'amministratore deve attivare l'opzione \\\"Aggiungi nuovi utenti\\\" nelle "
+"L'amministratore deve attivare l'opzione \"Aggiungi nuovi utenti\" nelle "
 "opzioni del multisito:"
 
 #: dt-users/template-new-user.php:80

@@ -252,7 +252,7 @@ msgid ""
 "email should be handled through bulk email providers."
 msgstr ""
 "የአሁኑን ማጣሪያ በመጠቀም፣ የሚገኙት ኢሜይሎች በ50 ተቧድነዋል እና በቡድን ወደ ነባሪ የኢሜይል ደንበኛዎ ሊከፈቱ "
-"ይችላሉ። ብዙ የኢሜይል አቅራቢዎች በBCC ኢሜይሎች ላይ የ50 ገደብ ያስቀምጣሉ። \\\"ሁሉንም ክፈት\\\" የሚለውን "
+"ይችላሉ። ብዙ የኢሜይል አቅራቢዎች በBCC ኢሜይሎች ላይ የ50 ገደብ ያስቀምጣሉ። \"ሁሉንም ክፈት\" የሚለውን "
 "አዝራር በመጠቀም ሁሉንም ቡድኖች በአንድ ጊዜ መክፈት ይችላሉ። ዝርዝሩ በጣም ከፍተኛ ከሆነ፣ ይህ የኢሜይል አቅራቢዎን "
 "ሊያስጠንቅቅ ይችላል። የBCC ኢሜይል መሳሪያ ትናንሽ ቡድን ኢሜይሎችን ለማገዝ የተሰራ ነው። የጅምላ ኢሜይል በጅምላ "
 "ኢሜይል አቅራቢዎች በኩል መያዝ አለበት።"
@@ -897,7 +897,7 @@ msgstr "ያገለገሉ ቦታዎች"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "ከ \\\"{{query}}\\\" ጋር የሚዛመድ ምንም ውጤቶች አልተገኙም"
+msgstr "ከ \"{{query}}\" ጋር የሚዛመድ ምንም ውጤቶች አልተገኙም"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -976,11 +976,11 @@ msgstr "%3$s እና %1$s ከ %2$s ገላጭ ምስል ጋር ምላሽ ሰጥተ
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "የተናገሩትን ቋንቋ ይምረጡ እና ለመጀመር \\\"መቅረጽ ጀምር\\\" ላይ ጠቅ ያድርጉ።"
+msgstr "የተናገሩትን ቋንቋ ይምረጡ እና ለመጀመር \"መቅረጽ ጀምር\" ላይ ጠቅ ያድርጉ።"
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "ለመጀመር \\\"ቀረጻ ጀምር\\\" ላይ ጠቅ ያድርጉ።"
+msgstr "ለመጀመር \"ቀረጻ ጀምር\" ላይ ጠቅ ያድርጉ።"
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1518,7 +1518,7 @@ msgid ""
 "you attempted to reach this contact 4 times, but they did not answer. This "
 "action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"ለምሳሌ፣ \\\"መልስ የለም\\\" የሚለውን ቁልፍ 4 ጊዜ ጠቅ ካደረጉ፣ ይህንን ግንኙነት 4 ጊዜ ለመድረስ እንደሞከሩ "
+"ለምሳሌ፣ \"መልስ የለም\" የሚለውን ቁልፍ 4 ጊዜ ጠቅ ካደረጉ፣ ይህንን ግንኙነት 4 ጊዜ ለመድረስ እንደሞከሩ "
 "እንገልፃለን፣ ግን መልስ አልሰጡም። ይህ እርምጃ እንዲሁ ‹ፈላጊ ዱካ› ወደ ‹የእውቂያ ሙከራ› ይለውጠዋል።"
 
 #: dt-assets/parts/modals/modal-help.php:27
@@ -5313,7 +5313,7 @@ msgstr "የኃላፊነት ሽፋን"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"አስተዳዳሪ በባለብዙ ጣቢያ ቅንብሮች ውስጥ \\\"አዲስ ተጠቃሚዎችን አክል\\\" የሚለውን አማራጭ ማንቃት አለበት፡-"
+"አስተዳዳሪ በባለብዙ ጣቢያ ቅንብሮች ውስጥ \"አዲስ ተጠቃሚዎችን አክል\" የሚለውን አማራጭ ማንቃት አለበት፡-"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"

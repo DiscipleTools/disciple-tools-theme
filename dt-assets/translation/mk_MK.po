@@ -258,7 +258,7 @@ msgstr ""
 "Користејќи го моменталниот филтер, достапните е-пошти се групирани по 50 "
 "иможе да се отворат во вашиот стандарден клиент за е-пошта по група. "
 "Многупровајдери на е-пошта ставаат ограничување од 50 за BCC е-пошти. Може "
-"да гиотворите сите групи одеднаш со копчето \\\\\\\"Отвори ги сите\\\\\\"
+"да гиотворите сите групи одеднаш со копчето \"Отвори ги сите"
 "\".Доколку листата е премногу голема, ова може да го предупреди "
 "вашиотпровајдер за е-пошта. Алатката за BCC е-пошта е наменета за помош "
 "прииспраќање е-пошти на мали групи. Масовната е-пошта треба да се "
@@ -908,7 +908,7 @@ msgstr "Употребени локации"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Нема резултати кои содржат \\\\\\\"{{query}}\\\\\\\""
+msgstr "Нема резултати кои содржат \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -988,12 +988,12 @@ msgstr "%3$s и %1$s реагираа со %2$s емотикони"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Изберете говорен јазик и кликнете \\\\\\\"Започни снимање\\\\\\\" за "
+"Изберете говорен јазик и кликнете \"Започни снимање\" за "
 "дазапочнете."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Кликнете \\\\\\\"Започни снимање\\\\\\\" за да започнете."
+msgstr "Кликнете \"Започни снимање\" за да започнете."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."

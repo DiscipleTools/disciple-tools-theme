@@ -257,7 +257,7 @@ msgstr ""
 "zinaweza kuzinduliwa katika mteja wako chaguo-msingi wa barua pepe "
 "kwakikundi. Watoa huduma wengi wa barua pepe huweka kikomo cha 50 kwenye "
 "baruapepe za BCC. Unaweza kufungua vikundi vyote mara moja kwa kutumia "
-"kitufe cha\\\"Fungua Zote\\\". Ikiwa orodha ni kubwa sana, hii inaweza "
+"kitufe cha\"Fungua Zote\". Ikiwa orodha ni kubwa sana, hii inaweza "
 "kumuarifu mtoahuduma wako wa barua pepe. Zana ya barua pepe ya BCC "
 "inakusudiwa kusaidiabarua pepe za vikundi vidogo. Barua pepe nyingi "
 "zinapaswa kushughulikiwakupitia watoa huduma wengi wa barua pepe."
@@ -907,7 +907,7 @@ msgstr "Maeneo"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Hakuna matokeo yaliyopatikana yanayofanana na \\\"{{query}}\\\""
+msgstr "Hakuna matokeo yaliyopatikana yanayofanana na \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -986,11 +986,11 @@ msgstr "%3$s na %1$s wamejibu na emoji %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "Chagua lugha inayozungumzwa na ubofye \\\"Anza Kurekodi\\\" kuanza."
+msgstr "Chagua lugha inayozungumzwa na ubofye \"Anza Kurekodi\" kuanza."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Bofya \\\"Anza Kurekodi\\\" kuanza."
+msgstr "Bofya \"Anza Kurekodi\" kuanza."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1474,7 +1474,7 @@ msgstr "imeteuliwa."
 
 #: dt-assets/parts/merge-details.php:60
 msgid "Click merge to continue."
-msgstr "Bofya \\\"unganisha\\\" ili kuendelea."
+msgstr "Bofya \"unganisha\" ili kuendelea."
 
 #: dt-assets/parts/modals/modal-advanced-search.php:11
 msgid "Search Query..."
@@ -5387,7 +5387,7 @@ msgstr "Chanjo ya uwajibikaji"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Msimamizi lazima awashe chaguo la \\\"Ongeza Watumiaji Wapya\\\" "
+"Msimamizi lazima awashe chaguo la \"Ongeza Watumiaji Wapya\" "
 "katikamipangilio ya tovuti nyingi:"
 
 #: dt-users/template-new-user.php:80
@@ -6106,7 +6106,7 @@ msgid ""
 "wesuggest not using a personal photo, but instead choose a cartoon, "
 "abstract,or alias photo to represent you."
 msgstr ""
-"Mfumo wa Disciple Tools hauhifadhi picha. Kwa ajili ya picha za \\\"profile\\"
+"Mfumo wa Disciple Tools hauhifadhi picha. Kwa ajili ya picha za \"profile"
 "\" tunatumia Gravatar (Globally Recognized Avatar). Ukiwa na wasiwasi juu "
 "yausalama, tunapendekeza kuwa usitumie picha yako binafsi, lakini badala "
 "yakeunaweza kutumia katuni, picha kidhahania, au picha ya bandia "

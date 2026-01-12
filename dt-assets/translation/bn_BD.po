@@ -255,7 +255,7 @@ msgid ""
 msgstr ""
 "বর্তমান ফিল্টার ব্যবহার করে, উপলব্ধ ইমেইলগুলি ৫০টি করে গ্রুপ করা হয় এবং আপনার ডিফল্ট "
 "ইমেইল ক্লায়েন্টে গ্রুপ হিসাবে চালু করা যায়। অনেক ইমেইল প্রদানকারী BCC ইমেইলে ৫০টির "
-"সীমা রাখে। \\\"সব খুলুন\\\" বোতাম ব্যবহার করে আপনি একসাথে সব গ্রুপ খুলতে পারেন। "
+"সীমা রাখে। \"সব খুলুন\" বোতাম ব্যবহার করে আপনি একসাথে সব গ্রুপ খুলতে পারেন। "
 "তালিকা অনেক বড় হলে, এটি আপনার ইমেইল প্রদানকারীকে সতর্ক করতে পারে। BCC ইমেইল "
 "টুলটি ছোট গ্রুপ ইমেইলে সহায়তা করার জন্য। বাল্ক ইমেইল বাল্ক ইমেইল প্রদানকারীদের "
 "মাধ্যমে পরিচালনা করা উচিত।"
@@ -904,7 +904,7 @@ msgstr "অবস্থানগুলি ব্যবহৃত"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "মানানসই কোনও ফল পাওয়া গেল না \\\"{{query}}\\\""
+msgstr "মানানসই কোনও ফল পাওয়া গেল না \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -983,11 +983,11 @@ msgstr "%3$s এবং %1$s %2$s ইমোজি দিয়ে প্রতিক
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "কথ্য ভাষা নির্বাচন করুন এবং শুরু করতে \\\"রেকর্ডিং শুরু করুন\\\" ক্লিক করুন।"
+msgstr "কথ্য ভাষা নির্বাচন করুন এবং শুরু করতে \"রেকর্ডিং শুরু করুন\" ক্লিক করুন।"
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "শুরু করতে \\\"রেকর্ডিং শুরু করুন\\\" ক্লিক করুন।"
+msgstr "শুরু করতে \"রেকর্ডিং শুরু করুন\" ক্লিক করুন।"
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5375,7 +5375,7 @@ msgstr "দায়িত্ব কভারেজ"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"প্রশাসককে মাল্টিসাইট সেটিংসে \\\"নতুন ব্যবহারকারী যোগ করুন\\\" বিকল্পটি সক্ষম করতে "
+"প্রশাসককে মাল্টিসাইট সেটিংসে \"নতুন ব্যবহারকারী যোগ করুন\" বিকল্পটি সক্ষম করতে "
 "হবে:"
 
 #: dt-users/template-new-user.php:80

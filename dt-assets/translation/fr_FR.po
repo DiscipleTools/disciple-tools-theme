@@ -261,7 +261,7 @@ msgstr ""
 "et peuvent être lancés dans votre client de messagerie par défaut par "
 "groupe. De nombreux fournisseurs d'e-mails imposent une limite de 50 e-mails "
 "en copie cachée. Vous pouvez ouvrir tous les groupes à la fois en utilisant "
-"le bouton \\\"Tout ouvrir\\\". Si la liste est trop importante, cela "
+"le bouton \"Tout ouvrir\". Si la liste est trop importante, cela "
 "pourrait alerter votre fournisseur d'e-mail. L'outil d'e-mail en copie "
 "cachée est destiné à aider les e-mails de petits groupes. Les e-mails en "
 "masse devraient être gérés par des fournisseurs d'e-mails en masse."
@@ -912,7 +912,7 @@ msgstr "Emplacements utilisés"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Aucun résultat correspondant à \\\"{{query}}\\\""
+msgstr "Aucun résultat correspondant à \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -1583,8 +1583,8 @@ msgstr ""
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
-"Vous pouvez filtrer cette section par \\\"Tous\\\", \\\"Commentaires\\\" ou "
-"\\\"Activité\\\"."
+"Vous pouvez filtrer cette section par \"Tous\", \"Commentaires\" ou "
+"\"Activité\"."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
@@ -1700,7 +1700,7 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
-"Cliquez sur le bouton \\\"Tous\\\" pour afficher la liste complète de toutes "
+"Cliquez sur le bouton \"Tous\" pour afficher la liste complète de toutes "
 "vos notifications."
 
 #: dt-assets/parts/modals/modal-help.php:91
@@ -1709,7 +1709,7 @@ msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
 msgstr ""
-"Cliquez sur le bouton \\\"Non lu\\\" pour afficher la liste de toutes vos "
+"Cliquez sur le bouton \"Non lu\" pour afficher la liste de toutes vos "
 "notifications non lues."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
@@ -1739,7 +1739,7 @@ msgid ""
 "whether to you will receive a notification for any update that happens in "
 "the system."
 msgstr ""
-"Cliquez sur le lien \\\"Paramètres\\\" pour accéder à la zone des paramètres "
+"Cliquez sur le lien \"Paramètres\" pour accéder à la zone des paramètres "
 "de notifications afin d'ajuster si vous souhaitez voir les notifications "
 "concernant les nouveaux commentaires, les modifications des informations de "
 "contact, les jalons de contact et les mesures d'intégrité du groupe, et si "
@@ -2170,7 +2170,7 @@ msgstr "Sous-assigné à"
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
-"Contact ou utilisateur aidant l'utilisateur \\\"Assigné à\\\" avec le suivi "
+"Contact ou utilisateur aidant l'utilisateur \"Assigné à\" avec le suivi "
 "du contact."
 
 #: dt-contacts/base-setup.php:360
@@ -5460,7 +5460,7 @@ msgstr "Couverture de responsabilité"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"L'administrateur doit activer l'option \\\"Ajouter de nouveaux utilisateurs\\"
+"L'administrateur doit activer l'option \"Ajouter de nouveaux utilisateurs"
 "\" dans les paramètres multisites :"
 
 #: dt-users/template-new-user.php:80

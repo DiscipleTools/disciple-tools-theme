@@ -258,7 +258,7 @@ msgstr ""
 "A jelenlegi szűrő használatával az elérhető e-mailek 50-esével vannak "
 "csoportosítva, és csoportonként megnyithatók az alapértelmezett "
 "levelezőprogramban. Sok e-mail szolgáltató 50 címre korlátozza a BCC e-"
-"maileket. Az összes csoport egyszerre megnyitható az \\\"Összes megnyitása\\"
+"maileket. Az összes csoport egyszerre megnyitható az \"Összes megnyitása"
 "\" gombbal. Ha a lista túl nagy, az értesítheti az e-mail szolgáltatót. A "
 "BCC e-mail eszköz kisebb csoportos e-mailekhez készült. Tömeges e-mailek "
 "kezeléséhez használjon tömeges e-mail szolgáltatót."
@@ -910,7 +910,7 @@ msgstr "Felhasznált Helyek"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Egy eredmény sem eggyezik \\\\\\\"{{lekérdezés}}"
+msgstr "Egy eredmény sem eggyezik \"{{lekérdezés}}"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -990,12 +990,12 @@ msgstr "%3$s és %1$s %2$s emojival válaszolt"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Válassza ki a beszélt nyelvet, és kattintson a \\\"Felvétel indítása\\\" "
+"Válassza ki a beszélt nyelvet, és kattintson a \"Felvétel indítása\" "
 "gombra a kezdéshez."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Kattintson a \\\"Felvétel indítása\\\" gombra a kezdéshez."
+msgstr "Kattintson a \"Felvétel indítása\" gombra a kezdéshez."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1692,7 +1692,7 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
-"Nyomd meg a \\\\\\\"minden\\\\\\\" gombot, az értesítéseid teljes listájának "
+"Nyomd meg a \"minden\" gombot, az értesítéseid teljes listájának "
 "megjelenítéséhez."
 
 #: dt-assets/parts/modals/modal-help.php:91
@@ -1701,7 +1701,7 @@ msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
 msgstr ""
-"Nyomd meg az \\\\\\\"olvasatlan\\\\\\\" gombot az elolvasatlan értesítések "
+"Nyomd meg az \"olvasatlan\" gombot az elolvasatlan értesítések "
 "teljes listájának megjelenítéséhez."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
@@ -3680,8 +3680,8 @@ msgstr "Kiválasztás"
 #: dt-groups/base-setup.php:571
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr ""
-"Új tagok hozzáadásához, klikkelj a \\\\\\\"létrehozás\\\\\\\" vagy \\\\\\"
-"\"választás\\\\\\\" opcióra."
+"Új tagok hozzáadásához, klikkelj a \"létrehozás\" vagy "
+"\"választás\" opcióra."
 
 #: dt-groups/base-setup.php:577
 msgctxt "Add members modal"

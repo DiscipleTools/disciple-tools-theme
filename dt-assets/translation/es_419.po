@@ -260,7 +260,7 @@ msgstr ""
 "y pueden iniciarse en su cliente de correo electrónico predeterminado por "
 "grupo. Muchos proveedores de correo electrónico ponen un límite de 50 en los "
 "correos electrónicos CCO. Puede abrir todos los grupos a la vez usando el "
-"botón \\\"Abrir todo\\\". Si la lista es demasiado grande, esto podría "
+"botón \"Abrir todo\". Si la lista es demasiado grande, esto podría "
 "alertar a su proveedor de correo electrónico. La herramienta de correo "
 "electrónico CCO está destinada a ayudar con el envío de correos electrónicos "
 "de grupos pequeños. El correo electrónico masivo debe manejarse a través de "
@@ -913,7 +913,7 @@ msgstr "Ubicaciones utilizadas"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "No se encontraron resultados para \\\"{{query}}\\\""
+msgstr "No se encontraron resultados para \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -993,12 +993,12 @@ msgstr "%3$s y %1$s reaccionaron con %2$s emoji"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Seleccione el idioma hablado y haga clic en \\\"Iniciar Grabación\\\" para "
+"Seleccione el idioma hablado y haga clic en \"Iniciar Grabación\" para "
 "comenzar."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Haga clic en \\\"Iniciar Grabación\\\" para comenzar."
+msgstr "Haga clic en \"Iniciar Grabación\" para comenzar."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5449,7 +5449,7 @@ msgstr "Cobertura de responsabilidad"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Un administrador tiene que habilitar la opción \\\"Agregar Nuevos Usuarios\\"
+"Un administrador tiene que habilitar la opción \"Agregar Nuevos Usuarios"
 "\" en la configuración del multisitio:"
 
 #: dt-users/template-new-user.php:80

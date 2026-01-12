@@ -258,7 +258,7 @@ msgstr ""
 "Nipa lilo àlẹmọ lọwọlọwọ, awọn imeeli ti o wa ni ṣe akojọpọ nipasẹ 50 ati pe "
 "o le bẹrẹ sinu alabara imeeli aiyipada rẹ nipasẹ ẹgbẹ. Ọpọlọpọ awọn olupese "
 "imeeli fi opin 50 si awọn imeeli BCC. O le ṣii gbogbo awọn ẹgbẹ ni ẹẹkan "
-"nipa lilo bọtini \\\"Ṣii Gbogbo\\\". Ti akojọ naa ba tobi ju, eyi le jẹ ki "
+"nipa lilo bọtini \"Ṣii Gbogbo\". Ti akojọ naa ba tobi ju, eyi le jẹ ki "
 "olupese imeeli rẹ mọ. Ọpa imeeli BCC jẹ lati ṣe iranlọwọ fun awọn imeeli "
 "ẹgbẹ kekere. Imeeli olopobobo yẹ ki o ṣe nipasẹ awọn olupese imeeli "
 "olopobobo."
@@ -908,7 +908,7 @@ msgstr "Awọn ipo Ti a Lo"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "A ko rii awọn abajade ti o baamu \\\"{{query}}\\\""
+msgstr "A ko rii awọn abajade ti o baamu \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -987,11 +987,11 @@ msgstr "%3$s ati %1$s ṣe pẹlu emoji %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "Yan ede sisọ ki o tẹ \\\"Bẹrẹ Gbigbasilẹ\\\" lati bẹrẹ."
+msgstr "Yan ede sisọ ki o tẹ \"Bẹrẹ Gbigbasilẹ\" lati bẹrẹ."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Tẹ \\\"Bẹrẹ Gbigbasilẹ\\\" lati bẹrẹ."
+msgstr "Tẹ \"Bẹrẹ Gbigbasilẹ\" lati bẹrẹ."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."

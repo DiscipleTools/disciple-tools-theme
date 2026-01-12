@@ -258,7 +258,7 @@ msgstr ""
 "Korištenjem trenutnog filtra, dostupni emailovi grupirani su po 50 i mogu se "
 "pokrenuti u vašem zadanom email klijentu po grupama. Mnogi pružatelji email "
 "usluga postavljaju ograničenje od 50 BCC emailova. Sve grupe možete otvoriti "
-"odjednom pomoću gumba \\\"Otvori sve\\\". Ako je popis prevelik, to bi moglo "
+"odjednom pomoću gumba \"Otvori sve\". Ako je popis prevelik, to bi moglo "
 "upozoriti vašeg davatelja email usluga. BCC alat za email namijenjen je za "
 "pomoć pri slanju emailova malim grupama. Grupnim emailovima treba upravljati "
 "putem davatelja usluga masovnih emailova."
@@ -907,7 +907,7 @@ msgstr "Korištene lokacije"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Nisu pronađeni rezultati koji se podudaraju \\\"{{query}}\\\""
+msgstr "Nisu pronađeni rezultati koji se podudaraju \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -986,11 +986,11 @@ msgstr "%3$s i %1$s reagirali su s %2$s emoji"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "Odaberite govorni jezik i kliknite \\\"Počni snimanje\\\" za početak."
+msgstr "Odaberite govorni jezik i kliknite \"Počni snimanje\" za početak."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Kliknite \\\"Počni snimanje\\\" za početak."
+msgstr "Kliknite \"Počni snimanje\" za početak."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5396,7 +5396,7 @@ msgstr "Obuhvaćenost odgovornosti"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Administrator mora omogućiti opciju \\\"Dodaj nove korisnike\\\" u "
+"Administrator mora omogućiti opciju \"Dodaj nove korisnike\" u "
 "postavkama za više stranica:"
 
 #: dt-users/template-new-user.php:80
