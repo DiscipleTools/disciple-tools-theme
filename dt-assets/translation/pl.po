@@ -382,10 +382,7 @@ msgstr "Nie wybrano pól"
 #, php-format
 msgid ""
 "Select all the %1$s you want to update from the list, and update them below"
-msgstr ""
-"Wybierz wszystkie %1$s, które chcesz zaktualizować z listy, i zaktualizuj je "
-"poniżejWybierz z listy wszystkie %1$s, które chcesz zaktualizować, i "
-"zaktualizuj je poniżej"
+msgstr "Wybierz wszystkie %1$s, które chcesz zaktualizować z listy, i zaktualizuj je poniżej"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -5127,7 +5124,7 @@ msgstr "Usunięto %1$s z %2$s"
 #, php-format
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
-msgstr "Dodano %1$s do %2$s "
+msgstr "Dodano %1$s do %2$s"
 
 #: dt-posts/posts.php:470
 #, php-format

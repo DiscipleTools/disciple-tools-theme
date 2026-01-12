@@ -347,7 +347,7 @@ msgstr "%s nîşan bide"
 
 #: archive-template.php:538 dt-apps/dt-home/magic-link-home-app.php:238
 msgid "Loading..."
-msgstr "Loading ..."
+msgstr "Loading..."
 
 #: archive-template.php:543 dt-assets/functions/enqueue-scripts.php:418
 msgid "Load More"
@@ -1484,7 +1484,7 @@ msgstr "Ji bo berdewamiyê li ser yekbûnê bikirtînin."
 
 #: dt-assets/parts/modals/modal-advanced-search.php:11
 msgid "Search Query..."
-msgstr "Lêpirsîna Lêgerînê ..."
+msgstr "Lêpirsîna Lêgerînê..."
 
 #: dt-assets/parts/modals/modal-advanced-search.php:29
 msgid "Search Settings"
@@ -1719,7 +1719,7 @@ msgstr ""
 "Heke hûn nexwazin li her çerxa tijî dagirtî ya li rexê rastê yê her rêzê "
 "bikirtînin da ku nîşan bikin ku notification hatiye xwendin, hingê li jor li "
 "ser lînka 'Mark All as Read' bikirtînin da ku hemî peyamên ku hemî wan hene "
-"zû sererast bikin hatine xwendin"
+"zû sererast bikin hatine xwendin."
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
@@ -2156,7 +2156,7 @@ msgstr "Binê-tayîn kirin ku"
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
-"Têkilî an Bikarhênerê ku ji Bo Bikarhêneran re Arîkar e ku têkiliyê bişopîne"
+"Têkilî an Bikarhênerê ku ji Bo Bikarhêneran re Arîkar e ku têkiliyê bişopîne."
 
 #: dt-contacts/base-setup.php:360
 msgid "Sub-assigned on other Contacts"

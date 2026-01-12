@@ -1848,11 +1848,11 @@ msgstr "공유 설정"
 
 #: dt-assets/parts/modals/modal-share.php:12
 msgid "This group is shared with:"
-msgstr "이 그룹은 여기에 공유됩니다 :"
+msgstr "이 그룹은 다음과 공유됩니다:"
 
 #: dt-assets/parts/modals/modal-share.php:14
 msgid "This contact is shared with:"
-msgstr "이 연락처는 여기에 공유됩니다 :"
+msgstr "이 연락처는 다음과 공유됩니다:"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid ""
@@ -2135,7 +2135,7 @@ msgstr "다른 연락처에 부속 할당됨"
 
 #: dt-contacts/base-setup.php:361
 msgid "Contacts this contacts is subassigned on"
-msgstr "연락처 이 연락처는 다음 날짜에 부속할당되었음:"
+msgstr "이 연락처가 부속할당된 연락처"
 
 #: dt-contacts/base-setup.php:373 dt-contacts/base-setup.php:754
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
@@ -3550,7 +3550,7 @@ msgstr "불신자"
 #: dt-groups/base-setup.php:378
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
-msgstr "이 그룹 내 불신자 수"
+msgstr "이 그룹 내 불신자 수."
 
 #: dt-groups/base-setup.php:386
 msgid "Believers"
@@ -3559,7 +3559,7 @@ msgstr "신자"
 #: dt-groups/base-setup.php:387
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
-msgstr "이 그룹 내 신자 수"
+msgstr "이 그룹 내 신자 수."
 
 #: dt-groups/base-setup.php:395
 msgid "Accountable"
@@ -3568,7 +3568,7 @@ msgstr "책임 있음"
 #: dt-groups/base-setup.php:396
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
-msgstr "어카운터빌리티 그룹 내 사람 수"
+msgstr "어카운터빌리티 그룹 내 사람 수."
 
 #: dt-groups/base-setup.php:405
 msgctxt "Optional Documentation"
@@ -3610,7 +3610,7 @@ msgstr "선택"
 
 #: dt-groups/base-setup.php:571
 msgid "To add new members, click on 'Create' or 'Select'."
-msgstr "새 멤버를 추가하려면, '생성' 또는 '선택'을 클릭하세요"
+msgstr "새 멤버를 추가하려면, '생성' 또는 '선택'을 클릭하세요."
 
 #: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
@@ -4575,7 +4575,7 @@ msgstr "%s 이/가 생성되었으며 당신에게 배정되었습니다."
 #, php-format
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
-msgstr "배정됨: %1$s"
+msgstr "배정됨: %1$s."
 
 #: dt-notifications/notifications.php:917
 #, php-format
@@ -4769,7 +4769,7 @@ msgid ""
 "Ifdesired, share this record with the user to grant access."
 msgstr ""
 "@[%1$s](%2$s) - 사용자 %3$s님이 %4$s [%5$s](%6$s)에 대한 액세스를 요청했습니"
-"다. 원하신다면,"
+"다. 원하신다면, 이 기록을 해당 사용자와 공유하여 액세스 권한을 부여하세요."
 
 #: dt-posts/dt-posts.php:2802
 msgid "Access Request"

@@ -1537,7 +1537,7 @@ msgstr ""
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
 msgid "User workload status icons legend:"
-msgstr "Awọn aami ipo iṣẹ ṣiṣe olumulo itanran"
+msgstr "Awọn aami ipo iṣẹ ṣiṣe olumulo itanran:"
 
 #: dt-assets/parts/modals/modal-help.php:33
 msgid "2 contacts need an update"
@@ -3986,7 +3986,7 @@ msgstr "Osu to koja"
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s oṣu sẹyin"
-msgstr[1] ""
+msgstr[1] "%s oṣu sẹyin"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4575,42 +4575,42 @@ msgstr "Daily Digest"
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "Iṣẹju %s sẹhin"
-msgstr[1] ""
+msgstr[1] "Iṣẹju %s sẹhin"
 
 #: dt-notifications/notifications.php:481
 #, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "Wakati %s sẹhin"
-msgstr[1] ""
+msgstr[1] "Wakati %s sẹhin"
 
 #: dt-notifications/notifications.php:486
 #, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s ọjọ sẹhin"
-msgstr[1] ""
+msgstr[1] "%s ọjọ sẹhin"
 
 #: dt-notifications/notifications.php:491
 #, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "%s ọsẹ sẹyin"
-msgstr[1] ""
+msgstr[1] "%s ọsẹ sẹyin"
 
 #: dt-notifications/notifications.php:510
 #, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "%s ọdun sẹyin"
-msgstr[1] ""
+msgstr[1] "%s ọdun sẹyin"
 
 #: dt-notifications/notifications.php:514
 #, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "lori %s ọdun sẹyin"
-msgstr[1] ""
+msgstr[1] "lori %s ọdun sẹyin"
 
 #: dt-notifications/notifications.php:909
 #, php-format

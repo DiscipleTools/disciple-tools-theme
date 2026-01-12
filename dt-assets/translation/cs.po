@@ -1484,7 +1484,7 @@ msgstr "Nastavení vyhledávání"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:42
 msgid "Record Hits:"
-msgstr "Dosažené rekordy"
+msgstr "Dosažené rekordy:"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:90
 msgid "Names"
@@ -3255,7 +3255,7 @@ msgstr "Přeložit"
 #: template-settings.php:729
 msgid ""
 "Translate Disciple.Tools into your language or help make a translationbetter."
-msgstr "Přeložte DiscipleTools do svého jazyka nebo pomozte překlad vylepšit"
+msgstr "Přeložte DiscipleTools do svého jazyka nebo pomozte překlad vylepšit."
 
 #: dt-core/release-notifications.php:134
 msgid "Build or Document"
@@ -3266,7 +3266,7 @@ msgid ""
 "Make Disciple.Tools better by building a feature or helping us make "
 "thedocumentation better."
 msgstr ""
-"Vylepšete Disciple.Tools tím, že vytvoříte funkci nebo vylepšením dokumentace"
+"Vylepšete Disciple.Tools tím, že vytvoříte funkci nebo vylepšením dokumentace."
 
 #: dt-core/release-notifications.php:138
 msgid "Find out more"

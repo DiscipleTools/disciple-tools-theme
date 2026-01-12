@@ -388,10 +388,7 @@ msgstr "Keine Felder ausgewählt"
 #, php-format
 msgid ""
 "Select all the %1$s you want to update from the list, and update them below"
-msgstr ""
-"Wählen Sie alle %1$s aus der Liste aus, die Sie aktualisieren möchten, und "
-"aktualisieren Sie sie untenWählen Sie alle %1$s aus der Liste aus, die Sie "
-"aktualisieren möchten, und aktualisieren Sie sie unten."
+msgstr "Wählen Sie alle %1$s aus der Liste aus, die Sie aktualisieren möchten, und aktualisieren Sie sie unten"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -2080,7 +2077,7 @@ msgstr "Verbindungen zu anderen %s"
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr ""
-"Beziehung in der dieser Kontakt zu einem anderen  Kontakt im System steht."
+"Beziehung in der dieser Kontakt zu einem anderen Kontakt im System steht."
 
 #: dt-contacts/base-setup.php:278 dt-contacts/module-access.php:1189
 #: dt-users/template-new-user.php:185 dt-users/template-user-management.php:231
@@ -2272,7 +2269,7 @@ msgstr "Weitere"
 
 #: dt-contacts/base-setup.php:628
 msgid "This record might be a duplicate of: "
-msgstr "Dieser Eintrag könnte ein Duplikat sein von:"
+msgstr "Dieser Eintrag könnte ein Duplikat sein von: "
 
 #: dt-contacts/base-setup.php:634 dt-contacts/duplicates-merging.php:513
 #: dt-contacts/duplicates-merging.php:595

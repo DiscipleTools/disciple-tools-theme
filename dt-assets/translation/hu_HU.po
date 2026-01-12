@@ -380,10 +380,7 @@ msgstr "Nincsenek kiválasztott mezők."
 #, php-format
 msgid ""
 "Select all the %1$s you want to update from the list, and update them below"
-msgstr ""
-"Válassza ki az összes %1$s elemet a listából, amelyet frissíteni szeretne, "
-"és frissítse őket alábbVálassza ki az összes frissíteni kívánt %1$s-t a "
-"listából, és frissítse őket alább"
+msgstr "Válassza ki az összes %1$s elemet a listából, amelyet frissíteni szeretne, és frissítse őket alább"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -2249,7 +2246,7 @@ msgstr "Egyéb"
 
 #: dt-contacts/base-setup.php:628
 msgid "This record might be a duplicate of: "
-msgstr "Ez a bejegyzés a következő duplikátuma lehet:"
+msgstr "Ez a bejegyzés a következő duplikátuma lehet: "
 
 #: dt-contacts/base-setup.php:634 dt-contacts/duplicates-merging.php:513
 #: dt-contacts/duplicates-merging.php:595
@@ -2636,7 +2633,7 @@ msgstr "Névjegy nem mutat kezdeményezést"
 #: dt-contacts/module-access.php:221
 msgctxt "Reason Paused label"
 msgid "Contact has questionable motives"
-msgstr "Névjegynek kérdéses szándékai vannak "
+msgstr "Névjegynek kérdéses szándékai vannak"
 
 #: dt-contacts/module-access.php:222
 msgctxt "Reason Paused label"
@@ -4937,7 +4934,7 @@ msgstr "Már nem mentorálja %s"
 #, php-format
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "Már nem mentorálja  %s"
+msgstr "Már nem mentorálja %s"
 
 #: dt-posts/posts.php:306
 #, php-format
@@ -6100,7 +6097,7 @@ msgid ""
 "Set the dates you will be traveling or unavailable so the Dispatcher will "
 "know your availability to receive new contacts"
 msgstr ""
-"Add meg a dátumot, amikor  utazol, vagy nem vagy elérhető, annak érdekében, "
+"Add meg a dátumot, amikor utazol, vagy nem vagy elérhető, annak érdekében, "
 "hogy a diszpécser tisztában legyen vele, hogy mikor tudsz új kapcsolatokat "
 "fogadni."
 
@@ -6114,7 +6111,7 @@ msgstr "Nem elérhető napok hozzáadása"
 
 #: template-settings.php:463
 msgid "No Travel Scheduled"
-msgstr "Nincs tervezett utazás "
+msgstr "Nincs tervezett utazás"
 
 #: template-settings.php:483
 msgid "Contact Info"

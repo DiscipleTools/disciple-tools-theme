@@ -1390,7 +1390,7 @@ msgstr "Зберегти запис"
 
 #: dt-assets/parts/loop-activity-comment.php:158
 msgid "Showing:"
-msgstr "Покази"
+msgstr "Покази:"
 
 #: dt-assets/parts/loop-activity-comment.php:172
 #: dt-users/template-user-management.php:91
@@ -1768,7 +1768,7 @@ msgstr "Скопіювати посилання в буфер обміну"
 #: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
 #: dt-reports/magic-url-setup.php:508
 msgid "Send the link via email."
-msgstr "Надіслати посилання електронною поштою"
+msgstr "Надіслати посилання електронною поштою."
 
 #: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:312
 #: dt-reports/magic-url-setup.php:517
@@ -2760,7 +2760,7 @@ msgstr "Призначити"
 
 #: dt-contacts/module-access.php:628
 msgid "This contact has been assigned to you."
-msgstr "Цей контакт призначено вам"
+msgstr "Цей контакт призначено вам."
 
 #: dt-contacts/module-access.php:629
 msgid "Accept"
@@ -3481,7 +3481,7 @@ msgstr "Лідери"
 #: dt-groups/base-setup.php:238
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
-msgstr "Група має лідерів"
+msgstr "Група має лідерів."
 
 #: dt-groups/base-setup.php:242 dt-groups/base-setup.php:404
 msgid "Church Commitment"
@@ -3609,7 +3609,7 @@ msgstr "Підзвітний"
 #: dt-groups/base-setup.php:396
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
-msgstr "Кількість людей у групі підзвітності"
+msgstr "Кількість людей у групі підзвітності."
 
 #: dt-groups/base-setup.php:405
 msgctxt "Optional Documentation"
@@ -3903,7 +3903,7 @@ msgid ""
 "byconnection"
 msgstr ""
 "Кількість хрещених контактів із датою хрещення в діапазоні дат і "
-"хрещенихчерез зв'язок."
+"хрещенихчерез зв'язок"
 
 #: dt-metrics/combined/critical-path.php:277
 #, php-format
@@ -5260,7 +5260,7 @@ msgstr "Унікальне посилання для доступу до дод�
 
 #: dt-reports/magic-url-bulk-send.php:71
 msgid "Select app to email"
-msgstr "Оберіть застосунок, який буде надіслано електронною поштою."
+msgstr "Оберіть застосунок, який буде надіслано електронною поштою"
 
 #: dt-reports/magic-url-bulk-send.php:72
 msgid "You must select an app"

@@ -3060,7 +3060,7 @@ msgstr ""
 
 #: dt-core/configuration/config-site-defaults.php:346
 msgid "We haven't heard about this group in a while. Do you have an update?"
-msgstr "Nismo čuli o ovoj grupi za dugo. Da li imate neko ažuriranje ?"
+msgstr "Nismo čuli o ovoj grupi za dugo. Da li imate neko ažuriranje?"
 
 #: dt-core/configuration/config-site-defaults.php:377
 msgid "Personal Phone"
@@ -3172,7 +3172,7 @@ msgstr "stranica za prijavu"
 
 #: dt-core/configuration/restrict-site-access.php:257
 msgid "ERROR: Invalid username/password combination."
-msgstr "GREŠKA: Nevažeća kombinacija korisničkog imena i lozinke.."
+msgstr "GREŠKA: Nevažeća kombinacija korisničkog imena i lozinke."
 
 #: dt-core/configuration/restrict-site-access.php:261
 #: dt-login/login-template.php:217 dt-login/login-template.php:263

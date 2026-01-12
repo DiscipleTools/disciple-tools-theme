@@ -3013,7 +3013,7 @@ msgid ""
 "To finish the linking, merge this contact with the existing user details."
 msgstr ""
 "Para finalizar el enlace, combina este contacto con los detalles existentes "
-"del usuario ."
+"del usuario."
 
 #: dt-core/configuration/class-roles.php:81
 #: dt-core/configuration/class-roles.php:245

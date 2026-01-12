@@ -1099,7 +1099,6 @@ msgstr "%s ਲਈ ਸਾਰੇ ਮੈਚ ਰੱਦ ਕਰੋ"
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr ""
-"_ _ _ _________________________________________ _ _ _ _ _ _ _ _ _ _ _ _ _ __"
 
 #: dt-assets/functions/enqueue-scripts.php:322
 msgid "Sorting By"

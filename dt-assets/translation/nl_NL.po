@@ -133,7 +133,7 @@ msgstr "annuleren"
 #: template-new-bulk-post.php:223 template-new-bulk-post.php:295
 #: template-settings.php:596
 msgid "Close"
-msgstr "sluit "
+msgstr "sluit"
 
 #: 404.php:25
 msgid "Epic 404 - Not Found"
@@ -382,10 +382,7 @@ msgstr "Geen velden geselecteerd"
 #, php-format
 msgid ""
 "Select all the %1$s you want to update from the list, and update them below"
-msgstr ""
-"Selecteer alle %1$s die u wilt bijwerken uit de lijst en werk ze hieronder "
-"bijSelecteer alle %1$s uit de lijst die u wilt bijwerken en werk ze "
-"hieronder bij"
+msgstr "Selecteer alle %1$s die u wilt bijwerken uit de lijst en werk ze hieronder bij"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -917,7 +914,7 @@ msgstr "Geen resultaten gevonden voor \"{{query}}\""
 #, php-format
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "%s items worden weergegeven. Typ om er meer te  vinden."
+msgstr "%s items worden weergegeven. Typ om er meer te vinden."
 
 #: dt-assets/functions/enqueue-scripts.php:121
 #, php-format
@@ -1570,7 +1567,7 @@ msgid ""
 "or group status became active etc."
 msgstr ""
 "Deze sectie omvat ook de geschiedenis van de activiteit, zoals wanneer het "
-"contact of the groepstatus  actief werd enz."
+"contact of the groepstatus actief werd enz."
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
@@ -1633,7 +1630,7 @@ msgid ""
 "notification preferences. To change your preference, click the toggle "
 "buttons."
 msgstr ""
-"Je ontvangt  Web- en e-mail notificaties gebaseerd op je notificatie "
+"Je ontvangt Web- en e-mail notificaties gebaseerd op je notificatie "
 "voorkeuren. Om je voorkeuren aan te passen, klik op de tuimel knoppen."
 
 #: dt-assets/parts/modals/modal-help.php:75
@@ -2249,7 +2246,7 @@ msgstr "Anders"
 
 #: dt-contacts/base-setup.php:628
 msgid "This record might be a duplicate of: "
-msgstr "Dit dossier is mogelijk een duplicaat van:"
+msgstr "Dit dossier is mogelijk een duplicaat van: "
 
 #: dt-contacts/base-setup.php:634 dt-contacts/duplicates-merging.php:513
 #: dt-contacts/duplicates-merging.php:595
@@ -2321,7 +2318,7 @@ msgstr "gedeeld met mij"
 
 #: dt-contacts/base-setup.php:838 dt-contacts/base-setup.php:839
 msgid "Subassigned only"
-msgstr "alleen Sub-toegewezen "
+msgstr "alleen Sub-toegewezen"
 
 #: dt-contacts/base-setup.php:992
 #, php-format
@@ -2648,7 +2645,7 @@ msgstr "Het initiatief ligt bij het contact"
 #: dt-contacts/module-access.php:223
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
-msgstr "We willen zien of/hoe het contact reageert op automatische berichten "
+msgstr "We willen zien of/hoe het contact reageert op automatische berichten"
 
 #: dt-contacts/module-access.php:230
 msgid "Reason Archived"
@@ -2658,7 +2655,7 @@ msgstr "Reden gearchiveerd"
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
 msgstr ""
-"Een afgesloten contact is er een waar je niet mee kunt  of wilt in "
+"Een afgesloten contact is er een waar je niet mee kunt of wilt in "
 "interactie zijn."
 
 #: dt-contacts/module-access.php:235
@@ -3123,7 +3120,7 @@ msgstr "Wek Email"
 
 #: dt-core/configuration/config-site-defaults.php:408
 msgid "Work email is for distribution to contacts and seekers."
-msgstr "Werk Email  is om door te geven aan contacten en zoekenden."
+msgstr "Werk Email is om door te geven aan contacten en zoekenden."
 
 #: dt-core/configuration/config-site-defaults.php:412
 msgid "Work Facebook"
@@ -3171,7 +3168,7 @@ msgstr "Werk"
 
 #: dt-core/configuration/config-site-defaults.php:453
 msgid "Accepting new contacts"
-msgstr "Accepteert  nieuwe contacten"
+msgstr "Accepteert nieuwe contacten"
 
 #: dt-core/configuration/config-site-defaults.php:457
 msgid "I'm only investing in existing contacts"
@@ -4591,7 +4588,7 @@ msgstr "Klik hier om te zien of te beantwoorden"
 #, php-format
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
-msgstr "Update voor  %1$s #%2$s"
+msgstr "Update voor %1$s #%2$s"
 
 #: dt-notifications/notifications-email.php:142
 msgid "Do not reply directly to this email."
@@ -4681,7 +4678,7 @@ msgstr "%1$s heeft jou genoemd bij %2$s zeggend : %3$s"
 #, php-format
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
-msgstr "%1$s heeft een opmerking gemaakt bij %2$s  namelijk: %3$s"
+msgstr "%1$s heeft een opmerking gemaakt bij %2$s namelijk: %3$s"
 
 #: dt-notifications/notifications.php:939
 #, php-format
@@ -5056,7 +5053,7 @@ msgstr "%s verwijderd uit oudergroepen"
 #, php-format
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "%s  toegevoegd aan leeftijdgenoot groepen"
+msgstr "%s toegevoegd aan leeftijdgenoot groepen"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
 #, php-format
@@ -5731,7 +5728,7 @@ msgstr "Komt overeen met Contact"
 
 #: dt-users/user-hooks-and-config.php:592 dt-users/user-management.php:191
 msgid "View Contact"
-msgstr "Zie contact "
+msgstr "Zie contact"
 
 #: dt-users/user-hooks-and-config.php:594
 msgid "Add the name of the contact record this user corresponds to."
@@ -5763,7 +5760,7 @@ msgstr "Gebruiker toevoegen"
 #, php-format
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "%1$s heeft een opmerking gemaakt bij %2$s  namelijk: %3$s"
+msgstr "%1$s heeft een opmerking gemaakt bij %2$s namelijk: %3$s"
 
 #: dt-users/user-management.php:181
 #, php-format
@@ -5906,7 +5903,7 @@ msgstr "Je hebt een herinnering gezet voor vandaag voor %1$s"
 #, php-format
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
-msgstr "Je hebt deze taak geplaatst voor  %1$s: %2$s"
+msgstr "Je hebt deze taak geplaatst voor %1$s: %2$s"
 
 #: dt-workflows/workflows-triggers.php:73
 msgid "D.T Workflow"
@@ -5927,7 +5924,7 @@ msgid ""
 "version of your browser, this may site may not function correctly. Please "
 "note that Internet Explorer is not supported."
 msgstr ""
-"Je lijkt een verouderde  web-browser te gebruiken. Zonder de meest recente "
+"Je lijkt een verouderde web-browser te gebruiken. Zonder de meest recente "
 "versie van je browser kan deze site misschien niet goed functioneren. Let "
 "op: Internet Explorer wordt niet ondersteund!"
 
@@ -6093,7 +6090,7 @@ msgstr ""
 
 #: template-settings.php:432
 msgid "Schedule Travel or Dates Unavailable"
-msgstr "Schema Reis of Data  wanneer onbeschikbaar"
+msgstr "Schema Reis of Data wanneer onbeschikbaar"
 
 #: template-settings.php:449
 msgid "Add Unavailable dates"
@@ -6182,7 +6179,7 @@ msgstr "Systeem email kan gewijzigd worden door de site administrator."
 
 #: template-settings.php:656
 msgid "Use this email reset form to create a new password."
-msgstr "Gebruik  dit email-reset formulier om een nieuw paswoord aan te maken."
+msgstr "Gebruik dit email-reset formulier om een nieuw paswoord aan te maken."
 
 #: template-settings.php:658
 msgid "go to password change form"

@@ -65,7 +65,7 @@ msgstr "የመዝገብ መዳረሻ ይጠይቁ"
 #: 403.php:49
 msgid ""
 "Record owner to be notified of access request. Are you happy to proceed?"
-msgstr "የመዝገብ ጥያቄ ባለቤት የመድረሻ ጥያቄ እንዲነገርለት ፡፡ ለመቀጠል ደስተኛ ነዎት?"
+msgstr "የመዝገብ ጥያቄ ባለቤት የመድረሻ ጥያቄ እንዲነገርለት ። ለመቀጠል ደስተኛ ነዎት?"
 
 #: 403.php:52
 msgid "Submit Request"
@@ -405,7 +405,7 @@ msgstr "አስተያየትዎን ወይም ማስታወሻዎን እዚህ ይ�
 
 #: archive-template.php:744 dt-assets/parts/loop-activity-comment.php:59
 msgid "Type:"
-msgstr "ዓይነት"
+msgstr "ዓይነት፦"
 
 #: archive-template.php:764 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
@@ -988,7 +988,7 @@ msgstr "የድምጽ ቀረጻ መስቀል አልተሳካም። እባክዎ �
 
 #: dt-assets/functions/enqueue-scripts.php:195
 msgid "No recording available to upload."
-msgstr "የሚሰቀል ቀረጻ የለም"
+msgstr "የሚሰቀል ቀረጻ የለም።"
 
 #: dt-assets/functions/enqueue-scripts.php:228
 msgid "Mark as complete"
@@ -1083,7 +1083,7 @@ msgstr "ቅዳ"
 #: dt-assets/functions/enqueue-scripts.php:301
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
-msgstr "ግጥሚያዎች ተገኝተዋል"
+msgstr "ግጥሚያዎች ተገኝተዋል፦"
 
 #: dt-assets/functions/enqueue-scripts.php:302
 #, php-format
@@ -1409,11 +1409,11 @@ msgstr "ይቅርታ, የሆነ ችግር ተፈጥሯል"
 
 #: dt-assets/parts/loop-activity-comment.php:236
 msgid "The comment could not be deleted."
-msgstr "አስተያየቱ መሰረዝ አልተቻለም ፡፡"
+msgstr "አስተያየቱ መሰረዝ አልተቻለም ።"
 
 #: dt-assets/parts/loop-activity-comment.php:241
 msgid "Edit Comment:"
-msgstr "አስተያየት ያርትዑ"
+msgstr "አስተያየት ያርትዑ፦"
 
 #: dt-assets/parts/loop-activity-comment.php:257
 msgid "Type of Comment"
@@ -1458,7 +1458,7 @@ msgstr "ይህን %1$s ከሌላ %2$s ጋር ያዋህዱት"
 #: dt-assets/parts/merge-details.php:59
 msgctxt "added to the end of a sentence"
 msgid "selected."
-msgstr "ተመርጧል"
+msgstr "ተመርጧል።"
 
 #: dt-assets/parts/merge-details.php:60
 msgid "Click merge to continue."
@@ -1474,7 +1474,7 @@ msgstr "የፍለጋ ቅንብሮች"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:42
 msgid "Record Hits:"
-msgstr "ሪኮርዶች"
+msgstr "ሪኮርዶች፦"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:90
 msgid "Names"
@@ -1509,7 +1509,7 @@ msgid ""
 "record faster and keep a count of how many times each action has be done."
 msgstr ""
 "እነዚህ ፈጣን የድርጊት ቁልፎች የእውቂያ መዝገብን በፍጥነት ለማዘመን እርስዎን ለመርዳት እና እያንዳንዱ እርምጃ ምን "
-"ያህል ጊዜ እንደተከናወነ ቆጠራን ለማስቀመጥ እዚህ አሉ ፡፡"
+"ያህል ጊዜ እንደተከናወነ ቆጠራን ለማስቀመጥ እዚህ አሉ ።"
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
@@ -1524,7 +1524,7 @@ msgstr ""
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
 msgid "User workload status icons legend:"
-msgstr "የተጠቃሚ የሥራ ጫና ሁኔታ አዶዎች አፈ ታሪክ-"
+msgstr "የተጠቃሚ የሥራ ጫና ሁኔታ አዶዎች አፈ ታሪክ-፦"
 
 #: dt-assets/parts/modals/modal-help.php:33
 msgid "2 contacts need an update"
@@ -1533,7 +1533,7 @@ msgstr "2 እውቂያዎች ዝመና ይፈልጋሉ"
 #: dt-assets/parts/modals/modal-help.php:42
 msgctxt "Optional Documentation"
 msgid "This is where you can record notes from meetings and conversations."
-msgstr "ከስብሰባዎች እና ከውይይቶች ማስታወሻዎችን መቅዳት የሚችሉበት ቦታ ይህ ነው ፡፡"
+msgstr "ከስብሰባዎች እና ከውይይቶች ማስታወሻዎችን መቅዳት የሚችሉበት ቦታ ይህ ነው ።"
 
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
@@ -1548,12 +1548,12 @@ msgid ""
 "This section also includes the history of activity, such as when the contact "
 "or group status became active etc."
 msgstr ""
-"ይህ ክፍል የእንቅስቃሴውን ታሪክም ያጠቃልላል ፣ ለምሳሌ የግንኙነት ወይም የቡድን ሁኔታ ንቁ በሚሆንበት ጊዜ ወዘተ ፡፡"
+"ይህ ክፍል የእንቅስቃሴውን ታሪክም ያጠቃልላል ፣ ለምሳሌ የግንኙነት ወይም የቡድን ሁኔታ ንቁ በሚሆንበት ጊዜ ወዘተ ።"
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
-msgstr "ይህንን ክፍል በ ‹ሁሉም› ፣ በአስተያየቶች ወይም በ ‹እንቅስቃሴ› ማጣራት ይችላሉ ፡፡."
+msgstr "ይህንን ክፍል በ ‹ሁሉም› ፣ በአስተያየቶች ወይም በ ‹እንቅስቃሴ› ማጣራት ይችላሉ ።."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
@@ -1562,7 +1562,7 @@ msgstr "የእርስዎ መገለጫ"
 #: dt-assets/parts/modals/modal-help.php:59
 msgctxt "Optional Documentation"
 msgid "In this area you can see your user profile."
-msgstr "በዚህ አካባቢ የተጠቃሚዎን መገለጫ ማየት ይችላሉ ፡፡"
+msgstr "በዚህ አካባቢ የተጠቃሚዎን መገለጫ ማየት ይችላሉ ።"
 
 #: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
@@ -1570,14 +1570,14 @@ msgid ""
 "You are not required to fill out any of these profile fields. They are "
 "optional to meet your team’s needs."
 msgstr ""
-"ከእነዚህ የመገለጫ መስኮች ማናቸውንም እንዲሞሉ አይጠየቁም ፡፡ የቡድንዎን ፍላጎቶች ለማሟላት እንደ አማራጭ ናቸው ፡፡"
+"ከእነዚህ የመገለጫ መስኮች ማናቸውንም እንዲሞሉ አይጠየቁም ። የቡድንዎን ፍላጎቶች ለማሟላት እንደ አማራጭ ናቸው ።"
 
 #: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid ""
 "By clicking 'Edit', you will be able adjust things like the language that "
 "this system operates in."
-msgstr "‹አርትዕ› ን ጠቅ በማድረግ ይህ ስርዓት የሚሠራበትን ቋንቋ ያሉ ነገሮችን ማስተካከል ይችላሉ ፡፡"
+msgstr "‹አርትዕ› ን ጠቅ በማድረግ ይህ ስርዓት የሚሠራበትን ቋንቋ ያሉ ነገሮችን ማስተካከል ይችላሉ ።"
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
 #: dt-users/users.php:169
@@ -1590,8 +1590,8 @@ msgid ""
 "These are the areas you are responsible for. Clicking the 'Add' button will "
 "bring up a list of locations to choose from."
 msgstr ""
-"እርስዎ ኃላፊነት የሚሰማቸው እነዚህ አካባቢዎች ናቸው ፡፡ የ ‹አክል› ቁልፍን ጠቅ ማድረግ መምረጥ የሚቻልባቸውን "
-"አካባቢዎች ዝርዝር ያመጣል ፡፡"
+"እርስዎ ኃላፊነት የሚሰማቸው እነዚህ አካባቢዎች ናቸው ። የ ‹አክል› ቁልፍን ጠቅ ማድረግ መምረጥ የሚቻልባቸውን "
+"አካባቢዎች ዝርዝር ያመጣል ።"
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
@@ -1605,7 +1605,7 @@ msgid ""
 "notification preferences. To change your preference, click the toggle "
 "buttons."
 msgstr ""
-"በማሳወቂያ ምርጫዎችዎ ላይ በመመርኮዝ የድር ማሳወቂያዎችን እና የኢሜል ማሳወቂያዎችን ይቀበላሉ ፡፡ ምርጫዎን ለመቀየር "
+"በማሳወቂያ ምርጫዎችዎ ላይ በመመርኮዝ የድር ማሳወቂያዎችን እና የኢሜል ማሳወቂያዎችን ይቀበላሉ ። ምርጫዎን ለመቀየር "
 "የመቀየሪያ ቁልፎቹን ጠቅ ያድርጉ።"
 
 #: dt-assets/parts/modals/modal-help.php:75
@@ -1623,7 +1623,7 @@ msgctxt "Optional Documentation"
 msgid ""
 "Some of the types of notifications cannot be adjusted because they are "
 "required by the system."
-msgstr "አንዳንዶቹ የማሳወቂያ ዓይነቶች በስርዓቱ የሚፈለጉ በመሆናቸው ሊስተካከሉ አይችሉም ፡፡"
+msgstr "አንዳንዶቹ የማሳወቂያ ዓይነቶች በስርዓቱ የሚፈለጉ በመሆናቸው ሊስተካከሉ አይችሉም ።"
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
@@ -1634,7 +1634,7 @@ msgid ""
 "the system."
 msgstr ""
 "ስለ አዳዲስ አስተያየቶች ፣ የእውቂያ መረጃ ለውጦች ፣ የእውቂያ ማይልቶን እና የቡድን ጤና መለኪያዎች ማሳወቂያዎችን "
-"ማየት ይፈልጉ እንደሆነ እና በስርዓቱ ውስጥ ለሚከሰት ማናቸውም ዝመና ማሳወቂያ ይደርሰዎት እንደሆነ ያስተካክሉ ፡፡"
+"ማየት ይፈልጉ እንደሆነ እና በስርዓቱ ውስጥ ለሚከሰት ማናቸውም ዝመና ማሳወቂያ ይደርሰዎት እንደሆነ ያስተካክሉ ።"
 
 #: dt-assets/parts/modals/modal-help.php:87
 msgctxt "Optional Documentation"
@@ -1666,7 +1666,7 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
-msgstr "ሁሉንም ያልተነበቡ ማሳወቂያዎችዎን ዝርዝር ለማሳየት ‹ያልተነበበ› ቁልፍን ጠቅ ያድርጉ ፡፡"
+msgstr "ሁሉንም ያልተነበቡ ማሳወቂያዎችዎን ዝርዝር ለማሳየት ‹ያልተነበበ› ቁልፍን ጠቅ ያድርጉ ።"
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
 #: template-notifications.php:66
@@ -1683,7 +1683,7 @@ msgid ""
 msgstr ""
 "ማሳወቂያው የተነበበ መሆኑን ለማሳየት በእያንዳንዱ ረድፍ በቀኝ በኩል በክብ የተሞሉ እያንዳንዱን ጠቅ ማድረግ ካልፈለጉ "
 "ታዲያ ሁሉንም ያሏቸውን መልዕክቶች በፍጥነት ለማስተካከል ከላይ ያለውን “ሁሉንም እንደ አንብ ምልክት ያድርጉ” የሚለውን "
-"አገናኝ ጠቅ ያድርጉ ፡፡ ተብሎ ተነበበ ፡፡"
+"አገናኝ ጠቅ ያድርጉ ። ተብሎ ተነበበ ።"
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
@@ -1696,7 +1696,7 @@ msgid ""
 msgstr ""
 "ስለ አዳዲስ አስተያየቶች ፣ ስለ የእውቂያ መረጃ ለውጦች ፣ ስለ ማይልስቶን እና ለቡድን ጤና መለኪያዎች ማሳወቂያዎችን "
 "ማየት ይፈልጉ እንደሆነ ለማስተካከል ወደ ‹ማሳወቂያዎች ቅንብሮች› አካባቢ ለመሄድ የ ‹ቅንብሮች› አገናኝን ጠቅ ያድርጉ "
-"እና በ ውስጥ ለሚከሰት ማንኛውም ዝመና ማሳወቂያ ይደርሰዎታል ፡፡ ስርዓቱን"
+"እና በ ውስጥ ለሚከሰት ማንኛውም ዝመና ማሳወቂያ ይደርሰዎታል ። ስርዓቱን።"
 
 #: dt-assets/parts/modals/modal-help.php:100
 msgctxt "Optional Documentation"
@@ -1712,7 +1712,7 @@ msgid ""
 "existing contact."
 msgstr ""
 "ይህ የተባዛ የእውቂያ ገጽ በስርዓቱ የወሰዱትን እውቂያዎች (ስማቸውን ፣ ኢሜላቸውን እና ስልካቸውን በመፈተሽ) ምናልባት "
-"ቀድሞውኑ የሌላ ሌላ የእውቅያ ቅጂዎች ሊሆኑ የሚችሉበት ሁኔታዎችን መገምገም ፣ ውድቅ ማድረግ ወይም ማዋሃድ ነው ፡፡"
+"ቀድሞውኑ የሌላ ሌላ የእውቅያ ቅጂዎች ሊሆኑ የሚችሉበት ሁኔታዎችን መገምገም ፣ ውድቅ ማድረግ ወይም ማዋሃድ ነው ።"
 
 #: dt-assets/parts/modals/modal-help.php:124
 #: dt-assets/parts/modals/modal-help.php:174
@@ -1777,7 +1777,7 @@ msgstr "መለያ ፍጠር"
 
 #: dt-assets/parts/modals/modal-new-tag.php:3 template-new-bulk-post.php:277
 msgid "Create a tag and apply it to this record."
-msgstr "መለያ ይፍጠሩ እና በዚህ መዝገብ ላይ ይተግብሩ ፡፡"
+msgstr "መለያ ይፍጠሩ እና በዚህ መዝገብ ላይ ይተግብሩ ።"
 
 #: dt-assets/parts/modals/modal-new-tag.php:7
 #: dt-assets/parts/modals/modal-new-tag.php:9 template-new-bulk-post.php:281
@@ -1841,7 +1841,7 @@ msgstr "ይህ ቡድን ለ:"
 
 #: dt-assets/parts/modals/modal-share.php:14
 msgid "This contact is shared with:"
-msgstr "ይህ ዕውቂያ የተጋራው ለ"
+msgstr "ይህ ዕውቂያ የተጋራው ለ፦"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid ""
@@ -1867,7 +1867,7 @@ msgstr "ተግባር ፍጠር"
 
 #: dt-assets/parts/modals/modal-tasks.php:38
 msgid "Existing tasks for this record:"
-msgstr "ለዚህ መዝገብ ነባር ተግባራት"
+msgstr "ለዚህ መዝገብ ነባር ተግባራት፦"
 
 #: dt-assets/parts/nav-topbar.php:88
 msgid "Theme Update Available!"
@@ -2017,7 +2017,7 @@ msgstr "ከሌላ %s ጋር ግንኙነቶች"
 #: dt-contacts/base-setup.php:267
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
-msgstr "ይህ ዕውቂያ በሲስተሙ ውስጥ ካለው ሌላ ዕውቂያ ጋር ያለው ግንኙነት ፡፡"
+msgstr "ይህ ዕውቂያ በሲስተሙ ውስጥ ካለው ሌላ ዕውቂያ ጋር ያለው ግንኙነት ።"
 
 #: dt-contacts/base-setup.php:278 dt-contacts/module-access.php:1189
 #: dt-users/template-new-user.php:185 dt-users/template-user-management.php:231
@@ -2067,7 +2067,7 @@ msgstr "የእውቂያ ሁኔታ"
 msgctxt "Contact Status field description"
 msgid ""
 "The Contact Status describes the progress in communicating with the contact."
-msgstr "የግንኙነት ሁኔታ ከእውቂያው ጋር በመግባባት ላይ ያለውን እድገት ይገልጻል ፡፡"
+msgstr "የግንኙነት ሁኔታ ከእውቂያው ጋር በመግባባት ላይ ያለውን እድገት ይገልጻል ።"
 
 #: dt-contacts/base-setup.php:318 dt-groups/base-setup.php:121
 #: dt-users/users.php:177
@@ -2086,7 +2086,7 @@ msgstr "አዲስ ዕውቂያ"
 #: dt-contacts/base-setup.php:325
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
-msgstr "እውቂያው በሲስተሙ ውስጥ አዲስ ነው ፡፡"
+msgstr "እውቂያው በሲስተሙ ውስጥ አዲስ ነው ።"
 
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
@@ -2094,7 +2094,7 @@ msgid ""
 "This contact has made it known that they no longer want to continue or you "
 "have decided not to continue with him/her."
 msgstr ""
-"ይህ ግንኙነት ከእንግዲህ ለመቀጠል እንደማይፈልጉ ወይም ከእሱ / ከእሷ ጋር ላለመቀጠል እንደወሰኑ እንዲያውቅ አድርጓል ፡፡"
+"ይህ ግንኙነት ከእንግዲህ ለመቀጠል እንደማይፈልጉ ወይም ከእሱ / ከእሷ ጋር ላለመቀጠል እንደወሰኑ እንዲያውቅ አድርጓል ።"
 
 #: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
@@ -2104,7 +2104,7 @@ msgstr "ተመድቧል ለ"
 #: dt-contacts/base-setup.php:338
 msgid ""
 "Select the main person who is responsible for reporting on this contact."
-msgstr "በዚህ ዕውቂያ ላይ ሪፖርት የማድረግ ኃላፊነት ያለበት ዋናውን ሰው ይምረጡ ፡፡"
+msgstr "በዚህ ዕውቂያ ላይ ሪፖርት የማድረግ ኃላፊነት ያለበት ዋናውን ሰው ይምረጡ ።"
 
 #: dt-contacts/base-setup.php:348
 msgid "Sub-assigned to"
@@ -2113,7 +2113,7 @@ msgstr "ንዑስ ተመድቧል"
 #: dt-contacts/base-setup.php:349
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
-msgstr "የተመደበውን ለተጠቃሚው እውቂያውን ለመከታተል ያነጋግሩ ወይም ተጠቃሚን ይረዱ ፡፡"
+msgstr "የተመደበውን ለተጠቃሚው እውቂያውን ለመከታተል ያነጋግሩ ወይም ተጠቃሚን ይረዱ ።"
 
 #: dt-contacts/base-setup.php:360
 msgid "Sub-assigned on other Contacts"
@@ -2152,7 +2152,7 @@ msgstr "ምንጮች"
 #: dt-contacts/base-setup.php:397
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
-msgstr "ይህ ዕውቂያ ድር ጣቢያው ፣ ዝግጅቱ ወይም ስፍራው የመጣው ፡፡"
+msgstr "ይህ ዕውቂያ ድር ጣቢያው ፣ ዝግጅቱ ወይም ስፍራው የመጣው ።"
 
 #: dt-contacts/base-setup.php:438 dt-contacts/base-setup.php:470
 #, php-format
@@ -2183,7 +2183,7 @@ msgstr "መዝገብ ቤት"
 #: dt-contacts/base-setup.php:489 dt-contacts/module-access.php:432
 #: dt-contacts/module-access.php:463 dt-contacts/module-access.php:494
 msgid "Choose an option:"
-msgstr "አንድ አማራጭ ይምረጡ"
+msgstr "አንድ አማራጭ ይምረጡ፦"
 
 #: dt-contacts/base-setup.php:513 dt-contacts/module-access.php:454
 #: dt-contacts/module-access.php:485 dt-contacts/module-access.php:513
@@ -2198,7 +2198,7 @@ msgstr "ሌላ"
 
 #: dt-contacts/base-setup.php:628
 msgid "This record might be a duplicate of: "
-msgstr "ይህ መዝገብ አንድ የተባዛ ሊሆን ይችላል- "
+msgstr "ይህ መዝገብ አንድ የተባዛ ሊሆን ይችላል-፦ "
 
 #: dt-contacts/base-setup.php:634 dt-contacts/duplicates-merging.php:513
 #: dt-contacts/duplicates-merging.php:595
@@ -2307,7 +2307,7 @@ msgstr "ሁኔታ በአሁኑ ጊዜ አይገኝም"
 
 #: dt-contacts/contacts-transfer.php:113
 msgid "Seeker Path Currently Unavailable"
-msgstr "የፈላጊ መንገድ በአሁኑ ጊዜ የለም።"
+msgstr "የፈላጊ መንገድ በአሁኑ ጊዜ የለም"
 
 #: dt-contacts/contacts-transfer.php:124
 msgid "Remote Contact Summary"
@@ -2345,7 +2345,7 @@ msgstr "መሻር እና ቀጥል"
 
 #: dt-contacts/contacts-transfer.php:289
 msgid "Transfer this contact to:"
-msgstr "ይህንን ዕውቂያ ወደዚህ ያስተላልፉ"
+msgstr "ይህንን ዕውቂያ ወደዚህ ያስተላልፉ፦"
 
 #: dt-contacts/contacts-transfer.php:304
 msgid "Confirm Transfer"
@@ -2475,7 +2475,7 @@ msgctxt "Contact Status field description"
 msgid ""
 "There is not enough information to move forward with the contact at this "
 "time."
-msgstr "በዚህ ጊዜ ከእውቂያ ጋር ወደፊት ለመሄድ በቂ መረጃ የለም ፡፡"
+msgstr "በዚህ ጊዜ ከእውቂያ ጋር ወደፊት ለመሄድ በቂ መረጃ የለም ።"
 
 #: dt-contacts/module-access.php:153
 msgid "Dispatch Needed"
@@ -2495,7 +2495,7 @@ msgctxt "Contact Status field description"
 msgid ""
 "The contact has been assigned to someone, but has not yet been accepted by "
 "that person."
-msgstr "እውቂያው ለአንድ ሰው ተሰጥቷል ፣ ግን ያ ሰው እስካሁን አልተቀበለውም ፡፡"
+msgstr "እውቂያው ለአንድ ሰው ተሰጥቷል ፣ ግን ያ ሰው እስካሁን አልተቀበለውም ።"
 
 #: dt-contacts/module-access.php:164
 msgid "Paused"
@@ -2513,7 +2513,7 @@ msgstr "ምክንያት ዝግጁ አይደለም"
 #: dt-contacts/module-access.php:181
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
-msgstr "እውቂያው ለተጠቃሚ ለመመደብ ዝግጁ ያልሆነበት ዋናው ምክንያት ፡፡"
+msgstr "እውቂያው ለተጠቃሚ ለመመደብ ዝግጁ ያልሆነበት ዋናው ምክንያት ።"
 
 #: dt-contacts/module-access.php:188
 msgid "Insufficient Contact Information"
@@ -2548,7 +2548,7 @@ msgctxt "Optional Documentation"
 msgid ""
 "A paused contact is one you are not currently interacting with but expect to "
 "in the future."
-msgstr "ለአፍታ የቆመ ግንኙነት በአሁኑ ጊዜ ከእርስዎ ጋር የማይገናኙት ነገር ግን ለወደፊቱ እንደሚጠብቁት ነው ፡፡"
+msgstr "ለአፍታ የቆመ ግንኙነት በአሁኑ ጊዜ ከእርስዎ ጋር የማይገናኙት ነገር ግን ለወደፊቱ እንደሚጠብቁት ነው ።"
 
 #: dt-contacts/module-access.php:216
 msgctxt "Reason Paused label"
@@ -2788,7 +2788,7 @@ msgstr "ተጠመቀ"
 #: dt-contacts/module-baptisms.php:72
 msgctxt "Optional Documentation"
 msgid "Who this contact has baptized"
-msgstr "ይህ ግንኙነት ማን ተጠመቀ?"
+msgstr "ይህ ግንኙነት ማን ተጠመቀ"
 
 #: dt-contacts/module-baptisms.php:88 dt-contacts/module-faith.php:123
 msgid "Faith"
@@ -2805,7 +2805,7 @@ msgstr "ማሠልጠን ነው"
 #: dt-contacts/module-coaching.php:47
 msgctxt "Optional Documentation"
 msgid "Who is this contact coaching"
-msgstr "ይህ የግንኙነት ማሰልጠኛ ማነው?"
+msgstr "ይህ የግንኙነት ማሰልጠኛ ማነው"
 
 #: dt-contacts/module-coaching.php:56
 msgid "Coached by"
@@ -2833,7 +2833,7 @@ msgid ""
 "These are points in a contact’s spiritual journey worth celebrating but can "
 "happen in any order."
 msgstr ""
-"በእምነታቸው ጉዞ ውስጥ ግንኙነቱ የደረሰበትን የትኞቹን ወሳኝ ክስተቶች ይመድቡ ፡፡ እነዚህ በእውቂያ መንፈሳዊ ጉዞ ውስጥ "
+"በእምነታቸው ጉዞ ውስጥ ግንኙነቱ የደረሰበትን የትኞቹን ወሳኝ ክስተቶች ይመድቡ ። እነዚህ በእውቂያ መንፈሳዊ ጉዞ ውስጥ "
 "ነጥቦችን ማክበር የሚገባቸው ነጥቦች ናቸው ነገር ግን በማንኛውም ቅደም ተከተል ሊከሰቱ ይችላሉ።"
 
 #: dt-contacts/module-faith.php:48
@@ -2991,7 +2991,7 @@ msgstr "የማይል ድንጋይዎችን እና የቡድን ጤናን መለ�
 msgid ""
 "This contact is active but there is no record of anybody contacting them. "
 "Please do contact them."
-msgstr "ይህ ዕውቂያ ንቁ ነው ነገር ግን ማንም የሚያነጋግራቸው መዝገብ የለም። እባክዎ ያነጋግሩዋቸው ፡፡"
+msgstr "ይህ ዕውቂያ ንቁ ነው ነገር ግን ማንም የሚያነጋግራቸው መዝገብ የለም። እባክዎ ያነጋግሩዋቸው ።"
 
 #: dt-core/configuration/config-site-defaults.php:306
 msgid "Please try connecting with this contact again."
@@ -3005,11 +3005,11 @@ msgstr "እባክዎ ከዚህ እውቂያ ጋር እንደገና ለመገና�
 msgid ""
 "We haven't heard about this person in a while. Do you have an update for "
 "this contact?"
-msgstr "ስለዚህ ሰው ለተወሰነ ጊዜ አልሰማንም ፡፡ ለዚህ ዕውቂያ ዝመና አለዎት?"
+msgstr "ስለዚህ ሰው ለተወሰነ ጊዜ አልሰማንም ። ለዚህ ዕውቂያ ዝመና አለዎት?"
 
 #: dt-core/configuration/config-site-defaults.php:346
 msgid "We haven't heard about this group in a while. Do you have an update?"
-msgstr "ስለዚህ ቡድን ለተወሰነ ጊዜ አልሰማንም ፡፡ ዝመና አለዎት?"
+msgstr "ስለዚህ ቡድን ለተወሰነ ጊዜ አልሰማንም ። ዝመና አለዎት?"
 
 #: dt-core/configuration/config-site-defaults.php:377
 msgid "Personal Phone"
@@ -3017,7 +3017,7 @@ msgstr "የግል ስልክ"
 
 #: dt-core/configuration/config-site-defaults.php:380
 msgid "Personal phone is private to the team, not for distribution."
-msgstr "የግል ስልክ ለቡድኑ የግል እንጂ ለማሰራጨት አይደለም ፡፡"
+msgstr "የግል ስልክ ለቡድኑ የግል እንጂ ለማሰራጨት አይደለም ።"
 
 #: dt-core/configuration/config-site-defaults.php:384
 msgid "Personal Email"
@@ -3025,7 +3025,7 @@ msgstr "የግል ኢሜል"
 
 #: dt-core/configuration/config-site-defaults.php:387
 msgid "Personal email is private to the team, not for distribution."
-msgstr "የግል ኢሜል ለቡድኑ የግል እንጂ ለማሰራጨት አይደለም ፡፡"
+msgstr "የግል ኢሜል ለቡድኑ የግል እንጂ ለማሰራጨት አይደለም ።"
 
 #: dt-core/configuration/config-site-defaults.php:391
 msgid "Personal Address"
@@ -3033,7 +3033,7 @@ msgstr "የግል አድራሻ"
 
 #: dt-core/configuration/config-site-defaults.php:394
 msgid "Personal address is private to the team, not for distribution."
-msgstr "የግል አድራሻ ለቡድኑ የግል እንጂ ለማሰራጨት አይደለም ፡፡"
+msgstr "የግል አድራሻ ለቡድኑ የግል እንጂ ለማሰራጨት አይደለም ።"
 
 #: dt-core/configuration/config-site-defaults.php:398
 msgid "Work Phone"
@@ -3041,7 +3041,7 @@ msgstr "የስራ ስልክ"
 
 #: dt-core/configuration/config-site-defaults.php:401
 msgid "Work phone is for distribution to contacts and seekers."
-msgstr "የሥራ ስልክ ለእውቂያዎች እና ፈላጊዎች ማሰራጨት ነው ፡፡"
+msgstr "የሥራ ስልክ ለእውቂያዎች እና ፈላጊዎች ማሰራጨት ነው ።"
 
 #: dt-core/configuration/config-site-defaults.php:405
 msgid "Work Email"
@@ -3049,7 +3049,7 @@ msgstr "የሥራ ኢሜይል"
 
 #: dt-core/configuration/config-site-defaults.php:408
 msgid "Work email is for distribution to contacts and seekers."
-msgstr "የሥራ ኢሜል ለእውቂያዎች እና ፈላጊዎች ለማሰራጨት ነው ፡፡"
+msgstr "የሥራ ኢሜል ለእውቂያዎች እና ፈላጊዎች ለማሰራጨት ነው ።"
 
 #: dt-core/configuration/config-site-defaults.php:412
 msgid "Work Facebook"
@@ -3057,7 +3057,7 @@ msgstr "ስራ ፌስቡክ"
 
 #: dt-core/configuration/config-site-defaults.php:415
 msgid "Work Facebook is for distribution to contacts and seekers."
-msgstr "ሥራ ፌስቡክ ለእውቂያዎች እና ፈላጊዎች ማሰራጨት ነው ፡፡"
+msgstr "ሥራ ፌስቡክ ለእውቂያዎች እና ፈላጊዎች ማሰራጨት ነው ።"
 
 #: dt-core/configuration/config-site-defaults.php:419
 msgid "Work WhatsApp"
@@ -3065,7 +3065,7 @@ msgstr "ዋትስአፕ ይስሩ"
 
 #: dt-core/configuration/config-site-defaults.php:422
 msgid "Work WhatsApp is for distribution to contacts and seekers."
-msgstr "የስራ ዋትሳፕ ለግንኙነቶች እና ፈላጊዎች ማሰራጨት ነው ፡፡"
+msgstr "የስራ ዋትሳፕ ለግንኙነቶች እና ፈላጊዎች ማሰራጨት ነው ።"
 
 #: dt-core/configuration/config-site-defaults.php:429
 msgid "thumbs up"
@@ -3134,7 +3134,7 @@ msgstr "የይለፍ ቃልዎን ጠፉ"
 
 #: dt-core/configuration/restrict-site-access.php:317
 msgid "Someone has requested a password reset for the following account:"
-msgstr "አንድ ሰው ለሚከተለው መለያ የይለፍ ቃል ዳግም ማስጀመር ጠይቋል"
+msgstr "አንድ ሰው ለሚከተለው መለያ የይለፍ ቃል ዳግም ማስጀመር ጠይቋል፦"
 
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:319
@@ -3151,11 +3151,11 @@ msgstr "የተጠቃሚ ስም:%s"
 
 #: dt-core/configuration/restrict-site-access.php:322
 msgid "If this was a mistake, just ignore this email and nothing will happen."
-msgstr "ይህ ስህተት ቢሆን ኖሮ ይህንን ኢሜል ችላ ይበሉ እና ምንም ነገር አይከሰትም ፡፡"
+msgstr "ይህ ስህተት ቢሆን ኖሮ ይህንን ኢሜል ችላ ይበሉ እና ምንም ነገር አይከሰትም ።"
 
 #: dt-core/configuration/restrict-site-access.php:323
 msgid "To reset your password, visit the following address:"
-msgstr "የይለፍ ቃልዎን እንደገና ለማስጀመር የሚከተለውን አድራሻ ይጎብኙ"
+msgstr "የይለፍ ቃልዎን እንደገና ለማስጀመር የሚከተለውን አድራሻ ይጎብኙ፦"
 
 #: dt-core/dt-storage.php:223
 msgid ""
@@ -3257,12 +3257,12 @@ msgstr "የቡድን ሁኔታ"
 #: dt-groups/base-setup.php:117
 msgctxt "field description"
 msgid "Set the current status of the group."
-msgstr "የቡድኑን ወቅታዊ ሁኔታ ያዘጋጁ ፡፡"
+msgstr "የቡድኑን ወቅታዊ ሁኔታ ያዘጋጁ ።"
 
 #: dt-groups/base-setup.php:122
 msgctxt "field description"
 msgid "The group is actively meeting."
-msgstr "ቡድኑ በንቃት እየተሰበሰበ ነው ፡፡"
+msgstr "ቡድኑ በንቃት እየተሰበሰበ ነው ።"
 
 #: dt-groups/base-setup.php:126 dt-users/users.php:180
 msgid "Inactive"
@@ -3271,11 +3271,11 @@ msgstr "እንቅስቃሴ-አልባ"
 #: dt-groups/base-setup.php:127
 msgctxt "field description"
 msgid "The group is no longer meeting."
-msgstr "ቡድኑ ከእንግዲህ እየተሰበሰበ አይደለም ፡፡"
+msgstr "ቡድኑ ከእንግዲህ እየተሰበሰበ አይደለም ።"
 
 #: dt-groups/base-setup.php:139
 msgid "Select the main person who is responsible for reporting on this group."
-msgstr "በዚህ ቡድን ላይ ሪፖርት የማድረግ ኃላፊነት ያለበት ዋናውን ሰው ይምረጡ ፡፡"
+msgstr "በዚህ ቡድን ላይ ሪፖርት የማድረግ ኃላፊነት ያለበት ዋናውን ሰው ይምረጡ ።"
 
 #: dt-groups/base-setup.php:147
 msgid "Group Coach / Church Planter"
@@ -3288,8 +3288,8 @@ msgid ""
 "assigned to a group while multiple people can be coaches / church planters "
 "of this group."
 msgstr ""
-"ይህንን ቡድን የተከላ እና / ወይም አሰልጣኝ የሆነው ሰው ፡፡ ለቡድን አንድ ሰው ብቻ ሊመደብ ይችላል ብዙ ሰዎች የዚህ "
-"ቡድን አሰልጣኞች / የቤተ ክርስቲያን ተከላዎች ሊሆኑ ይችላሉ ፡፡"
+"ይህንን ቡድን የተከላ እና / ወይም አሰልጣኝ የሆነው ሰው ። ለቡድን አንድ ሰው ብቻ ሊመደብ ይችላል ብዙ ሰዎች የዚህ "
+"ቡድን አሰልጣኞች / የቤተ ክርስቲያን ተከላዎች ሊሆኑ ይችላሉ ።"
 
 #: dt-groups/base-setup.php:160
 msgid "Group Type"
@@ -3326,7 +3326,7 @@ msgstr "ቡድን"
 msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
-msgstr "እንደ ቤተክርስቲያን የማይሰበሰብ (ወይም ቤተክርስቲያን ለመሆን የማይሞክር) ልዩ ቡድን ፡፡"
+msgstr "እንደ ቤተክርስቲያን የማይሰበሰብ (ወይም ቤተክርስቲያን ለመሆን የማይሞክር) ልዩ ቡድን ።"
 
 #: dt-groups/base-setup.php:192 dt-groups/base-setup.php:603
 msgid "Church Health"
@@ -3335,7 +3335,7 @@ msgstr "የቤተክርስቲያን ጤና"
 #: dt-groups/base-setup.php:193
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
-msgstr "የአንድ ቡድን / ቤተክርስቲያን እድገት እና ጤና ይከታተሉ ፡፡"
+msgstr "የአንድ ቡድን / ቤተክርስቲያን እድገት እና ጤና ይከታተሉ ።"
 
 #: dt-groups/base-setup.php:197
 msgid "Baptism"
@@ -3344,7 +3344,7 @@ msgstr "ጥምቀት"
 #: dt-groups/base-setup.php:198
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
-msgstr "ቡድኑ እየተጠመቀ ነው ፡፡"
+msgstr "ቡድኑ እየተጠመቀ ነው ።"
 
 #: dt-groups/base-setup.php:202
 msgid "Bible Study"
@@ -3353,7 +3353,7 @@ msgstr "የመጽሐፍ ቅዱስ ጥናት"
 #: dt-groups/base-setup.php:203
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
-msgstr "ቡድኑ መጽሐፍ ቅዱስን እያጠና ነው ፡፡"
+msgstr "ቡድኑ መጽሐፍ ቅዱስን እያጠና ነው ።"
 
 #: dt-groups/base-setup.php:207
 msgid "Communion"
@@ -3362,7 +3362,7 @@ msgstr "ቁርባን"
 #: dt-groups/base-setup.php:208
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
-msgstr "ቡድኑ ቁርባን እየተለማመደ ነው ፡፡"
+msgstr "ቡድኑ ቁርባን እየተለማመደ ነው ።"
 
 #: dt-groups/base-setup.php:212
 msgid "Fellowship"
@@ -3371,7 +3371,7 @@ msgstr "ህብረት"
 #: dt-groups/base-setup.php:213
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
-msgstr "ቡድኑ ህብረት እያደረገ ነው ፡፡"
+msgstr "ቡድኑ ህብረት እያደረገ ነው ።"
 
 #: dt-groups/base-setup.php:217
 msgid "Giving"
@@ -3380,7 +3380,7 @@ msgstr "መስጠት"
 #: dt-groups/base-setup.php:218
 msgctxt "Optional Documentation"
 msgid "The group is giving."
-msgstr "ቡድኑ እየሰጠ ነው ፡፡"
+msgstr "ቡድኑ እየሰጠ ነው ።"
 
 #: dt-groups/base-setup.php:222
 msgid "Prayer"
@@ -3389,7 +3389,7 @@ msgstr "ጸሎት"
 #: dt-groups/base-setup.php:223
 msgctxt "Optional Documentation"
 msgid "The group is praying."
-msgstr "ቡድኑ እየጸለየ ነው ፡፡"
+msgstr "ቡድኑ እየጸለየ ነው ።"
 
 #: dt-groups/base-setup.php:227
 msgid "Praise"
@@ -3398,7 +3398,7 @@ msgstr "ውዳሴ"
 #: dt-groups/base-setup.php:228
 msgctxt "Optional Documentation"
 msgid "The group is praising."
-msgstr "ቡድኑ እያደነቀ ነው ፡፡"
+msgstr "ቡድኑ እያደነቀ ነው ።"
 
 #: dt-groups/base-setup.php:232
 msgid "Sharing the Gospel"
@@ -3407,7 +3407,7 @@ msgstr "ወንጌልን መጋራት"
 #: dt-groups/base-setup.php:233
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
-msgstr "ቡድኑ ወንጌልን እያካፈለ ነው ፡፡"
+msgstr "ቡድኑ ወንጌልን እያካፈለ ነው ።"
 
 #: dt-groups/base-setup.php:237 dt-groups/base-setup.php:299
 msgid "Leaders"
@@ -3416,7 +3416,7 @@ msgstr "መሪዎች"
 #: dt-groups/base-setup.php:238
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
-msgstr "ቡድኑ አመራሮች አሉት ፡፡"
+msgstr "ቡድኑ አመራሮች አሉት ።"
 
 #: dt-groups/base-setup.php:242 dt-groups/base-setup.php:404
 msgid "Church Commitment"
@@ -3425,7 +3425,7 @@ msgstr "የቤተክርስቲያን ቁርጠኝነት"
 #: dt-groups/base-setup.php:243
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
-msgstr "ቡድኑ ቤተክርስቲያን ለመሆን ቃል ገብቷል ፡፡"
+msgstr "ቡድኑ ቤተክርስቲያን ለመሆን ቃል ገብቷል ።"
 
 #: dt-groups/base-setup.php:252 dt-users/template-user-management.php:174
 #: template-settings.php:438 template-settings.php:457
@@ -3435,7 +3435,7 @@ msgstr "የመጀመሪያ ቀን"
 #: dt-groups/base-setup.php:253
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
-msgstr "ይህ ቡድን መገናኘት የጀመረበት ቀን ፡፡"
+msgstr "ይህ ቡድን መገናኘት የጀመረበት ቀን ።"
 
 #: dt-groups/base-setup.php:260
 msgid "Church Start Date"
@@ -3444,7 +3444,7 @@ msgstr "ቤተክርስቲያን የሚጀመርበት ቀን"
 #: dt-groups/base-setup.php:261
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
-msgstr "ይህ ቡድን ለመጀመሪያ ጊዜ ቤተክርስቲያን እንደሆነ የታወቀው ቀን ፡፡"
+msgstr "ይህ ቡድን ለመጀመሪያ ጊዜ ቤተክርስቲያን እንደሆነ የታወቀው ቀን ።"
 
 #: dt-groups/base-setup.php:269 dt-users/template-user-management.php:175
 #: template-settings.php:444 template-settings.php:458
@@ -3469,7 +3469,7 @@ msgid ""
 "of the group."
 msgstr ""
 "የዚህ ቡድን አባላት ብዛት። በአባላቱ ዝርዝር ውስጥ አዳዲስ አባላት ሲደመሩ ወይም ሲወገዱ በራስ-ሰር ይዘምናል። በስርዓቱ "
-"ውስጥ የሌሉ ነገር ግን የቡድኑ አባላት የሆኑ ሰዎችን ለማካተት ይህንን ቁጥር በእጅ ይለውጡ ፡፡"
+"ውስጥ የሌሉ ነገር ግን የቡድኑ አባላት የሆኑ ሰዎችን ለማካተት ይህንን ቁጥር በእጅ ይለውጡ ።"
 
 #: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
 #: dt-groups/base-setup.php:602
@@ -3492,7 +3492,7 @@ msgstr "የወላጅ ቡድን"
 #: dt-groups/base-setup.php:318
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
-msgstr "ይህንን ቡድን የመሠረተው ቡድን ፡፡"
+msgstr "ይህንን ቡድን የመሠረተው ቡድን ።"
 
 #: dt-groups/base-setup.php:329
 msgid "Peer Group"
@@ -3505,7 +3505,7 @@ msgid ""
 "groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
 "በግንኙነት ውስጥ ወላጅ / ልጅ ያልሆነ ተዛማጅ ቡድን። የሚተባበሩ ፣ ሊዋሃዱ ፣ በቅርቡ ሊከፋፈሉ ፣ ወዘተ ቡድኖችን "
-"ሊያመለክት ይችላል ፡፡"
+"ሊያመለክት ይችላል ።"
 
 #: dt-groups/base-setup.php:341
 msgid "Child Group"
@@ -3514,7 +3514,7 @@ msgstr "የልጆች ቡድን"
 #: dt-groups/base-setup.php:342
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
-msgstr "ከዚህ ቡድን ውስጥ የተወለደው ቡድን ፡፡"
+msgstr "ከዚህ ቡድን ውስጥ የተወለደው ቡድን ።"
 
 #: dt-groups/base-setup.php:377
 msgid "Unbelievers"
@@ -3582,7 +3582,7 @@ msgstr "ይምረጡ"
 
 #: dt-groups/base-setup.php:571
 msgid "To add new members, click on 'Create' or 'Select'."
-msgstr "አዲስ አባላትን ለማከል ‹ፍጠር› ወይም ‹ምረጥ› ላይ ጠቅ ያድርጉ ፡፡"
+msgstr "አዲስ አባላትን ለማከል ‹ፍጠር› ወይም ‹ምረጥ› ላይ ጠቅ ያድርጉ ።"
 
 #: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
@@ -3594,7 +3594,7 @@ msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
 "to this group."
-msgstr "በ ‹አባል ዝርዝር› መስክ ውስጥ ከዚህ ቡድን ጋር ለማከል ነባር የእውቂያ ስም ይተይቡ ፡፡"
+msgstr "በ ‹አባል ዝርዝር› መስክ ውስጥ ከዚህ ቡድን ጋር ለማከል ነባር የእውቂያ ስም ይተይቡ ።"
 
 #: dt-groups/base-setup.php:606
 msgid "Four Fields"
@@ -3608,7 +3608,7 @@ msgid ""
 "for:"
 msgstr ""
 "በአራቱ መስኮች ንድፍ ውስጥ 5 ካሬዎች አሉ። ከላይ ግራ አራት ማዕዘን ውስጥ በመጀመር በሰዓት አቅጣጫ መሄድ እና "
-"አምስተኛው በመሃል ላይ ሆነው ይቆማሉ ፡፡"
+"አምስተኛው በመሃል ላይ ሆነው ይቆማሉ፦"
 
 #: dt-login/login-template.php:68
 msgid ""
@@ -4053,7 +4053,7 @@ msgstr "ምንጮች ገበታ"
 
 #: dt-metrics/contacts/sources.php:87
 msgid "Filter contacts to date range:"
-msgstr "እውቂያዎችን እስከ ቀን ክልል ያጣሩ"
+msgstr "እውቂያዎችን እስከ ቀን ክልል ያጣሩ፦"
 
 #: dt-metrics/contacts/sources.php:88
 #: dt-metrics/personal/activity-highlights.php:54
@@ -4081,7 +4081,7 @@ msgstr "ንቁ እውቂያዎች ፣ በመነሻ እና ፈላጊ ዱካ"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
-msgstr "ይህ አሁን ላይ ‹ንቁ› ሁኔታ ያላቸውን ዕውቂያዎች ብቻ እያሳየ ነው ፡፡"
+msgstr "ይህ አሁን ላይ ‹ንቁ› ሁኔታ ያላቸውን ዕውቂያዎች ብቻ እያሳየ ነው ።"
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
@@ -4172,7 +4172,7 @@ msgstr "ምንም"
 #: dt-metrics/personal/activity-highlights.php:60
 #, php-format
 msgid "%1$s I Changed"
-msgstr "%1$s ተለውጫለሁ።"
+msgstr "%1$s ተለውጫለሁ"
 
 #: dt-metrics/personal/activity-highlights.php:61
 #, php-format
@@ -4209,7 +4209,7 @@ msgstr "ቀን"
 #: dt-metrics/personal/activity-highlights.php:191
 #, php-format
 msgid "%1$d %2$s created"
-msgstr "%1$d %2$s ተፈጥሯል።"
+msgstr "%1$d %2$s ተፈጥሯል"
 
 #: dt-metrics/personal/activity-log.php:22
 #: dt-metrics/personal/activity-log.php:52
@@ -4489,7 +4489,7 @@ msgstr "በ %1$s # %2$s ላይ ያዘምኑ"
 
 #: dt-notifications/notifications-email.php:142
 msgid "Do not reply directly to this email."
-msgstr "ለዚህ ኢሜል በቀጥታ መልስ አይመልሱ ፡፡"
+msgstr "ለዚህ ኢሜል በቀጥታ መልስ አይመልሱ ።"
 
 #: dt-notifications/notifications-scheduler.php:140 template-settings.php:514
 msgid "Hourly Digest"
@@ -4551,7 +4551,7 @@ msgstr "%s ተፈጥሮ ለእርስዎ ተመደበ።"
 #, php-format
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
-msgstr "ተመድበዋል %1$s"
+msgstr "ተመድበዋል %1$s።"
 
 #: dt-notifications/notifications.php:917
 #, php-format
@@ -4587,7 +4587,7 @@ msgstr "%1$s ን ለእርስዎ %2$s ን ተመድቧል።"
 #, php-format
 msgctxt "User1 added milestone Baptizing on contact1."
 msgid "%1$s added milestone %2$s on %3$s."
-msgstr "%1$s በ %3$s ላይ ጉልበቱን አክሏል %2$s"
+msgstr "%1$s በ %3$s ላይ ጉልበቱን አክሏል %2$s።"
 
 #: dt-notifications/notifications.php:952
 #, php-format
@@ -4605,7 +4605,7 @@ msgstr "%1$s የተቀየረ የእውቂያ ዝርዝሮች በ %2$s ላይ።"
 #, php-format
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
-msgstr "%1$s ውድቅ የሆነ ተልእኮ በ: %2$s"
+msgstr "%1$s ውድቅ የሆነ ተልእኮ በ: %2$s።"
 
 #: dt-people-groups/people-groups-base.php:111
 #: dt-people-groups/people-groups-base.php:121
@@ -4651,12 +4651,12 @@ msgstr "ሀገር"
 #: dt-people-groups/people-groups-base.php:316
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this contact."
-msgstr "በዚህ ግንኙነት የተወከሉት የሰዎች ቡድኖች ፡፡"
+msgstr "በዚህ ግንኙነት የተወከሉት የሰዎች ቡድኖች ።"
 
 #: dt-people-groups/people-groups-base.php:329
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
-msgstr "በዚህ ቡድን የተወከሉት የሰዎች ቡድኖች ፡፡"
+msgstr "በዚህ ቡድን የተወከሉት የሰዎች ቡድኖች ።"
 
 #: dt-people-groups/people-groups-base.php:345
 msgid "Connections"
@@ -5229,7 +5229,7 @@ msgstr "ማስታወሻ ጨምር"
 
 #: dt-reports/magic-url-setup.php:267
 msgid "Send email with link"
-msgstr "ከአገናኝ ጋር ኢሜል ይላኩ።"
+msgstr "ከአገናኝ ጋር ኢሜል ይላኩ"
 
 #: dt-reports/magic-url-setup.php:329
 msgid "Delete and replace the app link"
@@ -5313,7 +5313,7 @@ msgstr "የኃላፊነት ሽፋን"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"አስተዳዳሪ በባለብዙ ጣቢያ ቅንብሮች ውስጥ \"አዲስ ተጠቃሚዎችን አክል\" የሚለውን አማራጭ ማንቃት አለበት፡-"
+"አስተዳዳሪ በባለብዙ ጣቢያ ቅንብሮች ውስጥ \"አዲስ ተጠቃሚዎችን አክል\" የሚለውን አማራጭ ማንቃት አለበት፡-፦"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"
@@ -5583,7 +5583,7 @@ msgstr "[%s] የመግቢያ ዝርዝሮች"
 
 #: dt-users/user-hooks-and-config.php:323
 msgid "To set your password, visit the following address:"
-msgstr "የይለፍ ቃልህን ለማዘጋጀት የሚከተለውን አድራሻ ጎብኝ።"
+msgstr "የይለፍ ቃልህን ለማዘጋጀት የሚከተለውን አድራሻ ጎብኝ፦"
 
 #: dt-users/user-hooks-and-config.php:346
 #, php-format
@@ -5717,7 +5717,7 @@ msgstr "መዝገብ ፈጠረ"
 
 #: dt-users/user-metrics.php:115
 msgid "Logged In %n times"
-msgstr "%n ጊዜ ገብቷል።"
+msgstr "%n ጊዜ ገብቷል"
 
 #: dt-users/user-metrics.php:116
 msgid "Logged In"
@@ -5765,7 +5765,7 @@ msgstr "ተጠቃሚን ወደ ጣቢያ ማከል አልተሳካም።"
 #, php-format
 msgctxt "These are archived comments for contact John Doe"
 msgid "These are archived comments for %1$s"
-msgstr "እነዚህ በማህደር የተቀመጡ ለ%1$s አስተያየቶች ናቸው።"
+msgstr "እነዚህ በማህደር የተቀመጡ ለ%1$s አስተያየቶች ናቸው"
 
 #: dt-users/users.php:744
 msgctxt "List Filters"
@@ -5807,7 +5807,7 @@ msgid ""
 "note that Internet Explorer is not supported."
 msgstr ""
 "ጊዜው ያለፈበት የድር አሳሽ የሚጠቀሙ ይመስላል። በጣም ዘመናዊው የአሳሽዎ ስሪት ከሌለው ይህ ጣቢያ በትክክል ላይሰራ "
-"ይችላል። እባክዎን ኢንተርኔት ኤክስፕሎረር እንደማይደገፍ ልብ ይበሉ ፡፡"
+"ይችላል። እባክዎን ኢንተርኔት ኤክስፕሎረር እንደማይደገፍ ልብ ይበሉ ።"
 
 #: header.php:63
 msgid "See what browser you are using."
@@ -6021,9 +6021,9 @@ msgid ""
 "suggest not using a personal photo, but instead choose a cartoon, abstract, "
 "or alias photo to represent you."
 msgstr ""
-"የደቀመዝሙር መሳሪያዎች ስርዓት ምስሎችን አያስቀምጥም ፡፡ ለመገለጫ ምስሎች ግራቫታር (በዓለም አቀፍ ደረጃ የታወቀ "
-"አምሳያ) እንጠቀማለን ፡፡ የደህንነት ስጋት ካለብዎ የግል ፎቶ እንዳይጠቀሙ እንመክራለን ፣ ግን ይልቁንስ እርስዎን "
-"ለመወከል የካርቱን ፣ ረቂቅ ወይም ቅጽል ፎቶን ይምረጡ ፡፡"
+"የደቀመዝሙር መሳሪያዎች ስርዓት ምስሎችን አያስቀምጥም ። ለመገለጫ ምስሎች ግራቫታር (በዓለም አቀፍ ደረጃ የታወቀ "
+"አምሳያ) እንጠቀማለን ። የደህንነት ስጋት ካለብዎ የግል ፎቶ እንዳይጠቀሙ እንመክራለን ፣ ግን ይልቁንስ እርስዎን "
+"ለመወከል የካርቱን ፣ ረቂቅ ወይም ቅጽል ፎቶን ይምረጡ ።"
 
 #: template-settings.php:625
 msgid "edit image on gravatar.com"
@@ -6050,7 +6050,7 @@ msgstr "የተጠቃሚ ስም ሊለወጥ አይችልም"
 
 #: template-settings.php:648
 msgid "User email can be changed by site administrator."
-msgstr "የተጠቃሚ ኢሜል በጣቢያ አስተዳዳሪ ሊቀየር ይችላል ፡፡"
+msgstr "የተጠቃሚ ኢሜል በጣቢያ አስተዳዳሪ ሊቀየር ይችላል ።"
 
 #: template-settings.php:656
 msgid "Use this email reset form to create a new password."
@@ -6073,15 +6073,15 @@ msgid ""
 "Scanning for duplicates starting with the most recently modified contacts. "
 "Results are limited to ones that have less than 10 exact matches."
 msgstr ""
-"በጣም በቅርብ በተሻሻሉ እውቂያዎች የሚጀምሩ የተባዙን መቃኘት ፡፡ ውጤቶች ከ 10 ያነሱ ትክክለኛ ግጥሚያዎች ባሉት ብቻ "
+"በጣም በቅርብ በተሻሻሉ እውቂያዎች የሚጀምሩ የተባዙን መቃኘት ። ውጤቶች ከ 10 ያነሱ ትክክለኛ ግጥሚያዎች ባሉት ብቻ "
 "የተገደቡ ናቸው።"
 
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"
 msgid "Access contacts scanned:"
-msgstr "የመዳረሻ እውቂያዎችን ተቃኝተዋል"
+msgstr "የመዳረሻ እውቂያዎችን ተቃኝተዋል፦"
 
 #: template-view-duplicates.php:31
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
-msgstr "የተባዙ ተገኝተዋል"
+msgstr "የተባዙ ተገኝተዋል፦"

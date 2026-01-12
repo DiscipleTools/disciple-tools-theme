@@ -3982,7 +3982,7 @@ msgstr "Kurekebishwa mara ya mwisho"
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s mwezi uliopita"
-msgstr[1] ""
+msgstr[1] "%s miezi iliyopita"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4575,42 +4575,42 @@ msgstr "Digest ya Kila siku"
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "Dakika %s iliyopita"
-msgstr[1] ""
+msgstr[1] "Dakika %s zilizopita"
 
 #: dt-notifications/notifications.php:481
 #, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "Saa %s iliyopita"
-msgstr[1] ""
+msgstr[1] "Saa %s zilizopita"
 
 #: dt-notifications/notifications.php:486
 #, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "Siku %s iliyopita"
-msgstr[1] ""
+msgstr[1] "Siku %s zilizopita"
 
 #: dt-notifications/notifications.php:491
 #, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "Wiki %s iliyopita"
-msgstr[1] ""
+msgstr[1] "Wiki %s zilizopita"
 
 #: dt-notifications/notifications.php:510
 #, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "%s mwaka uliopita"
-msgstr[1] ""
+msgstr[1] "%s miaka iliyopita"
 
 #: dt-notifications/notifications.php:514
 #, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "zaidi ya %s mwaka uliopita"
-msgstr[1] ""
+msgstr[1] "zaidi ya %s miaka iliyopita"
 
 #: dt-notifications/notifications.php:909
 #, php-format
@@ -5903,7 +5903,7 @@ msgstr "%s inahitaji sasisho."
 
 #: single-template.php:101 single-template.php:109
 msgid "Please provide an update by posting a comment."
-msgstr "Tafadhali, ongeza maoni ili kusasisha"
+msgstr "Tafadhali, ongeza maoni ili kusasisha."
 
 #: single-template.php:258
 msgid "Edit all details fields"

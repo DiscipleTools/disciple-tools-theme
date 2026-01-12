@@ -2569,7 +2569,7 @@ msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr ""
 "Ang kontak na ito ay kasalukuyang nakahinto (ibig sabihin, nakabakasyon "
-"ohindi tumutugon)"
+"ohindi tumutugon)."
 
 #: dt-contacts/module-access.php:180
 msgid "Reason Not Ready"
@@ -2579,7 +2579,7 @@ msgstr "Dahilan Kung Bakit Hindi Handa"
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr ""
-"Ang pangunahing dahilan kung bakit hindi handang maitakda ang contact sa user"
+"Ang pangunahing dahilan kung bakit hindi handang maitakda ang contact sa user."
 
 #: dt-contacts/module-access.php:188
 msgid "Insufficient Contact Information"

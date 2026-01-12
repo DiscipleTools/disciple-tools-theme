@@ -48,7 +48,7 @@ msgstr "عذراً، ليس لديك إذن لعرض %1$s بالمعرف %2$s."
 
 #: 403.php:36
 msgid "Request permission from your administrator."
-msgstr "طلب إذن من المسؤول الخاص بك"
+msgstr "طلب إذن من المسؤول الخاص بك."
 
 #: 403.php:37
 msgid "Request Record Access Permission"
@@ -1402,7 +1402,7 @@ msgstr "أخف كل شيء"
 
 #: dt-assets/parts/loop-activity-comment.php:221
 msgid "Delete Comment:"
-msgstr "حذف تعليقات"
+msgstr "حذف تعليقات:"
 
 #: dt-assets/parts/loop-activity-comment.php:235
 #: dt-assets/parts/loop-activity-comment.php:283
@@ -1461,7 +1461,7 @@ msgstr "دمج %1$s مع %2$s آخر"
 #: dt-assets/parts/merge-details.php:59
 msgctxt "added to the end of a sentence"
 msgid "selected."
-msgstr "تم التحديث"
+msgstr "تم التحديث."
 
 #: dt-assets/parts/merge-details.php:60
 msgid "Click merge to continue."
@@ -2111,7 +2111,7 @@ msgctxt "Contact Status field description"
 msgid ""
 "This contact has made it known that they no longer want to continue or "
 "youhave decided not to continue with him/her."
-msgstr "لا تريد جهة الاتصال هذه إكمال التواصل أو أنت بنفسك قررت إيقاف متابعته"
+msgstr "لا تريد جهة الاتصال هذه إكمال التواصل أو أنت بنفسك قررت إيقاف متابعته."
 
 #: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
@@ -2511,7 +2511,7 @@ msgctxt "Contact Status field description"
 msgid ""
 "The contact has been assigned to someone, but has not yet been accepted "
 "bythat person."
-msgstr "تمّ تعيين جهة الاتصال هذه لشخص لكن لم يتم قبوله بعد"
+msgstr "تمّ تعيين جهة الاتصال هذه لشخص لكن لم يتم قبوله بعد."
 
 #: dt-contacts/module-access.php:164
 msgid "Paused"
@@ -2520,7 +2520,7 @@ msgstr "موقوف مؤقتا"
 #: dt-contacts/module-access.php:165
 msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
-msgstr "جهة الاتصال هذه معلقة (في عطلة أو لا يتجاوب)"
+msgstr "جهة الاتصال هذه معلقة (في عطلة أو لا يتجاوب)."
 
 #: dt-contacts/module-access.php:180
 msgid "Reason Not Ready"
@@ -2909,7 +2909,7 @@ msgstr "راسل المستعمل"
 #: dt-contacts/user-module.php:43
 msgctxt "Optional Documentation"
 msgid "The id of the user this contact corresponds to"
-msgstr "أضف اسم سجل الاتصال الذي يتوافق مع هذا المستخدم."
+msgstr ""
 
 #: dt-contacts/user-module.php:72
 msgid "This contact represents you as a user."
@@ -3287,7 +3287,7 @@ msgstr "حدد الحالة الحالية للمجموعة."
 #: dt-groups/base-setup.php:122
 msgctxt "field description"
 msgid "The group is actively meeting."
-msgstr "المجموعة نشطة (تجتمع باستمرار)"
+msgstr "المجموعة نشطة (تجتمع باستمرار)."
 
 #: dt-groups/base-setup.php:126 dt-users/users.php:180
 msgid "Inactive"
@@ -4749,7 +4749,7 @@ msgstr "صورة"
 
 #: dt-posts/custom-post-type.php:209
 msgid "Tags"
-msgstr "العلامات:"
+msgstr "العلامات"
 
 #: dt-posts/custom-post-type.php:210
 msgctxt "Optional Documentation"
@@ -6042,7 +6042,7 @@ msgstr "جدولة السفر أو التواريخ غير المتاحة"
 
 #: template-settings.php:449
 msgid "Add Unavailable dates"
-msgstr "النسخة المتاحة:"
+msgstr ""
 
 #: template-settings.php:463
 msgid "No Travel Scheduled"

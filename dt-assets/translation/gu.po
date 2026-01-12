@@ -1728,7 +1728,7 @@ msgid ""
 msgstr ""
 "આ ડુપ્લિકેટ સંપર્ક પૃષ્ઠ તે છે જ્યાં તમે સંભવિત પહેલાથી અસ્તિત્વમાંના સંપર્કના ડુપ્લિકેટ્સ હોવાને "
 "કારણે સિસ્ટમ દ્વારા લેવામાં આવેલા સંપર્કોની સમીક્ષા, નામંજૂર અથવા મર્જ કરી શકો છો (તેમના "
-"નામ, ઇમેઇલ અને ફોન સામે તપાસ કરતા)"
+"નામ, ઇમેઇલ અને ફોન સામે તપાસ કરતા)."
 
 #: dt-assets/parts/modals/modal-help.php:124
 #: dt-assets/parts/modals/modal-help.php:174
@@ -3464,7 +3464,7 @@ msgstr "પ્રારંભ તારીખ"
 #: dt-groups/base-setup.php:253
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
-msgstr "આ જૂથની મીટિંગ શરૂ થઈ તે તારીખ"
+msgstr "આ જૂથની મીટિંગ શરૂ થઈ તે તારીખ."
 
 #: dt-groups/base-setup.php:260
 msgid "Church Start Date"

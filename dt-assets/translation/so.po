@@ -1429,7 +1429,7 @@ msgstr "Waan ka xumahay, waxbaa qaldamay"
 
 #: dt-assets/parts/loop-activity-comment.php:236
 msgid "The comment could not be deleted."
-msgstr "Faallada waa la tirtiri kari waayey"
+msgstr "Faallada waa la tirtiri kari waayey."
 
 #: dt-assets/parts/loop-activity-comment.php:241
 msgid "Edit Comment:"
@@ -1478,7 +1478,7 @@ msgstr "La midow %1$s kani %2$s kale"
 #: dt-assets/parts/merge-details.php:59
 msgctxt "added to the end of a sentence"
 msgid "selected."
-msgstr "la xushay"
+msgstr "la xushay."
 
 #: dt-assets/parts/merge-details.php:60
 msgid "Click merge to continue."
@@ -2409,11 +2409,11 @@ msgstr "Xaqiiji Wareejinta"
 
 #: dt-contacts/contacts-transfer.php:425
 msgid "Unknown error."
-msgstr "Cilad aan la aqoon"
+msgstr "Cilad aan la aqoon."
 
 #: dt-contacts/contacts-transfer.php:457
 msgid "Minor transfer error."
-msgstr "Khalad wareejin yar"
+msgstr "Khalad wareejin yar."
 
 #: dt-contacts/contacts-transfer.php:479
 #, php-format
@@ -4030,7 +4030,7 @@ msgstr "Bishii Ugu Dambeysay"
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s bil kahor"
-msgstr[1] ""
+msgstr[1] "%s bilood kahor"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4624,42 +4624,42 @@ msgstr "Soo Koobidda Maalinlaha"
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "%s daqiiqo kahor"
-msgstr[1] ""
+msgstr[1] "%s daqiiqadood kahor"
 
 #: dt-notifications/notifications.php:481
 #, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "%s saacad kahor"
-msgstr[1] ""
+msgstr[1] "%s saacadood kahor"
 
 #: dt-notifications/notifications.php:486
 #, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s maalin kahor"
-msgstr[1] ""
+msgstr[1] "%s maalmood kahor"
 
 #: dt-notifications/notifications.php:491
 #, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "%s usbuuc ka hor"
-msgstr[1] ""
+msgstr[1] "%s usbuucyood ka hor"
 
 #: dt-notifications/notifications.php:510
 #, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "%s sanad kahor"
-msgstr[1] ""
+msgstr[1] "%s sannadood kahor"
 
 #: dt-notifications/notifications.php:514
 #, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "in ka badan %s sanad kahor"
-msgstr[1] ""
+msgstr[1] "in ka badan %s sannadood kahor"
 
 #: dt-notifications/notifications.php:909
 #, php-format
@@ -4683,7 +4683,7 @@ msgstr "%1$s loo qoondeeyay %2$s ilaa %3$s."
 #, php-format
 msgctxt "User1 shared contact1 with you."
 msgid "%1$s shared %2$s with you."
-msgstr "%1$s ayaa kula wadaagay %2$s"
+msgstr "%1$s ayaa kula wadaagay %2$s."
 
 #: dt-notifications/notifications.php:928
 #, php-format
@@ -4701,7 +4701,7 @@ msgstr "%1$s waxay faallo ka bixisay %2$s iyadoo leh: %3$s"
 #, php-format
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
-msgstr "%1$s adiga lagugu subkay %2$s"
+msgstr "%1$s adiga lagugu subkay %2$s."
 
 #: dt-notifications/notifications.php:949
 #, php-format
@@ -6166,7 +6166,7 @@ msgstr ""
 "adeegsanaa Gravatar (Avatar Caalamka laga Aqoonsaday). Haddii aad ka "
 "walwalsan tahay amniga, waxaan kuu soo jeedineynaa inaadan isticmaalin sawir "
 "shaqsiyeed, laakiin taa beddelkeed ka dooro kartoon, sawir aan caadi ahayn, "
-"ama magac kale oo loo yaqaan 'alias photo' si uu kuu matalo"
+"ama magac kale oo loo yaqaan 'alias photo' si uu kuu matalo."
 
 #: template-settings.php:625
 msgid "edit image on gravatar.com"
@@ -6226,7 +6226,7 @@ msgstr ""
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"
 msgid "Access contacts scanned:"
-msgstr "Xiriirinta marin u helka ayaa la marsiiyey"
+msgstr "Xiriirinta marin u helka ayaa la marsiiyey:"
 
 #: template-view-duplicates.php:31
 msgctxt "Duplicate contacts found: 100"

@@ -1046,7 +1046,7 @@ msgstr "हस्तांतरण अद्यतन अयशस्वी. �
 
 #: dt-assets/functions/enqueue-scripts.php:239
 msgid "Transfer update successful."
-msgstr "हस्तांतरण अद्यतन यशस्वी"
+msgstr "हस्तांतरण अद्यतन यशस्वी."
 
 #: dt-assets/functions/enqueue-scripts.php:240
 #, php-format
@@ -1757,7 +1757,7 @@ msgstr "लिंक क्लिपबोर्डवर कॉपी करा
 #: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
 #: dt-reports/magic-url-setup.php:508
 msgid "Send the link via email."
-msgstr "ईमेलद्वारे लिंक पाठवा"
+msgstr "ईमेलद्वारे लिंक पाठवा."
 
 #: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:312
 #: dt-reports/magic-url-setup.php:517
@@ -1797,7 +1797,7 @@ msgstr "टॅग निर्माण करा"
 
 #: dt-assets/parts/modals/modal-new-tag.php:3 template-new-bulk-post.php:277
 msgid "Create a tag and apply it to this record."
-msgstr "टॅग निर्माण करा आणि या नोंदीला लागू करा"
+msgstr "टॅग निर्माण करा आणि या नोंदीला लागू करा."
 
 #: dt-assets/parts/modals/modal-new-tag.php:7
 #: dt-assets/parts/modals/modal-new-tag.php:9 template-new-bulk-post.php:281
@@ -2165,7 +2165,7 @@ msgstr "हस्तांतरण"
 #: dt-contacts/base-setup.php:383
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
-msgstr "दुसऱ्या शिष्यासोबतच्या भागीदारीतून संपर्क हस्तांतरित केले"
+msgstr "दुसऱ्या शिष्यासोबतच्या भागीदारीतून संपर्क हस्तांतरित केले."
 
 #: dt-contacts/base-setup.php:396 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:616
@@ -2175,7 +2175,7 @@ msgstr "स्रोत"
 #: dt-contacts/base-setup.php:397
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
-msgstr "वेबसाइट, हा काँटॅक्ट आला तो कार्यक्रम किंवा ठिकाण"
+msgstr "वेबसाइट, हा काँटॅक्ट आला तो कार्यक्रम किंवा ठिकाण."
 
 #: dt-contacts/base-setup.php:438 dt-contacts/base-setup.php:470
 #, php-format
@@ -2497,7 +2497,7 @@ msgstr "तयार नाही"
 msgctxt "Contact Status field description"
 msgid ""
 "There is not enough information to move forward with the contact at thistime."
-msgstr "या काँटॅक्टबाबत पुढे जाण्यासाठी सध्याच्या घडीला पुरेशी माहिती नाही"
+msgstr "या काँटॅक्टबाबत पुढे जाण्यासाठी सध्याच्या घडीला पुरेशी माहिती नाही."
 
 #: dt-contacts/module-access.php:153
 msgid "Dispatch Needed"
@@ -2536,7 +2536,7 @@ msgstr "कारण तयार नाही"
 #: dt-contacts/module-access.php:181
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
-msgstr "हा काँटॅक्ट वापरकर्त्याला देण्यास तयार नाही याचे मुख्य कारण"
+msgstr "हा काँटॅक्ट वापरकर्त्याला देण्यास तयार नाही याचे मुख्य कारण."
 
 #: dt-contacts/module-access.php:188
 msgid "Insufficient Contact Information"
@@ -3337,12 +3337,12 @@ msgstr "पूर्व-गट"
 #: dt-groups/base-setup.php:166
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
-msgstr "प्रामुख्याने अश्रद्ध लोकांचा गट"
+msgstr "प्रामुख्याने अश्रद्ध लोकांचा गट."
 
 #: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
-msgstr "3 किंवा अधिक सश्रद्ध व्यक्तींचा गट, मात्र चर्च म्हणून ओळख नाही"
+msgstr "3 किंवा अधिक सश्रद्ध व्यक्तींचा गट, मात्र चर्च म्हणून ओळख नाही."
 
 #: dt-groups/base-setup.php:173
 msgid "Church"
@@ -3406,7 +3406,7 @@ msgstr "फेलोशिप"
 #: dt-groups/base-setup.php:213
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
-msgstr "गट फेलोशिप करत आहे"
+msgstr "गट फेलोशिप करत आहे."
 
 #: dt-groups/base-setup.php:217
 msgid "Giving"
@@ -3489,7 +3489,7 @@ msgstr "समाप्ती दिनांक"
 #: dt-groups/base-setup.php:270
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
-msgstr "या गटाने भेटणे थांबवले ती तारीख ( लागू असल्यास)"
+msgstr "या गटाने भेटणे थांबवले ती तारीख (लागू असल्यास)."
 
 #: dt-groups/base-setup.php:280 dt-metrics/records/genmap.php:157
 msgid "Member Count"
@@ -3528,7 +3528,7 @@ msgstr "पालक गट"
 #: dt-groups/base-setup.php:318
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
-msgstr "हा गट तयार करणारा गट"
+msgstr "हा गट तयार करणारा गट."
 
 #: dt-groups/base-setup.php:329
 msgid "Peer Group"
@@ -3597,7 +3597,7 @@ msgstr "अन्य गट सुरू करण्यासाठी मद�
 #: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
-msgstr "हा काँटॅक्ट सदस्य असलेले गट"
+msgstr "हा काँटॅक्ट सदस्य असलेले गट."
 
 #: dt-groups/base-setup.php:439
 msgid "Leader of Group"
@@ -4526,7 +4526,7 @@ msgstr "वर अपडेट करा %1$s #%2$s"
 
 #: dt-notifications/notifications-email.php:142
 msgid "Do not reply directly to this email."
-msgstr "या ईमेलला थेट उत्तर देऊ नका"
+msgstr "या ईमेलला थेट उत्तर देऊ नका."
 
 #: dt-notifications/notifications-scheduler.php:140 template-settings.php:514
 msgid "Hourly Digest"
@@ -4582,7 +4582,7 @@ msgstr[1] "%s हून अधिक वर्षांपूर्वी"
 #, php-format
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "%s तयार केले व तुम्हाला नियुक्त केले"
+msgstr "%s तयार केले व तुम्हाला नियुक्त केले."
 
 #: dt-notifications/notifications.php:911
 #, php-format
@@ -4688,12 +4688,12 @@ msgstr "देश"
 #: dt-people-groups/people-groups-base.php:316
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this contact."
-msgstr "हा काँटॅक्ट प्रतिनिधित्व करत असलेले लोक गट"
+msgstr "हा काँटॅक्ट प्रतिनिधित्व करत असलेले लोक गट."
 
 #: dt-people-groups/people-groups-base.php:329
 msgctxt "Optional Documentation"
 msgid "The people groups represented by this group."
-msgstr "हा गट प्रतिनिधित्व करत असलेले लोकांचे गट"
+msgstr "हा गट प्रतिनिधित्व करत असलेले लोकांचे गट."
 
 #: dt-people-groups/people-groups-base.php:345
 msgid "Connections"

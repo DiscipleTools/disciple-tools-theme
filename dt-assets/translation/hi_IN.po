@@ -1040,7 +1040,7 @@ msgstr "डुप्लिकेट: %s पर"
 
 #: dt-assets/functions/enqueue-scripts.php:237
 msgid "Transfer failed. Check site-to-site configuration."
-msgstr "लेनदेन असफल रहा. साइट टू साइट कॉन्फ़िगरेशन चेक करें"
+msgstr "लेनदेन असफल रहा. साइट टू साइट कॉन्फ़िगरेशन चेक करें।"
 
 #: dt-assets/functions/enqueue-scripts.php:238
 msgid "Transfer update failed. Check site-to-site configuration."
@@ -1420,7 +1420,7 @@ msgstr "यह कमेंट डिलीट नही हो सका।"
 
 #: dt-assets/parts/loop-activity-comment.php:241
 msgid "Edit Comment:"
-msgstr "कमेंट बदलें"
+msgstr "कमेंट बदलें:"
 
 #: dt-assets/parts/loop-activity-comment.php:257
 msgid "Type of Comment"
@@ -2376,11 +2376,11 @@ msgstr "ट्रांसफर की पुष्टि करें"
 
 #: dt-contacts/contacts-transfer.php:425
 msgid "Unknown error."
-msgstr "अज्ञात एरर"
+msgstr "अज्ञात एरर।"
 
 #: dt-contacts/contacts-transfer.php:457
 msgid "Minor transfer error."
-msgstr "ट्रांसफर में छोटी सी गलती"
+msgstr "ट्रांसफर में छोटी सी गलती।"
 
 #: dt-contacts/contacts-transfer.php:479
 #, php-format
@@ -2398,7 +2398,7 @@ msgstr "ट्रांसफर बॉट"
 
 #: dt-contacts/contacts-transfer.php:633
 msgid "ALERT: Possible duplicate contact from a previous transfer."
-msgstr "अलर्ट: इससे पहले किये गए किसी ट्रांसफर से निकला संभावित डुप्लीकेट"
+msgstr "अलर्ट: इससे पहले किये गए किसी ट्रांसफर से निकला संभावित डुप्लीकेट।"
 
 #: dt-contacts/contacts-transfer.php:1202
 msgid "redacted email"
@@ -3457,7 +3457,7 @@ msgstr "नेता"
 #: dt-groups/base-setup.php:238
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
-msgstr "समूह में नेता है|"
+msgstr "समूह में नेता है।"
 
 #: dt-groups/base-setup.php:242 dt-groups/base-setup.php:404
 msgid "Church Commitment"

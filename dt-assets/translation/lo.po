@@ -661,7 +661,7 @@ msgstr "ລິ້ງຂອງທ່ານ"
 #: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:47
 #: template-settings.php:57
 msgid "Apps"
-msgstr "ແອັບ."
+msgstr "ແອັບ"
 
 #: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:49
 #: dt-core/configuration/config-site-defaults.php:442
@@ -1522,7 +1522,7 @@ msgstr ""
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
 msgid "User workload status icons legend:"
-msgstr "ຕຳ ແໜ່ງ ວຽກງານຂອງຜູ້ໃຊ້"
+msgstr "ຕຳ ແໜ່ງ ວຽກງານຂອງຜູ້ໃຊ້:"
 
 #: dt-assets/parts/modals/modal-help.php:33
 msgid "2 contacts need an update"

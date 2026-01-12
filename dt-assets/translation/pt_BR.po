@@ -382,10 +382,7 @@ msgstr "Nenhum campo selecionado"
 #, php-format
 msgid ""
 "Select all the %1$s you want to update from the list, and update them below"
-msgstr ""
-"Selecione todos os %1$s que deseja atualizar da lista e atualize-os "
-"abaixoSelecione todos os %1$s que deseja atualizar da lista e atualize-os "
-"abaixo"
+msgstr "Selecione todos os %1$s que deseja atualizar da lista e atualize-os abaixo"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -3163,7 +3160,7 @@ msgstr "triste"
 
 #: dt-core/configuration/config-site-defaults.php:434
 msgid "prayer"
-msgstr "Oração "
+msgstr "Oração"
 
 #: dt-core/configuration/config-site-defaults.php:443
 msgid "Work"
@@ -5709,7 +5706,7 @@ msgstr "Para definir sua senha, visite o seguinte endereço:"
 #: dt-users/user-hooks-and-config.php:346
 #, php-format
 msgid "To log in click here: %s"
-msgstr "Para logar clique aqui: %s "
+msgstr "Para logar clique aqui: %s"
 
 #: dt-users/user-hooks-and-config.php:388
 #, php-format
@@ -5747,7 +5744,7 @@ msgstr "Saber mais."
 
 #: dt-users/user-hooks-and-config.php:602
 msgid "User Language"
-msgstr "Linguagem do usuário "
+msgstr "Linguagem do usuário"
 
 #: dt-users/user-initial-setup.php:44
 msgid "Initial User Setup!"

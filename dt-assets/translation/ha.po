@@ -1468,7 +1468,7 @@ msgstr "Haɗa wannan %1$s da wani %2$s"
 #: dt-assets/parts/merge-details.php:59
 msgctxt "added to the end of a sentence"
 msgid "selected."
-msgstr "zaba"
+msgstr "zaba."
 
 #: dt-assets/parts/merge-details.php:60
 msgid "Click merge to continue."
@@ -2387,7 +2387,7 @@ msgstr "Tabbatar da Canja wurin"
 
 #: dt-contacts/contacts-transfer.php:425
 msgid "Unknown error."
-msgstr "Kuskuren da ba a sani ba"
+msgstr "Kuskuren da ba a sani ba."
 
 #: dt-contacts/contacts-transfer.php:457
 msgid "Minor transfer error."
