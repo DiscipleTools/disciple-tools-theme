@@ -658,14 +658,18 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
             if ( $is_legacy ) {
                 $is_empty_post = !is_array( $post ) || count( array_keys( $post ) ) <= 1; // if this is a new post, it only has a post_type key
+                $hide_label = isset( $params['hide_label'] ) && $params['hide_label'] === true;
                 ?>
-                <div class="section-subheader">
-                    <?php dt_render_field_icon( $fields[$field_key] );
+                <?php if ( !$hide_label || $field_type === 'link' ) : ?>
+                <div class="section-subheader" <?php echo ( $hide_label && $field_type === 'link' ) ? 'style="display: flex; align-items: center; justify-content: flex-start;"' : ''; ?>>
+                    <?php if ( !$hide_label ) : ?>
+                        <?php dt_render_field_icon( $fields[$field_key] );
 
-                    echo esc_html( $fields[$field_key]['name'] );
-                    ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
-                    <?php if ( $is_private ) : ?>
-                        <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
+                        echo esc_html( $fields[$field_key]['name'] );
+                        ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
+                        <?php if ( $is_private ) : ?>
+                            <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
+                        <?php endif; ?>
                     <?php endif; ?>
 
                     <?php if ( $field_type === 'link' ) : ?>
@@ -709,6 +713,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
 
                     <?php endif; ?>
                 </div>
+                <?php endif; ?>
                 <?php
                 // render fields
                 if ( $field_type === 'boolean' ):

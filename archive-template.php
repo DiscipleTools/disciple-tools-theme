@@ -629,102 +629,6 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                             <p style="font-weight:bold"><?php
                                 echo sprintf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                             <div class="grid-x">
-                                <?php if ( isset( $field_options['assigned_to'] ) ) : ?>
-                                    <div class="cell small-12">
-                                        <div class="section-subheader">
-                                            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                                            <?php echo esc_html( $field_options['assigned_to']['name'] ); ?>
-                                            <button class="help-button" data-section="assigned-to-help-text">
-                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                            </button>
-                                        </div>
-                                        <div class="bulk_assigned_to details">
-                                            <var id="bulk_assigned_to-result-container" class="result-container bulk_assigned_to-result-container"></var>
-                                            <div id="bulk_assigned_to_t" name="form-bulk_assigned_to" class="scrollable-typeahead">
-                                                <div class="typeahead__container" style="margin-bottom: 0">
-                                                    <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-bulk_assigned_to input-height" dir="auto"
-                                                       name="bulk_assigned_to[query]" placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
-                                                       autocomplete="off">
-                                            </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php endif; ?>
-
-                                <?php if ( $post_type == 'contacts' ) {?>
-                                    <?php if ( isset( $field_options['subassigned'] ) ) : ?>
-                                        <div class="cell small-12">
-                                            <?php $field_options['subassigned']['custom_display'] = false ?>
-                                            <?php render_field_for_display( 'subassigned', $field_options, null, false, false, 'bulk_', $field_params ); ?>
-                                        </div>
-                                    <?php endif; ?>
-                                    <?php if ( isset( $field_options['overall_status'] ) ) : ?>
-                                        <div class="cell small-12">
-                                            <?php
-                                            $field_key = 'overall_status';
-                                            if ( isset( $field_options[$field_key]['select_cannot_be_empty'] ) ) {
-                                                unset( $field_options[$field_key]['select_cannot_be_empty'] );
-                                            }
-                                            DT_Components::render_key_select( 'overall_status', $field_options, null, $field_params );
-                                            ?>
-                                        </div>
-                                    <?php endif; ?>
-                                    <?php if ( isset( $field_options['reason_paused'] ) ) : ?>
-                                        <div class="cell small-12" style="display:none">
-                                            <?php
-                                            render_field_for_display( 'reason_paused', $field_options, null, false, false, 'bulk_', $field_params );
-                                            ?>
-                                        </div>
-                                    <?php endif; ?>
-
-                                <?php } elseif ( $post_type == 'groups' ) {?>
-                                    <div class="cell small-12">
-                                        <?php $field_options['coaches']['custom_display'] = false ?>
-                                        <?php
-                                        render_field_for_display( 'coaches', $field_options, null, false, false, 'bulk_' ); ?>
-                                    </div>
-                                <?php } ?>
-                                <div class="cell small-12">
-                                    <div class="section-subheader">
-                                        <?php esc_html_e( 'Share with:', 'disciple_tools' );?>
-                                    </div>
-                                    <div id="<?php echo esc_attr( 'bulk_share_connection' ) ?>" class="dt_typeahead">
-                                        <span id="<?php echo esc_html( 'share' ); ?>-result-container" class="result-container"></span>
-                                        <div id="<?php echo esc_html( 'share' ); ?>_t" name="form-<?php echo esc_html( 'share' ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
-                                            <div class="typeahead__container" style="margin-bottom: 0">
-                                                <div class="typeahead__field">
-                                                <span class="typeahead__query">
-                                                    <input id = "bulk_share" class="input-height" data-field="<?php echo esc_html( 'share' ); ?>"
-                                                           data-post_type="<?php echo esc_html( $post_type ) ?>"
-                                                           data-field_type="connection"
-                                                           name="share[query]"
-                                                           placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), 'Users' ) )?>"
-                                                           autocomplete="off">
-                                                </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <label style="display: inline-block">
-                                            <input type="checkbox" id="bulk_share_unshare">
-                                            <?php esc_html_e( 'Unshare with selected user', 'disciple_tools' ); ?>
-                                        </label>
-                                    </div>
-                                </div>
-                                <?php if ( isset( $field_options['requires_update'] ) ) : ?>
-                                    <div class="cell small-12 center-items">
-                                        <span style="margin-right:5px"><?php echo esc_html( $field_options['requires_update']['name'] ); ?>:</span>
-                                        <input type="checkbox" id="update-needed-bulk" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
-                                        <label class="dt-switch" for="update-needed-bulk" style="vertical-align: top;"></label>
-                                    </div>
-                                <?php endif; ?>
-                                <div class="cell small-12 center-items">
-                                    <button class="button follow" data-value=""><?php echo esc_html( __( 'Follow', 'disciple_tools' ) ) ?></button>
-                                </div>
-
                                 <div class="cell small-12 medium-12 grid-y">
                                     <div class="section-subheader">
                                         <?php esc_html_e( 'Comments and Activity', 'disciple_tools' ) ?>
@@ -761,15 +665,12 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
 
                                 <!-- Dynamic Field Selection Section -->
                                 <div class="cell small-12" id="bulk_edit_dynamic_fields_section">
-                                    <div class="section-subheader" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+                                    <div class="section-subheader">
                                         <?php esc_html_e( 'Add Fields to Update', 'disciple_tools' ); ?>
                                     </div>
                                     
                                     <!-- Field Selection with dt-multi-select -->
                                     <div class="bulk-edit-field-select-wrapper" style="margin-bottom: 15px;">
-                                        <label for="bulk_edit_field_selector" class="field-search-label">
-                                            <?php esc_html_e( 'Search and add fields:', 'disciple_tools' ); ?>
-                                        </label>
                                         <dt-multi-select
                                             id="bulk_edit_field_selector"
                                             name="bulk_edit_field_selector"

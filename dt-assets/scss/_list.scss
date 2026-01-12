@@ -621,21 +621,10 @@ table.js-list {
 }
 
 /* === Bulk Edit Field Selection === */
-#bulk_edit_dynamic_fields_section {
-    margin-top: 20px;
-    padding-top: 20px;
-    // border-top: 1px solid #e0e0e0;
-}
 
 // Bulk Edit Field Selection with dt-multi-select
 .bulk-edit-field-select-wrapper {
     margin-bottom: 15px;
-
-    label.field-search-label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-    }
 }
 
 .bulk-edit-field-wrapper {

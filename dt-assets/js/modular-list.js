@@ -1079,19 +1079,10 @@
   // Note: We include ALL available fields (including selected ones) in options
   // The component's built-in _filterOptions() will automatically filter out selected items from the dropdown
   function transformFieldsForMultiSelect(fields) {
+    // Fields that should remain hardcoded (not in selector)
     const alreadyVisible = [
-      'assigned_to',
-      'subassigned',
-      'overall_status',
-      'coaches',
-      'share',
-      'requires_update',
-      'follow',
-      'comments',
+      'comments', // Comments and Activity textarea
     ];
-    if (list_settings.post_type === 'contacts') {
-      alreadyVisible.push('reason_paused');
-    }
 
     const allowedTypes = [
       'user_select',
@@ -1104,15 +1095,20 @@
       'text',
       'textarea',
       'number',
+      'connection', // For share, coaches, etc.
+      'boolean', // For requires_update, etc.
+      'link', // Link fields
+      'communication_channel', // Communication channel fields
+      // Note: 'array' type is not supported as it's typically used for internal data structures
     ];
 
     return fields
       .filter((field) => {
         return (
           !alreadyVisible.includes(field.field_key) &&
-          !field.hidden &&
-          allowedTypes.includes(field.field_type) &&
-          field.field_type !== 'communication_channel'
+          !field.hidden && // Exclude hidden fields
+          !field.private && // Exclude private fields
+          allowedTypes.includes(field.field_type)
         );
       })
       .sort((a, b) => {
@@ -1134,13 +1130,19 @@
       return [];
     }
 
-    return Object.entries(window.post_type_fields).map(([key, value]) => ({
-      field_key: key,
-      field_name: value.name,
-      field_type: value.type,
-      hidden: value.hidden || false,
-      icon: value.icon || null,
-    }));
+    return Object.entries(window.post_type_fields)
+      .map(([key, value]) => ({
+        field_key: key,
+        field_name: value.name,
+        field_type: value.type,
+        hidden: value.hidden || false,
+        private: value.private || false, // Include private flag
+        icon: value.icon || null,
+      }))
+      .filter((field) => {
+        // Exclude hidden and private fields
+        return !field.hidden && !field.private;
+      });
   }
 
   // Update dt-multi-select options
@@ -1166,19 +1168,28 @@
       return $();
     }
 
+    // Get icon from fieldData - check both icon and font-icon properties
     const icon = fieldData.icon || fieldData['font-icon'];
-    if (!icon) {
+
+    // Validate icon exists and is a non-empty string
+    if (
+      !icon ||
+      typeof icon !== 'string' ||
+      icon.trim() === '' ||
+      icon === 'undefined'
+    ) {
       return $();
     }
 
     // Create icon element based on type
     let iconHtml;
-    if (icon.trim().toLowerCase().startsWith('mdi')) {
+    const iconLower = icon.trim().toLowerCase();
+    if (iconLower.startsWith('mdi')) {
       // Font icon (Material Design Icons)
-      iconHtml = `<i class="${icon} dt-icon lightgray" style="font-size: 20px;"></i>`;
+      iconHtml = `<i class="${icon.trim()} dt-icon lightgray" style="font-size: 20px;"></i>`;
     } else {
       // Image icon
-      iconHtml = `<img src="${icon}" class="dt-icon lightgray">`;
+      iconHtml = `<img src="${icon.trim()}" class="dt-icon lightgray" alt="">`;
     }
 
     return $(iconHtml);
@@ -1341,8 +1352,21 @@
         if (response && response.html) {
           container.html(response.html);
 
-          // Initialize field-specific handlers
-          initializeBulkEditFieldHandlers(fieldKey, fieldType);
+          // For web components, wait a moment for them to be upgraded
+          if (
+            fieldType === 'connection' ||
+            fieldType === 'tags' ||
+            fieldType === 'location_meta'
+          ) {
+            // Use requestAnimationFrame to ensure DOM is ready
+            requestAnimationFrame(() => {
+              // Initialize field-specific handlers after component upgrade
+              initializeBulkEditFieldHandlers(fieldKey, fieldType);
+            });
+          } else {
+            // Initialize field-specific handlers immediately for non-web-component fields
+            initializeBulkEditFieldHandlers(fieldKey, fieldType);
+          }
         } else {
           console.error('Field loading error: Invalid response', response);
           container.html(
@@ -1381,9 +1405,258 @@
     // This will hook into existing field initialization code
     // Most field types should auto-initialize, but we may need to trigger specific handlers
     if (fieldType === 'user_select') {
-      // User select typeahead should auto-initialize via existing handlers
+      // Initialize user_select typeahead for dynamically added fields
+      const fieldId = `bulk_${fieldKey}`;
+      const userInput = $(`.js-typeahead-${fieldId}`);
+
+      if (userInput.length && !window.Typeahead[`.js-typeahead-${fieldId}`]) {
+        $.typeahead({
+          input: `.js-typeahead-${fieldId}`,
+          minLength: 0,
+          maxItem: 0,
+          accent: true,
+          searchOnFocus: true,
+          source: window.TYPEAHEADS.typeaheadUserSource(),
+          templateValue: '{{name}}',
+          template: function (query, item) {
+            return `<div class="assigned-to-row" dir="auto">
+              <span>
+                  <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+                  ${window.SHAREDFUNCTIONS.escapeHTML(item.name)}
+              </span>
+              ${item.status_color ? `<span class="status-square" style="background-color: ${window.SHAREDFUNCTIONS.escapeHTML(item.status_color)};">&nbsp;</span>` : ''}
+              ${
+                item.update_needed && item.update_needed > 0
+                  ? `<span>
+                <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
+                <span style="font-size: 14px">${window.SHAREDFUNCTIONS.escapeHTML(item.update_needed)}</span>
+              </span>`
+                  : ''
+              }
+            </div>`;
+          },
+          dynamic: true,
+          hint: true,
+          emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(
+            window.wpApiShare.translations.no_records_found,
+          ),
+          callback: {
+            onClick: function (node, a, item, event) {
+              event.preventDefault();
+              this.hideLayout();
+              this.resetInput();
+
+              // Set the selected user value
+              const resultContainer = $(`#${fieldId}-result-container`);
+              resultContainer.html(
+                `<span class="selected-result">${window.SHAREDFUNCTIONS.escapeHTML(item.name)}</span>`,
+              );
+
+              // Store the selected user ID in data attributes for later collection
+              // Store on both input and result container for redundancy
+              userInput.data('selected-user-id', item.ID);
+              userInput.data('selected-user-name', item.name);
+              resultContainer.data('selected-user-id', item.ID);
+              resultContainer.data('selected-user-name', item.name);
+            },
+            onResult: function (node, query, result, resultCount) {
+              const resultContainer = $(`#${fieldId}-result-container`);
+              if (resultCount > 0) {
+                resultContainer.html(
+                  `${resultCount} ${window.wpApiShare.translations.user_found || 'user(s) found'}`,
+                );
+              } else {
+                resultContainer.html('');
+              }
+            },
+            onHideLayout: function () {
+              $(`#${fieldId}-result-container`).html('');
+            },
+          },
+        });
+      }
     } else if (fieldType === 'connection') {
-      // Connection typeahead should auto-initialize
+      // Ensure dt-connection component is properly initialized after AJAX insertion
+      const fieldId = `bulk_${fieldKey}`;
+
+      // Try multiple ways to find the element
+      let connectionElement = document.getElementById(fieldId);
+      if (!connectionElement) {
+        // Try finding by name attribute
+        connectionElement = document.querySelector(
+          `dt-connection[name="${fieldKey}"]`,
+        );
+      }
+      if (!connectionElement) {
+        // Try finding within the container
+        const container = $(
+          `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
+        );
+        connectionElement = container.find('dt-connection')[0];
+      }
+
+      if (connectionElement && connectionElement.tagName === 'DT-CONNECTION') {
+        // Verify postType attribute is set (required for lookup functionality)
+        let postType = connectionElement.getAttribute('postType');
+        if (!postType) {
+          // Fallback: get post_type from field settings
+          const fieldSettings = window.lodash.get(
+            list_settings,
+            `post_type_settings.fields.${fieldKey}`,
+            {},
+          );
+          if (fieldSettings.post_type) {
+            postType = fieldSettings.post_type;
+            connectionElement.setAttribute('postType', postType);
+          }
+        }
+
+        // Ensure ComponentService is available and initialized
+        if (window.componentService) {
+          // For dynamically added components, we need to ensure they're properly initialized
+          // ComponentService.initialize() sets up event listeners for all components on the page
+          if (window.componentService.initialize) {
+            // Re-initialize to pick up the new component
+            try {
+              window.componentService.initialize();
+            } catch (e) {
+              console.warn(
+                '[Bulk Edit] Error re-initializing ComponentService:',
+                e,
+              );
+            }
+          } else if (window.componentService.attachLoadEvents) {
+            // Fallback: re-attach load events for the new component
+            window.componentService.attachLoadEvents();
+          }
+        } else {
+          console.warn(
+            '[Bulk Edit] ComponentService not available for connection field:',
+            fieldKey,
+          );
+        }
+
+        if (!postType) {
+          console.warn(
+            '[Bulk Edit] Connection field missing postType attribute:',
+            fieldKey,
+          );
+        }
+      } else {
+        console.warn('[Bulk Edit] Connection element not found:', fieldKey);
+      }
+    } else if (fieldType === 'link') {
+      // Link fields use legacy rendering with add/delete buttons
+      // Need to attach event handlers for dynamically added link fields
+      const fieldId = `bulk_${fieldKey}`;
+      const linkGroup = $(
+        `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"] .link-group`,
+      );
+
+      if (linkGroup.length === 0) {
+        console.warn('[Bulk Edit] Link field group not found:', fieldKey);
+        return;
+      }
+
+      // Attach event handlers for link dropdown options
+      // Use event delegation to handle dynamically added elements
+      const fieldWrapper = $(
+        `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
+      );
+
+      // Remove any existing handlers to avoid duplicates
+      fieldWrapper.off('click', '.add-link__option');
+      fieldWrapper.off('click', '.add-link-dropdown[data-only-one-option]');
+      fieldWrapper.off('click', '.link-delete-button');
+
+      // Attach click handler for link dropdown options
+      fieldWrapper.on('click', '.add-link__option', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Get data attributes from the clicked element
+        const $target = $(event.currentTarget);
+        const linkType =
+          $target.data('link-type') || $target.attr('data-link-type');
+        const fieldKeyAttr =
+          $target.data('field-key') || $target.attr('data-field-key');
+
+        // The fieldKey in data attributes is the original field key (e.g., "links")
+        // The link-list and template use the original field key, not the display_field_id
+        const actualFieldKey = fieldKeyAttr || fieldKey;
+
+        // Find the link list and template using the original field key
+        const linkList = fieldWrapper.find(
+          `.link-list-${actualFieldKey} .link-section--${linkType}`,
+        );
+        const template = fieldWrapper.find(
+          `#link-template-${actualFieldKey}-${linkType}`,
+        );
+
+        if (linkList.length > 0 && template.length > 0) {
+          const templateInput = template.find('.input-group');
+          if (templateInput.length > 0) {
+            const newInputGroup = templateInput.clone(true);
+            const newInput = newInputGroup.find('input');
+
+            // The input's data-field-key should use display_field_id (bulk_${fieldKey})
+            // This is already set in render_link_field, but let's ensure it's correct
+            const displayFieldId = fieldId; // bulk_${fieldKey}
+            newInput.attr('data-field-key', displayFieldId);
+
+            linkList.append(newInputGroup);
+            newInput.focus();
+
+            // Hide dropdown after selection
+            const dropdownContent = $(event.currentTarget).closest(
+              '.add-link-dropdown__content',
+            );
+            dropdownContent.hide();
+            setTimeout(() => {
+              dropdownContent.removeAttr('style');
+            }, 100);
+          } else {
+            console.warn('[Bulk Edit] Link template input group not found');
+          }
+        } else {
+          console.warn('[Bulk Edit] Link list or template not found:', {
+            linkList: linkList.length,
+            template: template.length,
+            actualFieldKey,
+            linkType,
+          });
+        }
+      });
+
+      // Attach click handler for single-option link dropdowns
+      fieldWrapper.on(
+        'click',
+        '.add-link-dropdown[data-only-one-option]',
+        function (event) {
+          if (window.SHAREDFUNCTIONS && window.SHAREDFUNCTIONS.addLink) {
+            window.SHAREDFUNCTIONS.addLink(event);
+          }
+        },
+      );
+
+      // Attach click handler for delete buttons (using document delegation for dynamically added inputs)
+      $(document).off(
+        'click',
+        `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"] .link-delete-button`,
+      );
+      $(document).on(
+        'click',
+        `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"] .link-delete-button`,
+        function () {
+          $(this).closest('.input-group').remove();
+        },
+      );
+
+      // Attach change handler for link inputs to track values
+      fieldWrapper.off('change', '.link-input');
+      fieldWrapper.on('change', '.link-input', function () {
+        // Value tracking is handled in collectFieldValue
+      });
     } else if (fieldType === 'date' || fieldType === 'datetime') {
       // Date pickers should auto-initialize
     }
@@ -1443,6 +1716,8 @@
       'textarea',
       'number',
       'key_select',
+      'link',
+      'communication_channel',
     ];
     return clearableTypes.includes(fieldType);
   }
@@ -3671,10 +3946,24 @@
         // Skip if field is marked as cleared - set cleared value and ensure it's not overwritten
         if (fieldData.cleared) {
           const clearedValue = getClearedFieldValue(fieldType);
-          updatePayload[fieldKey] = clearedValue;
+          // For communication_channel, backend expects: {"contact_email":[],"force_values":true}
+          // We need to create an object that has array-like structure with force_values property
+          if (fieldType === 'communication_channel') {
+            // Create an object that will serialize correctly
+            // Backend checks: is_array($fields[$details_key]) AND $fields[$details_key]['force_values']
+            // In JavaScript, we can't have an array with properties that serialize, so we use an object
+            // But backend also accepts: $fields[$details_key]['values'] format
+            // So we'll use: {values: [], force_values: true} which backend will handle
+            updatePayload[fieldKey] = {
+              values: [],
+              force_values: true,
+            };
+          } else {
+            updatePayload[fieldKey] = clearedValue;
+          }
           console.log(
             `[Bulk Edit] Setting cleared value for ${fieldKey} (${fieldType}):`,
-            clearedValue,
+            updatePayload[fieldKey],
           );
           return;
         }
@@ -3691,30 +3980,67 @@
         );
 
         if (fieldValue !== null && fieldValue !== undefined) {
-          // Handle multi-select fields specially
-          if (fieldType === 'multi_select' || fieldType === 'tags') {
-            if (!updatePayload[fieldKey]) {
-              updatePayload[fieldKey] = { values: [] };
-            }
-            if (fieldValue.values && Array.isArray(fieldValue.values)) {
-              updatePayload[fieldKey].values = fieldValue.values;
+          // Handle communication_channel fields specially (direct array format, not wrapped)
+          if (fieldType === 'communication_channel') {
+            // Communication channel expects direct array: [{"value":"...","key":"..."}]
+            if (Array.isArray(fieldValue)) {
+              updatePayload[fieldKey] = fieldValue;
               console.log(
-                `[Bulk Edit] Added multi_select values for ${fieldKey}:`,
-                fieldValue.values,
+                `[Bulk Edit] Added communication_channel values for ${fieldKey}:`,
+                updatePayload[fieldKey],
               );
             } else {
               console.log(
-                `[Bulk Edit] Warning: multi_select field ${fieldKey} has no values array:`,
+                `[Bulk Edit] Warning: communication_channel field ${fieldKey} is not an array:`,
+                fieldValue,
+              );
+            }
+          }
+          // Handle array-based fields specially (multi_select, tags, connection, location_meta, link)
+          else if (
+            fieldType === 'multi_select' ||
+            fieldType === 'tags' ||
+            fieldType === 'connection' ||
+            fieldType === 'location_meta' ||
+            fieldType === 'link'
+          ) {
+            // Array-based fields return { values: [...] } format
+            // We need to preserve the structure and ensure force_values is set
+            if (fieldValue.values && Array.isArray(fieldValue.values)) {
+              updatePayload[fieldKey] = {
+                values: fieldValue.values,
+                force_values:
+                  fieldValue.force_values !== undefined
+                    ? fieldValue.force_values
+                    : false,
+              };
+              console.log(
+                `[Bulk Edit] Added ${fieldType} values for ${fieldKey}:`,
+                updatePayload[fieldKey],
+              );
+            } else {
+              console.log(
+                `[Bulk Edit] Warning: ${fieldType} field ${fieldKey} has no values array:`,
                 fieldValue,
               );
             }
           } else {
-            updatePayload[fieldKey] = fieldValue;
+            // For boolean fields, include even if false (false is a valid value)
+            if (fieldType === 'boolean') {
+              updatePayload[fieldKey] = fieldValue === true;
+            } else {
+              updatePayload[fieldKey] = fieldValue;
+            }
           }
         } else {
-          console.log(
-            `[Bulk Edit] No value collected for ${fieldKey} (${fieldType}) - field may be empty or not initialized`,
-          );
+          // For boolean fields, if no value was collected, default to false
+          if (fieldType === 'boolean') {
+            updatePayload[fieldKey] = false;
+          } else {
+            console.log(
+              `[Bulk Edit] No value collected for ${fieldKey} (${fieldType}) - field may be empty or not initialized`,
+            );
+          }
         }
       });
     }
@@ -3725,7 +4051,9 @@
 
     let shares = {
       users: sharePayload,
-      unshare: $('#bulk_share_unshare').prop('checked'),
+      unshare: $('#bulk_share_unshare').length
+        ? $('#bulk_share_unshare').prop('checked')
+        : false,
     };
 
     let queue = [];
@@ -3784,20 +4112,41 @@
       case 'key_select':
         return input.val() || null;
 
-      case 'user_select': {
-        // Get from typeahead result container
-        const resultContainer = fieldWrapper.find(
-          `#bulk_${fieldKey}-result-container`,
-        );
-        const selected = resultContainer.data('selected');
-        if (selected && selected.id) {
-          return selected.id;
-        }
-        return null;
-      }
-
       case 'connection': {
-        // Get from typeahead result container
+        // Connection fields use dt-connection web component
+        const connectionComponent =
+          fieldWrapper.find(`dt-connection#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-connection[name="${fieldKey}"]`)[0] ||
+          fieldWrapper.find(`dt-connection`)[0];
+
+        if (connectionComponent && connectionComponent.value) {
+          // Use ComponentService to convert the value
+          const componentValue =
+            window.DtWebComponents?.ComponentService?.convertValue(
+              connectionComponent.tagName,
+              connectionComponent.value,
+            ) || connectionComponent.value;
+
+          // ComponentService.convertValue returns { values: [{value: id}], force_values: false }
+          if (componentValue && typeof componentValue === 'object') {
+            if (componentValue.values) {
+              return componentValue;
+            } else if (Array.isArray(componentValue)) {
+              // If it's an array, convert to { values: [...] } format
+              return {
+                values: componentValue.map((v) => {
+                  if (typeof v === 'string') {
+                    return { value: v };
+                  }
+                  return { value: v.id || v.value || v };
+                }),
+                force_values: false,
+              };
+            }
+          }
+        }
+
+        // Fallback: Get from legacy typeahead result container
         const resultContainer = fieldWrapper.find(
           `#bulk_${fieldKey}-result-container`,
         );
@@ -3807,6 +4156,7 @@
             values: selected.map((v) => ({
               value: typeof v === 'object' ? v.id || v.value : v,
             })),
+            force_values: false,
           };
         }
         return null;
@@ -3982,6 +4332,97 @@
         return null;
       }
 
+      case 'user_select': {
+        // User select fields use typeahead with data stored in data attributes
+        const fieldId = `bulk_${fieldKey}`;
+        const userInput = fieldWrapper.find(`.js-typeahead-${fieldId}`);
+
+        if (userInput.length > 0) {
+          // First: Get selected user ID from data attribute (set during typeahead onClick)
+          const selectedUserId = userInput.data('selected-user-id');
+          if (selectedUserId) {
+            // Return in format expected by backend: "user-{ID}"
+            return `user-${selectedUserId}`;
+          }
+
+          // Second: Check typeahead instance for selected items
+          const typeaheadSelector = `.js-typeahead-${fieldId}`;
+          const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
+          if (
+            typeaheadInstance &&
+            typeaheadInstance.items &&
+            typeaheadInstance.items.length > 0
+          ) {
+            const selectedItem = typeaheadInstance.items[0];
+            if (selectedItem && selectedItem.ID) {
+              return `user-${selectedItem.ID}`;
+            }
+          }
+
+          // Third: Check result container for stored data
+          const resultContainer = fieldWrapper.find(
+            `#${fieldId}-result-container`,
+          );
+          if (resultContainer.length > 0) {
+            // Check if result container has a data attribute with selected user
+            const containerUserId = resultContainer.data('selected-user-id');
+            if (containerUserId) {
+              return `user-${containerUserId}`;
+            }
+
+            // Check if there's a selected result displayed (might have data in DOM)
+            const selectedResult = resultContainer.find('.selected-result');
+            if (selectedResult.length > 0) {
+              // Try to get from the input's value or data
+              const inputValue = userInput.val();
+              // If input has a value, we might need to extract ID from it
+              // But typically the data attribute should be set, so this is a last resort
+            }
+          }
+
+          // Fourth: Check legacy result container format
+          const legacyResultContainer = fieldWrapper.find(
+            `#bulk_${fieldKey}-result-container`,
+          );
+          if (legacyResultContainer.length > 0) {
+            const selected = legacyResultContainer.data('selected');
+            if (selected && selected.id) {
+              return `user-${selected.id}`;
+            }
+            if (selected && selected.ID) {
+              return `user-${selected.ID}`;
+            }
+          }
+        }
+
+        return null;
+      }
+
+      case 'link': {
+        // Link fields have multiple inputs, one per link type
+        // Collect all link inputs and format them as an array
+        const linkInputs = fieldWrapper.find('.link-input');
+        const links = [];
+
+        linkInputs.each(function () {
+          const $input = $(this);
+          const value = $input.val();
+          const linkType = $input.data('type');
+          const metaId = $input.data('meta-id');
+
+          if (value && value.trim() !== '') {
+            links.push({
+              value: value.trim(),
+              type: linkType,
+              meta_id: metaId || '',
+            });
+          }
+        });
+
+        // Return in format expected by backend: {values: [...]}
+        return links.length > 0 ? { values: links } : null;
+      }
+
       case 'location':
       case 'location_meta': {
         // Try web component (dt-location or dt-location-map)
@@ -4033,6 +4474,117 @@
         return null;
       }
 
+      case 'boolean': {
+        // Boolean fields use dt-toggle web component
+        const toggleComponent =
+          fieldWrapper.find(`dt-toggle#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-toggle[name="${fieldKey}"]`)[0] ||
+          fieldWrapper.find(`dt-toggle`)[0];
+
+        if (toggleComponent) {
+          // dt-toggle has a 'checked' property (boolean) and 'value' property (boolean)
+          // Check both properties to get the current state
+          let isChecked = false;
+
+          // First try the 'checked' property (most reliable)
+          if (toggleComponent.checked !== undefined) {
+            isChecked = toggleComponent.checked === true;
+          }
+          // Fallback to 'value' property
+          else if (toggleComponent.value !== undefined) {
+            isChecked =
+              toggleComponent.value === true ||
+              toggleComponent.value === '1' ||
+              toggleComponent.value === 1;
+          }
+          // Fallback: Check the internal input element
+          else {
+            const input = toggleComponent.querySelector(
+              'input[type="checkbox"]',
+            );
+            if (input) {
+              isChecked = input.checked === true;
+            }
+          }
+
+          return isChecked;
+        }
+
+        // Fallback: Check for legacy checkbox input
+        const checkboxInput = fieldWrapper.find(
+          `#bulk_${fieldKey}[type="checkbox"]`,
+        );
+        if (checkboxInput.length > 0) {
+          return checkboxInput.is(':checked');
+        }
+
+        // Fallback: Try data attribute
+        const dataValue = fieldWrapper
+          .find(`#bulk_${fieldKey}`)
+          .data('bulk_key_' + fieldKey);
+        if (dataValue !== null && dataValue !== undefined) {
+          return dataValue === true || dataValue === '1' || dataValue === 1;
+        }
+
+        // Default to false if no value found
+        return false;
+      }
+
+      case 'communication_channel': {
+        // Communication channel fields use dt-multi-text web component
+        const multiTextComponent =
+          fieldWrapper.find(`dt-multi-text#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-multi-text[name="${fieldKey}"]`)[0] ||
+          fieldWrapper.find(`dt-multi-text`)[0];
+
+        if (multiTextComponent && multiTextComponent.value) {
+          // dt-multi-text stores values as array of objects: [{value: "...", key: "...", verified: false}, ...]
+          // Backend expects direct array format: [{"verified":false,"value":"abc@email.com"}]
+          if (Array.isArray(multiTextComponent.value)) {
+            return multiTextComponent.value.map((item) => {
+              // Ensure each item has the required structure
+              const result = {
+                value: item.value || '',
+              };
+              // Include key if present (for updates)
+              if (item.key && item.key !== 'new') {
+                result.key = item.key;
+              }
+              // Include verified if present
+              if (item.verified !== undefined) {
+                result.verified = item.verified;
+              }
+              return result;
+            });
+          }
+        }
+
+        // Fallback: Try legacy input elements
+        const legacyInputs = fieldWrapper.find('.input-group input');
+        if (legacyInputs.length > 0) {
+          const values = [];
+          legacyInputs.each(function () {
+            const $input = $(this);
+            const value = $input.val();
+            const $button = $input.closest('.input-group').find('button');
+            const key = $button.data('key');
+
+            if (value && value.trim() !== '') {
+              const item = {
+                value: value.trim(),
+              };
+              if (key && key !== 'new') {
+                item.key = key;
+              }
+              values.push(item);
+            }
+          });
+          return values.length > 0 ? values : null;
+        }
+
+        return null;
+      }
+
       default:
         // Try to get from data attribute as fallback
         const dataValue = fieldWrapper
@@ -4051,9 +4603,15 @@
       case 'location':
       case 'multi_select':
       case 'location_meta':
+      case 'link':
         // Use force_values: true to clear all values (backend requirement)
         // Backend checks for force_values to delete all existing values before processing new ones
         return { values: [], force_values: true };
+
+      case 'communication_channel':
+        // Communication channel expects direct array format with force_values
+        // Backend format: {"contact_email":[],"force_values":true}
+        return [];
 
       case 'date':
       case 'datetime':
@@ -4490,52 +5048,55 @@
   }
 
   /**
-   * Bulk share
+   * Bulk share (only initialize if element exists - field may be dynamically added)
    */
-  $.typeahead({
-    input: '#bulk_share',
-    minLength: 0,
-    maxItem: 0,
-    accent: true,
-    searchOnFocus: true,
-    source: window.TYPEAHEADS.typeaheadUserSource(),
-    templateValue: '{{name}}',
-    dynamic: true,
-    multiselect: {
-      matchOn: ['ID'],
+  let bulk_share_input = $('#bulk_share');
+  if (bulk_share_input.length) {
+    $.typeahead({
+      input: '#bulk_share',
+      minLength: 0,
+      maxItem: 0,
+      accent: true,
+      searchOnFocus: true,
+      source: window.TYPEAHEADS.typeaheadUserSource(),
+      templateValue: '{{name}}',
+      dynamic: true,
+      multiselect: {
+        matchOn: ['ID'],
+        callback: {
+          onCancel: function (node, item) {
+            $(node).removeData(`bulk_key_bulk_share`);
+            $('#share-result-container').html('');
+          },
+        },
+      },
       callback: {
-        onCancel: function (node, item) {
-          $(node).removeData(`bulk_key_bulk_share`);
+        onClick: function (node, a, item, event) {
+          let shareUserArray;
+          if (node.data('bulk_key_share')) {
+            shareUserArray = node.data('bulk_key_share');
+          } else {
+            shareUserArray = [];
+          }
+          shareUserArray.push(item.ID);
+          node.data(`bulk_key_share`, shareUserArray);
+        },
+        onResult: function (node, query, result, resultCount) {
+          if (query) {
+            let text = window.TYPEAHEADS.typeaheadHelpText(
+              resultCount,
+              query,
+              result,
+            );
+            $('#share-result-container').html(text);
+          }
+        },
+        onHideLayout: function () {
           $('#share-result-container').html('');
         },
       },
-    },
-    callback: {
-      onClick: function (node, a, item, event) {
-        let shareUserArray;
-        if (node.data('bulk_key_share')) {
-          shareUserArray = node.data('bulk_key_share');
-        } else {
-          shareUserArray = [];
-        }
-        shareUserArray.push(item.ID);
-        node.data(`bulk_key_share`, shareUserArray);
-      },
-      onResult: function (node, query, result, resultCount) {
-        if (query) {
-          let text = window.TYPEAHEADS.typeaheadHelpText(
-            resultCount,
-            query,
-            result,
-          );
-          $('#share-result-container').html(text);
-        }
-      },
-      onHideLayout: function () {
-        $('#share-result-container').html('');
-      },
-    },
-  });
+    });
+  }
 
   /**
    * Bulk Typeahead
