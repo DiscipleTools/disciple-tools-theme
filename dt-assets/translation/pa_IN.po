@@ -947,7 +947,7 @@ msgstr "ਰੀਲੀਜ਼ ਐਲਾਨ!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Disciple.Tools ਦਾ ਇੱਕ ਨਵਾਂ ਸੰਸਕਰਨ ਉਪਲਬਧ ਹੈ"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1513,8 +1513,8 @@ msgid ""
 "These quick action buttons are here to aid you in updating the contact "
 "record faster and keep a count of how many times each action has be done."
 msgstr ""
-"ਇਹ ਤੇਜ਼ ਐਕਸ਼ਨ ਬਟਨ ਸੰਪਰਕ ਨੂੰ ਤੇਜ਼ੀ ਨਾਲ ਅਪਡੇਟ ਕਰਨ ਵਿੱਚ ਤੁਹਾਡੀ ਸਹਾਇਤਾ ਕਰਨ ਲਈ ਹਨ ਅਤੇ ਇਹ "
-"ਦੱਸਦੇ ਹਨ ਕਿ ਹਰ ਕਾਰਵਾਈ ਕਿੰਨੀ ਵਾਰ ਕੀਤੀ ਗਈ ਹੈ."
+"ਇਹ ਤੇਜ਼ ਐਕਸ਼ਨ ਬਟਨ ਸੰਪਰਕ ਨੂੰ ਤੇਜ਼ੀ ਨਾਲ ਅਪਡੇਟ ਕਰਨ ਵਿੱਚ ਤੁਹਾਡੀ ਸਹਾਇਤਾ ਕਰਨ ਲਈ ਹਨ ਅਤੇ ਇਹ ਦੱਸਦੇ "
+"ਹਨ ਕਿ ਹਰ ਕਾਰਵਾਈ ਕਿੰਨੀ ਵਾਰ ਕੀਤੀ ਗਈ ਹੈ."
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
@@ -1890,9 +1890,8 @@ msgid "Theme Update Available!"
 msgstr "ਥੀਮ ਅਪਡੇਟ ਉਪਲਬਧ!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "ਕੋਈ ਰਿਕਾਰਡ ਉਪਲਬਧ ਨਹੀਂ"
+msgstr "ਨਵੀਂ ਰੀਲੀਜ਼ ਉਪਲਬਧ ਹੈ"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"
@@ -6134,135 +6133,3 @@ msgstr "ਪਹੁੰਚ ਸਕੈਨ ਸਕੈਨ:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "ਡੁਪਲਿਕੇਟ ਮਿਲਿਆ:"
-
-#, fuzzy
-#~ msgid "Home Screen Settings"
-#~ msgstr "ਸ਼ੇਅਰ ਸੈਟਿੰਗਜ਼"
-
-#, fuzzy
-#~ msgid "Edit App"
-#~ msgstr "ਸੰਪਾਦਿਤ ਕਰੋ"
-
-#, fuzzy
-#~ msgid "Edit Video"
-#~ msgstr "ਉਪਭੋਗਤਾ ਦਾ ਸੰਪਾਦਨ ਕਰੋ"
-
-#, fuzzy
-#~ msgid "General Settings"
-#~ msgstr "ਖੋਜ ਸੈਟਿੰਗਜ਼"
-
-#, fuzzy
-#~ msgid "Home Screen Description"
-#~ msgstr "ਐਪ ਵੇਰਵਾ"
-
-#, fuzzy
-#~ msgid "Network Settings"
-#~ msgstr "ਖੋਜ ਸੈਟਿੰਗਜ਼"
-
-#, fuzzy
-#~ msgid "User Registration Status:"
-#~ msgstr "ਉਪਭੋਗਤਾ ਸਥਿਤੀ"
-
-#, fuzzy
-#~ msgid "Enabled"
-#~ msgstr "ਯੋਗ"
-
-#, fuzzy
-#~ msgid "Save Settings"
-#~ msgstr "ਸ਼ੇਅਰ ਸੈਟਿੰਗਜ਼"
-
-#, fuzzy
-#~ msgid "Add New App"
-#~ msgstr "ਨਵਾਂ ਸ਼ਾਮਲ ਕਰੋ"
-
-#, fuzzy
-#~ msgid "Security check failed. Please try again."
-#~ msgstr "ਐਪ ਲਿੰਕ ਨੂੰ ਮਿਟਾਓ ਅਤੇ ਬਦਲੋ"
-
-#, fuzzy
-#~ msgid "Update App"
-#~ msgstr "ਅਪਡੇਟ"
-
-#, fuzzy
-#~ msgid "Update Video"
-#~ msgstr "ਅੱਪਡੇਟ ਕੀਤਾ"
-
-#, fuzzy
-#~ msgid "App created successfully!"
-#~ msgstr "ਟ੍ਰਾਂਸਫਰ ਅੱਪਡੇਟ ਸਫਲ।"
-
-#, fuzzy
-#~ msgid "App updated successfully!"
-#~ msgstr "ਟ੍ਰਾਂਸਫਰ ਅੱਪਡੇਟ ਸਫਲ।"
-
-#, fuzzy
-#~ msgid "Coded apps cannot be deleted."
-#~ msgstr "ਟਿੱਪਣੀ ਨੂੰ ਹਟਾਇਆ ਨਹੀ ਜਾ ਸਕਦਾ ਹੈ."
-
-#, fuzzy
-#~ msgid "Video updated successfully!"
-#~ msgstr "ਟ੍ਰਾਂਸਫਰ ਅੱਪਡੇਟ ਸਫਲ।"
-
-#, fuzzy
-#~ msgid "Link"
-#~ msgstr "ਲਿੰਕ"
-
-#, fuzzy
-#~ msgid "App"
-#~ msgstr "ਐਪਸ"
-
-#, fuzzy
-#~ msgid "Description"
-#~ msgstr "ਐਪ ਵੇਰਵਾ"
-
-#, fuzzy
-#~ msgid "Reset to Default"
-#~ msgstr "ਡਿਫੌਲਟ ਤੇ ਰੀਸੈਟ ਕਰੋ"
-
-#, fuzzy
-#~ msgid "User Access"
-#~ msgstr "ਸਵੀਕਾਰ ਕਰੋ"
-
-#, fuzzy
-#~ msgid "Limit access by role"
-#~ msgstr "ਸਰੋਤ ਦੁਆਰਾ ਪਹੁੰਚ"
-
-#, fuzzy
-#~ msgid "Select Roles"
-#~ msgstr "ਸਾਰਿਆ ਨੂੰ ਚੁਣੋ"
-
-#, fuzzy
-#~ msgid "No apps found."
-#~ msgstr "ਕੋਈ ਡੁਪਲਿਕੇਟ ਨਹੀਂ ਮਿਲੀਆਂ."
-
-#, fuzzy
-#~ msgid "No roles selected"
-#~ msgstr "ਚੁਣਿਆ ਹੋਇਆ."
-
-#, fuzzy
-#~ msgid "All roles"
-#~ msgstr "ਸਾਰੇ$s"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this app?"
-#~ msgstr "ਕੀ ਤੁਸੀਂ$s ਨੂੰ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?"
-
-#, fuzzy
-#~ msgid "Duration"
-#~ msgstr "ਪੀੜ੍ਹੀ"
-
-#, fuzzy
-#~ msgid "General"
-#~ msgstr "ਪੀੜ੍ਹੀ"
-
-#, fuzzy
-#~ msgid "Advanced"
-#~ msgstr "ਆਧੁਨਿਕ ਖੋਜ"
-
-#, fuzzy
-#~ msgid "Add Video"
-#~ msgstr "ਚਾਈਲਡ ਗਰੁੱਪ"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this video?"
-#~ msgstr "ਕੀ ਤੁਸੀਂ$s ਨੂੰ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?"

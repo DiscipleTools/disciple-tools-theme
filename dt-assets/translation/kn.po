@@ -952,7 +952,7 @@ msgstr "ಬಿಡುಗಡೆ ಪ್ರಕಟಣೆ!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Disciple.Tools ನ ಹೊಸ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1902,9 +1902,8 @@ msgid "Theme Update Available!"
 msgstr "ಥೀಮ್ ನವೀಕರಣ ಲಭ್ಯವಿದೆ!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "ಯಾವುದೇ ದಾಖಲೆಗಳು ಲಭ್ಯವಿಲ್ಲ"
+msgstr "ಹೊಸ ಬಿಡುಗಡೆ ಲಭ್ಯವಿದೆ"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"
@@ -6165,135 +6164,3 @@ msgstr "ಪ್ರವೇಶ ಸಂಪರ್ಕಗಳನ್ನು ಸ್ಕ್ಯ�
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "ನಕಲುಗಳು ಕಂಡುಬಂದಿವೆ:"
-
-#, fuzzy
-#~ msgid "Home Screen Settings"
-#~ msgstr "ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ"
-
-#, fuzzy
-#~ msgid "Edit App"
-#~ msgstr "ತಿದ್ದು"
-
-#, fuzzy
-#~ msgid "Edit Video"
-#~ msgstr "ಬಳಕೆದಾರರನ್ನು ಸಂಪಾದಿಸಿ"
-
-#, fuzzy
-#~ msgid "General Settings"
-#~ msgstr "ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಹುಡುಕಿ"
-
-#, fuzzy
-#~ msgid "Home Screen Description"
-#~ msgstr "ಅಪ್ಲಿಕೇಶನ್ ವಿವರಣೆ"
-
-#, fuzzy
-#~ msgid "Network Settings"
-#~ msgstr "ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಹುಡುಕಿ"
-
-#, fuzzy
-#~ msgid "User Registration Status:"
-#~ msgstr "ಬಳಕೆದಾರರ ಸ್ಥಿತಿ"
-
-#, fuzzy
-#~ msgid "Enabled"
-#~ msgstr "ಸಕ್ರಿಯಗೊಳಿಸಿ"
-
-#, fuzzy
-#~ msgid "Save Settings"
-#~ msgstr "ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ"
-
-#, fuzzy
-#~ msgid "Add New App"
-#~ msgstr "ಹೊಸದನ್ನು ಸೇರಿಸಿ"
-
-#, fuzzy
-#~ msgid "Security check failed. Please try again."
-#~ msgstr "ಅಪ್ಲಿಕೇಶನ್ ಲಿಂಕ್ ಅನ್ನು ಅಳಿಸಿ ಮತ್ತು ಬದಲಾಯಿಸಿ"
-
-#, fuzzy
-#~ msgid "Update App"
-#~ msgstr "ನವೀಕರಿಸಿ"
-
-#, fuzzy
-#~ msgid "Update Video"
-#~ msgstr "ನವೀಕರಿಸಲಾಗಿದೆ"
-
-#, fuzzy
-#~ msgid "App created successfully!"
-#~ msgstr "ವರ್ಗಾವಣೆ ನವೀಕರಣ ಯಶಸ್ವಿಯಾಗಿದೆ."
-
-#, fuzzy
-#~ msgid "App updated successfully!"
-#~ msgstr "ವರ್ಗಾವಣೆ ನವೀಕರಣ ಯಶಸ್ವಿಯಾಗಿದೆ."
-
-#, fuzzy
-#~ msgid "Coded apps cannot be deleted."
-#~ msgstr "ಕಾಮೆಂಟ್ ಅನ್ನು ಅಳಿಸಲಾಗಲಿಲ್ಲ."
-
-#, fuzzy
-#~ msgid "Video updated successfully!"
-#~ msgstr "ವರ್ಗಾವಣೆ ನವೀಕರಣ ಯಶಸ್ವಿಯಾಗಿದೆ."
-
-#, fuzzy
-#~ msgid "Link"
-#~ msgstr "ಲಿಂಕ್‌ಗಳು"
-
-#, fuzzy
-#~ msgid "App"
-#~ msgstr "ಅಪ್ಲಿಕೇಶನ್‌ಗಳು"
-
-#, fuzzy
-#~ msgid "Description"
-#~ msgstr "ಅಪ್ಲಿಕೇಶನ್ ವಿವರಣೆ"
-
-#, fuzzy
-#~ msgid "Reset to Default"
-#~ msgstr "ಡೀಫಾಲ್ಟ್ಗೆ ಮರುಹೊಂದಿಸಿ"
-
-#, fuzzy
-#~ msgid "User Access"
-#~ msgstr "ಒಪ್ಪಿಕೊಳ್ಳಿ"
-
-#, fuzzy
-#~ msgid "Limit access by role"
-#~ msgstr "ಮೂಲದಿಂದ ಪ್ರವೇಶ"
-
-#, fuzzy
-#~ msgid "Select Roles"
-#~ msgstr "ಎಲ್ಲವನ್ನು ಆರಿಸು"
-
-#, fuzzy
-#~ msgid "No apps found."
-#~ msgstr "ಯಾವುದೇ ನಕಲುಗಳು ಕಂಡುಬಂದಿಲ್ಲ."
-
-#, fuzzy
-#~ msgid "No roles selected"
-#~ msgstr "ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ."
-
-#, fuzzy
-#~ msgid "All roles"
-#~ msgstr "ಎಲ್ಲಾ%s"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this app?"
-#~ msgstr "%s ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?"
-
-#, fuzzy
-#~ msgid "Duration"
-#~ msgstr "ಪೀಳಿಗೆ"
-
-#, fuzzy
-#~ msgid "General"
-#~ msgstr "ಪೀಳಿಗೆ"
-
-#, fuzzy
-#~ msgid "Advanced"
-#~ msgstr "ವಿಸ್ತೃತ ಹುಡುಕಾಟ"
-
-#, fuzzy
-#~ msgid "Add Video"
-#~ msgstr "ಮಕ್ಕಳ ಗುಂಪು"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this video?"
-#~ msgstr "%s ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?"

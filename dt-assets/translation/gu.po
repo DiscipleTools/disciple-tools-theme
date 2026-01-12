@@ -947,7 +947,7 @@ msgstr "પ્રકાશન જાહેરાત!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Disciple.Tools નું નવું સંસ્કરણ ઉપલબ્ધ છે"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1891,9 +1891,8 @@ msgid "Theme Update Available!"
 msgstr "થીમ અપડેટ ઉપલબ્ધ છે!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "કોઈ રેકોર્ડ્સ ઉપલબ્ધ નથી"
+msgstr "નવી રિલીઝ ઉપલબ્ધ છે"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"
@@ -5842,9 +5841,8 @@ msgid ""
 "version of your browser, this may site may not function correctly. Please "
 "note that Internet Explorer is not supported."
 msgstr ""
-"લાગે છે કે તમે જૂનું વેબ બ્રાઉઝર વાપરી રહ્યા છો. તમારા બ્રાઉઝરના સૌથી અદ્યતન સંસ્કરણ "
-"વિના, આ સાઇટ યોગ્ય રીતે કાર્ય કરી શકશે નહીં. કૃપા કરીને નોંધો કે ઇન્ટરનેટ એક્સપ્લોરર "
-"સપોર્ટેડ નથી."
+"લાગે છે કે તમે જૂનું વેબ બ્રાઉઝર વાપરી રહ્યા છો. તમારા બ્રાઉઝરના સૌથી અદ્યતન સંસ્કરણ વિના, "
+"આ સાઇટ યોગ્ય રીતે કાર્ય કરી શકશે નહીં. કૃપા કરીને નોંધો કે ઇન્ટરનેટ એક્સપ્લોરર સપોર્ટેડ નથી."
 
 #: header.php:63
 msgid "See what browser you are using."
@@ -6125,259 +6123,3 @@ msgstr "સંપર્કો સ્કેન કરો:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "ડુપ્લિકેટ્સ મળી:"
-
-#~ msgid "Home Screen"
-#~ msgstr "હોમ સ્ક્રીન"
-
-#~ msgid "Home Screen Settings"
-#~ msgstr "હોમ સ્ક્રીન સેટિંગ્સ"
-
-#~ msgid "Edit App"
-#~ msgstr "એપ સંપાદિત કરો"
-
-#~ msgid "Edit Video"
-#~ msgstr "વિડીઓ સંપાદિત કરો"
-
-#~ msgid "General Settings"
-#~ msgstr "સામાન્ય સેટિંગ્સ"
-
-#~ msgid "Home Screen Title"
-#~ msgstr "હોમ સ્ક્રીન શીર્ષક"
-
-#~ msgid "The main title displayed on the home screen."
-#~ msgstr "હોમ સ્ક્રીન પર પ્રદર્શિત મુખ્ય શીર્ષક."
-
-#~ msgid "Home Screen Description"
-#~ msgstr "હોમ સ્ક્રીન વર્ણન"
-
-#~ msgid "A brief description shown below the title."
-#~ msgstr "શીર્ષકની નીચે દર્શાવેલ ટૂંકું વર્ણન."
-
-#~ msgid "Enable Role-Based Access"
-#~ msgstr "ભૂમિકા-આધારિત ઍક્સેસ સક્ષમ કરો"
-
-#~ msgid "Enable role-based access control for apps"
-#~ msgstr "એપ્સ માટે ભૂમિકા-આધારિત ઍક્સેસ નિયંત્રણ સક્ષમ કરો"
-
-#~ msgid "When enabled, you can restrict app access to specific user roles."
-#~ msgstr ""
-#~ "સક્ષમ હોય ત્યારે, તમે ચોક્કસ વપરાશકર્તા ભૂમિકાઓ માટે એપ ઍક્સેસ પ્રતિબંધિત કરી શકો છો."
-
-#~ msgid "Allow users to invite others"
-#~ msgstr "વપરાશકર્તાઓને અન્યને આમંત્રિત કરવાની મંજૂરી આપો"
-
-#~ msgid ""
-#~ "When enabled, users can share an invite link to allow others to register "
-#~ "and access their own Home Screen."
-#~ msgstr ""
-#~ "સક્ષમ હોય ત્યારે, વપરાશકર્તાઓ અન્યને નોંધણી કરાવવા અને તેમની પોતાની હોમ સ્ક્રીન ઍક્સેસ "
-#~ "કરવા માટે આમંત્રણ લિંક શેર કરી શકે છે."
-
-#~ msgid "Network Settings"
-#~ msgstr "નેટવર્ક સેટિંગ્સ"
-
-#~ msgid "User registration must be enabled to use this feature."
-#~ msgstr "આ સુવિધાનો ઉપયોગ કરવા માટે વપરાશકર્તા નોંધણી સક્ષમ હોવી જરૂરી છે."
-
-#, php-format
-#~ msgid "To enable user registration, visit %s."
-#~ msgstr "વપરાશકર્તા નોંધણી સક્ષમ કરવા માટે, %s ની મુલાકાત લો."
-
-#~ msgid "Require users to login"
-#~ msgstr "વપરાશકર્તાઓને લૉગ ઇન કરવું જરૂરી"
-
-#~ msgid "Require users to login to access the home screen magic link?"
-#~ msgstr "હોમ સ્ક્રીન મેજિક લિંક ઍક્સેસ કરવા માટે વપરાશકર્તાઓને લૉગ ઇન કરવું જરૂરી છે?"
-
-#~ msgid ""
-#~ "When enabled, users must be logged in to access their Home Screen. When "
-#~ "disabled, magic links can be accessed without login."
-#~ msgstr ""
-#~ "સક્ષમ હોય ત્યારે, વપરાશકર્તાઓએ તેમની હોમ સ્ક્રીન ઍક્સેસ કરવા માટે લૉગ ઇન હોવું જરૂરી "
-#~ "છે. અક્ષમ હોય ત્યારે, મેજિક લિંક્સ લૉગ ઇન વિના ઍક્સેસ કરી શકાય છે."
-
-#~ msgid "User Registration Status:"
-#~ msgstr "વપરાશકર્તા નોંધણી સ્થિતિ:"
-
-#~ msgid "Enabled"
-#~ msgstr "સક્ષમ"
-
-#~ msgid "Disabled"
-#~ msgstr "અક્ષમ"
-
-#, php-format
-#~ msgid "To change registration settings, visit %s."
-#~ msgstr "નોંધણી સેટિંગ્સ બદલવા માટે, %s ની મુલાકાત લો."
-
-#~ msgid "Save Settings"
-#~ msgstr "સેટિંગ્સ સાચવો"
-
-#~ msgid "Debug Information"
-#~ msgstr "ડીબગ માહિતી"
-
-#~ msgid "Current apps and videos data:"
-#~ msgstr "વર્તમાન એપ્સ અને વિડીઓ ડેટા:"
-
-#~ msgid "Apps Management"
-#~ msgstr "એપ્સ મેનેજમેન્ટ"
-
-#~ msgid "Manage the apps that appear on the home screen."
-#~ msgstr "હોમ સ્ક્રીન પર દેખાતી એપ્સનું સંચાલન કરો."
-
-#~ msgid "Add New App"
-#~ msgstr "નવી એપ ઉમેરો"
-
-#~ msgid "Training Videos Management"
-#~ msgstr "તાલીમ વિડીઓ મેનેજમેન્ટ"
-
-#~ msgid "Manage the training videos that appear on the home screen."
-#~ msgstr "હોમ સ્ક્રીન પર દેખાતી તાલીમ વિડીઓનું સંચાલન કરો."
-
-#~ msgid "Add New Training Video"
-#~ msgstr "નવી તાલીમ વિડીઓ ઉમેરો"
-
-#~ msgid "Security check failed. Please try again."
-#~ msgstr "સુરક્ષા ચકાસણી નિષ્ફળ. કૃપા કરીને ફરીથી પ્રયાસ કરો."
-
-#~ msgid "Home Screen settings saved successfully!"
-#~ msgstr "હોમ સ્ક્રીન સેટિંગ્સ સફળતાપૂર્વક સાચવવામાં આવ્યા!"
-
-#~ msgid "Upload Icon"
-#~ msgstr "આઇકન અપલોડ કરો"
-
-#~ msgid "Update App"
-#~ msgstr "એપ અપડેટ કરો"
-
-#~ msgid "Update Video"
-#~ msgstr "વિડીઓ અપડેટ કરો"
-
-#~ msgid "App created successfully!"
-#~ msgstr "એપ સફળતાપૂર્વક બનાવવામાં આવી!"
-
-#~ msgid "App updated successfully!"
-#~ msgstr "એપ સફળતાપૂર્વક અપડેટ થઈ!"
-
-#~ msgid "Coded apps cannot be deleted."
-#~ msgstr "કોડેડ એપ્સ કાઢી નાખી શકાતી નથી."
-
-#~ msgid "App deleted successfully!"
-#~ msgstr "એપ સફળતાપૂર્વક કાઢી નાખવામાં આવી!"
-
-#~ msgid "Video created successfully!"
-#~ msgstr "વિડીઓ સફળતાપૂર્વક બનાવવામાં આવી!"
-
-#~ msgid "Video updated successfully!"
-#~ msgstr "વિડીઓ સફળતાપૂર્વક અપડેટ થઈ!"
-
-#~ msgid "Video deleted successfully!"
-#~ msgstr "વિડીઓ સફળતાપૂર્વક કાઢી નાખવામાં આવી!"
-
-#~ msgid "Link"
-#~ msgstr "લિંક"
-
-#~ msgid "App"
-#~ msgstr "એપ"
-
-#~ msgid "Description"
-#~ msgstr "વર્ણન"
-
-#~ msgid "URL"
-#~ msgstr "URL"
-
-#~ msgid "Icon"
-#~ msgstr "આઇકન"
-
-#~ msgid "Change Icon"
-#~ msgstr "આઇકન બદલો"
-
-#~ msgid "Color"
-#~ msgstr "રંગ"
-
-#~ msgid "Reset to Default"
-#~ msgstr "ડિફોલ્ટ પર રીસેટ કરો"
-
-#~ msgid ""
-#~ "Using default theme-aware color. The icon will automatically switch "
-#~ "between black (light mode) and white (dark mode). Set a custom color to "
-#~ "override."
-#~ msgstr ""
-#~ "ડિફોલ્ટ થીમ-અવેર રંગનો ઉપયોગ કરી રહ્યા છે. આઇકન આપોઆપ કાળો (લાઇટ મોડ) અને સફેદ "
-#~ "(ડાર્ક મોડ) વચ્ચે સ્વિચ થશે. ઓવરરાઇડ કરવા માટે કસ્ટમ રંગ સેટ કરો."
-
-#~ msgid "User Access"
-#~ msgstr "વપરાશકર્તા ઍક્સેસ"
-
-#~ msgid "All roles have access"
-#~ msgstr "બધી ભૂમિકાઓને ઍક્સેસ છે"
-
-#~ msgid "Limit access by role"
-#~ msgstr "ભૂમિકા દ્વારા ઍક્સેસ મર્યાદિત કરો"
-
-#~ msgid "Select Roles"
-#~ msgstr "ભૂમિકાઓ પસંદ કરો"
-
-#~ msgid "Add App"
-#~ msgstr "એપ ઉમેરો"
-
-#~ msgid "Existing Apps"
-#~ msgstr "હાલની એપ્સ"
-
-#~ msgid "No apps found."
-#~ msgstr "કોઈ એપ્સ મળી નથી."
-
-#~ msgid "⋮⋮"
-#~ msgstr "⋮⋮"
-
-#~ msgid "Limited to specific roles"
-#~ msgstr "ચોક્કસ ભૂમિકાઓ સુધી મર્યાદિત"
-
-#, php-format
-#~ msgid "%d role"
-#~ msgid_plural "%d roles"
-#~ msgstr[0] "%d ભૂમિકા"
-#~ msgstr[1] "%d ભૂમિકાઓ"
-
-#~ msgid "No roles selected"
-#~ msgstr "કોઈ ભૂમિકાઓ પસંદ નથી"
-
-#~ msgid "All roles"
-#~ msgstr "બધી ભૂમિકાઓ"
-
-#~ msgid "Are you sure you want to delete this app?"
-#~ msgstr "શું તમે ખરેખર આ એપ કાઢી નાખવા માંગો છો?"
-
-#~ msgid "Coded apps cannot be deleted"
-#~ msgstr "કોડેડ એપ્સ કાઢી નાખી શકાતી નથી"
-
-#~ msgid "Video URL"
-#~ msgstr "વિડીઓ URL"
-
-#~ msgid "Duration"
-#~ msgstr "સમયગાળો"
-
-#~ msgid "Category"
-#~ msgstr "શ્રેણી"
-
-#~ msgid "General"
-#~ msgstr "સામાન્ય"
-
-#~ msgid "Basics"
-#~ msgstr "મૂળભૂત"
-
-#~ msgid "Advanced"
-#~ msgstr "અદ્યતન"
-
-#~ msgid "Tutorial"
-#~ msgstr "ટ્યુટોરિયલ"
-
-#~ msgid "Add Video"
-#~ msgstr "વિડીઓ ઉમેરો"
-
-#~ msgid "Existing Training Videos"
-#~ msgstr "હાલની તાલીમ વિડીઓ"
-
-#~ msgid "No training videos found."
-#~ msgstr "કોઈ તાલીમ વિડીઓ મળી નથી."
-
-#~ msgid "Are you sure you want to delete this video?"
-#~ msgstr "શું તમે ખરેખર આ વિડીઓ કાઢી નાખવા માંગો છો?"

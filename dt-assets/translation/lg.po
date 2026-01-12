@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Disciple Tools 1.69.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2026-01-09T14:54:09+00:00\n"
+"POT-Creation-Date: 2026-01-12T08:19:17+00:00\n"
 "PO-Revision-Date: 2026-01-09 12:00+0000\n"
 "Last-Translator: Tom Nelson Munghono <taatadaniella@gmail.com>\n"
 "Language-Team: Luganda <https://translate.disciple.tools/projects/disciple-"
@@ -1587,7 +1587,7 @@ msgstr "Mu kitundu kino osobola okulaba ebikukwatako."
 msgctxt "Optional Documentation"
 msgid ""
 "You are not required to fill out any of these profile fields. They are "
-"optional to meet your team's needs."
+"optional to meet your team’s needs."
 msgstr ""
 "Toweebwa kujjuza nnimiro zino zonna z'ebikukwatako. Byeweeza okukwataganya "
 "n'ebyetaago by'ekibiina kyo."
@@ -2867,7 +2867,7 @@ msgstr "Ebikolo by'Okukkiriza"
 msgctxt "Optional Documentation"
 msgid ""
 "Assign which milestones the contact has reached in their faith journey. "
-"These are points in a contact's spiritual journey worth celebrating but can "
+"These are points in a contact’s spiritual journey worth celebrating but can "
 "happen in any order."
 msgstr ""
 "Weereza ebikolo by'okukkiriza omuntu by'atuuseko mu lugendo lwe. Zino ze "
@@ -3983,7 +3983,7 @@ msgstr "Omwezi Oguwedde"
 #, php-format
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] ""
+msgstr[0] "emyezi %s emabega"
 msgstr[1] ""
 
 #: dt-metrics/combined/daily-activity.php:85
@@ -4574,42 +4574,42 @@ msgstr "Enfunza y'Olunaku"
 #, php-format
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] ""
+msgstr[0] "eddakiika %s emabega"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:481
 #, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] ""
+msgstr[0] "essaawa %s emabega"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:486
 #, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] ""
+msgstr[0] "ennaku %s emabega"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:491
 #, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] ""
+msgstr[0] "wiiki %s emabega"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:510
 #, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] ""
+msgstr[0] "emyaka %s emabega"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:514
 #, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] ""
+msgstr[0] "okusukka emyaka %s emabega"
 msgstr[1] ""
 
 #: dt-notifications/notifications.php:909
@@ -6172,11 +6172,3 @@ msgstr "Abantu ab'okuyingira abasimbiddwa:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Ebyenkanankana ebizuulidde:"
-
-#, fuzzy
-#~ msgid "User Access"
-#~ msgstr "Saba olukusa"
-
-#, fuzzy
-#~ msgid "Advanced"
-#~ msgstr "Noonya Ebuziba"

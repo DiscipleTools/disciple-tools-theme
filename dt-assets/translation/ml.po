@@ -951,7 +951,7 @@ msgstr "റിലീസ് അറിയിപ്പ്!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Disciple.Tools ന്റെ പുതിയ പതിപ്പ് ലഭ്യമാണ്"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1903,9 +1903,8 @@ msgid "Theme Update Available!"
 msgstr "തീം അപ്‌ഡേറ്റ് ലഭ്യമാണ്!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "റെക്കോർഡുകളൊന്നും ലഭ്യമല്ല"
+msgstr "പുതിയ പതിപ്പ് ലഭ്യമാണ്"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"
@@ -6166,131 +6165,3 @@ msgstr "കോൺ‌ടാക്റ്റുകൾ ആക്‌സസ്സു�
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "തനിപ്പകർപ്പുകൾ കണ്ടെത്തി:"
-
-#, fuzzy
-#~ msgid "Home Screen Settings"
-#~ msgstr "ക്രമീകരണങ്ങൾ പങ്കിടുക"
-
-#, fuzzy
-#~ msgid "Edit App"
-#~ msgstr "എഡിറ്റുചെയ്യുക"
-
-#, fuzzy
-#~ msgid "General Settings"
-#~ msgstr "ക്രമീകരണങ്ങൾ തിരയുക"
-
-#, fuzzy
-#~ msgid "Home Screen Description"
-#~ msgstr "അപ്ലിക്കേഷൻ വിവരണം"
-
-#, fuzzy
-#~ msgid "Network Settings"
-#~ msgstr "ക്രമീകരണങ്ങൾ തിരയുക"
-
-#, fuzzy
-#~ msgid "User Registration Status:"
-#~ msgstr "ഉപയോക്തൃ നില"
-
-#, fuzzy
-#~ msgid "Enabled"
-#~ msgstr "പ്രവർത്തനക്ഷമമാക്കുക"
-
-#, fuzzy
-#~ msgid "Save Settings"
-#~ msgstr "ക്രമീകരണങ്ങൾ പങ്കിടുക"
-
-#, fuzzy
-#~ msgid "Add New App"
-#~ msgstr "പുതിയത് ചേർക്കുക"
-
-#, fuzzy
-#~ msgid "Security check failed. Please try again."
-#~ msgstr "അപ്‌ഡേറ്റുചെയ്യാനായില്ല"
-
-#, fuzzy
-#~ msgid "Update App"
-#~ msgstr "അപ്ഡേറ്റ് ചെയ്യുക"
-
-#, fuzzy
-#~ msgid "Update Video"
-#~ msgstr "അപ്‌ഡേറ്റ് ആവശ്യമാണ്"
-
-#, fuzzy
-#~ msgid "App created successfully!"
-#~ msgstr "കൈമാറ്റ പ്രക്രിയ പുതിക്കല്‍ വിജയകരം."
-
-#, fuzzy
-#~ msgid "App updated successfully!"
-#~ msgstr "കൈമാറ്റ പ്രക്രിയ പുതിക്കല്‍ വിജയകരം."
-
-#, fuzzy
-#~ msgid "Coded apps cannot be deleted."
-#~ msgstr "അഭിപ്രായം ഇല്ലാതാക്കാൻ കഴിഞ്ഞില്ല."
-
-#, fuzzy
-#~ msgid "Video updated successfully!"
-#~ msgstr "കൈമാറ്റ പ്രക്രിയ പുതിക്കല്‍ വിജയകരം."
-
-#, fuzzy
-#~ msgid "Link"
-#~ msgstr "അപ്ലിക്കേഷൻ ലിങ്ക്"
-
-#, fuzzy
-#~ msgid "App"
-#~ msgstr "അപ്ലിക്കേഷനുകൾ"
-
-#, fuzzy
-#~ msgid "Description"
-#~ msgstr "അപ്ലിക്കേഷൻ വിവരണം"
-
-#, fuzzy
-#~ msgid "Reset to Default"
-#~ msgstr "സ്ഥിരസ്ഥിതിയായി പുന reset സജ്ജമാക്കുക"
-
-#, fuzzy
-#~ msgid "User Access"
-#~ msgstr "അംഗീകരിക്കുക"
-
-#, fuzzy
-#~ msgid "Limit access by role"
-#~ msgstr "ഉറവിടം ഉപയോഗിച്ച് ആക്സസ് ചെയ്യുക"
-
-#, fuzzy
-#~ msgid "Select Roles"
-#~ msgstr "എല്ലാം തിരഞ്ഞെടുക്കുക"
-
-#, fuzzy
-#~ msgid "No apps found."
-#~ msgstr "തനിപ്പകർപ്പുകളൊന്നും കണ്ടെത്തിയില്ല."
-
-#, fuzzy
-#~ msgid "No roles selected"
-#~ msgstr "തിരഞ്ഞെടുത്തു."
-
-#, fuzzy
-#~ msgid "All roles"
-#~ msgstr "എല്ലാം%s"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this app?"
-#~ msgstr "%s ഇല്ലാതാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?"
-
-#, fuzzy
-#~ msgid "Duration"
-#~ msgstr "തലമുറ"
-
-#, fuzzy
-#~ msgid "General"
-#~ msgstr "തലമുറ"
-
-#, fuzzy
-#~ msgid "Advanced"
-#~ msgstr "വിപുലമായ തിരയൽ"
-
-#, fuzzy
-#~ msgid "Add Video"
-#~ msgstr "കുട്ടികളുടെ ഗ്രൂപ്പ്"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this video?"
-#~ msgstr "%s ഇല്ലാതാക്കാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?"

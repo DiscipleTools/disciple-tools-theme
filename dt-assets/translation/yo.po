@@ -954,7 +954,7 @@ msgstr "Ikede Itusilẹ!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Ẹ̀dà tuntun ti Disciple.Tools wa"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1903,9 +1903,8 @@ msgid "Theme Update Available!"
 msgstr "Imudojuiwọn Akori Wa!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "Ko si Awọn Igbasilẹ Ti o Wa"
+msgstr "Ẹ̀dà Tuntun Wa"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"
@@ -2624,7 +2623,8 @@ msgstr "Bọọlu wa ni ile-ẹjọ olubasọrọ"
 #: dt-contacts/module-access.php:223
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
-msgstr "A fẹ lati rii boya / bawo ni olubasoro naa ṣe dahun si awọn ifọrọranṣẹ adaṣe"
+msgstr ""
+"A fẹ lati rii boya / bawo ni olubasoro naa ṣe dahun si awọn ifọrọranṣẹ adaṣe"
 
 #: dt-contacts/module-access.php:230
 msgid "Reason Archived"
@@ -6170,135 +6170,3 @@ msgstr "Ti ṣayẹwo awọn olubasọrọ iwọle:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Awọn ẹda ti a ri:"
-
-#, fuzzy
-#~ msgid "Home Screen Settings"
-#~ msgstr "Pin awọn eto"
-
-#, fuzzy
-#~ msgid "Edit App"
-#~ msgstr "Ṣatunkọ"
-
-#, fuzzy
-#~ msgid "Edit Video"
-#~ msgstr "Olumulo Ṣatunkọ"
-
-#, fuzzy
-#~ msgid "General Settings"
-#~ msgstr "Awọn Eto Ṣawari"
-
-#, fuzzy
-#~ msgid "Home Screen Description"
-#~ msgstr "Apejuwe App"
-
-#, fuzzy
-#~ msgid "Network Settings"
-#~ msgstr "Awọn Eto Ṣawari"
-
-#, fuzzy
-#~ msgid "User Registration Status:"
-#~ msgstr "Ipo Olumulo"
-
-#, fuzzy
-#~ msgid "Enabled"
-#~ msgstr "Mu ṣiṣẹ"
-
-#, fuzzy
-#~ msgid "Save Settings"
-#~ msgstr "Pin awọn eto"
-
-#, fuzzy
-#~ msgid "Add New App"
-#~ msgstr "Ṣafikun Tuntun"
-
-#, fuzzy
-#~ msgid "Security check failed. Please try again."
-#~ msgstr "Paarẹ ati rọpo ọna asopọ app"
-
-#, fuzzy
-#~ msgid "Update App"
-#~ msgstr "Imudojuiwọn"
-
-#, fuzzy
-#~ msgid "Update Video"
-#~ msgstr "imudojuiwọn"
-
-#, fuzzy
-#~ msgid "App created successfully!"
-#~ msgstr "Imudojuiwọn gbigbe ni aṣeyọri."
-
-#, fuzzy
-#~ msgid "App updated successfully!"
-#~ msgstr "Imudojuiwọn gbigbe ni aṣeyọri."
-
-#, fuzzy
-#~ msgid "Coded apps cannot be deleted."
-#~ msgstr "Ọrọìwòye ko le paarẹ."
-
-#, fuzzy
-#~ msgid "Video updated successfully!"
-#~ msgstr "Imudojuiwọn gbigbe ni aṣeyọri."
-
-#, fuzzy
-#~ msgid "Link"
-#~ msgstr "Awọn ọna asopọ"
-
-#, fuzzy
-#~ msgid "App"
-#~ msgstr "Awọn ohun elo"
-
-#, fuzzy
-#~ msgid "Description"
-#~ msgstr "Apejuwe App"
-
-#, fuzzy
-#~ msgid "Reset to Default"
-#~ msgstr "tunto si aiyipada"
-
-#, fuzzy
-#~ msgid "User Access"
-#~ msgstr "Gba"
-
-#, fuzzy
-#~ msgid "Limit access by role"
-#~ msgstr "Wiwọle nipasẹ Orisun"
-
-#, fuzzy
-#~ msgid "Select Roles"
-#~ msgstr "Sa gbogbo re"
-
-#, fuzzy
-#~ msgid "No apps found."
-#~ msgstr "A ko rii awọn ẹda-ẹda."
-
-#, fuzzy
-#~ msgid "No roles selected"
-#~ msgstr "ti yan."
-
-#, fuzzy
-#~ msgid "All roles"
-#~ msgstr "Gbogbo %s"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this app?"
-#~ msgstr "Ṣe o da ọ loju pe o fẹ paarẹ%s?"
-
-#, fuzzy
-#~ msgid "Duration"
-#~ msgstr "Iran"
-
-#, fuzzy
-#~ msgid "General"
-#~ msgstr "Iran"
-
-#, fuzzy
-#~ msgid "Advanced"
-#~ msgstr "Iwadi Ilọsiwaju"
-
-#, fuzzy
-#~ msgid "Add Video"
-#~ msgstr "Ẹgbẹ Ọmọde"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this video?"
-#~ msgstr "Ṣe o da ọ loju pe o fẹ paarẹ%s?"

@@ -628,7 +628,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                 <span aria-hidden="true">×</span>
                             </button>
                             <p style="font-weight:bold"><?php
-                                echo sprintf( esc_html__( 'Select all the  %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
+                                echo sprintf( esc_html__( 'Select all the %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                             <div class="grid-x">
                                 <?php if ( isset( $field_options['assigned_to'] ) ) : ?>
                                     <div class="cell small-12">

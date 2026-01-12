@@ -12,8 +12,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3"
-"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3&& "
+"n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Weblate 5.10.2\n"
 
 #. Theme Name of the theme
@@ -29,8 +29,7 @@ msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 #. Description of the theme
 #: style.css
 msgid ""
-"Disciple.Tools is a coalition management system for disciple making"
-"movements."
+"Disciple.Tools is a coalition management system for disciple makingmovements."
 msgstr "Disciple.Tools هو نظام إدارة تحالفات لحركات صنع التلاميذ."
 
 #. Author URI of the theme
@@ -238,26 +237,26 @@ msgstr "مساعدة تصدير القائمة"
 
 #: archive-template.php:263
 msgid ""
-"Using the current filter, this is a simple way to export basic information"
-"and use it in other applications."
+"Using the current filter, this is a simple way to export basic "
+"informationand use it in other applications."
 msgstr ""
-"باستخدام الفلتر الحالي، هذه طريقة بسيطة لتصدير المعلومات الأساسية واستخدامها"
-"في تطبيقات أخرى."
+"باستخدام الفلتر الحالي، هذه طريقة بسيطة لتصدير المعلومات الأساسية "
+"واستخدامهافي تطبيقات أخرى."
 
 #: archive-template.php:267
 msgid ""
-"Using the current filter, the available emails are grouped by 50 and can be"
-"launched into your default email client by group. Many email providers put a"
-"limit of 50 on BCC emails. You can open all groups at once using the \"Open"
-"All\" button. If the list is too large, this might alert your email"
-"provider. The BCC email tool is meant to assist small group emails. Bulk"
-"email should be handled through bulk email providers."
+"Using the current filter, the available emails are grouped by 50 and can "
+"belaunched into your default email client by group. Many email providers put "
+"alimit of 50 on BCC emails. You can open all groups at once using the "
+"\"OpenAll\" button. If the list is too large, this might alert your "
+"emailprovider. The BCC email tool is meant to assist small group emails. "
+"Bulkemail should be handled through bulk email providers."
 msgstr ""
-"باستخدام الفلتر الحالي، يتم تجميع عناوين البريد الإلكتروني المتاحة في"
-"مجموعات من 50 ويمكن تشغيلها في عميل البريد الافتراضي لديك. يضع العديد من"
-"مزودي البريد الإلكتروني حدًا قدره 50 على رسائل BCC. يمكنك فتح جميع المجموعات"
-"دفعة واحدة باستخدام زر \\\"فتح الكل\\\". إذا كانت القائمة كبيرة جدًا، فقد"
-"يُنبه ذلك مزود البريد الإلكتروني الخاص بك."
+"باستخدام الفلتر الحالي، يتم تجميع عناوين البريد الإلكتروني المتاحة فيمجموعات "
+"من 50 ويمكن تشغيلها في عميل البريد الافتراضي لديك. يضع العديد منمزودي البريد "
+"الإلكتروني حدًا قدره 50 على رسائل BCC. يمكنك فتح جميع المجموعاتدفعة واحدة "
+"باستخدام زر \\\"فتح الكل\\\". إذا كانت القائمة كبيرة جدًا، فقديُنبه ذلك مزود "
+"البريد الإلكتروني الخاص بك."
 
 #: archive-template.php:270
 msgid "Phone Number List"
@@ -265,20 +264,20 @@ msgstr "قائمة أرقام الهاتف"
 
 #: archive-template.php:271
 msgid ""
-"Using the current filter, this is intended for copy pasting a list of"
-"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of"
-"starting a group conversation."
+"Using the current filter, this is intended for copy pasting a list ofnumbers "
+"into a messaging app, WhatsApp, Signal, etc. This is a quick way ofstarting "
+"a group conversation."
 msgstr ""
-"باستخدام الفلتر الحالي، هذا مخصص لنسخ ولصق قائمة الأرقام في تطبيق مراسلة مثل"
-"واتساب أو سيجنال وغيرها. هذه طريقة سريعة لبدء محادثة جماعية."
+"باستخدام الفلتر الحالي، هذا مخصص لنسخ ولصق قائمة الأرقام في تطبيق مراسلة "
+"مثلواتساب أو سيجنال وغيرها. هذه طريقة سريعة لبدء محادثة جماعية."
 
 #: archive-template.php:275
 msgid ""
-"Using the current filter, this creates a basic points map of known locations"
-"of listed individuals."
+"Using the current filter, this creates a basic points map of known "
+"locationsof listed individuals."
 msgstr ""
-"باستخدام الفلتر الحالي، هذا ينشئ خريطة نقاط أساسية للمواقع المعروفة للأفراد"
-"المدرجين."
+"باستخدام الفلتر الحالي، هذا ينشئ خريطة نقاط أساسية للمواقع المعروفة "
+"للأفرادالمدرجين."
 
 #: archive-template.php:339
 msgid "No results found"
@@ -947,7 +946,7 @@ msgstr "إعلان الإصدار!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "يتوفر إصدار جديد من Disciple.Tools"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1509,21 +1508,21 @@ msgstr "إجراءات سريعة"
 #: dt-assets/parts/modals/modal-help.php:14
 msgctxt "Optional Documentation"
 msgid ""
-"These quick action buttons are here to aid you in updating the contact"
-"record faster and keep a count of how many times each action has be done."
+"These quick action buttons are here to aid you in updating the contactrecord "
+"faster and keep a count of how many times each action has be done."
 msgstr ""
-"توجد أزرار الإجراءات السريعة هذه لمساعدتك في تحديث سجل جهات الاتصال بشكل"
-"أسرع والاحتفاظ بعدد المرات التي تم فيها تنفيذ كل إجراء."
+"توجد أزرار الإجراءات السريعة هذه لمساعدتك في تحديث سجل جهات الاتصال بشكلأسرع "
+"والاحتفاظ بعدد المرات التي تم فيها تنفيذ كل إجراء."
 
 #: dt-assets/parts/modals/modal-help.php:15
 msgctxt "Optional Documentation"
 msgid ""
-"For example, If you click the 'No Answer' button 4 times, we will log that"
-"you attempted to reach this contact 4 times, but they did not answer. This"
-"action will also change the 'Seeker Path' to 'Contact Attempted'."
+"For example, If you click the 'No Answer' button 4 times, we will log "
+"thatyou attempted to reach this contact 4 times, but they did not answer. "
+"Thisaction will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"على سبيل المثال ، إذا قمت بالنقر فوق الزر \\\"لا إجابة\\\" 4 مرات ، فسوف"
-"نسجل أنك حاولت الوصول إلى جهة الاتصال هذه 4 مرات ، لكنهم لم يردوا. "
+"على سبيل المثال ، إذا قمت بالنقر فوق الزر \\\"لا إجابة\\\" 4 مرات ، فسوفنسجل "
+"أنك حاولت الوصول إلى جهة الاتصال هذه 4 مرات ، لكنهم لم يردوا. "
 "                 سيؤدي هذا الإجراء أيضًا إلى تغيير \\\"مسار الباحث\\\" إلى \\"
 "\"محاولة الاتصال\\\"."
 
@@ -1544,19 +1543,19 @@ msgstr "هذا هو المكان الذي يمكنك فيه تسجيل المل�
 #: dt-assets/parts/modals/modal-help.php:43
 msgctxt "Optional Documentation"
 msgid ""
-"Type @ and the name of a user to mention them in a comment. This user will"
-"then receive a notification."
+"Type @ and the name of a user to mention them in a comment. This user "
+"willthen receive a notification."
 msgstr ""
 "اكتب @ واسم مستخدم لذكرها في تعليق. سيتلقى هذا المستخدم بعد ذلك إشعارًا."
 
 #: dt-assets/parts/modals/modal-help.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"This section also includes the history of activity, such as when the contact"
-"or group status became active etc."
+"This section also includes the history of activity, such as when the "
+"contactor group status became active etc."
 msgstr ""
-"يتضمن هذا القسم أيضًا سجل النشاط ، مثل عندما تصبح حالة جهة الاتصال أو"
-"المجموعة نشطة وما إلى ذلك."
+"يتضمن هذا القسم أيضًا سجل النشاط ، مثل عندما تصبح حالة جهة الاتصال أوالمجموعة "
+"نشطة وما إلى ذلك."
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
@@ -1577,20 +1576,20 @@ msgstr "في هذه المنطقة يمكنك مشاهدة ملف تعريف ا�
 #: dt-assets/parts/modals/modal-help.php:60
 msgctxt "Optional Documentation"
 msgid ""
-"You are not required to fill out any of these profile fields. They are"
-"optional to meet your team’s needs."
+"You are not required to fill out any of these profile fields. They "
+"areoptional to meet your team’s needs."
 msgstr ""
-"لست مطالبًا بملء أي من حقول الملف الشخصي هذه. إنها اختيارية لتلبية احتياجات"
-"فريقك."
+"لست مطالبًا بملء أي من حقول الملف الشخصي هذه. إنها اختيارية لتلبية "
+"احتياجاتفريقك."
 
 #: dt-assets/parts/modals/modal-help.php:61
 msgctxt "Optional Documentation"
 msgid ""
-"By clicking 'Edit', you will be able adjust things like the language that"
-"this system operates in."
+"By clicking 'Edit', you will be able adjust things like the language "
+"thatthis system operates in."
 msgstr ""
-"بالنقر فوق \\\"تحرير\\\" ، ستتمكن من ضبط أشياء مثل اللغة التي يعمل بها هذا"
-"النظام."
+"بالنقر فوق \\\"تحرير\\\" ، ستتمكن من ضبط أشياء مثل اللغة التي يعمل بها "
+"هذاالنظام."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
 #: dt-users/users.php:169
@@ -1600,11 +1599,11 @@ msgstr "الجهات"
 #: dt-assets/parts/modals/modal-help.php:67
 msgctxt "Optional Documentation"
 msgid ""
-"These are the areas you are responsible for. Clicking the 'Add' button will"
-"bring up a list of locations to choose from."
+"These are the areas you are responsible for. Clicking the 'Add' button "
+"willbring up a list of locations to choose from."
 msgstr ""
-"هذه هي المجالات التي أنت مسؤول عنها. سيؤدي النقر فوق الزر \\\"إضافة\\\" إلى"
-"ظهور قائمة بالمواقع للاختيار من بينها."
+"هذه هي المجالات التي أنت مسؤول عنها. سيؤدي النقر فوق الزر \\\"إضافة\\\" "
+"إلىظهور قائمة بالمواقع للاختيار من بينها."
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
@@ -1614,12 +1613,12 @@ msgstr "إشعارات"
 #: dt-assets/parts/modals/modal-help.php:73
 msgctxt "Optional Documentation"
 msgid ""
-"You will receive web notifications and email notifications based on your"
-"notification preferences. To change your preference, click the toggle"
-"buttons."
+"You will receive web notifications and email notifications based on "
+"yournotification preferences. To change your preference, click the "
+"togglebuttons."
 msgstr ""
-"سوف تتلقى إشعارات الويب وإشعارات البريد الإلكتروني بناءً على تفضيلات الإخطار"
-"الخاصة بك. لتغيير التفضيلات الخاصة بك ، انقر فوق أزرار التبديل."
+"سوف تتلقى إشعارات الويب وإشعارات البريد الإلكتروني بناءً على تفضيلات "
+"الإخطارالخاصة بك. لتغيير التفضيلات الخاصة بك ، انقر فوق أزرار التبديل."
 
 #: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
@@ -1634,21 +1633,21 @@ msgstr "تم إيقاف تشغيل الإشعارات: سيظهر زر التب�
 #: dt-assets/parts/modals/modal-help.php:78
 msgctxt "Optional Documentation"
 msgid ""
-"Some of the types of notifications cannot be adjusted because they are"
-"required by the system."
+"Some of the types of notifications cannot be adjusted because they "
+"arerequired by the system."
 msgstr "لا يمكن تعديل بعض أنواع الإشعارات لأنها مطلوبة من قبل النظام."
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
 msgid ""
-"Adjust whether you want to see notifications about new comments, contact"
-"information changes, Contact Milestones and Group Health metrics, and"
-"whether to you will receive a notification for any update that happens in"
-"the system."
+"Adjust whether you want to see notifications about new comments, "
+"contactinformation changes, Contact Milestones and Group Health metrics, "
+"andwhether to you will receive a notification for any update that happens "
+"inthe system."
 msgstr ""
-"قم بتعديل ما إذا كنت تريد الاطلاع على إشعارات حول التعليقات الجديدة ،"
-"وتغييرات معلومات الاتصال ، ومراحل جهة الاتصال ومقاييس صحة المجموعة ، وما إذا"
-"كنت ستتلقى إشعارًا بأي تحديث يحدث في النظام."
+"قم بتعديل ما إذا كنت تريد الاطلاع على إشعارات حول التعليقات "
+"الجديدة ،وتغييرات معلومات الاتصال ، ومراحل جهة الاتصال ومقاييس صحة "
+"المجموعة ، وما إذاكنت ستتلقى إشعارًا بأي تحديث يحدث في النظام."
 
 #: dt-assets/parts/modals/modal-help.php:87
 msgctxt "Optional Documentation"
@@ -1658,11 +1657,11 @@ msgstr "إشعارات"
 #: dt-assets/parts/modals/modal-help.php:88
 msgctxt "Optional Documentation"
 msgid ""
-"This Notifications Page is where you can read updates to users and groups."
-"It displays notifications about activity on your records."
+"This Notifications Page is where you can read updates to users and groups.It "
+"displays notifications about activity on your records."
 msgstr ""
-"صفحة الإشعارات هذه هي المكان الذي يمكنك فيه قراءة التحديثات للمستخدمين"
-"والمجموعات. يعرض إشعارات حول النشاط في سجلاتك."
+"صفحة الإشعارات هذه هي المكان الذي يمكنك فيه قراءة التحديثات "
+"للمستخدمينوالمجموعات. يعرض إشعارات حول النشاط في سجلاتك."
 
 #: dt-assets/parts/modals/modal-help.php:89
 msgctxt "Optional Documentation"
@@ -1678,8 +1677,8 @@ msgstr "انقر فوق الزر \\\"الكل\\\" لإظهار القائمة ا
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Unread' button to show the list of all of your unread"
-"notifications."
+"Click the 'Unread' button to show the list of all of your "
+"unreadnotifications."
 msgstr ""
 "انقر فوق الزر \\\"غير مقروء\\\" لإظهار قائمة بجميع الإشعارات غير المقروءة."
 
@@ -1691,28 +1690,29 @@ msgstr "اجعل الكل مقروء"
 #: dt-assets/parts/modals/modal-help.php:93
 msgctxt "Optional Documentation"
 msgid ""
-"If you don't want to click each filled in circle on the right side of each"
-"row to indicate the notification has been read, then click the 'Mark All as"
-"Read' link at the top to quickly adjust all the messages that they have all"
-"been read."
+"If you don't want to click each filled in circle on the right side of "
+"eachrow to indicate the notification has been read, then click the 'Mark All "
+"asRead' link at the top to quickly adjust all the messages that they have "
+"allbeen read."
 msgstr ""
-"إذا كنت لا تريد النقر فوق كل دائرة مملوءة في الجانب الأيمن من كل صف للإشارة"
-"إلى قراءة الإشعار ، فانقر فوق الرابط \\\"وضع علامة على اجعل الكل مقروء\\\""
-"في الأعلى لضبط جميع الرسائل التي تحتوي عليها جميعًا بسرعة تمت قراءتها."
+"إذا كنت لا تريد النقر فوق كل دائرة مملوءة في الجانب الأيمن من كل صف "
+"للإشارةإلى قراءة الإشعار ، فانقر فوق الرابط \\\"وضع علامة على اجعل الكل "
+"مقروء\\\"في الأعلى لضبط جميع الرسائل التي تحتوي عليها جميعًا بسرعة تمت "
+"قراءتها."
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Settings' link to go to the notifications settings area to adjust"
-"whether you want to see notifications about new comments, contact"
-"information changes, Contact Milestones and Group Health metrics, and"
-"whether to you will receive a notification for any update that happens in"
-"the system."
+"Click the 'Settings' link to go to the notifications settings area to "
+"adjustwhether you want to see notifications about new comments, "
+"contactinformation changes, Contact Milestones and Group Health metrics, "
+"andwhether to you will receive a notification for any update that happens "
+"inthe system."
 msgstr ""
-"انقر على رابط \\\"الإعدادات\\\" للانتقال إلى منطقة إعدادات الإشعارات لضبط ما"
-"إذا كنت تريد رؤية إشعارات حول التعليقات الجديدة ، وتغييرات معلومات الاتصال ،"
-"ومراحل جهة الاتصال ومقاييس صحة المجموعة ، وما إذا كنت ستتلقى إشعارًا بأي"
-"تحديث يحدث في النظام."
+"انقر على رابط \\\"الإعدادات\\\" للانتقال إلى منطقة إعدادات الإشعارات لضبط "
+"ماإذا كنت تريد رؤية إشعارات حول التعليقات الجديدة ، وتغييرات معلومات "
+"الاتصال ،ومراحل جهة الاتصال ومقاييس صحة المجموعة ، وما إذا كنت ستتلقى إشعارًا "
+"بأيتحديث يحدث في النظام."
 
 #: dt-assets/parts/modals/modal-help.php:100
 msgctxt "Optional Documentation"
@@ -1722,14 +1722,15 @@ msgstr "بحث المتواصلون"
 #: dt-assets/parts/modals/modal-help.php:101
 msgctxt "Optional Documentation"
 msgid ""
-"This Duplicate Contact Page is where you can review, decline or merge"
-"contacts that have been picked up by the system (checking against their"
-"name, email and phone) as possibly being duplicates of another already"
-"existing contact."
+"This Duplicate Contact Page is where you can review, decline or "
+"mergecontacts that have been picked up by the system (checking against "
+"theirname, email and phone) as possibly being duplicates of another "
+"alreadyexisting contact."
 msgstr ""
-"صفحة جهة الاتصال المكررة هذه هي المكان الذي يمكنك فيه مراجعة جهات الاتصال"
-"التي تم التقاطها بواسطة النظام أو رفضها أو دمجها (التحقق من الاسم والبريد"
-"الإلكتروني والهاتف) باعتبارها نسخًا مكررة لجهة اتصال أخرى موجودة بالفعل."
+"صفحة جهة الاتصال المكررة هذه هي المكان الذي يمكنك فيه مراجعة جهات "
+"الاتصالالتي تم التقاطها بواسطة النظام أو رفضها أو دمجها (التحقق من الاسم "
+"والبريدالإلكتروني والهاتف) باعتبارها نسخًا مكررة لجهة اتصال أخرى موجودة "
+"بالفعل."
 
 #: dt-assets/parts/modals/modal-help.php:124
 #: dt-assets/parts/modals/modal-help.php:174
@@ -1763,11 +1764,11 @@ msgstr "امسح رمز QR لفتح الرابط السحري على جهاز م
 
 #: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
 msgid ""
-"Reset the security code. No data is removed. Only access. The previous link"
-"will be disabled and another one created."
+"Reset the security code. No data is removed. Only access. The previous "
+"linkwill be disabled and another one created."
 msgstr ""
-"إعادة تعيين رمز الأمان. لا تتم إزالة أي بيانات. فقط الوصول. سيتم تعطيل"
-"الرابط السابق وإنشاء رابط آخر."
+"إعادة تعيين رمز الأمان. لا تتم إزالة أي بيانات. فقط الوصول. سيتم تعطيلالرابط "
+"السابق وإنشاء رابط آخر."
 
 #: dt-assets/parts/modals/modal-new-contact.php:3
 #: dt-assets/parts/modals/modal-new-contact.php:12
@@ -1862,8 +1863,8 @@ msgstr "تتم مشاركة جهة الاتصال هذه مع:"
 
 #: dt-assets/parts/modals/modal-tasks.php:12
 msgid ""
-"Set a reminder or a task with a note and receive a notification on the due"
-"date."
+"Set a reminder or a task with a note and receive a notification on the "
+"duedate."
 msgstr "قم بتعيين تذكير أو مهمة بملاحظة واستلام إشعار في تاريخ الاستحقاق."
 
 #: dt-assets/parts/modals/modal-tasks.php:13
@@ -1891,9 +1892,8 @@ msgid "Theme Update Available!"
 msgstr "تحديث الثيم متاح!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "لا توجد سجلات متاحة"
+msgstr "إصدار جديد متاح"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"
@@ -2109,8 +2109,8 @@ msgstr "جهة الاتصال جديدة في النظام."
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
-"This contact has made it known that they no longer want to continue or you"
-"have decided not to continue with him/her."
+"This contact has made it known that they no longer want to continue or "
+"youhave decided not to continue with him/her."
 msgstr "لا تريد جهة الاتصال هذه إكمال التواصل أو أنت بنفسك قررت إيقاف متابعته"
 
 #: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
@@ -2349,12 +2349,12 @@ msgstr "تم نقله بالفعل إلى %s"
 
 #: dt-contacts/contacts-transfer.php:277
 msgid ""
-"NOTE: You have already transferred this contact. Transferring again might"
-"create duplicates. Do you still want to override this warning and continue"
-"with your transfer?"
+"NOTE: You have already transferred this contact. Transferring again "
+"mightcreate duplicates. Do you still want to override this warning and "
+"continuewith your transfer?"
 msgstr ""
-"ملاحظة: لقد قمت بالفعل بنقل جهة الاتصال هذه. نقل مرة أخرى قد يخلق التكرارات."
-"هل ما زلت ترغب في تجاوز هذا التحذير ومتابعة عملية النقل؟"
+"ملاحظة: لقد قمت بالفعل بنقل جهة الاتصال هذه. نقل مرة أخرى قد يخلق "
+"التكرارات.هل ما زلت ترغب في تجاوز هذا التحذير ومتابعة عملية النقل؟"
 
 #: dt-contacts/contacts-transfer.php:281
 msgid "Override and Continue"
@@ -2449,11 +2449,11 @@ msgstr "طريق الباحث"
 #: dt-contacts/module-access.php:103
 msgctxt "Seeker Path field description"
 msgid ""
-"Set the status of your progression with the contact. These are the steps"
-"that happen in a specific order to help a contact move forward."
+"Set the status of your progression with the contact. These are the stepsthat "
+"happen in a specific order to help a contact move forward."
 msgstr ""
-"تعيين حالة تقدمك مع جهة الاتصال. هذه هي الخطوات التي تحدث في ترتيب معين"
-"لمساعدة جهة اتصال على المضي قدمًا."
+"تعيين حالة تقدمك مع جهة الاتصال. هذه هي الخطوات التي تحدث في ترتيب "
+"معينلمساعدة جهة اتصال على المضي قدمًا."
 
 #: dt-contacts/module-access.php:107
 msgid "Contact Attempt Needed"
@@ -2490,8 +2490,7 @@ msgstr "غير جاهز"
 #: dt-contacts/module-access.php:149
 msgctxt "Contact Status field description"
 msgid ""
-"There is not enough information to move forward with the contact at this"
-"time."
+"There is not enough information to move forward with the contact at thistime."
 msgstr "لا توجد معلومات كافية للمضي قدماً مع جهة الاتصال في هذا الوقت."
 
 #: dt-contacts/module-access.php:153
@@ -2510,8 +2509,8 @@ msgstr "في انتظار أن تكون مقبولة"
 #: dt-contacts/module-access.php:159
 msgctxt "Contact Status field description"
 msgid ""
-"The contact has been assigned to someone, but has not yet been accepted by"
-"that person."
+"The contact has been assigned to someone, but has not yet been accepted "
+"bythat person."
 msgstr "تمّ تعيين جهة الاتصال هذه لشخص لكن لم يتم قبوله بعد"
 
 #: dt-contacts/module-access.php:164
@@ -2563,11 +2562,11 @@ msgstr "السبب_موقف مؤقتاّ"
 #: dt-contacts/module-access.php:212
 msgctxt "Optional Documentation"
 msgid ""
-"A paused contact is one you are not currently interacting with but expect to"
-"in the future."
+"A paused contact is one you are not currently interacting with but expect "
+"toin the future."
 msgstr ""
-"جهة الاتصال المتوقفة مؤقتًا هي تلك التي لا تتفاعل معها حاليًا ولكن تتوقعها في"
-"المستقبل."
+"جهة الاتصال المتوقفة مؤقتًا هي تلك التي لا تتفاعل معها حاليًا ولكن تتوقعها "
+"فيالمستقبل."
 
 #: dt-contacts/module-access.php:216
 msgctxt "Reason Paused label"
@@ -2848,12 +2847,12 @@ msgstr "معلمات الإيمان"
 #: dt-contacts/module-faith.php:44
 msgctxt "Optional Documentation"
 msgid ""
-"Assign which milestones the contact has reached in their faith journey."
-"These are points in a contact’s spiritual journey worth celebrating but can"
-"happen in any order."
+"Assign which milestones the contact has reached in their faith journey.These "
+"are points in a contact’s spiritual journey worth celebrating but canhappen "
+"in any order."
 msgstr ""
-"حدد المراحل التي وصل إليها الاتصال في رحلة الإيمان. هذه نقاط في الرحلة"
-"الروحية لجهة اتصال تستحق الاحتفال ولكن يمكن أن تحدث بأي ترتيب."
+"حدد المراحل التي وصل إليها الاتصال في رحلة الإيمان. هذه نقاط في "
+"الرحلةالروحية لجهة اتصال تستحق الاحتفال ولكن يمكن أن تحدث بأي ترتيب."
 
 #: dt-contacts/module-faith.php:48
 msgid "Has Bible"
@@ -3008,8 +3007,8 @@ msgstr "معلمات الإيمان ومقاييس صحة المجموعة"
 
 #: dt-core/configuration/config-site-defaults.php:300
 msgid ""
-"This contact is active but there is no record of anybody contacting them."
-"Please do contact them."
+"This contact is active but there is no record of anybody contacting "
+"them.Please do contact them."
 msgstr ""
 "جهة الاتصال هذه نشطة ولكن لا يوجد سجل لأي شخص يتصل بهم. يرجى الاتصال بهم."
 
@@ -3023,8 +3022,8 @@ msgstr "يرجى محاولة التواصل مع جهة الاتصال هذه �
 #: dt-core/configuration/config-site-defaults.php:330
 #: dt-core/configuration/config-site-defaults.php:336
 msgid ""
-"We haven't heard about this person in a while. Do you have an update for"
-"this contact?"
+"We haven't heard about this person in a while. Do you have an update forthis "
+"contact?"
 msgstr "لم نسمع عن هذا الشخص منذ فترة. هل لديك تحديث لجهة الاتصال هذه؟"
 
 #: dt-core/configuration/config-site-defaults.php:346
@@ -3172,8 +3171,8 @@ msgstr "اسم المستخدم: %s"
 #: dt-core/configuration/restrict-site-access.php:322
 msgid "If this was a mistake, just ignore this email and nothing will happen."
 msgstr ""
-"إذا كان هذا خطأ، تجاهل هذا البريد الإلكتروني ولن يحدث شيء.إذا كان هذا خطأ ،"
-"فما عليك سوى تجاهل هذا البريد الإلكتروني ولن يحدث شيء."
+"إذا كان هذا خطأ، تجاهل هذا البريد الإلكتروني ولن يحدث شيء.إذا كان هذا "
+"خطأ ،فما عليك سوى تجاهل هذا البريد الإلكتروني ولن يحدث شيء."
 
 #: dt-core/configuration/restrict-site-access.php:323
 msgid "To reset your password, visit the following address:"
@@ -3181,11 +3180,11 @@ msgstr "لإعادة تعيين كلمة مرورك ، تفضل بزيارة ا�
 
 #: dt-core/dt-storage.php:223
 msgid ""
-"Something went wrong. Please try again or have an admin check the connection"
-"settings."
+"Something went wrong. Please try again or have an admin check the "
+"connectionsettings."
 msgstr ""
-"حدث خطأ ما. يرجى المحاولة مرة أخرى أو مراجعة المسؤول للتحقق من إعدادات"
-"الاتصال."
+"حدث خطأ ما. يرجى المحاولة مرة أخرى أو مراجعة المسؤول للتحقق من "
+"إعداداتالاتصال."
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3218,11 +3217,11 @@ msgstr "مجاني لكنه ليس رخيصًا"
 
 #: dt-core/release-notifications.php:119
 msgid ""
-"Disciple.Tools relies on contributions for continued development and"
-"maintenance. Will you join the team?"
+"Disciple.Tools relies on contributions for continued development "
+"andmaintenance. Will you join the team?"
 msgstr ""
-"يعتمد Disciple.Tools على المساهمات لاستمرار التطوير والصيانة. هل ستنضم إلى"
-"الفريق؟"
+"يعتمد Disciple.Tools على المساهمات لاستمرار التطوير والصيانة. هل ستنضم "
+"إلىالفريق؟"
 
 #: dt-core/release-notifications.php:121
 msgid "Give"
@@ -3235,8 +3234,7 @@ msgstr "ترجم"
 #: dt-core/release-notifications.php:127 dt-users/user-initial-setup.php:68
 #: template-settings.php:729
 msgid ""
-"Translate Disciple.Tools into your language or help make a translation"
-"better."
+"Translate Disciple.Tools into your language or help make a translationbetter."
 msgstr "ترجم Disciple.Tools إلى لغتك أو ساعد في تحسين الترجمة."
 
 #: dt-core/release-notifications.php:134
@@ -3245,8 +3243,8 @@ msgstr "ابنِ أو وثّق"
 
 #: dt-core/release-notifications.php:136
 msgid ""
-"Make Disciple.Tools better by building a feature or helping us make the"
-"documentation better."
+"Make Disciple.Tools better by building a feature or helping us make "
+"thedocumentation better."
 msgstr ""
 "اجعل Disciple.Tools أفضل من خلال بناء ميزة أو مساعدتنا في تحسين التوثيق."
 
@@ -3311,12 +3309,13 @@ msgstr "مدرب المجموعة / زارع الكنيسة"
 #: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
-"The person who planted and/or is coaching this group. Only one person can be"
-"assigned to a group while multiple people can be coaches / church planters"
-"of this group."
+"The person who planted and/or is coaching this group. Only one person can "
+"beassigned to a group while multiple people can be coaches / church "
+"plantersof this group."
 msgstr ""
-"الشخص الذي زرع هذه المجموعة و / أو يقوم بتدريبها. يمكن تعيين شخص واحد فقط"
-"لمجموعة بينما يمكن أن يكون عدة أشخاص مدربين / زارعي الكنيسة في هذه المجموعة."
+"الشخص الذي زرع هذه المجموعة و / أو يقوم بتدريبها. يمكن تعيين شخص واحد "
+"فقطلمجموعة بينما يمكن أن يكون عدة أشخاص مدربين / زارعي الكنيسة في هذه "
+"المجموعة."
 
 #: dt-groups/base-setup.php:160
 msgid "Group Type"
@@ -3490,14 +3489,14 @@ msgstr "عدد الأعضاء"
 #: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
-"The number of members in this group. It will automatically be updated when"
-"new members are added or removed in the member list. Change this number"
-"manually to include people who may not be in the system but are also members"
-"of the group."
+"The number of members in this group. It will automatically be updated "
+"whennew members are added or removed in the member list. Change this "
+"numbermanually to include people who may not be in the system but are also "
+"membersof the group."
 msgstr ""
-"عدد الأعضاء في هذه المجموعة. سيتم تحديثه تلقائيًا عند إضافة أعضاء جدد أو"
-"إزالتهم من قائمة الأعضاء. غيّر هذا الرقم يدويًا لتضمين الأشخاص الذين قد لا"
-"يكونون في النظام ولكنهم أيضًا أعضاء في المجموعة."
+"عدد الأعضاء في هذه المجموعة. سيتم تحديثه تلقائيًا عند إضافة أعضاء جدد "
+"أوإزالتهم من قائمة الأعضاء. غيّر هذا الرقم يدويًا لتضمين الأشخاص الذين قد "
+"لايكونون في النظام ولكنهم أيضًا أعضاء في المجموعة."
 
 #: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
 #: dt-groups/base-setup.php:602
@@ -3529,11 +3528,11 @@ msgstr "مجموعة الأقران"
 #: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
-"A related group that isn't a parent/child in relationship. It might indicate"
-"groups that collaborate, are about to merge, recently split, etc."
+"A related group that isn't a parent/child in relationship. It might "
+"indicategroups that collaborate, are about to merge, recently split, etc."
 msgstr ""
-"مجموعة ذات صلة ليست من علاقة اصلية / فرعية. قد يشير إلى المجموعات التي"
-"تتعاون ، على وشك الاندماج ، والانقسام مؤخرًا ، وما إلى ذلك."
+"مجموعة ذات صلة ليست من علاقة اصلية / فرعية. قد يشير إلى المجموعات "
+"التيتتعاون ، على وشك الاندماج ، والانقسام مؤخرًا ، وما إلى ذلك."
 
 #: dt-groups/base-setup.php:341
 msgid "Child Group"
@@ -3583,8 +3582,7 @@ msgstr "مضاعف"
 #: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
-"Number of people helping start other groups. How many members are"
-"multiplying?"
+"Number of people helping start other groups. How many members aremultiplying?"
 msgstr ""
 "عدد الأشخاص الذين يساعدون في بدء مجموعات أخرى. كم عدد الأعضاء الذين يتضاعفون؟"
 
@@ -3621,11 +3619,11 @@ msgstr "إنشاء مستخدم من خلال هذا المتصل"
 #: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
-"In the 'Member List' field, type the name of an existing contact to add them"
-"to this group."
+"In the 'Member List' field, type the name of an existing contact to add "
+"themto this group."
 msgstr ""
-"في حقل \\\"قائمة الأعضاء\\\" ، اكتب اسم جهة اتصال موجودة لإضافتها إلى هذه"
-"المجموعة."
+"في حقل \\\"قائمة الأعضاء\\\" ، اكتب اسم جهة اتصال موجودة لإضافتها إلى "
+"هذهالمجموعة."
 
 #: dt-groups/base-setup.php:606
 msgid "Four Fields"
@@ -3634,17 +3632,17 @@ msgstr "أربعة حقول"
 #: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
-"There are 5 squares in the Four Fields diagram. Starting in the top left"
-"quadrant and going clockwise and the fifth being in the middle, they stand"
-"for:"
+"There are 5 squares in the Four Fields diagram. Starting in the top "
+"leftquadrant and going clockwise and the fifth being in the middle, they "
+"standfor:"
 msgstr ""
-"هناك 5 مربعات في مخطط الحقول الأربعة. بدءًا من الربع العلوي الأيسر والذهاب"
-"باتجاه عقارب الساعة والخامس في المنتصف ، فإنهم يمثلون:"
+"هناك 5 مربعات في مخطط الحقول الأربعة. بدءًا من الربع العلوي الأيسر "
+"والذهابباتجاه عقارب الساعة والخامس في المنتصف ، فإنهم يمثلون:"
 
 #: dt-login/login-template.php:68
 msgid ""
-"Your password reset link appears to be invalid. Please request a new link"
-"below."
+"Your password reset link appears to be invalid. Please request a new "
+"linkbelow."
 msgstr ""
 "يبدو أن رابط إعادة تعيين كلمة المرور غير صالح. يرجى طلب رابط جديد أدناه."
 
@@ -3662,11 +3660,11 @@ msgstr "عنوان البريد الإلكتروني"
 
 #: dt-login/login-template.php:112
 msgid ""
-"Your password reset email has been sent. Check your email or junk mail for"
-"the link to reset your password."
+"Your password reset email has been sent. Check your email or junk mail "
+"forthe link to reset your password."
 msgstr ""
-"تم إرسال بريد إعادة تعيين كلمة المرور. تحقق من بريدك الإلكتروني أو البريد"
-"غير المرغوب فيه للحصول على رابط إعادة تعيين كلمة المرور."
+"تم إرسال بريد إعادة تعيين كلمة المرور. تحقق من بريدك الإلكتروني أو البريدغير "
+"المرغوب فيه للحصول على رابط إعادة تعيين كلمة المرور."
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
@@ -3855,11 +3853,11 @@ msgstr "التعميد"
 
 #: dt-metrics/combined/critical-path.php:260
 msgid ""
-"Number of baptized contact with a baptism date in date range and baptized by"
-"connection"
+"Number of baptized contact with a baptism date in date range and baptized "
+"byconnection"
 msgstr ""
-"عدد جهات الاتصال التي تم تعميدها بتاريخ المعمودية في النطاق الزمني وعمد"
-"بواسطة اتصال"
+"عدد جهات الاتصال التي تم تعميدها بتاريخ المعمودية في النطاق الزمني "
+"وعمدبواسطة اتصال"
 
 #: dt-metrics/combined/critical-path.php:277
 #, php-format
@@ -3912,8 +3910,8 @@ msgstr "زارعو الكنائس"
 
 #: dt-metrics/combined/critical-path.php:333
 msgid ""
-"Number of contacts or users who have started a church and are marked as the"
-"church coach"
+"Number of contacts or users who have started a church and are marked as "
+"thechurch coach"
 msgstr ""
 "عدد جهات الاتصال أو المستخدمين الذين بدأوا كنيسة وتم تعليمهم كمدرب الكنيسة"
 
@@ -4127,11 +4125,11 @@ msgstr "اتصالات نشطة ، حسب المصدر والإيمان المع
 
 #: dt-metrics/contacts/sources.php:98
 msgid ""
-"A contact can come from more than one source, and it can have more than one"
-"faith milestone at the same time."
+"A contact can come from more than one source, and it can have more than "
+"onefaith milestone at the same time."
 msgstr ""
-"يمكن أن تأتي جهة الاتصال من أكثر من مصدر ، ويمكن أن تحتوي على أكثر من معلم"
-"إيمان واحد في نفس الوقت."
+"يمكن أن تأتي جهة الاتصال من أكثر من مصدر ، ويمكن أن تحتوي على أكثر من "
+"معلمإيمان واحد في نفس الوقت."
 
 #: dt-metrics/counter.php:135
 msgid "First Meetings"
@@ -4463,8 +4461,8 @@ msgstr "رسم بياني بسيط"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
-"This chart shows the total number for each field value at the end of the"
-"selected date."
+"This chart shows the total number for each field value at the end of "
+"theselected date."
 msgstr ""
 "يُظهر هذا الرسم البياني العدد الإجمالي لكل قيمة حقل في نهاية التاريخ المحدد."
 
@@ -4800,15 +4798,15 @@ msgstr "التفاصيل"
 #: dt-posts/dt-posts.php:2796
 #, php-format
 msgctxt ""
-"@[user name][user_id] - User Fred has requested access to Contact [contact"
-"name][contact_id]. If desired, share this record with the user to grant"
-"access."
+"@[user name][user_id] - User Fred has requested access to Contact "
+"[contactname][contact_id]. If desired, share this record with the user to "
+"grantaccess."
 msgid ""
-"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If"
-"desired, share this record with the user to grant access."
+"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). "
+"Ifdesired, share this record with the user to grant access."
 msgstr ""
-"@[%1$s](%2$s) - User %3$s طلب الوصول إلى %4$s [%5$s](%6$s). إذا كنت ترغب،"
-"شارك هذا التسجيل مع المستخدم لضمان الوصول."
+"@[%1$s](%2$s) - User %3$s طلب الوصول إلى %4$s [%5$s](%6$s). إذا كنت "
+"ترغب،شارك هذا التسجيل مع المستخدم لضمان الوصول."
 
 #: dt-posts/dt-posts.php:2802
 msgid "Access Request"
@@ -5300,8 +5298,8 @@ msgstr "حذف واستبدال رابط التطبيق"
 
 #: dt-reports/magic-url-setup.php:462
 msgid ""
-"This app is not yet activated for this user. Enable the app to generate a"
-"link."
+"This app is not yet activated for this user. Enable the app to generate "
+"alink."
 msgstr ""
 "لم يتم تفعيل هذا التطبيق لهذا المستخدم بعد. قم بتفعيل التطبيق لإنشاء رابط."
 
@@ -5377,8 +5375,8 @@ msgstr "تغطية المسؤولية"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"يجب على المسؤول تمكين خيار \\\"إضافة مستخدمين جدد\\\" في إعدادات المواقع"
-"المتعددة:"
+"يجب على المسؤول تمكين خيار \\\"إضافة مستخدمين جدد\\\" في إعدادات "
+"المواقعالمتعددة:"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"
@@ -5448,11 +5446,12 @@ msgstr "ترقية جهة اتصال"
 
 #: dt-users/template-new-user.php:260
 msgid ""
-"The new user will have access to all the fields and comments on this contact"
-"record. We suggest archiving the comments if they contain sensitive data."
+"The new user will have access to all the fields and comments on this "
+"contactrecord. We suggest archiving the comments if they contain sensitive "
+"data."
 msgstr ""
-"سيتمكن المستخدم الجديد من الوصول إلى جميع الحقول والتعليقات في سجل جهة"
-"الاتصال هذا. نقترح أرشفة التعليقات إذا كانت تحتوي على بيانات حساسة."
+"سيتمكن المستخدم الجديد من الوصول إلى جميع الحقول والتعليقات في سجل "
+"جهةالاتصال هذا. نقترح أرشفة التعليقات إذا كانت تحتوي على بيانات حساسة."
 
 #: dt-users/template-new-user.php:267
 msgid "Continue and archive comments"
@@ -5480,8 +5479,8 @@ msgstr "هل تريد دمج الحقول من السجل القديم إلى ا
 
 #: dt-users/template-no-permission.php:92
 msgid ""
-"You are registered but an administrator needs to assign you access"
-"permissions."
+"You are registered but an administrator needs to assign you "
+"accesspermissions."
 msgstr "أنت مسجل ولكن يحتاج المسؤول إلى تعيين أذونات الوصول لك."
 
 #: dt-users/template-user-management.php:63
@@ -5512,11 +5511,11 @@ msgstr "التوفر"
 
 #: dt-users/template-user-management.php:158
 msgid ""
-"Set the dates you will be unavailable so the Dispatcher will know your"
-"availability to receive new contacts"
+"Set the dates you will be unavailable so the Dispatcher will know "
+"youravailability to receive new contacts"
 msgstr ""
-"قم بتعيين التواريخ التي ستكون غير متاح فيها حتى يعرف المرسل مدى تواجدك لتلقي"
-"جهات اتصال جديدة"
+"قم بتعيين التواريخ التي ستكون غير متاح فيها حتى يعرف المرسل مدى تواجدك "
+"لتلقيجهات اتصال جديدة"
 
 #: dt-users/template-user-management.php:160
 msgid "Schedule Unavailability"
@@ -5572,11 +5571,11 @@ msgstr "كل المصادر - تتيح الدخول إلى كافة جهات ا�
 #: dt-users/template-user-management.php:334
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
-"Custom - Access own contacts and all the contacts of the selected sources"
-"below"
+"Custom - Access own contacts and all the contacts of the selected "
+"sourcesbelow"
 msgstr ""
-"مخصص - الدخول إلى جهات الاتصال الخاصة وجميع جهات الاتصال الخاصة بالمصادر"
-"المحددة أدناه"
+"مخصص - الدخول إلى جهات الاتصال الخاصة وجميع جهات الاتصال الخاصة "
+"بالمصادرالمحددة أدناه"
 
 #: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:637
@@ -5638,11 +5637,11 @@ msgstr "الوقت من تعيين محاولة الاتصال لآخر 10 جه�
 #: dt-users/user-hooks-and-config.php:196
 #, php-format
 msgid ""
-"Welcome %1$s, this is your personal contact record. Feel free to update the"
-"fields and @mention me or other users"
+"Welcome %1$s, this is your personal contact record. Feel free to update "
+"thefields and @mention me or other users"
 msgstr ""
-"مرحبًا %1$s، هذا هو سجل الاتصال الشخصي الخاص بك. لا تتردد في تحديث الحقول"
-"و@الإشارة إليّ أو إلى مستخدمين آخرين"
+"مرحبًا %1$s، هذا هو سجل الاتصال الشخصي الخاص بك. لا تتردد في تحديث "
+"الحقولو@الإشارة إليّ أو إلى مستخدمين آخرين"
 
 #: dt-users/user-hooks-and-config.php:312
 #: dt-users/user-hooks-and-config.php:350
@@ -5871,12 +5870,12 @@ msgstr "يجب تفعيل جافا سكريبت لكي يعمل هذا المو�
 
 #: header.php:61
 msgid ""
-"You seem to be using an out-of-date web browser. Without the most up-to-date"
-"version of your browser, this may site may not function correctly. Please"
-"note that Internet Explorer is not supported."
+"You seem to be using an out-of-date web browser. Without the most up-to-"
+"dateversion of your browser, this may site may not function correctly. "
+"Pleasenote that Internet Explorer is not supported."
 msgstr ""
-"يبدو أنك تستخدم متصفح ويب قديم. بدون أحدث إصدار من متصفحك، قد لا يعمل هذا"
-"الموقع بشكل صحيح. يرجى ملاحظة أن إنترنيت إكسبلورر غير مدعوم."
+"يبدو أنك تستخدم متصفح ويب قديم. بدون أحدث إصدار من متصفحك، قد لا يعمل "
+"هذاالموقع بشكل صحيح. يرجى ملاحظة أن إنترنيت إكسبلورر غير مدعوم."
 
 #: header.php:63
 msgid "See what browser you are using."
@@ -5916,12 +5915,12 @@ msgstr "دمج %s المكرر"
 
 #: template-merge-post-details.php:126
 msgid ""
-"When you merge, the primary record is updated with the values you choose,"
-"and relationships to other items are shifted to the primary record; which"
-"can be switched below."
+"When you merge, the primary record is updated with the values you choose,and "
+"relationships to other items are shifted to the primary record; whichcan be "
+"switched below."
 msgstr ""
-"عند الدمج، يتم تحديث السجل الأساسي بالقيم التي تختارها، ويتم تحويل العلاقات"
-"مع العناصر الأخرى إلى السجل الأساسي؛ والذي يمكن تبديله أدناه."
+"عند الدمج، يتم تحديث السجل الأساسي بالقيم التي تختارها، ويتم تحويل "
+"العلاقاتمع العناصر الأخرى إلى السجل الأساسي؛ والذي يمكن تبديله أدناه."
 
 #: template-merge-post-details.php:129
 msgid "Copy comments to updated primary record"
@@ -6031,11 +6030,11 @@ msgstr "إمكانية استقبال جهات الاتصال من المُرس�
 
 #: template-settings.php:428
 msgid ""
-"Set the dates you will be traveling or unavailable so the Dispatcher will"
-"know your availability to receive new contacts"
+"Set the dates you will be traveling or unavailable so the Dispatcher "
+"willknow your availability to receive new contacts"
 msgstr ""
-"قم بتعيين التواريخ التي ستسافر إليها أو غير متاحة حتى يعرف المرسل مدى تواجدك"
-"لتلقي جهات اتصال جديدة"
+"قم بتعيين التواريخ التي ستسافر إليها أو غير متاحة حتى يعرف المرسل مدى "
+"تواجدكلتلقي جهات اتصال جديدة"
 
 #: template-settings.php:432
 msgid "Schedule Travel or Dates Unavailable"
@@ -6086,15 +6085,15 @@ msgstr "سوف تتلقى إخطارًا عن أي تحديث يحدث في ال
 
 #: template-settings.php:624
 msgid ""
-"Disciple Tools System does not store images. For profile images we use"
-"Gravatar (Globally Recognized Avatar). If you have security concerns, we"
-"suggest not using a personal photo, but instead choose a cartoon, abstract,"
-"or alias photo to represent you."
+"Disciple Tools System does not store images. For profile images we "
+"useGravatar (Globally Recognized Avatar). If you have security concerns, "
+"wesuggest not using a personal photo, but instead choose a cartoon, "
+"abstract,or alias photo to represent you."
 msgstr ""
-"نظام أدوات الضبط لا يخزن الصور. لصور الملف الشخصي ، نستخدم Gravatar (الصورة"
-"الرمزية المعترف بها عالميًا). إذا كانت لديك مخاوف تتعلق بالأمان ، فنحن نقترح"
-"عدم استخدام صورة شخصية ، ولكن بدلاً من ذلك ، اختر صورة كرتونية أو مجردة أو"
-"اسم مستعار لتمثيلك."
+"نظام أدوات الضبط لا يخزن الصور. لصور الملف الشخصي ، نستخدم Gravatar "
+"(الصورةالرمزية المعترف بها عالميًا). إذا كانت لديك مخاوف تتعلق بالأمان ، فنحن "
+"نقترحعدم استخدام صورة شخصية ، ولكن بدلاً من ذلك ، اختر صورة كرتونية أو مجردة "
+"أواسم مستعار لتمثيلك."
 
 #: template-settings.php:625
 msgid "edit image on gravatar.com"
@@ -6102,15 +6101,15 @@ msgstr "تحرير الصورة على gravatar.com"
 
 #: template-settings.php:631
 msgid ""
-"Disciple Tools System does not store images. All media assets will be placed"
-"within specified media connection storage service. If you have security"
-"concerns, we suggest not using a personal photo, but instead choose a"
-"cartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. All media assets will be "
+"placedwithin specified media connection storage service. If you have "
+"securityconcerns, we suggest not using a personal photo, but instead choose "
+"acartoon, abstract, or alias photo to represent you."
 msgstr ""
-"نظام Disciple Tools لا يخزن الصور. سيتم وضع جميع أصول الوسائط ضمن خدمة تخزين"
-"الوسائط المحددة. إذا كانت لديك مخاوف تتعلق بالأمان، فنحن نقترح عدم استخدام"
-"صورة شخصية، ولكن بدلاً من ذلك اختر صورة كرتونية أو مجردة أو اسم مستعار"
-"لتمثيلك."
+"نظام Disciple Tools لا يخزن الصور. سيتم وضع جميع أصول الوسائط ضمن خدمة "
+"تخزينالوسائط المحددة. إذا كانت لديك مخاوف تتعلق بالأمان، فنحن نقترح عدم "
+"استخدامصورة شخصية، ولكن بدلاً من ذلك اختر صورة كرتونية أو مجردة أو اسم "
+"مستعارلتمثيلك."
 
 #: template-settings.php:632
 msgid "Upload new profile image"
@@ -6142,11 +6141,11 @@ msgstr "استنساخ جهات اتصال الوصول"
 
 #: template-view-duplicates.php:27
 msgid ""
-"Scanning for duplicates starting with the most recently modified contacts."
-"Results are limited to ones that have less than 10 exact matches."
+"Scanning for duplicates starting with the most recently modified "
+"contacts.Results are limited to ones that have less than 10 exact matches."
 msgstr ""
-"الفحص للاستنساخ يبدأ بجهات الاتصال المعدلة حديثًا. النتائج محدودة للجهات التي"
-"لها أقل من 10 تطابقات كاملة."
+"الفحص للاستنساخ يبدأ بجهات الاتصال المعدلة حديثًا. النتائج محدودة للجهات "
+"التيلها أقل من 10 تطابقات كاملة."
 
 #: template-view-duplicates.php:30
 msgctxt "Access contact scanned: 100"
@@ -6157,264 +6156,3 @@ msgstr "جهات اتصال الوصول المفحوصة:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "التكرارات التي تم إيجادها:"
-
-#~ msgid "Home Screen"
-#~ msgstr "الشاشة الرئيسية"
-
-#~ msgid "Home Screen Settings"
-#~ msgstr "إعدادات الشاشة الرئيسية"
-
-#~ msgid "Edit App"
-#~ msgstr "تعديل التطبيق"
-
-#~ msgid "Edit Video"
-#~ msgstr "تعديل الفيديو"
-
-#~ msgid "General Settings"
-#~ msgstr "الإعدادات العامة"
-
-#~ msgid "Home Screen Title"
-#~ msgstr "عنوان الشاشة الرئيسية"
-
-#~ msgid "The main title displayed on the home screen."
-#~ msgstr "العنوان الرئيسي المعروض على الشاشة الرئيسية."
-
-#~ msgid "Home Screen Description"
-#~ msgstr "وصف الشاشة الرئيسية"
-
-#~ msgid "A brief description shown below the title."
-#~ msgstr "وصف مختصر يظهر أسفل العنوان."
-
-#~ msgid "Enable Role-Based Access"
-#~ msgstr "تفعيل التحكم بالوصول حسب الدور"
-
-#~ msgid "Enable role-based access control for apps"
-#~ msgstr "تفعيل التحكم بالوصول حسب الدور للتطبيقات"
-
-#~ msgid "When enabled, you can restrict app access to specific user roles."
-#~ msgstr "عند التفعيل، يمكنك تقييد الوصول للتطبيقات لأدوار مستخدمين محددة."
-
-#~ msgid "Allow users to invite others"
-#~ msgstr "السماح للمستخدمين بدعوة الآخرين"
-
-#~ msgid ""
-#~ "When enabled, users can share an invite link to allow others to register"
-#~ "and access their own Home Screen."
-#~ msgstr ""
-#~ "عند التفعيل، يمكن للمستخدمين مشاركة رابط دعوة للسماح للآخرين بالتسجيل"
-#~ "والوصول إلى شاشتهم الرئيسية."
-
-#~ msgid "Network Settings"
-#~ msgstr "إعدادات الشبكة"
-
-#~ msgid "User registration must be enabled to use this feature."
-#~ msgstr "يجب تفعيل تسجيل المستخدمين لاستخدام هذه الميزة."
-
-#, php-format
-#~ msgid "To enable user registration, visit %s."
-#~ msgstr "لتفعيل تسجيل المستخدمين، قم بزيارة %s."
-
-#~ msgid "Require users to login"
-#~ msgstr "مطالبة المستخدمين بتسجيل الدخول"
-
-#~ msgid "Require users to login to access the home screen magic link?"
-#~ msgstr ""
-#~ "هل تريد مطالبة المستخدمين بتسجيل الدخول للوصول إلى الرابط السحري للشاشة"
-#~ "الرئيسية؟"
-
-#~ msgid ""
-#~ "When enabled, users must be logged in to access their Home Screen. When"
-#~ "disabled, magic links can be accessed without login."
-#~ msgstr ""
-#~ "عند التفعيل، يجب على المستخدمين تسجيل الدخول للوصول إلى شاشتهم الرئيسية."
-#~ "عند التعطيل، يمكن الوصول للروابط السحرية بدون تسجيل الدخول."
-
-#~ msgid "User Registration Status:"
-#~ msgstr "حالة تسجيل المستخدمين:"
-
-#~ msgid "Enabled"
-#~ msgstr "مُفعّل"
-
-#~ msgid "Disabled"
-#~ msgstr "معطّل"
-
-#, php-format
-#~ msgid "To change registration settings, visit %s."
-#~ msgstr "لتغيير إعدادات التسجيل، قم بزيارة %s."
-
-#~ msgid "Save Settings"
-#~ msgstr "حفظ الإعدادات"
-
-#~ msgid "Debug Information"
-#~ msgstr "معلومات التصحيح"
-
-#~ msgid "Current apps and videos data:"
-#~ msgstr "بيانات التطبيقات والفيديوهات الحالية:"
-
-#~ msgid "Apps Management"
-#~ msgstr "إدارة التطبيقات"
-
-#~ msgid "Manage the apps that appear on the home screen."
-#~ msgstr "إدارة التطبيقات التي تظهر على الشاشة الرئيسية."
-
-#~ msgid "Add New App"
-#~ msgstr "إضافة تطبيق جديد"
-
-#~ msgid "Training Videos Management"
-#~ msgstr "إدارة فيديوهات التدريب"
-
-#~ msgid "Manage the training videos that appear on the home screen."
-#~ msgstr "إدارة فيديوهات التدريب التي تظهر على الشاشة الرئيسية."
-
-#~ msgid "Add New Training Video"
-#~ msgstr "إضافة فيديو تدريبي جديد"
-
-#~ msgid "Security check failed. Please try again."
-#~ msgstr "فشل التحقق الأمني. يرجى المحاولة مرة أخرى."
-
-#~ msgid "Home Screen settings saved successfully!"
-#~ msgstr "تم حفظ إعدادات الشاشة الرئيسية بنجاح!"
-
-#~ msgid "Upload Icon"
-#~ msgstr "رفع أيقونة"
-
-#~ msgid "Update App"
-#~ msgstr "تحديث التطبيق"
-
-#~ msgid "Update Video"
-#~ msgstr "تحديث الفيديو"
-
-#~ msgid "App created successfully!"
-#~ msgstr "تم إنشاء التطبيق بنجاح!"
-
-#~ msgid "App updated successfully!"
-#~ msgstr "تم تحديث التطبيق بنجاح!"
-
-#~ msgid "Coded apps cannot be deleted."
-#~ msgstr "لا يمكن حذف التطبيقات المبرمجة."
-
-#~ msgid "App deleted successfully!"
-#~ msgstr "تم حذف التطبيق بنجاح!"
-
-#~ msgid "Video created successfully!"
-#~ msgstr "تم إنشاء الفيديو بنجاح!"
-
-#~ msgid "Video updated successfully!"
-#~ msgstr "تم تحديث الفيديو بنجاح!"
-
-#~ msgid "Video deleted successfully!"
-#~ msgstr "تم حذف الفيديو بنجاح!"
-
-#~ msgid "Link"
-#~ msgstr "رابط"
-
-#~ msgid "App"
-#~ msgstr "تطبيق"
-
-#~ msgid "Description"
-#~ msgstr "الوصف"
-
-#~ msgid "URL"
-#~ msgstr "الرابط"
-
-#~ msgid "Icon"
-#~ msgstr "الأيقونة"
-
-#~ msgid "Change Icon"
-#~ msgstr "تغيير الأيقونة"
-
-#~ msgid "Color"
-#~ msgstr "اللون"
-
-#~ msgid "Reset to Default"
-#~ msgstr "إعادة التعيين للافتراضي"
-
-#~ msgid ""
-#~ "Using default theme-aware color. The icon will automatically switch"
-#~ "between black (light mode) and white (dark mode). Set a custom color to"
-#~ "override."
-#~ msgstr ""
-#~ "يستخدم لون القالب الافتراضي. ستتبدل الأيقونة تلقائياً بين الأسود (الوضع"
-#~ "الفاتح) والأبيض (الوضع الداكن). عيّن لوناً مخصصاً للتجاوز."
-
-#~ msgid "User Access"
-#~ msgstr "صلاحية وصول المستخدم"
-
-#~ msgid "All roles have access"
-#~ msgstr "جميع الأدوار لديها صلاحية الوصول"
-
-#~ msgid "Limit access by role"
-#~ msgstr "تقييد الوصول حسب الدور"
-
-#~ msgid "Select Roles"
-#~ msgstr "اختيار الأدوار"
-
-#~ msgid "Add App"
-#~ msgstr "إضافة تطبيق"
-
-#~ msgid "Existing Apps"
-#~ msgstr "التطبيقات الموجودة"
-
-#~ msgid "No apps found."
-#~ msgstr "لم يتم العثور على تطبيقات."
-
-#~ msgid "⋮⋮"
-#~ msgstr "⋮⋮"
-
-#~ msgid "Limited to specific roles"
-#~ msgstr "مقتصر على أدوار محددة"
-
-#, php-format
-#~ msgid "%d role"
-#~ msgid_plural "%d roles"
-#~ msgstr[0] "لا أدوار"
-#~ msgstr[1] "دور واحد"
-#~ msgstr[2] "%d دوران"
-#~ msgstr[3] "%d أدوار"
-#~ msgstr[4] "%d دورًا"
-#~ msgstr[5] "%d دور"
-
-#~ msgid "No roles selected"
-#~ msgstr "لم يتم تحديد أدوار"
-
-#~ msgid "All roles"
-#~ msgstr "جميع الأدوار"
-
-#~ msgid "Are you sure you want to delete this app?"
-#~ msgstr "هل أنت متأكد من حذف هذا التطبيق؟"
-
-#~ msgid "Coded apps cannot be deleted"
-#~ msgstr "لا يمكن حذف التطبيقات المبرمجة"
-
-#~ msgid "Video URL"
-#~ msgstr "رابط الفيديو"
-
-#~ msgid "Duration"
-#~ msgstr "المدة"
-
-#~ msgid "Category"
-#~ msgstr "الفئة"
-
-#~ msgid "General"
-#~ msgstr "عام"
-
-#~ msgid "Basics"
-#~ msgstr "الأساسيات"
-
-#~ msgid "Advanced"
-#~ msgstr "متقدم"
-
-#~ msgid "Tutorial"
-#~ msgstr "درس تعليمي"
-
-#~ msgid "Add Video"
-#~ msgstr "إضافة فيديو"
-
-#~ msgid "Existing Training Videos"
-#~ msgstr "فيديوهات التدريب الموجودة"
-
-#~ msgid "No training videos found."
-#~ msgstr "لم يتم العثور على فيديوهات تدريبية."
-
-#~ msgid "Are you sure you want to delete this video?"
-#~ msgstr "هل أنت متأكد من حذف هذا الفيديو؟"
