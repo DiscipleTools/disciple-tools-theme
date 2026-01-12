@@ -382,8 +382,10 @@ msgstr "Nenhum campo selecionado"
 #, php-format
 msgid ""
 "Select all the %1$s you want to update from the list, and update them below"
-msgstr "Selecione todos os %1$s que deseja atualizar da lista e atualize-os abaixo"
-"Selecione todos os %1$s que deseja atualizar da lista e atualize-os abaixo"
+msgstr ""
+"Selecione todos os %1$s que deseja atualizar da lista e atualize-os "
+"abaixoSelecione todos os %1$s que deseja atualizar da lista e atualize-os "
+"abaixo"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -6214,135 +6216,3 @@ msgstr "Acessar contatos analisados:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Duplicidades encontradas:"
-
-#, fuzzy
-#~ msgid "Home Screen Settings"
-#~ msgstr "Compartilhar configurações"
-
-#, fuzzy
-#~ msgid "Edit App"
-#~ msgstr "Editar"
-
-#, fuzzy
-#~ msgid "Edit Video"
-#~ msgstr "Editar usuário"
-
-#, fuzzy
-#~ msgid "General Settings"
-#~ msgstr "Configurações de pesquisa"
-
-#, fuzzy
-#~ msgid "Home Screen Description"
-#~ msgstr "Descrição do aplicativo"
-
-#, fuzzy
-#~ msgid "Network Settings"
-#~ msgstr "Configurações de pesquisa"
-
-#, fuzzy
-#~ msgid "User Registration Status:"
-#~ msgstr "Status"
-
-#, fuzzy
-#~ msgid "Enabled"
-#~ msgstr "Habilitar"
-
-#, fuzzy
-#~ msgid "Save Settings"
-#~ msgstr "Compartilhar configurações"
-
-#, fuzzy
-#~ msgid "Add New App"
-#~ msgstr "Adicionar novo"
-
-#, fuzzy
-#~ msgid "Security check failed. Please try again."
-#~ msgstr "Excluir e substituir o link do aplicativo"
-
-#, fuzzy
-#~ msgid "Update App"
-#~ msgstr "Atualizar"
-
-#, fuzzy
-#~ msgid "Update Video"
-#~ msgstr "Atualizado"
-
-#, fuzzy
-#~ msgid "App created successfully!"
-#~ msgstr "Transferência de atualização concluída."
-
-#, fuzzy
-#~ msgid "App updated successfully!"
-#~ msgstr "Transferência de atualização concluída."
-
-#, fuzzy
-#~ msgid "Coded apps cannot be deleted."
-#~ msgstr "O comentário não pôde ser excluído."
-
-#, fuzzy
-#~ msgid "Video updated successfully!"
-#~ msgstr "Transferência de atualização concluída."
-
-#, fuzzy
-#~ msgid "Link"
-#~ msgstr "Links"
-
-#, fuzzy
-#~ msgid "App"
-#~ msgstr "Aplicativos"
-
-#, fuzzy
-#~ msgid "Description"
-#~ msgstr "Descrição do aplicativo"
-
-#, fuzzy
-#~ msgid "Reset to Default"
-#~ msgstr "restaurar ao padrão"
-
-#, fuzzy
-#~ msgid "User Access"
-#~ msgstr "Acesso"
-
-#, fuzzy
-#~ msgid "Limit access by role"
-#~ msgstr "Acesso por Fonte"
-
-#, fuzzy
-#~ msgid "Select Roles"
-#~ msgstr "Selecionar tudo"
-
-#, fuzzy
-#~ msgid "No apps found."
-#~ msgstr "Nenhuma duplicidade encontrada."
-
-#, fuzzy
-#~ msgid "No roles selected"
-#~ msgstr "selecionado."
-
-#, fuzzy
-#~ msgid "All roles"
-#~ msgstr "Todos %s"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this app?"
-#~ msgstr "Tem certeza de que deseja excluir %s?"
-
-#, fuzzy
-#~ msgid "Duration"
-#~ msgstr "Geração"
-
-#, fuzzy
-#~ msgid "General"
-#~ msgstr "Geração"
-
-#, fuzzy
-#~ msgid "Advanced"
-#~ msgstr "Busca Avançada"
-
-#, fuzzy
-#~ msgid "Add Video"
-#~ msgstr "Grupo de Crianças"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this video?"
-#~ msgstr "Tem certeza de que deseja excluir %s?"

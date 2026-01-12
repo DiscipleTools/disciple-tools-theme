@@ -382,9 +382,10 @@ msgstr "Niciun câmp selectat"
 #, php-format
 msgid ""
 "Select all the %1$s you want to update from the list, and update them below"
-msgstr "Selectați toate %1$s pe care doriți să le actualizați din listă și actualizați-le mai jos"
-"Selectați din listă toate %1$s pe care doriți să le actualizați și "
-"actualizați-le mai jos"
+msgstr ""
+"Selectați toate %1$s pe care doriți să le actualizați din listă și "
+"actualizați-le mai josSelectați din listă toate %1$s pe care doriți să le "
+"actualizați și actualizați-le mai jos"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -6259,135 +6260,3 @@ msgstr "Accesează contactele scanate:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Duplicate găsite:"
-
-#, fuzzy
-#~ msgid "Home Screen Settings"
-#~ msgstr "Opțiuni de distribuire"
-
-#, fuzzy
-#~ msgid "Edit App"
-#~ msgstr "Editați  ×"
-
-#, fuzzy
-#~ msgid "Edit Video"
-#~ msgstr "Editare utilizator"
-
-#, fuzzy
-#~ msgid "General Settings"
-#~ msgstr "Caută în Setări"
-
-#, fuzzy
-#~ msgid "Home Screen Description"
-#~ msgstr "Descrierea aplicației"
-
-#, fuzzy
-#~ msgid "Network Settings"
-#~ msgstr "Caută în Setări"
-
-#, fuzzy
-#~ msgid "User Registration Status:"
-#~ msgstr "Statutul utilizatorului"
-
-#, fuzzy
-#~ msgid "Enabled"
-#~ msgstr "Permite"
-
-#, fuzzy
-#~ msgid "Save Settings"
-#~ msgstr "Opțiuni de distribuire"
-
-#, fuzzy
-#~ msgid "Add New App"
-#~ msgstr "Adăuga nou"
-
-#, fuzzy
-#~ msgid "Security check failed. Please try again."
-#~ msgstr "Ștergeți și înlocuiți legătura aplicației"
-
-#, fuzzy
-#~ msgid "Update App"
-#~ msgstr "Actualizați"
-
-#, fuzzy
-#~ msgid "Update Video"
-#~ msgstr "Actualizat"
-
-#, fuzzy
-#~ msgid "App created successfully!"
-#~ msgstr "Actualizarea transferului a fost finalizată cu succes."
-
-#, fuzzy
-#~ msgid "App updated successfully!"
-#~ msgstr "Actualizarea transferului a fost finalizată cu succes."
-
-#, fuzzy
-#~ msgid "Coded apps cannot be deleted."
-#~ msgstr "Comentariul nu a putut fi șters."
-
-#, fuzzy
-#~ msgid "Video updated successfully!"
-#~ msgstr "Actualizarea transferului a fost finalizată cu succes."
-
-#, fuzzy
-#~ msgid "Link"
-#~ msgstr "Legături"
-
-#, fuzzy
-#~ msgid "App"
-#~ msgstr "Aplicații"
-
-#, fuzzy
-#~ msgid "Description"
-#~ msgstr "Descrierea aplicației"
-
-#, fuzzy
-#~ msgid "Reset to Default"
-#~ msgstr "resetare la valorile implicite"
-
-#, fuzzy
-#~ msgid "User Access"
-#~ msgstr "Accept"
-
-#, fuzzy
-#~ msgid "Limit access by role"
-#~ msgstr "Acces prin sursă"
-
-#, fuzzy
-#~ msgid "Select Roles"
-#~ msgstr "Selectează tot"
-
-#, fuzzy
-#~ msgid "No apps found."
-#~ msgstr "Nu s-au găsit duplicate."
-
-#, fuzzy
-#~ msgid "No roles selected"
-#~ msgstr "selectat."
-
-#, fuzzy
-#~ msgid "All roles"
-#~ msgstr "Toate %s"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this app?"
-#~ msgstr "Sigur doriți să ștergeți %s?"
-
-#, fuzzy
-#~ msgid "Duration"
-#~ msgstr "Generaţia"
-
-#, fuzzy
-#~ msgid "General"
-#~ msgstr "Generaţia"
-
-#, fuzzy
-#~ msgid "Advanced"
-#~ msgstr "Căutare avansată"
-
-#, fuzzy
-#~ msgid "Add Video"
-#~ msgstr "Grup fiică"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this video?"
-#~ msgstr "Sigur doriți să ștergeți %s?"

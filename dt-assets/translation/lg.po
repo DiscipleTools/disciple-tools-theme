@@ -6172,11 +6172,3 @@ msgstr "Abantu ab'okuyingira abasimbiddwa:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Ebyenkanankana ebizuulidde:"
-
-#, fuzzy
-#~ msgid "User Access"
-#~ msgstr "Saba olukusa"
-
-#, fuzzy
-#~ msgid "Advanced"
-#~ msgstr "Noonya Ebuziba"

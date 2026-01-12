@@ -258,12 +258,12 @@ msgid ""
 msgstr ""
 "Adiga oo isticmaalaya shaandheynta hadda, iimaylasha la heli karo waxaa loo "
 "qaybiyay 50-50 waxaana loo soo diri karaa macmiilkaaga iimaylka caadiga ah "
-"koox. Bixiyeyaasha iimaylka badankood waxay xad saaran yihiin 50 "
-"iimaylka BCC. Waxaad fur kartaa dhammaan kooxaha hal mar adiga oo "
-"isticmaalaya badhanka \\\"Fur Dhamaan\\\". Haddii liiskaani aad u weyn "
-"yahay, tani waxay u soo ogeysiinaysaa bixiyaha iimaylkaaga. Qalabka iimaylka "
-"BCC waxaa loogu talagalay inuu caawiyo iimaylasha kooxda yaryar. Iimaylasha "
-"badan waa inay ka maaraan bixiyeyaasha iimaylka badan."
+"koox. Bixiyeyaasha iimaylka badankood waxay xad saaran yihiin 50 iimaylka "
+"BCC. Waxaad fur kartaa dhammaan kooxaha hal mar adiga oo isticmaalaya "
+"badhanka \\\"Fur Dhamaan\\\". Haddii liiskaani aad u weyn yahay, tani waxay "
+"u soo ogeysiinaysaa bixiyaha iimaylkaaga. Qalabka iimaylka BCC waxaa loogu "
+"talagalay inuu caawiyo iimaylasha kooxda yaryar. Iimaylasha badan waa inay "
+"ka maaraan bixiyeyaasha iimaylka badan."
 
 #: archive-template.php:270
 msgid "Phone Number List"
@@ -5942,10 +5942,10 @@ msgid ""
 "version of your browser, this may site may not function correctly. Please "
 "note that Internet Explorer is not supported."
 msgstr ""
-"Waxaad moodaa inaad isticmaaleyso biraawsar waqtigiisu dhacay. "
-"Iyadoo aan lahayn nooca ugu dambeeya ee biraawsarkaaga, boggan waxaa laga "
-"yaabaa inuusan si sax ah u shaqeyn. Fadlan la soco in Internet Explorer aan "
-"la taageerin."
+"Waxaad moodaa inaad isticmaaleyso biraawsar waqtigiisu dhacay. Iyadoo aan "
+"lahayn nooca ugu dambeeya ee biraawsarkaaga, boggan waxaa laga yaabaa "
+"inuusan si sax ah u shaqeyn. Fadlan la soco in Internet Explorer aan la "
+"taageerin."
 
 #: header.php:63
 msgid "See what browser you are using."
@@ -6232,119 +6232,3 @@ msgstr "Xiriirinta marin u helka ayaa la marsiiyey"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Nuqullada la helay:"
-
-#, fuzzy
-#~ msgid "Home Screen Settings"
-#~ msgstr "La wadaag dejinta"
-
-#, fuzzy
-#~ msgid "Edit App"
-#~ msgstr "Tafatir"
-
-#, fuzzy
-#~ msgid "General Settings"
-#~ msgstr "Dejinta Raadinta"
-
-#, fuzzy
-#~ msgid "Home Screen Description"
-#~ msgstr "Sharaxaadda barnaamijka"
-
-#, fuzzy
-#~ msgid "Network Settings"
-#~ msgstr "Dejinta Raadinta"
-
-#, fuzzy
-#~ msgid "User Registration Status:"
-#~ msgstr "Xaaladda Isticmaalaha"
-
-#, fuzzy
-#~ msgid "Enabled"
-#~ msgstr "Daar"
-
-#, fuzzy
-#~ msgid "Save Settings"
-#~ msgstr "La wadaag dejinta"
-
-#, fuzzy
-#~ msgid "Add New App"
-#~ msgstr "Ku dar Cusub"
-
-#, fuzzy
-#~ msgid "Security check failed. Please try again."
-#~ msgstr "Lama cusbooneysiin karo"
-
-#, fuzzy
-#~ msgid "Update App"
-#~ msgstr "Cusboonaysiinta"
-
-#, fuzzy
-#~ msgid "Update Video"
-#~ msgstr "Cusbooneysiin Loo Baahan Yahay"
-
-#, fuzzy
-#~ msgid "Coded apps cannot be deleted."
-#~ msgstr "Faallada waa la tirtiri kari waayey"
-
-#, fuzzy
-#~ msgid "Link"
-#~ msgstr "Xiriirinta App"
-
-#, fuzzy
-#~ msgid "App"
-#~ msgstr "Barnaamijyada"
-
-#, fuzzy
-#~ msgid "Description"
-#~ msgstr "Sharaxaadda barnaamijka"
-
-#, fuzzy
-#~ msgid "Reset to Default"
-#~ msgstr "dib ugu celi sidii hore"
-
-#, fuzzy
-#~ msgid "User Access"
-#~ msgstr "Aqbal"
-
-#, fuzzy
-#~ msgid "Limit access by role"
-#~ msgstr "Helitaanka Isha"
-
-#, fuzzy
-#~ msgid "Select Roles"
-#~ msgstr "Xulo Dhamaan"
-
-#, fuzzy
-#~ msgid "No apps found."
-#~ msgstr "Lama helin nuqullo."
-
-#, fuzzy
-#~ msgid "No roles selected"
-#~ msgstr "la xushay"
-
-#, fuzzy
-#~ msgid "All roles"
-#~ msgstr "Dhamaan %s"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this app?"
-#~ msgstr "Ma hubtaa inaad rabto inaad tirtirto %s?"
-
-#, fuzzy
-#~ msgid "Duration"
-#~ msgstr "Jiilka"
-
-#, fuzzy
-#~ msgid "General"
-#~ msgstr "Jiilka"
-
-#, fuzzy
-#~ msgid "Advanced"
-#~ msgstr "Raadin Sareysa"
-
-#, fuzzy
-#~ msgid "Add Video"
-#~ msgstr "Kooxda Carruurta"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this video?"
-#~ msgstr "Ma hubtaa inaad rabto inaad tirtirto %s?"

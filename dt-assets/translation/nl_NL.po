@@ -382,9 +382,10 @@ msgstr "Geen velden geselecteerd"
 #, php-format
 msgid ""
 "Select all the %1$s you want to update from the list, and update them below"
-msgstr "Selecteer alle %1$s die u wilt bijwerken uit de lijst en werk ze hieronder bij"
-"Selecteer alle %1$s uit de lijst die u wilt bijwerken en werk ze hieronder "
-"bij"
+msgstr ""
+"Selecteer alle %1$s die u wilt bijwerken uit de lijst en werk ze hieronder "
+"bijSelecteer alle %1$s uit de lijst die u wilt bijwerken en werk ze "
+"hieronder bij"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -6212,135 +6213,3 @@ msgstr "Gescande toegangscontacten:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Gevonden duplicaten:"
-
-#, fuzzy
-#~ msgid "Home Screen Settings"
-#~ msgstr "Deel de instellingen"
-
-#, fuzzy
-#~ msgid "Edit App"
-#~ msgstr "wijzig"
-
-#, fuzzy
-#~ msgid "Edit Video"
-#~ msgstr "bewerk gebruiker"
-
-#, fuzzy
-#~ msgid "General Settings"
-#~ msgstr "Zoekinstellingen"
-
-#, fuzzy
-#~ msgid "Home Screen Description"
-#~ msgstr "App-omschrijving"
-
-#, fuzzy
-#~ msgid "Network Settings"
-#~ msgstr "Zoekinstellingen"
-
-#, fuzzy
-#~ msgid "User Registration Status:"
-#~ msgstr "status"
-
-#, fuzzy
-#~ msgid "Enabled"
-#~ msgstr "inschakelen"
-
-#, fuzzy
-#~ msgid "Save Settings"
-#~ msgstr "Deel de instellingen"
-
-#, fuzzy
-#~ msgid "Add New App"
-#~ msgstr "voeg Nieuw toe"
-
-#, fuzzy
-#~ msgid "Security check failed. Please try again."
-#~ msgstr "Verwijder en vervang de app-link"
-
-#, fuzzy
-#~ msgid "Update App"
-#~ msgstr "update"
-
-#, fuzzy
-#~ msgid "Update Video"
-#~ msgstr "Bijgewerkt"
-
-#, fuzzy
-#~ msgid "App created successfully!"
-#~ msgstr "Overdrachtsupdate geslaagd."
-
-#, fuzzy
-#~ msgid "App updated successfully!"
-#~ msgstr "Overdrachtsupdate geslaagd."
-
-#, fuzzy
-#~ msgid "Coded apps cannot be deleted."
-#~ msgstr "de opmerking kon niet verwijderd worden"
-
-#, fuzzy
-#~ msgid "Video updated successfully!"
-#~ msgstr "Overdrachtsupdate geslaagd."
-
-#, fuzzy
-#~ msgid "Link"
-#~ msgstr "Links"
-
-#, fuzzy
-#~ msgid "App"
-#~ msgstr "Apps"
-
-#, fuzzy
-#~ msgid "Description"
-#~ msgstr "App-omschrijving"
-
-#, fuzzy
-#~ msgid "Reset to Default"
-#~ msgstr "Terugzetten naar standaardwaarden"
-
-#, fuzzy
-#~ msgid "User Access"
-#~ msgstr "accepteer"
-
-#, fuzzy
-#~ msgid "Limit access by role"
-#~ msgstr "Toegang per bron"
-
-#, fuzzy
-#~ msgid "Select Roles"
-#~ msgstr "Selecteer Alles"
-
-#, fuzzy
-#~ msgid "No apps found."
-#~ msgstr "Geen duplicaten gevonden"
-
-#, fuzzy
-#~ msgid "No roles selected"
-#~ msgstr "geselecteerd"
-
-#, fuzzy
-#~ msgid "All roles"
-#~ msgstr "alle %s"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this app?"
-#~ msgstr "Weet u zeker dat u %s wilt verwijderen?"
-
-#, fuzzy
-#~ msgid "Duration"
-#~ msgstr "Generatie"
-
-#, fuzzy
-#~ msgid "General"
-#~ msgstr "Generatie"
-
-#, fuzzy
-#~ msgid "Advanced"
-#~ msgstr "Geavanceerd zoeken"
-
-#, fuzzy
-#~ msgid "Add Video"
-#~ msgstr "kinder groep"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this video?"
-#~ msgstr "Weet u zeker dat u %s wilt verwijderen?"
