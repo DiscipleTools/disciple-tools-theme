@@ -1098,7 +1098,7 @@ msgstr "%s ਲਈ ਸਾਰੇ ਮੈਚ ਰੱਦ ਕਰੋ"
 #: dt-assets/functions/enqueue-scripts.php:321
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
-msgstr ""
+msgstr "_TOTAL_ ਵਿੱਚੋਂ _START_ ਦਿਖਾ ਰਿਹਾ ਹੈ"
 
 #: dt-assets/functions/enqueue-scripts.php:322
 msgid "Sorting By"
@@ -3955,7 +3955,7 @@ msgstr "ਪਿਛਲਾ ਮਹੀਨਾ"
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s ਮਹੀਨਾ ਪਹਿਲਾਂ"
-msgstr[1] ""
+msgstr[1] "%s ਮਹੀਨਾ ਪਹਿਲਾਂ"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4543,42 +4543,42 @@ msgstr "ਰੋਜ਼ਾਨਾ ਡਾਇਜੈਸਟ"
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "%s ਮਿੰਟ ਪਹਿਲਾਂ"
-msgstr[1] ""
+msgstr[1] "%s ਮਿੰਟ ਪਹਿਲਾਂ"
 
 #: dt-notifications/notifications.php:481
 #, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "%s ਘੰਟਾ ਪਹਿਲਾਂ"
-msgstr[1] ""
+msgstr[1] "%s ਘੰਟਾ ਪਹਿਲਾਂ"
 
 #: dt-notifications/notifications.php:486
 #, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s ਦਿਨ ਪਹਿਲਾਂ"
-msgstr[1] ""
+msgstr[1] "%s ਦਿਨ ਪਹਿਲਾਂ"
 
 #: dt-notifications/notifications.php:491
 #, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "%s ਹਫ਼ਤਾ ਪਹਿਲਾਂ"
-msgstr[1] ""
+msgstr[1] "%s ਹਫ਼ਤਾ ਪਹਿਲਾਂ"
 
 #: dt-notifications/notifications.php:510
 #, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "%s ਸਾਲ ਪਹਿਲਾਂ"
-msgstr[1] ""
+msgstr[1] "%s ਸਾਲ ਪਹਿਲਾਂ"
 
 #: dt-notifications/notifications.php:514
 #, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "%s ਸਾਲ ਪਹਿਲਾਂ"
-msgstr[1] ""
+msgstr[1] "%s ਸਾਲ ਪਹਿਲਾਂ"
 
 #: dt-notifications/notifications.php:909
 #, php-format

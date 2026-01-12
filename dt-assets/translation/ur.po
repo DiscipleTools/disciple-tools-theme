@@ -4000,8 +4000,8 @@ msgstr "پچھلے مہینے"
 #, php-format
 msgid "%s month ago"
 msgid_plural "%s months ago"
-msgstr[0] "٪ s مہینہ پہلے"
-msgstr[1] ""
+msgstr[0] "%s مہینہ پہلے"
+msgstr[1] "%s مہینہ پہلے"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4590,43 +4590,43 @@ msgstr "ڈیلی ڈائجسٹ"
 #, php-format
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
-msgstr[0] "٪ s منٹ پہلے"
-msgstr[1] ""
+msgstr[0] "%s منٹ پہلے"
+msgstr[1] "%s منٹ پہلے"
 
 #: dt-notifications/notifications.php:481
 #, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
-msgstr[0] "٪ s گھنٹہ پہلے"
-msgstr[1] ""
+msgstr[0] "%s گھنٹہ پہلے"
+msgstr[1] "%s گھنٹہ پہلے"
 
 #: dt-notifications/notifications.php:486
 #, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
-msgstr[0] "٪ s دن پہلے"
-msgstr[1] ""
+msgstr[0] "%s دن پہلے"
+msgstr[1] "%s دن پہلے"
 
 #: dt-notifications/notifications.php:491
 #, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
-msgstr[0] "٪ s ہفتہ پہلے"
-msgstr[1] ""
+msgstr[0] "%s ہفتہ پہلے"
+msgstr[1] "%s ہفتہ پہلے"
 
 #: dt-notifications/notifications.php:510
 #, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
-msgstr[0] "٪ s سال پہلے"
-msgstr[1] ""
+msgstr[0] "%s سال پہلے"
+msgstr[1] "%s سال پہلے"
 
 #: dt-notifications/notifications.php:514
 #, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
-msgstr[0] "٪ s سال پہلے"
-msgstr[1] ""
+msgstr[0] "%s سال پہلے"
+msgstr[1] "%s سال پہلے"
 
 #: dt-notifications/notifications.php:909
 #, php-format

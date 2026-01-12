@@ -4004,7 +4004,7 @@ msgstr "Meha Dawîn"
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s meh berê"
-msgstr[1] ""
+msgstr[1] "%s meh berê"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4597,42 +4597,42 @@ msgstr "Daily Digest"
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "%s deqe berê"
-msgstr[1] ""
+msgstr[1] "%s deqe berê"
 
 #: dt-notifications/notifications.php:481
 #, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "%s saet berê"
-msgstr[1] ""
+msgstr[1] "%s saet berê"
 
 #: dt-notifications/notifications.php:486
 #, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s roj berê"
-msgstr[1] ""
+msgstr[1] "%s roj berê"
 
 #: dt-notifications/notifications.php:491
 #, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "%s hefte berê"
-msgstr[1] ""
+msgstr[1] "%s hefte berê"
 
 #: dt-notifications/notifications.php:510
 #, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "%s sal berê"
-msgstr[1] ""
+msgstr[1] "%s sal berê"
 
 #: dt-notifications/notifications.php:514
 #, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "berî%s sal berê"
-msgstr[1] ""
+msgstr[1] "berî%s sal berê"
 
 #: dt-notifications/notifications.php:909
 #, php-format

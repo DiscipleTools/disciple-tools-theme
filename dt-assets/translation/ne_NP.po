@@ -4573,7 +4573,7 @@ msgstr[1] "बहुवचन:%s वर्ष पहिले"
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "%s वर्ष पहिले"
-msgstr[1] ""
+msgstr[1] "%s वर्ष पहिले"
 
 #: dt-notifications/notifications.php:909
 #, php-format

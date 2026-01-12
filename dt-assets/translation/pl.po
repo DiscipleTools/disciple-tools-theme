@@ -4014,7 +4014,6 @@ msgid_plural "%s months ago"
 msgstr[0] "%s miesiąc temu"
 msgstr[1] "%s miesięcy temu"
 msgstr[2] "%s miesięcy temu"
-msgstr[3] "%s miesięcy temu"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4609,7 +4608,6 @@ msgid_plural "%s minutes ago"
 msgstr[0] "%s minutę temu"
 msgstr[1] "%s minut temu"
 msgstr[2] "%s minut temu"
-msgstr[3] "%s minut temu"
 
 #: dt-notifications/notifications.php:481
 #, php-format
@@ -4618,7 +4616,6 @@ msgid_plural "%s hours ago"
 msgstr[0] "%s godzinę temu"
 msgstr[1] "%s godzin temu"
 msgstr[2] "%s godzin temu"
-msgstr[3] "%s godzin temu"
 
 #: dt-notifications/notifications.php:486
 #, php-format
@@ -4627,7 +4624,6 @@ msgid_plural "%s days ago"
 msgstr[0] "%s dzień temu"
 msgstr[1] "%s dni temu"
 msgstr[2] "%s dni temu"
-msgstr[3] "%s dni temu"
 
 #: dt-notifications/notifications.php:491
 #, php-format
@@ -4636,7 +4632,6 @@ msgid_plural "%s weeks ago"
 msgstr[0] "%s tydzień temu"
 msgstr[1] "%s tygodni temu"
 msgstr[2] "%s tygodni temu"
-msgstr[3] "%s tygodni temu"
 
 #: dt-notifications/notifications.php:510
 #, php-format
@@ -4645,7 +4640,6 @@ msgid_plural "%s years ago"
 msgstr[0] "%s rok temu"
 msgstr[1] "%s lat temu"
 msgstr[2] "%s lat temu"
-msgstr[3] "%s lat temu"
 
 #: dt-notifications/notifications.php:514
 #, php-format
@@ -4654,7 +4648,6 @@ msgid_plural "over %s years ago"
 msgstr[0] "ponad %s rok temu"
 msgstr[1] "ponad %s lata temu"
 msgstr[2] "ponad %s lata temu"
-msgstr[3] "ponad %s lata temu"
 
 #: dt-notifications/notifications.php:909
 #, php-format

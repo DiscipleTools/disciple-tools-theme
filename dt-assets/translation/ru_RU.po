@@ -4027,7 +4027,6 @@ msgid_plural "%s months ago"
 msgstr[0] "%s месяц назад"
 msgstr[1] "%s месяца назад"
 msgstr[2] "%s месяцев назад"
-msgstr[3] "%s месяцев назад"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4622,7 +4621,6 @@ msgid_plural "%s minutes ago"
 msgstr[0] "%s минуту назад"
 msgstr[1] "%s минуты назад"
 msgstr[2] "%s минут назад"
-msgstr[3] "%s минут назад"
 
 #: dt-notifications/notifications.php:481
 #, php-format
@@ -4631,7 +4629,6 @@ msgid_plural "%s hours ago"
 msgstr[0] "%s час назад"
 msgstr[1] "%s часа назад"
 msgstr[2] "%s часов назад"
-msgstr[3] "%s часов назад"
 
 #: dt-notifications/notifications.php:486
 #, php-format
@@ -4640,7 +4637,6 @@ msgid_plural "%s days ago"
 msgstr[0] "%s день назад"
 msgstr[1] "%s дня назад"
 msgstr[2] "%s дней назад"
-msgstr[3] "%s дней назад"
 
 #: dt-notifications/notifications.php:491
 #, php-format
@@ -4649,7 +4645,6 @@ msgid_plural "%s weeks ago"
 msgstr[0] "%s неделю назад"
 msgstr[1] "%s недели назад"
 msgstr[2] "%s недель назад"
-msgstr[3] "%s недель назад"
 
 #: dt-notifications/notifications.php:510
 #, php-format
@@ -4658,7 +4653,6 @@ msgid_plural "%s years ago"
 msgstr[0] "%s год назад"
 msgstr[1] "%s года назад"
 msgstr[2] "%s лет назад"
-msgstr[3] "%s лет назад"
 
 #: dt-notifications/notifications.php:514
 #, php-format
@@ -4667,7 +4661,6 @@ msgid_plural "over %s years ago"
 msgstr[0] "больше %s года назад"
 msgstr[1] "больше %s лет назад"
 msgstr[2] "больше %s лет назад"
-msgstr[3] "больше %s лет назад"
 
 #: dt-notifications/notifications.php:909
 #, php-format

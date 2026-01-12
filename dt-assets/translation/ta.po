@@ -3990,7 +3990,7 @@ msgstr "கடந்த மாதம்"
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s மாதத்திற்கு முன்பு"
-msgstr[1] ""
+msgstr[1] "%s மாதத்திற்கு முன்பு"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4581,42 +4581,42 @@ msgstr "தினசரி டைஜஸ்ட்"
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "%s நிமிடத்திற்கு முன்பு"
-msgstr[1] ""
+msgstr[1] "%s நிமிடத்திற்கு முன்பு"
 
 #: dt-notifications/notifications.php:481
 #, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "%s மணி நேரத்திற்கு முன்பு"
-msgstr[1] ""
+msgstr[1] "%s மணி நேரத்திற்கு முன்பு"
 
 #: dt-notifications/notifications.php:486
 #, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s நாள் முன்பு"
-msgstr[1] ""
+msgstr[1] "%s நாள் முன்பு"
 
 #: dt-notifications/notifications.php:491
 #, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "%s வாரத்திற்கு முன்பு"
-msgstr[1] ""
+msgstr[1] "%s வாரத்திற்கு முன்பு"
 
 #: dt-notifications/notifications.php:510
 #, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "%s வருடம் முன்பு"
-msgstr[1] ""
+msgstr[1] "%s வருடம் முன்பு"
 
 #: dt-notifications/notifications.php:514
 #, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "ஆண்டுக்கு முன்பு%s க்கு மேல்"
-msgstr[1] ""
+msgstr[1] "ஆண்டுக்கு முன்பு%s க்கு மேல்"
 
 #: dt-notifications/notifications.php:909
 #, php-format

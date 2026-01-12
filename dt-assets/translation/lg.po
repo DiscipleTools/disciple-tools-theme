@@ -3984,7 +3984,7 @@ msgstr "Omwezi Oguwedde"
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "emyezi %s emabega"
-msgstr[1] ""
+msgstr[1] "emyezi %s emabega"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4575,42 +4575,42 @@ msgstr "Enfunza y'Olunaku"
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "eddakiika %s emabega"
-msgstr[1] ""
+msgstr[1] "eddakiika %s emabega"
 
 #: dt-notifications/notifications.php:481
 #, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "essaawa %s emabega"
-msgstr[1] ""
+msgstr[1] "essaawa %s emabega"
 
 #: dt-notifications/notifications.php:486
 #, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "ennaku %s emabega"
-msgstr[1] ""
+msgstr[1] "ennaku %s emabega"
 
 #: dt-notifications/notifications.php:491
 #, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "wiiki %s emabega"
-msgstr[1] ""
+msgstr[1] "wiiki %s emabega"
 
 #: dt-notifications/notifications.php:510
 #, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "emyaka %s emabega"
-msgstr[1] ""
+msgstr[1] "emyaka %s emabega"
 
 #: dt-notifications/notifications.php:514
 #, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "okusukka emyaka %s emabega"
-msgstr[1] ""
+msgstr[1] "okusukka emyaka %s emabega"
 
 #: dt-notifications/notifications.php:909
 #, php-format

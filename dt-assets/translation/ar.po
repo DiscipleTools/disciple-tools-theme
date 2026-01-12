@@ -2835,7 +2835,7 @@ msgstr "تم تدريبه من"
 #: dt-contacts/module-coaching.php:57
 msgctxt "Optional Documentation"
 msgid "Who is coaching this contact"
-msgstr ""
+msgstr "من يدرب جهة الاتصال هذه"
 
 #: dt-contacts/module-coaching.php:94 dt-contacts/module-coaching.php:104
 #: dt-contacts/module-coaching.php:114 dt-contacts/module-coaching.php:115
@@ -3376,7 +3376,7 @@ msgstr "معمودية"
 #: dt-groups/base-setup.php:198
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
-msgstr ""
+msgstr "المجموعة تعمّد."
 
 #: dt-groups/base-setup.php:202
 msgid "Bible Study"
@@ -3385,7 +3385,7 @@ msgstr "دراسة الكتاب المقدس"
 #: dt-groups/base-setup.php:203
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
-msgstr ""
+msgstr "المجموعة تدرس الكتاب المقدس."
 
 #: dt-groups/base-setup.php:207
 msgid "Communion"
@@ -3394,7 +3394,7 @@ msgstr "كسر الخبز"
 #: dt-groups/base-setup.php:208
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
-msgstr ""
+msgstr "المجموعة تمارس العشاء الرباني."
 
 #: dt-groups/base-setup.php:212
 msgid "Fellowship"
@@ -3403,7 +3403,7 @@ msgstr "الشركة"
 #: dt-groups/base-setup.php:213
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
-msgstr ""
+msgstr "المجموعة تتشارك الزمالة."
 
 #: dt-groups/base-setup.php:217
 msgid "Giving"
@@ -3412,7 +3412,7 @@ msgstr "العطاء"
 #: dt-groups/base-setup.php:218
 msgctxt "Optional Documentation"
 msgid "The group is giving."
-msgstr ""
+msgstr "المجموعة تعطي."
 
 #: dt-groups/base-setup.php:222
 msgid "Prayer"
@@ -3421,7 +3421,7 @@ msgstr "الصلاة"
 #: dt-groups/base-setup.php:223
 msgctxt "Optional Documentation"
 msgid "The group is praying."
-msgstr ""
+msgstr "المجموعة تصلي."
 
 #: dt-groups/base-setup.php:227
 msgid "Praise"
@@ -3430,7 +3430,7 @@ msgstr "التسبيح"
 #: dt-groups/base-setup.php:228
 msgctxt "Optional Documentation"
 msgid "The group is praising."
-msgstr ""
+msgstr "المجموعة تسبّح."
 
 #: dt-groups/base-setup.php:232
 msgid "Sharing the Gospel"
@@ -3439,7 +3439,7 @@ msgstr "مشاركة الانجيل"
 #: dt-groups/base-setup.php:233
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
-msgstr ""
+msgstr "المجموعة تشارك الإنجيل."
 
 #: dt-groups/base-setup.php:237 dt-groups/base-setup.php:299
 msgid "Leaders"

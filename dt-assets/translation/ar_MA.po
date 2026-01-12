@@ -2909,7 +2909,7 @@ msgstr "راسل المستعمل"
 #: dt-contacts/user-module.php:43
 msgctxt "Optional Documentation"
 msgid "The id of the user this contact corresponds to"
-msgstr ""
+msgstr "معرّف المستخدم الذي يتوافق معه جهة الاتصال هذه"
 
 #: dt-contacts/user-module.php:72
 msgid "This contact represents you as a user."
@@ -6042,7 +6042,7 @@ msgstr "جدولة السفر أو التواريخ غير المتاحة"
 
 #: template-settings.php:449
 msgid "Add Unavailable dates"
-msgstr ""
+msgstr "إضافة تواريخ عدم التوفر"
 
 #: template-settings.php:463
 msgid "No Travel Scheduled"
