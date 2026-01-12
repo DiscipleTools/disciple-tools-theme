@@ -943,7 +943,7 @@ msgstr "የልቀት ማስታወቂያ!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "አዲስ የ Disciple.Tools ስሪት አለ"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1874,9 +1874,8 @@ msgid "Theme Update Available!"
 msgstr "ገጽታ ዝመና ይገኛል!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "ምንም መዝገቦች የሉም"
+msgstr "አዲስ ልቀት አለ"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

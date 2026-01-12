@@ -957,7 +957,7 @@ msgstr "Daxuyaniya Derketinê!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Guhertoya nû ya Disciple.Tools berdest e"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1916,9 +1916,8 @@ msgid "Theme Update Available!"
 msgstr "Nûvekirina Mijarê Heye!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "Tu Tomar Berdest Nîne"
+msgstr "Guhertoya nû berdest e"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

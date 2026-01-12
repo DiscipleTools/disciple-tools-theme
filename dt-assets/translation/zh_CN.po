@@ -942,7 +942,7 @@ msgstr "版本公告！"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Disciple.Tools 的新版本可用"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483

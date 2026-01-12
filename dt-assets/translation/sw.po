@@ -954,7 +954,7 @@ msgstr "Tangazo la Kutolewa!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Toleo jipya la Disciple.Tools linapatikana"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1903,9 +1903,8 @@ msgid "Theme Update Available!"
 msgstr "Sasisho la Mandhari Linapatikana!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "Hakuna Rekodi Zinazopatikana"
+msgstr "Toleo Jipya Linapatikana"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

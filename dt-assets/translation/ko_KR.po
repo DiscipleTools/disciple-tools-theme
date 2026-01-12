@@ -949,7 +949,7 @@ msgstr "릴리스 공지!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Disciple.Tools의 새 버전을 사용할 수 있습니다"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1886,9 +1886,8 @@ msgid "Theme Update Available!"
 msgstr "테마 업데이트를 사용하실 수 있습니다!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "사용 가능한 레코드 없음"
+msgstr "새 릴리스 사용 가능"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

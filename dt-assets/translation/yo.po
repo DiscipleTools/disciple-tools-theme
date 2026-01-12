@@ -954,7 +954,7 @@ msgstr "Ikede Itusilẹ!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Ẹ̀dà tuntun ti Disciple.Tools wa"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1903,9 +1903,8 @@ msgid "Theme Update Available!"
 msgstr "Imudojuiwọn Akori Wa!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "Ko si Awọn Igbasilẹ Ti o Wa"
+msgstr "Ẹ̀dà Tuntun Wa"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

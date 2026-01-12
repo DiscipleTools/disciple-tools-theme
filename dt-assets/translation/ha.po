@@ -951,7 +951,7 @@ msgstr "Sanarwar Sakin!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Sabon sigar Disciple.Tools yana samuwa"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1899,9 +1899,8 @@ msgid "Theme Update Available!"
 msgstr "Akwai Updateaukaka Jigo"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "Babu Rikodi"
+msgstr "Sabon fitowar ya samuwa"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

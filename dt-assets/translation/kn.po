@@ -952,7 +952,7 @@ msgstr "ಬಿಡುಗಡೆ ಪ್ರಕಟಣೆ!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Disciple.Tools ನ ಹೊಸ ಆವೃತ್ತಿ ಲಭ್ಯವಿದೆ"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1902,9 +1902,8 @@ msgid "Theme Update Available!"
 msgstr "ಥೀಮ್ ನವೀಕರಣ ಲಭ್ಯವಿದೆ!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "ಯಾವುದೇ ದಾಖಲೆಗಳು ಲಭ್ಯವಿಲ್ಲ"
+msgstr "ಹೊಸ ಬಿಡುಗಡೆ ಲಭ್ಯವಿದೆ"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

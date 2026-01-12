@@ -956,7 +956,7 @@ msgstr "Ogeysiis Sii-deyn!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Nooc cusub oo Disciple.Tools ah ayaa la heli karaa"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1924,9 +1924,8 @@ msgid "Theme Update Available!"
 msgstr "Cusboonaysiinta Mawduuca waa la heli karaa!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "Diiwaan La Heli Karo Ma Jiro"
+msgstr "Noocyo cusub ayaa la heli karaa"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

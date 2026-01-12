@@ -954,7 +954,7 @@ msgstr "Rilis Pengumuman"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Versi baru Disciple.Tools tersedia"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1917,9 +1917,8 @@ msgid "Theme Update Available!"
 msgstr "Update Tema sudah tersedia!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "Tidak Ada Rekod Tersedia"
+msgstr "Rilis Baru Tersedia"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

@@ -959,7 +959,7 @@ msgstr "¡Anuncio de lanzamiento!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Una nueva versión de Disciple.Tools está disponible"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1923,9 +1923,8 @@ msgid "Theme Update Available!"
 msgstr "¡Actualización de tema disponible!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "No hay registros disponibles"
+msgstr "Nueva versión disponible"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

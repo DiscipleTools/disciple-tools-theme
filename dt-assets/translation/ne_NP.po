@@ -949,7 +949,7 @@ msgstr "विमोचन घोषणा !"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Disciple.Tools को नयाँ संस्करण उपलब्ध छ"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1893,9 +1893,8 @@ msgid "Theme Update Available!"
 msgstr "थिम अपडेट उपलब्ध छ!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "कुनै रेकर्ड उपलब्ध छैन"
+msgstr "नयाँ रिलीज उपलब्ध छ"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

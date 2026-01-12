@@ -954,7 +954,7 @@ msgstr "வெளியீட்டு அறிவிப்பு!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Disciple.Tools இன் புதிய பதிப்பு கிடைக்கிறது"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1906,9 +1906,8 @@ msgid "Theme Update Available!"
 msgstr "தீம் புதுப்பிப்பு கிடைக்கிறது!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "பதிவுகள் எதுவும் கிடைக்கவில்லை"
+msgstr "புதிய வெளியீடு கிடைக்கிறது"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

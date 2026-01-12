@@ -952,7 +952,7 @@ msgstr "Oznámení o vydání!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Je k dispozici nová verze Disciple.Tools"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1900,9 +1900,8 @@ msgid "Theme Update Available!"
 msgstr "Aktualizace motivu k dispozici!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "Nejsou k dispozici žádné záznamy"
+msgstr "Nové vydání k dispozici"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"

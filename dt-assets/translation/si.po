@@ -947,7 +947,7 @@ msgstr "නිකුත් කිරීමේ නිවේදනය!"
 
 #: dt-assets/functions/enqueue-scripts.php:148
 msgid "A new version of Disciple.Tools is available"
-msgstr ""
+msgstr "Disciple.Tools හි නව අනුවාදයක් ලබා ගත හැකිය"
 
 #: dt-assets/functions/enqueue-scripts.php:149
 #: dt-reports/magic-url-setup.php:483
@@ -1885,9 +1885,8 @@ msgid "Theme Update Available!"
 msgstr "තේමා යාවත්කාලීනය තිබේ!"
 
 #: dt-assets/parts/nav-topbar.php:110
-#, fuzzy
 msgid "New Release Available"
-msgstr "වාර්තා නොමැත"
+msgstr "නව නිකුතුවක් ලබා ගත හැකිය"
 
 #: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"
