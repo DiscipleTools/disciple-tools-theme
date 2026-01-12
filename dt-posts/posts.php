@@ -2078,7 +2078,7 @@ class Disciple_Tools_Posts
             if ( isset( $field['force_values'] ) && $field['force_values'] === true ) {
                 // Get all link types for this field
                 $link_types = isset( $field_settings[ $field_key ]['default'] ) ? array_keys( $field_settings[ $field_key ]['default'] ) : [];
-                
+
                 // Build list of meta keys to delete
                 $meta_keys_to_delete = [];
                 foreach ( $link_types as $link_type ) {
@@ -2088,12 +2088,12 @@ class Disciple_Tools_Posts
                 if ( !empty( $meta_keys_to_delete ) ) {
                     // Check if this is a private field
                     $is_private = isset( $field_settings[ $field_key ]['private'] ) && $field_settings[ $field_key ]['private'];
-                    
+
                     if ( $is_private ) {
                         if ( !$current_user_id ){
                             return new WP_Error( __FUNCTION__, 'Cannot update post_user_meta fields for no user.', [ 'status' => 400 ] );
                         }
-                        
+
                         // Delete all link meta entries from dt_post_user_meta for this post and field
                         $meta_keys_sql = dt_array_to_sql( $meta_keys_to_delete );
                         // phpcs:disable
@@ -2105,7 +2105,7 @@ class Disciple_Tools_Posts
                             AND meta_key IN ( $meta_keys_sql )
                         ", $post_id, $current_user_id ) );
                         // phpcs:enable
-                        
+
                         if ( $delete_result === false ){
                             return new WP_Error( __FUNCTION__, 'Something wrong deleting post user meta on field: ' . $field_key, [ 'status' => 500 ] );
                         }
@@ -2120,13 +2120,13 @@ class Disciple_Tools_Posts
                             AND meta_key IN ( $meta_keys_sql )
                         ", $post_id ) );
                         // phpcs:enable
-                        
+
                         if ( $delete_result === false ){
                             return new WP_Error( __FUNCTION__, 'Something wrong deleting post meta on field: ' . $field_key, [ 'status' => 500 ] );
                         }
                     }
                 }
-                
+
                 // If values array is empty, we're done (all deleted, nothing to add)
                 if ( empty( $field['values'] ) ) {
                     continue;
