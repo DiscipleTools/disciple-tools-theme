@@ -258,7 +258,7 @@ msgstr ""
 "Korištenjem trenutnog filtra, dostupni emailovi grupirani su po 50 i mogu se "
 "pokrenuti u vašem zadanom email klijentu po grupama. Mnogi pružatelji email "
 "usluga postavljaju ograničenje od 50 BCC emailova. Sve grupe možete otvoriti "
-"odjednom pomoću gumba \\\"Otvori sve\\\". Ako je popis prevelik, to bi moglo "
+"odjednom pomoću gumba \"Otvori sve\". Ako je popis prevelik, to bi moglo "
 "upozoriti vašeg davatelja email usluga. BCC alat za email namijenjen je za "
 "pomoć pri slanju emailova malim grupama. Grupnim emailovima treba upravljati "
 "putem davatelja usluga masovnih emailova."
@@ -907,7 +907,7 @@ msgstr "Korištene lokacije"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Nisu pronađeni rezultati koji se podudaraju \\\"{{query}}\\\""
+msgstr "Nisu pronađeni rezultati koji se podudaraju \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -986,11 +986,11 @@ msgstr "%3$s i %1$s reagirali su s %2$s emoji"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "Odaberite govorni jezik i kliknite \\\"Počni snimanje\\\" za početak."
+msgstr "Odaberite govorni jezik i kliknite \"Počni snimanje\" za početak."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Kliknite \\\"Počni snimanje\\\" za početak."
+msgstr "Kliknite \"Počni snimanje\" za početak."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5099,7 +5099,7 @@ msgstr "%s uklonjen"
 #, php-format
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
-msgstr "%1$s maknut iz lokacija."
+msgstr "%1$s maknut iz lokacija"
 
 #: dt-posts/posts.php:481 dt-posts/posts.php:498
 #, php-format
@@ -5396,7 +5396,7 @@ msgstr "Obuhvaćenost odgovornosti"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Administrator mora omogućiti opciju \\\"Dodaj nove korisnike\\\" u "
+"Administrator mora omogućiti opciju \"Dodaj nove korisnike\" u "
 "postavkama za više stranica:"
 
 #: dt-users/template-new-user.php:80
@@ -5523,7 +5523,7 @@ msgstr "Odgovornost za lokaciju"
 
 #: dt-users/template-user-management.php:141 template-settings.php:362
 msgid "Languages you are comfortable speaking"
-msgstr "Jezici koje dobro govorite."
+msgstr "Jezici koje dobro govorite"
 
 #: dt-users/template-user-management.php:157 template-settings.php:60
 #: template-settings.php:425
@@ -5732,19 +5732,19 @@ msgstr "Dodaj korisnika"
 #, php-format
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "%1$s je prihvaćen %2$s nakon %3$s dana."
+msgstr "%1$s je prihvaćen %2$s nakon %3$s dana"
 
 #: dt-users/user-management.php:181
 #, php-format
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "%1$s čeka pokušaj uspostave kontakta %2$s dana."
+msgstr "%1$s čeka pokušaj uspostave kontakta %2$s dana"
 
 #: dt-users/user-management.php:182
 #, php-format
 msgctxt "Contact with Bob was attempted on Jul 8 after 10 days"
 msgid "Contact with %1$s was attempted on %2$s after %3$s days"
-msgstr "Uspostava kontakta s %1$s je pokušana %2$s nakon %3$s dana."
+msgstr "Uspostava kontakta s %1$s je pokušana %2$s nakon %3$s dana"
 
 #: dt-users/user-management.php:183
 msgid "Unable to update"
@@ -5844,7 +5844,7 @@ msgstr "Neodgovarajuće dozvole"
 
 #: dt-users/users.php:507
 msgid "Email already exists and is a user on this site"
-msgstr "E-pošta već postoji i korisnik je na ovoj stranici."
+msgstr "E-pošta već postoji i korisnik je na ovoj stranici"
 
 #: dt-users/users.php:513
 msgid "Failed to add user to site."
@@ -5977,7 +5977,7 @@ msgstr "Odaberite koja polja želite prikazati u novim skupnim zapisima"
 #: template-new-bulk-post.php:145 template-new-post.php:66
 #, php-format
 msgid "Select the %s type:"
-msgstr "Odaberi %s tip"
+msgstr "Odaberi %s tip:"
 
 #: template-new-bulk-post.php:255
 msgid "Add New Row"
@@ -6041,15 +6041,15 @@ msgstr "Nije instalirana nijedna aplikacija"
 
 #: template-settings.php:343 template-settings.php:351
 msgid "Locations you are willing to be responsible for"
-msgstr "Lokacije za koje ste spremni biti odgovorni."
+msgstr "Lokacije za koje ste spremni biti odgovorni"
 
 #: template-settings.php:383
 msgid "People Groups you wish to serve"
-msgstr "Grupa ljudi kojoj želite služiti."
+msgstr "Grupa ljudi kojoj želite služiti"
 
 #: template-settings.php:406
 msgid "Availability to receive contacts from the Dispatcher"
-msgstr "Dostupnost za primanje kontakta od Dispečera."
+msgstr "Dostupnost za primanje kontakta od Dispečera"
 
 #: template-settings.php:428
 msgid ""

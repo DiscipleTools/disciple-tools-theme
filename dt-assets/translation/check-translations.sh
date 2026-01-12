@@ -14,9 +14,9 @@ if ! command -v pofilter &> /dev/null; then
 fi
 
 # Tests to run (comment out any you want to skip)
-TESTS="endwhitespace,doublespacing,printf,newlines,doublewords,nplurals"
-# Punctuation tests often have false positives for non-Latin scripts
-# Add these if needed: endpunc,startpunc,unchanged
+TESTS=(endwhitespace doublespacing printf newlines doublewords nplurals endpunc)
+# Note: endpunc may have false positives for non-Latin scripts with different punctuation
+# Add these if needed: startpunc unchanged
 
 OUTPUT_DIR="/tmp/po-errors"
 mkdir -p "$OUTPUT_DIR"
@@ -26,7 +26,13 @@ check_file() {
     local base_name=$(basename "$po_file" .po)
     local output_file="$OUTPUT_DIR/${base_name}_errors.po"
 
-    pofilter --nofuzzy -t "$TESTS" "$po_file" "$output_file" 2>/dev/null
+    # Build -t flags for each test
+    local test_flags=""
+    for test in "${TESTS[@]}"; do
+        test_flags="$test_flags -t $test"
+    done
+
+    pofilter --nofuzzy $test_flags "$po_file" "$output_file" 2>/dev/null
 
     local count=$(grep -c "^msgid \"" "$output_file" 2>/dev/null || echo 0)
     count=$((count - 1))  # Subtract header

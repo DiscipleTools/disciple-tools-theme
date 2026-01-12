@@ -254,7 +254,7 @@ msgstr ""
 "با استفاده از فیلتر فعلی، ایمیل‌های موجود در گروه‌های ۵۰ تایی دسته‌بندی شده "
 "ومی‌توانند در کلاینت ایمیل پیش‌فرض شما به صورت گروهی باز شوند. بسیاری "
 "ازارائه‌دهندگان ایمیل محدودیت ۵۰ ایمیل برای رونوشت مخفی دارند. می‌توانید "
-"همهگروه‌ها را با استفاده از دکمه \\\"باز کردن همه\\\" یک‌جا باز کنید. اگر "
+"همهگروه‌ها را با استفاده از دکمه \"باز کردن همه\" یک‌جا باز کنید. اگر "
 "لیستبیش از حد بزرگ باشد، ممکن است ارائه‌دهنده ایمیل شما هشدار دهد. ابزار "
 "ایمیلرونوشت مخفی برای کمک به ایمیل‌های گروهی کوچک طراحی شده است. ایمیل‌های "
 "انبوهباید از طریق ارائه‌دهندگان ایمیل انبوه ارسال شوند."
@@ -342,7 +342,7 @@ msgstr "نمایش %s"
 
 #: archive-template.php:538 dt-apps/dt-home/magic-link-home-app.php:238
 msgid "Loading..."
-msgstr "بارگیری ..."
+msgstr "بارگیری..."
 
 #: archive-template.php:543 dt-assets/functions/enqueue-scripts.php:418
 msgid "Load More"
@@ -904,7 +904,7 @@ msgstr "مکان‌های استفاده شده"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "هیچ نتیجه‌ای مطابق با «{{query}}» یافت نشد."
+msgstr "هیچ نتیجه‌ای مطابق با «{{query}}» یافت نشد"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -983,11 +983,11 @@ msgstr "%3$s و %1$s با ایموجی %2$s واکنش نشان داده است"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "زبان گفتاری را انتخاب کنید و برای شروع روی \\\"شروع ضبط\\\" کلیک کنید."
+msgstr "زبان گفتاری را انتخاب کنید و برای شروع روی \"شروع ضبط\" کلیک کنید."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "برای شروع روی \\\"شروع ضبط\\\" کلیک کنید."
+msgstr "برای شروع روی \"شروع ضبط\" کلیک کنید."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -2550,7 +2550,7 @@ msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr ""
 "این مخاطب در حال حاضر در لیست انتظار است. (برای مثال در تعطیلات است و "
-"یاپاسخگو نیست.)"
+"یاپاسخگو نیست)."
 
 #: dt-contacts/module-access.php:180
 msgid "Reason Not Ready"
@@ -3403,7 +3403,7 @@ msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr ""
 "گروهی خاص که جلسات برگزار می‌کنند ولی نه به‌عنوان یک کلیسا. (یا سعی دارند کهیک "
-"کلیسا بشوند)"
+"کلیسا بشوند)."
 
 #: dt-groups/base-setup.php:192 dt-groups/base-setup.php:603
 msgid "Church Health"
@@ -3531,7 +3531,7 @@ msgstr "تاریخ پایان"
 #: dt-groups/base-setup.php:270
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
-msgstr "تاریخی که این گروه برگزاری جلسات را متوقف کرد. (در صورت بُروز)"
+msgstr "تاریخی که این گروه برگزاری جلسات را متوقف کرد. (در صورت بُروز)."
 
 #: dt-groups/base-setup.php:280 dt-metrics/records/genmap.php:157
 msgid "Member Count"
@@ -3625,7 +3625,7 @@ msgstr "تعداد افراد در گروه پاسخگویی."
 #: dt-groups/base-setup.php:405
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
-msgstr "آیا این یک کلیسا است؟ (بله یا خیر)"
+msgstr "آیا این یک کلیسا است - بله یا خیر؟"
 
 #: dt-groups/base-setup.php:413
 msgid "Multiplying"
@@ -3773,7 +3773,7 @@ msgstr "مرا به خاطر بسپار"
 
 #: dt-login/login-template.php:552
 msgid "Lost Password"
-msgstr "رمز عبور را فراموش کرده‌اید؟"
+msgstr "رمز عبور فراموش شده"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:222
@@ -5406,7 +5406,7 @@ msgstr "پوشش جوابگویی"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"مدیر باید گزینه \\\"افزودن کاربران جدید\\\" را در تنظیمات چند سایتی فعال کند:"
+"مدیر باید گزینه \"افزودن کاربران جدید\" را در تنظیمات چند سایتی فعال کند:"
 
 #: dt-users/template-new-user.php:80
 msgid "Add New User"
@@ -5673,7 +5673,7 @@ msgid ""
 "thefields and @mention me or other users"
 msgstr ""
 "%1$s خوش آمدید، این رکورد مخاطب شخصی شماست. می‌توانید حوزه‌ها را "
-"به‌روزرسانیکنید و من یا سایر کاربران @اشاره کنید."
+"به‌روزرسانیکنید و من یا سایر کاربران @اشاره کنید"
 
 #: dt-users/user-hooks-and-config.php:312
 #: dt-users/user-hooks-and-config.php:350
@@ -5783,7 +5783,7 @@ msgstr "‏‏حذف کنید"
 
 #: dt-users/user-management.php:189
 msgid "This contact is already a user."
-msgstr "این مخاطب را به‌عنوان کاربر از قبل دارید"
+msgstr "این مخاطب را به‌عنوان کاربر از قبل دارید."
 
 #: dt-users/user-management.php:190
 msgid "View User"

@@ -14,6 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: WP-CLI\n"
 "X-Domain: disciple_tools\n"
 
@@ -256,7 +257,7 @@ msgid ""
 msgstr ""
 "বর্তমান ফিল্টার ব্যবহার করে, উপলব্ধ ইমেলগুলি ৫০টি করে গ্রুপ করা হয় এবং গ্রুপ অনুসারে "
 "আপনার ডিফল্ট ইমেল ক্লায়েন্টে চালু করা যায়। অনেক ইমেল প্রদানকারী BCC ইমেলে ৫০টির "
-"সীমা রাখে। আপনি \\\"সব খুলুন\\\" বোতাম ব্যবহার করে সব গ্রুপ একসাথে খুলতে পারেন। "
+"সীমা রাখে। আপনি \"সব খুলুন\" বোতাম ব্যবহার করে সব গ্রুপ একসাথে খুলতে পারেন। "
 "তালিকা খুব বড় হলে, এটি আপনার ইমেল প্রদানকারীকে সতর্ক করতে পারে। BCC ইমেল টুলটি "
 "ছোট দলের ইমেলে সহায়তা করার জন্য। বাল্ক ইমেল বাল্ক ইমেল প্রদানকারীদের মাধ্যমে "
 "পরিচালনা করা উচিত।"
@@ -905,7 +906,7 @@ msgstr "ব্যবহৃত অবস্থান"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "\\\"{{query}}\\\" এর সাথে মিলে কোনো ফলাফল পাওয়া যায়নি"
+msgstr "\"{{query}}\" এর সাথে মিলে কোনো ফলাফল পাওয়া যায়নি"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -984,11 +985,11 @@ msgstr "%3$s এবং %1$s %2$s ইমোজি দিয়ে প্রতি
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "কথ্য ভাষা নির্বাচন করুন এবং শুরু করতে \\\"রেকর্ডিং শুরু করুন\\\" ক্লিক করুন।"
+msgstr "কথ্য ভাষা নির্বাচন করুন এবং শুরু করতে \"রেকর্ডিং শুরু করুন\" ক্লিক করুন।"
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "শুরু করতে \\\"রেকর্ডিং শুরু করুন\\\" ক্লিক করুন।"
+msgstr "শুরু করতে \"রেকর্ডিং শুরু করুন\" ক্লিক করুন।"
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -5352,7 +5353,7 @@ msgstr "দায়িত্ব কভারেজ"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"প্রশাসককে মাল্টিসাইট সেটিংসে \\\"নতুন ব্যবহারকারী যোগ করুন\\\" বিকল্প সক্রিয় করতে "
+"প্রশাসককে মাল্টিসাইট সেটিংসে \"নতুন ব্যবহারকারী যোগ করুন\" বিকল্প সক্রিয় করতে "
 "হবে:"
 
 #: dt-users/template-new-user.php:80

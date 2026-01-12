@@ -260,7 +260,7 @@ msgstr ""
 "Przy użyciu bieżącego filtra dostępne adresy e-mail są pogrupowane po 50 i "
 "mogą być otwierane grupami w domyślnym kliencie poczty. Wielu dostawców "
 "poczty ogranicza liczbę adresów UDW do 50. Możesz otworzyć wszystkie grupy "
-"naraz za pomocą przycisku \\\"Otwórz wszystkie\\\". Jeśli lista jest zbyt "
+"naraz za pomocą przycisku \"Otwórz wszystkie\". Jeśli lista jest zbyt "
 "duża, może to wywołać alert u dostawcy poczty. Narzędzie UDW jest "
 "przeznaczone do małych grup e-mail. Masowe wysyłki powinny być obsługiwane "
 "przez dostawców poczty masowej."
@@ -382,10 +382,7 @@ msgstr "Nie wybrano pól"
 #, php-format
 msgid ""
 "Select all the %1$s you want to update from the list, and update them below"
-msgstr ""
-"Wybierz wszystkie %1$s, które chcesz zaktualizować z listy, i zaktualizuj je "
-"poniżejWybierz z listy wszystkie %1$s, które chcesz zaktualizować, i "
-"zaktualizuj je poniżej"
+msgstr "Wybierz wszystkie %1$s, które chcesz zaktualizować z listy, i zaktualizuj je poniżej"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -911,7 +908,7 @@ msgstr "Użyte lokalizacje"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Brak wyników dla \\\"{{query}}\\\""
+msgstr "Brak wyników dla \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -991,11 +988,11 @@ msgstr "%3$s i %1$s zareagowali za pomocą emotikony %2$s"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Wybierz język mówiony i kliknij \\\"Rozpocznij nagrywanie\\\", aby rozpocząć."
+"Wybierz język mówiony i kliknij \"Rozpocznij nagrywanie\", aby rozpocząć."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Kliknij \\\"Rozpocznij nagrywanie\\\", aby rozpocząć."
+msgstr "Kliknij \"Rozpocznij nagrywanie\", aby rozpocząć."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1694,7 +1691,7 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
-"Kliknij przycisk \\\"wszystkie\\\" aby zobaczyć wszystkie powiadomienia."
+"Kliknij przycisk \"wszystkie\" aby zobaczyć wszystkie powiadomienia."
 
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
@@ -1702,7 +1699,7 @@ msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
 msgstr ""
-"Kliknij przycisk \\\"nieprzeczytane\\\" aby zobaczyć wszystkie "
+"Kliknij przycisk \"nieprzeczytane\" aby zobaczyć wszystkie "
 "nieprzeczytane powiadomienia."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
@@ -4017,7 +4014,6 @@ msgid_plural "%s months ago"
 msgstr[0] "%s miesiąc temu"
 msgstr[1] "%s miesięcy temu"
 msgstr[2] "%s miesięcy temu"
-msgstr[3] "%s miesięcy temu"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4612,7 +4608,6 @@ msgid_plural "%s minutes ago"
 msgstr[0] "%s minutę temu"
 msgstr[1] "%s minut temu"
 msgstr[2] "%s minut temu"
-msgstr[3] "%s minut temu"
 
 #: dt-notifications/notifications.php:481
 #, php-format
@@ -4621,7 +4616,6 @@ msgid_plural "%s hours ago"
 msgstr[0] "%s godzinę temu"
 msgstr[1] "%s godzin temu"
 msgstr[2] "%s godzin temu"
-msgstr[3] "%s godzin temu"
 
 #: dt-notifications/notifications.php:486
 #, php-format
@@ -4630,7 +4624,6 @@ msgid_plural "%s days ago"
 msgstr[0] "%s dzień temu"
 msgstr[1] "%s dni temu"
 msgstr[2] "%s dni temu"
-msgstr[3] "%s dni temu"
 
 #: dt-notifications/notifications.php:491
 #, php-format
@@ -4639,7 +4632,6 @@ msgid_plural "%s weeks ago"
 msgstr[0] "%s tydzień temu"
 msgstr[1] "%s tygodni temu"
 msgstr[2] "%s tygodni temu"
-msgstr[3] "%s tygodni temu"
 
 #: dt-notifications/notifications.php:510
 #, php-format
@@ -4648,7 +4640,6 @@ msgid_plural "%s years ago"
 msgstr[0] "%s rok temu"
 msgstr[1] "%s lat temu"
 msgstr[2] "%s lat temu"
-msgstr[3] "%s lat temu"
 
 #: dt-notifications/notifications.php:514
 #, php-format
@@ -4657,7 +4648,6 @@ msgid_plural "over %s years ago"
 msgstr[0] "ponad %s rok temu"
 msgstr[1] "ponad %s lata temu"
 msgstr[2] "ponad %s lata temu"
-msgstr[3] "ponad %s lata temu"
 
 #: dt-notifications/notifications.php:909
 #, php-format
@@ -5127,7 +5117,7 @@ msgstr "Usunięto %1$s z %2$s"
 #, php-format
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
-msgstr "Dodano %1$s do %2$s "
+msgstr "Dodano %1$s do %2$s"
 
 #: dt-posts/posts.php:470
 #, php-format
@@ -5435,7 +5425,7 @@ msgstr "Zakres odpowiedzialności"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Administrator musi włączyć opcję \\\"Dodaj nowych użytkowników\\\" w "
+"Administrator musi włączyć opcję \"Dodaj nowych użytkowników\" w "
 "ustawieniach serwisu:"
 
 #: dt-users/template-new-user.php:80

@@ -49,7 +49,7 @@ msgstr "Жалиме, но немате пристап до %1$s со идент
 
 #: 403.php:36
 msgid "Request permission from your administrator."
-msgstr "Барајте пристап од вашиот адмнистратор"
+msgstr "Барајте пристап од вашиот адмнистратор."
 
 #: 403.php:37
 msgid "Request Record Access Permission"
@@ -258,7 +258,7 @@ msgstr ""
 "Користејќи го моменталниот филтер, достапните е-пошти се групирани по 50 "
 "иможе да се отворат во вашиот стандарден клиент за е-пошта по група. "
 "Многупровајдери на е-пошта ставаат ограничување од 50 за BCC е-пошти. Може "
-"да гиотворите сите групи одеднаш со копчето \\\\\\\"Отвори ги сите\\\\\\"
+"да гиотворите сите групи одеднаш со копчето \"Отвори ги сите"
 "\".Доколку листата е премногу голема, ова може да го предупреди "
 "вашиотпровајдер за е-пошта. Алатката за BCC е-пошта е наменета за помош "
 "прииспраќање е-пошти на мали групи. Масовната е-пошта треба да се "
@@ -908,7 +908,7 @@ msgstr "Употребени локации"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Нема резултати кои содржат \\\\\\\"{{query}}\\\\\\\""
+msgstr "Нема резултати кои содржат \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -988,12 +988,12 @@ msgstr "%3$s и %1$s реагираа со %2$s емотикони"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Изберете говорен јазик и кликнете \\\\\\\"Започни снимање\\\\\\\" за "
+"Изберете говорен јазик и кликнете \"Започни снимање\" за "
 "дазапочнете."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Кликнете \\\\\\\"Започни снимање\\\\\\\" за да започнете."
+msgstr "Кликнете \"Започни снимање\" за да започнете."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1127,7 +1127,7 @@ msgstr "Нема филтри, креирај еден подолу"
 
 #: dt-assets/functions/enqueue-scripts.php:326
 msgid "No records found matching your filter."
-msgstr "Нема записи според твојот филтер"
+msgstr "Нема записи според твојот филтер."
 
 #: dt-assets/functions/enqueue-scripts.php:327 dt-contacts/base-setup.php:679
 #: dt-groups/base-setup.php:1040 dt-posts/custom-post-type.php:489
@@ -1428,7 +1428,7 @@ msgstr "Извинете, нешто не е во ред"
 
 #: dt-assets/parts/loop-activity-comment.php:236
 msgid "The comment could not be deleted."
-msgstr "Коментарот не можеше да се избрише"
+msgstr "Коментарот не можеше да се избрише."
 
 #: dt-assets/parts/loop-activity-comment.php:241
 msgid "Edit Comment:"
@@ -1913,7 +1913,7 @@ msgstr "Постоечки задачи за овој запис:"
 
 #: dt-assets/parts/nav-topbar.php:88
 msgid "Theme Update Available!"
-msgstr "На располагање е ажурурање на темата."
+msgstr "На располагање е ажурурање на темата!"
 
 #: dt-assets/parts/nav-topbar.php:110
 msgid "New Release Available"
@@ -2129,7 +2129,7 @@ msgstr "Нов контакт"
 #: dt-contacts/base-setup.php:325
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
-msgstr "Контактот е нов во системот"
+msgstr "Контактот е нов во системот."
 
 #: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
@@ -2149,7 +2149,7 @@ msgstr "Доделено на"
 msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr ""
-"Избери ја главната личност која е одговорна за известување за овој контакт"
+"Избери ја главната личност која е одговорна за известување за овој контакт."
 
 #: dt-contacts/base-setup.php:348
 msgid "Sub-assigned to"
@@ -2604,7 +2604,7 @@ msgstr ""
 #: dt-contacts/module-access.php:216
 msgctxt "Reason Paused label"
 msgid "Contact on vacation"
-msgstr "Контактот е на одмор."
+msgstr "Контактот е на одмор"
 
 #: dt-contacts/module-access.php:217
 msgctxt "Reason Paused label"
@@ -2772,7 +2772,7 @@ msgstr "Додели на"
 
 #: dt-contacts/module-access.php:628
 msgid "This contact has been assigned to you."
-msgstr "Овој контак ти е доделен на тебе"
+msgstr "Овој контак ти е доделен на тебе."
 
 #: dt-contacts/module-access.php:629
 msgid "Accept"
@@ -3083,7 +3083,7 @@ msgstr "Личен телефон"
 
 #: dt-core/configuration/config-site-defaults.php:380
 msgid "Personal phone is private to the team, not for distribution."
-msgstr "Личниот тел број е само за тимот, не е за дистрибуција"
+msgstr "Личниот тел број е само за тимот, не е за дистрибуција."
 
 #: dt-core/configuration/config-site-defaults.php:384
 msgid "Personal Email"
@@ -3091,7 +3091,7 @@ msgstr "Лична е-пошта"
 
 #: dt-core/configuration/config-site-defaults.php:387
 msgid "Personal email is private to the team, not for distribution."
-msgstr "Личната е-пошта е само за тимот, не е за дистрибуција"
+msgstr "Личната е-пошта е само за тимот, не е за дистрибуција."
 
 #: dt-core/configuration/config-site-defaults.php:391
 msgid "Personal Address"
@@ -3099,7 +3099,7 @@ msgstr "Лична адреса"
 
 #: dt-core/configuration/config-site-defaults.php:394
 msgid "Personal address is private to the team, not for distribution."
-msgstr "Личната адреса е само за тимот, не е за дистрибуција"
+msgstr "Личната адреса е само за тимот, не е за дистрибуција."
 
 #: dt-core/configuration/config-site-defaults.php:398
 msgid "Work Phone"
@@ -3107,7 +3107,7 @@ msgstr "Телефон на работа"
 
 #: dt-core/configuration/config-site-defaults.php:401
 msgid "Work phone is for distribution to contacts and seekers."
-msgstr "Телефонот на работа е само за тимот, не е за дистрибуција"
+msgstr "Телефонот на работа е само за тимот, не е за дистрибуција."
 
 #: dt-core/configuration/config-site-defaults.php:405
 msgid "Work Email"
@@ -3115,7 +3115,7 @@ msgstr "Е-пошта од работа"
 
 #: dt-core/configuration/config-site-defaults.php:408
 msgid "Work email is for distribution to contacts and seekers."
-msgstr "Е-поштата од работа е само за тимот, не е за дистрибуција"
+msgstr "Е-поштата од работа е само за тимот, не е за дистрибуција."
 
 #: dt-core/configuration/config-site-defaults.php:412
 msgid "Work Facebook"
@@ -3332,7 +3332,7 @@ msgstr "Стаус на група"
 #: dt-groups/base-setup.php:117
 msgctxt "field description"
 msgid "Set the current status of the group."
-msgstr "Постави го моменталниот статус на групата"
+msgstr "Постави го моменталниот статус на групата."
 
 #: dt-groups/base-setup.php:122
 msgctxt "field description"
@@ -3378,7 +3378,7 @@ msgstr "Пред-група"
 #: dt-groups/base-setup.php:166
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
-msgstr "Група доминантно составена од неверници"
+msgstr "Група доминантно составена од неверници."
 
 #: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
@@ -3423,7 +3423,7 @@ msgstr "Крштевање"
 #: dt-groups/base-setup.php:198
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
-msgstr "Групата има крштевања"
+msgstr "Групата има крштевања."
 
 #: dt-groups/base-setup.php:202
 msgid "Bible Study"
@@ -3644,7 +3644,7 @@ msgstr ""
 #: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
-msgstr "Групи во кои е зачленет овој контакт"
+msgstr "Групи во кои е зачленет овој контакт."
 
 #: dt-groups/base-setup.php:439
 msgid "Leader of Group"
@@ -3982,7 +3982,7 @@ msgstr "Активност по ден"
 #: dt-metrics/combined/daily-activity.php:72 dt-metrics/contacts/sources.php:89
 #: dt-metrics/personal/activity-highlights.php:55
 msgid "Filter to date range"
-msgstr "Филтер до одредена дата:"
+msgstr "Филтер до одредена дата"
 
 #: dt-metrics/combined/daily-activity.php:75
 msgid "This Week"
@@ -4180,7 +4180,7 @@ msgstr "Ова ги прикажува само контактите со „а�
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
-msgstr "Активни конакти, според извор и одредници на верата."
+msgstr "Активни конакти, според извор и одредници на верата"
 
 #: dt-metrics/contacts/sources.php:98
 msgid ""
@@ -4636,7 +4636,7 @@ msgstr[1] "%s пред повеќе години"
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "пред повеќе од %s година"
-msgstr[1] ""
+msgstr[1] "пред повеќе од %s години"
 
 #: dt-notifications/notifications.php:909
 #, php-format
@@ -5931,7 +5931,7 @@ msgstr "Овој %s треба да се ажурира."
 
 #: single-template.php:101 single-template.php:109
 msgid "Please provide an update by posting a comment."
-msgstr "Ве молиме ажурирајте ги информациите со ставање коментар"
+msgstr "Ве молиме ажурирајте ги информациите со ставање коментар."
 
 #: single-template.php:258
 msgid "Edit all details fields"
@@ -6006,7 +6006,7 @@ msgstr "Додадете нов ред"
 
 #: template-new-post.php:153
 msgid "Show all fields"
-msgstr "Прикажи ги сите полиња:"
+msgstr "Прикажи ги сите полиња"
 
 #: template-new-post.php:156
 msgid "Hide fields"
@@ -6078,7 +6078,7 @@ msgid ""
 "willknow your availability to receive new contacts"
 msgstr ""
 "Постави датуми кога ќе бидеш на пат или зафатен за да може Диспечерот дазнае "
-"кога си достапен да примиш нови контакти."
+"кога си достапен да примиш нови контакти"
 
 #: template-settings.php:432
 msgid "Schedule Travel or Dates Unavailable"

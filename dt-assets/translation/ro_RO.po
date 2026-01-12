@@ -260,7 +260,7 @@ msgstr ""
 "Folosind filtrul curent, e-mailurile disponibile sunt grupate câte 50 și pot "
 "fi lansate în clientul dvs. de e-mail implicit pe grupuri. Mulți furnizori "
 "de e-mail impun o limită de 50 pentru e-mailurile BCC. Puteți deschide toate "
-"grupurile simultan folosind butonul \\\"Deschide tot\\\". Dacă lista este "
+"grupurile simultan folosind butonul \"Deschide tot\". Dacă lista este "
 "prea mare, acest lucru ar putea alerta furnizorul dvs. de e-mail. "
 "Instrumentul de e-mail BCC este destinat pentru e-mailuri de grup mic. E-"
 "mailurile în masă ar trebui gestionate prin furnizori de e-mail în masă."
@@ -382,10 +382,7 @@ msgstr "Niciun câmp selectat"
 #, php-format
 msgid ""
 "Select all the %1$s you want to update from the list, and update them below"
-msgstr ""
-"Selectați toate %1$s pe care doriți să le actualizați din listă și "
-"actualizați-le mai josSelectați din listă toate %1$s pe care doriți să le "
-"actualizați și actualizați-le mai jos"
+msgstr "Selectați toate %1$s pe care doriți să le actualizați din listă și actualizați-le mai jos"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
@@ -931,7 +928,7 @@ msgstr "Se afișează %1$s articole care se potrivesc cu %2$s"
 #: dt-assets/functions/enqueue-scripts.php:319 template-settings.php:120
 #: template-settings.php:599
 msgid "Edit"
-msgstr "Editați  ×"
+msgstr "Editați ×"
 
 #: dt-assets/functions/enqueue-scripts.php:123
 #: dt-reports/magic-url-setup.php:496 template-settings.php:304
@@ -992,12 +989,12 @@ msgstr "%3$s și %1$s au reacționat cu un emoji %2$s"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Selectați limba vorbită și faceți clic pe \\\"Începe înregistrarea\\\" "
+"Selectați limba vorbită și faceți clic pe \"Începe înregistrarea\" "
 "pentru a începe."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Faceți clic pe \\\"Începe înregistrarea\\\" pentru a începe."
+msgstr "Faceți clic pe \"Începe înregistrarea\" pentru a începe."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -2111,7 +2108,7 @@ msgstr "Necesită actualizare"
 #: dt-contacts/base-setup.php:310 dt-contacts/module-access.php:142
 #: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
-msgstr "Statutul  Contactului"
+msgstr "Statutul Contactului"
 
 #: dt-contacts/base-setup.php:311
 msgctxt "Contact Status field description"
@@ -2167,7 +2164,7 @@ msgstr "Reatribuit către"
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
-"Contactul sau utilizatorul care asistă utilizatorul Atribuit  să urmărească "
+"Contactul sau utilizatorul care asistă utilizatorul Atribuit să urmărească "
 "contactul."
 
 #: dt-contacts/base-setup.php:360
@@ -2254,7 +2251,7 @@ msgstr "Alte"
 
 #: dt-contacts/base-setup.php:628
 msgid "This record might be a duplicate of: "
-msgstr "Această înregistrare ar putea fi un duplicat al:"
+msgstr "Această înregistrare ar putea fi un duplicat al: "
 
 #: dt-contacts/base-setup.php:634 dt-contacts/duplicates-merging.php:513
 #: dt-contacts/duplicates-merging.php:595
@@ -2317,7 +2314,7 @@ msgstr "Reatribuite mie"
 #, php-format
 msgctxt "Personal records"
 msgid "Connected %s"
-msgstr "%s conectate "
+msgstr "%s conectate"
 
 #: dt-contacts/base-setup.php:790 dt-contacts/base-setup.php:798
 #: dt-contacts/base-setup.php:834 dt-contacts/base-setup.php:835
@@ -2343,11 +2340,11 @@ msgstr "Transfer Contact în ambele direcții"
 
 #: dt-contacts/contacts-transfer.php:32
 msgid "Contact Transfer Sending Only"
-msgstr "Transfer Contact numai Trimiterea "
+msgstr "Transfer Contact numai Trimiterea"
 
 #: dt-contacts/contacts-transfer.php:33
 msgid "Contact Transfer Receiving Only"
-msgstr "Transfer Contact numai Primirea "
+msgstr "Transfer Contact numai Primirea"
 
 #: dt-contacts/contacts-transfer.php:57
 msgid "This contact has been transferred"
@@ -3897,7 +3894,7 @@ msgstr "Evanghelizare"
 
 #: dt-metrics/combined/critical-path.php:80
 msgid "Filter Critical Path fields"
-msgstr "Filtru  câmpurile Drumul Critic "
+msgstr "Filtru câmpurile Drumul Critic"
 
 #: dt-metrics/combined/critical-path.php:81
 msgid "Movement Tracking"
@@ -4723,7 +4720,7 @@ msgstr "%1$s a comentat la %2$s spunând: %3$s"
 #, php-format
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
-msgstr "%1$s v-a reatribuit  pe %2$s."
+msgstr "%1$s v-a reatribuit pe %2$s."
 
 #: dt-notifications/notifications.php:949
 #, php-format
@@ -5213,7 +5210,7 @@ msgstr "S-a adăugat %1$s: %2$s"
 #, php-format
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
-msgstr "Actualizat %1$s de la %2$s  la %3$s"
+msgstr "Actualizat %1$s de la %2$s la %3$s"
 
 #: dt-posts/posts.php:570
 #, php-format
@@ -5805,7 +5802,7 @@ msgstr "Adăugați utilizator"
 #, php-format
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "%1$s a fost acceptat  pe  %2$s după %3$s zile"
+msgstr "%1$s a fost acceptat pe %2$s după %3$s zile"
 
 #: dt-users/user-management.php:181
 #, php-format
@@ -6080,7 +6077,7 @@ msgstr "Încărcați mai multe notificări"
 
 #: template-settings.php:59 template-settings.php:333
 msgid "Multiplier Preferences"
-msgstr "Preferințele  multiplicatorului"
+msgstr "Preferințele multiplicatorului"
 
 #: template-settings.php:68
 msgid "Invite User"
@@ -6174,7 +6171,7 @@ msgstr "necesar"
 
 #: template-settings.php:562
 msgid "Follow all contacts"
-msgstr "Urmăriți toate  contactele"
+msgstr "Urmăriți toate contactele"
 
 #: template-settings.php:564
 msgid ""

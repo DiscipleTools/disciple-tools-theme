@@ -259,7 +259,7 @@ msgstr ""
 "С текущим фильтром доступные адреса электронной почты группируются по 50 и "
 "могут быть открыты в вашем почтовом клиенте по умолчанию группами. Многие "
 "почтовые провайдеры устанавливают лимит в 50 адресов для скрытой копии. Вы "
-"можете открыть все группы сразу с помощью кнопки \\\"Открыть все\\\". Если "
+"можете открыть все группы сразу с помощью кнопки \"Открыть все\". Если "
 "список слишком большой, это может вызвать предупреждение от вашего почтового "
 "провайдера. Инструмент скрытой копии предназначен для помощи в отправке "
 "писем небольшим группам. Массовая рассылка должна осуществляться через "
@@ -909,7 +909,7 @@ msgstr "Использованные местоположения"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Нет результатов по запросу \\\"{{query}}\\\""
+msgstr "Нет результатов по запросу \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -988,11 +988,11 @@ msgstr "%3$s и %1$s отреагировали с помощью эмодзи %
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "Выберите язык и нажмите \\\"Начать запись\\\", чтобы начать."
+msgstr "Выберите язык и нажмите \"Начать запись\", чтобы начать."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Нажмите \\\"Начать запись\\\", чтобы начать."
+msgstr "Нажмите \"Начать запись\", чтобы начать."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -4027,7 +4027,6 @@ msgid_plural "%s months ago"
 msgstr[0] "%s месяц назад"
 msgstr[1] "%s месяца назад"
 msgstr[2] "%s месяцев назад"
-msgstr[3] "%s месяцев назад"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4622,7 +4621,6 @@ msgid_plural "%s minutes ago"
 msgstr[0] "%s минуту назад"
 msgstr[1] "%s минуты назад"
 msgstr[2] "%s минут назад"
-msgstr[3] "%s минут назад"
 
 #: dt-notifications/notifications.php:481
 #, php-format
@@ -4631,7 +4629,6 @@ msgid_plural "%s hours ago"
 msgstr[0] "%s час назад"
 msgstr[1] "%s часа назад"
 msgstr[2] "%s часов назад"
-msgstr[3] "%s часов назад"
 
 #: dt-notifications/notifications.php:486
 #, php-format
@@ -4640,7 +4637,6 @@ msgid_plural "%s days ago"
 msgstr[0] "%s день назад"
 msgstr[1] "%s дня назад"
 msgstr[2] "%s дней назад"
-msgstr[3] "%s дней назад"
 
 #: dt-notifications/notifications.php:491
 #, php-format
@@ -4649,7 +4645,6 @@ msgid_plural "%s weeks ago"
 msgstr[0] "%s неделю назад"
 msgstr[1] "%s недели назад"
 msgstr[2] "%s недель назад"
-msgstr[3] "%s недель назад"
 
 #: dt-notifications/notifications.php:510
 #, php-format
@@ -4658,7 +4653,6 @@ msgid_plural "%s years ago"
 msgstr[0] "%s год назад"
 msgstr[1] "%s года назад"
 msgstr[2] "%s лет назад"
-msgstr[3] "%s лет назад"
 
 #: dt-notifications/notifications.php:514
 #, php-format
@@ -4667,7 +4661,6 @@ msgid_plural "over %s years ago"
 msgstr[0] "больше %s года назад"
 msgstr[1] "больше %s лет назад"
 msgstr[2] "больше %s лет назад"
-msgstr[3] "больше %s лет назад"
 
 #: dt-notifications/notifications.php:909
 #, php-format
@@ -4792,7 +4785,7 @@ msgstr "Связи"
 
 #: dt-people-groups/people-groups-base.php:347
 msgid "Joshua Project"
-msgstr "Проект \\\"Джошуа\\\" (Joshua Project)"
+msgstr "Проект \"Джошуа\" (Joshua Project)"
 
 #: dt-people-groups/people-groups-post-type.php:204
 msgid "Add/Update People Group"
@@ -5242,7 +5235,7 @@ msgstr "Поделился с %s"
 #, php-format
 msgctxt "message"
 msgid "Unshared with %s"
-msgstr "Отменил \\\"поделиться\\\" с %s"
+msgstr "Отменил \"поделиться\" с %s"
 
 #: dt-posts/posts.php:2527
 msgid "Removed User"
@@ -5447,7 +5440,7 @@ msgstr "Зона ответственности"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Администратор должен включить опцию \\\"Добавлять новых пользователей\\\" в "
+"Администратор должен включить опцию \"Добавлять новых пользователей\" в "
 "настройках мультисайта:"
 
 #: dt-users/template-new-user.php:80

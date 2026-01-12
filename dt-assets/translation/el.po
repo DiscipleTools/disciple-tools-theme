@@ -49,7 +49,7 @@ msgstr "Λυπούμαστε, δεν έχετε δικαίωμα προβολή�
 
 #: 403.php:36
 msgid "Request permission from your administrator."
-msgstr "Αιτηθείτε άδεια από τον διαχειριστή σας"
+msgstr "Αιτηθείτε άδεια από τον διαχειριστή σας."
 
 #: 403.php:37
 msgid "Request Record Access Permission"
@@ -4685,7 +4685,7 @@ msgstr[1] "άνω από %s χρόνια πριν"
 #, php-format
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "Το %s δημιουργήθηκε και ανατέθηκε σε εσάς"
+msgstr "Το %s δημιουργήθηκε και ανατέθηκε σε εσάς."
 
 #: dt-notifications/notifications.php:911
 #, php-format
@@ -4745,7 +4745,7 @@ msgstr "Ο/Η %1$s άλλαξε τα στοιχεία επικοινωνίας �
 #, php-format
 msgctxt "User1 declined assignment on: contact1"
 msgid "%1$s declined assignment on: %2$s."
-msgstr "Ο/Η %1$s απέρριψε ανάθεση σε: %2$s"
+msgstr "Ο/Η %1$s απέρριψε ανάθεση σε: %2$s."
 
 #: dt-people-groups/people-groups-base.php:111
 #: dt-people-groups/people-groups-base.php:121

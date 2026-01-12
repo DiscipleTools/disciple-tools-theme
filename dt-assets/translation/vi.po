@@ -258,7 +258,7 @@ msgstr ""
 "Bằng cách sử dụng bộ lọc hiện tại, các email có sẵn được nhóm thành 50 và có "
 "thể được khởi chạy vào ứng dụng email khách mặc định của bạn theo nhóm. "
 "Nhiều nhà cung cấp email đặt giới hạn 50 cho email BCC. Bạn có thể mở tất cả "
-"các nhóm cùng một lúc bằng nút \\\"Mở tất cả\\\". Nếu danh sách quá lớn, "
+"các nhóm cùng một lúc bằng nút \"Mở tất cả\". Nếu danh sách quá lớn, "
 "điều này có thể cảnh báo nhà cung cấp email của bạn. Công cụ email BCC nhằm "
 "hỗ trợ các email nhóm nhỏ. Email số lượng lớn nên được xử lý thông qua các "
 "nhà cung cấp dịch vụ email."
@@ -907,7 +907,7 @@ msgstr "Vị trí Đã sử dụng"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Không tìm thấy kết quả nào phù hợp với \\\"{{query}}\\\""
+msgstr "Không tìm thấy kết quả nào phù hợp với \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -986,11 +986,11 @@ msgstr "%3$s và %1$s đã tương tác bằng emoji %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "Chọn ngôn ngữ nói và nhấp vào \\\"Bắt đầu ghi âm\\\" để bắt đầu."
+msgstr "Chọn ngôn ngữ nói và nhấp vào \"Bắt đầu ghi âm\" để bắt đầu."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Nhấp vào \\\"Bắt đầu ghi âm\\\" để bắt đầu."
+msgstr "Nhấp vào \"Bắt đầu ghi âm\" để bắt đầu."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1530,10 +1530,10 @@ msgid ""
 "you attempted to reach this contact 4 times, but they did not answer. This "
 "action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"Ví dụ: Nếu bạn bấm vào nút \\\"Không Trả lời\\\" 4 lần, chúng tôi sẽ ghi lại "
+"Ví dụ: Nếu bạn bấm vào nút \"Không Trả lời\" 4 lần, chúng tôi sẽ ghi lại "
 "rằng bạn đã cố gắn liên lạc với liên hệ này 4 lần, nhưng không trả lời. Hành "
-"động này cũng sẽ thay đổi \\\"Con đường của Người tìm kiếm\\\" thành \\\"Đã "
-"Cố gắng Liên hệ\\\"."
+"động này cũng sẽ thay đổi \"Con đường của Người tìm kiếm\" thành \"Đã "
+"Cố gắng Liên hệ\"."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1572,8 +1572,8 @@ msgstr ""
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
-"Bạn có thể lọc phần này theo \\\"Tất cả\\\", \\\"Bình luận\\\" hoặc \\\"Hoạt "
-"động\\\"."
+"Bạn có thể lọc phần này theo \"Tất cả\", \"Bình luận\" hoặc \"Hoạt "
+"động\"."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
@@ -1599,7 +1599,7 @@ msgid ""
 "By clicking 'Edit', you will be able adjust things like the language that "
 "this system operates in."
 msgstr ""
-"Bằng cách bấm vào \\\"Chỉnh sửa\\\", bạn sẽ có thể điều chỉnh những thứ như "
+"Bằng cách bấm vào \"Chỉnh sửa\", bạn sẽ có thể điều chỉnh những thứ như "
 "ngôn ngữ mà hệ thống này sử dụng để hoạt động."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
@@ -1613,7 +1613,7 @@ msgid ""
 "These are the areas you are responsible for. Clicking the 'Add' button will "
 "bring up a list of locations to choose from."
 msgstr ""
-"Đây là những khu vực bạn chịu trách nhiệm. Bấm vào nút \\\"Thêm\\\" sẽ hiển "
+"Đây là những khu vực bạn chịu trách nhiệm. Bấm vào nút \"Thêm\" sẽ hiển "
 "thị danh sách các vị trí để bạn lựa chọn."
 
 #: dt-assets/parts/modals/modal-help.php:72
@@ -1687,7 +1687,7 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
-"Bấm vào nút \\\"Tất cả\\\" để hiển thị danh sách đầy đủ tất cả các thông báo "
+"Bấm vào nút \"Tất cả\" để hiển thị danh sách đầy đủ tất cả các thông báo "
 "của bạn."
 
 #: dt-assets/parts/modals/modal-help.php:91
@@ -1696,7 +1696,7 @@ msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
 msgstr ""
-"Bấm vào nút \\\"Chưa đọc\\\" để hiển thị danh sách tất cả các thông báo chưa "
+"Bấm vào nút \"Chưa đọc\" để hiển thị danh sách tất cả các thông báo chưa "
 "đọc của bạn."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
@@ -1713,8 +1713,8 @@ msgid ""
 "been read."
 msgstr ""
 "Nếu bạn không muốn bấm vào từng vòng tròn được tô màu ở phía bên phải của "
-"mỗi hàng để cho biết bạn đã đọc thông báo, hãy bấm vào liên kết \\\"Đánh dấu "
-"Tất cả là Đã đọc\\\" ở trên cùng để nhanh chóng điều chỉnh tất cả thông báo "
+"mỗi hàng để cho biết bạn đã đọc thông báo, hãy bấm vào liên kết \"Đánh dấu "
+"Tất cả là Đã đọc\" ở trên cùng để nhanh chóng điều chỉnh tất cả thông báo "
 "là đã đọc."
 
 #: dt-assets/parts/modals/modal-help.php:95
@@ -1726,7 +1726,7 @@ msgid ""
 "whether to you will receive a notification for any update that happens in "
 "the system."
 msgstr ""
-"Bấm vào liên kết \\\"Cài đặt\\\" để chuyển đến khu vực cài đặt thông báo để "
+"Bấm vào liên kết \"Cài đặt\" để chuyển đến khu vực cài đặt thông báo để "
 "điều chỉnh liệu bạn có muốn xem thông báo về bình luận mới, các thay đổi đối "
 "với thông tin liên hệ, Cột mốc của Liên hệ và chỉ số Sức khỏe Nhóm hay "
 "không, cũng như liệu bạn có nhận được thông báo cho bất kỳ cập nhật nào xảy "
@@ -2153,8 +2153,8 @@ msgstr "Gán lại cho"
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
-"Người liên hệ hoặc Người dùng đang trợ giúp người dùng ở mục \\\"Được chỉ "
-"định cho\\\" để theo sát liên hệ này."
+"Người liên hệ hoặc Người dùng đang trợ giúp người dùng ở mục \"Được chỉ "
+"định cho\" để theo sát liên hệ này."
 
 #: dt-contacts/base-setup.php:360
 msgid "Sub-assigned on other Contacts"
@@ -4189,8 +4189,8 @@ msgstr "Các liên hệ đang hoạt động, theo nguồn và đường lối c
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
 msgstr ""
-"Thao tác này chỉ hiển thị người liên hệ nào hiện đang có trạng thái \\\"hoạt "
-"động\\\" ngay lúc này."
+"Thao tác này chỉ hiển thị người liên hệ nào hiện đang có trạng thái \"hoạt "
+"động\" ngay lúc này."
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
@@ -5420,7 +5420,7 @@ msgstr "Phạm vi Trách nhiệm"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Quản trị viên phải bật tùy chọn \\\"Thêm Người dùng Mới\\\" trong cài đặt đa "
+"Quản trị viên phải bật tùy chọn \"Thêm Người dùng Mới\" trong cài đặt đa "
 "trang:"
 
 #: dt-users/template-new-user.php:80

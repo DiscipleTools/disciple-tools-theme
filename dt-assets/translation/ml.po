@@ -255,7 +255,7 @@ msgid ""
 msgstr ""
 "നിലവിലെ ഫിൽട്ടർ ഉപയോഗിച്ച്, ലഭ്യമായ ഇമെയിലുകൾ 50 വീതം ഗ്രൂപ്പ് ചെയ്തിരിക്കുന്നു, ഗ്രൂപ്പ് "
 "അനുസരിച്ച് നിങ്ങളുടെ ഡിഫോൾട്ട് ഇമെയിൽ ക്ലയന്റിലേക്ക് ലോഞ്ച് ചെയ്യാവുന്നതാണ്. പല ഇമെയിൽ "
-"ദാതാക്കളും BCC ഇമെയിലുകളിൽ 50 എന്ന പരിധി വയ്ക്കുന്നു. \\\"എല്ലാം തുറക്കുക\\\" ബട്ടൺ "
+"ദാതാക്കളും BCC ഇമെയിലുകളിൽ 50 എന്ന പരിധി വയ്ക്കുന്നു. \"എല്ലാം തുറക്കുക\" ബട്ടൺ "
 "ഉപയോഗിച്ച് എല്ലാ ഗ്രൂപ്പുകളും ഒരേസമയം തുറക്കാം. ലിസ്റ്റ് വളരെ വലുതാണെങ്കിൽ, ഇത് നിങ്ങളുടെ "
 "ഇമെയിൽ ദാതാവിനെ അലേർട്ട് ചെയ്തേക്കാം. ചെറിയ ഗ്രൂപ്പ് ഇമെയിലുകളെ സഹായിക്കാനാണ് BCC "
 "ഇമെയിൽ ടൂൾ ഉദ്ദേശിക്കുന്നത്. ബൾക്ക് ഇമെയിൽ ബൾക്ക് ഇമെയിൽ ദാതാക്കൾ വഴി കൈകാര്യം ചെയ്യണം."
@@ -905,7 +905,7 @@ msgstr "ഉപയോഗിച്ച ലൊക്കേഷനുകൾ"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "\\\"{{അന്വേഷണം}}\\\" പൊരുത്തപ്പെടുന്ന ഫലങ്ങളൊന്നും കണ്ടെത്തിയില്ല"
+msgstr "\"{{അന്വേഷണം}}\" പൊരുത്തപ്പെടുന്ന ഫലങ്ങളൊന്നും കണ്ടെത്തിയില്ല"
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -984,11 +984,11 @@ msgstr "%3$s ഉം %1$s ഉം %2$s ഇമോജികളുമായി പ്
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "സംസാരിക്കുന്ന ഭാഷ തിരഞ്ഞെടുത്ത് \\\"റെക്കോർഡിംഗ് ആരംഭിക്കുക\\\" ക്ലിക്ക് ചെയ്യുക."
+msgstr "സംസാരിക്കുന്ന ഭാഷ തിരഞ്ഞെടുത്ത് \"റെക്കോർഡിംഗ് ആരംഭിക്കുക\" ക്ലിക്ക് ചെയ്യുക."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "ആരംഭിക്കാൻ \\\"റെക്കോർഡിംഗ് ആരംഭിക്കുക\\\" ക്ലിക്ക് ചെയ്യുക."
+msgstr "ആരംഭിക്കാൻ \"റെക്കോർഡിംഗ് ആരംഭിക്കുക\" ക്ലിക്ക് ചെയ്യുക."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -3978,7 +3978,7 @@ msgstr "കഴിഞ്ഞ മാസം"
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s മാസം മുമ്പ്"
-msgstr[1] ""
+msgstr[1] "%s മാസം മുമ്പ്"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -4568,42 +4568,42 @@ msgstr "ദിവസ ഡൈജസ്റ്റ്"
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "%s മിനിറ്റ് മുമ്പ്"
-msgstr[1] ""
+msgstr[1] "%s മിനിറ്റ് മുമ്പ്"
 
 #: dt-notifications/notifications.php:481
 #, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "%s മണിക്കൂർ മുമ്പ്"
-msgstr[1] ""
+msgstr[1] "%s മണിക്കൂർ മുമ്പ്"
 
 #: dt-notifications/notifications.php:486
 #, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s ദിവസം മുമ്പ്"
-msgstr[1] ""
+msgstr[1] "%s ദിവസം മുമ്പ്"
 
 #: dt-notifications/notifications.php:491
 #, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "%s ആഴ്ച മുമ്പ്"
-msgstr[1] ""
+msgstr[1] "%s ആഴ്ച മുമ്പ്"
 
 #: dt-notifications/notifications.php:510
 #, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "%s വർഷം മുമ്പ്"
-msgstr[1] ""
+msgstr[1] "%s വർഷം മുമ്പ്"
 
 #: dt-notifications/notifications.php:514
 #, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "%s വർഷം മുമ്പ്"
-msgstr[1] ""
+msgstr[1] "%s വർഷം മുമ്പ്"
 
 #: dt-notifications/notifications.php:909
 #, php-format
@@ -5380,7 +5380,7 @@ msgstr "ഉത്തരവാദിത്ത പരിരക്ഷ"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"അഡ്മിനിസ്ട്രേറ്റർ മൾട്ടിസൈറ്റ് ക്രമീകരണങ്ങളിൽ \\\"പുതിയ ഉപയോക്താക്കളെ ചേർക്കുക\\\" ഓപ്ഷൻ "
+"അഡ്മിനിസ്ട്രേറ്റർ മൾട്ടിസൈറ്റ് ക്രമീകരണങ്ങളിൽ \"പുതിയ ഉപയോക്താക്കളെ ചേർക്കുക\" ഓപ്ഷൻ "
 "പ്രവർത്തനക്ഷമമാക്കണം:"
 
 #: dt-users/template-new-user.php:80

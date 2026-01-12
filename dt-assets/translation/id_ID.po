@@ -257,7 +257,7 @@ msgstr ""
 "Dengan menggunakan filter saat ini, email yang tersedia dikelompokkan per "
 "50dan dapat diluncurkan ke klien email default Anda berdasarkan "
 "kelompok.Banyak penyedia email membatasi 50 email BCC. Anda dapat membuka "
-"semuakelompok sekaligus menggunakan tombol \\\\\\\"Buka Semua\\\\\\\". "
+"semuakelompok sekaligus menggunakan tombol \"Buka Semua\". "
 "Jikadaftarnya terlalu besar, ini mungkin memicu peringatan dari penyedia "
 "emailAnda. Alat email BCC dimaksudkan untuk membantu email kelompok kecil. "
 "Emailmassal harus ditangani melalui penyedia email massal."
@@ -907,7 +907,7 @@ msgstr "Lokasi yang digunakan"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "Tiada hasil yang sesuai dengan pencarian \\\\\\\"{{query}}\\\\\\\""
+msgstr "Tiada hasil yang sesuai dengan pencarian \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -987,11 +987,11 @@ msgstr "%3$s dan %1$s bereaksi dengan emoji %2$s"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Pilih bahasa lisan dan klik \\\\\\\"Mulai Merekam\\\\\\\" untuk memulai."
+"Pilih bahasa lisan dan klik \"Mulai Merekam\" untuk memulai."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Klik \\\\\\\"Mulai Merekam\\\\\\\" untuk memulai."
+msgstr "Klik \"Mulai Merekam\" untuk memulai."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1474,7 +1474,7 @@ msgstr "Dipilih"
 
 #: dt-assets/parts/merge-details.php:60
 msgid "Click merge to continue."
-msgstr "Klik \\\\\\\"Gabung\\\\\\\" untuk lanjut"
+msgstr "Klik \"Gabung\" untuk lanjut"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:11
 msgid "Search Query..."
@@ -1530,10 +1530,10 @@ msgid ""
 "thatyou attempted to reach this contact 4 times, but they did not answer. "
 "Thisaction will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"Contohnya: Jikalau Anda klik pada tombol \\\\\\\"Tidak Menjawab\\\\\\\" "
+"Contohnya: Jikalau Anda klik pada tombol \"Tidak Menjawab\" "
 "4kali, kami akan mencatat bahwa Anda telah mencoba untuk hubungi kontak ini "
-"4kali, tetapi mereka tidak menjawab. Aksi ini akan mengubah \\\\\\"
-"\"PerjalananPencari\\\\\\\" menjadi \\\\\\\"Hubungi pencoba\\\\\\\""
+"4kali, tetapi mereka tidak menjawab. Aksi ini akan mengubah "
+"\"PerjalananPencari\" menjadi \"Hubungi pencoba\""
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1572,9 +1572,7 @@ msgstr ""
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
-msgstr ""
-"Bagian ini dapat difilter oleh \\\\\\\"Semua\\\\\\\", \\\\\\\"Komentar\\\\\\"
-"\", atau \\\\\\\"Kegiatan\\\\\\\"."
+msgstr "Bagian ini dapat difilter oleh \"Semua\", \"Komentar\", atau \"Kegiatan\"."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
@@ -1600,7 +1598,7 @@ msgid ""
 "By clicking 'Edit', you will be able adjust things like the language "
 "thatthis system operates in."
 msgstr ""
-"Dengan mengklik \\\\\\\"Mengedit\\\\\\\", Anda dapat mengubah hal-halseperti "
+"Dengan mengklik \"Mengedit\", Anda dapat mengubah hal-halseperti "
 "bahasa yang digunakan sistem ini."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
@@ -1690,7 +1688,7 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
-"Klik pada tombol \\\\\\\"Semua\\\\\\\" untuk menampilkan catatan penuh "
+"Klik pada tombol \"Semua\" untuk menampilkan catatan penuh "
 "darisemua notifikasi Anda."
 
 #: dt-assets/parts/modals/modal-help.php:91
@@ -1699,7 +1697,7 @@ msgid ""
 "Click the 'Unread' button to show the list of all of your "
 "unreadnotifications."
 msgstr ""
-"Klik pada tombol \\\\\\\"Belum Dibaca\\\\\\\" untuk menampilkan catatan "
+"Klik pada tombol \"Belum Dibaca\" untuk menampilkan catatan "
 "darisegala notifikasi Anda yang belum dibaca."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
@@ -3671,8 +3669,8 @@ msgstr "Pilih Semua"
 #: dt-groups/base-setup.php:571
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr ""
-"Untuk menambah anggota baru, silahkan klik \\\\\\\"membuat\\\\\\\" atau \\\\"
-"\\\"memilih\\\\\\\""
+"Untuk menambah anggota baru, silahkan klik \"membuat\" atau "
+"\"memilih\""
 
 #: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
@@ -3685,7 +3683,7 @@ msgid ""
 "In the 'Member List' field, type the name of an existing contact to add "
 "themto this group."
 msgstr ""
-"Dalam field \\\\\\\"Daftar Anggota\\\\\\\", ketiklah nama kontak yang "
+"Dalam field \"Daftar Anggota\", ketiklah nama kontak yang "
 "sudahada, dan tambahkan mereka ke dalam kelompok ini."
 
 #: dt-groups/base-setup.php:606
@@ -3699,7 +3697,7 @@ msgid ""
 "leftquadrant and going clockwise and the fifth being in the middle, they "
 "standfor:"
 msgstr ""
-"Ada lima kotak dalam gambar \\\\\\\"Empat Fields.\\\\\\\" Dari atas dankiri, "
+"Ada lima kotak dalam gambar \"Empat Fields.\" Dari atas dankiri, "
 "dan berlajut sesuai searah jarum jam, dan yang ke-lima di tengah,kotak ini "
 "mewakili sebagai yang berikut:"
 
@@ -4185,7 +4183,7 @@ msgstr "Kontak-kontak yang aktif, ditampilkan secara sumber dan jalan pencari"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
-msgstr "Hanya menampilkan kontak-kontak dengan status \\\\\\\"aktif\\\\\\\""
+msgstr "Hanya menampilkan kontak-kontak dengan status \"aktif\""
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
@@ -5419,7 +5417,7 @@ msgstr "Cakupan Tanggung Jawab"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Administrator harus mengaktifkan opsi \\\\\\\"Tambah Pengguna Baru\\\\\\\"di "
+"Administrator harus mengaktifkan opsi \"Tambah Pengguna Baru\"di "
 "pengaturan multisite:"
 
 #: dt-users/template-new-user.php:80

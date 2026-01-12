@@ -256,7 +256,7 @@ msgstr ""
 "باستخدام عامل التصفية الحالي، يتم تجميع رسائل البريد الإلكتروني المتاحة في "
 "مجموعات من 50 ويمكن تشغيلها في برنامج البريد الإلكتروني الافتراضي حسب "
 "المجموعة. يضع العديد من مزودي البريد الإلكتروني حدًا أقصى 50 على رسائل النسخ "
-"الخفية. يمكنك فتح جميع المجموعات دفعة واحدة باستخدام زر \\\"فتح الكل\\\". "
+"الخفية. يمكنك فتح جميع المجموعات دفعة واحدة باستخدام زر \"فتح الكل\". "
 "إذا كانت القائمة كبيرة جدًا، فقد ينبه ذلك مزود البريد الإلكتروني الخاص بك. "
 "أداة البريد الإلكتروني للنسخ الخفية مخصصة للمساعدة في رسائل البريد "
 "الإلكتروني للمجموعات الصغيرة. يجب التعامل مع البريد الإلكتروني الجماعي من "
@@ -904,7 +904,7 @@ msgstr "المواقع المستعملة"
 #: dt-assets/functions/enqueue-scripts.php:119
 msgctxt "Empty list results. Keep {{query}} as is in english"
 msgid "No results found matching \"{{query}}\""
-msgstr "لم يتم العثور على نتائج تطابق \\\"{{query}}\\\""
+msgstr "لم يتم العثور على نتائج تطابق \"{{query}}\""
 
 #: dt-assets/functions/enqueue-scripts.php:120
 #, php-format
@@ -983,11 +983,11 @@ msgstr "%3$s و %1$s تفاعل برمز %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "اختر اللغة المنطوقة وانقر على \\\"بدء التسجيل\\\" للبدء."
+msgstr "اختر اللغة المنطوقة وانقر على \"بدء التسجيل\" للبدء."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "انقر على \\\"بدء التسجيل\\\" للبدء."
+msgstr "انقر على \"بدء التسجيل\" للبدء."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1406,7 +1406,7 @@ msgstr "إخفاء الكل"
 
 #: dt-assets/parts/loop-activity-comment.php:221
 msgid "Delete Comment:"
-msgstr "مسح التعليق"
+msgstr "مسح التعليق:"
 
 #: dt-assets/parts/loop-activity-comment.php:235
 #: dt-assets/parts/loop-activity-comment.php:283
@@ -1420,7 +1420,7 @@ msgstr "لا يمكن حذف التعليق."
 
 #: dt-assets/parts/loop-activity-comment.php:241
 msgid "Edit Comment:"
-msgstr "تغيير التعليق"
+msgstr "تغيير التعليق:"
 
 #: dt-assets/parts/loop-activity-comment.php:257
 msgid "Type of Comment"
@@ -1525,10 +1525,10 @@ msgid ""
 "you attempted to reach this contact 4 times, but they did not answer. This "
 "action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"على سبيل المثال ، إذا قمت بالنقر فوق الزر \\\"لا إجابة\\\" 4 مرات ، فسوف "
+"على سبيل المثال ، إذا قمت بالنقر فوق الزر \"لا إجابة\" 4 مرات ، فسوف "
 "نسجل أنك حاولت الوصول إلى جهة الاتصال هذه 4 مرات ، لكنهم لم يردوا. "
-"                 سيؤدي هذا الإجراء أيضًا إلى تغيير \\\"مسار الباحث\\\" إلى \\"
-"\"محاولة الاتصال\\\"."
+"                 سيؤدي هذا الإجراء أيضًا إلى تغيير \"مسار الباحث\" إلى "
+"\"محاولة الاتصال\"."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1565,8 +1565,8 @@ msgstr ""
 msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr ""
-"يمكنك تصفية هذا القسم إما عن طريق \\\"الكل\\\" أو \\\"التعليقات\\\" أو \\"
-"\"النشاط\\\"."
+"يمكنك تصفية هذا القسم إما عن طريق \"الكل\" أو \"التعليقات\" أو "
+"\"النشاط\"."
 
 #: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
@@ -1592,7 +1592,7 @@ msgid ""
 "By clicking 'Edit', you will be able adjust things like the language that "
 "this system operates in."
 msgstr ""
-"بالنقر فوق \\\"تحرير\\\" ، ستتمكن من ضبط أشياء مثل اللغة التي يعمل بها هذا "
+"بالنقر فوق \"تحرير\" ، ستتمكن من ضبط أشياء مثل اللغة التي يعمل بها هذا "
 "النظام."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
@@ -1606,7 +1606,7 @@ msgid ""
 "These are the areas you are responsible for. Clicking the 'Add' button will "
 "bring up a list of locations to choose from."
 msgstr ""
-"هذه هي المجالات التي أنت مسؤول عنها. سيؤدي النقر فوق الزر \\\"إضافة\\\" إلى "
+"هذه هي المجالات التي أنت مسؤول عنها. سيؤدي النقر فوق الزر \"إضافة\" إلى "
 "ظهور قائمة بالمواقع للاختيار من بينها."
 
 #: dt-assets/parts/modals/modal-help.php:72
@@ -1676,7 +1676,7 @@ msgstr "الكل / غير المقروء"
 msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
-msgstr "انقر فوق الزر \\\"الكل\\\" لإظهار القائمة الكاملة لجميع الإشعارات."
+msgstr "انقر فوق الزر \"الكل\" لإظهار القائمة الكاملة لجميع الإشعارات."
 
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
@@ -1684,7 +1684,7 @@ msgid ""
 "Click the 'Unread' button to show the list of all of your unread "
 "notifications."
 msgstr ""
-"انقر فوق الزر \\\"غير مقروء\\\" لإظهار قائمة بجميع الإشعارات غير المقروءة."
+"انقر فوق الزر \"غير مقروء\" لإظهار قائمة بجميع الإشعارات غير المقروءة."
 
 #: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
 #: template-notifications.php:66
@@ -1700,7 +1700,7 @@ msgid ""
 "been read."
 msgstr ""
 "إذا كنت لا تريد النقر فوق كل دائرة مملوءة في الجانب الأيمن من كل صف للإشارة "
-"إلى قراءة الإشعار ، فانقر فوق الرابط \\\"وضع علامة على اجعل الكل مقروء\\\" "
+"إلى قراءة الإشعار ، فانقر فوق الرابط \"وضع علامة على اجعل الكل مقروء\" "
 "في الأعلى لضبط جميع الرسائل التي تحتوي عليها جميعًا بسرعة تمت قراءتها."
 
 #: dt-assets/parts/modals/modal-help.php:95
@@ -1712,7 +1712,7 @@ msgid ""
 "whether to you will receive a notification for any update that happens in "
 "the system."
 msgstr ""
-"انقر على رابط \\\"الإعدادات\\\" للانتقال إلى منطقة إعدادات الإشعارات لضبط ما "
+"انقر على رابط \"الإعدادات\" للانتقال إلى منطقة إعدادات الإشعارات لضبط ما "
 "إذا كنت تريد رؤية إشعارات حول التعليقات الجديدة ، وتغييرات معلومات الاتصال ، "
 "ومراحل جهة الاتصال ومقاييس صحة المجموعة ، وما إذا كنت ستتلقى إشعارًا بأي "
 "تحديث يحدث في النظام."
@@ -1857,7 +1857,7 @@ msgstr "مشاركة الإعدادات"
 
 #: dt-assets/parts/modals/modal-share.php:12
 msgid "This group is shared with:"
-msgstr "تمّت مشاركة هذه المجموعة مع:."
+msgstr "تمّت مشاركة هذه المجموعة مع:"
 
 #: dt-assets/parts/modals/modal-share.php:14
 msgid "This contact is shared with:"
@@ -2835,7 +2835,7 @@ msgstr "تم تدريبه من"
 #: dt-contacts/module-coaching.php:57
 msgctxt "Optional Documentation"
 msgid "Who is coaching this contact"
-msgstr "نقل جهة الاتصال هذه إلى:"
+msgstr "من يدرب جهة الاتصال هذه"
 
 #: dt-contacts/module-coaching.php:94 dt-contacts/module-coaching.php:104
 #: dt-contacts/module-coaching.php:114 dt-contacts/module-coaching.php:115
@@ -3161,7 +3161,7 @@ msgstr "فقدت كلمة المرور الخاصة بك"
 
 #: dt-core/configuration/restrict-site-access.php:317
 msgid "Someone has requested a password reset for the following account:"
-msgstr "هناك من طلب تغيير كلمة السر للحساب التالي"
+msgstr "هناك من طلب تغيير كلمة السر للحساب التالي:"
 
 #. translators: %s: Site name.
 #: dt-core/configuration/restrict-site-access.php:319
@@ -3376,7 +3376,7 @@ msgstr "معمودية"
 #: dt-groups/base-setup.php:198
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
-msgstr "تمّت مشاركة هذه المجموعة مع:."
+msgstr "المجموعة تعمّد."
 
 #: dt-groups/base-setup.php:202
 msgid "Bible Study"
@@ -3385,7 +3385,7 @@ msgstr "دراسة الكتاب المقدس"
 #: dt-groups/base-setup.php:203
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
-msgstr "تمّت مشاركة هذه المجموعة مع:."
+msgstr "المجموعة تدرس الكتاب المقدس."
 
 #: dt-groups/base-setup.php:207
 msgid "Communion"
@@ -3394,7 +3394,7 @@ msgstr "كسر الخبز"
 #: dt-groups/base-setup.php:208
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
-msgstr "تمّت مشاركة هذه المجموعة مع:."
+msgstr "المجموعة تمارس العشاء الرباني."
 
 #: dt-groups/base-setup.php:212
 msgid "Fellowship"
@@ -3403,7 +3403,7 @@ msgstr "الشركة"
 #: dt-groups/base-setup.php:213
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
-msgstr "تمّت مشاركة هذه المجموعة مع:."
+msgstr "المجموعة تتشارك الزمالة."
 
 #: dt-groups/base-setup.php:217
 msgid "Giving"
@@ -3412,7 +3412,7 @@ msgstr "العطاء"
 #: dt-groups/base-setup.php:218
 msgctxt "Optional Documentation"
 msgid "The group is giving."
-msgstr "تمّت مشاركة هذه المجموعة مع:."
+msgstr "المجموعة تعطي."
 
 #: dt-groups/base-setup.php:222
 msgid "Prayer"
@@ -3421,7 +3421,7 @@ msgstr "الصلاة"
 #: dt-groups/base-setup.php:223
 msgctxt "Optional Documentation"
 msgid "The group is praying."
-msgstr "تمّت مشاركة هذه المجموعة مع:."
+msgstr "المجموعة تصلي."
 
 #: dt-groups/base-setup.php:227
 msgid "Praise"
@@ -3430,7 +3430,7 @@ msgstr "التسبيح"
 #: dt-groups/base-setup.php:228
 msgctxt "Optional Documentation"
 msgid "The group is praising."
-msgstr "تمّت مشاركة هذه المجموعة مع:."
+msgstr "المجموعة تسبّح."
 
 #: dt-groups/base-setup.php:232
 msgid "Sharing the Gospel"
@@ -3439,7 +3439,7 @@ msgstr "مشاركة الانجيل"
 #: dt-groups/base-setup.php:233
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
-msgstr "تمّت مشاركة هذه المجموعة مع:."
+msgstr "المجموعة تشارك الإنجيل."
 
 #: dt-groups/base-setup.php:237 dt-groups/base-setup.php:299
 msgid "Leaders"
@@ -3616,7 +3616,7 @@ msgstr "تحديد"
 
 #: dt-groups/base-setup.php:571
 msgid "To add new members, click on 'Create' or 'Select'."
-msgstr "لإضافة أعضاء جدد ، انقر فوق \\\"إنشاء\\\" أو \\\"تحديد\\\"."
+msgstr "لإضافة أعضاء جدد ، انقر فوق \"إنشاء\" أو \"تحديد\"."
 
 #: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
@@ -3629,7 +3629,7 @@ msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
 "to this group."
 msgstr ""
-"في حقل \\\"قائمة الأعضاء\\\" ، اكتب اسم جهة اتصال موجودة لإضافتها إلى هذه "
+"في حقل \"قائمة الأعضاء\" ، اكتب اسم جهة اتصال موجودة لإضافتها إلى هذه "
 "المجموعة."
 
 #: dt-groups/base-setup.php:606
@@ -4124,7 +4124,7 @@ msgstr "جهات اتصال نشطة ، بحسب المصدر ومسار الب�
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
-msgstr "يتم عرض جهات الاتصال ذات الحالة \\\"النشطة\\\" فقط في الوقت الحالي."
+msgstr "يتم عرض جهات الاتصال ذات الحالة \"النشطة\" فقط في الوقت الحالي."
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
@@ -5382,7 +5382,7 @@ msgstr "تغطية المسؤولية"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"يجب على المسؤول تمكين خيار \\\"إضافة مستخدمين جدد\\\" في إعدادات المواقع "
+"يجب على المسؤول تمكين خيار \"إضافة مستخدمين جدد\" في إعدادات المواقع "
 "المتعددة:"
 
 #: dt-users/template-new-user.php:80

@@ -254,7 +254,7 @@ msgid ""
 msgstr ""
 "Pomocí aktuálního filtru jsou dostupné e-maily seskupeny po 50 a lze "
 "jeotevřít ve výchozím e-mailovém klientu podle skupiny. Mnoho poskytovatelů "
-"e-mailu omezuje BCC e-maily na 50. Pomocí tlačítka \\\"Otevřít vše\\\" "
+"e-mailu omezuje BCC e-maily na 50. Pomocí tlačítka \"Otevřít vše\" "
 "můžeteotevřít všechny skupiny najednou. Pokud je seznam příliš velký, může "
 "toupozornit vašeho poskytovatele e-mailu. Nástroj BCC e-mail je určen pro e-"
 "maily malých skupin. Hromadné e-maily by měly být zpracovány "
@@ -984,11 +984,11 @@ msgstr "%3$s a %1$s reagovali pomocí emodži %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr "Vyberte mluvený jazyk a kliknutím na \\\"Začít nahrávat\\\" začněte."
+msgstr "Vyberte mluvený jazyk a kliknutím na \"Začít nahrávat\" začněte."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Klikněte na \\\"Začít nahrávání\\\" pro zahájení."
+msgstr "Klikněte na \"Začít nahrávání\" pro zahájení."
 
 #: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
@@ -1484,7 +1484,7 @@ msgstr "Nastavení vyhledávání"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:42
 msgid "Record Hits:"
-msgstr "Dosažené rekordy"
+msgstr "Dosažené rekordy:"
 
 #: dt-assets/parts/modals/modal-advanced-search.php:90
 msgid "Names"
@@ -3255,7 +3255,7 @@ msgstr "Přeložit"
 #: template-settings.php:729
 msgid ""
 "Translate Disciple.Tools into your language or help make a translationbetter."
-msgstr "Přeložte DiscipleTools do svého jazyka nebo pomozte překlad vylepšit"
+msgstr "Přeložte DiscipleTools do svého jazyka nebo pomozte překlad vylepšit."
 
 #: dt-core/release-notifications.php:134
 msgid "Build or Document"
@@ -3266,7 +3266,7 @@ msgid ""
 "Make Disciple.Tools better by building a feature or helping us make "
 "thedocumentation better."
 msgstr ""
-"Vylepšete Disciple.Tools tím, že vytvoříte funkci nebo vylepšením dokumentace"
+"Vylepšete Disciple.Tools tím, že vytvoříte funkci nebo vylepšením dokumentace."
 
 #: dt-core/release-notifications.php:138
 msgid "Find out more"
@@ -5387,7 +5387,7 @@ msgstr "Rozsah odpovědnosti"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"Administrátor musí povolit možnost \\\"Přidat nové uživatele\\\" v "
+"Administrátor musí povolit možnost \"Přidat nové uživatele\" v "
 "nastavenímultisite:"
 
 #: dt-users/template-new-user.php:80

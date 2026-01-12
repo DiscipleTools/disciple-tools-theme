@@ -1645,7 +1645,7 @@ msgid ""
 "Some of the types of notifications cannot be adjusted because they are "
 "required by the system."
 msgstr ""
-"Nekaterih vrst obvestil ni mogoče prilagoditi, saj jih zahteva sistem ."
+"Nekaterih vrst obvestil ni mogoče prilagoditi, saj jih zahteva sistem."
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
@@ -2125,7 +2125,7 @@ msgid ""
 "have decided not to continue with him/her."
 msgstr ""
 "Ta stik je dal vedeti, da ne želi več nadaljevati ali ste se vi odločili, da "
-"z njim/njo ne boste nadaljevali ."
+"z njim/njo ne boste nadaljevali."
 
 #: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
@@ -2395,7 +2395,7 @@ msgstr "Manjša napaka pri prenosu."
 #: dt-contacts/contacts-transfer.php:479
 #, php-format
 msgid "This contact was transferred to %s for further follow-up."
-msgstr "Stik je bil premeščen v %s za nadaljnje dejavnosti"
+msgstr "Stik je bil premeščen v %s za nadaljnje dejavnosti."
 
 #: dt-contacts/contacts-transfer.php:623
 msgid "Contact transferred from site"
@@ -2469,7 +2469,7 @@ msgid ""
 "that happen in a specific order to help a contact move forward."
 msgstr ""
 "S stikom nastavite stanje napredovanja. To so koraki, ki se zgodijo v "
-"določenem vrstnem redu, da stik napreduje"
+"določenem vrstnem redu, da stik napreduje."
 
 #: dt-contacts/module-access.php:107
 msgid "Contact Attempt Needed"
@@ -3599,7 +3599,7 @@ msgstr "Odgovorno"
 #: dt-groups/base-setup.php:396
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
-msgstr "Število odgovornih v skupini"
+msgstr "Število odgovornih v skupini."
 
 #: dt-groups/base-setup.php:405
 msgctxt "Optional Documentation"
@@ -4157,7 +4157,7 @@ msgstr "Aktivni stiki po viru in iskalni poti"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
-msgstr "Trenutno so prikazani samo stiki s statusom \\\"aktiven\\\"."
+msgstr "Trenutno so prikazani samo stiki s statusom \"aktiven\"."
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
@@ -5404,7 +5404,7 @@ msgstr "Pokritost odgovornosti"
 msgid ""
 "Administrator must enable \"Add New Users\" option in multisite settings:"
 msgstr ""
-"﻿Skrbnik mora omogočiti možnost \\\"Dodaj nove uporabnike\\\" v nastavitvah "
+"﻿Skrbnik mora omogočiti možnost \"Dodaj nove uporabnike\" v nastavitvah "
 "za več strani:"
 
 #: dt-users/template-new-user.php:80
@@ -5544,7 +5544,7 @@ msgid ""
 "availability to receive new contacts"
 msgstr ""
 "Določite datume, ko ne boste na voljo, da bo dispečer vedel, kdaj vam lahko "
-"pošlje nove stike."
+"pošlje nove stike"
 
 #: dt-users/template-user-management.php:160
 msgid "Schedule Unavailability"
@@ -5779,7 +5779,7 @@ msgstr "Odstrani"
 
 #: dt-users/user-management.php:189
 msgid "This contact is already a user."
-msgstr "Ta stik je že uporabnik"
+msgstr "Ta stik je že uporabnik."
 
 #: dt-users/user-management.php:190
 msgid "View User"
