@@ -1,3 +1,5 @@
+/* global dtHomeAdmin */
+
 /**
  * Home Screen Admin JavaScript
  */
@@ -45,44 +47,20 @@ jQuery(document).ready(function ($) {
    * Custom colors override defaults, same logic as frontend
    */
   function applyAdminIconColors() {
-    // Detect system preference for dark/light mode
-    const prefersDark =
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const defaultColor = prefersDark ? '#ffffff' : '#0a0a0a'; // White for dark, black for light
-
     // Find all admin app icons
     const adminIcons = document.querySelectorAll('.admin-app-icon');
 
-    adminIcons.forEach(function (icon) {
+    for (const icon of adminIcons) {
       const hasCustomColor =
         icon.getAttribute('data-has-custom-color') === 'true';
 
-      if (!hasCustomColor) {
-        // Apply theme-aware default color
-        icon.style.setProperty('color', defaultColor, 'important');
-      } else {
+      if (hasCustomColor) {
         // Use custom color if specified
         const customColor = icon.getAttribute('data-custom-color');
         if (customColor) {
           icon.style.setProperty('color', customColor, 'important');
         }
       }
-    });
-
-    // Listen for system preference changes
-    if (window.matchMedia) {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      mediaQuery.addEventListener('change', function (e) {
-        const newDefaultColor = e.matches ? '#ffffff' : '#0a0a0a';
-        adminIcons.forEach(function (icon) {
-          const hasCustomColor =
-            icon.getAttribute('data-has-custom-color') === 'true';
-          if (!hasCustomColor) {
-            icon.style.setProperty('color', newDefaultColor, 'important');
-          }
-        });
-      });
     }
   }
 
@@ -279,13 +257,17 @@ jQuery(document).ready(function ($) {
 
         // Call icon selector dialog with null parent_form to prevent auto-submission
         // The icon will still be updated in the input field, but form won't submit
-        if (typeof display_icon_selector_dialog === 'function') {
-          display_icon_selector_dialog(null, iconInput, function (source) {
-            // Update icon preview after icon is selected
-            if (source === 'save') {
-              updateIconPreview(iconInput);
-            }
-          });
+        if (typeof window.display_icon_selector_dialog === 'function') {
+          window.display_icon_selector_dialog(
+            null,
+            iconInput,
+            function (source) {
+              // Update icon preview after icon is selected
+              if (source === 'save') {
+                updateIconPreview(iconInput);
+              }
+            },
+          );
         } else {
           console.error('display_icon_selector_dialog function not found');
         }
@@ -2055,7 +2037,7 @@ jQuery(document).ready(function ($) {
         if (appsTable) {
           new SortableTable('table[data-type="apps"]', {
             type: 'apps',
-            endpoint: ajaxurl + '?action=dt_home_reorder_apps',
+            endpoint: dtHomeAdmin.ajax_url + '?action=dt_home_reorder_apps',
           });
         }
 
@@ -2064,7 +2046,7 @@ jQuery(document).ready(function ($) {
         if (videosTable) {
           new SortableTable('table[data-type="videos"]', {
             type: 'videos',
-            endpoint: ajaxurl + '?action=dt_home_reorder_videos',
+            endpoint: dtHomeAdmin.ajax_url + '?action=dt_home_reorder_videos',
           });
         }
       }, 100);

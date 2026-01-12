@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2025-12-02T12:46:53+00:00\n"
+"POT-Creation-Date: 2026-01-09T14:54:09+00:00\n"
 "PO-Revision-Date: 2025-03-05 16:00+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Kurdish <https://translate.disciple.tools/projects/disciple-"
@@ -82,8 +82,8 @@ msgstr "Daxwazê bişînin"
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-assets/parts/modals/modal-new-tag.php:12 dt-contacts/base-setup.php:470
-#: dt-contacts/base-setup.php:505 dt-contacts/module-access.php:451
+#: dt-assets/parts/modals/modal-new-tag.php:12 dt-contacts/base-setup.php:475
+#: dt-contacts/base-setup.php:510 dt-contacts/module-access.php:451
 #: dt-contacts/module-access.php:482 dt-contacts/module-access.php:510
 #: dt-contacts/user-module.php:159 single-template.php:413
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
@@ -93,7 +93,7 @@ msgstr "Bişûndekirin"
 
 #: 403.php:59 archive-template.php:552 archive-template.php:627
 #: archive-template.php:814 archive-template.php:1226
-#: dt-assets/functions/enqueue-scripts.php:462
+#: dt-assets/functions/enqueue-scripts.php:449
 #: dt-assets/parts/loop-activity-comment.php:225
 #: dt-assets/parts/loop-activity-comment.php:230
 #: dt-assets/parts/loop-activity-comment.php:273
@@ -120,17 +120,17 @@ msgstr "Bişûndekirin"
 #: dt-assets/parts/modals/modal-tasks.php:54
 #: dt-assets/parts/modals/modal-template-metrics.php:8
 #: dt-assets/parts/modals/modal-template-metrics.php:13
-#: dt-contacts/base-setup.php:475 dt-contacts/base-setup.php:510
+#: dt-contacts/base-setup.php:480 dt-contacts/base-setup.php:515
 #: dt-contacts/module-access.php:456 dt-contacts/module-access.php:487
 #: dt-contacts/module-access.php:515 dt-contacts/module-access.php:606
 #: dt-contacts/module-baptisms.php:201 dt-contacts/module-baptisms.php:203
-#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:586
-#: dt-groups/base-setup.php:591 dt-reports/magic-url-bulk-send.php:34
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:587
+#: dt-groups/base-setup.php:592 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
 #: dt-users/user-initial-setup.php:82 single-template.php:418
 #: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-settings.php:602
+#: template-settings.php:596
 msgid "Close"
 msgstr "Nêzîkî"
 
@@ -150,7 +150,7 @@ msgid "Comments"
 msgstr "Îrove"
 
 #: archive-template.php:53
-#, fuzzy, php-format
+#, php-format
 msgctxt "Create New record"
 msgid "Create New %s"
 msgstr "%s nû çêbikin"
@@ -160,16 +160,15 @@ msgid "Filters"
 msgstr "Parzûn"
 
 #: archive-template.php:64 archive-template.php:136 archive-template.php:706
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:828
-#: dt-core/utilities/dt-components.php:249 dt-posts/custom-post-type.php:20
-#: template-settings.php:399
-#, fuzzy, php-format
+#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:252
+#: dt-posts/custom-post-type.php:20 template-settings.php:393
+#, php-format
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "Li %s bigerin"
 
 #: archive-template.php:65 archive-template.php:137
-#: dt-mapping/geocode-api/mapbox-api.php:293
+#: dt-mapping/geocode-api/mapbox-api.php:328
 msgid "Clear"
 msgstr "Zelal"
 
@@ -179,7 +178,7 @@ msgstr "Zelal"
 msgid "Advanced Search"
 msgstr "Lêgerîna Pêşkeftî"
 
-#: archive-template.php:76 dt-users/user-management.php:230
+#: archive-template.php:76 dt-users/user-management.php:234
 msgid "Search"
 msgstr "Gerr"
 
@@ -218,39 +217,35 @@ msgstr "Parzûna xwerû biafirînin"
 #: archive-template.php:227
 msgctxt "List Exports"
 msgid "List Exports"
-msgstr ""
+msgstr "Derxistina Lîsteyê"
 
 #: archive-template.php:239 archive-template.php:262
-#, fuzzy
-#| msgid "List"
 msgid "CSV List"
-msgstr "Rêzok"
+msgstr "Lîsteya CSV"
 
 #: archive-template.php:243 archive-template.php:266
 msgid "BCC Email List"
-msgstr ""
+msgstr "Lîsteya E-nameyên BCC"
 
 #: archive-template.php:244
-#, fuzzy
-#| msgid "Phone"
 msgid "Phone List"
-msgstr "Telefon"
+msgstr "Lîsteya Telefonê"
 
 #: archive-template.php:249 archive-template.php:274
-#, fuzzy
-#| msgid "List"
 msgid "Map List"
-msgstr "Rêzok"
+msgstr "Lîsteya Nexşeyê"
 
 #: archive-template.php:258
 msgid "List Exports Help"
-msgstr ""
+msgstr "Alîkariya Derxistina Lîsteyê"
 
 #: archive-template.php:263
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
+"Bi parzûna heyî, ev rêyek hêsan e ku agahiyên bingehîn derxînin û di sepanên "
+"din de bikar bînin."
 
 #: archive-template.php:267
 msgid ""
@@ -261,12 +256,17 @@ msgid ""
 "provider. The BCC email tool is meant to assist small group emails. Bulk "
 "email should be handled through bulk email providers."
 msgstr ""
+"Bi parzûna heyî, e-nameyên berdest bi 50an têne kom kirin û dikarin bi komê "
+"re di xerîdarê e-nameya xweya standard de bên destpêkirin. Gelek pêşkêşkerên "
+"e-nameyê li ser e-nameyên BCC sînorek 50 datînin. Hûn dikarin hemû koman bi "
+"carekê re bi bişkoja \"Hemî Veke\" vebînin. Eger lîste pir mezin be, "
+"dibe ku ev pêşkêşkerê e-nameya we hişyar bike. Amûra e-nameya BCC ji bo "
+"alîkariya e-nameyên komên piçûk hatiye çêkirin. E-nameya girseyî divê bi "
+"pêşkêşkerên e-nameya girseyî were rêvebirin."
 
 #: archive-template.php:270
-#, fuzzy
-#| msgid "Member List"
 msgid "Phone Number List"
-msgstr "Lîsteya Endaman"
+msgstr "Lîsteya Jimareyên Telefonê"
 
 #: archive-template.php:271
 msgid ""
@@ -274,18 +274,21 @@ msgid ""
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
+"Bi parzûna heyî, ev ji bo kopî û pêçandina lîsteyek jimaran di sepaneke "
+"peyamê de wek WhatsApp, Signal, hwd. hatiye armanc kirin. Ev rêyek bilez e "
+"ji bo destpêkirina sohbetek komê."
 
 #: archive-template.php:275
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
+"Bi parzûna heyî, ev nexşeyek xalên bingehîn ên cihên naskirî yên kesên "
+"navnîşkirî diafirîne."
 
 #: archive-template.php:339
-#, fuzzy
-#| msgid "No duplicates found."
 msgid "No results found"
-msgstr "Dûbare nehat dîtin."
+msgstr "Encam nehat dîtin"
 
 #: archive-template.php:348
 #, php-format
@@ -322,10 +325,8 @@ msgid "Bulk Edit"
 msgstr "Guhertina Pirrjimar"
 
 #: archive-template.php:401
-#, fuzzy
-#| msgid "Bulk Send App"
 msgid "Bulk Send Message"
-msgstr "Serlêdana girseyî bişînin"
+msgstr "Peyama Girseyî Bişîne"
 
 #: archive-template.php:435 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
@@ -334,66 +335,59 @@ msgstr "Zêde"
 
 #: archive-template.php:456
 #: dt-assets/parts/modals/modal-advanced-search.php:108
-#: dt-contacts/base-setup.php:324 dt-users/users.php:554
+#: dt-contacts/base-setup.php:329 dt-users/users.php:554
 msgid "Archived"
 msgstr "Arşîv kirin"
 
 #: archive-template.php:460
-#, fuzzy, php-format
-#| msgid "New %s"
+#, php-format
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "%s nû"
+msgstr "%s nîşan bide"
 
-#: archive-template.php:538
+#: archive-template.php:538 dt-apps/dt-home/magic-link-home-app.php:238
 msgid "Loading..."
-msgstr "Loading ..."
+msgstr "Loading..."
 
-#: archive-template.php:543 dt-assets/functions/enqueue-scripts.php:431
+#: archive-template.php:543 dt-assets/functions/enqueue-scripts.php:418
 msgid "Load More"
 msgstr "Zêde Barkirin"
 
 #: archive-template.php:551
-#, fuzzy
-#| msgid "Locations"
 msgid "Actions"
-msgstr "Cih"
+msgstr "Çalakî"
 
 #: archive-template.php:563
 msgid "Choose which fields to display as columns in the list"
 msgstr "Vebijêrin ka kîjan zevî wekî stûnên navnîşê nîşan bikin"
 
 #: archive-template.php:569
-#, fuzzy
-#| msgid "Hide fields"
 msgid "Add fields:"
-msgstr "Zeviyan veşêrin"
+msgstr "Zeviyan lê zêde bike:"
 
 #: archive-template.php:572
 msgid "Search for fields to add..."
-msgstr ""
+msgstr "Li zeviyan bigerin ku lê zêde bikin..."
 
 #: archive-template.php:594
-#, fuzzy
-#| msgid "Updated fields"
 msgid "Enabled fields:"
-msgstr "Zeviyên nûvekirî"
+msgstr "Zeviyên çalakkirî:"
 
 #: archive-template.php:598
 msgid "No fields selected"
-msgstr ""
+msgstr "Tu zevî nehatine hilbijartin"
 
 #: archive-template.php:631
 #, php-format
 msgid ""
-"Select all the  %1$s you want to update from the list, and update them below"
+"Select all the %1$s you want to update from the list, and update them below"
 msgstr ""
 "Hemî %1$s ku hûn dixwazin ji lîsteyê nûve bikin hilbijêrin, û li jêr nûve "
 "bikin"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:843
+#: dt-core/global-functions.php:808
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "Bikarhêneran Bigerin"
@@ -403,11 +397,8 @@ msgid "Share with:"
 msgstr "Parve dikin li gel:"
 
 #: archive-template.php:714
-#, fuzzy
-#| msgctxt "message"
-#| msgid "Unshared with %s"
 msgid "Unshare with selected user"
-msgstr "Bi %s re nayê parve kirin"
+msgstr "Bi bikarhênerê hilbijartî re parve neke"
 
 #: archive-template.php:726 dt-assets/functions/details-bar.php:199
 #: dt-posts/custom-post-type.php:217
@@ -444,87 +435,84 @@ msgid "Update"
 msgstr "Rojanekirin"
 
 #: archive-template.php:793 archive-template.php:997
-#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-assets/functions/enqueue-scripts.php:333
 #: dt-reports/magic-url-bulk-send.php:94
 msgid "Make Selections Below"
 msgstr "Hilbijartinên jêrîn bikin"
 
-#: archive-template.php:801 dt-assets/functions/enqueue-scripts.php:183
-#: dt-assets/functions/enqueue-scripts.php:224
-#: dt-assets/functions/enqueue-scripts.php:289
-#: dt-assets/functions/enqueue-scripts.php:329
+#: archive-template.php:801 dt-assets/functions/enqueue-scripts.php:186
+#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/functions/enqueue-scripts.php:280
+#: dt-assets/functions/enqueue-scripts.php:320
 #: dt-assets/parts/loop-activity-comment.php:228 single-template.php:416
 msgid "Delete"
 msgstr "Jêbirin"
 
-#: archive-template.php:804 dt-assets/functions/enqueue-scripts.php:343
-#, fuzzy
-#| msgid "Make Selections Below"
+#: archive-template.php:804 dt-assets/functions/enqueue-scripts.php:334
 msgid "Delete Selections Below"
-msgstr "Hilbijartinên jêrîn bikin"
+msgstr "Hilbijartinên li jêr jêbibe"
 
 #: archive-template.php:818
-#, fuzzy, php-format
-#| msgid "Select all the %1$s to whom you want to send app links."
+#, php-format
 msgid "Select all the %1$s to whom you want to message."
-msgstr "Hemî %1$s yên ku hûn dixwazin lînkên sepanê bişînin hilbijêrin."
+msgstr "Hemû %1$s yên ku hûn dixwazin peyam bişînin hilbijêrin."
 
 #: archive-template.php:856
 msgid "Message subject"
-msgstr ""
+msgstr "Mijara peyamê"
 
 #: archive-template.php:858
 msgid "A valid message subject must be entered."
-msgstr ""
+msgstr "Divê mijarek peyama derbasdar were nivîsandin."
 
 #: archive-template.php:860
 msgid "Message from name"
-msgstr ""
+msgstr "Peyam ji navê"
 
 #: archive-template.php:862
 msgid "A valid from name must be specified."
-msgstr ""
+msgstr "Divê navekî derbasdar were destnîşankirin."
 
 #: archive-template.php:864
 msgid "Message reply to"
-msgstr ""
+msgstr "Bersiva peyamê ji bo"
 
 #: archive-template.php:866
 msgid "A valid reply to email address must be specified."
-msgstr ""
+msgstr "Divê navnîşanek e-nameya derbasdar ji bo bersivê were destnîşankirin."
 
 #: archive-template.php:868
 #, php-format
 msgid "Emails will be sent from: %s"
-msgstr ""
+msgstr "E-name dê ji %s werin şandin"
 
 #: archive-template.php:891
 msgid "Please ensure a valid send method has been specified."
 msgstr ""
+"Ji kerema xwe piştrast bikin ku rêbazek şandina derbasdar hatiye "
+"destnîşankirin."
 
 #: archive-template.php:893
 msgid "Message"
-msgstr ""
+msgstr "Peyam"
 
 #: archive-template.php:895
 msgid "Please ensure a valid send message has been entered."
-msgstr ""
+msgstr "Ji kerema xwe piştrast bikin ku peyamek derbasdar hatiye nivîsandin."
 
 #: archive-template.php:896 dt-reports/magic-url-bulk-send.php:57
 #: dt-reports/magic-url-setup.php:254
 msgid "Message placeholders"
-msgstr ""
+msgstr "Cihgirên peyamê"
 
 #: archive-template.php:927 dt-reports/magic-url-bulk-send.php:63
 #: dt-reports/magic-url-setup.php:260
-#, fuzzy
-#| msgid "Create Record"
 msgid "Name of the Record"
-msgstr "Qeydekê çêbikin"
+msgstr "Navê Tomarê"
 
 #: archive-template.php:949
 msgid "Message Placeholder Help"
-msgstr ""
+msgstr "Alîkariya Cihgirên Peyamê"
 
 #: archive-template.php:992 dt-reports/magic-url-bulk-send.php:89
 msgid "Send to selected records"
@@ -545,7 +533,7 @@ msgstr "Girêdanên"
 
 #: archive-template.php:1001
 msgid "Ensure valid record selections have been made."
-msgstr ""
+msgstr "Piştrast bikin ku hilbijartinên tomarê yên derbasdar hatine kirin."
 
 #: archive-template.php:1020
 msgid "Field Name"
@@ -572,7 +560,7 @@ msgstr "Hemû %1$s bêyî %2$s"
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Parzûnek ji bo veqetandî OR Jî Veqetandî"
 
-#: archive-template.php:1104 dt-assets/functions/enqueue-scripts.php:332
+#: archive-template.php:1104 dt-assets/functions/enqueue-scripts.php:323
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "Dîroka Afirandinê"
@@ -584,19 +572,19 @@ msgid "None Set"
 msgstr "None Set"
 
 #: archive-template.php:1132 archive-template.php:1133
-#: dt-assets/functions/enqueue-scripts.php:240 dt-core/global-functions.php:722
+#: dt-assets/functions/enqueue-scripts.php:243 dt-core/global-functions.php:723
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-reports/magic-url-setup.php:474 dt-users/user-management.php:196
-#: template-settings.php:313 template-settings.php:577
+#: template-settings.php:314 template-settings.php:571
 msgid "No"
 msgstr "Na"
 
 #: archive-template.php:1139 archive-template.php:1140
-#: dt-assets/functions/enqueue-scripts.php:239 dt-core/global-functions.php:723
+#: dt-assets/functions/enqueue-scripts.php:242 dt-core/global-functions.php:724
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-reports/magic-url-setup.php:473
-#: dt-users/user-management.php:195 template-settings.php:312
-#: template-settings.php:576
+#: dt-users/user-management.php:195 template-settings.php:313
+#: template-settings.php:570
 msgid "Yes"
 msgstr "Erê"
 
@@ -616,43 +604,33 @@ msgid "Range End"
 msgstr "Range End"
 
 #: archive-template.php:1169
-#, fuzzy
-#| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
-msgstr "Navê Parzûnê"
+msgstr "Li gor Nirxê Fîlter Bike"
 
 #: archive-template.php:1174
-#, fuzzy, php-format
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
+#, php-format
 msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
-msgstr "Hemî %1$s digel %2$s"
+msgstr "Hemû %1$s bi nirxa fîlterkirî di %2$s de"
 
 #: archive-template.php:1178
-#, fuzzy, php-format
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
+#, php-format
 msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
-msgstr "Hemû %1$s bêyî %2$s"
+msgstr "Hemû %1$s bêyî nirxa fîlterkirî di %2$s de"
 
 #: archive-template.php:1182
-#, fuzzy, php-format
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
+#, php-format
 msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
-msgstr "Hemî %1$s digel %2$s"
+msgstr "Hemû %1$s bi her nirxek di %2$s de"
 
 #: archive-template.php:1186
-#, fuzzy, php-format
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
+#, php-format
 msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
-msgstr "Hemû %1$s bêyî %2$s"
+msgstr "Hemû %1$s bêyî nirxek di %2$s de"
 
 #: archive-template.php:1210
 msgid "Filter Name"
@@ -662,16 +640,193 @@ msgstr "Navê Parzûnê"
 msgid "Filter Records"
 msgstr "Records Parzûn"
 
-#: archive-template.php:1219 dt-assets/functions/enqueue-scripts.php:292
-#: dt-assets/functions/enqueue-scripts.php:327
-#: dt-users/user-initial-setup.php:79 template-settings.php:745
+#: archive-template.php:1219 dt-assets/functions/enqueue-scripts.php:283
+#: dt-assets/functions/enqueue-scripts.php:318
+#: dt-users/user-initial-setup.php:79 template-settings.php:739
 msgid "Save"
 msgstr "Rizgarkirin"
+
+#: dt-apps/dt-home/frontend/home-screen.php:17
+#: dt-apps/dt-home/frontend/home-screen.php:23
+#: dt-apps/dt-home/magic-link-home-app.php:235
+msgid "Welcome to your Home Screen"
+msgstr "Bi xêr hatî Dîmendera Malê"
+
+#: dt-apps/dt-home/frontend/home-screen.php:18
+#: dt-apps/dt-home/frontend/home-screen.php:24
+msgid "Your personalized dashboard for apps and training."
+msgstr "Panela we ya kesane ji bo sepan û perwerdehiyê."
+
+#: dt-apps/dt-home/frontend/home-screen.php:75
+#: dt-apps/dt-home/frontend/training-screen.php:28
+msgid "Toggle menu"
+msgstr "Menuya veguherîne"
+
+#: dt-apps/dt-home/frontend/home-screen.php:93
+#: dt-apps/dt-home/magic-link-home-app.php:236 template-settings.php:258
+msgid "Your Apps"
+msgstr "Serlêdanên We"
+
+#: dt-apps/dt-home/frontend/home-screen.php:110
+msgid "Your Links"
+msgstr "Girêdanên Te"
+
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:45
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:47
+#: template-settings.php:57
+msgid "Apps"
+msgstr "Apps"
+
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:49
+#: dt-core/configuration/config-site-defaults.php:442
+#: dt-login/login-template.php:529
+msgid "Home"
+msgstr "Xane"
+
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:52
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:54
+#: dt-assets/parts/nav-offcanvas.php:66 dt-assets/parts/nav-topbar.php:200
+#: dt-users/template-no-permission.php:94
+msgid "Log Out"
+msgstr "Derkeve"
+
+#: dt-apps/dt-home/frontend/partials/launcher-wrapper.php:44
+msgid "App Launcher"
+msgstr "Destpêkera Sepanê"
+
+#: dt-apps/dt-home/frontend/partials/launcher-wrapper.php:59
+msgid "App Content"
+msgstr "Naveroka Sepanê"
+
+#: dt-apps/dt-home/frontend/training-screen.php:6
+#: dt-apps/dt-home/frontend/training-screen.php:10
+msgid "Training"
+msgstr "Perwerdehî"
+
+#: dt-apps/dt-home/frontend/training-screen.php:7
+#: dt-apps/dt-home/frontend/training-screen.php:11
+msgid "Watch training videos and tutorials."
+msgstr "Vîdyoyên perwerdehiyê û hînkaran temaşe bikin."
+
+#: dt-apps/dt-home/frontend/training-screen.php:44
+#: dt-apps/dt-home/magic-link-home-app.php:237
+msgid "Training Videos"
+msgstr "Vîdyoyên Perwerdehiyê"
+
+#: dt-apps/dt-home/includes/class-home-apps.php:305
+#: dt-apps/dt-home/includes/class-home-apps.php:807
+msgid "App title is required."
+msgstr "Sernavê sepanê pêwîst e."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:359
+msgid "Failed to save app."
+msgstr "Tomarkirina sepanê têk çû."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:374
+#: dt-apps/dt-home/includes/class-home-apps.php:583
+msgid "App not found."
+msgstr "Sepan nehat dîtin."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:461
+#: dt-apps/dt-home/includes/class-home-apps.php:570
+msgid "Failed to update app."
+msgstr "Nûkirina sepanê têk çû."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:596
+msgid "Failed to delete app."
+msgstr "Jêbirina sepanê têk çû."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:643
+msgid "Failed to reorder apps."
+msgstr "Rêzkirina sepanan têk çû."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:811
+msgid "App URL must be a valid URL."
+msgstr "URL-ya sepanê divê URL-yek derbasdar be."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:815
+msgid "App color must be a valid hex color."
+msgstr "Rengê sepanê divê rengek hex derbasdar be."
+
+#: dt-apps/dt-home/includes/class-home-roles-permissions.php:73
+msgid "Access to the Home Screen dashboard"
+msgstr "Gihîştina panelê Dîmendera Malê"
+
+#: dt-apps/dt-home/includes/class-home-roles-permissions.php:83
+#, php-format
+msgid "Access to %s app"
+msgstr "Gihîştina sepana %s"
+
+#: dt-apps/dt-home/includes/class-home-training.php:93
+#: dt-apps/dt-home/includes/class-home-training.php:342
+msgid "Video title is required."
+msgstr "Sernavê vîdyoyê pêwîst e."
+
+#: dt-apps/dt-home/includes/class-home-training.php:97
+#: dt-apps/dt-home/includes/class-home-training.php:346
+msgid "Video URL is required."
+msgstr "URL-ya vîdyoyê pêwîst e."
+
+#: dt-apps/dt-home/includes/class-home-training.php:140
+msgid "Failed to save video."
+msgstr "Tomarkirina vîdyoyê têk çû."
+
+#: dt-apps/dt-home/includes/class-home-training.php:152
+#: dt-apps/dt-home/includes/class-home-training.php:200
+msgid "Video not found."
+msgstr "Vîdyo nehat dîtin."
+
+#: dt-apps/dt-home/includes/class-home-training.php:188
+msgid "Failed to update video."
+msgstr "Nûkirina vîdyoyê têk çû."
+
+#: dt-apps/dt-home/includes/class-home-training.php:213
+msgid "Failed to delete video."
+msgstr "Jêbirina vîdyoyê têk çû."
+
+#: dt-apps/dt-home/includes/class-home-training.php:260
+msgid "Failed to reorder videos."
+msgstr "Rêzkirina vîdyoyan têk çû."
+
+#: dt-apps/dt-home/includes/class-home-training.php:348
+msgid "Video URL must be a valid URL."
+msgstr "URL-ya vîdyoyê divê URL-yek derbasdar be."
+
+#: dt-apps/dt-home/magic-link-home-app.php:64
+#: dt-assets/parts/modals/modal-new-contact.php:7
+#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
+#: dt-metrics/combined/locations-list.php:90 dt-metrics/records/genmap.php:166
+#: dt-posts/custom-post-type.php:170 dt-users/template-user-management.php:190
+#: template-settings.php:147
+msgid "Name"
+msgstr "Nav"
+
+#: dt-apps/dt-home/magic-link-home-app.php:239
+msgid "Login Required"
+msgstr "Têketin Pêwîst e"
+
+#: dt-apps/dt-home/magic-link-home-app.php:240
+msgid "Please log in to access your Home Screen."
+msgstr "Ji kerema xwe têkevin da ku bigihîjin Dîmendera Malê."
+
+#: dt-apps/dt-home/magic-link-home-app.php:241
+msgid "Username or Email"
+msgstr "Navê Bikarhêner an E-name"
+
+#: dt-apps/dt-home/magic-link-home-app.php:242 dt-login/login-template.php:489
+#: dt-users/template-new-user.php:121 dt-users/template-new-user.php:122
+#: template-settings.php:655
+msgid "Password"
+msgstr "Şîfre"
+
+#: dt-apps/dt-home/magic-link-home-app.php:243
+msgid "Log In"
+msgstr "Têkevin"
 
 #: dt-assets/functions/details-bar.php:58
 #: dt-assets/functions/details-bar.php:275
 #: dt-core/configuration/config-site-defaults.php:276
-#: dt-workflows/update-required.php:86 dt-workflows/update-required.php:136
+#: dt-workflows/update-required.php:88 dt-workflows/update-required.php:140
 msgid "Update Needed"
 msgstr "Rojanekirin Pêdivî ye"
 
@@ -689,7 +844,7 @@ msgstr "%s paqij bike"
 #, php-format
 msgctxt "View Contact History"
 msgid "View %s History"
-msgstr ""
+msgstr "Dîroka %s bibînin"
 
 #: dt-assets/functions/details-bar.php:87
 #, php-format
@@ -703,15 +858,13 @@ msgid "Previous record"
 msgstr "Qeyda berê"
 
 #: dt-assets/functions/details-bar.php:121
-#, fuzzy
-#| msgid "Record Hits:"
 msgctxt "the picture of the record"
 msgid "Record Picture"
-msgstr "Hits Record:"
+msgstr "Wêneya Tomarê"
 
 #: dt-assets/functions/details-bar.php:153
 #: dt-assets/functions/details-bar.php:329
-#, fuzzy, php-format
+#, php-format
 msgctxt "(record created) by multiplier1"
 msgid "by %s"
 msgstr "ji hêla %s ve"
@@ -736,20 +889,18 @@ msgid "Share"
 msgstr "Par"
 
 #: dt-assets/functions/details-bar.php:301
-#, fuzzy
-#| msgid "Record Hits:"
 msgid "Record Picture"
-msgstr "Hits Record:"
+msgstr "Wêneya Tomarê"
 
 #: dt-assets/functions/enqueue-scripts.php:116
 #: dt-metrics/records/date-range-activity.php:111
-#: template-merge-post-details.php:103
+#: template-merge-post-details.php:106
 msgid "Regions of Focus"
 msgstr "Herêmên Fokusê"
 
 #: dt-assets/functions/enqueue-scripts.php:117
 #: dt-metrics/records/date-range-activity.php:112
-#: template-merge-post-details.php:104
+#: template-merge-post-details.php:107
 msgid "All Locations"
 msgstr "All Locations"
 
@@ -775,21 +926,21 @@ msgid "Showing %1$s items matching %2$s"
 msgstr "Tiştên %1$s bi %2$s re hevûdu nîşan didin"
 
 #: dt-assets/functions/enqueue-scripts.php:122
-#: dt-assets/functions/enqueue-scripts.php:182
-#: dt-assets/functions/enqueue-scripts.php:328 template-settings.php:119
-#: template-settings.php:605
+#: dt-assets/functions/enqueue-scripts.php:185
+#: dt-assets/functions/enqueue-scripts.php:319 template-settings.php:120
+#: template-settings.php:599
 msgid "Edit"
 msgstr "Weşandin"
 
 #: dt-assets/functions/enqueue-scripts.php:123
-#: dt-reports/magic-url-setup.php:496 template-settings.php:303
+#: dt-reports/magic-url-setup.php:496 template-settings.php:304
 msgid "Copy"
-msgstr ""
+msgstr "Kopî bike"
 
 #: dt-assets/functions/enqueue-scripts.php:124
 #, php-format
 msgid "Copied: %s"
-msgstr ""
+msgstr "Hate kopîkirin: %s"
 
 #: dt-assets/functions/enqueue-scripts.php:145
 msgid "You don't have any unread notifications"
@@ -799,387 +950,367 @@ msgstr "Tu notifications nexwendî tune"
 msgid "You don't have any notifications"
 msgstr "Tu notifications tune"
 
-#: dt-assets/functions/enqueue-scripts.php:180 dt-posts/dt-posts.php:1658
+#: dt-assets/functions/enqueue-scripts.php:147
+#: dt-core/release-notifications.php:80
+msgid "Release Announcement!"
+msgstr "Daxuyaniya Derketinê!"
+
+#: dt-assets/functions/enqueue-scripts.php:148
+msgid "A new version of Disciple.Tools is available"
+msgstr "Guhertoya nû ya Disciple.Tools berdest e"
+
+#: dt-assets/functions/enqueue-scripts.php:149
+#: dt-reports/magic-url-setup.php:483
+msgid "View"
+msgstr "Bibîne"
+
+#: dt-assets/functions/enqueue-scripts.php:183 dt-posts/dt-posts.php:1658
 msgid "D.T System"
 msgstr "Pergala D.T"
 
-#: dt-assets/functions/enqueue-scripts.php:184
+#: dt-assets/functions/enqueue-scripts.php:187
 msgid "Translate with Google Translate"
 msgstr "Bi Google Wergerê wergerînin"
 
-#: dt-assets/functions/enqueue-scripts.php:185
+#: dt-assets/functions/enqueue-scripts.php:188
 msgid "Hide Translation"
-msgstr "Veşêre Veşêre"
+msgstr "Veşêre"
 
-#: dt-assets/functions/enqueue-scripts.php:186
+#: dt-assets/functions/enqueue-scripts.php:189
 #, php-format
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "%1$s bi %2$s emojî re bertek nîşan da"
 
-#: dt-assets/functions/enqueue-scripts.php:187
+#: dt-assets/functions/enqueue-scripts.php:190
 #, php-format
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s û %1$s bi %2$s emojî re bertek nîşan dan"
 
-#: dt-assets/functions/enqueue-scripts.php:189
+#: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
+"Zimanê axaftinê hilbijêrin û li \"Tomarkirinê Bide Destpêkirin\" "
+"bikirtînin."
 
-#: dt-assets/functions/enqueue-scripts.php:190
-#, fuzzy
-#| msgid "Create Record"
+#: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Qeydekê çêbikin"
+msgstr ""
+"Li \"Tomarkirinê Bide Destpêkirin\" bikirtînin da ku dest pê bikin."
 
-#: dt-assets/functions/enqueue-scripts.php:191
-#, fuzzy
-#| msgid "Unable to update"
+#: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
-msgstr "Nûvekirin nabe"
+msgstr "Barkirina tomarkirina deng têk çû. Ji kerema xwe dîsa biceribînin."
 
-#: dt-assets/functions/enqueue-scripts.php:192
-#, fuzzy
-#| msgid "No Data Available"
+#: dt-assets/functions/enqueue-scripts.php:195
 msgid "No recording available to upload."
-msgstr "No Data Available"
+msgstr "Tu tomarkirin berdest nîne ji bo barkirinê."
 
-#: dt-assets/functions/enqueue-scripts.php:225
+#: dt-assets/functions/enqueue-scripts.php:228
 msgid "Mark as complete"
 msgstr "Wekî temam nîşan bikin"
 
-#: dt-assets/functions/enqueue-scripts.php:226
+#: dt-assets/functions/enqueue-scripts.php:229
 msgid "No task created"
 msgstr "Tu peywir nehat afirandin"
 
-#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/functions/enqueue-scripts.php:230
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr "Bîranîn"
 
-#: dt-assets/functions/enqueue-scripts.php:228
+#: dt-assets/functions/enqueue-scripts.php:231
 msgid "No note set"
 msgstr "No not danîn"
 
-#: dt-assets/functions/enqueue-scripts.php:229
+#: dt-assets/functions/enqueue-scripts.php:232
 msgid "Duplicates Detected"
 msgstr "Duplicates Detected"
 
-#: dt-assets/functions/enqueue-scripts.php:230
+#: dt-assets/functions/enqueue-scripts.php:233
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
-#: dt-users/template-new-user.php:293 template-merge-post-details.php:131
-#: template-merge-post-details.php:188
+#: dt-users/template-new-user.php:293 template-merge-post-details.php:134
+#: template-merge-post-details.php:191
 msgid "Merge"
 msgstr "Bihevkelyan"
 
-#: dt-assets/functions/enqueue-scripts.php:231
+#: dt-assets/functions/enqueue-scripts.php:234
 msgid "Dismiss"
 msgstr "Berdan"
 
-#: dt-assets/functions/enqueue-scripts.php:232
+#: dt-assets/functions/enqueue-scripts.php:235
 msgid "Dismissed Duplicates"
 msgstr "Duplicates Disseded"
 
-#: dt-assets/functions/enqueue-scripts.php:233
+#: dt-assets/functions/enqueue-scripts.php:236
 #, php-format
 msgid "Duplicates on: %s"
 msgstr "Dûbare li ser:%s"
 
-#: dt-assets/functions/enqueue-scripts.php:234
+#: dt-assets/functions/enqueue-scripts.php:237
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "Veguhestin têk çû. Veavakirina malper-malper venêrin."
 
-#: dt-assets/functions/enqueue-scripts.php:235
+#: dt-assets/functions/enqueue-scripts.php:238
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr ""
 "Nûvekirina veguhastinê têk çû. Veavakirina malperê-to-malperê kontrol bikin."
 
-#: dt-assets/functions/enqueue-scripts.php:236
+#: dt-assets/functions/enqueue-scripts.php:239
 msgid "Transfer update successful."
 msgstr "Nûvekirina veguheztinê serketî bû."
 
-#: dt-assets/functions/enqueue-scripts.php:237
+#: dt-assets/functions/enqueue-scripts.php:240
 #, php-format
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "Di %s de hate afirandin"
 
-#: dt-assets/functions/enqueue-scripts.php:238
+#: dt-assets/functions/enqueue-scripts.php:241
 msgid "Open With"
 msgstr "Bi Vekin"
 
-#: dt-assets/functions/enqueue-scripts.php:258
+#: dt-assets/functions/enqueue-scripts.php:257
 msgid "Revert Record Back To This Point"
-msgstr ""
+msgstr "Tomarê Vegerînin Vê Nuqteyê"
 
-#: dt-assets/functions/enqueue-scripts.php:259
-#, fuzzy, php-format
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
+#: dt-assets/functions/enqueue-scripts.php:258
+#, php-format
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "Ma hûn pê ewle ne ku hûn dixwazin %s jêbirin?"
+msgstr "Ma hûn pê ewle ne ku hûn dixwazin rewşa tomarê vegerin %s?"
 
-#: dt-assets/functions/enqueue-scripts.php:290
+#: dt-assets/functions/enqueue-scripts.php:281
 msgid "Locations you are responsible for"
 msgstr "Cihên ku hûn jê berpirsiyar in"
 
-#: dt-assets/functions/enqueue-scripts.php:291
+#: dt-assets/functions/enqueue-scripts.php:282
 #: dt-metrics/records/genmap.php:160
 msgid "Add"
 msgstr "Lêzêdekirin"
 
-#: dt-assets/functions/enqueue-scripts.php:293
-#: dt-reports/magic-url-setup.php:453 template-settings.php:296
+#: dt-assets/functions/enqueue-scripts.php:284
+#: dt-reports/magic-url-setup.php:453 template-settings.php:297
 msgid "link"
 msgstr "pêvek"
 
-#: dt-assets/functions/enqueue-scripts.php:294
+#: dt-assets/functions/enqueue-scripts.php:285
 msgid "copy"
 msgstr "kopî"
 
-#: dt-assets/functions/enqueue-scripts.php:310
+#: dt-assets/functions/enqueue-scripts.php:301
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "Maçên Dîtin:"
 
-#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/functions/enqueue-scripts.php:302
 #, php-format
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "Ji bo %s hemî maçan hilînin"
 
-#: dt-assets/functions/enqueue-scripts.php:330
+#: dt-assets/functions/enqueue-scripts.php:321
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "Nîşan _START_ ji _TOTAL_"
 
-#: dt-assets/functions/enqueue-scripts.php:331
+#: dt-assets/functions/enqueue-scripts.php:322
 msgid "Sorting By"
 msgstr "Sorting By"
 
-#: dt-assets/functions/enqueue-scripts.php:333
+#: dt-assets/functions/enqueue-scripts.php:324
 msgid "Date Modified"
 msgstr "Dîrok Guherandin"
 
-#: dt-assets/functions/enqueue-scripts.php:334
+#: dt-assets/functions/enqueue-scripts.php:325
 msgid "No filters, create one below"
 msgstr "Fîltre tune, li jêrê yekê çêbikin"
 
-#: dt-assets/functions/enqueue-scripts.php:335
+#: dt-assets/functions/enqueue-scripts.php:326
 msgid "No records found matching your filter."
 msgstr "Ti tomar bi parzûna we re nehat dîtin."
 
-#: dt-assets/functions/enqueue-scripts.php:336 dt-contacts/base-setup.php:674
-#: dt-groups/base-setup.php:1039 dt-posts/custom-post-type.php:489
+#: dt-assets/functions/enqueue-scripts.php:327 dt-contacts/base-setup.php:679
+#: dt-groups/base-setup.php:1040 dt-posts/custom-post-type.php:489
 #, php-format
 msgctxt "All records"
 msgid "All %s"
 msgstr "Hemî%s"
 
-#: dt-assets/functions/enqueue-scripts.php:337
+#: dt-assets/functions/enqueue-scripts.php:328
 msgid "Split By"
-msgstr ""
+msgstr "Dabeş bike li gor"
 
-#: dt-assets/functions/enqueue-scripts.php:338
+#: dt-assets/functions/enqueue-scripts.php:329
 msgid "start"
 msgstr "destpêkirin"
 
-#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:330
 msgid "end"
 msgstr "dawî"
 
-#: dt-assets/functions/enqueue-scripts.php:340
+#: dt-assets/functions/enqueue-scripts.php:331
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/module-access.php:1183 dt-groups/base-setup.php:957
+#: dt-contacts/module-access.php:1183 dt-groups/base-setup.php:958
 #: dt-metrics/personal/activity-highlights.php:56
-#: dt-metrics/records/dynamic-records-map.php:99
+#: dt-metrics/records/dynamic-records-map.php:100
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "Gişt"
 
-#: dt-assets/functions/enqueue-scripts.php:341
+#: dt-assets/functions/enqueue-scripts.php:332
 msgid "Without"
 msgstr "Bê"
 
-#: dt-assets/functions/enqueue-scripts.php:344
+#: dt-assets/functions/enqueue-scripts.php:335
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
-msgstr ""
+msgstr "plankirin ji bo şandina"
 
-#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:336
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "nehat şandin (dibe ku e-nameya derbasdar winda nebe)"
 
-#: dt-assets/functions/enqueue-scripts.php:346
+#: dt-assets/functions/enqueue-scripts.php:337
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
-msgstr ""
+msgstr "Rêza bibînin"
 
-#: dt-assets/functions/enqueue-scripts.php:347
+#: dt-assets/functions/enqueue-scripts.php:338
 msgid "Exclude Item"
 msgstr "Tiştê jê derxe"
 
-#: dt-assets/functions/enqueue-scripts.php:350
+#: dt-assets/functions/enqueue-scripts.php:341
 #, php-format
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
-msgstr ""
+msgstr "Daneyên csv yên derxistî dê hemû %2$s zeviyên %1$s bigirin."
 
-#: dt-assets/functions/enqueue-scripts.php:351
+#: dt-assets/functions/enqueue-scripts.php:342
 #, php-format
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
-msgstr ""
+msgstr "Daneyên csv yên derxistî dê %2$s zeviyên %1$s yên xuya li jêr bigirin."
+
+#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:353
+msgid "Full List"
+msgstr "Lîsteya Tevahî"
+
+#: dt-assets/functions/enqueue-scripts.php:346
+msgid "No Addresses"
+msgstr "Tu Navnîşan Tune"
+
+#: dt-assets/functions/enqueue-scripts.php:347
+msgid "With Additional Addresses"
+msgstr "Bi Navnîşanên Zêde"
+
+#: dt-assets/functions/enqueue-scripts.php:348
+msgid "Open Email for Group"
+msgstr "E-nameyê ji bo Komê Veke"
+
+#: dt-assets/functions/enqueue-scripts.php:349
+msgid "Open All"
+msgstr "Hemî Veke"
+
+#: dt-assets/functions/enqueue-scripts.php:350
+msgid "Show Group Addresses"
+msgstr "Navnîşanên Komê Nîşan Bide"
 
 #: dt-assets/functions/enqueue-scripts.php:354
-#: dt-assets/functions/enqueue-scripts.php:362
-#, fuzzy
-#| msgctxt "Contacts List"
-#| msgid "%s List"
-msgid "Full List"
-msgstr "Lîsteya %s"
+msgid "Has No Phone Number"
+msgstr "Jimareya Telefonê Tune"
 
 #: dt-assets/functions/enqueue-scripts.php:355
-#, fuzzy
-#| msgid "Address"
-msgid "No Addresses"
-msgstr "Navnîşan"
-
-#: dt-assets/functions/enqueue-scripts.php:356
-msgid "With Additional Addresses"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:357
-msgid "Open Email for Group"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:358
-#, fuzzy
-#| msgid "Open Modal"
-msgid "Open All"
-msgstr "Modal vekin"
+msgid "Has Additional Phone Numbers"
+msgstr "Jimareyên Telefonê yên Zêde Hene"
 
 #: dt-assets/functions/enqueue-scripts.php:359
-msgid "Show Group Addresses"
-msgstr ""
+msgid "Mapped Locations"
+msgstr "Cihên Nexşekirî"
+
+#: dt-assets/functions/enqueue-scripts.php:360
+msgid "Contacts Without Locations"
+msgstr "Têkiliyên Bêyî Cih"
+
+#: dt-assets/functions/enqueue-scripts.php:361
+msgid "Records on zoomed map"
+msgstr "Tomar li nexşeya zoom"
+
+#: dt-assets/functions/enqueue-scripts.php:362
+msgid "No Zoomed Map Records Found!"
+msgstr "Tu Tomarên Nexşeya Zoom nehat dîtin!"
 
 #: dt-assets/functions/enqueue-scripts.php:363
-msgid "Has No Phone Number"
-msgstr ""
+msgid "Open Zoomed Map Records"
+msgstr "Tomarên Nexşeya Zoom Veke"
 
 #: dt-assets/functions/enqueue-scripts.php:364
-msgid "Has Additional Phone Numbers"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:368
-#, fuzzy
-#| msgid "Used Locations"
-msgid "Mapped Locations"
-msgstr "Cihên Bikaranîn"
-
-#: dt-assets/functions/enqueue-scripts.php:369
-#, fuzzy
-#| msgctxt "Reason Paused label"
-#| msgid "Contact on vacation"
-msgid "Contacts Without Locations"
-msgstr "Têkilî li betlaneyê"
-
-#: dt-assets/functions/enqueue-scripts.php:370
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records on zoomed map"
-msgstr "Records lê zêde bike"
-
-#: dt-assets/functions/enqueue-scripts.php:371
-msgid "No Zoomed Map Records Found!"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:372
-msgid "Open Zoomed Map Records"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:373
-#: dt-assets/functions/enqueue-scripts.php:374
-#, fuzzy
-#| msgid "Filter Name"
+#: dt-assets/functions/enqueue-scripts.php:365
 msgid "Filtered Map"
-msgstr "Navê Parzûnê"
+msgstr "Nexşeya Fîlterkirî"
 
-#: dt-assets/functions/enqueue-scripts.php:402 dt-contacts/base-setup.php:55
+#: dt-assets/functions/enqueue-scripts.php:391 dt-contacts/base-setup.php:55
 #: dt-contacts/base-setup.php:67 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "Têkelî"
 
-#: dt-assets/functions/enqueue-scripts.php:403
+#: dt-assets/functions/enqueue-scripts.php:392
 #, php-format
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
-msgstr ""
+msgstr "%s jixwe heye"
 
-#: dt-assets/functions/enqueue-scripts.php:450
+#: dt-assets/functions/enqueue-scripts.php:437
 msgid "File Upload"
-msgstr ""
+msgstr "Barkirin Dosya"
 
-#: dt-assets/functions/enqueue-scripts.php:451
-#, fuzzy
-#| msgid "Choose an option:"
+#: dt-assets/functions/enqueue-scripts.php:438
 msgid "Choose a file"
-msgstr "Vebijarek hilbijêrin:"
+msgstr "Dosyayek hilbijêrin"
 
-#: dt-assets/functions/enqueue-scripts.php:452
+#: dt-assets/functions/enqueue-scripts.php:439
 msgid "or drag it here"
-msgstr ""
+msgstr "an jî li vir bikişînin"
 
-#: dt-assets/functions/enqueue-scripts.php:453
+#: dt-assets/functions/enqueue-scripts.php:440
 msgid "Successfully Uploaded!"
-msgstr ""
+msgstr "Bi serkeftî hate barkirin!"
 
-#: dt-assets/functions/enqueue-scripts.php:454
+#: dt-assets/functions/enqueue-scripts.php:441
 msgid "Error!"
-msgstr ""
+msgstr "Çewtî!"
 
-#: dt-assets/functions/enqueue-scripts.php:455
-#, fuzzy
-#| msgid "Unable to update"
+#: dt-assets/functions/enqueue-scripts.php:442
 msgid "Unable to upload, please try again"
-msgstr "Nûvekirin nabe"
+msgstr "Nikare bar bike, ji kerema xwe dîsa biceribîne"
 
-#: dt-assets/functions/enqueue-scripts.php:456
+#: dt-assets/functions/enqueue-scripts.php:443
 msgid "Upload"
-msgstr ""
+msgstr "Barkirin"
 
-#: dt-assets/functions/enqueue-scripts.php:457
-#, fuzzy
-#| msgid "Delete Filter"
+#: dt-assets/functions/enqueue-scripts.php:444
 msgid "Delete Existing File"
-msgstr "Parzûna Paqij Bike"
+msgstr "Dosyaya Heyî Jêbibe"
 
-#: dt-assets/functions/enqueue-scripts.php:458
-#, fuzzy
-#| msgid "Delete Filter"
+#: dt-assets/functions/enqueue-scripts.php:445
 msgid "Replace Existing Image"
-msgstr "Parzûna Paqij Bike"
+msgstr "Wêneya Heyî Biguherîne"
 
-#: dt-assets/functions/enqueue-scripts.php:459
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
+#: dt-assets/functions/enqueue-scripts.php:446
 msgid "Are you sure you wish to delete existing file?"
-msgstr "Ma hûn pê ewle ne ku hûn dixwazin %s jêbirin?"
+msgstr "Ma hûn pê ewle ne ku hûn dixwazin dosyaya heyî jêbibin?"
 
-#: dt-assets/functions/enqueue-scripts.php:460
+#: dt-assets/functions/enqueue-scripts.php:447
 msgid "Successfully Deleted!"
-msgstr ""
+msgstr "Bi serkeftî hate jêbirin!"
 
-#: dt-assets/functions/enqueue-scripts.php:461
-#, fuzzy
-#| msgid "Delete and replace the app link"
+#: dt-assets/functions/enqueue-scripts.php:448
 msgid "Delete failed, please try again"
-msgstr "Zencîreya sepanê jêbirin û biguhezînin"
+msgstr "Jêbirin têk çû, ji kerema xwe dîsa biceribîne"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:27
 msgid "Menu"
@@ -1189,7 +1320,7 @@ msgstr "Qerta xûrekê"
 msgid "Disciple.Tools"
 msgstr "Ipagirt.Alav"
 
-#: dt-assets/functions/menu.php:51 template-settings.php:54
+#: dt-assets/functions/menu.php:51 template-settings.php:55
 msgid "Profile"
 msgstr "Tengal"
 
@@ -1199,14 +1330,14 @@ msgstr "Nû lê zêde bike"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:70 dt-assets/parts/nav-offcanvas.php:50
-#: dt-assets/parts/nav-topbar.php:157 template-notifications.php:33
-#: template-settings.php:60 template-settings.php:485
+#: dt-assets/parts/nav-topbar.php:170 template-notifications.php:33
+#: template-settings.php:61 template-settings.php:479
 msgid "Notifications"
 msgstr "Notifications"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:321
+#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:334
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "Mîhengên"
@@ -1215,13 +1346,13 @@ msgstr "Mîhengên"
 msgid "Admin"
 msgstr "Admin"
 
-#: dt-assets/functions/menu.php:94 dt-contacts/base-setup.php:689
-#: dt-contacts/base-setup.php:693 dt-mapping/columns/add-users-column.php:56
+#: dt-assets/functions/menu.php:94 dt-contacts/base-setup.php:694
+#: dt-contacts/base-setup.php:698 dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:269
 #: dt-metrics/combined/locations-list.php:95
 #: dt-metrics/combined/locations-list.php:270
-#: dt-metrics/records/dynamic-records-map.php:65
-#: dt-users/user-management.php:134 dt-users/user-management.php:231
+#: dt-metrics/records/dynamic-records-map.php:66
+#: dt-users/user-management.php:134 dt-users/user-management.php:235
 msgid "Users"
 msgstr "Bikarhêner"
 
@@ -1230,52 +1361,40 @@ msgid "Help"
 msgstr "Alîkarî"
 
 #: dt-assets/functions/menu.php:106
-#, fuzzy
-#| msgid "D.T Record"
 msgid "D.T Forum"
-msgstr "D.T Record"
+msgstr "Foruma D.T"
 
 #: dt-assets/parts/loop-activity-comment.php:84
-#, fuzzy
-#| msgid "New Comments"
 msgid "Add Image Comment"
-msgstr "Commentsîroveyên Nû"
+msgstr "Şîroveya Wêneyê Lê Zêde Bike"
 
 #: dt-assets/parts/loop-activity-comment.php:97
-#, fuzzy
-#| msgid "Add Records"
 msgid "Record Voice Message"
-msgstr "Records lê zêde bike"
+msgstr "Peyama Deng Tomar Bike"
 
 #: dt-assets/parts/loop-activity-comment.php:102
 msgid "Submit comment"
 msgstr "Commentîrove bişînin"
 
 #: dt-assets/parts/loop-activity-comment.php:111
-#, fuzzy
-#| msgid "Next record"
 msgid "Ready to record"
-msgstr "Qeyda paşîn"
+msgstr "Amade ye ji bo tomarkirinê"
 
 #: dt-assets/parts/loop-activity-comment.php:129
-#, fuzzy
-#| msgid "Create Record"
 msgid "Start Recording"
-msgstr "Qeydekê çêbikin"
+msgstr "Tomarkirinê Bide Destpêkirin"
 
 #: dt-assets/parts/loop-activity-comment.php:132
 msgid "Stop Recording"
-msgstr ""
+msgstr "Tomarkirinê Bisekinîne"
 
 #: dt-assets/parts/loop-activity-comment.php:135
 msgid "Play Recording"
-msgstr ""
+msgstr "Tomarkirinê Bilêxin"
 
 #: dt-assets/parts/loop-activity-comment.php:138
-#, fuzzy
-#| msgid "Create Record"
 msgid "Save Recording"
-msgstr "Qeydekê çêbikin"
+msgstr "Tomarkirinê Tomar Bike"
 
 #: dt-assets/parts/loop-activity-comment.php:158
 msgid "Showing:"
@@ -1302,7 +1421,7 @@ msgstr "Commentîrove Jê Bike:"
 
 #: dt-assets/parts/loop-activity-comment.php:235
 #: dt-assets/parts/loop-activity-comment.php:283
-#: template-merge-post-details.php:105
+#: template-merge-post-details.php:108
 msgid "Sorry, something went wrong"
 msgstr "Bibore, tiştek xelet çû"
 
@@ -1365,7 +1484,7 @@ msgstr "Ji bo berdewamiyê li ser yekbûnê bikirtînin."
 
 #: dt-assets/parts/modals/modal-advanced-search.php:11
 msgid "Search Query..."
-msgstr "Lêpirsîna Lêgerînê ..."
+msgstr "Lêpirsîna Lêgerînê..."
 
 #: dt-assets/parts/modals/modal-advanced-search.php:29
 msgid "Search Settings"
@@ -1412,24 +1531,15 @@ msgstr ""
 "hatiye kirin, ji we re dibin alîkar."
 
 #: dt-assets/parts/modals/modal-help.php:15
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid ""
-#| "For example, If you click the 'No Answer' button 4 times, we will log "
-#| "that you attempted to reach this contact 4 times, but they did not "
-#| "answer.\n"
-#| "                This action will also change the 'Seeker Path' to "
-#| "'Contact Attempted'."
 msgctxt "Optional Documentation"
 msgid ""
 "For example, If you click the 'No Answer' button 4 times, we will log that "
 "you attempted to reach this contact 4 times, but they did not answer. This "
 "action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"Mînakî, Heke hûn 4 caran bişkoja 'Bê Bersiv' bitikînin, em ê têkevin ku we 4 "
-"caran hewl da ku hûn bigihîjin vê têkiliyê, lê wan bersiv neda.\n"
-"                Di heman demê de ev çalakî dê 'Riya Lêgerîn' biguherîne "
-"'Têkoşîna Hewlê'."
+"Mînakî, Heke hûn 4 caran bişkoja 'Bê Bersiv' bikirtînin, em ê têkevin ku we "
+"4 caran hewl da ku bigihîjin vê têkiliyê, lê wan bersiv neda. Di heman demê "
+"de ev çalakî dê 'Riya Lêgerînê' biguherîne 'Hewldana Têkiliyê'."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1470,7 +1580,7 @@ msgstr ""
 "Hûn dikarin vê beşê an bi 'Hemî', 'Commentsîrove', an jî 'Çalakî' parzûn "
 "bikin."
 
-#: dt-assets/parts/modals/modal-help.php:58 template-settings.php:117
+#: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
 msgstr "Profîla we"
 
@@ -1543,8 +1653,7 @@ msgid ""
 "Some of the types of notifications cannot be adjusted because they are "
 "required by the system."
 msgstr ""
-"Hin celeb celeb agahdarî nayê verast kirin ji ber ku ji hêla pergalê ve "
-"hewce ne."
+"Hin celeb agahdarî nayê verast kirin ji ber ku ji hêla pergalê ve hewce ne."
 
 #: dt-assets/parts/modals/modal-help.php:79
 msgctxt "Optional Documentation"
@@ -1594,7 +1703,7 @@ msgstr ""
 "Bişkojka 'Nexwendî' bikirtînin da ku navnîşa hemî agahdariyên xweyên "
 "nexwendî nîşan bide."
 
-#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
+#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "Hemî wekî xwendî nîşan bikin"
@@ -1610,7 +1719,7 @@ msgstr ""
 "Heke hûn nexwazin li her çerxa tijî dagirtî ya li rexê rastê yê her rêzê "
 "bikirtînin da ku nîşan bikin ku notification hatiye xwendin, hingê li jor li "
 "ser lînka 'Mark All as Read' bikirtînin da ku hemî peyamên ku hemî wan hene "
-"zû zû sererast bikin hatine xwendin"
+"zû sererast bikin hatine xwendin."
 
 #: dt-assets/parts/modals/modal-help.php:95
 msgctxt "Optional Documentation"
@@ -1657,14 +1766,12 @@ msgid "Read the documentation"
 msgstr "Belgekirin bixwînin"
 
 #: dt-assets/parts/modals/modal-help.php:143 dt-reports/magic-url-setup.php:491
-#, fuzzy
-#| msgid "Open With"
 msgid "Open the link"
-msgstr "Bi Vekin"
+msgstr "Girêdanê veke"
 
 #: dt-assets/parts/modals/modal-help.php:147 dt-reports/magic-url-setup.php:499
 msgid "Copy the link to the clipboard"
-msgstr ""
+msgstr "Girêdanê li clipboardê kopî bike"
 
 #: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
 #: dt-reports/magic-url-setup.php:508
@@ -1688,14 +1795,6 @@ msgstr ""
 #: dt-assets/parts/modals/modal-new-contact.php:12
 msgid "Create Record"
 msgstr "Qeydekê çêbikin"
-
-#: dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
-#: dt-metrics/combined/locations-list.php:90 dt-metrics/records/genmap.php:166
-#: dt-posts/custom-post-type.php:170 dt-users/template-user-management.php:196
-#: template-settings.php:146
-msgid "Name"
-msgstr "Nav"
 
 #: dt-assets/parts/modals/modal-new-contact.php:20
 msgid "Record Created"
@@ -1735,23 +1834,18 @@ msgid "Create and apply tag"
 msgstr "Tag çêkin û bikar bînin"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
-#, fuzzy, php-format
-#| msgid "Record Hits:"
+#, php-format
 msgctxt "Record History"
 msgid "%s Record History"
-msgstr "Hits Record:"
+msgstr "Dîroka Tomara %s"
 
 #: dt-assets/parts/modals/modal-record-history.php:16
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Filter To Date"
-msgstr "Navê Parzûnê"
+msgstr "Heya Roja Fîlter Bike"
 
 #: dt-assets/parts/modals/modal-record-history.php:22
-#, fuzzy
-#| msgid "Create custom filter"
 msgid "select date to filter by"
-msgstr "Parzûna xwerû biafirînin"
+msgstr "rojek hilbijêrin ji bo fîlterkirinê"
 
 #: dt-assets/parts/modals/modal-revert.php:4
 msgid "Revert Activity"
@@ -1816,38 +1910,37 @@ msgstr "Task biafirînin"
 msgid "Existing tasks for this record:"
 msgstr "Karên heyî yên ji bo vê tomarê:"
 
-#: dt-assets/parts/nav-offcanvas.php:66 dt-assets/parts/nav-topbar.php:187
-#: dt-users/template-no-permission.php:94
-msgid "Log Out"
-msgstr "Derkeve"
-
 #: dt-assets/parts/nav-topbar.php:88
 msgid "Theme Update Available!"
 msgstr "Nûvekirina Mijarê Heye!"
 
-#: dt-assets/parts/nav-topbar.php:289 template-notifications.php:43
+#: dt-assets/parts/nav-topbar.php:110
+msgid "New Release Available"
+msgstr "Guhertoya nû berdest e"
+
+#: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"
 msgstr "Nşh"
 
-#: dt-assets/parts/nav-topbar.php:295 template-notifications.php:50
+#: dt-assets/parts/nav-topbar.php:308 template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "Gişt"
 
-#: dt-assets/parts/nav-topbar.php:299 template-notifications.php:54
+#: dt-assets/parts/nav-topbar.php:312 template-notifications.php:54
 msgid "Unread"
 msgstr "Nexwendî ye"
 
-#: dt-assets/parts/nav-topbar.php:306
+#: dt-assets/parts/nav-topbar.php:319
 msgid "See All"
 msgstr "Hemî Bibînin"
 
-#: dt-assets/parts/nav-topbar.php:325 template-notifications.php:72
+#: dt-assets/parts/nav-topbar.php:338 template-notifications.php:72
 msgid "Mark All"
 msgstr "Hemî Mark bikin"
 
 #: dt-contacts/base-setup.php:55 dt-contacts/base-setup.php:68
-#: dt-contacts/base-setup.php:261 dt-mapping/columns/add-contacts-column.php:59
+#: dt-contacts/base-setup.php:266 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:132
 #: dt-metrics/combined/locations-list.php:92
@@ -1855,190 +1948,188 @@ msgstr "Hemî Mark bikin"
 #: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
 #: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:172
-#: dt-users/template-user-management.php:466
+#: dt-users/template-user-management.php:460
 msgid "Contacts"
 msgstr "Têkilî"
 
-#: dt-contacts/base-setup.php:108
+#: dt-contacts/base-setup.php:113
 msgid "Nickname"
 msgstr "Nasnav"
 
-#: dt-contacts/base-setup.php:116
+#: dt-contacts/base-setup.php:121
 msgid "Contact Type"
 msgstr "Type Têkilî"
 
-#: dt-contacts/base-setup.php:120
+#: dt-contacts/base-setup.php:125
 msgid "User"
 msgstr "Bikaranîvan"
 
-#: dt-contacts/base-setup.php:121
+#: dt-contacts/base-setup.php:126
 msgid "Representing a User in the system"
 msgstr "Di pergalê de Bikarhêner temsîl dike"
 
-#: dt-contacts/base-setup.php:127
+#: dt-contacts/base-setup.php:132
 msgid "Private Contact"
 msgstr "Têkiliya Taybet"
 
-#: dt-contacts/base-setup.php:129
+#: dt-contacts/base-setup.php:134
 msgid "A friend, family member or acquaintance"
 msgstr "Hevalek, endamek malbatê an nasek"
 
-#: dt-contacts/base-setup.php:130 dt-contacts/base-setup.php:160
+#: dt-contacts/base-setup.php:135 dt-contacts/base-setup.php:165
 msgid "Only me"
 msgstr "Tenê ez"
 
-#: dt-contacts/base-setup.php:137
+#: dt-contacts/base-setup.php:142
 msgid "Standard Contact"
 msgstr "Têkiliya Standard"
 
-#: dt-contacts/base-setup.php:139
+#: dt-contacts/base-setup.php:144
 msgid "A contact to collaborate on"
 msgstr "Têkiliyek ji bo hevkariyê"
 
-#: dt-contacts/base-setup.php:140
+#: dt-contacts/base-setup.php:145
 msgid "Me and project leadership"
 msgstr "Ez û serokatiya projeyê"
 
-#: dt-contacts/base-setup.php:146
+#: dt-contacts/base-setup.php:151
 msgid "Connection"
 msgstr "Têkêlî"
 
-#: dt-contacts/base-setup.php:148 dt-contacts/base-setup.php:157
+#: dt-contacts/base-setup.php:153 dt-contacts/base-setup.php:162
 msgid "Connected to a contact, or generational fruit"
 msgstr "Bi têkiliyek, an fêkiyek nifşî ve girêdayî ye"
 
-#: dt-contacts/base-setup.php:151
+#: dt-contacts/base-setup.php:156
 msgid "Collaborators"
 msgstr "Hevkar"
 
-#: dt-contacts/base-setup.php:155
+#: dt-contacts/base-setup.php:160
 msgid "Private Connection"
 msgstr "Girêdana Taybet"
 
-#: dt-contacts/base-setup.php:184 dt-users/users.php:162
+#: dt-contacts/base-setup.php:189 dt-users/users.php:162
 msgid "Languages"
 msgstr "Ziman"
 
-#: dt-contacts/base-setup.php:193 template-settings.php:179
+#: dt-contacts/base-setup.php:198 template-settings.php:180
 msgid "Phone"
 msgstr "Telefon"
 
-#: dt-contacts/base-setup.php:201
+#: dt-contacts/base-setup.php:206
 msgid "Signal"
 msgstr "Nîşan"
 
-#: dt-contacts/base-setup.php:206
+#: dt-contacts/base-setup.php:211
 msgid "Viber"
 msgstr "Viber"
 
-#: dt-contacts/base-setup.php:211
-#, fuzzy
-#| msgid "Whatsapp"
+#: dt-contacts/base-setup.php:216
 msgid "WhatsApp"
-msgstr "Whatsapp"
+msgstr "WhatsApp"
 
-#: dt-contacts/base-setup.php:218
+#: dt-contacts/base-setup.php:223
 #: dt-core/configuration/config-site-defaults.php:253
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
-#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
-#: dt-users/users.php:129 template-settings.php:166
+#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:223
+#: dt-users/users.php:129 template-settings.php:167
 msgid "Email"
 msgstr "E-nameyê bişînin"
 
-#: dt-contacts/base-setup.php:227 dt-groups/base-setup.php:357
-#: dt-people-groups/people-groups-base.php:210 template-settings.php:190
+#: dt-contacts/base-setup.php:232 dt-groups/base-setup.php:358
+#: dt-people-groups/people-groups-base.php:210 template-settings.php:191
 msgid "Address"
 msgstr "Navnîşan"
 
-#: dt-contacts/base-setup.php:244
+#: dt-contacts/base-setup.php:249
 msgid "Facebook"
 msgstr "Facebook"
 
-#: dt-contacts/base-setup.php:252
+#: dt-contacts/base-setup.php:257
 msgid "Other Social Links"
 msgstr "Zencîreyên Civakî yên Din"
 
-#: dt-contacts/base-setup.php:261
+#: dt-contacts/base-setup.php:266
 #, php-format
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Girêdanên bi %s yên din re"
 
-#: dt-contacts/base-setup.php:262
+#: dt-contacts/base-setup.php:267
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Têkiliya vê têkiliyê bi têkiliyek din a di pergalê de heye."
 
-#: dt-contacts/base-setup.php:273 dt-contacts/module-access.php:1189
-#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
-#: template-settings.php:714
+#: dt-contacts/base-setup.php:278 dt-contacts/module-access.php:1189
+#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:231
+#: template-settings.php:708
 msgid "Gender"
 msgstr "Zayend"
 
-#: dt-contacts/base-setup.php:276 dt-users/template-user-management.php:241
+#: dt-contacts/base-setup.php:281 dt-users/template-user-management.php:235
 msgid "Male"
 msgstr "Nêrî"
 
-#: dt-contacts/base-setup.php:277 dt-users/template-user-management.php:242
+#: dt-contacts/base-setup.php:282 dt-users/template-user-management.php:236
 msgid "Female"
 msgstr "Mê"
 
-#: dt-contacts/base-setup.php:284
+#: dt-contacts/base-setup.php:289
 msgid "Age"
 msgstr "Kalbûn"
 
-#: dt-contacts/base-setup.php:288
+#: dt-contacts/base-setup.php:293
 msgid "Under 18 years old"
 msgstr "Di bin 18 salî de"
 
-#: dt-contacts/base-setup.php:289
+#: dt-contacts/base-setup.php:294
 msgid "18-25 years old"
 msgstr "18-25 salî"
 
-#: dt-contacts/base-setup.php:290
+#: dt-contacts/base-setup.php:295
 msgid "26-40 years old"
 msgstr "26-40 salî"
 
-#: dt-contacts/base-setup.php:291
+#: dt-contacts/base-setup.php:296
 msgid "Over 40 years old"
 msgstr "Di ser 40 salî re"
 
-#: dt-contacts/base-setup.php:299 dt-groups/base-setup.php:104
+#: dt-contacts/base-setup.php:304 dt-groups/base-setup.php:105
 #: dt-people-groups/people-groups-base.php:166
 msgid "Requires Update"
 msgstr "Pêdivî ye Rojanekirin"
 
-#: dt-contacts/base-setup.php:305 dt-contacts/module-access.php:142
+#: dt-contacts/base-setup.php:310 dt-contacts/module-access.php:142
 #: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
 msgstr "Rewşa Têkiliyê"
 
-#: dt-contacts/base-setup.php:306
+#: dt-contacts/base-setup.php:311
 msgctxt "Contact Status field description"
 msgid ""
 "The Contact Status describes the progress in communicating with the contact."
 msgstr "Rewşa Têkiliyê pêşveçûna di têkiliya bi têkiliyê re vedibêje."
 
-#: dt-contacts/base-setup.php:313 dt-groups/base-setup.php:120
+#: dt-contacts/base-setup.php:318 dt-groups/base-setup.php:121
 #: dt-users/users.php:177
 msgid "Active"
 msgstr "Jîr"
 
-#: dt-contacts/base-setup.php:314
+#: dt-contacts/base-setup.php:319
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "Têkilî pêşve diçe û / an jî bi berdewamî tê nûve kirin."
 
-#: dt-contacts/base-setup.php:319
+#: dt-contacts/base-setup.php:324
 msgid "New Contact"
 msgstr "Têkiliya Nû"
 
-#: dt-contacts/base-setup.php:320
+#: dt-contacts/base-setup.php:325
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
 msgstr "Têkilî di pergalê de nû ye."
 
-#: dt-contacts/base-setup.php:326
+#: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
 "This contact has made it known that they no longer want to continue or you "
@@ -2047,192 +2138,190 @@ msgstr ""
 "Vê têkiliyê da zanîn ku ew êdî naxwazin berdewam bikin an we biryar daye ku "
 "hûn bi wî / wê re berdewam nekin."
 
-#: dt-contacts/base-setup.php:332 dt-groups/base-setup.php:137
+#: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "Hat tayîn kirin"
 
-#: dt-contacts/base-setup.php:333
+#: dt-contacts/base-setup.php:338
 msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr "Kesê sereke yê ku berpirsiyarê ragihandina vê têkiliyê ye hilbijêrin."
 
-#: dt-contacts/base-setup.php:343
+#: dt-contacts/base-setup.php:348
 msgid "Sub-assigned to"
 msgstr "Binê-tayîn kirin ku"
 
-#: dt-contacts/base-setup.php:344
+#: dt-contacts/base-setup.php:349
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
-"Têkilî an Bikarhênerê ku ji Bo Bikarhêneran re Arîkar e ku têkiliyê bişopîne"
+"Têkilî an Bikarhênerê ku ji Bo Bikarhêneran re Arîkar e ku têkiliyê bişopîne."
 
-#: dt-contacts/base-setup.php:355
+#: dt-contacts/base-setup.php:360
 msgid "Sub-assigned on other Contacts"
 msgstr "Sub-li ser Têkiliyên din têne şandin"
 
-#: dt-contacts/base-setup.php:356
+#: dt-contacts/base-setup.php:361
 msgid "Contacts this contacts is subassigned on"
 msgstr "Têkiliyên ku ev têkilî li ser wan tê veqetandin"
 
-#: dt-contacts/base-setup.php:368 dt-contacts/base-setup.php:749
+#: dt-contacts/base-setup.php:373 dt-contacts/base-setup.php:754
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
 #: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
 msgid "Personal"
 msgstr "Şexsî"
 
-#: dt-contacts/base-setup.php:372
+#: dt-contacts/base-setup.php:377
 #: dt-core/configuration/config-site-defaults.php:256
 msgid "Web"
 msgstr "Tevn"
 
-#: dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:381
 msgid "Transfer"
 msgstr "Derbaskirin"
 
-#: dt-contacts/base-setup.php:378
+#: dt-contacts/base-setup.php:383
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr ""
 "Têkilî ji hevkariyek bi malpera din a Disciple.Tools re hatine veguheztin."
 
-#: dt-contacts/base-setup.php:391 dt-metrics/contacts/sources.php:90
+#: dt-contacts/base-setup.php:396 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:616
 msgid "Sources"
 msgstr "Çavkaniyên"
 
-#: dt-contacts/base-setup.php:392
+#: dt-contacts/base-setup.php:397
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "Malper, bûyer an cîhê ku ev têkilî ji ku hatî."
 
-#: dt-contacts/base-setup.php:433 dt-contacts/base-setup.php:465
+#: dt-contacts/base-setup.php:438 dt-contacts/base-setup.php:470
 #, php-format
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "%s arşîv bike"
 
-#: dt-contacts/base-setup.php:440
+#: dt-contacts/base-setup.php:445
 #, php-format
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "Tîpa %s biguherîne"
 
-#: dt-contacts/base-setup.php:446
+#: dt-contacts/base-setup.php:451
 msgid "See duplicates"
 msgstr "Dubareyan bibînin"
 
-#: dt-contacts/base-setup.php:466
+#: dt-contacts/base-setup.php:471
 #, php-format
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "Ma hûn pê ewle ne ku hûn dixwazin %s arşîv bikin?"
 
-#: dt-contacts/base-setup.php:473
+#: dt-contacts/base-setup.php:478
 msgid "Archive"
 msgstr "Arşîv"
 
-#: dt-contacts/base-setup.php:484 dt-contacts/module-access.php:432
+#: dt-contacts/base-setup.php:489 dt-contacts/module-access.php:432
 #: dt-contacts/module-access.php:463 dt-contacts/module-access.php:494
 msgid "Choose an option:"
 msgstr "Vebijarek hilbijêrin:"
 
-#: dt-contacts/base-setup.php:508 dt-contacts/module-access.php:454
+#: dt-contacts/base-setup.php:513 dt-contacts/module-access.php:454
 #: dt-contacts/module-access.php:485 dt-contacts/module-access.php:513
 msgid "Confirm"
 msgstr "Tesdîqkirin"
 
-#: dt-contacts/base-setup.php:532
+#: dt-contacts/base-setup.php:537
 #: dt-core/configuration/config-site-defaults.php:444
-#: dt-groups/base-setup.php:610 template-settings.php:212
+#: dt-groups/base-setup.php:611 template-settings.php:213
 msgid "Other"
 msgstr "Yên din"
 
-#: dt-contacts/base-setup.php:623
+#: dt-contacts/base-setup.php:628
 msgid "This record might be a duplicate of: "
 msgstr "Ev tomar dibe ku dubare be ji: "
 
-#: dt-contacts/base-setup.php:629 dt-contacts/duplicates-merging.php:513
+#: dt-contacts/base-setup.php:634 dt-contacts/duplicates-merging.php:513
 #: dt-contacts/duplicates-merging.php:595
 msgid "Duplicate Checker"
 msgstr "Duplicate Checker"
 
-#: dt-contacts/base-setup.php:668 dt-groups/base-setup.php:1031
+#: dt-contacts/base-setup.php:673 dt-groups/base-setup.php:1032
 #: dt-posts/custom-post-type.php:468
 msgid "Default Filters"
 msgstr "Parzûnên Default"
 
-#: dt-contacts/base-setup.php:678
+#: dt-contacts/base-setup.php:683
 #, php-format
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Hemî%s dikarim bibînim"
 
-#: dt-contacts/base-setup.php:705 dt-groups/base-setup.php:1045
+#: dt-contacts/base-setup.php:710 dt-groups/base-setup.php:1046
 #: dt-posts/custom-post-type.php:501
 #, php-format
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "Favorite %s"
 
-#: dt-contacts/base-setup.php:711 dt-groups/base-setup.php:1050
+#: dt-contacts/base-setup.php:716 dt-groups/base-setup.php:1051
 #: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:507
 msgid "Favorite"
 msgstr "Hezkirî"
 
-#: dt-contacts/base-setup.php:717 dt-groups/base-setup.php:1056
+#: dt-contacts/base-setup.php:722 dt-groups/base-setup.php:1057
 #: dt-posts/custom-post-type.php:516
 msgid "My Recently Viewed"
 msgstr "Min Demên Nû Dît"
 
-#: dt-contacts/base-setup.php:722 dt-groups/base-setup.php:1061
+#: dt-contacts/base-setup.php:727 dt-groups/base-setup.php:1062
 #: dt-posts/custom-post-type.php:521
 msgid "Last 30 viewed"
 msgstr "30 paşîn hat dîtin"
 
-#: dt-contacts/base-setup.php:729
-#, fuzzy
-#| msgid "Assigned Contacts"
+#: dt-contacts/base-setup.php:734
 msgid "My Assigned Contacts"
-msgstr "Têkilî destnîşan kirin"
+msgstr "Têkiliyên Min ên Destnîşankirî"
 
-#: dt-contacts/base-setup.php:739
+#: dt-contacts/base-setup.php:744
 msgid "My Follow-Up"
 msgstr "Followopandina min"
 
-#: dt-contacts/base-setup.php:740 dt-contacts/module-access.php:873
+#: dt-contacts/base-setup.php:745 dt-contacts/module-access.php:873
 #: dt-contacts/module-access.php:895 dt-contacts/module-access.php:920
-#: dt-groups/base-setup.php:949
+#: dt-groups/base-setup.php:950
 msgid "Assigned to me"
 msgstr "Ji min re tayîn kirin"
 
-#: dt-contacts/base-setup.php:741 dt-contacts/module-access.php:874
+#: dt-contacts/base-setup.php:746 dt-contacts/module-access.php:874
 #: dt-contacts/module-access.php:896 dt-contacts/module-access.php:921
 msgid "Sub-assigned to me"
 msgstr "Ji min re hatî şandin"
 
-#: dt-contacts/base-setup.php:761
+#: dt-contacts/base-setup.php:766
 #, php-format
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "Bi %s ve girêdayî ye"
 
-#: dt-contacts/base-setup.php:785 dt-contacts/base-setup.php:793
-#: dt-contacts/base-setup.php:829 dt-contacts/base-setup.php:830
+#: dt-contacts/base-setup.php:790 dt-contacts/base-setup.php:798
+#: dt-contacts/base-setup.php:834 dt-contacts/base-setup.php:835
 msgid "Shared with me"
 msgstr "Bi min re parve kirin"
 
-#: dt-contacts/base-setup.php:833 dt-contacts/base-setup.php:834
+#: dt-contacts/base-setup.php:838 dt-contacts/base-setup.php:839
 msgid "Subassigned only"
 msgstr "Tenê binavkirî"
 
-#: dt-contacts/base-setup.php:987
+#: dt-contacts/base-setup.php:992
 #, php-format
 msgid "This %s is archived"
 msgstr "Ev %s hatî arşîv kirin"
 
-#: dt-contacts/base-setup.php:989
+#: dt-contacts/base-setup.php:994
 msgid "Restore"
 msgstr "Nûvdekirin"
 
@@ -2327,7 +2416,7 @@ msgstr "Têkilî ji malperê veguhastin"
 #: dt-contacts/contacts-transfer.php:626 dt-contacts/contacts-transfer.php:641
 #: dt-contacts/contacts-transfer.php:671 dt-contacts/contacts-transfer.php:885
 msgid "Transfer Bot"
-msgstr "Bot Bot"
+msgstr "Bot"
 
 #: dt-contacts/contacts-transfer.php:633
 msgid "ALERT: Possible duplicate contact from a previous transfer."
@@ -2720,7 +2809,7 @@ msgid "Assign"
 msgstr "Cîrêdan"
 
 #: dt-contacts/module-access.php:1188 dt-users/template-new-user.php:134
-#: template-settings.php:226
+#: template-settings.php:227
 msgid "Language"
 msgstr "Ziman"
 
@@ -2871,10 +2960,8 @@ msgstr ""
 "nûve bikin."
 
 #: dt-contacts/user-module.php:73
-#, fuzzy
-#| msgid "Settings"
 msgid "Profile Settings"
-msgstr "Mîhengên"
+msgstr "Mîhengên Profîlê"
 
 #: dt-contacts/user-module.php:76
 msgid "This contact represents a user."
@@ -3024,7 +3111,7 @@ msgstr "Têlefona kar ji bo belavkirina têkilî û lêgerînan e."
 
 #: dt-core/configuration/config-site-defaults.php:405
 msgid "Work Email"
-msgstr "Email Email"
+msgstr "Email"
 
 #: dt-core/configuration/config-site-defaults.php:408
 msgid "Work email is for distribution to contacts and seekers."
@@ -3070,11 +3157,6 @@ msgstr "xemgîn"
 msgid "prayer"
 msgstr "dûa"
 
-#: dt-core/configuration/config-site-defaults.php:442
-#: dt-login/login-template.php:529
-msgid "Home"
-msgstr "Xane"
-
 #: dt-core/configuration/config-site-defaults.php:443
 msgid "Work"
 msgstr "Kar"
@@ -3094,14 +3176,15 @@ msgstr "Pir têkiliyên min hene"
 #: dt-core/configuration/restrict-site-access.php:249
 msgid "Check your email for the confirmation link, then visit the"
 msgstr ""
+"Ji bo girêdana pejirandinê e-nameya xwe kontrol bikin, paşê serdana bikin"
 
 #: dt-core/configuration/restrict-site-access.php:253
 msgid "Login Page"
-msgstr ""
+msgstr "Rûpela Têketinê"
 
 #: dt-core/configuration/restrict-site-access.php:254
 msgid "login page"
-msgstr ""
+msgstr "rûpela têketinê"
 
 #: dt-core/configuration/restrict-site-access.php:257
 msgid "ERROR: Invalid username/password combination."
@@ -3109,10 +3192,8 @@ msgstr "ÇEWT: Navê bikarhêner / şîfreya nederbasdar."
 
 #: dt-core/configuration/restrict-site-access.php:261
 #: dt-login/login-template.php:217 dt-login/login-template.php:263
-#, fuzzy
-#| msgid "Reset password"
 msgid "Reset Password"
-msgstr "Reset şîfreyê"
+msgstr "Şîfreyê Ji Nû Ve Saz Bike"
 
 #: dt-core/configuration/restrict-site-access.php:262
 msgid "Lost your password"
@@ -3148,82 +3229,90 @@ msgid ""
 "Something went wrong. Please try again or have an admin check the connection "
 "settings."
 msgstr ""
+"Tiştek çewt bû. Ji kerema xwe dîsa biceribînin an jî admin mîhengên "
+"pêwendiyê kontrol bike."
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
 msgstr "(sernav tune)"
 
-#: dt-core/release-notifications.php:58
-msgid "Release Announcement!"
-msgstr ""
-
-#: dt-core/release-notifications.php:59
+#: dt-core/release-notifications.php:81
 #, php-format
 msgid "Disciple.Tools Theme Version %1$s"
-msgstr ""
+msgstr "Guhertoya Temaya Disciple.Tools %1$s"
 
-#: dt-core/release-notifications.php:65
+#: dt-core/release-notifications.php:87
 msgid "Theme News"
-msgstr ""
+msgstr "Nûçeyên Temayê"
 
-#: dt-core/release-notifications.php:67 dt-core/release-notifications.php:76
+#: dt-core/release-notifications.php:89 dt-core/release-notifications.php:98
 msgid "Other News"
-msgstr ""
+msgstr "Nûçeyên Din"
 
-#: dt-core/release-notifications.php:68
+#: dt-core/release-notifications.php:90
 msgid "Get Involved"
-msgstr ""
+msgstr "Beşdar bibin"
 
-#: dt-core/release-notifications.php:80
+#: dt-core/release-notifications.php:102
 msgid "Other news not available."
-msgstr ""
+msgstr "Nûçeyên din berdest nînin."
 
-#: dt-core/release-notifications.php:95
+#: dt-core/release-notifications.php:117
 msgid "Freely given, but not cheap"
-msgstr ""
+msgstr "Bê pere tê dayîn, lê ne erzan e"
 
-#: dt-core/release-notifications.php:97
+#: dt-core/release-notifications.php:119
 msgid ""
 "Disciple.Tools relies on contributions for continued development and "
 "maintenance. Will you join the team?"
 msgstr ""
+"Disciple.Tools ji bo pêşkeftin û lênihêrîna domdar bi beşdariyan ve girêdayî "
+"ye. Hûn ê beşdarî tîmê bibin?"
 
-#: dt-core/release-notifications.php:99
+#: dt-core/release-notifications.php:121
 msgid "Give"
-msgstr ""
+msgstr "Bidin"
 
-#: dt-core/release-notifications.php:103 dt-core/release-notifications.php:107
+#: dt-core/release-notifications.php:125 dt-core/release-notifications.php:129
 msgid "Translate"
-msgstr ""
+msgstr "Wergerîne"
 
-#: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
-#: template-settings.php:735
+#: dt-core/release-notifications.php:127 dt-users/user-initial-setup.php:68
+#: template-settings.php:729
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
 msgstr ""
+"Disciple.Tools bi zimanê xwe wergerînin an alîkariya çêtirkirina wergerekê "
+"bikin."
 
-#: dt-core/release-notifications.php:112
+#: dt-core/release-notifications.php:134
 msgid "Build or Document"
-msgstr ""
+msgstr "Çêkin an Belge bikin"
 
-#: dt-core/release-notifications.php:114
+#: dt-core/release-notifications.php:136
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
 msgstr ""
+"Disciple.Tools baştir bikin bi çêkirina taybetmendiyek an alîkariya me di "
+"çêtirkirina belgeyê de."
 
-#: dt-core/release-notifications.php:116
+#: dt-core/release-notifications.php:138
 msgid "Find out more"
-msgstr ""
+msgstr "Zêdetir fêr bibin"
+
+#: dt-core/utilities/dt-components.php:135
+msgid "Search Locations"
+msgstr "Li Cihan Lêgerin"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
-#: dt-groups/base-setup.php:168 dt-metrics/personal/activity-highlights.php:58
+#: dt-groups/base-setup.php:169 dt-metrics/personal/activity-highlights.php:58
 msgid "Group"
 msgstr "Kom"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:61
-#: dt-groups/base-setup.php:425 dt-groups/base-setup.php:609
+#: dt-groups/base-setup.php:426 dt-groups/base-setup.php:610
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:177
@@ -3236,38 +3325,38 @@ msgstr "Kom"
 msgid "Groups"
 msgstr "Koman"
 
-#: dt-groups/base-setup.php:115
+#: dt-groups/base-setup.php:116
 msgid "Group Status"
 msgstr "Rewşa Koma"
 
-#: dt-groups/base-setup.php:116
+#: dt-groups/base-setup.php:117
 msgctxt "field description"
 msgid "Set the current status of the group."
 msgstr "Rewşa komê ya heyî saz bikin."
 
-#: dt-groups/base-setup.php:121
+#: dt-groups/base-setup.php:122
 msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "Kom bi aktîfî dicive."
 
-#: dt-groups/base-setup.php:125 dt-users/users.php:180
+#: dt-groups/base-setup.php:126 dt-users/users.php:180
 msgid "Inactive"
 msgstr "Bêkar"
 
-#: dt-groups/base-setup.php:126
+#: dt-groups/base-setup.php:127
 msgctxt "field description"
 msgid "The group is no longer meeting."
 msgstr "Kom êdî nema dicive."
 
-#: dt-groups/base-setup.php:138
+#: dt-groups/base-setup.php:139
 msgid "Select the main person who is responsible for reporting on this group."
 msgstr "Kesê sereke yê ku berpirsiyarê ragihandina vê komê ye hilbijêrin."
 
-#: dt-groups/base-setup.php:146
+#: dt-groups/base-setup.php:147
 msgid "Group Coach / Church Planter"
 msgstr "Rahênerê Koma / Çandiniya Dêrê"
 
-#: dt-groups/base-setup.php:147
+#: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
 "The person who planted and/or is coaching this group. Only one person can be "
@@ -3278,176 +3367,176 @@ msgstr ""
 "komekê de were peywirdarkirin dema ku gelek kes dikarin bibin rahêner / "
 "darên vê komê."
 
-#: dt-groups/base-setup.php:159
+#: dt-groups/base-setup.php:160
 msgid "Group Type"
 msgstr "Tîpa komê"
 
-#: dt-groups/base-setup.php:164
+#: dt-groups/base-setup.php:165
 msgid "Pre-Group"
 msgstr "Pêş-Kom"
 
-#: dt-groups/base-setup.php:165
+#: dt-groups/base-setup.php:166
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
 msgstr "Komek bi piranî ji bawermendan nîn e."
 
-#: dt-groups/base-setup.php:169
+#: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr "Komek xwedan 3 an bêtir bawermend lê wekî dêr nayên nas kirin."
 
-#: dt-groups/base-setup.php:172
+#: dt-groups/base-setup.php:173
 msgid "Church"
 msgstr "Dêr"
 
-#: dt-groups/base-setup.php:173
+#: dt-groups/base-setup.php:174
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
 msgstr "Komek xwedan 3 an bêtir bawermend û wekî dêr têne nas kirin."
 
-#: dt-groups/base-setup.php:176
+#: dt-groups/base-setup.php:177
 msgid "Team"
 msgstr "Kom"
 
-#: dt-groups/base-setup.php:177
+#: dt-groups/base-setup.php:178
 msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr "Komek taybetî ku wekî dêrek dicive (an hewl nade ku bibe dêr)."
 
-#: dt-groups/base-setup.php:191 dt-groups/base-setup.php:602
+#: dt-groups/base-setup.php:192 dt-groups/base-setup.php:603
 msgid "Church Health"
 msgstr "Tenduristiya Dêrê"
 
-#: dt-groups/base-setup.php:192
+#: dt-groups/base-setup.php:193
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "Pêşkeftin û tenduristiya komek / dêrê bişopînin."
 
-#: dt-groups/base-setup.php:196
+#: dt-groups/base-setup.php:197
 msgid "Baptism"
 msgstr "Waftîz"
 
-#: dt-groups/base-setup.php:197
+#: dt-groups/base-setup.php:198
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "Kom imad dikin."
 
-#: dt-groups/base-setup.php:201
+#: dt-groups/base-setup.php:202
 msgid "Bible Study"
 msgstr "Xwendina Incîlê"
 
-#: dt-groups/base-setup.php:202
+#: dt-groups/base-setup.php:203
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "Kom koma încîlê dixwîne."
 
-#: dt-groups/base-setup.php:206
+#: dt-groups/base-setup.php:207
 msgid "Communion"
 msgstr "Komînyon"
 
-#: dt-groups/base-setup.php:207
+#: dt-groups/base-setup.php:208
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "Kom kombûnê dike."
 
-#: dt-groups/base-setup.php:211
+#: dt-groups/base-setup.php:212
 msgid "Fellowship"
 msgstr "Hevaltî"
 
-#: dt-groups/base-setup.php:212
+#: dt-groups/base-setup.php:213
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "Kom hevaltiyê dike."
 
-#: dt-groups/base-setup.php:216
+#: dt-groups/base-setup.php:217
 msgid "Giving"
 msgstr "Diyarî kirin"
 
-#: dt-groups/base-setup.php:217
+#: dt-groups/base-setup.php:218
 msgctxt "Optional Documentation"
 msgid "The group is giving."
 msgstr "Kom dide."
 
-#: dt-groups/base-setup.php:221
+#: dt-groups/base-setup.php:222
 msgid "Prayer"
 msgstr "Dûa"
 
-#: dt-groups/base-setup.php:222
+#: dt-groups/base-setup.php:223
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "Kom dua dike."
 
-#: dt-groups/base-setup.php:226
+#: dt-groups/base-setup.php:227
 msgid "Praise"
 msgstr "Pesn"
 
-#: dt-groups/base-setup.php:227
+#: dt-groups/base-setup.php:228
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "Kom pesnê xwe didin."
 
-#: dt-groups/base-setup.php:231
+#: dt-groups/base-setup.php:232
 msgid "Sharing the Gospel"
 msgstr "Parvekirina Mizgîniyê"
 
-#: dt-groups/base-setup.php:232
+#: dt-groups/base-setup.php:233
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
 msgstr "Kom mizgîniyê parve dike."
 
-#: dt-groups/base-setup.php:236 dt-groups/base-setup.php:298
+#: dt-groups/base-setup.php:237 dt-groups/base-setup.php:299
 msgid "Leaders"
 msgstr "Rêber"
 
-#: dt-groups/base-setup.php:237
+#: dt-groups/base-setup.php:238
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "Serokên komê hene."
 
-#: dt-groups/base-setup.php:241 dt-groups/base-setup.php:403
+#: dt-groups/base-setup.php:242 dt-groups/base-setup.php:404
 msgid "Church Commitment"
 msgstr "Dilsoziya Dêrê"
 
-#: dt-groups/base-setup.php:242
+#: dt-groups/base-setup.php:243
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "Komê soz da ku bibe dêr."
 
-#: dt-groups/base-setup.php:251 dt-users/template-user-management.php:180
-#: template-settings.php:444 template-settings.php:463
+#: dt-groups/base-setup.php:252 dt-users/template-user-management.php:174
+#: template-settings.php:438 template-settings.php:457
 msgid "Start Date"
 msgstr "Dîroka Destpêkê"
 
-#: dt-groups/base-setup.php:252
+#: dt-groups/base-setup.php:253
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "Dîroka ku vê komê dest bi civînê kir."
 
-#: dt-groups/base-setup.php:259
+#: dt-groups/base-setup.php:260
 msgid "Church Start Date"
 msgstr "Dîroka Destpêka Dêrê"
 
-#: dt-groups/base-setup.php:260
+#: dt-groups/base-setup.php:261
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "Dîroka ku vê komê yekem wekî dêrek destnîşan kir."
 
-#: dt-groups/base-setup.php:268 dt-users/template-user-management.php:181
-#: template-settings.php:450 template-settings.php:464
+#: dt-groups/base-setup.php:269 dt-users/template-user-management.php:175
+#: template-settings.php:444 template-settings.php:458
 msgid "End Date"
 msgstr "Dîroka Dawiyê"
 
-#: dt-groups/base-setup.php:269
+#: dt-groups/base-setup.php:270
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "Dîroka ku vê komê civîn sekinand (heke pêkan be)."
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:157
+#: dt-groups/base-setup.php:280 dt-metrics/records/genmap.php:157
 msgid "Member Count"
-msgstr "Count Count"
+msgstr "Count"
 
-#: dt-groups/base-setup.php:280
+#: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
 "The number of members in this group. It will automatically be updated when "
@@ -3460,34 +3549,34 @@ msgstr ""
 "bi destan biguhezînin da ku mirovên ku dibe ku di pergalê de ne lê endamên "
 "komê ne jî tê de bigirin."
 
-#: dt-groups/base-setup.php:288 dt-groups/base-setup.php:557
-#: dt-groups/base-setup.php:601
+#: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
+#: dt-groups/base-setup.php:602
 msgid "Member List"
 msgstr "Lîsteya Endaman"
 
-#: dt-groups/base-setup.php:289
+#: dt-groups/base-setup.php:290
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "Têkiliyên ku endamên vê komê ne."
 
-#: dt-groups/base-setup.php:308
+#: dt-groups/base-setup.php:309
 msgid "Leader Count"
-msgstr "Count Count"
+msgstr "Count"
 
-#: dt-groups/base-setup.php:316
+#: dt-groups/base-setup.php:317
 msgid "Parent Group"
 msgstr "Koma Dêûbavan"
 
-#: dt-groups/base-setup.php:317
+#: dt-groups/base-setup.php:318
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
 msgstr "Komek ku vê komê ava kir."
 
-#: dt-groups/base-setup.php:328
+#: dt-groups/base-setup.php:329
 msgid "Peer Group"
 msgstr "Koma Peer"
 
-#: dt-groups/base-setup.php:329
+#: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
 "A related group that isn't a parent/child in relationship. It might indicate "
@@ -3496,89 +3585,89 @@ msgstr ""
 "Komek pêwendîdar ku dêûbav / zarokek di têkiliyê de ne. Dibe ku ev komên ku "
 "hevkariyê dikin, dê li ber hev bibin, vê dawiyê veqetandî, hwd."
 
-#: dt-groups/base-setup.php:340
+#: dt-groups/base-setup.php:341
 msgid "Child Group"
 msgstr "Koma Zarokan"
 
-#: dt-groups/base-setup.php:341
+#: dt-groups/base-setup.php:342
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "Komek ku ji vê komê çêbûye."
 
-#: dt-groups/base-setup.php:376
+#: dt-groups/base-setup.php:377
 msgid "Unbelievers"
 msgstr "Kafiran"
 
-#: dt-groups/base-setup.php:377
+#: dt-groups/base-setup.php:378
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "Hejmara kafiran di vê komê de."
 
-#: dt-groups/base-setup.php:385
+#: dt-groups/base-setup.php:386
 msgid "Believers"
 msgstr "Bawermend"
 
-#: dt-groups/base-setup.php:386
+#: dt-groups/base-setup.php:387
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "Hejmara bawermendên vê komê."
 
-#: dt-groups/base-setup.php:394
+#: dt-groups/base-setup.php:395
 msgid "Accountable"
 msgstr "Berpirsîyarîn"
 
-#: dt-groups/base-setup.php:395
+#: dt-groups/base-setup.php:396
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "Hejmara mirovên di koma berpirsiyariyê de."
 
-#: dt-groups/base-setup.php:404
+#: dt-groups/base-setup.php:405
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "Ma ev dêr e - erê an na?"
 
-#: dt-groups/base-setup.php:412
+#: dt-groups/base-setup.php:413
 msgid "Multiplying"
 msgstr "Pirbûn"
 
-#: dt-groups/base-setup.php:413
+#: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
 "Number of people helping start other groups. How many members are "
 "multiplying?"
 msgstr "Hejmara kesên ku alîkariya komên din dikin. Çiqas endam pir dibin?"
 
-#: dt-groups/base-setup.php:426
+#: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "Komên ku ev têkilî endamek e."
 
-#: dt-groups/base-setup.php:438
+#: dt-groups/base-setup.php:439
 msgid "Leader of Group"
 msgstr "Serokê Koma"
 
-#: dt-groups/base-setup.php:448
+#: dt-groups/base-setup.php:449
 msgid "Coach of Group"
 msgstr "Coach of Group"
 
-#: dt-groups/base-setup.php:560
+#: dt-groups/base-setup.php:561
 msgid "Create"
 msgstr "Xûliqandin"
 
-#: dt-groups/base-setup.php:565
+#: dt-groups/base-setup.php:566
 msgid "Select"
 msgstr "Neqandin"
 
-#: dt-groups/base-setup.php:570
+#: dt-groups/base-setup.php:571
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "Ji bo zêdekirina endamên nû, li 'Afirandin' an 'Hilbijêre' bikirtînin."
 
-#: dt-groups/base-setup.php:576
+#: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Endaman ji têkiliyên heyî zêde bikin"
 
-#: dt-groups/base-setup.php:577
+#: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
@@ -3587,11 +3676,11 @@ msgstr ""
 "Di qada 'Lîsteya Endaman' de, navê têkiliyek heyî binivîse da ku wan li vê "
 "komê zêde bike."
 
-#: dt-groups/base-setup.php:605
+#: dt-groups/base-setup.php:606
 msgid "Four Fields"
 msgstr "Çar Zevî"
 
-#: dt-groups/base-setup.php:606
+#: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
@@ -3606,95 +3695,82 @@ msgid ""
 "Your password reset link appears to be invalid. Please request a new link "
 "below."
 msgstr ""
+"Girêdana nûvekirina şîfreya we xuya ye ku nederbasdar e. Ji kerema xwe li "
+"jêr girêdaneke nû bixwazin."
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
 msgstr ""
+"Girêdana nûvekirina şîfreya we qediya. Ji kerema xwe li jêr girêdaneke nû "
+"bixwazin."
 
 #: dt-login/login-template.php:84 dt-login/login-template.php:109
-#, fuzzy
-#| msgid "Password"
 msgid "Get New Password"
-msgstr "Şîfre"
+msgstr "Şîfreya Nû Bistînin"
 
 #: dt-login/login-template.php:98 dt-login/login-template.php:488
-#, fuzzy
-#| msgid "Add email address"
 msgid "Email Address"
-msgstr "Navnîşana e-nameyê zêde bikin"
+msgstr "Navnîşana E-nameyê"
 
 #: dt-login/login-template.php:112
 msgid ""
 "Your password reset email has been sent. Check your email or junk mail for "
 "the link to reset your password."
 msgstr ""
+"E-nameya nûvekirina şîfreya we hate şandin. Ji bo girêdana nûvekirina "
+"şîfreya xwe e-nameya xwe an junk mailê kontrol bikin."
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
-msgstr ""
+msgstr "E-name an şîfre winda ye."
 
 #: dt-login/login-template.php:164 dt-login/login-template.php:244
 #: dt-login/login-template.php:365
 msgid "Passwords do not match. Please, try again."
-msgstr ""
+msgstr "Şîfre li hev nakin. Ji kerema xwe, dîsa biceribînin."
 
 #: dt-login/login-template.php:231 dt-login/login-template.php:234
 #: dt-login/login-template.php:353 dt-login/login-template.php:356
-#, fuzzy
-#| msgid "Password"
 msgid "Password Required"
-msgstr "Şîfre"
+msgstr "Şîfre Pêwîst e"
 
 #: dt-login/login-template.php:241 dt-login/login-template.php:362
-#, fuzzy
-#| msgid "Reset password"
 msgid "Re-enter Password"
-msgstr "Reset şîfreyê"
+msgstr "Şîfreyê Dîsa Binivîsin"
 
 #: dt-login/login-template.php:312 dt-login/login-template.php:374
 #: dt-login/login-template.php:545
-#, fuzzy
-#| msgid "Registered"
 msgid "Register"
-msgstr "Tomar kirin"
+msgstr "Tomar bibe"
 
 #: dt-login/login-template.php:340 dt-users/template-new-user.php:88
 msgid "There are some errors in your form."
 msgstr "Di forma we de hin çewtî hene."
 
 #: dt-login/login-template.php:345
-#, fuzzy
-#| msgid "Display Name"
 msgid "Display Name (optional)"
-msgstr "Navê Nîşan bide"
+msgstr "Navê Nîşandanê (vebijarkî)"
 
 #: dt-login/login-template.php:456
 msgid "User action confirmed."
-msgstr ""
+msgstr "Çalakiya bikarhêner pejirîn."
 
 #: dt-login/login-template.php:466 dt-login/login-template.php:491
 #: dt-login/login-template.php:537
 msgid "Login"
-msgstr ""
+msgstr "Têketin"
 
 #: dt-login/login-template.php:472
 msgid "Username or password does not match. Try again."
-msgstr ""
-
-#: dt-login/login-template.php:489 dt-users/template-new-user.php:121
-#: dt-users/template-new-user.php:122 template-settings.php:661
-msgid "Password"
-msgstr "Şîfre"
+msgstr "Navê bikarhêner an şîfre li hev nake. Dîsa biceribîne."
 
 #: dt-login/login-template.php:490
 msgid "Remember Me"
-msgstr ""
+msgstr "Min bi bîr bîne"
 
 #: dt-login/login-template.php:552
-#, fuzzy
-#| msgid "Reset password"
 msgid "Lost Password"
-msgstr "Reset şîfreyê"
+msgstr "Şîfre Winda Bû"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:222
@@ -3703,28 +3779,28 @@ msgstr "Reset şîfreyê"
 msgid "Churches"
 msgstr "Dêr"
 
-#: dt-mapping/geocode-api/mapbox-api.php:288
 #: dt-mapping/geocode-api/mapbox-api.php:323
-#: dt-users/template-user-management.php:124 template-settings.php:340
+#: dt-mapping/geocode-api/mapbox-api.php:364
 msgid "add"
 msgstr "lêzêdekirin"
 
-#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:98
+#: dt-mapping/geocode-api/mapbox-api.php:324
+#: template-merge-post-details.php:101
 msgid "Use"
 msgstr "Bikaranîn"
 
-#: dt-mapping/geocode-api/mapbox-api.php:290 template-merge-post-details.php:96
+#: dt-mapping/geocode-api/mapbox-api.php:325 template-merge-post-details.php:99
 #: template-new-bulk-post.php:26 template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
 msgstr "Cihê lêgerînê"
 
-#: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:97
-#: template-new-bulk-post.php:216
+#: dt-mapping/geocode-api/mapbox-api.php:326
+#: template-merge-post-details.php:100 template-new-bulk-post.php:216
 msgid "Delete Location"
 msgstr "Ciyê jêbirin"
 
-#: dt-mapping/geocode-api/mapbox-api.php:292
+#: dt-mapping/geocode-api/mapbox-api.php:327
 msgid "Open Mapping"
 msgstr "Nexşeya Vekirinê"
 
@@ -3806,7 +3882,7 @@ msgstr "Hejmara têkiliyên ku ji bo serdanek rû bi rû hatine veqetandin"
 #: dt-metrics/combined/critical-path.php:230
 #: dt-metrics/combined/mapbox-maps.php:80 dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:67 dt-metrics/personal/overview.php:64
-#: dt-users/template-user-management.php:388
+#: dt-users/template-user-management.php:382
 msgid "Active Contacts"
 msgstr "Têkiliyên Çalak"
 
@@ -3838,9 +3914,9 @@ msgstr ""
 "ve imad kirin"
 
 #: dt-metrics/combined/critical-path.php:277
-#, fuzzy, php-format
+#, php-format
 msgid "Generation %s Baptisms"
-msgstr "Nifş% Vaftîzm"
+msgstr "Vaftîzmên Nifşa %s"
 
 #: dt-metrics/combined/critical-path.php:278
 #, php-format
@@ -3909,12 +3985,12 @@ msgid "This Week"
 msgstr "Vê Hefteyê"
 
 #: dt-metrics/combined/daily-activity.php:76
-#: dt-users/template-user-management.php:418
+#: dt-users/template-user-management.php:412
 msgid "This Month"
 msgstr "Vê mehê"
 
 #: dt-metrics/combined/daily-activity.php:77
-#: dt-users/template-user-management.php:422
+#: dt-users/template-user-management.php:416
 msgid "Last Month"
 msgstr "Meha Dawîn"
 
@@ -3924,13 +4000,11 @@ msgstr "Meha Dawîn"
 #: dt-metrics/combined/daily-activity.php:81
 #: dt-metrics/combined/daily-activity.php:82
 #: dt-notifications/notifications.php:496
-#, fuzzy, php-format
-#| msgid "%s month ago"
-#| msgid_plural "%s months ago"
+#, php-format
 msgid "%s month ago"
 msgid_plural "%s months ago"
 msgstr[0] "%s meh berê"
-msgstr[1] ""
+msgstr[1] "%s meh berê"
 
 #: dt-metrics/combined/daily-activity.php:85
 msgid ""
@@ -3960,10 +4034,8 @@ msgid "New %s"
 msgstr "%s nû"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Simple Map"
-msgstr "Navê Parzûnê"
+msgstr "Nexşeya Hêsan"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3975,11 +4047,13 @@ msgstr "Nexşeyên hevgirtî"
 
 #: dt-metrics/combined/mapbox-maps.php:62
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
-#: dt-metrics/records/dynamic-records-map.php:105
+#: dt-metrics/records/dynamic-records-map.php:106
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
 msgstr ""
+"Ji bo dîtina vê nexşeyê, kilîteke mapbox hewce ye; li vir bikirtînin da ku "
+"lê zêde bikin."
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -3990,10 +4064,8 @@ msgid "Transferred Contacts"
 msgstr "Têkiliyên Veguhestin"
 
 #: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
-#, fuzzy
-#| msgid "Accept"
 msgid "Access"
-msgstr "Baweranîn"
+msgstr "Gihîştin"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4078,7 +4150,7 @@ msgstr "Fîlterkirina têkiliyan heya rêza dîrokê:"
 #: dt-metrics/personal/activity-highlights.php:54
 #: dt-metrics/records/select-tags-charts.php:89
 #: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:432
+#: dt-users/template-user-management.php:426
 msgid "All Time"
 msgstr "Her dem"
 
@@ -4173,11 +4245,11 @@ msgstr "Bend"
 
 #: dt-metrics/metrics.php:79
 msgid "Genmap"
-msgstr ""
+msgstr "Genmap"
 
 #: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
-msgstr ""
+msgstr "Nexşe"
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4256,24 +4328,18 @@ msgid "stats as of"
 msgstr "îstatîstîkên wekî"
 
 #: dt-metrics/records/date-range-activity.php:43
-#, fuzzy
-#| msgid "Activity Log"
 msgid "Activity Logs"
-msgstr "Log Çalakî"
+msgstr "Têketinên Çalakiyê"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
-#, fuzzy
-#| msgid "Record"
 msgid "Record Type"
-msgstr "Rekor"
+msgstr "Cureyê Tomarê"
 
 #: dt-metrics/records/date-range-activity.php:103
-#, fuzzy
-#| msgid "Activity"
 msgid "Any Activity"
-msgstr "Çalakî"
+msgstr "Her Çalakî"
 
 #: dt-metrics/records/date-range-activity.php:104
 #: dt-metrics/records/time-charts.php:108
@@ -4281,79 +4347,62 @@ msgid "Total"
 msgstr "Hemî"
 
 #: dt-metrics/records/date-range-activity.php:105
-#, fuzzy
-#| msgid "Date Ranges"
 msgid "Date Range"
-msgstr "Rêjeyên Dîrokê"
+msgstr "Navbera Dîrokê"
 
 #: dt-metrics/records/date-range-activity.php:106
-#, fuzzy
-#| msgid "Custom"
 msgid "Custom Range"
-msgstr "Hûnbunî"
+msgstr "Navbera Taybet"
 
 #: dt-metrics/records/date-range-activity.php:107
 msgid "Reload"
-msgstr ""
+msgstr "Dîsa bar bike"
 
 #: dt-metrics/records/date-range-activity.php:108
 #: dt-metrics/records/select-tags-charts.php:91
 #: dt-metrics/records/time-charts.php:122
 msgid "Title"
-msgstr ""
+msgstr "Sernav"
 
 #: dt-metrics/records/date-range-activity.php:109
-#, fuzzy
-#| msgid "No Activity Detected!"
 msgid "Time Activity Recorded"
-msgstr "Çalakî nehat dîtin!"
+msgstr "Dema Çalakiya Tomarkirî"
 
 #: dt-metrics/records/date-range-activity.php:110
-#, fuzzy
-#| msgid "Old Value"
 msgid "New Value"
-msgstr "Nirxa Kevn"
+msgstr "Nirxa Nû"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "True"
-msgstr ""
+msgstr "Rast"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "False"
-msgstr ""
+msgstr "Şaş"
 
-#: dt-metrics/records/dynamic-records-map.php:92
+#: dt-metrics/records/dynamic-records-map.php:93
 #: dt-metrics/records/genmap.php:136
-#, fuzzy
-#| msgid "Archived"
 msgid "Show Archived"
-msgstr "Arşîv kirin"
+msgstr "Arşîvkirî Nîşan Bide"
 
-#: dt-metrics/records/dynamic-records-map.php:94 template-new-bulk-post.php:264
+#: dt-metrics/records/dynamic-records-map.php:95 template-new-bulk-post.php:264
 msgid "Add Records"
 msgstr "Records lê zêde bike"
 
-#: dt-metrics/records/dynamic-records-map.php:95
-#: dt-metrics/records/dynamic-records-map.php:98
-#, fuzzy
-#| msgid "Record"
-msgid "Record Types"
-msgstr "Rekor"
-
 #: dt-metrics/records/dynamic-records-map.php:96
-#, fuzzy
-#| msgid "prayer"
-msgid "Layer"
-msgstr "dûa"
+#: dt-metrics/records/dynamic-records-map.php:99
+msgid "Record Types"
+msgstr "Cureyên Tomarê"
 
 #: dt-metrics/records/dynamic-records-map.php:97
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
-msgid "Are you sure you wish to delete layer?"
-msgstr "Ma hûn pê ewle ne ku hûn dixwazin %s jêbirin?"
+msgid "Layer"
+msgstr "Qat"
 
-#: dt-metrics/records/dynamic-records-map.php:100
+#: dt-metrics/records/dynamic-records-map.php:98
+msgid "Are you sure you wish to delete layer?"
+msgstr "Ma hûn pê ewle ne ku hûn dixwazin qatê jêbibin?"
+
+#: dt-metrics/records/dynamic-records-map.php:101
 #: dt-notifications/notifications.php:920
 #: dt-notifications/notifications.php:927
 #: dt-notifications/notifications.php:934
@@ -4364,40 +4413,32 @@ msgid "System"
 msgstr "Sîstem"
 
 #: dt-metrics/records/genmap.php:23
-#, fuzzy
-#| msgid "Group Generation Tree"
 msgid "GenMapper Trees"
-msgstr "Dara Nifşê Komê"
+msgstr "Darên GenMapper"
 
 #: dt-metrics/records/genmap.php:137
-#, fuzzy
-#| msgid "prayer"
 msgid "Data Layers"
-msgstr "dûa"
+msgstr "Qatên Daneyan"
 
 #: dt-metrics/records/genmap.php:138
 msgid "Node Color"
-msgstr ""
+msgstr "Rengê Nodê"
 
 #: dt-metrics/records/genmap.php:139
-#, fuzzy
-#| msgid "Default Filters"
 msgid "Default"
-msgstr "Parzûnên Default"
+msgstr "Default"
 
 #: dt-metrics/records/genmap.php:140
 msgid "Add Data Layer"
-msgstr ""
+msgstr "Qata Daneyan Lê Zêde Bike"
 
 #: dt-metrics/records/genmap.php:141
-#, fuzzy
-#| msgid "Show all fields"
 msgid "Show as icons"
-msgstr "Hemî zeviyan nîşan bide"
+msgstr "Wekî îkonan nîşan bide"
 
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
-msgstr ""
+msgstr "qata daneyan hilbijêrin da ku bigirin"
 
 #: dt-metrics/records/genmap.php:143
 msgid "Highlight Active"
@@ -4416,7 +4457,7 @@ msgid "View Record"
 msgstr "Record bibînin"
 
 #: dt-metrics/records/genmap.php:148 dt-metrics/records/genmap.php:152
-#: dt-posts/dt-posts.php:2717 dt-users/template-user-management.php:384
+#: dt-posts/dt-posts.php:2717 dt-users/template-user-management.php:378
 #: dt-users/users.php:175 single-template.php:127
 msgid "Status"
 msgstr "Cî"
@@ -4434,105 +4475,82 @@ msgid "Coaches"
 msgstr "Rahêner"
 
 #: dt-metrics/records/genmap.php:156
-#, fuzzy
-#| msgid "Type:"
 msgid "Type"
-msgstr "Awa:"
+msgstr "Cure"
 
 #: dt-metrics/records/genmap.php:159
-#, fuzzy
-#| msgid "Open With"
 msgid "Open"
-msgstr "Bi Vekin"
+msgstr "Veke"
 
 #: dt-metrics/records/genmap.php:161
 msgid "Focus"
-msgstr ""
+msgstr "Hûrdar"
 
 #: dt-metrics/records/genmap.php:162
 msgid "Hide"
-msgstr ""
+msgstr "Veşêre"
 
 #: dt-metrics/records/genmap.php:165
-#, fuzzy
-#| msgid "Child Group"
 msgid "Add Child To"
-msgstr "Koma Zarokan"
+msgstr "Zarok Lê Zêde Bike"
 
 #: dt-metrics/records/genmap.php:167
 msgid "Add Child"
-msgstr ""
+msgstr "Zarok Lê Zêde Bike"
 
 #: dt-metrics/records/genmap.php:168
 msgid "Focus On Node"
-msgstr ""
+msgstr "Li Nodê Hûrdar Bibe"
 
 #: dt-metrics/records/genmap.php:169
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
-msgstr "Ma hûn pê ewle ne ku hûn dixwazin %s jêbirin?"
+msgstr "Ma hûn pê ewle ne ku hûn dixwazin li ser nodê hûrdar bibin?"
 
 #: dt-metrics/records/genmap.php:173
 msgid "Infinite Loops"
-msgstr ""
+msgstr "Loopên Bêdawî"
 
 #: dt-metrics/records/select-tags-charts.php:32
-#, fuzzy
-#| msgid "Fields over Time Charts"
 msgid "Simple Chart"
-msgstr "Fields over Time Charts"
+msgstr "Nexşeya Hêsan"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
 "This chart shows the total number for each field value at the end of the "
 "selected date."
 msgstr ""
+"Ev nexşe jimara giştî ji bo her nirxa zeviyê di dawiya roja hilbijartî de "
+"nîşan dide."
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records"
-msgstr "Records lê zêde bike"
+msgstr "Tomar"
 
 #: dt-metrics/records/select-tags-charts.php:92
 #: dt-metrics/records/time-charts.php:123
-#, fuzzy
-#| msgid "No Data Available"
 msgid "No Records Available"
-msgstr "No Data Available"
+msgstr "Tu Tomar Berdest Nîne"
 
 #: dt-metrics/records/time-charts.php:41
-#, fuzzy
-#| msgid "Advanced Search"
 msgid "Advanced Charts"
-msgstr "Lêgerîna Pêşkeftî"
+msgstr "Nexşeyên Pêşketî"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
 msgstr "Zêdekirin"
 
 #: dt-metrics/records/time-charts.php:110
-#, fuzzy
-#| msgid "Delete"
 msgid "Deleted"
-msgstr "Jêbirin"
+msgstr "Hatiye jêbirin"
 
 #: dt-metrics/records/time-charts.php:111
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Connected"
-msgstr "Bi %s ve girêdayî ye"
+msgstr "Girêdayî"
 
 #: dt-metrics/records/time-charts.php:112
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Disconnected"
-msgstr "Bi %s ve girêdayî ye"
+msgstr "Veqetiyayî"
 
 #: dt-metrics/records/time-charts.php:113
 #, php-format
@@ -4549,10 +4567,8 @@ msgid "Single cumulative totals"
 msgstr "Totalên yekbûyî yên yekbûyî"
 
 #: dt-metrics/records/time-charts.php:118
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records changes"
-msgstr "Records lê zêde bike"
+msgstr "Guhertinên Tomaran"
 
 #: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
@@ -4568,67 +4584,55 @@ msgstr "Li ser %1$s nûve bikin # %2$s"
 msgid "Do not reply directly to this email."
 msgstr "Bi rasterast bersîva vê e-nameyê nedin."
 
-#: dt-notifications/notifications-scheduler.php:140 template-settings.php:520
+#: dt-notifications/notifications-scheduler.php:140 template-settings.php:514
 msgid "Hourly Digest"
 msgstr "Hourly Digest"
 
-#: dt-notifications/notifications-scheduler.php:143 template-settings.php:524
+#: dt-notifications/notifications-scheduler.php:143 template-settings.php:518
 msgid "Daily Digest"
 msgstr "Daily Digest"
 
 #: dt-notifications/notifications.php:476
-#, fuzzy, php-format
-#| msgid "%s minute ago"
-#| msgid_plural "%s minutes ago"
+#, php-format
 msgid "%s minute ago"
 msgid_plural "%s minutes ago"
 msgstr[0] "%s deqe berê"
-msgstr[1] ""
+msgstr[1] "%s deqe berê"
 
 #: dt-notifications/notifications.php:481
-#, fuzzy, php-format
-#| msgid "%s hour ago"
-#| msgid_plural "%s hours ago"
+#, php-format
 msgid "%s hour ago"
 msgid_plural "%s hours ago"
 msgstr[0] "%s saet berê"
-msgstr[1] ""
+msgstr[1] "%s saet berê"
 
 #: dt-notifications/notifications.php:486
-#, fuzzy, php-format
-#| msgid "%s day ago"
-#| msgid_plural "%s days ago"
+#, php-format
 msgid "%s day ago"
 msgid_plural "%s days ago"
 msgstr[0] "%s roj berê"
-msgstr[1] ""
+msgstr[1] "%s roj berê"
 
 #: dt-notifications/notifications.php:491
-#, fuzzy, php-format
-#| msgid "%s week ago"
-#| msgid_plural "%s weeks ago"
+#, php-format
 msgid "%s week ago"
 msgid_plural "%s weeks ago"
 msgstr[0] "%s hefte berê"
-msgstr[1] ""
+msgstr[1] "%s hefte berê"
 
 #: dt-notifications/notifications.php:510
-#, fuzzy, php-format
-#| msgid "%s year ago"
-#| msgid_plural "%s years ago"
+#, php-format
 msgid "%s year ago"
 msgid_plural "%s years ago"
 msgstr[0] "%s sal berê"
-msgstr[1] ""
+msgstr[1] "%s sal berê"
 
 #: dt-notifications/notifications.php:514
-#, fuzzy, php-format
-#| msgid "over %s year ago"
-#| msgid_plural "over %s years ago"
+#, php-format
 msgid "over %s year ago"
 msgid_plural "over %s years ago"
 msgstr[0] "berî%s sal berê"
-msgstr[1] ""
+msgstr[1] "berî%s sal berê"
 
 #: dt-notifications/notifications.php:909
 #, php-format
@@ -4710,11 +4714,11 @@ msgstr "Komên Mirovan"
 
 #: dt-people-groups/people-groups-base.php:184
 msgid "Contacts Total"
-msgstr ""
+msgstr "Têkiliyên Giştî"
 
 #: dt-people-groups/people-groups-base.php:203
 msgid "Groups Total"
-msgstr ""
+msgstr "Komên Giştî"
 
 #: dt-people-groups/people-groups-base.php:218
 #: dt-posts/custom-post-type.php:186
@@ -4723,19 +4727,19 @@ msgstr "Last Modified"
 
 #: dt-people-groups/people-groups-base.php:283
 msgid "People Group Code"
-msgstr ""
+msgstr "Koda Koma Gelan"
 
 #: dt-people-groups/people-groups-base.php:290
 msgid "People ID"
-msgstr ""
+msgstr "Nasnameya Gelan"
 
 #: dt-people-groups/people-groups-base.php:297
 msgid "Primary Language"
-msgstr ""
+msgstr "Zimanê Seretayî"
 
 #: dt-people-groups/people-groups-base.php:304
 msgid "Country"
-msgstr ""
+msgstr "Welat"
 
 #: dt-people-groups/people-groups-base.php:316
 msgctxt "Optional Documentation"
@@ -4749,11 +4753,11 @@ msgstr "Komên gel ên ku vê komê temsîl dikin."
 
 #: dt-people-groups/people-groups-base.php:345
 msgid "Connections"
-msgstr ""
+msgstr "Pêwendî"
 
 #: dt-people-groups/people-groups-base.php:347
 msgid "Joshua Project"
-msgstr ""
+msgstr "Joshua Project"
 
 #: dt-people-groups/people-groups-post-type.php:204
 msgid "Add/Update People Group"
@@ -4773,7 +4777,7 @@ msgstr "Sernavê Koma Gel li vir binivîse"
 
 #: dt-posts/custom-post-type.php:179
 msgid "Picture"
-msgstr ""
+msgstr "Wêne"
 
 #: dt-posts/custom-post-type.php:209
 msgid "Tags"
@@ -4789,12 +4793,9 @@ msgid "Un-Follow"
 msgstr "Un-Follow"
 
 #: dt-posts/custom-post-type.php:248
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid "The general location where this contact is located."
 msgctxt "Optional Documentation"
 msgid "The general location where this record is located."
-msgstr "Cihê gelemperî ku ev têkilî tê de ye."
+msgstr "Cihê gelemperî ku ev tomar tê de ye."
 
 #: dt-posts/custom-post-type.php:256
 msgid "Locations or Address"
@@ -4803,38 +4804,31 @@ msgstr "Cih an Navnîşan"
 #: dt-posts/dt-posts.php:101
 msgid ""
 "This record was automatically updated rather than creating a new record."
-msgstr ""
+msgstr "Ev tomar bi otomatîk hate nûkirin li şûna afirandina tomarek nû."
 
 #: dt-posts/dt-posts.php:1650
-#, fuzzy, php-format
-#| msgid "Magic Link Submission"
+#, php-format
 msgid "%s Submission"
-msgstr "Magic Link Submission"
+msgstr "Pêşkêşkirina %s"
 
 #: dt-posts/dt-posts.php:1650
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Link"
-msgstr "Magic Link Submission"
+msgstr "Girêdana Sêrbaz"
 
 #: dt-posts/dt-posts.php:1652 dt-posts/dt-posts.php:2199
-#, fuzzy
-#| msgid "Revert Activity"
 msgid "Revert Bot"
-msgstr "Çalakiyê Vegerînin"
+msgstr "Bota Vegerandinê"
 
 #: dt-posts/dt-posts.php:2439
-#, fuzzy
-#| msgid "Post already shared with user."
 msgid "Record already shared with user."
-msgstr "Post jixwe bi bikarhêner re hatî parve kirin."
+msgstr "Tomar jixwe bi bikarhêner re hatiye parve kirin."
 
 #: dt-posts/dt-posts.php:2718 single-template.php:174
 msgid "Details"
 msgstr "Hûrgulî"
 
 #: dt-posts/dt-posts.php:2796
-#, fuzzy, php-format
+#, php-format
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4844,7 +4838,7 @@ msgid ""
 "desired, share this record with the user to grant access."
 msgstr ""
 "@[%1$s](%2$s) - Bikarhêner %3$s daxwaza gihîştina %4$s [%5$s](%6$s) kir. "
-"Heke bixwaze, vê tomarê bi bikarhênerê re parve bike da ku bigihîje destûrê."
+"Heke bixwazin, vê tomarê bi bikarhênerê re parve bikin da ku destûr bidin."
 
 #: dt-posts/dt-posts.php:2802
 msgid "Access Request"
@@ -4857,10 +4851,10 @@ msgid "Baptized %s"
 msgstr "%s imad kirin"
 
 #: dt-posts/posts.php:282
-#, fuzzy, php-format
+#, php-format
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
-msgstr "Ji hêla %s ve hat imad kirin"
+msgstr "Ji hêla %s ve hatiye vaftîz kirin"
 
 #: dt-posts/posts.php:284
 #, php-format
@@ -4917,10 +4911,10 @@ msgid "No longer coaching %s"
 msgstr "Coachdî rahêneriya %s nake"
 
 #: dt-posts/posts.php:302
-#, fuzzy, php-format
+#, php-format
 msgctxt "No longer coached by contact1"
 msgid "No longer coached by %s"
-msgstr "%Dî bi %s rahênan nayê kirin"
+msgstr "Êdî ji hêla %s ve nayê rahênan kirin"
 
 #: dt-posts/posts.php:306
 #, php-format
@@ -5062,12 +5056,10 @@ msgid "Connected to %s"
 msgstr "Bi %s ve hat girêdan"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
-#, fuzzy, php-format
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
+#, php-format
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
-msgstr "%1$s li %2$s zêde kir"
+msgstr "%1$s li %2$s hate zêdekirin"
 
 #: dt-posts/posts.php:373 dt-posts/posts.php:374 dt-posts/posts.php:382
 #: dt-posts/posts.php:386
@@ -5077,20 +5069,16 @@ msgid "Removed connection to %s"
 msgstr "Girêdana bi %s re hate rakirin"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
-#, fuzzy, php-format
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
+#, php-format
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s ji %2$s hate rakirin"
 
 #: dt-posts/posts.php:416
-#, fuzzy, php-format
-#| msgctxt "Total in January"
-#| msgid "%1$s in %2$s"
+#, php-format
 msgctxt "User Select: User1"
 msgid "%1$s: %2$s"
-msgstr "%1$s di %2$s de"
+msgstr "%1$s: %2$s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -5132,20 +5120,16 @@ msgid "%1$s added to locations"
 msgstr "%1$s li deveran zêde kir"
 
 #: dt-posts/posts.php:512
-#, fuzzy, php-format
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
+#, php-format
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
-msgstr "%1$s ji %2$s hate rakirin"
+msgstr "%1$s ji girêdanên %2$s hate rakirin"
 
 #: dt-posts/posts.php:515
-#, fuzzy, php-format
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
+#, php-format
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
-msgstr "%1$s li %2$s zêde kir"
+msgstr "%1$s li girêdanên %2$s hate zêdekirin"
 
 #: dt-posts/posts.php:536
 msgctxt "message"
@@ -5226,10 +5210,8 @@ msgid "Unshared with %s"
 msgstr "Bi %s re nayê parve kirin"
 
 #: dt-posts/posts.php:2527
-#, fuzzy
-#| msgid "Remove"
 msgid "Removed User"
-msgstr "Dûrxistin"
+msgstr "Bikarhênerê Rakirî"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
@@ -5250,28 +5232,33 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"Silav {{name}},\n"
+"\n"
+"Ji kerema xwe li bişkoja jêrîn bikirtînin da ku bigihîjin sepana xwe.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Spas!"
 
 #: dt-reports/magic-url-bulk-send.php:50
 msgid "Configure email subject"
-msgstr ""
+msgstr "Mijara e-nameyê mîheng bikin"
 
 #: dt-reports/magic-url-bulk-send.php:53
 msgid "{{app}} will be replaced with the selected app name."
-msgstr ""
+msgstr "{{app}} dê bi navê sepana hilbijartî were guhertin."
 
 #: dt-reports/magic-url-bulk-send.php:55
 msgid "Configure email message"
-msgstr ""
+msgstr "Peyama e-nameyê mîheng bikin"
 
 #: dt-reports/magic-url-bulk-send.php:60 dt-reports/magic-url-setup.php:257
-#, fuzzy
-#| msgid "Select app to email"
 msgid "Selected app name"
-msgstr "Ji bo e-nameyê sepanê hilbijêrin"
+msgstr "Navê sepana hilbijartî"
 
 #: dt-reports/magic-url-bulk-send.php:66 dt-reports/magic-url-setup.php:263
 msgid "Unique link to access the app."
-msgstr ""
+msgstr "Girêdana yekta ji bo gihîştina sepanê."
 
 #: dt-reports/magic-url-bulk-send.php:71
 msgid "Select app to email"
@@ -5283,35 +5270,29 @@ msgstr "Divê hûn sepanek hilbijêrin"
 
 #: dt-reports/magic-url-landing-page.php:29
 #: dt-reports/magic-url-landing-page.php:33
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Invalid Link"
-msgstr "Magic Link Submission"
+msgstr "Girêdana Nederbasdar"
 
 #: dt-reports/magic-url-landing-page.php:38
 msgid "Link key is no longer valid or has expired."
-msgstr ""
+msgstr "Mifteya girêdanê êdî ne derbasdar e an jî qediyaye."
 
 #: dt-reports/magic-url-landing-page.php:39
 #, php-format
 msgid "Please %s, or locate a more recent key, or request a new one."
-msgstr ""
+msgstr "Ji kerema xwe %s, an mifteyek nûtir bibînin, an yek nû bixwazin."
 
 #: dt-reports/magic-url-landing-page.php:39
 msgid "login"
-msgstr ""
+msgstr "têketin"
 
 #: dt-reports/magic-url-setup.php:30
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Links"
-msgstr "Magic Link Submission"
+msgstr "Girêdanên Sêrbaz"
 
 #: dt-reports/magic-url-setup.php:31
-#, fuzzy
-#| msgid "Apps available on this record."
 msgid "Magic Links available on this record."
-msgstr "Serlêdanên li ser vê tomarê hene."
+msgstr "Girêdanên Sêrbaz li ser vê tomarê hene."
 
 #: dt-reports/magic-url-setup.php:236
 msgid ""
@@ -5323,6 +5304,13 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"Silav,\n"
+"\n"
+"Ji kerema xwe li bişkoja jêrîn bikirtînin da ku bigihîjin sepana xwe.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Spas!"
 
 #: dt-reports/magic-url-setup.php:248
 msgid "Add email address"
@@ -5345,39 +5333,33 @@ msgid ""
 "This app is not yet activated for this user. Enable the app to generate a "
 "link."
 msgstr ""
+"Ev sepan hêj ji bo vê bikarhêner nehatiye çalak kirin. Sepanê çalak bikin da "
+"ku girêdanekê çêbikin."
 
-#: dt-reports/magic-url-setup.php:465 template-settings.php:265
+#: dt-reports/magic-url-setup.php:465 template-settings.php:266
 msgid "App Activation"
 msgstr "Çalakkirina Appê"
 
 #: dt-reports/magic-url-setup.php:472 dt-users/user-management.php:194
-#: template-settings.php:311 template-settings.php:575
+#: template-settings.php:312 template-settings.php:569
 msgid "Enable"
 msgstr "Bikêrkirin"
 
-#: dt-reports/magic-url-setup.php:483
-#, fuzzy
-#| msgid "View User"
-msgid "View"
-msgstr "Bikarhêner Bibînin"
-
 #: dt-reports/magic-url-setup.php:512
 msgid "QR code"
-msgstr ""
+msgstr "Koda QR"
 
 #: dt-reports/magic-url-setup.php:521
 msgid "Reset"
-msgstr ""
+msgstr "Ji nû ve saz bike"
 
 #: dt-reports/magic-url-setup.php:526
-#, fuzzy
-#| msgid "Open With"
 msgid "Reset link"
-msgstr "Bi Vekin"
+msgstr "Girêdanê ji nû ve saz bike"
 
 #: dt-reports/magic-url-setup.php:528
 msgid "This app is currently disabled."
-msgstr ""
+msgstr "Ev sepan niha neçalak e."
 
 #: dt-reports/reports.php:160
 msgid "Added new report"
@@ -5441,18 +5423,18 @@ msgstr "Têkilî ji bo çêkirina bikarhênerek (vebijarkî)"
 msgid "Search multipliers and contacts"
 msgstr "Pirjimar û têkiliyan bigerin"
 
-#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:232
+#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:226
 #: dt-users/users.php:141
 msgid "Display Name"
 msgstr "Navê Nîşan bide"
 
-#: dt-users/template-new-user.php:115 template-settings.php:153
-#: template-settings.php:682
+#: dt-users/template-new-user.php:115 template-settings.php:154
+#: template-settings.php:676
 msgid "Nickname (Display Name)"
 msgstr "Nasnav (Navê Navnîşan)"
 
 #: dt-users/template-new-user.php:119 dt-users/template-new-user.php:120
-#: dt-users/users.php:135 template-settings.php:140 template-settings.php:647
+#: dt-users/users.php:135 template-settings.php:141 template-settings.php:641
 msgid "Username"
 msgstr "Navê bikarhêner"
 
@@ -5460,7 +5442,7 @@ msgstr "Navê bikarhêner"
 msgid "Role"
 msgstr "Role"
 
-#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:293
+#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:287
 msgid "Click here to see roles documentation"
 msgstr "Vira bikirtînin ku hûn belgekirina rolan bibînin"
 
@@ -5469,7 +5451,7 @@ msgid "Create User"
 msgstr "Bikarhêner biafirînin"
 
 #: dt-users/template-new-user.php:178 dt-users/template-new-user.php:180
-#: template-settings.php:671
+#: template-settings.php:665
 msgid "First Name"
 msgstr "Nav"
 
@@ -5480,14 +5462,14 @@ msgid "optional"
 msgstr "bixwe"
 
 #: dt-users/template-new-user.php:182 dt-users/template-new-user.php:183
-#: template-settings.php:677
+#: template-settings.php:671
 msgid "Last Name"
 msgstr "Paşnav"
 
 #: dt-users/template-new-user.php:218 dt-users/template-new-user.php:222
-#: dt-users/template-user-management.php:269
-#: dt-users/template-user-management.php:276 template-settings.php:236
-#: template-settings.php:706
+#: dt-users/template-user-management.php:263
+#: dt-users/template-user-management.php:270 template-settings.php:237
+#: template-settings.php:700
 msgid "Biography"
 msgstr "Jînenîgarî"
 
@@ -5547,25 +5529,21 @@ msgstr "Çalakiya Rojane"
 msgid "Workload Status"
 msgstr "Rewşa Karûbar"
 
-#: dt-users/template-user-management.php:124
-#: dt-users/template-user-management.php:127
+#: dt-users/template-user-management.php:126
+#: dt-users/template-user-management.php:133
 msgid "Location Responsibility"
 msgstr "Berpirsiyariya Cihê"
 
-#: dt-users/template-user-management.php:136 template-settings.php:355
-msgid "Search Locations"
-msgstr "Li Cihan Lêgerin"
-
-#: dt-users/template-user-management.php:147 template-settings.php:368
+#: dt-users/template-user-management.php:141 template-settings.php:362
 msgid "Languages you are comfortable speaking"
 msgstr "Zimanên ku hûn pê rehet diaxifin"
 
-#: dt-users/template-user-management.php:163 template-settings.php:59
-#: template-settings.php:431
+#: dt-users/template-user-management.php:157 template-settings.php:60
+#: template-settings.php:425
 msgid "Availability"
 msgstr "Berdestbûnî"
 
-#: dt-users/template-user-management.php:164
+#: dt-users/template-user-management.php:158
 msgid ""
 "Set the dates you will be unavailable so the Dispatcher will know your "
 "availability to receive new contacts"
@@ -5573,64 +5551,58 @@ msgstr ""
 "Tarîxên ku hûn ne amade ne diyar bikin da ku Dispatcher hebûna we bizanibe "
 "ku têkiliyên nû bistîne"
 
-#: dt-users/template-user-management.php:166
+#: dt-users/template-user-management.php:160
 msgid "Schedule Unavailability"
 msgstr "Nediyarbûna Bernameyê"
 
-#: dt-users/template-user-management.php:175
+#: dt-users/template-user-management.php:169
 msgid "Travel or Away Dates"
 msgstr "Rêwîtiya an Dîrokên Dûr"
 
-#: dt-users/template-user-management.php:191
-#, fuzzy
-#| msgid "Users"
+#: dt-users/template-user-management.php:185
 msgid "User Apps"
-msgstr "Bikarhêner"
+msgstr "Sepanên Bikarhêner"
 
-#: dt-users/template-user-management.php:197
-#, fuzzy
-#| msgid "App Activation"
+#: dt-users/template-user-management.php:191
 msgid "Activation"
-msgstr "Çalakkirina Appê"
+msgstr "Çalakkirin"
 
-#: dt-users/template-user-management.php:212
+#: dt-users/template-user-management.php:206
 msgid "User Profile"
 msgstr "Profîla Bikarhêner"
 
-#: dt-users/template-user-management.php:215
+#: dt-users/template-user-management.php:209
 #: dt-users/user-hooks-and-config.php:408
 msgid "View contact record"
 msgstr "Tomara têkiliyê bibînin"
 
-#: dt-users/template-user-management.php:220
+#: dt-users/template-user-management.php:214
 msgid "Edit User"
 msgstr "Bikarhêner biguherîne"
 
-#: dt-users/template-user-management.php:225
-#, fuzzy
-#| msgid "Password"
+#: dt-users/template-user-management.php:219
 msgid "Email Password Reset"
-msgstr "Şîfre"
+msgstr "Nûvekirina Şîfreya E-nameyê"
 
-#: dt-users/template-user-management.php:288 dt-users/users.php:147
-#: template-settings.php:159
+#: dt-users/template-user-management.php:282 dt-users/users.php:147
+#: template-settings.php:160
 msgid "Roles"
 msgstr "Rol"
 
-#: dt-users/template-user-management.php:320
+#: dt-users/template-user-management.php:314
 msgid "Save Roles"
 msgstr "Rolan Rizgar bikin"
 
-#: dt-users/template-user-management.php:328
+#: dt-users/template-user-management.php:322
 msgid "Access by Source"
 msgstr "Access by Source"
 
-#: dt-users/template-user-management.php:334
+#: dt-users/template-user-management.php:328
 #: dt-users/user-hooks-and-config.php:623
 msgid "All Sources - gives access to all contacts"
 msgstr "Hemî Çavkanî - gihîştina hemî têkiliyan dide"
 
-#: dt-users/template-user-management.php:340
+#: dt-users/template-user-management.php:334
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
@@ -5639,62 +5611,62 @@ msgstr ""
 "Custom - Têkiliyên xwe û hemî têkiliyên çavkaniyên bijartî yên jêrîn "
 "bigihînin"
 
-#: dt-users/template-user-management.php:346
+#: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:637
 msgid "No Sources - only own contacts"
 msgstr "Çavkaniyên Na - tenê têkiliyên xwe hene"
 
-#: dt-users/template-user-management.php:352
+#: dt-users/template-user-management.php:346
 msgid "Sources List"
 msgstr "Lîsteya Çavkaniyan"
 
-#: dt-users/template-user-management.php:364
+#: dt-users/template-user-management.php:358
 msgid "Save Allowed Sources"
 msgstr "Çavkaniyên Destûr Tomar Bikin"
 
-#: dt-users/template-user-management.php:394
+#: dt-users/template-user-management.php:388
 msgid "Updates Needed"
 msgstr "Nûvekirin Hewce ne"
 
-#: dt-users/template-user-management.php:400
+#: dt-users/template-user-management.php:394
 msgid "Pending"
 msgstr "Nexelas"
 
-#: dt-users/template-user-management.php:407
+#: dt-users/template-user-management.php:401
 msgid "Unread Notifications"
 msgstr "Notifications Nexwendî"
 
-#: dt-users/template-user-management.php:414
+#: dt-users/template-user-management.php:408
 msgid "Assignments"
 msgstr "Erkan"
 
-#: dt-users/template-user-management.php:428
+#: dt-users/template-user-management.php:422
 msgid "This Year"
 msgstr "Yearsal"
 
-#: dt-users/template-user-management.php:446
+#: dt-users/template-user-management.php:440
 msgid "Pace"
 msgstr "Pace"
 
-#: dt-users/template-user-management.php:447
+#: dt-users/template-user-management.php:441
 msgid "Assigned and not accepted"
 msgstr "Erkdar kirin û qebûl nekirin"
 
-#: dt-users/template-user-management.php:449
+#: dt-users/template-user-management.php:443
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr ""
 "Dema ji peywendîdar ve hatî diyarkirin ji bo 10 têkiliyên paşîn hatine qebûl "
 "kirin"
 
-#: dt-users/template-user-management.php:451
+#: dt-users/template-user-management.php:445
 msgid "Accepted with no contact attempt"
 msgstr "Bi hewldanek têkiliyê nayê qebûl kirin"
 
-#: dt-users/template-user-management.php:453
+#: dt-users/template-user-management.php:447
 msgid "Oldest 10 update needed"
 msgstr "10 nûvekirina herî kevn hewce ne"
 
-#: dt-users/template-user-management.php:455
+#: dt-users/template-user-management.php:449
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "Wext ji veqetandî ji bo hewildana têkiliyê ji bo 10 têkiliyên paşîn"
 
@@ -5730,8 +5702,8 @@ msgstr "Silav %s,"
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
 msgctxt ""
-"You've been invited to join Awesome Site at https://awesome_site.disciple."
-"tools"
+"You've been invited to join Awesome Site at https://"
+"awesome_site.disciple.tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "Hûn hatine vexwendin ku hûn li %2$s beşdarî %1$s bibin"
 
@@ -5760,16 +5732,12 @@ msgid "User Language"
 msgstr "Ziman Bikarhêner"
 
 #: dt-users/user-initial-setup.php:44
-#, fuzzy
-#| msgid "Invite User"
 msgid "Initial User Setup!"
-msgstr "Bikarhêner vexwendin"
+msgstr "Sazkirina Destpêkê ya Bikarhêner!"
 
 #: dt-users/user-initial-setup.php:52
-#, fuzzy
-#| msgid "User Language"
 msgid "Default Language"
-msgstr "Ziman Bikarhêner"
+msgstr "Zimanê Default"
 
 #: dt-users/user-management.php:136
 msgid "Add User"
@@ -5782,10 +5750,10 @@ msgid "%1$s was accepted on %2$s after %3$s days"
 msgstr "%1$s piştî %3$s rojan di %2$s de hate qebûl kirin"
 
 #: dt-users/user-management.php:181
-#, fuzzy, php-format
+#, php-format
 msgctxt "Bob waiting for contact for 10 days"
 msgid "%1$s waiting for Contact Attempt for %2$s days"
-msgstr "%1$s rojan li benda Hewldana Têkiliyê ye"
+msgstr "%1$s ji %2$s rojan e li benda Hewldana Têkiliyê ye"
 
 #: dt-users/user-management.php:182
 #, php-format
@@ -5825,18 +5793,16 @@ msgstr "Ev têkilî jixwe bikarhêner e."
 msgid "View User"
 msgstr "Bikarhêner Bibînin"
 
-#: dt-users/user-management.php:229
+#: dt-users/user-management.php:233
 msgid "Go"
-msgstr ""
+msgstr "Biçe"
 
-#: dt-users/user-management.php:232
-#, fuzzy, php-format
-#| msgctxt "Showing 30 items matching bob"
-#| msgid "Showing %1$s items matching %2$s"
+#: dt-users/user-management.php:236
+#, php-format
 msgid "Showing %1$s of %2$s"
-msgstr "Tiştên %1$s bi %2$s re hevûdu nîşan didin"
+msgstr "Ji %2$s %1$s tê nîşandan"
 
-#: dt-users/user-management.php:353
+#: dt-users/user-management.php:357
 #, php-format
 msgid "%s days since last update"
 msgstr "Ji nûvekirina dawîn ve %s roj"
@@ -5869,11 +5835,11 @@ msgstr "Li %s peywir red kirin"
 
 #: dt-users/users.php:124
 msgid "ID"
-msgstr ""
+msgstr "Nasname"
 
 #: dt-users/users.php:154
 msgid "Locale"
-msgstr ""
+msgstr "Cih"
 
 #: dt-users/users.php:178
 msgid "Away"
@@ -5910,7 +5876,7 @@ msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "Parzûnên xwerû"
 
-#: dt-users/users.php:1351 template-settings.php:169 template-settings.php:653
+#: dt-users/users.php:1351 template-settings.php:170 template-settings.php:647
 msgid "System Email"
 msgstr "Pergala E-nameyê"
 
@@ -5967,7 +5933,7 @@ msgstr "Qadên hemî hûrguliyan sererast bikin"
 
 #: single-template.php:386
 msgid "Show Hidden Tiles"
-msgstr ""
+msgstr "Kaşîyên Veşartî Nîşan Bide"
 
 #: single-template.php:409
 #, php-format
@@ -5975,16 +5941,16 @@ msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Ma hûn pê ewle ne ku hûn dixwazin %s jêbirin?"
 
-#: template-merge-post-details.php:99
+#: template-merge-post-details.php:102
 msgid "Open Modal"
 msgstr "Modal vekin"
 
-#: template-merge-post-details.php:121
+#: template-merge-post-details.php:124
 #, php-format
 msgid "Merge Duplicate %s"
 msgstr "Duber %s bike yek"
 
-#: template-merge-post-details.php:123
+#: template-merge-post-details.php:126
 msgid ""
 "When you merge, the primary record is updated with the values you choose, "
 "and relationships to other items are shifted to the primary record; which "
@@ -5994,23 +5960,23 @@ msgstr ""
 "tê nûve kirin, û têkiliyên bi tiştên din re vediguhezin tomara bingehîn; ku "
 "dikare li jêr were guheztin."
 
-#: template-merge-post-details.php:126
+#: template-merge-post-details.php:129
 msgid "Copy comments to updated primary record"
 msgstr "Şîroveyan li tomara bingehîn a nûvekirî kopî bikin"
 
-#: template-merge-post-details.php:142
+#: template-merge-post-details.php:145
 msgid "Archiving"
 msgstr "Arşîvkirin"
 
-#: template-merge-post-details.php:150
+#: template-merge-post-details.php:153
 msgid "Use as Primary"
 msgstr "Wekî Seretayî bikar bînin"
 
-#: template-merge-post-details.php:163
+#: template-merge-post-details.php:166
 msgid "Primary"
 msgstr "Bingehîn"
 
-#: template-merge-post-details.php:177
+#: template-merge-post-details.php:180
 msgid "Updated"
 msgstr "Nûkirin"
 
@@ -6053,63 +6019,55 @@ msgstr "Behsa dike"
 msgid "Load more notifications"
 msgstr "Agahdariyên bêtir barkirin"
 
-#: template-settings.php:56
-msgid "Apps"
-msgstr "Apps"
-
-#: template-settings.php:58 template-settings.php:332
+#: template-settings.php:59 template-settings.php:333
 msgid "Multiplier Preferences"
 msgstr "Preferences Pirjimar"
 
-#: template-settings.php:67
+#: template-settings.php:68
 msgid "Invite User"
 msgstr "Bikarhêner vexwendin"
 
-#: template-settings.php:77
+#: template-settings.php:78
 msgid "View Contact Record"
 msgstr "Binêre Tomara Têkilî"
 
-#: template-settings.php:201
+#: template-settings.php:202
 msgid "Social"
 msgstr "Civatî"
 
-#: template-settings.php:232
+#: template-settings.php:233
 msgid "English"
 msgstr "Îngilîzî"
 
-#: template-settings.php:257
-msgid "Your Apps"
-msgstr "Serlêdanên We"
-
-#: template-settings.php:262
+#: template-settings.php:263
 msgid "App Name"
 msgstr "Navê appê"
 
-#: template-settings.php:263
+#: template-settings.php:264
 msgid "App Description"
 msgstr "Danasîna Appê"
 
-#: template-settings.php:264
+#: template-settings.php:265
 msgid "App Link"
 msgstr "Zencîreya Appê"
 
-#: template-settings.php:275
+#: template-settings.php:276
 msgid "No apps installed"
 msgstr "Ne sepan hatine saz kirin"
 
-#: template-settings.php:340 template-settings.php:345
+#: template-settings.php:343 template-settings.php:351
 msgid "Locations you are willing to be responsible for"
 msgstr "Cihên ku hûn amade ne ku ji wan berpirsiyar bin"
 
-#: template-settings.php:389
+#: template-settings.php:383
 msgid "People Groups you wish to serve"
 msgstr "Komên Mirovan ên ku hûn dixwazin ji wan re xizmetê bikin"
 
-#: template-settings.php:412
+#: template-settings.php:406
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "Heyîna ku ji Dispatcher têkiliyan werdigire"
 
-#: template-settings.php:434
+#: template-settings.php:428
 msgid ""
 "Set the dates you will be traveling or unavailable so the Dispatcher will "
 "know your availability to receive new contacts"
@@ -6117,57 +6075,55 @@ msgstr ""
 "Tarîxên ku hûn ê rêwîtiyê bikin an jî tune ne diyar bikin da ku Dabeşker "
 "hebûna we bizanibe ku têkiliyên nû bistîne"
 
-#: template-settings.php:438
+#: template-settings.php:432
 msgid "Schedule Travel or Dates Unavailable"
 msgstr "Rêwîtiyê an Dîrokan Nexebitînin"
 
-#: template-settings.php:455
+#: template-settings.php:449
 msgid "Add Unavailable dates"
 msgstr "Dîrokên Nedankirî Zêde bikin"
 
-#: template-settings.php:469
+#: template-settings.php:463
 msgid "No Travel Scheduled"
 msgstr "Rêwîtiyek Nehatiye Bilanîn"
 
-#: template-settings.php:489
-#, fuzzy
-#| msgid "Contact Info Changed"
+#: template-settings.php:483
 msgid "Contact Info"
-msgstr "Agahdariya Têkiliyê Guherandin"
+msgstr "Agahiya Têkiliyê"
 
-#: template-settings.php:493
+#: template-settings.php:487
 #, php-format
 msgctxt "Email will be sent to: [email]"
 msgid "Email notifications will be sent to: %s"
-msgstr ""
+msgstr "Agahdariyên e-nameyê dê ji %s re bêne şandin"
 
-#: template-settings.php:510
+#: template-settings.php:504
 msgid "Email preferences"
 msgstr "tercîhên Email"
 
-#: template-settings.php:516
+#: template-settings.php:510
 msgid "Real time"
 msgstr "Dema rast"
 
-#: template-settings.php:531
+#: template-settings.php:525
 msgid "Type of Notification"
 msgstr "Cureyê Agahdariyê"
 
-#: template-settings.php:544
+#: template-settings.php:538
 msgid "required"
 msgstr "pêdivî ye"
 
-#: template-settings.php:568
+#: template-settings.php:562
 msgid "Follow all contacts"
 msgstr "Hemî têkiliyan bişopînin"
 
-#: template-settings.php:570
+#: template-settings.php:564
 msgid ""
 "You will receive a notification for any update that happens in the system."
 msgstr ""
 "Hûn ê ji bo her nûvekirina ku di pergalê de çêdibe agahdariyek bistînin."
 
-#: template-settings.php:630
+#: template-settings.php:624
 msgid ""
 "Disciple Tools System does not store images. For profile images we use "
 "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
@@ -6179,49 +6135,43 @@ msgstr ""
 "hene, em pêşniyar dikin ku wêneyek kesane bikar neynin, lê li şûna wê "
 "wêneyek kartonî, abstrakt, an alias hilbijêrin ku we temsîl bike."
 
-#: template-settings.php:631
+#: template-settings.php:625
 msgid "edit image on gravatar.com"
 msgstr "wêneyê li ser gravatar.com biguherîne"
 
-#: template-settings.php:637
-#, fuzzy
-#| msgid ""
-#| "Disciple Tools System does not store images. For profile images we use "
-#| "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
-#| "suggest not using a personal photo, but instead choose a cartoon, "
-#| "abstract, or alias photo to represent you."
+#: template-settings.php:631
 msgid ""
 "Disciple Tools System does not store images. All media assets will be placed "
 "within specified media connection storage service. If you have security "
 "concerns, we suggest not using a personal photo, but instead choose a "
 "cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"Pergala Amûrên ipagirt wêneyan nagire. Ji bo wêneyên profîlê em Gravatar "
-"(Avatarê bi Gloverî Naskirî) bikar tînin. Heke fikarên we yên ewlekariyê "
-"hene, em pêşniyar dikin ku wêneyek kesane bikar neynin, lê li şûna wê "
-"wêneyek kartonî, abstrakt, an alias hilbijêrin ku we temsîl bike."
+"Pergala Disciple Tools wêneyan nagire. Hemû malên medyayê dê di nav karûbarê "
+"hilanîna pêwendiya medyayê ya destnîşankirî de bêne danîn. Heke fikarên we "
+"yên ewlehiyê hene, em pêşniyar dikin ku wêneyek kesane bikar neynin, lê li "
+"şûna wê wêneyek karton, abstrakt, an alias hilbijêrin ku we temsîl bike."
 
-#: template-settings.php:638
+#: template-settings.php:632
 msgid "Upload new profile image"
-msgstr ""
+msgstr "Wêneya profîla nû bar bike"
 
-#: template-settings.php:648 template-settings.php:649
+#: template-settings.php:642 template-settings.php:643
 msgid "Username cannot be changed"
 msgstr "Navê bikarhêner nayê guhertin"
 
-#: template-settings.php:654
+#: template-settings.php:648
 msgid "User email can be changed by site administrator."
 msgstr "E-nameya bikarhêner dikare ji hêla rêveberê malperê ve were guhertin."
 
-#: template-settings.php:662
+#: template-settings.php:656
 msgid "Use this email reset form to create a new password."
 msgstr "Vê forma vesazkirina e-nameyê bikar bînin ku şîfreyek nû çêbikin."
 
-#: template-settings.php:664
+#: template-settings.php:658
 msgid "go to password change form"
 msgstr "biçin forma guhertina şîfreyê"
 
-#: template-settings.php:728
+#: template-settings.php:722
 msgid "System Language"
 msgstr "Zimanê Pergalê"
 
@@ -6246,263 +6196,3 @@ msgstr "Têkiliyên gihîştinê werin şandin:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Duplicates found:"
-
-#~ msgid "Reset password"
-#~ msgstr "Reset şîfreyê"
-
-#, fuzzy
-#~| msgid "Post Type"
-#~ msgid "Post Types"
-#~ msgstr "Tîpa Postê"
-
-#~ msgctxt "input field placeholder"
-#~ msgid "Search multipliers and contacts"
-#~ msgstr "Pirjimar û têkiliyan bigerin"
-
-#~ msgid "Add new tag \"%s\""
-#~ msgstr "Tagek nû lê zêde bike \"%s\""
-
-#~ msgid "Tag \"%s\" is already being used"
-#~ msgstr "Tag \"%s\" jixwe tê bikar anîn"
-
-#~ msgid "Add Bulk Records?"
-#~ msgstr "Qeydên Mezin zêde bikin?"
-
-#~ msgid "Twitter"
-#~ msgstr "Twitter"
-
-#~ msgid "Baptism Tree"
-#~ msgstr "Dara Batizmiyê"
-
-#~ msgid "Baptism Generation Tree"
-#~ msgstr "Dara Nifşê Baptîzmê"
-
-#~ msgid "Coaching Tree"
-#~ msgstr "Dara Hînkariyê"
-
-#~ msgid "Coaching Generation Tree"
-#~ msgstr "Coaching Dara Nifşê"
-
-#~ msgid "Milestones Map"
-#~ msgstr "Nexşe Milestones"
-
-#~ msgid "Milestones"
-#~ msgstr "Milestones"
-
-#~ msgid "Milestones Chart"
-#~ msgstr "Chart Milestones"
-
-#~ msgid "Groups Tree"
-#~ msgstr "Dara Koman"
-
-#~ msgid "Group Generation Tree"
-#~ msgstr "Dara Nifşê Komê"
-
-#~ msgid "My Baptism Tree"
-#~ msgstr "Dara Batizmiya min"
-
-#~ msgid "My Baptism Generation Tree"
-#~ msgstr "Dara Nifşê Baptîzma Min"
-
-#~ msgid "My Coaching Tree"
-#~ msgstr "Dara Rahênana Min"
-
-#~ msgid "My Coaching Generation Tree"
-#~ msgstr "Dara Nifşê Coaching My"
-
-#~ msgid "Disciple"
-#~ msgstr "Dilxaz"
-
-#~ msgid "My Groups Tree"
-#~ msgstr "Dara Komên Min"
-
-#~ msgid "My Group Generation Tree"
-#~ msgstr "Dara Nifşê Koma min"
-
-#~ msgid "Contacts Maps"
-#~ msgstr "Nexşeyên Têkiliyan"
-
-#~ msgid "Groups Maps"
-#~ msgstr "Nexşeyên Koman"
-
-#, fuzzy
-#~| msgid "Add Records"
-#~ msgid "Records Map"
-#~ msgstr "Records lê zêde bike"
-
-#, fuzzy
-#~| msgid "Metrics"
-#~ msgid "Dynamic Metrics"
-#~ msgstr "Metrîk"
-
-#, fuzzy
-#~| msgid "Daily Activity"
-#~ msgid "Field Activity"
-#~ msgstr "Çalakiya Rojane"
-
-#, fuzzy
-#~| msgid "All cumulative totals"
-#~ msgid "Field Cumulative Values"
-#~ msgstr "Hemî tevgerên komkirî"
-
-#~ msgid "No Answer"
-#~ msgstr "Bersiv tune"
-
-#, fuzzy
-#~| msgid "No"
-#~ msgid "No."
-#~ msgstr "Na"
-
-#, fuzzy
-#~| msgid "Generation"
-#~ msgid "Generation Map"
-#~ msgstr "Bend"
-
-#, fuzzy
-#~| msgid "List"
-#~ msgid "Map List Filter"
-#~ msgstr "Rêzok"
-
-#~ msgctxt "Number of emails sent. i.e. 20 sent!"
-#~ msgid "sent"
-#~ msgstr "şandin"
-
-#~ msgid "Add optional greeting"
-#~ msgstr "Silavek vebijarkî lê zêde bike"
-
-#~ msgid "Add short greeting to be added above the app link."
-#~ msgstr ""
-#~ "Silavek kurt lê zêde bikin ku li jor zencîreya sepanê were zêdekirin."
-
-#~ msgctxt "Assigned to: User1"
-#~ msgid "Assigned to: %s"
-#~ msgstr "Hat destnîşankirin:%s"
-
-#, fuzzy
-#~| msgid "Generation"
-#~ msgid "Generate"
-#~ msgstr "Bend"
-
-#, fuzzy
-#~| msgid "show all"
-#~ msgid "Show All"
-#~ msgstr "nîşanî hemî bide"
-
-#, fuzzy
-#~| msgid "Lost your password"
-#~ msgid "Lost your password?"
-#~ msgstr "Passwordîfreya xwe winda kir"
-
-#~ msgid "Number added"
-#~ msgstr "Hejmar lê zêde kir"
-
-#~ msgctxt "either rtl or ltr"
-#~ msgid "ltr"
-#~ msgstr "ltr"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Default and Custom Filters Tile"
-#~ msgstr "Pelika Parzûnên Pêşniyar û Xweser"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Use these filters to focus in on the contacts or groups you are "
-#~ "responsible for. If the default filters do not fit your needs you can "
-#~ "create your own custom filter."
-#~ msgstr ""
-#~ "Van felteran bikar bînin da ku hûn li ser têkilî an komên ku hûn jê "
-#~ "berpirs in bisekinin. Ger Parzûnên pêşkeftî li gorî hewcedariyên we ne "
-#~ "guncan be hûn dikarin Parzûna xweya xwerû çêbikin."
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Contacts List Tile"
-#~ msgstr "Tileya Lîsteya Têkiliyan"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Your list of contacts will show up here. Whenever you filter contacts, "
-#~ "the list will also be changed in this section too. You can sort your "
-#~ "contacts by newest, oldest, most recently modified, and least recently "
-#~ "modified. If you have a long list of contacts they will not all load at "
-#~ "once, so clicking the 'Load more contacts' button at the bottom of the "
-#~ "list will allow you to load more."
-#~ msgstr ""
-#~ "Navnîşa weya têkiliyan dê li vir xuya bibe. Kengê ku hûn têkiliyan parzûn "
-#~ "bikin, dê navnîş di vê beşê de jî were guhertin. Hûn dikarin têkiliyên "
-#~ "xwe li gorî nûtirîn, kevnartirîn, herî paşîn guheztî, û ya herî kêm "
-#~ "paşiya paşîn guherandin rêz bikin. Heke navnîşek dirêj a têkiliyên we "
-#~ "hebin ew ê hemî bi carekê de bar nekin, ji ber vê yekê tikandina bişkoja "
-#~ "'Têkiliyên zêdetir barkirin' li biniya lîsteyê dê dihêle hûn bêtir "
-#~ "barkirin."
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Groups List Tile"
-#~ msgstr "Tile Lîsteya Koman"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Your list of groups will show up here. Whenever you filter groups, the "
-#~ "list will also be changed in this section too. You can sort your groups "
-#~ "by newest, oldest, most recently modified, and least recently modified. "
-#~ "If you have a long list of groups they will not all load at once, so "
-#~ "clicking the 'Load more groups' button at the bottom of the list will "
-#~ "allow you to load more."
-#~ msgstr ""
-#~ "Navnîşa komên we dê li vir xuya bibe. Kengê ku hûn komên parzûn bikin, dê "
-#~ "navnîş jî di vê beşê de were guhertin. Hûn dikarin komên xwe li gorî "
-#~ "nûtirîn, kevnartirîn, herî paşîn guheztî, û herî kêm paşiya paşîn guheztî "
-#~ "rêz bikin. Heke navnîşek dirêj a komên we hebe ew ê hemî bi carekê de bar "
-#~ "nekin, ji ber vê yekê tikandina bişkoja 'Komên zêdetir barkirin' li "
-#~ "biniya lîsteyê dê dihêle hûn bêtir barkirin."
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Closed Contacts Switch"
-#~ msgstr "Guhestina Têkiliyên Girtî"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Use this toggle switch to either show or not show closed contacts in the "
-#~ "list."
-#~ msgstr ""
-#~ "Vê veguherîna veguherînê bikar bînin da ku hûn têkiliyên girtî yên "
-#~ "navnîşê nîşan bidin an jî nîşan nedin."
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Inactive Groups Switch"
-#~ msgstr "Komên Neçalak Guhestin"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Use this toggle switch to either show or not show inactive groups in the "
-#~ "list."
-#~ msgstr ""
-#~ "Vê veguherîna veguherînê bikar bînin da ku komên neçalak di navnîşê de "
-#~ "nîşan bide an jî nîşan nede."
-
-#~ msgid "Accept Needed"
-#~ msgstr "Pêdivî Bipejirînin"
-
-#~ msgid "Last Activity"
-#~ msgstr "Çalakiya Dawîn"
-
-#~ msgid "No activity"
-#~ msgstr "Çalakî tune"
-
-#~ msgid "Comment"
-#~ msgstr "Agahkişî"
-
-#~ msgid "Select All"
-#~ msgstr "Hemî hilbijêrin"
-
-#~ msgctxt "My records"
-#~ msgid "My %s"
-#~ msgstr "%s min"
-
-#~ msgid "Sub-assigned"
-#~ msgstr "Bine-wezîfedarkirin"
-
-#~ msgid "User Role"
-#~ msgstr "Rola Bikarhêner"
-
-#~ msgid "Update %s"
-#~ msgstr "%s nûve bike"

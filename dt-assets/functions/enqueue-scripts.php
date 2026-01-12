@@ -143,7 +143,10 @@ function dt_site_scripts() {
             'current_user_id' => get_current_user_id(),
             'translations' => [
                 'no-unread' => __( "You don't have any unread notifications", 'disciple_tools' ),
-                'no-notifications' => __( "You don't have any notifications", 'disciple_tools' )
+                'no-notifications' => __( "You don't have any notifications", 'disciple_tools' ),
+                'release-announcement' => __( 'Release Announcement!', 'disciple_tools' ),
+                'new-version-available' => __( 'A new version of Disciple.Tools is available', 'disciple_tools' ),
+                'view' => __( 'View', 'disciple_tools' ),
             ]
         )
     );
@@ -241,10 +244,6 @@ function dt_site_scripts() {
                 ]
             ]);
 
-            if ( DT_Mapbox_API::get_key() ) {
-                DT_Mapbox_API::load_mapbox_search_widget();
-            }
-
             dt_theme_enqueue_script( 'dt-record-history', 'dt-assets/js/record-history.js', [
                 'jquery',
                 'lodash',
@@ -267,14 +266,6 @@ function dt_site_scripts() {
 
         $dependencies = [ 'jquery', 'jquery-ui', 'lodash', 'moment' ];
         $contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
-        if ( DT_Mapbox_API::get_key() ) {
-            DT_Mapbox_API::load_mapbox_search_widget_users();
-            $dependencies[] = 'mapbox-search-widget';
-            $dependencies[] = 'mapbox-gl';
-        } else {
-            DT_Mapping_Module::instance()->drilldown_script();
-            $dependencies[] = 'mapping-drill-down';
-        }
 
         dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', $dependencies, true );
         wp_localize_script(
@@ -390,8 +381,6 @@ function dt_site_scripts() {
             'default_icon' => apply_filters( 'dt_record_icon', null, $post_type, null ),
         ) );
         if ( DT_Mapbox_API::get_key() ){
-            DT_Mapbox_API::load_mapbox_search_widget();
-            $dependencies[] = 'mapbox-search-widget';
             $dependencies[] = 'mapbox-gl';
         }
     }
@@ -404,8 +393,6 @@ function dt_site_scripts() {
         ];
         $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
         if ( DT_Mapbox_API::get_key() ){
-            DT_Mapbox_API::load_mapbox_search_widget();
-            $dependencies[] = 'mapbox-search-widget';
             $dependencies[] = 'mapbox-gl';
         }
     }

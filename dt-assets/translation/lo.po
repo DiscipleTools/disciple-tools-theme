@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2025-12-02T12:46:53+00:00\n"
+"POT-Creation-Date: 2026-01-09T14:54:09+00:00\n"
 "PO-Revision-Date: 2023-06-09 07:28+0000\n"
 "Last-Translator: Corsacca <corsacca@gmail.com>\n"
 "Language-Team: Lao <https://translate.disciple.tools/projects/disciple-tools/"
@@ -79,8 +79,8 @@ msgstr "ຍື່ນ ຄຳ ຮ້ອງຂໍ"
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-assets/parts/modals/modal-new-tag.php:12 dt-contacts/base-setup.php:470
-#: dt-contacts/base-setup.php:505 dt-contacts/module-access.php:451
+#: dt-assets/parts/modals/modal-new-tag.php:12 dt-contacts/base-setup.php:475
+#: dt-contacts/base-setup.php:510 dt-contacts/module-access.php:451
 #: dt-contacts/module-access.php:482 dt-contacts/module-access.php:510
 #: dt-contacts/user-module.php:159 single-template.php:413
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
@@ -90,7 +90,7 @@ msgstr "ຍົກເລີກ"
 
 #: 403.php:59 archive-template.php:552 archive-template.php:627
 #: archive-template.php:814 archive-template.php:1226
-#: dt-assets/functions/enqueue-scripts.php:462
+#: dt-assets/functions/enqueue-scripts.php:449
 #: dt-assets/parts/loop-activity-comment.php:225
 #: dt-assets/parts/loop-activity-comment.php:230
 #: dt-assets/parts/loop-activity-comment.php:273
@@ -117,17 +117,17 @@ msgstr "ຍົກເລີກ"
 #: dt-assets/parts/modals/modal-tasks.php:54
 #: dt-assets/parts/modals/modal-template-metrics.php:8
 #: dt-assets/parts/modals/modal-template-metrics.php:13
-#: dt-contacts/base-setup.php:475 dt-contacts/base-setup.php:510
+#: dt-contacts/base-setup.php:480 dt-contacts/base-setup.php:515
 #: dt-contacts/module-access.php:456 dt-contacts/module-access.php:487
 #: dt-contacts/module-access.php:515 dt-contacts/module-access.php:606
 #: dt-contacts/module-baptisms.php:201 dt-contacts/module-baptisms.php:203
-#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:586
-#: dt-groups/base-setup.php:591 dt-reports/magic-url-bulk-send.php:34
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:587
+#: dt-groups/base-setup.php:592 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
 #: dt-users/user-initial-setup.php:82 single-template.php:418
 #: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-settings.php:602
+#: template-settings.php:596
 msgid "Close"
 msgstr "ປິດ"
 
@@ -157,16 +157,15 @@ msgid "Filters"
 msgstr "ຕົວກອງ"
 
 #: archive-template.php:64 archive-template.php:136 archive-template.php:706
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:828
-#: dt-core/utilities/dt-components.php:249 dt-posts/custom-post-type.php:20
-#: template-settings.php:399
-#, fuzzy, php-format
+#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:252
+#: dt-posts/custom-post-type.php:20 template-settings.php:393
+#, php-format
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "ຄົ້ນຫາ %s"
 
 #: archive-template.php:65 archive-template.php:137
-#: dt-mapping/geocode-api/mapbox-api.php:293
+#: dt-mapping/geocode-api/mapbox-api.php:328
 msgid "Clear"
 msgstr "ແຈ້ງ"
 
@@ -176,7 +175,7 @@ msgstr "ແຈ້ງ"
 msgid "Advanced Search"
 msgstr "ການຄົ້ນຫາຂັ້ນສູງ"
 
-#: archive-template.php:76 dt-users/user-management.php:230
+#: archive-template.php:76 dt-users/user-management.php:234
 msgid "Search"
 msgstr "ຄົ້ນຫາ"
 
@@ -215,39 +214,33 @@ msgstr "ສ້າງຕົວກອງແບບກຳນົດເອງ"
 #: archive-template.php:227
 msgctxt "List Exports"
 msgid "List Exports"
-msgstr ""
+msgstr "ສົ່ງອອກລາຍຊື່"
 
 #: archive-template.php:239 archive-template.php:262
-#, fuzzy
-#| msgid "List"
 msgid "CSV List"
-msgstr "ລາຍຊື່"
+msgstr "ລາຍຊື່ CSV"
 
 #: archive-template.php:243 archive-template.php:266
 msgid "BCC Email List"
-msgstr ""
+msgstr "ລາຍຊື່ອີເມວ BCC"
 
 #: archive-template.php:244
-#, fuzzy
-#| msgid "Phone"
 msgid "Phone List"
-msgstr "ໂທລະສັບ"
+msgstr "ລາຍຊື່ໂທລະສັບ"
 
 #: archive-template.php:249 archive-template.php:274
-#, fuzzy
-#| msgid "List"
 msgid "Map List"
-msgstr "ລາຍຊື່"
+msgstr "ລາຍຊື່ແຜນທີ່"
 
 #: archive-template.php:258
 msgid "List Exports Help"
-msgstr ""
+msgstr "ຊ່ວຍເຫຼືອການສົ່ງອອກລາຍຊື່"
 
 #: archive-template.php:263
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
-msgstr ""
+msgstr "ໃຊ້ຕົວກອງປະຈຸບັນ, ນີ້ແມ່ນວິທີງ່າຍໆໃນການສົ່ງອອກຂໍ້ມູນພື້ນຖານ ແລະໃຊ້ມັນໃນແອັບອື່ນ."
 
 #: archive-template.php:267
 msgid ""
@@ -258,12 +251,15 @@ msgid ""
 "provider. The BCC email tool is meant to assist small group emails. Bulk "
 "email should be handled through bulk email providers."
 msgstr ""
+"ໃຊ້ຕົວກອງປະຈຸບັນ, ອີເມວທີ່ມີຢູ່ຈະຖືກຈັດກຸ່ມເປັນ 50 "
+"ແລະສາມາດເປີດໃນໂປຣແກມອີເມວເລີ່ມຕົ້ນຂອງທ່ານເປັນກຸ່ມໄດ້. ຜູ້ໃຫ້ບໍລິການອີເມວຫຼາຍລາຍຈຳກັດ BCC ໄວ້ທີ່ 50 "
+"ອີເມວ. ທ່ານສາມາດເປີດທຸກກຸ່ມພ້ອມກັນໂດຍໃຊ້ປຸ່ມ \"ເປີດທັງໝົດ\". ຖ້າລາຍຊື່ໃຫຍ່ເກີນໄປ, "
+"ອາດຈະເຕືອນຜູ້ໃຫ້ບໍລິການອີເມວຂອງທ່ານ. ເຄື່ອງມືອີເມວ BCC ມີໄວ້ສຳລັບຊ່ວຍສົ່ງອີເມວກຸ່ມນ້ອຍ. "
+"ອີເມວຈຳນວນຫຼາຍຄວນຈັດການຜ່ານຜູ້ໃຫ້ບໍລິການອີເມວຈຳນວນຫຼາຍ."
 
 #: archive-template.php:270
-#, fuzzy
-#| msgid "Member List"
 msgid "Phone Number List"
-msgstr "ລາຍຊື່ສະມາຊິກ"
+msgstr "ລາຍຊື່ເບີໂທລະສັບ"
 
 #: archive-template.php:271
 msgid ""
@@ -271,18 +267,18 @@ msgid ""
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
+"ໃຊ້ຕົວກອງປະຈຸບັນ, ນີ້ມີໄວ້ສຳລັບການຄັດລອກ ແລະວາງລາຍຊື່ເບີໂທລະສັບເຂົ້າໃນແອັບສົ່ງຂໍ້ຄວາມ, WhatsApp, "
+"Signal, ແລະອື່ນໆ. ນີ້ແມ່ນວິທີໄວໃນການເລີ່ມການສົນທະນາກຸ່ມ."
 
 #: archive-template.php:275
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
-msgstr ""
+msgstr "ໃຊ້ຕົວກອງປະຈຸບັນ, ນີ້ສ້າງແຜນທີ່ຈຸດພື້ນຖານຂອງສະຖານທີ່ທີ່ຮູ້ຈັກຂອງບຸກຄົນທີ່ລະບຸໄວ້."
 
 #: archive-template.php:339
-#, fuzzy
-#| msgid "No duplicates found."
 msgid "No results found"
-msgstr "ບໍ່ພົບສິ່ງທີ່ຊໍ້າຊ້ອນ."
+msgstr "ບໍ່ພົບຜົນໄດ້ຮັບ"
 
 #: archive-template.php:348
 #, php-format
@@ -319,10 +315,8 @@ msgid "Bulk Edit"
 msgstr "ດັດແກ້ຫຼາຍ"
 
 #: archive-template.php:401
-#, fuzzy
-#| msgid "Bulk Send App"
 msgid "Bulk Send Message"
-msgstr "ແອັບຯສົ່ງຈໍານວນຫລາຍ"
+msgstr "ສົ່ງຂໍ້ຄວາມຈຳນວນຫຼາຍ"
 
 #: archive-template.php:435 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
@@ -331,64 +325,57 @@ msgstr "ເພີ່ມເຕີມ"
 
 #: archive-template.php:456
 #: dt-assets/parts/modals/modal-advanced-search.php:108
-#: dt-contacts/base-setup.php:324 dt-users/users.php:554
+#: dt-contacts/base-setup.php:329 dt-users/users.php:554
 msgid "Archived"
 msgstr "ເກັບໄວ້"
 
 #: archive-template.php:460
-#, fuzzy, php-format
-#| msgid "New %s"
+#, php-format
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "ໃໝ່%s"
+msgstr "ສະແດງ %s"
 
-#: archive-template.php:538
+#: archive-template.php:538 dt-apps/dt-home/magic-link-home-app.php:238
 msgid "Loading..."
 msgstr "ກຳ ລັງໂຫລດ ..."
 
-#: archive-template.php:543 dt-assets/functions/enqueue-scripts.php:431
+#: archive-template.php:543 dt-assets/functions/enqueue-scripts.php:418
 msgid "Load More"
 msgstr "ໂຫລດຫຼາຍ"
 
 #: archive-template.php:551
-#, fuzzy
-#| msgid "Locations"
 msgid "Actions"
-msgstr "ສະຖານທີ່ຕ່າງໆ"
+msgstr "ການດຳເນີນການ"
 
 #: archive-template.php:563
 msgid "Choose which fields to display as columns in the list"
 msgstr "ເລືອກຊ່ອງໃດທີ່ຈະສະແດງເປັນຖັນໃນບັນຊີ"
 
 #: archive-template.php:569
-#, fuzzy
-#| msgid "Hide fields"
 msgid "Add fields:"
-msgstr "ເຊື່ອງທົ່ງນາ"
+msgstr "ເພີ່ມຊ່ອງຂໍ້ມູນ:"
 
 #: archive-template.php:572
 msgid "Search for fields to add..."
-msgstr ""
+msgstr "ຄົ້ນຫາຊ່ອງຂໍ້ມູນເພື່ອເພີ່ມ..."
 
 #: archive-template.php:594
-#, fuzzy
-#| msgid "Updated fields"
 msgid "Enabled fields:"
-msgstr "ຊ່ອງຂໍ້ມູນທີ່ຖືກປັບປຸງ"
+msgstr "ຊ່ອງຂໍ້ມູນທີ່ເປີດໃຊ້:"
 
 #: archive-template.php:598
 msgid "No fields selected"
-msgstr ""
+msgstr "ບໍ່ໄດ້ເລືອກຊ່ອງຂໍ້ມູນ"
 
 #: archive-template.php:631
 #, php-format
 msgid ""
-"Select all the  %1$s you want to update from the list, and update them below"
+"Select all the %1$s you want to update from the list, and update them below"
 msgstr "ເລືອກທຸກ %1$s ທີ່ທ່ານຕ້ອງການປັບປຸງຈາກບັນຊີລາຍຊື່, ແລະປັບປຸງພວກມັນຢູ່ດ້ານລຸ່ມ"
 
 #: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:843
+#: dt-core/global-functions.php:808
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "ຜູ້ໃຊ້ຄົ້ນຫາ"
@@ -398,11 +385,8 @@ msgid "Share with:"
 msgstr "ແບ່ງປັນກັບ:"
 
 #: archive-template.php:714
-#, fuzzy
-#| msgctxt "message"
-#| msgid "Unshared with %s"
 msgid "Unshare with selected user"
-msgstr "ແບ່ງປັນກັບ%s"
+msgstr "ຍົກເລີກການແບ່ງປັນກັບຜູ້ໃຊ້ທີ່ເລືອກ"
 
 #: archive-template.php:726 dt-assets/functions/details-bar.php:199
 #: dt-posts/custom-post-type.php:217
@@ -439,87 +423,82 @@ msgid "Update"
 msgstr "ປັບປຸງໃຫ້ທັນ"
 
 #: archive-template.php:793 archive-template.php:997
-#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-assets/functions/enqueue-scripts.php:333
 #: dt-reports/magic-url-bulk-send.php:94
 msgid "Make Selections Below"
 msgstr "ເລືອກທາງລຸ່ມ"
 
-#: archive-template.php:801 dt-assets/functions/enqueue-scripts.php:183
-#: dt-assets/functions/enqueue-scripts.php:224
-#: dt-assets/functions/enqueue-scripts.php:289
-#: dt-assets/functions/enqueue-scripts.php:329
+#: archive-template.php:801 dt-assets/functions/enqueue-scripts.php:186
+#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/functions/enqueue-scripts.php:280
+#: dt-assets/functions/enqueue-scripts.php:320
 #: dt-assets/parts/loop-activity-comment.php:228 single-template.php:416
 msgid "Delete"
 msgstr "ລົບ"
 
-#: archive-template.php:804 dt-assets/functions/enqueue-scripts.php:343
-#, fuzzy
-#| msgid "Make Selections Below"
+#: archive-template.php:804 dt-assets/functions/enqueue-scripts.php:334
 msgid "Delete Selections Below"
-msgstr "ເລືອກທາງລຸ່ມ"
+msgstr "ລຶບການເລືອກຂ້າງລຸ່ມ"
 
 #: archive-template.php:818
-#, fuzzy, php-format
-#| msgid "Select all the %1$s to whom you want to send app links."
+#, php-format
 msgid "Select all the %1$s to whom you want to message."
-msgstr "ເລືອກທັງໝົດ %1$s ໃຫ້ກັບຜູ້ທີ່ທ່ານຕ້ອງການສົ່ງລິ້ງແອັບ."
+msgstr "ເລືອກທັງໝົດ %1$s ທີ່ທ່ານຕ້ອງການສົ່ງຂໍ້ຄວາມ."
 
 #: archive-template.php:856
 msgid "Message subject"
-msgstr ""
+msgstr "ຫົວຂໍ້ຂໍ້ຄວາມ"
 
 #: archive-template.php:858
 msgid "A valid message subject must be entered."
-msgstr ""
+msgstr "ຕ້ອງປ້ອນຫົວຂໍ້ຂໍ້ຄວາມທີ່ຖືກຕ້ອງ."
 
 #: archive-template.php:860
 msgid "Message from name"
-msgstr ""
+msgstr "ຂໍ້ຄວາມຈາກຊື່"
 
 #: archive-template.php:862
 msgid "A valid from name must be specified."
-msgstr ""
+msgstr "ຕ້ອງລະບຸຊື່ຜູ້ສົ່ງທີ່ຖືກຕ້ອງ."
 
 #: archive-template.php:864
 msgid "Message reply to"
-msgstr ""
+msgstr "ຕອບກັບຂໍ້ຄວາມ"
 
 #: archive-template.php:866
 msgid "A valid reply to email address must be specified."
-msgstr ""
+msgstr "ຕ້ອງລະບຸທີ່ຢູ່ອີເມວຕອບກັບທີ່ຖືກຕ້ອງ."
 
 #: archive-template.php:868
 #, php-format
 msgid "Emails will be sent from: %s"
-msgstr ""
+msgstr "ອີເມວຈະຖືກສົ່ງຈາກ: %s"
 
 #: archive-template.php:891
 msgid "Please ensure a valid send method has been specified."
-msgstr ""
+msgstr "ກະລຸນາກວດສອບວ່າໄດ້ລະບຸວິທີສົ່ງທີ່ຖືກຕ້ອງແລ້ວ."
 
 #: archive-template.php:893
 msgid "Message"
-msgstr ""
+msgstr "ຂໍ້ຄວາມ"
 
 #: archive-template.php:895
 msgid "Please ensure a valid send message has been entered."
-msgstr ""
+msgstr "ກະລຸນາກວດສອບວ່າໄດ້ປ້ອນຂໍ້ຄວາມສົ່ງທີ່ຖືກຕ້ອງແລ້ວ."
 
 #: archive-template.php:896 dt-reports/magic-url-bulk-send.php:57
 #: dt-reports/magic-url-setup.php:254
 msgid "Message placeholders"
-msgstr ""
+msgstr "ຕົວແທນຂໍ້ຄວາມ"
 
 #: archive-template.php:927 dt-reports/magic-url-bulk-send.php:63
 #: dt-reports/magic-url-setup.php:260
-#, fuzzy
-#| msgid "Create Record"
 msgid "Name of the Record"
-msgstr "ສ້າງບັນທຶກ"
+msgstr "ຊື່ບັນທຶກ"
 
 #: archive-template.php:949
 msgid "Message Placeholder Help"
-msgstr ""
+msgstr "ຊ່ວຍເຫຼືອຕົວແທນຂໍ້ຄວາມ"
 
 #: archive-template.php:992 dt-reports/magic-url-bulk-send.php:89
 msgid "Send to selected records"
@@ -540,7 +519,7 @@ msgstr "ລິ້ງຄ໌"
 
 #: archive-template.php:1001
 msgid "Ensure valid record selections have been made."
-msgstr ""
+msgstr "ກວດສອບວ່າໄດ້ເລືອກບັນທຶກທີ່ຖືກຕ້ອງແລ້ວ."
 
 #: archive-template.php:1020
 msgid "Field Name"
@@ -567,7 +546,7 @@ msgstr "ທັງໝົດ %1$s ໂດຍບໍ່ມີ %2$s"
 msgid "Filter for subassigned OR Assigned To"
 msgstr "ກັ່ນຕອງ ສຳ ລັບອະນຸມັດຫລືມອບ ໝາຍ ໃຫ້"
 
-#: archive-template.php:1104 dt-assets/functions/enqueue-scripts.php:332
+#: archive-template.php:1104 dt-assets/functions/enqueue-scripts.php:323
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "ວັນສ້າງ"
@@ -579,19 +558,19 @@ msgid "None Set"
 msgstr "ບໍ່ມີ ກຳ ນົດ"
 
 #: archive-template.php:1132 archive-template.php:1133
-#: dt-assets/functions/enqueue-scripts.php:240 dt-core/global-functions.php:722
+#: dt-assets/functions/enqueue-scripts.php:243 dt-core/global-functions.php:723
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-reports/magic-url-setup.php:474 dt-users/user-management.php:196
-#: template-settings.php:313 template-settings.php:577
+#: template-settings.php:314 template-settings.php:571
 msgid "No"
 msgstr "ບໍ່"
 
 #: archive-template.php:1139 archive-template.php:1140
-#: dt-assets/functions/enqueue-scripts.php:239 dt-core/global-functions.php:723
+#: dt-assets/functions/enqueue-scripts.php:242 dt-core/global-functions.php:724
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-reports/magic-url-setup.php:473
-#: dt-users/user-management.php:195 template-settings.php:312
-#: template-settings.php:576
+#: dt-users/user-management.php:195 template-settings.php:313
+#: template-settings.php:570
 msgid "Yes"
 msgstr "ແມ່ນແລ້ວ"
 
@@ -611,43 +590,33 @@ msgid "Range End"
 msgstr "Range End"
 
 #: archive-template.php:1169
-#, fuzzy
-#| msgid "Filter Name"
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
-msgstr "ຊື່ຕົວກອງ"
+msgstr "ກອງຕາມຄ່າ"
 
 #: archive-template.php:1174
-#, fuzzy, php-format
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
+#, php-format
 msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
-msgstr "ທັງ ໝົດ %1$s ກັບ %2$s"
+msgstr "ທັງໝົດ %1$s ທີ່ມີຄ່າທີ່ກອງໃນ %2$s"
 
 #: archive-template.php:1178
-#, fuzzy, php-format
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
+#, php-format
 msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
-msgstr "ທັງໝົດ %1$s ໂດຍບໍ່ມີ %2$s"
+msgstr "ທັງໝົດ %1$s ທີ່ບໍ່ມີຄ່າທີ່ກອງໃນ %2$s"
 
 #: archive-template.php:1182
-#, fuzzy, php-format
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
+#, php-format
 msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
-msgstr "ທັງ ໝົດ %1$s ກັບ %2$s"
+msgstr "ທັງໝົດ %1$s ທີ່ມີຄ່າໃດໆໃນ %2$s"
 
 #: archive-template.php:1186
-#, fuzzy, php-format
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
+#, php-format
 msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
-msgstr "ທັງໝົດ %1$s ໂດຍບໍ່ມີ %2$s"
+msgstr "ທັງໝົດ %1$s ທີ່ບໍ່ມີຄ່າໃນ %2$s"
 
 #: archive-template.php:1210
 msgid "Filter Name"
@@ -657,16 +626,193 @@ msgstr "ຊື່ຕົວກອງ"
 msgid "Filter Records"
 msgstr "ບັນທຶກການກັ່ນຕອງ"
 
-#: archive-template.php:1219 dt-assets/functions/enqueue-scripts.php:292
-#: dt-assets/functions/enqueue-scripts.php:327
-#: dt-users/user-initial-setup.php:79 template-settings.php:745
+#: archive-template.php:1219 dt-assets/functions/enqueue-scripts.php:283
+#: dt-assets/functions/enqueue-scripts.php:318
+#: dt-users/user-initial-setup.php:79 template-settings.php:739
 msgid "Save"
 msgstr "ບັນທຶກ"
+
+#: dt-apps/dt-home/frontend/home-screen.php:17
+#: dt-apps/dt-home/frontend/home-screen.php:23
+#: dt-apps/dt-home/magic-link-home-app.php:235
+msgid "Welcome to your Home Screen"
+msgstr "ຍິນດີຕ້ອນຮັບສູ່ໜ້າຈໍເຮືອນຂອງທ່ານ"
+
+#: dt-apps/dt-home/frontend/home-screen.php:18
+#: dt-apps/dt-home/frontend/home-screen.php:24
+msgid "Your personalized dashboard for apps and training."
+msgstr "ໜ້າຈໍຄວບຄຸມສ່ວນຕົວຂອງທ່ານສຳລັບແອັບ ແລະການຝຶກອົບຮົມ."
+
+#: dt-apps/dt-home/frontend/home-screen.php:75
+#: dt-apps/dt-home/frontend/training-screen.php:28
+msgid "Toggle menu"
+msgstr "ສະຫຼັບເມນູ"
+
+#: dt-apps/dt-home/frontend/home-screen.php:93
+#: dt-apps/dt-home/magic-link-home-app.php:236 template-settings.php:258
+msgid "Your Apps"
+msgstr "ແອັບ Apps ຂອງທ່ານ"
+
+#: dt-apps/dt-home/frontend/home-screen.php:110
+msgid "Your Links"
+msgstr "ລິ້ງຂອງທ່ານ"
+
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:45
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:47
+#: template-settings.php:57
+msgid "Apps"
+msgstr "ແອັບ"
+
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:49
+#: dt-core/configuration/config-site-defaults.php:442
+#: dt-login/login-template.php:529
+msgid "Home"
+msgstr "ເຮືອນ"
+
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:52
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:54
+#: dt-assets/parts/nav-offcanvas.php:66 dt-assets/parts/nav-topbar.php:200
+#: dt-users/template-no-permission.php:94
+msgid "Log Out"
+msgstr "ອອກ​ຈາກ​ລະ​ບົບ"
+
+#: dt-apps/dt-home/frontend/partials/launcher-wrapper.php:44
+msgid "App Launcher"
+msgstr "ຕົວເປີດແອັບ"
+
+#: dt-apps/dt-home/frontend/partials/launcher-wrapper.php:59
+msgid "App Content"
+msgstr "ເນື້ອຫາແອັບ"
+
+#: dt-apps/dt-home/frontend/training-screen.php:6
+#: dt-apps/dt-home/frontend/training-screen.php:10
+msgid "Training"
+msgstr "ການຝຶກອົບຮົມ"
+
+#: dt-apps/dt-home/frontend/training-screen.php:7
+#: dt-apps/dt-home/frontend/training-screen.php:11
+msgid "Watch training videos and tutorials."
+msgstr "ເບິ່ງວິດີໂອຝຶກອົບຮົມ ແລະບົດຮຽນ."
+
+#: dt-apps/dt-home/frontend/training-screen.php:44
+#: dt-apps/dt-home/magic-link-home-app.php:237
+msgid "Training Videos"
+msgstr "ວິດີໂອຝຶກອົບຮົມ"
+
+#: dt-apps/dt-home/includes/class-home-apps.php:305
+#: dt-apps/dt-home/includes/class-home-apps.php:807
+msgid "App title is required."
+msgstr "ຕ້ອງການຊື່ແອັບ."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:359
+msgid "Failed to save app."
+msgstr "ບັນທຶກແອັບລົ້ມເຫຼວ."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:374
+#: dt-apps/dt-home/includes/class-home-apps.php:583
+msgid "App not found."
+msgstr "ບໍ່ພົບແອັບ."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:461
+#: dt-apps/dt-home/includes/class-home-apps.php:570
+msgid "Failed to update app."
+msgstr "ອັບເດດແອັບລົ້ມເຫຼວ."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:596
+msgid "Failed to delete app."
+msgstr "ລຶບແອັບລົ້ມເຫຼວ."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:643
+msgid "Failed to reorder apps."
+msgstr "ຈັດລຳດັບແອັບໃໝ່ລົ້ມເຫຼວ."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:811
+msgid "App URL must be a valid URL."
+msgstr "URL ແອັບຕ້ອງເປັນ URL ທີ່ຖືກຕ້ອງ."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:815
+msgid "App color must be a valid hex color."
+msgstr "ສີແອັບຕ້ອງເປັນສີ hex ທີ່ຖືກຕ້ອງ."
+
+#: dt-apps/dt-home/includes/class-home-roles-permissions.php:73
+msgid "Access to the Home Screen dashboard"
+msgstr "ເຂົ້າເຖິງໜ້າຈໍຄວບຄຸມໜ້າຈໍເຮືອນ"
+
+#: dt-apps/dt-home/includes/class-home-roles-permissions.php:83
+#, php-format
+msgid "Access to %s app"
+msgstr "ເຂົ້າເຖິງແອັບ %s"
+
+#: dt-apps/dt-home/includes/class-home-training.php:93
+#: dt-apps/dt-home/includes/class-home-training.php:342
+msgid "Video title is required."
+msgstr "ຕ້ອງການຊື່ວິດີໂອ."
+
+#: dt-apps/dt-home/includes/class-home-training.php:97
+#: dt-apps/dt-home/includes/class-home-training.php:346
+msgid "Video URL is required."
+msgstr "ຕ້ອງການ URL ວິດີໂອ."
+
+#: dt-apps/dt-home/includes/class-home-training.php:140
+msgid "Failed to save video."
+msgstr "ບັນທຶກວິດີໂອລົ້ມເຫຼວ."
+
+#: dt-apps/dt-home/includes/class-home-training.php:152
+#: dt-apps/dt-home/includes/class-home-training.php:200
+msgid "Video not found."
+msgstr "ບໍ່ພົບວິດີໂອ."
+
+#: dt-apps/dt-home/includes/class-home-training.php:188
+msgid "Failed to update video."
+msgstr "ອັບເດດວິດີໂອລົ້ມເຫຼວ."
+
+#: dt-apps/dt-home/includes/class-home-training.php:213
+msgid "Failed to delete video."
+msgstr "ລຶບວິດີໂອລົ້ມເຫຼວ."
+
+#: dt-apps/dt-home/includes/class-home-training.php:260
+msgid "Failed to reorder videos."
+msgstr "ຈັດລຳດັບວິດີໂອໃໝ່ລົ້ມເຫຼວ."
+
+#: dt-apps/dt-home/includes/class-home-training.php:348
+msgid "Video URL must be a valid URL."
+msgstr "URL ວິດີໂອຕ້ອງເປັນ URL ທີ່ຖືກຕ້ອງ."
+
+#: dt-apps/dt-home/magic-link-home-app.php:64
+#: dt-assets/parts/modals/modal-new-contact.php:7
+#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
+#: dt-metrics/combined/locations-list.php:90 dt-metrics/records/genmap.php:166
+#: dt-posts/custom-post-type.php:170 dt-users/template-user-management.php:190
+#: template-settings.php:147
+msgid "Name"
+msgstr "ຊື່"
+
+#: dt-apps/dt-home/magic-link-home-app.php:239
+msgid "Login Required"
+msgstr "ຕ້ອງເຂົ້າສູ່ລະບົບ"
+
+#: dt-apps/dt-home/magic-link-home-app.php:240
+msgid "Please log in to access your Home Screen."
+msgstr "ກະລຸນາເຂົ້າສູ່ລະບົບເພື່ອເຂົ້າເຖິງໜ້າຈໍເຮືອນຂອງທ່ານ."
+
+#: dt-apps/dt-home/magic-link-home-app.php:241
+msgid "Username or Email"
+msgstr "ຊື່ຜູ້ໃຊ້ ຫຼືອີເມວ"
+
+#: dt-apps/dt-home/magic-link-home-app.php:242 dt-login/login-template.php:489
+#: dt-users/template-new-user.php:121 dt-users/template-new-user.php:122
+#: template-settings.php:655
+msgid "Password"
+msgstr "ລະຫັດຜ່ານ"
+
+#: dt-apps/dt-home/magic-link-home-app.php:243
+msgid "Log In"
+msgstr "ເຂົ້າສູ່ລະບົບ"
 
 #: dt-assets/functions/details-bar.php:58
 #: dt-assets/functions/details-bar.php:275
 #: dt-core/configuration/config-site-defaults.php:276
-#: dt-workflows/update-required.php:86 dt-workflows/update-required.php:136
+#: dt-workflows/update-required.php:88 dt-workflows/update-required.php:140
 msgid "Update Needed"
 msgstr "ຕ້ອງການການປັບປຸງ"
 
@@ -684,7 +830,7 @@ msgstr "ລົບ%s"
 #, php-format
 msgctxt "View Contact History"
 msgid "View %s History"
-msgstr ""
+msgstr "ເບິ່ງປະຫວັດ %s"
 
 #: dt-assets/functions/details-bar.php:87
 #, php-format
@@ -698,11 +844,9 @@ msgid "Previous record"
 msgstr "ບັນທຶກກ່ອນ ໜ້າ ນີ້"
 
 #: dt-assets/functions/details-bar.php:121
-#, fuzzy
-#| msgid "Record Hits:"
 msgctxt "the picture of the record"
 msgid "Record Picture"
-msgstr "ບັນທຶກການເຂົ້າເບິ່ງ:"
+msgstr "ຮູບພາບບັນທຶກ"
 
 #: dt-assets/functions/details-bar.php:153
 #: dt-assets/functions/details-bar.php:329
@@ -731,20 +875,18 @@ msgid "Share"
 msgstr "ແບ່ງປັນ"
 
 #: dt-assets/functions/details-bar.php:301
-#, fuzzy
-#| msgid "Record Hits:"
 msgid "Record Picture"
-msgstr "ບັນທຶກການເຂົ້າເບິ່ງ:"
+msgstr "ຮູບພາບບັນທຶກ"
 
 #: dt-assets/functions/enqueue-scripts.php:116
 #: dt-metrics/records/date-range-activity.php:111
-#: template-merge-post-details.php:103
+#: template-merge-post-details.php:106
 msgid "Regions of Focus"
 msgstr "ຂົງເຂດຈຸດສຸມ"
 
 #: dt-assets/functions/enqueue-scripts.php:117
 #: dt-metrics/records/date-range-activity.php:112
-#: template-merge-post-details.php:104
+#: template-merge-post-details.php:107
 msgid "All Locations"
 msgstr "ທຸກສະຖານທີ່"
 
@@ -770,21 +912,21 @@ msgid "Showing %1$s items matching %2$s"
 msgstr "ສະແດງລາຍການ %1$s ກົງກັບ %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:122
-#: dt-assets/functions/enqueue-scripts.php:182
-#: dt-assets/functions/enqueue-scripts.php:328 template-settings.php:119
-#: template-settings.php:605
+#: dt-assets/functions/enqueue-scripts.php:185
+#: dt-assets/functions/enqueue-scripts.php:319 template-settings.php:120
+#: template-settings.php:599
 msgid "Edit"
 msgstr "ແກ້ໄຂ"
 
 #: dt-assets/functions/enqueue-scripts.php:123
-#: dt-reports/magic-url-setup.php:496 template-settings.php:303
+#: dt-reports/magic-url-setup.php:496 template-settings.php:304
 msgid "Copy"
-msgstr ""
+msgstr "ຄັດລອກ"
 
 #: dt-assets/functions/enqueue-scripts.php:124
 #, php-format
 msgid "Copied: %s"
-msgstr ""
+msgstr "ຄັດລອກແລ້ວ: %s"
 
 #: dt-assets/functions/enqueue-scripts.php:145
 msgid "You don't have any unread notifications"
@@ -794,386 +936,363 @@ msgstr "ທ່ານບໍ່ມີການແຈ້ງເຕືອນທີ່
 msgid "You don't have any notifications"
 msgstr "ທ່ານບໍ່ມີການແຈ້ງເຕືອນໃດໆ"
 
-#: dt-assets/functions/enqueue-scripts.php:180 dt-posts/dt-posts.php:1658
+#: dt-assets/functions/enqueue-scripts.php:147
+#: dt-core/release-notifications.php:80
+msgid "Release Announcement!"
+msgstr "ປະກາດການອອກເວີຊັນໃໝ່!"
+
+#: dt-assets/functions/enqueue-scripts.php:148
+msgid "A new version of Disciple.Tools is available"
+msgstr "ເວີຊັ່ນໃໝ່ຂອງ Disciple.Tools ມີໃຫ້ແລ້ວ"
+
+#: dt-assets/functions/enqueue-scripts.php:149
+#: dt-reports/magic-url-setup.php:483
+msgid "View"
+msgstr "ເບິ່ງ"
+
+#: dt-assets/functions/enqueue-scripts.php:183 dt-posts/dt-posts.php:1658
 msgid "D.T System"
 msgstr "ລະບົບ D.T"
 
-#: dt-assets/functions/enqueue-scripts.php:184
+#: dt-assets/functions/enqueue-scripts.php:187
 msgid "Translate with Google Translate"
 msgstr "ແປກັບ Google Translate"
 
-#: dt-assets/functions/enqueue-scripts.php:185
+#: dt-assets/functions/enqueue-scripts.php:188
 msgid "Hide Translation"
 msgstr "ເຊື່ອງການແປພາສາ"
 
-#: dt-assets/functions/enqueue-scripts.php:186
+#: dt-assets/functions/enqueue-scripts.php:189
 #, php-format
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "%1$s ປະຕິກິລິຍາກັບ emoji %2$s"
 
-#: dt-assets/functions/enqueue-scripts.php:187
+#: dt-assets/functions/enqueue-scripts.php:190
 #, php-format
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s ແລະ %1$s reacted ກັບ emoji %2$s"
 
-#: dt-assets/functions/enqueue-scripts.php:189
-msgid "Select spoken language and click \"Start Recording\" to begin."
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:190
-#, fuzzy
-#| msgid "Create Record"
-msgid "Click \"Start Recording\" to begin."
-msgstr "ສ້າງບັນທຶກ"
-
-#: dt-assets/functions/enqueue-scripts.php:191
-#, fuzzy
-#| msgid "Unable to update"
-msgid "Voice recording upload failed. Please try again."
-msgstr "ບໍ່ສາມາດອັບເດດໄດ້"
-
 #: dt-assets/functions/enqueue-scripts.php:192
-#, fuzzy
-#| msgid "No Data Available"
-msgid "No recording available to upload."
-msgstr "ບໍ່ມີຂໍ້ມູນ"
+msgid "Select spoken language and click \"Start Recording\" to begin."
+msgstr "ເລືອກພາສາເວົ້າ ແລະກົດ \"ເລີ່ມບັນທຶກ\" ເພື່ອເລີ່ມຕົ້ນ."
 
-#: dt-assets/functions/enqueue-scripts.php:225
+#: dt-assets/functions/enqueue-scripts.php:193
+msgid "Click \"Start Recording\" to begin."
+msgstr "ກົດ \"ເລີ່ມບັນທຶກ\" ເພື່ອເລີ່ມຕົ້ນ."
+
+#: dt-assets/functions/enqueue-scripts.php:194
+msgid "Voice recording upload failed. Please try again."
+msgstr "ອັບໂຫຼດການບັນທຶກສຽງລົ້ມເຫຼວ. ກະລຸນາລອງໃໝ່."
+
+#: dt-assets/functions/enqueue-scripts.php:195
+msgid "No recording available to upload."
+msgstr "ບໍ່ມີການບັນທຶກທີ່ຈະອັບໂຫຼດ."
+
+#: dt-assets/functions/enqueue-scripts.php:228
 msgid "Mark as complete"
 msgstr "ໝາຍ ສຳ ເລັດແລ້ວ"
 
-#: dt-assets/functions/enqueue-scripts.php:226
+#: dt-assets/functions/enqueue-scripts.php:229
 msgid "No task created"
 msgstr "ບໍ່ມີວຽກຫຍັງຖືກສ້າງຂື້ນ"
 
-#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/functions/enqueue-scripts.php:230
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr "ເຕືອນ"
 
-#: dt-assets/functions/enqueue-scripts.php:228
+#: dt-assets/functions/enqueue-scripts.php:231
 msgid "No note set"
 msgstr "ບໍ່ມີການຕັ້ງຄ່າບັນທຶກ"
 
-#: dt-assets/functions/enqueue-scripts.php:229
+#: dt-assets/functions/enqueue-scripts.php:232
 msgid "Duplicates Detected"
 msgstr "ຄົ້ນພົບຊໍ້າຊ້ອນ"
 
-#: dt-assets/functions/enqueue-scripts.php:230
+#: dt-assets/functions/enqueue-scripts.php:233
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
-#: dt-users/template-new-user.php:293 template-merge-post-details.php:131
-#: template-merge-post-details.php:188
+#: dt-users/template-new-user.php:293 template-merge-post-details.php:134
+#: template-merge-post-details.php:191
 msgid "Merge"
 msgstr "ຜະສົມຜະສານ"
 
-#: dt-assets/functions/enqueue-scripts.php:231
+#: dt-assets/functions/enqueue-scripts.php:234
 msgid "Dismiss"
 msgstr "ປະຕິເສດ"
 
-#: dt-assets/functions/enqueue-scripts.php:232
+#: dt-assets/functions/enqueue-scripts.php:235
 msgid "Dismissed Duplicates"
 msgstr "ຍົກເລີກການຊໍ້າຊ້ອນ"
 
-#: dt-assets/functions/enqueue-scripts.php:233
+#: dt-assets/functions/enqueue-scripts.php:236
 #, php-format
 msgid "Duplicates on: %s"
 msgstr "ສິ່ງທີ່ຊ້ ຳ ຊ້ອນໃນ:%s"
 
-#: dt-assets/functions/enqueue-scripts.php:234
+#: dt-assets/functions/enqueue-scripts.php:237
 msgid "Transfer failed. Check site-to-site configuration."
 msgstr "ການໂອນຍ້າຍລົ້ມເຫລວ. ກວດເບິ່ງການຕັ້ງຄ່າເວັບໄຊທ໌້ -."
 
-#: dt-assets/functions/enqueue-scripts.php:235
+#: dt-assets/functions/enqueue-scripts.php:238
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr "ການອັບເດດການໂອນຍ້າຍລົ້ມເຫລວ. ກວດເບິ່ງການຕັ້ງຄ່າຈາກເວັບໄຊຫາເວັບໄຊ."
 
-#: dt-assets/functions/enqueue-scripts.php:236
+#: dt-assets/functions/enqueue-scripts.php:239
 msgid "Transfer update successful."
 msgstr "ອັບເດດການໂອນສຳເລັດແລ້ວ."
 
-#: dt-assets/functions/enqueue-scripts.php:237
+#: dt-assets/functions/enqueue-scripts.php:240
 #, php-format
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "ສ້າງຂື້ນໃນ%s"
 
-#: dt-assets/functions/enqueue-scripts.php:238
+#: dt-assets/functions/enqueue-scripts.php:241
 msgid "Open With"
 msgstr "ເປີດດ້ວຍ"
 
-#: dt-assets/functions/enqueue-scripts.php:258
+#: dt-assets/functions/enqueue-scripts.php:257
 msgid "Revert Record Back To This Point"
-msgstr ""
+msgstr "ກັບຄືນບັນທຶກໄປຈຸດນີ້"
 
-#: dt-assets/functions/enqueue-scripts.php:259
-#, fuzzy, php-format
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
+#: dt-assets/functions/enqueue-scripts.php:258
+#, php-format
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າທ່ານຕ້ອງການລຶບ%s?"
+msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການກັບຄືນສະຖານະບັນທຶກໄປ %s?"
 
-#: dt-assets/functions/enqueue-scripts.php:290
+#: dt-assets/functions/enqueue-scripts.php:281
 msgid "Locations you are responsible for"
 msgstr "ສະຖານທີ່ທີ່ທ່ານຮັບຜິດຊອບ"
 
-#: dt-assets/functions/enqueue-scripts.php:291
+#: dt-assets/functions/enqueue-scripts.php:282
 #: dt-metrics/records/genmap.php:160
 msgid "Add"
 msgstr "ຕື່ມ"
 
-#: dt-assets/functions/enqueue-scripts.php:293
-#: dt-reports/magic-url-setup.php:453 template-settings.php:296
+#: dt-assets/functions/enqueue-scripts.php:284
+#: dt-reports/magic-url-setup.php:453 template-settings.php:297
 msgid "link"
 msgstr "link"
 
-#: dt-assets/functions/enqueue-scripts.php:294
+#: dt-assets/functions/enqueue-scripts.php:285
 msgid "copy"
 msgstr "ສຳເນົາ"
 
-#: dt-assets/functions/enqueue-scripts.php:310
+#: dt-assets/functions/enqueue-scripts.php:301
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "ພົບການແຂ່ງຂັນ:"
 
-#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/functions/enqueue-scripts.php:302
 #, php-format
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "ປະຖິ້ມການຈັບຄູ່ທັງ ໝົດ ສຳ ລັບ%s"
 
-#: dt-assets/functions/enqueue-scripts.php:330
+#: dt-assets/functions/enqueue-scripts.php:321
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "ການສະແດງ _START_ ຂອງ _TOTAL_"
 
-#: dt-assets/functions/enqueue-scripts.php:331
+#: dt-assets/functions/enqueue-scripts.php:322
 msgid "Sorting By"
 msgstr "ຈັດຮຽງຕາມ"
 
-#: dt-assets/functions/enqueue-scripts.php:333
+#: dt-assets/functions/enqueue-scripts.php:324
 msgid "Date Modified"
 msgstr "ວັນທີດັດແກ້"
 
-#: dt-assets/functions/enqueue-scripts.php:334
+#: dt-assets/functions/enqueue-scripts.php:325
 msgid "No filters, create one below"
 msgstr "ບໍ່ມີຕົວກອງ, ສ້າງ ໜຶ່ງ ລຸ່ມນີ້"
 
-#: dt-assets/functions/enqueue-scripts.php:335
+#: dt-assets/functions/enqueue-scripts.php:326
 msgid "No records found matching your filter."
 msgstr "ບໍ່ພົບບັນທຶກທີ່ກົງກັບຕົວກອງຂອງທ່ານ."
 
-#: dt-assets/functions/enqueue-scripts.php:336 dt-contacts/base-setup.php:674
-#: dt-groups/base-setup.php:1039 dt-posts/custom-post-type.php:489
+#: dt-assets/functions/enqueue-scripts.php:327 dt-contacts/base-setup.php:679
+#: dt-groups/base-setup.php:1040 dt-posts/custom-post-type.php:489
 #, php-format
 msgctxt "All records"
 msgid "All %s"
 msgstr "ທັງ ໝົດ%s"
 
-#: dt-assets/functions/enqueue-scripts.php:337
+#: dt-assets/functions/enqueue-scripts.php:328
 msgid "Split By"
-msgstr ""
+msgstr "ແບ່ງໂດຍ"
 
-#: dt-assets/functions/enqueue-scripts.php:338
+#: dt-assets/functions/enqueue-scripts.php:329
 msgid "start"
 msgstr "ເລີ່ມຕົ້ນ"
 
-#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:330
 msgid "end"
 msgstr "ສິ້ນສຸດ"
 
-#: dt-assets/functions/enqueue-scripts.php:340
+#: dt-assets/functions/enqueue-scripts.php:331
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/module-access.php:1183 dt-groups/base-setup.php:957
+#: dt-contacts/module-access.php:1183 dt-groups/base-setup.php:958
 #: dt-metrics/personal/activity-highlights.php:56
-#: dt-metrics/records/dynamic-records-map.php:99
+#: dt-metrics/records/dynamic-records-map.php:100
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "ທັງ ໝົດ"
 
-#: dt-assets/functions/enqueue-scripts.php:341
+#: dt-assets/functions/enqueue-scripts.php:332
 msgid "Without"
 msgstr "ໂດຍບໍ່ມີການ"
 
-#: dt-assets/functions/enqueue-scripts.php:344
+#: dt-assets/functions/enqueue-scripts.php:335
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
-msgstr ""
+msgstr "ກຳນົດເວລາສົ່ງ"
 
-#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:336
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "ບໍ່ໄດ້ສົ່ງ (ເບິ່ງຄືວ່າຈະບໍ່ມີອີເມວທີ່ຖືກຕ້ອງ)"
 
-#: dt-assets/functions/enqueue-scripts.php:346
+#: dt-assets/functions/enqueue-scripts.php:337
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
-msgstr ""
+msgstr "ເບິ່ງຄິວ"
 
-#: dt-assets/functions/enqueue-scripts.php:347
+#: dt-assets/functions/enqueue-scripts.php:338
 msgid "Exclude Item"
 msgstr "ບໍ່ລວມລາຍການ"
 
-#: dt-assets/functions/enqueue-scripts.php:350
+#: dt-assets/functions/enqueue-scripts.php:341
 #, php-format
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
-msgstr ""
+msgstr "ຂໍ້ມູນ csv ທີ່ສົ່ງອອກຈະມີທຸກ %2$s ຊ່ອງ %1$s."
 
-#: dt-assets/functions/enqueue-scripts.php:351
+#: dt-assets/functions/enqueue-scripts.php:342
 #, php-format
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
-msgstr ""
+msgstr "ຂໍ້ມູນ csv ທີ່ສົ່ງອອກຈະມີ %2$s ຊ່ອງ %1$s ທີ່ເຫັນໄດ້ດັ່ງຂ້າງລຸ່ມນີ້."
+
+#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:353
+msgid "Full List"
+msgstr "ລາຍຊື່ເຕັມ"
+
+#: dt-assets/functions/enqueue-scripts.php:346
+msgid "No Addresses"
+msgstr "ບໍ່ມີທີ່ຢູ່"
+
+#: dt-assets/functions/enqueue-scripts.php:347
+msgid "With Additional Addresses"
+msgstr "ພ້ອມທີ່ຢູ່ເພີ່ມເຕີມ"
+
+#: dt-assets/functions/enqueue-scripts.php:348
+msgid "Open Email for Group"
+msgstr "ເປີດອີເມວສຳລັບກຸ່ມ"
+
+#: dt-assets/functions/enqueue-scripts.php:349
+msgid "Open All"
+msgstr "ເປີດທັງໝົດ"
+
+#: dt-assets/functions/enqueue-scripts.php:350
+msgid "Show Group Addresses"
+msgstr "ສະແດງທີ່ຢູ່ກຸ່ມ"
 
 #: dt-assets/functions/enqueue-scripts.php:354
-#: dt-assets/functions/enqueue-scripts.php:362
-#, fuzzy
-#| msgctxt "Contacts List"
-#| msgid "%s List"
-msgid "Full List"
-msgstr "ບັນຊີ%s"
+msgid "Has No Phone Number"
+msgstr "ບໍ່ມີເບີໂທລະສັບ"
 
 #: dt-assets/functions/enqueue-scripts.php:355
-#, fuzzy
-#| msgid "Address"
-msgid "No Addresses"
-msgstr "ທີ່ຢູ່"
-
-#: dt-assets/functions/enqueue-scripts.php:356
-msgid "With Additional Addresses"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:357
-msgid "Open Email for Group"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:358
-#, fuzzy
-#| msgid "Open Modal"
-msgid "Open All"
-msgstr "ເປີດ Modal"
+msgid "Has Additional Phone Numbers"
+msgstr "ມີເບີໂທລະສັບເພີ່ມເຕີມ"
 
 #: dt-assets/functions/enqueue-scripts.php:359
-msgid "Show Group Addresses"
-msgstr ""
+msgid "Mapped Locations"
+msgstr "ສະຖານທີ່ໃນແຜນທີ່"
+
+#: dt-assets/functions/enqueue-scripts.php:360
+msgid "Contacts Without Locations"
+msgstr "ຕິດຕໍ່ທີ່ບໍ່ມີສະຖານທີ່"
+
+#: dt-assets/functions/enqueue-scripts.php:361
+msgid "Records on zoomed map"
+msgstr "ບັນທຶກໃນແຜນທີ່ຂະຫຍາຍ"
+
+#: dt-assets/functions/enqueue-scripts.php:362
+msgid "No Zoomed Map Records Found!"
+msgstr "ບໍ່ພົບບັນທຶກແຜນທີ່ຂະຫຍາຍ!"
 
 #: dt-assets/functions/enqueue-scripts.php:363
-msgid "Has No Phone Number"
-msgstr ""
+msgid "Open Zoomed Map Records"
+msgstr "ເປີດບັນທຶກແຜນທີ່ຂະຫຍາຍ"
 
 #: dt-assets/functions/enqueue-scripts.php:364
-msgid "Has Additional Phone Numbers"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:368
-#, fuzzy
-#| msgid "Used Locations"
-msgid "Mapped Locations"
-msgstr "ສະຖານທີ່ທີ່ໃຊ້ແລ້ວ"
-
-#: dt-assets/functions/enqueue-scripts.php:369
-#, fuzzy
-#| msgctxt "Reason Paused label"
-#| msgid "Contact on vacation"
-msgid "Contacts Without Locations"
-msgstr "ຕິດຕໍ່ໃນວັນຢຸດ"
-
-#: dt-assets/functions/enqueue-scripts.php:370
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records on zoomed map"
-msgstr "ເພີ່ມບັນທຶກ"
-
-#: dt-assets/functions/enqueue-scripts.php:371
-msgid "No Zoomed Map Records Found!"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:372
-msgid "Open Zoomed Map Records"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:373
-#: dt-assets/functions/enqueue-scripts.php:374
-#, fuzzy
-#| msgid "Filter Name"
+#: dt-assets/functions/enqueue-scripts.php:365
 msgid "Filtered Map"
-msgstr "ຊື່ຕົວກອງ"
+msgstr "ແຜນທີ່ກອງ"
 
-#: dt-assets/functions/enqueue-scripts.php:402 dt-contacts/base-setup.php:55
+#: dt-assets/functions/enqueue-scripts.php:391 dt-contacts/base-setup.php:55
 #: dt-contacts/base-setup.php:67 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "ຕິດຕໍ່"
 
-#: dt-assets/functions/enqueue-scripts.php:403
+#: dt-assets/functions/enqueue-scripts.php:392
 #, php-format
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
-msgstr ""
+msgstr "%s ມີຢູ່ແລ້ວ"
 
-#: dt-assets/functions/enqueue-scripts.php:450
+#: dt-assets/functions/enqueue-scripts.php:437
 msgid "File Upload"
-msgstr ""
+msgstr "ອັບໂຫຼດໄຟລ໌"
 
-#: dt-assets/functions/enqueue-scripts.php:451
-#, fuzzy
-#| msgid "Choose an option:"
+#: dt-assets/functions/enqueue-scripts.php:438
 msgid "Choose a file"
-msgstr "ເລືອກຕົວເລືອກ:"
+msgstr "ເລືອກໄຟລ໌"
 
-#: dt-assets/functions/enqueue-scripts.php:452
+#: dt-assets/functions/enqueue-scripts.php:439
 msgid "or drag it here"
-msgstr ""
+msgstr "ຫຼືລາກມາວາງຢູ່ນີ້"
 
-#: dt-assets/functions/enqueue-scripts.php:453
+#: dt-assets/functions/enqueue-scripts.php:440
 msgid "Successfully Uploaded!"
-msgstr ""
+msgstr "ອັບໂຫຼດສຳເລັດແລ້ວ!"
 
-#: dt-assets/functions/enqueue-scripts.php:454
+#: dt-assets/functions/enqueue-scripts.php:441
 msgid "Error!"
-msgstr ""
+msgstr "ຂໍ້ຜິດພາດ!"
 
-#: dt-assets/functions/enqueue-scripts.php:455
-#, fuzzy
-#| msgid "Unable to update"
+#: dt-assets/functions/enqueue-scripts.php:442
 msgid "Unable to upload, please try again"
-msgstr "ບໍ່ສາມາດອັບເດດໄດ້"
+msgstr "ບໍ່ສາມາດອັບໂຫຼດ, ກະລຸນາລອງໃໝ່"
 
-#: dt-assets/functions/enqueue-scripts.php:456
+#: dt-assets/functions/enqueue-scripts.php:443
 msgid "Upload"
-msgstr ""
+msgstr "ອັບໂຫຼດ"
 
-#: dt-assets/functions/enqueue-scripts.php:457
-#, fuzzy
-#| msgid "Delete Filter"
+#: dt-assets/functions/enqueue-scripts.php:444
 msgid "Delete Existing File"
-msgstr "ລຶບຕົວກອງ"
+msgstr "ລຶບໄຟລ໌ທີ່ມີຢູ່"
 
-#: dt-assets/functions/enqueue-scripts.php:458
-#, fuzzy
-#| msgid "Delete Filter"
+#: dt-assets/functions/enqueue-scripts.php:445
 msgid "Replace Existing Image"
-msgstr "ລຶບຕົວກອງ"
+msgstr "ປ່ຽນຮູບພາບທີ່ມີຢູ່"
 
-#: dt-assets/functions/enqueue-scripts.php:459
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
+#: dt-assets/functions/enqueue-scripts.php:446
 msgid "Are you sure you wish to delete existing file?"
-msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າທ່ານຕ້ອງການລຶບ%s?"
+msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບໄຟລ໌ທີ່ມີຢູ່?"
 
-#: dt-assets/functions/enqueue-scripts.php:460
+#: dt-assets/functions/enqueue-scripts.php:447
 msgid "Successfully Deleted!"
-msgstr ""
+msgstr "ລຶບສຳເລັດແລ້ວ!"
 
-#: dt-assets/functions/enqueue-scripts.php:461
-#, fuzzy
-#| msgid "Delete and replace the app link"
+#: dt-assets/functions/enqueue-scripts.php:448
 msgid "Delete failed, please try again"
-msgstr "ລຶບ ແລະປ່ຽນແທນລິ້ງແອັບ"
+msgstr "ລຶບລົ້ມເຫຼວ, ກະລຸນາລອງໃໝ່"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:27
 msgid "Menu"
@@ -1183,7 +1302,7 @@ msgstr "ເມນູ"
 msgid "Disciple.Tools"
 msgstr "Disciple.Tools"
 
-#: dt-assets/functions/menu.php:51 template-settings.php:54
+#: dt-assets/functions/menu.php:51 template-settings.php:55
 msgid "Profile"
 msgstr "ຂໍ້ມູນ"
 
@@ -1193,14 +1312,14 @@ msgstr "ຕື່ມ ໃໝ່"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:70 dt-assets/parts/nav-offcanvas.php:50
-#: dt-assets/parts/nav-topbar.php:157 template-notifications.php:33
-#: template-settings.php:60 template-settings.php:485
+#: dt-assets/parts/nav-topbar.php:170 template-notifications.php:33
+#: template-settings.php:61 template-settings.php:479
 msgid "Notifications"
 msgstr "ແຈ້ງການ"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:321
+#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:334
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "ການຕັ້ງຄ່າ"
@@ -1209,13 +1328,13 @@ msgstr "ການຕັ້ງຄ່າ"
 msgid "Admin"
 msgstr "ບໍລິຫານ"
 
-#: dt-assets/functions/menu.php:94 dt-contacts/base-setup.php:689
-#: dt-contacts/base-setup.php:693 dt-mapping/columns/add-users-column.php:56
+#: dt-assets/functions/menu.php:94 dt-contacts/base-setup.php:694
+#: dt-contacts/base-setup.php:698 dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:269
 #: dt-metrics/combined/locations-list.php:95
 #: dt-metrics/combined/locations-list.php:270
-#: dt-metrics/records/dynamic-records-map.php:65
-#: dt-users/user-management.php:134 dt-users/user-management.php:231
+#: dt-metrics/records/dynamic-records-map.php:66
+#: dt-users/user-management.php:134 dt-users/user-management.php:235
 msgid "Users"
 msgstr "ຜູ້ໃຊ້"
 
@@ -1224,52 +1343,40 @@ msgid "Help"
 msgstr "ຊ່ວຍເຫຼືອ"
 
 #: dt-assets/functions/menu.php:106
-#, fuzzy
-#| msgid "D.T Record"
 msgid "D.T Forum"
-msgstr "ບັນທຶກ D.T"
+msgstr "ເວທີ D.T"
 
 #: dt-assets/parts/loop-activity-comment.php:84
-#, fuzzy
-#| msgid "New Comments"
 msgid "Add Image Comment"
-msgstr "ຄຳ ເຫັນ ໃໝ່"
+msgstr "ເພີ່ມຄຳເຫັນຮູບພາບ"
 
 #: dt-assets/parts/loop-activity-comment.php:97
-#, fuzzy
-#| msgid "Add Records"
 msgid "Record Voice Message"
-msgstr "ເພີ່ມບັນທຶກ"
+msgstr "ບັນທຶກຂໍ້ຄວາມສຽງ"
 
 #: dt-assets/parts/loop-activity-comment.php:102
 msgid "Submit comment"
 msgstr "ສົ່ງ ຄຳ ເຫັນ"
 
 #: dt-assets/parts/loop-activity-comment.php:111
-#, fuzzy
-#| msgid "Next record"
 msgid "Ready to record"
-msgstr "ບັນທຶກຕໍ່ໄປ"
+msgstr "ພ້ອມທີ່ຈະບັນທຶກ"
 
 #: dt-assets/parts/loop-activity-comment.php:129
-#, fuzzy
-#| msgid "Create Record"
 msgid "Start Recording"
-msgstr "ສ້າງບັນທຶກ"
+msgstr "ເລີ່ມບັນທຶກ"
 
 #: dt-assets/parts/loop-activity-comment.php:132
 msgid "Stop Recording"
-msgstr ""
+msgstr "ຢຸດການບັນທຶກ"
 
 #: dt-assets/parts/loop-activity-comment.php:135
 msgid "Play Recording"
-msgstr ""
+msgstr "ຫຼິ້ນການບັນທຶກ"
 
 #: dt-assets/parts/loop-activity-comment.php:138
-#, fuzzy
-#| msgid "Create Record"
 msgid "Save Recording"
-msgstr "ສ້າງບັນທຶກ"
+msgstr "ບັນທຶກການບັນທຶກ"
 
 #: dt-assets/parts/loop-activity-comment.php:158
 msgid "Showing:"
@@ -1296,7 +1403,7 @@ msgstr "ລຶບ ຄຳ ເຫັນ:"
 
 #: dt-assets/parts/loop-activity-comment.php:235
 #: dt-assets/parts/loop-activity-comment.php:283
-#: template-merge-post-details.php:105
+#: template-merge-post-details.php:108
 msgid "Sorry, something went wrong"
 msgstr "ຂໍອະໄພ, ມີບາງຢ່າງຜິດປົກກະຕິ"
 
@@ -1403,28 +1510,19 @@ msgid ""
 msgstr "ປຸ່ມປະຕິບັດທີ່ວ່ອງໄວເຫຼົ່ານີ້ແມ່ນຢູ່ທີ່ນີ້ເພື່ອຊ່ວຍທ່ານໃນການປັບປຸງບັນທຶກການຕິດຕໍ່ໃຫ້ໄວຂື້ນແລະຮັກສາການນັບປະຕິບັດການປະຕິບັດແຕ່ລະຄັ້ງ."
 
 #: dt-assets/parts/modals/modal-help.php:15
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid ""
-#| "For example, If you click the 'No Answer' button 4 times, we will log "
-#| "that you attempted to reach this contact 4 times, but they did not "
-#| "answer.\n"
-#| "                This action will also change the 'Seeker Path' to "
-#| "'Contact Attempted'."
 msgctxt "Optional Documentation"
 msgid ""
 "For example, If you click the 'No Answer' button 4 times, we will log that "
 "you attempted to reach this contact 4 times, but they did not answer. This "
 "action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"ຕົວຢ່າງ: ຖ້າທ່ານກົດປຸ່ມ 'ບໍ່ມີ ຄຳ ຕອບ' 4 ຄັ້ງ, ພວກເຮົາຈະເຂົ້າສູ່ລະບົບວ່າທ່ານພະຍາຍາມເຂົ້າຫາຜູ້ຕິດຕໍ່ນີ້ 4 "
-"ເທື່ອ, ແຕ່ພວກເຂົາບໍ່ຕອບ.\n"
-"                ການກະ ທຳ ນີ້ຍັງຈະປ່ຽນ 'ເສັ້ນທາງຜູ້ຊອກຫາ' ໄປເປັນ 'ການຕິດຕໍ່ທີ່ພະຍາຍາມ'."
+"ຕົວຢ່າງ, ຖ້າທ່ານກົດປຸ່ມ 'ບໍ່ຕອບ' 4 ຄັ້ງ, ພວກເຮົາຈະບັນທຶກວ່າທ່ານພະຍາຍາມຕິດຕໍ່ຜູ້ຕິດຕໍ່ນີ້ 4 ຄັ້ງ, "
+"ແຕ່ພວກເຂົາບໍ່ຕອບ. ການດຳເນີນການນີ້ຍັງຈະປ່ຽນ 'ເສັ້ນທາງຜູ້ຊອກຫາ' ເປັນ 'ພະຍາຍາມຕິດຕໍ່ແລ້ວ'."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
 msgid "User workload status icons legend:"
-msgstr "ຕຳ ແໜ່ງ ວຽກງານຂອງຜູ້ໃຊ້"
+msgstr "ຕຳ ແໜ່ງ ວຽກງານຂອງຜູ້ໃຊ້:"
 
 #: dt-assets/parts/modals/modal-help.php:33
 msgid "2 contacts need an update"
@@ -1456,7 +1554,7 @@ msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr "ທ່ານສາມາດກັ່ນຕອງພາກນີ້ໂດຍທັງ 'ທັງ ໝົດ', 'ຄຳ ເຫັນ', ຫຼື 'ກິດຈະ ກຳ'."
 
-#: dt-assets/parts/modals/modal-help.php:58 template-settings.php:117
+#: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
 msgstr "ຂໍ້ມູນຂອງທ່ານ"
 
@@ -1569,7 +1667,7 @@ msgid ""
 "notifications."
 msgstr "ກົດປຸ່ມ 'ຍັງບໍ່ໄດ້ອ່ານ' ເພື່ອສະແດງລາຍຊື່ຂອງການແຈ້ງເຕືອນທີ່ຍັງບໍ່ໄດ້ອ່ານຂອງທ່ານ."
 
-#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
+#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "ໝາຍ ທຸກຢ່າງທີ່ອ່ານແລ້ວ"
@@ -1627,14 +1725,12 @@ msgid "Read the documentation"
 msgstr "ອ່ານເອກະສານ"
 
 #: dt-assets/parts/modals/modal-help.php:143 dt-reports/magic-url-setup.php:491
-#, fuzzy
-#| msgid "Open With"
 msgid "Open the link"
-msgstr "ເປີດດ້ວຍ"
+msgstr "ເປີດລິ້ງ"
 
 #: dt-assets/parts/modals/modal-help.php:147 dt-reports/magic-url-setup.php:499
 msgid "Copy the link to the clipboard"
-msgstr ""
+msgstr "ຄັດລອກລິ້ງໄປຍັງຄລິບບອດ"
 
 #: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
 #: dt-reports/magic-url-setup.php:508
@@ -1657,14 +1753,6 @@ msgstr ""
 #: dt-assets/parts/modals/modal-new-contact.php:12
 msgid "Create Record"
 msgstr "ສ້າງບັນທຶກ"
-
-#: dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
-#: dt-metrics/combined/locations-list.php:90 dt-metrics/records/genmap.php:166
-#: dt-posts/custom-post-type.php:170 dt-users/template-user-management.php:196
-#: template-settings.php:146
-msgid "Name"
-msgstr "ຊື່"
 
 #: dt-assets/parts/modals/modal-new-contact.php:20
 msgid "Record Created"
@@ -1704,23 +1792,18 @@ msgid "Create and apply tag"
 msgstr "ສ້າງແລະ ນຳ ໃຊ້ tag"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
-#, fuzzy, php-format
-#| msgid "Record Hits:"
+#, php-format
 msgctxt "Record History"
 msgid "%s Record History"
-msgstr "ບັນທຶກການເຂົ້າເບິ່ງ:"
+msgstr "ປະຫວັດບັນທຶກ %s"
 
 #: dt-assets/parts/modals/modal-record-history.php:16
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Filter To Date"
-msgstr "ຊື່ຕົວກອງ"
+msgstr "ກອງຫາວັນທີ"
 
 #: dt-assets/parts/modals/modal-record-history.php:22
-#, fuzzy
-#| msgid "Create custom filter"
 msgid "select date to filter by"
-msgstr "ສ້າງຕົວກອງແບບກຳນົດເອງ"
+msgstr "ເລືອກວັນທີເພື່ອກອງ"
 
 #: dt-assets/parts/modals/modal-revert.php:4
 msgid "Revert Activity"
@@ -1783,38 +1866,37 @@ msgstr "ສ້າງ Task"
 msgid "Existing tasks for this record:"
 msgstr "ວຽກທີ່ມີຢູ່ ສຳ ລັບບັນທຶກນີ້:"
 
-#: dt-assets/parts/nav-offcanvas.php:66 dt-assets/parts/nav-topbar.php:187
-#: dt-users/template-no-permission.php:94
-msgid "Log Out"
-msgstr "ອອກ​ຈາກ​ລະ​ບົບ"
-
 #: dt-assets/parts/nav-topbar.php:88
 msgid "Theme Update Available!"
 msgstr "ມີການປັບປຸງຫົວຂໍ້!"
 
-#: dt-assets/parts/nav-topbar.php:289 template-notifications.php:43
+#: dt-assets/parts/nav-topbar.php:110
+msgid "New Release Available"
+msgstr "ມີການອອກໃໝ່"
+
+#: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"
 msgstr "ໃຫມ່"
 
-#: dt-assets/parts/nav-topbar.php:295 template-notifications.php:50
+#: dt-assets/parts/nav-topbar.php:308 template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "ທັງ ໝົດ"
 
-#: dt-assets/parts/nav-topbar.php:299 template-notifications.php:54
+#: dt-assets/parts/nav-topbar.php:312 template-notifications.php:54
 msgid "Unread"
 msgstr "ຍັງບໍ່ໄດ້ອ່ານ"
 
-#: dt-assets/parts/nav-topbar.php:306
+#: dt-assets/parts/nav-topbar.php:319
 msgid "See All"
 msgstr "ເບິ່ງທັງ ໝົດ"
 
-#: dt-assets/parts/nav-topbar.php:325 template-notifications.php:72
+#: dt-assets/parts/nav-topbar.php:338 template-notifications.php:72
 msgid "Mark All"
 msgstr "ໝາຍ ທັງ ໝົດ"
 
 #: dt-contacts/base-setup.php:55 dt-contacts/base-setup.php:68
-#: dt-contacts/base-setup.php:261 dt-mapping/columns/add-contacts-column.php:59
+#: dt-contacts/base-setup.php:266 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:132
 #: dt-metrics/combined/locations-list.php:92
@@ -1822,380 +1904,376 @@ msgstr "ໝາຍ ທັງ ໝົດ"
 #: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
 #: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:172
-#: dt-users/template-user-management.php:466
+#: dt-users/template-user-management.php:460
 msgid "Contacts"
 msgstr "ລາຍຊື່ຜູ້ຕິດຕໍ່"
 
-#: dt-contacts/base-setup.php:108
+#: dt-contacts/base-setup.php:113
 msgid "Nickname"
 msgstr "ຊື່ຫຼິ້ນ"
 
-#: dt-contacts/base-setup.php:116
+#: dt-contacts/base-setup.php:121
 msgid "Contact Type"
 msgstr "ປະເພດຕິດຕໍ່"
 
-#: dt-contacts/base-setup.php:120
+#: dt-contacts/base-setup.php:125
 msgid "User"
 msgstr "ຜູ້ໃຊ້"
 
-#: dt-contacts/base-setup.php:121
+#: dt-contacts/base-setup.php:126
 msgid "Representing a User in the system"
 msgstr "ການເປັນຕົວແທນຂອງຜູ້ໃຊ້ໃນລະບົບ"
 
-#: dt-contacts/base-setup.php:127
+#: dt-contacts/base-setup.php:132
 msgid "Private Contact"
 msgstr "ການຕິດຕໍ່ສ່ວນຕົວ"
 
-#: dt-contacts/base-setup.php:129
+#: dt-contacts/base-setup.php:134
 msgid "A friend, family member or acquaintance"
 msgstr "ເພື່ອນ, ສະມາຊິກໃນຄອບຄົວຫຼືຄົນຮູ້ຈັກ"
 
-#: dt-contacts/base-setup.php:130 dt-contacts/base-setup.php:160
+#: dt-contacts/base-setup.php:135 dt-contacts/base-setup.php:165
 msgid "Only me"
 msgstr "ພຽງ​ຂ້ອຍ"
 
-#: dt-contacts/base-setup.php:137
+#: dt-contacts/base-setup.php:142
 msgid "Standard Contact"
 msgstr "ມາດຕະຖານຕິດຕໍ່"
 
-#: dt-contacts/base-setup.php:139
+#: dt-contacts/base-setup.php:144
 msgid "A contact to collaborate on"
 msgstr "ຕິດຕໍ່ພົວພັນເພື່ອຮ່ວມມື"
 
-#: dt-contacts/base-setup.php:140
+#: dt-contacts/base-setup.php:145
 msgid "Me and project leadership"
 msgstr "ຂ້ອຍແລະຜູ້ນໍາໂຄງການ"
 
-#: dt-contacts/base-setup.php:146
+#: dt-contacts/base-setup.php:151
 msgid "Connection"
 msgstr "ການເຊື່ອມຕໍ່"
 
-#: dt-contacts/base-setup.php:148 dt-contacts/base-setup.php:157
+#: dt-contacts/base-setup.php:153 dt-contacts/base-setup.php:162
 msgid "Connected to a contact, or generational fruit"
 msgstr "ຕິດຕໍ່ພົວພັນກັບ, ຫຼືຫມາກໄມ້ໂດຍທົ່ວໄປ"
 
-#: dt-contacts/base-setup.php:151
+#: dt-contacts/base-setup.php:156
 msgid "Collaborators"
 msgstr "ຜູ້ຮ່ວມມື"
 
-#: dt-contacts/base-setup.php:155
+#: dt-contacts/base-setup.php:160
 msgid "Private Connection"
 msgstr "ການເຊື່ອມຕໍ່ສ່ວນຕົວ"
 
-#: dt-contacts/base-setup.php:184 dt-users/users.php:162
+#: dt-contacts/base-setup.php:189 dt-users/users.php:162
 msgid "Languages"
 msgstr "ພາສາຕ່າງໆ"
 
-#: dt-contacts/base-setup.php:193 template-settings.php:179
+#: dt-contacts/base-setup.php:198 template-settings.php:180
 msgid "Phone"
 msgstr "ໂທລະສັບ"
 
-#: dt-contacts/base-setup.php:201
+#: dt-contacts/base-setup.php:206
 msgid "Signal"
 msgstr "ສັນຍານ"
 
-#: dt-contacts/base-setup.php:206
+#: dt-contacts/base-setup.php:211
 msgid "Viber"
 msgstr "Viber"
 
-#: dt-contacts/base-setup.php:211
-#, fuzzy
-#| msgid "Whatsapp"
+#: dt-contacts/base-setup.php:216
 msgid "WhatsApp"
-msgstr "Whatsapp"
+msgstr "WhatsApp"
 
-#: dt-contacts/base-setup.php:218
+#: dt-contacts/base-setup.php:223
 #: dt-core/configuration/config-site-defaults.php:253
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
-#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
-#: dt-users/users.php:129 template-settings.php:166
+#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:223
+#: dt-users/users.php:129 template-settings.php:167
 msgid "Email"
 msgstr "ອີເມວ"
 
-#: dt-contacts/base-setup.php:227 dt-groups/base-setup.php:357
-#: dt-people-groups/people-groups-base.php:210 template-settings.php:190
+#: dt-contacts/base-setup.php:232 dt-groups/base-setup.php:358
+#: dt-people-groups/people-groups-base.php:210 template-settings.php:191
 msgid "Address"
 msgstr "ທີ່ຢູ່"
 
-#: dt-contacts/base-setup.php:244
+#: dt-contacts/base-setup.php:249
 msgid "Facebook"
 msgstr "ເຟສບຸກ"
 
-#: dt-contacts/base-setup.php:252
+#: dt-contacts/base-setup.php:257
 msgid "Other Social Links"
 msgstr "ການເຊື່ອມຕໍ່ທາງສັງຄົມອື່ນໆ"
 
-#: dt-contacts/base-setup.php:261
+#: dt-contacts/base-setup.php:266
 #, php-format
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "ເຊື່ອມຕໍ່ກັບ%s ອື່ນ"
 
-#: dt-contacts/base-setup.php:262
+#: dt-contacts/base-setup.php:267
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "ຄວາມ ສຳ ພັນຕິດຕໍ່ພົວພັນນີ້ມີການຕິດຕໍ່ອື່ນໃນລະບົບ."
 
-#: dt-contacts/base-setup.php:273 dt-contacts/module-access.php:1189
-#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
-#: template-settings.php:714
+#: dt-contacts/base-setup.php:278 dt-contacts/module-access.php:1189
+#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:231
+#: template-settings.php:708
 msgid "Gender"
 msgstr "ເພດ"
 
-#: dt-contacts/base-setup.php:276 dt-users/template-user-management.php:241
+#: dt-contacts/base-setup.php:281 dt-users/template-user-management.php:235
 msgid "Male"
 msgstr "ຜູ້​ຊາຍ"
 
-#: dt-contacts/base-setup.php:277 dt-users/template-user-management.php:242
+#: dt-contacts/base-setup.php:282 dt-users/template-user-management.php:236
 msgid "Female"
 msgstr "ເພດຍິງ"
 
-#: dt-contacts/base-setup.php:284
+#: dt-contacts/base-setup.php:289
 msgid "Age"
 msgstr "ອາຍຸ"
 
-#: dt-contacts/base-setup.php:288
+#: dt-contacts/base-setup.php:293
 msgid "Under 18 years old"
 msgstr "ອາຍຸຕ່ ຳ ກວ່າ 18 ປີ"
 
-#: dt-contacts/base-setup.php:289
+#: dt-contacts/base-setup.php:294
 msgid "18-25 years old"
 msgstr "ອາຍຸ 18-25 ປີ"
 
-#: dt-contacts/base-setup.php:290
+#: dt-contacts/base-setup.php:295
 msgid "26-40 years old"
 msgstr "ອາຍຸ 26-40 ປີ"
 
-#: dt-contacts/base-setup.php:291
+#: dt-contacts/base-setup.php:296
 msgid "Over 40 years old"
 msgstr "ອາຍຸຫຼາຍກວ່າ 40 ປີ"
 
-#: dt-contacts/base-setup.php:299 dt-groups/base-setup.php:104
+#: dt-contacts/base-setup.php:304 dt-groups/base-setup.php:105
 #: dt-people-groups/people-groups-base.php:166
 msgid "Requires Update"
 msgstr "ຮຽກຮ້ອງໃຫ້ມີການປັບປຸງ"
 
-#: dt-contacts/base-setup.php:305 dt-contacts/module-access.php:142
+#: dt-contacts/base-setup.php:310 dt-contacts/module-access.php:142
 #: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
 msgstr "ສະຖານະການຕິດຕໍ່"
 
-#: dt-contacts/base-setup.php:306
+#: dt-contacts/base-setup.php:311
 msgctxt "Contact Status field description"
 msgid ""
 "The Contact Status describes the progress in communicating with the contact."
 msgstr "ສະຖານະການຕິດຕໍ່ອະທິບາຍເຖິງຄວາມກ້າວ ໜ້າ ໃນການສື່ສານກັບຜູ້ຕິດຕໍ່."
 
-#: dt-contacts/base-setup.php:313 dt-groups/base-setup.php:120
+#: dt-contacts/base-setup.php:318 dt-groups/base-setup.php:121
 #: dt-users/users.php:177
 msgid "Active"
 msgstr "ຫ້າວຫັນ"
 
-#: dt-contacts/base-setup.php:314
+#: dt-contacts/base-setup.php:319
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "ການຕິດຕໍ່ແມ່ນມີຄວາມຄືບ ໜ້າ ແລະ / ຫຼື ກຳ ລັງປັບປຸງຢູ່ເລື້ອຍໆ."
 
-#: dt-contacts/base-setup.php:319
+#: dt-contacts/base-setup.php:324
 msgid "New Contact"
 msgstr "ຕິດຕໍ່ ໃໝ່"
 
-#: dt-contacts/base-setup.php:320
+#: dt-contacts/base-setup.php:325
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
 msgstr "ການຕິດຕໍ່ແມ່ນ ໃໝ່ ໃນລະບົບ."
 
-#: dt-contacts/base-setup.php:326
+#: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
 "This contact has made it known that they no longer want to continue or you "
 "have decided not to continue with him/her."
 msgstr "ການຕິດຕໍ່ນີ້ໄດ້ເຮັດໃຫ້ມັນຮູ້ວ່າພວກເຂົາບໍ່ຕ້ອງການສືບຕໍ່ຫຼືທ່ານໄດ້ຕັດສິນໃຈທີ່ຈະບໍ່ສືບຕໍ່ກັບລາວ."
 
-#: dt-contacts/base-setup.php:332 dt-groups/base-setup.php:137
+#: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "ການ​ມອບ​ຫມາຍ​ໃຫ້"
 
-#: dt-contacts/base-setup.php:333
+#: dt-contacts/base-setup.php:338
 msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr "ເລືອກບຸກຄົນຫຼັກທີ່ຮັບຜິດຊອບລາຍງານກ່ຽວກັບຜູ້ຕິດຕໍ່ນີ້."
 
-#: dt-contacts/base-setup.php:343
+#: dt-contacts/base-setup.php:348
 msgid "Sub-assigned to"
 msgstr "ມອບ ໝາຍ ໃຫ້"
 
-#: dt-contacts/base-setup.php:344
+#: dt-contacts/base-setup.php:349
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr "ຕິດຕໍ່ຫຼືຜູ້ໃຊ້ທີ່ໃຫ້ການມອບ ໝາຍ ໃຫ້ຜູ້ໃຊ້ຕິດຕາມກັບການຕິດຕໍ່."
 
-#: dt-contacts/base-setup.php:355
+#: dt-contacts/base-setup.php:360
 msgid "Sub-assigned on other Contacts"
 msgstr "ໄດ້ຮັບການມອບ ໝາຍ ໃນລາຍຊື່ຜູ້ຕິດຕໍ່ອື່ນໆ"
 
-#: dt-contacts/base-setup.php:356
+#: dt-contacts/base-setup.php:361
 msgid "Contacts this contacts is subassigned on"
 msgstr "ລາຍຊື່ຜູ້ຕິດຕໍ່ນີ້ຖືກຈັດສົ່ງໃຫ້"
 
-#: dt-contacts/base-setup.php:368 dt-contacts/base-setup.php:749
+#: dt-contacts/base-setup.php:373 dt-contacts/base-setup.php:754
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
 #: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
 msgid "Personal"
 msgstr "ສ່ວນຕົວ"
 
-#: dt-contacts/base-setup.php:372
+#: dt-contacts/base-setup.php:377
 #: dt-core/configuration/config-site-defaults.php:256
 msgid "Web"
 msgstr "ເວັບ"
 
-#: dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:381
 msgid "Transfer"
 msgstr "ໂອນ"
 
-#: dt-contacts/base-setup.php:378
+#: dt-contacts/base-setup.php:383
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr "ລາຍຊື່ຜູ້ຕິດຕໍ່ທີ່ຖືກຍົກຍ້າຍຈາກການຮ່ວມມືກັບເວັບໄຊທ໌ Disciple.Tools ອື່ນ."
 
-#: dt-contacts/base-setup.php:391 dt-metrics/contacts/sources.php:90
+#: dt-contacts/base-setup.php:396 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:616
 msgid "Sources"
 msgstr "ແຫຼ່ງຂໍ້ມູນ"
 
-#: dt-contacts/base-setup.php:392
+#: dt-contacts/base-setup.php:397
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "ເວັບໄຊທ໌, ເຫດການຫຼືສະຖານທີ່ທີ່ຜູ້ຕິດຕໍ່ນີ້ມາຈາກ."
 
-#: dt-contacts/base-setup.php:433 dt-contacts/base-setup.php:465
+#: dt-contacts/base-setup.php:438 dt-contacts/base-setup.php:470
 #, php-format
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "ເກັບ%s"
 
-#: dt-contacts/base-setup.php:440
+#: dt-contacts/base-setup.php:445
 #, php-format
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "ປ່ຽນ%s ປະເພດ"
 
-#: dt-contacts/base-setup.php:446
+#: dt-contacts/base-setup.php:451
 msgid "See duplicates"
 msgstr "ເບິ່ງຊໍ້າ"
 
-#: dt-contacts/base-setup.php:466
+#: dt-contacts/base-setup.php:471
 #, php-format
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "ທ່ານແນ່ໃຈບໍວ່າທ່ານຕ້ອງການທີ່ຈະເກັບ%s?"
 
-#: dt-contacts/base-setup.php:473
+#: dt-contacts/base-setup.php:478
 msgid "Archive"
 msgstr "ຮວບຮວມ"
 
-#: dt-contacts/base-setup.php:484 dt-contacts/module-access.php:432
+#: dt-contacts/base-setup.php:489 dt-contacts/module-access.php:432
 #: dt-contacts/module-access.php:463 dt-contacts/module-access.php:494
 msgid "Choose an option:"
 msgstr "ເລືອກຕົວເລືອກ:"
 
-#: dt-contacts/base-setup.php:508 dt-contacts/module-access.php:454
+#: dt-contacts/base-setup.php:513 dt-contacts/module-access.php:454
 #: dt-contacts/module-access.php:485 dt-contacts/module-access.php:513
 msgid "Confirm"
 msgstr "ຢືນຢັນ"
 
-#: dt-contacts/base-setup.php:532
+#: dt-contacts/base-setup.php:537
 #: dt-core/configuration/config-site-defaults.php:444
-#: dt-groups/base-setup.php:610 template-settings.php:212
+#: dt-groups/base-setup.php:611 template-settings.php:213
 msgid "Other"
 msgstr "ອື່ນໆ"
 
-#: dt-contacts/base-setup.php:623
+#: dt-contacts/base-setup.php:628
 msgid "This record might be a duplicate of: "
 msgstr "ບັນທຶກນີ້ອາດຈະຊ້ ຳ ກັບ: "
 
-#: dt-contacts/base-setup.php:629 dt-contacts/duplicates-merging.php:513
+#: dt-contacts/base-setup.php:634 dt-contacts/duplicates-merging.php:513
 #: dt-contacts/duplicates-merging.php:595
 msgid "Duplicate Checker"
 msgstr "ເຄື່ອງກວດຊໍ້າກັນ"
 
-#: dt-contacts/base-setup.php:668 dt-groups/base-setup.php:1031
+#: dt-contacts/base-setup.php:673 dt-groups/base-setup.php:1032
 #: dt-posts/custom-post-type.php:468
 msgid "Default Filters"
 msgstr "ຕົວກອງເລີ່ມຕົ້ນ"
 
-#: dt-contacts/base-setup.php:678
+#: dt-contacts/base-setup.php:683
 #, php-format
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "ທັງ ໝົດ%s ທີ່ຂ້ອຍສາມາດເບິ່ງໄດ້"
 
-#: dt-contacts/base-setup.php:705 dt-groups/base-setup.php:1045
+#: dt-contacts/base-setup.php:710 dt-groups/base-setup.php:1046
 #: dt-posts/custom-post-type.php:501
 #, php-format
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "ມັກ%s"
 
-#: dt-contacts/base-setup.php:711 dt-groups/base-setup.php:1050
+#: dt-contacts/base-setup.php:716 dt-groups/base-setup.php:1051
 #: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:507
 msgid "Favorite"
 msgstr "ມັກ"
 
-#: dt-contacts/base-setup.php:717 dt-groups/base-setup.php:1056
+#: dt-contacts/base-setup.php:722 dt-groups/base-setup.php:1057
 #: dt-posts/custom-post-type.php:516
 msgid "My Recently Viewed"
 msgstr "ເບິ່ງທີ່ຜ່ານມາຂອງຂ້ອຍ"
 
-#: dt-contacts/base-setup.php:722 dt-groups/base-setup.php:1061
+#: dt-contacts/base-setup.php:727 dt-groups/base-setup.php:1062
 #: dt-posts/custom-post-type.php:521
 msgid "Last 30 viewed"
 msgstr "30 ຄົນລ້າສຸດ"
 
-#: dt-contacts/base-setup.php:729
-#, fuzzy
-#| msgid "Assigned Contacts"
+#: dt-contacts/base-setup.php:734
 msgid "My Assigned Contacts"
-msgstr "ລາຍຊື່ຜູ້ຕິດຕໍ່ທີ່ຖືກມອບ ໝາຍ"
+msgstr "ຕິດຕໍ່ທີ່ມອບໝາຍໃຫ້ຂ້ອຍ"
 
-#: dt-contacts/base-setup.php:739
+#: dt-contacts/base-setup.php:744
 msgid "My Follow-Up"
 msgstr "ການຕິດຕາມຂ້ອຍ"
 
-#: dt-contacts/base-setup.php:740 dt-contacts/module-access.php:873
+#: dt-contacts/base-setup.php:745 dt-contacts/module-access.php:873
 #: dt-contacts/module-access.php:895 dt-contacts/module-access.php:920
-#: dt-groups/base-setup.php:949
+#: dt-groups/base-setup.php:950
 msgid "Assigned to me"
 msgstr "ມອບ ໝາຍ ໃຫ້ຂ້ອຍ"
 
-#: dt-contacts/base-setup.php:741 dt-contacts/module-access.php:874
+#: dt-contacts/base-setup.php:746 dt-contacts/module-access.php:874
 #: dt-contacts/module-access.php:896 dt-contacts/module-access.php:921
 msgid "Sub-assigned to me"
 msgstr "ມອບ ໝາຍ ໃຫ້ຂ້ອຍ"
 
-#: dt-contacts/base-setup.php:761
+#: dt-contacts/base-setup.php:766
 #, php-format
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "ເຊື່ອມຕໍ່%s"
 
-#: dt-contacts/base-setup.php:785 dt-contacts/base-setup.php:793
-#: dt-contacts/base-setup.php:829 dt-contacts/base-setup.php:830
+#: dt-contacts/base-setup.php:790 dt-contacts/base-setup.php:798
+#: dt-contacts/base-setup.php:834 dt-contacts/base-setup.php:835
 msgid "Shared with me"
 msgstr "ແບ່ງປັນກັບຂ້ອຍ"
 
-#: dt-contacts/base-setup.php:833 dt-contacts/base-setup.php:834
+#: dt-contacts/base-setup.php:838 dt-contacts/base-setup.php:839
 msgid "Subassigned only"
 msgstr "ຍື່ນສະເພາະເທົ່ານັ້ນ"
 
-#: dt-contacts/base-setup.php:987
+#: dt-contacts/base-setup.php:992
 #, php-format
 msgid "This %s is archived"
 msgstr "%s ນີ້ຖືກເກັບໄວ້"
 
-#: dt-contacts/base-setup.php:989
+#: dt-contacts/base-setup.php:994
 msgid "Restore"
 msgstr "ຟື້ນຟູ"
 
@@ -2672,7 +2750,7 @@ msgid "Assign"
 msgstr "ມອບໝາຍ"
 
 #: dt-contacts/module-access.php:1188 dt-users/template-new-user.php:134
-#: template-settings.php:226
+#: template-settings.php:227
 msgid "Language"
 msgstr "ພາສາ"
 
@@ -2821,10 +2899,8 @@ msgid "Please update contact details on your profile page instead of here."
 msgstr "ກະລຸນາອັບເດດລາຍລະອຽດການຕິດຕໍ່ຢູ່ໃນໜ້າໂປຣໄຟລ໌ຂອງທ່ານແທນທີ່ນີ້."
 
 #: dt-contacts/user-module.php:73
-#, fuzzy
-#| msgid "Settings"
 msgid "Profile Settings"
-msgstr "ການຕັ້ງຄ່າ"
+msgstr "ການຕັ້ງຄ່າໂປຣໄຟລ໌"
 
 #: dt-contacts/user-module.php:76
 msgid "This contact represents a user."
@@ -3012,11 +3088,6 @@ msgstr "ເສົ້າໃຈ"
 msgid "prayer"
 msgstr "ອະທິຖານ"
 
-#: dt-core/configuration/config-site-defaults.php:442
-#: dt-login/login-template.php:529
-msgid "Home"
-msgstr "ເຮືອນ"
-
 #: dt-core/configuration/config-site-defaults.php:443
 msgid "Work"
 msgstr "ເຮັດວຽກ"
@@ -3035,15 +3106,15 @@ msgstr "ຂ້ອຍມີຜູ້ຕິດຕໍ່ຫຼາຍເກີນໄ
 
 #: dt-core/configuration/restrict-site-access.php:249
 msgid "Check your email for the confirmation link, then visit the"
-msgstr ""
+msgstr "ກວດສອບອີເມວຂອງທ່ານສຳລັບລິ້ງຢືນຢັນ, ຈາກນັ້ນເຂົ້າໄປທີ່"
 
 #: dt-core/configuration/restrict-site-access.php:253
 msgid "Login Page"
-msgstr ""
+msgstr "ໜ້າເຂົ້າສູ່ລະບົບ"
 
 #: dt-core/configuration/restrict-site-access.php:254
 msgid "login page"
-msgstr ""
+msgstr "ໜ້າເຂົ້າສູ່ລະບົບ"
 
 #: dt-core/configuration/restrict-site-access.php:257
 msgid "ERROR: Invalid username/password combination."
@@ -3051,10 +3122,8 @@ msgstr "ຄວາມຜິດພາດ: ການປະສົມເຂົ້າ�
 
 #: dt-core/configuration/restrict-site-access.php:261
 #: dt-login/login-template.php:217 dt-login/login-template.php:263
-#, fuzzy
-#| msgid "Reset password"
 msgid "Reset Password"
-msgstr "ຕັ້ງລະຫັດຜ່ານ ໃໝ່"
+msgstr "ຕັ້ງລະຫັດຜ່ານໃໝ່"
 
 #: dt-core/configuration/restrict-site-access.php:262
 msgid "Lost your password"
@@ -3089,83 +3158,85 @@ msgstr "ເພື່ອຕັ້ງລະຫັດລັບຂອງທ່ານ
 msgid ""
 "Something went wrong. Please try again or have an admin check the connection "
 "settings."
-msgstr ""
+msgstr "ມີບາງຢ່າງຜິດພາດ. ກະລຸນາລອງໃໝ່ ຫຼືໃຫ້ຜູ້ດູແລລະບົບກວດສອບການຕັ້ງຄ່າການເຊື່ອມຕໍ່."
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
 msgstr "(ບໍ່ມີຫົວຂໍ້)"
 
-#: dt-core/release-notifications.php:58
-msgid "Release Announcement!"
-msgstr ""
-
-#: dt-core/release-notifications.php:59
+#: dt-core/release-notifications.php:81
 #, php-format
 msgid "Disciple.Tools Theme Version %1$s"
-msgstr ""
+msgstr "Disciple.Tools ຮູບແບບເວີຊັນ %1$s"
 
-#: dt-core/release-notifications.php:65
+#: dt-core/release-notifications.php:87
 msgid "Theme News"
-msgstr ""
+msgstr "ຂ່າວຮູບແບບ"
 
-#: dt-core/release-notifications.php:67 dt-core/release-notifications.php:76
+#: dt-core/release-notifications.php:89 dt-core/release-notifications.php:98
 msgid "Other News"
-msgstr ""
+msgstr "ຂ່າວອື່ນໆ"
 
-#: dt-core/release-notifications.php:68
+#: dt-core/release-notifications.php:90
 msgid "Get Involved"
-msgstr ""
+msgstr "ເຂົ້າຮ່ວມ"
 
-#: dt-core/release-notifications.php:80
+#: dt-core/release-notifications.php:102
 msgid "Other news not available."
-msgstr ""
+msgstr "ບໍ່ມີຂ່າວອື່ນໆ."
 
-#: dt-core/release-notifications.php:95
+#: dt-core/release-notifications.php:117
 msgid "Freely given, but not cheap"
-msgstr ""
+msgstr "ໃຫ້ຟຣີ, ແຕ່ບໍ່ແມ່ນລາຄາຖືກ"
 
-#: dt-core/release-notifications.php:97
+#: dt-core/release-notifications.php:119
 msgid ""
 "Disciple.Tools relies on contributions for continued development and "
 "maintenance. Will you join the team?"
 msgstr ""
+"Disciple.Tools ອາໄສການປະກອບສ່ວນສຳລັບການພັດທະນາ ແລະບຳລຸງຮັກສາຢ່າງຕໍ່ເນື່ອງ. "
+"ທ່ານຈະເຂົ້າຮ່ວມທີມບໍ?"
 
-#: dt-core/release-notifications.php:99
+#: dt-core/release-notifications.php:121
 msgid "Give"
-msgstr ""
+msgstr "ໃຫ້"
 
-#: dt-core/release-notifications.php:103 dt-core/release-notifications.php:107
+#: dt-core/release-notifications.php:125 dt-core/release-notifications.php:129
 msgid "Translate"
-msgstr ""
+msgstr "ແປພາສາ"
 
-#: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
-#: template-settings.php:735
+#: dt-core/release-notifications.php:127 dt-users/user-initial-setup.php:68
+#: template-settings.php:729
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
-msgstr ""
+msgstr "ແປ Disciple.Tools ເປັນພາສາຂອງທ່ານ ຫຼືຊ່ວຍເຮັດໃຫ້ການແປດີຂຶ້ນ."
 
-#: dt-core/release-notifications.php:112
+#: dt-core/release-notifications.php:134
 msgid "Build or Document"
-msgstr ""
+msgstr "ສ້າງ ຫຼື ຂຽນເອກະສານ"
 
-#: dt-core/release-notifications.php:114
+#: dt-core/release-notifications.php:136
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
-msgstr ""
+msgstr "ເຮັດໃຫ້ Disciple.Tools ດີຂຶ້ນໂດຍການສ້າງຄຸນສົມບັດ ຫຼືຊ່ວຍພວກເຮົາເຮັດໃຫ້ເອກະສານດີຂຶ້ນ."
 
-#: dt-core/release-notifications.php:116
+#: dt-core/release-notifications.php:138
 msgid "Find out more"
-msgstr ""
+msgstr "ຊອກຮູ້ເພີ່ມເຕີມ"
+
+#: dt-core/utilities/dt-components.php:135
+msgid "Search Locations"
+msgstr "ສະຖານທີ່ຄົ້ນຫາ"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
-#: dt-groups/base-setup.php:168 dt-metrics/personal/activity-highlights.php:58
+#: dt-groups/base-setup.php:169 dt-metrics/personal/activity-highlights.php:58
 msgid "Group"
 msgstr "ກຸ່ມ"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:61
-#: dt-groups/base-setup.php:425 dt-groups/base-setup.php:609
+#: dt-groups/base-setup.php:426 dt-groups/base-setup.php:610
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:177
@@ -3178,38 +3249,38 @@ msgstr "ກຸ່ມ"
 msgid "Groups"
 msgstr "ກຸ່ມ"
 
-#: dt-groups/base-setup.php:115
+#: dt-groups/base-setup.php:116
 msgid "Group Status"
 msgstr "ສະຖານະພາບກຸ່ມ"
 
-#: dt-groups/base-setup.php:116
+#: dt-groups/base-setup.php:117
 msgctxt "field description"
 msgid "Set the current status of the group."
 msgstr "ກຳ ນົດສະຖານະຂອງກຸ່ມ."
 
-#: dt-groups/base-setup.php:121
+#: dt-groups/base-setup.php:122
 msgctxt "field description"
 msgid "The group is actively meeting."
 msgstr "ກຸ່ມໄດ້ປະຊຸມຢ່າງຫ້າວຫັນ."
 
-#: dt-groups/base-setup.php:125 dt-users/users.php:180
+#: dt-groups/base-setup.php:126 dt-users/users.php:180
 msgid "Inactive"
 msgstr "ບໍ່ເຮັດວຽກ"
 
-#: dt-groups/base-setup.php:126
+#: dt-groups/base-setup.php:127
 msgctxt "field description"
 msgid "The group is no longer meeting."
 msgstr "ກຸ່ມບໍ່ໄດ້ປະຊຸມອີກຕໍ່ໄປ."
 
-#: dt-groups/base-setup.php:138
+#: dt-groups/base-setup.php:139
 msgid "Select the main person who is responsible for reporting on this group."
 msgstr "ເລືອກເອົາບຸກຄົນຕົ້ນຕໍທີ່ຮັບຜິດຊອບໃນການລາຍງານກ່ຽວກັບກຸ່ມນີ້."
 
-#: dt-groups/base-setup.php:146
+#: dt-groups/base-setup.php:147
 msgid "Group Coach / Church Planter"
 msgstr "ຄູຝຶກສອນກຸ່ມ / ຜູ້ປູກໂບດ"
 
-#: dt-groups/base-setup.php:147
+#: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
 "The person who planted and/or is coaching this group. Only one person can be "
@@ -3219,176 +3290,176 @@ msgstr ""
 "ຜູ້ທີ່ປູກແລະ / ຫຼືເປັນຄູຝຶກສອນກຸ່ມນີ້. ມີພຽງຄົນດຽວເທົ່ານັ້ນທີ່ສາມາດຖືກມອບ ໝາຍ "
 "ໃຫ້ເປັນກຸ່ມໃນຂະນະທີ່ຫຼາຍຄົນສາມາດເປັນຄູຝຶກ / ຜູ້ປູກໂບດຂອງກຸ່ມນີ້."
 
-#: dt-groups/base-setup.php:159
+#: dt-groups/base-setup.php:160
 msgid "Group Type"
 msgstr "ປະເພດກຸ່ມ"
 
-#: dt-groups/base-setup.php:164
+#: dt-groups/base-setup.php:165
 msgid "Pre-Group"
 msgstr "ທາງສ່ວນຫນ້າຂອງກຸ່ມ"
 
-#: dt-groups/base-setup.php:165
+#: dt-groups/base-setup.php:166
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
 msgstr "ກຸ່ມ ໜຶ່ງ ທີ່ບໍ່ເຊື່ອຖື."
 
-#: dt-groups/base-setup.php:169
+#: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr "ກຸ່ມທີ່ມີຜູ້ເຊື່ອຖື 3 ຄົນຫຼືຫຼາຍກວ່ານັ້ນແຕ່ບໍ່ໄດ້ລະບຸວ່າເປັນໂບດ."
 
-#: dt-groups/base-setup.php:172
+#: dt-groups/base-setup.php:173
 msgid "Church"
 msgstr "ໂບດ"
 
-#: dt-groups/base-setup.php:173
+#: dt-groups/base-setup.php:174
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
 msgstr "ກຸ່ມທີ່ມີຜູ້ເຊື່ອຖື 3 ຄົນຫຼືຫຼາຍກວ່ານັ້ນແລະລະບຸວ່າເປັນໂບດ."
 
-#: dt-groups/base-setup.php:176
+#: dt-groups/base-setup.php:177
 msgid "Team"
 msgstr "ທີມງານ"
 
-#: dt-groups/base-setup.php:177
+#: dt-groups/base-setup.php:178
 msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr "ກຸ່ມພິເສດທີ່ບໍ່ໄດ້ມາປະຊຸມເປັນໂບດ (ຫລືພະຍາຍາມທີ່ຈະກາຍເປັນໂບດ)."
 
-#: dt-groups/base-setup.php:191 dt-groups/base-setup.php:602
+#: dt-groups/base-setup.php:192 dt-groups/base-setup.php:603
 msgid "Church Health"
 msgstr "ສຸຂະພາບຂອງໂບດ"
 
-#: dt-groups/base-setup.php:192
+#: dt-groups/base-setup.php:193
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
 msgstr "ຕິດຕາມຄວາມຄືບ ໜ້າ ແລະສຸຂະພາບຂອງກຸ່ມ / ໂບດ."
 
-#: dt-groups/base-setup.php:196
+#: dt-groups/base-setup.php:197
 msgid "Baptism"
 msgstr "ບັບຕິສະມາ"
 
-#: dt-groups/base-setup.php:197
+#: dt-groups/base-setup.php:198
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "ກຸ່ມແມ່ນບັບຕິສະມາ."
 
-#: dt-groups/base-setup.php:201
+#: dt-groups/base-setup.php:202
 msgid "Bible Study"
 msgstr "ການສຶກສາ ຄຳ ພີໄບເບິນ"
 
-#: dt-groups/base-setup.php:202
+#: dt-groups/base-setup.php:203
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "ກຸ່ມ ກຳ ລັງສຶກສາພະ ຄຳ ພີ."
 
-#: dt-groups/base-setup.php:206
+#: dt-groups/base-setup.php:207
 msgid "Communion"
 msgstr "ການສື່ສານ"
 
-#: dt-groups/base-setup.php:207
+#: dt-groups/base-setup.php:208
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "ກຸ່ມແມ່ນປະຕິບັດການສື່ສານ."
 
-#: dt-groups/base-setup.php:211
+#: dt-groups/base-setup.php:212
 msgid "Fellowship"
 msgstr "Fellowship"
 
-#: dt-groups/base-setup.php:212
+#: dt-groups/base-setup.php:213
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "ກຸ່ມແມ່ນການຄົບຫາສະມາຄົມ."
 
-#: dt-groups/base-setup.php:216
+#: dt-groups/base-setup.php:217
 msgid "Giving"
 msgstr "ການໃຫ້"
 
-#: dt-groups/base-setup.php:217
+#: dt-groups/base-setup.php:218
 msgctxt "Optional Documentation"
 msgid "The group is giving."
 msgstr "ກຸ່ມແມ່ນໃຫ້."
 
-#: dt-groups/base-setup.php:221
+#: dt-groups/base-setup.php:222
 msgid "Prayer"
 msgstr "ການອະທິຖານ"
 
-#: dt-groups/base-setup.php:222
+#: dt-groups/base-setup.php:223
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "ກຸ່ມແມ່ນການອະທິຖານ."
 
-#: dt-groups/base-setup.php:226
+#: dt-groups/base-setup.php:227
 msgid "Praise"
 msgstr "ຍ້ອງຍໍ"
 
-#: dt-groups/base-setup.php:227
+#: dt-groups/base-setup.php:228
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "ກຸ່ມ ກຳ ລັງຍ້ອງຍໍ."
 
-#: dt-groups/base-setup.php:231
+#: dt-groups/base-setup.php:232
 msgid "Sharing the Gospel"
 msgstr "ແບ່ງປັນຂ່າວປະເສີດ"
 
-#: dt-groups/base-setup.php:232
+#: dt-groups/base-setup.php:233
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
 msgstr "ກຸ່ມແມ່ນແບ່ງປັນຂ່າວປະເສີດ."
 
-#: dt-groups/base-setup.php:236 dt-groups/base-setup.php:298
+#: dt-groups/base-setup.php:237 dt-groups/base-setup.php:299
 msgid "Leaders"
 msgstr "ຜູ້ ນຳ"
 
-#: dt-groups/base-setup.php:237
+#: dt-groups/base-setup.php:238
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
 msgstr "ກຸ່ມມີຜູ້ ນຳ."
 
-#: dt-groups/base-setup.php:241 dt-groups/base-setup.php:403
+#: dt-groups/base-setup.php:242 dt-groups/base-setup.php:404
 msgid "Church Commitment"
 msgstr "ຄຳ ໝັ້ນ ສັນຍາຂອງໂບດ"
 
-#: dt-groups/base-setup.php:242
+#: dt-groups/base-setup.php:243
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
 msgstr "ກຸ່ມດັ່ງກ່າວໄດ້ສັນຍາວ່າຈະເປັນໂບດ."
 
-#: dt-groups/base-setup.php:251 dt-users/template-user-management.php:180
-#: template-settings.php:444 template-settings.php:463
+#: dt-groups/base-setup.php:252 dt-users/template-user-management.php:174
+#: template-settings.php:438 template-settings.php:457
 msgid "Start Date"
 msgstr "ວັນ​ທີ່​ເລີ່ມ"
 
-#: dt-groups/base-setup.php:252
+#: dt-groups/base-setup.php:253
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "ວັນທີທີ່ກຸ່ມຄົນນີ້ເລີ່ມປະຊຸມ."
 
-#: dt-groups/base-setup.php:259
+#: dt-groups/base-setup.php:260
 msgid "Church Start Date"
 msgstr "ວັນທີເລີ່ມຕົ້ນຂອງໂບດ"
 
-#: dt-groups/base-setup.php:260
+#: dt-groups/base-setup.php:261
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
 msgstr "ວັນທີທີ່ກຸ່ມຄົນນີ້ລະບຸວ່າເປັນໂບດ."
 
-#: dt-groups/base-setup.php:268 dt-users/template-user-management.php:181
-#: template-settings.php:450 template-settings.php:464
+#: dt-groups/base-setup.php:269 dt-users/template-user-management.php:175
+#: template-settings.php:444 template-settings.php:458
 msgid "End Date"
 msgstr "ວັນທີສິ້ນສຸດ"
 
-#: dt-groups/base-setup.php:269
+#: dt-groups/base-setup.php:270
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
 msgstr "ວັນທີທີ່ກຸ່ມຄົນນີ້ຢຸດການປະຊຸມ (ຖ້າມີ)."
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:157
+#: dt-groups/base-setup.php:280 dt-metrics/records/genmap.php:157
 msgid "Member Count"
 msgstr "ຈຳ ນວນສະມາຊິກ"
 
-#: dt-groups/base-setup.php:280
+#: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
 "The number of members in this group. It will automatically be updated when "
@@ -3400,34 +3471,34 @@ msgstr ""
 "ຖືກເພີ່ມຫລືລຶບອອກໃນບັນຊີສະມາຊິກ. ປ່ຽນເລກ ໝາຍ "
 "ນີ້ດ້ວຍຕົນເອງເພື່ອລວມເອົາຄົນທີ່ບໍ່ຢູ່ໃນລະບົບແຕ່ຍັງເປັນສະມາຊິກຂອງກຸ່ມ."
 
-#: dt-groups/base-setup.php:288 dt-groups/base-setup.php:557
-#: dt-groups/base-setup.php:601
+#: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
+#: dt-groups/base-setup.php:602
 msgid "Member List"
 msgstr "ລາຍຊື່ສະມາຊິກ"
 
-#: dt-groups/base-setup.php:289
+#: dt-groups/base-setup.php:290
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "ຜູ້ຕິດຕໍ່ທີ່ເປັນສະມາຊິກຂອງກຸ່ມນີ້."
 
-#: dt-groups/base-setup.php:308
+#: dt-groups/base-setup.php:309
 msgid "Leader Count"
 msgstr "ຈຳ ນວນຜູ້ ນຳ"
 
-#: dt-groups/base-setup.php:316
+#: dt-groups/base-setup.php:317
 msgid "Parent Group"
 msgstr "ກຸ່ມພໍ່ແມ່"
 
-#: dt-groups/base-setup.php:317
+#: dt-groups/base-setup.php:318
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
 msgstr "ກຸ່ມທີ່ສ້າງຕັ້ງກຸ່ມນີ້."
 
-#: dt-groups/base-setup.php:328
+#: dt-groups/base-setup.php:329
 msgid "Peer Group"
 msgstr "ກຸ່ມ ໝູ່ ເພື່ອນ"
 
-#: dt-groups/base-setup.php:329
+#: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
 "A related group that isn't a parent/child in relationship. It might indicate "
@@ -3436,100 +3507,100 @@ msgstr ""
 "ກຸ່ມທີ່ກ່ຽວຂ້ອງທີ່ບໍ່ແມ່ນພໍ່ແມ່ / ເດັກໃນຄວາມ ສຳ ພັນ. ມັນອາດຈະຊີ້ບອກເຖິງກຸ່ມທີ່ຮ່ວມມືກັນ, ກຳ "
 "ລັງຈະຮວມເຂົ້າກັນ, ແບ່ງປັນກັນບໍ່ດົນມານີ້, ແລະອື່ນໆ."
 
-#: dt-groups/base-setup.php:340
+#: dt-groups/base-setup.php:341
 msgid "Child Group"
 msgstr "ກຸ່ມເດັກ"
 
-#: dt-groups/base-setup.php:341
+#: dt-groups/base-setup.php:342
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "ກຸ່ມ ໜຶ່ງ ທີ່ຖືກຂົມຂື່ນອອກຈາກກຸ່ມນີ້."
 
-#: dt-groups/base-setup.php:376
+#: dt-groups/base-setup.php:377
 msgid "Unbelievers"
 msgstr "ບໍ່ເຊື່ອຖື"
 
-#: dt-groups/base-setup.php:377
+#: dt-groups/base-setup.php:378
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
 msgstr "ຈຳ ນວນຄົນທີ່ບໍ່ເຊື່ອໃນກຸ່ມນີ້."
 
-#: dt-groups/base-setup.php:385
+#: dt-groups/base-setup.php:386
 msgid "Believers"
 msgstr "ຜູ້ທີ່ເຊື່ອ"
 
-#: dt-groups/base-setup.php:386
+#: dt-groups/base-setup.php:387
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
 msgstr "ຈຳ ນວນຜູ້ທີ່ເຊື່ອໃນກຸ່ມນີ້."
 
-#: dt-groups/base-setup.php:394
+#: dt-groups/base-setup.php:395
 msgid "Accountable"
 msgstr "ຮັບຜິດຊອບ"
 
-#: dt-groups/base-setup.php:395
+#: dt-groups/base-setup.php:396
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
 msgstr "ຈຳ ນວນຄົນໃນກຸ່ມຄວາມຮັບຜິດຊອບ."
 
-#: dt-groups/base-setup.php:404
+#: dt-groups/base-setup.php:405
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "ນີ້ແມ່ນສາດສະ ໜາ ຈັກ - ແມ່ນຫຼືບໍ່?"
 
-#: dt-groups/base-setup.php:412
+#: dt-groups/base-setup.php:413
 msgid "Multiplying"
 msgstr "ຄູນ"
 
-#: dt-groups/base-setup.php:413
+#: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
 "Number of people helping start other groups. How many members are "
 "multiplying?"
 msgstr "ຈຳ ນວນຄົນທີ່ຊ່ວຍໃນການເລີ່ມຕົ້ນກຸ່ມອື່ນ. ມີສະມາຊິກຈັກຄົນທີ່ຄູນ?"
 
-#: dt-groups/base-setup.php:426
+#: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "ກຸ່ມຕິດຕໍ່ນີ້ແມ່ນສະມາຊິກຂອງ."
 
-#: dt-groups/base-setup.php:438
+#: dt-groups/base-setup.php:439
 msgid "Leader of Group"
 msgstr "ຜູ້ ນຳ ກຸ່ມ"
 
-#: dt-groups/base-setup.php:448
+#: dt-groups/base-setup.php:449
 msgid "Coach of Group"
 msgstr "ຄູຝຶກຂອງກຸ່ມ"
 
-#: dt-groups/base-setup.php:560
+#: dt-groups/base-setup.php:561
 msgid "Create"
 msgstr "ສ້າງ"
 
-#: dt-groups/base-setup.php:565
+#: dt-groups/base-setup.php:566
 msgid "Select"
 msgstr "ເລືອກ"
 
-#: dt-groups/base-setup.php:570
+#: dt-groups/base-setup.php:571
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "ເພື່ອເພີ່ມສະມາຊິກ ໃໝ່, ໃຫ້ຄລິກໃສ່ 'ສ້າງ' ຫລື 'ເລືອກ'."
 
-#: dt-groups/base-setup.php:576
+#: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "ເພີ່ມສະມາຊິກຈາກຜູ້ຕິດຕໍ່ທີ່ມີຢູ່"
 
-#: dt-groups/base-setup.php:577
+#: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
 "to this group."
 msgstr "ໃນ 'ລາຍຊື່ສະມາຊິກ' ໃສ່ພາກສະຫນາມ, ພິມຊື່ຂອງຜູ້ຕິດຕໍ່ທີ່ມີຢູ່ເພື່ອເພີ່ມພວກເຂົາເຂົ້າໃນກຸ່ມນີ້."
 
-#: dt-groups/base-setup.php:605
+#: dt-groups/base-setup.php:606
 msgid "Four Fields"
 msgstr "ສີ່ໄຮ່"
 
-#: dt-groups/base-setup.php:606
+#: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
@@ -3543,56 +3614,47 @@ msgstr ""
 msgid ""
 "Your password reset link appears to be invalid. Please request a new link "
 "below."
-msgstr ""
+msgstr "ລິ້ງຕັ້ງລະຫັດຜ່ານໃໝ່ຂອງທ່ານເບິ່ງຄືວ່າບໍ່ຖືກຕ້ອງ. ກະລຸນາຂໍລິ້ງໃໝ່ຂ້າງລຸ່ມນີ້."
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
-msgstr ""
+msgstr "ລິ້ງຕັ້ງລະຫັດຜ່ານໃໝ່ຂອງທ່ານໝົດອາຍຸແລ້ວ. ກະລຸນາຂໍລິ້ງໃໝ່ຂ້າງລຸ່ມນີ້."
 
 #: dt-login/login-template.php:84 dt-login/login-template.php:109
-#, fuzzy
-#| msgid "Password"
 msgid "Get New Password"
-msgstr "ລະຫັດຜ່ານ"
+msgstr "ຮັບລະຫັດຜ່ານໃໝ່"
 
 #: dt-login/login-template.php:98 dt-login/login-template.php:488
-#, fuzzy
-#| msgid "Add email address"
 msgid "Email Address"
-msgstr "ເພີ່ມທີ່ຢູ່ອີເມວ"
+msgstr "ທີ່ຢູ່ອີເມວ"
 
 #: dt-login/login-template.php:112
 msgid ""
 "Your password reset email has been sent. Check your email or junk mail for "
 "the link to reset your password."
 msgstr ""
+"ອີເມວຕັ້ງລະຫັດຜ່ານໃໝ່ຂອງທ່ານຖືກສົ່ງແລ້ວ. ກວດສອບອີເມວ ຫຼືຈົດໝາຍຂີ້ເຫຍື່ອສຳລັບລິ້ງຕັ້ງລະຫັດຜ່ານໃໝ່ຂອງທ່ານ."
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
-msgstr ""
+msgstr "ຂາດອີເມວ ຫຼືລະຫັດຜ່ານ."
 
 #: dt-login/login-template.php:164 dt-login/login-template.php:244
 #: dt-login/login-template.php:365
 msgid "Passwords do not match. Please, try again."
-msgstr ""
+msgstr "ລະຫັດຜ່ານບໍ່ກົງກັນ. ກະລຸນາລອງໃໝ່."
 
 #: dt-login/login-template.php:231 dt-login/login-template.php:234
 #: dt-login/login-template.php:353 dt-login/login-template.php:356
-#, fuzzy
-#| msgid "Password"
 msgid "Password Required"
-msgstr "ລະຫັດຜ່ານ"
+msgstr "ຕ້ອງການລະຫັດຜ່ານ"
 
 #: dt-login/login-template.php:241 dt-login/login-template.php:362
-#, fuzzy
-#| msgid "Reset password"
 msgid "Re-enter Password"
-msgstr "ຕັ້ງລະຫັດຜ່ານ ໃໝ່"
+msgstr "ປ້ອນລະຫັດຜ່ານໃໝ່"
 
 #: dt-login/login-template.php:312 dt-login/login-template.php:374
 #: dt-login/login-template.php:545
-#, fuzzy
-#| msgid "Registered"
 msgid "Register"
 msgstr "ລົງທະບຽນ"
 
@@ -3601,38 +3663,29 @@ msgid "There are some errors in your form."
 msgstr "ມີຂໍ້ຜິດພາດບາງຢ່າງໃນແບບຟອມຂອງທ່ານ."
 
 #: dt-login/login-template.php:345
-#, fuzzy
-#| msgid "Display Name"
 msgid "Display Name (optional)"
-msgstr "ສະແດງຊື່"
+msgstr "ຊື່ທີ່ສະແດງ (ທາງເລືອກ)"
 
 #: dt-login/login-template.php:456
 msgid "User action confirmed."
-msgstr ""
+msgstr "ການດຳເນີນການຂອງຜູ້ໃຊ້ຖືກຢືນຢັນແລ້ວ."
 
 #: dt-login/login-template.php:466 dt-login/login-template.php:491
 #: dt-login/login-template.php:537
 msgid "Login"
-msgstr ""
+msgstr "ເຂົ້າສູ່ລະບົບ"
 
 #: dt-login/login-template.php:472
 msgid "Username or password does not match. Try again."
-msgstr ""
-
-#: dt-login/login-template.php:489 dt-users/template-new-user.php:121
-#: dt-users/template-new-user.php:122 template-settings.php:661
-msgid "Password"
-msgstr "ລະຫັດຜ່ານ"
+msgstr "ຊື່ຜູ້ໃຊ້ ຫຼືລະຫັດຜ່ານບໍ່ກົງກັນ. ລອງໃໝ່."
 
 #: dt-login/login-template.php:490
 msgid "Remember Me"
-msgstr ""
+msgstr "ຈື່ຂ້ອຍໄວ້"
 
 #: dt-login/login-template.php:552
-#, fuzzy
-#| msgid "Reset password"
 msgid "Lost Password"
-msgstr "ຕັ້ງລະຫັດຜ່ານ ໃໝ່"
+msgstr "ລືມລະຫັດຜ່ານ"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:222
@@ -3641,28 +3694,28 @@ msgstr "ຕັ້ງລະຫັດຜ່ານ ໃໝ່"
 msgid "Churches"
 msgstr "ໂບດ"
 
-#: dt-mapping/geocode-api/mapbox-api.php:288
 #: dt-mapping/geocode-api/mapbox-api.php:323
-#: dt-users/template-user-management.php:124 template-settings.php:340
+#: dt-mapping/geocode-api/mapbox-api.php:364
 msgid "add"
 msgstr "ເພີ່ມ"
 
-#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:98
+#: dt-mapping/geocode-api/mapbox-api.php:324
+#: template-merge-post-details.php:101
 msgid "Use"
 msgstr "ໃຊ້"
 
-#: dt-mapping/geocode-api/mapbox-api.php:290 template-merge-post-details.php:96
+#: dt-mapping/geocode-api/mapbox-api.php:325 template-merge-post-details.php:99
 #: template-new-bulk-post.php:26 template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
 msgstr "ສະຖານທີ່ຄົ້ນຫາ"
 
-#: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:97
-#: template-new-bulk-post.php:216
+#: dt-mapping/geocode-api/mapbox-api.php:326
+#: template-merge-post-details.php:100 template-new-bulk-post.php:216
 msgid "Delete Location"
 msgstr "ລຶບສະຖານທີ່"
 
-#: dt-mapping/geocode-api/mapbox-api.php:292
+#: dt-mapping/geocode-api/mapbox-api.php:327
 msgid "Open Mapping"
 msgstr "ເປີດແຜນທີ່"
 
@@ -3744,7 +3797,7 @@ msgstr "ຈຳ ນວນລາຍຊື່ຜູ້ຕິດຕໍ່ທີ່�
 #: dt-metrics/combined/critical-path.php:230
 #: dt-metrics/combined/mapbox-maps.php:80 dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:67 dt-metrics/personal/overview.php:64
-#: dt-users/template-user-management.php:388
+#: dt-users/template-user-management.php:382
 msgid "Active Contacts"
 msgstr "ລາຍຊື່ຜູ້ຕິດຕໍ່ທີ່ໃຊ້ວຽກ"
 
@@ -3843,12 +3896,12 @@ msgid "This Week"
 msgstr "ອາ​ທິດ​ນີ້"
 
 #: dt-metrics/combined/daily-activity.php:76
-#: dt-users/template-user-management.php:418
+#: dt-users/template-user-management.php:412
 msgid "This Month"
 msgstr "ເດືອນ​ນີ້"
 
 #: dt-metrics/combined/daily-activity.php:77
-#: dt-users/template-user-management.php:422
+#: dt-users/template-user-management.php:416
 msgid "Last Month"
 msgstr "ເດືອນທີ່ຜ່ານມາ"
 
@@ -3889,10 +3942,8 @@ msgid "New %s"
 msgstr "ໃໝ່%s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Simple Map"
-msgstr "ຊື່ຕົວກອງ"
+msgstr "ແຜນທີ່ງ່າຍໆ"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3904,11 +3955,11 @@ msgstr "ແຜນທີ່ລວມ"
 
 #: dt-metrics/combined/mapbox-maps.php:62
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
-#: dt-metrics/records/dynamic-records-map.php:105
+#: dt-metrics/records/dynamic-records-map.php:106
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
-msgstr ""
+msgstr "ເພື່ອເບິ່ງແຜນທີ່ນີ້, ຕ້ອງການກະແຈ mapbox; ກົດບ່ອນນີ້ເພື່ອເພີ່ມ."
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -3919,10 +3970,8 @@ msgid "Transferred Contacts"
 msgstr "ໂອນຕິດຕໍ່ພົວພັນ"
 
 #: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
-#, fuzzy
-#| msgid "Accept"
 msgid "Access"
-msgstr "ຍອມ​ຮັບ"
+msgstr "ການເຂົ້າເຖິງ"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4007,7 +4056,7 @@ msgstr "ກັ່ນຕອງລາຍຊື່ຜູ້ຕິດຕໍ່ຫາ
 #: dt-metrics/personal/activity-highlights.php:54
 #: dt-metrics/records/select-tags-charts.php:89
 #: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:432
+#: dt-users/template-user-management.php:426
 msgid "All Time"
 msgstr "ຕະ​ຫລອດ​ເວ​ລາ"
 
@@ -4101,11 +4150,11 @@ msgstr "ລຸ້ນ"
 
 #: dt-metrics/metrics.php:79
 msgid "Genmap"
-msgstr ""
+msgstr "ແຜນທີ່ລຸ້ນ"
 
 #: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
-msgstr ""
+msgstr "ແຜນທີ່"
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4184,24 +4233,18 @@ msgid "stats as of"
 msgstr "ສະຖິຕິເປັນຂອງ"
 
 #: dt-metrics/records/date-range-activity.php:43
-#, fuzzy
-#| msgid "Activity Log"
 msgid "Activity Logs"
-msgstr "ບັນທຶກການເຄື່ອນໄຫວ"
+msgstr "ບັນທຶກກິດຈະກຳ"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
-#, fuzzy
-#| msgid "Record"
 msgid "Record Type"
-msgstr "ບັນທຶກ"
+msgstr "ປະເພດບັນທຶກ"
 
 #: dt-metrics/records/date-range-activity.php:103
-#, fuzzy
-#| msgid "Activity"
 msgid "Any Activity"
-msgstr "ກິດຈະ ກຳ"
+msgstr "ກິດຈະກຳໃດກໍ່ໄດ້"
 
 #: dt-metrics/records/date-range-activity.php:104
 #: dt-metrics/records/time-charts.php:108
@@ -4209,79 +4252,62 @@ msgid "Total"
 msgstr "ລວມ"
 
 #: dt-metrics/records/date-range-activity.php:105
-#, fuzzy
-#| msgid "Date Ranges"
 msgid "Date Range"
 msgstr "ຊ່ວງວັນທີ"
 
 #: dt-metrics/records/date-range-activity.php:106
-#, fuzzy
-#| msgid "Custom"
 msgid "Custom Range"
-msgstr "ປະເພນີ"
+msgstr "ຊ່ວງທີ່ກຳນົດເອງ"
 
 #: dt-metrics/records/date-range-activity.php:107
 msgid "Reload"
-msgstr ""
+msgstr "ໂຫຼດໃໝ່"
 
 #: dt-metrics/records/date-range-activity.php:108
 #: dt-metrics/records/select-tags-charts.php:91
 #: dt-metrics/records/time-charts.php:122
 msgid "Title"
-msgstr ""
+msgstr "ຫົວຂໍ້"
 
 #: dt-metrics/records/date-range-activity.php:109
-#, fuzzy
-#| msgid "No Activity Detected!"
 msgid "Time Activity Recorded"
-msgstr "ບໍ່ພົບການເຄື່ອນໄຫວ!"
+msgstr "ເວລາທີ່ບັນທຶກກິດຈະກຳ"
 
 #: dt-metrics/records/date-range-activity.php:110
-#, fuzzy
-#| msgid "Old Value"
 msgid "New Value"
-msgstr "ມູນຄ່າເກົ່າ"
+msgstr "ຄ່າໃໝ່"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "True"
-msgstr ""
+msgstr "ແທ້"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "False"
-msgstr ""
+msgstr "ບໍ່ແທ້"
 
-#: dt-metrics/records/dynamic-records-map.php:92
+#: dt-metrics/records/dynamic-records-map.php:93
 #: dt-metrics/records/genmap.php:136
-#, fuzzy
-#| msgid "Archived"
 msgid "Show Archived"
-msgstr "ເກັບໄວ້"
+msgstr "ສະແດງທີ່ເກັບໄວ້"
 
-#: dt-metrics/records/dynamic-records-map.php:94 template-new-bulk-post.php:264
+#: dt-metrics/records/dynamic-records-map.php:95 template-new-bulk-post.php:264
 msgid "Add Records"
 msgstr "ເພີ່ມບັນທຶກ"
 
-#: dt-metrics/records/dynamic-records-map.php:95
-#: dt-metrics/records/dynamic-records-map.php:98
-#, fuzzy
-#| msgid "Record"
-msgid "Record Types"
-msgstr "ບັນທຶກ"
-
 #: dt-metrics/records/dynamic-records-map.php:96
-#, fuzzy
-#| msgid "prayer"
-msgid "Layer"
-msgstr "ອະທິຖານ"
+#: dt-metrics/records/dynamic-records-map.php:99
+msgid "Record Types"
+msgstr "ປະເພດບັນທຶກ"
 
 #: dt-metrics/records/dynamic-records-map.php:97
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
-msgid "Are you sure you wish to delete layer?"
-msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າທ່ານຕ້ອງການລຶບ%s?"
+msgid "Layer"
+msgstr "ຊັ້ນ"
 
-#: dt-metrics/records/dynamic-records-map.php:100
+#: dt-metrics/records/dynamic-records-map.php:98
+msgid "Are you sure you wish to delete layer?"
+msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບຊັ້ນ?"
+
+#: dt-metrics/records/dynamic-records-map.php:101
 #: dt-notifications/notifications.php:920
 #: dt-notifications/notifications.php:927
 #: dt-notifications/notifications.php:934
@@ -4292,40 +4318,32 @@ msgid "System"
 msgstr "ລະບົບ"
 
 #: dt-metrics/records/genmap.php:23
-#, fuzzy
-#| msgid "Group Generation Tree"
 msgid "GenMapper Trees"
-msgstr "ຕົ້ນໄມ້ການຜະລິດກຸ່ມ"
+msgstr "ຕົ້ນໄມ້ GenMapper"
 
 #: dt-metrics/records/genmap.php:137
-#, fuzzy
-#| msgid "prayer"
 msgid "Data Layers"
-msgstr "ອະທິຖານ"
+msgstr "ຊັ້ນຂໍ້ມູນ"
 
 #: dt-metrics/records/genmap.php:138
 msgid "Node Color"
-msgstr ""
+msgstr "ສີຂໍ້"
 
 #: dt-metrics/records/genmap.php:139
-#, fuzzy
-#| msgid "Default Filters"
 msgid "Default"
-msgstr "ຕົວກອງເລີ່ມຕົ້ນ"
+msgstr "ເລີ່ມຕົ້ນ"
 
 #: dt-metrics/records/genmap.php:140
 msgid "Add Data Layer"
-msgstr ""
+msgstr "ເພີ່ມຊັ້ນຂໍ້ມູນ"
 
 #: dt-metrics/records/genmap.php:141
-#, fuzzy
-#| msgid "Show all fields"
 msgid "Show as icons"
-msgstr "ສະແດງທຸກຊ່ອງ"
+msgstr "ສະແດງເປັນໄອຄອນ"
 
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
-msgstr ""
+msgstr "ເລືອກຊ່ອງຂໍ້ມູນຊັ້ນຂໍ້ມູນເພື່ອບັນທຶກ"
 
 #: dt-metrics/records/genmap.php:143
 msgid "Highlight Active"
@@ -4344,7 +4362,7 @@ msgid "View Record"
 msgstr "ເບິ່ງບັນທຶກ"
 
 #: dt-metrics/records/genmap.php:148 dt-metrics/records/genmap.php:152
-#: dt-posts/dt-posts.php:2717 dt-users/template-user-management.php:384
+#: dt-posts/dt-posts.php:2717 dt-users/template-user-management.php:378
 #: dt-users/users.php:175 single-template.php:127
 msgid "Status"
 msgstr "ສະຖານະພາບ"
@@ -4362,105 +4380,80 @@ msgid "Coaches"
 msgstr "ຄູຝຶກສອນ"
 
 #: dt-metrics/records/genmap.php:156
-#, fuzzy
-#| msgid "Type:"
 msgid "Type"
-msgstr "ປະເພດ:"
+msgstr "ປະເພດ"
 
 #: dt-metrics/records/genmap.php:159
-#, fuzzy
-#| msgid "Open With"
 msgid "Open"
-msgstr "ເປີດດ້ວຍ"
+msgstr "ເປີດ"
 
 #: dt-metrics/records/genmap.php:161
 msgid "Focus"
-msgstr ""
+msgstr "ສຸມໃສ່"
 
 #: dt-metrics/records/genmap.php:162
 msgid "Hide"
-msgstr ""
+msgstr "ເຊື່ອງ"
 
 #: dt-metrics/records/genmap.php:165
-#, fuzzy
-#| msgid "Child Group"
 msgid "Add Child To"
-msgstr "ກຸ່ມເດັກ"
+msgstr "ເພີ່ມລູກໃສ່"
 
 #: dt-metrics/records/genmap.php:167
 msgid "Add Child"
-msgstr ""
+msgstr "ເພີ່ມລູກ"
 
 #: dt-metrics/records/genmap.php:168
 msgid "Focus On Node"
-msgstr ""
+msgstr "ສຸມໃສ່ຂໍ້"
 
 #: dt-metrics/records/genmap.php:169
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
-msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າທ່ານຕ້ອງການລຶບ%s?"
+msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການສຸມໃສ່ຂໍ້?"
 
 #: dt-metrics/records/genmap.php:173
 msgid "Infinite Loops"
-msgstr ""
+msgstr "ການວົນຮອບບໍ່ສິ້ນສຸດ"
 
 #: dt-metrics/records/select-tags-charts.php:32
-#, fuzzy
-#| msgid "Fields over Time Charts"
 msgid "Simple Chart"
-msgstr "ເຂດຂໍ້ມູນໃນຕາຕະລາງເວລາ"
+msgstr "ຕາຕະລາງງ່າຍໆ"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
 "This chart shows the total number for each field value at the end of the "
 "selected date."
-msgstr ""
+msgstr "ຕາຕະລາງນີ້ສະແດງຈຳນວນທັງໝົດສຳລັບແຕ່ລະຄ່າຊ່ອງຂໍ້ມູນໃນຕອນທ້າຍຂອງວັນທີທີ່ເລືອກ."
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records"
-msgstr "ເພີ່ມບັນທຶກ"
+msgstr "ບັນທຶກ"
 
 #: dt-metrics/records/select-tags-charts.php:92
 #: dt-metrics/records/time-charts.php:123
-#, fuzzy
-#| msgid "No Data Available"
 msgid "No Records Available"
-msgstr "ບໍ່ມີຂໍ້ມູນ"
+msgstr "ບໍ່ມີບັນທຶກທີ່ມີຢູ່"
 
 #: dt-metrics/records/time-charts.php:41
-#, fuzzy
-#| msgid "Advanced Search"
 msgid "Advanced Charts"
-msgstr "ການຄົ້ນຫາຂັ້ນສູງ"
+msgstr "ຕາຕະລາງຂັ້ນສູງ"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
 msgstr "ເພີ່ມແລ້ວ"
 
 #: dt-metrics/records/time-charts.php:110
-#, fuzzy
-#| msgid "Delete"
 msgid "Deleted"
-msgstr "ລົບ"
+msgstr "ລຶບແລ້ວ"
 
 #: dt-metrics/records/time-charts.php:111
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Connected"
-msgstr "ເຊື່ອມຕໍ່%s"
+msgstr "ເຊື່ອມຕໍ່ແລ້ວ"
 
 #: dt-metrics/records/time-charts.php:112
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Disconnected"
-msgstr "ເຊື່ອມຕໍ່%s"
+msgstr "ຕັດການເຊື່ອມຕໍ່ແລ້ວ"
 
 #: dt-metrics/records/time-charts.php:113
 #, php-format
@@ -4477,10 +4470,8 @@ msgid "Single cumulative totals"
 msgstr "ລວມສະສົມທັງ ໝົດ"
 
 #: dt-metrics/records/time-charts.php:118
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records changes"
-msgstr "ເພີ່ມບັນທຶກ"
+msgstr "ການປ່ຽນແປງບັນທຶກ"
 
 #: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
@@ -4496,11 +4487,11 @@ msgstr "ອັບເດດໃນ %1$s # %2$s"
 msgid "Do not reply directly to this email."
 msgstr "ຢ່າຕອບໂດຍກົງຕໍ່ອີເມວນີ້."
 
-#: dt-notifications/notifications-scheduler.php:140 template-settings.php:520
+#: dt-notifications/notifications-scheduler.php:140 template-settings.php:514
 msgid "Hourly Digest"
 msgstr "ສະຫຼຸບຊົ່ວໂມງ"
 
-#: dt-notifications/notifications-scheduler.php:143 template-settings.php:524
+#: dt-notifications/notifications-scheduler.php:143 template-settings.php:518
 msgid "Daily Digest"
 msgstr "ສະຫຼຸບປະຈຳວັນ"
 
@@ -4620,11 +4611,11 @@ msgstr "ກຸ່ມຄົນ"
 
 #: dt-people-groups/people-groups-base.php:184
 msgid "Contacts Total"
-msgstr ""
+msgstr "ຕິດຕໍ່ທັງໝົດ"
 
 #: dt-people-groups/people-groups-base.php:203
 msgid "Groups Total"
-msgstr ""
+msgstr "ກຸ່ມທັງໝົດ"
 
 #: dt-people-groups/people-groups-base.php:218
 #: dt-posts/custom-post-type.php:186
@@ -4633,19 +4624,19 @@ msgstr "ແກ້ໄຂສຸດທ້າຍ"
 
 #: dt-people-groups/people-groups-base.php:283
 msgid "People Group Code"
-msgstr ""
+msgstr "ລະຫັດກຸ່ມຄົນ"
 
 #: dt-people-groups/people-groups-base.php:290
 msgid "People ID"
-msgstr ""
+msgstr "ລະຫັດປະຊາຊົນ"
 
 #: dt-people-groups/people-groups-base.php:297
 msgid "Primary Language"
-msgstr ""
+msgstr "ພາສາຫຼັກ"
 
 #: dt-people-groups/people-groups-base.php:304
 msgid "Country"
-msgstr ""
+msgstr "ປະເທດ"
 
 #: dt-people-groups/people-groups-base.php:316
 msgctxt "Optional Documentation"
@@ -4659,11 +4650,11 @@ msgstr "ກຸ່ມຄົນທີ່ເປັນຕົວແທນໂດຍກ
 
 #: dt-people-groups/people-groups-base.php:345
 msgid "Connections"
-msgstr ""
+msgstr "ການເຊື່ອມຕໍ່"
 
 #: dt-people-groups/people-groups-base.php:347
 msgid "Joshua Project"
-msgstr ""
+msgstr "Joshua Project"
 
 #: dt-people-groups/people-groups-post-type.php:204
 msgid "Add/Update People Group"
@@ -4683,7 +4674,7 @@ msgstr "ໃສ່ຫົວຂໍ້ກຸ່ມຄົນຢູ່ບ່ອນນ
 
 #: dt-posts/custom-post-type.php:179
 msgid "Picture"
-msgstr ""
+msgstr "ຮູບພາບ"
 
 #: dt-posts/custom-post-type.php:209
 msgid "Tags"
@@ -4699,12 +4690,9 @@ msgid "Un-Follow"
 msgstr "ປະຕິບັດຕາມ"
 
 #: dt-posts/custom-post-type.php:248
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid "The general location where this contact is located."
 msgctxt "Optional Documentation"
 msgid "The general location where this record is located."
-msgstr "ສະຖານທີ່ທົ່ວໄປທີ່ຕິດຕໍ່ພົວພັນນີ້."
+msgstr "ສະຖານທີ່ທົ່ວໄປທີ່ບັນທຶກນີ້ຕັ້ງຢູ່."
 
 #: dt-posts/custom-post-type.php:256
 msgid "Locations or Address"
@@ -4713,38 +4701,31 @@ msgstr "ສະຖານທີ່ຫລືທີ່ຢູ່"
 #: dt-posts/dt-posts.php:101
 msgid ""
 "This record was automatically updated rather than creating a new record."
-msgstr ""
+msgstr "ບັນທຶກນີ້ຖືກອັບເດດອັດຕະໂນມັດແທນທີ່ຈະສ້າງບັນທຶກໃໝ່."
 
 #: dt-posts/dt-posts.php:1650
-#, fuzzy, php-format
-#| msgid "Magic Link Submission"
+#, php-format
 msgid "%s Submission"
-msgstr "ການຍື່ນສະເຫນີ Magic Link"
+msgstr "ການສົ່ງ %s"
 
 #: dt-posts/dt-posts.php:1650
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Link"
-msgstr "ການຍື່ນສະເຫນີ Magic Link"
+msgstr "ລິ້ງມະຫັດສະຈັນ"
 
 #: dt-posts/dt-posts.php:1652 dt-posts/dt-posts.php:2199
-#, fuzzy
-#| msgid "Revert Activity"
 msgid "Revert Bot"
-msgstr "ປະຕິບັດກິດຈະ ກຳ"
+msgstr "ບອດກັບຄືນ"
 
 #: dt-posts/dt-posts.php:2439
-#, fuzzy
-#| msgid "Post already shared with user."
 msgid "Record already shared with user."
-msgstr "ໂພສແບ່ງປັນກັບຜູ້ໃຊ້ແລ້ວ."
+msgstr "ບັນທຶກຖືກແບ່ງປັນກັບຜູ້ໃຊ້ແລ້ວ."
 
 #: dt-posts/dt-posts.php:2718 single-template.php:174
 msgid "Details"
 msgstr "ລາຍລະອຽດ"
 
 #: dt-posts/dt-posts.php:2796
-#, fuzzy, php-format
+#, php-format
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
 "name][contact_id]. If desired, share this record with the user to grant "
@@ -4767,10 +4748,10 @@ msgid "Baptized %s"
 msgstr "ຮັບບັບເຕມາ%s"
 
 #: dt-posts/posts.php:282
-#, fuzzy, php-format
+#, php-format
 msgctxt "Baptized by contact1"
 msgid "Baptized by %s"
-msgstr "ບັບຕິສະມາໂດຍ %s"
+msgstr "ຮັບບັບເຕມາໂດຍ %s"
 
 #: dt-posts/posts.php:284
 #, php-format
@@ -4972,9 +4953,7 @@ msgid "Connected to %s"
 msgstr "ເຊື່ອມຕໍ່ກັບ%s"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
-#, fuzzy, php-format
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
+#, php-format
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
 msgstr "ເພີ່ມ %1$s ໃສ່ %2$s"
@@ -4987,20 +4966,16 @@ msgid "Removed connection to %s"
 msgstr "ອອກການເຊື່ອມຕໍ່ໄປ%s"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
-#, fuzzy, php-format
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
+#, php-format
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s ຖືກລຶບອອກຈາກ %2$s"
 
 #: dt-posts/posts.php:416
-#, fuzzy, php-format
-#| msgctxt "Total in January"
-#| msgid "%1$s in %2$s"
+#, php-format
 msgctxt "User Select: User1"
 msgid "%1$s: %2$s"
-msgstr "%1$s ໃນ %2$s"
+msgstr "%1$s: %2$s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -5042,20 +5017,16 @@ msgid "%1$s added to locations"
 msgstr "%1$s ຖືກເພີ່ມເຂົ້າສະຖານທີ່ແລ້ວ"
 
 #: dt-posts/posts.php:512
-#, fuzzy, php-format
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
+#, php-format
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
-msgstr "%1$s ຖືກລຶບອອກຈາກ %2$s"
+msgstr "%1$s ຖືກລຶບອອກຈາກລິ້ງ %2$s"
 
 #: dt-posts/posts.php:515
-#, fuzzy, php-format
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
+#, php-format
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
-msgstr "ເພີ່ມ %1$s ໃສ່ %2$s"
+msgstr "ເພີ່ມ %1$s ໃສ່ລິ້ງ %2$s"
 
 #: dt-posts/posts.php:536
 msgctxt "message"
@@ -5136,10 +5107,8 @@ msgid "Unshared with %s"
 msgstr "ແບ່ງປັນກັບ%s"
 
 #: dt-posts/posts.php:2527
-#, fuzzy
-#| msgid "Remove"
 msgid "Removed User"
-msgstr "ເອົາອອກ"
+msgstr "ຜູ້ໃຊ້ທີ່ຖືກລຶບ"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
@@ -5160,28 +5129,33 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"ສະບາຍດີ {{name}},\n"
+"\n"
+"ກະລຸນາກົດປຸ່ມຂ້າງລຸ່ມນີ້ເພື່ອເຂົ້າເຖິງແອັບຂອງທ່ານ.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"ຂອບໃຈ!"
 
 #: dt-reports/magic-url-bulk-send.php:50
 msgid "Configure email subject"
-msgstr ""
+msgstr "ຕັ້ງຄ່າຫົວຂໍ້ອີເມວ"
 
 #: dt-reports/magic-url-bulk-send.php:53
 msgid "{{app}} will be replaced with the selected app name."
-msgstr ""
+msgstr "{{app}} ຈະຖືກແທນທີ່ດ້ວຍຊື່ແອັບທີ່ເລືອກ."
 
 #: dt-reports/magic-url-bulk-send.php:55
 msgid "Configure email message"
-msgstr ""
+msgstr "ຕັ້ງຄ່າຂໍ້ຄວາມອີເມວ"
 
 #: dt-reports/magic-url-bulk-send.php:60 dt-reports/magic-url-setup.php:257
-#, fuzzy
-#| msgid "Select app to email"
 msgid "Selected app name"
-msgstr "ເລືອກແອັບເພື່ອສົ່ງອີເມວ"
+msgstr "ຊື່ແອັບທີ່ເລືອກ"
 
 #: dt-reports/magic-url-bulk-send.php:66 dt-reports/magic-url-setup.php:263
 msgid "Unique link to access the app."
-msgstr ""
+msgstr "ລິ້ງເປັນເອກະລັກເພື່ອເຂົ້າເຖິງແອັບ."
 
 #: dt-reports/magic-url-bulk-send.php:71
 msgid "Select app to email"
@@ -5193,35 +5167,29 @@ msgstr "ທ່ານຕ້ອງເລືອກແອັບຯ"
 
 #: dt-reports/magic-url-landing-page.php:29
 #: dt-reports/magic-url-landing-page.php:33
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Invalid Link"
-msgstr "ການຍື່ນສະເຫນີ Magic Link"
+msgstr "ລິ້ງບໍ່ຖືກຕ້ອງ"
 
 #: dt-reports/magic-url-landing-page.php:38
 msgid "Link key is no longer valid or has expired."
-msgstr ""
+msgstr "ກະແຈລິ້ງບໍ່ຖືກຕ້ອງອີກຕໍ່ໄປ ຫຼືໝົດອາຍຸແລ້ວ."
 
 #: dt-reports/magic-url-landing-page.php:39
 #, php-format
 msgid "Please %s, or locate a more recent key, or request a new one."
-msgstr ""
+msgstr "ກະລຸນາ %s, ຫຼືຊອກຫາກະແຈທີ່ໃໝ່ກວ່າ, ຫຼືຂໍກະແຈໃໝ່."
 
 #: dt-reports/magic-url-landing-page.php:39
 msgid "login"
-msgstr ""
+msgstr "ເຂົ້າສູ່ລະບົບ"
 
 #: dt-reports/magic-url-setup.php:30
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Links"
-msgstr "ການຍື່ນສະເຫນີ Magic Link"
+msgstr "ລິ້ງມະຫັດສະຈັນ"
 
 #: dt-reports/magic-url-setup.php:31
-#, fuzzy
-#| msgid "Apps available on this record."
 msgid "Magic Links available on this record."
-msgstr "ແອັບທີ່ມີຢູ່ໃນບັນທຶກນີ້."
+msgstr "ລິ້ງມະຫັດສະຈັນທີ່ມີຢູ່ໃນບັນທຶກນີ້."
 
 #: dt-reports/magic-url-setup.php:236
 msgid ""
@@ -5233,6 +5201,13 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"ສະບາຍດີ,\n"
+"\n"
+"ກະລຸນາກົດປຸ່ມຂ້າງລຸ່ມນີ້ເພື່ອເຂົ້າເຖິງແອັບຂອງທ່ານ.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"ຂອບໃຈ!"
 
 #: dt-reports/magic-url-setup.php:248
 msgid "Add email address"
@@ -5254,40 +5229,32 @@ msgstr "ລຶບ ແລະປ່ຽນແທນລິ້ງແອັບ"
 msgid ""
 "This app is not yet activated for this user. Enable the app to generate a "
 "link."
-msgstr ""
+msgstr "ແອັບນີ້ຍັງບໍ່ໄດ້ເປີດໃຊ້ສຳລັບຜູ້ໃຊ້ນີ້. ເປີດໃຊ້ແອັບເພື່ອສ້າງລິ້ງ."
 
-#: dt-reports/magic-url-setup.php:465 template-settings.php:265
+#: dt-reports/magic-url-setup.php:465 template-settings.php:266
 msgid "App Activation"
 msgstr "ການເປີດໃຊ້ App"
 
 #: dt-reports/magic-url-setup.php:472 dt-users/user-management.php:194
-#: template-settings.php:311 template-settings.php:575
+#: template-settings.php:312 template-settings.php:569
 msgid "Enable"
 msgstr "ເປີດໃຊ້ງານ"
 
-#: dt-reports/magic-url-setup.php:483
-#, fuzzy
-#| msgid "View User"
-msgid "View"
-msgstr "ເບິ່ງຜູ້ໃຊ້"
-
 #: dt-reports/magic-url-setup.php:512
 msgid "QR code"
-msgstr ""
+msgstr "ລະຫັດ QR"
 
 #: dt-reports/magic-url-setup.php:521
 msgid "Reset"
-msgstr ""
+msgstr "ຕັ້ງໃໝ່"
 
 #: dt-reports/magic-url-setup.php:526
-#, fuzzy
-#| msgid "Open With"
 msgid "Reset link"
-msgstr "ເປີດດ້ວຍ"
+msgstr "ຕັ້ງລິ້ງໃໝ່"
 
 #: dt-reports/magic-url-setup.php:528
 msgid "This app is currently disabled."
-msgstr ""
+msgstr "ແອັບນີ້ຖືກປິດໃຊ້ງານໃນປັດຈຸບັນ."
 
 #: dt-reports/reports.php:160
 msgid "Added new report"
@@ -5349,18 +5316,18 @@ msgstr "ຕິດຕໍ່ເພື່ອສ້າງຜູ້ໃຊ້ (ເປ�
 msgid "Search multipliers and contacts"
 msgstr "ຄົ້ນຫາຕົວຄູນແລະລາຍຊື່ຜູ້ຕິດຕໍ່"
 
-#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:232
+#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:226
 #: dt-users/users.php:141
 msgid "Display Name"
 msgstr "ສະແດງຊື່"
 
-#: dt-users/template-new-user.php:115 template-settings.php:153
-#: template-settings.php:682
+#: dt-users/template-new-user.php:115 template-settings.php:154
+#: template-settings.php:676
 msgid "Nickname (Display Name)"
 msgstr "ຊື່ຫຼິ້ນ (ຊື່ສະແດງ)"
 
 #: dt-users/template-new-user.php:119 dt-users/template-new-user.php:120
-#: dt-users/users.php:135 template-settings.php:140 template-settings.php:647
+#: dt-users/users.php:135 template-settings.php:141 template-settings.php:641
 msgid "Username"
 msgstr "ຊື່ຜູ້ໃຊ້"
 
@@ -5368,7 +5335,7 @@ msgstr "ຊື່ຜູ້ໃຊ້"
 msgid "Role"
 msgstr "ບົດບາດ"
 
-#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:293
+#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:287
 msgid "Click here to see roles documentation"
 msgstr "ກົດບ່ອນນີ້ເພື່ອເບິ່ງເອກະສານບົດບາດ"
 
@@ -5377,7 +5344,7 @@ msgid "Create User"
 msgstr "ສ້າງຜູ້ໃຊ້"
 
 #: dt-users/template-new-user.php:178 dt-users/template-new-user.php:180
-#: template-settings.php:671
+#: template-settings.php:665
 msgid "First Name"
 msgstr "ຊື່​ແທ້"
 
@@ -5388,14 +5355,14 @@ msgid "optional"
 msgstr "ທາງເລືອກ"
 
 #: dt-users/template-new-user.php:182 dt-users/template-new-user.php:183
-#: template-settings.php:677
+#: template-settings.php:671
 msgid "Last Name"
 msgstr "ນາມ​ສະ​ກຸນ"
 
 #: dt-users/template-new-user.php:218 dt-users/template-new-user.php:222
-#: dt-users/template-user-management.php:269
-#: dt-users/template-user-management.php:276 template-settings.php:236
-#: template-settings.php:706
+#: dt-users/template-user-management.php:263
+#: dt-users/template-user-management.php:270 template-settings.php:237
+#: template-settings.php:700
 msgid "Biography"
 msgstr "ຊີວະປະຫວັດ"
 
@@ -5453,148 +5420,138 @@ msgstr "ກິດຈະ ກຳ ປະ ຈຳ ວັນ"
 msgid "Workload Status"
 msgstr "ສະຖານະພາບຂອງ Workload"
 
-#: dt-users/template-user-management.php:124
-#: dt-users/template-user-management.php:127
+#: dt-users/template-user-management.php:126
+#: dt-users/template-user-management.php:133
 msgid "Location Responsibility"
 msgstr "ໜ້າ ທີ່ຮັບຜິດຊອບສະຖານທີ່"
 
-#: dt-users/template-user-management.php:136 template-settings.php:355
-msgid "Search Locations"
-msgstr "ສະຖານທີ່ຄົ້ນຫາ"
-
-#: dt-users/template-user-management.php:147 template-settings.php:368
+#: dt-users/template-user-management.php:141 template-settings.php:362
 msgid "Languages you are comfortable speaking"
 msgstr "ພາສາທີ່ທ່ານເວົ້າສະບາຍ"
 
-#: dt-users/template-user-management.php:163 template-settings.php:59
-#: template-settings.php:431
+#: dt-users/template-user-management.php:157 template-settings.php:60
+#: template-settings.php:425
 msgid "Availability"
 msgstr "ຄວາມພ້ອມ"
 
-#: dt-users/template-user-management.php:164
+#: dt-users/template-user-management.php:158
 msgid ""
 "Set the dates you will be unavailable so the Dispatcher will know your "
 "availability to receive new contacts"
 msgstr "ກຳ ນົດວັນເວລາທີ່ທ່ານຈະໃຊ້ບໍ່ໄດ້ເພື່ອໃຫ້ Dispatcher ຮູ້ວ່າທ່ານມີທີ່ຈະໄດ້ຮັບລາຍຊື່ຜູ້ຕິດຕໍ່ ໃໝ່"
 
-#: dt-users/template-user-management.php:166
+#: dt-users/template-user-management.php:160
 msgid "Schedule Unavailability"
 msgstr "ຕາຕະລາງບໍ່ສາມາດໃຊ້ງານໄດ້"
 
-#: dt-users/template-user-management.php:175
+#: dt-users/template-user-management.php:169
 msgid "Travel or Away Dates"
 msgstr "ການເດີນທາງຫລືວັນທີທີ່ຫ່າງໄກ"
 
-#: dt-users/template-user-management.php:191
-#, fuzzy
-#| msgid "Users"
+#: dt-users/template-user-management.php:185
 msgid "User Apps"
-msgstr "ຜູ້ໃຊ້"
+msgstr "ແອັບຜູ້ໃຊ້"
 
-#: dt-users/template-user-management.php:197
-#, fuzzy
-#| msgid "App Activation"
+#: dt-users/template-user-management.php:191
 msgid "Activation"
-msgstr "ການເປີດໃຊ້ App"
+msgstr "ການເປີດໃຊ້"
 
-#: dt-users/template-user-management.php:212
+#: dt-users/template-user-management.php:206
 msgid "User Profile"
 msgstr "ໂປຣໄຟລ໌ຜູ້ໃຊ້"
 
-#: dt-users/template-user-management.php:215
+#: dt-users/template-user-management.php:209
 #: dt-users/user-hooks-and-config.php:408
 msgid "View contact record"
 msgstr "ເບິ່ງບັນທຶກການຕິດຕໍ່"
 
-#: dt-users/template-user-management.php:220
+#: dt-users/template-user-management.php:214
 msgid "Edit User"
 msgstr "ແກ້ໄຂຜູ້ໃຊ້"
 
-#: dt-users/template-user-management.php:225
-#, fuzzy
-#| msgid "Password"
+#: dt-users/template-user-management.php:219
 msgid "Email Password Reset"
-msgstr "ລະຫັດຜ່ານ"
+msgstr "ອີເມວຕັ້ງລະຫັດຜ່ານໃໝ່"
 
-#: dt-users/template-user-management.php:288 dt-users/users.php:147
-#: template-settings.php:159
+#: dt-users/template-user-management.php:282 dt-users/users.php:147
+#: template-settings.php:160
 msgid "Roles"
 msgstr "ພາລະບົດບາດ"
 
-#: dt-users/template-user-management.php:320
+#: dt-users/template-user-management.php:314
 msgid "Save Roles"
 msgstr "ປະຫຍັດພາລະບົດບາດ"
 
-#: dt-users/template-user-management.php:328
+#: dt-users/template-user-management.php:322
 msgid "Access by Source"
 msgstr "ເຂົ້າເຖິງໂດຍແຫຼ່ງຂໍ້ມູນ"
 
-#: dt-users/template-user-management.php:334
+#: dt-users/template-user-management.php:328
 #: dt-users/user-hooks-and-config.php:623
 msgid "All Sources - gives access to all contacts"
 msgstr "ແຫຼ່ງຂໍ້ມູນທັງ ໝົດ - ໃຫ້ການເຂົ້າເຖິງຜູ້ຕິດຕໍ່ທັງ ໝົດ"
 
-#: dt-users/template-user-management.php:340
+#: dt-users/template-user-management.php:334
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
 "below"
 msgstr "Custom - ເຂົ້າເຖິງລາຍຊື່ຜູ້ຕິດຕໍ່ຂອງຕົວເອງແລະລາຍຊື່ຜູ້ຕິດຕໍ່ທັງ ໝົດ ຂອງແຫລ່ງທີ່ເລືອກໄວ້ຂ້າງລຸ່ມນີ້"
 
-#: dt-users/template-user-management.php:346
+#: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:637
 msgid "No Sources - only own contacts"
 msgstr "ບໍ່ມີແຫລ່ງຂໍ້ມູນ - ຕິດຕໍ່ພົວພັນກັບຕົວເອງເທົ່ານັ້ນ"
 
-#: dt-users/template-user-management.php:352
+#: dt-users/template-user-management.php:346
 msgid "Sources List"
 msgstr "ລາຍຊື່ແຫຼ່ງຂໍ້ມູນ"
 
-#: dt-users/template-user-management.php:364
+#: dt-users/template-user-management.php:358
 msgid "Save Allowed Sources"
 msgstr "ປະຢັດແຫຼ່ງທີ່ອະນຸຍາດ"
 
-#: dt-users/template-user-management.php:394
+#: dt-users/template-user-management.php:388
 msgid "Updates Needed"
 msgstr "ຕ້ອງມີການປັບປຸງ"
 
-#: dt-users/template-user-management.php:400
+#: dt-users/template-user-management.php:394
 msgid "Pending"
 msgstr "ທີ່ຍັງຄ້າງ"
 
-#: dt-users/template-user-management.php:407
+#: dt-users/template-user-management.php:401
 msgid "Unread Notifications"
 msgstr "ການແຈ້ງເຕືອນທີ່ຍັງບໍ່ໄດ້ອ່ານ"
 
-#: dt-users/template-user-management.php:414
+#: dt-users/template-user-management.php:408
 msgid "Assignments"
 msgstr "ວຽກມອບ ໝາຍ"
 
-#: dt-users/template-user-management.php:428
+#: dt-users/template-user-management.php:422
 msgid "This Year"
 msgstr "ປີ​ນີ້"
 
-#: dt-users/template-user-management.php:446
+#: dt-users/template-user-management.php:440
 msgid "Pace"
 msgstr "ຈັງຫວະ"
 
-#: dt-users/template-user-management.php:447
+#: dt-users/template-user-management.php:441
 msgid "Assigned and not accepted"
 msgstr "ມອບ ໝາຍ ແລະບໍ່ຍອມຮັບ"
 
-#: dt-users/template-user-management.php:449
+#: dt-users/template-user-management.php:443
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr "ເວລາຈາກການມອບ ໝາຍ ໃຫ້ຕິດຕໍ່ໄດ້ຮັບການຍອມຮັບ ສຳ ລັບ 10 ລາຍຊື່ຜູ້ຕິດຕໍ່ສຸດທ້າຍ"
 
-#: dt-users/template-user-management.php:451
+#: dt-users/template-user-management.php:445
 msgid "Accepted with no contact attempt"
 msgstr "ຍອມຮັບໂດຍບໍ່ມີຄວາມພະຍາຍາມຕິດຕໍ່ໃດໆ"
 
-#: dt-users/template-user-management.php:453
+#: dt-users/template-user-management.php:447
 msgid "Oldest 10 update needed"
 msgstr "ຕ້ອງມີການອັບເດດເກົ່າ 10 ອັນ ໃໝ່"
 
-#: dt-users/template-user-management.php:455
+#: dt-users/template-user-management.php:449
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "ເວລາຈາກການມອບ ໝາຍ ໃຫ້ພະຍາຍາມຕິດຕໍ່ ສຳ ລັບ 10 ລາຍຊື່ຜູ້ຕິດຕໍ່ສຸດທ້າຍ"
 
@@ -5630,8 +5587,8 @@ msgstr "ສະບາຍດີ %s,"
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
 msgctxt ""
-"You've been invited to join Awesome Site at https://awesome_site.disciple."
-"tools"
+"You've been invited to join Awesome Site at https://"
+"awesome_site.disciple.tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "ທ່ານໄດ້ຮັບເຊີນໃຫ້ເຂົ້າຮ່ວມ %1$s ຢູ່ %2$s"
 
@@ -5660,16 +5617,12 @@ msgid "User Language"
 msgstr "ພາສາຜູ້ໃຊ້"
 
 #: dt-users/user-initial-setup.php:44
-#, fuzzy
-#| msgid "Invite User"
 msgid "Initial User Setup!"
-msgstr "ເຊີນຜູ້ໃຊ້"
+msgstr "ການຕັ້ງຄ່າຜູ້ໃຊ້ເບື້ອງຕົ້ນ!"
 
 #: dt-users/user-initial-setup.php:52
-#, fuzzy
-#| msgid "User Language"
 msgid "Default Language"
-msgstr "ພາສາຜູ້ໃຊ້"
+msgstr "ພາສາເລີ່ມຕົ້ນ"
 
 #: dt-users/user-management.php:136
 msgid "Add User"
@@ -5725,18 +5678,16 @@ msgstr "ລາຍຊື່ຜູ້ຕິດຕໍ່ນີ້ແມ່ນຜູ
 msgid "View User"
 msgstr "ເບິ່ງຜູ້ໃຊ້"
 
-#: dt-users/user-management.php:229
+#: dt-users/user-management.php:233
 msgid "Go"
-msgstr ""
+msgstr "ໄປ"
 
-#: dt-users/user-management.php:232
-#, fuzzy, php-format
-#| msgctxt "Showing 30 items matching bob"
-#| msgid "Showing %1$s items matching %2$s"
+#: dt-users/user-management.php:236
+#, php-format
 msgid "Showing %1$s of %2$s"
-msgstr "ສະແດງລາຍການ %1$s ກົງກັບ %2$s"
+msgstr "ກຳລັງສະແດງ %1$s ຈາກ %2$s"
 
-#: dt-users/user-management.php:353
+#: dt-users/user-management.php:357
 #, php-format
 msgid "%s days since last update"
 msgstr "%s ມື້ນັບຕັ້ງແຕ່ການປັບປຸງຄັ້ງສຸດທ້າຍ"
@@ -5769,11 +5720,11 @@ msgstr "ການປະຕິເສດການມອບ ໝາຍ ໃນ%s"
 
 #: dt-users/users.php:124
 msgid "ID"
-msgstr ""
+msgstr "ລະຫັດ"
 
 #: dt-users/users.php:154
 msgid "Locale"
-msgstr ""
+msgstr "ທ້ອງຖິ່ນ"
 
 #: dt-users/users.php:178
 msgid "Away"
@@ -5810,7 +5761,7 @@ msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "ຕົວກອງທີ່ ກຳ ຫນົດເອງ"
 
-#: dt-users/users.php:1351 template-settings.php:169 template-settings.php:653
+#: dt-users/users.php:1351 template-settings.php:170 template-settings.php:647
 msgid "System Email"
 msgstr "ລະບົບອີເມວ"
 
@@ -5867,7 +5818,7 @@ msgstr "ແກ້ໄຂທຸກລາຍລະອຽດ"
 
 #: single-template.php:386
 msgid "Show Hidden Tiles"
-msgstr ""
+msgstr "ສະແດງກະເບື້ອງທີ່ເຊື່ອງໄວ້"
 
 #: single-template.php:409
 #, php-format
@@ -5875,16 +5826,16 @@ msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "ທ່ານແນ່ໃຈບໍ່ວ່າທ່ານຕ້ອງການລຶບ%s?"
 
-#: template-merge-post-details.php:99
+#: template-merge-post-details.php:102
 msgid "Open Modal"
 msgstr "ເປີດ Modal"
 
-#: template-merge-post-details.php:121
+#: template-merge-post-details.php:124
 #, php-format
 msgid "Merge Duplicate %s"
 msgstr "ຮວມອັນຊ້ຳກັນ %s"
 
-#: template-merge-post-details.php:123
+#: template-merge-post-details.php:126
 msgid ""
 "When you merge, the primary record is updated with the values you choose, "
 "and relationships to other items are shifted to the primary record; which "
@@ -5893,23 +5844,23 @@ msgstr ""
 "ເມື່ອທ່ານລວມເຂົ້າກັນ, ບັນທຶກຫຼັກຈະຖືກປັບປຸງດ້ວຍຄ່າທີ່ທ່ານເລືອກ, "
 "ແລະຄວາມສຳພັນກັບລາຍການອື່ນໆຈະຖືກປ່ຽນເປັນບັນທຶກຫຼັກ; ເຊິ່ງສາມາດປ່ຽນໄດ້ຂ້າງລຸ່ມນີ້."
 
-#: template-merge-post-details.php:126
+#: template-merge-post-details.php:129
 msgid "Copy comments to updated primary record"
 msgstr "ສຳເນົາຄຳເຫັນໃສ່ບັນທຶກຫຼັກທີ່ອັບເດດແລ້ວ"
 
-#: template-merge-post-details.php:142
+#: template-merge-post-details.php:145
 msgid "Archiving"
 msgstr "ການຈັດເກັບ"
 
-#: template-merge-post-details.php:150
+#: template-merge-post-details.php:153
 msgid "Use as Primary"
 msgstr "ໃຊ້ເປັນປະຖົມ"
 
-#: template-merge-post-details.php:163
+#: template-merge-post-details.php:166
 msgid "Primary"
 msgstr "ປະຖົມ"
 
-#: template-merge-post-details.php:177
+#: template-merge-post-details.php:180
 msgid "Updated"
 msgstr "ອັບເດດ"
 
@@ -5951,63 +5902,55 @@ msgstr "ກ່າວເຖິງ"
 msgid "Load more notifications"
 msgstr "ໂຫລດການແຈ້ງເຕືອນເພີ່ມເຕີມ"
 
-#: template-settings.php:56
-msgid "Apps"
-msgstr "ແອັບ."
-
-#: template-settings.php:58 template-settings.php:332
+#: template-settings.php:59 template-settings.php:333
 msgid "Multiplier Preferences"
 msgstr "ຄວາມຕ້ອງການແບບທະວີຄູນ"
 
-#: template-settings.php:67
+#: template-settings.php:68
 msgid "Invite User"
 msgstr "ເຊີນຜູ້ໃຊ້"
 
-#: template-settings.php:77
+#: template-settings.php:78
 msgid "View Contact Record"
 msgstr "ເບິ່ງບັນທຶກການຕິດຕໍ່"
 
-#: template-settings.php:201
+#: template-settings.php:202
 msgid "Social"
 msgstr "ສັງຄົມ"
 
-#: template-settings.php:232
+#: template-settings.php:233
 msgid "English"
 msgstr "ພາສາອັງກິດ"
 
-#: template-settings.php:257
-msgid "Your Apps"
-msgstr "ແອັບ Apps ຂອງທ່ານ"
-
-#: template-settings.php:262
+#: template-settings.php:263
 msgid "App Name"
 msgstr "ຊື່ App"
 
-#: template-settings.php:263
+#: template-settings.php:264
 msgid "App Description"
 msgstr "ລາຍລະອຽດຂອງ App"
 
-#: template-settings.php:264
+#: template-settings.php:265
 msgid "App Link"
 msgstr "App Link"
 
-#: template-settings.php:275
+#: template-settings.php:276
 msgid "No apps installed"
 msgstr "ບໍ່ມີການຕິດຕັ້ງແອັບ apps ໃດໆ"
 
-#: template-settings.php:340 template-settings.php:345
+#: template-settings.php:343 template-settings.php:351
 msgid "Locations you are willing to be responsible for"
 msgstr "ສະຖານທີ່ທີ່ທ່ານເຕັມໃຈທີ່ຈະຮັບຜິດຊອບ"
 
-#: template-settings.php:389
+#: template-settings.php:383
 msgid "People Groups you wish to serve"
 msgstr "ກຸ່ມຄົນທີ່ທ່ານຕ້ອງການຢາກຮັບໃຊ້"
 
-#: template-settings.php:412
+#: template-settings.php:406
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "ຄວາມພ້ອມທີ່ຈະໄດ້ຮັບການຕິດຕໍ່ຈາກ Dispatcher"
 
-#: template-settings.php:434
+#: template-settings.php:428
 msgid ""
 "Set the dates you will be traveling or unavailable so the Dispatcher will "
 "know your availability to receive new contacts"
@@ -6015,56 +5958,54 @@ msgstr ""
 "ກຳ ນົດວັນທີ່ທ່ານຈະເດີນທາງຫລືບໍ່ມີເລີຍເພື່ອວ່າ Dispatcher ຈະຮູ້ວ່າຄວາມພ້ອມຂອງທ່ານຈະໄດ້ຮັບລາຍຊື່ຜູ້ຕິດຕໍ່ "
 "ໃໝ່"
 
-#: template-settings.php:438
+#: template-settings.php:432
 msgid "Schedule Travel or Dates Unavailable"
 msgstr "ຈັດຕາຕະລາງການເດີນທາງຫຼືວັນທີທີ່ບໍ່ມີ"
 
-#: template-settings.php:455
+#: template-settings.php:449
 msgid "Add Unavailable dates"
 msgstr "ເພີ່ມວັນທີບໍ່ມີເລີຍ"
 
-#: template-settings.php:469
+#: template-settings.php:463
 msgid "No Travel Scheduled"
 msgstr "ບໍ່ມີການວາງແຜນການເດີນທາງ"
 
-#: template-settings.php:489
-#, fuzzy
-#| msgid "Contact Info Changed"
+#: template-settings.php:483
 msgid "Contact Info"
-msgstr "ຂໍ້ມູນການຕິດຕໍ່ປ່ຽນແປງ"
+msgstr "ຂໍ້ມູນຕິດຕໍ່"
 
-#: template-settings.php:493
+#: template-settings.php:487
 #, php-format
 msgctxt "Email will be sent to: [email]"
 msgid "Email notifications will be sent to: %s"
-msgstr ""
+msgstr "ການແຈ້ງເຕືອນອີເມວຈະຖືກສົ່ງໄປ: %s"
 
-#: template-settings.php:510
+#: template-settings.php:504
 msgid "Email preferences"
 msgstr "ການຕັ້ງຄ່າອີເມວ"
 
-#: template-settings.php:516
+#: template-settings.php:510
 msgid "Real time"
 msgstr "ເວ​ລາ​ຈິງ"
 
-#: template-settings.php:531
+#: template-settings.php:525
 msgid "Type of Notification"
 msgstr "ປະເພດແຈ້ງການ"
 
-#: template-settings.php:544
+#: template-settings.php:538
 msgid "required"
 msgstr "ຕ້ອງການ"
 
-#: template-settings.php:568
+#: template-settings.php:562
 msgid "Follow all contacts"
 msgstr "ຕິດຕາມຜູ້ຕິດຕໍ່ທັງ ໝົດ"
 
-#: template-settings.php:570
+#: template-settings.php:564
 msgid ""
 "You will receive a notification for any update that happens in the system."
 msgstr "ທ່ານຈະໄດ້ຮັບແຈ້ງການ ສຳ ລັບການປັບປຸງໃດໆທີ່ເກີດຂື້ນໃນລະບົບ."
 
-#: template-settings.php:630
+#: template-settings.php:624
 msgid ""
 "Disciple Tools System does not store images. For profile images we use "
 "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
@@ -6075,48 +6016,42 @@ msgstr ""
 "ທີ່ຖືກຮັບຮູ້ທົ່ວໂລກ). ຖ້າທ່ານມີຄວາມກັງວົນກ່ຽວກັບຄວາມປອດໄພ, ພວກເຮົາແນະ ນຳ ໃຫ້ບໍ່ໃຊ້ຮູບສ່ວນຕົວ, "
 "ແຕ່ແທນທີ່ຈະເລືອກຮູບກາຕູນ, ຮູບແຕ້ມທີ່ບໍ່ມີຕົວຕົນຫລືນາມແຝງເພື່ອເປັນຕົວແທນໃຫ້ທ່ານ."
 
-#: template-settings.php:631
+#: template-settings.php:625
 msgid "edit image on gravatar.com"
 msgstr "ແກ້ໄຂຮູບພາບໃນ gravatar.com"
 
-#: template-settings.php:637
-#, fuzzy
-#| msgid ""
-#| "Disciple Tools System does not store images. For profile images we use "
-#| "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
-#| "suggest not using a personal photo, but instead choose a cartoon, "
-#| "abstract, or alias photo to represent you."
+#: template-settings.php:631
 msgid ""
 "Disciple Tools System does not store images. All media assets will be placed "
 "within specified media connection storage service. If you have security "
 "concerns, we suggest not using a personal photo, but instead choose a "
 "cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"ລະບົບເຄື່ອງມື Disciple ບໍ່ເກັບຮູບພາບ. ສຳ ລັບຮູບພາບປະຫວັດສາດພວກເຮົາໃຊ້ Gravatar (Avatar "
-"ທີ່ຖືກຮັບຮູ້ທົ່ວໂລກ). ຖ້າທ່ານມີຄວາມກັງວົນກ່ຽວກັບຄວາມປອດໄພ, ພວກເຮົາແນະ ນຳ ໃຫ້ບໍ່ໃຊ້ຮູບສ່ວນຕົວ, "
-"ແຕ່ແທນທີ່ຈະເລືອກຮູບກາຕູນ, ຮູບແຕ້ມທີ່ບໍ່ມີຕົວຕົນຫລືນາມແຝງເພື່ອເປັນຕົວແທນໃຫ້ທ່ານ."
+"ລະບົບ Disciple Tools ບໍ່ເກັບຮູບພາບ. ທຸກສື່ຈະຖືກວາງໄວ້ໃນບໍລິການເກັບຮັກສາການເຊື່ອມຕໍ່ສື່ທີ່ລະບຸ. "
+"ຖ້າທ່ານມີຄວາມກັງວົນກ່ຽວກັບຄວາມປອດໄພ, ພວກເຮົາແນະນຳບໍ່ໃຊ້ຮູບສ່ວນຕົວ, ແຕ່ເລືອກຮູບກາຕູນ, "
+"ຮູບແຕ້ມບໍ່ຊັດເຈນ, ຫຼືຮູບນາມແຝງເພື່ອເປັນຕົວແທນທ່ານ."
 
-#: template-settings.php:638
+#: template-settings.php:632
 msgid "Upload new profile image"
-msgstr ""
+msgstr "ອັບໂຫຼດຮູບໂປຣໄຟລ໌ໃໝ່"
 
-#: template-settings.php:648 template-settings.php:649
+#: template-settings.php:642 template-settings.php:643
 msgid "Username cannot be changed"
 msgstr "ບໍ່ສາມາດປ່ຽນຊື່ຜູ້ໃຊ້ໄດ້"
 
-#: template-settings.php:654
+#: template-settings.php:648
 msgid "User email can be changed by site administrator."
 msgstr "ອີເມວຂອງຜູ້ໃຊ້ສາມາດປ່ຽນແປງໄດ້ໂດຍຜູ້ຄຸ້ມຄອງເວບໄຊທ໌."
 
-#: template-settings.php:662
+#: template-settings.php:656
 msgid "Use this email reset form to create a new password."
 msgstr "ໃຊ້ແບບຟອມການຕັ້ງຄ່າອີເມວນີ້ເພື່ອສ້າງລະຫັດລັບ ໃໝ່."
 
-#: template-settings.php:664
+#: template-settings.php:658
 msgid "go to password change form"
 msgstr "ໄປທີ່ແບບຟອມການປ່ຽນລະຫັດຜ່ານ"
 
-#: template-settings.php:728
+#: template-settings.php:722
 msgid "System Language"
 msgstr "ພາສາລະບົບ"
 
@@ -6141,254 +6076,3 @@ msgstr "ລາຍຊື່ຜູ້ຕິດຕໍ່ເຂົ້າເຖິງ
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "ພົບວ່າຊໍ້າກັນ:"
-
-#~ msgid "Reset password"
-#~ msgstr "ຕັ້ງລະຫັດຜ່ານ ໃໝ່"
-
-#, fuzzy
-#~| msgid "Post Type"
-#~ msgid "Post Types"
-#~ msgstr "ປະເພດ Post"
-
-#~ msgctxt "input field placeholder"
-#~ msgid "Search multipliers and contacts"
-#~ msgstr "ຄົ້ນຫາຕົວຄູນແລະລາຍຊື່ຜູ້ຕິດຕໍ່"
-
-#~ msgid "Add new tag \"%s\""
-#~ msgstr "ເພີ່ມແທັກ ໃໝ່ \"%s\""
-
-#~ msgid "Tag \"%s\" is already being used"
-#~ msgstr "ແທັກ \"%s\" ກຳ ລັງຖືກ ນຳ ໃຊ້ຢູ່ແລ້ວ"
-
-#~ msgid "Add Bulk Records?"
-#~ msgstr "ເພີ່ມບັນທຶກເປັນຊຸດບໍ?"
-
-#~ msgid "Twitter"
-#~ msgstr "Twitter"
-
-#~ msgid "Baptism Tree"
-#~ msgstr "ຕົ້ນໄມ້ບັບຕິສະມາ"
-
-#~ msgid "Baptism Generation Tree"
-#~ msgstr "ຕົ້ນໄມ້ການບັບຕິສະມາ"
-
-#~ msgid "Coaching Tree"
-#~ msgstr "ຕົ້ນໄມ້ທີ່ເປັນຄູຝຶກສອນ"
-
-#~ msgid "Coaching Generation Tree"
-#~ msgstr "ຕົ້ນໄມ້ການເປັນຄູຝຶກສອນ"
-
-#~ msgid "Milestones Map"
-#~ msgstr "ແຜນທີ່ Milestones"
-
-#~ msgid "Milestones"
-#~ msgstr "Milestones"
-
-#~ msgid "Milestones Chart"
-#~ msgstr "ຕາຕະລາງ Milestones"
-
-#~ msgid "Groups Tree"
-#~ msgstr "ເປັນໄມ້ຢືນຕົ້ນກຸ່ມ"
-
-#~ msgid "Group Generation Tree"
-#~ msgstr "ຕົ້ນໄມ້ການຜະລິດກຸ່ມ"
-
-#~ msgid "My Baptism Tree"
-#~ msgstr "ຕົ້ນໄມ້ບັບຕິສະມາຂອງຂ້ອຍ"
-
-#~ msgid "My Baptism Generation Tree"
-#~ msgstr "ຕົ້ນໄມ້ແຫ່ງການບັບຕິສະມາຂອງຂ້ອຍ"
-
-#~ msgid "My Coaching Tree"
-#~ msgstr "ຕົ້ນໄມ້ເປັນຄູຝຶກຂອງຂ້ອຍ"
-
-#~ msgid "My Coaching Generation Tree"
-#~ msgstr "ຕົ້ນໄມ້ການສ້າງຄູຝຶກຂອງຂ້ອຍ"
-
-#~ msgid "Disciple"
-#~ msgstr "ສານຸສິດ"
-
-#~ msgid "My Groups Tree"
-#~ msgstr "ເປັນໄມ້ຢືນຕົ້ນກຸ່ມຂອງຂ້ອຍ"
-
-#~ msgid "My Group Generation Tree"
-#~ msgstr "ຕົ້ນໄມ້ການຜະລິດກຸ່ມຂອງຂ້ອຍ"
-
-#~ msgid "Contacts Maps"
-#~ msgstr "ແຜນທີ່ຕິດຕໍ່"
-
-#~ msgid "Groups Maps"
-#~ msgstr "ແຜນທີ່ກຸ່ມ"
-
-#, fuzzy
-#~| msgid "Add Records"
-#~ msgid "Records Map"
-#~ msgstr "ເພີ່ມບັນທຶກ"
-
-#, fuzzy
-#~| msgid "Metrics"
-#~ msgid "Dynamic Metrics"
-#~ msgstr "ວັດແທກ"
-
-#, fuzzy
-#~| msgid "Daily Activity"
-#~ msgid "Field Activity"
-#~ msgstr "ກິດຈະ ກຳ ປະ ຈຳ ວັນ"
-
-#, fuzzy
-#~| msgid "All cumulative totals"
-#~ msgid "Field Cumulative Values"
-#~ msgstr "ການສະສົມທັງ ໝົດ"
-
-#~ msgid "No Answer"
-#~ msgstr "ບໍ່​ມີ​ຄໍາ​ຕອບ"
-
-#, fuzzy
-#~| msgid "No"
-#~ msgid "No."
-#~ msgstr "ບໍ່"
-
-#, fuzzy
-#~| msgid "Generation"
-#~ msgid "Generation Map"
-#~ msgstr "ລຸ້ນ"
-
-#, fuzzy
-#~| msgid "List"
-#~ msgid "Map List Filter"
-#~ msgstr "ລາຍຊື່"
-
-#~ msgctxt "Number of emails sent. i.e. 20 sent!"
-#~ msgid "sent"
-#~ msgstr "ສົ່ງ"
-
-#~ msgid "Add optional greeting"
-#~ msgstr "ເພີ່ມການທັກທາຍທາງເລືອກ"
-
-#~ msgid "Add short greeting to be added above the app link."
-#~ msgstr "ຕື່ມການທັກທາຍສັ້ນທີ່ຈະເພີ່ມຢູ່ຂ້າງເທິງການເຊື່ອມຕໍ່ app."
-
-#~ msgctxt "Assigned to: User1"
-#~ msgid "Assigned to: %s"
-#~ msgstr "ມອບ ໝາຍ ໃຫ້:%s"
-
-#, fuzzy
-#~| msgid "Generation"
-#~ msgid "Generate"
-#~ msgstr "ລຸ້ນ"
-
-#, fuzzy
-#~| msgid "show all"
-#~ msgid "Show All"
-#~ msgstr "ສະແດງທຸກຢ່າງ"
-
-#, fuzzy
-#~| msgid "Lost your password"
-#~ msgid "Lost your password?"
-#~ msgstr "ລືມລະຫັດຜ່ານຂອງທ່ານ"
-
-#~ msgid "Number added"
-#~ msgstr "ເພີ່ມ ຈຳ ນວນ"
-
-#~ msgctxt "either rtl or ltr"
-#~ msgid "ltr"
-#~ msgstr "ltr"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Default and Custom Filters Tile"
-#~ msgstr "ການກັ່ນຕອງເບື້ອງຕົ້ນແລະທາງກະເບື້ອງ"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Use these filters to focus in on the contacts or groups you are "
-#~ "responsible for. If the default filters do not fit your needs you can "
-#~ "create your own custom filter."
-#~ msgstr ""
-#~ "ໃຊ້ຕົວກອງເຫຼົ່ານີ້ເພື່ອສຸມໃສ່ຜູ້ຕິດຕໍ່ຫຼືກຸ່ມທີ່ທ່ານຮັບຜິດຊອບ. ຖ້າຕົວກອງແບບເລີ່ມຕົ້ນບໍ່ ເໝາະ "
-#~ "ສົມກັບຄວາມຕ້ອງການຂອງທ່ານທ່ານສາມາດສ້າງຕົວກອງແບບ ກຳ ນົດເອງ."
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Contacts List Tile"
-#~ msgstr "ລາຍຊື່ຜູ້ຕິດຕໍ່ກະເບື້ອງ"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Your list of contacts will show up here. Whenever you filter contacts, "
-#~ "the list will also be changed in this section too. You can sort your "
-#~ "contacts by newest, oldest, most recently modified, and least recently "
-#~ "modified. If you have a long list of contacts they will not all load at "
-#~ "once, so clicking the 'Load more contacts' button at the bottom of the "
-#~ "list will allow you to load more."
-#~ msgstr ""
-#~ "ລາຍຊື່ຜູ້ຕິດຕໍ່ຂອງທ່ານຈະສະແດງຢູ່ບ່ອນນີ້. ທຸກຄັ້ງທີ່ທ່ານກັ່ນຕອງລາຍຊື່ຜູ້ຕິດຕໍ່, "
-#~ "ລາຍຊື່ກໍ່ຈະຖືກປ່ຽນແປງໃນສ່ວນນີ້ເຊັ່ນກັນ. ທ່ານສາມາດຈັດຮຽງລາຍຊື່ຜູ້ຕິດຕໍ່ຂອງທ່ານໂດຍແບບເກົ່າ, "
-#~ "ເກົ່າແກ່ທີ່ສຸດ, ຖືກແກ້ໄຂ ໃໝ່ ຫຼ້າສຸດແລະມີການດັດແກ້ຫຼ້າສຸດ. "
-#~ "ຖ້າທ່ານມີລາຍຊື່ຜູ້ຕິດຕໍ່ທີ່ຍາວໆພວກເຂົາຈະບໍ່ໂຫລດທັງ ໝົດ ໃນເວລາດຽວກັນ, ສະນັ້ນການກົດປຸ່ມ "
-#~ "'ໂຫຼດຜູ້ຕິດຕໍ່ຫຼາຍຂື້ນ' ຢູ່ທາງລຸ່ມຂອງລາຍຊື່ຈະຊ່ວຍໃຫ້ທ່ານສາມາດໂຫລດໄດ້ຫຼາຍຂື້ນ."
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Groups List Tile"
-#~ msgstr "ລາຍຊື່ກຸ່ມ"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Your list of groups will show up here. Whenever you filter groups, the "
-#~ "list will also be changed in this section too. You can sort your groups "
-#~ "by newest, oldest, most recently modified, and least recently modified. "
-#~ "If you have a long list of groups they will not all load at once, so "
-#~ "clicking the 'Load more groups' button at the bottom of the list will "
-#~ "allow you to load more."
-#~ msgstr ""
-#~ "ລາຍຊື່ກຸ່ມຂອງທ່ານຈະສະແດງຢູ່ນີ້. ທຸກຄັ້ງທີ່ທ່ານກັ່ນຕອງກຸ່ມ, ລາຍຊື່ກໍ່ຈະຖືກປ່ຽນແປງໃນສ່ວນນີ້ເຊັ່ນກັນ. "
-#~ "ທ່ານສາມາດຈັດກຸ່ມຂອງທ່ານໂດຍແບບເກົ່າ, ເກົ່າແກ່ທີ່ສຸດ, ທີ່ຖືກດັດແກ້ຫຼ້າສຸດແລະ ໜ້ອຍ "
-#~ "ທີ່ສຸດແມ່ນມີການດັດແກ້ຫຼ້າສຸດ. ຖ້າທ່ານມີບັນຊີລາຍຊື່ຍາວຂອງກຸ່ມພວກເຂົາຈະບໍ່ສາມາດໂຫລດໄດ້ທັງ ໝົດ "
-#~ "ໃນເວລາດຽວກັນ, ສະນັ້ນການກົດປຸ່ມ 'ໂຫລດກຸ່ມຫຼາຍກວ່າ' "
-#~ "ຢູ່ທາງລຸ່ມຂອງບັນຊີຈະຊ່ວຍໃຫ້ທ່ານສາມາດໂຫລດໄດ້ຫຼາຍ."
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Closed Contacts Switch"
-#~ msgstr "ຕິດຕໍ່ພົວພັນປິດ"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Use this toggle switch to either show or not show closed contacts in the "
-#~ "list."
-#~ msgstr "ໃຊ້ສະຫຼັບຫຼັບນີ້ເພື່ອສະແດງຫລືບໍ່ສະແດງລາຍຊື່ຜູ້ຕິດຕໍ່ທີ່ປິດໃນບັນຊີ."
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Inactive Groups Switch"
-#~ msgstr "ກຸ່ມທີ່ບໍ່ມີປະໂຫຍດປ່ຽນ"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Use this toggle switch to either show or not show inactive groups in the "
-#~ "list."
-#~ msgstr "ໃຊ້ສະຫຼັບຫຼັບນີ້ເພື່ອສະແດງຫລືບໍ່ສະແດງກຸ່ມທີ່ບໍ່ມີປະໂຫຍດໃນບັນຊີ."
-
-#~ msgid "Accept Needed"
-#~ msgstr "ຍອມຮັບເອົາຄວາມ ຈຳ ເປັນ"
-
-#~ msgid "Last Activity"
-#~ msgstr "ກິດຈະ ກຳ ສຸດທ້າຍ"
-
-#~ msgid "No activity"
-#~ msgstr "ບໍ່ມີກິດຈະ ກຳ"
-
-#~ msgid "Comment"
-#~ msgstr "ຄຳ ເຫັນ"
-
-#~ msgid "Select All"
-#~ msgstr "ເລືອກ​ທັງ​ຫມົດ"
-
-#~ msgctxt "My records"
-#~ msgid "My %s"
-#~ msgstr "%s ຂອງຂ້ອຍ"
-
-#~ msgid "Sub-assigned"
-#~ msgstr "ມອບ ໝາຍ ຍ່ອຍ"
-
-#~ msgid "User Role"
-#~ msgstr "ພາລະບົດບາດຂອງຜູ້ໃຊ້"
-
-#~ msgid "Update %s"
-#~ msgstr "ອັບເດດ %s"

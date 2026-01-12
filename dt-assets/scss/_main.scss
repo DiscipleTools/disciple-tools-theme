@@ -391,6 +391,36 @@ html[dir="rtl"] #top-bar-menu {
     top: 0;
     margin-left:10px;
 }
+
+// Release notification icon in navbar
+.release-notification-icon-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+
+    .release-notification-icon {
+        color: white;
+        font-size: 28px;
+        line-height: 1;
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 1px;
+            right: -4px;
+            width: 10px;
+            height: 10px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+        }
+    }
+
+    &:hover .release-notification-icon {
+        color: #f0f0f0;
+    }
+}
 .top-bar .is-submenu-item {
     background-color: #3f729b;
     text-align: left;

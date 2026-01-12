@@ -135,6 +135,7 @@ class DT_Components
         ?>
         <dt-location <?php echo wp_kses_post( $shared_attributes ) ?>
             value='<?php echo esc_attr( json_encode( $value ) ) ?>'
+            placeholder="<?php echo esc_attr( __( 'Search Locations', 'disciple_tools' ) ) ?>"
             filters='[{"id": "focus", "label": "Region of Focus"},
             {"id": "all", "label": "All Locations"}]'>
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>

@@ -103,7 +103,7 @@ class Disciple_Tools
          * Prepare variables
          */
         $this->token = 'disciple_tools';
-        $this->version = '1.76.3';
+        $this->version = '1.77.2';
 
         $this->theme_url = get_template_directory_uri() . '/';
         $this->theme_path = get_template_directory() . '/';

@@ -62,10 +62,13 @@ function merge_post_details_scripts( $args ) {
     $dependencies = [ 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery' ];
     if ( DT_Mapbox_API::get_key() ) {
         DT_Mapbox_API::load_mapbox_header_scripts();
-        DT_Mapbox_API::load_mapbox_search_widget();
         $dependencies[] = 'mapbox-cookie';
-        $dependencies[] = 'mapbox-search-widget';
         $dependencies[] = 'mapbox-gl';
+
+        // load Google Geocoder if key is present.
+        if ( Disciple_Tools_Google_Geocode_API::get_key() ){
+            Disciple_Tools_Google_Geocode_API::load_google_geocoding_scripts();
+        }
     }
 
     dt_theme_enqueue_script( 'merge-post-details', 'dt-assets/js/merge-post-details.js', $dependencies, true );
