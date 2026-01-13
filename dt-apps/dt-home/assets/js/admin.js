@@ -168,12 +168,49 @@ jQuery(document).ready(function ($) {
   }
 
   /**
+   * Get description text for app type
+   * @param {string} type - Either 'app' or 'link'
+   * @returns {string} Description text for the app type
+   */
+  function getAppTypeDescription(type) {
+    if (type === 'app') {
+      return 'App-type entries open in the same tab with integrated navigation. Use this for apps that are part of your Disciple Tools system and should maintain the app launcher interface.';
+    } else {
+      return 'Link-type entries open in a new browser tab. Use this for external websites or resources that should open separately from your Disciple Tools interface.';
+    }
+  }
+
+  /**
+   * Update app type description based on selected type
+   * @param {string} type - Either 'app' or 'link'
+   * @param {string} targetId - ID of the description element to update
+   */
+  function updateAppTypeDescription(type, targetId) {
+    const $description = $('#' + targetId);
+    if ($description.length > 0) {
+      $description.text(getAppTypeDescription(type));
+    }
+  }
+
+  /**
    * Set up event handlers
    */
   function setupEventHandlers() {
     // Handle icon input changes for live preview
     $(document).on('input', 'input[name="app_icon"]', function () {
       updateIconPreview($(this));
+    });
+
+    // Handle app type change in add form
+    $(document).on('change', '#app_type', function () {
+      const selectedType = $(this).val();
+      updateAppTypeDescription(selectedType, 'app-type-description-add');
+    });
+
+    // Handle app type change in edit modal (using delegated handler)
+    $(document).on('change', '#app-edit-type', function () {
+      const selectedType = $(this).val();
+      updateAppTypeDescription(selectedType, 'app-type-description-edit');
     });
 
     // Handle color reset button for add form
@@ -772,6 +809,9 @@ jQuery(document).ready(function ($) {
               <option value="link" ${appType === 'link' ? 'selected' : ''}>Link</option>
               <option value="app" ${appType === 'app' ? 'selected' : ''}>App</option>
             </select>
+            <p class="description" id="app-type-description-edit" style="margin-top: 5px;">
+              ${getAppTypeDescription(appType)}
+            </p>
           </td>
         </tr>
         <tr>

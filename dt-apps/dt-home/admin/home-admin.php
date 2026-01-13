@@ -1046,6 +1046,9 @@ class DT_Home_Admin {
                                 <option value="link"><?php esc_html_e( 'Link', 'disciple_tools' ) ?></option>
                                 <option value="app"><?php esc_html_e( 'App', 'disciple_tools' ) ?></option>
                             </select>
+                            <p class="description" id="app-type-description-add">
+                                <?php esc_html_e( 'Link-type entries open in a new browser tab. Use this for external websites or resources that should open separately from your Disciple Tools interface.', 'disciple_tools' ); ?>
+                            </p>
                         </td>
                     </tr>
                     <tr>
