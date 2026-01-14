@@ -1079,11 +1079,6 @@
   // Note: We include ALL available fields (including selected ones) in options
   // The component's built-in _filterOptions() will automatically filter out selected items from the dropdown
   function transformFieldsForMultiSelect(fields) {
-    // Fields that should remain hardcoded (not in selector)
-    const alreadyVisible = [
-      'comments', // Comments and Activity textarea
-    ];
-
     const allowedTypes = [
       'user_select',
       'multi_select',
@@ -1102,10 +1097,9 @@
       // Note: 'array' type is not supported as it's typically used for internal data structures
     ];
 
-    return fields
+    const transformedFields = fields
       .filter((field) => {
         return (
-          !alreadyVisible.includes(field.field_key) &&
           !field.hidden && // Exclude hidden fields
           !field.private && // Exclude private fields
           allowedTypes.includes(field.field_type)
@@ -1122,6 +1116,16 @@
         color: null,
         icon: field.icon || null,
       }));
+
+    // Add synthetic "Comments" option (not a real post field)
+    transformedFields.push({
+      id: 'comments',
+      label: window.wpApiShare?.translations?.comments || 'Comments',
+      color: null,
+      icon: null,
+    });
+
+    return transformedFields;
   }
 
   // Get all available fields
@@ -1231,28 +1235,50 @@
 
       // Add newly selected fields
       newlySelected.forEach((fieldKey) => {
-        const fieldData = window.post_type_fields[fieldKey];
-        if (
-          fieldData &&
-          !bulkEditSelectedFields.some((f) => f.fieldKey === fieldKey)
-        ) {
-          bulkEditSelectedFields.push({
-            fieldKey: fieldKey,
-            fieldType: fieldData.type,
-            fieldName: fieldData.name,
-            cleared: false,
-          });
+        // Handle special 'comments' field (not a real post field)
+        if (fieldKey === 'comments') {
+          if (!bulkEditSelectedFields.some((f) => f.fieldKey === fieldKey)) {
+            bulkEditSelectedFields.push({
+              fieldKey: fieldKey,
+              fieldType: 'comment',
+              fieldName:
+                window.wpApiShare?.translations?.comments || 'Comments',
+              cleared: false,
+            });
 
-          // Create icon element from field data
-          const iconElement = createFieldIconElement(fieldData);
+            // Render the comment field
+            renderBulkEditField(
+              fieldKey,
+              'comment',
+              window.wpApiShare?.translations?.comments || 'Comments',
+              $(), // No icon for comments
+            );
+          }
+        } else {
+          // Handle regular post fields
+          const fieldData = window.post_type_fields[fieldKey];
+          if (
+            fieldData &&
+            !bulkEditSelectedFields.some((f) => f.fieldKey === fieldKey)
+          ) {
+            bulkEditSelectedFields.push({
+              fieldKey: fieldKey,
+              fieldType: fieldData.type,
+              fieldName: fieldData.name,
+              cleared: false,
+            });
 
-          // Render the field
-          renderBulkEditField(
-            fieldKey,
-            fieldData.type,
-            fieldData.name,
-            iconElement,
-          );
+            // Create icon element from field data
+            const iconElement = createFieldIconElement(fieldData);
+
+            // Render the field
+            renderBulkEditField(
+              fieldKey,
+              fieldData.type,
+              fieldData.name,
+              iconElement,
+            );
+          }
         }
       });
 
@@ -1267,6 +1293,14 @@
       // Update hidden input and button state
       updateBulkEditSelectedFieldsInput();
       updateBulkEditButtonState();
+
+      // Ensure dropdown closes after selection
+      // Use requestAnimationFrame to ensure the component has processed the change
+      requestAnimationFrame(() => {
+        if (fieldSelector && fieldSelector.open) {
+          fieldSelector.open = false;
+        }
+      });
 
       // Note: No need to update options - component auto-filters selected items from dropdown
       // But we do need to ensure options include all fields so selected ones can be displayed as tags
@@ -1322,8 +1356,8 @@
     const inputContainer = wrapper.find('.bulk-edit-field-input-container');
     renderBulkEditFieldInput(fieldKey, fieldType, inputContainer);
 
-    // Show clear button for fields that support clearing
-    if (supportsFieldClearing(fieldType)) {
+    // Show clear button for fields that support clearing (exclude comment fields)
+    if (supportsFieldClearing(fieldType) && fieldType !== 'comment') {
       wrapper.find('.bulk-edit-clear-field-btn').show();
     }
 
@@ -1332,6 +1366,164 @@
   }
 
   function renderBulkEditFieldInput(fieldKey, fieldType, container) {
+    // Handle comment field specially
+    if (fieldType === 'comment') {
+      // Create unique IDs for this comment field instance
+      const commentInputId = `bulk_comment-input_${fieldKey}`;
+      const commentTypeSelectorId = `comment_type_selector_${fieldKey}`;
+
+      // Build comment HTML with proper spacing
+      let commentHtml = '<div class="auto cell">';
+      commentHtml +=
+        '<textarea class="mention" dir="auto" id="' +
+        commentInputId +
+        '" placeholder="' +
+        (window.wpApiShare?.translations?.write_comment_placeholder ||
+          'Write your comment or note here') +
+        '" style="margin-bottom: 15px;"></textarea>';
+
+      // Add Type selector with proper spacing
+      commentHtml += '<div class="grid-x" style="margin-top: 15px;">';
+      commentHtml +=
+        '<div class="section-subheader cell shrink">' +
+        (window.wpApiShare?.translations?.type || 'Type:') +
+        '</div>';
+      commentHtml +=
+        '<select id="' + commentTypeSelectorId + '" class="cell auto">';
+      // Default option
+      commentHtml +=
+        '<option value="comment">' +
+        (window.wpApiShare?.translations?.comments || 'Comments') +
+        '</option>';
+      commentHtml += '</select>';
+      commentHtml += '</div>';
+      commentHtml += '</div>';
+
+      container.html(commentHtml);
+
+      // Populate comment type selector options from hidden data element
+      // Use requestAnimationFrame to ensure DOM is ready
+      requestAnimationFrame(() => {
+        const newSelector = $(`#${commentTypeSelectorId}`);
+
+        if (newSelector.length === 0) {
+          return;
+        }
+
+        // Get comment sections from hidden JSON data element
+        const commentSectionsData = document.getElementById(
+          'bulk_edit_comment_sections_data',
+        );
+        if (commentSectionsData) {
+          try {
+            // Get text content from the script element
+            const jsonText =
+              commentSectionsData.textContent || commentSectionsData.innerText;
+            if (!jsonText || jsonText.trim() === '') {
+              // Fallback: ensure default 'comment' option exists
+              if (newSelector.find('option').length === 0) {
+                newSelector.append(
+                  '<option value="comment">' +
+                    (window.wpApiShare?.translations?.comments || 'Comments') +
+                    '</option>',
+                );
+                newSelector.val('comment');
+              }
+              return;
+            }
+
+            const commentSectionsRaw = JSON.parse(jsonText.trim());
+
+            // Convert to array if it's an object with numeric keys
+            let commentSections = [];
+            if (Array.isArray(commentSectionsRaw)) {
+              commentSections = commentSectionsRaw;
+            } else if (
+              typeof commentSectionsRaw === 'object' &&
+              commentSectionsRaw !== null
+            ) {
+              // Convert object to array
+              commentSections = Object.values(commentSectionsRaw);
+            }
+
+            if (commentSections.length > 0) {
+              // Clear default option and add all sections
+              newSelector.empty();
+
+              // Add all comment sections
+              commentSections.forEach((section) => {
+                if (section && section.key) {
+                  // Skip 'activity' as it's not a comment type
+                  if (section.key !== 'activity') {
+                    // Get label - check multiple possible properties
+                    const label = section.label || section.name || section.key;
+                    const enabled = section.enabled !== false; // Default to enabled if not specified
+
+                    // Only add if enabled (unless it's the default comment type)
+                    if (enabled || section.key === 'comment') {
+                      newSelector.append(
+                        `<option value="${section.key}">${label}</option>`,
+                      );
+                    }
+                  }
+                }
+              });
+
+              // Ensure at least one option exists (fallback to 'comment' if empty)
+              if (newSelector.find('option').length === 0) {
+                newSelector.append(
+                  '<option value="comment">' +
+                    (window.wpApiShare?.translations?.comments || 'Comments') +
+                    '</option>',
+                );
+              }
+
+              // Set default value to 'comment' if available, otherwise first option
+              if (newSelector.find('option[value="comment"]').length > 0) {
+                newSelector.val('comment');
+              } else if (newSelector.find('option').length > 0) {
+                newSelector.val(
+                  newSelector.find('option').first().attr('value'),
+                );
+              }
+            } else {
+              // Fallback: ensure default 'comment' option exists
+              if (newSelector.find('option').length === 0) {
+                newSelector.append(
+                  '<option value="comment">' +
+                    (window.wpApiShare?.translations?.comments || 'Comments') +
+                    '</option>',
+                );
+                newSelector.val('comment');
+              }
+            }
+          } catch (e) {
+            // Fallback: ensure default 'comment' option exists
+            if (newSelector.find('option').length === 0) {
+              newSelector.append(
+                '<option value="comment">' +
+                  (window.wpApiShare?.translations?.comments || 'Comments') +
+                  '</option>',
+              );
+              newSelector.val('comment');
+            }
+          }
+        } else {
+          // Fallback: ensure default 'comment' option exists
+          if (newSelector.find('option').length === 0) {
+            newSelector.append(
+              '<option value="comment">' +
+                (window.wpApiShare?.translations?.comments || 'Comments') +
+                '</option>',
+            );
+            newSelector.val('comment');
+          }
+        }
+      });
+
+      return;
+    }
+
     // Show loading state
     container.html(
       '<div class="bulk-edit-field-loading"><div class="loading-spinner active" style="margin: 10px auto;"></div><p style="text-align: center; color: #999; margin-top: 5px;">Loading field input...</p></div>',
@@ -1401,6 +1593,11 @@
   }
 
   function initializeBulkEditFieldHandlers(fieldKey, fieldType) {
+    // Get the field wrapper for this field
+    const fieldWrapper = $(
+      `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
+    );
+
     // Initialize typeaheads, date pickers, etc. based on field type
     // This will hook into existing field initialization code
     // Most field types should auto-initialize, but we may need to trigger specific handlers
@@ -1520,30 +1717,13 @@
             try {
               window.componentService.initialize();
             } catch (e) {
-              console.warn(
-                '[Bulk Edit] Error re-initializing ComponentService:',
-                e,
-              );
+              // ComponentService initialization error - component should still work
             }
           } else if (window.componentService.attachLoadEvents) {
             // Fallback: re-attach load events for the new component
             window.componentService.attachLoadEvents();
           }
-        } else {
-          console.warn(
-            '[Bulk Edit] ComponentService not available for connection field:',
-            fieldKey,
-          );
         }
-
-        if (!postType) {
-          console.warn(
-            '[Bulk Edit] Connection field missing postType attribute:',
-            fieldKey,
-          );
-        }
-      } else {
-        console.warn('[Bulk Edit] Connection element not found:', fieldKey);
       }
     } else if (fieldType === 'link') {
       // Link fields use legacy rendering with add/delete buttons
@@ -1554,7 +1734,6 @@
       );
 
       if (linkGroup.length === 0) {
-        console.warn('[Bulk Edit] Link field group not found:', fieldKey);
         return;
       }
 
@@ -1615,16 +1794,7 @@
             setTimeout(() => {
               dropdownContent.removeAttr('style');
             }, 100);
-          } else {
-            console.warn('[Bulk Edit] Link template input group not found');
           }
-        } else {
-          console.warn('[Bulk Edit] Link list or template not found:', {
-            linkList: linkList.length,
-            template: template.length,
-            actualFieldKey,
-            linkType,
-          });
         }
       });
 
@@ -1657,6 +1827,79 @@
       fieldWrapper.on('change', '.link-input', function () {
         // Value tracking is handled in collectFieldValue
       });
+    } else if (fieldType === 'tags') {
+      // Tags use dt-tags web component which handles its own initialization
+      // Ensure ComponentService initializes the component and handle load events
+      const fieldId = `bulk_${fieldKey}`;
+      const tagsComponent =
+        fieldWrapper.find(`dt-tags#${fieldId}`)[0] ||
+        fieldWrapper.find(`dt-tags[name="${fieldKey}"]`)[0] ||
+        fieldWrapper.find(`dt-tags`)[0];
+
+      if (tagsComponent && tagsComponent.tagName === 'DT-TAGS') {
+        // Ensure ComponentService is available and initialized
+        if (window.componentService) {
+          // For dynamically added components, we need to ensure they're properly initialized
+          if (window.componentService.initialize) {
+            // Re-initialize to pick up the new component
+            try {
+              window.componentService.initialize();
+            } catch (e) {
+              // ComponentService initialization error - component should still work
+            }
+          } else if (window.componentService.attachLoadEvents) {
+            // Fallback: re-attach load events for the new component
+            window.componentService.attachLoadEvents();
+          }
+        }
+
+        // Add listener for load events from this specific dt-tags component
+        // The component dispatches 'load' events when it needs to fetch tag options
+        const field = fieldKey;
+        const field_options = window.lodash.get(
+          list_settings,
+          `post_type_settings.fields.${field}.default`,
+          {},
+        );
+
+        tagsComponent.addEventListener('load', function (event) {
+          const { query, onSuccess, onError } = event.detail;
+
+          // Fetch tags from API
+          $.ajax({
+            url:
+              window.wpApiShare.root +
+              `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
+            method: 'GET',
+            data: {
+              s: query || '',
+              field: field,
+            },
+            headers: {
+              'X-WP-Nonce': window.wpApiShare.nonce,
+            },
+            success: function (data) {
+              // Transform data to match component's expected format
+              const options = (data || []).map((tag) => {
+                const label = window.lodash.get(
+                  field_options,
+                  tag + '.label',
+                  tag,
+                );
+                return { id: tag, label: label || tag };
+              });
+              if (onSuccess) {
+                onSuccess(options);
+              }
+            },
+            error: function (xhr, status, error) {
+              if (onError) {
+                onError(error);
+              }
+            },
+          });
+        });
+      }
     } else if (fieldType === 'date' || fieldType === 'datetime') {
       // Date pickers should auto-initialize
     }
@@ -3785,7 +4028,6 @@
   bulk_edit_submit_button.on('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
-    console.log('[Bulk Edit] Button clicked - calling bulk_edit_submit()');
     bulk_edit_submit();
     return false;
   });
@@ -3798,8 +4040,30 @@
     let multiSelectInputs = $('#bulk_edit_picker .dt_multi_select');
     let shareInput = $('#bulk_share');
     let commentPayload = {};
-    commentPayload['commentText'] = $('#bulk_comment-input').val();
-    commentPayload['commentType'] = $('#comment_type_selector').val();
+    // Check for comment field in dynamically selected fields
+    const commentFieldSelected = bulkEditSelectedFields?.some(
+      (f) => f.fieldKey === 'comments',
+    );
+    if (commentFieldSelected) {
+      // Find the comment input for the comments field
+      const commentInput = $(
+        '#bulk_edit_selected_fields_container textarea[id^="bulk_comment-input_"]',
+      );
+      if (commentInput.length > 0) {
+        commentPayload['commentText'] = commentInput.val();
+        // Get the corresponding comment type selector
+        const commentTypeSelector = commentInput
+          .closest('.bulk-edit-field-input-container')
+          .find('select[id^="comment_type_selector_"]');
+        if (commentTypeSelector.length > 0) {
+          commentPayload['commentType'] = commentTypeSelector.val();
+        } else {
+          // Fallback to default selector if exists
+          commentPayload['commentType'] =
+            $('#comment_type_selector').val() || 'comment';
+        }
+      }
+    }
 
     let updatePayload = {};
     let sharePayload;
@@ -3818,10 +4082,6 @@
         fieldName === 'bulk_edit_field_selector' ||
         el.id === 'bulk_edit_field_selector'
       ) {
-        console.log(
-          '[Bulk Edit] Skipping field selector component:',
-          el.id || el.name,
-        );
         return;
       }
 
@@ -3848,27 +4108,11 @@
               convertedValue.force_values === true
             ) {
               updatePayload[fieldName] = convertedValue;
-              console.log(
-                `[Bulk Edit] Added web component field ${fieldName}:`,
-                convertedValue,
-              );
-            } else {
-              console.log(
-                `[Bulk Edit] Skipping empty array field ${fieldName} (no values, no force_values)`,
-              );
             }
           } else {
             // For simple fields, include if not empty
             if (convertedValue !== '' && convertedValue !== null) {
               updatePayload[fieldName] = convertedValue;
-              console.log(
-                `[Bulk Edit] Added web component field ${fieldName}:`,
-                convertedValue,
-              );
-            } else {
-              console.log(
-                `[Bulk Edit] Skipping empty simple field ${fieldName}`,
-              );
             }
           }
         }
@@ -3927,10 +4171,6 @@
         if (!updatePayload[key] || !updatePayload[key].force_values) {
           updatePayload[key] = multiSelectUpdatePayload[key];
         }
-      } else {
-        console.log(
-          `[Bulk Edit] Skipping multiSelectUpdatePayload for cleared field: ${key}`,
-        );
       }
     });
 
@@ -3961,10 +4201,6 @@
           } else {
             updatePayload[fieldKey] = clearedValue;
           }
-          console.log(
-            `[Bulk Edit] Setting cleared value for ${fieldKey} (${fieldType}):`,
-            updatePayload[fieldKey],
-          );
           return;
         }
 
@@ -3974,26 +4210,12 @@
         );
         const fieldValue = collectFieldValue(fieldKey, fieldType, fieldWrapper);
 
-        console.log(
-          `[Bulk Edit] Collected value for ${fieldKey} (${fieldType}):`,
-          fieldValue,
-        );
-
         if (fieldValue !== null && fieldValue !== undefined) {
           // Handle communication_channel fields specially (direct array format, not wrapped)
           if (fieldType === 'communication_channel') {
             // Communication channel expects direct array: [{"value":"...","key":"..."}]
             if (Array.isArray(fieldValue)) {
               updatePayload[fieldKey] = fieldValue;
-              console.log(
-                `[Bulk Edit] Added communication_channel values for ${fieldKey}:`,
-                updatePayload[fieldKey],
-              );
-            } else {
-              console.log(
-                `[Bulk Edit] Warning: communication_channel field ${fieldKey} is not an array:`,
-                fieldValue,
-              );
             }
           }
           // Handle array-based fields specially (multi_select, tags, connection, location_meta, link)
@@ -4014,15 +4236,6 @@
                     ? fieldValue.force_values
                     : false,
               };
-              console.log(
-                `[Bulk Edit] Added ${fieldType} values for ${fieldKey}:`,
-                updatePayload[fieldKey],
-              );
-            } else {
-              console.log(
-                `[Bulk Edit] Warning: ${fieldType} field ${fieldKey} has no values array:`,
-                fieldValue,
-              );
             }
           } else {
             // For boolean fields, include even if false (false is a valid value)
@@ -4036,10 +4249,6 @@
           // For boolean fields, if no value was collected, default to false
           if (fieldType === 'boolean') {
             updatePayload[fieldKey] = false;
-          } else {
-            console.log(
-              `[Bulk Edit] No value collected for ${fieldKey} (${fieldType}) - field may be empty or not initialized`,
-            );
           }
         }
       });
@@ -4065,19 +4274,6 @@
       }
     });
 
-    // Log everything for debugging
-    console.log('[Bulk Edit] ========== SUBMIT DEBUG INFO ==========');
-    console.log(
-      '[Bulk Edit] Final updatePayload:',
-      JSON.stringify(updatePayload, null, 2),
-    );
-    console.log('[Bulk Edit] Queue (selected post IDs):', queue);
-    console.log('[Bulk Edit] Queue length:', queue.length);
-    console.log('[Bulk Edit] Shares:', shares);
-    console.log('[Bulk Edit] Comment payload:', commentPayload);
-    console.log('[Bulk Edit] bulkEditSelectedFields:', bulkEditSelectedFields);
-    console.log('[Bulk Edit] =======================================');
-
     // Process the queue to update records
     if (queue.length > 0) {
       process(
@@ -4090,7 +4286,6 @@
         commentPayload,
       );
     } else {
-      console.log('[Bulk Edit] No records selected - skipping update');
       $('#bulk_edit_submit-spinner').removeClass('active');
     }
   }
@@ -4236,17 +4431,6 @@
         const webComponent = buttonGroupComponent || multiSelectComponent;
 
         if (webComponent) {
-          console.log(
-            `[Bulk Edit] DEBUG: Found web component for ${fieldKey}:`,
-            webComponent.tagName,
-            webComponent.id,
-            webComponent.name,
-          );
-          console.log(
-            `[Bulk Edit] DEBUG: Component value (raw):`,
-            webComponent.value,
-          );
-
           if (webComponent.value) {
             // Use ComponentService to convert the value to the expected format
             const componentValue =
@@ -4585,6 +4769,28 @@
         return null;
       }
 
+      case 'comment': {
+        // Comment fields use the bulk_comment-input textarea
+        // Check if comment field is in the dynamically selected fields container
+        const commentInput = fieldWrapper.find('#bulk_comment-input');
+        if (commentInput.length > 0) {
+          const commentText = commentInput.val();
+          // Return comment text if not empty, otherwise null
+          return commentText && commentText.trim() !== ''
+            ? commentText.trim()
+            : null;
+        }
+        // Fallback: check the original comment input (if field was selected but input is elsewhere)
+        const originalCommentInput = $('#bulk_comment-input');
+        if (originalCommentInput.length > 0) {
+          const commentText = originalCommentInput.val();
+          return commentText && commentText.trim() !== ''
+            ? commentText.trim()
+            : null;
+        }
+        return null;
+      }
+
       default:
         // Try to get from data attribute as fallback
         const dataValue = fieldWrapper
@@ -4788,14 +4994,10 @@
     switch (event_type) {
       case 'update': {
         if (Object.keys(update).length) {
-          console.log(
-            `[Bulk Edit] Updating post ${item} with payload:`,
-            JSON.stringify(update, null, 2),
-          );
           promises.push(
             window.API.update_post(list_settings.post_type, item, update).catch(
               (err) => {
-                console.error('[Bulk Edit] Update error:', err);
+                // Error handled silently - user will see error via UI feedback
               },
             ),
           );

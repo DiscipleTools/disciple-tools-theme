@@ -629,40 +629,6 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                             <p style="font-weight:bold"><?php
                                 echo sprintf( esc_html__( 'Select all the %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                             <div class="grid-x">
-                                <div class="cell small-12 medium-12 grid-y">
-                                    <div class="section-subheader">
-                                        <?php esc_html_e( 'Comments and Activity', 'disciple_tools' ) ?>
-                                    </div>
-                                    <div class="cell" id="bulk_add-comment-section">
-                                        <div class="auto cell">
-                                        <textarea class="mention" dir="auto" id="bulk_comment-input"
-                                                  placeholder="<?php echo esc_html_x( 'Write your comment or note here', 'input field placeholder', 'disciple_tools' ) ?>"
-                                        ></textarea>
-
-                                            <?php
-                                            $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );
-                                            if ( sizeof( $sections ) > 0 ) : ?>
-                                                <div class="grid-x">
-                                                    <div class="section-subheader cell shrink">
-                                                        <?php esc_html_e( 'Type:', 'disciple_tools' ) ?>
-                                                    </div>
-                                                    <select id="comment_type_selector" class="cell auto">
-                                                        <?php
-                                                        $section_keys = [ 'activity' ];
-                                                        foreach ( $sections as $section ) {
-                                                            if ( !in_array( $section['key'], $section_keys ) ) {
-                                                                $section_keys[] = $section['key'] ?>
-                                                        <option value="<?php echo esc_html( $section['key'] ); ?>">
-                                                                <?php echo esc_html( $section['label'] );
-                                                            }
-                                                        } ?>
-                                                    </select>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <!-- Dynamic Field Selection Section -->
                                 <div class="cell small-12" id="bulk_edit_dynamic_fields_section">
                                     <div class="section-subheader">
@@ -687,6 +653,24 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                     
                                     <!-- Hidden input to store selected field keys -->
                                     <input type="hidden" id="bulk_edit_selected_fields_input" value="[]">
+                                    
+                                    <!-- Hidden data element with comment sections for dynamic comment fields -->
+                                    <?php
+                                    // Start with default comment section
+                                    $comment_sections = [
+                                        [
+                                            'key' => 'comment',
+                                            'label' => __( 'Comments', 'disciple_tools' ),
+                                            'selected_by_default' => true,
+                                            'always_show' => true,
+                                        ]
+                                    ];
+                                    // Apply filter to get additional sections
+                                    $comment_sections = apply_filters( 'dt_comments_additional_sections', $comment_sections, $post_type );
+                                    ?>
+                                    <script type="application/json" id="bulk_edit_comment_sections_data">
+                                        <?php echo json_encode( $comment_sections ); ?>
+                                    </script>
                                 </div>
                             </div>
 
