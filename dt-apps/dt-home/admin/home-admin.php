@@ -1042,12 +1042,13 @@ class DT_Home_Admin {
                     <tr>
                         <th scope="row"><?php esc_html_e( 'Type', 'disciple_tools' ); ?></th>
                         <td>
-                            <select name="app_type" id="app_type" required>
-                                <option value="link"><?php esc_html_e( 'Link', 'disciple_tools' ) ?></option>
-                                <option value="app"><?php esc_html_e( 'App', 'disciple_tools' ) ?></option>
-                            </select>
+                            <label>
+                                <input type="checkbox" name="app_type_link" id="app_type_link" checked />
+                                <?php esc_html_e( 'Open as Link (opens in new tab)', 'disciple_tools' ); ?>
+                            </label>
+                            <input type="hidden" name="app_type" id="app_type" value="link" />
                             <p class="description" id="app-type-description-add">
-                                <?php esc_html_e( 'Link-type entries open in a new browser tab. Use this for external websites or resources that should open separately from your Disciple Tools interface.', 'disciple_tools' ); ?>
+                                <?php esc_html_e( 'Link mode shall be used; which will open the app in a new browser tab. Use this for external websites or resources that should open separately from your Disciple Tools interface.', 'disciple_tools' ); ?>
                             </p>
                         </td>
                     </tr>

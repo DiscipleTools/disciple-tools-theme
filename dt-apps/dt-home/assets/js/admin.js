@@ -174,9 +174,9 @@ jQuery(document).ready(function ($) {
    */
   function getAppTypeDescription(type) {
     if (type === 'app') {
-      return 'App-type entries open in the same tab with integrated navigation. Use this for apps that are part of your Disciple Tools system and should maintain the app launcher interface.';
+      return 'App type selected; which will display the app within the same tab with integrated navigation. Use this for apps that are part of your Disciple Tools system and should maintain the app launcher interface.';
     } else {
-      return 'Link-type entries open in a new browser tab. Use this for external websites or resources that should open separately from your Disciple Tools interface.';
+      return 'Link mode shall be used; which will open the app in a new browser tab. Use this for external websites or resources that should open separately from your Disciple Tools interface.';
     }
   }
 
@@ -193,6 +193,24 @@ jQuery(document).ready(function ($) {
   }
 
   /**
+   * Get app type from checkbox state
+   * @param {boolean} isChecked - Whether checkbox is checked
+   * @returns {string} Either 'link' (if checked) or 'app' (if unchecked)
+   */
+  function getTypeFromCheckbox(isChecked) {
+    return isChecked ? 'link' : 'app';
+  }
+
+  /**
+   * Get checkbox state from app type
+   * @param {string} type - Either 'app' or 'link'
+   * @returns {boolean} True if type is 'link', false if type is 'app'
+   */
+  function getCheckboxFromType(type) {
+    return type === 'link';
+  }
+
+  /**
    * Set up event handlers
    */
   function setupEventHandlers() {
@@ -201,16 +219,24 @@ jQuery(document).ready(function ($) {
       updateIconPreview($(this));
     });
 
-    // Handle app type change in add form
-    $(document).on('change', '#app_type', function () {
-      const selectedType = $(this).val();
-      updateAppTypeDescription(selectedType, 'app-type-description-add');
+    // Handle app type checkbox change in add form
+    $(document).on('change', '#app_type_link', function () {
+      const isChecked = $(this).is(':checked');
+      const appType = getTypeFromCheckbox(isChecked);
+      // Update hidden field value
+      $('#app_type').val(appType);
+      // Update description
+      updateAppTypeDescription(appType, 'app-type-description-add');
     });
 
-    // Handle app type change in edit modal (using delegated handler)
-    $(document).on('change', '#app-edit-type', function () {
-      const selectedType = $(this).val();
-      updateAppTypeDescription(selectedType, 'app-type-description-edit');
+    // Handle app type checkbox change in edit modal (using delegated handler)
+    $(document).on('change', '#app-edit-type-link', function () {
+      const isChecked = $(this).is(':checked');
+      const appType = getTypeFromCheckbox(isChecked);
+      // Update hidden field value
+      $('#app-edit-type').val(appType);
+      // Update description
+      updateAppTypeDescription(appType, 'app-type-description-edit');
     });
 
     // Handle color reset button for add form
@@ -805,10 +831,11 @@ jQuery(document).ready(function ($) {
         <tr>
           <th scope="row" style="width: 150px;">Type</th>
           <td>
-            <select name="app_type" id="app-edit-type" required style="width: 100%; max-width: 100%; box-sizing: border-box;">
-              <option value="link" ${appType === 'link' ? 'selected' : ''}>Link</option>
-              <option value="app" ${appType === 'app' ? 'selected' : ''}>App</option>
-            </select>
+            <label>
+              <input type="checkbox" name="app_type_link" id="app-edit-type-link" ${getCheckboxFromType(appType) ? 'checked' : ''} />
+              Open as Link (opens in new tab)
+            </label>
+            <input type="hidden" name="app_type" id="app-edit-type" value="${appType}" />
             <p class="description" id="app-type-description-edit" style="margin-top: 5px;">
               ${getAppTypeDescription(appType)}
             </p>
