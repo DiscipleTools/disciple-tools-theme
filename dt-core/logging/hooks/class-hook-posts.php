@@ -422,6 +422,11 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
      *
      */
     public function hooks_error_post( $code, $message, $data, $wp_error ) {
+        $excluded_codes = [ 'empty_username', 'empty_password' ];
+        if ( in_array( $code, $excluded_codes, true ) ) {
+            return;
+        }
+
         if ( ! empty( $wp_error ) ) {
             $current_migration = get_option( 'dt_migration_number' );
             if ( empty( $current_migration ) || intval( $current_migration ) < 40 ){
