@@ -108,10 +108,12 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             /* Site Notifications */
 
             /* User Visibility */
+            echo '<div id="user-preferences">';
             $this->box( 'top', 'User Preferences' );
             $this->process_user_preferences();
             $this->update_user_preferences();
             $this->box( 'bottom' );
+            echo '</div>';
             /* User Visibility */
 
 
@@ -664,6 +666,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             $dt_roles = dt_multi_role_get_editable_role_names();
             foreach ( $dt_roles as $role_key => $name ) :
                 $role_object = get_role( $role_key );
+                if ( !$role_object ) {
+                    continue; // Skip roles that don't exist in WordPress
+                }
                 if ( isset( $_POST[$role_key] ) && !array_key_exists( 'dt_list_users', $role_object->capabilities ) ) {
                     $role_options[$role_key]['permissions']['dt_list_users'] = true;
                 } else if ( !isset( $_POST[$role_key] ) && array_key_exists( 'dt_list_users', $role_object->capabilities ) ) {
