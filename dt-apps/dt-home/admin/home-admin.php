@@ -207,7 +207,7 @@ class DT_Home_Admin {
                                             <?php
                                             $dt_general_settings_link = admin_url( 'admin.php?page=dt_options&tab=general#user-preferences' );
                                             printf(
-                                                esc_html__( 'To enable user registration, you must enable it in both WordPress settings (%s) and Disciple Tools settings (%s).', 'disciple_tools' ),
+                                                esc_html__( 'To enable user registration, you must enable it in both WordPress settings (%1$s) and Disciple Tools settings (%2$s).', 'disciple_tools' ),
                                                 '<a href="' . esc_url( $settings_link ) . '">' . esc_html( $settings_text ) . '</a>',
                                                 '<a href="' . esc_url( $dt_general_settings_link ) . '">' . esc_html__( 'General Settings', 'disciple_tools' ) . '</a>'
                                             );
@@ -261,7 +261,7 @@ class DT_Home_Admin {
                                 }
                                 $dt_general_settings_link = admin_url( 'admin.php?page=dt_options&tab=general#user-preferences' );
                                 printf(
-                                    esc_html__( 'To change registration settings, visit WordPress %s and Disciple Tools %s.', 'disciple_tools' ),
+                                    esc_html__( 'To change registration settings, visit WordPress %1$s and Disciple Tools %2$s.', 'disciple_tools' ),
                                     '<a href="' . esc_url( $settings_link ) . '">' . esc_html( $settings_text ) . '</a>',
                                     '<a href="' . esc_url( $dt_general_settings_link ) . '">' . esc_html__( 'General Settings', 'disciple_tools' ) . '</a>'
                                 );
