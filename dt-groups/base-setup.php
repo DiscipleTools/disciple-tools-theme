@@ -636,16 +636,19 @@ class DT_Groups_Base extends DT_Module_Base {
         self::$genmap_rendered = true;
         $post_id = get_the_ID();
         ?>
-        <section id="genmap" class="custom-tile-section small-12 cell grid-item">
+        <section id="genmap" class="custom-tile-section cell grid-item xlarge-6 large-12 medium-6">
             <div class="bordered-box" id="genmap-tile">
                 <h3 class="section-header">
                     <?php echo esc_html( $tiles['genmap']['label'] ?? __( 'Generational Map', 'disciple_tools' ) ); ?>
-                    <button class="help-button-tile" data-tile="genmap">
+                    <button class="help-button-tile" data-tile="genmap" style="margin-right: 12px;">
                         <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
                     </button>
-                    <button class="group-genmap-layout-toggle" id="group-genmap-layout-toggle" aria-label="<?php esc_attr_e( 'Toggle layout', 'disciple_tools' ); ?>" style="display: none;">
+                    <button class="group-genmap-layout-toggle" id="group-genmap-layout-toggle" aria-label="<?php esc_attr_e( 'Toggle layout', 'disciple_tools' ); ?>" style="display: none; margin-right: 12px;">
                         <i class="mdi mdi-align-vertical-top group-genmap-layout-icon-switch-to-vertical" style="font-size: 18px;"></i>
                         <i class="mdi mdi-align-horizontal-left group-genmap-layout-icon-switch-to-horizontal" style="font-size: 18px; display: none;"></i>
+                    </button>
+                    <button class="group-genmap-maximize" id="group-genmap-maximize" aria-label="<?php esc_attr_e( 'Maximize generational map', 'disciple_tools' ); ?>" style="display: none;">
+                        <i class="mdi mdi-arrow-expand-all" style="font-size: 18px;"></i>
                     </button>
                     <button class="section-chevron chevron_down">
                         <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
@@ -669,6 +672,13 @@ class DT_Groups_Base extends DT_Module_Base {
             <div class="reveal" id="group-genmap-details-modal" data-reveal data-reset-on-close>
                 <h3 id="group-genmap-details-modal-title"></h3>
                 <div id="group-genmap-details-modal-content"></div>
+                <button class="close-button" data-close aria-label="<?php esc_attr_e( 'Close', 'disciple_tools' ); ?>" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="reveal full" id="group-genmap-full-modal" data-reveal data-reset-on-close>
+                <h3><?php echo esc_html( __( 'Generational Map', 'disciple_tools' ) ); ?></h3>
+                <div id="group-genmap-full-modal-content" style="height: calc(100vh - 180px); overflow: hidden; position: relative;"></div>
                 <button class="close-button" data-close aria-label="<?php esc_attr_e( 'Close', 'disciple_tools' ); ?>" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>

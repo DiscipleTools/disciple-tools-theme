@@ -31,8 +31,8 @@
     if (saved === 't2b' || saved === 'l2r') {
       return saved;
     }
-    // Default to horizontal for desktop
-    return 'l2r';
+    // Default to vertical for desktop
+    return 't2b';
   }
 
   function saveLayoutPreference(layout) {
@@ -41,6 +41,40 @@
 
   function isMobileView() {
     return window.innerWidth < 768;
+  }
+
+  /**
+   * Determine graph orientation based on section CSS classes
+   * @param {jQuery} wrapper - Optional wrapper to check for stored orientation (for modal)
+   * @returns {string} - 't2b' for top-to-bottom (vertical) or 'l2r' for left-to-right (horizontal)
+   */
+  function getGraphOrientationFromSection(wrapper = null) {
+    // Check if wrapper has stored graph orientation (for modal context)
+    if (wrapper && wrapper.data('graphOrientation')) {
+      return wrapper.data('graphOrientation');
+    }
+
+    const genmapSection = jQuery('#genmap');
+    if (!genmapSection.length) {
+      return 'l2r'; // Default to horizontal
+    }
+
+    // Check if section has xlarge-6, large-12, or medium-6 classes (half width = horizontal graph)
+    if (
+      genmapSection.hasClass('xlarge-6') ||
+      genmapSection.hasClass('large-12') ||
+      genmapSection.hasClass('medium-6')
+    ) {
+      return 'l2r'; // Left-to-right graph
+    }
+
+    // Check if section has small-12 class (full width = vertical graph)
+    if (genmapSection.hasClass('small-12')) {
+      return 't2b'; // Top-to-bottom graph
+    }
+
+    // Default to horizontal if no matching classes found
+    return 'l2r';
   }
 
   jQuery(document).ready(() => {
@@ -60,7 +94,8 @@
           white-space: nowrap;
         }
         @media (max-width: 767px) {
-          .group-genmap-layout-toggle {
+          .group-genmap-layout-toggle,
+          .group-genmap-maximize {
             display: none !important;
           }
         }
@@ -212,7 +247,7 @@
         wrapper.data('currentLayout', currentLayout);
 
         if (useD3Visualization && typeof d3 !== 'undefined') {
-          renderD3Chart(wrapper, sanitizedGenmap);
+          renderD3Chart(wrapper, sanitizedGenmap, currentLayout);
         } else {
           renderChart(wrapper, sanitizedGenmap, currentLayout);
         }
@@ -533,7 +568,7 @@
       // Visual properties
       nodeSize: {
         width: 60,
-        height: 40,
+        height: 30,
       },
 
       // Display properties
@@ -615,7 +650,7 @@
     root.each((node) => {
       // Ensure each node has the enhanced properties
       if (!node.data.nodeSize) {
-        node.data.nodeSize = { width: 60, height: 40 };
+        node.data.nodeSize = { width: 60, height: 30 };
       }
       if (!node.data.displayName) {
         node.data.displayName = ellipsizeName(node.data.name || '', 15);
@@ -690,6 +725,9 @@
       return;
     }
 
+    // Check if we're in a modal context (for z-index adjustment)
+    const isInModal = wrapper.closest('#group-genmap-full-modal').length > 0;
+
     // Get node position in SVG coordinates
     const nodeGroup = d3.select(event.currentTarget);
     const transform = nodeGroup.attr('transform');
@@ -748,10 +786,14 @@
       top = viewportHeight - popoverHeight - padding;
     }
 
+    // Set z-index higher than modal (Foundation reveal modals use ~1005)
+    const popoverZIndex = isInModal ? 10010 : 1000;
+
     popover.css({
       left: left + 'px',
       top: top + 'px',
       position: 'fixed', // Use fixed positioning relative to viewport
+      zIndex: popoverZIndex, // Ensure popover appears above modal
     });
 
     // Store popover reference
@@ -850,44 +892,61 @@
    * @param {jQuery} popover - Popover jQuery element
    */
   function bindPopoverEvents(wrapper, nodeData, popover) {
-    // Close button
+    // Close button - use direct click handler to ensure it works
+    popover.find('.popover-close').on('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      hideGenmapPopover(wrapper);
+      return false;
+    });
+
+    // Also bind using event delegation as fallback
     popover.on('click', '.popover-close', function (e) {
       e.preventDefault();
       e.stopPropagation();
+      e.stopImmediatePropagation();
       hideGenmapPopover(wrapper);
+      return false;
     });
 
     // Add Child button
     popover.on('click', '.genmap-popover-add-child', function (e) {
       e.preventDefault();
       e.stopPropagation();
+      e.stopImmediatePropagation();
+      // Store button data before closing popover
       const button = jQuery(this);
-      displayAddChildModal(
-        button.data('post-type'),
-        button.data('post-id'),
-        button.data('post-name'),
-      );
+      const postType = button.data('post-type');
+      const postId = button.data('post-id');
+      const postName = button.data('post-name');
+      // Close popover first
       hideGenmapPopover(wrapper);
+      // Small delay to ensure popover is removed before modal opens
+      setTimeout(function () {
+        displayAddChildModal(postType, postId, postName);
+      }, 50);
+      return false;
     });
 
     // Collapse/Expand button
     popover.on('click', '.genmap-popover-collapse', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      const currentWrapper = jQuery(TILE_SELECTOR);
-      const treeData = currentWrapper.data('d3Root');
-      const linksGroup = currentWrapper.data('d3LinksGroup');
-      const nodesGroup = currentWrapper.data('d3NodesGroup');
-      const svg = currentWrapper.data('d3Svg');
-      const zoomBehavior = currentWrapper.data('d3Zoom');
-      const container = currentWrapper.find('.group-genmap-chart');
+      // Use the wrapper passed to this function (works for both modal and regular tile)
+      const treeData = wrapper.data('d3Root');
+      const linksGroup = wrapper.data('d3LinksGroup');
+      const nodesGroup = wrapper.data('d3NodesGroup');
+      const svg = wrapper.data('d3Svg');
+      const zoomBehavior = wrapper.data('d3Zoom');
+      const container = wrapper.find('.group-genmap-chart');
       const containerWidth = container.width() || 800;
       const containerHeight = parseInt(container.css('height')) || 400;
 
       if (treeData && linksGroup && nodesGroup && svg && zoomBehavior) {
         toggleNodeCollapse(
           nodeData,
-          currentWrapper,
+          wrapper,
           treeData,
           linksGroup,
           nodesGroup,
@@ -896,13 +955,15 @@
           containerWidth,
           containerHeight,
         );
-        hideGenmapPopover(currentWrapper);
+        hideGenmapPopover(wrapper);
       }
     });
 
     // Close popover when clicking outside (use setTimeout to avoid immediate closure)
-    setTimeout(function () {
-      jQuery(document).one('click', function (e) {
+    // Store timeout ID so we can clear it if popover is closed via button
+    const clickOutsideTimeout = setTimeout(function () {
+      jQuery(document).one('click.genmap-popover', function (e) {
+        // Don't close if clicking on popover or its children
         if (popover.length && !popover[0].contains(e.target)) {
           // Check if click is not on a node
           const clickedNode = jQuery(e.target).closest('.node');
@@ -912,6 +973,9 @@
         }
       });
     }, 100);
+
+    // Store timeout ID in popover data so we can clear it if needed
+    popover.data('clickOutsideTimeout', clickOutsideTimeout);
   }
 
   /**
@@ -921,6 +985,15 @@
   function hideGenmapPopover(wrapper) {
     const popover = wrapper.data('genmapPopover');
     if (popover) {
+      // Clear any pending click-outside timeout
+      const timeoutId = popover.data('clickOutsideTimeout');
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        popover.removeData('clickOutsideTimeout');
+      }
+      // Remove click-outside handler
+      jQuery(document).off('click.genmap-popover');
+      // Remove popover
       popover.remove();
       wrapper.data('genmapPopover', null);
     }
@@ -980,6 +1053,146 @@
   }
 
   /**
+   * Add or update collapse indicator icon on a node
+   * @param {Object} nodeSelection - D3 selection of node group
+   * @param {Object} nodeData - D3 node data
+   * @param {jQuery} wrapper - jQuery wrapper element
+   * @param {Object} treeData - Current tree data
+   * @param {Object} linksGroup - D3 links group selection
+   * @param {Object} nodesGroup - D3 nodes group selection
+   * @param {Object} svg - D3 SVG selection
+   * @param {Object} zoomBehavior - D3 zoom behavior
+   * @param {number} containerWidth - Container width
+   * @param {number} containerHeight - Container height
+   */
+  function addCollapseIndicatorIcon(
+    nodeSelection,
+    nodeData,
+    wrapper,
+    treeData,
+    linksGroup,
+    nodesGroup,
+    svg,
+    zoomBehavior,
+    containerWidth,
+    containerHeight,
+  ) {
+    // Check if node has collapsed children
+    const hasCollapsedChildren =
+      nodeData._children && nodeData._children.length > 0;
+
+    // Get graph orientation for dynamic positioning (pass wrapper for modal context)
+    const graphOrientation = getGraphOrientationFromSection(wrapper);
+
+    // Select or create icon group
+    let iconGroup = nodeSelection.select('.node-collapse-indicator-group');
+
+    if (hasCollapsedChildren) {
+      // Create icon group if it doesn't exist
+      if (iconGroup.empty()) {
+        iconGroup = nodeSelection
+          .append('g')
+          .attr('class', 'node-collapse-indicator-group')
+          .style('cursor', 'pointer')
+          .style('pointer-events', 'all');
+
+        // Determine position based on graph orientation
+        // Inverted: l2r (horizontal) = bottom, t2b (vertical) = right
+        let bgX, bgY, iconX, iconY;
+        if (graphOrientation === 'l2r') {
+          // Horizontal mode: icon on bottom center
+          // Node is 30px tall (from y=-15 to y=+15), bottom edge at y=15
+          // Background is 20px tall, icon is 16px tall
+          // Position background to overlap node bottom border (extend below y=15)
+          // Then center icon on background
+          bgY = 8; // Background: top y=8, bottom y=28 (overlaps node bottom at y=15)
+          bgX = -10; // Background centered behind icon
+          iconY = 9; // Icon center at y=9 (centered on background)
+          iconX = -8; // Horizontally centered (slight left offset for better visual alignment)
+        } else {
+          // Vertical mode: icon on right side
+          bgX = 20; // Background centered behind icon (22 - 2 = 20)
+          bgY = -10; // Background centered behind icon (-8 - 2 = -10)
+          iconX = 22; // Right side of 60px node (leaving 8px margin from right edge)
+          iconY = -8; // Vertically centered in 30px node
+        }
+
+        // Add background rectangle
+        iconGroup
+          .append('rect')
+          .attr('x', bgX)
+          .attr('y', bgY)
+          .attr('width', 20)
+          .attr('height', 20)
+          .attr('rx', 3)
+          .attr('fill', 'rgba(255, 255, 255, 0.95)')
+          .attr('stroke', '#ccc')
+          .attr('stroke-width', 1)
+          .style('pointer-events', 'none'); // Background doesn't capture clicks
+
+        // Add foreignObject for HTML icon
+        const foreignObject = iconGroup
+          .append('foreignObject')
+          .attr('x', iconX)
+          .attr('y', iconY)
+          .attr('width', 16)
+          .attr('height', 16)
+          .style('pointer-events', 'none'); // Icon doesn't capture clicks, group does
+
+        // Add HTML with MDI icon
+        foreignObject
+          .append('xhtml:div')
+          .style('width', '16px')
+          .style('height', '16px')
+          .style('display', 'flex')
+          .style('align-items', 'center')
+          .style('justify-content', 'center')
+          .html(
+            '<i class="mdi mdi-account-group-outline" style="font-size: 16px; color: #3f729b; font-weight: 600;"></i>',
+          );
+
+        // Add click handler to the group
+        iconGroup.on('click', function (event) {
+          event.stopPropagation(); // Prevent node click
+          toggleNodeCollapse(
+            nodeData,
+            wrapper,
+            treeData,
+            linksGroup,
+            nodesGroup,
+            svg,
+            zoomBehavior,
+            containerWidth,
+            containerHeight,
+          );
+        });
+      } else {
+        // Update position if icon group already exists (for orientation changes)
+        const bgRect = iconGroup.select('rect');
+        const foreignObj = iconGroup.select('foreignObject');
+
+        if (graphOrientation === 'l2r') {
+          // Horizontal mode: icon on bottom center
+          bgRect.attr('x', -10).attr('y', 8);
+          foreignObj.attr('x', -8).attr('y', 9);
+        } else {
+          // Vertical mode: icon on right side
+          bgRect.attr('x', 20).attr('y', -10);
+          foreignObj.attr('x', 22).attr('y', -8);
+        }
+      }
+
+      // Show icon
+      iconGroup.style('display', 'block');
+    } else {
+      // Hide icon if node doesn't have collapsed children
+      if (!iconGroup.empty()) {
+        iconGroup.style('display', 'none');
+      }
+    }
+  }
+
+  /**
    * Update D3 tree after collapse/expand
    * @param {jQuery} wrapper - jQuery wrapper element
    * @param {Object} root - D3 hierarchy root node
@@ -1000,16 +1213,27 @@
     containerWidth,
     containerHeight,
   ) {
-    // Recreate tree layout with updated structure
-    const tree = createD3TreeLayout(100, 80);
+    // Determine graph orientation from section CSS classes (not from layout variable)
+    // Pass wrapper to check for stored orientation (for modal context)
+    const graphOrientation = getGraphOrientationFromSection(wrapper);
+
+    // Recreate tree layout with updated structure and current orientation
+    const tree = createD3TreeLayout(100, 80, graphOrientation);
     const treeData = tree(root);
 
-    // Update links
+    // Update links based on graph orientation (determined from section classes)
+    // l2r (small-12) = left-to-right graph, t2b (xlarge-6/large-12/medium-6) = top-to-bottom graph
     const links = treeData.links();
-    const linkPath = d3
-      .linkVertical()
-      .x((d) => d.y)
-      .y((d) => d.x);
+    const linkPath =
+      graphOrientation === 'l2r'
+        ? d3
+            .linkHorizontal()
+            .x((d) => d.x) // Horizontal position (normal for horizontal layout)
+            .y((d) => d.y) // Vertical position (normal for horizontal layout)
+        : d3
+            .linkVertical()
+            .x((d) => d.y) // Horizontal position (swapped for vertical layout)
+            .y((d) => d.x); // Vertical position (swapped for vertical layout)
 
     // Update existing links and add new ones
     const linkUpdate = linksGroup.selectAll('.link').data(links, (d) => {
@@ -1044,20 +1268,26 @@
     nodeExit.selectAll('*').remove();
     nodeExit.remove();
 
-    // Add new nodes
+    // Add new nodes with layout-aware transform
+    // (graphOrientation already determined at top of function)
     const nodeEnter = nodeUpdate
       .enter()
       .append('g')
       .attr('class', 'node')
-      .attr('transform', (d) => `translate(${d.y},${d.x})`);
+      .attr(
+        'transform',
+        graphOrientation === 'l2r'
+          ? (d) => `translate(${d.x},${d.y})` // Horizontal: normal x/y (left-to-right)
+          : (d) => `translate(${d.y},${d.x})`, // Vertical: swap x/y (top-to-bottom)
+      );
 
     // Add rectangle for new nodes
     nodeEnter
       .append('rect')
       .attr('width', 60)
-      .attr('height', 40)
+      .attr('height', 30)
       .attr('x', -30)
-      .attr('y', -20)
+      .attr('y', -15)
       .attr('rx', 4)
       .attr('fill', (d) => {
         // Ensure statusColor is computed from status property (matching legacy flow)
@@ -1120,7 +1350,7 @@
     textGroupEnter
       .append('text')
       .attr('x', 0)
-      .attr('y', -8)
+      .attr('y', 0)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
       .attr('font-size', '10px')
@@ -1132,35 +1362,52 @@
         return name.length > 10 ? name.substring(0, 7) + '...' : name;
       });
 
-    textGroupEnter
-      .append('text')
-      .attr('x', 0)
-      .attr('y', 8)
-      .attr('text-anchor', 'middle')
-      .attr('dominant-baseline', 'middle')
-      .attr('font-size', '9px')
-      .attr('fill', '#ffffff')
-      .attr('font-weight', '600')
-      .attr('class', 'node-generation')
-      .attr('opacity', 0.9)
-      .text((d) => {
-        if (d.data.content && d.data.content.startsWith('Gen ')) {
-          return d.data.content;
-        }
-        const gen = d.data.generation !== undefined ? d.data.generation : 0;
-        return `Gen ${gen}`;
-      });
+    // Add collapse indicator icon for new nodes with collapsed children
+    nodeEnter.each(function (d) {
+      addCollapseIndicatorIcon(
+        d3.select(this),
+        d,
+        wrapper,
+        treeData,
+        linksGroup,
+        nodesGroup,
+        svg,
+        zoomBehavior,
+        containerWidth,
+        containerHeight,
+      );
+    });
 
     // Update existing nodes (position and collapse indicator)
     const nodeUpdateMerged = nodeUpdate.merge(nodeEnter);
 
-    // Update node positions with transition
+    // Update node positions with transition (layout-aware)
+    // Use graph orientation from section classes (already determined above)
     nodeUpdateMerged
       .transition()
       .duration(300)
-      .attr('transform', (d) => `translate(${d.y},${d.x})`);
+      .attr(
+        'transform',
+        graphOrientation === 'l2r'
+          ? (d) => `translate(${d.x},${d.y})` // Horizontal: normal x/y (left-to-right)
+          : (d) => `translate(${d.y},${d.x})`, // Vertical: swap x/y (top-to-bottom)
+      );
 
-    // Note: Collapse indicators removed - will be in popover (Phase 5)
+    // Update collapse indicator icon visibility for existing nodes
+    nodeUpdateMerged.each(function (d) {
+      addCollapseIndicatorIcon(
+        d3.select(this),
+        d,
+        wrapper,
+        treeData,
+        linksGroup,
+        nodesGroup,
+        svg,
+        zoomBehavior,
+        containerWidth,
+        containerHeight,
+      );
+    });
 
     // Update link positions with transition
     linkUpdate.merge(linkEnter).transition().duration(300).attr('d', linkPath);
@@ -1190,16 +1437,26 @@
    * @returns {Object} - Object with svg, zoomContainer, linksGroup, nodesGroup
    */
   function setupSVGContainer(container, layout = 'l2r') {
-    // Determine height based on layout/tile size
-    // Smaller tile (t2b/medium-6): taller height for better vertical space utilization
-    // Larger tile (l2r/small-12): standard height
-    const baseHeight = layout === 't2b' ? 600 : 400;
+    // Check if container is in modal (fullscreen context)
+    const isInModal = container.closest('#group-genmap-full-modal').length > 0;
+
+    // Determine height based on context
+    let baseHeight;
+    if (isInModal) {
+      // In modal: use full available height (modal content is calc(100vh - 180px))
+      baseHeight = window.innerHeight - 180;
+    } else {
+      // In tile: use layout-based height
+      // Smaller tile (t2b/medium-6): taller height for better vertical space utilization
+      // Larger tile (l2r/small-12): standard height
+      baseHeight = layout === 't2b' ? 600 : 400;
+    }
 
     // Ensure container has proper styling
     container.css({
       width: '100%',
       minHeight: baseHeight + 'px',
-      height: baseHeight + 'px',
+      height: isInModal ? '100%' : baseHeight + 'px',
       position: 'relative',
       overflow: 'hidden',
       background: '#f9f9f9',
@@ -1208,7 +1465,9 @@
     // Get container dimensions - use parent width if container doesn't have explicit width
     const parentWidth = container.parent().width() || window.innerWidth;
     const containerWidth = container.width() || parentWidth;
-    const containerHeight = baseHeight;
+    const containerHeight = isInModal
+      ? container.height() || baseHeight
+      : baseHeight;
 
     // Clear container
     container.empty();
@@ -1305,6 +1564,7 @@
     containerHeight,
     nodeWidth = 100,
     nodeHeight = 80,
+    layout = 't2b',
   ) {
     if (!root || !root.descendants().length) {
       return;
@@ -1323,9 +1583,11 @@
       if (d.y > maxY) maxY = d.y;
     });
 
-    // Calculate tree dimensions
-    const treeWidth = maxY - minY;
-    const treeHeight = maxX - minX;
+    // Calculate tree dimensions based on layout orientation
+    // For vertical (t2b): tree uses swapped coordinates (x=vertical, y=horizontal)
+    // For horizontal (l2r): tree uses normal coordinates (x=horizontal, y=vertical)
+    const treeWidth = layout === 't2b' ? maxY - minY : maxX - minX; // Horizontal extent
+    const treeHeight = layout === 't2b' ? maxX - minX : maxY - minY; // Vertical extent
 
     // Add padding
     const padding = 40;
@@ -1337,9 +1599,17 @@
     const scaleY = targetHeight / treeHeight;
     const scale = Math.min(scaleX, scaleY, 1); // Don't zoom in beyond 100%
 
-    // Calculate translation to center
-    const translateX = (containerWidth - treeWidth * scale) / 2 - minY * scale;
-    const translateY = padding - minX * scale;
+    // Calculate translation to center based on layout orientation
+    let translateX, translateY;
+    if (layout === 't2b') {
+      // Vertical layout: coordinates are swapped (x=vertical, y=horizontal)
+      translateX = (containerWidth - treeWidth * scale) / 2 - minY * scale;
+      translateY = padding - minX * scale;
+    } else {
+      // Horizontal layout: coordinates are normal (x=horizontal, y=vertical)
+      translateX = (containerWidth - treeWidth * scale) / 2 - minX * scale;
+      translateY = padding - minY * scale;
+    }
 
     // Apply transform
     svg.call(
@@ -1352,12 +1622,21 @@
    * Create D3 tree layout
    * @param {number} nodeWidth - Horizontal spacing between nodes (default: 100)
    * @param {number} nodeHeight - Vertical spacing between nodes (default: 80)
+   * @param {string} layout - Layout orientation: 't2b' (vertical) or 'l2r' (horizontal)
    * @returns {Object} - D3 tree layout
    */
-  function createD3TreeLayout(nodeWidth = 100, nodeHeight = 80) {
+  function createD3TreeLayout(
+    nodeWidth = 100,
+    nodeHeight = 80,
+    layout = 't2b',
+  ) {
     const tree = d3
       .tree()
-      .nodeSize([nodeHeight, nodeWidth]) // [height, width] for vertical layout
+      .nodeSize(
+        layout === 't2b'
+          ? [nodeHeight, nodeWidth] // [height, width] for vertical layout (top-to-bottom)
+          : [nodeWidth, nodeHeight], // [width, height] for horizontal layout (left-to-right)
+      )
       .separation((a, b) => {
         // Separation function: siblings get 1, different parents get more space
         return a.parent === b.parent ? 1 : 1.2;
@@ -1370,8 +1649,9 @@
    * Render D3 tree visualization
    * @param {jQuery} wrapper - jQuery wrapper element
    * @param {Object} genmapData - Genmap data from API
+   * @param {string} layout - Layout orientation: 't2b' (vertical) or 'l2r' (horizontal)
    */
-  function renderD3Chart(wrapper, genmapData) {
+  function renderD3Chart(wrapper, genmapData, layout = null) {
     // Check if D3.js is available
     if (typeof d3 === 'undefined') {
       console.error('D3.js is not loaded. Cannot render D3 chart.');
@@ -1383,6 +1663,16 @@
       setMessage(wrapper, 'empty');
       return;
     }
+
+    // Determine graph orientation from section CSS classes (not from layout variable)
+    // This ensures the graph matches the actual section width
+    // Pass wrapper to check for stored orientation (for modal context)
+    const graphOrientation = getGraphOrientationFromSection(wrapper);
+
+    // Still store layout for other purposes (toggle button, etc.)
+    const currentLayout =
+      layout || wrapper.data('currentLayout') || getDefaultLayout();
+    wrapper.data('currentLayout', currentLayout);
 
     // Transform data to D3 hierarchy
     const root = transformToD3Hierarchy(genmapData);
@@ -1398,9 +1688,6 @@
       return;
     }
 
-    // Get current layout for determining container height
-    const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
-
     // Setup SVG container with layout-aware height
     const {
       svg,
@@ -1409,10 +1696,10 @@
       nodesGroup,
       containerWidth,
       containerHeight,
-    } = setupSVGContainer(container, currentLayout);
+    } = setupSVGContainer(container, graphOrientation);
 
-    // Create tree layout
-    const tree = createD3TreeLayout(100, 80); // 100px horizontal, 80px vertical spacing
+    // Create tree layout with orientation based on section classes
+    const tree = createD3TreeLayout(100, 80, graphOrientation); // 100px horizontal, 80px vertical spacing
     const treeData = tree(root);
 
     // Setup zoom and pan
@@ -1425,9 +1712,9 @@
       .attr('id', 'node-text-clip')
       .append('rect')
       .attr('x', -28) // Leave 2px padding on each side (60px width - 4px = 56px)
-      .attr('y', -18) // Leave 2px padding on top/bottom (40px height - 4px = 36px)
+      .attr('y', -13) // Leave 2px padding on top/bottom (30px height - 4px = 26px)
       .attr('width', 56)
-      .attr('height', 36);
+      .attr('height', 26);
 
     // Store references for later use (collapse/expand, popover, etc.)
     wrapper.data('d3Svg', svg);
@@ -1439,14 +1726,21 @@
 
     // Render links (edges) - Phase 4 will implement full rendering
     // D3 v7 API: Use d3.link() with curve for curved paths
-    // For vertical layout, we use linkVertical() without curve, or link() with proper curve
+    // For vertical layout, we use linkVertical(); for horizontal, use linkHorizontal()
     const links = treeData.links();
 
-    // Create link generator with curve for smooth paths
-    const linkPath = d3
-      .linkVertical()
-      .x((d) => d.y) // Horizontal position
-      .y((d) => d.x); // Vertical position
+    // Create link generator based on graph orientation (determined from section classes)
+    // l2r (small-12) = left-to-right graph, t2b (xlarge-6/large-12/medium-6) = top-to-bottom graph
+    const linkPath =
+      graphOrientation === 'l2r'
+        ? d3
+            .linkHorizontal()
+            .x((d) => d.x) // Horizontal position (normal for horizontal layout)
+            .y((d) => d.y) // Vertical position (normal for horizontal layout)
+        : d3
+            .linkVertical()
+            .x((d) => d.y) // Horizontal position (swapped for vertical layout)
+            .y((d) => d.x); // Vertical position (swapped for vertical layout)
 
     // Render links with enhanced styling
     linksGroup
@@ -1474,15 +1768,20 @@
       .enter()
       .append('g')
       .attr('class', 'node')
-      .attr('transform', (d) => `translate(${d.y},${d.x})`);
+      .attr(
+        'transform',
+        graphOrientation === 'l2r'
+          ? (d) => `translate(${d.x},${d.y})` // Horizontal: normal x/y (left-to-right)
+          : (d) => `translate(${d.y},${d.x})`, // Vertical: swap x/y (top-to-bottom)
+      );
 
     // Add node rectangle with status color
     nodeGroup
       .append('rect')
       .attr('width', 60)
-      .attr('height', 40)
+      .attr('height', 30)
       .attr('x', -30) // Center horizontally
-      .attr('y', -20) // Center vertically
+      .attr('y', -15) // Center vertically
       .attr('rx', 4)
       .attr('fill', (d) => {
         // statusColor should already be set by sanitizeNode, but ensure it's computed if missing
@@ -1548,11 +1847,11 @@
       .attr('class', 'node-text-group')
       .attr('clip-path', 'url(#node-text-clip)');
 
-    // Add node title (ellipsized name) - with padding from edges
+    // Add node title (ellipsized name) - centered vertically
     textGroup
       .append('text')
       .attr('x', 0)
-      .attr('y', -8)
+      .attr('y', 0)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
       .attr('font-size', '10px') // Slightly smaller to ensure fit
@@ -1569,26 +1868,21 @@
         return name;
       });
 
-    // Add generation indicator (Gen X) - improved visibility
-    textGroup
-      .append('text')
-      .attr('x', 0)
-      .attr('y', 8)
-      .attr('text-anchor', 'middle')
-      .attr('dominant-baseline', 'middle')
-      .attr('font-size', '9px')
-      .attr('fill', '#ffffff') // White for better visibility on colored backgrounds
-      .attr('font-weight', '600') // Slightly bolder
-      .attr('class', 'node-generation')
-      .attr('opacity', 0.9) // Slight transparency for subtle effect
-      .text((d) => {
-        // Use content field if available (e.g., "Gen 0", "Gen 1"), otherwise calculate from generation
-        if (d.data.content && d.data.content.startsWith('Gen ')) {
-          return d.data.content;
-        }
-        const gen = d.data.generation !== undefined ? d.data.generation : 0;
-        return `Gen ${gen}`;
-      });
+    // Add collapse indicator icon for nodes with collapsed children
+    nodeGroup.each(function (d) {
+      addCollapseIndicatorIcon(
+        d3.select(this),
+        d,
+        wrapper,
+        treeData,
+        linksGroup,
+        nodesGroup,
+        svg,
+        zoomBehavior,
+        containerWidth,
+        containerHeight,
+      );
+    });
 
     // Add click handler for node selection and popover display
     nodeGroup.on('click', function (event, d) {
@@ -1620,6 +1914,7 @@
       containerHeight,
       100,
       80,
+      graphOrientation,
     );
 
     // Show layout toggle button and update icon based on current layout
@@ -1630,6 +1925,12 @@
       updateLayoutToggleIcon(currentLayout);
       // Ensure section width matches layout
       updateSectionWidth(currentLayout);
+    }
+
+    // Show maximize button on desktop
+    const maximizeButton = $('#group-genmap-maximize');
+    if (maximizeButton.length && !isMobileView()) {
+      maximizeButton.show();
     }
 
     // Mark as ready
@@ -1745,6 +2046,123 @@
       switchToVerticalIcon.hide();
       switchToHorizontalIcon.show();
     }
+  }
+
+  /**
+   * Render genmap in modal container
+   * @param {jQuery} modalWrapper - jQuery wrapper for modal genmap container
+   * @param {Object} genmapData - Genmap data from API
+   * @param {string} layout - Layout orientation: 't2b' (vertical) or 'l2r' (horizontal)
+   * @param {string} graphOrientation - Graph orientation from section classes
+   */
+  function renderGenmapInModal(
+    modalWrapper,
+    genmapData,
+    layout,
+    graphOrientation,
+  ) {
+    // Check if D3 visualization should be used
+    const useD3Visualization = typeof d3 !== 'undefined';
+    modalWrapper.data('useD3Visualization', useD3Visualization);
+    modalWrapper.data('currentLayout', layout);
+    modalWrapper.data('currentGenmapData', genmapData);
+    // Store graph orientation for modal (since there's no section to check)
+    modalWrapper.data('graphOrientation', graphOrientation);
+
+    if (useD3Visualization) {
+      renderD3Chart(modalWrapper, genmapData, layout);
+    } else {
+      renderChart(modalWrapper, genmapData, layout);
+    }
+  }
+
+  /**
+   * Open genmap in fullscreen modal
+   */
+  function openGenmapFullModal() {
+    const wrapper = jQuery(TILE_SELECTOR);
+    if (!wrapper.length) {
+      return;
+    }
+
+    // Get current genmap data and layout
+    const genmapData = wrapper.data('currentGenmapData');
+    if (!genmapData) {
+      console.warn('No genmap data available to display in modal');
+      return;
+    }
+
+    const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
+    const graphOrientation = getGraphOrientationFromSection();
+
+    // Get modal and content container
+    const modal = jQuery('#group-genmap-full-modal');
+    const modalContent = jQuery('#group-genmap-full-modal-content');
+    if (!modal.length || !modalContent.length) {
+      console.error('Genmap full modal not found');
+      return;
+    }
+
+    // Close any open popovers from the original genmap
+    hideGenmapPopover(wrapper);
+
+    // Create modal genmap container structure
+    const modalGenmapHtml = `
+      <div id="group-genmap-tile-modal" class="group-genmap-tile" 
+           data-post-id="${wrapper.data('postId') || ''}" 
+           data-post-type="${wrapper.data('postType') || 'groups'}"
+           style="width: 100%; height: 100%;">
+        <div class="group-genmap-message" aria-live="polite" style="display: none;"></div>
+        <div class="group-genmap-chart" role="region"
+             aria-label="${window.dtGroupGenmap?.strings?.loading || 'Group generational map'}"
+             style="width: 100%; height: 100%;"></div>
+      </div>
+    `;
+
+    // Clear and set modal content
+    modalContent.empty().html(modalGenmapHtml);
+
+    // Create wrapper for modal genmap
+    const modalWrapper = jQuery('#group-genmap-tile-modal');
+    if (!modalWrapper.length) {
+      console.error('Failed to create modal genmap container');
+      return;
+    }
+
+    // Open Foundation reveal modal first
+    modal.foundation('open');
+
+    // Wait for modal to be fully opened before rendering (Foundation animation)
+    setTimeout(() => {
+      // Render genmap in modal after modal is opened
+      renderGenmapInModal(
+        modalWrapper,
+        genmapData,
+        currentLayout,
+        graphOrientation,
+      );
+    }, 300);
+
+    // Handle modal close - cleanup
+    modal
+      .off('closed.zf.reveal.genmap')
+      .on('closed.zf.reveal.genmap', function () {
+        // Clean up modal genmap
+        const modalGenmap = jQuery('#group-genmap-tile-modal');
+        if (modalGenmap.length) {
+          // Remove D3 references
+          const svg = modalGenmap.data('d3Svg');
+          if (svg && svg.node()) {
+            svg.remove();
+          }
+          // Clear data
+          modalGenmap.removeData();
+          // Remove container
+          modalGenmap.remove();
+        }
+        // Clear modal content
+        modalContent.empty();
+      });
   }
 
   function openGenmapDetails(wrapper, nodeId, parentId, postType) {
@@ -1992,6 +2410,13 @@
     },
   );
 
+  // Maximize button handler - opens genmap in fullscreen modal
+  jQuery(document).on('click', '#group-genmap-maximize', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    openGenmapFullModal();
+  });
+
   // Layout toggle handler - toggles tile container size and layout
   jQuery(document).on('click', '#group-genmap-layout-toggle', function () {
     const wrapper = jQuery(TILE_SELECTOR);
@@ -2012,12 +2437,12 @@
       updateLayoutToggleIcon(newLayout);
       updateSectionWidth(newLayout);
 
-      // Re-render D3 chart with new container height based on layout
+      // Re-render D3 chart with new layout orientation
       const genmapData = wrapper.data('currentGenmapData');
       if (genmapData) {
         // Small delay to ensure CSS changes are applied before re-rendering
         setTimeout(() => {
-          renderD3Chart(wrapper, genmapData);
+          renderD3Chart(wrapper, genmapData, newLayout);
         }, 100);
       }
     } else {
