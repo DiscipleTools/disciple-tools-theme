@@ -174,9 +174,9 @@ jQuery(document).ready(function ($) {
    */
   function getAppTypeDescription(type) {
     if (type === 'app') {
-      return 'App type selected; which will display the app within the same tab with integrated navigation. Use this for apps that are part of your Disciple Tools system and should maintain the app launcher interface.';
+      return 'Apps will open in the current tab and will keep the Home Screen navigation bar.';
     } else {
-      return 'Link mode shall be used; which will open the app in a new browser tab. Use this for external websites or resources that should open separately from your Disciple Tools interface.';
+      return 'Open the app in a new browser tab. Use this for external websites or resources.';
     }
   }
 

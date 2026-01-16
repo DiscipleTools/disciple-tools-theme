@@ -1048,7 +1048,7 @@ class DT_Home_Admin {
                             </label>
                             <input type="hidden" name="app_type" id="app_type" value="link" />
                             <p class="description" id="app-type-description-add">
-                                <?php esc_html_e( 'Link mode shall be used; which will open the app in a new browser tab. Use this for external websites or resources that should open separately from your Disciple Tools interface.', 'disciple_tools' ); ?>
+                                <?php esc_html_e( 'Open the app in a new browser tab. Use this for external websites or resources.', 'disciple_tools' ); ?>
                             </p>
                         </td>
                     </tr>
@@ -1181,8 +1181,8 @@ class DT_Home_Admin {
                                         $app_color = $has_custom_color ? $app['color'] : '#0a0a0a'; // Default to black (light mode default)
 
                                         if ( strpos( $app['icon'], 'mdi ' ) === 0 ) : ?>
-                                            <i class="<?php echo esc_attr( $app['icon'] ); ?> admin-app-icon" 
-                                               style="font-size: 20px; vertical-align: middle; color: <?php echo esc_attr( $app_color ); ?>;" 
+                                            <i class="<?php echo esc_attr( $app['icon'] ); ?> admin-app-icon"
+                                               style="font-size: 20px; vertical-align: middle; color: <?php echo esc_attr( $app_color ); ?>;"
                                                data-has-custom-color="<?php echo $has_custom_color ? 'true' : 'false'; ?>"
                                                data-custom-color="<?php echo $has_custom_color ? esc_attr( $app['color'] ) : ''; ?>"></i>
                                         <?php else : ?>
