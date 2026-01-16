@@ -545,12 +545,6 @@ jQuery(document).ready(function ($) {
       closeEditModal();
     });
 
-    // Handle cancel edit buttons (for inline forms - legacy support)
-    $(document).on('click', '.cancel-edit', function (e) {
-      e.preventDefault();
-      hideEditForms();
-    });
-
     // Handle add new app button
     $(document).on('click', '.add-new-app-btn', function (e) {
       e.preventDefault();
@@ -1769,13 +1763,6 @@ jQuery(document).ready(function ($) {
     if ($dialog.hasClass('ui-dialog-content')) {
       $dialog.dialog('close');
     }
-  }
-
-  /**
-   * Hide edit forms (legacy function for inline forms)
-   */
-  function hideEditForms() {
-    $('.edit-form-row').remove();
   }
 
   /**
