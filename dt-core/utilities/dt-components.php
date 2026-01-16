@@ -286,4 +286,14 @@ class DT_Components
         </dt-toggle>
         <?php
     }
+
+    public static function render_user_select( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+        ?>
+        <dt-users-connection <?php echo wp_kses_post( $shared_attributes ) ?>
+            value="<?php echo esc_attr( json_encode( $post[$field_key] ) ) ?>"
+        ><?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        </dt-users-connection>
+        <?php
+    }
 }

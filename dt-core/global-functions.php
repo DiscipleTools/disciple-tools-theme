@@ -651,6 +651,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 case 'location_meta':
                     DT_Components::render_location_meta( $field_key, $fields, $post, $params );
                     break;
+                case 'user_select':
+                    DT_Components::render_user_select( $field_key, $fields, $post, $params );
+                    break;
                 default:
                     $is_legacy = true;
                     break;
