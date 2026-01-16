@@ -24,8 +24,7 @@
     margin-top: 15px;
 }
 
-.apps-list,
-.training-list {
+.apps-list {
     margin-top: 20px;
 }
 
@@ -56,17 +55,6 @@
     margin-right: 8px;
 }
 
-/* Button styling */
-.dt-home-section .button-primary {
-    background: #667eea;
-    border-color: #667eea;
-}
-
-.dt-home-section .button-primary:hover {
-    background: #5a6fd8;
-    border-color: #5a6fd8;
-}
-
 /* Apps and Training Management Styles */
 .apps-management-interface,
 .training-management-interface {
@@ -76,15 +64,6 @@
 .add-new-app-btn,
 .add-new-video-btn {
     margin-bottom: 20px;
-    /*background: #667eea !important;
-    border-color: #667eea !important;
-    color: #fff !important;*/
-}
-
-.add-new-app-btn:hover,
-.add-new-video-btn:hover {
-    /*background: #5a6fd8 !important;
-    border-color: #5a6fd8 !important;*/
 }
 
 .add-app-form,
@@ -109,7 +88,6 @@
 .add-app-form-container h4,
 .add-video-form-container h4 {
     margin-top: 0;
-    color: #667eea;
     border-bottom: 1px solid #dcdcde;
     padding-bottom: 10px;
 }
@@ -153,11 +131,11 @@
 }
 
 .button-link-delete {
-    color: #dc3545 !important;
+    color: #dc3545;
 }
 
 .button-link-delete:hover {
-    color: #c82333 !important;
+    color: #c82333;
 }
 
 /* Form improvements */
@@ -175,59 +153,6 @@
 .app-form .form-table td,
 .video-form .form-table td {
     padding: 15px 10px;
-}
-
-/* Edit form styles */
-.edit-form-row {
-    background-color: #f0f8ff !important;
-    border: 2px solid #667eea !important;
-}
-
-.edit-form-container {
-    padding: 20px;
-    background: #fff;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.edit-form-container h4 {
-    margin-top: 0;
-    color: #667eea;
-    border-bottom: 1px solid #dcdcde;
-    padding-bottom: 10px;
-}
-
-.edit-form-container .form-table th {
-    width: 150px;
-    padding: 15px 10px 15px 0;
-    vertical-align: top;
-}
-
-.edit-form-container .form-table td {
-    padding: 15px 10px;
-}
-
-.edit-form-container .form-table input[type="text"],
-.edit-form-container .form-table input[type="url"],
-.edit-form-container .form-table textarea,
-.edit-form-container .form-table select {
-    width: 100%;
-    max-width: 400px;
-}
-
-.edit-form-container .form-table textarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
-.edit-form-container .submit {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #dcdcde;
-}
-
-.edit-form-container .button {
-    margin-right: 10px;
 }
 
 .cancel-edit {
@@ -316,27 +241,7 @@
     width: 60px;
 }
 
-.drag-placeholder {
-    height: 2px !important;
-    background-color: #007cba !important;
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-.drag-placeholder td {
-    height: 2px !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none !important;
-    background-color: #007cba !important;
-}
-
 /* Visual feedback during drag operations */
-.sortable-table tbody tr.drop-indicator-top {
-    border-bottom: 4px solid #007cba;
-}
-
 .sortable-table tbody tr.drop-indicator-bottom {
     border-bottom: 4px solid #007cba;
 }
@@ -404,18 +309,6 @@
     .wp-list-table th,
     .wp-list-table td {
         padding: 8px 4px;
-    }
-
-    .edit-form-container .form-table th,
-    .edit-form-container .form-table td {
-        display: block;
-        width: 100%;
-        padding: 10px 0;
-    }
-
-    .edit-form-container .form-table th {
-        border-bottom: none;
-        padding-bottom: 5px;
     }
 
     /* Mobile drag and drop adjustments */
