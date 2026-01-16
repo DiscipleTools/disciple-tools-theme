@@ -20,8 +20,6 @@ class DT_Contacts_Access extends DT_Module_Base {
         }
         //permissions
         add_filter( 'dt_set_roles_and_permissions', [ $this, 'dt_set_roles_and_permissions' ], 10, 1 );
-        add_filter( 'dt_can_view_permission', [ $this, 'can_view_permission_filter' ], 10, 3 );
-        add_filter( 'dt_can_update_permission', [ $this, 'can_update_permission_filter' ], 10, 3 );
 
         //setup fields
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
@@ -38,7 +36,6 @@ class DT_Contacts_Access extends DT_Module_Base {
 
         //list
         add_filter( 'dt_user_list_filters', [ $this, 'dt_user_list_filters' ], 20, 2 );
-        add_filter( 'dt_filter_access_permissions', [ $this, 'dt_filter_access_permissions' ], 20, 2 );
 
         //api
         add_filter( 'dt_post_update_fields', [ $this, 'dt_post_update_fields' ], 10, 4 );
@@ -85,11 +82,6 @@ class DT_Contacts_Access extends DT_Module_Base {
         $expected_roles['dispatcher']['permissions']['assign_any_contacts'] = true;
         $expected_roles['dispatcher']['permissions']['list_users'] = true;
         $expected_roles['dispatcher']['permissions']['dt_list_users'] = true;
-
-        $expected_roles['administrator']['permissions']['dt_all_access_contacts'] = true;
-        $expected_roles['administrator']['permissions']['assign_any_contacts'] = true;
-        $expected_roles['dt_admin']['permissions']['dt_all_access_contacts'] = true;
-        $expected_roles['dt_admin']['permissions']['assign_any_contacts'] = true;
 
         return $expected_roles;
     }
@@ -1097,80 +1089,6 @@ class DT_Contacts_Access extends DT_Module_Base {
             GROUP BY status.meta_value, pm.meta_value
         ", get_current_user_id(), $user_post ), ARRAY_A);
         return $results;
-    }
-
-    public static function dt_filter_access_permissions( $permissions, $post_type ){
-        if ( $post_type === 'contacts' ){
-            if ( DT_Posts::can_view_all( $post_type ) ){
-                $permissions['type'] = [ 'access', 'user', 'access_placeholder' ];
-            } else if ( current_user_can( 'dt_all_access_contacts' ) ){
-                //give user permission to all contacts af type 'access'
-                $permissions[] = [ 'type' => [ 'access', 'user', 'access_placeholder' ] ];
-            } else if ( current_user_can( 'access_specific_sources' ) ){
-                //give user permission to all 'access' that also have a source the user can view.
-                $allowed_sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
-                if ( empty( $allowed_sources ) || in_array( 'all', $allowed_sources, true ) ){
-                    $permissions['type'] = [ 'access', 'access_placeholder' ];
-                } elseif ( !in_array( 'restrict_all_sources', $allowed_sources ) ){
-                    $permissions[] = [ 'type' => [ 'access' ], 'sources' => $allowed_sources ];
-                }
-            }
-        }
-        return $permissions;
-    }
-
-    // filter for access to a specific record
-    public function can_view_permission_filter( $has_permission, $post_id, $post_type ){
-        if ( $post_type === 'contacts' ){
-            if ( current_user_can( 'dt_all_access_contacts' ) ){
-                $contact_type = get_post_meta( $post_id, 'type', true );
-                if ( $contact_type === 'access' || $contact_type === 'user' || $contact_type === 'access_placeholder' ){
-                    return true;
-                }
-            }
-            //check if the user has access to all posts of a specific source
-            if ( current_user_can( 'access_specific_sources' ) ){
-                $contact_type = get_post_meta( $post_id, 'type', true );
-                if ( $contact_type === 'access' || $contact_type === 'access_placeholder' ){
-                    $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
-                    if ( empty( $sources ) || in_array( 'all', $sources ) ) {
-                        return true;
-                    }
-                    $post_sources = get_post_meta( $post_id, 'sources' );
-                    foreach ( $post_sources as $s ){
-                        if ( in_array( $s, $sources ) ){
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return $has_permission;
-    }
-    public function can_update_permission_filter( $has_permission, $post_id, $post_type ){
-        if ( current_user_can( 'dt_all_access_contacts' ) ){
-            $contact_type = get_post_meta( $post_id, 'type', true );
-            if ( $contact_type === 'access' || $contact_type === 'user' || $contact_type === 'access_placeholder' ){
-                return true;
-            }
-        }
-        //check if the user has access to all posts of a specific source
-        if ( current_user_can( 'access_specific_sources' ) ){
-            $contact_type = get_post_meta( $post_id, 'type', true );
-            if ( $contact_type === 'access' || $contact_type === 'access_placeholder' ){
-                $sources = get_user_option( 'allowed_sources', get_current_user_id() ) ?: [];
-                if ( empty( $sources ) || in_array( 'all', $sources ) ){
-                    return true;
-                }
-                $post_sources = get_post_meta( $post_id, 'sources' );
-                foreach ( $post_sources as $s ){
-                    if ( in_array( $s, $sources ) ){
-                        return true;
-                    }
-                }
-            }
-        }
-        return $has_permission;
     }
 
     public function scripts(){
