@@ -245,7 +245,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     ],
                 ],
                 'tile' => 'health-metrics',
-                'custom_display' => true
+                'display' => 'health-circle',
             ];
 
             $fields['start_date'] = [
@@ -459,65 +459,8 @@ class DT_Groups_Base extends DT_Module_Base {
     }
 
     public function dt_details_additional_section( $section, $post_type ) {
-        self::display_health_metrics_tile( $section, $post_type );
         self::display_four_fields_tile( $section, $post_type );
         self::display_group_relationships_tile( $section, $post_type );
-    }
-
-    private function display_health_metrics_tile( $section, $post_type ) {
-        if ( $post_type === 'groups' && $section === 'health-metrics' ) {
-            $fields = DT_Posts::get_post_field_settings( $post_type );
-            if ( self::church_metrics_is_enabled() ) : ?>
-                <div class="grid-x">
-                    <div style="margin-right:auto; margin-left:auto;min-height:302px">
-                        <div class="health-circle" id="health-items-container">
-                            <div class="health-grid">
-                                <?php $fields = DT_Posts::get_post_field_settings( $post_type );
-                                if ( empty( $fields['health_metrics']['default'] ) ): ?>
-                                    <div class="custom-group-health-item empty-health" id="health-metrics" style="filter: opacity(0.35);">
-                                        <img src="<?php echo esc_attr( get_template_directory_uri() . '/dt-assets/images/dots.svg' ); ?>">
-                                        <div class="empty-health-text">
-                                            <?php echo esc_html( 'Empty', 'disciple_tools' ); ?>
-                                        </div>
-                                    </div>
-                                <?php else : ?>
-                                    <?php foreach ( $fields['health_metrics']['default'] as $key => $option ) : ?>
-                                        <?php if ( $key !== 'church_commitment' ) : ?>
-                                            <?php
-                                            if ( empty( $option['icon'] ) || ! isset( $option['icon'] ) ) {
-                                                $option['icon'] = get_template_directory_uri() . '/dt-assets/images/groups/missing.svg';
-                                            }
-                                            if ( ! isset( $option['description'] ) ) {
-                                                $option['description'] = '';
-                                            }
-                                            ?>
-                                            <div class="health-item" id="icon_<?php echo esc_attr( strtolower( $key ) ) ?>" title="<?php echo esc_attr( $option['description'] ); ?>">
-                                                <?php
-                                                if ( !empty( $option['font-icon'] ) && strpos( $option['font-icon'], 'undefined' ) === false ){
-                                                    ?>
-                                                    <i class="<?php echo esc_html( $option['font-icon'] ); ?> dt-icon"></i>
-                                                    <?php
-                                                } elseif ( !empty( $option['icon'] ) && strpos( $option['icon'], 'undefined' ) === false ) {
-                                                    ?>
-                                                    <img src="<?php echo esc_attr( $option['icon'] ); ?>">
-                                                    <?php
-                                                }
-                                                ?>
-                                            </div>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <span><?php echo esc_html( $fields['health_metrics']['default']['church_commitment']['label'] ); ?></span>
-                    <input type="checkbox" id="is-church-switch" class="dt-switch">
-                    <label class="dt-switch" for="is-church-switch" style="vertical-align: top;"></label>
-                </div>
-        <?php endif;
-        }
     }
 
     private function display_four_fields_tile( $section, $post_type ) {
@@ -600,7 +543,9 @@ class DT_Groups_Base extends DT_Module_Base {
 
         if ( $post_type === 'groups' ){
             $tiles['relationships'] = [ 'label' => __( 'Member List', 'disciple_tools' ) ];
-            $tiles['health-metrics'] = [ 'label' => __( 'Church Health', 'disciple_tools' ) ];
+            if ( self::church_metrics_is_enabled() ){
+                $tiles['health-metrics'] = [ 'label' => __( 'Church Health', 'disciple_tools' ) ];
+            }
             if ( self::four_fields_is_enabled() ){
                 $tiles['four-fields'] = [
                     'label' => __( 'Four Fields', 'disciple_tools' ),
