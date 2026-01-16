@@ -205,9 +205,11 @@ class DT_Home_Admin {
                                             </strong>
                                             <br>
                                             <?php
+                                            $dt_general_settings_link = admin_url( 'admin.php?page=dt_options&tab=general#user-preferences' );
                                             printf(
-                                                esc_html__( 'To enable user registration, visit %s.', 'disciple_tools' ),
-                                                '<a href="' . esc_url( $settings_link ) . '">' . esc_html( $settings_text ) . '</a>'
+                                                esc_html__( 'To enable user registration, you must enable it in both WordPress settings (%1$s) and Disciple Tools settings (%2$s).', 'disciple_tools' ),
+                                                '<a href="' . esc_url( $settings_link ) . '">' . esc_html( $settings_text ) . '</a>',
+                                                '<a href="' . esc_url( $dt_general_settings_link ) . '">' . esc_html__( 'General Settings', 'disciple_tools' ) . '</a>'
                                             );
                                             ?>
                                         <?php endif; ?>
@@ -257,9 +259,11 @@ class DT_Home_Admin {
                                     $settings_link = admin_url( 'options-general.php' );
                                     $settings_text = __( 'General Settings', 'disciple_tools' );
                                 }
+                                $dt_general_settings_link = admin_url( 'admin.php?page=dt_options&tab=general#user-preferences' );
                                 printf(
-                                    esc_html__( 'To change registration settings, visit %s.', 'disciple_tools' ),
-                                    '<a href="' . esc_url( $settings_link ) . '">' . esc_html( $settings_text ) . '</a>'
+                                    esc_html__( 'To change registration settings, visit WordPress %1$s and Disciple Tools %2$s.', 'disciple_tools' ),
+                                    '<a href="' . esc_url( $settings_link ) . '">' . esc_html( $settings_text ) . '</a>',
+                                    '<a href="' . esc_url( $dt_general_settings_link ) . '">' . esc_html__( 'General Settings', 'disciple_tools' ) . '</a>'
                                 );
                                 ?>
                             </p>
