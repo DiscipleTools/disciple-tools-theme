@@ -34,7 +34,8 @@ class DT_Components
             'location_meta',
             'communication_channel',
             'tags',
-            'user_select'
+            'user_select',
+            'health_metrics',
         ] );
         if ( !in_array( $field_type, $allowed_types ) ){
             return;
@@ -205,16 +206,15 @@ class DT_Components
     public static function render_multi_select( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         $options_array = $fields[$field_key]['default'];
-        $options_array = array_map(function ( $key, $value ) {
-            return [
-                'id' => (string) $key,
-                'label' => $value['label'] ?? $key,
-                'color' => $value['color'] ?? null,
-                'icon' => $value['icon'] ?? null,
-            ];
-        }, array_keys( $options_array ), $options_array);
-
         if ( isset( $fields[$field_key]['display'] ) && $fields[$field_key]['display'] === 'typeahead' ) {
+            $options_array = array_map(function ( $key, $value ) {
+                return [
+                    'id' => (string) $key,
+                    'label' => $value['label'] ?? $key,
+                    'color' => $value['color'] ?? null,
+                    'icon' => $value['icon'] ?? null,
+                ];
+            }, array_keys( $options_array ), $options_array);
             // typeahead
             ?>
             <dt-multi-select <?php echo wp_kses_post( $shared_attributes ) ?>
@@ -222,6 +222,14 @@ class DT_Components
                 value='<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>'>
                 <?php dt_render_icon_slot( $fields[$field_key] ) ?>
             </dt-multi-select>
+            <?php
+        } else if ( isset( $fields[$field_key]['display'] ) && $fields[$field_key]['display'] === 'health-circle' ) {
+            // health-circle
+            ?>
+            <dt-church-health-circle <?php echo wp_kses_post( $shared_attributes ) ?>
+                options='<?php echo esc_attr( json_encode( $options_array ) ) ?>'
+                value='<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>'>
+            </dt-church-health-circle>
             <?php
         } else {
             // button-group, non-typeahead
