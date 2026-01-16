@@ -300,9 +300,6 @@ jQuery(document).ready(function ($) {
       // Extract values from general settings fields (they may be outside the form)
       const titleValue = $('#home_screen_title').val() || '';
       const descriptionValue = $('#home_screen_description').val() || '';
-      const enableRolesPermissions = $('#enable_roles_permissions').is(
-        ':checked',
-      );
       const inviteOthers = $('#invite_others').is(':checked');
       const requireLogin = $('#require_login').is(':checked');
 
@@ -310,7 +307,6 @@ jQuery(document).ready(function ($) {
       console.log('Extracted form data:', {
         title: titleValue,
         description: descriptionValue,
-        enable_roles_permissions: enableRolesPermissions,
         invite_others: inviteOthers,
         require_login: requireLogin,
         dt_home_screen_settings: $form
@@ -346,19 +342,6 @@ jQuery(document).ready(function ($) {
       }
       $descriptionField.val(descriptionValue);
 
-      // Handle enable_roles_permissions (checkbox)
-      // Remove any existing hidden field first
-      $form.find('input[name="enable_roles_permissions"]').remove();
-      // Only add the field if checkbox is checked (standard HTML form behavior)
-      if (enableRolesPermissions) {
-        const $checkboxField = $('<input>').attr({
-          type: 'hidden',
-          name: 'enable_roles_permissions',
-          value: '1',
-        });
-        $form.append($checkboxField);
-      }
-
       // Handle invite_others (checkbox)
       // Remove any existing hidden fields first (both the one we added and any existing ones)
       $form.find('input[name="invite_others"]').remove();
@@ -384,9 +367,6 @@ jQuery(document).ready(function ($) {
       console.log('Added hidden fields to form. Form now contains:', {
         title: $form.find('input[name="home_screen_title"]').length,
         description: $form.find('input[name="home_screen_description"]').length,
-        enable_roles_permissions: $form.find(
-          'input[name="enable_roles_permissions"]',
-        ).length,
         invite_others: $form.find('input[name="invite_others"]').length,
         require_login: $form.find('input[name="require_login"]').length,
       });

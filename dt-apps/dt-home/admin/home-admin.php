@@ -157,20 +157,6 @@ class DT_Home_Admin {
                             </tr>
                             <tr>
                                 <th scope="row">
-                                    <label for="enable_roles_permissions"><?php esc_html_e( 'Enable Role-Based Access', 'disciple_tools' ); ?></label>
-                                </th>
-                                <td>
-                                    <input type="checkbox"
-                                           id="enable_roles_permissions"
-                                           name="enable_roles_permissions"
-                                           value="1"
-                                           <?php checked( $settings['enable_roles_permissions'] ?? true ); ?> />
-                                    <label for="enable_roles_permissions"><?php esc_html_e( 'Enable role-based access control for apps', 'disciple_tools' ); ?></label>
-                                    <p class="description"><?php esc_html_e( 'When enabled, you can restrict app access to specific user roles.', 'disciple_tools' ); ?></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
                                     <label for="invite_others"><?php esc_html_e( 'Allow users to invite others', 'disciple_tools' ); ?></label>
                                 </th>
                                 <td>
@@ -648,7 +634,7 @@ class DT_Home_Admin {
         $settings = [
             'title' => sanitize_text_field( wp_unslash( $_POST['home_screen_title'] ?? '' ) ),
             'description' => sanitize_textarea_field( wp_unslash( $_POST['home_screen_description'] ?? '' ) ),
-            'enable_roles_permissions' => isset( $_POST['enable_roles_permissions'] ) ? 1 : 0,
+            'enable_roles_permissions' => 1, // Always enabled by default
         ];
 
         // Handle require_login (checkbox sends "1" when checked, "0" when unchecked via hidden field)
