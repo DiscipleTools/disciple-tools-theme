@@ -82,6 +82,32 @@ const notification_group_header = (record_title) => `
 </div>
 `;
 
+function open_release_modal() {
+  return window
+    .makeRequest('post', 'release/open_modal')
+    .done((data) => {
+      if (data && data.success !== false) {
+        // Remove release notification icon from navbar
+        jQuery('.release-notification-nav-item').remove();
+
+        // Update the global flag
+        if (window.dtReleaseNotification) {
+          window.dtReleaseNotification.hasUnread = false;
+        }
+
+        // Open the modal
+        const modal = jQuery('#release-modal');
+        if (modal.length > 0) {
+          if (!modal.data('zfPlugin')) {
+            new window.Foundation.Reveal(modal);
+          }
+          modal.foundation('open');
+        }
+      }
+    })
+    .fail(window.handleAjaxError);
+}
+
 function notification_template(id, note, is_new, pretty_time) {
   let button = ``;
   let label = ``; // used by the mark_all_viewed()
@@ -171,11 +197,11 @@ function get_notifications(all, reset, dropdown = false, limit = 20) {
       mentions,
     })
     .done((data) => {
-      if (data) {
-        if (reset) {
-          jQueryElements.notificationList.empty();
-        }
+      if (reset) {
+        jQueryElements.notificationList.empty();
+      }
 
+      if (data) {
         const groupedData = groupNotificationsByDayAndRecord(data);
 
         groupedData.forEach((dayGroupedByRecord) => {

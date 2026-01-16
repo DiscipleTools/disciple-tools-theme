@@ -1,0 +1,52 @@
+{
+  "_comment": "Example translations file for batch_translate.py",
+  "_instructions": [
+    "1. Copy this file and rename for your language (e.g., translations_es.json)",
+    "2. Add translations as key-value pairs where key is the English msgid",
+    "3. For context-specific strings, use 'context::msgid' as the key",
+    "4. Keep format specifiers (%s, %1$s, %2$s) in the correct order",
+    "5. Use \\n for newlines in multiline strings",
+    "6. Run: python batch_translate.py <lang>.po translations_<lang>.json"
+  ],
+
+  "_format_options": {
+    "simple": "Just use msgid as key and translation as value",
+    "with_context": "Use 'context::msgid' for strings that have msgctxt",
+    "from_export": "Use --export to generate a template with all untranslated strings"
+  },
+
+  "translations": {
+    "Cancel": "Cancelar",
+    "Save": "Guardar",
+    "Delete": "Eliminar",
+    "Edit": "Editar",
+    "Back": "Volver",
+
+    "Contact": "Contacto",
+    "Contacts": "Contactos",
+    "Group": "Grupo",
+    "Groups": "Grupos",
+
+    "Filter": "Filtro",
+    "Filters": "Filtros",
+    "Custom Filter": "Filtro personalizado",
+
+    "Assigned to me": "Asignados a mí",
+    "Shared with me": "Compartidos conmigo",
+
+    "Split By::Split By": "Dividir por",
+    "List Exports::List Exports": "Exportar lista",
+
+    "Search for fields to add...": "Buscar campos para agregar...",
+    "No fields selected": "No hay campos seleccionados",
+
+    "Emails will be sent from: %s": "Los correos se enviarán desde: %s",
+    "View %s History": "Ver historial de %s",
+
+    "Hello {{name}},\\n\\nPlease click on the button below to access your app.\\n\\n{{link}}\\n\\nThanks!": "Hola {{name}},\\n\\nHaga clic en el botón de abajo para acceder a su aplicación.\\n\\n{{link}}\\n\\n¡Gracias!",
+
+    "%s month ago": "hace %s mes",
+    "%s day ago": "hace %s día",
+    "%s hour ago": "hace %s hora"
+  }
+}

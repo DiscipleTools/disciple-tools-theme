@@ -103,7 +103,11 @@ class DT_Users_Mapbox_Coverage_Map extends DT_Metrics_Chart_Base
 
 
         DT_Mapbox_API::load_mapbox_header_scripts();
-        DT_Mapbox_API::load_mapbox_search_widget_users();
+
+        // load Google Geocoder if key is present.
+        if ( Disciple_Tools_Google_Geocode_API::get_key() ){
+            Disciple_Tools_Google_Geocode_API::load_google_geocoding_scripts();
+        }
     }
 
     public function add_api_routes() {

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2025-10-17T15:27:16+00:00\n"
+"POT-Creation-Date: 2026-01-12T08:19:17+00:00\n"
 "PO-Revision-Date: 2025-03-05 15:59+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Dutch <https://translate.disciple.tools/projects/disciple-"
@@ -51,7 +51,7 @@ msgstr ""
 
 #: 403.php:36
 msgid "Request permission from your administrator."
-msgstr "vraag toestemming van je administrator"
+msgstr "vraag toestemming van je administrator."
 
 #: 403.php:37
 msgid "Request Record Access Permission"
@@ -76,15 +76,15 @@ msgstr ""
 msgid "Submit Request"
 msgstr "Aanvraag indienen"
 
-#: 403.php:55 archive-template.php:1231
+#: 403.php:55 archive-template.php:1202
 #: dt-assets/parts/loop-activity-comment.php:141
 #: dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-assets/parts/modals/modal-new-tag.php:12 dt-contacts/base-setup.php:470
-#: dt-contacts/base-setup.php:505 dt-contacts/module-access.php:451
+#: dt-assets/parts/modals/modal-new-tag.php:12 dt-contacts/base-setup.php:475
+#: dt-contacts/base-setup.php:510 dt-contacts/module-access.php:451
 #: dt-contacts/module-access.php:482 dt-contacts/module-access.php:510
 #: dt-contacts/user-module.php:159 single-template.php:413
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
@@ -92,9 +92,9 @@ msgstr "Aanvraag indienen"
 msgid "Cancel"
 msgstr "annuleren"
 
-#: 403.php:59 archive-template.php:523 archive-template.php:618
-#: archive-template.php:805 archive-template.php:1255
-#: dt-assets/functions/enqueue-scripts.php:461
+#: 403.php:59 archive-template.php:552 archive-template.php:627
+#: archive-template.php:814 archive-template.php:1226
+#: dt-assets/functions/enqueue-scripts.php:449
 #: dt-assets/parts/loop-activity-comment.php:225
 #: dt-assets/parts/loop-activity-comment.php:230
 #: dt-assets/parts/loop-activity-comment.php:273
@@ -121,19 +121,19 @@ msgstr "annuleren"
 #: dt-assets/parts/modals/modal-tasks.php:54
 #: dt-assets/parts/modals/modal-template-metrics.php:8
 #: dt-assets/parts/modals/modal-template-metrics.php:13
-#: dt-contacts/base-setup.php:475 dt-contacts/base-setup.php:510
+#: dt-contacts/base-setup.php:480 dt-contacts/base-setup.php:515
 #: dt-contacts/module-access.php:456 dt-contacts/module-access.php:487
 #: dt-contacts/module-access.php:515 dt-contacts/module-access.php:606
 #: dt-contacts/module-baptisms.php:201 dt-contacts/module-baptisms.php:203
-#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:586
-#: dt-groups/base-setup.php:591 dt-reports/magic-url-bulk-send.php:34
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:587
+#: dt-groups/base-setup.php:592 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
 #: dt-users/user-initial-setup.php:82 single-template.php:418
 #: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-settings.php:602
+#: template-settings.php:596
 msgid "Close"
-msgstr "sluit "
+msgstr "sluit"
 
 #: 404.php:25
 msgid "Epic 404 - Not Found"
@@ -143,129 +143,112 @@ msgstr "Epic 404- niet gevonden"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "De pagina die je zocht is niet gevonden of is verwijderd"
 
-#: archive-template.php:39
-#, php-format
-msgctxt "Create New record"
-msgid "Create New %s"
-msgstr "Maak een nieuwe %s"
-
-#: archive-template.php:43
-msgid "Filters"
-msgstr "Filters"
-
-#: archive-template.php:50 archive-template.php:153 archive-template.php:697
-#: dt-assets/parts/merge-details.php:45 dt-core/global-functions.php:828
-#: dt-core/utilities/dt-components.php:249 dt-posts/custom-post-type.php:20
-#: template-settings.php:399
-#, php-format
-msgctxt "Search 'something'"
-msgid "Search %s"
-msgstr "zoek %s"
-
-#: archive-template.php:51 archive-template.php:154
-#: dt-mapping/geocode-api/mapbox-api.php:293
-msgid "Clear"
-msgstr "Wissen"
-
-#: archive-template.php:55 archive-template.php:56 archive-template.php:158
-#: archive-template.php:159 dt-assets/functions/menu.php:57
-#: dt-assets/parts/modals/modal-advanced-search.php:2
-msgid "Advanced Search"
-msgstr "Geavanceerd zoeken"
-
-#: archive-template.php:60 dt-assets/parts/loop-activity-comment.php:49
+#: archive-template.php:34 dt-assets/parts/loop-activity-comment.php:49
 #: dt-assets/parts/loop-activity-comment.php:166
 #: dt-assets/parts/loop-activity-comment.php:250
 #: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "opmerkingen"
 
-#: archive-template.php:77 archive-template.php:177
-#: dt-users/user-management.php:230
+#: archive-template.php:53
+#, php-format
+msgctxt "Create New record"
+msgid "Create New %s"
+msgstr "Maak een nieuwe %s"
+
+#: archive-template.php:57
+msgid "Filters"
+msgstr "Filters"
+
+#: archive-template.php:64 archive-template.php:136 archive-template.php:706
+#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:252
+#: dt-posts/custom-post-type.php:20 template-settings.php:393
+#, php-format
+msgctxt "Search 'something'"
+msgid "Search %s"
+msgstr "zoek %s"
+
+#: archive-template.php:65 archive-template.php:137
+#: dt-mapping/geocode-api/mapbox-api.php:328
+msgid "Clear"
+msgstr "Wissen"
+
+#: archive-template.php:69 archive-template.php:70 archive-template.php:141
+#: archive-template.php:142 dt-assets/functions/menu.php:57
+#: dt-assets/parts/modals/modal-advanced-search.php:2
+msgid "Advanced Search"
+msgstr "Geavanceerd zoeken"
+
+#: archive-template.php:76 dt-users/user-management.php:234
 msgid "Search"
 msgstr "Zoek"
 
-#: archive-template.php:86 archive-template.php:182
+#: archive-template.php:85 archive-template.php:161
 msgid "Choose which fields to search"
 msgstr "Kies welke velden u wilt doorzoeken"
 
-#: archive-template.php:95 archive-template.php:191
+#: archive-template.php:94 archive-template.php:170
 msgid "Search All Fields"
 msgstr "Alle velden doorzoeken"
 
-#: archive-template.php:105 archive-template.php:201
+#: archive-template.php:104 archive-template.php:180
 msgid "Communication Channels"
 msgstr "Communicatie kanalen"
 
-#: archive-template.php:125 archive-template.php:221 archive-template.php:612
+#: archive-template.php:124 archive-template.php:200 archive-template.php:621
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "Toepassen"
 
-#: archive-template.php:126 archive-template.php:222 archive-template.php:613
+#: archive-template.php:125 archive-template.php:201 archive-template.php:622
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "Terugzetten naar standaardwaarden"
 
-#: archive-template.php:230
+#: archive-template.php:209
 #, php-format
 msgctxt "Contacts Filters"
 msgid "%s Filters"
 msgstr "%s Filters"
 
-#: archive-template.php:241
+#: archive-template.php:220
 msgid "Create custom filter"
 msgstr "Aangepast filter maken"
 
-#: archive-template.php:248
-msgctxt "Split By"
-msgid "Split By"
-msgstr ""
-
-#: archive-template.php:310
-#, fuzzy
-#| msgid "No duplicates found."
-msgid "No results found"
-msgstr "Geen duplicaten gevonden"
-
-#: archive-template.php:315
+#: archive-template.php:227
 msgctxt "List Exports"
 msgid "List Exports"
-msgstr ""
+msgstr "Lijst exporteren"
 
-#: archive-template.php:327 archive-template.php:350
-#, fuzzy
-#| msgid "List"
+#: archive-template.php:239 archive-template.php:262
 msgid "CSV List"
-msgstr "Lijst"
+msgstr "CSV-lijst"
 
-#: archive-template.php:331 archive-template.php:354
+#: archive-template.php:243 archive-template.php:266
 msgid "BCC Email List"
-msgstr ""
+msgstr "BCC e-maillijst"
 
-#: archive-template.php:332
-#, fuzzy
-#| msgid "Phone"
+#: archive-template.php:244
 msgid "Phone List"
-msgstr "Telefoon"
+msgstr "Telefoonlijst"
 
-#: archive-template.php:337 archive-template.php:362
-#, fuzzy
-#| msgid "List"
+#: archive-template.php:249 archive-template.php:274
 msgid "Map List"
-msgstr "Lijst"
+msgstr "Kaartlijst"
 
-#: archive-template.php:346
+#: archive-template.php:258
 msgid "List Exports Help"
-msgstr ""
+msgstr "Hulp bij lijst exporteren"
 
-#: archive-template.php:351
+#: archive-template.php:263
 msgid ""
 "Using the current filter, this is a simple way to export basic information "
 "and use it in other applications."
 msgstr ""
+"Met het huidige filter is dit een eenvoudige manier om basisinformatie te "
+"exporteren en in andere toepassingen te gebruiken."
 
-#: archive-template.php:355
+#: archive-template.php:267
 msgid ""
 "Using the current filter, the available emails are grouped by 50 and can be "
 "launched into your default email client by group. Many email providers put a "
@@ -274,405 +257,573 @@ msgid ""
 "provider. The BCC email tool is meant to assist small group emails. Bulk "
 "email should be handled through bulk email providers."
 msgstr ""
+"Met het huidige filter worden de beschikbare e-mails gegroepeerd per 50 en "
+"kunnen per groep worden geopend in uw standaard e-mailprogramma. Veel e-"
+"mailproviders hebben een limiet van 50 voor BCC-e-mails. U kunt alle groepen "
+"tegelijk openen met de knop \"Alles openen\". Als de lijst te groot is, "
+"kan dit uw e-mailprovider waarschuwen. De BCC e-mail tool is bedoeld voor "
+"kleine groepen e-mails. Bulk e-mail moet worden afgehandeld via bulk e-"
+"mailproviders."
 
-#: archive-template.php:358
-#, fuzzy
-#| msgid "Member List"
+#: archive-template.php:270
 msgid "Phone Number List"
-msgstr "Leden lijst"
+msgstr "Telefoonnummerlijst"
 
-#: archive-template.php:359
+#: archive-template.php:271
 msgid ""
 "Using the current filter, this is intended for copy pasting a list of "
 "numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
 "starting a group conversation."
 msgstr ""
+"Met het huidige filter is dit bedoeld om een lijst met nummers te kopieren "
+"en plakken in een messaging app, WhatsApp, Signal, etc. Dit is een snelle "
+"manier om een groepsgesprek te starten."
 
-#: archive-template.php:363
+#: archive-template.php:275
 msgid ""
 "Using the current filter, this creates a basic points map of known locations "
 "of listed individuals."
 msgstr ""
+"Met het huidige filter wordt een eenvoudige puntenkaart gemaakt van bekende "
+"locaties van de vermelde personen."
 
-#: archive-template.php:389
+#: archive-template.php:339
+msgid "No results found"
+msgstr "Geen resultaten gevonden"
+
+#: archive-template.php:348
 #, php-format
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "%s Lijst"
 
-#: archive-template.php:398
+#: archive-template.php:357
 msgid "Sort"
 msgstr "sorteer"
 
-#: archive-template.php:403
+#: archive-template.php:362
 msgid "Newest"
 msgstr "nieuwste"
 
-#: archive-template.php:408
+#: archive-template.php:367
 msgid "Oldest"
 msgstr "oudste"
 
-#: archive-template.php:413
+#: archive-template.php:372
 msgid "Most recently modified"
 msgstr "meest recent aangepast"
 
-#: archive-template.php:418
+#: archive-template.php:377
 msgid "Least recently modified"
 msgstr "minst recent aangepast"
 
-#: archive-template.php:428 template-new-bulk-post.php:89
+#: archive-template.php:387 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "Velden"
 
-#: archive-template.php:435
+#: archive-template.php:394
 msgid "Bulk Edit"
 msgstr "Bulkbewerking"
 
-#: archive-template.php:442
-#, fuzzy
-#| msgid "Bulk Send App"
+#: archive-template.php:401
 msgid "Bulk Send Message"
-msgstr "Bulkverstuur-app"
+msgstr "Bulkbericht verzenden"
 
-#: archive-template.php:476 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:435 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
 msgid "More"
 msgstr "Meer"
 
-#: archive-template.php:497
+#: archive-template.php:456
 #: dt-assets/parts/modals/modal-advanced-search.php:108
-#: dt-contacts/base-setup.php:324 dt-users/users.php:550
+#: dt-contacts/base-setup.php:329 dt-users/users.php:554
 msgid "Archived"
 msgstr "Gearchiveerd"
 
-#: archive-template.php:501
-#, fuzzy, php-format
-#| msgid "New %s"
+#: archive-template.php:460
+#, php-format
 msgctxt "Show archived"
 msgid "Show %s"
-msgstr "Nieuwe %s"
+msgstr "Toon %s"
 
-#: archive-template.php:526
+#: archive-template.php:538 dt-apps/dt-home/magic-link-home-app.php:238
+msgid "Loading..."
+msgstr "aan het laden....."
+
+#: archive-template.php:543 dt-assets/functions/enqueue-scripts.php:418
+msgid "Load More"
+msgstr "Laad meer"
+
+#: archive-template.php:551
+msgid "Actions"
+msgstr "Acties"
+
+#: archive-template.php:563
 msgid "Choose which fields to display as columns in the list"
 msgstr "Kies welke velden u als kolommen in de lijst wilt weergeven"
 
-#: archive-template.php:560
-#, fuzzy
-#| msgid "Hide fields"
+#: archive-template.php:569
 msgid "Add fields:"
-msgstr "Velden verbergen"
+msgstr "Velden toevoegen:"
 
-#: archive-template.php:563
+#: archive-template.php:572
 msgid "Search for fields to add..."
-msgstr ""
+msgstr "Zoek naar velden om toe te voegen..."
 
-#: archive-template.php:585
-#, fuzzy
-#| msgid "Updated fields"
+#: archive-template.php:594
 msgid "Enabled fields:"
-msgstr "Bijgewerkte velden"
+msgstr "Ingeschakelde velden:"
 
-#: archive-template.php:589
+#: archive-template.php:598
 msgid "No fields selected"
-msgstr ""
+msgstr "Geen velden geselecteerd"
 
-#: archive-template.php:622
+#: archive-template.php:631
 #, php-format
 msgid ""
-"Select all the  %1$s you want to update from the list, and update them below"
-msgstr ""
-"Selecteer alle %1$s uit de lijst die u wilt bijwerken en werk ze hieronder "
-"bij"
+"Select all the %1$s you want to update from the list, and update them below"
+msgstr "Selecteer alle %1$s die u wilt bijwerken uit de lijst en werk ze hieronder bij"
 
-#: archive-template.php:640 dt-assets/parts/modals/modal-share.php:27
+#: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
 #: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:843
+#: dt-core/global-functions.php:808
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "zoek gebruikers"
 
-#: archive-template.php:685
+#: archive-template.php:694
 msgid "Share with:"
 msgstr "Delen met:"
 
-#: archive-template.php:705
-#, fuzzy
-#| msgctxt "message"
-#| msgid "Unshared with %s"
+#: archive-template.php:714
 msgid "Unshare with selected user"
-msgstr "Niet gedeeld met %s"
+msgstr "Delen opheffen met geselecteerde gebruiker"
 
-#: archive-template.php:717 dt-assets/functions/details-bar.php:199
+#: archive-template.php:726 dt-assets/functions/details-bar.php:199
 #: dt-posts/custom-post-type.php:217
 msgid "Follow"
 msgstr "volg"
 
-#: archive-template.php:722 dt-assets/parts/loop-activity-comment.php:22
+#: archive-template.php:731 dt-assets/parts/loop-activity-comment.php:22
 #: dt-assets/parts/modals/modal-help.php:41
 msgid "Comments and Activity"
 msgstr "opmerkingen en activiteiten"
 
-#: archive-template.php:727 dt-assets/parts/loop-activity-comment.php:39
+#: archive-template.php:736 dt-assets/parts/loop-activity-comment.php:39
 msgctxt "input field placeholder"
 msgid "Write your comment or note here"
 msgstr "schrijf jouw commentaar of notitie hier"
 
-#: archive-template.php:735 dt-assets/parts/loop-activity-comment.php:59
+#: archive-template.php:744 dt-assets/parts/loop-activity-comment.php:59
 msgid "Type:"
 msgstr "Type:"
 
-#: archive-template.php:755 dt-users/template-new-user.php:127
+#: archive-template.php:764 dt-users/template-new-user.php:127
 #: dt-users/template-new-user.php:234
 msgid "See More Options"
 msgstr "Meer opties zien"
 
-#: archive-template.php:756 dt-users/template-new-user.php:130
+#: archive-template.php:765 dt-users/template-new-user.php:130
 #: dt-users/template-new-user.php:237
 msgid "See Fewer Options"
 msgstr "Minder opties zien"
 
-#: archive-template.php:783 dt-assets/parts/loop-activity-comment.php:276
+#: archive-template.php:792 dt-assets/parts/loop-activity-comment.php:276
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "update"
 
-#: archive-template.php:784 archive-template.php:989
-#: dt-assets/functions/enqueue-scripts.php:341
-#: dt-reports/magic-url-bulk-send.php:95
+#: archive-template.php:793 archive-template.php:997
+#: dt-assets/functions/enqueue-scripts.php:333
+#: dt-reports/magic-url-bulk-send.php:94
 msgid "Make Selections Below"
 msgstr "Maak hieronder selecties"
 
-#: archive-template.php:792 dt-assets/functions/enqueue-scripts.php:183
-#: dt-assets/functions/enqueue-scripts.php:224
-#: dt-assets/functions/enqueue-scripts.php:289
-#: dt-assets/functions/enqueue-scripts.php:329
+#: archive-template.php:801 dt-assets/functions/enqueue-scripts.php:186
+#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/functions/enqueue-scripts.php:280
+#: dt-assets/functions/enqueue-scripts.php:320
 #: dt-assets/parts/loop-activity-comment.php:228 single-template.php:416
 msgid "Delete"
 msgstr "verwijder"
 
-#: archive-template.php:795 dt-assets/functions/enqueue-scripts.php:342
-#, fuzzy
-#| msgid "Make Selections Below"
+#: archive-template.php:804 dt-assets/functions/enqueue-scripts.php:334
 msgid "Delete Selections Below"
-msgstr "Maak hieronder selecties"
+msgstr "Onderstaande selecties verwijderen"
 
-#: archive-template.php:809
-#, fuzzy, php-format
-#| msgid "Select all the %1$s to whom you want to send app links."
+#: archive-template.php:818
+#, php-format
 msgid "Select all the %1$s to whom you want to message."
-msgstr "Selecteer alle %1$s naar wie je app-links wilt sturen."
-
-#: archive-template.php:848
-msgid "Message subject"
-msgstr ""
-
-#: archive-template.php:850
-msgid "A valid message subject must be entered."
-msgstr ""
-
-#: archive-template.php:852
-msgid "Message from name"
-msgstr ""
-
-#: archive-template.php:854
-msgid "A valid from name must be specified."
-msgstr ""
+msgstr "Selecteer alle %1$s naar wie je een bericht wilt sturen."
 
 #: archive-template.php:856
-msgid "Message reply to"
-msgstr ""
+msgid "Message subject"
+msgstr "Berichtonderwerp"
 
 #: archive-template.php:858
-msgid "A valid reply to email address must be specified."
-msgstr ""
+msgid "A valid message subject must be entered."
+msgstr "Er moet een geldig berichtonderwerp worden ingevoerd."
 
 #: archive-template.php:860
+msgid "Message from name"
+msgstr "Bericht van naam"
+
+#: archive-template.php:862
+msgid "A valid from name must be specified."
+msgstr "Er moet een geldige afzendernaam worden opgegeven."
+
+#: archive-template.php:864
+msgid "Message reply to"
+msgstr "Bericht antwoorden aan"
+
+#: archive-template.php:866
+msgid "A valid reply to email address must be specified."
+msgstr "Er moet een geldig antwoord-e-mailadres worden opgegeven."
+
+#: archive-template.php:868
 #, php-format
 msgid "Emails will be sent from: %s"
-msgstr ""
+msgstr "E-mails worden verzonden vanaf: %s"
 
-#: archive-template.php:883
+#: archive-template.php:891
 msgid "Please ensure a valid send method has been specified."
-msgstr ""
+msgstr "Zorg ervoor dat een geldige verzendmethode is opgegeven."
 
-#: archive-template.php:885
+#: archive-template.php:893
 msgid "Message"
-msgstr ""
+msgstr "Bericht"
 
-#: archive-template.php:887
+#: archive-template.php:895
 msgid "Please ensure a valid send message has been entered."
-msgstr ""
+msgstr "Zorg ervoor dat een geldig bericht is ingevoerd."
 
-#: archive-template.php:888 dt-reports/magic-url-bulk-send.php:58
+#: archive-template.php:896 dt-reports/magic-url-bulk-send.php:57
 #: dt-reports/magic-url-setup.php:254
 msgid "Message placeholders"
-msgstr ""
+msgstr "Berichtplaatshouders"
 
-#: archive-template.php:919 dt-reports/magic-url-bulk-send.php:64
+#: archive-template.php:927 dt-reports/magic-url-bulk-send.php:63
 #: dt-reports/magic-url-setup.php:260
-#, fuzzy
-#| msgid "Create Record"
 msgid "Name of the Record"
-msgstr "Dossier aanmaken"
+msgstr "Naam van het dossier"
 
-#: archive-template.php:941
+#: archive-template.php:949
 msgid "Message Placeholder Help"
-msgstr ""
+msgstr "Hulp bij berichtplaatshouders"
 
-#: archive-template.php:984 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:992 dt-reports/magic-url-bulk-send.php:89
 msgid "Send to selected records"
 msgstr "Verzenden naar geselecteerde records"
 
-#: archive-template.php:985 dt-reports/magic-url-bulk-send.php:91
+#: archive-template.php:993 dt-reports/magic-url-bulk-send.php:90
 msgid "You must select at least one record"
 msgstr "U moet ten minste één record selecteren"
 
-#: archive-template.php:988 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:996 dt-reports/magic-url-bulk-send.php:93
 #: dt-reports/magic-url-setup.php:503
 msgid "Send"
 msgstr "Versturen"
 
-#: archive-template.php:988 dt-reports/magic-url-bulk-send.php:94
+#: archive-template.php:996 dt-reports/magic-url-bulk-send.php:93
 msgid "Links"
 msgstr "Links"
 
-#: archive-template.php:993
+#: archive-template.php:1001
 msgid "Ensure valid record selections have been made."
-msgstr ""
+msgstr "Zorg ervoor dat geldige dossierselecties zijn gemaakt."
 
-#: archive-template.php:1032
-msgid "Loading..."
-msgstr "aan het laden....."
-
-#: archive-template.php:1037 dt-assets/functions/enqueue-scripts.php:430
-msgid "Load More"
-msgstr "Laad meer"
-
-#: archive-template.php:1049
+#: archive-template.php:1020
 msgid "Field Name"
 msgstr "Veldnaam"
 
-#: archive-template.php:1105
+#: archive-template.php:1076
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Typ om te zoeken"
 
-#: archive-template.php:1114
+#: archive-template.php:1085
 #, php-format
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "Alle %1$s met %2$s"
 
-#: archive-template.php:1117
+#: archive-template.php:1088
 #, php-format
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "Alle %1$s zonder %2$s"
 
-#: archive-template.php:1124
+#: archive-template.php:1095
 msgid "Filter for subassigned OR Assigned To"
 msgstr "filter voor sub-toegewezen OF Toegewezen Aan"
 
-#: archive-template.php:1133 dt-assets/functions/enqueue-scripts.php:332
+#: archive-template.php:1104 dt-assets/functions/enqueue-scripts.php:323
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "datum van aanmaak"
 
-#: archive-template.php:1140 archive-template.php:1147
+#: archive-template.php:1111 archive-template.php:1118
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:970
 msgid "None Set"
 msgstr "Niets ingesteld"
 
-#: archive-template.php:1161 archive-template.php:1162
-#: dt-assets/functions/enqueue-scripts.php:240 dt-core/global-functions.php:722
+#: archive-template.php:1132 archive-template.php:1133
+#: dt-assets/functions/enqueue-scripts.php:243 dt-core/global-functions.php:723
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-reports/magic-url-setup.php:474 dt-users/user-management.php:196
-#: template-settings.php:313 template-settings.php:577
+#: template-settings.php:314 template-settings.php:571
 msgid "No"
 msgstr "nee"
 
-#: archive-template.php:1168 archive-template.php:1169
-#: dt-assets/functions/enqueue-scripts.php:239 dt-core/global-functions.php:723
+#: archive-template.php:1139 archive-template.php:1140
+#: dt-assets/functions/enqueue-scripts.php:242 dt-core/global-functions.php:724
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-reports/magic-url-setup.php:473
-#: dt-users/user-management.php:195 template-settings.php:312
-#: template-settings.php:576
+#: dt-users/user-management.php:195 template-settings.php:313
+#: template-settings.php:570
 msgid "Yes"
 msgstr "ja"
 
-#: archive-template.php:1173
+#: archive-template.php:1144
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Begin van tijdperiode"
 
-#: archive-template.php:1176 archive-template.php:1187
+#: archive-template.php:1147 archive-template.php:1158
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "verwijder"
 
-#: archive-template.php:1183
+#: archive-template.php:1154
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Eind van tijdperiode"
 
-#: archive-template.php:1198
-#, fuzzy
-#| msgid "Filter Name"
+#: archive-template.php:1169
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
-msgstr "Filter naam"
+msgstr "Filteren op waarde"
 
-#: archive-template.php:1203
-#, fuzzy, php-format
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
+#: archive-template.php:1174
+#, php-format
 msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
-msgstr "Alle %1$s met %2$s"
+msgstr "Alle %1$s met gefilterde waarde in %2$s"
 
-#: archive-template.php:1207
-#, fuzzy, php-format
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
+#: archive-template.php:1178
+#, php-format
 msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
-msgstr "Alle %1$s zonder %2$s"
+msgstr "Alle %1$s zonder gefilterde waarde in %2$s"
 
-#: archive-template.php:1211
-#, fuzzy, php-format
-#| msgctxt "All Contacts with Is Coaching"
-#| msgid "All %1$s with %2$s"
+#: archive-template.php:1182
+#, php-format
 msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
-msgstr "Alle %1$s met %2$s"
+msgstr "Alle %1$s met enige waarde in %2$s"
 
-#: archive-template.php:1215
-#, fuzzy, php-format
-#| msgctxt "All Contacts without Is Coaching"
-#| msgid "All %1$s without %2$s"
+#: archive-template.php:1186
+#, php-format
 msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
-msgstr "Alle %1$s zonder %2$s"
+msgstr "Alle %1$s zonder waarde in %2$s"
 
-#: archive-template.php:1239
+#: archive-template.php:1210
 msgid "Filter Name"
 msgstr "Filter naam"
 
-#: archive-template.php:1244
+#: archive-template.php:1215
 msgid "Filter Records"
 msgstr "filter bestanden"
 
-#: archive-template.php:1248 dt-assets/functions/enqueue-scripts.php:292
-#: dt-assets/functions/enqueue-scripts.php:327
-#: dt-users/user-initial-setup.php:79 template-settings.php:745
+#: archive-template.php:1219 dt-assets/functions/enqueue-scripts.php:283
+#: dt-assets/functions/enqueue-scripts.php:318
+#: dt-users/user-initial-setup.php:79 template-settings.php:739
 msgid "Save"
 msgstr "opslaan"
+
+#: dt-apps/dt-home/frontend/home-screen.php:17
+#: dt-apps/dt-home/frontend/home-screen.php:23
+#: dt-apps/dt-home/magic-link-home-app.php:235
+msgid "Welcome to your Home Screen"
+msgstr "Welkom op uw startscherm"
+
+#: dt-apps/dt-home/frontend/home-screen.php:18
+#: dt-apps/dt-home/frontend/home-screen.php:24
+msgid "Your personalized dashboard for apps and training."
+msgstr "Uw gepersonaliseerd dashboard voor apps en training."
+
+#: dt-apps/dt-home/frontend/home-screen.php:75
+#: dt-apps/dt-home/frontend/training-screen.php:28
+msgid "Toggle menu"
+msgstr "Menu in-/uitschakelen"
+
+#: dt-apps/dt-home/frontend/home-screen.php:93
+#: dt-apps/dt-home/magic-link-home-app.php:236 template-settings.php:258
+msgid "Your Apps"
+msgstr "Je apps"
+
+#: dt-apps/dt-home/frontend/home-screen.php:110
+msgid "Your Links"
+msgstr "Uw links"
+
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:45
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:47
+#: template-settings.php:57
+msgid "Apps"
+msgstr "Apps"
+
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:49
+#: dt-core/configuration/config-site-defaults.php:442
+#: dt-login/login-template.php:529
+msgid "Home"
+msgstr "Thuis"
+
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:52
+#: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:54
+#: dt-assets/parts/nav-offcanvas.php:66 dt-assets/parts/nav-topbar.php:200
+#: dt-users/template-no-permission.php:94
+msgid "Log Out"
+msgstr "Uitloggen"
+
+#: dt-apps/dt-home/frontend/partials/launcher-wrapper.php:44
+msgid "App Launcher"
+msgstr "App-starter"
+
+#: dt-apps/dt-home/frontend/partials/launcher-wrapper.php:59
+msgid "App Content"
+msgstr "App-inhoud"
+
+#: dt-apps/dt-home/frontend/training-screen.php:6
+#: dt-apps/dt-home/frontend/training-screen.php:10
+msgid "Training"
+msgstr "Training"
+
+#: dt-apps/dt-home/frontend/training-screen.php:7
+#: dt-apps/dt-home/frontend/training-screen.php:11
+msgid "Watch training videos and tutorials."
+msgstr "Bekijk trainingsvideo's en handleidingen."
+
+#: dt-apps/dt-home/frontend/training-screen.php:44
+#: dt-apps/dt-home/magic-link-home-app.php:237
+msgid "Training Videos"
+msgstr "Trainingsvideo's"
+
+#: dt-apps/dt-home/includes/class-home-apps.php:305
+#: dt-apps/dt-home/includes/class-home-apps.php:807
+msgid "App title is required."
+msgstr "App-titel is vereist."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:359
+msgid "Failed to save app."
+msgstr "App opslaan mislukt."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:374
+#: dt-apps/dt-home/includes/class-home-apps.php:583
+msgid "App not found."
+msgstr "App niet gevonden."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:461
+#: dt-apps/dt-home/includes/class-home-apps.php:570
+msgid "Failed to update app."
+msgstr "App bijwerken mislukt."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:596
+msgid "Failed to delete app."
+msgstr "App verwijderen mislukt."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:643
+msgid "Failed to reorder apps."
+msgstr "Apps herschikken mislukt."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:811
+msgid "App URL must be a valid URL."
+msgstr "App-URL moet een geldige URL zijn."
+
+#: dt-apps/dt-home/includes/class-home-apps.php:815
+msgid "App color must be a valid hex color."
+msgstr "App-kleur moet een geldige hexadecimale kleur zijn."
+
+#: dt-apps/dt-home/includes/class-home-roles-permissions.php:73
+msgid "Access to the Home Screen dashboard"
+msgstr "Toegang tot het startscherm dashboard"
+
+#: dt-apps/dt-home/includes/class-home-roles-permissions.php:83
+#, php-format
+msgid "Access to %s app"
+msgstr "Toegang tot %s app"
+
+#: dt-apps/dt-home/includes/class-home-training.php:93
+#: dt-apps/dt-home/includes/class-home-training.php:342
+msgid "Video title is required."
+msgstr "Videotitel is vereist."
+
+#: dt-apps/dt-home/includes/class-home-training.php:97
+#: dt-apps/dt-home/includes/class-home-training.php:346
+msgid "Video URL is required."
+msgstr "Video-URL is vereist."
+
+#: dt-apps/dt-home/includes/class-home-training.php:140
+msgid "Failed to save video."
+msgstr "Video opslaan mislukt."
+
+#: dt-apps/dt-home/includes/class-home-training.php:152
+#: dt-apps/dt-home/includes/class-home-training.php:200
+msgid "Video not found."
+msgstr "Video niet gevonden."
+
+#: dt-apps/dt-home/includes/class-home-training.php:188
+msgid "Failed to update video."
+msgstr "Video bijwerken mislukt."
+
+#: dt-apps/dt-home/includes/class-home-training.php:213
+msgid "Failed to delete video."
+msgstr "Video verwijderen mislukt."
+
+#: dt-apps/dt-home/includes/class-home-training.php:260
+msgid "Failed to reorder videos."
+msgstr "Video's herschikken mislukt."
+
+#: dt-apps/dt-home/includes/class-home-training.php:348
+msgid "Video URL must be a valid URL."
+msgstr "Video-URL moet een geldige URL zijn."
+
+#: dt-apps/dt-home/magic-link-home-app.php:64
+#: dt-assets/parts/modals/modal-new-contact.php:7
+#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
+#: dt-metrics/combined/locations-list.php:90 dt-metrics/records/genmap.php:166
+#: dt-posts/custom-post-type.php:170 dt-users/template-user-management.php:190
+#: template-settings.php:147
+msgid "Name"
+msgstr "naam"
+
+#: dt-apps/dt-home/magic-link-home-app.php:239
+msgid "Login Required"
+msgstr "Inloggen vereist"
+
+#: dt-apps/dt-home/magic-link-home-app.php:240
+msgid "Please log in to access your Home Screen."
+msgstr "Log in om toegang te krijgen tot uw startscherm."
+
+#: dt-apps/dt-home/magic-link-home-app.php:241
+msgid "Username or Email"
+msgstr "Gebruikersnaam of e-mail"
+
+#: dt-apps/dt-home/magic-link-home-app.php:242 dt-login/login-template.php:489
+#: dt-users/template-new-user.php:121 dt-users/template-new-user.php:122
+#: template-settings.php:655
+msgid "Password"
+msgstr "Paswoord"
+
+#: dt-apps/dt-home/magic-link-home-app.php:243
+msgid "Log In"
+msgstr "Inloggen"
 
 #: dt-assets/functions/details-bar.php:58
 #: dt-assets/functions/details-bar.php:275
 #: dt-core/configuration/config-site-defaults.php:276
-#: dt-workflows/update-required.php:86 dt-workflows/update-required.php:136
+#: dt-workflows/update-required.php:88 dt-workflows/update-required.php:140
 msgid "Update Needed"
 msgstr "Update nodig"
 
@@ -690,7 +841,7 @@ msgstr "Verwijder %s"
 #, php-format
 msgctxt "View Contact History"
 msgid "View %s History"
-msgstr ""
+msgstr "Bekijk %s geschiedenis"
 
 #: dt-assets/functions/details-bar.php:87
 #, php-format
@@ -704,11 +855,9 @@ msgid "Previous record"
 msgstr "Vorig dossier"
 
 #: dt-assets/functions/details-bar.php:121
-#, fuzzy
-#| msgid "Record Hits:"
 msgctxt "the picture of the record"
 msgid "Record Picture"
-msgstr "Overeenkomsten:"
+msgstr "Dossierafbeelding"
 
 #: dt-assets/functions/details-bar.php:153
 #: dt-assets/functions/details-bar.php:329
@@ -737,20 +886,18 @@ msgid "Share"
 msgstr "deel"
 
 #: dt-assets/functions/details-bar.php:301
-#, fuzzy
-#| msgid "Record Hits:"
 msgid "Record Picture"
-msgstr "Overeenkomsten:"
+msgstr "Dossierafbeelding"
 
 #: dt-assets/functions/enqueue-scripts.php:116
 #: dt-metrics/records/date-range-activity.php:111
-#: template-merge-post-details.php:103
+#: template-merge-post-details.php:106
 msgid "Regions of Focus"
 msgstr "Focus gebieden"
 
 #: dt-assets/functions/enqueue-scripts.php:117
 #: dt-metrics/records/date-range-activity.php:112
-#: template-merge-post-details.php:104
+#: template-merge-post-details.php:107
 msgid "All Locations"
 msgstr "alle locaties"
 
@@ -767,7 +914,7 @@ msgstr "Geen resultaten gevonden voor \"{{query}}\""
 #, php-format
 msgctxt "Showing 30 items"
 msgid "Showing %s items. Type to find more."
-msgstr "%s items worden weergegeven. Typ om er meer te  vinden."
+msgstr "%s items worden weergegeven. Typ om er meer te vinden."
 
 #: dt-assets/functions/enqueue-scripts.php:121
 #, php-format
@@ -776,21 +923,21 @@ msgid "Showing %1$s items matching %2$s"
 msgstr "%1$s items weergegeven die overeenkomen met %2$s"
 
 #: dt-assets/functions/enqueue-scripts.php:122
-#: dt-assets/functions/enqueue-scripts.php:182
-#: dt-assets/functions/enqueue-scripts.php:328 template-settings.php:119
-#: template-settings.php:605
+#: dt-assets/functions/enqueue-scripts.php:185
+#: dt-assets/functions/enqueue-scripts.php:319 template-settings.php:120
+#: template-settings.php:599
 msgid "Edit"
 msgstr "wijzig"
 
 #: dt-assets/functions/enqueue-scripts.php:123
-#: dt-reports/magic-url-setup.php:496 template-settings.php:303
+#: dt-reports/magic-url-setup.php:496 template-settings.php:304
 msgid "Copy"
-msgstr ""
+msgstr "Kopieren"
 
 #: dt-assets/functions/enqueue-scripts.php:124
 #, php-format
 msgid "Copied: %s"
-msgstr ""
+msgstr "Gekopieerd: %s"
 
 #: dt-assets/functions/enqueue-scripts.php:145
 msgid "You don't have any unread notifications"
@@ -800,382 +947,366 @@ msgstr "je hebt geen ongelezen berichten"
 msgid "You don't have any notifications"
 msgstr "je hebt geen berichten"
 
-#: dt-assets/functions/enqueue-scripts.php:180 dt-posts/dt-posts.php:1658
+#: dt-assets/functions/enqueue-scripts.php:147
+#: dt-core/release-notifications.php:80
+msgid "Release Announcement!"
+msgstr "Release aankondiging!"
+
+#: dt-assets/functions/enqueue-scripts.php:148
+msgid "A new version of Disciple.Tools is available"
+msgstr "Er is een nieuwe versie van Disciple.Tools beschikbaar"
+
+#: dt-assets/functions/enqueue-scripts.php:149
+#: dt-reports/magic-url-setup.php:483
+msgid "View"
+msgstr "Bekijken"
+
+#: dt-assets/functions/enqueue-scripts.php:183 dt-posts/dt-posts.php:1658
 msgid "D.T System"
 msgstr "D.T-systeem"
 
-#: dt-assets/functions/enqueue-scripts.php:184
+#: dt-assets/functions/enqueue-scripts.php:187
 msgid "Translate with Google Translate"
 msgstr "Vertalen met Google Translate"
 
-#: dt-assets/functions/enqueue-scripts.php:185
+#: dt-assets/functions/enqueue-scripts.php:188
 msgid "Hide Translation"
 msgstr "Vertaling verbergen"
 
-#: dt-assets/functions/enqueue-scripts.php:186
+#: dt-assets/functions/enqueue-scripts.php:189
 #, php-format
 msgctxt "Bob reacted with heart emoji"
 msgid "%1$s reacted with %2$s emoji"
 msgstr "%1$s reageerde met %2$s emoji"
 
-#: dt-assets/functions/enqueue-scripts.php:187
+#: dt-assets/functions/enqueue-scripts.php:190
 #, php-format
 msgctxt "Bob, Bill and Ben reacted with heart emoji"
 msgid "%3$s and %1$s reacted with %2$s emoji"
 msgstr "%3$s en %1$s reageerden met %2$s emoji"
 
-#: dt-assets/functions/enqueue-scripts.php:189
+#: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
+"Selecteer de gesproken taal en klik op \"Opname starten\" om te beginnen."
 
-#: dt-assets/functions/enqueue-scripts.php:190
-#, fuzzy
-#| msgid "Create Record"
+#: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
-msgstr "Dossier aanmaken"
+msgstr "Klik op \"Opname starten\" om te beginnen."
 
-#: dt-assets/functions/enqueue-scripts.php:191
-#, fuzzy
-#| msgid "Unable to update"
+#: dt-assets/functions/enqueue-scripts.php:194
 msgid "Voice recording upload failed. Please try again."
-msgstr "Kan niet bijwerken"
+msgstr "Spraakopname uploaden mislukt. Probeer het opnieuw."
 
-#: dt-assets/functions/enqueue-scripts.php:192
-#, fuzzy
-#| msgid "No Data Available"
+#: dt-assets/functions/enqueue-scripts.php:195
 msgid "No recording available to upload."
-msgstr "Geen gegevens beschikbaar"
+msgstr "Geen opname beschikbaar om te uploaden."
 
-#: dt-assets/functions/enqueue-scripts.php:225
+#: dt-assets/functions/enqueue-scripts.php:228
 msgid "Mark as complete"
 msgstr "als compleet markeren"
 
-#: dt-assets/functions/enqueue-scripts.php:226
+#: dt-assets/functions/enqueue-scripts.php:229
 msgid "No task created"
 msgstr "geen taak aangemaakt"
 
-#: dt-assets/functions/enqueue-scripts.php:227
+#: dt-assets/functions/enqueue-scripts.php:230
 #: dt-assets/parts/modals/modal-tasks.php:17
 msgid "Reminder"
 msgstr "geslacht"
 
-#: dt-assets/functions/enqueue-scripts.php:228
+#: dt-assets/functions/enqueue-scripts.php:231
 msgid "No note set"
 msgstr "niets ingesteld"
 
-#: dt-assets/functions/enqueue-scripts.php:229
+#: dt-assets/functions/enqueue-scripts.php:232
 msgid "Duplicates Detected"
 msgstr "Duplicaten gedetecteerd"
 
-#: dt-assets/functions/enqueue-scripts.php:230
+#: dt-assets/functions/enqueue-scripts.php:233
 #: dt-assets/parts/merge-details.php:72 dt-contacts/user-module.php:165
-#: dt-users/template-new-user.php:293 template-merge-post-details.php:131
-#: template-merge-post-details.php:188
+#: dt-users/template-new-user.php:293 template-merge-post-details.php:134
+#: template-merge-post-details.php:191
 msgid "Merge"
 msgstr "samenvoegen"
 
-#: dt-assets/functions/enqueue-scripts.php:231
+#: dt-assets/functions/enqueue-scripts.php:234
 msgid "Dismiss"
 msgstr "negeer"
 
-#: dt-assets/functions/enqueue-scripts.php:232
+#: dt-assets/functions/enqueue-scripts.php:235
 msgid "Dismissed Duplicates"
 msgstr "Afgewezen duplicaten"
 
-#: dt-assets/functions/enqueue-scripts.php:233
+#: dt-assets/functions/enqueue-scripts.php:236
 #, php-format
 msgid "Duplicates on: %s"
 msgstr "Duplicaten op: %s"
 
-#: dt-assets/functions/enqueue-scripts.php:234
+#: dt-assets/functions/enqueue-scripts.php:237
 msgid "Transfer failed. Check site-to-site configuration."
-msgstr "overdracht mislukt. controleer de configuratie van site naar site"
+msgstr "overdracht mislukt. controleer de configuratie van site naar site."
 
-#: dt-assets/functions/enqueue-scripts.php:235
+#: dt-assets/functions/enqueue-scripts.php:238
 msgid "Transfer update failed. Check site-to-site configuration."
 msgstr "Overdrachtsupdate mislukt. Controleer de site-naar-site-configuratie."
 
-#: dt-assets/functions/enqueue-scripts.php:236
+#: dt-assets/functions/enqueue-scripts.php:239
 msgid "Transfer update successful."
 msgstr "Overdrachtsupdate geslaagd."
 
-#: dt-assets/functions/enqueue-scripts.php:237
+#: dt-assets/functions/enqueue-scripts.php:240
 #, php-format
 msgctxt "Created on the 21st of August"
 msgid "Created on %s"
 msgstr "Aangemaakt op %s"
 
-#: dt-assets/functions/enqueue-scripts.php:238
+#: dt-assets/functions/enqueue-scripts.php:241
 msgid "Open With"
 msgstr "Openen met"
 
-#: dt-assets/functions/enqueue-scripts.php:258
+#: dt-assets/functions/enqueue-scripts.php:257
 msgid "Revert Record Back To This Point"
-msgstr ""
+msgstr "Dossier terugzetten naar dit punt"
 
-#: dt-assets/functions/enqueue-scripts.php:259
-#, fuzzy, php-format
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
+#: dt-assets/functions/enqueue-scripts.php:258
+#, php-format
 msgid "Are you sure you want to revert record state back to %s?"
-msgstr "Weet u zeker dat u %s wilt verwijderen?"
+msgstr "Weet u zeker dat u de dossierstatus wilt terugzetten naar %s?"
 
-#: dt-assets/functions/enqueue-scripts.php:290
+#: dt-assets/functions/enqueue-scripts.php:281
 msgid "Locations you are responsible for"
 msgstr "Locaties waarvoor jij verantwoordelijk bent."
 
-#: dt-assets/functions/enqueue-scripts.php:291
+#: dt-assets/functions/enqueue-scripts.php:282
 #: dt-metrics/records/genmap.php:160
 msgid "Add"
 msgstr "Toevoegen"
 
-#: dt-assets/functions/enqueue-scripts.php:293
-#: dt-reports/magic-url-setup.php:453 template-settings.php:296
+#: dt-assets/functions/enqueue-scripts.php:284
+#: dt-reports/magic-url-setup.php:453 template-settings.php:297
 msgid "link"
 msgstr "link"
 
-#: dt-assets/functions/enqueue-scripts.php:294
+#: dt-assets/functions/enqueue-scripts.php:285
 msgid "copy"
 msgstr "kopiëren"
 
-#: dt-assets/functions/enqueue-scripts.php:310
+#: dt-assets/functions/enqueue-scripts.php:301
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "Gevonden matches:"
 
-#: dt-assets/functions/enqueue-scripts.php:311
+#: dt-assets/functions/enqueue-scripts.php:302
 #, php-format
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "Alle matches voor %s verwerpen"
 
-#: dt-assets/functions/enqueue-scripts.php:330
+#: dt-assets/functions/enqueue-scripts.php:321
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "weergave _START_van_TOTAAL_"
 
-#: dt-assets/functions/enqueue-scripts.php:331
+#: dt-assets/functions/enqueue-scripts.php:322
 msgid "Sorting By"
 msgstr "Sorteren op"
 
-#: dt-assets/functions/enqueue-scripts.php:333
+#: dt-assets/functions/enqueue-scripts.php:324
 msgid "Date Modified"
 msgstr "Datum Wijziging"
 
-#: dt-assets/functions/enqueue-scripts.php:334
+#: dt-assets/functions/enqueue-scripts.php:325
 msgid "No filters, create one below"
 msgstr "Geen filters, maak eentje hier beneden"
 
-#: dt-assets/functions/enqueue-scripts.php:335
+#: dt-assets/functions/enqueue-scripts.php:326
 msgid "No records found matching your filter."
-msgstr "Geen bestanden gevonden die overeenkomen met jouw filter"
+msgstr "Geen bestanden gevonden die overeenkomen met jouw filter."
 
-#: dt-assets/functions/enqueue-scripts.php:336 dt-contacts/base-setup.php:674
-#: dt-groups/base-setup.php:1039 dt-posts/custom-post-type.php:489
+#: dt-assets/functions/enqueue-scripts.php:327 dt-contacts/base-setup.php:679
+#: dt-groups/base-setup.php:1040 dt-posts/custom-post-type.php:489
 #, php-format
 msgctxt "All records"
 msgid "All %s"
 msgstr "alle %s"
 
-#: dt-assets/functions/enqueue-scripts.php:337
+#: dt-assets/functions/enqueue-scripts.php:328
+msgid "Split By"
+msgstr "Splitsen op"
+
+#: dt-assets/functions/enqueue-scripts.php:329
 msgid "start"
 msgstr "beginnen"
 
-#: dt-assets/functions/enqueue-scripts.php:338
+#: dt-assets/functions/enqueue-scripts.php:330
 msgid "end"
 msgstr "beëindigen"
 
-#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:331
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/module-access.php:1183 dt-groups/base-setup.php:957
+#: dt-contacts/module-access.php:1183 dt-groups/base-setup.php:958
 #: dt-metrics/personal/activity-highlights.php:56
-#: dt-metrics/records/dynamic-records-map.php:99
+#: dt-metrics/records/dynamic-records-map.php:100
 #: dt-users/mapbox-coverage-map.php:74
 msgid "All"
 msgstr "Alle"
 
-#: dt-assets/functions/enqueue-scripts.php:340
+#: dt-assets/functions/enqueue-scripts.php:332
 msgid "Without"
 msgstr "Zonder"
 
-#: dt-assets/functions/enqueue-scripts.php:343
+#: dt-assets/functions/enqueue-scripts.php:335
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
-msgstr ""
+msgstr "gepland om te verzenden"
 
-#: dt-assets/functions/enqueue-scripts.php:344
+#: dt-assets/functions/enqueue-scripts.php:336
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "niet verzonden (waarschijnlijk ontbrekende geldige e-mail)"
 
-#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:337
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
-msgstr ""
+msgstr "Bekijk wachtrij"
 
-#: dt-assets/functions/enqueue-scripts.php:346
+#: dt-assets/functions/enqueue-scripts.php:338
 msgid "Exclude Item"
 msgstr "Artikel uitsluiten"
 
-#: dt-assets/functions/enqueue-scripts.php:349
+#: dt-assets/functions/enqueue-scripts.php:341
 #, php-format
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
-msgstr ""
+msgstr "De geexporteerde csv-gegevens bevatten alle %2$s %1$s velden."
 
-#: dt-assets/functions/enqueue-scripts.php:350
+#: dt-assets/functions/enqueue-scripts.php:342
 #, php-format
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
 msgid ""
 "The exported csv data to contain the %2$s visible %1$s field(s) shown below."
 msgstr ""
+"De geexporteerde csv-gegevens bevatten de %2$s zichtbare %1$s veld(en) die "
+"hieronder worden weergegeven."
 
+#: dt-assets/functions/enqueue-scripts.php:345
 #: dt-assets/functions/enqueue-scripts.php:353
-#: dt-assets/functions/enqueue-scripts.php:361
-#, fuzzy
-#| msgctxt "Contacts List"
-#| msgid "%s List"
 msgid "Full List"
-msgstr "%s Lijst"
+msgstr "Volledige lijst"
+
+#: dt-assets/functions/enqueue-scripts.php:346
+msgid "No Addresses"
+msgstr "Geen adressen"
+
+#: dt-assets/functions/enqueue-scripts.php:347
+msgid "With Additional Addresses"
+msgstr "Met extra adressen"
+
+#: dt-assets/functions/enqueue-scripts.php:348
+msgid "Open Email for Group"
+msgstr "E-mail openen voor groep"
+
+#: dt-assets/functions/enqueue-scripts.php:349
+msgid "Open All"
+msgstr "Alles openen"
+
+#: dt-assets/functions/enqueue-scripts.php:350
+msgid "Show Group Addresses"
+msgstr "Groepsadressen tonen"
 
 #: dt-assets/functions/enqueue-scripts.php:354
-#, fuzzy
-#| msgid "Address"
-msgid "No Addresses"
-msgstr "adres"
+msgid "Has No Phone Number"
+msgstr "Heeft geen telefoonnummer"
 
 #: dt-assets/functions/enqueue-scripts.php:355
-msgid "With Additional Addresses"
-msgstr ""
+msgid "Has Additional Phone Numbers"
+msgstr "Heeft extra telefoonnummers"
 
-#: dt-assets/functions/enqueue-scripts.php:356
-msgid "Open Email for Group"
-msgstr ""
+#: dt-assets/functions/enqueue-scripts.php:359
+msgid "Mapped Locations"
+msgstr "Gekoppelde locaties"
 
-#: dt-assets/functions/enqueue-scripts.php:357
-#, fuzzy
-#| msgid "Open Modal"
-msgid "Open All"
-msgstr "Modaal openen"
+#: dt-assets/functions/enqueue-scripts.php:360
+msgid "Contacts Without Locations"
+msgstr "Contacten zonder locaties"
 
-#: dt-assets/functions/enqueue-scripts.php:358
-msgid "Show Group Addresses"
-msgstr ""
+#: dt-assets/functions/enqueue-scripts.php:361
+msgid "Records on zoomed map"
+msgstr "Dossiers op ingezoomde kaart"
 
 #: dt-assets/functions/enqueue-scripts.php:362
-msgid "Has No Phone Number"
-msgstr ""
+msgid "No Zoomed Map Records Found!"
+msgstr "Geen ingezoomde kaartdossiers gevonden!"
 
 #: dt-assets/functions/enqueue-scripts.php:363
-msgid "Has Additional Phone Numbers"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:367
-#, fuzzy
-#| msgid "Used Locations"
-msgid "Mapped Locations"
-msgstr "Gebruikte Locaties"
-
-#: dt-assets/functions/enqueue-scripts.php:368
-#, fuzzy
-#| msgctxt "Reason Paused label"
-#| msgid "Contact on vacation"
-msgid "Contacts Without Locations"
-msgstr "Contact is op vakante."
-
-#: dt-assets/functions/enqueue-scripts.php:369
-#, fuzzy
-#| msgid "Add Records"
-msgid "Records on zoomed map"
-msgstr "Records toevoegen"
-
-#: dt-assets/functions/enqueue-scripts.php:370
-msgid "No Zoomed Map Records Found!"
-msgstr ""
-
-#: dt-assets/functions/enqueue-scripts.php:371
 msgid "Open Zoomed Map Records"
-msgstr ""
+msgstr "Ingezoomde kaartdossiers openen"
 
-#: dt-assets/functions/enqueue-scripts.php:372
-#: dt-assets/functions/enqueue-scripts.php:373
-#, fuzzy
-#| msgid "Filter Name"
+#: dt-assets/functions/enqueue-scripts.php:364
+#: dt-assets/functions/enqueue-scripts.php:365
 msgid "Filtered Map"
-msgstr "Filter naam"
+msgstr "Gefilterde kaart"
 
-#: dt-assets/functions/enqueue-scripts.php:401 dt-contacts/base-setup.php:55
+#: dt-assets/functions/enqueue-scripts.php:391 dt-contacts/base-setup.php:55
 #: dt-contacts/base-setup.php:67 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "contact"
 
-#: dt-assets/functions/enqueue-scripts.php:402
+#: dt-assets/functions/enqueue-scripts.php:392
 #, php-format
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
-msgstr ""
+msgstr "%s bestaat al"
 
-#: dt-assets/functions/enqueue-scripts.php:449
+#: dt-assets/functions/enqueue-scripts.php:437
 msgid "File Upload"
-msgstr ""
+msgstr "Bestand uploaden"
 
-#: dt-assets/functions/enqueue-scripts.php:450
-#, fuzzy
-#| msgid "Choose an option:"
+#: dt-assets/functions/enqueue-scripts.php:438
 msgid "Choose a file"
-msgstr "Kies een optie:"
+msgstr "Kies een bestand"
 
-#: dt-assets/functions/enqueue-scripts.php:451
+#: dt-assets/functions/enqueue-scripts.php:439
 msgid "or drag it here"
-msgstr ""
+msgstr "of sleep het hierheen"
 
-#: dt-assets/functions/enqueue-scripts.php:452
+#: dt-assets/functions/enqueue-scripts.php:440
 msgid "Successfully Uploaded!"
-msgstr ""
+msgstr "Succesvol geupload!"
 
-#: dt-assets/functions/enqueue-scripts.php:453
+#: dt-assets/functions/enqueue-scripts.php:441
 msgid "Error!"
-msgstr ""
+msgstr "Fout!"
 
-#: dt-assets/functions/enqueue-scripts.php:454
-#, fuzzy
-#| msgid "Unable to update"
+#: dt-assets/functions/enqueue-scripts.php:442
 msgid "Unable to upload, please try again"
-msgstr "Kan niet bijwerken"
+msgstr "Kan niet uploaden, probeer het opnieuw"
 
-#: dt-assets/functions/enqueue-scripts.php:455
+#: dt-assets/functions/enqueue-scripts.php:443
 msgid "Upload"
-msgstr ""
+msgstr "Uploaden"
 
-#: dt-assets/functions/enqueue-scripts.php:456
-#, fuzzy
-#| msgid "Delete Filter"
+#: dt-assets/functions/enqueue-scripts.php:444
 msgid "Delete Existing File"
-msgstr "verwijder filter"
+msgstr "Bestaand bestand verwijderen"
 
-#: dt-assets/functions/enqueue-scripts.php:457
-#, fuzzy
-#| msgid "Delete Filter"
+#: dt-assets/functions/enqueue-scripts.php:445
 msgid "Replace Existing Image"
-msgstr "verwijder filter"
+msgstr "Bestaande afbeelding vervangen"
 
-#: dt-assets/functions/enqueue-scripts.php:458
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
+#: dt-assets/functions/enqueue-scripts.php:446
 msgid "Are you sure you wish to delete existing file?"
-msgstr "Weet u zeker dat u %s wilt verwijderen?"
+msgstr "Weet u zeker dat u het bestaande bestand wilt verwijderen?"
 
-#: dt-assets/functions/enqueue-scripts.php:459
+#: dt-assets/functions/enqueue-scripts.php:447
 msgid "Successfully Deleted!"
-msgstr ""
+msgstr "Succesvol verwijderd!"
 
-#: dt-assets/functions/enqueue-scripts.php:460
-#, fuzzy
-#| msgid "Delete and replace the app link"
+#: dt-assets/functions/enqueue-scripts.php:448
 msgid "Delete failed, please try again"
-msgstr "Verwijder en vervang de app-link"
+msgstr "Verwijderen mislukt, probeer het opnieuw"
 
 #: dt-assets/functions/menu.php:39 template-metrics.php:27
 msgid "Menu"
@@ -1185,7 +1316,7 @@ msgstr "Menu"
 msgid "Disciple.Tools"
 msgstr "Disciple Tools"
 
-#: dt-assets/functions/menu.php:51 template-settings.php:54
+#: dt-assets/functions/menu.php:51 template-settings.php:55
 msgid "Profile"
 msgstr "Profiel"
 
@@ -1195,14 +1326,14 @@ msgstr "voeg Nieuw toe"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:70 dt-assets/parts/nav-offcanvas.php:50
-#: dt-assets/parts/nav-topbar.php:157 template-notifications.php:33
-#: template-settings.php:60 template-settings.php:485
+#: dt-assets/parts/nav-topbar.php:170 template-notifications.php:33
+#: template-settings.php:61 template-settings.php:479
 msgid "Notifications"
 msgstr "meldingen"
 
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:76 dt-assets/functions/menu.php:82
-#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:321
+#: dt-assets/parts/modals/modal-help.php:94 dt-assets/parts/nav-topbar.php:334
 #: template-notifications.php:68
 msgid "Settings"
 msgstr "instellingen"
@@ -1211,13 +1342,13 @@ msgstr "instellingen"
 msgid "Admin"
 msgstr "administrator"
 
-#: dt-assets/functions/menu.php:94 dt-contacts/base-setup.php:689
-#: dt-contacts/base-setup.php:693 dt-mapping/columns/add-users-column.php:56
+#: dt-assets/functions/menu.php:94 dt-contacts/base-setup.php:694
+#: dt-contacts/base-setup.php:698 dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:269
 #: dt-metrics/combined/locations-list.php:95
 #: dt-metrics/combined/locations-list.php:270
-#: dt-metrics/records/dynamic-records-map.php:65
-#: dt-users/user-management.php:134 dt-users/user-management.php:231
+#: dt-metrics/records/dynamic-records-map.php:66
+#: dt-users/user-management.php:134 dt-users/user-management.php:235
 msgid "Users"
 msgstr "Gebruikers Rollen"
 
@@ -1226,52 +1357,40 @@ msgid "Help"
 msgstr "Help"
 
 #: dt-assets/functions/menu.php:106
-#, fuzzy
-#| msgid "D.T Record"
 msgid "D.T Forum"
-msgstr "D.T. dossier"
+msgstr "D.T. Forum"
 
 #: dt-assets/parts/loop-activity-comment.php:84
-#, fuzzy
-#| msgid "New Comments"
 msgid "Add Image Comment"
-msgstr "nieuwe opmerkingen"
+msgstr "Afbeeldingscommentaar toevoegen"
 
 #: dt-assets/parts/loop-activity-comment.php:97
-#, fuzzy
-#| msgid "Add Records"
 msgid "Record Voice Message"
-msgstr "Records toevoegen"
+msgstr "Spraakbericht opnemen"
 
 #: dt-assets/parts/loop-activity-comment.php:102
 msgid "Submit comment"
 msgstr "opmerking toevoegen"
 
 #: dt-assets/parts/loop-activity-comment.php:111
-#, fuzzy
-#| msgid "Next record"
 msgid "Ready to record"
-msgstr "Volgend dossier"
+msgstr "Klaar om op te nemen"
 
 #: dt-assets/parts/loop-activity-comment.php:129
-#, fuzzy
-#| msgid "Create Record"
 msgid "Start Recording"
-msgstr "Dossier aanmaken"
+msgstr "Opname starten"
 
 #: dt-assets/parts/loop-activity-comment.php:132
 msgid "Stop Recording"
-msgstr ""
+msgstr "Opname stoppen"
 
 #: dt-assets/parts/loop-activity-comment.php:135
 msgid "Play Recording"
-msgstr ""
+msgstr "Opname afspelen"
 
 #: dt-assets/parts/loop-activity-comment.php:138
-#, fuzzy
-#| msgid "Create Record"
 msgid "Save Recording"
-msgstr "Dossier aanmaken"
+msgstr "Opname opslaan"
 
 #: dt-assets/parts/loop-activity-comment.php:158
 msgid "Showing:"
@@ -1298,13 +1417,13 @@ msgstr "verwijder opmerking"
 
 #: dt-assets/parts/loop-activity-comment.php:235
 #: dt-assets/parts/loop-activity-comment.php:283
-#: template-merge-post-details.php:105
+#: template-merge-post-details.php:108
 msgid "Sorry, something went wrong"
 msgstr "Sorry, er ging iets mis"
 
 #: dt-assets/parts/loop-activity-comment.php:236
 msgid "The comment could not be deleted."
-msgstr "de opmerking kon niet verwijderd worden"
+msgstr "de opmerking kon niet verwijderd worden."
 
 #: dt-assets/parts/loop-activity-comment.php:241
 msgid "Edit Comment:"
@@ -1316,7 +1435,7 @@ msgstr "Type opmerking:"
 
 #: dt-assets/parts/loop-activity-comment.php:284
 msgid "The comment could not be updated."
-msgstr "de opmerking kon niet bijgewerkt worden"
+msgstr "de opmerking kon niet bijgewerkt worden."
 
 #: dt-assets/parts/merge-details.php:9
 msgid "Duplicate Contacts"
@@ -1336,7 +1455,7 @@ msgstr "negeer alles"
 
 #: dt-assets/parts/merge-details.php:19
 msgid "No duplicates found."
-msgstr "Geen duplicaten gevonden"
+msgstr "Geen duplicaten gevonden."
 
 #: dt-assets/parts/merge-details.php:36
 #, php-format
@@ -1353,11 +1472,11 @@ msgstr "Voeg deze %1$s samen met een andere %2$s"
 #: dt-assets/parts/merge-details.php:59
 msgctxt "added to the end of a sentence"
 msgid "selected."
-msgstr "geselecteerd"
+msgstr "geselecteerd."
 
 #: dt-assets/parts/merge-details.php:60
 msgid "Click merge to continue."
-msgstr "klik op samenvoegen om door te gaan"
+msgstr "klik op samenvoegen om door te gaan."
 
 #: dt-assets/parts/modals/modal-advanced-search.php:11
 msgid "Search Query..."
@@ -1407,25 +1526,16 @@ msgstr ""
 "sneller te updaten en om bij te houden hoevaak een actie uitgevoerd is."
 
 #: dt-assets/parts/modals/modal-help.php:15
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid ""
-#| "For example, If you click the 'No Answer' button 4 times, we will log "
-#| "that you attempted to reach this contact 4 times, but they did not "
-#| "answer.\n"
-#| "                This action will also change the 'Seeker Path' to "
-#| "'Contact Attempted'."
 msgctxt "Optional Documentation"
 msgid ""
 "For example, If you click the 'No Answer' button 4 times, we will log that "
 "you attempted to reach this contact 4 times, but they did not answer. This "
 "action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
-"Bijvoorbeeld, als je de \"geen antwoord\" knop 4 keer klikt, registreren we "
-"dat je dit contact 4 keer hebt proberen te bereiken, maar hij/zij niet "
-"reageerde. \n"
-"Deze actie zal ook het \"zoekers pad\" veranderen naar \"contact maken "
-"geprobeerd\""
+"Bijvoorbeeld, als u de 'Geen antwoord' knop 4 keer klikt, registreren we dat "
+"u dit contact 4 keer hebt geprobeerd te bereiken, maar dat ze niet hebben "
+"geantwoord. Deze actie zal ook het 'Zoekerspad' veranderen naar 'Contact "
+"geprobeerd'."
 
 #: dt-assets/parts/modals/modal-help.php:27
 msgctxt "Optional Documentation"
@@ -1457,7 +1567,7 @@ msgid ""
 "or group status became active etc."
 msgstr ""
 "Deze sectie omvat ook de geschiedenis van de activiteit, zoals wanneer het "
-"contact of the groepstatus  actief werd enz."
+"contact of the groepstatus actief werd enz."
 
 #: dt-assets/parts/modals/modal-help.php:45
 msgctxt "Optional Documentation"
@@ -1466,7 +1576,7 @@ msgstr ""
 "Je kunt deze sectie filteren d.m.v. \"alles\", \"opmerkingen\" of "
 "\"Activiteiten\"."
 
-#: dt-assets/parts/modals/modal-help.php:58 template-settings.php:117
+#: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
 msgid "Your Profile"
 msgstr "Jouw Profiel"
 
@@ -1490,8 +1600,8 @@ msgid ""
 "By clicking 'Edit', you will be able adjust things like the language that "
 "this system operates in."
 msgstr ""
-"Door op \"Wijzigen\" te klikken, kun je instellinge aanpassen zoals de taal "
-"waarin dit systeem opereert."
+"Door op \"Wijzigen\" te klikken, kun je instellinge aanpassen zoals de "
+"taal waarin dit systeem opereert."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
 #: dt-users/users.php:169
@@ -1505,8 +1615,8 @@ msgid ""
 "bring up a list of locations to choose from."
 msgstr ""
 "Dit zijn de gebieden waar je verantwoordelijk voor bent. Door de \"voeg "
-"toe\" knop te klikken komt er een lijst tevoorschijn met locaties waaruit je "
-"kunt kiezen."
+"toe\" knop te klikken komt er een lijst tevoorschijn met locaties waaruit "
+"je kunt kiezen."
 
 #: dt-assets/parts/modals/modal-help.php:72
 msgctxt "Optional Documentation"
@@ -1520,18 +1630,18 @@ msgid ""
 "notification preferences. To change your preference, click the toggle "
 "buttons."
 msgstr ""
-"Je ontvangt  Web- en e-mail notificaties gebaseerd op je notificatie "
+"Je ontvangt Web- en e-mail notificaties gebaseerd op je notificatie "
 "voorkeuren. Om je voorkeuren aan te passen, klik op de tuimel knoppen."
 
 #: dt-assets/parts/modals/modal-help.php:75
 msgctxt "Optional Documentation"
 msgid "Notifications Turned On: The toggle will appear blue."
-msgstr "Notificaties Aan: de tuimelknop is blauw"
+msgstr "Notificaties Aan: de tuimelknop is blauw."
 
 #: dt-assets/parts/modals/modal-help.php:76
 msgctxt "Optional Documentation"
 msgid "Notifications Turned Off: The toggle will appear grey."
-msgstr "Notificaties Uit: de tuimelknop is grijs"
+msgstr "Notificaties Uit: de tuimelknop is grijs."
 
 #: dt-assets/parts/modals/modal-help.php:78
 msgctxt "Optional Documentation"
@@ -1579,8 +1689,8 @@ msgctxt "Optional Documentation"
 msgid ""
 "Click the 'All' button to show the full list of all of your notifications."
 msgstr ""
-"Klik op de \"Alles\" knop om de volledige lijst van al je notificaties te "
-"tonen."
+"Klik op de \"Alles\" knop om de volledige lijst van al je notificaties "
+"te tonen."
 
 #: dt-assets/parts/modals/modal-help.php:91
 msgctxt "Optional Documentation"
@@ -1591,7 +1701,7 @@ msgstr ""
 "Klik op de \"ongelezen\" knop om de lijst te tonen van al je ongelezen "
 "notificaties."
 
-#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:319
+#: dt-assets/parts/modals/modal-help.php:92 dt-assets/parts/nav-topbar.php:332
 #: template-notifications.php:66
 msgid "Mark all as read"
 msgstr "Markeer als Gelezen"
@@ -1618,8 +1728,8 @@ msgid ""
 "whether to you will receive a notification for any update that happens in "
 "the system."
 msgstr ""
-"Klik op de \"instellingen\" link om naar de notificatie instellingen te gaan "
-"om aan te passen of je notificaties wilt zien van nieuwe opmerkingen, "
+"Klik op de \"instellingen\" link om naar de notificatie instellingen te "
+"gaan om aan te passen of je notificaties wilt zien van nieuwe opmerkingen, "
 "Contact informatie veranderingen, Contact mijlpalen en Groep Gezondheid "
 "Statistieken en of je notificaties wilt krijgen van updates die in het "
 "systeem plaats vinden."
@@ -1654,14 +1764,12 @@ msgid "Read the documentation"
 msgstr "Lees de documentatie"
 
 #: dt-assets/parts/modals/modal-help.php:143 dt-reports/magic-url-setup.php:491
-#, fuzzy
-#| msgid "Open With"
 msgid "Open the link"
-msgstr "Openen met"
+msgstr "Link openen"
 
 #: dt-assets/parts/modals/modal-help.php:147 dt-reports/magic-url-setup.php:499
 msgid "Copy the link to the clipboard"
-msgstr ""
+msgstr "Kopieer de link naar het klembord"
 
 #: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
 #: dt-reports/magic-url-setup.php:508
@@ -1686,14 +1794,6 @@ msgstr ""
 #: dt-assets/parts/modals/modal-new-contact.php:12
 msgid "Create Record"
 msgstr "Dossier aanmaken"
-
-#: dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9 dt-mapping/mapping.php:303
-#: dt-metrics/combined/locations-list.php:90 dt-metrics/records/genmap.php:166
-#: dt-posts/custom-post-type.php:170 dt-users/template-user-management.php:196
-#: template-settings.php:146
-msgid "Name"
-msgstr "naam"
 
 #: dt-assets/parts/modals/modal-new-contact.php:20
 msgid "Record Created"
@@ -1733,23 +1833,18 @@ msgid "Create and apply tag"
 msgstr "Maak en pas tag toe"
 
 #: dt-assets/parts/modals/modal-record-history.php:6
-#, fuzzy, php-format
-#| msgid "Record Hits:"
+#, php-format
 msgctxt "Record History"
 msgid "%s Record History"
-msgstr "Overeenkomsten:"
+msgstr "%s dossiergeschiedenis"
 
 #: dt-assets/parts/modals/modal-record-history.php:16
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Filter To Date"
-msgstr "Filter naam"
+msgstr "Filteren tot datum"
 
 #: dt-assets/parts/modals/modal-record-history.php:22
-#, fuzzy
-#| msgid "Create custom filter"
 msgid "select date to filter by"
-msgstr "Aangepast filter maken"
+msgstr "selecteer datum om op te filteren"
 
 #: dt-assets/parts/modals/modal-revert.php:4
 msgid "Revert Activity"
@@ -1814,38 +1909,37 @@ msgstr "Maak een Tag"
 msgid "Existing tasks for this record:"
 msgstr "Bestaande taken voor dit bestand:"
 
-#: dt-assets/parts/nav-offcanvas.php:66 dt-assets/parts/nav-topbar.php:187
-#: dt-users/template-no-permission.php:94
-msgid "Log Out"
-msgstr "Uitloggen"
-
 #: dt-assets/parts/nav-topbar.php:88
 msgid "Theme Update Available!"
 msgstr "Thema Update beschikbaar!"
 
-#: dt-assets/parts/nav-topbar.php:289 template-notifications.php:43
+#: dt-assets/parts/nav-topbar.php:110
+msgid "New Release Available"
+msgstr "Nieuwe versie beschikbaar"
+
+#: dt-assets/parts/nav-topbar.php:302 template-notifications.php:43
 msgid "New"
 msgstr "nieuw"
 
-#: dt-assets/parts/nav-topbar.php:295 template-notifications.php:50
+#: dt-assets/parts/nav-topbar.php:308 template-notifications.php:50
 msgctxt "List Filters"
 msgid "All"
 msgstr "Alle"
 
-#: dt-assets/parts/nav-topbar.php:299 template-notifications.php:54
+#: dt-assets/parts/nav-topbar.php:312 template-notifications.php:54
 msgid "Unread"
 msgstr "Ongelezen"
 
-#: dt-assets/parts/nav-topbar.php:306
+#: dt-assets/parts/nav-topbar.php:319
 msgid "See All"
 msgstr "Alles bekijken"
 
-#: dt-assets/parts/nav-topbar.php:325 template-notifications.php:72
+#: dt-assets/parts/nav-topbar.php:338 template-notifications.php:72
 msgid "Mark All"
 msgstr "Markeer Alles"
 
 #: dt-contacts/base-setup.php:55 dt-contacts/base-setup.php:68
-#: dt-contacts/base-setup.php:261 dt-mapping/columns/add-contacts-column.php:59
+#: dt-contacts/base-setup.php:266 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:132
 #: dt-metrics/combined/locations-list.php:92
@@ -1853,191 +1947,189 @@ msgstr "Markeer Alles"
 #: dt-metrics/contacts/mapbox-maps.php:28 dt-metrics/contacts/overview.php:23
 #: dt-metrics/groups/overview.php:64 dt-metrics/personal/overview.php:58
 #: dt-people-groups/people-groups-base.php:172
-#: dt-users/template-user-management.php:466
+#: dt-users/template-user-management.php:460
 msgid "Contacts"
 msgstr "contacten"
 
-#: dt-contacts/base-setup.php:108
+#: dt-contacts/base-setup.php:113
 msgid "Nickname"
 msgstr "Bijnaam"
 
-#: dt-contacts/base-setup.php:116
+#: dt-contacts/base-setup.php:121
 msgid "Contact Type"
 msgstr "Contact Naam"
 
-#: dt-contacts/base-setup.php:120
+#: dt-contacts/base-setup.php:125
 msgid "User"
 msgstr "Gebruikersnaam"
 
-#: dt-contacts/base-setup.php:121
+#: dt-contacts/base-setup.php:126
 msgid "Representing a User in the system"
 msgstr "Vertegenwoordigen van een gebruiker in het systeem"
 
-#: dt-contacts/base-setup.php:127
+#: dt-contacts/base-setup.php:132
 msgid "Private Contact"
 msgstr "Privécontact"
 
-#: dt-contacts/base-setup.php:129
+#: dt-contacts/base-setup.php:134
 msgid "A friend, family member or acquaintance"
 msgstr "Een vriend, familielid of kennis"
 
-#: dt-contacts/base-setup.php:130 dt-contacts/base-setup.php:160
+#: dt-contacts/base-setup.php:135 dt-contacts/base-setup.php:165
 msgid "Only me"
 msgstr "Alleen ik"
 
-#: dt-contacts/base-setup.php:137
+#: dt-contacts/base-setup.php:142
 msgid "Standard Contact"
 msgstr "Standaardcontact"
 
-#: dt-contacts/base-setup.php:139
+#: dt-contacts/base-setup.php:144
 msgid "A contact to collaborate on"
 msgstr "Een contactpersoon om mee samen te werken"
 
-#: dt-contacts/base-setup.php:140
+#: dt-contacts/base-setup.php:145
 msgid "Me and project leadership"
 msgstr "Ik en projectleiderschap"
 
-#: dt-contacts/base-setup.php:146
+#: dt-contacts/base-setup.php:151
 msgid "Connection"
 msgstr "Verbinding"
 
-#: dt-contacts/base-setup.php:148 dt-contacts/base-setup.php:157
+#: dt-contacts/base-setup.php:153 dt-contacts/base-setup.php:162
 msgid "Connected to a contact, or generational fruit"
 msgstr "Verbonden met een contactpersoon, of generationeel fruit"
 
-#: dt-contacts/base-setup.php:151
+#: dt-contacts/base-setup.php:156
 msgid "Collaborators"
 msgstr "Medewerkers"
 
-#: dt-contacts/base-setup.php:155
+#: dt-contacts/base-setup.php:160
 msgid "Private Connection"
 msgstr "Privé verbinding"
 
-#: dt-contacts/base-setup.php:184 dt-users/users.php:162
+#: dt-contacts/base-setup.php:189 dt-users/users.php:162
 msgid "Languages"
 msgstr "Talen"
 
-#: dt-contacts/base-setup.php:193 template-settings.php:179
+#: dt-contacts/base-setup.php:198 template-settings.php:180
 msgid "Phone"
 msgstr "Telefoon"
 
-#: dt-contacts/base-setup.php:201
+#: dt-contacts/base-setup.php:206
 msgid "Signal"
 msgstr "Signaal"
 
-#: dt-contacts/base-setup.php:206
+#: dt-contacts/base-setup.php:211
 msgid "Viber"
 msgstr "Viber"
 
-#: dt-contacts/base-setup.php:211
-#, fuzzy
-#| msgid "Whatsapp"
+#: dt-contacts/base-setup.php:216
 msgid "WhatsApp"
-msgstr "Whatsapp"
+msgstr "WhatsApp"
 
-#: dt-contacts/base-setup.php:218
+#: dt-contacts/base-setup.php:223
 #: dt-core/configuration/config-site-defaults.php:253
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
-#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:229
-#: dt-users/users.php:129 template-settings.php:166
+#: dt-users/template-new-user.php:117 dt-users/template-user-management.php:223
+#: dt-users/users.php:129 template-settings.php:167
 msgid "Email"
 msgstr "Email"
 
-#: dt-contacts/base-setup.php:227 dt-groups/base-setup.php:357
-#: dt-people-groups/people-groups-base.php:210 template-settings.php:190
+#: dt-contacts/base-setup.php:232 dt-groups/base-setup.php:358
+#: dt-people-groups/people-groups-base.php:210 template-settings.php:191
 msgid "Address"
 msgstr "adres"
 
-#: dt-contacts/base-setup.php:244
+#: dt-contacts/base-setup.php:249
 msgid "Facebook"
 msgstr "Facebook"
 
-#: dt-contacts/base-setup.php:252
+#: dt-contacts/base-setup.php:257
 msgid "Other Social Links"
 msgstr "Andere sociale links"
 
-#: dt-contacts/base-setup.php:261
+#: dt-contacts/base-setup.php:266
 #, php-format
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Verbindingen met andere %s"
 
-#: dt-contacts/base-setup.php:262
+#: dt-contacts/base-setup.php:267
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
-msgstr "Connecties die deze groep heeft met andere groepen in dit systeem"
+msgstr "Connecties die deze groep heeft met andere groepen in dit systeem."
 
-#: dt-contacts/base-setup.php:273 dt-contacts/module-access.php:1189
-#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:237
-#: template-settings.php:714
+#: dt-contacts/base-setup.php:278 dt-contacts/module-access.php:1189
+#: dt-users/template-new-user.php:185 dt-users/template-user-management.php:231
+#: template-settings.php:708
 msgid "Gender"
 msgstr "geslacht"
 
-#: dt-contacts/base-setup.php:276 dt-users/template-user-management.php:241
+#: dt-contacts/base-setup.php:281 dt-users/template-user-management.php:235
 msgid "Male"
 msgstr "Mannelijk"
 
-#: dt-contacts/base-setup.php:277 dt-users/template-user-management.php:242
+#: dt-contacts/base-setup.php:282 dt-users/template-user-management.php:236
 msgid "Female"
 msgstr "Vrouwelijk"
 
-#: dt-contacts/base-setup.php:284
+#: dt-contacts/base-setup.php:289
 msgid "Age"
 msgstr "leeftijd"
 
-#: dt-contacts/base-setup.php:288
+#: dt-contacts/base-setup.php:293
 msgid "Under 18 years old"
 msgstr "Onder 18 jaar"
 
-#: dt-contacts/base-setup.php:289
+#: dt-contacts/base-setup.php:294
 msgid "18-25 years old"
 msgstr "18-25 jaar oud"
 
-#: dt-contacts/base-setup.php:290
+#: dt-contacts/base-setup.php:295
 msgid "26-40 years old"
 msgstr "25-40 jaar oud"
 
-#: dt-contacts/base-setup.php:291
+#: dt-contacts/base-setup.php:296
 msgid "Over 40 years old"
 msgstr "boven 40 jaar oud"
 
-#: dt-contacts/base-setup.php:299 dt-groups/base-setup.php:104
+#: dt-contacts/base-setup.php:304 dt-groups/base-setup.php:105
 #: dt-people-groups/people-groups-base.php:166
 msgid "Requires Update"
 msgstr "Update vereist"
 
-#: dt-contacts/base-setup.php:305 dt-contacts/module-access.php:142
+#: dt-contacts/base-setup.php:310 dt-contacts/module-access.php:142
 #: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
 msgstr "Contact details"
 
-#: dt-contacts/base-setup.php:306
+#: dt-contacts/base-setup.php:311
 msgctxt "Contact Status field description"
 msgid ""
 "The Contact Status describes the progress in communicating with the contact."
 msgstr ""
 "De Contact Status beschrijft onze voortgang in communicatie met dit contact."
 
-#: dt-contacts/base-setup.php:313 dt-groups/base-setup.php:120
+#: dt-contacts/base-setup.php:318 dt-groups/base-setup.php:121
 #: dt-users/users.php:177
 msgid "Active"
 msgstr "aktief"
 
-#: dt-contacts/base-setup.php:314
+#: dt-contacts/base-setup.php:319
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
-msgstr "Het contact vordert en/of wordt voortdurend bijgewerkt"
+msgstr "Het contact vordert en/of wordt voortdurend bijgewerkt."
 
-#: dt-contacts/base-setup.php:319
+#: dt-contacts/base-setup.php:324
 msgid "New Contact"
 msgstr "Nieuw contact"
 
-#: dt-contacts/base-setup.php:320
+#: dt-contacts/base-setup.php:325
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
-msgstr "Het contact is nieuw in het systeem"
+msgstr "Het contact is nieuw in het systeem."
 
-#: dt-contacts/base-setup.php:326
+#: dt-contacts/base-setup.php:331
 msgctxt "Contact Status field description"
 msgid ""
 "This contact has made it known that they no longer want to continue or you "
@@ -2046,196 +2138,194 @@ msgstr ""
 "Dit contact heeft laten weten dat zij niet door willen gaan of jij hebt "
 "gekozen niet verder te gaan met hem/haar."
 
-#: dt-contacts/base-setup.php:332 dt-groups/base-setup.php:137
+#: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "toegewezen aan"
 
-#: dt-contacts/base-setup.php:333
+#: dt-contacts/base-setup.php:338
 msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr ""
 "Selecteer de hoofd persoon die verantwoordelijk is voor rapporteren over dit "
 "contact."
 
-#: dt-contacts/base-setup.php:343
+#: dt-contacts/base-setup.php:348
 msgid "Sub-assigned to"
 msgstr "sub-toegewezen aan"
 
-#: dt-contacts/base-setup.php:344
+#: dt-contacts/base-setup.php:349
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
 "Contact of Gebruiker die de Toegewezen gebruiker assisteert bij het opvolgen "
 "van het contact."
 
-#: dt-contacts/base-setup.php:355
+#: dt-contacts/base-setup.php:360
 msgid "Sub-assigned on other Contacts"
 msgstr "Deels toegewezen aan andere contactpersonen"
 
-#: dt-contacts/base-setup.php:356
+#: dt-contacts/base-setup.php:361
 msgid "Contacts this contacts is subassigned on"
 msgstr "Contactpersonen waaraan deze contactpersoon deels is toegewezen"
 
-#: dt-contacts/base-setup.php:368 dt-contacts/base-setup.php:749
+#: dt-contacts/base-setup.php:373 dt-contacts/base-setup.php:754
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
 #: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
 msgid "Personal"
 msgstr "Persoonlijk"
 
-#: dt-contacts/base-setup.php:372
+#: dt-contacts/base-setup.php:377
 #: dt-core/configuration/config-site-defaults.php:256
 msgid "Web"
 msgstr "Web"
 
-#: dt-contacts/base-setup.php:376
+#: dt-contacts/base-setup.php:381
 msgid "Transfer"
 msgstr "Overdracht"
 
-#: dt-contacts/base-setup.php:378
+#: dt-contacts/base-setup.php:383
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr ""
 "Contacten overgedragen vanuit een partnerschap met een andere Disciple.Tools-"
 "site."
 
-#: dt-contacts/base-setup.php:391 dt-metrics/contacts/sources.php:90
+#: dt-contacts/base-setup.php:396 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:616
 msgid "Sources"
 msgstr "bronnen"
 
-#: dt-contacts/base-setup.php:392
+#: dt-contacts/base-setup.php:397
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
-msgstr "De website, evenement of plaats waar dit contact uit voort kwam"
+msgstr "De website, evenement of plaats waar dit contact uit voort kwam."
 
-#: dt-contacts/base-setup.php:433 dt-contacts/base-setup.php:465
+#: dt-contacts/base-setup.php:438 dt-contacts/base-setup.php:470
 #, php-format
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "%s archiveren"
 
-#: dt-contacts/base-setup.php:440
+#: dt-contacts/base-setup.php:445
 #, php-format
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "Type %s wijzigen"
 
-#: dt-contacts/base-setup.php:446
+#: dt-contacts/base-setup.php:451
 msgid "See duplicates"
 msgstr "Duplicaten bekijken"
 
-#: dt-contacts/base-setup.php:466
+#: dt-contacts/base-setup.php:471
 #, php-format
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "Weet u zeker dat u %s wilt archiveren?"
 
-#: dt-contacts/base-setup.php:473
+#: dt-contacts/base-setup.php:478
 msgid "Archive"
 msgstr "Archiveren"
 
-#: dt-contacts/base-setup.php:484 dt-contacts/module-access.php:432
+#: dt-contacts/base-setup.php:489 dt-contacts/module-access.php:432
 #: dt-contacts/module-access.php:463 dt-contacts/module-access.php:494
 msgid "Choose an option:"
 msgstr "Kies een optie:"
 
-#: dt-contacts/base-setup.php:508 dt-contacts/module-access.php:454
+#: dt-contacts/base-setup.php:513 dt-contacts/module-access.php:454
 #: dt-contacts/module-access.php:485 dt-contacts/module-access.php:513
 msgid "Confirm"
 msgstr "niet bevestigd"
 
-#: dt-contacts/base-setup.php:532
+#: dt-contacts/base-setup.php:537
 #: dt-core/configuration/config-site-defaults.php:444
-#: dt-groups/base-setup.php:610 template-settings.php:212
+#: dt-groups/base-setup.php:611 template-settings.php:213
 msgid "Other"
 msgstr "Anders"
 
-#: dt-contacts/base-setup.php:623
+#: dt-contacts/base-setup.php:628
 msgid "This record might be a duplicate of: "
-msgstr "Dit dossier is mogelijk een duplicaat van:"
+msgstr "Dit dossier is mogelijk een duplicaat van: "
 
-#: dt-contacts/base-setup.php:629 dt-contacts/duplicates-merging.php:513
+#: dt-contacts/base-setup.php:634 dt-contacts/duplicates-merging.php:513
 #: dt-contacts/duplicates-merging.php:595
 msgid "Duplicate Checker"
 msgstr "Duplicatenchecker"
 
-#: dt-contacts/base-setup.php:668 dt-groups/base-setup.php:1031
+#: dt-contacts/base-setup.php:673 dt-groups/base-setup.php:1032
 #: dt-posts/custom-post-type.php:468
 msgid "Default Filters"
 msgstr "Standaardfilters"
 
-#: dt-contacts/base-setup.php:678
+#: dt-contacts/base-setup.php:683
 #, php-format
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Alle %s die ik kan bekijken"
 
-#: dt-contacts/base-setup.php:705 dt-groups/base-setup.php:1045
+#: dt-contacts/base-setup.php:710 dt-groups/base-setup.php:1046
 #: dt-posts/custom-post-type.php:501
 #, php-format
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "Favoriete %s"
 
-#: dt-contacts/base-setup.php:711 dt-groups/base-setup.php:1050
+#: dt-contacts/base-setup.php:716 dt-groups/base-setup.php:1051
 #: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:507
 msgid "Favorite"
 msgstr "Favoriet"
 
-#: dt-contacts/base-setup.php:717 dt-groups/base-setup.php:1056
+#: dt-contacts/base-setup.php:722 dt-groups/base-setup.php:1057
 #: dt-posts/custom-post-type.php:516
 msgid "My Recently Viewed"
 msgstr "Mijn recent bekeken"
 
-#: dt-contacts/base-setup.php:722 dt-groups/base-setup.php:1061
+#: dt-contacts/base-setup.php:727 dt-groups/base-setup.php:1062
 #: dt-posts/custom-post-type.php:521
 msgid "Last 30 viewed"
 msgstr "Laatste 30 bekeken"
 
-#: dt-contacts/base-setup.php:729
-#, fuzzy
-#| msgid "Assigned Contacts"
+#: dt-contacts/base-setup.php:734
 msgid "My Assigned Contacts"
-msgstr "Toegewezen Contacten"
+msgstr "Mijn toegewezen contacten"
 
-#: dt-contacts/base-setup.php:739
+#: dt-contacts/base-setup.php:744
 msgid "My Follow-Up"
 msgstr "Mijn opvolging"
 
-#: dt-contacts/base-setup.php:740 dt-contacts/module-access.php:873
+#: dt-contacts/base-setup.php:745 dt-contacts/module-access.php:873
 #: dt-contacts/module-access.php:895 dt-contacts/module-access.php:920
-#: dt-groups/base-setup.php:949
+#: dt-groups/base-setup.php:950
 msgid "Assigned to me"
 msgstr "Aan mij toegewezen"
 
-#: dt-contacts/base-setup.php:741 dt-contacts/module-access.php:874
+#: dt-contacts/base-setup.php:746 dt-contacts/module-access.php:874
 #: dt-contacts/module-access.php:896 dt-contacts/module-access.php:921
 msgid "Sub-assigned to me"
 msgstr "Deels aan mij toegewezen"
 
-#: dt-contacts/base-setup.php:761
+#: dt-contacts/base-setup.php:766
 #, php-format
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "Verbonden %s"
 
-#: dt-contacts/base-setup.php:785 dt-contacts/base-setup.php:793
-#: dt-contacts/base-setup.php:829 dt-contacts/base-setup.php:830
+#: dt-contacts/base-setup.php:790 dt-contacts/base-setup.php:798
+#: dt-contacts/base-setup.php:834 dt-contacts/base-setup.php:835
 msgid "Shared with me"
 msgstr "gedeeld met mij"
 
-#: dt-contacts/base-setup.php:833 dt-contacts/base-setup.php:834
+#: dt-contacts/base-setup.php:838 dt-contacts/base-setup.php:839
 msgid "Subassigned only"
-msgstr "alleen Sub-toegewezen "
+msgstr "alleen Sub-toegewezen"
 
-#: dt-contacts/base-setup.php:987
+#: dt-contacts/base-setup.php:992
 #, php-format
 msgid "This %s is archived"
 msgstr "Deze %s is gearchiveerd"
 
-#: dt-contacts/base-setup.php:989
+#: dt-contacts/base-setup.php:994
 msgid "Restore"
 msgstr "Herstellen"
 
@@ -2312,11 +2402,11 @@ msgstr "bevestig de Overdracht"
 
 #: dt-contacts/contacts-transfer.php:425
 msgid "Unknown error."
-msgstr "onbekende Fout"
+msgstr "onbekende Fout."
 
 #: dt-contacts/contacts-transfer.php:457
 msgid "Minor transfer error."
-msgstr "Kleine overdrachtsfout"
+msgstr "Kleine overdrachtsfout."
 
 #: dt-contacts/contacts-transfer.php:479
 #, php-format
@@ -2329,13 +2419,12 @@ msgstr "Contact overgedragen van site"
 
 #: dt-contacts/contacts-transfer.php:626 dt-contacts/contacts-transfer.php:641
 #: dt-contacts/contacts-transfer.php:671 dt-contacts/contacts-transfer.php:885
-#, fuzzy
 msgid "Transfer Bot"
-msgstr "Overdracht systeem "
+msgstr "Overdrachtbot"
 
 #: dt-contacts/contacts-transfer.php:633
 msgid "ALERT: Possible duplicate contact from a previous transfer."
-msgstr "WAARSCHUWING: mogelijk dubbel contact van een vorige overdracht"
+msgstr "WAARSCHUWING: mogelijk dubbel contact van een vorige overdracht."
 
 #: dt-contacts/contacts-transfer.php:1202
 msgid "redacted email"
@@ -2386,9 +2475,8 @@ msgstr "digitale beantwoorder"
 
 #: dt-contacts/module-access.php:102 dt-metrics/combined/site-links.php:79
 #: dt-metrics/combined/site-links.php:82
-#, fuzzy
 msgid "Seeker Path"
-msgstr "zoekers pad"
+msgstr "Zoekerspad"
 
 #: dt-contacts/module-access.php:103
 msgctxt "Seeker Path field description"
@@ -2471,7 +2559,7 @@ msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr ""
 "Dit contact is momenteel in de wacht (bivoorbeeld is op vakantie of reageert "
-"niet)"
+"niet)."
 
 #: dt-contacts/module-access.php:180
 msgid "Reason Not Ready"
@@ -2480,7 +2568,7 @@ msgstr "Niet klaar."
 #: dt-contacts/module-access.php:181
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
-msgstr "dit contact is aan jou toegewezen"
+msgstr "dit contact is aan jou toegewezen."
 
 #: dt-contacts/module-access.php:188
 msgid "Insufficient Contact Information"
@@ -2503,9 +2591,8 @@ msgid "Needs Review"
 msgstr "herziening nodig"
 
 #: dt-contacts/module-access.php:203
-#, fuzzy
 msgid "Waiting for Confirmation"
-msgstr "[%s] Deelname Bevestiging"
+msgstr "Wachten op bevestiging"
 
 #: dt-contacts/module-access.php:211
 msgid "Reason Paused"
@@ -2558,7 +2645,7 @@ msgstr "Het initiatief ligt bij het contact"
 #: dt-contacts/module-access.php:223
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
-msgstr "We willen zien of/hoe het contact reageert op automatische berichten "
+msgstr "We willen zien of/hoe het contact reageert op automatische berichten"
 
 #: dt-contacts/module-access.php:230
 msgid "Reason Archived"
@@ -2568,7 +2655,7 @@ msgstr "Reden gearchiveerd"
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
 msgstr ""
-"Een afgesloten contact is er een waar je niet mee kunt  of wilt in "
+"Een afgesloten contact is er een waar je niet mee kunt of wilt in "
 "interactie zijn."
 
 #: dt-contacts/module-access.php:235
@@ -2691,7 +2778,7 @@ msgstr "Toewijzen"
 
 #: dt-contacts/module-access.php:628
 msgid "This contact has been assigned to you."
-msgstr "dit contact is aan jou toegewezen"
+msgstr "dit contact is aan jou toegewezen."
 
 #: dt-contacts/module-access.php:629
 msgid "Accept"
@@ -2728,7 +2815,7 @@ msgid "Assign"
 msgstr "Toewijzen"
 
 #: dt-contacts/module-access.php:1188 dt-users/template-new-user.php:134
-#: template-settings.php:226
+#: template-settings.php:227
 msgid "Language"
 msgstr "Taal"
 
@@ -2878,10 +2965,8 @@ msgid "Please update contact details on your profile page instead of here."
 msgstr "Werk de contactgegevens op uw profielpagina bij in plaats van hier."
 
 #: dt-contacts/user-module.php:73
-#, fuzzy
-#| msgid "Settings"
 msgid "Profile Settings"
-msgstr "instellingen"
+msgstr "Profielinstellingen"
 
 #: dt-contacts/user-module.php:76
 msgid "This contact represents a user."
@@ -2901,7 +2986,7 @@ msgstr "Link dit contact aan een bestaande gebruiker"
 
 #: dt-contacts/user-module.php:124
 msgid "This contact already represents a user."
-msgstr "Dit contact vertegenvoordigt een gebruiker al"
+msgstr "Dit contact vertegenvoordigt een gebruiker al."
 
 #: dt-contacts/user-module.php:128
 msgctxt "Step 1 of link user"
@@ -2909,7 +2994,7 @@ msgid ""
 "To link to an existing user, first, find the user using the field below."
 msgstr ""
 "om aan een bestaande gebruiker te koppelen, zoek eerst de gebruiker in het "
-"veld hier beneden"
+"veld hier beneden."
 
 #: dt-contacts/user-module.php:152
 msgctxt "Step 2 of link user"
@@ -2917,7 +3002,7 @@ msgid ""
 "To finish the linking, merge this contact with the existing user details."
 msgstr ""
 "om de koppeling af te maken, voeg dit contact aan de bestaande gebruiker "
-"details"
+"details."
 
 #: dt-core/configuration/class-roles.php:81
 #: dt-core/configuration/class-roles.php:245
@@ -2979,7 +3064,7 @@ msgstr ""
 
 #: dt-core/configuration/config-site-defaults.php:306
 msgid "Please try connecting with this contact again."
-msgstr "Probeer alsjeblieft weer contact te krijgen met deze persoon"
+msgstr "Probeer alsjeblieft weer contact te krijgen met deze persoon."
 
 #: dt-core/configuration/config-site-defaults.php:312
 #: dt-core/configuration/config-site-defaults.php:318
@@ -3003,7 +3088,7 @@ msgstr "persoonlijke telefoon"
 
 #: dt-core/configuration/config-site-defaults.php:380
 msgid "Personal phone is private to the team, not for distribution."
-msgstr "Persoonlijke telefoon is alleen voor het team, niet voor distributie"
+msgstr "Persoonlijke telefoon is alleen voor het team, niet voor distributie."
 
 #: dt-core/configuration/config-site-defaults.php:384
 msgid "Personal Email"
@@ -3011,7 +3096,7 @@ msgstr "persoonlijke Email"
 
 #: dt-core/configuration/config-site-defaults.php:387
 msgid "Personal email is private to the team, not for distribution."
-msgstr "Persoonlijke Email is alleen voor het team, niet voor distributie"
+msgstr "Persoonlijke Email is alleen voor het team, niet voor distributie."
 
 #: dt-core/configuration/config-site-defaults.php:391
 msgid "Personal Address"
@@ -3019,7 +3104,7 @@ msgstr "Huisadres"
 
 #: dt-core/configuration/config-site-defaults.php:394
 msgid "Personal address is private to the team, not for distribution."
-msgstr "Huisadres is alleen voor het team, niet voor distributie"
+msgstr "Huisadres is alleen voor het team, niet voor distributie."
 
 #: dt-core/configuration/config-site-defaults.php:398
 msgid "Work Phone"
@@ -3027,7 +3112,7 @@ msgstr "Werk telefoon"
 
 #: dt-core/configuration/config-site-defaults.php:401
 msgid "Work phone is for distribution to contacts and seekers."
-msgstr "Werk telefoon is om door te geven aan contacten en zoekenden"
+msgstr "Werk telefoon is om door te geven aan contacten en zoekenden."
 
 #: dt-core/configuration/config-site-defaults.php:405
 msgid "Work Email"
@@ -3035,7 +3120,7 @@ msgstr "Wek Email"
 
 #: dt-core/configuration/config-site-defaults.php:408
 msgid "Work email is for distribution to contacts and seekers."
-msgstr "Werk Email  is om door te geven aan contacten en zoekenden"
+msgstr "Werk Email is om door te geven aan contacten en zoekenden."
 
 #: dt-core/configuration/config-site-defaults.php:412
 msgid "Work Facebook"
@@ -3043,7 +3128,7 @@ msgstr "Werk Facebook"
 
 #: dt-core/configuration/config-site-defaults.php:415
 msgid "Work Facebook is for distribution to contacts and seekers."
-msgstr "Werk Facebook is om door te geven aan contacten en zoekenden"
+msgstr "Werk Facebook is om door te geven aan contacten en zoekenden."
 
 #: dt-core/configuration/config-site-defaults.php:419
 msgid "Work WhatsApp"
@@ -3051,7 +3136,7 @@ msgstr "Werk WhatsApp"
 
 #: dt-core/configuration/config-site-defaults.php:422
 msgid "Work WhatsApp is for distribution to contacts and seekers."
-msgstr "Werk WhatsApp is om door te geven aan contacten en zoekenden"
+msgstr "Werk WhatsApp is om door te geven aan contacten en zoekenden."
 
 #: dt-core/configuration/config-site-defaults.php:429
 msgid "thumbs up"
@@ -3077,18 +3162,13 @@ msgstr "verdrietig"
 msgid "prayer"
 msgstr "gebed"
 
-#: dt-core/configuration/config-site-defaults.php:442
-#: dt-login/login-template.php:529
-msgid "Home"
-msgstr "Thuis"
-
 #: dt-core/configuration/config-site-defaults.php:443
 msgid "Work"
 msgstr "Werk"
 
 #: dt-core/configuration/config-site-defaults.php:453
 msgid "Accepting new contacts"
-msgstr "Accepteert  nieuwe contacten"
+msgstr "Accepteert nieuwe contacten"
 
 #: dt-core/configuration/config-site-defaults.php:457
 msgid "I'm only investing in existing contacts"
@@ -3100,26 +3180,24 @@ msgstr "I heb te veel contacten"
 
 #: dt-core/configuration/restrict-site-access.php:249
 msgid "Check your email for the confirmation link, then visit the"
-msgstr ""
+msgstr "Controleer uw e-mail voor de bevestigingslink en ga dan naar de"
 
 #: dt-core/configuration/restrict-site-access.php:253
 msgid "Login Page"
-msgstr ""
+msgstr "Inlogpagina"
 
 #: dt-core/configuration/restrict-site-access.php:254
 msgid "login page"
-msgstr ""
+msgstr "inlogpagina"
 
 #: dt-core/configuration/restrict-site-access.php:257
 msgid "ERROR: Invalid username/password combination."
-msgstr "<strong>ERROR</strong>: ongeldige gebruikersnaam/paswoord combinatie"
+msgstr "<strong>ERROR</strong>: ongeldige gebruikersnaam/paswoord combinatie."
 
 #: dt-core/configuration/restrict-site-access.php:261
 #: dt-login/login-template.php:217 dt-login/login-template.php:263
-#, fuzzy
-#| msgid "Reset password"
 msgid "Reset Password"
-msgstr "Wijzig paswoord"
+msgstr "Wachtwoord resetten"
 
 #: dt-core/configuration/restrict-site-access.php:262
 msgid "Lost your password"
@@ -3155,82 +3233,89 @@ msgid ""
 "Something went wrong. Please try again or have an admin check the connection "
 "settings."
 msgstr ""
+"Er is iets misgegaan. Probeer het opnieuw of laat een beheerder de "
+"verbindingsinstellingen controleren."
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
 msgstr "(geen titel)"
 
-#: dt-core/release-notifications.php:58
-msgid "Release Announcement!"
-msgstr ""
-
-#: dt-core/release-notifications.php:59
+#: dt-core/release-notifications.php:81
 #, php-format
 msgid "Disciple.Tools Theme Version %1$s"
-msgstr ""
+msgstr "Disciple.Tools thema versie %1$s"
 
-#: dt-core/release-notifications.php:65
+#: dt-core/release-notifications.php:87
 msgid "Theme News"
-msgstr ""
+msgstr "Thema nieuws"
 
-#: dt-core/release-notifications.php:67 dt-core/release-notifications.php:76
+#: dt-core/release-notifications.php:89 dt-core/release-notifications.php:98
 msgid "Other News"
-msgstr ""
+msgstr "Ander nieuws"
 
-#: dt-core/release-notifications.php:68
+#: dt-core/release-notifications.php:90
 msgid "Get Involved"
-msgstr ""
+msgstr "Doe mee"
 
-#: dt-core/release-notifications.php:80
+#: dt-core/release-notifications.php:102
 msgid "Other news not available."
-msgstr ""
+msgstr "Ander nieuws niet beschikbaar."
 
-#: dt-core/release-notifications.php:95
+#: dt-core/release-notifications.php:117
 msgid "Freely given, but not cheap"
-msgstr ""
+msgstr "Gratis gegeven, maar niet goedkoop"
 
-#: dt-core/release-notifications.php:97
+#: dt-core/release-notifications.php:119
 msgid ""
 "Disciple.Tools relies on contributions for continued development and "
 "maintenance. Will you join the team?"
 msgstr ""
+"Disciple.Tools is afhankelijk van bijdragen voor voortdurende ontwikkeling "
+"en onderhoud. Wil je meedoen met het team?"
 
-#: dt-core/release-notifications.php:99
+#: dt-core/release-notifications.php:121
 msgid "Give"
-msgstr ""
+msgstr "Doneren"
 
-#: dt-core/release-notifications.php:103 dt-core/release-notifications.php:107
+#: dt-core/release-notifications.php:125 dt-core/release-notifications.php:129
 msgid "Translate"
-msgstr ""
+msgstr "Vertalen"
 
-#: dt-core/release-notifications.php:105 dt-users/user-initial-setup.php:68
-#: template-settings.php:735
+#: dt-core/release-notifications.php:127 dt-users/user-initial-setup.php:68
+#: template-settings.php:729
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
 msgstr ""
+"Vertaal Disciple.Tools naar uw taal of help een vertaling te verbeteren."
 
-#: dt-core/release-notifications.php:112
+#: dt-core/release-notifications.php:134
 msgid "Build or Document"
-msgstr ""
+msgstr "Bouwen of documenteren"
 
-#: dt-core/release-notifications.php:114
+#: dt-core/release-notifications.php:136
 msgid ""
 "Make Disciple.Tools better by building a feature or helping us make the "
 "documentation better."
 msgstr ""
+"Maak Disciple.Tools beter door een functie te bouwen of ons te helpen de "
+"documentatie te verbeteren."
 
-#: dt-core/release-notifications.php:116
+#: dt-core/release-notifications.php:138
 msgid "Find out more"
-msgstr ""
+msgstr "Meer informatie"
+
+#: dt-core/utilities/dt-components.php:135
+msgid "Search Locations"
+msgstr "locaties"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:60
-#: dt-groups/base-setup.php:168 dt-metrics/personal/activity-highlights.php:58
+#: dt-groups/base-setup.php:169 dt-metrics/personal/activity-highlights.php:58
 msgid "Group"
 msgstr "Groep"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:61
-#: dt-groups/base-setup.php:425 dt-groups/base-setup.php:609
+#: dt-groups/base-setup.php:426 dt-groups/base-setup.php:610
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:177
@@ -3243,40 +3328,40 @@ msgstr "Groep"
 msgid "Groups"
 msgstr "groepen"
 
-#: dt-groups/base-setup.php:115
+#: dt-groups/base-setup.php:116
 msgid "Group Status"
 msgstr "groep status"
 
-#: dt-groups/base-setup.php:116
+#: dt-groups/base-setup.php:117
 msgctxt "field description"
 msgid "Set the current status of the group."
-msgstr "Stel de huidige status in van de groep"
+msgstr "Stel de huidige status in van de groep."
 
-#: dt-groups/base-setup.php:121
+#: dt-groups/base-setup.php:122
 msgctxt "field description"
 msgid "The group is actively meeting."
-msgstr "De groep ontmoet elkaar actief"
+msgstr "De groep ontmoet elkaar actief."
 
-#: dt-groups/base-setup.php:125 dt-users/users.php:180
+#: dt-groups/base-setup.php:126 dt-users/users.php:180
 msgid "Inactive"
 msgstr "aktief"
 
-#: dt-groups/base-setup.php:126
+#: dt-groups/base-setup.php:127
 msgctxt "field description"
 msgid "The group is no longer meeting."
-msgstr "De groep ontmoet elkaar niet meer"
+msgstr "De groep ontmoet elkaar niet meer."
 
-#: dt-groups/base-setup.php:138
+#: dt-groups/base-setup.php:139
 msgid "Select the main person who is responsible for reporting on this group."
 msgstr ""
 "Selecteer de hoofd persoon die verantwoordelijk is voor het rapporteren over "
 "deze groep."
 
-#: dt-groups/base-setup.php:146
+#: dt-groups/base-setup.php:147
 msgid "Group Coach / Church Planter"
 msgstr "Groeps Coach/ Kerk Stichter"
 
-#: dt-groups/base-setup.php:147
+#: dt-groups/base-setup.php:148
 msgctxt "Optional Documentation"
 msgid ""
 "The person who planted and/or is coaching this group. Only one person can be "
@@ -3287,179 +3372,179 @@ msgstr ""
 "kan toegewezen worden aan een groep, terwijl meerdere personen coaches of "
 "Kerkstarters van deze groep kunnen zijn."
 
-#: dt-groups/base-setup.php:159
+#: dt-groups/base-setup.php:160
 msgid "Group Type"
 msgstr "Groeps type"
 
-#: dt-groups/base-setup.php:164
-#, fuzzy
-msgid "Pre-Group"
-msgstr "voor-groep"
-
 #: dt-groups/base-setup.php:165
+msgid "Pre-Group"
+msgstr "Pre-groep"
+
+#: dt-groups/base-setup.php:166
 msgctxt "Optional Documentation"
 msgid "A group predominantly of non-believers."
-msgstr "Een groep voornamelijk van niet-gelovigen"
+msgstr "Een groep voornamelijk van niet-gelovigen."
 
-#: dt-groups/base-setup.php:169
+#: dt-groups/base-setup.php:170
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers but not identifying as church."
 msgstr "Een groep met 3 of meer gelovigen, maar niet geidentificeerd als kerk."
 
-#: dt-groups/base-setup.php:172
+#: dt-groups/base-setup.php:173
 msgid "Church"
 msgstr "Kerk"
 
-#: dt-groups/base-setup.php:173
+#: dt-groups/base-setup.php:174
 msgctxt "Optional Documentation"
 msgid "A group having 3 or more believers and identifying as church."
-msgstr "Een groep van 3 of meer gelovigen geidentificeerd als kerk"
+msgstr "Een groep van 3 of meer gelovigen geidentificeerd als kerk."
 
-#: dt-groups/base-setup.php:176
+#: dt-groups/base-setup.php:177
 msgid "Team"
 msgstr "Teams"
 
-#: dt-groups/base-setup.php:177
+#: dt-groups/base-setup.php:178
 msgctxt "Optional Documentation"
 msgid ""
 "A special group that is not meeting as a church (or trying to become church)."
 msgstr ""
 "Een speiciale groep die niet ontmoet als kerk (of probeert een kerk te "
-"worden)"
+"worden)."
 
-#: dt-groups/base-setup.php:191 dt-groups/base-setup.php:602
+#: dt-groups/base-setup.php:192 dt-groups/base-setup.php:603
 msgid "Church Health"
 msgstr "Kerk Generatie"
 
-#: dt-groups/base-setup.php:192
+#: dt-groups/base-setup.php:193
 msgctxt "Optional Documentation"
 msgid "Track the progress and health of a group/church."
-msgstr "Traceer de voortgang en gezondheid van een groep/kerk"
+msgstr "Traceer de voortgang en gezondheid van een groep/kerk."
 
-#: dt-groups/base-setup.php:196
+#: dt-groups/base-setup.php:197
 msgid "Baptism"
 msgstr "Dopen"
 
-#: dt-groups/base-setup.php:197
+#: dt-groups/base-setup.php:198
 msgctxt "Optional Documentation"
 msgid "The group is baptising."
 msgstr "De groep doopt."
 
-#: dt-groups/base-setup.php:201
+#: dt-groups/base-setup.php:202
 msgid "Bible Study"
 msgstr "Bijbelstudie"
 
-#: dt-groups/base-setup.php:202
+#: dt-groups/base-setup.php:203
 msgctxt "Optional Documentation"
 msgid "The group is studying the bible."
 msgstr "De groep bestudeert de Bijbel."
 
-#: dt-groups/base-setup.php:206
+#: dt-groups/base-setup.php:207
 msgid "Communion"
 msgstr "Avondmaal."
 
-#: dt-groups/base-setup.php:207
+#: dt-groups/base-setup.php:208
 msgctxt "Optional Documentation"
 msgid "The group is practicing communion."
 msgstr "De groep houdt avondmaal."
 
-#: dt-groups/base-setup.php:211
+#: dt-groups/base-setup.php:212
 msgid "Fellowship"
 msgstr "volgende"
 
-#: dt-groups/base-setup.php:212
+#: dt-groups/base-setup.php:213
 msgctxt "Optional Documentation"
 msgid "The group is fellowshiping."
 msgstr "De groep ontmoet elkaar."
 
-#: dt-groups/base-setup.php:216
+#: dt-groups/base-setup.php:217
 msgid "Giving"
 msgstr "Geven"
 
-#: dt-groups/base-setup.php:217
+#: dt-groups/base-setup.php:218
 msgctxt "Optional Documentation"
 msgid "The group is giving."
-msgstr "De groep geeft"
+msgstr "De groep geeft."
 
-#: dt-groups/base-setup.php:221
+#: dt-groups/base-setup.php:222
 msgid "Prayer"
 msgstr "Gebeds Lijst"
 
-#: dt-groups/base-setup.php:222
+#: dt-groups/base-setup.php:223
 msgctxt "Optional Documentation"
 msgid "The group is praying."
 msgstr "De groep bidt."
 
-#: dt-groups/base-setup.php:226
+#: dt-groups/base-setup.php:227
 msgid "Praise"
 msgstr "Prijzen"
 
-#: dt-groups/base-setup.php:227
+#: dt-groups/base-setup.php:228
 msgctxt "Optional Documentation"
 msgid "The group is praising."
 msgstr "De groep prijst."
 
-#: dt-groups/base-setup.php:231
+#: dt-groups/base-setup.php:232
 msgid "Sharing the Gospel"
 msgstr "Deelt het evangelie."
 
-#: dt-groups/base-setup.php:232
+#: dt-groups/base-setup.php:233
 msgctxt "Optional Documentation"
 msgid "The group is sharing the gospel."
-msgstr "De groep deelt het evangelie"
+msgstr "De groep deelt het evangelie."
 
-#: dt-groups/base-setup.php:236 dt-groups/base-setup.php:298
+#: dt-groups/base-setup.php:237 dt-groups/base-setup.php:299
 msgid "Leaders"
 msgstr "Leiders"
 
-#: dt-groups/base-setup.php:237
+#: dt-groups/base-setup.php:238
 msgctxt "Optional Documentation"
 msgid "The group has leaders."
-msgstr "De groep heeft leiders"
+msgstr "De groep heeft leiders."
 
-#: dt-groups/base-setup.php:241 dt-groups/base-setup.php:403
+#: dt-groups/base-setup.php:242 dt-groups/base-setup.php:404
 msgid "Church Commitment"
 msgstr "Toewijding aan kerk"
 
-#: dt-groups/base-setup.php:242
+#: dt-groups/base-setup.php:243
 msgctxt "Optional Documentation"
 msgid "The group has committed to be church."
-msgstr "De groep heeft zich toegewijd als kerk"
+msgstr "De groep heeft zich toegewijd als kerk."
 
-#: dt-groups/base-setup.php:251 dt-users/template-user-management.php:180
-#: template-settings.php:444 template-settings.php:463
+#: dt-groups/base-setup.php:252 dt-users/template-user-management.php:174
+#: template-settings.php:438 template-settings.php:457
 msgid "Start Date"
 msgstr "Begindatum"
 
-#: dt-groups/base-setup.php:252
+#: dt-groups/base-setup.php:253
 msgctxt "Optional Documentation"
 msgid "The date this group began meeting."
 msgstr "De datum deze groep begon te ontmoeten."
 
-#: dt-groups/base-setup.php:259
+#: dt-groups/base-setup.php:260
 msgid "Church Start Date"
 msgstr "Begindatum van kerk"
 
-#: dt-groups/base-setup.php:260
+#: dt-groups/base-setup.php:261
 msgctxt "Optional Documentation"
 msgid "The date this group first identified as being a church."
-msgstr "De datum waarop deze groep zichzelf voor het eerst kerk noemde"
+msgstr "De datum waarop deze groep zichzelf voor het eerst kerk noemde."
 
-#: dt-groups/base-setup.php:268 dt-users/template-user-management.php:181
-#: template-settings.php:450 template-settings.php:464
+#: dt-groups/base-setup.php:269 dt-users/template-user-management.php:175
+#: template-settings.php:444 template-settings.php:458
 msgid "End Date"
 msgstr "einddatum"
 
-#: dt-groups/base-setup.php:269
+#: dt-groups/base-setup.php:270
 msgctxt "Optional Documentation"
 msgid "The date this group stopped meeting (if applicable)."
-msgstr "De datum waarop deze groep stopte te ontmoeten (indien van toepassing)"
+msgstr ""
+"De datum waarop deze groep stopte te ontmoeten (indien van toepassing)."
 
-#: dt-groups/base-setup.php:279 dt-metrics/records/genmap.php:157
+#: dt-groups/base-setup.php:280 dt-metrics/records/genmap.php:157
 msgid "Member Count"
 msgstr "Ledentelling"
 
-#: dt-groups/base-setup.php:280
+#: dt-groups/base-setup.php:281
 msgctxt "Optional Documentation"
 msgid ""
 "The number of members in this group. It will automatically be updated when "
@@ -3472,34 +3557,34 @@ msgstr ""
 "dit aantal handmatig om mensen op te nemen die misschien niet in het systeem "
 "zitten, maar wel lid zijn van de groep."
 
-#: dt-groups/base-setup.php:288 dt-groups/base-setup.php:557
-#: dt-groups/base-setup.php:601
+#: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
+#: dt-groups/base-setup.php:602
 msgid "Member List"
 msgstr "Leden lijst"
 
-#: dt-groups/base-setup.php:289
+#: dt-groups/base-setup.php:290
 msgctxt "Optional Documentation"
 msgid "The contacts who are members of this group."
 msgstr "De contacten die leden zijn van deze groep."
 
-#: dt-groups/base-setup.php:308
+#: dt-groups/base-setup.php:309
 msgid "Leader Count"
 msgstr "Ledenaantal"
 
-#: dt-groups/base-setup.php:316
+#: dt-groups/base-setup.php:317
 msgid "Parent Group"
 msgstr "Ouder Groep"
 
-#: dt-groups/base-setup.php:317
+#: dt-groups/base-setup.php:318
 msgctxt "Optional Documentation"
 msgid "A group that founded this group."
-msgstr "Een groep die deze groep heeft opgericht"
+msgstr "Een groep die deze groep heeft opgericht."
 
-#: dt-groups/base-setup.php:328
+#: dt-groups/base-setup.php:329
 msgid "Peer Group"
 msgstr "Leeftijds groep"
 
-#: dt-groups/base-setup.php:329
+#: dt-groups/base-setup.php:330
 msgctxt "Optional Documentation"
 msgid ""
 "A related group that isn't a parent/child in relationship. It might indicate "
@@ -3509,52 +3594,52 @@ msgstr ""
 "groepen samenwerken, gaan samenvoegen, recentelijk uitelkaar gegaan zijn, "
 "enz."
 
-#: dt-groups/base-setup.php:340
+#: dt-groups/base-setup.php:341
 msgid "Child Group"
 msgstr "kinder groep"
 
-#: dt-groups/base-setup.php:341
+#: dt-groups/base-setup.php:342
 msgctxt "Optional Documentation"
 msgid "A group that has been birthed out of this group."
 msgstr "Een groep die is voortgekomen uit deze groep."
 
-#: dt-groups/base-setup.php:376
+#: dt-groups/base-setup.php:377
 msgid "Unbelievers"
 msgstr "ongelovigen"
 
-#: dt-groups/base-setup.php:377
+#: dt-groups/base-setup.php:378
 msgctxt "Optional Documentation"
 msgid "Number of unbelievers in this group."
-msgstr "aantal niet gelovigen in deze groep"
+msgstr "aantal niet gelovigen in deze groep."
 
-#: dt-groups/base-setup.php:385
+#: dt-groups/base-setup.php:386
 msgid "Believers"
 msgstr "Gelovigen"
 
-#: dt-groups/base-setup.php:386
+#: dt-groups/base-setup.php:387
 msgctxt "Optional Documentation"
 msgid "Number of believers in this group."
-msgstr "aantal gelovigen in deze groep "
+msgstr "aantal gelovigen in deze groep ."
 
-#: dt-groups/base-setup.php:394
+#: dt-groups/base-setup.php:395
 msgid "Accountable"
 msgstr "Verantwoordelijk"
 
-#: dt-groups/base-setup.php:395
+#: dt-groups/base-setup.php:396
 msgctxt "Optional Documentation"
 msgid "Number of people in accountability group."
-msgstr "Aantal mensen die verantwoording aan elkaar afleggen"
+msgstr "Aantal mensen die verantwoording aan elkaar afleggen."
 
-#: dt-groups/base-setup.php:404
+#: dt-groups/base-setup.php:405
 msgctxt "Optional Documentation"
 msgid "Is this a church - yes or no?"
 msgstr "Is dit een kerk- ja of nee?"
 
-#: dt-groups/base-setup.php:412
+#: dt-groups/base-setup.php:413
 msgid "Multiplying"
 msgstr "Vermenigvuldiger"
 
-#: dt-groups/base-setup.php:413
+#: dt-groups/base-setup.php:414
 msgctxt "Optional Documentation"
 msgid ""
 "Number of people helping start other groups. How many members are "
@@ -3563,50 +3648,50 @@ msgstr ""
 "Aantal mensen die andere groepen helpen starten. Hoeveel leden "
 "vermenigvuldigen?"
 
-#: dt-groups/base-setup.php:426
+#: dt-groups/base-setup.php:427
 msgctxt "Optional Documentation"
 msgid "Groups this contact is a member of."
 msgstr "Groepen waar dit contact onderdeel van is."
 
-#: dt-groups/base-setup.php:438
+#: dt-groups/base-setup.php:439
 msgid "Leader of Group"
 msgstr "Groepsleider"
 
-#: dt-groups/base-setup.php:448
+#: dt-groups/base-setup.php:449
 msgid "Coach of Group"
 msgstr "Coach van Groep"
 
-#: dt-groups/base-setup.php:560
+#: dt-groups/base-setup.php:561
 msgid "Create"
 msgstr "Aangemaakt:"
 
-#: dt-groups/base-setup.php:565
+#: dt-groups/base-setup.php:566
 msgid "Select"
 msgstr "Selecteer Alles"
 
-#: dt-groups/base-setup.php:570
+#: dt-groups/base-setup.php:571
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr "om nieuwe leden toe te voegen, klik op 'Maak' of 'Selecteer'."
 
-#: dt-groups/base-setup.php:576
+#: dt-groups/base-setup.php:577
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "voeg leden toe van bestaande contacten"
 
-#: dt-groups/base-setup.php:577
+#: dt-groups/base-setup.php:578
 msgctxt "Add members modal"
 msgid ""
 "In the 'Member List' field, type the name of an existing contact to add them "
 "to this group."
 msgstr ""
-"In het \"ledenlijst\" veld, typ de naam van een bestaand contact om ze aan "
-"deze groep toe te voegen."
+"In het \"ledenlijst\" veld, typ de naam van een bestaand contact om ze "
+"aan deze groep toe te voegen."
 
-#: dt-groups/base-setup.php:605
+#: dt-groups/base-setup.php:606
 msgid "Four Fields"
 msgstr "Vier velden"
 
-#: dt-groups/base-setup.php:606
+#: dt-groups/base-setup.php:607
 msgctxt "Optional Documentation"
 msgid ""
 "There are 5 squares in the Four Fields diagram. Starting in the top left "
@@ -3621,95 +3706,81 @@ msgid ""
 "Your password reset link appears to be invalid. Please request a new link "
 "below."
 msgstr ""
+"Uw wachtwoord reset link lijkt ongeldig te zijn. Vraag hieronder een nieuwe "
+"link aan."
 
 #: dt-login/login-template.php:70
 msgid "Your password reset link has expired. Please request a new link below."
 msgstr ""
+"Uw wachtwoord reset link is verlopen. Vraag hieronder een nieuwe link aan."
 
 #: dt-login/login-template.php:84 dt-login/login-template.php:109
-#, fuzzy
-#| msgid "Password"
 msgid "Get New Password"
-msgstr "Paswoord"
+msgstr "Nieuw wachtwoord opvragen"
 
 #: dt-login/login-template.php:98 dt-login/login-template.php:488
-#, fuzzy
-#| msgid "Add email address"
 msgid "Email Address"
-msgstr "Voeg email adres toe"
+msgstr "E-mailadres"
 
 #: dt-login/login-template.php:112
 msgid ""
 "Your password reset email has been sent. Check your email or junk mail for "
 "the link to reset your password."
 msgstr ""
+"Uw wachtwoord reset e-mail is verzonden. Controleer uw e-mail of spam voor "
+"de link om uw wachtwoord te resetten."
 
 #: dt-login/login-template.php:160
 msgid "Missing email or password."
-msgstr ""
+msgstr "E-mail of wachtwoord ontbreekt."
 
 #: dt-login/login-template.php:164 dt-login/login-template.php:244
 #: dt-login/login-template.php:365
 msgid "Passwords do not match. Please, try again."
-msgstr ""
+msgstr "Wachtwoorden komen niet overeen. Probeer het opnieuw."
 
 #: dt-login/login-template.php:231 dt-login/login-template.php:234
 #: dt-login/login-template.php:353 dt-login/login-template.php:356
-#, fuzzy
-#| msgid "Password"
 msgid "Password Required"
-msgstr "Paswoord"
+msgstr "Wachtwoord vereist"
 
 #: dt-login/login-template.php:241 dt-login/login-template.php:362
-#, fuzzy
-#| msgid "Reset password"
 msgid "Re-enter Password"
-msgstr "Wijzig paswoord"
+msgstr "Wachtwoord opnieuw invoeren"
 
 #: dt-login/login-template.php:312 dt-login/login-template.php:374
 #: dt-login/login-template.php:545
-#, fuzzy
-#| msgid "Registered"
 msgid "Register"
-msgstr "Geregistreerd"
+msgstr "Registreren"
 
 #: dt-login/login-template.php:340 dt-users/template-new-user.php:88
 msgid "There are some errors in your form."
 msgstr "Uw formulier bevat een aantal fouten."
 
 #: dt-login/login-template.php:345
-#, fuzzy
-#| msgid "Display Name"
 msgid "Display Name (optional)"
-msgstr "Toon Naam"
+msgstr "Weergavenaam (optioneel)"
 
 #: dt-login/login-template.php:456
 msgid "User action confirmed."
-msgstr ""
+msgstr "Gebruikersactie bevestigd."
 
 #: dt-login/login-template.php:466 dt-login/login-template.php:491
 #: dt-login/login-template.php:537
 msgid "Login"
-msgstr ""
+msgstr "Inloggen"
 
 #: dt-login/login-template.php:472
 msgid "Username or password does not match. Try again."
-msgstr ""
-
-#: dt-login/login-template.php:489 dt-users/template-new-user.php:121
-#: dt-users/template-new-user.php:122 template-settings.php:661
-msgid "Password"
-msgstr "Paswoord"
+msgstr "Gebruikersnaam of wachtwoord komt niet overeen. Probeer het opnieuw."
 
 #: dt-login/login-template.php:490
 msgid "Remember Me"
-msgstr ""
+msgstr "Onthoud mij"
 
 #: dt-login/login-template.php:552
-#, fuzzy
-#| msgid "Reset password"
 msgid "Lost Password"
-msgstr "Wijzig paswoord"
+msgstr "Wachtwoord vergeten"
 
 #: dt-mapping/columns/add-churches-column.php:57
 #: dt-metrics/combined/hover-map.php:222
@@ -3718,28 +3789,28 @@ msgstr "Wijzig paswoord"
 msgid "Churches"
 msgstr "Kerken"
 
-#: dt-mapping/geocode-api/mapbox-api.php:288
 #: dt-mapping/geocode-api/mapbox-api.php:323
-#: dt-users/template-user-management.php:124 template-settings.php:340
+#: dt-mapping/geocode-api/mapbox-api.php:364
 msgid "add"
 msgstr "toevoegen"
 
-#: dt-mapping/geocode-api/mapbox-api.php:289 template-merge-post-details.php:98
+#: dt-mapping/geocode-api/mapbox-api.php:324
+#: template-merge-post-details.php:101
 msgid "Use"
 msgstr "Gebruiken"
 
-#: dt-mapping/geocode-api/mapbox-api.php:290 template-merge-post-details.php:96
+#: dt-mapping/geocode-api/mapbox-api.php:325 template-merge-post-details.php:99
 #: template-new-bulk-post.php:26 template-new-bulk-post.php:203
 #: template-new-bulk-post.php:208
 msgid "Search Location"
 msgstr "Locatie zoeken"
 
-#: dt-mapping/geocode-api/mapbox-api.php:291 template-merge-post-details.php:97
-#: template-new-bulk-post.php:216
+#: dt-mapping/geocode-api/mapbox-api.php:326
+#: template-merge-post-details.php:100 template-new-bulk-post.php:216
 msgid "Delete Location"
 msgstr "Locatie verwijderen"
 
-#: dt-mapping/geocode-api/mapbox-api.php:292
+#: dt-mapping/geocode-api/mapbox-api.php:327
 msgid "Open Mapping"
 msgstr "Mapping openen"
 
@@ -3821,7 +3892,7 @@ msgstr "Aantal contacten toegewezen voor een Face-to-Face bezoek"
 #: dt-metrics/combined/critical-path.php:230
 #: dt-metrics/combined/mapbox-maps.php:80 dt-metrics/contacts/overview.php:63
 #: dt-metrics/groups/overview.php:67 dt-metrics/personal/overview.php:64
-#: dt-users/template-user-management.php:388
+#: dt-users/template-user-management.php:382
 msgid "Active Contacts"
 msgstr "Actieve Contacten"
 
@@ -3835,9 +3906,9 @@ msgid "Number of contacts on %s at the end of the time range"
 msgstr "Aantal contacten op %s aan het eind van de tijd periode"
 
 #: dt-metrics/combined/critical-path.php:243
-#, fuzzy, php-format
+#, php-format
 msgid "Number of contacts where %s was set on the seeker path"
-msgstr "Aantal contacten waar  %s was geplaatst op het zoekers pad"
+msgstr "Aantal contacten waarbij %s werd ingesteld op het zoekerspad"
 
 #: dt-metrics/combined/critical-path.php:259
 #: dt-metrics/combined/daily-activity.php:91
@@ -3924,12 +3995,12 @@ msgid "This Week"
 msgstr "Deze week"
 
 #: dt-metrics/combined/daily-activity.php:76
-#: dt-users/template-user-management.php:418
+#: dt-users/template-user-management.php:412
 msgid "This Month"
 msgstr "Deze Maand"
 
 #: dt-metrics/combined/daily-activity.php:77
-#: dt-users/template-user-management.php:422
+#: dt-users/template-user-management.php:416
 msgid "Last Month"
 msgstr "Laatst Aangepast"
 
@@ -3973,10 +4044,8 @@ msgid "New %s"
 msgstr "Nieuwe %s"
 
 #: dt-metrics/combined/hover-map.php:25 dt-metrics/combined/hover-map.php:65
-#, fuzzy
-#| msgid "Filter Name"
 msgid "Simple Map"
-msgstr "Filter naam"
+msgstr "Eenvoudige kaart"
 
 #: dt-metrics/combined/locations-list.php:25
 msgid "Locations List"
@@ -3988,11 +4057,13 @@ msgstr "Gecombineerde kaarten"
 
 #: dt-metrics/combined/mapbox-maps.php:62
 #: dt-metrics/contacts/mapbox-maps.php:55 dt-metrics/groups/mapbox-maps.php:55
-#: dt-metrics/records/dynamic-records-map.php:105
+#: dt-metrics/records/dynamic-records-map.php:106
 #: dt-users/mapbox-coverage-map.php:81
 msgctxt "install mapbox key to view map"
 msgid "To view this map, a mapbox key is needed; click here to add."
 msgstr ""
+"Om deze kaart te bekijken is een mapbox-sleutel nodig; klik hier om toe te "
+"voegen."
 
 #: dt-metrics/combined/mapbox-maps.php:82
 msgid "Active Users"
@@ -4003,10 +4074,8 @@ msgid "Transferred Contacts"
 msgstr "Overgedragen contacten"
 
 #: dt-metrics/combined/site-links.php:23 dt-metrics/contacts/sources.php:25
-#, fuzzy
-#| msgid "Accept"
 msgid "Access"
-msgstr "accepteer"
+msgstr "Toegang"
 
 #: dt-metrics/combined/site-links.php:72
 msgid "Filter by date range and available site links"
@@ -4091,14 +4160,13 @@ msgstr "Filter contacten op datum tijdperk:"
 #: dt-metrics/personal/activity-highlights.php:54
 #: dt-metrics/records/select-tags-charts.php:89
 #: dt-metrics/records/time-charts.php:115
-#: dt-users/template-user-management.php:432
+#: dt-users/template-user-management.php:426
 msgid "All Time"
 msgstr "Alle periodes"
 
 #: dt-metrics/contacts/sources.php:91
-#, fuzzy
 msgid "Showing contacts created during"
-msgstr "Toont contacten aangemaakt gedurende"
+msgstr "Toont contacten aangemaakt tijdens"
 
 #: dt-metrics/contacts/sources.php:92
 msgid "All contacts, by source and status"
@@ -4106,16 +4174,15 @@ msgstr "Alle contacten gerangschikt op Bron en Status"
 
 #: dt-metrics/contacts/sources.php:93
 msgid "A contact can come from more than one source."
-msgstr "Een contact kan van meerdere bronnen komen"
+msgstr "Een contact kan van meerdere bronnen komen."
 
 #: dt-metrics/contacts/sources.php:94
-#, fuzzy
 msgid "Active contacts, by source and seeker path"
-msgstr "Actieve contacten, geordend op Bron en Zoekers pad"
+msgstr "Actieve contacten, op bron en zoekerspad"
 
 #: dt-metrics/contacts/sources.php:95 dt-metrics/contacts/sources.php:97
 msgid "This is displaying only the contacts with an 'active' status right now."
-msgstr "Dit geeft alleen de contacten weer die nu een actieve status hebben"
+msgstr "Dit geeft alleen de contacten weer die nu een actieve status hebben."
 
 #: dt-metrics/contacts/sources.php:96
 msgid "Active contacts, by source and faith milestone"
@@ -4146,9 +4213,8 @@ msgid "Total Churches and Groups"
 msgstr "Totaal aantal Kerken en Groepen"
 
 #: dt-metrics/counter.php:180
-#, fuzzy
 msgid "Church Generation"
-msgstr "Kerk Generatie"
+msgstr "Kerkgeneratie"
 
 #: dt-metrics/groups/mapbox-maps.php:27
 msgid "Group Maps"
@@ -4189,11 +4255,11 @@ msgstr "Generatie"
 
 #: dt-metrics/metrics.php:79
 msgid "Genmap"
-msgstr ""
+msgstr "Genmap"
 
 #: dt-metrics/metrics.php:80 dt-metrics/records/dynamic-records-map.php:31
 msgid "Maps"
-msgstr ""
+msgstr "Kaarten"
 
 #: dt-metrics/personal/activity-highlights.php:22
 #: dt-metrics/personal/activity-highlights.php:53
@@ -4272,24 +4338,18 @@ msgid "stats as of"
 msgstr "statistieken per"
 
 #: dt-metrics/records/date-range-activity.php:43
-#, fuzzy
-#| msgid "Activity Log"
 msgid "Activity Logs"
-msgstr "Activiteiten logboek"
+msgstr "Activiteitenlogboeken"
 
 #: dt-metrics/records/date-range-activity.php:101
 #: dt-metrics/records/select-tags-charts.php:86
 #: dt-metrics/records/time-charts.php:106
-#, fuzzy
-#| msgid "Record"
 msgid "Record Type"
-msgstr "Dossier"
+msgstr "Dossiertype"
 
 #: dt-metrics/records/date-range-activity.php:103
-#, fuzzy
-#| msgid "Activity"
 msgid "Any Activity"
-msgstr "activiteit"
+msgstr "Elke activiteit"
 
 #: dt-metrics/records/date-range-activity.php:104
 #: dt-metrics/records/time-charts.php:108
@@ -4297,79 +4357,62 @@ msgid "Total"
 msgstr "Totaal"
 
 #: dt-metrics/records/date-range-activity.php:105
-#, fuzzy
-#| msgid "Date Ranges"
 msgid "Date Range"
-msgstr "Datumbereiken"
+msgstr "Datumbereik"
 
 #: dt-metrics/records/date-range-activity.php:106
-#, fuzzy
-#| msgid "Custom"
 msgid "Custom Range"
-msgstr "aangepaste filters"
+msgstr "Aangepast bereik"
 
 #: dt-metrics/records/date-range-activity.php:107
 msgid "Reload"
-msgstr ""
+msgstr "Herladen"
 
 #: dt-metrics/records/date-range-activity.php:108
 #: dt-metrics/records/select-tags-charts.php:91
 #: dt-metrics/records/time-charts.php:122
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: dt-metrics/records/date-range-activity.php:109
-#, fuzzy
-#| msgid "No Activity Detected!"
 msgid "Time Activity Recorded"
-msgstr "Geen activiteit gedetecteerd!"
+msgstr "Tijdstip activiteit geregistreerd"
 
 #: dt-metrics/records/date-range-activity.php:110
-#, fuzzy
-#| msgid "Old Value"
 msgid "New Value"
-msgstr "Oude Waarde"
+msgstr "Nieuwe waarde"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "True"
-msgstr ""
+msgstr "Waar"
 
 #: dt-metrics/records/date-range-activity.php:343
 msgid "False"
-msgstr ""
+msgstr "Onwaar"
 
-#: dt-metrics/records/dynamic-records-map.php:92
+#: dt-metrics/records/dynamic-records-map.php:93
 #: dt-metrics/records/genmap.php:136
-#, fuzzy
-#| msgid "Archived"
 msgid "Show Archived"
-msgstr "Gearchiveerd"
+msgstr "Gearchiveerde tonen"
 
-#: dt-metrics/records/dynamic-records-map.php:94 template-new-bulk-post.php:264
+#: dt-metrics/records/dynamic-records-map.php:95 template-new-bulk-post.php:264
 msgid "Add Records"
 msgstr "Records toevoegen"
 
-#: dt-metrics/records/dynamic-records-map.php:95
-#: dt-metrics/records/dynamic-records-map.php:98
-#, fuzzy
-#| msgid "Record"
-msgid "Record Types"
-msgstr "Dossier"
-
 #: dt-metrics/records/dynamic-records-map.php:96
-#, fuzzy
-#| msgid "prayer"
-msgid "Layer"
-msgstr "gebed"
+#: dt-metrics/records/dynamic-records-map.php:99
+msgid "Record Types"
+msgstr "Dossiertypes"
 
 #: dt-metrics/records/dynamic-records-map.php:97
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
-msgid "Are you sure you wish to delete layer?"
-msgstr "Weet u zeker dat u %s wilt verwijderen?"
+msgid "Layer"
+msgstr "Laag"
 
-#: dt-metrics/records/dynamic-records-map.php:100
+#: dt-metrics/records/dynamic-records-map.php:98
+msgid "Are you sure you wish to delete layer?"
+msgstr "Weet u zeker dat u de laag wilt verwijderen?"
+
+#: dt-metrics/records/dynamic-records-map.php:101
 #: dt-notifications/notifications.php:920
 #: dt-notifications/notifications.php:927
 #: dt-notifications/notifications.php:934
@@ -4380,40 +4423,32 @@ msgid "System"
 msgstr "Systeem"
 
 #: dt-metrics/records/genmap.php:23
-#, fuzzy
-#| msgid "Group Generation Tree"
 msgid "GenMapper Trees"
-msgstr "Groep generatie boom"
+msgstr "GenMapper bomen"
 
 #: dt-metrics/records/genmap.php:137
-#, fuzzy
-#| msgid "prayer"
 msgid "Data Layers"
-msgstr "gebed"
+msgstr "Gegevenslagen"
 
 #: dt-metrics/records/genmap.php:138
 msgid "Node Color"
-msgstr ""
+msgstr "Knooppuntkleur"
 
 #: dt-metrics/records/genmap.php:139
-#, fuzzy
-#| msgid "Default Filters"
 msgid "Default"
-msgstr "Standaardfilters"
+msgstr "Standaard"
 
 #: dt-metrics/records/genmap.php:140
 msgid "Add Data Layer"
-msgstr ""
+msgstr "Gegevenslaag toevoegen"
 
 #: dt-metrics/records/genmap.php:141
-#, fuzzy
-#| msgid "Show all fields"
 msgid "Show as icons"
-msgstr "Toon alle velden"
+msgstr "Tonen als pictogrammen"
 
 #: dt-metrics/records/genmap.php:142
 msgid "select data layer field to capture"
-msgstr ""
+msgstr "selecteer gegevenslaagveld om vast te leggen"
 
 #: dt-metrics/records/genmap.php:143
 msgid "Highlight Active"
@@ -4432,7 +4467,7 @@ msgid "View Record"
 msgstr "Gegevens bekijken"
 
 #: dt-metrics/records/genmap.php:148 dt-metrics/records/genmap.php:152
-#: dt-posts/dt-posts.php:2717 dt-users/template-user-management.php:384
+#: dt-posts/dt-posts.php:2717 dt-users/template-user-management.php:378
 #: dt-users/users.php:175 single-template.php:127
 msgid "Status"
 msgstr "status"
@@ -4450,105 +4485,82 @@ msgid "Coaches"
 msgstr "Begeleiders"
 
 #: dt-metrics/records/genmap.php:156
-#, fuzzy
-#| msgid "Type:"
 msgid "Type"
-msgstr "Type:"
+msgstr "Type"
 
 #: dt-metrics/records/genmap.php:159
-#, fuzzy
-#| msgid "Open With"
 msgid "Open"
-msgstr "Openen met"
+msgstr "Openen"
 
 #: dt-metrics/records/genmap.php:161
 msgid "Focus"
-msgstr ""
+msgstr "Focus"
 
 #: dt-metrics/records/genmap.php:162
 msgid "Hide"
-msgstr ""
+msgstr "Verbergen"
 
 #: dt-metrics/records/genmap.php:165
-#, fuzzy
-#| msgid "Child Group"
 msgid "Add Child To"
-msgstr "kinder groep"
+msgstr "Kind toevoegen aan"
 
 #: dt-metrics/records/genmap.php:167
 msgid "Add Child"
-msgstr ""
+msgstr "Kind toevoegen"
 
 #: dt-metrics/records/genmap.php:168
 msgid "Focus On Node"
-msgstr ""
+msgstr "Focus op knooppunt"
 
 #: dt-metrics/records/genmap.php:169
-#, fuzzy
-#| msgctxt "Are you sure you want to delete name?"
-#| msgid "Are you sure you want to delete %s?"
 msgid "Are you sure you wish to focus on node?"
-msgstr "Weet u zeker dat u %s wilt verwijderen?"
+msgstr "Weet u zeker dat u wilt focussen op dit knooppunt?"
 
 #: dt-metrics/records/genmap.php:173
 msgid "Infinite Loops"
-msgstr ""
+msgstr "Oneindige lussen"
 
 #: dt-metrics/records/select-tags-charts.php:32
-#, fuzzy
-#| msgid "Fields over Time Charts"
 msgid "Simple Chart"
-msgstr "Velden in tijdgrafieken"
+msgstr "Eenvoudige grafiek"
 
 #: dt-metrics/records/select-tags-charts.php:85
 msgid ""
 "This chart shows the total number for each field value at the end of the "
 "selected date."
 msgstr ""
+"Deze grafiek toont het totale aantal voor elke veldwaarde aan het einde van "
+"de geselecteerde datum."
 
 #: dt-metrics/records/select-tags-charts.php:90
 #: dt-metrics/records/time-charts.php:121
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records"
-msgstr "Records toevoegen"
+msgstr "Dossiers"
 
 #: dt-metrics/records/select-tags-charts.php:92
 #: dt-metrics/records/time-charts.php:123
-#, fuzzy
-#| msgid "No Data Available"
 msgid "No Records Available"
-msgstr "Geen gegevens beschikbaar"
+msgstr "Geen dossiers beschikbaar"
 
 #: dt-metrics/records/time-charts.php:41
-#, fuzzy
-#| msgid "Advanced Search"
 msgid "Advanced Charts"
-msgstr "Geavanceerd zoeken"
+msgstr "Geavanceerde grafieken"
 
 #: dt-metrics/records/time-charts.php:109
 msgid "Added"
 msgstr "Toegevoegd"
 
 #: dt-metrics/records/time-charts.php:110
-#, fuzzy
-#| msgid "Delete"
 msgid "Deleted"
-msgstr "verwijder"
+msgstr "Verwijderd"
 
 #: dt-metrics/records/time-charts.php:111
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Connected"
-msgstr "Verbonden %s"
+msgstr "Verbonden"
 
 #: dt-metrics/records/time-charts.php:112
-#, fuzzy
-#| msgctxt "Personal records"
-#| msgid "Connected %s"
 msgid "Disconnected"
-msgstr "Verbonden %s"
+msgstr "Verbroken"
 
 #: dt-metrics/records/time-charts.php:113
 #, php-format
@@ -4565,10 +4577,8 @@ msgid "Single cumulative totals"
 msgstr "Enkele cumulatieve totalen"
 
 #: dt-metrics/records/time-charts.php:118
-#, fuzzy
-#| msgid "Add Records"
 msgid "Records changes"
-msgstr "Records toevoegen"
+msgstr "Dossierwijzigingen"
 
 #: dt-notifications/notifications-email.php:132
 msgid "Click here to view or reply"
@@ -4578,17 +4588,17 @@ msgstr "Klik hier om te zien of te beantwoorden"
 #, php-format
 msgctxt "ex: Update on Contact #323"
 msgid "Update on %1$s #%2$s"
-msgstr "Update voor  %1$s #%2$s"
+msgstr "Update voor %1$s #%2$s"
 
 #: dt-notifications/notifications-email.php:142
 msgid "Do not reply directly to this email."
-msgstr "Beantwoord deze email niet rechtstreeks"
+msgstr "Beantwoord deze email niet rechtstreeks."
 
-#: dt-notifications/notifications-scheduler.php:140 template-settings.php:520
+#: dt-notifications/notifications-scheduler.php:140 template-settings.php:514
 msgid "Hourly Digest"
 msgstr "Uurlijkse samenvatting"
 
-#: dt-notifications/notifications-scheduler.php:143 template-settings.php:524
+#: dt-notifications/notifications-scheduler.php:143 template-settings.php:518
 msgid "Daily Digest"
 msgstr "Dagelijkse samenvatting"
 
@@ -4638,13 +4648,13 @@ msgstr[1] "meer dan %s jaar geleden"
 #, php-format
 msgctxt "%s was created and assigned to you."
 msgid "%s was created and assigned to you."
-msgstr "%s is aangemaakt en aan jou toegewezen"
+msgstr "%s is aangemaakt en aan jou toegewezen."
 
 #: dt-notifications/notifications.php:911
 #, php-format
 msgctxt "You have been assigned: contact1."
 msgid "You have been assigned: %1$s."
-msgstr "%1$s is aan jou toegewezen"
+msgstr "%1$s is aan jou toegewezen."
 
 #: dt-notifications/notifications.php:917
 #, php-format
@@ -4668,13 +4678,13 @@ msgstr "%1$s heeft jou genoemd bij %2$s zeggend : %3$s"
 #, php-format
 msgctxt "User1 commented on contact1 saying: test"
 msgid "%1$s commented on %2$s saying: %3$s"
-msgstr "%1$s heeft een opmerking gemaakt bij %2$s  namelijk: %3$s"
+msgstr "%1$s heeft een opmerking gemaakt bij %2$s namelijk: %3$s"
 
 #: dt-notifications/notifications.php:939
 #, php-format
 msgctxt "User1 subassigned contact1 to you."
 msgid "%1$s subassigned %2$s to you."
-msgstr "%1$s heeft %2$s aan jou onderverwezen"
+msgstr "%1$s heeft %2$s aan jou onderverwezen."
 
 #: dt-notifications/notifications.php:949
 #, php-format
@@ -4692,7 +4702,7 @@ msgstr "%1$s, een update is vereist voor %2$s."
 #, php-format
 msgctxt "User1 modified contact details on contact1."
 msgid "%1$s modified contact details on %2$s."
-msgstr "%1$s heeft contact details aangepast bij %2$s"
+msgstr "%1$s heeft contact details aangepast bij %2$s."
 
 #: dt-notifications/notifications.php:959
 #, php-format
@@ -4714,11 +4724,11 @@ msgstr "Etnische groepen"
 
 #: dt-people-groups/people-groups-base.php:184
 msgid "Contacts Total"
-msgstr ""
+msgstr "Totaal contacten"
 
 #: dt-people-groups/people-groups-base.php:203
 msgid "Groups Total"
-msgstr ""
+msgstr "Totaal groepen"
 
 #: dt-people-groups/people-groups-base.php:218
 #: dt-posts/custom-post-type.php:186
@@ -4727,19 +4737,19 @@ msgstr "Laatst Aangepast"
 
 #: dt-people-groups/people-groups-base.php:283
 msgid "People Group Code"
-msgstr ""
+msgstr "Bevolkingsgroep code"
 
 #: dt-people-groups/people-groups-base.php:290
 msgid "People ID"
-msgstr ""
+msgstr "Personen ID"
 
 #: dt-people-groups/people-groups-base.php:297
 msgid "Primary Language"
-msgstr ""
+msgstr "Hoofdtaal"
 
 #: dt-people-groups/people-groups-base.php:304
 msgid "Country"
-msgstr ""
+msgstr "Land"
 
 #: dt-people-groups/people-groups-base.php:316
 msgctxt "Optional Documentation"
@@ -4754,11 +4764,11 @@ msgstr "De etnische groepen vertegenwoordigd door deze groep."
 
 #: dt-people-groups/people-groups-base.php:345
 msgid "Connections"
-msgstr ""
+msgstr "Verbindingen"
 
 #: dt-people-groups/people-groups-base.php:347
 msgid "Joshua Project"
-msgstr ""
+msgstr "Joshua Project"
 
 #: dt-people-groups/people-groups-post-type.php:204
 msgid "Add/Update People Group"
@@ -4778,7 +4788,7 @@ msgstr "Vul hier de Etnische Groep titel in"
 
 #: dt-posts/custom-post-type.php:179
 msgid "Picture"
-msgstr ""
+msgstr "Afbeelding"
 
 #: dt-posts/custom-post-type.php:209
 msgid "Tags"
@@ -4794,12 +4804,9 @@ msgid "Un-Follow"
 msgstr "Niet meer Volgen"
 
 #: dt-posts/custom-post-type.php:248
-#, fuzzy
-#| msgctxt "Optional Documentation"
-#| msgid "The general location where this contact is located."
 msgctxt "Optional Documentation"
 msgid "The general location where this record is located."
-msgstr "De algemene locatie waar dit contact zich bevindt."
+msgstr "De algemene locatie waar dit dossier zich bevindt."
 
 #: dt-posts/custom-post-type.php:256
 msgid "Locations or Address"
@@ -4809,30 +4816,25 @@ msgstr "Locaties of adres"
 msgid ""
 "This record was automatically updated rather than creating a new record."
 msgstr ""
+"Dit dossier is automatisch bijgewerkt in plaats van een nieuw dossier aan te "
+"maken."
 
 #: dt-posts/dt-posts.php:1650
-#, fuzzy, php-format
-#| msgid "Magic Link Submission"
+#, php-format
 msgid "%s Submission"
-msgstr "Magische Link Inzending"
+msgstr "%s inzending"
 
 #: dt-posts/dt-posts.php:1650
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Link"
-msgstr "Magische Link Inzending"
+msgstr "Magische link"
 
 #: dt-posts/dt-posts.php:1652 dt-posts/dt-posts.php:2199
-#, fuzzy
-#| msgid "Revert Activity"
 msgid "Revert Bot"
-msgstr "Activiteit terugzetten"
+msgstr "Terugzetbot"
 
 #: dt-posts/dt-posts.php:2439
-#, fuzzy
-#| msgid "Post already shared with user."
 msgid "Record already shared with user."
-msgstr "Post is al gedeeld met gebruiker."
+msgstr "Dossier is al gedeeld met gebruiker."
 
 #: dt-posts/dt-posts.php:2718 single-template.php:174
 msgid "Details"
@@ -4928,7 +4930,7 @@ msgid "No longer coached by %s"
 msgstr "niet meer gecoached door %s"
 
 #: dt-posts/posts.php:306
-#, fuzzy, php-format
+#, php-format
 msgctxt "Sub-assigned contact1"
 msgid "Sub-assigned %s"
 msgstr "Sub-toegewezen %s"
@@ -5051,7 +5053,7 @@ msgstr "%s verwijderd uit oudergroepen"
 #, php-format
 msgctxt "group1 added to peer groups"
 msgid "%s added to peer groups"
-msgstr "%s  toegevoegd aan leeftijdgenoot groepen"
+msgstr "%s toegevoegd aan leeftijdgenoot groepen"
 
 #: dt-posts/posts.php:350 dt-posts/posts.php:351
 #, php-format
@@ -5067,9 +5069,7 @@ msgid "Connected to %s"
 msgstr "verbonden met %s"
 
 #: dt-posts/posts.php:360 dt-posts/posts.php:361
-#, fuzzy, php-format
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
+#, php-format
 msgctxt "Contact1 added to [field]"
 msgid "%1$s added to %2$s"
 msgstr "%1$s toegevoegd aan %2$s"
@@ -5082,20 +5082,16 @@ msgid "Removed connection to %s"
 msgstr "Verbinding verwijderd bij %s"
 
 #: dt-posts/posts.php:377 dt-posts/posts.php:378
-#, fuzzy, php-format
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
+#, php-format
 msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s verwijderd uit %2$s"
 
 #: dt-posts/posts.php:416
-#, fuzzy, php-format
-#| msgctxt "Total in January"
-#| msgid "%1$s in %2$s"
+#, php-format
 msgctxt "User Select: User1"
 msgid "%1$s: %2$s"
-msgstr "%1$s in %2$s"
+msgstr "%1$s: %2$s"
 
 #: dt-posts/posts.php:416
 msgid "Nobody"
@@ -5137,20 +5133,16 @@ msgid "%1$s added to locations"
 msgstr "%1$s toegevoegd aan locaties"
 
 #: dt-posts/posts.php:512
-#, fuzzy, php-format
-#| msgctxt "Milestone1 removed from Milestones"
-#| msgid "%1$s removed from %2$s"
+#, php-format
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
-msgstr "%1$s verwijderd uit %2$s"
+msgstr "%1$s verwijderd uit %2$s links"
 
 #: dt-posts/posts.php:515
-#, fuzzy, php-format
-#| msgctxt "Milestone1 added to Milestones"
-#| msgid "%1$s added to %2$s"
+#, php-format
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
-msgstr "%1$s toegevoegd aan %2$s"
+msgstr "%1$s toegevoegd aan %2$s links"
 
 #: dt-posts/posts.php:536
 msgctxt "message"
@@ -5231,10 +5223,8 @@ msgid "Unshared with %s"
 msgstr "Niet gedeeld met %s"
 
 #: dt-posts/posts.php:2527
-#, fuzzy
-#| msgid "Remove"
 msgid "Removed User"
-msgstr "Verwijderen"
+msgstr "Verwijderde gebruiker"
 
 #: dt-reports/magic-url-bulk-send.php:17
 msgid "Bulk Send App"
@@ -5245,7 +5235,7 @@ msgstr "Bulkverstuur-app"
 msgid "Select all the %1$s to whom you want to send app links."
 msgstr "Selecteer alle %1$s naar wie je app-links wilt sturen."
 
-#: dt-reports/magic-url-bulk-send.php:43
+#: dt-reports/magic-url-bulk-send.php:42
 msgid ""
 "Hello {{name}},\n"
 "\n"
@@ -5255,68 +5245,67 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"Hallo {{name}},\n"
+"\n"
+"Klik op de onderstaande knop om toegang te krijgen tot uw app.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Bedankt!"
 
-#: dt-reports/magic-url-bulk-send.php:51
+#: dt-reports/magic-url-bulk-send.php:50
 msgid "Configure email subject"
-msgstr ""
+msgstr "E-mailonderwerp configureren"
 
-#: dt-reports/magic-url-bulk-send.php:54
+#: dt-reports/magic-url-bulk-send.php:53
 msgid "{{app}} will be replaced with the selected app name."
-msgstr ""
+msgstr "{{app}} wordt vervangen door de geselecteerde app-naam."
 
-#: dt-reports/magic-url-bulk-send.php:56
+#: dt-reports/magic-url-bulk-send.php:55
 msgid "Configure email message"
-msgstr ""
+msgstr "E-mailbericht configureren"
 
-#: dt-reports/magic-url-bulk-send.php:61 dt-reports/magic-url-setup.php:257
-#, fuzzy
-#| msgid "Select app to email"
+#: dt-reports/magic-url-bulk-send.php:60 dt-reports/magic-url-setup.php:257
 msgid "Selected app name"
-msgstr "Selecteer app om te e-mailen"
+msgstr "Geselecteerde app-naam"
 
-#: dt-reports/magic-url-bulk-send.php:67 dt-reports/magic-url-setup.php:263
+#: dt-reports/magic-url-bulk-send.php:66 dt-reports/magic-url-setup.php:263
 msgid "Unique link to access the app."
-msgstr ""
+msgstr "Unieke link om toegang te krijgen tot de app."
 
-#: dt-reports/magic-url-bulk-send.php:72
+#: dt-reports/magic-url-bulk-send.php:71
 msgid "Select app to email"
 msgstr "Selecteer app om te e-mailen"
 
-#: dt-reports/magic-url-bulk-send.php:73
+#: dt-reports/magic-url-bulk-send.php:72
 msgid "You must select an app"
 msgstr "Je moet een app selecteren"
 
 #: dt-reports/magic-url-landing-page.php:29
 #: dt-reports/magic-url-landing-page.php:33
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Invalid Link"
-msgstr "Magische Link Inzending"
+msgstr "Ongeldige link"
 
 #: dt-reports/magic-url-landing-page.php:38
 msgid "Link key is no longer valid or has expired."
-msgstr ""
+msgstr "Linksleutel is niet meer geldig of is verlopen."
 
 #: dt-reports/magic-url-landing-page.php:39
 #, php-format
 msgid "Please %s, or locate a more recent key, or request a new one."
-msgstr ""
+msgstr "Gelieve %s, of zoek een recentere sleutel, of vraag een nieuwe aan."
 
 #: dt-reports/magic-url-landing-page.php:39
 msgid "login"
-msgstr ""
+msgstr "inloggen"
 
 #: dt-reports/magic-url-setup.php:30
-#, fuzzy
-#| msgid "Magic Link Submission"
 msgid "Magic Links"
-msgstr "Magische Link Inzending"
+msgstr "Magische links"
 
 #: dt-reports/magic-url-setup.php:31
-#, fuzzy
-#| msgid "Apps available on this record."
 msgid "Magic Links available on this record."
-msgstr "Apps beschikbaar op deze plaat."
+msgstr "Magische links beschikbaar op dit dossier."
 
 #: dt-reports/magic-url-setup.php:236
 msgid ""
@@ -5328,6 +5317,13 @@ msgid ""
 "\n"
 "Thanks!"
 msgstr ""
+"Hallo,\n"
+"\n"
+"Klik op de onderstaande knop om toegang te krijgen tot uw app.\n"
+"\n"
+"{{link}}\n"
+"\n"
+"Bedankt!"
 
 #: dt-reports/magic-url-setup.php:248
 msgid "Add email address"
@@ -5350,39 +5346,33 @@ msgid ""
 "This app is not yet activated for this user. Enable the app to generate a "
 "link."
 msgstr ""
+"Deze app is nog niet geactiveerd voor deze gebruiker. Activeer de app om een "
+"link te genereren."
 
-#: dt-reports/magic-url-setup.php:465 template-settings.php:265
+#: dt-reports/magic-url-setup.php:465 template-settings.php:266
 msgid "App Activation"
 msgstr "App-activatie"
 
 #: dt-reports/magic-url-setup.php:472 dt-users/user-management.php:194
-#: template-settings.php:311 template-settings.php:575
+#: template-settings.php:312 template-settings.php:569
 msgid "Enable"
 msgstr "inschakelen"
 
-#: dt-reports/magic-url-setup.php:483
-#, fuzzy
-#| msgid "View User"
-msgid "View"
-msgstr "Bekijk gebruiker"
-
 #: dt-reports/magic-url-setup.php:512
 msgid "QR code"
-msgstr ""
+msgstr "QR-code"
 
 #: dt-reports/magic-url-setup.php:521
 msgid "Reset"
-msgstr ""
+msgstr "Resetten"
 
 #: dt-reports/magic-url-setup.php:526
-#, fuzzy
-#| msgid "Open With"
 msgid "Reset link"
-msgstr "Openen met"
+msgstr "Link resetten"
 
 #: dt-reports/magic-url-setup.php:528
 msgid "This app is currently disabled."
-msgstr ""
+msgstr "Deze app is momenteel uitgeschakeld."
 
 #: dt-reports/reports.php:160
 msgid "Added new report"
@@ -5446,18 +5436,18 @@ msgstr "Contact om een gebruiker aan te maken (optioneel)"
 msgid "Search multipliers and contacts"
 msgstr "Zoek multipliers en contacten"
 
-#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:232
+#: dt-users/template-new-user.php:114 dt-users/template-user-management.php:226
 #: dt-users/users.php:141
 msgid "Display Name"
 msgstr "Toon Naam"
 
-#: dt-users/template-new-user.php:115 template-settings.php:153
-#: template-settings.php:682
+#: dt-users/template-new-user.php:115 template-settings.php:154
+#: template-settings.php:676
 msgid "Nickname (Display Name)"
 msgstr "Bijnaam (Weergegeven Naam)"
 
 #: dt-users/template-new-user.php:119 dt-users/template-new-user.php:120
-#: dt-users/users.php:135 template-settings.php:140 template-settings.php:647
+#: dt-users/users.php:135 template-settings.php:141 template-settings.php:641
 msgid "Username"
 msgstr "Gebruikersnaam"
 
@@ -5465,7 +5455,7 @@ msgstr "Gebruikersnaam"
 msgid "Role"
 msgstr "Rol"
 
-#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:293
+#: dt-users/template-new-user.php:169 dt-users/template-user-management.php:287
 msgid "Click here to see roles documentation"
 msgstr "Lees de documentatie"
 
@@ -5474,7 +5464,7 @@ msgid "Create User"
 msgstr "Gebruiker aanmaken"
 
 #: dt-users/template-new-user.php:178 dt-users/template-new-user.php:180
-#: template-settings.php:671
+#: template-settings.php:665
 msgid "First Name"
 msgstr "Voornaam"
 
@@ -5485,14 +5475,14 @@ msgid "optional"
 msgstr "optioneel"
 
 #: dt-users/template-new-user.php:182 dt-users/template-new-user.php:183
-#: template-settings.php:677
+#: template-settings.php:671
 msgid "Last Name"
 msgstr "Achternaam"
 
 #: dt-users/template-new-user.php:218 dt-users/template-new-user.php:222
-#: dt-users/template-user-management.php:269
-#: dt-users/template-user-management.php:276 template-settings.php:236
-#: template-settings.php:706
+#: dt-users/template-user-management.php:263
+#: dt-users/template-user-management.php:270 template-settings.php:237
+#: template-settings.php:700
 msgid "Biography"
 msgstr "Biografie"
 
@@ -5552,25 +5542,21 @@ msgstr "activiteit"
 msgid "Workload Status"
 msgstr "groep status"
 
-#: dt-users/template-user-management.php:124
-#: dt-users/template-user-management.php:127
+#: dt-users/template-user-management.php:126
+#: dt-users/template-user-management.php:133
 msgid "Location Responsibility"
 msgstr "Locatieverantwoordelijkheid"
 
-#: dt-users/template-user-management.php:136 template-settings.php:355
-msgid "Search Locations"
-msgstr "locaties"
-
-#: dt-users/template-user-management.php:147 template-settings.php:368
+#: dt-users/template-user-management.php:141 template-settings.php:362
 msgid "Languages you are comfortable speaking"
 msgstr "Talen die u met gemak spreekt"
 
-#: dt-users/template-user-management.php:163 template-settings.php:59
-#: template-settings.php:431
+#: dt-users/template-user-management.php:157 template-settings.php:60
+#: template-settings.php:425
 msgid "Availability"
 msgstr "Beschikbaarheid"
 
-#: dt-users/template-user-management.php:164
+#: dt-users/template-user-management.php:158
 msgid ""
 "Set the dates you will be unavailable so the Dispatcher will know your "
 "availability to receive new contacts"
@@ -5578,64 +5564,58 @@ msgstr ""
 "Geef de data op dat je op reis bent of onbeschikbaar zodat de Dispatcher je "
 "beschikbaarheid weet om nieuwe contacten te ontvangen."
 
-#: dt-users/template-user-management.php:166
+#: dt-users/template-user-management.php:160
 msgid "Schedule Unavailability"
 msgstr "Inplannen onbeschikbaarheid"
 
-#: dt-users/template-user-management.php:175
+#: dt-users/template-user-management.php:169
 msgid "Travel or Away Dates"
 msgstr "Reis of niet aanwezig Data."
 
-#: dt-users/template-user-management.php:191
-#, fuzzy
-#| msgid "Users"
+#: dt-users/template-user-management.php:185
 msgid "User Apps"
-msgstr "Gebruikers Rollen"
+msgstr "Gebruikers-apps"
 
-#: dt-users/template-user-management.php:197
-#, fuzzy
-#| msgid "App Activation"
+#: dt-users/template-user-management.php:191
 msgid "Activation"
-msgstr "App-activatie"
+msgstr "Activering"
 
-#: dt-users/template-user-management.php:212
+#: dt-users/template-user-management.php:206
 msgid "User Profile"
 msgstr "Gebruikersprofiel"
 
-#: dt-users/template-user-management.php:215
+#: dt-users/template-user-management.php:209
 #: dt-users/user-hooks-and-config.php:408
 msgid "View contact record"
 msgstr "Zie Contact archief"
 
-#: dt-users/template-user-management.php:220
+#: dt-users/template-user-management.php:214
 msgid "Edit User"
 msgstr "bewerk gebruiker"
 
-#: dt-users/template-user-management.php:225
-#, fuzzy
-#| msgid "Password"
+#: dt-users/template-user-management.php:219
 msgid "Email Password Reset"
-msgstr "Paswoord"
+msgstr "Wachtwoord reset e-mail"
 
-#: dt-users/template-user-management.php:288 dt-users/users.php:147
-#: template-settings.php:159
+#: dt-users/template-user-management.php:282 dt-users/users.php:147
+#: template-settings.php:160
 msgid "Roles"
 msgstr "Rollen"
 
-#: dt-users/template-user-management.php:320
+#: dt-users/template-user-management.php:314
 msgid "Save Roles"
 msgstr "Gebruikers Rollen"
 
-#: dt-users/template-user-management.php:328
+#: dt-users/template-user-management.php:322
 msgid "Access by Source"
 msgstr "Toegang per bron"
 
-#: dt-users/template-user-management.php:334
+#: dt-users/template-user-management.php:328
 #: dt-users/user-hooks-and-config.php:623
 msgid "All Sources - gives access to all contacts"
 msgstr "Alle bronnen - geeft toegang tot alle contacten"
 
-#: dt-users/template-user-management.php:340
+#: dt-users/template-user-management.php:334
 #: dt-users/user-hooks-and-config.php:630
 msgid ""
 "Custom - Access own contacts and all the contacts of the selected sources "
@@ -5644,60 +5624,60 @@ msgstr ""
 "Aangepast - Toegang tot eigen contacten en alle contacten van de hieronder "
 "geselecteerde bronnen"
 
-#: dt-users/template-user-management.php:346
+#: dt-users/template-user-management.php:340
 #: dt-users/user-hooks-and-config.php:637
 msgid "No Sources - only own contacts"
 msgstr "Geen bronnen - alleen eigen contacten"
 
-#: dt-users/template-user-management.php:352
+#: dt-users/template-user-management.php:346
 msgid "Sources List"
 msgstr "Bronnenlijst"
 
-#: dt-users/template-user-management.php:364
+#: dt-users/template-user-management.php:358
 msgid "Save Allowed Sources"
 msgstr "Toegestane bronnen opslaan"
 
-#: dt-users/template-user-management.php:394
+#: dt-users/template-user-management.php:388
 msgid "Updates Needed"
 msgstr "Vereiste updates"
 
-#: dt-users/template-user-management.php:400
+#: dt-users/template-user-management.php:394
 msgid "Pending"
 msgstr "In Afwachting"
 
-#: dt-users/template-user-management.php:407
+#: dt-users/template-user-management.php:401
 msgid "Unread Notifications"
 msgstr "meldingen"
 
-#: dt-users/template-user-management.php:414
+#: dt-users/template-user-management.php:408
 msgid "Assignments"
 msgstr "Opdrachten"
 
-#: dt-users/template-user-management.php:428
+#: dt-users/template-user-management.php:422
 msgid "This Year"
 msgstr "Dit jaar."
 
-#: dt-users/template-user-management.php:446
+#: dt-users/template-user-management.php:440
 msgid "Pace"
 msgstr "Snelheid"
 
-#: dt-users/template-user-management.php:447
+#: dt-users/template-user-management.php:441
 msgid "Assigned and not accepted"
 msgstr "Toegewezen en niet geaccepteerd"
 
-#: dt-users/template-user-management.php:449
+#: dt-users/template-user-management.php:443
 msgid "Time from assigned to contact accepted for the last 10 contacts"
 msgstr "Tijd tussen toewijzing en acceptatie voor de laatste 10 contacten"
 
-#: dt-users/template-user-management.php:451
+#: dt-users/template-user-management.php:445
 msgid "Accepted with no contact attempt"
 msgstr "Geaccepteerd zonder poging tot contact"
 
-#: dt-users/template-user-management.php:453
+#: dt-users/template-user-management.php:447
 msgid "Oldest 10 update needed"
 msgstr "Oudste 10 update vereist"
 
-#: dt-users/template-user-management.php:455
+#: dt-users/template-user-management.php:449
 msgid "Time from assigned to contact attempt for the last 10 contacts"
 msgstr "Tijd tussen toewijzing en contactpoging voor de laatste 10 contacten"
 
@@ -5726,15 +5706,15 @@ msgid "To log in click here: %s"
 msgstr "Klik hier om in te loggen: %s"
 
 #: dt-users/user-hooks-and-config.php:388
-#, fuzzy, php-format
+#, php-format
 msgid "Hi %s,"
-msgstr "Zijn,"
+msgstr "Hallo %s,"
 
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
 msgctxt ""
-"You've been invited to join Awesome Site at https://awesome_site.disciple."
-"tools"
+"You've been invited to join Awesome Site at https://"
+"awesome_site.disciple.tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "Je bent uitgenodigd om lid te worden van %1$s op %2$s"
 
@@ -5748,33 +5728,29 @@ msgstr "Komt overeen met Contact"
 
 #: dt-users/user-hooks-and-config.php:592 dt-users/user-management.php:191
 msgid "View Contact"
-msgstr "Zie contact "
+msgstr "Zie contact"
 
 #: dt-users/user-hooks-and-config.php:594
-#, fuzzy
 msgid "Add the name of the contact record this user corresponds to."
 msgstr ""
-"Voeg de naam toe van Contactbestand waar deze gebruiker mee correspondeert"
+"Voeg de naam toe van het contactdossier waarmee deze gebruiker "
+"correspondeert."
 
 #: dt-users/user-hooks-and-config.php:595
 msgid "Learn more."
-msgstr "Leer meer"
+msgstr "Leer meer."
 
 #: dt-users/user-hooks-and-config.php:602
 msgid "User Language"
 msgstr "Gebruikerstaal"
 
 #: dt-users/user-initial-setup.php:44
-#, fuzzy
-#| msgid "Invite User"
 msgid "Initial User Setup!"
-msgstr "Gebruiker uitnodigen"
+msgstr "Initiele gebruikersinstellingen!"
 
 #: dt-users/user-initial-setup.php:52
-#, fuzzy
-#| msgid "User Language"
 msgid "Default Language"
-msgstr "Gebruikerstaal"
+msgstr "Standaardtaal"
 
 #: dt-users/user-management.php:136
 msgid "Add User"
@@ -5784,7 +5760,7 @@ msgstr "Gebruiker toevoegen"
 #, php-format
 msgctxt "Bob was accepted on Jul 8 after 10 days"
 msgid "%1$s was accepted on %2$s after %3$s days"
-msgstr "%1$s heeft een opmerking gemaakt bij %2$s  namelijk: %3$s"
+msgstr "%1$s heeft een opmerking gemaakt bij %2$s namelijk: %3$s"
 
 #: dt-users/user-management.php:181
 #, php-format
@@ -5830,18 +5806,16 @@ msgstr "Dit contact is al een gebruiker."
 msgid "View User"
 msgstr "Bekijk gebruiker"
 
-#: dt-users/user-management.php:229
+#: dt-users/user-management.php:233
 msgid "Go"
-msgstr ""
+msgstr "Ga"
 
-#: dt-users/user-management.php:232
-#, fuzzy, php-format
-#| msgctxt "Showing 30 items matching bob"
-#| msgid "Showing %1$s items matching %2$s"
+#: dt-users/user-management.php:236
+#, php-format
 msgid "Showing %1$s of %2$s"
-msgstr "%1$s items weergegeven die overeenkomen met %2$s"
+msgstr "Toont %1$s van %2$s"
 
-#: dt-users/user-management.php:353
+#: dt-users/user-management.php:357
 #, php-format
 msgid "%s days since last update"
 msgstr "%s dagen sinds laatste update"
@@ -5874,11 +5848,11 @@ msgstr "Toewijzing afgewezen voor %s"
 
 #: dt-users/users.php:124
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: dt-users/users.php:154
 msgid "Locale"
-msgstr ""
+msgstr "Taalregio"
 
 #: dt-users/users.php:178
 msgid "Away"
@@ -5896,26 +5870,26 @@ msgstr "Geen toestemming om te verwijzen"
 msgid "Insufficient permissions"
 msgstr "Onvoldoende machtiging"
 
-#: dt-users/users.php:503
+#: dt-users/users.php:507
 msgid "Email already exists and is a user on this site"
 msgstr "E-mail bestaat al en is een gebruiker op deze site"
 
-#: dt-users/users.php:509
+#: dt-users/users.php:513
 msgid "Failed to add user to site."
 msgstr "Gebruiker aan site toevoegen mislukt."
 
-#: dt-users/users.php:560
+#: dt-users/users.php:564
 #, php-format
 msgctxt "These are archived comments for contact John Doe"
 msgid "These are archived comments for %1$s"
 msgstr "Dit zijn gearchiveerde opmerkingen voor %1$s"
 
-#: dt-users/users.php:740
+#: dt-users/users.php:744
 msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "aangepaste filters"
 
-#: dt-users/users.php:1347 template-settings.php:169 template-settings.php:653
+#: dt-users/users.php:1351 template-settings.php:170 template-settings.php:647
 msgid "System Email"
 msgstr "Systeem Email"
 
@@ -5929,7 +5903,7 @@ msgstr "Je hebt een herinnering gezet voor vandaag voor %1$s"
 #, php-format
 msgctxt "You set this task on contact1: task note"
 msgid "You set this task on %1$s: %2$s"
-msgstr "Je hebt deze taak geplaatst voor  %1$s: %2$s"
+msgstr "Je hebt deze taak geplaatst voor %1$s: %2$s"
 
 #: dt-workflows/workflows-triggers.php:73
 msgid "D.T Workflow"
@@ -5950,7 +5924,7 @@ msgid ""
 "version of your browser, this may site may not function correctly. Please "
 "note that Internet Explorer is not supported."
 msgstr ""
-"Je lijkt een verouderde  web-browser te gebruiken. Zonder de meest recente "
+"Je lijkt een verouderde web-browser te gebruiken. Zonder de meest recente "
 "versie van je browser kan deze site misschien niet goed functioneren. Let "
 "op: Internet Explorer wordt niet ondersteund!"
 
@@ -5965,7 +5939,7 @@ msgstr "Deze %s heeft een update nodig."
 
 #: single-template.php:101 single-template.php:109
 msgid "Please provide an update by posting a comment."
-msgstr "Geef een update door een opmerking te plaatsen"
+msgstr "Geef een update door een opmerking te plaatsen."
 
 #: single-template.php:258
 msgid "Edit all details fields"
@@ -5973,7 +5947,7 @@ msgstr "Bewerk alle detailvelden"
 
 #: single-template.php:386
 msgid "Show Hidden Tiles"
-msgstr ""
+msgstr "Verborgen tegels tonen"
 
 #: single-template.php:409
 #, php-format
@@ -5981,16 +5955,16 @@ msgctxt "Are you sure you want to delete name?"
 msgid "Are you sure you want to delete %s?"
 msgstr "Weet u zeker dat u %s wilt verwijderen?"
 
-#: template-merge-post-details.php:99
+#: template-merge-post-details.php:102
 msgid "Open Modal"
 msgstr "Modaal openen"
 
-#: template-merge-post-details.php:121
+#: template-merge-post-details.php:124
 #, php-format
 msgid "Merge Duplicate %s"
 msgstr "Duplicaat %s samenvoegen"
 
-#: template-merge-post-details.php:123
+#: template-merge-post-details.php:126
 msgid ""
 "When you merge, the primary record is updated with the values you choose, "
 "and relationships to other items are shifted to the primary record; which "
@@ -6000,23 +5974,23 @@ msgstr ""
 "die u kiest en worden relaties met andere items verschoven naar het primaire "
 "record; die hieronder kan worden geschakeld."
 
-#: template-merge-post-details.php:126
+#: template-merge-post-details.php:129
 msgid "Copy comments to updated primary record"
 msgstr "Opmerkingen kopiëren naar bijgewerkte primaire record"
 
-#: template-merge-post-details.php:142
+#: template-merge-post-details.php:145
 msgid "Archiving"
 msgstr "Archiveren"
 
-#: template-merge-post-details.php:150
+#: template-merge-post-details.php:153
 msgid "Use as Primary"
 msgstr "Gebruiken als primair"
 
-#: template-merge-post-details.php:163
+#: template-merge-post-details.php:166
 msgid "Primary"
 msgstr "primair"
 
-#: template-merge-post-details.php:177
+#: template-merge-post-details.php:180
 msgid "Updated"
 msgstr "Bijgewerkt"
 
@@ -6058,63 +6032,55 @@ msgstr "vermeldingen"
 msgid "Load more notifications"
 msgstr "Laad meer meldingen"
 
-#: template-settings.php:56
-msgid "Apps"
-msgstr "Apps"
-
-#: template-settings.php:58 template-settings.php:332
+#: template-settings.php:59 template-settings.php:333
 msgid "Multiplier Preferences"
 msgstr "Multiplier-voorkeuren"
 
-#: template-settings.php:67
+#: template-settings.php:68
 msgid "Invite User"
 msgstr "Gebruiker uitnodigen"
 
-#: template-settings.php:77
+#: template-settings.php:78
 msgid "View Contact Record"
 msgstr "Contactrecord bekijken"
 
-#: template-settings.php:201
+#: template-settings.php:202
 msgid "Social"
 msgstr "Sociale media"
 
-#: template-settings.php:232
+#: template-settings.php:233
 msgid "English"
 msgstr "Engels"
 
-#: template-settings.php:257
-msgid "Your Apps"
-msgstr "Je apps"
-
-#: template-settings.php:262
+#: template-settings.php:263
 msgid "App Name"
 msgstr "App-naam"
 
-#: template-settings.php:263
+#: template-settings.php:264
 msgid "App Description"
 msgstr "App-omschrijving"
 
-#: template-settings.php:264
+#: template-settings.php:265
 msgid "App Link"
 msgstr "App-link"
 
-#: template-settings.php:275
+#: template-settings.php:276
 msgid "No apps installed"
 msgstr "Geen apps geïnstalleerd"
 
-#: template-settings.php:340 template-settings.php:345
+#: template-settings.php:343 template-settings.php:351
 msgid "Locations you are willing to be responsible for"
 msgstr "Locaties waarvoor u bereid bent de verantwoordelijkheid te dragen"
 
-#: template-settings.php:389
+#: template-settings.php:383
 msgid "People Groups you wish to serve"
 msgstr "Personengroepen die u wenst te dienen"
 
-#: template-settings.php:412
+#: template-settings.php:406
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "Beschikbaarheid om contacten te ontvangen van de coördinator"
 
-#: template-settings.php:434
+#: template-settings.php:428
 msgid ""
 "Set the dates you will be traveling or unavailable so the Dispatcher will "
 "know your availability to receive new contacts"
@@ -6122,57 +6088,55 @@ msgstr ""
 "Geef de data op dat je op reis bent of onbeschikbaar zodat de Dispatcher je "
 "beschikbaarheid weet om nieuwe contacten te ontvangen."
 
-#: template-settings.php:438
+#: template-settings.php:432
 msgid "Schedule Travel or Dates Unavailable"
-msgstr "Schema Reis of Data  wanneer onbeschikbaar"
+msgstr "Schema Reis of Data wanneer onbeschikbaar"
 
-#: template-settings.php:455
+#: template-settings.php:449
 msgid "Add Unavailable dates"
 msgstr "Voeg onbeschikbaarheids data toe."
 
-#: template-settings.php:469
+#: template-settings.php:463
 msgid "No Travel Scheduled"
 msgstr "Geen reis gepland"
 
-#: template-settings.php:489
-#, fuzzy
-#| msgid "Contact Info Changed"
+#: template-settings.php:483
 msgid "Contact Info"
-msgstr "contact informatie gewijzigd"
+msgstr "Contactgegevens"
 
-#: template-settings.php:493
+#: template-settings.php:487
 #, php-format
 msgctxt "Email will be sent to: [email]"
 msgid "Email notifications will be sent to: %s"
-msgstr ""
+msgstr "E-mailmeldingen worden verzonden naar: %s"
 
-#: template-settings.php:510
+#: template-settings.php:504
 msgid "Email preferences"
 msgstr "E-mail voorkeuren"
 
-#: template-settings.php:516
+#: template-settings.php:510
 msgid "Real time"
 msgstr "Echte tijd"
 
-#: template-settings.php:531
+#: template-settings.php:525
 msgid "Type of Notification"
 msgstr "Type van Meldingen"
 
-#: template-settings.php:544
+#: template-settings.php:538
 msgid "required"
 msgstr "vereist"
 
-#: template-settings.php:568
+#: template-settings.php:562
 msgid "Follow all contacts"
 msgstr "Volg alle contacten"
 
-#: template-settings.php:570
+#: template-settings.php:564
 msgid ""
 "You will receive a notification for any update that happens in the system."
 msgstr ""
-"Je ontvangt een melding voor elke update die plaatsvindt in het systeem"
+"Je ontvangt een melding voor elke update die plaatsvindt in het systeem."
 
-#: template-settings.php:630
+#: template-settings.php:624
 msgid ""
 "Disciple Tools System does not store images. For profile images we use "
 "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
@@ -6184,49 +6148,44 @@ msgstr ""
 "risico's ziet, raden we aan om geen persoonlijke foto te gebuiken, maar een "
 "Cartoon, iets abstracts of Alias foto als profiel afbeelding van jou."
 
-#: template-settings.php:631
+#: template-settings.php:625
 msgid "edit image on gravatar.com"
 msgstr "Pas de afbeelding aan op gravatar.com"
 
-#: template-settings.php:637
-#, fuzzy
-#| msgid ""
-#| "Disciple Tools System does not store images. For profile images we use "
-#| "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
-#| "suggest not using a personal photo, but instead choose a cartoon, "
-#| "abstract, or alias photo to represent you."
+#: template-settings.php:631
 msgid ""
 "Disciple Tools System does not store images. All media assets will be placed "
 "within specified media connection storage service. If you have security "
 "concerns, we suggest not using a personal photo, but instead choose a "
 "cartoon, abstract, or alias photo to represent you."
 msgstr ""
-"Disciple Tools Systeem slaat geen afbeeldingen op. Voor profielfoto's "
-"gebruiken we Gravatar (Wereldwijd Erkende Avatar). Als je veiligheids "
-"risico's ziet, raden we aan om geen persoonlijke foto te gebuiken, maar een "
-"Cartoon, iets abstracts of Alias foto als profiel afbeelding van jou."
+"Disciple Tools Systeem slaat geen afbeeldingen op. Alle media-assets worden "
+"geplaatst binnen de opgegeven mediaverbinding opslagdienst. Als u "
+"beveiligingsproblemen hebt, raden we aan geen persoonlijke foto te "
+"gebruiken, maar in plaats daarvan een cartoon, abstract of alias foto te "
+"kiezen om u te vertegenwoordigen."
 
-#: template-settings.php:638
+#: template-settings.php:632
 msgid "Upload new profile image"
-msgstr ""
+msgstr "Nieuwe profielafbeelding uploaden"
 
-#: template-settings.php:648 template-settings.php:649
+#: template-settings.php:642 template-settings.php:643
 msgid "Username cannot be changed"
 msgstr "Gebruikersnaam kan niet worden veranderd"
 
-#: template-settings.php:654
+#: template-settings.php:648
 msgid "User email can be changed by site administrator."
 msgstr "Systeem email kan gewijzigd worden door de site administrator."
 
-#: template-settings.php:662
+#: template-settings.php:656
 msgid "Use this email reset form to create a new password."
-msgstr "Gebruik  dit email-reset formulier om een nieuw paswoord aan te maken"
+msgstr "Gebruik dit email-reset formulier om een nieuw paswoord aan te maken."
 
-#: template-settings.php:664
+#: template-settings.php:658
 msgid "go to password change form"
 msgstr "Ga naar Paswoord wijzigings formulier"
 
-#: template-settings.php:728
+#: template-settings.php:722
 msgid "System Language"
 msgstr "Systeemtaal"
 
@@ -6251,263 +6210,3 @@ msgstr "Gescande toegangscontacten:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Gevonden duplicaten:"
-
-#~ msgid "Reset password"
-#~ msgstr "Wijzig paswoord"
-
-#, fuzzy
-#~| msgid "Post Type"
-#~ msgid "Post Types"
-#~ msgstr "Berichttype"
-
-#~ msgctxt "input field placeholder"
-#~ msgid "Search multipliers and contacts"
-#~ msgstr "Zoek Vermenigvuldigers en contacten"
-
-#~ msgid "Add new tag \"%s\""
-#~ msgstr "Nieuwe tag \"%s\" toevoegen"
-
-#~ msgid "Tag \"%s\" is already being used"
-#~ msgstr "Tag \"%s\" is al in gebruik"
-
-#~ msgid "Add Bulk Records?"
-#~ msgstr "Bulkrecords toevoegen?"
-
-#~ msgid "Twitter"
-#~ msgstr "Twitter"
-
-#~ msgid "Baptism Tree"
-#~ msgstr "Doop Boom"
-
-#~ msgid "Baptism Generation Tree"
-#~ msgstr "Doop Generatie Boom"
-
-#~ msgid "Coaching Tree"
-#~ msgstr "Coach Boom"
-
-#~ msgid "Coaching Generation Tree"
-#~ msgstr "Coach Generatie Boom"
-
-#~ msgid "Milestones Map"
-#~ msgstr "Mijlpalenkaart"
-
-#~ msgid "Milestones"
-#~ msgstr "Mijlpalen"
-
-#~ msgid "Milestones Chart"
-#~ msgstr "Mijlpalenkaart"
-
-#~ msgid "Groups Tree"
-#~ msgstr "Groepenboom"
-
-#~ msgid "Group Generation Tree"
-#~ msgstr "Groep generatie boom"
-
-#~ msgid "My Baptism Tree"
-#~ msgstr "Mijn doopboom"
-
-#~ msgid "My Baptism Generation Tree"
-#~ msgstr "Mijn doopboom"
-
-#~ msgid "My Coaching Tree"
-#~ msgstr "Mijn coachingboom"
-
-#~ msgid "My Coaching Generation Tree"
-#~ msgstr "Mijn coachingsstamboom"
-
-#~ msgid "Disciple"
-#~ msgstr "Discipel"
-
-#~ msgid "My Groups Tree"
-#~ msgstr "Mijn groepenboom"
-
-#~ msgid "My Group Generation Tree"
-#~ msgstr "Mijn groepsstamboom"
-
-#~ msgid "Contacts Maps"
-#~ msgstr "Kaarten van de contactpersonen"
-
-#~ msgid "Groups Maps"
-#~ msgstr "Kaarten van de groepen"
-
-#, fuzzy
-#~| msgid "Add Records"
-#~ msgid "Records Map"
-#~ msgstr "Records toevoegen"
-
-#, fuzzy
-#~| msgid "Metrics"
-#~ msgid "Dynamic Metrics"
-#~ msgstr "statistieken"
-
-#, fuzzy
-#~| msgid "Daily Activity"
-#~ msgid "Field Activity"
-#~ msgstr "activiteit"
-
-#, fuzzy
-#~| msgid "All cumulative totals"
-#~ msgid "Field Cumulative Values"
-#~ msgstr "Alle cumulatieve totalen"
-
-#~ msgid "No Answer"
-#~ msgstr "Geen Antwoord"
-
-#, fuzzy
-#~| msgid "No"
-#~ msgid "No."
-#~ msgstr "nee"
-
-#, fuzzy
-#~| msgid "Generation"
-#~ msgid "Generation Map"
-#~ msgstr "Generatie"
-
-#, fuzzy
-#~| msgid "List"
-#~ msgid "Map List Filter"
-#~ msgstr "Lijst"
-
-#~ msgctxt "Number of emails sent. i.e. 20 sent!"
-#~ msgid "sent"
-#~ msgstr "verzonden"
-
-#~ msgid "Add optional greeting"
-#~ msgstr "Voeg optionele begroeting toe"
-
-#~ msgid "Add short greeting to be added above the app link."
-#~ msgstr ""
-#~ "Voeg een korte begroeting toe die boven de app-link moet worden "
-#~ "toegevoegd."
-
-#~ msgctxt "Assigned to: User1"
-#~ msgid "Assigned to: %s"
-#~ msgstr "Toegewezen aan: %s"
-
-#, fuzzy
-#~| msgid "Generation"
-#~ msgid "Generate"
-#~ msgstr "Generatie"
-
-#, fuzzy
-#~| msgid "show all"
-#~ msgid "Show All"
-#~ msgstr "toon alles"
-
-#, fuzzy
-#~| msgid "Lost your password"
-#~ msgid "Lost your password?"
-#~ msgstr "Paswoord vergeten?"
-
-#~ msgid "Number added"
-#~ msgstr "Getal toegevoegd"
-
-#~ msgctxt "either rtl or ltr"
-#~ msgid "ltr"
-#~ msgstr "ltr"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Default and Custom Filters Tile"
-#~ msgstr "Standaard Filters"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Use these filters to focus in on the contacts or groups you are "
-#~ "responsible for. If the default filters do not fit your needs you can "
-#~ "create your own custom filter."
-#~ msgstr ""
-#~ "Gebruik deze filters om te focussen op de contacten of groepen waar je "
-#~ "verantwoordelijk voor bent. Als de standaard filters niet bruikbaar zijn, "
-#~ "kun je je eigen filters aanmaken."
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Contacts List Tile"
-#~ msgstr "Contact lijst"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Your list of contacts will show up here. Whenever you filter contacts, "
-#~ "the list will also be changed in this section too. You can sort your "
-#~ "contacts by newest, oldest, most recently modified, and least recently "
-#~ "modified. If you have a long list of contacts they will not all load at "
-#~ "once, so clicking the 'Load more contacts' button at the bottom of the "
-#~ "list will allow you to load more."
-#~ msgstr ""
-#~ "Je lijst van contacten wordt hier getoond. Wanneer je contacten filtert, "
-#~ "zal de lijst in deze sectie ook veranderen. Je kunt je contacten sorteren "
-#~ "op Nieuwste, oudste, laatst bijgewerkt en  minst recent bijgewerkt. Als "
-#~ "je een lange lijst van contacten hebt zullen ze niet allemaal tegelijk "
-#~ "laden, dus moet je \"laad meer contacten\" klikken onderaan de lijst om "
-#~ "meer contacten te laden."
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Groups List Tile"
-#~ msgstr "Groeps Lijst"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Your list of groups will show up here. Whenever you filter groups, the "
-#~ "list will also be changed in this section too. You can sort your groups "
-#~ "by newest, oldest, most recently modified, and least recently modified. "
-#~ "If you have a long list of groups they will not all load at once, so "
-#~ "clicking the 'Load more groups' button at the bottom of the list will "
-#~ "allow you to load more."
-#~ msgstr ""
-#~ "Je lijst van groepen wordt hier getoond. Wanneer je groepen filtert, zal "
-#~ "de lijst in deze sectie ook veranderen. Je kunt je groepen sorteren op "
-#~ "Nieuwste, oudste, laatst bijgewerkt en  minst recent bijgewerkt. Als je "
-#~ "een lange lijst van groepen hebt zullen ze niet allemaal tegelijk laden, "
-#~ "dus moet je \"laad meer groepen\" klikken onderaan de lijst om meer "
-#~ "groepen te laden. "
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Closed Contacts Switch"
-#~ msgstr "Afgesloten contacten schakelaar"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Use this toggle switch to either show or not show closed contacts in the "
-#~ "list."
-#~ msgstr ""
-#~ "Gebruik deze tuimel schakelaar om afgesloten contacten in de lijst te "
-#~ "tonen of te verbergen"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid "Inactive Groups Switch"
-#~ msgstr "inactieve Groepen schakelaar"
-
-#~ msgctxt "Optional Documentation"
-#~ msgid ""
-#~ "Use this toggle switch to either show or not show inactive groups in the "
-#~ "list."
-#~ msgstr ""
-#~ "Gebruik deze tuimel schakelaar om inactieve groepen in de lijst te tonen "
-#~ "of te verbergen"
-
-#~ msgid "Accept Needed"
-#~ msgstr "Pogingen Nodig"
-
-#~ msgid "Last Activity"
-#~ msgstr "Minst Aktief"
-
-#~ msgid "No activity"
-#~ msgstr "activiteit"
-
-#~ msgid "Comment"
-#~ msgstr "Opmerking"
-
-#~ msgid "Select All"
-#~ msgstr "Selecteer Alles"
-
-#~ msgctxt "My records"
-#~ msgid "My %s"
-#~ msgstr "Mijn %s"
-
-#~ msgid "Sub-assigned"
-#~ msgstr "Deels toegewezen"
-
-#~ msgid "User Role"
-#~ msgstr "Gebruikersfunctie"
-
-#~ msgid "Update %s"
-#~ msgstr "%s . bijwerken"

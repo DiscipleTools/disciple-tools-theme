@@ -63,7 +63,9 @@ class Disciple_Tools_Notifications_Endpoints
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'mark_viewed' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function( WP_REST_Request $request ) {
+                        return $this->check_notification_permission( $request->get_param( 'notification_id' ) );
+                    },
                 ],
             ]
         );
@@ -73,7 +75,9 @@ class Disciple_Tools_Notifications_Endpoints
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'mark_all_viewed' ],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function( WP_REST_Request $request ) {
+                        return (int) $request->get_param( 'user_id' ) === get_current_user_id();
+                    },
                 ],
             ]
         );
@@ -103,10 +107,37 @@ class Disciple_Tools_Notifications_Endpoints
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'mark_unread' ],
+                    'permission_callback' => function( WP_REST_Request $request ) {
+                        return $this->check_notification_permission( $request->get_param( 'notification_id' ) );
+                    },
+                ],
+            ]
+        );
+
+        register_rest_route(
+            $namespace, '/release/open_modal', [
+                [
+                    'methods'  => WP_REST_Server::CREATABLE,
+                    'callback' => [ $this, 'open_release_modal' ],
                     'permission_callback' => '__return_true',
                 ],
             ]
         );
+    }
+
+    /**
+     * Check if a notification belongs to the current user
+     *
+     * @param int $notification_id
+     * @return bool
+     */
+    private function check_notification_permission( $notification_id ) {
+        global $wpdb;
+        $notification = $wpdb->get_row( $wpdb->prepare(
+            "SELECT user_id FROM $wpdb->dt_notifications WHERE id = %d",
+            $notification_id
+        ) );
+        return $notification && (int) $notification->user_id === get_current_user_id();
     }
 
     /**
@@ -143,7 +174,7 @@ class Disciple_Tools_Notifications_Endpoints
      */
     public function mark_all_viewed( WP_REST_Request $request ) {
         $params = $request->get_params();
-        if ( isset( $params['user_id'] ) && $params['user_id'] == get_current_user_id() ) {
+        if ( isset( $params['user_id'] ) ) {
             $result = Disciple_Tools_Notifications::mark_all_viewed( $params['user_id'] );
             if ( $result['status'] ) {
                 return $result['rows_affected'];
@@ -216,5 +247,31 @@ class Disciple_Tools_Notifications_Endpoints
         } else {
             return new WP_Error( 'notification_param_error', 'Please provide a valid array', [ 'status' => 400 ] );
         }
+    }
+
+    /**
+     * Open release modal and mark as read
+     *
+     * @access public
+     * @since  0.1.0
+     * @return array|WP_Error
+     */
+    public function open_release_modal() {
+        if ( !function_exists( 'dt_has_unread_release' ) || !function_exists( 'dt_mark_release_notification_read' ) ) {
+            return new WP_Error( 'function_not_found', 'Release notification functions not found', [ 'status' => 500 ] );
+        }
+
+        $unread_release = dt_has_unread_release();
+        if ( !$unread_release ) {
+            return new WP_Error( 'no_unread_release', 'No unread release', [ 'status' => 404 ] );
+        }
+
+        // Mark as read
+        dt_mark_release_notification_read( $unread_release['version'] );
+
+        return [
+            'success' => true,
+            'version' => $unread_release['version'],
+        ];
     }
 }
