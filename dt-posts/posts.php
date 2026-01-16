@@ -2074,6 +2074,66 @@ class Disciple_Tools_Posts
                 return new WP_Error( __FUNCTION__, 'missing values field on: ' . $field_key, [ 'status' => 400 ] );
             }
 
+            // Handle force_values: true - delete all existing links for this field
+            if ( isset( $field['force_values'] ) && $field['force_values'] === true ) {
+                // Get all link types for this field
+                $link_types = isset( $field_settings[ $field_key ]['default'] ) ? array_keys( $field_settings[ $field_key ]['default'] ) : [];
+
+                // Build list of meta keys to delete
+                $meta_keys_to_delete = [];
+                foreach ( $link_types as $link_type ) {
+                    $meta_keys_to_delete[] = self::create_link_metakey( $field_key, $link_type );
+                }
+
+                if ( !empty( $meta_keys_to_delete ) ) {
+                    // Check if this is a private field
+                    $is_private = isset( $field_settings[ $field_key ]['private'] ) && $field_settings[ $field_key ]['private'];
+
+                    if ( $is_private ) {
+                        if ( !$current_user_id ){
+                            return new WP_Error( __FUNCTION__, 'Cannot update post_user_meta fields for no user.', [ 'status' => 400 ] );
+                        }
+
+                        // Delete all link meta entries from dt_post_user_meta for this post and field
+                        $meta_keys_sql = dt_array_to_sql( $meta_keys_to_delete );
+                        // phpcs:disable
+                        // WordPress.WP.PreparedSQL.NotPrepared
+                        $delete_result = $wpdb->query( $wpdb->prepare( "
+                            DELETE FROM $wpdb->dt_post_user_meta
+                            WHERE post_id = %d
+                            AND user_id = %d
+                            AND meta_key IN ( $meta_keys_sql )
+                        ", $post_id, $current_user_id ) );
+                        // phpcs:enable
+
+                        if ( $delete_result === false ){
+                            return new WP_Error( __FUNCTION__, 'Something wrong deleting post user meta on field: ' . $field_key, [ 'status' => 500 ] );
+                        }
+                    } else {
+                        // Delete all link meta entries from postmeta for this post and field
+                        $meta_keys_sql = dt_array_to_sql( $meta_keys_to_delete );
+                        // phpcs:disable
+                        // WordPress.WP.PreparedSQL.NotPrepared
+                        $delete_result = $wpdb->query( $wpdb->prepare( "
+                            DELETE FROM $wpdb->postmeta
+                            WHERE post_id = %d
+                            AND meta_key IN ( $meta_keys_sql )
+                        ", $post_id ) );
+                        // phpcs:enable
+
+                        if ( $delete_result === false ){
+                            return new WP_Error( __FUNCTION__, 'Something wrong deleting post meta on field: ' . $field_key, [ 'status' => 500 ] );
+                        }
+                    }
+                }
+
+                // If values array is empty, we're done (all deleted, nothing to add)
+                if ( empty( $field['values'] ) ) {
+                    continue;
+                }
+                // Otherwise, continue to process the new values below
+            }
+
             foreach ( $field['values'] as $value ) {
                 if ( isset( $value['delete'] ) && $value['delete'] === true ) {
                     if ( isset( $field_settings[ $field_key ] ) && isset( $field_settings[$field_key]['private'] ) && $field_settings[$field_key]['private'] ) {

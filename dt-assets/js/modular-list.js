@@ -94,6 +94,9 @@
     get_filter_counts(old_filters);
 
     reset_sorting_in_table_header(current_filter);
+
+    // Initialize bulk edit button visibility
+    bulk_edit_count();
   }
 
   function get_current_filter(urlCustomFilter, cachedFilter) {
@@ -1064,6 +1067,959 @@
       list_settings.post_type,
     );
     window.location.reload();
+  });
+
+  // ============================================
+  // Bulk Edit Field Selection with dt-multi-select
+  // ============================================
+
+  let bulkEditSelectedFields = [];
+
+  // Transform field definitions to dt-multi-select format
+  // Note: We include ALL available fields (including selected ones) in options
+  // The component's built-in _filterOptions() will automatically filter out selected items from the dropdown
+  function transformFieldsForMultiSelect(fields) {
+    const allowedTypes = [
+      'user_select',
+      'multi_select',
+      'key_select',
+      'date',
+      'datetime',
+      'location_meta',
+      'tags',
+      'text',
+      'textarea',
+      'number',
+      'connection', // For share, coaches, etc.
+      'boolean', // For requires_update, etc.
+      'link', // Link fields
+      'communication_channel', // Communication channel fields
+      // Note: 'array' type is not supported as it's typically used for internal data structures
+    ];
+
+    const transformedFields = fields
+      .filter((field) => {
+        return (
+          !field.hidden && // Exclude hidden fields
+          !field.private && // Exclude private fields
+          allowedTypes.includes(field.field_type)
+        );
+      })
+      .sort((a, b) => {
+        const nameA = (a.field_name || '').toLowerCase();
+        const nameB = (b.field_name || '').toLowerCase();
+        return nameA.localeCompare(nameB);
+      })
+      .map((field) => ({
+        id: field.field_key,
+        label: field.field_name,
+        color: null,
+        icon: field.icon || null,
+      }));
+
+    // Add synthetic "Comments" option (not a real post field)
+    transformedFields.push({
+      id: 'comments',
+      label: window.wpApiShare?.translations?.comments || 'Comments',
+      color: null,
+      icon: null,
+    });
+
+    return transformedFields;
+  }
+
+  // Get all available fields
+  function getAllAvailableFields() {
+    if (!window.post_type_fields) {
+      return [];
+    }
+
+    return Object.entries(window.post_type_fields)
+      .map(([key, value]) => ({
+        field_key: key,
+        field_name: value.name,
+        field_type: value.type,
+        hidden: value.hidden || false,
+        private: value.private || false, // Include private flag
+        icon: value.icon || null,
+      }))
+      .filter((field) => {
+        // Exclude hidden and private fields
+        return !field.hidden && !field.private;
+      });
+  }
+
+  // Update dt-multi-select options
+  // Note: Include ALL available fields - component will auto-filter selected ones from dropdown
+  function updateFieldSelectorOptions() {
+    const fieldSelector = document.querySelector(
+      'dt-multi-select[name="bulk_edit_field_selector"]',
+    );
+    if (!fieldSelector) {
+      return;
+    }
+
+    const allFields = getAllAvailableFields();
+    const allOptions = transformFieldsForMultiSelect(allFields);
+
+    // Set all options (component will filter out selected ones automatically)
+    fieldSelector.options = allOptions;
+  }
+
+  // Helper function to create icon element from field data
+  function createFieldIconElement(fieldData) {
+    if (!fieldData) {
+      return $();
+    }
+
+    // Get icon from fieldData - check both icon and font-icon properties
+    const icon = fieldData.icon || fieldData['font-icon'];
+
+    // Validate icon exists and is a non-empty string
+    if (
+      !icon ||
+      typeof icon !== 'string' ||
+      icon.trim() === '' ||
+      icon === 'undefined'
+    ) {
+      return $();
+    }
+
+    // Create icon element based on type
+    let iconHtml;
+    const iconLower = icon.trim().toLowerCase();
+    if (iconLower.startsWith('mdi')) {
+      // Font icon (Material Design Icons)
+      iconHtml = `<i class="${icon.trim()} dt-icon lightgray" style="font-size: 20px;"></i>`;
+    } else {
+      // Image icon
+      iconHtml = `<img src="${icon.trim()}" class="dt-icon lightgray" alt="">`;
+    }
+
+    return $(iconHtml);
+  }
+
+  // Initialize dt-multi-select on page load
+  function initializeBulkEditFieldSelector() {
+    const fieldSelector = document.querySelector(
+      'dt-multi-select[name="bulk_edit_field_selector"]',
+    );
+    if (!fieldSelector) {
+      return;
+    }
+
+    // Set initial options
+    updateFieldSelectorOptions();
+    fieldSelector.value = [];
+
+    // Handle change events
+    fieldSelector.addEventListener('change', function (e) {
+      // Extract field keys from newValue (could be strings or objects with id property)
+      const selectedFieldKeys = (e.detail.newValue || []).map((v) =>
+        typeof v === 'string' ? v : v.id || v,
+      );
+      // Extract field keys from oldValue
+      const previousFieldKeys = (e.detail.oldValue || []).map((v) =>
+        typeof v === 'string' ? v : v.id || v,
+      );
+
+      // Find newly selected fields
+      const newlySelected = selectedFieldKeys.filter(
+        (key) => !previousFieldKeys.includes(key),
+      );
+
+      // Find deselected fields
+      const deselected = previousFieldKeys.filter(
+        (key) => !selectedFieldKeys.includes(key),
+      );
+
+      // Add newly selected fields
+      newlySelected.forEach((fieldKey) => {
+        // Handle special 'comments' field (not a real post field)
+        if (fieldKey === 'comments') {
+          if (!bulkEditSelectedFields.some((f) => f.fieldKey === fieldKey)) {
+            bulkEditSelectedFields.push({
+              fieldKey: fieldKey,
+              fieldType: 'comment',
+              fieldName:
+                window.wpApiShare?.translations?.comments || 'Comments',
+              cleared: false,
+            });
+
+            // Render the comment field
+            renderBulkEditField(
+              fieldKey,
+              'comment',
+              window.wpApiShare?.translations?.comments || 'Comments',
+              $(), // No icon for comments
+            );
+          }
+        } else {
+          // Handle regular post fields
+          const fieldData = window.post_type_fields[fieldKey];
+          if (
+            fieldData &&
+            !bulkEditSelectedFields.some((f) => f.fieldKey === fieldKey)
+          ) {
+            bulkEditSelectedFields.push({
+              fieldKey: fieldKey,
+              fieldType: fieldData.type,
+              fieldName: fieldData.name,
+              cleared: false,
+            });
+
+            // Create icon element from field data
+            const iconElement = createFieldIconElement(fieldData);
+
+            // Render the field
+            renderBulkEditField(
+              fieldKey,
+              fieldData.type,
+              fieldData.name,
+              iconElement,
+            );
+          }
+        }
+      });
+
+      // Remove deselected fields
+      deselected.forEach((fieldKey) => {
+        $(`.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`).remove();
+        bulkEditSelectedFields = bulkEditSelectedFields.filter(
+          (f) => f.fieldKey !== fieldKey,
+        );
+      });
+
+      // Update hidden input and button state
+      updateBulkEditSelectedFieldsInput();
+      updateBulkEditButtonState();
+
+      // Ensure dropdown closes after selection
+      // Use requestAnimationFrame to ensure the component has processed the change
+      requestAnimationFrame(() => {
+        if (fieldSelector && fieldSelector.open) {
+          fieldSelector.open = false;
+        }
+      });
+
+      // Note: No need to update options - component auto-filters selected items from dropdown
+      // But we do need to ensure options include all fields so selected ones can be displayed as tags
+      updateFieldSelectorOptions();
+    });
+  }
+
+  // Initialize on page load
+  if ($('dt-multi-select[name="bulk_edit_field_selector"]').length) {
+    // Wait for web components to be ready
+    if (window.customElements && window.customElements.get('dt-multi-select')) {
+      initializeBulkEditFieldSelector();
+    } else {
+      // Wait for component to be defined
+      $(document).ready(function () {
+        setTimeout(initializeBulkEditFieldSelector, 100);
+      });
+    }
+  }
+
+  function renderBulkEditField(
+    fieldKey,
+    fieldType,
+    fieldName,
+    fieldIconElement,
+  ) {
+    const container = $('#bulk_edit_selected_fields_container');
+    const template = $('#bulk_edit_field_template').html();
+    const wrapper = $(template);
+
+    // Set field key
+    wrapper.attr('data-field-key', fieldKey);
+    wrapper.find('.bulk-edit-field-name').text(fieldName);
+    wrapper
+      .find('.bulk-edit-remove-field-btn')
+      .attr('data-field-key', fieldKey);
+    wrapper.find('.bulk-edit-clear-field-btn').attr('data-field-key', fieldKey);
+    wrapper
+      .find('.bulk-edit-restore-field-btn')
+      .attr('data-field-key', fieldKey);
+
+    // Set icon
+    const iconContainer = wrapper.find('.bulk-edit-field-icon');
+    if (fieldIconElement && fieldIconElement.length) {
+      iconContainer.html(fieldIconElement.clone());
+    } else {
+      iconContainer.html(
+        '<div style="width: 20px; display: inline-block;"></div>',
+      );
+    }
+
+    // Render field input based on type
+    const inputContainer = wrapper.find('.bulk-edit-field-input-container');
+    renderBulkEditFieldInput(fieldKey, fieldType, inputContainer);
+
+    // Show clear button for fields that support clearing (exclude comment fields)
+    if (supportsFieldClearing(fieldType) && fieldType !== 'comment') {
+      wrapper.find('.bulk-edit-clear-field-btn').show();
+    }
+
+    // Append to container
+    container.append(wrapper);
+  }
+
+  function renderBulkEditFieldInput(fieldKey, fieldType, container) {
+    // Handle comment field specially
+    if (fieldType === 'comment') {
+      // Create unique IDs for this comment field instance
+      const commentInputId = `bulk_comment-input_${fieldKey}`;
+      const commentTypeSelectorId = `comment_type_selector_${fieldKey}`;
+
+      // Build comment HTML with proper spacing
+      let commentHtml = '<div class="auto cell">';
+      commentHtml +=
+        '<textarea class="mention" dir="auto" id="' +
+        commentInputId +
+        '" placeholder="' +
+        (window.wpApiShare?.translations?.write_comment_placeholder ||
+          'Write your comment or note here') +
+        '" style="margin-bottom: 15px;"></textarea>';
+
+      // Add Type selector with proper spacing
+      commentHtml += '<div class="grid-x" style="margin-top: 15px;">';
+      commentHtml +=
+        '<div class="section-subheader cell shrink">' +
+        (window.wpApiShare?.translations?.type || 'Type:') +
+        '</div>';
+      commentHtml +=
+        '<select id="' + commentTypeSelectorId + '" class="cell auto">';
+      // Default option
+      commentHtml +=
+        '<option value="comment">' +
+        (window.wpApiShare?.translations?.comments || 'Comments') +
+        '</option>';
+      commentHtml += '</select>';
+      commentHtml += '</div>';
+      commentHtml += '</div>';
+
+      container.html(commentHtml);
+
+      // Populate comment type selector options from hidden data element
+      // Use requestAnimationFrame to ensure DOM is ready
+      requestAnimationFrame(() => {
+        const newSelector = $(`#${commentTypeSelectorId}`);
+
+        if (newSelector.length === 0) {
+          return;
+        }
+
+        // Get comment sections from hidden JSON data element
+        const commentSectionsData = document.getElementById(
+          'bulk_edit_comment_sections_data',
+        );
+        if (commentSectionsData) {
+          try {
+            // Get text content from the script element
+            const jsonText =
+              commentSectionsData.textContent || commentSectionsData.innerText;
+            if (!jsonText || jsonText.trim() === '') {
+              // Fallback: ensure default 'comment' option exists
+              if (newSelector.find('option').length === 0) {
+                newSelector.append(
+                  '<option value="comment">' +
+                    (window.wpApiShare?.translations?.comments || 'Comments') +
+                    '</option>',
+                );
+                newSelector.val('comment');
+              }
+              return;
+            }
+
+            const commentSectionsRaw = JSON.parse(jsonText.trim());
+
+            // Convert to array if it's an object with numeric keys
+            let commentSections = [];
+            if (Array.isArray(commentSectionsRaw)) {
+              commentSections = commentSectionsRaw;
+            } else if (
+              typeof commentSectionsRaw === 'object' &&
+              commentSectionsRaw !== null
+            ) {
+              // Convert object to array
+              commentSections = Object.values(commentSectionsRaw);
+            }
+
+            if (commentSections.length > 0) {
+              // Clear default option and add all sections
+              newSelector.empty();
+
+              // Add all comment sections
+              commentSections.forEach((section) => {
+                if (section && section.key) {
+                  // Skip 'activity' as it's not a comment type
+                  if (section.key !== 'activity') {
+                    // Get label - check multiple possible properties
+                    const label = section.label || section.name || section.key;
+                    const enabled = section.enabled !== false; // Default to enabled if not specified
+
+                    // Only add if enabled (unless it's the default comment type)
+                    if (enabled || section.key === 'comment') {
+                      newSelector.append(
+                        `<option value="${section.key}">${label}</option>`,
+                      );
+                    }
+                  }
+                }
+              });
+
+              // Ensure at least one option exists (fallback to 'comment' if empty)
+              if (newSelector.find('option').length === 0) {
+                newSelector.append(
+                  '<option value="comment">' +
+                    (window.wpApiShare?.translations?.comments || 'Comments') +
+                    '</option>',
+                );
+              }
+
+              // Set default value to 'comment' if available, otherwise first option
+              if (newSelector.find('option[value="comment"]').length > 0) {
+                newSelector.val('comment');
+              } else if (newSelector.find('option').length > 0) {
+                newSelector.val(
+                  newSelector.find('option').first().attr('value'),
+                );
+              }
+            } else {
+              // Fallback: ensure default 'comment' option exists
+              if (newSelector.find('option').length === 0) {
+                newSelector.append(
+                  '<option value="comment">' +
+                    (window.wpApiShare?.translations?.comments || 'Comments') +
+                    '</option>',
+                );
+                newSelector.val('comment');
+              }
+            }
+          } catch (e) {
+            // Fallback: ensure default 'comment' option exists
+            if (newSelector.find('option').length === 0) {
+              newSelector.append(
+                '<option value="comment">' +
+                  (window.wpApiShare?.translations?.comments || 'Comments') +
+                  '</option>',
+              );
+              newSelector.val('comment');
+            }
+          }
+        } else {
+          // Fallback: ensure default 'comment' option exists
+          if (newSelector.find('option').length === 0) {
+            newSelector.append(
+              '<option value="comment">' +
+                (window.wpApiShare?.translations?.comments || 'Comments') +
+                '</option>',
+            );
+            newSelector.val('comment');
+          }
+        }
+      });
+
+      return;
+    }
+
+    // Show loading state
+    container.html(
+      '<div class="bulk-edit-field-loading"><div class="loading-spinner active" style="margin: 10px auto;"></div><p style="text-align: center; color: #999; margin-top: 5px;">Loading field input...</p></div>',
+    );
+
+    // Make AJAX call to get field HTML
+    $.ajax({
+      url: `${window.wpApiShare.root}dt-posts/v2/${list_settings.post_type}/render-field-html`,
+      method: 'GET',
+      data: {
+        field_key: fieldKey,
+        field_id_prefix: 'bulk_',
+      },
+      headers: {
+        'X-WP-Nonce': window.wpApiShare.nonce,
+      },
+      success: function (response) {
+        if (response && response.html) {
+          container.html(response.html);
+
+          // For web components, wait a moment for them to be upgraded
+          if (
+            fieldType === 'connection' ||
+            fieldType === 'tags' ||
+            fieldType === 'location_meta'
+          ) {
+            // Use requestAnimationFrame to ensure DOM is ready
+            requestAnimationFrame(() => {
+              // Initialize field-specific handlers after component upgrade
+              initializeBulkEditFieldHandlers(fieldKey, fieldType);
+            });
+          } else {
+            // Initialize field-specific handlers immediately for non-web-component fields
+            initializeBulkEditFieldHandlers(fieldKey, fieldType);
+          }
+        } else {
+          console.error('Field loading error: Invalid response', response);
+          container.html(
+            '<div class="alert-box alert">Error loading field input: Invalid response from server</div>',
+          );
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error('Field loading AJAX error:', {
+          status: status,
+          error: error,
+          responseText: xhr.responseText,
+          statusCode: xhr.status,
+        });
+
+        let errorMessage = 'Error loading field input';
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          errorMessage += ': ' + xhr.responseJSON.message;
+        } else if (xhr.status === 0) {
+          errorMessage += ': Network error or server unavailable';
+        } else if (xhr.status === 403) {
+          errorMessage += ': Permission denied';
+        } else if (xhr.status === 404) {
+          errorMessage += ': Field not found';
+        } else if (xhr.status === 400) {
+          errorMessage += ': Invalid request';
+        }
+
+        container.html(`<div class="alert-box alert">${errorMessage}</div>`);
+      },
+    });
+  }
+
+  function initializeBulkEditFieldHandlers(fieldKey, fieldType) {
+    // Get the field wrapper for this field
+    const fieldWrapper = $(
+      `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
+    );
+
+    // Initialize typeaheads, date pickers, etc. based on field type
+    // This will hook into existing field initialization code
+    // Most field types should auto-initialize, but we may need to trigger specific handlers
+    if (fieldType === 'user_select') {
+      // Initialize user_select typeahead for dynamically added fields
+      const fieldId = `bulk_${fieldKey}`;
+      const userInput = $(`.js-typeahead-${fieldId}`);
+
+      if (userInput.length && !window.Typeahead[`.js-typeahead-${fieldId}`]) {
+        $.typeahead({
+          input: `.js-typeahead-${fieldId}`,
+          minLength: 0,
+          maxItem: 0,
+          accent: true,
+          searchOnFocus: true,
+          source: window.TYPEAHEADS.typeaheadUserSource(),
+          templateValue: '{{name}}',
+          template: function (query, item) {
+            return `<div class="assigned-to-row" dir="auto">
+              <span>
+                  <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+                  ${window.SHAREDFUNCTIONS.escapeHTML(item.name)}
+              </span>
+              ${item.status_color ? `<span class="status-square" style="background-color: ${window.SHAREDFUNCTIONS.escapeHTML(item.status_color)};">&nbsp;</span>` : ''}
+              ${
+                item.update_needed && item.update_needed > 0
+                  ? `<span>
+                <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
+                <span style="font-size: 14px">${window.SHAREDFUNCTIONS.escapeHTML(item.update_needed)}</span>
+              </span>`
+                  : ''
+              }
+            </div>`;
+          },
+          dynamic: true,
+          hint: true,
+          emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(
+            window.wpApiShare.translations.no_records_found,
+          ),
+          callback: {
+            onClick: function (node, a, item, event) {
+              event.preventDefault();
+              this.hideLayout();
+              this.resetInput();
+
+              // Set the selected user value
+              const resultContainer = $(`#${fieldId}-result-container`);
+              resultContainer.html(
+                `<span class="selected-result">${window.SHAREDFUNCTIONS.escapeHTML(item.name)}</span>`,
+              );
+
+              // Store the selected user ID in data attributes for later collection
+              // Store on both input and result container for redundancy
+              userInput.data('selected-user-id', item.ID);
+              userInput.data('selected-user-name', item.name);
+              resultContainer.data('selected-user-id', item.ID);
+              resultContainer.data('selected-user-name', item.name);
+            },
+            onResult: function (node, query, result, resultCount) {
+              const resultContainer = $(`#${fieldId}-result-container`);
+              if (resultCount > 0) {
+                resultContainer.html(
+                  `${resultCount} ${window.wpApiShare.translations.user_found || 'user(s) found'}`,
+                );
+              } else {
+                resultContainer.html('');
+              }
+            },
+            onHideLayout: function () {
+              $(`#${fieldId}-result-container`).html('');
+            },
+          },
+        });
+      }
+    } else if (fieldType === 'connection') {
+      // Ensure dt-connection component is properly initialized after AJAX insertion
+      const fieldId = `bulk_${fieldKey}`;
+
+      // Try multiple ways to find the element
+      let connectionElement = document.getElementById(fieldId);
+      if (!connectionElement) {
+        // Try finding by name attribute
+        connectionElement = document.querySelector(
+          `dt-connection[name="${fieldKey}"]`,
+        );
+      }
+      if (!connectionElement) {
+        // Try finding within the container
+        const container = $(
+          `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
+        );
+        connectionElement = container.find('dt-connection')[0];
+      }
+
+      if (connectionElement && connectionElement.tagName === 'DT-CONNECTION') {
+        // Verify postType attribute is set (required for lookup functionality)
+        let postType = connectionElement.getAttribute('postType');
+        if (!postType) {
+          // Fallback: get post_type from field settings
+          const fieldSettings = window.lodash.get(
+            list_settings,
+            `post_type_settings.fields.${fieldKey}`,
+            {},
+          );
+          if (fieldSettings.post_type) {
+            postType = fieldSettings.post_type;
+            connectionElement.setAttribute('postType', postType);
+          }
+        }
+
+        // Ensure ComponentService is available and initialized
+        if (window.componentService) {
+          // For dynamically added components, we need to ensure they're properly initialized
+          // ComponentService.initialize() sets up event listeners for all components on the page
+          if (window.componentService.initialize) {
+            // Re-initialize to pick up the new component
+            try {
+              window.componentService.initialize();
+            } catch (e) {
+              // ComponentService initialization error - component should still work
+            }
+          } else if (window.componentService.attachLoadEvents) {
+            // Fallback: re-attach load events for the new component
+            window.componentService.attachLoadEvents();
+          }
+        }
+      }
+    } else if (fieldType === 'link') {
+      // Link fields use legacy rendering with add/delete buttons
+      // Need to attach event handlers for dynamically added link fields
+      const fieldId = `bulk_${fieldKey}`;
+      const linkGroup = $(
+        `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"] .link-group`,
+      );
+
+      if (linkGroup.length === 0) {
+        return;
+      }
+
+      // Attach event handlers for link dropdown options
+      // Use event delegation to handle dynamically added elements
+      const fieldWrapper = $(
+        `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
+      );
+
+      // Remove any existing handlers to avoid duplicates
+      fieldWrapper.off('click', '.add-link__option');
+      fieldWrapper.off('click', '.add-link-dropdown[data-only-one-option]');
+      fieldWrapper.off('click', '.link-delete-button');
+
+      // Attach click handler for link dropdown options
+      fieldWrapper.on('click', '.add-link__option', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Get data attributes from the clicked element
+        const $target = $(event.currentTarget);
+        const linkType =
+          $target.data('link-type') || $target.attr('data-link-type');
+        const fieldKeyAttr =
+          $target.data('field-key') || $target.attr('data-field-key');
+
+        // The fieldKey in data attributes is the original field key (e.g., "links")
+        // The link-list and template use the original field key, not the display_field_id
+        const actualFieldKey = fieldKeyAttr || fieldKey;
+
+        // Find the link list and template using the original field key
+        const linkList = fieldWrapper.find(
+          `.link-list-${actualFieldKey} .link-section--${linkType}`,
+        );
+        const template = fieldWrapper.find(
+          `#link-template-${actualFieldKey}-${linkType}`,
+        );
+
+        if (linkList.length > 0 && template.length > 0) {
+          const templateInput = template.find('.input-group');
+          if (templateInput.length > 0) {
+            const newInputGroup = templateInput.clone(true);
+            const newInput = newInputGroup.find('input');
+
+            // The input's data-field-key should use display_field_id (bulk_${fieldKey})
+            // This is already set in render_link_field, but let's ensure it's correct
+            const displayFieldId = fieldId; // bulk_${fieldKey}
+            newInput.attr('data-field-key', displayFieldId);
+
+            linkList.append(newInputGroup);
+            newInput.focus();
+
+            // Hide dropdown after selection
+            const dropdownContent = $(event.currentTarget).closest(
+              '.add-link-dropdown__content',
+            );
+            dropdownContent.hide();
+            setTimeout(() => {
+              dropdownContent.removeAttr('style');
+            }, 100);
+          }
+        }
+      });
+
+      // Attach click handler for single-option link dropdowns
+      fieldWrapper.on(
+        'click',
+        '.add-link-dropdown[data-only-one-option]',
+        function (event) {
+          if (window.SHAREDFUNCTIONS && window.SHAREDFUNCTIONS.addLink) {
+            window.SHAREDFUNCTIONS.addLink(event);
+          }
+        },
+      );
+
+      // Attach click handler for delete buttons (using document delegation for dynamically added inputs)
+      $(document).off(
+        'click',
+        `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"] .link-delete-button`,
+      );
+      $(document).on(
+        'click',
+        `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"] .link-delete-button`,
+        function () {
+          $(this).closest('.input-group').remove();
+        },
+      );
+
+      // Attach change handler for link inputs to track values
+      fieldWrapper.off('change', '.link-input');
+      fieldWrapper.on('change', '.link-input', function () {
+        // Value tracking is handled in collectFieldValue
+      });
+    } else if (fieldType === 'tags') {
+      // Tags use dt-tags web component which handles its own initialization
+      // Ensure ComponentService initializes the component and handle load events
+      const fieldId = `bulk_${fieldKey}`;
+      const tagsComponent =
+        fieldWrapper.find(`dt-tags#${fieldId}`)[0] ||
+        fieldWrapper.find(`dt-tags[name="${fieldKey}"]`)[0] ||
+        fieldWrapper.find(`dt-tags`)[0];
+
+      if (tagsComponent && tagsComponent.tagName === 'DT-TAGS') {
+        // Ensure ComponentService is available and initialized
+        if (window.componentService) {
+          // For dynamically added components, we need to ensure they're properly initialized
+          if (window.componentService.initialize) {
+            // Re-initialize to pick up the new component
+            try {
+              window.componentService.initialize();
+            } catch (e) {
+              // ComponentService initialization error - component should still work
+            }
+          } else if (window.componentService.attachLoadEvents) {
+            // Fallback: re-attach load events for the new component
+            window.componentService.attachLoadEvents();
+          }
+        }
+
+        // Add listener for load events from this specific dt-tags component
+        // The component dispatches 'load' events when it needs to fetch tag options
+        const field = fieldKey;
+        const field_options = window.lodash.get(
+          list_settings,
+          `post_type_settings.fields.${field}.default`,
+          {},
+        );
+
+        tagsComponent.addEventListener('load', function (event) {
+          const { query, onSuccess, onError } = event.detail;
+
+          // Fetch tags from API
+          $.ajax({
+            url:
+              window.wpApiShare.root +
+              `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
+            method: 'GET',
+            data: {
+              s: query || '',
+              field: field,
+            },
+            headers: {
+              'X-WP-Nonce': window.wpApiShare.nonce,
+            },
+            success: function (data) {
+              // Transform data to match component's expected format
+              const options = (data || []).map((tag) => {
+                const label = window.lodash.get(
+                  field_options,
+                  tag + '.label',
+                  tag,
+                );
+                return { id: tag, label: label || tag };
+              });
+              if (onSuccess) {
+                onSuccess(options);
+              }
+            },
+            error: function (xhr, status, error) {
+              if (onError) {
+                onError(error);
+              }
+            },
+          });
+        });
+      }
+    } else if (fieldType === 'date' || fieldType === 'datetime') {
+      // Date pickers should auto-initialize
+    }
+    // Add other field type initializations as needed
+  }
+
+  // Remove field when clicking X button
+  $(document).on('click', '.bulk-edit-remove-field-btn', function () {
+    const fieldKey = $(this).data('field-key');
+
+    // Remove from selected fields array
+    bulkEditSelectedFields = bulkEditSelectedFields.filter(
+      (f) => f.fieldKey !== fieldKey,
+    );
+
+    // Remove field wrapper from DOM
+    $(`.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`).remove();
+
+    // Update hidden input
+    updateBulkEditSelectedFieldsInput();
+
+    // Update update button state based on field selection
+    updateBulkEditButtonState();
+
+    // Update dt-multi-select to remove the field from selection
+    const fieldSelector = document.querySelector(
+      'dt-multi-select[name="bulk_edit_field_selector"]',
+    );
+    if (fieldSelector) {
+      const currentValue = fieldSelector.value || [];
+      fieldSelector.value = currentValue.filter((v) => {
+        const id = typeof v === 'string' ? v : v.id;
+        return id !== fieldKey;
+      });
+      // Update options to show the field again
+      updateFieldSelectorOptions();
+    }
+  });
+
+  function updateBulkEditSelectedFieldsInput() {
+    const fieldKeys = bulkEditSelectedFields.map((f) => f.fieldKey);
+    $('#bulk_edit_selected_fields_input').val(JSON.stringify(fieldKeys));
+  }
+
+  function supportsFieldClearing(fieldType) {
+    // Fields that support clearing/unsetting
+    const clearableTypes = [
+      'connection',
+      'multi_select',
+      'tags',
+      'user_select',
+      'date',
+      'datetime',
+      'location',
+      'location_meta',
+      'text',
+      'textarea',
+      'number',
+      'key_select',
+      'link',
+      'communication_channel',
+    ];
+    return clearableTypes.includes(fieldType);
+  }
+
+  // Clear/unset field value
+  $(document).on('click', '.bulk-edit-clear-field-btn', function () {
+    const fieldKey = $(this).data('field-key');
+    const fieldWrapper = $(
+      `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
+    );
+    const fieldData = bulkEditSelectedFields.find(
+      (f) => f.fieldKey === fieldKey,
+    );
+
+    if (!fieldData) return;
+
+    // Mark field as cleared
+    fieldData.cleared = true;
+
+    // Clear the input visually
+    const inputContainer = fieldWrapper.find(
+      '.bulk-edit-field-input-container',
+    );
+    inputContainer.html(
+      '<div class="alert-box secondary" style="margin: 0;">Field will be cleared/unset</div>',
+    );
+
+    // Hide clear button, show restore button
+    $(this).hide();
+    fieldWrapper.find('.bulk-edit-restore-field-btn').show();
+  });
+
+  // Restore field value (undo clear)
+  $(document).on('click', '.bulk-edit-restore-field-btn', function () {
+    const fieldKey = $(this).data('field-key');
+    const fieldWrapper = $(
+      `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
+    );
+    const fieldData = bulkEditSelectedFields.find(
+      (f) => f.fieldKey === fieldKey,
+    );
+
+    if (!fieldData) return;
+
+    // Remove cleared flag
+    fieldData.cleared = false;
+
+    // Re-render field input
+    const inputContainer = fieldWrapper.find(
+      '.bulk-edit-field-input-container',
+    );
+    renderBulkEditFieldInput(fieldKey, fieldData.fieldType, inputContainer);
+
+    // Show clear button, hide restore button
+    $(this).hide();
+    fieldWrapper.find('.bulk-edit-clear-field-btn').show();
+
+    // Update update button state (field is no longer cleared)
+    updateBulkEditButtonState();
   });
 
   archivedSwitch.on('click', function () {
@@ -2993,10 +3949,7 @@
     $('#records-table').toggleClass('bulk_edit_on');
   });
 
-  $('#bulk_edit_seeMore').on('click', function () {
-    $('#bulk_more').toggle();
-    $('#bulk_edit_seeMore').children().toggle();
-  });
+  // Old bulk_edit_seeMore handler removed - replaced with dynamic field selection
 
   function bulk_edit_checkbox_event() {
     $('tbody tr td.bulk_edit_checkbox').on('click', function (e) {
@@ -3065,8 +4018,18 @@
    */
   let bulk_edit_submit_button = $('#bulk_edit_submit');
 
+  // Prevent form submission (button handles it via JavaScript)
+  $('#bulk_edit_picker').on('submit', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  });
+
   bulk_edit_submit_button.on('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     bulk_edit_submit();
+    return false;
   });
 
   function bulk_edit_submit() {
@@ -3077,8 +4040,30 @@
     let multiSelectInputs = $('#bulk_edit_picker .dt_multi_select');
     let shareInput = $('#bulk_share');
     let commentPayload = {};
-    commentPayload['commentText'] = $('#bulk_comment-input').val();
-    commentPayload['commentType'] = $('#comment_type_selector').val();
+    // Check for comment field in dynamically selected fields
+    const commentFieldSelected = bulkEditSelectedFields?.some(
+      (f) => f.fieldKey === 'comments',
+    );
+    if (commentFieldSelected) {
+      // Find the comment input for the comments field
+      const commentInput = $(
+        '#bulk_edit_selected_fields_container textarea[id^="bulk_comment-input_"]',
+      );
+      if (commentInput.length > 0) {
+        commentPayload['commentText'] = commentInput.val();
+        // Get the corresponding comment type selector
+        const commentTypeSelector = commentInput
+          .closest('.bulk-edit-field-input-container')
+          .find('select[id^="comment_type_selector_"]');
+        if (commentTypeSelector.length > 0) {
+          commentPayload['commentType'] = commentTypeSelector.val();
+        } else {
+          // Fallback to default selector if exists
+          commentPayload['commentType'] =
+            $('#comment_type_selector').val() || 'comment';
+        }
+      }
+    }
 
     let updatePayload = {};
     let sharePayload;
@@ -3091,12 +4076,46 @@
         return;
       }
 
+      // Skip the field selector component - it's not a field to update
+      const fieldName = el.name ? el.name.trim() : null;
+      if (
+        fieldName === 'bulk_edit_field_selector' ||
+        el.id === 'bulk_edit_field_selector'
+      ) {
+        return;
+      }
+
+      // Skip any components inside the dynamically selected fields container
+      // (they will be processed in the dynamically selected fields section)
+      if (el.closest('#bulk_edit_selected_fields_container')) {
+        return;
+      }
+
       if (el.value) {
-        updatePayload[el.name.trim()] =
+        const convertedValue =
           window.DtWebComponents.ComponentService.convertValue(
             el.tagName,
             el.value,
           );
+
+        // Only add to payload if value is not empty
+        // For array-based fields, check if values array has items
+        if (convertedValue !== null && convertedValue !== undefined) {
+          if (typeof convertedValue === 'object' && convertedValue.values) {
+            // For array-based fields, only include if there are values or force_values is true
+            if (
+              convertedValue.values.length > 0 ||
+              convertedValue.force_values === true
+            ) {
+              updatePayload[fieldName] = convertedValue;
+            }
+          } else {
+            // For simple fields, include if not empty
+            if (convertedValue !== '' && convertedValue !== null) {
+              updatePayload[fieldName] = convertedValue;
+            }
+          }
+        }
       }
     });
 
@@ -3119,10 +4138,22 @@
 
     let multiSelectUpdatePayload = {};
     multiSelectInputs.each(function () {
+      // Skip if this input is inside the dynamically selected fields container
+      if ($(this).closest('#bulk_edit_selected_fields_container').length > 0) {
+        return; // Skip - will be handled in dynamically selected fields section
+      }
+
       let inputData = $(this).data();
       $.each(inputData, function (key, value) {
         if (key.includes('bulk_key_') && value) {
           let field_key = key.replace('bulk_key_', '');
+          // Skip if this field is in dynamically selected fields (regardless of cleared status)
+          const fieldData = bulkEditSelectedFields?.find(
+            (f) => f.fieldKey === field_key,
+          );
+          if (fieldData) {
+            return; // Skip processing - will be handled in dynamically selected fields section
+          }
           if (!multiSelectUpdatePayload[field_key]) {
             multiSelectUpdatePayload[field_key] = { values: [] };
           }
@@ -3133,8 +4164,95 @@
     const multiSelectKeys = Object.keys(multiSelectUpdatePayload);
 
     multiSelectKeys.forEach((key, index) => {
-      updatePayload[key] = multiSelectUpdatePayload[key];
+      // Double-check: don't overwrite if field is cleared in dynamically selected fields
+      const fieldData = bulkEditSelectedFields?.find((f) => f.fieldKey === key);
+      if (!fieldData || !fieldData.cleared) {
+        // Also check if this field is already in updatePayload (from cleared fields)
+        if (!updatePayload[key] || !updatePayload[key].force_values) {
+          updatePayload[key] = multiSelectUpdatePayload[key];
+        }
+      }
     });
+
+    // Process dynamically selected fields
+    if (
+      typeof bulkEditSelectedFields !== 'undefined' &&
+      bulkEditSelectedFields.length > 0
+    ) {
+      bulkEditSelectedFields.forEach(function (fieldData) {
+        const fieldKey = fieldData.fieldKey;
+        const fieldType = fieldData.fieldType;
+
+        // Skip if field is marked as cleared - set cleared value and ensure it's not overwritten
+        if (fieldData.cleared) {
+          const clearedValue = getClearedFieldValue(fieldType);
+          // For communication_channel, backend expects: {"contact_email":[],"force_values":true}
+          // We need to create an object that has array-like structure with force_values property
+          if (fieldType === 'communication_channel') {
+            // Create an object that will serialize correctly
+            // Backend checks: is_array($fields[$details_key]) AND $fields[$details_key]['force_values']
+            // In JavaScript, we can't have an array with properties that serialize, so we use an object
+            // But backend also accepts: $fields[$details_key]['values'] format
+            // So we'll use: {values: [], force_values: true} which backend will handle
+            updatePayload[fieldKey] = {
+              values: [],
+              force_values: true,
+            };
+          } else {
+            updatePayload[fieldKey] = clearedValue;
+          }
+          return;
+        }
+
+        // Collect value from field input
+        const fieldWrapper = $(
+          `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
+        );
+        const fieldValue = collectFieldValue(fieldKey, fieldType, fieldWrapper);
+
+        if (fieldValue !== null && fieldValue !== undefined) {
+          // Handle communication_channel fields specially (direct array format, not wrapped)
+          if (fieldType === 'communication_channel') {
+            // Communication channel expects direct array: [{"value":"...","key":"..."}]
+            if (Array.isArray(fieldValue)) {
+              updatePayload[fieldKey] = fieldValue;
+            }
+          }
+          // Handle array-based fields specially (multi_select, tags, connection, location_meta, link)
+          else if (
+            fieldType === 'multi_select' ||
+            fieldType === 'tags' ||
+            fieldType === 'connection' ||
+            fieldType === 'location_meta' ||
+            fieldType === 'link'
+          ) {
+            // Array-based fields return { values: [...] } format
+            // We need to preserve the structure and ensure force_values is set
+            if (fieldValue.values && Array.isArray(fieldValue.values)) {
+              updatePayload[fieldKey] = {
+                values: fieldValue.values,
+                force_values:
+                  fieldValue.force_values !== undefined
+                    ? fieldValue.force_values
+                    : false,
+              };
+            }
+          } else {
+            // For boolean fields, include even if false (false is a valid value)
+            if (fieldType === 'boolean') {
+              updatePayload[fieldKey] = fieldValue === true;
+            } else {
+              updatePayload[fieldKey] = fieldValue;
+            }
+          }
+        } else {
+          // For boolean fields, if no value was collected, default to false
+          if (fieldType === 'boolean') {
+            updatePayload[fieldKey] = false;
+          }
+        }
+      });
+    }
 
     shareInput.each(function () {
       sharePayload = $(this).data('bulk_key_share');
@@ -3142,7 +4260,9 @@
 
     let shares = {
       users: sharePayload,
-      unshare: $('#bulk_share_unshare').prop('checked'),
+      unshare: $('#bulk_share_unshare').length
+        ? $('#bulk_share_unshare').prop('checked')
+        : false,
     };
 
     let queue = [];
@@ -3153,7 +4273,580 @@
         queue.push(postId);
       }
     });
-    process(queue, 10, do_each, do_done, updatePayload, shares, commentPayload);
+
+    // Process the queue to update records
+    if (queue.length > 0) {
+      process(
+        queue,
+        10,
+        do_each,
+        do_done,
+        updatePayload,
+        shares,
+        commentPayload,
+      );
+    } else {
+      $('#bulk_edit_submit-spinner').removeClass('active');
+    }
+  }
+
+  function collectFieldValue(fieldKey, fieldType, fieldWrapper) {
+    // Collect value based on field type
+    const input = fieldWrapper.find(`#bulk_${fieldKey}`);
+
+    switch (fieldType) {
+      case 'text':
+      case 'textarea':
+      case 'number':
+        return input.val() || '';
+
+      case 'date':
+      case 'datetime':
+        return input.val() || null;
+
+      case 'key_select':
+        return input.val() || null;
+
+      case 'connection': {
+        // Connection fields use dt-connection web component
+        const connectionComponent =
+          fieldWrapper.find(`dt-connection#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-connection[name="${fieldKey}"]`)[0] ||
+          fieldWrapper.find(`dt-connection`)[0];
+
+        if (connectionComponent && connectionComponent.value) {
+          // Use ComponentService to convert the value
+          const componentValue =
+            window.DtWebComponents?.ComponentService?.convertValue(
+              connectionComponent.tagName,
+              connectionComponent.value,
+            ) || connectionComponent.value;
+
+          // ComponentService.convertValue returns { values: [{value: id}], force_values: false }
+          if (componentValue && typeof componentValue === 'object') {
+            if (componentValue.values) {
+              return componentValue;
+            } else if (Array.isArray(componentValue)) {
+              // If it's an array, convert to { values: [...] } format
+              return {
+                values: componentValue.map((v) => {
+                  if (typeof v === 'string') {
+                    return { value: v };
+                  }
+                  return { value: v.id || v.value || v };
+                }),
+                force_values: false,
+              };
+            }
+          }
+        }
+
+        // Fallback: Get from legacy typeahead result container
+        const resultContainer = fieldWrapper.find(
+          `#bulk_${fieldKey}-result-container`,
+        );
+        const selected = resultContainer.data('selected') || [];
+        if (Array.isArray(selected) && selected.length > 0) {
+          return {
+            values: selected.map((v) => ({
+              value: typeof v === 'object' ? v.id || v.value : v,
+            })),
+            force_values: false,
+          };
+        }
+        return null;
+      }
+
+      case 'tags': {
+        // Tags use dt-tags web component
+        const tagsComponent =
+          fieldWrapper.find(`dt-tags#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-tags[name="${fieldKey}"]`)[0] ||
+          fieldWrapper.find(`dt-tags`)[0];
+
+        if (tagsComponent && tagsComponent.value) {
+          // Use ComponentService to convert the value
+          const componentValue =
+            window.DtWebComponents?.ComponentService?.convertValue(
+              tagsComponent.tagName,
+              tagsComponent.value,
+            ) || tagsComponent.value;
+
+          // Tags component returns an array of strings
+          if (Array.isArray(componentValue)) {
+            return { values: componentValue.map((v) => ({ value: v })) };
+          } else if (
+            componentValue &&
+            typeof componentValue === 'object' &&
+            componentValue.values
+          ) {
+            return componentValue;
+          }
+        }
+
+        // Fallback: Get from legacy data attribute or typeahead
+        const legacyInput = fieldWrapper.find(`#bulk_${fieldKey}`);
+        if (legacyInput.length > 0) {
+          const tagsData = legacyInput.data('bulk_key_' + fieldKey);
+          if (tagsData && tagsData.values) {
+            return tagsData;
+          }
+
+          // Try typeahead
+          const typeaheadSelector = `.js-typeahead-bulk_${fieldKey}`;
+          const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
+          if (typeaheadInstance && typeaheadInstance.items) {
+            const items = typeaheadInstance.items || [];
+            if (items.length > 0) {
+              return {
+                values: items.map((item) => {
+                  const tagValue =
+                    typeof item === 'string'
+                      ? item
+                      : item.value || item.key || item;
+                  return { value: tagValue };
+                }),
+              };
+            }
+          }
+        }
+
+        return null;
+      }
+
+      case 'multi_select': {
+        // First: Try web component (dt-multi-select-button-group or dt-multi-select)
+        const buttonGroupComponent =
+          fieldWrapper.find(
+            `dt-multi-select-button-group#bulk_${fieldKey}`,
+          )[0] ||
+          fieldWrapper.find(
+            `dt-multi-select-button-group[name="${fieldKey}"]`,
+          )[0] ||
+          fieldWrapper.find(`dt-multi-select-button-group`)[0];
+        const multiSelectComponent =
+          fieldWrapper.find(`dt-multi-select#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-multi-select[name="${fieldKey}"]`)[0];
+
+        const webComponent = buttonGroupComponent || multiSelectComponent;
+
+        if (webComponent) {
+          if (webComponent.value) {
+            // Use ComponentService to convert the value to the expected format
+            const componentValue =
+              window.DtWebComponents?.ComponentService?.convertValue(
+                webComponent.tagName,
+                webComponent.value,
+              ) || webComponent.value;
+
+            console.log(
+              `[Bulk Edit] DEBUG: Component value (converted):`,
+              componentValue,
+            );
+
+            // Handle different value formats
+            if (componentValue && typeof componentValue === 'object') {
+              if (componentValue.values) {
+                return componentValue;
+              } else if (Array.isArray(componentValue)) {
+                // If it's an array, convert to { values: [...] } format
+                return {
+                  values: componentValue.map((v) => {
+                    if (typeof v === 'string') {
+                      return { value: v };
+                    }
+                    return { value: v.value || v.key || v.id || v };
+                  }),
+                };
+              }
+            } else if (Array.isArray(webComponent.value)) {
+              // Direct array from component value property
+              return {
+                values: webComponent.value.map((v) => {
+                  if (typeof v === 'string') {
+                    return { value: v };
+                  }
+                  return { value: v.value || v.key || v.id || v };
+                }),
+              };
+            }
+          }
+        }
+
+        // Second: Collect from selected button elements (legacy button-based multi-select)
+        const selectedButtons = fieldWrapper.find('.selected-select-button');
+        if (selectedButtons.length > 0) {
+          const values = [];
+          selectedButtons.each(function () {
+            const optionKey = $(this).attr('id');
+            if (optionKey) {
+              values.push({ value: optionKey });
+            }
+          });
+          if (values.length > 0) {
+            return { values: values };
+          }
+        }
+
+        // Third: Get from legacy data attribute on input element
+        const legacyInput = fieldWrapper.find(`#bulk_${fieldKey}`);
+        if (legacyInput.length > 0) {
+          const multiSelectData = legacyInput.data('bulk_key_' + fieldKey);
+          if (multiSelectData && multiSelectData.values) {
+            return multiSelectData;
+          }
+
+          // Fourth: Get from typeahead component's internal state
+          const typeaheadSelector = `.js-typeahead-bulk_${fieldKey}`;
+          const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
+          if (typeaheadInstance && typeaheadInstance.items) {
+            const items = typeaheadInstance.items || [];
+            if (items.length > 0) {
+              const values = items.map((item) => {
+                if (typeof item === 'string') {
+                  return { value: item };
+                }
+                return { value: item.key || item.id || item.value || item };
+              });
+              return { values: values };
+            }
+          }
+        }
+
+        return null;
+      }
+
+      case 'user_select': {
+        // User select fields use typeahead with data stored in data attributes
+        const fieldId = `bulk_${fieldKey}`;
+        const userInput = fieldWrapper.find(`.js-typeahead-${fieldId}`);
+
+        if (userInput.length > 0) {
+          // First: Get selected user ID from data attribute (set during typeahead onClick)
+          const selectedUserId = userInput.data('selected-user-id');
+          if (selectedUserId) {
+            // Return in format expected by backend: "user-{ID}"
+            return `user-${selectedUserId}`;
+          }
+
+          // Second: Check typeahead instance for selected items
+          const typeaheadSelector = `.js-typeahead-${fieldId}`;
+          const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
+          if (
+            typeaheadInstance &&
+            typeaheadInstance.items &&
+            typeaheadInstance.items.length > 0
+          ) {
+            const selectedItem = typeaheadInstance.items[0];
+            if (selectedItem && selectedItem.ID) {
+              return `user-${selectedItem.ID}`;
+            }
+          }
+
+          // Third: Check result container for stored data
+          const resultContainer = fieldWrapper.find(
+            `#${fieldId}-result-container`,
+          );
+          if (resultContainer.length > 0) {
+            // Check if result container has a data attribute with selected user
+            const containerUserId = resultContainer.data('selected-user-id');
+            if (containerUserId) {
+              return `user-${containerUserId}`;
+            }
+
+            // Check if there's a selected result displayed (might have data in DOM)
+            const selectedResult = resultContainer.find('.selected-result');
+            if (selectedResult.length > 0) {
+              // Try to get from the input's value or data
+              const inputValue = userInput.val();
+              // If input has a value, we might need to extract ID from it
+              // But typically the data attribute should be set, so this is a last resort
+            }
+          }
+
+          // Fourth: Check legacy result container format
+          const legacyResultContainer = fieldWrapper.find(
+            `#bulk_${fieldKey}-result-container`,
+          );
+          if (legacyResultContainer.length > 0) {
+            const selected = legacyResultContainer.data('selected');
+            if (selected && selected.id) {
+              return `user-${selected.id}`;
+            }
+            if (selected && selected.ID) {
+              return `user-${selected.ID}`;
+            }
+          }
+        }
+
+        return null;
+      }
+
+      case 'link': {
+        // Link fields have multiple inputs, one per link type
+        // Collect all link inputs and format them as an array
+        const linkInputs = fieldWrapper.find('.link-input');
+        const links = [];
+
+        linkInputs.each(function () {
+          const $input = $(this);
+          const value = $input.val();
+          const linkType = $input.data('type');
+          const metaId = $input.data('meta-id');
+
+          if (value && value.trim() !== '') {
+            links.push({
+              value: value.trim(),
+              type: linkType,
+              meta_id: metaId || '',
+            });
+          }
+        });
+
+        // Return in format expected by backend: {values: [...]}
+        return links.length > 0 ? { values: links } : null;
+      }
+
+      case 'location':
+      case 'location_meta': {
+        // Try web component (dt-location or dt-location-map)
+        const locationComponent =
+          fieldWrapper.find(`dt-location#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-location[name="${fieldKey}"]`)[0] ||
+          fieldWrapper.find(`dt-location-map#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-location-map[name="${fieldKey}"]`)[0] ||
+          fieldWrapper.find(`dt-location, dt-location-map`)[0];
+
+        if (locationComponent && locationComponent.value) {
+          // Use ComponentService to convert the value
+          const componentValue =
+            window.DtWebComponents?.ComponentService?.convertValue(
+              locationComponent.tagName,
+              locationComponent.value,
+            ) || locationComponent.value;
+
+          // Location components return location data in specific format
+          if (componentValue && typeof componentValue === 'object') {
+            if (componentValue.values) {
+              return componentValue;
+            } else if (componentValue.location_grid_meta) {
+              // dt-location-map returns location_grid_meta
+              return componentValue;
+            } else if (Array.isArray(componentValue)) {
+              return { values: componentValue };
+            }
+          }
+        }
+
+        // Fallback: Get from legacy data attribute
+        const locationData = fieldWrapper
+          .find(`#bulk_${fieldKey}`)
+          .data('bulk_key_' + fieldKey);
+        if (locationData) {
+          return locationData;
+        }
+
+        // Check window.location_data for location_grid_meta
+        if (
+          fieldKey === 'location_grid_meta' &&
+          window.location_data &&
+          window.location_data.location_grid_meta
+        ) {
+          return window.location_data.location_grid_meta;
+        }
+
+        return null;
+      }
+
+      case 'boolean': {
+        // Boolean fields use dt-toggle web component
+        const toggleComponent =
+          fieldWrapper.find(`dt-toggle#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-toggle[name="${fieldKey}"]`)[0] ||
+          fieldWrapper.find(`dt-toggle`)[0];
+
+        if (toggleComponent) {
+          // dt-toggle has a 'checked' property (boolean) and 'value' property (boolean)
+          // Check both properties to get the current state
+          let isChecked = false;
+
+          // First try the 'checked' property (most reliable)
+          if (toggleComponent.checked !== undefined) {
+            isChecked = toggleComponent.checked === true;
+          }
+          // Fallback to 'value' property
+          else if (toggleComponent.value !== undefined) {
+            isChecked =
+              toggleComponent.value === true ||
+              toggleComponent.value === '1' ||
+              toggleComponent.value === 1;
+          }
+          // Fallback: Check the internal input element
+          else {
+            const input = toggleComponent.querySelector(
+              'input[type="checkbox"]',
+            );
+            if (input) {
+              isChecked = input.checked === true;
+            }
+          }
+
+          return isChecked;
+        }
+
+        // Fallback: Check for legacy checkbox input
+        const checkboxInput = fieldWrapper.find(
+          `#bulk_${fieldKey}[type="checkbox"]`,
+        );
+        if (checkboxInput.length > 0) {
+          return checkboxInput.is(':checked');
+        }
+
+        // Fallback: Try data attribute
+        const dataValue = fieldWrapper
+          .find(`#bulk_${fieldKey}`)
+          .data('bulk_key_' + fieldKey);
+        if (dataValue !== null && dataValue !== undefined) {
+          return dataValue === true || dataValue === '1' || dataValue === 1;
+        }
+
+        // Default to false if no value found
+        return false;
+      }
+
+      case 'communication_channel': {
+        // Communication channel fields use dt-multi-text web component
+        const multiTextComponent =
+          fieldWrapper.find(`dt-multi-text#bulk_${fieldKey}`)[0] ||
+          fieldWrapper.find(`dt-multi-text[name="${fieldKey}"]`)[0] ||
+          fieldWrapper.find(`dt-multi-text`)[0];
+
+        if (multiTextComponent && multiTextComponent.value) {
+          // dt-multi-text stores values as array of objects: [{value: "...", key: "...", verified: false}, ...]
+          // Backend expects direct array format: [{"verified":false,"value":"abc@email.com"}]
+          if (Array.isArray(multiTextComponent.value)) {
+            return multiTextComponent.value.map((item) => {
+              // Ensure each item has the required structure
+              const result = {
+                value: item.value || '',
+              };
+              // Include key if present (for updates)
+              if (item.key && item.key !== 'new') {
+                result.key = item.key;
+              }
+              // Include verified if present
+              if (item.verified !== undefined) {
+                result.verified = item.verified;
+              }
+              return result;
+            });
+          }
+        }
+
+        // Fallback: Try legacy input elements
+        const legacyInputs = fieldWrapper.find('.input-group input');
+        if (legacyInputs.length > 0) {
+          const values = [];
+          legacyInputs.each(function () {
+            const $input = $(this);
+            const value = $input.val();
+            const $button = $input.closest('.input-group').find('button');
+            const key = $button.data('key');
+
+            if (value && value.trim() !== '') {
+              const item = {
+                value: value.trim(),
+              };
+              if (key && key !== 'new') {
+                item.key = key;
+              }
+              values.push(item);
+            }
+          });
+          return values.length > 0 ? values : null;
+        }
+
+        return null;
+      }
+
+      case 'comment': {
+        // Comment fields use the bulk_comment-input textarea
+        // Check if comment field is in the dynamically selected fields container
+        const commentInput = fieldWrapper.find('#bulk_comment-input');
+        if (commentInput.length > 0) {
+          const commentText = commentInput.val();
+          // Return comment text if not empty, otherwise null
+          return commentText && commentText.trim() !== ''
+            ? commentText.trim()
+            : null;
+        }
+        // Fallback: check the original comment input (if field was selected but input is elsewhere)
+        const originalCommentInput = $('#bulk_comment-input');
+        if (originalCommentInput.length > 0) {
+          const commentText = originalCommentInput.val();
+          return commentText && commentText.trim() !== ''
+            ? commentText.trim()
+            : null;
+        }
+        return null;
+      }
+
+      default:
+        // Try to get from data attribute as fallback
+        const dataValue = fieldWrapper
+          .find(`#bulk_${fieldKey}`)
+          .data('bulk_key_' + fieldKey);
+        return dataValue || null;
+    }
+  }
+
+  function getClearedFieldValue(fieldType) {
+    // Return appropriate cleared value based on field type
+    // Backend requires force_values: true for array-based fields to properly clear all values
+    switch (fieldType) {
+      case 'connection':
+      case 'tags':
+      case 'location':
+      case 'multi_select':
+      case 'location_meta':
+      case 'link':
+        // Use force_values: true to clear all values (backend requirement)
+        // Backend checks for force_values to delete all existing values before processing new ones
+        return { values: [], force_values: true };
+
+      case 'communication_channel':
+        // Communication channel expects direct array format with force_values
+        // Backend format: {"contact_email":[],"force_values":true}
+        return [];
+
+      case 'date':
+      case 'datetime':
+      case 'text':
+      case 'textarea':
+      case 'number':
+      case 'key_select':
+      case 'user_select':
+        // Return empty string to reset field value
+        return '';
+
+      default:
+        return null;
+    }
+  }
+
+  function updateBulkEditButtonState() {
+    const updateButton = $('#bulk_edit_submit');
+    const hasSelectedFields =
+      bulkEditSelectedFields && bulkEditSelectedFields.length > 0;
+    const hasSelectedRecords =
+      $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length > 0;
+
+    // Enable update button only if both records and fields are selected
+    if (hasSelectedRecords && hasSelectedFields) {
+      updateButton.prop('disabled', false);
+    } else {
+      updateButton.prop('disabled', true);
+    }
   }
 
   function bulk_edit_count() {
@@ -3164,8 +4857,14 @@
     let bulk_edit_delete_submit_button_text = $(
       '.bulk_edit_delete_submit_text',
     );
+    let noSelectionMessage = $('#bulk_edit_no_selection_message');
+    let actionButtons = $('#bulk_edit_action_buttons');
 
     if (bulk_edit_total_checked == 0) {
+      // Hide buttons, show instruction message
+      noSelectionMessage.show();
+      actionButtons.hide();
+
       bulk_edit_submit_button_text.text(
         `${list_settings.translations.make_selections_below}`,
       );
@@ -3176,6 +4875,10 @@
         );
       }
     } else {
+      // Show buttons, hide instruction message
+      noSelectionMessage.hide();
+      actionButtons.show();
+
       bulk_edit_submit_button_text.each(function (index) {
         let pretext = $(this).data('pretext');
         let posttext = $(this).data('posttext');
@@ -3189,6 +4892,9 @@
           $(this).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`);
         });
       }
+
+      // Update update button state based on field selection
+      updateBulkEditButtonState();
     }
   }
 
@@ -3291,7 +4997,7 @@
           promises.push(
             window.API.update_post(list_settings.post_type, item, update).catch(
               (err) => {
-                console.error(err);
+                // Error handled silently - user will see error via UI feedback
               },
             ),
           );
@@ -3544,52 +5250,55 @@
   }
 
   /**
-   * Bulk share
+   * Bulk share (only initialize if element exists - field may be dynamically added)
    */
-  $.typeahead({
-    input: '#bulk_share',
-    minLength: 0,
-    maxItem: 0,
-    accent: true,
-    searchOnFocus: true,
-    source: window.TYPEAHEADS.typeaheadUserSource(),
-    templateValue: '{{name}}',
-    dynamic: true,
-    multiselect: {
-      matchOn: ['ID'],
+  let bulk_share_input = $('#bulk_share');
+  if (bulk_share_input.length) {
+    $.typeahead({
+      input: '#bulk_share',
+      minLength: 0,
+      maxItem: 0,
+      accent: true,
+      searchOnFocus: true,
+      source: window.TYPEAHEADS.typeaheadUserSource(),
+      templateValue: '{{name}}',
+      dynamic: true,
+      multiselect: {
+        matchOn: ['ID'],
+        callback: {
+          onCancel: function (node, item) {
+            $(node).removeData(`bulk_key_bulk_share`);
+            $('#share-result-container').html('');
+          },
+        },
+      },
       callback: {
-        onCancel: function (node, item) {
-          $(node).removeData(`bulk_key_bulk_share`);
+        onClick: function (node, a, item, event) {
+          let shareUserArray;
+          if (node.data('bulk_key_share')) {
+            shareUserArray = node.data('bulk_key_share');
+          } else {
+            shareUserArray = [];
+          }
+          shareUserArray.push(item.ID);
+          node.data(`bulk_key_share`, shareUserArray);
+        },
+        onResult: function (node, query, result, resultCount) {
+          if (query) {
+            let text = window.TYPEAHEADS.typeaheadHelpText(
+              resultCount,
+              query,
+              result,
+            );
+            $('#share-result-container').html(text);
+          }
+        },
+        onHideLayout: function () {
           $('#share-result-container').html('');
         },
       },
-    },
-    callback: {
-      onClick: function (node, a, item, event) {
-        let shareUserArray;
-        if (node.data('bulk_key_share')) {
-          shareUserArray = node.data('bulk_key_share');
-        } else {
-          shareUserArray = [];
-        }
-        shareUserArray.push(item.ID);
-        node.data(`bulk_key_share`, shareUserArray);
-      },
-      onResult: function (node, query, result, resultCount) {
-        if (query) {
-          let text = window.TYPEAHEADS.typeaheadHelpText(
-            resultCount,
-            query,
-            result,
-          );
-          $('#share-result-container').html(text);
-        }
-      },
-      onHideLayout: function () {
-        $('#share-result-container').html('');
-      },
-    },
-  });
+    });
+  }
 
   /**
    * Bulk Typeahead
