@@ -161,32 +161,6 @@ class Disciple_Tools_Posts_Endpoints {
             ]
         );
 
-        //render_field_html
-        register_rest_route(
-            $this->namespace, '/(?P<post_type>\w+)/render-field-html', [
-                [
-                    'methods'  => 'GET',
-                    'callback' => [ $this, 'render_field_html' ],
-                    'args' => [
-                        'post_type' => $arg_schemas['post_type'],
-                        'field_key' => [
-                            'description' => 'The field key to render',
-                            'type' => 'string',
-                            'required' => true,
-                            'validate_callback' => [ $this, 'prefix_validate_args' ]
-                        ],
-                        'field_id_prefix' => [
-                            'description' => 'Optional prefix for field ID (e.g., "bulk_")',
-                            'type' => 'string',
-                            'required' => false,
-                            'validate_callback' => [ $this, 'prefix_validate_args' ]
-                        ],
-                    ],
-                    'permission_callback' => '__return_true',
-                ]
-            ]
-        );
-
         //split_by
         register_rest_route(
             $this->namespace, '/(?P<post_type>\w+)/split_by', [
@@ -656,96 +630,6 @@ class Disciple_Tools_Posts_Endpoints {
         $url_params = $request->get_url_params();
         $get_params = $request->get_json_params() ?? $request->get_query_params();
         return DT_Posts::split_by( $url_params['post_type'], $get_params );
-    }
-
-    /**
-     * Render field HTML for display
-     * Generic endpoint that can be used for bulk edit, forms, or other field rendering needs
-     *
-     * @param WP_REST_Request $request
-     * @return array|WP_Error
-     */
-    public function render_field_html( WP_REST_Request $request ){
-        $url_params = $request->get_url_params();
-        $get_params = $request->get_query_params();
-
-        $post_type = $url_params['post_type'];
-        $field_key = $get_params['field_key'] ?? '';
-        $field_id_prefix = $get_params['field_id_prefix'] ?? '';
-
-        if ( empty( $field_key ) ) {
-            return new WP_Error( 'missing_field_key', 'Field key is required', [ 'status' => 400 ] );
-        }
-
-        // Check if user has access to this post type
-        if ( !current_user_can( 'access_' . $post_type ) ) {
-            return new WP_Error( 'permission_denied', 'You do not have permission to access this post type', [ 'status' => 403 ] );
-        }
-
-        // Get field settings
-        $field_settings = DT_Posts::get_post_field_settings( $post_type, false );
-
-        if ( !isset( $field_settings[$field_key] ) ) {
-            return new WP_Error( 'field_not_found', 'Field not found', [ 'status' => 404 ] );
-        }
-
-        // Prepare field options for rendering
-        $field_options = $field_settings;
-        $field_options[$field_key]['custom_display'] = false;
-
-        // Set field params - can be customized via query params in the future
-        $field_params = [
-            'connection' => [
-                'allow_add' => false,
-            ],
-            'key_select' => [
-                'disable_color' => true,
-            ],
-            'hide_label' => true, // Hide label since we show our own header
-        ];
-
-        // Capture rendered field HTML
-        ob_start();
-        $error_occurred = false;
-        try {
-            render_field_for_display( $field_key, $field_options, null, false, false, $field_id_prefix, $field_params );
-        } catch ( Exception $e ) {
-            $error_occurred = true;
-            error_log( 'Error rendering field ' . $field_key . ': ' . $e->getMessage() );
-        }
-        $rendered_field_html = ob_get_clean();
-
-        // Check for PHP errors in output
-        if ( $error_occurred || empty( trim( $rendered_field_html ) ) ) {
-            $error_message = sprintf(
-                'Field "%s" (type: %s) could not be rendered.',
-                $field_key,
-                $field_settings[$field_key]['type'] ?? 'unknown'
-            );
-
-            // Add more specific error details if available
-            if ( $error_occurred ) {
-                $error_message .= ' An exception occurred during rendering.';
-            } else {
-                $error_message .= ' No HTML was generated. This may be due to field type restrictions, missing dependencies, or field configuration issues.';
-            }
-
-            return new WP_Error(
-                'field_not_rendered',
-                $error_message,
-                [
-                    'status' => 500,
-                    'field_key' => $field_key,
-                    'field_type' => $field_settings[$field_key]['type'] ?? ''
-                ]
-            );
-        }
-
-        return [
-            'html' => $rendered_field_html,
-            'field_key' => $field_key,
-            'field_type' => $field_settings[$field_key]['type'] ?? ''
-        ];
     }
 
     public function get_posts_for_typeahead( WP_REST_Request $request ){

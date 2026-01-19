@@ -1092,8 +1092,8 @@
       'number',
       'connection', // For share, coaches, etc.
       'boolean', // For requires_update, etc.
-      'link', // Link fields
       'communication_channel', // Communication channel fields
+      // Note: 'link' fields are hidden until dt-link web component is ready
       // Note: 'array' type is not supported as it's typically used for internal data structures
     ];
 
@@ -1198,6 +1198,76 @@
 
     return $(iconHtml);
   }
+
+  // Global dt:get-data event listener for web component data fetching
+  // Set up once at page load to handle all component data requests
+  document.addEventListener('dt:get-data', async (e) => {
+    const { field, query, onSuccess, postType } = e.detail;
+    const postTypeToUse = postType || list_settings.post_type;
+
+    try {
+      // For tags and multi-select fields, use multi-select-values endpoint
+      // For other fields, use field-options endpoint
+      const fieldSettings = window.lodash.get(
+        list_settings,
+        `post_type_settings.fields.${field}`,
+        {},
+      );
+      const fieldType = fieldSettings.type || '';
+
+      let endpoint = 'field-options';
+      if (fieldType === 'tags' || fieldType === 'multi_select') {
+        endpoint = 'multi-select-values';
+      }
+
+      const response = await fetch(
+        `${window.wpApiShare.root}dt-posts/v2/${postTypeToUse}/${endpoint}?field=${field}&s=${encodeURIComponent(query || '')}`,
+        {
+          headers: {
+            'X-WP-Nonce': window.wpApiShare.nonce,
+          },
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (onSuccess) {
+        // Handle different response formats
+        if (data.options) {
+          onSuccess(data.options);
+        } else if (Array.isArray(data)) {
+          // For tags/multi-select, transform to component format
+          if (fieldType === 'tags') {
+            const fieldOptions = window.lodash.get(
+              list_settings,
+              `post_type_settings.fields.${field}.default`,
+              {},
+            );
+            const options = data.map((tag) => {
+              const label = window.lodash.get(
+                fieldOptions,
+                tag + '.label',
+                tag,
+              );
+              return { id: tag, label: label || tag };
+            });
+            onSuccess(options);
+          } else {
+            onSuccess(data);
+          }
+        } else {
+          onSuccess([]);
+        }
+      }
+    } catch (error) {
+      if (e.detail.onError) {
+        e.detail.onError(error);
+      }
+    }
+  });
 
   // Initialize dt-multi-select on page load
   function initializeBulkEditFieldSelector() {
@@ -1524,85 +1594,57 @@
       return;
     }
 
-    // Show loading state
-    container.html(
-      '<div class="bulk-edit-field-loading"><div class="loading-spinner active" style="margin: 10px auto;"></div><p style="text-align: center; color: #999; margin-top: 5px;">Loading field input...</p></div>',
+    // Get field settings from list_settings
+    const fieldSettings = window.lodash.get(
+      list_settings,
+      `post_type_settings.fields.${fieldKey}`,
+      null,
     );
 
-    // Make AJAX call to get field HTML
-    $.ajax({
-      url: `${window.wpApiShare.root}dt-posts/v2/${list_settings.post_type}/render-field-html`,
-      method: 'GET',
-      data: {
-        field_key: fieldKey,
-        field_id_prefix: 'bulk_',
-      },
-      headers: {
-        'X-WP-Nonce': window.wpApiShare.nonce,
-      },
-      success: function (response) {
-        if (response && response.html) {
-          container.html(response.html);
+    if (!fieldSettings) {
+      container.html(
+        '<div class="alert-box alert">Error: Field settings not found</div>',
+      );
+      return;
+    }
 
-          // For web components, wait a moment for them to be upgraded
-          if (
-            fieldType === 'connection' ||
-            fieldType === 'tags' ||
-            fieldType === 'location_meta'
-          ) {
-            // Use requestAnimationFrame to ensure DOM is ready
-            requestAnimationFrame(() => {
-              // Initialize field-specific handlers after component upgrade
-              initializeBulkEditFieldHandlers(fieldKey, fieldType);
-            });
-          } else {
-            // Initialize field-specific handlers immediately for non-web-component fields
-            initializeBulkEditFieldHandlers(fieldKey, fieldType);
-          }
-        } else {
-          console.error('Field loading error: Invalid response', response);
-          container.html(
-            '<div class="alert-box alert">Error loading field input: Invalid response from server</div>',
-          );
+    // Generate field HTML client-side using helper function
+    const fieldHtml = window.SHAREDFUNCTIONS.renderFieldForBulkEdit(
+      fieldKey,
+      fieldSettings,
+      'bulk_',
+    );
+
+    if (!fieldHtml) {
+      // Field type not supported
+      container.html(
+        '<div class="alert-box alert">This field type is not yet supported in bulk edit</div>',
+      );
+      return;
+    }
+
+    // Inject HTML directly into container
+    container.html(fieldHtml);
+
+    // Initialize web components after DOM injection
+    requestAnimationFrame(() => {
+      // Initialize ComponentService to set up all web components
+      if (window.componentService && window.componentService.initialize) {
+        try {
+          window.componentService.initialize();
+        } catch (e) {
+          // ComponentService initialization error - components should still work
         }
-      },
-      error: function (xhr, status, error) {
-        console.error('Field loading AJAX error:', {
-          status: status,
-          error: error,
-          responseText: xhr.responseText,
-          statusCode: xhr.status,
-        });
+      }
 
-        let errorMessage = 'Error loading field input';
-        if (xhr.responseJSON && xhr.responseJSON.message) {
-          errorMessage += ': ' + xhr.responseJSON.message;
-        } else if (xhr.status === 0) {
-          errorMessage += ': Network error or server unavailable';
-        } else if (xhr.status === 403) {
-          errorMessage += ': Permission denied';
-        } else if (xhr.status === 404) {
-          errorMessage += ': Field not found';
-        } else if (xhr.status === 400) {
-          errorMessage += ': Invalid request';
-        }
-
-        container.html(`<div class="alert-box alert">${errorMessage}</div>`);
-      },
+      // Initialize field-specific handlers if needed
+      initializeBulkEditFieldHandlers(fieldKey, fieldType);
     });
   }
 
   function initializeBulkEditFieldHandlers(fieldKey, fieldType) {
-    // Get the field wrapper for this field
-    const fieldWrapper = $(
-      `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
-    );
-
-    // Initialize typeaheads, date pickers, etc. based on field type
-    // This will hook into existing field initialization code
-    // Most field types should auto-initialize, but we may need to trigger specific handlers
+    // Special case: user_select uses typeahead (not a web component)
     if (fieldType === 'user_select') {
-      // Initialize user_select typeahead for dynamically added fields
       const fieldId = `bulk_${fieldKey}`;
       const userInput = $(`.js-typeahead-${fieldId}`);
 
@@ -1650,7 +1692,6 @@
               );
 
               // Store the selected user ID in data attributes for later collection
-              // Store on both input and result container for redundancy
               userInput.data('selected-user-id', item.ID);
               userInput.data('selected-user-name', item.name);
               resultContainer.data('selected-user-id', item.ID);
@@ -1672,238 +1713,12 @@
           },
         });
       }
-    } else if (fieldType === 'connection') {
-      // Ensure dt-connection component is properly initialized after AJAX insertion
-      const fieldId = `bulk_${fieldKey}`;
-
-      // Try multiple ways to find the element
-      let connectionElement = document.getElementById(fieldId);
-      if (!connectionElement) {
-        // Try finding by name attribute
-        connectionElement = document.querySelector(
-          `dt-connection[name="${fieldKey}"]`,
-        );
-      }
-      if (!connectionElement) {
-        // Try finding within the container
-        const container = $(
-          `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
-        );
-        connectionElement = container.find('dt-connection')[0];
-      }
-
-      if (connectionElement && connectionElement.tagName === 'DT-CONNECTION') {
-        // Verify postType attribute is set (required for lookup functionality)
-        let postType = connectionElement.getAttribute('postType');
-        if (!postType) {
-          // Fallback: get post_type from field settings
-          const fieldSettings = window.lodash.get(
-            list_settings,
-            `post_type_settings.fields.${fieldKey}`,
-            {},
-          );
-          if (fieldSettings.post_type) {
-            postType = fieldSettings.post_type;
-            connectionElement.setAttribute('postType', postType);
-          }
-        }
-
-        // Ensure ComponentService is available and initialized
-        if (window.componentService) {
-          // For dynamically added components, we need to ensure they're properly initialized
-          // ComponentService.initialize() sets up event listeners for all components on the page
-          if (window.componentService.initialize) {
-            // Re-initialize to pick up the new component
-            try {
-              window.componentService.initialize();
-            } catch (e) {
-              // ComponentService initialization error - component should still work
-            }
-          } else if (window.componentService.attachLoadEvents) {
-            // Fallback: re-attach load events for the new component
-            window.componentService.attachLoadEvents();
-          }
-        }
-      }
-    } else if (fieldType === 'link') {
-      // Link fields use legacy rendering with add/delete buttons
-      // Need to attach event handlers for dynamically added link fields
-      const fieldId = `bulk_${fieldKey}`;
-      const linkGroup = $(
-        `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"] .link-group`,
-      );
-
-      if (linkGroup.length === 0) {
-        return;
-      }
-
-      // Attach event handlers for link dropdown options
-      // Use event delegation to handle dynamically added elements
-      const fieldWrapper = $(
-        `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
-      );
-
-      // Remove any existing handlers to avoid duplicates
-      fieldWrapper.off('click', '.add-link__option');
-      fieldWrapper.off('click', '.add-link-dropdown[data-only-one-option]');
-      fieldWrapper.off('click', '.link-delete-button');
-
-      // Attach click handler for link dropdown options
-      fieldWrapper.on('click', '.add-link__option', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        // Get data attributes from the clicked element
-        const $target = $(event.currentTarget);
-        const linkType =
-          $target.data('link-type') || $target.attr('data-link-type');
-        const fieldKeyAttr =
-          $target.data('field-key') || $target.attr('data-field-key');
-
-        // The fieldKey in data attributes is the original field key (e.g., "links")
-        // The link-list and template use the original field key, not the display_field_id
-        const actualFieldKey = fieldKeyAttr || fieldKey;
-
-        // Find the link list and template using the original field key
-        const linkList = fieldWrapper.find(
-          `.link-list-${actualFieldKey} .link-section--${linkType}`,
-        );
-        const template = fieldWrapper.find(
-          `#link-template-${actualFieldKey}-${linkType}`,
-        );
-
-        if (linkList.length > 0 && template.length > 0) {
-          const templateInput = template.find('.input-group');
-          if (templateInput.length > 0) {
-            const newInputGroup = templateInput.clone(true);
-            const newInput = newInputGroup.find('input');
-
-            // The input's data-field-key should use display_field_id (bulk_${fieldKey})
-            // This is already set in render_link_field, but let's ensure it's correct
-            const displayFieldId = fieldId; // bulk_${fieldKey}
-            newInput.attr('data-field-key', displayFieldId);
-
-            linkList.append(newInputGroup);
-            newInput.focus();
-
-            // Hide dropdown after selection
-            const dropdownContent = $(event.currentTarget).closest(
-              '.add-link-dropdown__content',
-            );
-            dropdownContent.hide();
-            setTimeout(() => {
-              dropdownContent.removeAttr('style');
-            }, 100);
-          }
-        }
-      });
-
-      // Attach click handler for single-option link dropdowns
-      fieldWrapper.on(
-        'click',
-        '.add-link-dropdown[data-only-one-option]',
-        function (event) {
-          if (window.SHAREDFUNCTIONS && window.SHAREDFUNCTIONS.addLink) {
-            window.SHAREDFUNCTIONS.addLink(event);
-          }
-        },
-      );
-
-      // Attach click handler for delete buttons (using document delegation for dynamically added inputs)
-      $(document).off(
-        'click',
-        `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"] .link-delete-button`,
-      );
-      $(document).on(
-        'click',
-        `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"] .link-delete-button`,
-        function () {
-          $(this).closest('.input-group').remove();
-        },
-      );
-
-      // Attach change handler for link inputs to track values
-      fieldWrapper.off('change', '.link-input');
-      fieldWrapper.on('change', '.link-input', function () {
-        // Value tracking is handled in collectFieldValue
-      });
-    } else if (fieldType === 'tags') {
-      // Tags use dt-tags web component which handles its own initialization
-      // Ensure ComponentService initializes the component and handle load events
-      const fieldId = `bulk_${fieldKey}`;
-      const tagsComponent =
-        fieldWrapper.find(`dt-tags#${fieldId}`)[0] ||
-        fieldWrapper.find(`dt-tags[name="${fieldKey}"]`)[0] ||
-        fieldWrapper.find(`dt-tags`)[0];
-
-      if (tagsComponent && tagsComponent.tagName === 'DT-TAGS') {
-        // Ensure ComponentService is available and initialized
-        if (window.componentService) {
-          // For dynamically added components, we need to ensure they're properly initialized
-          if (window.componentService.initialize) {
-            // Re-initialize to pick up the new component
-            try {
-              window.componentService.initialize();
-            } catch (e) {
-              // ComponentService initialization error - component should still work
-            }
-          } else if (window.componentService.attachLoadEvents) {
-            // Fallback: re-attach load events for the new component
-            window.componentService.attachLoadEvents();
-          }
-        }
-
-        // Add listener for load events from this specific dt-tags component
-        // The component dispatches 'load' events when it needs to fetch tag options
-        const field = fieldKey;
-        const field_options = window.lodash.get(
-          list_settings,
-          `post_type_settings.fields.${field}.default`,
-          {},
-        );
-
-        tagsComponent.addEventListener('load', function (event) {
-          const { query, onSuccess, onError } = event.detail;
-
-          // Fetch tags from API
-          $.ajax({
-            url:
-              window.wpApiShare.root +
-              `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
-            method: 'GET',
-            data: {
-              s: query || '',
-              field: field,
-            },
-            headers: {
-              'X-WP-Nonce': window.wpApiShare.nonce,
-            },
-            success: function (data) {
-              // Transform data to match component's expected format
-              const options = (data || []).map((tag) => {
-                const label = window.lodash.get(
-                  field_options,
-                  tag + '.label',
-                  tag,
-                );
-                return { id: tag, label: label || tag };
-              });
-              if (onSuccess) {
-                onSuccess(options);
-              }
-            },
-            error: function (xhr, status, error) {
-              if (onError) {
-                onError(error);
-              }
-            },
-          });
-        });
-      }
-    } else if (fieldType === 'date' || fieldType === 'datetime') {
-      // Date pickers should auto-initialize
+      return;
     }
-    // Add other field type initializations as needed
+
+    // For all web components: ComponentService.initialize() handles initialization
+    // The global dt:get-data listener handles data fetching
+    // No per-field-type initialization needed
   }
 
   // Remove field when clicking X button
@@ -1959,7 +1774,6 @@
       'textarea',
       'number',
       'key_select',
-      'link',
       'communication_channel',
     ];
     return clearableTypes.includes(fieldType);
@@ -4218,13 +4032,12 @@
               updatePayload[fieldKey] = fieldValue;
             }
           }
-          // Handle array-based fields specially (multi_select, tags, connection, location_meta, link)
+          // Handle array-based fields specially (multi_select, tags, connection, location_meta)
           else if (
             fieldType === 'multi_select' ||
             fieldType === 'tags' ||
             fieldType === 'connection' ||
-            fieldType === 'location_meta' ||
-            fieldType === 'link'
+            fieldType === 'location_meta'
           ) {
             // Array-based fields return { values: [...] } format
             // We need to preserve the structure and ensure force_values is set
@@ -4291,513 +4104,116 @@
   }
 
   function collectFieldValue(fieldKey, fieldType, fieldWrapper) {
-    // Collect value based on field type
-    const input = fieldWrapper.find(`#bulk_${fieldKey}`);
-
-    switch (fieldType) {
-      case 'text':
-      case 'textarea':
-      case 'number':
-        return input.val() || '';
-
-      case 'date':
-      case 'datetime':
-        return input.val() || null;
-
-      case 'key_select':
-        return input.val() || null;
-
-      case 'connection': {
-        // Connection fields use dt-connection web component
-        const connectionComponent =
-          fieldWrapper.find(`dt-connection#bulk_${fieldKey}`)[0] ||
-          fieldWrapper.find(`dt-connection[name="${fieldKey}"]`)[0] ||
-          fieldWrapper.find(`dt-connection`)[0];
-
-        if (connectionComponent && connectionComponent.value) {
-          // Use ComponentService to convert the value
-          const componentValue =
-            window.DtWebComponents?.ComponentService?.convertValue(
-              connectionComponent.tagName,
-              connectionComponent.value,
-            ) || connectionComponent.value;
-
-          // ComponentService.convertValue returns { values: [{value: id}], force_values: false }
-          if (componentValue && typeof componentValue === 'object') {
-            if (componentValue.values) {
-              return componentValue;
-            } else if (Array.isArray(componentValue)) {
-              // If it's an array, convert to { values: [...] } format
-              return {
-                values: componentValue.map((v) => {
-                  if (typeof v === 'string') {
-                    return { value: v };
-                  }
-                  return { value: v.id || v.value || v };
-                }),
-                force_values: false,
-              };
-            }
-          }
-        }
-
-        // Fallback: Get from legacy typeahead result container
-        const resultContainer = fieldWrapper.find(
-          `#bulk_${fieldKey}-result-container`,
-        );
-        const selected = resultContainer.data('selected') || [];
-        if (Array.isArray(selected) && selected.length > 0) {
-          return {
-            values: selected.map((v) => ({
-              value: typeof v === 'object' ? v.id || v.value : v,
-            })),
-            force_values: false,
-          };
-        }
-        return null;
+    // Special case: comment field (not a real post field type)
+    if (fieldType === 'comment') {
+      const commentInputId = `bulk_comment-input_${fieldKey}`;
+      const commentInput = fieldWrapper.find(`#${commentInputId}`);
+      if (commentInput.length > 0) {
+        const commentText = commentInput.val();
+        return commentText && commentText.trim() !== ''
+          ? commentText.trim()
+          : null;
       }
-
-      case 'tags': {
-        // Tags use dt-tags web component
-        const tagsComponent =
-          fieldWrapper.find(`dt-tags#bulk_${fieldKey}`)[0] ||
-          fieldWrapper.find(`dt-tags[name="${fieldKey}"]`)[0] ||
-          fieldWrapper.find(`dt-tags`)[0];
-
-        if (tagsComponent && tagsComponent.value) {
-          // Use ComponentService to convert the value
-          const componentValue =
-            window.DtWebComponents?.ComponentService?.convertValue(
-              tagsComponent.tagName,
-              tagsComponent.value,
-            ) || tagsComponent.value;
-
-          // Tags component returns an array of strings
-          if (Array.isArray(componentValue)) {
-            return { values: componentValue.map((v) => ({ value: v })) };
-          } else if (
-            componentValue &&
-            typeof componentValue === 'object' &&
-            componentValue.values
-          ) {
-            return componentValue;
-          }
-        }
-
-        // Fallback: Get from legacy data attribute or typeahead
-        const legacyInput = fieldWrapper.find(`#bulk_${fieldKey}`);
-        if (legacyInput.length > 0) {
-          const tagsData = legacyInput.data('bulk_key_' + fieldKey);
-          if (tagsData && tagsData.values) {
-            return tagsData;
-          }
-
-          // Try typeahead
-          const typeaheadSelector = `.js-typeahead-bulk_${fieldKey}`;
-          const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
-          if (typeaheadInstance && typeaheadInstance.items) {
-            const items = typeaheadInstance.items || [];
-            if (items.length > 0) {
-              return {
-                values: items.map((item) => {
-                  const tagValue =
-                    typeof item === 'string'
-                      ? item
-                      : item.value || item.key || item;
-                  return { value: tagValue };
-                }),
-              };
-            }
-          }
-        }
-
-        return null;
+      // Fallback: check the original comment input
+      const originalCommentInput = $('#bulk_comment-input');
+      if (originalCommentInput.length > 0) {
+        const commentText = originalCommentInput.val();
+        return commentText && commentText.trim() !== ''
+          ? commentText.trim()
+          : null;
       }
-
-      case 'multi_select': {
-        // First: Try web component (dt-multi-select-button-group or dt-multi-select)
-        const buttonGroupComponent =
-          fieldWrapper.find(
-            `dt-multi-select-button-group#bulk_${fieldKey}`,
-          )[0] ||
-          fieldWrapper.find(
-            `dt-multi-select-button-group[name="${fieldKey}"]`,
-          )[0] ||
-          fieldWrapper.find(`dt-multi-select-button-group`)[0];
-        const multiSelectComponent =
-          fieldWrapper.find(`dt-multi-select#bulk_${fieldKey}`)[0] ||
-          fieldWrapper.find(`dt-multi-select[name="${fieldKey}"]`)[0];
-
-        const webComponent = buttonGroupComponent || multiSelectComponent;
-
-        if (webComponent) {
-          if (webComponent.value) {
-            // Use ComponentService to convert the value to the expected format
-            const componentValue =
-              window.DtWebComponents?.ComponentService?.convertValue(
-                webComponent.tagName,
-                webComponent.value,
-              ) || webComponent.value;
-
-            console.log(
-              `[Bulk Edit] DEBUG: Component value (converted):`,
-              componentValue,
-            );
-
-            // Handle different value formats
-            if (componentValue && typeof componentValue === 'object') {
-              if (componentValue.values) {
-                return componentValue;
-              } else if (Array.isArray(componentValue)) {
-                // If it's an array, convert to { values: [...] } format
-                return {
-                  values: componentValue.map((v) => {
-                    if (typeof v === 'string') {
-                      return { value: v };
-                    }
-                    return { value: v.value || v.key || v.id || v };
-                  }),
-                };
-              }
-            } else if (Array.isArray(webComponent.value)) {
-              // Direct array from component value property
-              return {
-                values: webComponent.value.map((v) => {
-                  if (typeof v === 'string') {
-                    return { value: v };
-                  }
-                  return { value: v.value || v.key || v.id || v };
-                }),
-              };
-            }
-          }
-        }
-
-        // Second: Collect from selected button elements (legacy button-based multi-select)
-        const selectedButtons = fieldWrapper.find('.selected-select-button');
-        if (selectedButtons.length > 0) {
-          const values = [];
-          selectedButtons.each(function () {
-            const optionKey = $(this).attr('id');
-            if (optionKey) {
-              values.push({ value: optionKey });
-            }
-          });
-          if (values.length > 0) {
-            return { values: values };
-          }
-        }
-
-        // Third: Get from legacy data attribute on input element
-        const legacyInput = fieldWrapper.find(`#bulk_${fieldKey}`);
-        if (legacyInput.length > 0) {
-          const multiSelectData = legacyInput.data('bulk_key_' + fieldKey);
-          if (multiSelectData && multiSelectData.values) {
-            return multiSelectData;
-          }
-
-          // Fourth: Get from typeahead component's internal state
-          const typeaheadSelector = `.js-typeahead-bulk_${fieldKey}`;
-          const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
-          if (typeaheadInstance && typeaheadInstance.items) {
-            const items = typeaheadInstance.items || [];
-            if (items.length > 0) {
-              const values = items.map((item) => {
-                if (typeof item === 'string') {
-                  return { value: item };
-                }
-                return { value: item.key || item.id || item.value || item };
-              });
-              return { values: values };
-            }
-          }
-        }
-
-        return null;
-      }
-
-      case 'user_select': {
-        // User select fields use typeahead with data stored in data attributes
-        const fieldId = `bulk_${fieldKey}`;
-        const userInput = fieldWrapper.find(`.js-typeahead-${fieldId}`);
-
-        if (userInput.length > 0) {
-          // First: Get selected user ID from data attribute (set during typeahead onClick)
-          const selectedUserId = userInput.data('selected-user-id');
-          if (selectedUserId) {
-            // Return in format expected by backend: "user-{ID}"
-            return `user-${selectedUserId}`;
-          }
-
-          // Second: Check typeahead instance for selected items
-          const typeaheadSelector = `.js-typeahead-${fieldId}`;
-          const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
-          if (
-            typeaheadInstance &&
-            typeaheadInstance.items &&
-            typeaheadInstance.items.length > 0
-          ) {
-            const selectedItem = typeaheadInstance.items[0];
-            if (selectedItem && selectedItem.ID) {
-              return `user-${selectedItem.ID}`;
-            }
-          }
-
-          // Third: Check result container for stored data
-          const resultContainer = fieldWrapper.find(
-            `#${fieldId}-result-container`,
-          );
-          if (resultContainer.length > 0) {
-            // Check if result container has a data attribute with selected user
-            const containerUserId = resultContainer.data('selected-user-id');
-            if (containerUserId) {
-              return `user-${containerUserId}`;
-            }
-
-            // Check if there's a selected result displayed (might have data in DOM)
-            const selectedResult = resultContainer.find('.selected-result');
-            if (selectedResult.length > 0) {
-              // Try to get from the input's value or data
-              const inputValue = userInput.val();
-              // If input has a value, we might need to extract ID from it
-              // But typically the data attribute should be set, so this is a last resort
-            }
-          }
-
-          // Fourth: Check legacy result container format
-          const legacyResultContainer = fieldWrapper.find(
-            `#bulk_${fieldKey}-result-container`,
-          );
-          if (legacyResultContainer.length > 0) {
-            const selected = legacyResultContainer.data('selected');
-            if (selected && selected.id) {
-              return `user-${selected.id}`;
-            }
-            if (selected && selected.ID) {
-              return `user-${selected.ID}`;
-            }
-          }
-        }
-
-        return null;
-      }
-
-      case 'link': {
-        // Link fields have multiple inputs, one per link type
-        // Collect all link inputs and format them as an array
-        const linkInputs = fieldWrapper.find('.link-input');
-        const links = [];
-
-        linkInputs.each(function () {
-          const $input = $(this);
-          const value = $input.val();
-          const linkType = $input.data('type');
-          const metaId = $input.data('meta-id');
-
-          if (value && value.trim() !== '') {
-            links.push({
-              value: value.trim(),
-              type: linkType,
-              meta_id: metaId || '',
-            });
-          }
-        });
-
-        // Return in format expected by backend: {values: [...]}
-        return links.length > 0 ? { values: links } : null;
-      }
-
-      case 'location':
-      case 'location_meta': {
-        // Try web component (dt-location or dt-location-map)
-        const locationComponent =
-          fieldWrapper.find(`dt-location#bulk_${fieldKey}`)[0] ||
-          fieldWrapper.find(`dt-location[name="${fieldKey}"]`)[0] ||
-          fieldWrapper.find(`dt-location-map#bulk_${fieldKey}`)[0] ||
-          fieldWrapper.find(`dt-location-map[name="${fieldKey}"]`)[0] ||
-          fieldWrapper.find(`dt-location, dt-location-map`)[0];
-
-        if (locationComponent && locationComponent.value) {
-          // Use ComponentService to convert the value
-          const componentValue =
-            window.DtWebComponents?.ComponentService?.convertValue(
-              locationComponent.tagName,
-              locationComponent.value,
-            ) || locationComponent.value;
-
-          // Location components return location data in specific format
-          if (componentValue && typeof componentValue === 'object') {
-            if (componentValue.values) {
-              return componentValue;
-            } else if (componentValue.location_grid_meta) {
-              // dt-location-map returns location_grid_meta
-              return componentValue;
-            } else if (Array.isArray(componentValue)) {
-              return { values: componentValue };
-            }
-          }
-        }
-
-        // Fallback: Get from legacy data attribute
-        const locationData = fieldWrapper
-          .find(`#bulk_${fieldKey}`)
-          .data('bulk_key_' + fieldKey);
-        if (locationData) {
-          return locationData;
-        }
-
-        // Check window.location_data for location_grid_meta
-        if (
-          fieldKey === 'location_grid_meta' &&
-          window.location_data &&
-          window.location_data.location_grid_meta
-        ) {
-          return window.location_data.location_grid_meta;
-        }
-
-        return null;
-      }
-
-      case 'boolean': {
-        // Boolean fields use dt-toggle web component
-        const toggleComponent =
-          fieldWrapper.find(`dt-toggle#bulk_${fieldKey}`)[0] ||
-          fieldWrapper.find(`dt-toggle[name="${fieldKey}"]`)[0] ||
-          fieldWrapper.find(`dt-toggle`)[0];
-
-        if (toggleComponent) {
-          // dt-toggle has a 'checked' property (boolean) and 'value' property (boolean)
-          // Check both properties to get the current state
-          let isChecked = false;
-
-          // First try the 'checked' property (most reliable)
-          if (toggleComponent.checked !== undefined) {
-            isChecked = toggleComponent.checked === true;
-          }
-          // Fallback to 'value' property
-          else if (toggleComponent.value !== undefined) {
-            isChecked =
-              toggleComponent.value === true ||
-              toggleComponent.value === '1' ||
-              toggleComponent.value === 1;
-          }
-          // Fallback: Check the internal input element
-          else {
-            const input = toggleComponent.querySelector(
-              'input[type="checkbox"]',
-            );
-            if (input) {
-              isChecked = input.checked === true;
-            }
-          }
-
-          return isChecked;
-        }
-
-        // Fallback: Check for legacy checkbox input
-        const checkboxInput = fieldWrapper.find(
-          `#bulk_${fieldKey}[type="checkbox"]`,
-        );
-        if (checkboxInput.length > 0) {
-          return checkboxInput.is(':checked');
-        }
-
-        // Fallback: Try data attribute
-        const dataValue = fieldWrapper
-          .find(`#bulk_${fieldKey}`)
-          .data('bulk_key_' + fieldKey);
-        if (dataValue !== null && dataValue !== undefined) {
-          return dataValue === true || dataValue === '1' || dataValue === 1;
-        }
-
-        // Default to false if no value found
-        return false;
-      }
-
-      case 'communication_channel': {
-        // Communication channel fields use dt-multi-text web component
-        const multiTextComponent =
-          fieldWrapper.find(`dt-multi-text#bulk_${fieldKey}`)[0] ||
-          fieldWrapper.find(`dt-multi-text[name="${fieldKey}"]`)[0] ||
-          fieldWrapper.find(`dt-multi-text`)[0];
-
-        if (multiTextComponent && multiTextComponent.value) {
-          // dt-multi-text stores values as array of objects: [{value: "...", key: "...", verified: false}, ...]
-          // Backend expects direct array format: [{"verified":false,"value":"abc@email.com"}]
-          if (Array.isArray(multiTextComponent.value)) {
-            return multiTextComponent.value.map((item) => {
-              // Ensure each item has the required structure
-              const result = {
-                value: item.value || '',
-              };
-              // Include key if present (for updates)
-              if (item.key && item.key !== 'new') {
-                result.key = item.key;
-              }
-              // Include verified if present
-              if (item.verified !== undefined) {
-                result.verified = item.verified;
-              }
-              return result;
-            });
-          }
-        }
-
-        // Fallback: Try legacy input elements
-        const legacyInputs = fieldWrapper.find('.input-group input');
-        if (legacyInputs.length > 0) {
-          const values = [];
-          legacyInputs.each(function () {
-            const $input = $(this);
-            const value = $input.val();
-            const $button = $input.closest('.input-group').find('button');
-            const key = $button.data('key');
-
-            if (value && value.trim() !== '') {
-              const item = {
-                value: value.trim(),
-              };
-              if (key && key !== 'new') {
-                item.key = key;
-              }
-              values.push(item);
-            }
-          });
-          return values.length > 0 ? values : null;
-        }
-
-        return null;
-      }
-
-      case 'comment': {
-        // Comment fields use the bulk_comment-input textarea
-        // Check if comment field is in the dynamically selected fields container
-        const commentInput = fieldWrapper.find('#bulk_comment-input');
-        if (commentInput.length > 0) {
-          const commentText = commentInput.val();
-          // Return comment text if not empty, otherwise null
-          return commentText && commentText.trim() !== ''
-            ? commentText.trim()
-            : null;
-        }
-        // Fallback: check the original comment input (if field was selected but input is elsewhere)
-        const originalCommentInput = $('#bulk_comment-input');
-        if (originalCommentInput.length > 0) {
-          const commentText = originalCommentInput.val();
-          return commentText && commentText.trim() !== ''
-            ? commentText.trim()
-            : null;
-        }
-        return null;
-      }
-
-      default:
-        // Try to get from data attribute as fallback
-        const dataValue = fieldWrapper
-          .find(`#bulk_${fieldKey}`)
-          .data('bulk_key_' + fieldKey);
-        return dataValue || null;
+      return null;
     }
+
+    // Special case: user_select (uses typeahead, not web component)
+    if (fieldType === 'user_select') {
+      const fieldId = `bulk_${fieldKey}`;
+      const userInput = fieldWrapper.find(`.js-typeahead-${fieldId}`);
+      if (userInput.length > 0) {
+        const selectedUserId = userInput.data('selected-user-id');
+        if (selectedUserId) {
+          return `user-${selectedUserId}`;
+        }
+        // Fallback: check typeahead instance
+        const typeaheadSelector = `.js-typeahead-${fieldId}`;
+        const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
+        if (
+          typeaheadInstance &&
+          typeaheadInstance.items &&
+          typeaheadInstance.items.length > 0
+        ) {
+          const selectedItem = typeaheadInstance.items[0];
+          if (selectedItem && selectedItem.ID) {
+            return `user-${selectedItem.ID}`;
+          }
+        }
+      }
+      return null;
+    }
+
+    // Special case: communication_channel (dt-multi-text needs special formatting)
+    if (fieldType === 'communication_channel') {
+      const multiTextComponent =
+        fieldWrapper.find(`dt-multi-text#bulk_${fieldKey}`)[0] ||
+        fieldWrapper.find(`dt-multi-text[name="${fieldKey}"]`)[0] ||
+        fieldWrapper.find(`dt-multi-text`)[0];
+
+      if (multiTextComponent && multiTextComponent.value) {
+        // dt-multi-text stores values as array of objects
+        // Backend expects direct array format: [{"verified":false,"value":"abc@email.com"}]
+        if (Array.isArray(multiTextComponent.value)) {
+          return multiTextComponent.value.map((item) => {
+            const result = {
+              value: item.value || '',
+            };
+            if (item.key && item.key !== 'new') {
+              result.key = item.key;
+            }
+            if (item.verified !== undefined) {
+              result.verified = item.verified;
+            }
+            return result;
+          });
+        }
+      }
+      return null;
+    }
+
+    // For all other fields: find web component and use ComponentService
+    const component = fieldWrapper.find(
+      'dt-text, dt-textarea, dt-number, dt-toggle, dt-date, dt-single-select, ' +
+        'dt-multi-select, dt-multi-select-button-group, dt-multi-text, dt-tags, ' +
+        'dt-connection, dt-location, dt-location-map, dt-user-select',
+    )[0];
+
+    if (!component?.value) {
+      // Fallback for simple input fields (text, textarea, number, date, key_select)
+      const input = fieldWrapper.find(`#bulk_${fieldKey}`);
+      if (input.length > 0) {
+        if (
+          fieldType === 'text' ||
+          fieldType === 'textarea' ||
+          fieldType === 'number'
+        ) {
+          return input.val() || '';
+        }
+        if (fieldType === 'date' || fieldType === 'datetime') {
+          return input.val() || null;
+        }
+        if (fieldType === 'key_select') {
+          return input.val() || null;
+        }
+      }
+      return null;
+    }
+
+    // Use ComponentService to convert component value
+    return (
+      window.DtWebComponents?.ComponentService?.convertValue(
+        component.tagName,
+        component.value,
+      ) ?? component.value
+    );
   }
 
   function getClearedFieldValue(fieldType) {
@@ -4809,7 +4225,6 @@
       case 'location':
       case 'multi_select':
       case 'location_meta':
-      case 'link':
         // Use force_values: true to clear all values (backend requirement)
         // Backend checks for force_values to delete all existing values before processing new ones
         return { values: [], force_values: true };
@@ -6632,7 +6047,6 @@
             window.SHAREDFUNCTIONS.escapeHTML(all_numbers.join(', ')),
           );
 
-          // console.log(list_count)
           jQuery('#list-count-with').html(list_count['with']);
           jQuery('#list-count-without').html(list_count['without']);
           jQuery('#list-count-full').html(list_count['full']);
