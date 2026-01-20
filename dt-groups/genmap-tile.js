@@ -1251,14 +1251,14 @@
     // Section layout 't2b' = half width (xlarge-6) → Graph orientation 't2b' (vertical graph)
     // Section layout 'l2r' = full width (small-12) → Graph orientation 'l2r' (horizontal graph)
     const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
-    
+
     // Check if we're in modal context (modal stores graphOrientation separately)
     const isInModal = wrapper.closest('#group-genmap-full-modal').length > 0;
-    
+
     // Map section layout to graph orientation (they are the SAME, not inverted!)
     // For modal: use stored graphOrientation; otherwise use currentLayout directly
-    const graphOrientation = isInModal 
-      ? (wrapper.data('graphOrientation') || currentLayout)
+    const graphOrientation = isInModal
+      ? wrapper.data('graphOrientation') || currentLayout
       : currentLayout;
 
     // Recreate tree layout with updated structure and current orientation
@@ -1275,7 +1275,6 @@
     const DEBUG_LINKS = false;
 
     const linkPath = (link) => {
-      
       // Calculate source and target coordinates directly
       let sourceX, sourceY, targetX, targetY;
 
@@ -1287,7 +1286,7 @@
         const deltaX = Math.abs(link.target.x - link.source.x);
         const deltaY = Math.abs(link.target.y - link.source.y);
         const isActuallyHorizontal = deltaX > deltaY;
-        
+
         if (isActuallyHorizontal) {
           // Nodes are horizontally aligned: connect right edge of parent to left edge of child
           sourceX = link.source.x + NODE_HALF_WIDTH; // Right edge
@@ -1345,7 +1344,7 @@
         const deltaX = Math.abs(svgTargetX - svgSourceX);
         const deltaY = Math.abs(svgTargetY - svgSourceY);
         const isActuallyHorizontal = deltaX > deltaY;
-        
+
         if (isActuallyHorizontal) {
           // Nodes are horizontally aligned in SVG: connect right edge of parent to left edge of child
           sourceX = svgSourceX + NODE_HALF_WIDTH; // Right edge
@@ -1834,15 +1833,17 @@
     const currentLayout =
       layout || wrapper.data('currentLayout') || getDefaultLayout();
     wrapper.data('currentLayout', currentLayout);
-    
+
     // Check if we're in modal context (modal stores graphOrientation separately)
     const isInModal = wrapper.closest('#group-genmap-full-modal').length > 0;
-    
+
     // Determine graph orientation from actual section CSS classes (source of truth)
     // For modal: use stored graphOrientation; otherwise check section classes
     let graphOrientation;
     if (isInModal) {
-      graphOrientation = wrapper.data('graphOrientation') || getGraphOrientationFromSection(wrapper);
+      graphOrientation =
+        wrapper.data('graphOrientation') ||
+        getGraphOrientationFromSection(wrapper);
     } else {
       // Use section classes to determine actual graph orientation
       const genmapSection = jQuery('#genmap');
@@ -1851,10 +1852,10 @@
       const hasXlarge6 = genmapSection.hasClass('xlarge-6');
       const hasLarge12 = genmapSection.hasClass('large-12');
       const hasMedium6 = genmapSection.hasClass('medium-6');
-      
+
       graphOrientation = getGraphOrientationFromSection(wrapper);
     }
-    
+
     // DEBUG: Uncomment to log orientation detection
     // console.log('renderD3Chart orientation:', { currentLayout, graphOrientation, sectionClasses: jQuery('#genmap').attr('class') });
 
@@ -1918,7 +1919,6 @@
     const DEBUG_LINKS = false;
 
     const linkPath = (link) => {
-      
       // Calculate source and target coordinates directly
       let sourceX, sourceY, targetX, targetY;
 
@@ -1930,7 +1930,7 @@
         const deltaX = Math.abs(link.target.x - link.source.x);
         const deltaY = Math.abs(link.target.y - link.source.y);
         const isActuallyHorizontal = deltaX > deltaY;
-        
+
         if (isActuallyHorizontal) {
           // Nodes are horizontally aligned: connect right edge of parent to left edge of child
           sourceX = link.source.x + NODE_HALF_WIDTH; // Right edge
@@ -1988,7 +1988,7 @@
         const deltaX = Math.abs(svgTargetX - svgSourceX);
         const deltaY = Math.abs(svgTargetY - svgSourceY);
         const isActuallyHorizontal = deltaX > deltaY;
-        
+
         if (isActuallyHorizontal) {
           // Nodes are horizontally aligned in SVG: connect right edge of parent to left edge of child
           sourceX = svgSourceX + NODE_HALF_WIDTH; // Right edge
