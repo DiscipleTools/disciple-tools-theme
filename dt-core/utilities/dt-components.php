@@ -297,7 +297,7 @@ class DT_Components
                 'label' => $value['display'],
                 'assigned_to' => $value['assigned_to'],
             ];
-        }, [$post[$field_key]] ?? []);
+        }, [ $post[$field_key] ] ?? []);
 
         ?>
         <dt-users-connection <?php echo wp_kses_post( $shared_attributes ) ?>
