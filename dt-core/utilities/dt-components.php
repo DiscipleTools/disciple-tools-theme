@@ -295,7 +295,6 @@ class DT_Components
                 'id' => $value['id'],
                 'type' => $value['type'],
                 'label' => $value['display'],
-                'assigned_to' => $value['assigned_to'],
             ];
         }, $post[$field_key] ?? []);
 
