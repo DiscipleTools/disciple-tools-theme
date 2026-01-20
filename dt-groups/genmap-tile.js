@@ -56,25 +56,27 @@
 
     const genmapSection = jQuery('#genmap');
     if (!genmapSection.length) {
-      return 'l2r'; // Default to horizontal
+      return 't2b'; // Default to vertical
     }
 
-    // Check if section has xlarge-6, large-12, or medium-6 classes (half width = horizontal graph)
+    // Check if section has xlarge-6, large-12, or medium-6 classes (half width = vertical graph)
+    // Half width sections use vertical graphs
     if (
       genmapSection.hasClass('xlarge-6') ||
       genmapSection.hasClass('large-12') ||
       genmapSection.hasClass('medium-6')
     ) {
-      return 'l2r'; // Left-to-right graph
+      return 't2b'; // Top-to-bottom graph (vertical, uses vertical space)
     }
 
-    // Check if section has small-12 class (full width = vertical graph)
+    // Check if section has small-12 class (full width = horizontal graph)
+    // Full width sections use horizontal graphs
     if (genmapSection.hasClass('small-12')) {
-      return 't2b'; // Top-to-bottom graph
+      return 'l2r'; // Left-to-right graph (horizontal, uses horizontal space)
     }
 
-    // Default to horizontal if no matching classes found
-    return 'l2r';
+    // Default to vertical if no matching classes found
+    return 't2b';
   }
 
   jQuery(document).ready(() => {
@@ -1130,26 +1132,38 @@
           .attr('stroke-width', 1)
           .style('pointer-events', 'none'); // Background doesn't capture clicks
 
-        // Add foreignObject for HTML icon
-        const foreignObject = iconGroup
-          .append('foreignObject')
+        // Get template directory URI from existing group type icons
+        const groupTypeIcons = window.dtGroupGenmap?.groupTypeIcons || {};
+        const templateDirUri = Object.values(groupTypeIcons)[0]
+          ? Object.values(groupTypeIcons)[0].replace(/\/[^/]+\.svg.*$/, '')
+          : '';
+        const streamIconPath = templateDirUri
+          ? `${templateDirUri}/stream.svg`
+          : '/wp-content/themes/disciple-tools-theme/dt-assets/images/stream.svg';
+
+        // Determine rotation angle based on graph orientation
+        // l2r (horizontal): no rotation (0°)
+        // t2b (vertical): rotate 90° anticlockwise
+        const rotationAngle = graphOrientation === 'l2r' ? 0 : -90;
+        const iconCenterX = iconX + 8; // Center of 16px icon
+        const iconCenterY = iconY + 8; // Center of 16px icon
+
+        // Add SVG image element with rotation transform
+        const transform =
+          rotationAngle !== 0
+            ? `rotate(${rotationAngle}, ${iconCenterX}, ${iconCenterY})`
+            : '';
+
+        // Add SVG image element with transform
+        iconGroup
+          .append('image')
           .attr('x', iconX)
           .attr('y', iconY)
           .attr('width', 16)
           .attr('height', 16)
+          .attr('href', streamIconPath)
+          .attr('transform', transform)
           .style('pointer-events', 'none'); // Icon doesn't capture clicks, group does
-
-        // Add HTML with MDI icon
-        foreignObject
-          .append('xhtml:div')
-          .style('width', '16px')
-          .style('height', '16px')
-          .style('display', 'flex')
-          .style('align-items', 'center')
-          .style('justify-content', 'center')
-          .html(
-            '<i class="mdi mdi-account-group-outline" style="font-size: 16px; color: #3f729b; font-weight: 600;"></i>',
-          );
 
         // Add click handler to the group
         iconGroup.on('click', function (event) {
@@ -1167,18 +1181,37 @@
           );
         });
       } else {
-        // Update position if icon group already exists (for orientation changes)
+        // Update position and rotation if icon group already exists (for orientation changes)
         const bgRect = iconGroup.select('rect');
-        const foreignObj = iconGroup.select('foreignObject');
+        const iconImage = iconGroup.select('image');
 
+        let bgX, bgY, iconX, iconY;
         if (graphOrientation === 'l2r') {
           // Horizontal mode: icon on bottom center
-          bgRect.attr('x', -10).attr('y', 8);
-          foreignObj.attr('x', -8).attr('y', 9);
+          bgY = 8;
+          bgX = -10;
+          iconY = 9;
+          iconX = -8;
         } else {
           // Vertical mode: icon on right side
-          bgRect.attr('x', 20).attr('y', -10);
-          foreignObj.attr('x', 22).attr('y', -8);
+          bgX = 20;
+          bgY = -10;
+          iconX = 22;
+          iconY = -8;
+        }
+
+        bgRect.attr('x', bgX).attr('y', bgY);
+        if (!iconImage.empty()) {
+          iconImage.attr('x', iconX).attr('y', iconY);
+          // Update rotation based on orientation
+          const rotationAngle = graphOrientation === 'l2r' ? 0 : -90;
+          const iconCenterX = iconX + 8;
+          const iconCenterY = iconY + 8;
+          const transform =
+            rotationAngle !== 0
+              ? `rotate(${rotationAngle}, ${iconCenterX}, ${iconCenterY})`
+              : '';
+          iconImage.attr('transform', transform);
         }
       }
 
@@ -1213,27 +1246,159 @@
     containerWidth,
     containerHeight,
   ) {
-    // Determine graph orientation from section CSS classes (not from layout variable)
-    // Pass wrapper to check for stored orientation (for modal context)
-    const graphOrientation = getGraphOrientationFromSection(wrapper);
+    // Determine graph orientation
+    // NOTE: currentLayout represents SECTION layout (tile width), which matches graph orientation
+    // Section layout 't2b' = half width (xlarge-6) → Graph orientation 't2b' (vertical graph)
+    // Section layout 'l2r' = full width (small-12) → Graph orientation 'l2r' (horizontal graph)
+    const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
+    
+    // Check if we're in modal context (modal stores graphOrientation separately)
+    const isInModal = wrapper.closest('#group-genmap-full-modal').length > 0;
+    
+    // Map section layout to graph orientation (they are the SAME, not inverted!)
+    // For modal: use stored graphOrientation; otherwise use currentLayout directly
+    const graphOrientation = isInModal 
+      ? (wrapper.data('graphOrientation') || currentLayout)
+      : currentLayout;
 
     // Recreate tree layout with updated structure and current orientation
     const tree = createD3TreeLayout(100, 80, graphOrientation);
     const treeData = tree(root);
 
-    // Update links based on graph orientation (determined from section classes)
-    // l2r (small-12) = left-to-right graph, t2b (xlarge-6/large-12/medium-6) = top-to-bottom graph
+    // Update links based on graph orientation
     const links = treeData.links();
-    const linkPath =
-      graphOrientation === 'l2r'
-        ? d3
-            .linkHorizontal()
-            .x((d) => d.x) // Horizontal position (normal for horizontal layout)
-            .y((d) => d.y) // Vertical position (normal for horizontal layout)
-        : d3
-            .linkVertical()
-            .x((d) => d.y) // Horizontal position (swapped for vertical layout)
-            .y((d) => d.x); // Vertical position (swapped for vertical layout)
+    const NODE_HALF_WIDTH = 30; // 60px / 2
+    const NODE_HALF_HEIGHT = 15; // 30px / 2
+
+    // Create link generator with Bézier curves connecting to node edges
+    // DEBUG: Set to true to log coordinate calculations to console
+    const DEBUG_LINKS = false;
+
+    const linkPath = (link) => {
+      
+      // Calculate source and target coordinates directly
+      let sourceX, sourceY, targetX, targetY;
+
+      if (graphOrientation === 'l2r') {
+        // Horizontal layout: Nodes positioned with translate(d.x, d.y)
+        // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
+        // In SVG: node center is at (d.x, d.y)
+        // Detect actual node alignment: horizontal (different x) or vertical (different y)
+        const deltaX = Math.abs(link.target.x - link.source.x);
+        const deltaY = Math.abs(link.target.y - link.source.y);
+        const isActuallyHorizontal = deltaX > deltaY;
+        
+        if (isActuallyHorizontal) {
+          // Nodes are horizontally aligned: connect right edge of parent to left edge of child
+          sourceX = link.source.x + NODE_HALF_WIDTH; // Right edge
+          sourceY = link.source.y; // Vertical center
+          targetX = link.target.x - NODE_HALF_WIDTH; // Left edge
+          targetY = link.target.y; // Vertical center
+        } else {
+          // Nodes are vertically aligned: connect bottom edge of parent to top edge of child
+          sourceX = link.source.x; // Horizontal center
+          sourceY = link.source.y + NODE_HALF_HEIGHT; // Bottom edge
+          targetX = link.target.x; // Horizontal center
+          targetY = link.target.y - NODE_HALF_HEIGHT; // Top edge
+        }
+
+        // Use straight line instead of Bézier curve for cleaner connections
+        // Direct path: M (sourceX, sourceY) L (targetX, targetY)
+        const pathData = `M${sourceX},${sourceY}L${targetX},${targetY}`;
+
+        if (DEBUG_LINKS) {
+          console.log('l2r link:', {
+            link: link, // Full link object for reference
+            linkId: `${link.source.data?.id || 'unknown'}-${link.target.data?.id || 'unknown'}`,
+            isActuallyHorizontal: isActuallyHorizontal,
+            deltaX: deltaX,
+            deltaY: deltaY,
+            sourceNode: {
+              id: link.source.data?.id,
+              name: link.source.data?.displayName || link.source.data?.name,
+              x: link.source.x,
+              y: link.source.y,
+            },
+            targetNode: {
+              id: link.target.data?.id,
+              name: link.target.data?.displayName || link.target.data?.name,
+              x: link.target.x,
+              y: link.target.y,
+            },
+            sourceEdge: { x: sourceX, y: sourceY },
+            targetEdge: { x: targetX, y: targetY },
+            pathData: pathData, // Generated path string
+          });
+        }
+
+        return pathData;
+      } else {
+        // Vertical layout: Nodes positioned with translate(d.y, d.x)
+        // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
+        // In SVG: node center is at (d.y, d.x) - coordinates are swapped!
+        // Detect actual node alignment in SVG coordinates
+        // In SVG: x = d.y, y = d.x
+        const svgSourceX = link.source.y;
+        const svgSourceY = link.source.x;
+        const svgTargetX = link.target.y;
+        const svgTargetY = link.target.x;
+        const deltaX = Math.abs(svgTargetX - svgSourceX);
+        const deltaY = Math.abs(svgTargetY - svgSourceY);
+        const isActuallyHorizontal = deltaX > deltaY;
+        
+        if (isActuallyHorizontal) {
+          // Nodes are horizontally aligned in SVG: connect right edge of parent to left edge of child
+          sourceX = svgSourceX + NODE_HALF_WIDTH; // Right edge
+          sourceY = svgSourceY; // Vertical center
+          targetX = svgTargetX - NODE_HALF_WIDTH; // Left edge
+          targetY = svgTargetY; // Vertical center
+        } else {
+          // Nodes are vertically aligned in SVG: connect bottom edge of parent to top edge of child
+          sourceX = svgSourceX; // Horizontal center
+          sourceY = svgSourceY + NODE_HALF_HEIGHT; // Bottom edge
+          targetX = svgTargetX; // Horizontal center
+          targetY = svgTargetY - NODE_HALF_HEIGHT; // Top edge
+        }
+
+        // Use straight line instead of Bézier curve for cleaner connections
+        // Direct path: M (sourceX, sourceY) L (targetX, targetY)
+        const pathData = `M${sourceX},${sourceY}L${targetX},${targetY}`;
+
+        if (DEBUG_LINKS) {
+          console.log('t2b link:', {
+            link: link, // Full link object for reference
+            linkId: `${link.source.data?.id || 'unknown'}-${link.target.data?.id || 'unknown'}`,
+            isActuallyHorizontal: isActuallyHorizontal,
+            deltaX: deltaX,
+            deltaY: deltaY,
+            svgSource: { x: svgSourceX, y: svgSourceY },
+            svgTarget: { x: svgTargetX, y: svgTargetY },
+            sourceNode: {
+              id: link.source.data?.id,
+              name: link.source.data?.displayName || link.source.data?.name,
+              x: link.source.x,
+              y: link.source.y,
+              svgX: link.source.y,
+              svgY: link.source.x,
+            },
+            targetNode: {
+              id: link.target.data?.id,
+              name: link.target.data?.displayName || link.target.data?.name,
+              x: link.target.x,
+              y: link.target.y,
+              svgX: link.target.y,
+              svgY: link.target.x,
+            },
+            sourceEdge: { x: sourceX, y: sourceY },
+            targetEdge: { x: targetX, y: targetY },
+            nodeTransform: `translate(${link.source.y},${link.source.x}) -> translate(${link.target.y},${link.target.x})`,
+            pathData: pathData, // Generated path string
+          });
+        }
+
+        return pathData;
+      }
+    };
 
     // Update existing links and add new ones
     const linkUpdate = linksGroup.selectAll('.link').data(links, (d) => {
@@ -1447,8 +1612,8 @@
       baseHeight = window.innerHeight - 180;
     } else {
       // In tile: use layout-based height
-      // Smaller tile (t2b/medium-6): taller height for better vertical space utilization
-      // Larger tile (l2r/small-12): standard height
+      // l2r (horizontal graph): smaller height (needs more horizontal space, less vertical)
+      // t2b (vertical graph): larger height (needs more vertical space)
       baseHeight = layout === 't2b' ? 600 : 400;
     }
 
@@ -1664,15 +1829,34 @@
       return;
     }
 
-    // Determine graph orientation from section CSS classes (not from layout variable)
-    // This ensures the graph matches the actual section width
-    // Pass wrapper to check for stored orientation (for modal context)
-    const graphOrientation = getGraphOrientationFromSection(wrapper);
-
-    // Still store layout for other purposes (toggle button, etc.)
+    // Determine graph orientation
+    // Store currentLayout for toggle button and other UI elements
     const currentLayout =
       layout || wrapper.data('currentLayout') || getDefaultLayout();
     wrapper.data('currentLayout', currentLayout);
+    
+    // Check if we're in modal context (modal stores graphOrientation separately)
+    const isInModal = wrapper.closest('#group-genmap-full-modal').length > 0;
+    
+    // Determine graph orientation from actual section CSS classes (source of truth)
+    // For modal: use stored graphOrientation; otherwise check section classes
+    let graphOrientation;
+    if (isInModal) {
+      graphOrientation = wrapper.data('graphOrientation') || getGraphOrientationFromSection(wrapper);
+    } else {
+      // Use section classes to determine actual graph orientation
+      const genmapSection = jQuery('#genmap');
+      const sectionClasses = genmapSection.attr('class') || '';
+      const hasSmall12 = genmapSection.hasClass('small-12');
+      const hasXlarge6 = genmapSection.hasClass('xlarge-6');
+      const hasLarge12 = genmapSection.hasClass('large-12');
+      const hasMedium6 = genmapSection.hasClass('medium-6');
+      
+      graphOrientation = getGraphOrientationFromSection(wrapper);
+    }
+    
+    // DEBUG: Uncomment to log orientation detection
+    // console.log('renderD3Chart orientation:', { currentLayout, graphOrientation, sectionClasses: jQuery('#genmap').attr('class') });
 
     // Transform data to D3 hierarchy
     const root = transformToD3Hierarchy(genmapData);
@@ -1724,23 +1908,140 @@
     wrapper.data('d3NodesGroup', nodesGroup);
     wrapper.data('d3ZoomContainer', zoomContainer);
 
-    // Render links (edges) - Phase 4 will implement full rendering
-    // D3 v7 API: Use d3.link() with curve for curved paths
-    // For vertical layout, we use linkVertical(); for horizontal, use linkHorizontal()
+    // Render links (edges) connecting to center of side facing parent
     const links = treeData.links();
+    const NODE_HALF_WIDTH = 30; // 60px / 2
+    const NODE_HALF_HEIGHT = 15; // 30px / 2
 
-    // Create link generator based on graph orientation (determined from section classes)
-    // l2r (small-12) = left-to-right graph, t2b (xlarge-6/large-12/medium-6) = top-to-bottom graph
-    const linkPath =
-      graphOrientation === 'l2r'
-        ? d3
-            .linkHorizontal()
-            .x((d) => d.x) // Horizontal position (normal for horizontal layout)
-            .y((d) => d.y) // Vertical position (normal for horizontal layout)
-        : d3
-            .linkVertical()
-            .x((d) => d.y) // Horizontal position (swapped for vertical layout)
-            .y((d) => d.x); // Vertical position (swapped for vertical layout)
+    // Create link generator with Bézier curves connecting to node edges
+    // DEBUG: Set to true to log coordinate calculations to console
+    const DEBUG_LINKS = false;
+
+    const linkPath = (link) => {
+      
+      // Calculate source and target coordinates directly
+      let sourceX, sourceY, targetX, targetY;
+
+      if (graphOrientation === 'l2r') {
+        // Horizontal layout: Nodes positioned with translate(d.x, d.y)
+        // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
+        // In SVG: node center is at (d.x, d.y)
+        // Detect actual node alignment: horizontal (different x) or vertical (different y)
+        const deltaX = Math.abs(link.target.x - link.source.x);
+        const deltaY = Math.abs(link.target.y - link.source.y);
+        const isActuallyHorizontal = deltaX > deltaY;
+        
+        if (isActuallyHorizontal) {
+          // Nodes are horizontally aligned: connect right edge of parent to left edge of child
+          sourceX = link.source.x + NODE_HALF_WIDTH; // Right edge
+          sourceY = link.source.y; // Vertical center
+          targetX = link.target.x - NODE_HALF_WIDTH; // Left edge
+          targetY = link.target.y; // Vertical center
+        } else {
+          // Nodes are vertically aligned: connect bottom edge of parent to top edge of child
+          sourceX = link.source.x; // Horizontal center
+          sourceY = link.source.y + NODE_HALF_HEIGHT; // Bottom edge
+          targetX = link.target.x; // Horizontal center
+          targetY = link.target.y - NODE_HALF_HEIGHT; // Top edge
+        }
+
+        // Use straight line instead of Bézier curve for cleaner connections
+        // Direct path: M (sourceX, sourceY) L (targetX, targetY)
+        const pathData = `M${sourceX},${sourceY}L${targetX},${targetY}`;
+
+        if (DEBUG_LINKS) {
+          console.log('l2r link:', {
+            link: link, // Full link object for reference
+            linkId: `${link.source.data?.id || 'unknown'}-${link.target.data?.id || 'unknown'}`,
+            isActuallyHorizontal: isActuallyHorizontal,
+            deltaX: deltaX,
+            deltaY: deltaY,
+            sourceNode: {
+              id: link.source.data?.id,
+              name: link.source.data?.displayName || link.source.data?.name,
+              x: link.source.x,
+              y: link.source.y,
+            },
+            targetNode: {
+              id: link.target.data?.id,
+              name: link.target.data?.displayName || link.target.data?.name,
+              x: link.target.x,
+              y: link.target.y,
+            },
+            sourceEdge: { x: sourceX, y: sourceY },
+            targetEdge: { x: targetX, y: targetY },
+            pathData: pathData, // Generated path string
+          });
+        }
+
+        return pathData;
+      } else {
+        // Vertical layout: Nodes positioned with translate(d.y, d.x)
+        // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
+        // In SVG: node center is at (d.y, d.x) - coordinates are swapped!
+        // Detect actual node alignment in SVG coordinates
+        // In SVG: x = d.y, y = d.x
+        const svgSourceX = link.source.y;
+        const svgSourceY = link.source.x;
+        const svgTargetX = link.target.y;
+        const svgTargetY = link.target.x;
+        const deltaX = Math.abs(svgTargetX - svgSourceX);
+        const deltaY = Math.abs(svgTargetY - svgSourceY);
+        const isActuallyHorizontal = deltaX > deltaY;
+        
+        if (isActuallyHorizontal) {
+          // Nodes are horizontally aligned in SVG: connect right edge of parent to left edge of child
+          sourceX = svgSourceX + NODE_HALF_WIDTH; // Right edge
+          sourceY = svgSourceY; // Vertical center
+          targetX = svgTargetX - NODE_HALF_WIDTH; // Left edge
+          targetY = svgTargetY; // Vertical center
+        } else {
+          // Nodes are vertically aligned in SVG: connect bottom edge of parent to top edge of child
+          sourceX = svgSourceX; // Horizontal center
+          sourceY = svgSourceY + NODE_HALF_HEIGHT; // Bottom edge
+          targetX = svgTargetX; // Horizontal center
+          targetY = svgTargetY - NODE_HALF_HEIGHT; // Top edge
+        }
+
+        // Use straight line instead of Bézier curve for cleaner connections
+        // Direct path: M (sourceX, sourceY) L (targetX, targetY)
+        const pathData = `M${sourceX},${sourceY}L${targetX},${targetY}`;
+
+        if (DEBUG_LINKS) {
+          console.log('t2b link:', {
+            link: link, // Full link object for reference
+            linkId: `${link.source.data?.id || 'unknown'}-${link.target.data?.id || 'unknown'}`,
+            isActuallyHorizontal: isActuallyHorizontal,
+            deltaX: deltaX,
+            deltaY: deltaY,
+            svgSource: { x: svgSourceX, y: svgSourceY },
+            svgTarget: { x: svgTargetX, y: svgTargetY },
+            sourceNode: {
+              id: link.source.data?.id,
+              name: link.source.data?.displayName || link.source.data?.name,
+              x: link.source.x,
+              y: link.source.y,
+              svgX: link.source.y,
+              svgY: link.source.x,
+            },
+            targetNode: {
+              id: link.target.data?.id,
+              name: link.target.data?.displayName || link.target.data?.name,
+              x: link.target.x,
+              y: link.target.y,
+              svgX: link.target.y,
+              svgY: link.target.x,
+            },
+            sourceEdge: { x: sourceX, y: sourceY },
+            targetEdge: { x: targetX, y: targetY },
+            nodeTransform: `translate(${link.source.y},${link.source.x}) -> translate(${link.target.y},${link.target.x})`,
+            pathData: pathData, // Generated path string
+          });
+        }
+
+        return pathData;
+      }
+    };
 
     // Render links with enhanced styling
     linksGroup
@@ -2093,7 +2394,10 @@
     }
 
     const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
-    const graphOrientation = getGraphOrientationFromSection();
+    // Map section layout to graph orientation (they are the SAME!)
+    // Section layout 't2b' = half width (xlarge-6) → Graph orientation 't2b' (vertical graph)
+    // Section layout 'l2r' = full width (small-12) → Graph orientation 'l2r' (horizontal graph)
+    const graphOrientation = currentLayout;
 
     // Get modal and content container
     const modal = jQuery('#group-genmap-full-modal');
