@@ -289,9 +289,19 @@ class DT_Components
 
     public static function render_user_select( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+
+        $value = array_map(function ( $value ) {
+            return [
+                'id' => $value['id'],
+                'type' => $value['type'],
+                'label' => $value['display'],
+                'assigned_to' => $value['assigned_to'],
+            ];
+        }, [$post[$field_key]] ?? []);
+
         ?>
         <dt-users-connection <?php echo wp_kses_post( $shared_attributes ) ?>
-            value="<?php echo esc_attr( json_encode( [$post[$field_key]] ) ) ?>"
+            value="<?php echo esc_attr( json_encode( $value ) ) ?>"
         ><?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-users-connection>
         <?php

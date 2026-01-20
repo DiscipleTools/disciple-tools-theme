@@ -2525,7 +2525,6 @@ class Disciple_Tools_Posts
                                     'id' => $id,
                                     'type' => $type,
                                     'display' => wp_specialchars_decode( $user && is_user_member_of_blog( $id ) ? $user->display_name : __( 'Removed User', 'disciple_tools' ) ),
-                                    'label' => wp_specialchars_decode( $user && is_user_member_of_blog( $id ) ? $user->display_name : __( 'Removed User', 'disciple_tools' ) ),
                                     'assigned-to' => $value[0]['value']
                                 ];
                             }
