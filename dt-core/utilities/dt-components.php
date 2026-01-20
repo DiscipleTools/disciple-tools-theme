@@ -297,12 +297,12 @@ class DT_Components
                 'label' => $value['display'],
                 'assigned_to' => $value['assigned_to'],
             ];
-        }, [ $post[$field_key] ] ?? []);
+        }, $post[$field_key] ?? []);
 
         ?>
         <dt-users-connection <?php echo wp_kses_post( $shared_attributes ) ?>
             value="<?php echo esc_attr( json_encode( $value ) ) ?>"
-        ><?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        single><?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-users-connection>
         <?php
     }

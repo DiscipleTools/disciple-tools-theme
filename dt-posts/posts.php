@@ -2522,10 +2522,12 @@ class Disciple_Tools_Posts
                             if ( $type == 'user' && $id ) {
                                 $user = get_user_by( 'id', $id );
                                 $fields[$key] = [
-                                    'id' => $id,
-                                    'type' => $type,
-                                    'display' => wp_specialchars_decode( $user && is_user_member_of_blog( $id ) ? $user->display_name : __( 'Removed User', 'disciple_tools' ) ),
-                                    'assigned-to' => $value[0]['value']
+                                    [
+                                        'id' => $id,
+                                        'type' => $type,
+                                        'display' => wp_specialchars_decode( $user && is_user_member_of_blog( $id ) ? $user->display_name : __( 'Removed User', 'disciple_tools' ) ),
+                                        'assigned-to' => $value[0]['value'],
+                                    ]
                                 ];
                             }
                         }
