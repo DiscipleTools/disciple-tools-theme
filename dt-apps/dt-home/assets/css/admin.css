@@ -242,8 +242,13 @@
 }
 
 /* Visual feedback during drag operations */
-.sortable-table tbody tr.drop-indicator-bottom {
+.sortable-table tbody tr.drop-indicator-bottom,
+.sortable-table tbody tr.drop-indicator-last {
     border-bottom: 4px solid #007cba;
+}
+
+.sortable-table tbody tr.drop-indicator-first {
+    border-top: 4px solid #007cba;
 }
 
 /* Status indicators for drag and drop */
