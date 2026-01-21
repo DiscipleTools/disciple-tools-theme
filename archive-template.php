@@ -655,18 +655,18 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                     <input type="hidden" id="bulk_edit_selected_fields_input" value="[]">
                                     
                                     <!-- Hidden data element with comment sections for dynamic comment fields -->
-                                            <?php
-                                    // Start with default comment section
-                                    $comment_sections = [
-                                        [
-                                            'key' => 'comment',
-                                            'label' => __( 'Comments', 'disciple_tools' ),
-                                            'selected_by_default' => true,
-                                            'always_show' => true,
-                                        ]
-                                    ];
-                                    // Apply filter to get additional sections
-                                    $comment_sections = apply_filters( 'dt_comments_additional_sections', $comment_sections, $post_type );
+                                    <?php
+                                        // Start with default comment section
+                                        $comment_sections = [
+                                            [
+                                                'key' => 'comment',
+                                                'label' => __( 'Comments', 'disciple_tools' ),
+                                                'selected_by_default' => true,
+                                                'always_show' => true,
+                                            ]
+                                        ];
+                                        // Apply filter to get additional sections
+                                        $comment_sections = apply_filters( 'dt_comments_additional_sections', $comment_sections, $post_type );
                                     ?>
                                     <script type="application/json" id="bulk_edit_comment_sections_data">
                                         <?php echo json_encode( $comment_sections ); ?>
