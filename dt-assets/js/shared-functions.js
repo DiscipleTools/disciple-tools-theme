@@ -965,15 +965,15 @@ window.SHAREDFUNCTIONS = {
   },
 
   /**
-   * Render field HTML for bulk edit using web components
+   * Render field HTML using web components
    * Generates client-side HTML for field types based on field settings
    *
    * @param {string} fieldKey - The field key
    * @param {object} fieldSettings - Field settings from list_settings.post_type_settings.fields
-   * @param {string} prefix - Prefix for field ID (default: 'bulk_')
+   * @param {string} prefix - Prefix for field ID (default: '')
    * @returns {string|null} - HTML string for the component or null if unsupported
    */
-  renderFieldForBulkEdit(fieldKey, fieldSettings, prefix = 'bulk_') {
+  renderField(fieldKey, fieldSettings, prefix = '') {
     const id = `${prefix}${fieldKey}`;
     const name = fieldKey;
     const label = fieldSettings.name || fieldKey;

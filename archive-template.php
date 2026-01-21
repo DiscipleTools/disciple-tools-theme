@@ -631,9 +631,9 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                             <div class="grid-x">
                                 <!-- Dynamic Field Selection Section -->
                                 <div class="cell small-12" id="bulk_edit_dynamic_fields_section">
-                                    <div class="section-subheader">
+                                        <div class="section-subheader">
                                         <?php esc_html_e( 'Add Fields to Update', 'disciple_tools' ); ?>
-                                    </div>
+                                        </div>
                                     
                                     <!-- Field Selection with dt-multi-select -->
                                     <div class="bulk-edit-field-select-wrapper" style="margin-bottom: 15px;">
@@ -644,18 +644,18 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                             options='[]'
                                             value='[]'>
                                         </dt-multi-select>
-                                    </div>
+                                        </div>
                                     
                                     <!-- Selected Fields Container -->
                                     <div class="bulk-edit-selected-fields-container" id="bulk_edit_selected_fields_container">
                                         <!-- Fields will be dynamically added here -->
-                                    </div>
-                                    
+                                </div>
+
                                     <!-- Hidden input to store selected field keys -->
                                     <input type="hidden" id="bulk_edit_selected_fields_input" value="[]">
                                     
                                     <!-- Hidden data element with comment sections for dynamic comment fields -->
-                                    <?php
+                                            <?php
                                     // Start with default comment section
                                     $comment_sections = [
                                         [
@@ -678,7 +678,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                             <div id="bulk_edit_no_selection_message" class="bulk-edit-no-selection-message">
                                 <strong><?php esc_html_e( 'Please select records from the displayed list, to enable bulk actions.', 'disciple_tools' ); ?></strong>
                             </div>
-                            
+
                             <!-- Action buttons (hidden initially) -->
                             <div id="bulk_edit_action_buttons" class="bulk-edit-action-buttons" style="display:none;">
                                 <button class="button dt-green bulk-edit-update-btn" id="bulk_edit_submit">
@@ -691,16 +691,16 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                 <?php if ( current_user_can( 'delete_any_' . $post_type ) ){ ?>
                                     <button class="button bulk-edit-delete-btn" id="bulk_edit_delete_submit">
                                         <i class="mdi mdi-delete-outline"></i>
-                                        <span class="bulk_edit_delete_submit_text"
-                                              data-pretext="<?php echo esc_html__( 'Delete', 'disciple_tools' ); ?>"
-                                              data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>"
-                                              style="text-transform:capitalize;">
-                                            <?php echo esc_html( __( 'Delete Selections Below', 'disciple_tools' ) ); ?>
-                                        </span>
-                                        <span id="bulk_edit_delete_submit-spinner" style="display: inline-block;"
-                                              class="loading-spinner"></span>
-                                    </button>
-                                <?php } ?>
+                                    <span class="bulk_edit_delete_submit_text"
+                                          data-pretext="<?php echo esc_html__( 'Delete', 'disciple_tools' ); ?>"
+                                          data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>"
+                                          style="text-transform:capitalize;">
+                                        <?php echo esc_html( __( 'Delete Selections Below', 'disciple_tools' ) ); ?>
+                                    </span>
+                                    <span id="bulk_edit_delete_submit-spinner" style="display: inline-block;"
+                                          class="loading-spinner"></span>
+                                </button>
+                            <?php } ?>
                             </div>
                         </form>
 

@@ -1609,7 +1609,7 @@
     }
 
     // Generate field HTML client-side using helper function
-    const fieldHtml = window.SHAREDFUNCTIONS.renderFieldForBulkEdit(
+    const fieldHtml = window.SHAREDFUNCTIONS.renderField(
       fieldKey,
       fieldSettings,
       'bulk_',
