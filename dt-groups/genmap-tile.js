@@ -1282,24 +1282,11 @@
         // Horizontal layout: Nodes positioned with translate(d.x, d.y)
         // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
         // In SVG: node center is at (d.x, d.y)
-        // Detect actual node alignment: horizontal (different x) or vertical (different y)
-        const deltaX = Math.abs(link.target.x - link.source.x);
-        const deltaY = Math.abs(link.target.y - link.source.y);
-        const isActuallyHorizontal = deltaX > deltaY;
-
-        if (isActuallyHorizontal) {
-          // Nodes are horizontally aligned: connect right edge of parent to left edge of child
-          sourceX = link.source.x + NODE_HALF_WIDTH; // Right edge
-          sourceY = link.source.y; // Vertical center
-          targetX = link.target.x - NODE_HALF_WIDTH; // Left edge
-          targetY = link.target.y; // Vertical center
-        } else {
-          // Nodes are vertically aligned: connect bottom edge of parent to top edge of child
-          sourceX = link.source.x; // Horizontal center
-          sourceY = link.source.y + NODE_HALF_HEIGHT; // Bottom edge
-          targetX = link.target.x; // Horizontal center
-          targetY = link.target.y - NODE_HALF_HEIGHT; // Top edge
-        }
+        // Always connect: parent bottom center → child top center (consistent with tree hierarchy)
+        sourceX = link.source.x; // Horizontal center of parent
+        sourceY = link.source.y + NODE_HALF_HEIGHT; // Bottom edge of parent
+        targetX = link.target.x; // Horizontal center of child
+        targetY = link.target.y - NODE_HALF_HEIGHT; // Top edge of child
 
         // Use straight line instead of Bézier curve for cleaner connections
         // Direct path: M (sourceX, sourceY) L (targetX, targetY)
@@ -1309,9 +1296,6 @@
           console.log('l2r link:', {
             link: link, // Full link object for reference
             linkId: `${link.source.data?.id || 'unknown'}-${link.target.data?.id || 'unknown'}`,
-            isActuallyHorizontal: isActuallyHorizontal,
-            deltaX: deltaX,
-            deltaY: deltaY,
             sourceNode: {
               id: link.source.data?.id,
               name: link.source.data?.displayName || link.source.data?.name,
@@ -1335,29 +1319,18 @@
         // Vertical layout: Nodes positioned with translate(d.y, d.x)
         // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
         // In SVG: node center is at (d.y, d.x) - coordinates are swapped!
-        // Detect actual node alignment in SVG coordinates
+        // Always connect: parent right center → child left center (consistent with tree hierarchy)
         // In SVG: x = d.y, y = d.x
         const svgSourceX = link.source.y;
         const svgSourceY = link.source.x;
         const svgTargetX = link.target.y;
         const svgTargetY = link.target.x;
-        const deltaX = Math.abs(svgTargetX - svgSourceX);
-        const deltaY = Math.abs(svgTargetY - svgSourceY);
-        const isActuallyHorizontal = deltaX > deltaY;
 
-        if (isActuallyHorizontal) {
-          // Nodes are horizontally aligned in SVG: connect right edge of parent to left edge of child
-          sourceX = svgSourceX + NODE_HALF_WIDTH; // Right edge
-          sourceY = svgSourceY; // Vertical center
-          targetX = svgTargetX - NODE_HALF_WIDTH; // Left edge
-          targetY = svgTargetY; // Vertical center
-        } else {
-          // Nodes are vertically aligned in SVG: connect bottom edge of parent to top edge of child
-          sourceX = svgSourceX; // Horizontal center
-          sourceY = svgSourceY + NODE_HALF_HEIGHT; // Bottom edge
-          targetX = svgTargetX; // Horizontal center
-          targetY = svgTargetY - NODE_HALF_HEIGHT; // Top edge
-        }
+        // Always connect right edge of parent to left edge of child
+        sourceX = svgSourceX + NODE_HALF_WIDTH; // Right edge of parent
+        sourceY = svgSourceY; // Vertical center of parent
+        targetX = svgTargetX - NODE_HALF_WIDTH; // Left edge of child
+        targetY = svgTargetY; // Vertical center of child
 
         // Use straight line instead of Bézier curve for cleaner connections
         // Direct path: M (sourceX, sourceY) L (targetX, targetY)
@@ -1367,9 +1340,6 @@
           console.log('t2b link:', {
             link: link, // Full link object for reference
             linkId: `${link.source.data?.id || 'unknown'}-${link.target.data?.id || 'unknown'}`,
-            isActuallyHorizontal: isActuallyHorizontal,
-            deltaX: deltaX,
-            deltaY: deltaY,
             svgSource: { x: svgSourceX, y: svgSourceY },
             svgTarget: { x: svgTargetX, y: svgTargetY },
             sourceNode: {
@@ -1926,24 +1896,11 @@
         // Horizontal layout: Nodes positioned with translate(d.x, d.y)
         // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
         // In SVG: node center is at (d.x, d.y)
-        // Detect actual node alignment: horizontal (different x) or vertical (different y)
-        const deltaX = Math.abs(link.target.x - link.source.x);
-        const deltaY = Math.abs(link.target.y - link.source.y);
-        const isActuallyHorizontal = deltaX > deltaY;
-
-        if (isActuallyHorizontal) {
-          // Nodes are horizontally aligned: connect right edge of parent to left edge of child
-          sourceX = link.source.x + NODE_HALF_WIDTH; // Right edge
-          sourceY = link.source.y; // Vertical center
-          targetX = link.target.x - NODE_HALF_WIDTH; // Left edge
-          targetY = link.target.y; // Vertical center
-        } else {
-          // Nodes are vertically aligned: connect bottom edge of parent to top edge of child
-          sourceX = link.source.x; // Horizontal center
-          sourceY = link.source.y + NODE_HALF_HEIGHT; // Bottom edge
-          targetX = link.target.x; // Horizontal center
-          targetY = link.target.y - NODE_HALF_HEIGHT; // Top edge
-        }
+        // Always connect: parent bottom center → child top center (consistent with tree hierarchy)
+        sourceX = link.source.x; // Horizontal center of parent
+        sourceY = link.source.y + NODE_HALF_HEIGHT; // Bottom edge of parent
+        targetX = link.target.x; // Horizontal center of child
+        targetY = link.target.y - NODE_HALF_HEIGHT; // Top edge of child
 
         // Use straight line instead of Bézier curve for cleaner connections
         // Direct path: M (sourceX, sourceY) L (targetX, targetY)
@@ -1953,9 +1910,6 @@
           console.log('l2r link:', {
             link: link, // Full link object for reference
             linkId: `${link.source.data?.id || 'unknown'}-${link.target.data?.id || 'unknown'}`,
-            isActuallyHorizontal: isActuallyHorizontal,
-            deltaX: deltaX,
-            deltaY: deltaY,
             sourceNode: {
               id: link.source.data?.id,
               name: link.source.data?.displayName || link.source.data?.name,
@@ -1979,29 +1933,18 @@
         // Vertical layout: Nodes positioned with translate(d.y, d.x)
         // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
         // In SVG: node center is at (d.y, d.x) - coordinates are swapped!
-        // Detect actual node alignment in SVG coordinates
+        // Always connect: parent right center → child left center (consistent with tree hierarchy)
         // In SVG: x = d.y, y = d.x
         const svgSourceX = link.source.y;
         const svgSourceY = link.source.x;
         const svgTargetX = link.target.y;
         const svgTargetY = link.target.x;
-        const deltaX = Math.abs(svgTargetX - svgSourceX);
-        const deltaY = Math.abs(svgTargetY - svgSourceY);
-        const isActuallyHorizontal = deltaX > deltaY;
 
-        if (isActuallyHorizontal) {
-          // Nodes are horizontally aligned in SVG: connect right edge of parent to left edge of child
-          sourceX = svgSourceX + NODE_HALF_WIDTH; // Right edge
-          sourceY = svgSourceY; // Vertical center
-          targetX = svgTargetX - NODE_HALF_WIDTH; // Left edge
-          targetY = svgTargetY; // Vertical center
-        } else {
-          // Nodes are vertically aligned in SVG: connect bottom edge of parent to top edge of child
-          sourceX = svgSourceX; // Horizontal center
-          sourceY = svgSourceY + NODE_HALF_HEIGHT; // Bottom edge
-          targetX = svgTargetX; // Horizontal center
-          targetY = svgTargetY - NODE_HALF_HEIGHT; // Top edge
-        }
+        // Always connect right edge of parent to left edge of child
+        sourceX = svgSourceX + NODE_HALF_WIDTH; // Right edge of parent
+        sourceY = svgSourceY; // Vertical center of parent
+        targetX = svgTargetX - NODE_HALF_WIDTH; // Left edge of child
+        targetY = svgTargetY; // Vertical center of child
 
         // Use straight line instead of Bézier curve for cleaner connections
         // Direct path: M (sourceX, sourceY) L (targetX, targetY)
@@ -2011,9 +1954,6 @@
           console.log('t2b link:', {
             link: link, // Full link object for reference
             linkId: `${link.source.data?.id || 'unknown'}-${link.target.data?.id || 'unknown'}`,
-            isActuallyHorizontal: isActuallyHorizontal,
-            deltaX: deltaX,
-            deltaY: deltaY,
             svgSource: { x: svgSourceX, y: svgSourceY },
             svgTarget: { x: svgTargetX, y: svgTargetY },
             sourceNode: {
