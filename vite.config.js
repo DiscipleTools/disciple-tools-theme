@@ -8,7 +8,8 @@ export default defineConfig({
   root: '.',
   build: {
     minify: true,
-    outDir: 'dt-assets/build-vite',
+    outDir: 'dt-assets/build',
+    sourcemap: true,
     rollupOptions: {
       input: {
         style: resolve(__dirname, 'dt-assets/scss/style.scss'),
@@ -47,6 +48,31 @@ export default defineConfig({
     legacy({
       targets: ['defaults', 'not IE 11'],
     }),
+    {
+      name: 'cleanup-scripts',
+      generateBundle(_, bundle) {
+        for (const fileName in bundle) {
+          if (
+            fileName.startsWith('js/') &&
+            (fileName.endsWith('.js') || fileName.endsWith('.js.map'))
+          ) {
+            const isMap = fileName.endsWith('.map');
+            const baseName = isMap ? fileName.slice(3, -4) : fileName.slice(3);
+            // We want to keep anything that is part of the 'scripts' entry
+            // entryFileNames: 'js/[name].min.js' -> scripts.min.js
+            // polyfills-legacy: 'js/polyfills-legacy.min.js'
+            // scripts-legacy: 'js/scripts-legacy.min.js'
+            if (
+              !baseName.startsWith('scripts.') &&
+              !baseName.startsWith('scripts-legacy.') &&
+              !baseName.startsWith('polyfills-legacy.')
+            ) {
+              delete bundle[fileName];
+            }
+          }
+        }
+      },
+    },
     liveReload(['**/*.php']),
     viteStaticCopy({
       targets: [
