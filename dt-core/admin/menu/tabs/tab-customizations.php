@@ -620,9 +620,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                     <!-- START TOGGLED ITEMS -->
                                     <div class="field-settings-table-child-toggle">
                                         <?php foreach ( $field_settings as $key => $value ) : ?>
-                                            <?php if ( $key === 'default' && !empty( $field_settings['default'] ) && is_array( $field_settings['default'] ) ) : ?>
-                                                <?php $i = 0 ?>
-                                                <?php foreach ( $value as $k => $v ) {
+                                            <?php if ( $key === 'default' && !empty( $field_settings['default'] ) && is_array( $field_settings['default'] ) ) {
+                                                $i = 0;
+                                                foreach ( $value as $k => $v ) {
                                                     $label = 'default blank';
                                                     if ( isset( $v['label'] ) && !empty( $v['label'] ) ) {
                                                         $label = $v['label'];
@@ -645,8 +645,8 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                         break;
                                                     }
                                                 }
-                                            endif; ?>
-                                        <?php endforeach; ?>
+                                            } 
+                                        endforeach; ?>
                                         <div class="field-settings-table-field-option new-field-option add-new-item" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
                                            <span><?php esc_html_e( 'new field option', 'disciple_tools' ); ?></span>
                                         </div>
