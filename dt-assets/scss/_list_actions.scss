@@ -17,8 +17,6 @@
     }
 
     .section-body {
-      overflow-y: auto;
-
       .list_action_section {
         display: none;
         & > .close-button { display: none; }

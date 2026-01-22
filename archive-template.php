@@ -28,7 +28,6 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
     ];
 
     get_header();
-
     $fields_to_search = [];
     $all_searchable_fields = $post_settings['fields'];
     $all_searchable_fields['comment'] = [ 'name' => __( 'Comments', 'disciple_tools' ), 'type' => 'text' ];
@@ -630,173 +629,68 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                             <p style="font-weight:bold"><?php
                                 echo sprintf( esc_html__( 'Select all the %1$s you want to update from the list, and update them below', 'disciple_tools' ), esc_html( $post_type ) );?></p>
                             <div class="grid-x">
-                                <?php if ( isset( $field_options['assigned_to'] ) ) : ?>
-                                    <div class="cell small-12">
+                                <!-- Dynamic Field Selection Section -->
+                                <div class="cell small-12" id="bulk_edit_dynamic_fields_section">
                                         <div class="section-subheader">
-                                            <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/assigned-to.svg' ?>">
-                                            <?php echo esc_html( $field_options['assigned_to']['name'] ); ?>
-                                            <button class="help-button" data-section="assigned-to-help-text">
-                                                <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                                            </button>
+                                        <?php esc_html_e( 'Add Fields to Update', 'disciple_tools' ); ?>
                                         </div>
-                                        <div class="bulk_assigned_to details">
-                                            <var id="bulk_assigned_to-result-container" class="result-container bulk_assigned_to-result-container"></var>
-                                            <div id="bulk_assigned_to_t" name="form-bulk_assigned_to" class="scrollable-typeahead">
-                                                <div class="typeahead__container" style="margin-bottom: 0">
-                                                    <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-bulk_assigned_to input-height" dir="auto"
-                                                       name="bulk_assigned_to[query]" placeholder="<?php echo esc_html_x( 'Search Users', 'input field placeholder', 'disciple_tools' ) ?>"
-                                                       autocomplete="off">
-                                            </span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    
+                                    <!-- Field Selection with dt-multi-select -->
+                                    <div class="bulk-edit-field-select-wrapper" style="margin-bottom: 15px;">
+                                        <dt-multi-select
+                                            id="bulk_edit_field_selector"
+                                            name="bulk_edit_field_selector"
+                                            placeholder="<?php esc_attr_e( 'Search and add fields...', 'disciple_tools' ); ?>"
+                                            options='[]'
+                                            value='[]'>
+                                        </dt-multi-select>
                                         </div>
-                                    </div>
-                                <?php endif; ?>
-
-                                <?php if ( $post_type == 'contacts' ) {?>
-                                    <?php if ( isset( $field_options['subassigned'] ) ) : ?>
-                                        <div class="cell small-12">
-                                            <?php $field_options['subassigned']['custom_display'] = false ?>
-                                            <?php render_field_for_display( 'subassigned', $field_options, null, false, false, 'bulk_', $field_params ); ?>
-                                        </div>
-                                    <?php endif; ?>
-                                    <?php if ( isset( $field_options['overall_status'] ) ) : ?>
-                                        <div class="cell small-12">
-                                            <?php
-                                            $field_key = 'overall_status';
-                                            if ( isset( $field_options[$field_key]['select_cannot_be_empty'] ) ) {
-                                                unset( $field_options[$field_key]['select_cannot_be_empty'] );
-                                            }
-                                            DT_Components::render_key_select( 'overall_status', $field_options, null, $field_params );
-                                            ?>
-                                        </div>
-                                    <?php endif; ?>
-                                    <?php if ( isset( $field_options['reason_paused'] ) ) : ?>
-                                        <div class="cell small-12" style="display:none">
-                                            <?php
-                                            render_field_for_display( 'reason_paused', $field_options, null, false, false, 'bulk_', $field_params );
-                                            ?>
-                                        </div>
-                                    <?php endif; ?>
-
-                                <?php } elseif ( $post_type == 'groups' ) {?>
-                                    <div class="cell small-12">
-                                        <?php $field_options['coaches']['custom_display'] = false ?>
-                                        <?php
-                                        render_field_for_display( 'coaches', $field_options, null, false, false, 'bulk_' ); ?>
-                                    </div>
-                                <?php } ?>
-                                <div class="cell small-12">
-                                    <div class="section-subheader">
-                                        <?php esc_html_e( 'Share with:', 'disciple_tools' );?>
-                                    </div>
-                                    <div id="<?php echo esc_attr( 'bulk_share_connection' ) ?>" class="dt_typeahead">
-                                        <span id="<?php echo esc_html( 'share' ); ?>-result-container" class="result-container"></span>
-                                        <div id="<?php echo esc_html( 'share' ); ?>_t" name="form-<?php echo esc_html( 'share' ); ?>" class="scrollable-typeahead typeahead-margin-when-active">
-                                            <div class="typeahead__container" style="margin-bottom: 0">
-                                                <div class="typeahead__field">
-                                                <span class="typeahead__query">
-                                                    <input id = "bulk_share" class="input-height" data-field="<?php echo esc_html( 'share' ); ?>"
-                                                           data-post_type="<?php echo esc_html( $post_type ) ?>"
-                                                           data-field_type="connection"
-                                                           name="share[query]"
-                                                           placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), 'Users' ) )?>"
-                                                           autocomplete="off">
-                                                </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <label style="display: inline-block">
-                                            <input type="checkbox" id="bulk_share_unshare">
-                                            <?php esc_html_e( 'Unshare with selected user', 'disciple_tools' ); ?>
-                                        </label>
-                                    </div>
-                                </div>
-                                <?php if ( isset( $field_options['requires_update'] ) ) : ?>
-                                    <div class="cell small-12 center-items">
-                                        <span style="margin-right:5px"><?php echo esc_html( $field_options['requires_update']['name'] ); ?>:</span>
-                                        <input type="checkbox" id="update-needed-bulk" class="dt-switch update-needed" data-bulk_key_requires_update=""/>
-                                        <label class="dt-switch" for="update-needed-bulk" style="vertical-align: top;"></label>
-                                    </div>
-                                <?php endif; ?>
-                                <div class="cell small-12 center-items">
-                                    <button class="button follow" data-value=""><?php echo esc_html( __( 'Follow', 'disciple_tools' ) ) ?></button>
+                                    
+                                    <!-- Selected Fields Container -->
+                                    <div class="bulk-edit-selected-fields-container" id="bulk_edit_selected_fields_container">
+                                        <!-- Fields will be dynamically added here -->
                                 </div>
 
-                                <div class="cell small-12 medium-12 grid-y">
-                                    <div class="section-subheader">
-                                        <?php esc_html_e( 'Comments and Activity', 'disciple_tools' ) ?>
-                                    </div>
-                                    <div class="cell" id="bulk_add-comment-section">
-                                        <div class="auto cell">
-                                        <textarea class="mention" dir="auto" id="bulk_comment-input"
-                                                  placeholder="<?php echo esc_html_x( 'Write your comment or note here', 'input field placeholder', 'disciple_tools' ) ?>"
-                                        ></textarea>
-
-                                            <?php
-                                            $sections = apply_filters( 'dt_comments_additional_sections', [], $post_type );
-                                            if ( sizeof( $sections ) > 0 ) : ?>
-                                                <div class="grid-x">
-                                                    <div class="section-subheader cell shrink">
-                                                        <?php esc_html_e( 'Type:', 'disciple_tools' ) ?>
-                                                    </div>
-                                                    <select id="comment_type_selector" class="cell auto">
-                                                        <?php
-                                                        $section_keys = [ 'activity' ];
-                                                        foreach ( $sections as $section ) {
-                                                            if ( !in_array( $section['key'], $section_keys ) ) {
-                                                                $section_keys[] = $section['key'] ?>
-                                                        <option value="<?php echo esc_html( $section['key'] ); ?>">
-                                                                <?php echo esc_html( $section['label'] );
-                                                            }
-                                                        } ?>
-                                                    </select>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span class="cell small-12 medium-12 center">
-                                    <a class="button" id="bulk_edit_seeMore">
-                                        <span class="seeMoreText"><?php esc_html_e( 'See More Options', 'disciple_tools' ); ?></span>
-                                        <span class="seeFewerText" style="display:none"><?php esc_html_e( 'See Fewer Options', 'disciple_tools' ); ?></span>
-                                    </a>
-                                </span>
-                                <div id="bulk_more" class="grid-x cell" style="display:none;">
-
+                                    <!-- Hidden input to store selected field keys -->
+                                    <input type="hidden" id="bulk_edit_selected_fields_input" value="[]">
+                                    
+                                    <!-- Hidden data element with comment sections for dynamic comment fields -->
                                     <?php
-                                    //move multi_select fields to the end
-                                    function multiselect_at_end( $a, $b ){
-                                        return ( $a['type'] ?? '' === 'multi_select' && ( $a['display'] ?? '' ) !== 'typeahead' ) ? 1 : 0;
-                                    };
-                                    uasort( $field_options, 'multiselect_at_end' );
-                                    $already_done = [ 'subassigned', 'assigned_to', 'overall_status' ];
-                                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'textarea', 'number' ];
-                                    foreach ( $field_options as $field_option => $value ) :
-                                        if ( !in_array( $field_option, $already_done ) && array_key_exists( 'type', $value ) && in_array( $value['type'], $allowed_types )
-                                            && $value['type'] != 'communication_channel' && empty( $value['hidden'] ) ) : ?>
-                                            <div class="cell small-12">
-                                                <?php $field_options[$field_option]['custom_display'] = false;
-                                                render_field_for_display( $field_option, $field_options, null, false, false, 'bulk_' ); ?>
-                                            </div>
-                                        <?php endif;
-                                    endforeach;
-                                    ?>
+                                        // Start with default comment section
+                                        $comment_sections = [
+                                            [
+                                                'key' => 'comment',
+                                                'label' => __( 'Comments', 'disciple_tools' ),
+                                                'selected_by_default' => true,
+                                                'always_show' => true,
+                                            ]
+                                        ];
+                                        // Apply filter to get additional sections
+                                        $comment_sections = apply_filters( 'dt_comments_additional_sections', $comment_sections, $post_type );
+                                        ?>
+                                    <script type="application/json" id="bulk_edit_comment_sections_data">
+                                        <?php echo json_encode( $comment_sections ); ?>
+                                    </script>
                                 </div>
                             </div>
 
-                            <button class="button dt-green" id="bulk_edit_submit">
-                            <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Update', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>" style="text-transform:capitalize;">
-                                <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
-                            </span>
-                                <span id="bulk_edit_submit-spinner" style="display: inline-block;" class="loading-spinner"></span>
-                            </button>
-                            <span class="list-action-event-buttons">
-                            <?php if ( current_user_can( 'delete_any_' . $post_type ) ){ ?>
-                                <button class="button" id="bulk_edit_delete_submit">
+                            <!-- Instruction message (shown when no records selected) -->
+                            <div id="bulk_edit_no_selection_message" class="bulk-edit-no-selection-message">
+                                <strong><?php esc_html_e( 'Please select records from the displayed list, to enable bulk actions.', 'disciple_tools' ); ?></strong>
+                            </div>
+
+                            <!-- Action buttons (hidden initially) -->
+                            <div id="bulk_edit_action_buttons" class="bulk-edit-action-buttons" style="display:none;">
+                                <button class="button dt-green bulk-edit-update-btn" id="bulk_edit_submit">
+                                    <i class="mdi mdi-update"></i>
+                                    <span class="bulk_edit_submit_text" data-pretext="<?php echo esc_html__( 'Update', 'disciple_tools' ); ?>" data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>" style="text-transform:capitalize;">
+                                        <?php echo esc_html( __( 'Make Selections Below', 'disciple_tools' ) ); ?>
+                                    </span>
+                                    <span id="bulk_edit_submit-spinner" style="display: inline-block;" class="loading-spinner"></span>
+                                </button>
+                                <?php if ( current_user_can( 'delete_any_' . $post_type ) ){ ?>
+                                    <button class="button bulk-edit-delete-btn" id="bulk_edit_delete_submit">
+                                        <i class="mdi mdi-delete-outline"></i>
                                     <span class="bulk_edit_delete_submit_text"
                                           data-pretext="<?php echo esc_html__( 'Delete', 'disciple_tools' ); ?>"
                                           data-posttext="<?php echo esc_html( $post_settings['label_plural'] ); ?>"
@@ -807,8 +701,34 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                           class="loading-spinner"></span>
                                 </button>
                             <?php } ?>
-                        </span>
+                            </div>
                         </form>
+
+                        <!-- Template for rendering selected fields -->
+                        <div id="bulk_edit_field_template" style="display:none;">
+                            <div class="bulk-edit-field-wrapper cell small-12" data-field-key="">
+                                <div class="bulk-edit-field-header">
+                                    <div class="section-subheader">
+                                        <span class="bulk-edit-field-icon"></span>
+                                        <span class="bulk-edit-field-name"></span>
+                                        <button type="button" class="bulk-edit-remove-field-btn" data-field-key="" title="<?php esc_attr_e( 'Remove field', 'disciple_tools' ); ?>">
+                                            <i class="mdi mdi-close-circle-outline"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="bulk-edit-field-input-container">
+                                    <!-- Field input will be rendered here -->
+                                </div>
+                                <div class="bulk-edit-field-actions">
+                                    <button type="button" class="button small bulk-edit-clear-field-btn" data-field-key="" style="display:none;">
+                                        <?php esc_html_e( 'Clear/Unset Field', 'disciple_tools' ); ?>
+                                    </button>
+                                    <button type="button" class="button small bulk-edit-restore-field-btn" data-field-key="" style="display:none;">
+                                        <?php esc_html_e( 'Restore Field', 'disciple_tools' ); ?>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
                         <div id="bulk_send_msg_picker" class="list_action_section">
                             <button class="close-button list-action-close-button" data-close="bulk_send_msg_picker" aria-label="<?php esc_html_e( 'Close', 'disciple_tools' ); ?>" type="button">
