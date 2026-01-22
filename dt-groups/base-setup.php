@@ -603,7 +603,8 @@ class DT_Groups_Base extends DT_Module_Base {
             return;
         }
         $tiles = DT_Posts::get_post_tiles( $post_type );
-        if ( !isset( $tiles['genmap'] ) || ( isset( $tiles['genmap']['hidden'] ) && $tiles['genmap']['hidden'] ) ) {
+        // Always render the HTML - the 'hidden' flag only controls CSS visibility via hidden-grid-item class
+        if ( !isset( $tiles['genmap'] ) ) {
             return;
         }
         $post_id = get_the_ID();

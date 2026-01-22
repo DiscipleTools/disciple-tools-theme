@@ -1182,6 +1182,29 @@ jQuery(document).ready(function ($) {
 
     // Hide show hidden tiles section.
     $('#hidden_tiles_section').fadeOut('fast');
+
+    // Initialize genmap if it exists and hasn't been loaded yet (only for groups post type)
+    if (
+      window.detailsSettings?.post_type === 'groups' &&
+      typeof window.initializeGenmap === 'function'
+    ) {
+      const genmapSection = $('#genmap');
+      if (
+        genmapSection.length > 0 &&
+        !genmapSection.hasClass('hidden-grid-item')
+      ) {
+        // Small delay to ensure DOM is ready after removing hidden class
+        setTimeout(function () {
+          const genmapTile = $('#group-genmap-tile');
+          if (
+            genmapTile.length &&
+            !genmapTile.hasClass('group-genmap-loaded')
+          ) {
+            window.initializeGenmap();
+          }
+        }, 100);
+      }
+    }
   });
 
   init_hidden_tiles_section();

@@ -79,8 +79,12 @@
     return 't2b';
   }
 
-  jQuery(document).ready(() => {
-    // Add CSS for selected node border and truncation
+  /**
+   * Initialize genmap tile - idempotent function that can be called multiple times
+   * @returns {boolean} - Returns true if initialization was successful, false otherwise
+   */
+  function initializeGenmap() {
+    // Add CSS for selected node border and truncation (only once)
     if (!document.getElementById('group-genmap-tile-styles')) {
       const style = document.createElement('style');
       style.id = 'group-genmap-tile-styles';
@@ -107,7 +111,12 @@
 
     const wrapper = $(TILE_SELECTOR);
     if (!wrapper.length) {
-      return;
+      return false;
+    }
+
+    // Check if already initialized (idempotent check)
+    if (wrapper.hasClass('group-genmap-loaded')) {
+      return true; // Already initialized
     }
 
     // Initialize layout toggle button
@@ -120,12 +129,10 @@
       updateLayoutToggleIcon(currentLayout);
     }
 
-    // Setup layout toggle handler will be set up after functions are defined
-
     const postId = parseInt(wrapper.data('postId'), 10);
     if (!postId) {
       setMessage(wrapper, 'empty');
-      return;
+      return false;
     }
 
     // Store initial layout
@@ -137,6 +144,14 @@
     }, 100);
 
     fetchGenmap(wrapper, postId, currentLayout);
+    return true;
+  }
+
+  // Expose initializeGenmap globally so it can be called from other scripts
+  window.initializeGenmap = initializeGenmap;
+
+  jQuery(document).ready(() => {
+    initializeGenmap();
   });
 
   function fetchGenmap(wrapper, focusId, layout = null) {
