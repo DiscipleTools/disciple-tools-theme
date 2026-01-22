@@ -2,6 +2,11 @@
 /**
  * Bulk Edit Operations for Modular List
  * Handles bulk edit, bulk delete, bulk messaging functionality
+ *
+ * Organized into three main sections:
+ * 1. Bulk Operations & List Controls - Checkbox handling, record counting, shared queue processing
+ * 2. Bulk Editing - Field selection, field rendering, submit handling, delete
+ * 3. Bulk Messaging - Send messages and app notifications
  */
 (function ($, list_settings, Foundation) {
   // Wait for DT_List to be available
@@ -14,6 +19,11 @@
 
   const DT_List = window.DT_List;
 
+  // ============================================
+  // SECTION 1: Bulk Operations & List Controls
+  // Checkbox handling, record counting, shared queue processing
+  // ============================================
+
   // Bulk Edit Field Selection state
   let bulkEditSelectedFields = [];
 
@@ -22,16 +32,9 @@
     return bulkEditSelectedFields;
   }
 
-  /***
-   * Bulk Edit
+  /**
+   * Checkbox Event Handlers
    */
-
-  $('#bulk_edit_controls').on('click', function () {
-    $('#bulk_edit_picker').toggle();
-    $('#records-table').toggleClass('bulk_edit_on');
-  });
-
-  // Old bulk_edit_seeMore handler removed - replaced with dynamic field selection
 
   function bulk_edit_checkbox_event() {
     $('tbody tr td.bulk_edit_checkbox').on('click', function (e) {
@@ -49,7 +52,308 @@
     });
   });
 
-  /***
+  /**
+   * Record Count & Button State
+   */
+
+  function updateBulkEditButtonState() {
+    const bulkEditSelectedFields = getBulkEditSelectedFields();
+    const updateButton = $('#bulk_edit_submit');
+    const hasSelectedFields =
+      bulkEditSelectedFields && bulkEditSelectedFields.length > 0;
+    const hasSelectedRecords =
+      $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length > 0;
+
+    // Enable update button only if both records and fields are selected
+    if (hasSelectedRecords && hasSelectedFields) {
+      updateButton.prop('disabled', false);
+    } else {
+      updateButton.prop('disabled', true);
+    }
+  }
+
+  function bulk_edit_count() {
+    let bulk_edit_total_checked = $(
+      '.bulk_edit_checkbox:not(#bulk_edit_master) input:checked',
+    ).length;
+    let bulk_edit_submit_button_text = $('.bulk_edit_submit_text');
+    let bulk_edit_delete_submit_button_text = $(
+      '.bulk_edit_delete_submit_text',
+    );
+    let noSelectionMessage = $('#bulk_edit_no_selection_message');
+    let actionButtons = $('#bulk_edit_action_buttons');
+
+    if (bulk_edit_total_checked == 0) {
+      // Hide buttons, show instruction message
+      noSelectionMessage.show();
+      actionButtons.hide();
+
+      bulk_edit_submit_button_text.text(
+        `${list_settings.translations.make_selections_below}`,
+      );
+
+      if (list_settings.permissions.delete_any) {
+        bulk_edit_delete_submit_button_text.text(
+          `${list_settings.translations.delete_selections_below}`,
+        );
+      }
+    } else {
+      // Show buttons, hide instruction message
+      noSelectionMessage.hide();
+      actionButtons.show();
+
+      bulk_edit_submit_button_text.each(function (index) {
+        let pretext = $(this).data('pretext');
+        let posttext = $(this).data('posttext');
+        $(this).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`);
+      });
+
+      if (list_settings.permissions.delete_any) {
+        bulk_edit_delete_submit_button_text.each(function (index) {
+          let pretext = $(this).data('pretext');
+          let posttext = $(this).data('posttext');
+          $(this).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`);
+        });
+      }
+
+      // Update update button state based on field selection
+      updateBulkEditButtonState();
+    }
+  }
+
+  /**
+   * Bulk Update Queue Processing
+   */
+
+  function process(
+    q,
+    num,
+    fn,
+    done,
+    update,
+    share,
+    comment,
+    event_type = 'update',
+    responses = [],
+  ) {
+    // remove a batch of items from the queue
+    let items = q.splice(0, num),
+      count = items.length;
+
+    // no more items?
+    if (!count) {
+      // exec done callback if specified
+      done && done(responses);
+      // quit
+      return;
+    }
+
+    // loop over each item
+    for (let i = 0; i < count; i++) {
+      // call callback, passing item and
+      // a "done" callback
+      fn(
+        items[i],
+        function (response) {
+          // capture valid response
+          if (response) {
+            if (Array.isArray(response)) {
+              response.forEach((element) => responses.push(element));
+            } else {
+              responses.push(response);
+            }
+          }
+
+          // when done, decrement counter and
+          // if counter is 0, process next batch
+          --count ||
+            process(
+              q,
+              num,
+              fn,
+              done,
+              update,
+              share,
+              comment,
+              event_type,
+              responses,
+            );
+        },
+        update,
+        share,
+        comment,
+        event_type,
+      );
+    }
+  }
+
+  // a per-item action
+  function do_each(item, done, update, share, comment, event_type) {
+    let promises = [];
+
+    switch (event_type) {
+      case 'update': {
+        if (Object.keys(update).length) {
+          promises.push(
+            window.API.update_post(list_settings.post_type, item, update).catch(
+              (err) => {
+                // Error handled silently - user will see error via UI feedback
+              },
+            ),
+          );
+        }
+
+        if (share && share['users']) {
+          share['users'].forEach(function (value) {
+            let promise = share['unshare']
+              ? window.API.remove_shared(
+                  list_settings.post_type,
+                  item,
+                  value,
+                ).catch((err) => {
+                  console.error(err);
+                })
+              : window.API.add_shared(
+                  list_settings.post_type,
+                  item,
+                  value,
+                ).catch((err) => {
+                  console.error(err);
+                });
+            promises.push(promise);
+          });
+        }
+
+        if (comment.commentText) {
+          promises.push(
+            window.API.post_comment(
+              list_settings.post_type,
+              item,
+              comment.commentText,
+              comment.commentType,
+            ).catch((err) => {
+              console.error(err);
+            }),
+          );
+        }
+
+        break;
+      }
+      case 'delete': {
+        if (list_settings.permissions.delete_any) {
+          promises.push(
+            window.API.delete_post(list_settings.post_type, item).catch(
+              (err) => {
+                console.error(err);
+              },
+            ),
+          );
+        }
+        break;
+      }
+      case 'message': {
+        if (
+          update?.subject &&
+          update?.from_name &&
+          update?.send_method &&
+          update?.message
+        ) {
+          promises.push(
+            window
+              .makeRequestOnPosts(
+                'POST',
+                `${list_settings.post_type}/${item}/post_messaging`,
+                update,
+              )
+              .catch((err) => {
+                console.error(err);
+              }),
+          );
+        }
+        break;
+      }
+    }
+    Promise.all(promises).then(function (responses) {
+      done(responses);
+    });
+  }
+
+  function do_done() {
+    $('#bulk_edit_submit-spinner').removeClass('active');
+    $('#bulk_edit_delete_submit-spinner').removeClass('active');
+    window.location.reload();
+  }
+
+  /**
+   * List Dropdown & Modal Handlers
+   */
+
+  $('.list-dropdown-submenu-item-link').on('click', function () {
+    // Hide bulk select modals
+    $('#records-table').removeClass('bulk_edit_on');
+
+    // Close all open modals
+    $('.list-dropdown-submenu-item-link').each(function () {
+      let open_modals = $(this).data('modal');
+      $('#' + open_modals).hide();
+    });
+
+    // Open modal for clicked menu item
+    let display_modal = $(this).data('modal');
+    $('#' + display_modal).show();
+
+    // Show bulk select checkboxes if applicable
+    if ($(this).data('checkboxes') === true) {
+      $('#records-table').addClass('bulk_edit_on');
+    }
+  });
+
+  $('.list-action-close-button').on('click', function () {
+    let section = $(this).data('close');
+    if (section) {
+      $(`#${section}`).hide();
+      if (section === 'bulk_edit_picker') {
+        $('#records-table').toggleClass('bulk_edit_on');
+      }
+    } else {
+      $('#list-actions .list_action_section').hide();
+      $('#records-table').removeClass('bulk_edit_on');
+    }
+  });
+
+  /**
+   * Follow Button Handler
+   */
+
+  $('button.follow').on('click', function () {
+    const current_user_id = DT_List.current_user_id;
+    let following = !($(this).data('value') === 'following');
+    $(this).data('value', following ? 'following' : '');
+    $(this).html(following ? 'Unfollow' : 'Follow');
+    $(this).toggleClass('hollow');
+    let follow = { values: [{ value: current_user_id, delete: !following }] };
+
+    let unfollow = { values: [{ value: current_user_id, delete: following }] };
+
+    $(this).data('bulk_key_follow', follow);
+    $(this).data('bulk_key_unfollow', unfollow);
+  });
+
+  // ============================================
+  // SECTION 2: Bulk Editing
+  // Field selection, field rendering, submit handling, delete
+  // ============================================
+
+  /**
+   * Bulk Edit Controls Toggle
+   */
+
+  $('#bulk_edit_controls').on('click', function () {
+    $('#bulk_edit_picker').toggle();
+    $('#records-table').toggleClass('bulk_edit_on');
+  });
+
+  /**
    * Bulk Delete
    */
 
@@ -96,8 +400,9 @@
   }
 
   /**
-   * Bulk_Assigned_to
+   * Bulk Edit Submit
    */
+
   let bulk_edit_submit_button = $('#bulk_edit_submit');
 
   // Prevent form submission (button handles it via JavaScript)
@@ -373,6 +678,10 @@
     }
   }
 
+  /**
+   * Field Value Collection
+   */
+
   function collectFieldValue(fieldKey, fieldType, fieldWrapper) {
     // Special case: comment field (not a real post field type)
     if (fieldType === 'comment') {
@@ -519,70 +828,9 @@
     }
   }
 
-  function updateBulkEditButtonState() {
-    const bulkEditSelectedFields = getBulkEditSelectedFields();
-    const updateButton = $('#bulk_edit_submit');
-    const hasSelectedFields =
-      bulkEditSelectedFields && bulkEditSelectedFields.length > 0;
-    const hasSelectedRecords =
-      $('.bulk_edit_checkbox:not(#bulk_edit_master) input:checked').length > 0;
-
-    // Enable update button only if both records and fields are selected
-    if (hasSelectedRecords && hasSelectedFields) {
-      updateButton.prop('disabled', false);
-    } else {
-      updateButton.prop('disabled', true);
-    }
-  }
-
-  function bulk_edit_count() {
-    let bulk_edit_total_checked = $(
-      '.bulk_edit_checkbox:not(#bulk_edit_master) input:checked',
-    ).length;
-    let bulk_edit_submit_button_text = $('.bulk_edit_submit_text');
-    let bulk_edit_delete_submit_button_text = $(
-      '.bulk_edit_delete_submit_text',
-    );
-    let noSelectionMessage = $('#bulk_edit_no_selection_message');
-    let actionButtons = $('#bulk_edit_action_buttons');
-
-    if (bulk_edit_total_checked == 0) {
-      // Hide buttons, show instruction message
-      noSelectionMessage.show();
-      actionButtons.hide();
-
-      bulk_edit_submit_button_text.text(
-        `${list_settings.translations.make_selections_below}`,
-      );
-
-      if (list_settings.permissions.delete_any) {
-        bulk_edit_delete_submit_button_text.text(
-          `${list_settings.translations.delete_selections_below}`,
-        );
-      }
-    } else {
-      // Show buttons, hide instruction message
-      noSelectionMessage.hide();
-      actionButtons.show();
-
-      bulk_edit_submit_button_text.each(function (index) {
-        let pretext = $(this).data('pretext');
-        let posttext = $(this).data('posttext');
-        $(this).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`);
-      });
-
-      if (list_settings.permissions.delete_any) {
-        bulk_edit_delete_submit_button_text.each(function (index) {
-          let pretext = $(this).data('pretext');
-          let posttext = $(this).data('posttext');
-          $(this).text(`${pretext} ${bulk_edit_total_checked} ${posttext}`);
-        });
-      }
-
-      // Update update button state based on field selection
-      updateBulkEditButtonState();
-    }
-  }
+  /**
+   * Bulk Edit Picker Handlers
+   */
 
   let bulk_edit_picker_checkboxes = $('#bulk_edit_picker .update-needed');
   bulk_edit_picker_checkboxes.on('click', function (e) {
@@ -610,165 +858,9 @@
     $(this).data(`bulk_key_${field_key}`, fieldValue);
   });
 
-  //Bulk Update Queue
-  function process(
-    q,
-    num,
-    fn,
-    done,
-    update,
-    share,
-    comment,
-    event_type = 'update',
-    responses = [],
-  ) {
-    // remove a batch of items from the queue
-    let items = q.splice(0, num),
-      count = items.length;
-
-    // no more items?
-    if (!count) {
-      // exec done callback if specified
-      done && done(responses);
-      // quit
-      return;
-    }
-
-    // loop over each item
-    for (let i = 0; i < count; i++) {
-      // call callback, passing item and
-      // a "done" callback
-      fn(
-        items[i],
-        function (response) {
-          // capture valid response
-          if (response) {
-            if (Array.isArray(response)) {
-              response.forEach((element) => responses.push(element));
-            } else {
-              responses.push(response);
-            }
-          }
-
-          // when done, decrement counter and
-          // if counter is 0, process next batch
-          --count ||
-            process(
-              q,
-              num,
-              fn,
-              done,
-              update,
-              share,
-              comment,
-              event_type,
-              responses,
-            );
-        },
-        update,
-        share,
-        comment,
-        event_type,
-      );
-    }
-  }
-
-  // a per-item action
-  function do_each(item, done, update, share, comment, event_type) {
-    let promises = [];
-
-    switch (event_type) {
-      case 'update': {
-        if (Object.keys(update).length) {
-          promises.push(
-            window.API.update_post(list_settings.post_type, item, update).catch(
-              (err) => {
-                // Error handled silently - user will see error via UI feedback
-              },
-            ),
-          );
-        }
-
-        if (share && share['users']) {
-          share['users'].forEach(function (value) {
-            let promise = share['unshare']
-              ? window.API.remove_shared(
-                  list_settings.post_type,
-                  item,
-                  value,
-                ).catch((err) => {
-                  console.error(err);
-                })
-              : window.API.add_shared(
-                  list_settings.post_type,
-                  item,
-                  value,
-                ).catch((err) => {
-                  console.error(err);
-                });
-            promises.push(promise);
-          });
-        }
-
-        if (comment.commentText) {
-          promises.push(
-            window.API.post_comment(
-              list_settings.post_type,
-              item,
-              comment.commentText,
-              comment.commentType,
-            ).catch((err) => {
-              console.error(err);
-            }),
-          );
-        }
-
-        break;
-      }
-      case 'delete': {
-        if (list_settings.permissions.delete_any) {
-          promises.push(
-            window.API.delete_post(list_settings.post_type, item).catch(
-              (err) => {
-                console.error(err);
-              },
-            ),
-          );
-        }
-        break;
-      }
-      case 'message': {
-        if (
-          update?.subject &&
-          update?.from_name &&
-          update?.send_method &&
-          update?.message
-        ) {
-          promises.push(
-            window
-              .makeRequestOnPosts(
-                'POST',
-                `${list_settings.post_type}/${item}/post_messaging`,
-                update,
-              )
-              .catch((err) => {
-                console.error(err);
-              }),
-          );
-        }
-        break;
-      }
-    }
-    Promise.all(promises).then(function (responses) {
-      done(responses);
-    });
-  }
-
-  function do_done() {
-    $('#bulk_edit_submit-spinner').removeClass('active');
-    $('#bulk_edit_delete_submit-spinner').removeClass('active');
-    window.location.reload();
-  }
+  /**
+   * Bulk Assigned To Typeahead
+   */
 
   let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`);
   if (bulk_assigned_to_input.length) {
@@ -823,121 +915,9 @@
   }
 
   /**
-   * Bulk Send Message
+   * Bulk Share Typeahead
    */
 
-  $('#bulk_send_msg_submit').on('click', function (e) {
-    handle_bulk_send_messages();
-  });
-
-  function handle_bulk_send_messages() {
-    const spinner = $('#bulk_send_msg_submit-spinner');
-
-    let subject = $('#bulk_send_msg_subject').val().trim();
-    let from_name = $('#bulk_send_msg_from_name').val().trim();
-    let reply_to = $('#bulk_send_msg_reply_to').val().trim();
-    let send_method = 'email';
-    let message = $('#bulk_send_msg').val().trim();
-
-    // If multiple options detected, ensure correct selection is made.
-    const checked_send_method = $('.bulk-send-msg-method:checked');
-    if ($(checked_send_method).length > 0) {
-      send_method = $(checked_send_method).val().trim();
-    }
-
-    let queue = [];
-    $('.bulk_edit_checkbox input').each(function () {
-      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
-        queue.push(parseInt($(this).val()));
-      }
-    });
-
-    // Validate entries.
-    if (!subject) {
-      $('#bulk_send_msg_subject_support_text').show();
-      return;
-    } else {
-      $('#bulk_send_msg_subject_support_text').hide();
-    }
-
-    if (!from_name) {
-      $('#bulk_send_msg_from_name_support_text').show();
-      return;
-    } else {
-      $('#bulk_send_msg_from_name_support_text').hide();
-    }
-
-    if (!send_method) {
-      $('#bulk_send_msg_method_support_text').show();
-      return;
-    } else {
-      $('#bulk_send_msg_method_support_text').hide();
-    }
-
-    if (!message) {
-      $('#bulk_send_msg_support_text').show();
-      return;
-    } else {
-      $('#bulk_send_msg_support_text').hide();
-    }
-
-    if (!queue || queue.length < 1) {
-      $('#bulk_send_msg_submit_support_text').show();
-      return;
-    } else {
-      $('#bulk_send_msg_submit_support_text').hide();
-    }
-
-    // Proceed with staged-based message send requests.
-    $(spinner).addClass('active');
-    process(
-      queue,
-      10,
-      do_each,
-      function (responses) {
-        // If available, extract response summary.
-        if (responses && responses.length > 0) {
-          let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">${list_settings.translations.see_queue}</a>`;
-          let count_sent = 0;
-          let count_fails = 0;
-          responses.forEach(function (response) {
-            if (response && response['sent'] !== undefined) {
-              if (response['sent']) {
-                count_sent++;
-              } else {
-                count_fails++;
-              }
-            }
-          });
-
-          $('#bulk_send_msg_submit-message').html(
-            `<strong>${count_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : ''}<br><strong>${count_fails}</strong> ${list_settings.translations.not_sent}`,
-          );
-        }
-
-        // Reset record selections.
-        $(spinner).removeClass('active');
-        $('#bulk_edit_master_checkbox').prop('checked', false);
-        $('.bulk_edit_checkbox input').prop('checked', false);
-        bulk_edit_count();
-        // window.location.reload();
-      },
-      {
-        subject: subject,
-        from_name: from_name,
-        reply_to: reply_to,
-        send_method: send_method,
-        message: message,
-      },
-      {},
-      {},
-      'message',
-    );
-  }
-
-  /**
-   * Bulk share (only initialize if element exists - field may be dynamically added)
-   */
   let bulk_share_input = $('#bulk_share');
   if (bulk_share_input.length) {
     $.typeahead({
@@ -987,130 +967,8 @@
   }
 
   /**
-   * Bulk Typeahead
+   * Bulk Edit Field Selection with dt-multi-select
    */
-
-  $('button.follow').on('click', function () {
-    const current_user_id = DT_List.current_user_id;
-    let following = !($(this).data('value') === 'following');
-    $(this).data('value', following ? 'following' : '');
-    $(this).html(following ? 'Unfollow' : 'Follow');
-    $(this).toggleClass('hollow');
-    let follow = { values: [{ value: current_user_id, delete: !following }] };
-
-    let unfollow = { values: [{ value: current_user_id, delete: following }] };
-
-    $(this).data('bulk_key_follow', follow);
-    $(this).data('bulk_key_unfollow', unfollow);
-  });
-
-  $('.list-dropdown-submenu-item-link').on('click', function () {
-    // Hide bulk select modals
-    $('#records-table').removeClass('bulk_edit_on');
-
-    // Close all open modals
-    $('.list-dropdown-submenu-item-link').each(function () {
-      let open_modals = $(this).data('modal');
-      $('#' + open_modals).hide();
-    });
-
-    // Open modal for clicked menu item
-    let display_modal = $(this).data('modal');
-    $('#' + display_modal).show();
-
-    // Show bulk select checkboxes if applicable
-    if ($(this).data('checkboxes') === true) {
-      $('#records-table').addClass('bulk_edit_on');
-    }
-  });
-
-  $('.list-action-close-button').on('click', function () {
-    let section = $(this).data('close');
-    if (section) {
-      $(`#${section}`).hide();
-      if (section === 'bulk_edit_picker') {
-        $('#records-table').toggleClass('bulk_edit_on');
-      }
-    } else {
-      $('#list-actions .list_action_section').hide();
-      $('#records-table').removeClass('bulk_edit_on');
-    }
-  });
-
-  /*****
-   * Bulk Send App
-   */
-  let bulk_send_app_button = $('#bulk_send_app_submit');
-  bulk_send_app_button.on('click', function (e) {
-    bulk_send_app();
-  });
-
-  function bulk_send_app() {
-    let subject = $('#bulk_send_app_subject').val();
-    let note = $('#bulk_send_app_msg').val();
-
-    let selected_input = jQuery(
-      '.bulk_send_app.dt-radio.button-group input:checked',
-    );
-    if (selected_input.length < 1) {
-      $('#bulk_send_app_required_selection').show();
-      return;
-    } else {
-      $('#bulk_send_app_required_selection').hide();
-    }
-
-    let root = selected_input.data('root');
-    let type = selected_input.data('type');
-
-    let queue = [];
-    $('.bulk_edit_checkbox input').each(function () {
-      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
-        let postId = parseInt($(this).val());
-        queue.push(postId);
-      }
-    });
-
-    if (queue.length < 1) {
-      $('#bulk_send_app_required_elements').show();
-      return;
-    } else {
-      $('#bulk_send_app_required_elements').hide();
-    }
-
-    $('#bulk_send_app_submit-spinner').addClass('active');
-
-    let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">See queue</a>`;
-
-    window
-      .makeRequest('POST', list_settings.post_type + '/email_magic', {
-        root: root,
-        type: type,
-        subject: subject,
-        note: note,
-        post_ids: queue,
-      })
-      .done((data) => {
-        $('#bulk_send_app_submit-spinner').removeClass('active');
-        $('#bulk_send_app_submit-message').html(
-          `<strong>${data.total_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : ''}<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`,
-        );
-        $('#bulk_edit_master_checkbox').prop('checked', false);
-        $('.bulk_edit_checkbox input').prop('checked', false);
-        bulk_edit_count();
-        // window.location.reload();
-      })
-      .fail((e) => {
-        $('#bulk_send_app_submit-spinner').removeClass('active');
-        $('#bulk_send_app_submit-message').html(
-          'Oops. Something went wrong! Check log.',
-        );
-        console.log(e);
-      });
-  }
-
-  // ============================================
-  // Bulk Edit Field Selection with dt-multi-select
-  // ============================================
 
   // Transform field definitions to dt-multi-select format
   // Note: We include ALL available fields (including selected ones) in options
@@ -1427,6 +1285,10 @@
       });
     }
   }
+
+  /**
+   * Field Rendering
+   */
 
   function renderBulkEditField(
     fieldKey,
@@ -1758,43 +1620,9 @@
     // No per-field-type initialization needed
   }
 
-  // Remove field when clicking X button
-  $(document).on('click', '.bulk-edit-remove-field-btn', function () {
-    const fieldKey = $(this).data('field-key');
-
-    // Remove from selected fields array
-    bulkEditSelectedFields = bulkEditSelectedFields.filter(
-      (f) => f.fieldKey !== fieldKey,
-    );
-
-    // Remove field wrapper from DOM
-    $(`.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`).remove();
-
-    // Update hidden input
-    updateBulkEditSelectedFieldsInput();
-
-    // Update update button state based on field selection
-    updateBulkEditButtonState();
-
-    // Update dt-multi-select to remove the field from selection
-    const fieldSelector = document.querySelector(
-      'dt-multi-select[name="bulk_edit_field_selector"]',
-    );
-    if (fieldSelector) {
-      const currentValue = fieldSelector.value || [];
-      fieldSelector.value = currentValue.filter((v) => {
-        const id = typeof v === 'string' ? v : v.id;
-        return id !== fieldKey;
-      });
-      // Update options to show the field again
-      updateFieldSelectorOptions();
-    }
-  });
-
-  function updateBulkEditSelectedFieldsInput() {
-    const fieldKeys = bulkEditSelectedFields.map((f) => f.fieldKey);
-    $('#bulk_edit_selected_fields_input').val(JSON.stringify(fieldKeys));
-  }
+  /**
+   * Field Clear/Restore Handlers
+   */
 
   function supportsFieldClearing(fieldType) {
     // Fields that support clearing/unsetting
@@ -1872,6 +1700,238 @@
     // Update update button state (field is no longer cleared)
     updateBulkEditButtonState();
   });
+
+  // Remove field when clicking X button
+  $(document).on('click', '.bulk-edit-remove-field-btn', function () {
+    const fieldKey = $(this).data('field-key');
+
+    // Remove from selected fields array
+    bulkEditSelectedFields = bulkEditSelectedFields.filter(
+      (f) => f.fieldKey !== fieldKey,
+    );
+
+    // Remove field wrapper from DOM
+    $(`.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`).remove();
+
+    // Update hidden input
+    updateBulkEditSelectedFieldsInput();
+
+    // Update update button state based on field selection
+    updateBulkEditButtonState();
+
+    // Update dt-multi-select to remove the field from selection
+    const fieldSelector = document.querySelector(
+      'dt-multi-select[name="bulk_edit_field_selector"]',
+    );
+    if (fieldSelector) {
+      const currentValue = fieldSelector.value || [];
+      fieldSelector.value = currentValue.filter((v) => {
+        const id = typeof v === 'string' ? v : v.id;
+        return id !== fieldKey;
+      });
+      // Update options to show the field again
+      updateFieldSelectorOptions();
+    }
+  });
+
+  function updateBulkEditSelectedFieldsInput() {
+    const fieldKeys = bulkEditSelectedFields.map((f) => f.fieldKey);
+    $('#bulk_edit_selected_fields_input').val(JSON.stringify(fieldKeys));
+  }
+
+  // ============================================
+  // SECTION 3: Bulk Messaging
+  // Send messages and app notifications
+  // ============================================
+
+  /**
+   * Bulk Send Message
+   */
+
+  $('#bulk_send_msg_submit').on('click', function (e) {
+    handle_bulk_send_messages();
+  });
+
+  function handle_bulk_send_messages() {
+    const spinner = $('#bulk_send_msg_submit-spinner');
+
+    let subject = $('#bulk_send_msg_subject').val().trim();
+    let from_name = $('#bulk_send_msg_from_name').val().trim();
+    let reply_to = $('#bulk_send_msg_reply_to').val().trim();
+    let send_method = 'email';
+    let message = $('#bulk_send_msg').val().trim();
+
+    // If multiple options detected, ensure correct selection is made.
+    const checked_send_method = $('.bulk-send-msg-method:checked');
+    if ($(checked_send_method).length > 0) {
+      send_method = $(checked_send_method).val().trim();
+    }
+
+    let queue = [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        queue.push(parseInt($(this).val()));
+      }
+    });
+
+    // Validate entries.
+    if (!subject) {
+      $('#bulk_send_msg_subject_support_text').show();
+      return;
+    } else {
+      $('#bulk_send_msg_subject_support_text').hide();
+    }
+
+    if (!from_name) {
+      $('#bulk_send_msg_from_name_support_text').show();
+      return;
+    } else {
+      $('#bulk_send_msg_from_name_support_text').hide();
+    }
+
+    if (!send_method) {
+      $('#bulk_send_msg_method_support_text').show();
+      return;
+    } else {
+      $('#bulk_send_msg_method_support_text').hide();
+    }
+
+    if (!message) {
+      $('#bulk_send_msg_support_text').show();
+      return;
+    } else {
+      $('#bulk_send_msg_support_text').hide();
+    }
+
+    if (!queue || queue.length < 1) {
+      $('#bulk_send_msg_submit_support_text').show();
+      return;
+    } else {
+      $('#bulk_send_msg_submit_support_text').hide();
+    }
+
+    // Proceed with staged-based message send requests.
+    $(spinner).addClass('active');
+    process(
+      queue,
+      10,
+      do_each,
+      function (responses) {
+        // If available, extract response summary.
+        if (responses && responses.length > 0) {
+          let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">${list_settings.translations.see_queue}</a>`;
+          let count_sent = 0;
+          let count_fails = 0;
+          responses.forEach(function (response) {
+            if (response && response['sent'] !== undefined) {
+              if (response['sent']) {
+                count_sent++;
+              } else {
+                count_fails++;
+              }
+            }
+          });
+
+          $('#bulk_send_msg_submit-message').html(
+            `<strong>${count_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : ''}<br><strong>${count_fails}</strong> ${list_settings.translations.not_sent}`,
+          );
+        }
+
+        // Reset record selections.
+        $(spinner).removeClass('active');
+        $('#bulk_edit_master_checkbox').prop('checked', false);
+        $('.bulk_edit_checkbox input').prop('checked', false);
+        bulk_edit_count();
+        // window.location.reload();
+      },
+      {
+        subject: subject,
+        from_name: from_name,
+        reply_to: reply_to,
+        send_method: send_method,
+        message: message,
+      },
+      {},
+      {},
+      'message',
+    );
+  }
+
+  /**
+   * Bulk Send App
+   */
+
+  let bulk_send_app_button = $('#bulk_send_app_submit');
+  bulk_send_app_button.on('click', function (e) {
+    bulk_send_app();
+  });
+
+  function bulk_send_app() {
+    let subject = $('#bulk_send_app_subject').val();
+    let note = $('#bulk_send_app_msg').val();
+
+    let selected_input = jQuery(
+      '.bulk_send_app.dt-radio.button-group input:checked',
+    );
+    if (selected_input.length < 1) {
+      $('#bulk_send_app_required_selection').show();
+      return;
+    } else {
+      $('#bulk_send_app_required_selection').hide();
+    }
+
+    let root = selected_input.data('root');
+    let type = selected_input.data('type');
+
+    let queue = [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        let postId = parseInt($(this).val());
+        queue.push(postId);
+      }
+    });
+
+    if (queue.length < 1) {
+      $('#bulk_send_app_required_elements').show();
+      return;
+    } else {
+      $('#bulk_send_app_required_elements').hide();
+    }
+
+    $('#bulk_send_app_submit-spinner').addClass('active');
+
+    let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">See queue</a>`;
+
+    window
+      .makeRequest('POST', list_settings.post_type + '/email_magic', {
+        root: root,
+        type: type,
+        subject: subject,
+        note: note,
+        post_ids: queue,
+      })
+      .done((data) => {
+        $('#bulk_send_app_submit-spinner').removeClass('active');
+        $('#bulk_send_app_submit-message').html(
+          `<strong>${data.total_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : ''}<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`,
+        );
+        $('#bulk_edit_master_checkbox').prop('checked', false);
+        $('.bulk_edit_checkbox input').prop('checked', false);
+        bulk_edit_count();
+        // window.location.reload();
+      })
+      .fail((e) => {
+        $('#bulk_send_app_submit-spinner').removeClass('active');
+        $('#bulk_send_app_submit-message').html(
+          'Oops. Something went wrong! Check log.',
+        );
+        console.log(e);
+      });
+  }
+
+  // ============================================
+  // Module Registration
+  // ============================================
 
   // Register this module with DT_List
   DT_List.bulk = {
