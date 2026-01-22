@@ -373,7 +373,8 @@ function dt_display_tile( $tile, $post ): bool {
                                         </div>
                                     </div>
                                 </section>
-                            <?php } ?>
+                            <?php }
+                            do_action( 'dt_record_bottom_after_tiles', $post_type, $dt_post ); ?>
                         </div>
                     </div>
                     <?php do_action( 'dt_record_bottom_below_tiles', $post_type, $dt_post ); ?>
