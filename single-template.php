@@ -303,13 +303,9 @@ function dt_display_tile( $tile, $post ): bool {
                     <div class="cell small-12">
                         <div class="grid-x grid-margin-x grid-margin-y grid">
                             <?php
-                            // Render genmap first if it exists
-                            if ( isset( $tiles['genmap'] ) && ( !isset( $tiles['genmap']['hidden'] ) || !$tiles['genmap']['hidden'] ) ) {
-                                do_action( 'dt_record_bottom_after_tiles', $post_type, $dt_post );
-                            }
                             foreach ( $tiles as $tile_key => $tile_options ){
                                 $class = '';
-                                if ( in_array( $tile_key, [ 'details', 'status', 'genmap' ] ) ){
+                                if ( in_array( $tile_key, [ 'details', 'status' ] ) ){
                                     continue;
                                 }
                                 if ( ( isset( $tile_options['hidden'] ) && $tile_options['hidden'] ) ) {
@@ -377,8 +373,7 @@ function dt_display_tile( $tile, $post ): bool {
                                         </div>
                                     </div>
                                 </section>
-                            <?php }
-                            do_action( 'dt_record_bottom_after_tiles', $post_type, $dt_post ); ?>
+                            <?php } ?>
                         </div>
                     </div>
                     <?php do_action( 'dt_record_bottom_below_tiles', $post_type, $dt_post ); ?>

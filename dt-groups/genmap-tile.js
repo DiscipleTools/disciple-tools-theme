@@ -101,58 +101,6 @@
             display: none !important;
           }
         }
-        /* Vertical layout connection line fixes */
-        .group-genmap-chart .orgchart.t2b .nodes {
-          justify-content: center !important;
-        }
-        /* Ensure hierarchy containers center their nodes */
-        .group-genmap-chart .orgchart.t2b .hierarchy {
-          text-align: center !important;
-        }
-        /* Vertical mode: Set specific left position for horizontal connecting line */
-        .group-genmap-chart .orgchart.t2b .hierarchy::before {
-          border-top: 2px solid var(--dt-blue-o) !important;
-          left: 40px !important;
-          width: 100% !important;
-        }
-        /* Vertical mode: First child uses specific left position */
-        .group-genmap-chart .orgchart.t2b .hierarchy:first-child::before,
-        .group-genmap-chart .orgchart.t2b .hierarchy.isSiblingsCollapsed.left-sibs::before {
-          left: 65px !important;
-          width: calc(50% + 1px) !important;
-        }
-        /* Vertical mode: Last child starts from left, extends to center */
-        .group-genmap-chart .orgchart.t2b .hierarchy:last-child::before,
-        .group-genmap-chart .orgchart.t2b .hierarchy.isSiblingsCollapsed.right-sibs::before {
-          left: 0 !important;
-          width: calc(50% + 1px) !important;
-        }
-        /* Vertical mode: Only child - centered vertical line connecting to parent */
-        .group-genmap-chart .orgchart.t2b .hierarchy:not(.hidden):only-child::before {
-          left: calc(50% - 1px) !important;
-          width: 2px !important;
-          border-top: none !important;
-          border-left: none !important;
-          border-right: none !important;
-          border-bottom: 2px solid var(--dt-blue-o) !important;
-          height: 11px !important;
-        }
-        /* Ensure vertical line from parent node is centered */
-        .group-genmap-chart .orgchart.t2b .node:not(:only-child)::after {
-          left: calc(50% - 1px) !important;
-        }
-        /* Ensure vertical line to parent node is centered (all levels) */
-        .group-genmap-chart .orgchart.t2b ul li ul li > .node::before {
-          left: calc(50% - 1px) !important;
-        }
-        /* Horizontal mode: Revert to base CSS defaults (let base CSS handle it) */
-        .group-genmap-chart .orgchart.l2r .hierarchy::before {
-          left: 0 !important;
-        }
-        .group-genmap-chart .orgchart.l2r .hierarchy:first-child::before,
-        .group-genmap-chart .orgchart.l2r .hierarchy.isSiblingsCollapsed.left-sibs::before {
-          left: 25px !important;
-        }
       `;
       document.head.appendChild(style);
     }
@@ -166,8 +114,7 @@
     const layoutToggle = $('#group-genmap-layout-toggle');
     const currentLayout = getDefaultLayout();
 
-    // Show toggle only on desktop and only for legacy orgchart (not D3)
-    // D3 visualization will hide it when rendering
+    // Show toggle on desktop (D3 visualization will show it when rendering)
     if (!isMobileView()) {
       layoutToggle.show();
       updateLayoutToggleIcon(currentLayout);
@@ -236,23 +183,11 @@
         // Store genmap data for layout switching
         wrapper.data('currentGenmapData', sanitizedGenmap);
 
-        // Phase 3: Use D3.js visualization - check stored preference or default
-        // Store preference in wrapper data so layout toggle can access it
-        let useD3Visualization = wrapper.data('useD3Visualization');
-        if (useD3Visualization === undefined) {
-          // Default to D3.js visualization
-          useD3Visualization = true;
-          wrapper.data('useD3Visualization', useD3Visualization);
-        }
-
-        // Store current layout for tile size management (even for D3)
+        // Store current layout for tile size management
         wrapper.data('currentLayout', currentLayout);
 
-        if (useD3Visualization && typeof d3 !== 'undefined') {
-          renderD3Chart(wrapper, sanitizedGenmap, currentLayout);
-        } else {
-          renderChart(wrapper, sanitizedGenmap, currentLayout);
-        }
+        // Render with D3.js visualization
+        renderD3Chart(wrapper, sanitizedGenmap, currentLayout);
       })
       .fail(() => {
         setMessage(wrapper, 'error');
@@ -260,183 +195,6 @@
       .always(() => {
         wrapper.addClass('group-genmap-loaded');
       });
-  }
-
-  function renderChart(wrapper, genmap, layout = null) {
-    if (!genmap) {
-      setMessage(wrapper, 'empty');
-      return;
-    }
-
-    const currentLayout =
-      layout || wrapper.data('currentLayout') || getDefaultLayout();
-    wrapper.data('currentLayout', currentLayout);
-
-    const container = wrapper.find('.group-genmap-chart');
-    container.empty();
-    container
-      .css({
-        overflow: 'auto',
-        width: '100%',
-      })
-      .removeClass('group-genmap-chart--ready');
-
-    const nodeTemplate = function (data) {
-      return `
-        <div class="title" data-item-id="${window.lodash.escape(data.id)}" title="${window.lodash.escape(data.name || '')}">${window.lodash.escape(data.name || '')}</div>
-        <div class="content" style="padding: 2px;">${window.lodash.escape(data.content || '')}</div>
-      `;
-    };
-
-    const orgchart = container.orgchart({
-      data: genmap,
-      nodeContent: 'content',
-      direction: currentLayout,
-      nodeTemplate: nodeTemplate,
-      createNode: function ($node, data) {
-        const sharedFlag = String(data.shared ?? '1');
-        $node.attr('data-shared', sharedFlag);
-
-        if (data.statusColor) {
-          $node.css('background-color', data.statusColor);
-          $node
-            .find('.title, .content')
-            .css('background-color', data.statusColor);
-          $node.find('.content').css('border', '0');
-        }
-
-        if (data.isNonShared) {
-          $node.addClass('group-genmap-node-private');
-        }
-      },
-    });
-
-    // Bind click handler for node selection.
-    container.off('click', '.node');
-    container.on('click', '.node', function () {
-      const node = $(this);
-      if (String(node.data('shared')) === '0') {
-        return;
-      }
-      const nodeId = node.attr('id');
-      const parentId = node.data('parent') || 0;
-      if (!nodeId) {
-        return;
-      }
-
-      // Remove previous selection
-      container.find('.node').removeClass('group-genmap-node-selected');
-      // Add selection to current node
-      node.addClass('group-genmap-node-selected');
-
-      openGenmapDetails(wrapper, nodeId, parentId, 'groups');
-    });
-
-    // Keep a handle for potential future use/debugging.
-    wrapper.data('orgchartInstance', orgchart);
-    adjustCanvasSize(container);
-    container.addClass('group-genmap-chart--ready');
-    setMessage(wrapper, 'ready');
-
-    // Update layout toggle icon
-    updateLayoutToggleIcon(currentLayout);
-
-    // Update section width based on layout
-    updateSectionWidth(currentLayout);
-
-    // Apply dynamic styles for connection lines after chart renders
-    applyConnectionLineStyles(container, currentLayout);
-
-    // Recalculate Masonry grid after chart has fully rendered and we have final dimensions
-    // This ensures the grid positions tiles correctly with the final chart size
-    setTimeout(() => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          recalculateMasonryGrid();
-        });
-      });
-    }, 300); // Delay to ensure chart is fully rendered and dimensions are final
-  }
-
-  function applyConnectionLineStyles(container, layout) {
-    // Use setTimeout to ensure chart is fully rendered before applying styles
-    setTimeout(() => {
-      // Remove any existing dynamic style tag
-      const existingStyleId = 'group-genmap-dynamic-connection-styles';
-      const existingStyle = document.getElementById(existingStyleId);
-      if (existingStyle) {
-        existingStyle.remove();
-      }
-
-      // Create style tag with high specificity targeting the specific chart
-      const style = document.createElement('style');
-      style.id = existingStyleId;
-
-      if (layout === 't2b') {
-        // Vertical mode: Apply specific pixel values with maximum specificity
-        style.textContent = `
-          #group-genmap-tile .group-genmap-chart .orgchart.t2b .hierarchy::before {
-            left: 40px !important;
-            width: 100% !important;
-          }
-          #group-genmap-tile .group-genmap-chart .orgchart.t2b .hierarchy:first-child::before,
-          #group-genmap-tile .group-genmap-chart .orgchart.t2b .hierarchy.isSiblingsCollapsed.left-sibs::before {
-            left: 65px !important;
-            width: calc(50% + 1px) !important;
-          }
-          #group-genmap-tile .group-genmap-chart .orgchart.t2b .hierarchy:last-child::before,
-          #group-genmap-tile .group-genmap-chart .orgchart.t2b .hierarchy.isSiblingsCollapsed.right-sibs::before {
-            left: 0 !important;
-            width: calc(50% + 1px) !important;
-          }
-          /* styles of link lines */
-          .orgchart .hierarchy::before {
-              content: "";
-              position: absolute;
-              top: -11px; /* -(background square size + half width of line) */
-              left: 65px !important;
-              border-top: 2px solid var(--dt-blue-o);
-              box-sizing: border-box;
-          }
-          .orgchart .hierarchy:last-child::before, .orgchart .hierarchy.isSiblingsCollapsed.right-sibs::before {
-              width: 0 !important;
-          }
-        `;
-      } else {
-        // Horizontal mode: Revert to defaults
-        style.textContent = `
-          #group-genmap-tile .group-genmap-chart .orgchart.l2r .hierarchy::before {
-            left: 0 !important;
-          }
-          #group-genmap-tile .group-genmap-chart .orgchart.l2r .hierarchy:first-child::before,
-          #group-genmap-tile .group-genmap-chart .orgchart.l2r .hierarchy.isSiblingsCollapsed.left-sibs::before {
-            left: 25px !important;
-          }
-        `;
-      }
-
-      document.head.appendChild(style);
-    }, 100); // Small delay to ensure DOM is ready
-  }
-
-  function adjustCanvasSize(container) {
-    const orgchartEl = container.find('.orgchart');
-    if (!orgchartEl.length) {
-      return;
-    }
-
-    const chartHeight = orgchartEl.outerHeight(true) || MIN_CANVAS_HEIGHT;
-    const computedHeight = Math.min(
-      Math.max(chartHeight + 32, MIN_CANVAS_HEIGHT),
-      MAX_CANVAS_HEIGHT,
-    );
-    container.height(computedHeight);
-
-    const chartWidth = orgchartEl.outerWidth(true);
-    if (chartWidth > container.innerWidth()) {
-      const scrollLeft = (chartWidth - container.innerWidth()) / 2;
-      container.scrollLeft(scrollLeft);
-    }
   }
 
   function sanitizeNode(node) {
@@ -467,13 +225,13 @@
       sanitized.isNonShared = true;
     }
 
-    // Map status to statusColor - matching legacy flow behavior
+    // Map status to statusColor
     // The API returns only 'status' property (e.g., "active"), we need to map it to statusColor
     // using dtGroupGenmap.statusField.colors object
     const archivedKey = window.dtGroupGenmap?.statusField?.archived_key || '';
     const colors = window.dtGroupGenmap?.statusField?.colors || {};
 
-    // Always compute statusColor from status property (matching legacy flow)
+    // Compute statusColor from status property
     // This ensures statusColor is set before data flows to D3 visualization
     if (sanitized.status) {
       // Direct lookup in colors object - status value should match the key
@@ -576,7 +334,7 @@
       // Display properties
       displayName: ellipsizeName(node.name || '', 15),
 
-      // Status and color - ensure statusColor is computed from status
+      // Status and color - compute statusColor from status
       statusColor:
         node.statusColor ||
         (() => {
@@ -1270,10 +1028,7 @@
     const NODE_HALF_WIDTH = 30; // 60px / 2
     const NODE_HALF_HEIGHT = 15; // 30px / 2
 
-    // Create link generator with Bézier curves connecting to node edges
-    // DEBUG: Set to true to log coordinate calculations to console
-    const DEBUG_LINKS = false;
-
+    // Create link generator connecting to node edges
     const linkPath = (link) => {
       // Calculate source and target coordinates directly
       let sourceX, sourceY, targetX, targetY;
@@ -1291,28 +1046,6 @@
         // Use straight line instead of Bézier curve for cleaner connections
         // Direct path: M (sourceX, sourceY) L (targetX, targetY)
         const pathData = `M${sourceX},${sourceY}L${targetX},${targetY}`;
-
-        if (DEBUG_LINKS) {
-          console.log('l2r link:', {
-            link: link, // Full link object for reference
-            linkId: `${link.source.data?.id || 'unknown'}-${link.target.data?.id || 'unknown'}`,
-            sourceNode: {
-              id: link.source.data?.id,
-              name: link.source.data?.displayName || link.source.data?.name,
-              x: link.source.x,
-              y: link.source.y,
-            },
-            targetNode: {
-              id: link.target.data?.id,
-              name: link.target.data?.displayName || link.target.data?.name,
-              x: link.target.x,
-              y: link.target.y,
-            },
-            sourceEdge: { x: sourceX, y: sourceY },
-            targetEdge: { x: targetX, y: targetY },
-            pathData: pathData, // Generated path string
-          });
-        }
 
         return pathData;
       } else {
@@ -1335,35 +1068,6 @@
         // Use straight line instead of Bézier curve for cleaner connections
         // Direct path: M (sourceX, sourceY) L (targetX, targetY)
         const pathData = `M${sourceX},${sourceY}L${targetX},${targetY}`;
-
-        if (DEBUG_LINKS) {
-          console.log('t2b link:', {
-            link: link, // Full link object for reference
-            linkId: `${link.source.data?.id || 'unknown'}-${link.target.data?.id || 'unknown'}`,
-            svgSource: { x: svgSourceX, y: svgSourceY },
-            svgTarget: { x: svgTargetX, y: svgTargetY },
-            sourceNode: {
-              id: link.source.data?.id,
-              name: link.source.data?.displayName || link.source.data?.name,
-              x: link.source.x,
-              y: link.source.y,
-              svgX: link.source.y,
-              svgY: link.source.x,
-            },
-            targetNode: {
-              id: link.target.data?.id,
-              name: link.target.data?.displayName || link.target.data?.name,
-              x: link.target.x,
-              y: link.target.y,
-              svgX: link.target.y,
-              svgY: link.target.x,
-            },
-            sourceEdge: { x: sourceX, y: sourceY },
-            targetEdge: { x: targetX, y: targetY },
-            nodeTransform: `translate(${link.source.y},${link.source.x}) -> translate(${link.target.y},${link.target.x})`,
-            pathData: pathData, // Generated path string
-          });
-        }
 
         return pathData;
       }
@@ -1826,9 +1530,6 @@
       graphOrientation = getGraphOrientationFromSection(wrapper);
     }
 
-    // DEBUG: Uncomment to log orientation detection
-    // console.log('renderD3Chart orientation:', { currentLayout, graphOrientation, sectionClasses: jQuery('#genmap').attr('class') });
-
     // Transform data to D3 hierarchy
     const root = transformToD3Hierarchy(genmapData);
     if (!root) {
@@ -1884,10 +1585,7 @@
     const NODE_HALF_WIDTH = 30; // 60px / 2
     const NODE_HALF_HEIGHT = 15; // 30px / 2
 
-    // Create link generator with Bézier curves connecting to node edges
-    // DEBUG: Set to true to log coordinate calculations to console
-    const DEBUG_LINKS = false;
-
+    // Create link generator connecting to node edges
     const linkPath = (link) => {
       // Calculate source and target coordinates directly
       let sourceX, sourceY, targetX, targetY;
@@ -1905,28 +1603,6 @@
         // Use straight line instead of Bézier curve for cleaner connections
         // Direct path: M (sourceX, sourceY) L (targetX, targetY)
         const pathData = `M${sourceX},${sourceY}L${targetX},${targetY}`;
-
-        if (DEBUG_LINKS) {
-          console.log('l2r link:', {
-            link: link, // Full link object for reference
-            linkId: `${link.source.data?.id || 'unknown'}-${link.target.data?.id || 'unknown'}`,
-            sourceNode: {
-              id: link.source.data?.id,
-              name: link.source.data?.displayName || link.source.data?.name,
-              x: link.source.x,
-              y: link.source.y,
-            },
-            targetNode: {
-              id: link.target.data?.id,
-              name: link.target.data?.displayName || link.target.data?.name,
-              x: link.target.x,
-              y: link.target.y,
-            },
-            sourceEdge: { x: sourceX, y: sourceY },
-            targetEdge: { x: targetX, y: targetY },
-            pathData: pathData, // Generated path string
-          });
-        }
 
         return pathData;
       } else {
@@ -1949,35 +1625,6 @@
         // Use straight line instead of Bézier curve for cleaner connections
         // Direct path: M (sourceX, sourceY) L (targetX, targetY)
         const pathData = `M${sourceX},${sourceY}L${targetX},${targetY}`;
-
-        if (DEBUG_LINKS) {
-          console.log('t2b link:', {
-            link: link, // Full link object for reference
-            linkId: `${link.source.data?.id || 'unknown'}-${link.target.data?.id || 'unknown'}`,
-            svgSource: { x: svgSourceX, y: svgSourceY },
-            svgTarget: { x: svgTargetX, y: svgTargetY },
-            sourceNode: {
-              id: link.source.data?.id,
-              name: link.source.data?.displayName || link.source.data?.name,
-              x: link.source.x,
-              y: link.source.y,
-              svgX: link.source.y,
-              svgY: link.source.x,
-            },
-            targetNode: {
-              id: link.target.data?.id,
-              name: link.target.data?.displayName || link.target.data?.name,
-              x: link.target.x,
-              y: link.target.y,
-              svgX: link.target.y,
-              svgY: link.target.x,
-            },
-            sourceEdge: { x: sourceX, y: sourceY },
-            targetEdge: { x: targetX, y: targetY },
-            nodeTransform: `translate(${link.source.y},${link.source.x}) -> translate(${link.target.y},${link.target.x})`,
-            pathData: pathData, // Generated path string
-          });
-        }
 
         return pathData;
       }
@@ -2026,7 +1673,6 @@
       .attr('rx', 4)
       .attr('fill', (d) => {
         // statusColor should already be set by sanitizeNode, but ensure it's computed if missing
-        // This is a safety check - statusColor should be set during data sanitization
         if (!d.data.statusColor) {
           if (d.data.status) {
             const colors = window.dtGroupGenmap?.statusField?.colors || {};
@@ -2206,21 +1852,6 @@
     return window.dtGroupGenmap?.strings?.[key] || '';
   }
 
-  function switchLayout(wrapper, newLayout) {
-    const currentGenmap = wrapper.data('currentGenmapData');
-    if (!currentGenmap) {
-      return;
-    }
-
-    wrapper.data('currentLayout', newLayout);
-    saveLayoutPreference(newLayout);
-    updateLayoutToggleIcon(newLayout);
-    updateSectionWidth(newLayout);
-
-    // Re-render chart with new layout
-    renderChart(wrapper, currentGenmap, newLayout);
-  }
-
   function updateSectionWidth(layout) {
     const genmapSection = jQuery('#genmap');
     if (!genmapSection.length) {
@@ -2302,19 +1933,13 @@
     layout,
     graphOrientation,
   ) {
-    // Check if D3 visualization should be used
-    const useD3Visualization = typeof d3 !== 'undefined';
-    modalWrapper.data('useD3Visualization', useD3Visualization);
     modalWrapper.data('currentLayout', layout);
     modalWrapper.data('currentGenmapData', genmapData);
     // Store graph orientation for modal (since there's no section to check)
     modalWrapper.data('graphOrientation', graphOrientation);
 
-    if (useD3Visualization) {
-      renderD3Chart(modalWrapper, genmapData, layout);
-    } else {
-      renderChart(modalWrapper, genmapData, layout);
-    }
+    // Render with D3.js visualization
+    renderD3Chart(modalWrapper, genmapData, layout);
   }
 
   /**
@@ -2668,32 +2293,22 @@
       return;
     }
 
-    // Check if D3 visualization is active
-    const useD3Visualization = wrapper.data('useD3Visualization');
+    // Toggle tile container size and re-render with new layout
+    const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
+    const newLayout = currentLayout === 'l2r' ? 't2b' : 'l2r';
 
-    if (useD3Visualization && typeof d3 !== 'undefined') {
-      // D3 visualization: Toggle tile container size and re-render with new height
-      const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
-      const newLayout = currentLayout === 'l2r' ? 't2b' : 'l2r';
+    wrapper.data('currentLayout', newLayout);
+    saveLayoutPreference(newLayout);
+    updateLayoutToggleIcon(newLayout);
+    updateSectionWidth(newLayout);
 
-      wrapper.data('currentLayout', newLayout);
-      saveLayoutPreference(newLayout);
-      updateLayoutToggleIcon(newLayout);
-      updateSectionWidth(newLayout);
-
-      // Re-render D3 chart with new layout orientation
-      const genmapData = wrapper.data('currentGenmapData');
-      if (genmapData) {
-        // Small delay to ensure CSS changes are applied before re-rendering
-        setTimeout(() => {
-          renderD3Chart(wrapper, genmapData, newLayout);
-        }, 100);
-      }
-    } else {
-      // Legacy orgchart: Toggle layout and tile container size
-      const currentLayout = wrapper.data('currentLayout') || getDefaultLayout();
-      const newLayout = currentLayout === 'l2r' ? 't2b' : 'l2r';
-      switchLayout(wrapper, newLayout);
+    // Re-render D3 chart with new layout orientation
+    const genmapData = wrapper.data('currentGenmapData');
+    if (genmapData) {
+      // Small delay to ensure CSS changes are applied before re-rendering
+      setTimeout(() => {
+        renderD3Chart(wrapper, genmapData, newLayout);
+      }, 100);
     }
   });
 })(jQuery);

@@ -27,7 +27,6 @@ class DT_Groups_Base extends DT_Module_Base {
         add_filter( 'dt_details_additional_tiles', [ $this, 'dt_details_additional_tiles' ], 10, 2 );
         add_filter( 'dt_custom_tiles_after_combine', [ $this, 'dt_custom_tiles_after_combine' ], 10, 2 );
         add_action( 'dt_details_additional_section', [ $this, 'dt_details_additional_section' ], 20, 2 );
-        add_action( 'dt_record_bottom_after_tiles', [ $this, 'dt_record_bottom_after_tiles' ], 10, 2 );
         add_action( 'dt_record_footer', [ $this, 'dt_record_footer' ], 10, 2 );
         add_action( 'wp_enqueue_scripts', [ $this, 'scripts' ], 99 );
 
@@ -464,7 +463,7 @@ class DT_Groups_Base extends DT_Module_Base {
         self::display_health_metrics_tile( $section, $post_type );
         self::display_four_fields_tile( $section, $post_type );
         self::display_group_relationships_tile( $section, $post_type );
-        // Note: genmap tile is rendered separately via dt_record_after_details_section hook
+        self::display_group_genmap_tile( $section, $post_type );
     }
 
     private function display_health_metrics_tile( $section, $post_type ) {
@@ -603,8 +602,21 @@ class DT_Groups_Base extends DT_Module_Base {
         if ( $post_type !== 'groups' || $section !== 'genmap' ) {
             return;
         }
+        $tiles = DT_Posts::get_post_tiles( $post_type );
+        if ( !isset( $tiles['genmap'] ) || ( isset( $tiles['genmap']['hidden'] ) && $tiles['genmap']['hidden'] ) ) {
+            return;
+        }
         $post_id = get_the_ID();
         ?>
+        <div class="group-genmap-controls" style="display: flex; justify-content: flex-start; gap: 8px; margin-bottom: 8px; padding: 0 8px;">
+            <button class="group-genmap-layout-toggle" id="group-genmap-layout-toggle" aria-label="<?php esc_attr_e( 'Toggle layout', 'disciple_tools' ); ?>" style="display: none;">
+                <i class="mdi mdi-align-vertical-top group-genmap-layout-icon-switch-to-vertical" style="font-size: 18px;"></i>
+                <i class="mdi mdi-align-horizontal-left group-genmap-layout-icon-switch-to-horizontal" style="font-size: 18px; display: none;"></i>
+            </button>
+            <button class="group-genmap-maximize" id="group-genmap-maximize" aria-label="<?php esc_attr_e( 'Maximize generational map', 'disciple_tools' ); ?>" style="display: none;">
+                <i class="mdi mdi-arrow-expand-all" style="font-size: 18px;"></i>
+            </button>
+        </div>
         <div id="group-genmap-tile"
              class="group-genmap-tile"
              data-post-id="<?php echo esc_attr( $post_id ); ?>"
@@ -616,52 +628,6 @@ class DT_Groups_Base extends DT_Module_Base {
                  aria-label="<?php esc_attr_e( 'Group generational map', 'disciple_tools' ); ?>">
             </div>
         </div>
-        <?php
-    }
-
-    private static $genmap_rendered = false;
-
-    public function dt_record_bottom_after_tiles( $post_type, $dt_post ) {
-        if ( $post_type !== 'groups' ) {
-            return;
-        }
-        // Prevent double rendering
-        if ( self::$genmap_rendered ) {
-            return;
-        }
-        $tiles = DT_Posts::get_post_tiles( $post_type );
-        if ( !isset( $tiles['genmap'] ) || ( isset( $tiles['genmap']['hidden'] ) && $tiles['genmap']['hidden'] ) ) {
-            return;
-        }
-        self::$genmap_rendered = true;
-        $post_id = get_the_ID();
-        ?>
-        <section id="genmap" class="custom-tile-section cell grid-item xlarge-6 large-12 medium-6">
-            <div class="bordered-box" id="genmap-tile">
-                <h3 class="section-header">
-                    <?php echo esc_html( $tiles['genmap']['label'] ?? __( 'Generational Map', 'disciple_tools' ) ); ?>
-                    <button class="help-button-tile" data-tile="genmap" style="margin-right: 12px;">
-                        <img class="help-icon" src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"/>
-                    </button>
-                    <button class="group-genmap-layout-toggle" id="group-genmap-layout-toggle" aria-label="<?php esc_attr_e( 'Toggle layout', 'disciple_tools' ); ?>" style="display: none; margin-right: 12px;">
-                        <i class="mdi mdi-align-vertical-top group-genmap-layout-icon-switch-to-vertical" style="font-size: 18px;"></i>
-                        <i class="mdi mdi-align-horizontal-left group-genmap-layout-icon-switch-to-horizontal" style="font-size: 18px; display: none;"></i>
-                    </button>
-                    <button class="group-genmap-maximize" id="group-genmap-maximize" aria-label="<?php esc_attr_e( 'Maximize generational map', 'disciple_tools' ); ?>" style="display: none;">
-                        <i class="mdi mdi-arrow-expand-all" style="font-size: 18px;"></i>
-                    </button>
-                    <button class="section-chevron chevron_down">
-                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_down.svg' ) ?>"/>
-                    </button>
-                    <button class="section-chevron chevron_up">
-                        <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/chevron_up.svg' ) ?>"/>
-                    </button>
-                </h3>
-                <div class="section-body grid-y">
-                    <?php self::display_group_genmap_tile( 'genmap', $post_type ); ?>
-                </div>
-            </div>
-        </section>
         <?php
     }
 
@@ -690,6 +656,10 @@ class DT_Groups_Base extends DT_Module_Base {
     public function dt_details_additional_tiles( $tiles, $post_type = '' ){
 
         if ( $post_type === 'groups' ){
+            $tiles['genmap'] = [
+                'label' => __( 'Generational Map', 'disciple_tools' ),
+                'description' => __( 'Visualize the generational relationships between groups, showing parent and child group connections in a tree-like structure.', 'disciple_tools' ),
+            ];
             $tiles['relationships'] = [ 'label' => __( 'Member List', 'disciple_tools' ) ];
             $tiles['health-metrics'] = [ 'label' => __( 'Church Health', 'disciple_tools' ) ];
             if ( self::four_fields_is_enabled() ){
@@ -698,7 +668,6 @@ class DT_Groups_Base extends DT_Module_Base {
                     'description' => " Zúme article on 4 Fields: https://zume.training/four-fields-tool \r\n\r\n" . _x( 'There are 5 squares in the Four Fields diagram. Starting in the top left quadrant and going clockwise and the fifth being in the middle, they stand for:', 'Optional Documentation', 'disciple_tools' ),
                 ];
             }
-            $tiles['genmap'] = [ 'label' => __( 'Generational Map', 'disciple_tools' ) ];
             $tiles['groups'] = [ 'label' => __( 'Groups', 'disciple_tools' ) ];
             $tiles['other'] = [ 'label' => __( 'Other', 'disciple_tools' ) ];
         }
@@ -1218,19 +1187,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'details'
             ], filemtime( get_theme_file_path() . '/dt-groups/groups.js' ), true );
 
-            // Legacy orgchart library (kept for comparison during migration)
-            wp_enqueue_script( 'orgchart_js', 'https://cdnjs.cloudflare.com/ajax/libs/orgchart/3.7.0/js/jquery.orgchart.min.js', [
-                'jquery',
-            ], '3.7.0', true );
-
-            $css_file_name = 'dt-metrics/common/jquery.orgchart.custom.css';
-            $css_uri = get_template_directory_uri() . "/$css_file_name";
-            $css_dir = get_template_directory() . "/$css_file_name";
-            if ( file_exists( $css_dir ) ) {
-                wp_enqueue_style( 'orgchart_css', $css_uri, [], filemtime( $css_dir ) );
-            }
-
-            // D3.js library for new genmap visualization
+            // D3.js library for genmap visualization
             wp_enqueue_script( 'd3', 'https://d3js.org/d3.v7.min.js', [], '7.8.5', true );
 
             // D3.js genmap styles
@@ -1247,8 +1204,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 get_template_directory_uri() . '/dt-groups/genmap-tile.js',
                 [
                     'jquery',
-                    'orgchart_js', // Keep for now during migration
-                    'd3', // Add D3.js dependency
+                    'd3',
                     'shared-functions',
                 ],
                 filemtime( get_theme_file_path() . '/dt-groups/genmap-tile.js' ),
