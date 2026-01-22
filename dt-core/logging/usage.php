@@ -87,6 +87,8 @@ class Disciple_Tools_Usage {
                 'church_countries' => (array) $countries['churches'] ?? [],
                 'active_users' => (string) $activity['active_users'] ?: '0',
                 'total_users' => (string) $users->get_total() ?: '0',
+                'magic_link_activity' => (string) $activity['magic_link_activity'] ?: '0',
+                'magic_link_posts_updated' => (string) $activity['magic_link_posts_updated'] ?: '0',
                 'user_languages' => $languages,
                 'has_demo_data' => !empty( $system_usage['has_demo_data'] ),
 
@@ -178,7 +180,19 @@ class Disciple_Tools_Usage {
             AND user_id != 0
             AND from_unixtime(`hist_time`) BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
             AND user_id
-        ) as active_users;
+        ) as active_users,
+        (
+            SELECT COUNT(*)
+            FROM $wpdb->dt_activity_log
+            WHERE user_caps = 'magic_link'
+            AND from_unixtime(`hist_time`) BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
+        ) as magic_link_activity,
+        (
+            SELECT COUNT(DISTINCT object_id)
+            FROM $wpdb->dt_activity_log
+            WHERE user_caps = 'magic_link'
+            AND from_unixtime(`hist_time`) BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
+        ) as magic_link_posts_updated;
         ", ARRAY_A );
 
         return $results;
