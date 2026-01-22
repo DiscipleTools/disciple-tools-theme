@@ -645,7 +645,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                                                         break;
                                                     }
                                                 }
-                                            } 
+                                            }
                                         endforeach; ?>
                                         <div class="field-settings-table-field-option new-field-option add-new-item" data-parent-tile-key="<?php echo esc_attr( $tile_key ); ?>" data-field-key="<?php echo esc_attr( $field_key ); ?>">
                                            <span><?php esc_html_e( 'new field option', 'disciple_tools' ); ?></span>
