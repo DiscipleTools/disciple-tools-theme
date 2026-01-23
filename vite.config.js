@@ -8,25 +8,17 @@ export default defineConfig({
   root: '.',
   build: {
     minify: true,
-    outDir: 'dt-assets/build',
+    outDir: 'dt-assets/build-vite',
     sourcemap: true,
     rollupOptions: {
       input: {
-        style: resolve(__dirname, 'dt-assets/scss/style.scss'),
-        login: resolve(__dirname, 'dt-assets/scss/login.scss'),
-        light: resolve(
-          __dirname,
+        style: 'dt-assets/scss/style.scss',
+        login: 'dt-assets/scss/login.scss',
+        light:
           'node_modules/@disciple.tools/web-components/src/styles/light.css',
-        ),
-        dim: resolve(
-          __dirname,
-          'node_modules/@disciple.tools/web-components/src/styles/dim.css',
-        ),
-        dark: resolve(
-          __dirname,
-          'node_modules/@disciple.tools/web-components/src/styles/dark.css',
-        ),
-        scripts: resolve(__dirname, 'dt-assets/js/main.js'),
+        dim: 'node_modules/@disciple.tools/web-components/src/styles/dim.css',
+        dark: 'node_modules/@disciple.tools/web-components/src/styles/dark.css',
+        scripts: 'dt-assets/js/main.js',
       },
       output: {
         entryFileNames: 'js/[name].min.js',
