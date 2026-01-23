@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import liveReload from 'vite-plugin-live-reload';
 import legacy from '@vitejs/plugin-legacy';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import inject from '@rollup/plugin-inject';
 
 export default defineConfig({
   root: '.',
@@ -37,6 +38,12 @@ export default defineConfig({
     emptyOutDir: true,
   },
   plugins: [
+    inject({
+      modules: {
+        jQuery: 'jquery',
+        $: 'jquery',
+      },
+    }),
     legacy({
       targets: ['defaults', 'not IE 11'],
     }),

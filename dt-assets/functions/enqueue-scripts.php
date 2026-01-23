@@ -77,8 +77,10 @@ function dt_site_scripts() {
     wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1' );
     wp_enqueue_script( 'jquery-ui' );
 
-
-    dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_script( 'site-polyfills', 'dt-assets/build-vite/js/polyfills-legacy.min.js', array( 'jquery' ), true );
+//    dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts.min.js', array( 'jquery' ), true );
+//    dt_theme_enqueue_script( 'site-js', 'dt-assets/build-vite/js/scripts.min.js', array( 'jquery', 'site-polyfills' ), true );
+    dt_theme_enqueue_script( 'site-js', 'dt-assets/build-vite/js/scripts-legacy.min.js', array( 'jquery', 'site-polyfills' ), true );
 
     // Register main stylesheet
     dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
