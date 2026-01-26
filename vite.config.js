@@ -87,6 +87,14 @@ export default defineConfig({
       scss: {
         api: 'modern-compiler',
         includePaths: ['node_modules'],
+        quietDeps: true, // This and below silences deprecation warnings from node_modules, particularly foundation-sites
+        silenceDeprecations: [
+          'import',
+          'global-builtin',
+          'if-function',
+          'color-functions',
+          'abs-percent',
+        ],
       },
     },
     devSourcemap: true,
