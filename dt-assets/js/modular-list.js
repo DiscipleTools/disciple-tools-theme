@@ -1125,6 +1125,22 @@
       icon: null,
     });
 
+    // Add synthetic "Share" option (not a real post field)
+    transformedFields.push({
+      id: 'share',
+      label: window.wpApiShare?.translations?.share || 'Share',
+      color: null,
+      icon: null,
+    });
+
+    // Add synthetic "Follow" option (not a real post field)
+    transformedFields.push({
+      id: 'follow',
+      label: window.wpApiShare?.translations?.follow || 'Follow',
+      color: null,
+      icon: null,
+    });
+
     return transformedFields;
   }
 
@@ -1324,6 +1340,43 @@
               $(), // No icon for comments
             );
           }
+        } else if (fieldKey === 'share') {
+          // Handle special 'share' field (not a real post field)
+          if (!bulkEditSelectedFields.some((f) => f.fieldKey === fieldKey)) {
+            bulkEditSelectedFields.push({
+              fieldKey: fieldKey,
+              fieldType: 'share',
+              fieldName: window.wpApiShare?.translations?.share || 'Share',
+              cleared: false,
+              shareUserId: null, // Store selected user ID for clear/restore
+            });
+
+            // Render the share field
+            renderBulkEditField(
+              fieldKey,
+              'share',
+              window.wpApiShare?.translations?.share || 'Share',
+              $(), // No icon for share
+            );
+          }
+        } else if (fieldKey === 'follow') {
+          // Handle special 'follow' field (not a real post field)
+          if (!bulkEditSelectedFields.some((f) => f.fieldKey === fieldKey)) {
+            bulkEditSelectedFields.push({
+              fieldKey: fieldKey,
+              fieldType: 'follow',
+              fieldName: window.wpApiShare?.translations?.follow || 'Follow',
+              cleared: false,
+            });
+
+            // Render the follow field
+            renderBulkEditField(
+              fieldKey,
+              'follow',
+              window.wpApiShare?.translations?.follow || 'Follow',
+              $(), // No icon for follow
+            );
+          }
         } else {
           // Handle regular post fields
           const fieldData = window.post_type_fields[fieldKey];
@@ -1426,7 +1479,7 @@
     const inputContainer = wrapper.find('.bulk-edit-field-input-container');
     renderBulkEditFieldInput(fieldKey, fieldType, inputContainer);
 
-    // Show clear button for fields that support clearing (exclude comment fields)
+    // Show clear button for fields that support clearing (exclude comment, follow, and share fields)
     if (supportsFieldClearing(fieldType) && fieldType !== 'comment') {
       wrapper.find('.bulk-edit-clear-field-btn').show();
     }
@@ -1588,6 +1641,173 @@
             );
             newSelector.val('comment');
           }
+        }
+      });
+
+      return;
+    }
+
+    // Handle share field specially
+    if (fieldType === 'share') {
+      const shareInputId = `bulk_share_${fieldKey}`;
+      const shareResultContainerId = `bulk_share-result-container_${fieldKey}`;
+
+      // Build share HTML with typeahead input
+      let shareHtml = '<div class="auto cell">';
+      shareHtml +=
+        '<var id="' +
+        shareResultContainerId +
+        '" class="result-container share-result-container"></var>';
+      shareHtml +=
+        '<div id="share_t_' +
+        fieldKey +
+        '" name="form-share" class="scrollable-typeahead">';
+      shareHtml += '<div class="typeahead__container">';
+      shareHtml += '<div class="typeahead__field">';
+      shareHtml += '<span class="typeahead__query">';
+      shareHtml +=
+        '<input class="js-typeahead-' +
+        shareInputId +
+        ' input-height" name="share[query]" placeholder="' +
+        (window.wpApiShare?.translations?.search_users || 'Search Users') +
+        '" autocomplete="off">';
+      shareHtml += '</span>';
+      shareHtml += '</div>';
+      shareHtml += '</div>';
+      shareHtml += '</div>';
+      shareHtml += '</div>';
+
+      container.html(shareHtml);
+
+      // Initialize typeahead for share field
+      requestAnimationFrame(() => {
+        const shareInput = $(`.js-typeahead-${shareInputId}`);
+        if (shareInput.length === 0) {
+          return;
+        }
+
+        // Get field data to check if we need to restore a previous user selection
+        const fieldData = bulkEditSelectedFields.find(
+          (f) => f.fieldKey === fieldKey,
+        );
+        const previousUserId = fieldData?.shareUserId || null;
+
+        // Initialize typeahead (adapted from shared-functions.js share typeahead)
+        const typeaheadSelector = `.js-typeahead-${shareInputId}`;
+        window.Typeahead[typeaheadSelector] = jQuery.typeahead({
+          input: typeaheadSelector,
+          minLength: 0,
+          maxItem: 0,
+          accent: true,
+          searchOnFocus: true,
+          template: function (query, item) {
+            return `<div class="" dir="auto">
+              <div>
+                  <span class="avatar"><img style="vertical-align: text-bottom" src="${window.SHAREDFUNCTIONS.escapeHTML(item.avatar)}"/></span>
+                  {{name}} (#${window.SHAREDFUNCTIONS.escapeHTML(item.ID)})
+              </div>
+            </div>`;
+          },
+          source: window.TYPEAHEADS.typeaheadUserSource(),
+          emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(
+            window.wpApiShare?.translations?.no_records_found ||
+              'No records found',
+          ),
+          display: 'name',
+          templateValue: '{{name}}',
+          dynamic: true,
+          callback: {
+            onClick: function (node, a, item, event) {
+              // Get fresh reference to fieldData from the array (closure might have stale reference)
+              const currentFieldData = bulkEditSelectedFields.find(
+                (f) => f.fieldKey === fieldKey,
+              );
+
+              // Store selected user ID in fieldData
+              if (currentFieldData) {
+                currentFieldData.shareUserId = item.ID;
+              }
+              // Store in input data for easy retrieval
+              shareInput.data('selected-user-id', item.ID);
+              shareInput.data('selected-user-name', item.name);
+              // Add visual feedback
+              shareInput.attr('data-selected', 'true');
+              // Update input value to show selected user
+              shareInput.val(item.name);
+
+              // Prevent default and hide layout
+              event.preventDefault();
+              this.hideLayout();
+            },
+            onResult: function (node, query, result, resultCount) {
+              if (query) {
+                let text = window.TYPEAHEADS.typeaheadHelpText(
+                  resultCount,
+                  query,
+                  result,
+                );
+                $(`#${shareResultContainerId}`).html(text);
+              }
+            },
+            onHideLayout: function () {
+              $(`#${shareResultContainerId}`).html('');
+            },
+          },
+        });
+
+        // If we have a previous user ID (from restore), try to pre-select it
+        if (previousUserId) {
+          // Note: This would require fetching user data, which might be complex
+          // For now, we'll just restore the user_id in fieldData
+          // The user will need to re-select if they want to see it visually
+          if (fieldData) {
+            fieldData.shareUserId = previousUserId;
+          }
+          shareInput.data('selected-user-id', previousUserId);
+        }
+      });
+
+      return;
+    }
+
+    // Handle follow field specially
+    if (fieldType === 'follow') {
+      const followToggleId = `bulk_follow_${fieldKey}`;
+
+      // Build follow HTML with dt-toggle component
+      let followHtml = '<div class="auto cell">';
+      followHtml +=
+        '<dt-toggle id="' +
+        followToggleId +
+        '" name="' +
+        followToggleId +
+        '"></dt-toggle>';
+      followHtml += '</div>';
+
+      container.html(followHtml);
+
+      // Initialize toggle value (default to false - not following)
+      requestAnimationFrame(() => {
+        const toggleComponent = document.getElementById(followToggleId);
+        if (toggleComponent) {
+          // Set default value to false (not following)
+          // dt-toggle component uses 'checked' property
+          if (toggleComponent.checked !== undefined) {
+            toggleComponent.checked = false;
+          } else if (toggleComponent.value !== undefined) {
+            // Fallback: some implementations might use value property
+            toggleComponent.value = false;
+          } else {
+            // Set internal input element if component doesn't expose checked directly
+            const internalInput = toggleComponent.querySelector(
+              'input[type="checkbox"]',
+            );
+            if (internalInput) {
+              internalInput.checked = false;
+            }
+          }
+          // Optional: Check current user's follow state if available
+          // For now, default to false
         }
       });
 
@@ -3880,7 +4100,34 @@
     }
 
     let updatePayload = {};
-    let sharePayload;
+    let sharePayload = null;
+
+    // Check for share field in dynamically selected fields
+    const shareFieldSelected = bulkEditSelectedFields?.some(
+      (f) => f.fieldKey === 'share',
+    );
+    if (shareFieldSelected) {
+      const shareFieldData = bulkEditSelectedFields.find(
+        (f) => f.fieldKey === 'share',
+      );
+      if (shareFieldData) {
+        // Collect user ID from input
+        const shareFieldWrapper = $(
+          `.bulk-edit-field-wrapper[data-field-key="share"]`,
+        );
+        const shareUserId = collectFieldValue(
+          'share',
+          'share',
+          shareFieldWrapper,
+        );
+        if (shareUserId) {
+          sharePayload = {
+            user_id: shareUserId,
+            action: 'add',
+          };
+        }
+      }
+    }
 
     // Process web component values
     const form = document.getElementById('bulk_edit_picker');
@@ -3997,8 +4244,14 @@
         const fieldKey = fieldData.fieldKey;
         const fieldType = fieldData.fieldType;
 
+        // Skip share field - it's handled separately via sharePayload
+        if (fieldType === 'share') {
+          return;
+        }
+
         // Skip if field is marked as cleared - set cleared value and ensure it's not overwritten
-        if (fieldData.cleared) {
+        // Note: follow field doesn't support clearing (users toggle between states)
+        if (fieldData.cleared && fieldType !== 'follow') {
           const clearedValue = getClearedFieldValue(fieldType);
           // For communication_channel, backend expects: {"contact_email":[],"force_values":true}
           // We need to create an object that has array-like structure with force_values property
@@ -4025,8 +4278,16 @@
         const fieldValue = collectFieldValue(fieldKey, fieldType, fieldWrapper);
 
         if (fieldValue !== null && fieldValue !== undefined) {
+          // Handle follow field specially - add both follow and unfollow to payload
+          if (fieldType === 'follow') {
+            // Follow field returns { follow: {...}, unfollow: {...} } structure
+            if (fieldValue.follow && fieldValue.unfollow) {
+              updatePayload['follow'] = fieldValue.follow;
+              updatePayload['unfollow'] = fieldValue.unfollow;
+            }
+          }
           // Handle communication_channel fields specially (direct array format, not wrapped)
-          if (fieldType === 'communication_channel') {
+          else if (fieldType === 'communication_channel') {
             // Communication channel expects direct array: [{"value":"...","key":"..."}]
             if (Array.isArray(fieldValue)) {
               updatePayload[fieldKey] = fieldValue;
@@ -4067,16 +4328,19 @@
       });
     }
 
+    // Legacy share input handling (for backward compatibility)
     shareInput.each(function () {
-      sharePayload = $(this).data('bulk_key_share');
+      const legacySharePayload = $(this).data('bulk_key_share');
+      // Only use legacy sharePayload if new sharePayload is not set
+      if (!sharePayload && legacySharePayload) {
+        sharePayload = {
+          users: legacySharePayload,
+          unshare: $('#bulk_share_unshare').length
+            ? $('#bulk_share_unshare').prop('checked')
+            : false,
+        };
+      }
     });
-
-    let shares = {
-      users: sharePayload,
-      unshare: $('#bulk_share_unshare').length
-        ? $('#bulk_share_unshare').prop('checked')
-        : false,
-    };
 
     let queue = [];
     let count = 0;
@@ -4095,7 +4359,7 @@
         do_each,
         do_done,
         updatePayload,
-        shares,
+        sharePayload,
         commentPayload,
       );
     } else {
@@ -4121,6 +4385,100 @@
         return commentText && commentText.trim() !== ''
           ? commentText.trim()
           : null;
+      }
+      return null;
+    }
+
+    // Special case: share field (not a real post field type)
+    if (fieldType === 'share') {
+      const shareInputId = `bulk_share_${fieldKey}`;
+      const shareInput = fieldWrapper.find(`.js-typeahead-${shareInputId}`);
+
+      if (shareInput.length > 0) {
+        // Get selected user ID from input data
+        let selectedUserId = shareInput.data('selected-user-id');
+
+        // Fallback: check typeahead instance
+        if (!selectedUserId) {
+          const typeaheadSelector = `.js-typeahead-${shareInputId}`;
+          const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
+          if (
+            typeaheadInstance &&
+            typeaheadInstance.items &&
+            typeaheadInstance.items.length > 0
+          ) {
+            selectedUserId = typeaheadInstance.items[0].ID;
+          }
+        }
+
+        // Also store in fieldData for later use
+        const fieldData = bulkEditSelectedFields.find(
+          (f) => f.fieldKey === fieldKey,
+        );
+        if (fieldData && selectedUserId) {
+          fieldData.shareUserId = selectedUserId;
+        }
+
+        return selectedUserId || null;
+      }
+      return null;
+    }
+
+    // Special case: follow field (not a real post field type)
+    if (fieldType === 'follow') {
+      const followToggleId = `bulk_follow_${fieldKey}`;
+      const toggleComponent =
+        fieldWrapper.find(`#${followToggleId}`)[0] ||
+        document.getElementById(followToggleId);
+
+      if (toggleComponent) {
+        // Get toggle value (true/false)
+        // dt-toggle component may expose 'value' property (for ComponentService compatibility)
+        // or 'checked' property, or we need to check internal input element
+        let toggleValue = false;
+
+        // First, try to get value property (ComponentService expects this)
+        if (
+          toggleComponent.value !== undefined &&
+          toggleComponent.value !== null
+        ) {
+          if (typeof toggleComponent.value === 'boolean') {
+            toggleValue = toggleComponent.value === true;
+          } else if (typeof toggleComponent.value === 'string') {
+            toggleValue = toggleComponent.value.toLowerCase() === 'true';
+          } else {
+            toggleValue = Boolean(toggleComponent.value);
+          }
+        }
+        // Fallback to checked property
+        else if (toggleComponent.checked !== undefined) {
+          toggleValue = toggleComponent.checked === true;
+        }
+        // Last resort: check internal input element
+        else {
+          const internalInput = toggleComponent.querySelector(
+            'input[type="checkbox"]',
+          );
+          if (internalInput) {
+            toggleValue = internalInput.checked === true;
+          }
+        }
+
+        // Get current user ID
+        const currentUserId =
+          window.wpApiNotifications?.current_user_id || current_user_id;
+
+        if (currentUserId) {
+          // Return follow/unfollow structure
+          return {
+            follow: {
+              values: [{ value: String(currentUserId), delete: !toggleValue }],
+            },
+            unfollow: {
+              values: [{ value: String(currentUserId), delete: toggleValue }],
+            },
+          };
+        }
       }
       return null;
     }
@@ -4418,7 +4776,20 @@
           );
         }
 
-        if (share && share['users']) {
+        // Handle new share payload format: { user_id: <userId>, action: 'add' }
+        if (share && share.user_id && share.action === 'add') {
+          promises.push(
+            window.API.add_shared(
+              list_settings.post_type,
+              item,
+              share.user_id,
+            ).catch((err) => {
+              console.error(err);
+            }),
+          );
+        }
+        // Legacy share format support (backward compatibility)
+        else if (share && share['users']) {
           share['users'].forEach(function (value) {
             let promise = share['unshare']
               ? window.API.remove_shared(
