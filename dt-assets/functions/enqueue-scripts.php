@@ -1,6 +1,9 @@
 <?php
 declare( strict_types=1 );
 
+require_once get_template_directory() . '/vendor/autoload.php';
+use Kucrut\Vite;
+
 /**
  * Load scripts, in a way that implements cache-busting
  *
@@ -77,13 +80,28 @@ function dt_site_scripts() {
     wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1' );
     wp_enqueue_script( 'jquery-ui' );
 
-    dt_theme_enqueue_script( 'site-polyfills', 'dt-assets/build-vite/js/polyfills-legacy.min.js', array( 'jquery' ), true );
-//    dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts.min.js', array( 'jquery' ), true );
-//    dt_theme_enqueue_script( 'site-js', 'dt-assets/build-vite/js/scripts.min.js', array( 'jquery', 'site-polyfills' ), true );
-    dt_theme_enqueue_script( 'site-js', 'dt-assets/build-vite/js/scripts-legacy.min.js', array( 'jquery', 'site-polyfills' ), true );
+    // Register main stylesheet. Enable HMR by loading from vite if possible
+    $vite_dev_server_running = false;
+    if ( function_exists( 'Kucrut\Vite\enqueue_asset' ) ) {
+        $vite_dev_server_running = is_file( get_template_directory() . '/dt-assets/build/vite-dev-server.json' );
+    }
 
-    // Register main stylesheet
-    dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
+    if ( $vite_dev_server_running ) {
+        dt_write_log( 'serving dt-assets from vite' );
+        Vite\enqueue_asset(
+            get_template_directory() . '/dt-assets/build',
+            'dt-assets/scss/style.scss',
+            [
+                'handle' => 'site-css',
+            ]
+        );
+    } else {
+        dt_write_log( 'serving dt-assets from static' );
+        dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
+    }
+
+    dt_theme_enqueue_script( 'site-polyfills', 'dt-assets/build/js/polyfills-legacy.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts-legacy.min.js', array( 'jquery', 'site-polyfills' ), true );
 
     // Register web components
     dt_theme_enqueue_script( 'web-components', 'dt-assets/build/components/index.js', array(), false );

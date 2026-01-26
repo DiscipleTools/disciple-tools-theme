@@ -30,6 +30,20 @@ Checking out a PR and seeing the orange debug table is disappointing.
 
 We look forward to hearing from you!
 
+### Styles & CSS
+We use [SASS](https://sass-lang.com/) for styling, pulling in JS and SCSS components
+from foundation-sites. The build process is handled by Vite, which compiles and minifies the assets for production.
+
+When developing styles locally, you can run `npm run dev` to start the Vite dev server.
+This will watch for changes to the SCSS files and automatically recompile them and instantly
+load them in your browser. To do that, it will run a local server on port 5173 using a generated SSL.
+On initial load from your DT site, it will reject the SSL certificate. You must go to https://localhost:5173
+and click through the prompts to proceed anyway.
+
+When the dev server is running, you will need to make sure you copy the `vendor` directory to your
+development site along with the `vite-dev-server.json` file that is generated in `dt-assets/build`.
+Removing that json file (which happens when running `npm run build`) will revert the theme to using the production assets.
+
 ### Web Components
 When working on updates to the web components package and wanting to test them here in the theme, you can use NPM Link to streamline local testing.
 
