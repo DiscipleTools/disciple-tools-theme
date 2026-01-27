@@ -37,7 +37,7 @@ jobs:
       with:
         node-version: 22.x
         cache: 'npm'
-    - run: npm install -g eslint @babel/eslint-parser
+    - run: npm install -g vite eslint @babel/eslint-parser
 
     - name: Install PHP
       uses: shivammathur/setup-php@master
