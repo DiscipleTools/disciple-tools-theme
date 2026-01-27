@@ -77,6 +77,14 @@ function dt_site_scripts() {
     wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1' );
     wp_enqueue_script( 'jquery-ui' );
 
+    // Register site scripts
+    // Although WP has wp_enqueue_script_module to be able to load scripts.min.js directly as a js module,
+    // WP doesn't let module scripts depend on classic scripts (scripts.min.js depending on jquery) or
+    // vice versa (modular-list.js depending on scripts.min.js). So at least for now, we need to depend on
+    // the legacy scripts that many wp scripts depend on via the 'site-js' handle.
+    dt_theme_enqueue_script( 'site-polyfills', 'dt-assets/build/js/polyfills-legacy.min.js', array( 'jquery' ), true );
+    dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts-legacy.min.js', array( 'jquery', 'site-polyfills' ), true );
+
     // Register main stylesheet. Enable HMR by loading from vite if possible
     $vite_dev_server_running = false;
     if ( function_exists( 'Kucrut\Vite\enqueue_asset' ) ) {
@@ -84,7 +92,6 @@ function dt_site_scripts() {
     }
 
     if ( $vite_dev_server_running ) {
-        dt_write_log( 'serving dt-assets from vite' );
         Kucrut\Vite\enqueue_asset(
             get_template_directory() . '/dt-assets/build',
             'dt-assets/scss/style.scss',
@@ -93,13 +100,8 @@ function dt_site_scripts() {
             ]
         );
     } else {
-        dt_write_log( 'serving dt-assets from static' );
         dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
     }
-
-    dt_theme_enqueue_script( 'site-polyfills', 'dt-assets/build/js/polyfills-legacy.min.js', array( 'jquery' ), true );
-    dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts-legacy.min.js', array( 'jquery', 'site-polyfills' ), true );
-
     // Register web components
     dt_theme_enqueue_script( 'web-components', 'dt-assets/build/components/index.js', array(), false );
     dt_theme_enqueue_style( 'web-components-css', 'dt-assets/build/css/light.min.css', array() );
