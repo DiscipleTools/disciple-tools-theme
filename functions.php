@@ -12,6 +12,10 @@ if ( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
+if ( file_exists( get_template_directory() . '/vendor/autoload.php' ) ) {
+    require_once get_template_directory() . '/vendor/autoload.php';
+}
+
 /**
  * Test for minimum required PHP version
  */
