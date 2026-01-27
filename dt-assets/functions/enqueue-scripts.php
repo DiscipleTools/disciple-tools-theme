@@ -1,8 +1,9 @@
 <?php
 declare( strict_types=1 );
 
-require_once get_template_directory() . '/vendor/autoload.php';
-use Kucrut\Vite;
+if ( file_exists( get_template_directory() . '/vendor/autoload.php' ) ) {
+    require_once get_template_directory() . '/vendor/autoload.php';
+}
 
 /**
  * Load scripts, in a way that implements cache-busting
@@ -88,7 +89,7 @@ function dt_site_scripts() {
 
     if ( $vite_dev_server_running ) {
         dt_write_log( 'serving dt-assets from vite' );
-        Vite\enqueue_asset(
+        Kucrut\Vite\enqueue_asset(
             get_template_directory() . '/dt-assets/build',
             'dt-assets/scss/style.scss',
             [
