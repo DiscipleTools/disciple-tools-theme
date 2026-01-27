@@ -307,7 +307,8 @@ table.js-list {
     }
 
     tr {
-        -webkit-transform: translateZ(0px)
+        -webkit-transform: translateZ(0px);
+        transform: translateZ(0px);
     }
 
     td, th {
@@ -616,6 +617,145 @@ table.js-list {
 
     .confirm-filter-records {
         margin: 5px 0 5px 0;
+    }
+}
+
+/* === Bulk Edit Field Selection === */
+
+// Bulk Edit Field Selection with dt-multi-select
+.bulk-edit-field-select-wrapper {
+    margin-bottom: 16px;
+}
+
+.bulk-edit-field-wrapper {
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fafafa;
+}
+
+.bulk-edit-field-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    .section-subheader {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0;
+        flex: 1;
+    }
+}
+
+.bulk-edit-remove-field-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    color: #ff4444;
+    transition: color 0.2s, transform 0.2s;
+
+    i.mdi {
+        font-size: 24px;
+        line-height: 1;
+    }
+
+    &:hover {
+        color: #cc0000;
+        transform: scale(1.1);
+    }
+
+    &:focus {
+        outline: 2px solid #ff4444;
+        outline-offset: 2px;
+        border-radius: 2px;
+    }
+}
+
+.bulk-edit-field-input-container {
+    margin-top: 10px;
+    
+    // Hide labels from web components since we show our own header
+    dt-text label,
+    dt-textarea label,
+    dt-multi-select label,
+    dt-key-select label,
+    dt-date label,
+    dt-datetime label,
+    dt-number label,
+    dt-tags label,
+    dt-user-select label,
+    dt-connection label,
+    dt-location label {
+        display: none !important;
+    }
+}
+
+.bulk-edit-field-actions {
+    margin-top: 15px;
+}
+
+.bulk-edit-selected-fields-container {
+    margin-top: 15px;
+}
+
+.bulk-edit-field-loading {
+    padding: 10px;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}
+
+/* === Bulk Edit Action Buttons === */
+.bulk-edit-no-selection-message {
+    padding: 15px;
+    text-align: center;
+    color: #666;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.bulk-edit-action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    align-items: center;
+    
+    .button {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        
+        i.mdi {
+            font-size: 18px;
+            line-height: 1;
+        }
+    }
+    
+    .bulk-edit-delete-btn {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+        
+        &:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+        
+        &:focus {
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
+        }
     }
 }
 

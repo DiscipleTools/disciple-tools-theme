@@ -1083,6 +1083,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="date"><?php esc_html_e( 'Date', 'disciple_tools' ) ?></option>
                             <option value="datetime"><?php esc_html_e( 'DateTime', 'disciple_tools' ) ?></option>
                             <option value="connection"><?php esc_html_e( 'Connection', 'disciple_tools' ) ?></option>
+                            <option value="user_select"><?php esc_html_e( 'User Select', 'disciple_tools' ) ?></option>
                         </select>
                     </td>
                 </tr>
@@ -1196,6 +1197,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( 'Date: A field that uses a date picker to choose dates (like baptism date)', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'Link: Create a collection of links', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'Connection: An autocomplete picker to connect to another record.', 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( 'User Select: An autocomplete picker to connect to a user account.', 'disciple_tools' ) ?></li>
         </ul>
         <strong><?php esc_html_e( 'Private Field:', 'disciple_tools' ) ?></strong>
         <ul style="list-style: disc; padding-left:40px">
@@ -1337,6 +1339,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             'label' => 'Default',
                         ],
                     ],
+                    'tile'     => $field_tile,
+                    'customizable' => 'all',
+                    'private' => $field_private
+                ];
+            } elseif ( $field_type === 'user_select' ){
+                $new_field = [
+                    'name'        => $post_submission['new_field_name'],
+                    'type'        => 'user_select',
+                    'default'     => '',
                     'tile'     => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private

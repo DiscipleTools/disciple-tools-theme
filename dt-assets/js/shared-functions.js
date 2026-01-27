@@ -963,6 +963,125 @@ window.SHAREDFUNCTIONS = {
 
     jQuery('.grid').masonry('layout'); //resize or reorder tile
   },
+
+  /**
+   * Render field HTML using web components
+   * Generates client-side HTML for field types based on field settings
+   *
+   * @param {string} fieldKey - The field key
+   * @param {object} fieldSettings - Field settings from list_settings.post_type_settings.fields
+   * @param {string} prefix - Prefix for field ID (default: '')
+   * @returns {string|null} - HTML string for the component or null if unsupported
+   */
+  renderField(fieldKey, fieldSettings, prefix = '') {
+    const id = `${prefix}${fieldKey}`;
+    const name = fieldKey;
+    const label = fieldSettings.name || fieldKey;
+    const type = fieldSettings.type;
+
+    // Common attributes for all components
+    const baseAttrs = `id="${id}" name="${name}" label="${window.SHAREDFUNCTIONS.escapeHTML(label)}"`;
+
+    switch (type) {
+      case 'text':
+        return `<dt-text ${baseAttrs}></dt-text>`;
+
+      case 'textarea':
+        return `<dt-textarea ${baseAttrs}></dt-textarea>`;
+
+      case 'number':
+        return `<dt-number ${baseAttrs}></dt-number>`;
+
+      case 'boolean':
+        return `<dt-toggle ${baseAttrs}></dt-toggle>`;
+
+      case 'key_select': {
+        const options = Object.entries(fieldSettings.default || {}).map(
+          ([key, val]) => ({
+            id: key,
+            label: val.label || key,
+          }),
+        );
+        return `<dt-single-select ${baseAttrs} options='${window.SHAREDFUNCTIONS.escapeHTML(JSON.stringify(options))}'></dt-single-select>`;
+      }
+
+      case 'multi_select': {
+        const options = Object.entries(fieldSettings.default || {}).map(
+          ([key, val]) => ({
+            id: key,
+            label: val.label || key,
+          }),
+        );
+        return `<dt-multi-select-button-group ${baseAttrs} options='${window.SHAREDFUNCTIONS.escapeHTML(JSON.stringify(options))}'></dt-multi-select-button-group>`;
+      }
+
+      case 'tags':
+        return `<dt-tags ${baseAttrs} allowAdd></dt-tags>`;
+
+      case 'connection': {
+        const postType = fieldSettings.post_type || '';
+        return `<dt-connection ${baseAttrs} postType="${window.SHAREDFUNCTIONS.escapeHTML(postType)}"></dt-connection>`;
+      }
+
+      case 'location':
+      case 'location_meta': {
+        // dt-location-map requires mapbox token
+        // Token is available in list_settings.translations.exports.map.mapbox_key
+        const mapboxToken =
+          (window.list_settings &&
+            window.list_settings.translations &&
+            window.list_settings.translations.exports &&
+            window.list_settings.translations.exports.map &&
+            window.list_settings.translations.exports.map.mapbox_key) ||
+          '';
+        // Google token not currently in list_settings - leave empty for now
+        const googleToken = '';
+        return `<dt-location-map ${baseAttrs} mapbox-token="${window.SHAREDFUNCTIONS.escapeHTML(mapboxToken)}" google-token="${window.SHAREDFUNCTIONS.escapeHTML(googleToken)}"></dt-location-map>`;
+      }
+
+      case 'user_select': {
+        // user_select uses legacy typeahead (not a web component)
+        const fieldId = id;
+        return `<div id="${fieldKey}" class="${fieldId} dt_user_select">
+          <var id="${fieldId}-result-container" class="result-container ${fieldId}-result-container"></var>
+          <div id="${fieldId}_t" name="form-${fieldId}" class="scrollable-typeahead">
+            <div class="typeahead__container" style="margin-bottom: 0">
+              <div class="typeahead__field">
+                <span class="typeahead__query">
+                  <input class="js-typeahead-${fieldId} input-height" dir="auto"
+                         name="${fieldId}[query]" placeholder="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare?.translations?.search_users || 'Search Users')}"
+                         data-field_type="user_select"
+                         data-field="${fieldKey}"
+                         autocomplete="off">
+                </span>
+                <span class="typeahead__button">
+                  <button type="button" class="search_${fieldKey} typeahead__image_button input-height" data-id="${fieldKey}">
+                    <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/chevron_down.svg"/>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      }
+
+      case 'communication_channel':
+        return `<dt-multi-text ${baseAttrs}></dt-multi-text>`;
+
+      case 'date':
+        return `<dt-date ${baseAttrs}></dt-date>`;
+
+      case 'datetime':
+        return `<dt-date ${baseAttrs}></dt-date>`;
+
+      // Skip unsupported types for now
+      case 'link':
+        return null; // Hide until web component is ready
+
+      default:
+        return null;
+    }
+  },
 };
 
 let date_ranges = {
