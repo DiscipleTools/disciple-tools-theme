@@ -39,8 +39,8 @@
     "dotenv": "^16.4.7"
   },
   "browserslist": [
-    "last 2 version",
-    "> 2%"
+    "defaults",
+    "not IE 11"
   ],
   "scripts": {
     "postinstall": "npm run build",
