@@ -37,7 +37,7 @@ jobs:
       with:
         node-version: 22.x
         cache: 'npm'
-    - run: npm install -g gulp-cli eslint @babel/eslint-parser
+    - run: npm install -g eslint @babel/eslint-parser
 
     - name: Install PHP
       uses: shivammathur/setup-php@master
@@ -118,7 +118,7 @@ jobs:
       if: steps.changed-css-js-files.outputs.all_changed_and_modified_files != ''
       run : |
         find dt-assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
-        gulp
+        vite build
         git diff --exit-code -- . ':(exclude)package-lock.json'
 
     - name: Install Subversion
