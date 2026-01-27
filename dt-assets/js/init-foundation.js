@@ -51,5 +51,3 @@ window.Foundation = Foundation;
 
 // Register jQuery plugin
 Foundation.addToJquery();
-
-export { Foundation };

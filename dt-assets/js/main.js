@@ -2,8 +2,7 @@
  * Main entry point for Vite
  */
 
-import { Foundation } from './init-foundation.js';
-window.Foundation = Foundation;
+import './init-foundation.js';
 
 import 'what-input';
 
