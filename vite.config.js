@@ -88,7 +88,8 @@ export default defineConfig(({ mode }) => {
       v4wp({
         input: {
           // siteJs: 'dt-assets/js/main.js',
-          siteCss: 'dt-assets/scss/style.scss',
+          style: 'dt-assets/scss/style.scss',
+          login: 'dt-assets/scss/login.scss',
         },
         outDir: 'dt-assets/build',
       }),
