@@ -3265,6 +3265,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'description' => 'Location selected with the help of a geocoder (mapbox, google)',
                 'user_creatable' => false,
             ],
+            'upload_file' => [
+                'label' => 'File Upload',
+                'description' => 'Field for uploading multiple files (images, documents, PDFs, etc.)',
+                'user_creatable' => true,
+            ],
             'tasks' => [
                 'label' => 'Tasks',
                 'description' => 'Tasks assigned to a record',
