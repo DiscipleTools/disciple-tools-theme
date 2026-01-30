@@ -285,7 +285,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         $base_fields = Disciple_Tools_Post_Type_Template::get_base_post_type_fields();
         $defaults = apply_filters( 'dt_custom_fields_settings', $base_fields, $post_type );
 
-        $field_options = $field['default'] ?? [];
+        $field_options = $field['default'] ?? [ ];
         $first = true;
         $tile_options = DT_Posts::get_post_tiles( $post_type );
 
@@ -470,7 +470,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                     <?php
                     $custom_fields = dt_get_option( 'dt_field_customizations' );
-                    $custom_field = $custom_fields[$post_type][$field_key] ?? [];
+                    $custom_field = $custom_fields[ $post_type ][ $field_key ] ?? [ ];
                     if ( isset( $custom_field['customizable'] ) && $custom_field['customizable'] == 'all' ) : ?>
                         <button type="button" name="delete" id='open-delete-confirm-modal' class="button"><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></button>
                     <?php endif ?>
@@ -513,7 +513,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
             <?php
                 $custom_fields = dt_get_option( 'dt_field_customizations' );
-                $custom_field = $custom_fields[$post_type][$field_key] ?? [];
+                $custom_field = $custom_fields[ $post_type ][ $field_key ] ?? [ ];
             ?>
 
             <h3><?php esc_html_e( 'Field Options', 'disciple_tools' ) ?></h3>
@@ -544,7 +544,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
         <?php if ( $field['type'] === 'upload_file' ) : ?>
             <?php
                 $custom_fields = dt_get_option( 'dt_field_customizations' );
-                $custom_field = $custom_fields[$post_type][$field_key] ?? [];
+                $custom_field = $custom_fields[ $post_type ][ $field_key ] ?? [ ];
                 $accepted_file_types = $custom_field['accepted_file_types'] ?? ['image/*', 'application/pdf'];
                 $max_file_size = $custom_field['max_file_size'] ?? '';
                 $file_type_icon = $custom_field['file_type_icon'] ?? '';

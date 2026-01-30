@@ -909,7 +909,8 @@ class Disciple_Tools_Posts_Endpoints {
                 new \DateTimeImmutable( $storage_s3_url_duration );
                 $url_params = [ 'duration' => $storage_s3_url_duration ];
             } catch ( \Exception $e ) {
-                // Invalid duration string, fall back to default (+24 hours)
+                // Invalid duration string, fall back to default (+24 hours).
+                $url_params = [];
             }
         }
 
@@ -1103,8 +1104,8 @@ class Disciple_Tools_Posts_Endpoints {
 
             foreach ( $meta_key_value as $file_object ) {
                 // Handle both array format (with 'key') and string format (backward compatibility).
-                $file_key = is_array( $file_object ) && isset( $file_object['key'] ) 
-                    ? $file_object['key'] 
+                $file_key = is_array( $file_object ) && isset( $file_object['key'] )
+                    ? $file_object['key']
                     : ( is_string( $file_object ) ? $file_object : '' );
 
                 if ( $file_key === $file_key_to_delete ) {
@@ -1271,8 +1272,8 @@ class Disciple_Tools_Posts_Endpoints {
 
             foreach ( $meta_key_value as $file_object ) {
                 // Handle both array format (with 'key') and string format.
-                $file_key = is_array( $file_object ) && isset( $file_object['key'] ) 
-                    ? $file_object['key'] 
+                $file_key = is_array( $file_object ) && isset( $file_object['key'] )
+                    ? $file_object['key']
                     : ( is_string( $file_object ) ? $file_object : '' );
 
                 if ( !empty( $file_key ) ) {

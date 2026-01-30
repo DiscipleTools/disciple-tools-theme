@@ -332,7 +332,7 @@ class DT_Components
         }
 
         // Get field settings for configuration
-        $accepted_file_types = $fields[$field_key]['accepted_file_types'] ?? ['image/*', 'application/pdf'];
+        $accepted_file_types = $fields[ $field_key ]['accepted_file_types'] ?? [ 'image/*', 'application/pdf' ];
         $max_file_size = $fields[$field_key]['max_file_size'] ?? null;
         $delete_enabled = isset( $fields[$field_key]['delete_enabled'] ) ? $fields[$field_key]['delete_enabled'] : true;
         $display_layout = $fields[$field_key]['display_layout'] ?? 'grid';
@@ -354,7 +354,7 @@ class DT_Components
         // Enhance file objects with URLs for preview
         $enhanced_value = array_map(function( $file ) {
             $file_key = is_array( $file ) && isset( $file['key'] ) ? $file['key'] : ( is_string( $file ) ? $file : '' );
-            
+
             if ( empty( $file_key ) ) {
                 return $file;
             }
