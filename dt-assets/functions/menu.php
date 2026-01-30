@@ -47,6 +47,12 @@ function dt_default_menu_array() : array {
                 'icon' => apply_filters( 'dt_default_logo', get_template_directory_uri() . '/dt-assets/images/disciple-tools-logo-white.png' ),
                 'hidden' => false,
             ],
+            'donate' => [
+                'label' => __( 'Donate', 'disciple_tools' ),
+                'link' => 'https://disciple.tools/give/',
+                'icon' => get_template_directory_uri() . '/dt-assets/images/hand-heart.svg',
+                'hidden' => false,
+            ],
             'profile' => [
                 'label' => wp_get_current_user()->display_name ?? __( 'Profile', 'disciple_tools' ),
                 'link' => site_url( '/settings/' ),

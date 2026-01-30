@@ -75,6 +75,14 @@ if ( !empty( $custom_logo_url ) ) {
             </div>
             <div class="top-bar-right">
                 <ul class="dropdown menu" data-dropdown-menu>
+                    <?php if ( isset( $dt_nav_tabs['admin']['donate']['hidden'] ) && empty( $dt_nav_tabs['admin']['donate']['hidden'] ) ) : ?>
+                        <li class="image-menu-nav">
+                            <a href="<?php echo esc_url( $dt_nav_tabs['admin']['donate']['link'] ?? 'https://disciple.tools/give/' ); ?>" target="_blank">
+                                <img class="dt-white-icon" title="<?php echo esc_html( $dt_nav_tabs['admin']['donate']['label'] ?? __( 'Donate', 'disciple_tools' ) ); ?>" src="<?php echo esc_url( $dt_nav_tabs['admin']['donate']['icon'] ?? get_template_directory_uri() . '/dt-assets/images/hand-heart.svg' ); ?>">
+                                <span><?php echo esc_html( $dt_nav_tabs['admin']['donate']['label'] ?? __( 'Donate', 'disciple_tools' ) ); ?></span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
 
                     <!-- core update -->
                     <?php
