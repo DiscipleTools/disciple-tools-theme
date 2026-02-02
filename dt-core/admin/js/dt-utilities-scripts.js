@@ -480,7 +480,7 @@ jQuery(document).ready(function ($) {
     if (is_custom_import) {
       let filtered_field_settings = {};
       for (const [field_key, field] of Object.entries(field_settings)) {
-        if (field['customizable'] && field['customizable'] !== false) {
+        if (field['customizable'] !== false) {
           filtered_field_settings[field_key] = field;
         }
       }
