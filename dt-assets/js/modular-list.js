@@ -1480,7 +1480,10 @@
     renderBulkEditFieldInput(fieldKey, fieldType, inputContainer);
 
     // Show clear button for fields that support clearing (exclude comment, follow, and share fields)
-    if (supportsFieldClearing(fieldType) && fieldType !== 'comment') {
+    if (
+      supportsFieldClearing(fieldType) &&
+      !['comment', 'share', 'follow'].includes(fieldType)
+    ) {
       wrapper.find('.bulk-edit-clear-field-btn').show();
     }
 
