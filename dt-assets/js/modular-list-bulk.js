@@ -1110,8 +1110,23 @@
       );
       const fieldType = fieldSettings.type || '';
 
+      // Skip field types that are handled by ComponentService to prevent duplicate API calls
+      // ComponentService handles:
+      // - connection (uses compact endpoint via dt-connection component)
+      // - location (uses compact endpoint via dt-location component)
+      // - location_meta (uses compact endpoint via dt-location-map component)
+      // - tags (handled via dt-tags component)
+      if (
+        fieldType === 'connection' ||
+        fieldType === 'location' ||
+        fieldType === 'location_meta' ||
+        fieldType === 'tags'
+      ) {
+        return;
+      }
+
       let endpoint = 'field-options';
-      if (fieldType === 'tags' || fieldType === 'multi_select') {
+      if (fieldType === 'multi_select') {
         endpoint = 'multi-select-values';
       }
 
