@@ -453,13 +453,40 @@ jQuery(function ($) {
     switch (field_type) {
       case 'textarea':
       case 'number':
-      case 'boolean':
       case 'text':
-      case 'key_select':
         if (is_selected) {
           mergedField.val(sourceField.val());
         }
         break;
+
+      case 'boolean': {
+        // Web component: dt-toggle uses .value property (or .checked)
+        const sourceElement = sourceField[0];
+        const mergedElement = mergedField[0];
+        if (sourceElement && mergedElement && is_selected) {
+          // dt-toggle uses checked property for boolean values
+          mergedElement.checked = sourceElement.checked;
+          // Also update value property if it exists
+          if (sourceElement.value !== undefined) {
+            mergedElement.value = sourceElement.value;
+          }
+          // Trigger change event to update the component
+          mergedElement.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        break;
+      }
+
+      case 'key_select': {
+        // Web component: dt-single-select uses .value property
+        const sourceElement = sourceField[0];
+        const mergedElement = mergedField[0];
+        if (sourceElement && mergedElement && is_selected) {
+          mergedElement.value = sourceElement.value;
+          // Trigger change event to update the component
+          mergedElement.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        break;
+      }
 
       case 'date':
         if (is_selected) {
@@ -613,17 +640,55 @@ jQuery(function ($) {
       }
 
       case 'location_meta': {
-        // Determine values to be updated
-        let location_elements = $(selector.parent().parent()).find(
-          'input.input-group-field',
-        );
+        // Web component: dt-location-map stores value as JSON string in 'value' attribute
+        const sourceElement = sourceField[0];
+        const mergedElement = mergedField[0];
 
-        // Update values accordingly
-        if (location_elements) {
-          // Obtain handle to existing list
-          let td = $('#main_updated_fields_div')
-            .find('#mapbox-autocomplete')
-            .parent();
+        if (sourceElement && mergedElement) {
+          // Read from attribute first (as JSON string), fallback to property if needed
+          let sourceValueStr =
+            sourceElement.getAttribute('value') ||
+            sourceField.attr('value') ||
+            sourceElement.value ||
+            '[]';
+          let mergedValueStr =
+            mergedElement.getAttribute('value') ||
+            mergedField.attr('value') ||
+            mergedElement.value ||
+            '[]';
+
+          // Parse JSON strings to arrays
+          let sourceValue = [];
+          let mergedValue = [];
+
+          try {
+            // Handle both string and already-parsed values
+            if (typeof sourceValueStr === 'string') {
+              sourceValue = JSON.parse(sourceValueStr);
+            } else if (Array.isArray(sourceValueStr)) {
+              sourceValue = sourceValueStr;
+            }
+          } catch (e) {
+            sourceValue = [];
+          }
+
+          try {
+            if (typeof mergedValueStr === 'string') {
+              mergedValue = JSON.parse(mergedValueStr);
+            } else if (Array.isArray(mergedValueStr)) {
+              mergedValue = mergedValueStr;
+            }
+          } catch (e) {
+            mergedValue = [];
+          }
+
+          // Ensure they are arrays
+          if (!Array.isArray(sourceValue)) {
+            sourceValue = [];
+          }
+          if (!Array.isArray(mergedValue)) {
+            mergedValue = [];
+          }
 
           // Obtain handle onto update field meta - deletion array
           let update_field_meta = $('#main_updated_fields_div')
@@ -637,73 +702,77 @@ jQuery(function ($) {
               ? JSON.parse($(update_field_meta).val())
               : [];
 
-          // Iterate over values; processing accordingly
-          $.each(location_elements, function (idx, element) {
-            // Determine if the value already exists within update list
-            let has_value = false;
-            let value_ele = null;
+          // Update values accordingly
+          for (const sourceItem of sourceValue) {
+            // Compare by grid_meta_id if available, otherwise by label/value
+            const valIdx = mergedValue.findIndex((x) => {
+              if (sourceItem.grid_meta_id && x.grid_meta_id) {
+                return (
+                  String(x.grid_meta_id) === String(sourceItem.grid_meta_id)
+                );
+              }
+              // Fallback comparison by label or value
+              const sourceLabel = sourceItem.label || sourceItem.value || '';
+              const xLabel = x.label || x.value || '';
+              return sourceLabel === xLabel && sourceLabel !== '';
+            });
 
-            $(td)
-              .find('input.input-group-field')
-              .each(function (idx, input) {
-                if ($(input).val() === $(element).val()) {
-                  has_value = true;
-                  value_ele = input;
-                }
-              });
-
-            // Add/Remove accordingly
-            if (is_selected && !has_value) {
+            if (is_selected) {
               // Add, if not already present
-              let clone = $(element).clone();
-              $(clone).css('margin-bottom', '10px');
-              td.append(clone);
+              if (valIdx < 0) {
+                mergedValue.push(sourceItem);
 
-              // Keep deleted items in sync
-              if (
-                $(clone).attr('id') &&
-                $(clone).attr('id').length > 0 &&
-                $(clone).attr('id').indexOf('-') >= 0
-              ) {
-                let id = $(clone)
-                  .attr('id')
-                  .substring($(clone).attr('id').indexOf('-') + 1);
-                if (window.lodash.includes(deleted_items, id)) {
-                  window.lodash.remove(deleted_items, function (item) {
-                    return new String(item).valueOf() == new String(id);
-                  });
-
-                  $(update_field_meta).val(JSON.stringify(deleted_items));
+                // Remove from deleted items if it was previously deleted
+                if (sourceItem.grid_meta_id) {
+                  const deletedIdx = deleted_items.findIndex(
+                    (id) => String(id) === String(sourceItem.grid_meta_id),
+                  );
+                  if (deletedIdx >= 0) {
+                    deleted_items.splice(deletedIdx, 1);
+                    $(update_field_meta).val(JSON.stringify(deleted_items));
+                  }
                 }
               }
-            } else if (!is_selected && has_value && value_ele) {
+            } else {
               // Remove, if present and not still selected anywhere else!
               if (
+                valIdx >= 0 &&
                 !is_field_value_still_selected(
                   update_field_id,
                   field_type,
-                  $(value_ele).val(),
+                  sourceItem,
                 )
               ) {
-                $(value_ele).remove();
+                mergedValue.splice(valIdx, 1);
 
                 // Keep deleted items in sync
-                if (
-                  $(value_ele).attr('id') &&
-                  $(value_ele).attr('id').length > 0 &&
-                  $(value_ele).attr('id').indexOf('-') >= 0
-                ) {
-                  let id = $(value_ele)
-                    .attr('id')
-                    .substring($(value_ele).attr('id').indexOf('-') + 1);
-                  if (!window.lodash.includes(deleted_items, id)) {
-                    deleted_items.push(id);
+                if (sourceItem.grid_meta_id) {
+                  if (
+                    !window.lodash.includes(
+                      deleted_items,
+                      sourceItem.grid_meta_id,
+                    )
+                  ) {
+                    deleted_items.push(sourceItem.grid_meta_id);
                     $(update_field_meta).val(JSON.stringify(deleted_items));
                   }
                 }
               }
             }
-          });
+          }
+
+          // Update the web component's value attribute (as JSON string)
+          // Set both attribute and property for compatibility
+          mergedField.attr('value', JSON.stringify(mergedValue));
+          if (mergedElement) {
+            mergedElement.setAttribute('value', JSON.stringify(mergedValue));
+            // Also set property if component supports it
+            if (mergedElement.value !== undefined) {
+              mergedElement.value = mergedValue;
+            }
+            // Trigger change event to update the component UI
+            mergedElement.dispatchEvent(new Event('change', { bubbles: true }));
+          }
         }
 
         break;
@@ -972,12 +1041,66 @@ jQuery(function ($) {
           }
 
           case 'location_meta': {
-            let matched_value = $(td_field_select_input)
-              .parent()
-              .parent()
-              .find('input.input-group-field[value="' + field_value + '"]');
-            if (matched_value && $(matched_value).length > 0) {
-              still_selected = true;
+            // Web component: dt-location-map stores value as JSON string in 'value' attribute
+            const fieldElement = $(
+              '#' + merge_obj['post_id'] + '_' + field_id,
+            )[0];
+            const fieldJQuery = $('#' + merge_obj['post_id'] + '_' + field_id);
+
+            if (fieldElement) {
+              // Read from attribute first (as JSON string), fallback to property if needed
+              let selectedValueStr =
+                fieldElement.getAttribute('value') ||
+                fieldJQuery.attr('value') ||
+                fieldElement.value ||
+                '[]';
+
+              let selectedValue = [];
+              // Parse JSON string to array
+              try {
+                if (typeof selectedValueStr === 'string') {
+                  selectedValue = JSON.parse(selectedValueStr);
+                } else if (Array.isArray(selectedValueStr)) {
+                  selectedValue = selectedValueStr;
+                }
+              } catch (e) {
+                selectedValue = [];
+              }
+
+              if (!Array.isArray(selectedValue)) {
+                selectedValue = [];
+              }
+
+              // Compare field_value (which is a location object) with selectedValue array
+              // field_value could be a string (old format) or an object (new format)
+              if (typeof field_value === 'string') {
+                // Old format: compare by string value
+                const matched = selectedValue.some(
+                  (item) =>
+                    item.label === field_value || item.value === field_value,
+                );
+                if (matched) {
+                  still_selected = true;
+                }
+              } else if (field_value && typeof field_value === 'object') {
+                // New format: compare by grid_meta_id or label
+                const matched = selectedValue.some((item) => {
+                  if (field_value.grid_meta_id && item.grid_meta_id) {
+                    return (
+                      String(item.grid_meta_id) ===
+                      String(field_value.grid_meta_id)
+                    );
+                  }
+                  // Fallback: compare by label
+                  const fieldLabel =
+                    field_value.label || field_value.value || '';
+                  const itemLabel = item.label || item.value || '';
+                  return fieldLabel === itemLabel && fieldLabel !== '';
+                });
+                if (matched) {
+                  still_selected = true;
+                }
+              }
             }
 
             break;
@@ -1168,41 +1291,78 @@ jQuery(function ($) {
           }
 
           case 'location_meta': {
-            // Determine values to be processed
-            let location_meta_entries = [];
-            let location_meta_deletions = field_meta.val()
-              ? JSON.parse(field_meta.val())
-              : [];
+            // Get the web component element (dt-location-map)
+            const fieldElement = $(td).find('#' + field_id)[0];
 
-            // Package values and any deletions
-            $(td)
-              .find('input.input-group-field')
-              .each(function (idx, input) {
-                if ($(input).val()) {
+            if (fieldElement) {
+              // Read from value attribute (JSON string)
+              let locationValueStr =
+                fieldElement.getAttribute('value') ||
+                $(td)
+                  .find('#' + field_id)
+                  .attr('value') ||
+                fieldElement.value ||
+                '[]';
+
+              // Parse JSON to get array of location objects
+              let locationObjects = [];
+              try {
+                if (typeof locationValueStr === 'string') {
+                  locationObjects = JSON.parse(locationValueStr);
+                } else if (Array.isArray(locationValueStr)) {
+                  locationObjects = locationValueStr;
+                }
+              } catch (e) {
+                locationObjects = [];
+              }
+
+              if (!Array.isArray(locationObjects)) {
+                locationObjects = [];
+              }
+
+              // Get deletions from field_meta
+              let location_meta_deletions = field_meta.val()
+                ? JSON.parse(field_meta.val())
+                : [];
+
+              // Format location objects for backend
+              let location_meta_entries = [];
+
+              // Add each location with required fields
+              locationObjects.forEach((location) => {
+                // Backend requires: grid_id, label, level, lng, lat
+                if (
+                  location.grid_id &&
+                  location.label &&
+                  location.level &&
+                  location.lng &&
+                  location.lat
+                ) {
                   location_meta_entries.push({
-                    value: $(input).val(),
+                    grid_id: location.grid_id,
+                    label: location.label,
+                    level: location.level,
+                    lng: location.lng,
+                    lat: location.lat,
+                    source: location.source || 'user', // Default to 'user' if not set
                   });
                 }
               });
 
-            if (window.selected_location_grid_meta !== undefined) {
-              location_meta_entries.push({
-                value: window.selected_location_grid_meta,
+              // Add deletions (format: { grid_meta_id: id, delete: true })
+              location_meta_deletions.forEach((id) => {
+                location_meta_entries.push({
+                  grid_meta_id: id,
+                  delete: true,
+                });
               });
-            }
 
-            $.each(location_meta_deletions, function (idx, id) {
-              location_meta_entries.push({
-                grid_meta_id: id,
-                delete: true,
-              });
-            });
-
-            // If present, capture entries
-            if (location_meta_entries) {
-              values[post_field_id] = {
-                values: location_meta_entries,
-              };
+              // Package for submission
+              if (location_meta_entries.length > 0) {
+                values[post_field_id] = {
+                  values: location_meta_entries,
+                };
+              }
             }
             break;
           }
