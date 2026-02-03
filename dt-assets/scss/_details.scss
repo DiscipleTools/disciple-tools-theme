@@ -461,7 +461,7 @@ DT comments and activity
 
     //add a loading spinner when searching for contacts
     .mentions-input-box textarea.loading-gif {
-        background:url('../../../dt-assets/images/ajax-loader.gif') no-repeat 99% 6px;
+        background:url('../images/ajax-loader.gif') no-repeat 99% 6px;
     }
     //make sure the blue boxes around the @mentions in the textarea are the right sizes
     .mentions-input-box .mentions strong span {
@@ -751,7 +751,7 @@ DT comments and activity
     .upload-error-message {
         margin-top: 15px;
         animation: slideDown 0.3s ease-out;
-        
+
         .callout {
             display: flex;
             align-items: flex-start;
@@ -763,13 +763,13 @@ DT comments and activity
             word-wrap: break-word;
             overflow-wrap: break-word;
             hyphens: auto;
-            
+
             i {
                 font-size: 18px;
                 flex-shrink: 0;
                 margin-top: 2px;
             }
-            
+
             .error-text {
                 flex: 1;
                 min-width: 0;
@@ -779,18 +779,18 @@ DT comments and activity
                 hyphens: auto;
             }
         }
-        
+
         .callout.alert {
             background-color: #f8d7da;
             border: 1px solid #f5c6cb;
             color: #721c24;
-            
+
             i {
                 color: #dc3545;
             }
         }
     }
-    
+
     @keyframes slideDown {
         from {
             opacity: 0;

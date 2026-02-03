@@ -11,7 +11,8 @@ Disciple.Tools is a WordPress theme that functions as a CRM for Christian minist
 ### Build & Development
 ```bash
 npm install          # Install dependencies and run build
-npm run build        # Build CSS/JS (runs gulp)
+npm run dev          # Start Vite dev server with HMR (styles only)
+npm run build        # Build CSS/JS for production (Vite)
 ```
 
 ### Linting
@@ -52,10 +53,11 @@ The theme is organized into `dt-*` directories, each representing a major featur
 
 **REST API**: Endpoints follow pattern `/dt-posts/v2/{post_type}/` and `/dt/v1/` namespaces. All REST endpoints require authentication by default.
 
-**Frontend Build** (see `gulpfile.js`):
+**Frontend Build** (see `vite.config.js`):
 - SCSS from `dt-assets/scss/` and `@disciple.tools/web-components/src/styles/` compile to `dt-assets/build/css/`
-- JS from what-input, Foundation core + plugins, `dt-assets/js/footer-scripts.js`, and masonry concatenate to `dt-assets/build/js/scripts.min.js`
+- JS from what-input, Foundation core + plugins, `dt-assets/js/footer-scripts.js`, and masonry bundle to `dt-assets/build/js/scripts.min.js`
 - Web components JS from `@disciple.tools/web-components/dist/` copy to `dt-assets/build/components/`
+- Vite HMR is supported for development.
 
 ### Important Files
 
@@ -93,5 +95,5 @@ Pull requests must pass:
 1. PHP syntax check
 2. PHPCS on changed PHP files
 3. ESLint + Prettier
-4. Gulp build (minified files must match)
+4. Vite build (compiled assets must match expected output)
 5. PHPUnit tests (multisite mode)
