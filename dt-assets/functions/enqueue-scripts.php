@@ -389,7 +389,10 @@ function dt_site_scripts() {
             'delete_any' => current_user_can( 'delete_any_' . $post_type )
         ];
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );
-        dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );
+        $list_deps = array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' );
+        dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', $list_deps, true );
+        dt_theme_enqueue_script( 'modular-list-bulk-js', 'dt-assets/js/modular-list-bulk.js', array_merge( $list_deps, array( 'modular-list-js' ) ), true );
+        dt_theme_enqueue_script( 'modular-list-exports-js', 'dt-assets/js/modular-list-exports.js', array_merge( $list_deps, array( 'modular-list-js' ) ), true );
         wp_localize_script( 'modular-list-js', 'list_settings', array(
             'post_type' => $post_type,
             'post_type_settings' => $post_settings,
