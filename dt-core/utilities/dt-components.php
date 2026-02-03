@@ -35,7 +35,7 @@ class DT_Components
             'communication_channel',
             'tags',
             'user_select',
-            'upload_file'
+            'file_upload'
         ] );
         if ( !in_array( $field_type, $allowed_types ) ){
             return;
@@ -325,7 +325,7 @@ class DT_Components
         <?php
     }
 
-    public static function render_upload_file( $field_key, $fields, $post, $params = [] ) {
+    public static function render_file_upload( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         if ( empty( $shared_attributes ) ) {
             return;
@@ -405,7 +405,7 @@ class DT_Components
         // Output icon attribute directly to avoid wp_kses_post truncating font-icon values (e.g. "mdi mdi-file-arrow-up-down")
         $field_icon = $fields[ $field_key ]['font-icon'] ?? $fields[ $field_key ]['icon'] ?? '';
         ?>
-        <dt-upload-file <?php echo wp_kses_post( $shared_attributes ) ?>
+        <dt-file-upload <?php echo wp_kses_post( $shared_attributes ) ?>
             <?php if ( !empty( $field_icon ) ) : ?>icon="<?php echo esc_attr( $field_icon ); ?>"
             <?php endif; ?>
             value="<?php echo esc_attr( json_encode( $enhanced_value ) ) ?>"
@@ -432,7 +432,7 @@ class DT_Components
             meta-key="<?php echo esc_attr( $field_key ) ?>"
             key-prefix="<?php echo esc_attr( $key_prefix ) ?>"
         >
-        </dt-upload-file>
+        </dt-file-upload>
         <?php
     }
 }

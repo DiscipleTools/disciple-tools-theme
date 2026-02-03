@@ -541,7 +541,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
         <?php endif; ?>
 
-        <?php if ( $field['type'] === 'upload_file' ) : ?>
+        <?php if ( $field['type'] === 'file_upload' ) : ?>
             <?php
                 $custom_fields = dt_get_option( 'dt_field_customizations' );
                 $custom_field = $custom_fields[ $post_type ][ $field_key ] ?? [];
@@ -556,14 +556,14 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             ?>
 
             <h3><?php esc_html_e( 'Field Options', 'disciple_tools' ) ?></h3>
-            <table id="upload_file_options">
+            <table id="file_upload_options">
                 <tr>
                     <td style="vertical-align: middle">
                         <label for="accepted_file_types"><b><?php esc_html_e( 'Accepted File Types', 'disciple_tools' ) ?></b></label>
                     </td>
                     <td>
-                        <input type="text" name="accepted_file_types" id="accepted_file_types" 
-                               value="<?php echo esc_attr( implode( ', ', $accepted_file_types ) ) ?>" 
+                        <input type="text" name="accepted_file_types" id="accepted_file_types"
+                               value="<?php echo esc_attr( implode( ', ', $accepted_file_types ) ) ?>"
                                placeholder="e.g., image/*, application/pdf, .doc, .docx"
                                style="width: 100%;" />
                         <p style="font-size: 11px; color: #666; margin-top: 5px;">
@@ -576,8 +576,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         <label for="max_file_size"><b><?php esc_html_e( 'Max File Size (MB)', 'disciple_tools' ) ?></b></label>
                     </td>
                     <td>
-                        <input type="number" name="max_file_size" id="max_file_size" 
-                               value="<?php echo esc_attr( $max_file_size ) ?>" 
+                        <input type="number" name="max_file_size" id="max_file_size"
+                               value="<?php echo esc_attr( $max_file_size ) ?>"
                                min="0" step="0.1"
                                placeholder="<?php esc_attr_e( 'Leave empty for no limit', 'disciple_tools' ) ?>" />
                     </td>
@@ -623,7 +623,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <label>
-                            <input type="checkbox" name="delete_enabled" id="delete_enabled" 
+                            <input type="checkbox" name="delete_enabled" id="delete_enabled"
                                    <?php echo $delete_enabled ? 'checked' : ''; ?>>
                             <?php esc_html_e( 'Allow users to delete uploaded files', 'disciple_tools' ) ?>
                         </label>
@@ -635,7 +635,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <label>
-                            <input type="checkbox" name="download_enabled" id="download_enabled" 
+                            <input type="checkbox" name="download_enabled" id="download_enabled"
                                    <?php echo $download_enabled ? 'checked' : ''; ?>>
                             <?php esc_html_e( 'Allow users to download uploaded files', 'disciple_tools' ) ?>
                         </label>
@@ -647,7 +647,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <label>
-                            <input type="checkbox" name="rename_enabled" id="rename_enabled" 
+                            <input type="checkbox" name="rename_enabled" id="rename_enabled"
                                    <?php echo $rename_enabled ? 'checked' : ''; ?>>
                             <?php esc_html_e( 'Allow users to rename uploaded files', 'disciple_tools' ) ?>
                         </label>
@@ -670,7 +670,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <label>
-                            <input type="checkbox" name="auto_upload" id="auto_upload" 
+                            <input type="checkbox" name="auto_upload" id="auto_upload"
                                    <?php echo $auto_upload ? 'checked' : ''; ?>>
                             <?php esc_html_e( 'Automatically upload files when selected (uncheck to require manual upload)', 'disciple_tools' ) ?>
                         </label>
@@ -1066,8 +1066,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
 
-            // upload_file field options
-            if ( $field['type'] === 'upload_file' ) {
+            // file_upload field options
+            if ( $field['type'] === 'file_upload' ) {
                 // Accepted file types
                 if ( isset( $post_submission['accepted_file_types'] ) && !empty( $post_submission['accepted_file_types'] ) ) {
                     $types = array_map( 'trim', explode( ',', $post_submission['accepted_file_types'] ) );
@@ -1285,7 +1285,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="datetime"><?php esc_html_e( 'DateTime', 'disciple_tools' ) ?></option>
                             <option value="connection"><?php esc_html_e( 'Connection', 'disciple_tools' ) ?></option>
                             <option value="user_select"><?php esc_html_e( 'User Select', 'disciple_tools' ) ?></option>
-                            <option value="upload_file"><?php esc_html_e( 'File Upload', 'disciple_tools' ) ?></option>
+                            <option value="file_upload"><?php esc_html_e( 'File Upload', 'disciple_tools' ) ?></option>
                         </select>
                     </td>
                 </tr>
@@ -1555,10 +1555,10 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'customizable' => 'all',
                     'private' => $field_private
                 ];
-            } elseif ( $field_type === 'upload_file' ) {
+            } elseif ( $field_type === 'file_upload' ) {
                 $new_field = [
                     'name'        => $post_submission['new_field_name'],
-                    'type'        => 'upload_file',
+                    'type'        => 'file_upload',
                     'default'     => [],
                     'tile'     => $field_tile,
                     'customizable' => 'all',

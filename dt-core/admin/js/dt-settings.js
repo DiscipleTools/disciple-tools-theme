@@ -1284,7 +1284,7 @@ jQuery(document).ready(function ($) {
                     <option value="user_select">User Select</option>
                     <option value="location">Location (grid only)</option>
                     <option value="communication_channel">Communication Channel</option>
-                    <option value="upload_file">File Upload</option>
+                    <option value="file_upload">File Upload</option>
                 </select>
                 <p id="field-type-select-description" style="margin:0.2em 0">
                     ${window.field_settings.field_types.key_select.description}
@@ -1607,8 +1607,8 @@ jQuery(document).ready(function ($) {
         </tr>
         ${type_visibility_html}`;
 
-    // Add upload_file field-specific options
-    if (field_type === 'upload_file') {
+    // Add file_upload field-specific options
+    if (field_type === 'file_upload') {
       let accepted_file_types = field_settings['accepted_file_types'] || [
         'image/*',
         'application/pdf',
@@ -2439,8 +2439,8 @@ jQuery(document).ready(function ($) {
       );
     }
 
-    // Add upload_file field-specific options to visibility object
-    if (field_settings['type'] && field_settings['type'] === 'upload_file') {
+    // Add file_upload field-specific options to visibility object
+    if (field_settings['type'] && field_settings['type'] === 'file_upload') {
       visibility['accepted_file_types'] = $('#accepted_file_types')
         .val()
         .trim();

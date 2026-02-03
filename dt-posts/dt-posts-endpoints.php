@@ -898,7 +898,7 @@ class Disciple_Tools_Posts_Endpoints {
         // Determine storage upload requester type.
         $upload_type = $params['upload_type'] ?? 'post';
 
-        // Check if this is a multi-file field (upload_file type)
+        // Check if this is a multi-file field (file_upload type)
         $is_multi_file = isset( $params['is_multi_file'] ) && $params['is_multi_file'] === 'true';
 
         // Validate storage_s3_url_duration for presigned URL expiration (e.g. '+10 years', '+24 hours')

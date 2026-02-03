@@ -1296,7 +1296,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             }
 
             // Upload File Field Types: Field-specific options
-            if ( isset( $post_fields[$field_key]['type'] ) && $post_fields[$field_key]['type'] === 'upload_file' ) {
+            if ( isset( $post_fields[$field_key]['type'] ) && $post_fields[$field_key]['type'] === 'file_upload' ) {
                 // Accepted file types
                 if ( isset( $post_submission['visibility']['accepted_file_types'] ) && !empty( $post_submission['visibility']['accepted_file_types'] ) ) {
                     $types = array_map( 'trim', explode( ',', $post_submission['visibility']['accepted_file_types'] ) );
