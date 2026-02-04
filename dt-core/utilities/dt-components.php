@@ -34,7 +34,8 @@ class DT_Components
             'location_meta',
             'communication_channel',
             'tags',
-            'user_select'
+            'user_select',
+            'file_upload'
         ] );
         if ( !in_array( $field_type, $allowed_types ) ){
             return;
@@ -44,8 +45,10 @@ class DT_Components
         }
 
         $icon = null;
-        if ( isset( $fields[$field_key]['icon'] ) && !empty( $fields[$field_key]['icon'] ) ) {
-            $icon = 'icon=' . esc_attr( $fields[$field_key]['icon'] );
+        if ( isset( $fields[$field_key]['font-icon'] ) && !empty( $fields[$field_key]['font-icon'] ) ) {
+            $icon = 'icon="' . esc_attr( $fields[$field_key]['font-icon'] ) . '"';
+        } else if ( isset( $fields[$field_key]['icon'] ) && !empty( $fields[$field_key]['icon'] ) ) {
+            $icon = 'icon="' . esc_attr( $fields[$field_key]['icon'] ) . '"';
         }
         if ( isset( $fields[$field_key]['post_type'] ) ) {
             $post_type = 'postType=' . esc_attr( $fields[$field_key]['post_type'] );
@@ -61,7 +64,7 @@ class DT_Components
               name="' . esc_attr( $field_key ) . '"
               ' . $label_attr . '
               ' . esc_html( $post_type ?? '' ) . '
-              ' . esc_html( $icon ) . '
+              ' . $icon . '
               ' . esc_html( $required_tag ) . '
               ' . esc_html( $disabled ) . '
               ' . ( $is_private ? 'private' : null ) . '
@@ -319,6 +322,117 @@ class DT_Components
             value="<?php echo esc_attr( json_encode( $value ) ) ?>"
         single><?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-users-connection>
+        <?php
+    }
+
+    public static function render_file_upload( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+        if ( empty( $shared_attributes ) ) {
+            return;
+        }
+
+        // Get field settings for configuration
+        $accepted_file_types = $fields[ $field_key ]['accepted_file_types'] ?? [ 'image/*', 'application/pdf' ];
+        $max_file_size = $fields[$field_key]['max_file_size'] ?? null;
+        $delete_enabled = isset( $fields[$field_key]['delete_enabled'] ) ? $fields[$field_key]['delete_enabled'] : true;
+        $display_layout = $fields[$field_key]['display_layout'] ?? 'grid';
+        $file_type_icon = $fields[$field_key]['file_type_icon'] ?? '';
+        $auto_upload = isset( $fields[$field_key]['auto_upload'] ) ? $fields[$field_key]['auto_upload'] : true;
+        $download_enabled = isset( $fields[$field_key]['download_enabled'] ) ? $fields[$field_key]['download_enabled'] : true;
+        $rename_enabled = isset( $fields[$field_key]['rename_enabled'] ) ? $fields[$field_key]['rename_enabled'] : true;
+
+        // Get post type and ID for API calls
+        $post_type = $post['post_type'] ?? '';
+        $post_id = $post['ID'] ?? '';
+
+        // Get field value (array of file objects)
+        $value = $post[$field_key] ?? [];
+        if ( !is_array( $value ) ) {
+            $value = [];
+        }
+
+        // Enhance file objects with URLs for preview
+        $enhanced_value = array_map(function( $file ) {
+            $file_key = is_array( $file ) && isset( $file['key'] ) ? $file['key'] : ( is_string( $file ) ? $file : '' );
+
+            if ( empty( $file_key ) ) {
+                return $file;
+            }
+
+            // If already an array with all needed data, enhance with URLs (always regenerate to refresh expired presigned URLs)
+            if ( is_array( $file ) ) {
+                $file_type = $file['type'] ?? '';
+
+                // Add file URL
+                if ( DT_Storage_API::is_enabled() ) {
+                    $file['url'] = DT_Storage_API::get_file_url( $file_key );
+                }
+
+                // Add thumbnail URLs for images
+                if ( strpos( $file_type, 'image/' ) === 0 && DT_Storage_API::is_enabled() ) {
+                    // Use stored thumbnail_key if available, otherwise generate from original key
+                    if ( !empty( $file['thumbnail_key'] ) ) {
+                        $file['thumbnail_url'] = DT_Storage_API::get_file_url( $file['thumbnail_key'] );
+                    } else {
+                        $file['thumbnail_url'] = DT_Storage_API::get_thumbnail_url( $file_key );
+                    }
+
+                    // Use stored large_thumbnail_key if available, otherwise generate from original key
+                    if ( !empty( $file['large_thumbnail_key'] ) ) {
+                        $file['large_thumbnail_url'] = DT_Storage_API::get_file_url( $file['large_thumbnail_key'] );
+                    } else {
+                        $file['large_thumbnail_url'] = DT_Storage_API::get_large_thumbnail_url( $file_key );
+                    }
+                }
+            } else {
+                // Convert string key to array format
+                $file = [
+                    'key' => $file_key,
+                    'name' => basename( $file_key ),
+                    'type' => '',
+                ];
+                if ( DT_Storage_API::is_enabled() ) {
+                    $file['url'] = DT_Storage_API::get_file_url( $file_key );
+                }
+            }
+
+            return $file;
+        }, $value);
+
+        // Determine key prefix (use post type, post id and field key as prefix for better organization)
+        $key_prefix = $post_type . '/' . $post_id . '/' . $field_key;
+
+        // Output icon attribute directly to avoid wp_kses_post truncating font-icon values (e.g. "mdi mdi-file-arrow-up-down")
+        $field_icon = $fields[ $field_key ]['font-icon'] ?? $fields[ $field_key ]['icon'] ?? '';
+        ?>
+        <dt-file-upload <?php echo wp_kses_post( $shared_attributes ) ?>
+            <?php if ( !empty( $field_icon ) ) : ?>icon="<?php echo esc_attr( $field_icon ); ?>"
+            <?php endif; ?>
+            value="<?php echo esc_attr( json_encode( $enhanced_value ) ) ?>"
+            accepted-file-types='<?php echo esc_attr( json_encode( $accepted_file_types ) ) ?>'
+            <?php if ( $max_file_size ): ?>
+                max-file-size="<?php echo esc_attr( $max_file_size ) ?>"
+            <?php endif; ?>
+            <?php if ( !$delete_enabled ): ?>
+                delete-enabled="false"
+            <?php endif; ?>
+            display-layout="<?php echo esc_attr( $display_layout ) ?>"
+            <?php if ( $file_type_icon ): ?>
+                file-type-icon="<?php echo esc_attr( $file_type_icon ) ?>"
+            <?php endif; ?>
+            auto-upload="<?php echo $auto_upload ? 'true' : 'false' ?>"
+            <?php if ( !$download_enabled ): ?>
+                download-enabled="false"
+            <?php endif; ?>
+            <?php if ( !$rename_enabled ): ?>
+                rename-enabled="false"
+            <?php endif; ?>
+            post-type="<?php echo esc_attr( $post_type ) ?>"
+            post-id="<?php echo esc_attr( $post_id ) ?>"
+            meta-key="<?php echo esc_attr( $field_key ) ?>"
+            key-prefix="<?php echo esc_attr( $key_prefix ) ?>"
+        >
+        </dt-file-upload>
         <?php
     }
 }

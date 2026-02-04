@@ -1708,6 +1708,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             'text',
             'textarea',
             'number',
+            'file_upload',
             'connection to',
             'connection from',
             ''
@@ -3264,6 +3265,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'label' => 'Location with Geocoding',
                 'description' => 'Location selected with the help of a geocoder (mapbox, google)',
                 'user_creatable' => false,
+            ],
+            'file_upload' => [
+                'label' => 'File Upload',
+                'description' => 'Field for uploading multiple files (images, documents, PDFs, etc.)',
+                'user_creatable' => true,
             ],
             'tasks' => [
                 'label' => 'Tasks',
