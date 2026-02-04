@@ -1335,7 +1335,7 @@ class Disciple_Tools_Posts_Endpoints {
                     } else {
                         $old_file_name = basename( $file_key );
                     }
-                    
+
                     if ( is_array( $file_object ) ) {
                         $file_object['name'] = $new_name;
                         $updated_files[] = $file_object;
@@ -1371,7 +1371,7 @@ class Disciple_Tools_Posts_Endpoints {
                     'field_type'        => 'file_upload',
                     'object_note'       => $object_note,
                 ] );
-                
+
                 return [
                     'renamed' => true,
                     'file_key' => $file_key_to_rename,
