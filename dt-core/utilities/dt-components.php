@@ -399,8 +399,8 @@ class DT_Components
             return $file;
         }, $value);
 
-        // Determine key prefix (use post type and field key as prefix for better organization)
-        $key_prefix = $post_type . '/' . $field_key;
+        // Determine key prefix (use post type, post id and field key as prefix for better organization)
+        $key_prefix = $post_type . '/' . $post_id . '/' . $field_key;
 
         // Output icon attribute directly to avoid wp_kses_post truncating font-icon values (e.g. "mdi mdi-file-arrow-up-down")
         $field_icon = $fields[ $field_key ]['font-icon'] ?? $fields[ $field_key ]['icon'] ?? '';
