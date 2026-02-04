@@ -415,9 +415,8 @@ class Disciple_Tools_Posts
             } elseif ( isset( $fields[$activity->meta_key]['type'] ) && $fields[$activity->meta_key]['type'] === 'file_upload' ) {
                 $is_file_upload_field = true;
             }
-            
+
             if ( $is_file_upload_field ) {
-                error_log( print_r( $activity, true ) );
                 // Handle file_upload field formatting
                 if ( !empty( $activity->object_note ) ) {
                     $message = $activity->object_note;
@@ -426,7 +425,7 @@ class Disciple_Tools_Posts
                     $new_value = maybe_unserialize( $activity->meta_value );
                     $old_value = maybe_unserialize( $activity->old_value );
                     $field_name = isset( $fields[$activity->meta_key]['name'] ) ? $fields[$activity->meta_key]['name'] : $activity->meta_key;
-                    
+
                     if ( empty( $new_value ) || $new_value === 'value_deleted' ) {
                         // File(s) deleted
                         if ( is_array( $old_value ) ) {
@@ -435,13 +434,13 @@ class Disciple_Tools_Posts
                                 $file_name = is_array( $old_value[0] ) && isset( $old_value[0]['name'] )
                                     ? $old_value[0]['name']
                                     : basename( is_string( $old_value[0] ) ? $old_value[0] : '' );
-                                $message = sprintf( _x( 'Deleted file: %s from %s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+                                $message = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
                             } else {
-                                $message = sprintf( _x( 'Deleted all %d files from %s', 'file_upload activity', 'disciple_tools' ), $file_count, $field_name );
+                                $message = sprintf( _x( 'Deleted all %1$d files from %2$s', 'file_upload activity', 'disciple_tools' ), $file_count, $field_name );
                             }
                         } else {
                             $file_name = basename( $old_value );
-                            $message = sprintf( _x( 'Deleted file: %s from %s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+                            $message = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
                         }
                     } else if ( empty( $old_value ) ) {
                         // File(s) uploaded
@@ -456,23 +455,23 @@ class Disciple_Tools_Posts
                                 }
                             }
                             if ( $file_count === 1 ) {
-                                $message = sprintf( _x( 'Uploaded file: %s to %s', 'file_upload activity', 'disciple_tools' ), $file_names[0], $field_name );
+                                $message = sprintf( _x( 'Uploaded file: %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $file_names[0], $field_name );
                             } else {
                                 $file_list = implode( ', ', array_slice( $file_names, 0, 3 ) );
                                 if ( $file_count > 3 ) {
                                     $file_list .= sprintf( _x( ' and %d more', 'file_upload activity', 'disciple_tools' ), $file_count - 3 );
                                 }
-                                $message = sprintf( _x( 'Uploaded %d files: %s to %s', 'file_upload activity', 'disciple_tools' ), $file_count, $file_list, $field_name );
+                                $message = sprintf( _x( 'Uploaded %1$d files: %2$s to %3$s', 'file_upload activity', 'disciple_tools' ), $file_count, $file_list, $field_name );
                             }
                         } else {
                             $file_name = basename( $new_value );
-                            $message = sprintf( _x( 'Uploaded file: %s to %s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+                            $message = sprintf( _x( 'Uploaded file: %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
                         }
                     } else {
                         // File renamed or updated
                         $old_file_names = [];
                         $new_file_names = [];
-                        
+
                         if ( is_array( $old_value ) ) {
                             foreach ( $old_value as $file ) {
                                 if ( is_array( $file ) && isset( $file['name'] ) ) {
@@ -487,10 +486,10 @@ class Disciple_Tools_Posts
                                 }
                             }
                         }
-                        
+
                         // Check if it's a rename (one file, names differ)
                         if ( count( $old_file_names ) === 1 && count( $new_file_names ) === 1 && $old_file_names[0] !== $new_file_names[0] ) {
-                            $message = sprintf( _x( 'Renamed file from %s to %s', 'file_upload activity', 'disciple_tools' ), $old_file_names[0], $new_file_names[0] );
+                            $message = sprintf( _x( 'Renamed file from %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $old_file_names[0], $new_file_names[0] );
                         } else {
                             $message = $field_name . ': ' . __( 'File updated', 'disciple_tools' );
                         }

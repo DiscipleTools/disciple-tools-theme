@@ -1028,7 +1028,7 @@ class Disciple_Tools_Posts_Endpoints {
                 case 'post':
                     // Store old value for activity logging
                     $old_meta_value = $meta_key_value;
-                    
+
                     if ( $is_multi_file ) {
                         // Append new files to existing array
                         $existing_files = is_array( $meta_key_value ) ? $meta_key_value : [];
@@ -1038,7 +1038,7 @@ class Disciple_Tools_Posts_Endpoints {
                             }
                         }
                         update_post_meta( $post_id, $meta_key, $existing_files );
-                        
+
                         // Log activity for file upload
                         $post_settings = DT_Posts::get_post_settings( $post_type );
                         $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
@@ -1050,15 +1050,15 @@ class Disciple_Tools_Posts_Endpoints {
                         }
                         $file_count = count( $uploaded_file_names );
                         if ( $file_count === 1 ) {
-                            $object_note = sprintf( _x( 'Uploaded file: %s to %s', 'file_upload activity', 'disciple_tools' ), $uploaded_file_names[0], $field_name );
+                            $object_note = sprintf( _x( 'Uploaded file: %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $uploaded_file_names[0], $field_name );
                         } else {
                             $file_list = implode( ', ', array_slice( $uploaded_file_names, 0, 3 ) );
                             if ( $file_count > 3 ) {
                                 $file_list .= sprintf( _x( ' and %d more', 'file_upload activity', 'disciple_tools' ), $file_count - 3 );
                             }
-                            $object_note = sprintf( _x( 'Uploaded %d files: %s to %s', 'file_upload activity', 'disciple_tools' ), $file_count, $file_list, $field_name );
+                            $object_note = sprintf( _x( 'Uploaded %1$d files: %2$s to %3$s', 'file_upload activity', 'disciple_tools' ), $file_count, $file_list, $field_name );
                         }
-                        
+
                         dt_activity_insert( [
                             'action'            => 'field_update',
                             'object_type'       => $post_type,
@@ -1073,7 +1073,7 @@ class Disciple_Tools_Posts_Endpoints {
                     } else {
                         // Single file: use first uploaded key (backward compatibility)
                         update_post_meta( $post_id, $meta_key, $uploaded_keys[0] );
-                        
+
                         // Log activity for single file upload
                         $post_settings = DT_Posts::get_post_settings( $post_type );
                         $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
@@ -1083,8 +1083,8 @@ class Disciple_Tools_Posts_Endpoints {
                         } else {
                             $file_name = basename( $uploaded_keys[0] );
                         }
-                        $object_note = sprintf( _x( 'Uploaded file: %s to %s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
-                        
+                        $object_note = sprintf( _x( 'Uploaded file: %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+
                         dt_activity_insert( [
                             'action'            => 'field_update',
                             'object_type'       => $post_type,
@@ -1206,7 +1206,7 @@ class Disciple_Tools_Posts_Endpoints {
             if ( $file_found ) {
                 // Store old value for activity logging
                 $old_meta_value = $meta_key_value;
-                
+
                 // Update post meta with remaining files.
                 if ( !empty( $updated_files ) ) {
                     update_post_meta( $post_id, $meta_key, $updated_files );
@@ -1216,12 +1216,12 @@ class Disciple_Tools_Posts_Endpoints {
                     delete_post_meta( $post_id, $meta_key );
                     $new_meta_value = '';
                 }
-                
+
                 // Log activity for file deletion
                 $post_settings = DT_Posts::get_post_settings( $post_type );
                 $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
-                $object_note = sprintf( _x( 'Deleted file: %s from %s', 'file_upload activity', 'disciple_tools' ), $deleted_file_name, $field_name );
-                
+                $object_note = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $deleted_file_name, $field_name );
+
                 dt_activity_insert( [
                     'action'            => 'field_update',
                     'object_type'       => $post_type,
@@ -1255,13 +1255,13 @@ class Disciple_Tools_Posts_Endpoints {
                     // Store old value for activity logging
                     $old_meta_value = $meta_key_value;
                     delete_post_meta( $post_id, $meta_key );
-                    
+
                     // Log activity for file deletion
                     $post_settings = DT_Posts::get_post_settings( $post_type );
                     $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
                     $file_name = basename( $file_key_to_delete );
-                    $object_note = sprintf( _x( 'Deleted file: %s from %s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
-                    
+                    $object_note = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+
                     dt_activity_insert( [
                         'action'            => 'field_update',
                         'object_type'       => $post_type,
@@ -1354,12 +1354,12 @@ class Disciple_Tools_Posts_Endpoints {
                 // Store old value for activity logging
                 $old_meta_value = $meta_key_value;
                 update_post_meta( $post_id, $meta_key, $updated_files );
-                
+
                 // Log activity for file rename
                 $post_settings = DT_Posts::get_post_settings( $post_type );
                 $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
-                $object_note = sprintf( _x( 'Renamed file from %s to %s in %s', 'file_upload activity', 'disciple_tools' ), $old_file_name, $new_name, $field_name );
-                
+                $object_note = sprintf( _x( 'Renamed file from %1$s to %2$s in %3$s', 'file_upload activity', 'disciple_tools' ), $old_file_name, $new_name, $field_name );
+
                 dt_activity_insert( [
                     'action'            => 'field_update',
                     'object_type'       => $post_type,
@@ -1566,7 +1566,7 @@ class Disciple_Tools_Posts_Endpoints {
 
             // Delete corresponding meta data.
             delete_post_meta( $post_id, $meta_key );
-            
+
             // Log activity for deleting all files
             if ( $deleted_count > 0 ) {
                 $post_settings = DT_Posts::get_post_settings( $post_type );
@@ -1582,11 +1582,11 @@ class Disciple_Tools_Posts_Endpoints {
                     if ( empty( $file_name ) && !empty( $deleted_keys[0] ) ) {
                         $file_name = basename( $deleted_keys[0] );
                     }
-                    $object_note = sprintf( _x( 'Deleted file: %s from %s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+                    $object_note = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
                 } else {
-                    $object_note = sprintf( _x( 'Deleted all %d files from %s', 'file_upload activity', 'disciple_tools' ), $deleted_count, $field_name );
+                    $object_note = sprintf( _x( 'Deleted all %1$d files from %2$s', 'file_upload activity', 'disciple_tools' ), $deleted_count, $field_name );
                 }
-                
+
                 dt_activity_insert( [
                     'action'            => 'field_update',
                     'object_type'       => $post_type,
@@ -1614,14 +1614,14 @@ class Disciple_Tools_Posts_Endpoints {
 
             // Finally, delete corresponding meta data.
             delete_post_meta( $post_id, $meta_key );
-            
-                // Log activity for file deletion
-                if ( $deleted ) {
-                    $post_settings = DT_Posts::get_post_settings( $post_type );
-                    $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
-                    $file_name = basename( $old_meta_value );
-                    $object_note = sprintf( _x( 'Deleted file: %s from %s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
-                
+
+            // Log activity for file deletion
+            if ( $deleted ) {
+                $post_settings = DT_Posts::get_post_settings( $post_type );
+                $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
+                $file_name = basename( $old_meta_value );
+                $object_note = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+
                 dt_activity_insert( [
                     'action'            => 'field_update',
                     'object_type'       => $post_type,
