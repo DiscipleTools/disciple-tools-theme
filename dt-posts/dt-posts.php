@@ -1708,6 +1708,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             'text',
             'textarea',
             'number',
+            'file_upload',
             'connection to',
             'connection from',
             ''
