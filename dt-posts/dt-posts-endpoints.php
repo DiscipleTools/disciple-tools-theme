@@ -559,6 +559,22 @@ class Disciple_Tools_Posts_Endpoints {
             ]
         );
 
+        //Storage Download Single File
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/storage_download', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'storage_download' ],
+                'args'     => [
+                    'post_type' => $arg_schemas['post_type'],
+                    'id' => $arg_schemas['id']
+                ],
+                'permission_callback' => function ( WP_REST_Request $request ) {
+                    $params = $request->get_params();
+                    return DT_Posts::can_view( sanitize_text_field( wp_unslash( $params['post_type'] ) ), sanitize_text_field( wp_unslash( $params['id'] ) ) );
+                }
+            ]
+        );
+
         //Storage Delete
         register_rest_route(
             $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/storage_delete', [
@@ -1238,6 +1254,133 @@ class Disciple_Tools_Posts_Endpoints {
                 'error' => 'Invalid file data format.',
             ];
         }
+    }
+
+    public function storage_download( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( !isset( $params['post_type'], $params['id'], $params['meta_key'], $params['file_key'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
+        }
+
+        if ( !( method_exists( 'DT_Storage_API', 'get_file_url' ) && DT_Storage_API::is_enabled() ) ) {
+            return new WP_Error( __METHOD__, 'DT_Storage_API Download Function Unavailable.' );
+        }
+
+        $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
+        $post_id = sanitize_text_field( wp_unslash( $params['id'] ) );
+        $meta_key = sanitize_text_field( wp_unslash( $params['meta_key'] ) );
+        $file_key = sanitize_text_field( wp_unslash( $params['file_key'] ) );
+
+        // Verify file exists in post meta and extract file info
+        $meta_key_value = get_post_meta( $post_id, $meta_key, true );
+        $file_found = false;
+        $file_name = '';
+        $file_type = '';
+
+        if ( is_array( $meta_key_value ) ) {
+            foreach ( $meta_key_value as $file_object ) {
+                $file_key_from_meta = is_array( $file_object ) && isset( $file_object['key'] )
+                    ? $file_object['key']
+                    : ( is_string( $file_object ) ? $file_object : '' );
+
+                if ( $file_key_from_meta === $file_key ) {
+                    $file_found = true;
+                    $file_name = is_array( $file_object ) && isset( $file_object['name'] )
+                        ? $file_object['name']
+                        : basename( $file_key );
+
+                    // Extract type from metadata (priority 1 for content-type)
+                    $file_type = is_array( $file_object ) && isset( $file_object['type'] )
+                        ? $file_object['type']
+                        : '';
+                    break;
+                }
+            }
+        } elseif ( $meta_key_value === $file_key ) {
+            $file_found = true;
+            $file_name = basename( $file_key );
+            $file_type = '';
+        }
+
+        if ( !$file_found ) {
+            return new WP_Error( __METHOD__, 'File not found in post meta.' );
+        }
+
+        // Generate presigned URL
+        $presigned_url = DT_Storage_API::get_file_url( $file_key );
+
+        if ( empty( $presigned_url ) ) {
+            return new WP_Error( __METHOD__, 'Failed to generate download URL.' );
+        }
+
+        // Fetch file from S3 (server-side, no CORS)
+        // Note: Do not use 'stream' => true as it tries to use URL as filename, causing "File name too long" errors
+        $response = wp_remote_get( $presigned_url, [
+            'timeout' => 300, // 5 minutes for large files
+            'redirection' => 5,
+        ] );
+
+        if ( is_wp_error( $response ) ) {
+            return new WP_Error( __METHOD__, 'Failed to fetch file from storage: ' . $response->get_error_message() );
+        }
+
+        $response_code = wp_remote_retrieve_response_code( $response );
+        if ( $response_code !== 200 ) {
+            return new WP_Error( __METHOD__, 'Failed to fetch file from storage. Response code: ' . $response_code );
+        }
+
+        // Get file content
+        $file_content = wp_remote_retrieve_body( $response );
+
+        // Determine content type with priority:
+        // 1. From metadata (file_type variable)
+        // 2. From S3 response header
+        // 3. From file extension (fallback)
+        $content_type = 'application/octet-stream'; // Default fallback
+
+        if ( !empty( $file_type ) ) {
+            // Priority 1: Use type from metadata database
+            $content_type = $file_type;
+        } else {
+            // Priority 2: Try S3 response header
+            $content_type = wp_remote_retrieve_header( $response, 'content-type' );
+
+            if ( empty( $content_type ) ) {
+                // Priority 3: Extension-based detection
+                $file_ext = strtolower( pathinfo( $file_name, PATHINFO_EXTENSION ) );
+                $mime_types = [
+                    'pdf' => 'application/pdf',
+                    'doc' => 'application/msword',
+                    'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'txt' => 'text/plain',
+                    'csv' => 'text/csv',
+                    'json' => 'application/json',
+                    'xml' => 'application/xml',
+                    'html' => 'text/html',
+                    'htm' => 'text/html',
+                    'jpg' => 'image/jpeg',
+                    'jpeg' => 'image/jpeg',
+                    'png' => 'image/png',
+                    'gif' => 'image/gif',
+                ];
+                $content_type = isset( $mime_types[ $file_ext ] )
+                    ? $mime_types[ $file_ext ]
+                    : 'application/octet-stream';
+            }
+        }
+
+        // Set headers for file download
+        header( 'Content-Type: ' . $content_type );
+        header( 'Content-Disposition: attachment; filename="' . esc_attr( $file_name ) . '"' );
+        header( 'Content-Length: ' . strlen( $file_content ) );
+        header( 'Cache-Control: no-cache, must-revalidate' );
+        header( 'Pragma: no-cache' );
+
+        // Output file content
+        echo $file_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+        // Exit to prevent REST API wrapper from interfering
+        exit;
     }
 
     public function storage_delete( WP_REST_Request $request ) {
