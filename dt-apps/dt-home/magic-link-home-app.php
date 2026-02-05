@@ -230,6 +230,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 'nonce'                   => wp_create_nonce( 'wp_rest' ),
                 'parts'                   => $this->parts,
                 'user_id'                 => get_current_user_id(),
+                'require_login'           => function_exists( 'homescreen_require_login' ) ? homescreen_require_login() : true,
                 'invite_enabled'          => function_exists( 'homescreen_invite_users_enabled' ) ? homescreen_invite_users_enabled() : false,
                 'translations'            => [
                     'welcome' => __( 'Welcome to your Home Screen', 'disciple_tools' ),
