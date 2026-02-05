@@ -1110,7 +1110,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             <input type="hidden" name="duplicate_fields_nonce" id="duplicate_fields_nonce" value="<?php echo esc_attr( wp_create_nonce( 'duplicate_fields' ) ) ?>" />
             <input type="hidden" name="duplicate_fields_data" id="duplicate_fields_data" value="" />
 
-            <p><?php esc_html_e( 'Configure which fields should be checked when searching for duplicate records. The "name" field is always included by default.', 'disciple_tools' ) ?></p>
+            <p><?php esc_html_e( 'Configure which fields should be checked when searching for duplicate records.', 'disciple_tools' ) ?></p>
 
             <table class="widefat">
                 <tr>
@@ -1122,7 +1122,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                             <?php foreach ( $post_types as $post_type ) :
                                     $post_settings = DT_Posts::get_post_settings( $post_type );
                                     $label = $post_settings['label_singular'] ?? ucfirst( $post_type );
-                                    ?>
+                                ?>
                                     <option value="<?php echo esc_attr( $post_type ) ?>" <?php selected( $selected_post_type, $post_type ) ?>>
                                         <?php echo esc_html( $label ) ?>
                                     </option>
@@ -1145,7 +1145,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                             </dt-multi-select>
                         </div>
                         <p class="description" style="margin-top: 5px;">
-                            <?php esc_html_e( 'Select the fields that should be checked when searching for duplicates. The "name" field will always be included.', 'disciple_tools' ) ?>
+                            <?php esc_html_e( 'Select the fields that should be checked when searching for duplicates.', 'disciple_tools' ) ?>
                         </p>
                     </td>
                 </tr>
