@@ -108,8 +108,38 @@ jQuery(document).ready(function ($) {
       }
     });
   let merge_dupe_edit_modal = $('#merge-dupe-edit-modal');
+
   $(document).on('click', '#duplicates-detected-notice', function () {
-    merge_dupe_edit_modal.foundation('open');
+    // Ensure modal exists
+    if (!merge_dupe_edit_modal.length) {
+      console.error('Merge duplicate modal not found');
+      return;
+    }
+
+    // Check if Foundation is initialized on this element
+    let foundationInstance = merge_dupe_edit_modal.data('zfPlugin');
+
+    if (!foundationInstance) {
+      // Foundation might not be initialized yet, try to initialize it
+      if (typeof Foundation !== 'undefined' && Foundation.Reveal) {
+        // Initialize Foundation Reveal on this element
+        foundationInstance = new Foundation.Reveal(merge_dupe_edit_modal);
+      } else {
+        console.error('Foundation library not available');
+        return;
+      }
+    }
+
+    // Open the modal using the Foundation instance
+    if (foundationInstance && typeof foundationInstance.open === 'function') {
+      foundationInstance.open();
+    } else if (typeof merge_dupe_edit_modal.foundation === 'function') {
+      merge_dupe_edit_modal.foundation('open');
+    } else {
+      console.error(
+        'Unable to open modal - Foundation not properly initialized',
+      );
+    }
   });
 
   let possible_duplicates = [];
