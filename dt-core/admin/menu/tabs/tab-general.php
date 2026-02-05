@@ -1123,7 +1123,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                     $post_settings = DT_Posts::get_post_settings( $post_type );
                                     $label = $post_settings['label_singular'] ?? ucfirst( $post_type );
                             ?>
-                                <option value="<?php echo esc_attr( $post_type ) ?>" <?php selected( $selected_post_type, $post_type ) ?>>
+                                    <option value="<?php echo esc_attr( $post_type ) ?>" <?php selected( $selected_post_type, $post_type ) ?>>
                                     <?php echo esc_html( $label ) ?>
                                 </option>
                             <?php endforeach; ?>
