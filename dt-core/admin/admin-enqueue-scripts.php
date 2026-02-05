@@ -90,12 +90,37 @@ function dt_options_scripts() {
         dt_theme_enqueue_style( 'material-font-icons-local', 'dt-core/dependencies/mdi/css/materialdesignicons.min.css', array() );
         wp_enqueue_style( 'material-font-icons', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css' );
 
+        // Enqueue web components for dt-multi-select and other components
+        dt_theme_enqueue_script( 'web-components', 'dt-assets/build/components/index.js', array(), false );
+        dt_theme_enqueue_style( 'web-components-css', 'dt-assets/build/css/light.min.css', array() );
+
         if ( isset( $_GET['tab'] ) && ( ( $_GET['tab'] === 'people-groups' ) || ( $_GET['tab'] === 'general' ) ) ) {
             wp_enqueue_script( 'dt_peoplegroups_scripts', get_template_directory_uri() . '/dt-people-groups/people-groups.js', [
                 'jquery',
                 'jquery-ui-core',
             ], filemtime( get_template_directory() . '/dt-people-groups/people-groups.js' ), true );
             wp_localize_script( 'dt_peoplegroups_scripts', 'dtPeopleGroupsAPI', build_people_groups_api_object() );
+        }
+
+        // Prepare duplicate fields data for general tab
+        $duplicate_fields_data = [];
+        if ( isset( $_GET['tab'] ) && $_GET['tab'] === 'general' ) {
+            $site_options = dt_get_option( 'dt_site_options' );
+            $duplicate_fields_data['config'] = $site_options['duplicates'] ?? [];
+            $duplicate_fields_data['post_types'] = DT_Posts::get_post_types();
+            
+            // Pre-load field settings and defaults for all post types
+            $fields_data = [];
+            $defaults_data = [];
+            foreach ( $duplicate_fields_data['post_types'] as $post_type ) {
+                $field_settings = DT_Posts::get_post_field_settings( $post_type );
+                $fields_data[$post_type] = $field_settings;
+                
+                // Get default fields for this post type
+                $defaults_data[$post_type] = dt_get_duplicate_fields_defaults( $post_type );
+            }
+            $duplicate_fields_data['fields'] = $fields_data;
+            $duplicate_fields_data['defaults'] = $defaults_data;
         }
 
         wp_localize_script(
@@ -109,6 +134,7 @@ function dt_options_scripts() {
                 'available_languages' => dt_get_available_languages(),
                 'site_options' => dt_get_option( 'dt_site_options' ),
                 'contacts_field_settings' => DT_Posts::get_post_field_settings( 'contacts' ),
+                'duplicate_fields' => $duplicate_fields_data,
             )
         );
         wp_register_style( 'dt_admin_css', disciple_tools()->admin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->admin_css_path . 'disciple-tools-admin-styles.css' ) );
