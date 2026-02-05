@@ -1540,8 +1540,7 @@ jQuery(document).ready(function ($) {
   ) {
     const duplicateFieldsConfig =
       window.dtOptionAPI.duplicate_fields.config || {};
-    const allPostTypes =
-      window.dtOptionAPI.duplicate_fields.post_types || [];
+    const allPostTypes = window.dtOptionAPI.duplicate_fields.post_types || [];
     const fieldsData = window.dtOptionAPI.duplicate_fields.fields || {};
     const defaultFields = window.dtOptionAPI.duplicate_fields.defaults || {};
 
@@ -1573,9 +1572,7 @@ jQuery(document).ready(function ($) {
       return fieldsArray
         .filter(function (field) {
           return (
-            !field.hidden &&
-            !field.private &&
-            allowedTypes.includes(field.type)
+            !field.hidden && !field.private && allowedTypes.includes(field.type)
           );
         })
         .sort(function (a, b) {
@@ -1604,10 +1601,18 @@ jQuery(document).ready(function ($) {
       const options = transformFieldsForMultiSelect(fields);
       fieldSelector.options = options;
 
-      // Set selected values from config, or use defaults if no config exists
-      let selectedFields = duplicateFieldsConfig[postType];
-      if (!selectedFields || selectedFields.length === 0) {
-        // Use defaults if no configuration exists for this post type
+      // Set selected values from config, or use defaults if no valid config exists
+      // Check if valid config exists for this post type
+      let selectedFields;
+      if (
+        duplicateFieldsConfig.hasOwnProperty(postType) &&
+        Array.isArray(duplicateFieldsConfig[postType]) &&
+        duplicateFieldsConfig[postType].length > 0
+      ) {
+        // Valid saved config exists - use it
+        selectedFields = duplicateFieldsConfig[postType];
+      } else {
+        // No valid config exists - use defaults
         selectedFields = defaultFields[postType] || [];
       }
 
@@ -1646,13 +1651,15 @@ jQuery(document).ready(function ($) {
       // Collect all post type configurations
       const allConfigs = {};
 
-      // Get current selection
+      // Get current selection - always save current selection, even if empty
+      // (empty will be handled by PHP to use defaults)
       const currentFields = Array.isArray(fieldSelector.value)
         ? fieldSelector.value
         : [];
-      if (currentFields.length > 0) {
-        allConfigs[postType] = currentFields;
-      }
+
+      // Always save the current post type selection (even if empty array)
+      // PHP will ensure 'name' is included and handle empty arrays
+      allConfigs[postType] = currentFields;
 
       // Include other post types from existing config
       Object.keys(duplicateFieldsConfig).forEach(function (pt) {
@@ -1674,7 +1681,7 @@ jQuery(document).ready(function ($) {
         '#duplicate_fields_selector',
       );
       const postTypeSelect = $('#duplicate_fields_post_type');
-      
+
       if (!fieldSelector || !postTypeSelect.length) {
         return;
       }

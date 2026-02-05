@@ -105,8 +105,63 @@ function dt_options_scripts() {
         // Prepare duplicate fields data for general tab
         $duplicate_fields_data = [];
         if ( isset( $_GET['tab'] ) && $_GET['tab'] === 'general' ) {
-            $site_options = dt_get_option( 'dt_site_options' );
-            $duplicate_fields_data['config'] = $site_options['duplicates'] ?? [];
+            // Check if we're processing a duplicate fields form submission
+            // If so, read from POST data to get the latest values before they're saved
+            $duplicates_config = null; // Use null to distinguish "no POST data" from "empty config"
+            $has_post_data = false;
+            
+            if ( isset( $_POST['duplicate_fields_nonce'] ) && 
+                 wp_verify_nonce( sanitize_key( wp_unslash( $_POST['duplicate_fields_nonce'] ) ), 'duplicate_fields' ) &&
+                 isset( $_POST['duplicate_fields_data'] ) && !empty( $_POST['duplicate_fields_data'] ) ) {
+                // Form is being submitted - read from POST to get the latest data
+                $has_post_data = true;
+                $decoded_data = json_decode( wp_unslash( $_POST['duplicate_fields_data'] ), true );
+                if ( is_array( $decoded_data ) ) {
+                    $duplicates_config = [];
+                    $post_types = DT_Posts::get_post_types();
+                    foreach ( $decoded_data as $post_type => $fields ) {
+                        if ( in_array( $post_type, $post_types ) && is_array( $fields ) ) {
+                            // Handle both empty arrays (user cleared all fields) and non-empty arrays
+                            if ( empty( $fields ) ) {
+                                // Empty array means user wants to revert to defaults
+                                // Don't set the key, so it will use defaults
+                                // Explicitly don't add this post type to config
+                            } else {
+                                // Non-empty array - sanitize and save
+                                $sanitized_fields = [];
+                                foreach ( $fields as $field_key ) {
+                                    $sanitized_field_key = sanitize_key( $field_key );
+                                    $field_settings = DT_Posts::get_post_field_settings( $post_type );
+                                    if ( isset( $field_settings[$sanitized_field_key] ) ) {
+                                        $sanitized_fields[] = $sanitized_field_key;
+                                    }
+                                }
+                                if ( !empty( $sanitized_fields ) ) {
+                                    $duplicates_config[$post_type] = array_unique( $sanitized_fields );
+                                }
+                                // If sanitized_fields is empty (all invalid), don't add to config (use defaults)
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // If we didn't get data from POST, read from database
+            if ( !$has_post_data ) {
+                // Clear cache to ensure we read fresh data
+                wp_cache_delete( 'dt_site_options', 'options' );
+                wp_cache_delete( 'alloptions', 'options' );
+                $site_options = dt_get_option( 'dt_site_options' );
+                $duplicates_config = $site_options['duplicates'] ?? [];
+            } else {
+                // We have POST data - use it (even if empty array, which means use defaults)
+                // $duplicates_config is already set above
+                if ( $duplicates_config === null ) {
+                    $duplicates_config = [];
+                }
+            }
+            
+            $duplicate_fields_data['config'] = $duplicates_config;
             $duplicate_fields_data['post_types'] = DT_Posts::get_post_types();
             
             // Pre-load field settings and defaults for all post types

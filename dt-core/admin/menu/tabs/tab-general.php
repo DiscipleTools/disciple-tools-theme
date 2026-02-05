@@ -1060,12 +1060,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                             }
                         }
                         
-                        // Ensure 'name' field is always included
-                        if ( !in_array( 'name', $sanitized_fields ) ) {
-                            array_unshift( $sanitized_fields, 'name' );
-                        }
-                        
-                        // Only save if we have fields
+                        // Save the configuration as-is (respect user's explicit choices)
+                        // Note: 'name' will be included automatically via defaults if no config exists
+                        // But if user explicitly saves a config, we respect their choice
                         if ( !empty( $sanitized_fields ) ) {
                             $duplicates_config[$post_type] = array_unique( $sanitized_fields );
                         }
@@ -1079,6 +1076,10 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
             }
             
             update_option( 'dt_site_options', $site_options, true );
+            
+            // Clear any potential caches to ensure fresh data is read
+            wp_cache_delete( 'dt_site_options', 'options' );
+            wp_cache_delete( 'alloptions', 'options' );
         }
     }
 
@@ -1086,6 +1087,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
      * Display duplicate fields settings
      */
     public function display_duplicate_fields_settings() {
+        // Read fresh data (bypass any potential cache)
+        // This ensures we get the latest saved configuration
+        wp_cache_delete( 'dt_site_options', 'options' );
         $site_options = dt_get_option( 'dt_site_options' );
         $duplicates_config = $site_options['duplicates'] ?? [];
         $post_types = DT_Posts::get_post_types();
