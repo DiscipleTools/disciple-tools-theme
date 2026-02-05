@@ -109,12 +109,13 @@ function dt_options_scripts() {
             // If so, read from POST data to get the latest values before they're saved
             $duplicates_config = null; // Use null to distinguish "no POST data" from "empty config"
             $has_post_data = false;
-            
-            if ( isset( $_POST['duplicate_fields_nonce'] ) && 
+
+            if ( isset( $_POST['duplicate_fields_nonce'] ) &&
                  wp_verify_nonce( sanitize_key( wp_unslash( $_POST['duplicate_fields_nonce'] ) ), 'duplicate_fields' ) &&
                  isset( $_POST['duplicate_fields_data'] ) && !empty( $_POST['duplicate_fields_data'] ) ) {
                 // Form is being submitted - read from POST to get the latest data
                 $has_post_data = true;
+                // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON data will be sanitized after decoding
                 $decoded_data = json_decode( wp_unslash( $_POST['duplicate_fields_data'] ), true );
                 if ( is_array( $decoded_data ) ) {
                     $duplicates_config = [];
@@ -122,11 +123,7 @@ function dt_options_scripts() {
                     foreach ( $decoded_data as $post_type => $fields ) {
                         if ( in_array( $post_type, $post_types ) && is_array( $fields ) ) {
                             // Handle both empty arrays (user cleared all fields) and non-empty arrays
-                            if ( empty( $fields ) ) {
-                                // Empty array means user wants to revert to defaults
-                                // Don't set the key, so it will use defaults
-                                // Explicitly don't add this post type to config
-                            } else {
+                            if ( !empty( $fields ) ) {
                                 // Non-empty array - sanitize and save
                                 $sanitized_fields = [];
                                 foreach ( $fields as $field_key ) {
@@ -141,11 +138,12 @@ function dt_options_scripts() {
                                 }
                                 // If sanitized_fields is empty (all invalid), don't add to config (use defaults)
                             }
+                            // Empty array means user wants to revert to defaults - don't set the key
                         }
                     }
                 }
             }
-            
+
             // If we didn't get data from POST, read from database
             if ( !$has_post_data ) {
                 // Clear cache to ensure we read fresh data
@@ -160,17 +158,17 @@ function dt_options_scripts() {
                     $duplicates_config = [];
                 }
             }
-            
+
             $duplicate_fields_data['config'] = $duplicates_config;
             $duplicate_fields_data['post_types'] = DT_Posts::get_post_types();
-            
+
             // Pre-load field settings and defaults for all post types
             $fields_data = [];
             $defaults_data = [];
             foreach ( $duplicate_fields_data['post_types'] as $post_type ) {
                 $field_settings = DT_Posts::get_post_field_settings( $post_type );
                 $fields_data[$post_type] = $field_settings;
-                
+
                 // Get default fields for this post type
                 $defaults_data[$post_type] = dt_get_duplicate_fields_defaults( $post_type );
             }

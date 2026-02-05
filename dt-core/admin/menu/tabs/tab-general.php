@@ -1024,34 +1024,35 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
      * Process duplicate fields settings
      */
     public function process_duplicate_fields() {
-        if ( isset( $_POST['duplicate_fields_nonce'] ) && 
+        if ( isset( $_POST['duplicate_fields_nonce'] ) &&
              wp_verify_nonce( sanitize_key( wp_unslash( $_POST['duplicate_fields_nonce'] ) ), 'duplicate_fields' ) ) {
-            
+
             $site_options = dt_get_option( 'dt_site_options' );
-            
+
             // Parse the duplicate fields data from POST
             if ( isset( $_POST['duplicate_fields_data'] ) && !empty( $_POST['duplicate_fields_data'] ) ) {
+                // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON data will be sanitized after decoding
                 $decoded_data = json_decode( wp_unslash( $_POST['duplicate_fields_data'] ), true );
-                
+
                 if ( is_array( $decoded_data ) ) {
                     $duplicates_config = [];
-                    
+
                     // Get all valid post types once (outside the loop)
                     $post_types = DT_Posts::get_post_types();
-                    
+
                     // Process each post type configuration
                     foreach ( $decoded_data as $post_type => $fields ) {
                         // Validate post type exists
                         if ( !in_array( $post_type, $post_types ) ) {
                             continue;
                         }
-                        
+
                         // Sanitize field keys
                         $sanitized_fields = [];
                         if ( is_array( $fields ) ) {
                             foreach ( $fields as $field_key ) {
                                 $sanitized_field_key = sanitize_key( $field_key );
-                                
+
                                 // Validate field exists for this post type
                                 $field_settings = DT_Posts::get_post_field_settings( $post_type );
                                 if ( isset( $field_settings[$sanitized_field_key] ) ) {
@@ -1059,7 +1060,7 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                                 }
                             }
                         }
-                        
+
                         // Save the configuration as-is (respect user's explicit choices)
                         // Note: 'name' will be included automatically via defaults if no config exists
                         // But if user explicitly saves a config, we respect their choice
@@ -1067,16 +1068,16 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                             $duplicates_config[$post_type] = array_unique( $sanitized_fields );
                         }
                     }
-                    
+
                     $site_options['duplicates'] = $duplicates_config;
                 }
             } else {
                 // If no data provided, set to empty array (will use defaults)
                 $site_options['duplicates'] = [];
             }
-            
+
             update_option( 'dt_site_options', $site_options, true );
-            
+
             // Clear any potential caches to ensure fresh data is read
             wp_cache_delete( 'dt_site_options', 'options' );
             wp_cache_delete( 'alloptions', 'options' );
@@ -1093,24 +1094,24 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
         $site_options = dt_get_option( 'dt_site_options' );
         $duplicates_config = $site_options['duplicates'] ?? [];
         $post_types = DT_Posts::get_post_types();
-        
+
         // Get first post type for initial selection
         $selected_post_type = !empty( $post_types ) ? $post_types[0] : '';
-        
+
         // Pre-load field settings for all post types
         $fields_data = [];
         foreach ( $post_types as $post_type ) {
             $field_settings = DT_Posts::get_post_field_settings( $post_type );
             $fields_data[$post_type] = $field_settings;
         }
-        
+
         ?>
         <form method="post" name="duplicate-fields-form" id="duplicate-fields-form">
             <input type="hidden" name="duplicate_fields_nonce" id="duplicate_fields_nonce" value="<?php echo esc_attr( wp_create_nonce( 'duplicate_fields' ) ) ?>" />
             <input type="hidden" name="duplicate_fields_data" id="duplicate_fields_data" value="" />
-            
+
             <p><?php esc_html_e( 'Configure which fields should be checked when searching for duplicate records. The "name" field is always included by default.', 'disciple_tools' ) ?></p>
-            
+
             <table class="widefat">
                 <tr>
                     <td style="width: 200px;">
@@ -1118,9 +1119,9 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <select name="duplicate_fields_post_type" id="duplicate_fields_post_type" style="width: 100%;">
-                            <?php foreach ( $post_types as $post_type ) : 
-                                $post_settings = DT_Posts::get_post_settings( $post_type );
-                                $label = $post_settings['label_singular'] ?? ucfirst( $post_type );
+                            <?php foreach ( $post_types as $post_type ) :
+                                    $post_settings = DT_Posts::get_post_settings( $post_type );
+                                    $label = $post_settings['label_singular'] ?? ucfirst( $post_type );
                             ?>
                                 <option value="<?php echo esc_attr( $post_type ) ?>" <?php selected( $selected_post_type, $post_type ) ?>>
                                     <?php echo esc_html( $label ) ?>
