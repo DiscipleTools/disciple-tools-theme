@@ -311,7 +311,7 @@
 
   // Collapse filter tile for mobile view
   function collapse_filters() {
-    if (window.Foundation.MediaQuery.only('small')) {
+    if (window.Foundation && window.Foundation.MediaQuery && window.Foundation.MediaQuery.only('small')) {
       $('#list-filters .bordered-box').addClass('collapsed');
     } else {
       $('#list-filters .bordered-box').removeClass('collapsed');
@@ -699,10 +699,13 @@
           ),
         );
       });
-    new window.Foundation.Accordion(filter_accordions, {
-      slideSpeed: 100,
-      allowAllClosed: true,
-    });
+    // Initialize Foundation Accordion if available
+    if (window.Foundation && window.Foundation.Accordion && filter_accordions.length) {
+      new window.Foundation.Accordion(filter_accordions, {
+        slideSpeed: 100,
+        allowAllClosed: true,
+      });
+    }
     if (selected_tab) {
       $(
         `#list-filter-tabs [data-id='${window.SHAREDFUNCTIONS.escapeHTML(selected_tab)}'] a`,
@@ -1722,7 +1725,7 @@
       search_query,
       new_filter_labels,
     );
-    if (window.Foundation.MediaQuery.only('small')) {
+    if (window.Foundation && window.Foundation.MediaQuery && window.Foundation.MediaQuery.only('small')) {
       $('#tile-filters').addClass('collapsed');
     }
   });
