@@ -229,7 +229,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
                 'root'                    => esc_url_raw( rest_url() ),
                 'nonce'                   => wp_create_nonce( 'wp_rest' ),
                 'parts'                   => $this->parts,
-                'user_id'                 => get_current_user_id(),
+                'user_id'                 => DT_Magic_URL::get_current_user_id( $this->parts ),
                 'require_login'           => function_exists( 'homescreen_require_login' ) ? homescreen_require_login() : true,
                 'invite_enabled'          => function_exists( 'homescreen_invite_users_enabled' ) ? homescreen_invite_users_enabled() : false,
                 'translations'            => [
@@ -345,18 +345,25 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         $target_app_url = $this->get_target_app_url();
         error_log( 'DT Home: Showing launcher wrapper for URL: ' . $target_app_url );
 
+        // Get Magic URL for the target app so we can use the parts to determine the user ID
+        $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+        $url_parts = explode( '/', $request_uri );
+
+        $target_magic_url = new DT_Magic_URL( $url_parts[1] );
+        $parts = $target_magic_url->parse_url_parts();
+        $target_magic_url->determine_post_id( $parts );
+
+        // Get user ID based on magic link parts
+        $user_id = DT_Magic_URL::get_current_user_id( $parts );
+
         // Get all apps for the apps selector
         $apps_manager = DT_Home_Apps::instance();
-        $apps = $apps_manager->get_apps_for_user( get_current_user_id() );
-
-        // Output complete HTML page
-        $target_app_url = $this->get_target_app_url();
+        $apps = $apps_manager->get_apps_for_user( $user_id );
 
         // Include wrapper template
         $wrapper_path = get_template_directory() . '/dt-apps/dt-home/frontend/partials/launcher-wrapper.php';
         if ( file_exists( $wrapper_path ) ) {
-            // Set variables for template
-            $target_app_url = $this->get_target_app_url();
+            // Template has access to variables declared above
             include $wrapper_path;
             die(); // Stop all further processing
         } else {
@@ -495,8 +502,15 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
 
         // Sanitize and fetch user id
         $params  = dt_recursive_sanitize_array( $params );
-        $user_id = $params['parts']['post_id'];
+        $user_id = (int) $params['parts']['post_id'];
         $action = $params['action'];
+
+        // Update logged-in user state if required accordingly, based on their sys_type
+        if ( !is_user_logged_in() ) {
+            DT_ML_Helper::update_user_logged_in_state();
+            $current_user = wp_get_current_user();
+            $current_user->add_cap( 'access_contacts' ); // give access to get contact id from user id
+        }
 
         // Handle different actions
         if ( $action === 'get_apps' ) {
