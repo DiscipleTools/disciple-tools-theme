@@ -7,6 +7,7 @@
  *
  * @var string $target_app_url The URL of the target app (without launcher parameter)
  * @var array $apps Array of all apps for the apps selector
+ * @var int $user_id Current user ID
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -15,10 +16,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Include helper functions
 require_once get_template_directory() . '/dt-apps/dt-home/includes/class-home-helpers.php';
-
-// Get all apps for the apps selector
-$apps_manager = DT_Home_Apps::instance();
-$apps = $apps_manager->get_apps_for_user( get_current_user_id() );
 
 // Mark iframe requests so nested pages can detect they are inside the launcher
 $iframe_target_app_url = add_query_arg( 'launcher_iframe', '1', $target_app_url );

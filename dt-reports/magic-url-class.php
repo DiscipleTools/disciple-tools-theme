@@ -377,6 +377,29 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             return $return_parts ? $parts : true;
         }
 
+        /**
+         * Determine the post ID based on the magic URL parts.
+         * @param array $parts The magic URL parts.
+         * @return void
+         */
+        public function determine_post_id( &$parts ) {
+            if ( !empty( $parts['public_key'] ) ){
+                if ( $parts['post_type'] === 'user' ){
+                    // if user
+                    $user_id = $this->get_user_id( $parts['meta_key'], $parts['public_key'] );
+                    if ( $user_id ) {
+                        $parts['post_id'] = $user_id;
+                    }
+                } else {
+                    // get post_id
+                    $post_id = $this->get_post_id( $parts['meta_key'], $parts['public_key'] );
+                    if ( $post_id ) {
+                        $parts['post_id'] = $post_id;
+                    }
+                }
+            }
+        }
+
         public function get_post_id( string $meta_key, string $public_key ){
             global $wpdb;
             $result = $wpdb->get_var( $wpdb->prepare( "
@@ -404,6 +427,29 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 return $result;
             }
             return false;
+        }
+
+        /**
+         * Get the current user ID from the magic link parts or the currently logged-in user
+         * @param $parts string[] Links parts with post_id and post_type set
+         * @return int
+         */
+        public static function get_current_user_id( array $parts ) {
+            $user_id = get_current_user_id();
+
+            if ( isset( $parts['post_id'], $parts['post_type'] ) ) {
+                $post_id = $parts['post_id'];
+                $post_type = $parts['post_type'];
+                if ( $post_type === 'user' && !empty( $post_id ) ) {
+                    $user_id = (int) $post_id;
+                } else if ( $post_type === 'contacts' && !empty( $post_id ) ) {
+                    $contact_user_id = Disciple_Tools_Users::get_user_for_contact( $post_id );
+                    if ( !empty( $contact_user_id ) && !is_wp_error( $contact_user_id ) ) {
+                        $user_id = (int) $contact_user_id;
+                    }
+                }
+            }
+            return $user_id;
         }
 
         public function is_valid_base_url( string $type ) {
