@@ -437,7 +437,7 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
         public static function get_current_user_id( array $parts ) {
             $user_id = get_current_user_id();
 
-            if ( isset( $parts['post_id'], $parts['post_id'] ) ) {
+            if ( isset( $parts['post_id'], $parts['post_type'] ) ) {
                 $post_id = $parts['post_id'];
                 $post_type = $parts['post_type'];
                 if ( $post_type === 'user' && !empty( $post_id ) ) {

@@ -508,8 +508,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         // Update logged-in user state if required accordingly, based on their sys_type
         if ( !is_user_logged_in() ) {
             DT_ML_Helper::update_user_logged_in_state();
-            $current_user = wp_get_current_user();
-            $current_user->add_cap( 'access_contacts' ); // give access to get contact id from user id
         }
 
         // Handle different actions
