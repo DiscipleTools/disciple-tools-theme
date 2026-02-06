@@ -505,11 +505,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         $user_id = (int) $params['parts']['post_id'];
         $action = $params['action'];
 
-        // Update logged-in user state if required accordingly, based on their sys_type
-        if ( !is_user_logged_in() ) {
-            DT_ML_Helper::update_user_logged_in_state();
-        }
-
         // Handle different actions
         if ( $action === 'get_apps' ) {
             // Get apps only (filtered by user permissions)
