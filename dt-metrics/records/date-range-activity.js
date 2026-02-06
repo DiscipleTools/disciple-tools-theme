@@ -37,7 +37,14 @@ function project_activity_during_date_range() {
     window.dtMetricsProject.select_options.post_type_select_options,
   );
 
-  jQuery('#metrics-sidemenu').foundation('down', jQuery('#records-menu'));
+  // Ensure Foundation jQuery plugin is available before using it
+  window.DTFoundation.plugin(() => {
+    window.DTFoundation.callMethod(
+      '#metrics-sidemenu',
+      'down',
+      jQuery('#records-menu'),
+    );
+  });
 
   // Display initial controls.
   chartDiv.innerHTML = `

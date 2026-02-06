@@ -77,13 +77,17 @@ function dt_site_scripts() {
     wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1' );
     wp_enqueue_script( 'jquery-ui' );
 
+    // Register Foundation utilities (loads synchronously, not bundled)
+    // This must load before site-js to provide DTFoundation utilities
+    dt_theme_enqueue_script( 'foundation-utils', 'dt-assets/js/foundation-utils.js', array( 'jquery' ), true );
+
     // Register site scripts
     // Although WP has wp_enqueue_script_module to be able to load scripts.min.js directly as a js module,
     // WP doesn't let module scripts depend on classic scripts (scripts.min.js depending on jquery) or
     // vice versa (modular-list.js depending on scripts.min.js). So at least for now, we need to depend on
     // the legacy scripts that many wp scripts depend on via the 'site-js' handle.
     dt_theme_enqueue_script( 'site-polyfills', 'dt-assets/build/js/polyfills-legacy.min.js', array( 'jquery' ), true );
-    dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts-legacy.min.js', array( 'jquery', 'site-polyfills' ), true );
+    dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts-legacy.min.js', array( 'jquery', 'site-polyfills', 'foundation-utils' ), true );
 
     // Register main stylesheet. Enable HMR by loading from vite if possible
     $vite_dev_server_running = false;

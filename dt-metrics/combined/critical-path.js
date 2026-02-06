@@ -19,7 +19,14 @@ function project_critical_path() {
   let chartDiv = jQuery('#chart');
   let translations = window.dtMetricsProject.translations;
 
-  jQuery('#metrics-sidemenu').foundation('down', jQuery('#combined-menu'));
+  // Ensure Foundation jQuery plugin is available before using it
+  window.DTFoundation.plugin(() => {
+    window.DTFoundation.callMethod(
+      '#metrics-sidemenu',
+      'down',
+      jQuery('#combined-menu'),
+    );
+  });
 
   chartDiv.empty().html(`
     <div class="section-header">${window.SHAREDFUNCTIONS.escapeHTML(translations.title_critical_path)}</div>

@@ -122,7 +122,9 @@ jQuery(document).ready(function ($) {
     });
   });
   $('.add-new-member').on('click', function () {
-    $('#add-new-group-member-modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#add-new-group-member-modal', 'open');
+    });
     window.Typeahead[`.js-typeahead-members`].adjustInputSize();
   });
   $(document).on('dt-post-connection-added', function (e, new_post, field_key) {

@@ -9,6 +9,8 @@ jQuery(document).ready(function ($) {
     project_records_genmap();
   }
 
+  // Use DTFoundation utility for Foundation jQuery plugin availability checks
+
   let orgchart_container = null;
   function project_records_genmap() {
     'use strict';
@@ -16,10 +18,14 @@ jQuery(document).ready(function ($) {
     let spinner = ' <span class="loading-spinner active"></span> ';
 
     chart.empty().html(spinner);
-    jQuery('#metrics-sidemenu').foundation(
-      'down',
-      jQuery(`#${window.dtMetricsProject.base_slug}-menu`),
-    );
+    // Ensure Foundation jQuery plugin is available before using it
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod(
+        '#metrics-sidemenu',
+        'down',
+        jQuery(`#${window.dtMetricsProject.base_slug}-menu`),
+      );
+    });
 
     let translations = window.dtMetricsProject.translations;
 
@@ -1152,7 +1158,10 @@ jQuery(document).ready(function ($) {
     jQuery(content).css('max-height', '300px');
     jQuery(content).css('overflow', 'auto');
     jQuery(content).empty().html(list_html);
-    jQuery(modal).foundation('open');
+    // Ensure Foundation jQuery plugin is available before using it
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod(modal, 'open');
+    });
   }
 
   $(document).on(
@@ -1179,7 +1188,10 @@ jQuery(document).ready(function ($) {
       })
         .then((new_post) => {
           // Close modal and refresh generation tree, accordingly, based on focussed state.
-          jQuery('#template_metrics_modal').foundation('close');
+          // Ensure Foundation jQuery plugin is available before using it
+          window.DTFoundation.plugin(() => {
+            window.DTFoundation.callMethod('#template_metrics_modal', 'close');
+          });
 
           // Ensure to respect any existing focussed selections.
           const request_params = fetch_url_search_params();

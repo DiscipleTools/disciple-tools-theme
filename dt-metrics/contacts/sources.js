@@ -1,5 +1,12 @@
 jQuery(document).ready(function ($) {
-  jQuery('#metrics-sidemenu').foundation('down', jQuery('#contacts-menu'));
+  // Ensure Foundation jQuery plugin is available before using it
+  window.DTFoundation.plugin(() => {
+    window.DTFoundation.callMethod(
+      '#metrics-sidemenu',
+      'down',
+      jQuery('#contacts-menu'),
+    );
+  });
 
   function show_sources_overview() {
     let chartDiv = jQuery('#chart');

@@ -47,7 +47,132 @@ Foundation.Nest = Nest;
 Foundation.Triggers = Triggers;
 Foundation.Touch = Touch;
 
+// Set window.Foundation immediately and synchronously
+// This ensures it's available before any other scripts try to use it
+// Note: DTFoundation utility (foundation-utils.js) provides helper functions
+// for other scripts to wait for Foundation to be ready
 window.Foundation = Foundation;
 
-// Register jQuery plugin
-Foundation.addToJquery();
+// Register jQuery plugin - ensure jQuery is available first
+// CRITICAL: Foundation.addToJquery() uses $ from its closure (imported in foundation.core.js)
+// When the legacy build wraps code in System.register, that closure might be broken
+// So we manually register the jQuery plugin using window.jQuery instead
+function initializeFoundationJQuery() {
+  // Check if jQuery is available
+  const jQuery = window.jQuery || window.$;
+  if (jQuery && typeof jQuery === 'function') {
+    try {
+      // Try Foundation's addToJquery first (in case it works)
+      if (typeof Foundation.addToJquery === 'function') {
+        Foundation.addToJquery();
+      }
+
+      // Manually register jQuery plugin if Foundation.addToJquery didn't work
+      // This replicates what addToJquery() does, but uses window.jQuery
+      if (!jQuery.fn.foundation || typeof jQuery.fn.foundation !== 'function') {
+        const foundation = function (method) {
+          const type = typeof method;
+          const $noJS = jQuery('.no-js');
+
+          if ($noJS.length) {
+            $noJS.removeClass('no-js');
+          }
+
+          if (type === 'undefined') {
+            // Initialize Foundation
+            if (Foundation.MediaQuery && Foundation.MediaQuery._init) {
+              Foundation.MediaQuery._init();
+            }
+            if (Foundation.reflow) {
+              Foundation.reflow(this);
+            }
+          } else if (type === 'string') {
+            // Invoke method on plugin
+            const args = Array.prototype.slice.call(arguments, 1);
+            const plugClass = this.data('zfPlugin');
+
+            if (
+              typeof plugClass !== 'undefined' &&
+              typeof plugClass[method] !== 'undefined'
+            ) {
+              if (this.length === 1) {
+                plugClass[method].apply(plugClass, args);
+              } else {
+                this.each(function (i, el) {
+                  plugClass[method].apply(jQuery(el).data('zfPlugin'), args);
+                });
+              }
+            } else {
+              throw new ReferenceError(
+                "We're sorry, '" +
+                  method +
+                  "' is not an available method for " +
+                  (plugClass ? plugClass.constructor.name : 'this element') +
+                  '.',
+              );
+            }
+          } else {
+            throw new TypeError(
+              `We're sorry, ${type} is not a valid parameter. You must use a string representing the method you wish to invoke.`,
+            );
+          }
+          return this;
+        };
+
+        jQuery.fn.foundation = foundation;
+      }
+
+      // Verify it was registered
+      if (jQuery.fn.foundation && typeof jQuery.fn.foundation === 'function') {
+        // Dispatch custom event to signal Foundation is ready
+        const foundationReadyEvent = new CustomEvent('foundation:ready', {
+          detail: { Foundation },
+        });
+        window.dispatchEvent(foundationReadyEvent);
+      } else {
+        throw new Error('Foundation jQuery plugin was not registered');
+      }
+    } catch (error) {
+      console.warn('Error initializing Foundation jQuery plugin:', error);
+      // Retry after a short delay
+      setTimeout(initializeFoundationJQuery, 100);
+    }
+  } else {
+    // Wait for jQuery to be available - check multiple times
+    let attempts = 0;
+    const checkJQuery = () => {
+      attempts++;
+      const jQuery = window.jQuery || window.$;
+      if (jQuery && typeof jQuery === 'function') {
+        initializeFoundationJQuery();
+      } else if (attempts < 20) {
+        setTimeout(checkJQuery, 50);
+      } else {
+        console.warn('jQuery not available for Foundation initialization');
+      }
+    };
+    checkJQuery();
+  }
+}
+
+// Try to initialize immediately
+if (typeof window !== 'undefined') {
+  // Use requestAnimationFrame to ensure DOM is ready
+  if (window.requestAnimationFrame) {
+    window.requestAnimationFrame(() => {
+      initializeFoundationJQuery();
+    });
+  } else {
+    setTimeout(initializeFoundationJQuery, 0);
+  }
+
+  // Also try when DOM is ready as a fallback
+  if (window.document) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeFoundationJQuery);
+    } else {
+      // DOM already loaded, try initialization with a small delay
+      setTimeout(initializeFoundationJQuery, 10);
+    }
+  }
+}

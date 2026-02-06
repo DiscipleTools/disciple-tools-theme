@@ -1955,4 +1955,4 @@
     updateBulkEditButtonState: updateBulkEditButtonState,
     getBulkEditSelectedFields: getBulkEditSelectedFields,
   };
-})(window.jQuery, window.list_settings, window.Foundation);
+})(window.jQuery, window.list_settings, window.Foundation || null);

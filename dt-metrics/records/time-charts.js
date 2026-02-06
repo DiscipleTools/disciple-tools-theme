@@ -4,6 +4,8 @@ jQuery(function () {
   }
 });
 
+// Use DTFoundation utility for Foundation jQuery plugin availability checks
+
 const CUMULATIVE_PREFIX = 'cumulative_';
 const graphTypes = ['stacked', 'line'];
 
@@ -47,7 +49,14 @@ function projectTimeCharts() {
     window.dtMetricsProject.select_options.post_type_select_options,
   );
 
-  jQuery('#metrics-sidemenu').foundation('down', jQuery('#records-menu'));
+  // Ensure Foundation jQuery plugin is available before using it
+  window.DTFoundation.plugin(() => {
+    window.DTFoundation.callMethod(
+      '#metrics-sidemenu',
+      'down',
+      jQuery('#records-menu'),
+    );
+  });
 
   chartDiv.innerHTML = `
         <div class="section-header"> ${title_time_charts} </div>
@@ -969,7 +978,10 @@ function displayPostListModalRecordsHandler(records, limit) {
     jQuery(content).css('max-height', '300px');
     jQuery(content).css('overflow', 'auto');
     jQuery(content).empty().html(list_html);
-    jQuery('#template_metrics_modal').foundation('open');
+    // Ensure Foundation jQuery plugin is available before using it
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#template_metrics_modal', 'open');
+    });
   }
 }
 

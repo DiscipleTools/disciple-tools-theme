@@ -13,7 +13,14 @@ jQuery(document).ready(function ($) {
     let sourceData = window.dtMetricsActivity.data;
     let translations = window.dtMetricsActivity.translations;
 
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
+    // Ensure Foundation jQuery plugin is available before using it
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod(
+        '#metrics-sidemenu',
+        'down',
+        jQuery('#personal-menu'),
+      );
+    });
 
     const title = window.SHAREDFUNCTIONS.escapeHTML(translations.title);
 

@@ -2,15 +2,25 @@
 These functions make sure WordPress
 and Foundation play nice together.
 */
-if (window.Foundation.MediaQuery.current == 'small') {
-  jQuery('.title-bar')
-    .removeAttr('data-sticky')
-    .removeClass('is-anchored is-at-bottom')
-    .attr('style', '');
-}
 
-window.Foundation.Reveal.defaults.closeOnClick = false;
-jQuery(document).foundation();
+// Initialize Foundation-dependent code using DTFoundation utility
+window.DTFoundation.ready((foundation) => {
+  if (foundation.MediaQuery && foundation.MediaQuery.current == 'small') {
+    jQuery('.title-bar')
+      .removeAttr('data-sticky')
+      .removeClass('is-anchored is-at-bottom')
+      .attr('style', '');
+  }
+
+  if (foundation.Reveal && foundation.Reveal.defaults) {
+    foundation.Reveal.defaults.closeOnClick = false;
+  }
+
+  // Initialize Foundation jQuery plugin
+  window.DTFoundation.plugin(() => {
+    jQuery(document).foundation();
+  });
+});
 
 jQuery(document).ready(function () {
   // Remove empty P tags created by WP inside of Accordion and Orbit
@@ -94,7 +104,9 @@ jQuery(document).ready(function ($) {
         '#mobile-add-new-dropdown, [data-toggle="mobile-add-new-dropdown"]',
       ).length
     ) {
-      $('#mobile-add-new-dropdown').foundation('close');
+      window.DTFoundation.plugin(() => {
+        window.DTFoundation.callMethod('#mobile-add-new-dropdown', 'close');
+      });
     }
   });
 });

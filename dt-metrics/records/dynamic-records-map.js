@@ -2130,7 +2130,9 @@ jQuery(document).ready(function ($) {
           }
 
           jQuery('.accordion-item').last().addClass('is-active');
-          list.foundation();
+          window.DTFoundation.plugin(() => {
+            list.foundation();
+          });
           /* end hierarchy list */
 
           if (details.admin2_grid_id !== null) {
@@ -2223,8 +2225,11 @@ jQuery(document).ready(function ($) {
 
   window.mapbox_library_api.setup_container();
   let obj = window.dt_mapbox_metrics;
-  jQuery('#metrics-sidemenu').foundation(
-    'down',
-    jQuery(`#${obj.settings.menu_slug}-menu`),
-  );
+  window.DTFoundation.plugin(() => {
+    window.DTFoundation.callMethod(
+      '#metrics-sidemenu',
+      'down',
+      jQuery(`#${obj.settings.menu_slug}-menu`),
+    );
+  });
 });

@@ -2,10 +2,14 @@
 let LISTDATA = null;
 
 jQuery(document).ready(function () {
-  jQuery('#metrics-sidemenu').foundation(
-    'down',
-    jQuery(`#${window.wp_js_object.base_slug}-menu`),
-  );
+  // Ensure Foundation jQuery plugin is available before using it
+  window.DTFoundation.plugin(() => {
+    window.DTFoundation.callMethod(
+      '#metrics-sidemenu',
+      'down',
+      jQuery(`#${window.wp_js_object.base_slug}-menu`),
+    );
+  });
 
   let chartDiv = jQuery('#chart');
   chartDiv.empty().html(`

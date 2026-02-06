@@ -17,7 +17,14 @@ jQuery(function () {
 
     let translations = window.dtMetricsPersonal.translations;
 
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#personal-menu'));
+    // Ensure Foundation jQuery plugin is available and element is initialized
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod(
+        '#metrics-sidemenu',
+        'down',
+        jQuery('#personal-menu'),
+      );
+    });
 
     let html = `
       <div class="cell center">
@@ -288,7 +295,19 @@ jQuery(function () {
       chart.legend = new window.am4charts.Legend();
     }
 
-    new window.Foundation.Reveal(jQuery('.dt-project-legend'));
+    // Ensure Foundation is available before initializing Reveal
+    if (window.DTFoundation && window.DTFoundation.isAvailable()) {
+      const Foundation = window.Foundation;
+      if (Foundation && Foundation.Reveal) {
+        new Foundation.Reveal(jQuery('.dt-project-legend'));
+      }
+    } else {
+      window.DTFoundation.ready((Foundation) => {
+        if (Foundation && Foundation.Reveal) {
+          new Foundation.Reveal(jQuery('.dt-project-legend'));
+        }
+      });
+    }
   }
 });
 
