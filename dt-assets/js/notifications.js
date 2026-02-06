@@ -98,10 +98,17 @@ function open_release_modal() {
         // Open the modal
         const modal = jQuery('#release-modal');
         if (modal.length > 0) {
-          if (!modal.data('zfPlugin')) {
-            new window.Foundation.Reveal(modal);
-          }
-          modal.foundation('open');
+          // Use DTFoundation utility to ensure Foundation is available
+          window.DTFoundation.ready((Foundation) => {
+            if (Foundation && Foundation.Reveal) {
+              if (!modal.data('zfPlugin')) {
+                new Foundation.Reveal(modal);
+              }
+              window.DTFoundation.plugin(() => {
+                window.DTFoundation.callMethod(modal, 'open');
+              });
+            }
+          });
         }
       }
     })

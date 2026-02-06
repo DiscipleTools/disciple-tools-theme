@@ -4,7 +4,14 @@ jQuery(document).ready(function ($) {
   }
 
   function display_site_link_metrics() {
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#combined-menu'));
+    // Ensure Foundation jQuery plugin is available before using it
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod(
+        '#metrics-sidemenu',
+        'down',
+        jQuery('#combined-menu'),
+      );
+    });
 
     let chartDiv = jQuery('#chart');
 

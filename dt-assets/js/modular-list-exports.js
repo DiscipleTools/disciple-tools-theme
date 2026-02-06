@@ -15,6 +15,9 @@
   const DT_List = window.DT_List;
   const esc = window.SHAREDFUNCTIONS.escapeHTML;
 
+  // Use DTFoundation utility for Foundation jQuery plugin availability checks
+  // This utility is loaded synchronously before this script
+
   // Helper to get current_filter from main module
   function getCurrentFilter() {
     return DT_List.current_filter;
@@ -52,7 +55,42 @@
 
     if (modal) {
       display_function();
-      $(modal).foundation('open');
+      // Ensure Foundation jQuery plugin is available and modal is initialized before opening
+      window.DTFoundation.plugin(() => {
+        window.DTFoundation.callMethod(modal, 'open');
+
+        // Ensure close button works - Foundation's data-close relies on triggers
+        // Reinitialize Foundation triggers for this modal to ensure data-close buttons work
+        setTimeout(() => {
+          const $ = window.jQuery || window.$;
+          if ($ && $.fn && $.fn.foundation) {
+            try {
+              // Reinitialize Foundation on the modal to ensure triggers are attached
+              modal.foundation();
+            } catch (e) {
+              // Ignore errors
+            }
+          }
+
+          // Manual fallback: attach click handler to close button if data-close doesn't work
+          modal
+            .find('[data-close]')
+            .off('click.modal-close')
+            .on('click.modal-close', function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+              // Close the modal directly since Foundation is already available
+              if (modal.data('zfPlugin')) {
+                modal.foundation('close');
+              } else {
+                // Fallback: try to close via Foundation object
+                window.DTFoundation.plugin(() => {
+                  window.DTFoundation.callMethod(modal, 'close');
+                });
+              }
+            });
+        }, 50);
+      });
     }
   }
 
@@ -183,7 +221,10 @@
             : exporting_fields_all,
           function () {
             $(spinner).removeClass('active');
-            $('#modal-large').foundation('close');
+            // Ensure Foundation jQuery plugin is available and modal is initialized before closing
+            window.DTFoundation.plugin(() => {
+              window.DTFoundation.callMethod('#modal-large', 'close');
+            });
           },
         );
       });
@@ -923,7 +964,10 @@
                     }, 0);
 
                     // Close modal window to display updated records list.
-                    $('#modal-full').foundation('close');
+                    // Ensure Foundation jQuery plugin is available and modal is initialized before closing
+                    window.DTFoundation.plugin(() => {
+                      window.DTFoundation.callMethod('#modal-full', 'close');
+                    });
                   } else {
                     alert(
                       `${esc(window.list_settings.translations.exports.map['no_records_on_zoomed_map_alert'])}`,
@@ -1204,4 +1248,4 @@
   DT_List.exports = {
     export_list_display: export_list_display,
   };
-})(window.jQuery, window.list_settings, window.Foundation);
+})(window.jQuery, window.list_settings, window.Foundation || null);

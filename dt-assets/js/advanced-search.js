@@ -7,7 +7,55 @@ jQuery(document).ready(function ($) {
   // Open the advanced search modal
   $(document).on('click', '.advanced-search-nav-button', function () {
     reset_widgets();
-    $('#advanced-search-modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#advanced-search-modal', 'open');
+
+      // Ensure close button works
+      setTimeout(() => {
+        const $ = window.jQuery || window.$;
+        const $modal = $('#advanced-search-modal');
+        if ($ && $.fn && $.fn.foundation) {
+          try {
+            $modal.foundation();
+          } catch (e) {
+            // Ignore errors
+          }
+        }
+
+        // Attach click handler directly to close buttons and also use event delegation as fallback
+        const closeHandler = function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const $closeModal = $('#advanced-search-modal');
+          if ($closeModal.data('zfPlugin')) {
+            $closeModal.foundation('close');
+          } else {
+            window.DTFoundation.plugin(() => {
+              window.DTFoundation.callMethod('#advanced-search-modal', 'close');
+            });
+          }
+        };
+
+        // Remove any existing handlers
+        $modal.find('[data-close]').off('click.modal-close-advanced-search');
+        $(document).off(
+          'click.modal-close-advanced-search',
+          '#advanced-search-modal [data-close]',
+        );
+
+        // Attach directly to buttons
+        $modal
+          .find('[data-close]')
+          .on('click.modal-close-advanced-search', closeHandler);
+
+        // Also use event delegation as fallback
+        $(document).on(
+          'click.modal-close-advanced-search',
+          '#advanced-search-modal [data-close]',
+          closeHandler,
+        );
+      }, 150);
+    });
     $('#advanced-search-modal-form-query').focus();
   });
 

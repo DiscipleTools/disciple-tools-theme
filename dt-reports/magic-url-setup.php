@@ -229,7 +229,9 @@ class DT_Magic_URL_Setup {
                     const modalContent = document.getElementById('modal-large-content');
                     modalTitle.innerHTML = `<h3 class="section-header">${title}</h3><span class="small-text">${description}</span><hr>`;
                     modalContent.innerHTML = `<iframe src="${url}" style="width:100%;height: ${window.innerHeight - 170}px;border:1px solid lightgrey;"></iframe>`;
-                    $('#modal-large').foundation('open');
+                    window.DTFoundation.plugin(() => {
+                      window.DTFoundation.callMethod('#modal-large', 'open');
+                    });
                 }
 
                 <?php
@@ -267,7 +269,9 @@ Thanks!', 'disciple_tools' );
                             <button type="button" disabled class="button"><?php echo esc_html__( 'Send email with link', 'disciple_tools' ) ?> <span class="loading-spinner"></span></button>
                         </div>
                     </div>`;
-                    $('#modal-small').foundation('open');
+                    window.DTFoundation.plugin(() => {
+                      window.DTFoundation.callMethod('#modal-small', 'open');
+                    });
 
                     let contactEmail = null;
                     if (window.detailsSettings.post_fields?.contact_email && window.detailsSettings.post_fields?.contact_email.length) {
@@ -301,7 +305,9 @@ Thanks!', 'disciple_tools' );
                            })
                             .done( data => {
                                 loadingSpinner.classList.remove('active')
-                                $('#modal-small').foundation('close')
+                                window.DTFoundation.plugin(() => {
+                                  window.DTFoundation.callMethod('#modal-small', 'close');
+                                });
                             })
                     });
                 }
@@ -317,7 +323,9 @@ Thanks!', 'disciple_tools' );
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${url}" style="width: 100%;max-width:400px;" />
                         </div>
                     </div>`;
-                    $('#modal-small').foundation('open')
+                    window.DTFoundation.plugin(() => {
+                      window.DTFoundation.callMethod('#modal-small', 'open');
+                    });
                 }
                 function app_link_reset(evt) {
                     const { url, title, key } = get_app(evt.target);
@@ -327,7 +335,9 @@ Thanks!', 'disciple_tools' );
                     modalTitle.innerHTML = `<h3 class="section-header">${title}</h3><span class="small-text"><?php echo esc_html__( 'Reset the security code. No data is removed. Only access. The previous link will be disabled and another one created.', 'disciple_tools' ) ?></span><hr>`;
                     const modalContent = document.getElementById('modal-small-content');
                     modalContent.innerHTML = `<button type="button" class="button delete-and-reset"><?php echo esc_html__( 'Delete and replace the app link', 'disciple_tools' ) ?>  <span class="loading-spinner"></span></button>`
-                    $('#modal-small').foundation('open');
+                    window.DTFoundation.plugin(() => {
+                      window.DTFoundation.callMethod('#modal-small', 'open');
+                    });
 
                     const button = modalContent.querySelector('.button');
                     const loadingSpinner = modalContent.querySelector('.loading-spinner');
@@ -353,7 +363,9 @@ Thanks!', 'disciple_tools' );
                                                     app_link_set_url(evt.target, key, data2);
                                                 }
                                             })
-                                        $('#modal-small').foundation('close')
+                                        window.DTFoundation.plugin(() => {
+                                  window.DTFoundation.callMethod('#modal-small', 'close');
+                                });
                                         app_link_set_url(evt.target, key, null);
                                     }
                                 })
@@ -362,7 +374,9 @@ Thanks!', 'disciple_tools' );
                                     post_type,
                                     post_id, {[key]: window.sha256( Date.now() )}
                                 ).done( newPost => {
-                                    $('#modal-small').foundation('close')
+                                    window.DTFoundation.plugin(() => {
+                                  window.DTFoundation.callMethod('#modal-small', 'close');
+                                });
                                     app_link_set_url(evt.target, key, newPost[key]);
                                 })
                             }

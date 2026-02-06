@@ -8,7 +8,14 @@ jQuery(document).ready(function () {
     let chart = jQuery('#chart');
     let spinner = ' <span class="loading-spinner active"></span> ';
     chart.empty().html(spinner);
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#contacts-menu'));
+    // Ensure Foundation jQuery plugin is available before using it
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod(
+        '#metrics-sidemenu',
+        'down',
+        jQuery('#contacts-menu'),
+      );
+    });
 
     let sourceData = window.dtMetricsProject.data;
     let translations = window.dtMetricsProject.data.translations;
@@ -223,7 +230,19 @@ jQuery(document).ready(function () {
       }
     }
 
-    new window.Foundation.Reveal(jQuery('#dt-project-legend'));
+    // Ensure Foundation is available before initializing Reveal
+    if (window.DTFoundation && window.DTFoundation.isAvailable()) {
+      const Foundation = window.Foundation;
+      if (Foundation && Foundation.Reveal) {
+        new Foundation.Reveal(jQuery('#dt-project-legend'));
+      }
+    } else {
+      window.DTFoundation.ready((Foundation) => {
+        if (Foundation && Foundation.Reveal) {
+          new Foundation.Reveal(jQuery('#dt-project-legend'));
+        }
+      });
+    }
   }
 });
 

@@ -32,7 +32,10 @@ jQuery(document).ready(function ($) {
         wpApiShare.post_type,
       );
     }
-    $('.grid').masonry('layout');
+    // Check if masonry is available before using it
+    if ($.fn.masonry && typeof $.fn.masonry === 'function') {
+      $('.grid').masonry('layout');
+    }
   });
   $('.bordered-box').each((index, item) => {
     let id = $(item).attr('id');
@@ -265,13 +268,79 @@ jQuery(document)
   });
 
 jQuery(document).on('click', '.help-button', function () {
-  jQuery('#help-modal').foundation('open');
+  window.DTFoundation.plugin(() => {
+    window.DTFoundation.callMethod('#help-modal', 'open');
+
+    // Ensure close button works
+    setTimeout(() => {
+      const $ = window.jQuery || window.$;
+      const $modal = jQuery('#help-modal');
+      if ($ && $.fn && $.fn.foundation) {
+        try {
+          $modal.foundation();
+        } catch (e) {
+          // Ignore errors
+        }
+      }
+
+      // Manual fallback: attach click handler to close button
+      jQuery(document)
+        .off('click.modal-close-help', '#help-modal [data-close]')
+        .on('click.modal-close-help', '#help-modal [data-close]', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const $closeModal = jQuery('#help-modal');
+          if ($closeModal.data('zfPlugin')) {
+            $closeModal.foundation('close');
+          } else {
+            window.DTFoundation.plugin(() => {
+              window.DTFoundation.callMethod('#help-modal', 'close');
+            });
+          }
+        });
+    }, 100);
+  });
   let section = jQuery(this).data('section');
   jQuery('.help-section').hide();
   jQuery(`#${section}`).show();
 });
 jQuery(document).on('click', '.help-button-tile', function () {
-  jQuery('#help-modal-field').foundation('open');
+  window.DTFoundation.plugin(() => {
+    window.DTFoundation.callMethod('#help-modal-field', 'open');
+
+    // Ensure close button works
+    setTimeout(() => {
+      const $ = window.jQuery || window.$;
+      const $modal = jQuery('#help-modal-field');
+      if ($ && $.fn && $.fn.foundation) {
+        try {
+          $modal.foundation();
+        } catch (e) {
+          // Ignore errors
+        }
+      }
+
+      // Manual fallback: attach click handler to close button
+      jQuery(document)
+        .off('click.modal-close-help-field', '#help-modal-field [data-close]')
+        .on(
+          'click.modal-close-help-field',
+          '#help-modal-field [data-close]',
+          function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const $closeModal = jQuery('#help-modal-field');
+            if ($closeModal.data('zfPlugin')) {
+              $closeModal.foundation('close');
+            } else {
+              window.DTFoundation.plugin(() => {
+                window.DTFoundation.callMethod('#help-modal-field', 'close');
+              });
+            }
+          },
+        );
+    }, 100);
+  });
   let section = jQuery(this).data('tile');
   jQuery('.help-section').hide();
   let tile = window.wpApiShare.tiles[section];
@@ -351,7 +420,42 @@ jQuery(document).on('click', '.help-button-tile', function () {
   jQuery(`#${section}`).show();
 });
 jQuery(document).on('click', '.help-button-field', function () {
-  jQuery('#help-modal-field').foundation('open');
+  window.DTFoundation.plugin(() => {
+    window.DTFoundation.callMethod('#help-modal-field', 'open');
+
+    // Ensure close button works
+    setTimeout(() => {
+      const $ = window.jQuery || window.$;
+      const $modal = jQuery('#help-modal-field');
+      if ($ && $.fn && $.fn.foundation) {
+        try {
+          $modal.foundation();
+        } catch (e) {
+          // Ignore errors
+        }
+      }
+
+      // Manual fallback: attach click handler to close button
+      jQuery(document)
+        .off('click.modal-close-help-field', '#help-modal-field [data-close]')
+        .on(
+          'click.modal-close-help-field',
+          '#help-modal-field [data-close]',
+          function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const $closeModal = jQuery('#help-modal-field');
+            if ($closeModal.data('zfPlugin')) {
+              $closeModal.foundation('close');
+            } else {
+              window.DTFoundation.plugin(() => {
+                window.DTFoundation.callMethod('#help-modal-field', 'close');
+              });
+            }
+          },
+        );
+    }, 100);
+  });
   let section = jQuery(this).data('section').replace('-help-text', '');
   jQuery('.help-section').hide();
 

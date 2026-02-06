@@ -60,7 +60,9 @@ jQuery(function ($) {
   let tags_field = null;
   $('dt-tags').on('dt:add-new', (e) => {
     tags_field = e.detail.field;
-    $('#create-tag-modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#create-tag-modal', 'open');
+    });
     $('.js-create-tag input[name=title]').val(e.detail.value);
   });
 

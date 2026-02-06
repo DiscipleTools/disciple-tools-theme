@@ -2014,7 +2014,9 @@
     }
 
     // Open Foundation reveal modal first
-    modal.foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod(modal, 'open');
+    });
 
     // Wait for modal to be fully opened before rendering (Foundation animation)
     setTimeout(() => {
@@ -2057,7 +2059,9 @@
 
     const spinner = ' <span class="loading-spinner active"></span> ';
     $('#group-genmap-details-modal-content').html(spinner);
-    modal.foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod(modal, 'open');
+    });
 
     const request = window.makeRequest
       ? window.makeRequest('GET', postType + '/' + nodeId, null, 'dt-posts/v2/')
@@ -2178,7 +2182,9 @@
     // Close details modal if open
     const detailsModal = jQuery('#group-genmap-details-modal');
     if (detailsModal.length && detailsModal.hasClass('is-open')) {
-      detailsModal.foundation('close');
+      window.DTFoundation.plugin(() => {
+        window.DTFoundation.callMethod(detailsModal, 'close');
+      });
     }
 
     const modalStrings = window.dtGroupGenmap?.strings?.modal || {};
@@ -2218,7 +2224,9 @@
     jQuery(content).css('max-height', '300px');
     jQuery(content).css('overflow', 'auto');
     jQuery(content).empty().html(listHtml);
-    jQuery(modal).foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod(modal, 'open');
+    });
   }
 
   function handleAddChild() {
@@ -2239,7 +2247,9 @@
         },
       })
         .then((newPost) => {
-          jQuery('#template_metrics_modal').foundation('close');
+          window.DTFoundation.plugin(() => {
+            window.DTFoundation.callMethod('#template_metrics_modal', 'close');
+          });
           // Refresh the page to show the new child
           window.location.reload();
         })

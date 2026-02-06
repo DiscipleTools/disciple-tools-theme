@@ -21,7 +21,9 @@ jQuery(document).ready(function ($) {
     button_icon.css('color', '');
     button_icon.css('margin-left', '');
 
-    $('#user_modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#user_modal', 'open');
+    });
     /**
      * Set availability dates
      */
@@ -1060,7 +1062,9 @@ jQuery(document).ready(function ($) {
     $(document).on('submit', function (ev) {
       ev.preventDefault();
       if (typeof window.contact_record !== 'undefined') {
-        $('#confirm-user-upgrade').foundation('open');
+        window.DTFoundation.plugin(() => {
+          window.DTFoundation.callMethod('#confirm-user-upgrade', 'open');
+        });
       } else {
         create_user();
       }

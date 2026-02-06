@@ -76,7 +76,12 @@ jQuery(document).ready(function ($) {
     window.API.create_user(values)
       .then(() => {
         $(this).removeClass('loading');
-        $(`#make-user-from-contact-modal`).foundation('close');
+        window.DTFoundation.plugin(() => {
+          window.DTFoundation.callMethod(
+            '#make-user-from-contact-modal',
+            'close',
+          );
+        });
         location.reload();
       })
       .catch((err) => {
@@ -109,7 +114,40 @@ jQuery(document).ready(function ($) {
     });
   let merge_dupe_edit_modal = $('#merge-dupe-edit-modal');
   $(document).on('click', '#duplicates-detected-notice', function () {
-    merge_dupe_edit_modal.foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod(merge_dupe_edit_modal, 'open');
+
+      // Ensure close button works - Foundation's data-close relies on triggers
+      setTimeout(() => {
+        const $ = window.jQuery || window.$;
+        if ($ && $.fn && $.fn.foundation) {
+          try {
+            // Reinitialize Foundation on the modal to ensure triggers are attached
+            merge_dupe_edit_modal.foundation();
+          } catch (e) {
+            // Ignore errors
+          }
+        }
+
+        // Manual fallback: attach click handler to close button if data-close doesn't work
+        merge_dupe_edit_modal
+          .find('[data-close]')
+          .off('click.modal-close')
+          .on('click.modal-close', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Close the modal directly since Foundation is already available
+            if (merge_dupe_edit_modal.data('zfPlugin')) {
+              merge_dupe_edit_modal.foundation('close');
+            } else {
+              // Fallback: try to close via Foundation object
+              window.DTFoundation.plugin(() => {
+                window.DTFoundation.callMethod(merge_dupe_edit_modal, 'close');
+              });
+            }
+          });
+      }, 50);
+    });
   });
 
   let possible_duplicates = [];
@@ -294,7 +332,40 @@ jQuery(document).ready(function ($) {
   //open duplicates modal if 'open-duplicates' param is is url
   let open_duplicates = window.SHAREDFUNCTIONS.get_url_param('open-duplicates');
   if (open_duplicates === '1') {
-    merge_dupe_edit_modal.foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod(merge_dupe_edit_modal, 'open');
+
+      // Ensure close button works - Foundation's data-close relies on triggers
+      setTimeout(() => {
+        const $ = window.jQuery || window.$;
+        if ($ && $.fn && $.fn.foundation) {
+          try {
+            // Reinitialize Foundation on the modal to ensure triggers are attached
+            merge_dupe_edit_modal.foundation();
+          } catch (e) {
+            // Ignore errors
+          }
+        }
+
+        // Manual fallback: attach click handler to close button if data-close doesn't work
+        merge_dupe_edit_modal
+          .find('[data-close]')
+          .off('click.modal-close')
+          .on('click.modal-close', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Close the modal directly since Foundation is already available
+            if (merge_dupe_edit_modal.data('zfPlugin')) {
+              merge_dupe_edit_modal.foundation('close');
+            } else {
+              // Fallback: try to close via Foundation object
+              window.DTFoundation.plugin(() => {
+                window.DTFoundation.callMethod(merge_dupe_edit_modal, 'close');
+              });
+            }
+          });
+      }, 50);
+    });
   }
 
   /**

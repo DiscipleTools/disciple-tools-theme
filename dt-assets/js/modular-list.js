@@ -1,5 +1,8 @@
 'use strict';
 (function ($, list_settings, Foundation) {
+  // Use DTFoundation utility for Foundation availability checks
+  // This utility is loaded synchronously before this script
+
   $(document).ready(function () {
     if (window.DtWebComponents && window.DtWebComponents.ComponentService) {
       const service = new window.DtWebComponents.ComponentService(
@@ -311,10 +314,15 @@
 
   // Collapse filter tile for mobile view
   function collapse_filters() {
-    if (window.Foundation.MediaQuery.only('small')) {
-      $('#list-filters .bordered-box').addClass('collapsed');
-    } else {
-      $('#list-filters .bordered-box').removeClass('collapsed');
+    if (window.DTFoundation && window.DTFoundation.isAvailable()) {
+      const Foundation = window.Foundation;
+      if (Foundation && Foundation.MediaQuery && Foundation.MediaQuery.only) {
+        if (Foundation.MediaQuery.only('small')) {
+          $('#list-filters .bordered-box').addClass('collapsed');
+        } else {
+          $('#list-filters .bordered-box').removeClass('collapsed');
+        }
+      }
     }
   }
 
@@ -668,7 +676,9 @@
       </span>`);
         delete_filter.on('click', function () {
           $(`.delete-filter-name`).html(filter.name);
-          $('#delete-filter-modal').foundation('open');
+          window.DTFoundation.plugin(() => {
+            window.DTFoundation.callMethod('#delete-filter-modal', 'open');
+          });
           filter_to_delete = filter.ID;
         });
         let edit_filter =
@@ -699,10 +709,25 @@
           ),
         );
       });
-    new window.Foundation.Accordion(filter_accordions, {
-      slideSpeed: 100,
-      allowAllClosed: true,
-    });
+    // Initialize Foundation Accordion using DTFoundation utility
+    if (window.DTFoundation && window.DTFoundation.isAvailable()) {
+      const Foundation = window.Foundation;
+      if (Foundation && Foundation.Accordion) {
+        new Foundation.Accordion(filter_accordions, {
+          slideSpeed: 100,
+          allowAllClosed: true,
+        });
+      }
+    } else {
+      window.DTFoundation.ready((Foundation) => {
+        if (Foundation && Foundation.Accordion) {
+          new Foundation.Accordion(filter_accordions, {
+            slideSpeed: 100,
+            allowAllClosed: true,
+          });
+        }
+      });
+    }
     if (selected_tab) {
       $(
         `#list-filter-tabs [data-id='${window.SHAREDFUNCTIONS.escapeHTML(selected_tab)}'] a`,
@@ -1529,7 +1554,9 @@
         ${window.SHAREDFUNCTIONS.escapeHTML(list_settings.translations.save)}
     </a>`).on('click', function () {
         $('#filter-name').val(name);
-        $('#save-filter-modal').foundation('open');
+        window.DTFoundation.plugin(() => {
+          window.DTFoundation.callMethod('#save-filter-modal', 'open');
+        });
         filter_to_save = ID;
       });
     let filterRow = $(
@@ -1722,8 +1749,13 @@
       search_query,
       new_filter_labels,
     );
-    if (window.Foundation.MediaQuery.only('small')) {
-      $('#tile-filters').addClass('collapsed');
+    if (window.DTFoundation && window.DTFoundation.isAvailable()) {
+      const Foundation = window.Foundation;
+      if (Foundation && Foundation.MediaQuery && Foundation.MediaQuery.only) {
+        if (Foundation.MediaQuery.only('small')) {
+          $('#tile-filters').addClass('collapsed');
+        }
+      }
     }
   });
 
@@ -2589,7 +2621,9 @@
   });
 
   function edit_saved_filter(filter) {
-    $('#filter-modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#filter-modal', 'open');
+    });
     typeaheads_loaded.then(() => {
       let connectionTypeKeys =
         list_settings.post_type_settings.connection_types;
@@ -3217,4 +3251,4 @@
     $('#split_by_current_filter_no_results_msg').fadeOut('fast');
     $('.split-by-current-filter-accordion').slideUp('fast', function () {});
   }
-})(window.jQuery, window.list_settings, window.Foundation);
+})(window.jQuery, window.list_settings, window.Foundation || null);

@@ -8,7 +8,14 @@ jQuery(document).ready(function () {
     let chart = jQuery('#chart');
     let spinner = ' <span class="loading-spinner active"></span> ';
     chart.empty().html(spinner);
-    jQuery('#metrics-sidemenu').foundation('down', jQuery('#groups-menu'));
+    // Ensure Foundation jQuery plugin is available before using it
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod(
+        '#metrics-sidemenu',
+        'down',
+        jQuery('#groups-menu'),
+      );
+    });
 
     let sourceData = window.dtMetricsProject.data;
     let translations = window.dtMetricsProject.data.translations;

@@ -505,7 +505,9 @@ jQuery(document).ready(function ($) {
   let tags_field = null;
   $('dt-tags').on('dt:add-new', (e) => {
     tags_field = e.detail.field;
-    $('#create-tag-modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#create-tag-modal', 'open');
+    });
     $('.js-create-tag input[name=title]').val(e.detail.value);
   });
 
@@ -524,7 +526,9 @@ jQuery(document).ready(function ($) {
   // new record from group member list
   $('.create-new-record').on('click', function () {
     connection_type = $(this).data('connection-key');
-    $('#create-record-modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#create-record-modal', 'open');
+    });
     $('.js-create-record .error-text').empty();
     $('.js-create-record-button').attr('disabled', false).removeClass('alert');
     $('.reveal-after-record-create').hide();
@@ -542,7 +546,9 @@ jQuery(document).ready(function ($) {
       connection_type = e.currentTarget.name;
       const newPost = e.detail.newValue.find((x) => x.isNew);
 
-      $('#create-record-modal').foundation('open');
+      window.DTFoundation.plugin(() => {
+        window.DTFoundation.callMethod('#create-record-modal', 'open');
+      });
       $('.js-create-record .error-text').empty();
       $('.js-create-record-button')
         .attr('disabled', false)
@@ -666,7 +672,53 @@ jQuery(document).ready(function ($) {
    */
   let shareTypeahead = null;
   $('.open-share').on('click', function () {
-    $('#share-contact-modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#share-contact-modal', 'open');
+
+      // Ensure close button works
+      setTimeout(() => {
+        const $ = window.jQuery || window.$;
+        const $modal = $('#share-contact-modal');
+        if ($ && $.fn && $.fn.foundation) {
+          try {
+            $modal.foundation();
+          } catch (e) {
+            // Ignore errors
+          }
+        }
+
+        // Attach click handler directly to close buttons and also use event delegation as fallback
+        const closeHandler = function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const $closeModal = $('#share-contact-modal');
+          if ($closeModal.data('zfPlugin')) {
+            $closeModal.foundation('close');
+          } else {
+            window.DTFoundation.plugin(() => {
+              window.DTFoundation.callMethod('#share-contact-modal', 'close');
+            });
+          }
+        };
+
+        // Remove any existing handlers
+        $modal.find('[data-close]').off('click.modal-close-share');
+        $(document).off(
+          'click.modal-close-share',
+          '#share-contact-modal [data-close]',
+        );
+
+        // Attach directly to buttons
+        $modal.find('[data-close]').on('click.modal-close-share', closeHandler);
+
+        // Also use event delegation as fallback
+        $(document).on(
+          'click.modal-close-share',
+          '#share-contact-modal [data-close]',
+          closeHandler,
+        );
+      }, 150);
+    });
     if (!shareTypeahead) {
       shareTypeahead = window.TYPEAHEADS.share(post_type, post_id);
     }
@@ -737,7 +789,50 @@ jQuery(document).ready(function ($) {
   $('.open-set-task').on('click', function () {
     $('.js-add-task-form .error-text').empty();
     build_task_list();
-    $('#tasks-modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#tasks-modal', 'open');
+
+      // Ensure close button works
+      setTimeout(() => {
+        const $ = window.jQuery || window.$;
+        const $modal = $('#tasks-modal');
+        if ($ && $.fn && $.fn.foundation) {
+          try {
+            $modal.foundation();
+          } catch (e) {
+            // Ignore errors
+          }
+        }
+
+        // Attach click handler directly to close buttons and also use event delegation as fallback
+        const closeHandler = function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          const $closeModal = $('#tasks-modal');
+          if ($closeModal.data('zfPlugin')) {
+            $closeModal.foundation('close');
+          } else {
+            window.DTFoundation.plugin(() => {
+              window.DTFoundation.callMethod('#tasks-modal', 'close');
+            });
+          }
+        };
+
+        // Remove any existing handlers
+        $modal.find('[data-close]').off('click.modal-close-tasks');
+        $(document).off('click.modal-close-tasks', '#tasks-modal [data-close]');
+
+        // Attach directly to buttons
+        $modal.find('[data-close]').on('click.modal-close-tasks', closeHandler);
+
+        // Also use event delegation as fallback
+        $(document).on(
+          'click.modal-close-tasks',
+          '#tasks-modal [data-close]',
+          closeHandler,
+        );
+      }, 150);
+    });
   });
   $('#task-custom-text').on('click', function () {
     $('input:radio[name="task-type"]')
@@ -783,7 +878,9 @@ jQuery(document).ready(function ($) {
         post = resp;
         $('#create-task').attr('disabled', false).removeClass('loading');
         task_note.val('');
-        $('#tasks-modal').foundation('close');
+        window.DTFoundation.plugin(() => {
+          window.DTFoundation.callMethod('#tasks-modal', 'close');
+        });
       })
       .catch((err) => {
         $('#create-task').attr('disabled', false).removeClass('loading');
@@ -1054,7 +1151,9 @@ jQuery(document).ready(function ($) {
       overall_status: 'closed',
     }).then(() => {
       $(this).attr('disabled', false).removeClass('loading');
-      $('#archive-record-modal').foundation('close');
+      window.DTFoundation.plugin(() => {
+        window.DTFoundation.callMethod('#archive-record-modal', 'close');
+      });
       $('.archived-notification').show();
     });
   });
@@ -1169,7 +1268,9 @@ jQuery(document).ready(function ($) {
       user_select_input.trigger('input.typeahead');
       user_select_input.focus();
     });
-    $('#merge-with-post-modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#merge-with-post-modal', 'open');
+    });
   });
 
   /**

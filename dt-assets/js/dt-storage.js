@@ -7,7 +7,9 @@ jQuery(document).ready(function ($) {
 
     // Close the dt-storage-picture modal
     if ($('#dt-storage-picture').length) {
-      $('#dt-storage-picture').foundation('close');
+      window.DTFoundation.plugin(() => {
+        window.DTFoundation.callMethod('#dt-storage-picture', 'close');
+      });
     }
 
     display_storage_upload_modal(
@@ -242,7 +244,49 @@ jQuery(document).ready(function ($) {
     $(document).foundation();
 
     // Open upload modal.
-    $('#dt_storage_upload_modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#dt_storage_upload_modal', 'open');
+
+      // Ensure close button works
+      setTimeout(() => {
+        const $ = window.jQuery || window.$;
+        const $modal = $('#dt_storage_upload_modal');
+        if ($ && $.fn && $.fn.foundation) {
+          try {
+            $modal.foundation();
+          } catch (e) {
+            // Ignore errors
+          }
+        }
+
+        // Manual fallback: attach click handler to close button using event delegation
+        // This ensures it works even if the button is dynamically added
+        $(document)
+          .off(
+            'click.modal-close-storage',
+            '#dt_storage_upload_modal [data-close]',
+          )
+          .on(
+            'click.modal-close-storage',
+            '#dt_storage_upload_modal [data-close]',
+            function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+              const $closeModal = $('#dt_storage_upload_modal');
+              if ($closeModal.data('zfPlugin')) {
+                $closeModal.foundation('close');
+              } else {
+                window.DTFoundation.plugin(() => {
+                  window.DTFoundation.callMethod(
+                    '#dt_storage_upload_modal',
+                    'close',
+                  );
+                });
+              }
+            },
+          );
+      }, 100);
+    });
   }
 
   function display_picture_modal(
@@ -296,7 +340,46 @@ jQuery(document).ready(function ($) {
     $(document).foundation();
 
     // Open upload modal.
-    $('#dt-storage-picture').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#dt-storage-picture', 'open');
+
+      // Ensure close button works
+      setTimeout(() => {
+        const $ = window.jQuery || window.$;
+        const $modal = $('#dt-storage-picture');
+        if ($ && $.fn && $.fn.foundation) {
+          try {
+            $modal.foundation();
+          } catch (e) {
+            // Ignore errors
+          }
+        }
+
+        // Manual fallback: attach click handler to close button using event delegation
+        // This ensures it works even if the button is dynamically added
+        $(document)
+          .off('click.modal-close-picture', '#dt-storage-picture [data-close]')
+          .on(
+            'click.modal-close-picture',
+            '#dt-storage-picture [data-close]',
+            function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+              const $closeModal = $('#dt-storage-picture');
+              if ($closeModal.data('zfPlugin')) {
+                $closeModal.foundation('close');
+              } else {
+                window.DTFoundation.plugin(() => {
+                  window.DTFoundation.callMethod(
+                    '#dt-storage-picture',
+                    'close',
+                  );
+                });
+              }
+            },
+          );
+      }, 100);
+    });
   }
 
   function activate_storage_upload_modal_widgets(

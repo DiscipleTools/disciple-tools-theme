@@ -153,7 +153,9 @@ function load_modal(lng, lat, level, label, grid_id) {
   let spinner = '<span class="loading-spinner active"></span>';
 
   let container = jQuery('#mapping-modal');
-  container.foundation('open');
+  window.DTFoundation.plugin(() => {
+    window.DTFoundation.callMethod(container, 'open');
+  });
 
   let content = jQuery('#mapping-modal-contents');
   content.empty().append(`

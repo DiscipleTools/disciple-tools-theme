@@ -982,7 +982,9 @@ jQuery(function ($) {
       'bulk_record_id',
       $(evt.currentTarget).data('bulk_record_id'),
     );
-    $('#altered_mapbox_search_modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#altered_mapbox_search_modal', 'open');
+    });
   });
 
   $(document).on('open.zf.reveal', '[data-reveal]', function (evt) {
@@ -994,7 +996,9 @@ jQuery(function ($) {
 
   $('#altered_mapbox_search_modal_but_cancel').on('click', function () {
     reset_altered_mapbox_search_field_values();
-    $('#altered_mapbox_search_modal').foundation('close');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#altered_mapbox_search_modal', 'close');
+    });
   });
 
   $('#altered_mapbox_search_modal_but_update').on('click', function () {
@@ -1028,7 +1032,9 @@ jQuery(function ($) {
           }
         });
     }
-    $('#altered_mapbox_search_modal').foundation('close');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#altered_mapbox_search_modal', 'close');
+    });
   });
 
   function reset_altered_mapbox_search_field_values() {

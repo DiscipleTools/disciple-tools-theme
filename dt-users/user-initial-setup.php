@@ -90,7 +90,9 @@ function dt_user_initial_setup_modal(): void{
             content.append(modal_html);
             let div = jQuery('#user_notify_modal');
             new window.Foundation.Reveal(div);
-            div.foundation('open');
+            window.DTFoundation.plugin(() => {
+              window.DTFoundation.callMethod(div, 'open');
+            });
 
             // Handle initial user language setup submissions.
             jQuery('#user_default_language_update').on('click', function (e) {
@@ -107,7 +109,9 @@ function dt_user_initial_setup_modal(): void{
                 .done(response => {
 
                     // Assume all is well in the world, refresh page (if any changes) and close modal!
-                    modal.foundation('close');
+                    window.DTFoundation.plugin(() => {
+                      window.DTFoundation.callMethod(modal, 'close');
+                    });
 
                     if ( initial_locale !== updated_locale ) {
                         location.reload();
@@ -115,7 +119,9 @@ function dt_user_initial_setup_modal(): void{
                 })
                 .catch((e) => {
                     console.log(e);
-                    modal.foundation('close');
+                    window.DTFoundation.plugin(() => {
+                      window.DTFoundation.callMethod(modal, 'close');
+                    });
                 });
             });
         });

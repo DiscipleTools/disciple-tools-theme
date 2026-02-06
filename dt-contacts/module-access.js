@@ -11,11 +11,17 @@ function setStatus(contact, openModal) {
 
   if (openModal) {
     if (status === 'paused') {
-      jQuery('#paused-contact-modal').foundation('open');
+      window.DTFoundation.plugin(() => {
+        window.DTFoundation.callMethod('#paused-contact-modal', 'open');
+      });
     } else if (status === 'closed') {
-      jQuery('#closed-contact-modal').foundation('open');
+      window.DTFoundation.plugin(() => {
+        window.DTFoundation.callMethod('#closed-contact-modal', 'open');
+      });
     } else if (status === 'unassignable') {
-      jQuery('#unassignable-contact-modal').foundation('open');
+      window.DTFoundation.plugin(() => {
+        window.DTFoundation.callMethod('#unassignable-contact-modal', 'open');
+      });
     }
   }
 
@@ -88,7 +94,9 @@ jQuery(document).ready(function ($) {
     window.API.update_post('contacts', post_id, data)
       .then((contactData) => {
         $(this).toggleClass('loading');
-        $(`#${field}-contact-modal`).foundation('close');
+        window.DTFoundation.plugin(() => {
+          window.DTFoundation.callMethod(`#${field}-contact-modal`, 'close');
+        });
         setStatus(contactData);
       })
       .catch((err) => {
@@ -125,7 +133,9 @@ jQuery(document).ready(function ($) {
   let populated_list = $('.populated-list');
 
   jQuery('.advanced_user_select').on('click', function () {
-    $('#assigned_to_user_modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#assigned_to_user_modal', 'open');
+    });
     if (dispatch_users_promise === null) {
       $('#assigned_to_user_modal #dispatch-tile-loader').addClass('active');
       dispatch_users_promise = window.makeRequest(
@@ -271,7 +281,9 @@ jQuery(document).ready(function ($) {
       $(`.js-typeahead-assigned_to`)
         .val(window.SHAREDFUNCTIONS.escapeHTML(response.assigned_to.display))
         .blur();
-      $('#assigned_to_user_modal').foundation('close');
+      window.DTFoundation.plugin(() => {
+        window.DTFoundation.callMethod('#assigned_to_user_modal', 'close');
+      });
     });
   });
 

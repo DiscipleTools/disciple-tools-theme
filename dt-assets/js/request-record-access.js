@@ -9,7 +9,9 @@ jQuery(document).ready(function ($) {
     'click',
     '.open-request-record-access-button-modal',
     function () {
-      $('#request-record-access-modal').foundation('open');
+      window.DTFoundation.plugin(() => {
+        window.DTFoundation.callMethod('#request-record-access-modal', 'open');
+      });
     },
   );
 
@@ -24,7 +26,12 @@ jQuery(document).ready(function ($) {
       .request_record_access(postType, postId, currentUserId)
       .then((data) => {
         $('#request-record-access-modal-button').toggleClass('loading');
-        $('#request-record-access-modal').foundation('close');
+        window.DTFoundation.plugin(() => {
+          window.DTFoundation.callMethod(
+            '#request-record-access-modal',
+            'close',
+          );
+        });
 
         window.location = window.wpApiShare.site_url + '/' + postType;
       })
@@ -36,7 +43,12 @@ jQuery(document).ready(function ($) {
         $('#request-record-access-error').append(err.responseText);
 
         $('#request-record-access-modal-button').toggleClass('loading');
-        $('#request-record-access-modal').foundation('close');
+        window.DTFoundation.plugin(() => {
+          window.DTFoundation.callMethod(
+            '#request-record-access-modal',
+            'close',
+          );
+        });
       });
   });
 });

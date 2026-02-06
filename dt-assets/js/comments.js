@@ -294,7 +294,9 @@ jQuery(document).ready(function ($) {
     let id = $(this).data('id');
     $('#comment-to-delete').html($(`.comment-bubble.${id}`).html());
     $('.delete-comment.callout').hide();
-    $('#delete-comment-modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#delete-comment-modal', 'open');
+    });
     $('#confirm-comment-delete').data('id', id);
   });
   $('#confirm-comment-delete').on('click', function () {
@@ -305,7 +307,9 @@ jQuery(document).ready(function ($) {
       .then((response) => {
         $(this).toggleClass('loading');
         if (response) {
-          $('#delete-comment-modal').foundation('close');
+          window.DTFoundation.plugin(() => {
+            window.DTFoundation.callMethod('#delete-comment-modal', 'close');
+          });
         } else {
           $('.delete-comment.callout').show();
         }
@@ -350,7 +354,9 @@ jQuery(document).ready(function ($) {
     $('#edit_comment_type_selector').val(comment_type);
 
     $('.edit-comment.callout').hide();
-    $('#edit-comment-modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#edit-comment-modal', 'open');
+    });
     $('#confirm-comment-edit').data('id', id);
   });
   $('#confirm-comment-edit').on('click', function () {
@@ -363,7 +369,9 @@ jQuery(document).ready(function ($) {
       .then((response) => {
         $(this).toggleClass('loading');
         if (response === 1 || response === 0 || response.comment_ID) {
-          $('#edit-comment-modal').foundation('close');
+          window.DTFoundation.plugin(() => {
+            window.DTFoundation.callMethod('#edit-comment-modal', 'close');
+          });
         } else {
           $('.edit-comment.callout').show();
         }
@@ -719,7 +727,9 @@ jQuery(document).ready(function ($) {
   //
   $(document).on('click', '.revert-activity', function () {
     let id = $(this).data('id');
-    $('#revert-modal').foundation('open');
+    window.DTFoundation.plugin(() => {
+      window.DTFoundation.callMethod('#revert-modal', 'open');
+    });
     $('#confirm-revert').data('id', id);
     window.API.get_single_activity(postType, postId, id)
       .then((a) => {
@@ -746,7 +756,9 @@ jQuery(document).ready(function ($) {
     window.API.revert_activity(postType, postId, id)
       .then((contactResponse) => {
         refreshActivity();
-        $('#revert-modal').foundation('close');
+        window.DTFoundation.plugin(() => {
+          window.DTFoundation.callMethod('#revert-modal', 'close');
+        });
         if (typeof refresh_quick_action_buttons === 'function') {
           window.refresh_quick_action_buttons(contactResponse);
         }

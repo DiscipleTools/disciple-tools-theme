@@ -148,7 +148,9 @@ class DT_Contacts_Baptisms extends DT_Module_Base {
                 !(post.milestones || []).includes('milestone_baptized') ||
                 (post.baptized_by || []).length === 0
               ) {
-                $('#baptism-modal').foundation('open');
+                window.DTFoundation.plugin(() => {
+                  window.DTFoundation.callMethod('#baptism-modal', 'open');
+                });
 
                 // set values of fields in baptism modal
                 const componentService = window.DtWebComponents.ComponentService;
