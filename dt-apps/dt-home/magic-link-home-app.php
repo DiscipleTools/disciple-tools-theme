@@ -132,7 +132,7 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         // Enqueue menu toggle JavaScript
         wp_enqueue_script( 'dt-home-menu-toggle', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/menu-toggle.js', [], '1.0.0', true );
 
-        wp_enqueue_script( 'dt-home-app', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/home-app.js', [], '1.0.0', true );
+        wp_enqueue_script( 'dt-home-app', get_template_directory_uri() . '/dt-apps/dt-home/assets/js/home-app.js', [], '1.0.1', true );
 
         // Pass logout URL and invite settings to menu toggle script
         if ( function_exists( 'dt_home_get_logout_url' ) ) {
