@@ -13,6 +13,7 @@ phpcs.phar
 package-lock.json
 
 */development-only/*
+dt-assets/build/vite-dev-server.json
 
 /composer.lock
 /.phpunit.result.cache

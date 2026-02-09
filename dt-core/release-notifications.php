@@ -18,7 +18,7 @@ function dt_has_unread_release() {
         return false;
     }
 
-    $show_notification_for_theme_version = '1.77.0'; // increment this number with each new release modal
+    $show_notification_for_theme_version = '1.78.0'; // increment this number with each new release modal
     $last_release_notification = get_user_meta( get_current_user_id(), 'dt_release_notification', true );
 
     if ( empty( $last_release_notification ) ) {
