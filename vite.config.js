@@ -1,7 +1,5 @@
 import { defineConfig } from 'vite';
-import legacy from '@vitejs/plugin-legacy';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
-import inject from '@rollup/plugin-inject';
 import { v4wp } from '@kucrut/vite-for-wp';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 
@@ -21,7 +19,6 @@ export default defineConfig(({ mode }) => {
             'node_modules/@disciple.tools/web-components/src/styles/light.css',
           dim: 'node_modules/@disciple.tools/web-components/src/styles/dim.css',
           dark: 'node_modules/@disciple.tools/web-components/src/styles/dark.css',
-          scripts: 'dt-assets/js/main.js',
         },
         output: {
           entryFileNames: 'js/[name].min.js',
@@ -35,21 +32,10 @@ export default defineConfig(({ mode }) => {
           },
         },
       },
-      // Ensure we don't empty the dir if we are building to separate subdirs,
-      // but here we use a single outDir with subdirs in naming.
-      emptyOutDir: true,
+      emptyOutDir: false,
     },
     plugins: [
       basicSsl(),
-      inject({
-        modules: {
-          jQuery: 'jquery',
-          $: 'jquery',
-        },
-      }),
-      legacy({
-        targets: ['defaults', 'not IE 11'],
-      }),
       {
         name: 'cleanup-scripts',
         generateBundle(_, bundle) {
