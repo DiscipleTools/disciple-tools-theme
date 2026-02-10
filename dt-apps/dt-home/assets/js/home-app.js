@@ -7,7 +7,7 @@ class HomeApp {
   constructor() {
     // Check authentication before loading content
     // If user is not authenticated, they will be redirected by PHP before this JavaScript runs
-    if (jsObject.user_id === 0) {
+    if (jsObject.user_id === 0 && jsObject.require_login) {
       // This should not happen as PHP redirects unauthenticated users
       // But as a fallback, redirect to login
       const currentUrl = window.location.href;

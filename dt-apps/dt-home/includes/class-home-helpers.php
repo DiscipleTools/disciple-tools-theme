@@ -17,15 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param string $action Optional. The action to append to the URL (e.g., 'app/{slug}', 'logout').
  * @param string $key Optional. The magic link key. If not provided, uses current user's key.
+ * @param int|null $user_id Optional. The user ID. Defaults to current user.
  * @return string The generated magic URL.
  */
-function dt_home_magic_url( $action = '', $key = '' ) {
+function dt_home_magic_url( $action = '', $key = '', $user_id = null ) {
     // Get the home screen app instance
     $home_app = DT_Home_Magic_Link_App::instance();
 
     if ( ! $key ) {
         // Get current user's magic link key
-        $user_id = get_current_user_id();
+        $user_id = $user_id ?? get_current_user_id();
         if ( ! $user_id ) {
             return '';
         }
