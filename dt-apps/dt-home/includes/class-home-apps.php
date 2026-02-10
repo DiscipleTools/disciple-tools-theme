@@ -29,9 +29,6 @@ class DT_Home_Apps {
     }
 
     public function __construct() {
-        // Initialize with default apps if none exist
-        $this->initialize_default_apps();
-
         // Register init hook to handle filter timing
         add_action( 'init', [ $this, 'on_init' ], 20 );
     }
@@ -55,6 +52,9 @@ class DT_Home_Apps {
         // This is where we can safely load apps after all classes are loaded
         $this->load_magic_link_apps();
         $this->load_home_apps();
+
+        // Initialize with default apps if none exist
+        $this->initialize_default_apps();
     }
 
     /**
