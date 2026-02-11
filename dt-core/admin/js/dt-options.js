@@ -1535,12 +1535,18 @@ jQuery(document).ready(function ($) {
   if (
     window.dtOptionAPI &&
     window.dtOptionAPI.duplicate_fields &&
-    Object.keys(window.dtOptionAPI.duplicate_fields).length > 0 &&
+    window.dtOptionAPI.duplicate_fields.post_types &&
+    Array.isArray(window.dtOptionAPI.duplicate_fields.post_types) &&
+    window.dtOptionAPI.duplicate_fields.post_types.length > 0 &&
     $('#duplicate-fields-form').length > 0
   ) {
     const duplicateFieldsConfig =
       window.dtOptionAPI.duplicate_fields.config || {};
-    const allPostTypes = window.dtOptionAPI.duplicate_fields.post_types || [];
+    // Ensure post_types is an array (handle case where it might be an object due to non-sequential keys)
+    const postTypesRaw = window.dtOptionAPI.duplicate_fields.post_types || [];
+    const allPostTypes = Array.isArray(postTypesRaw)
+      ? postTypesRaw
+      : Object.values(postTypesRaw);
     const fieldsData = window.dtOptionAPI.duplicate_fields.fields || {};
     const defaultFields = window.dtOptionAPI.duplicate_fields.defaults || {};
 

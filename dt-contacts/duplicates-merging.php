@@ -88,7 +88,7 @@ class DT_Duplicate_Checker_And_Merging {
         $post_id = $params['id'] ?? null;
         $post_type = $params['post_type'] ?? null;
         if ( $post_id ){
-            return self::ids_of_non_dismissed_duplicates( $post_type, $post_id, false );
+            return self::ids_of_non_dismissed_duplicates( $post_type, $post_id );
         } else {
             return new WP_Error( __FUNCTION__, 'Missing field for request', [ 'status' => 400 ] );
         }

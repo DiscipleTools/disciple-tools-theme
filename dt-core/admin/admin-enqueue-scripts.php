@@ -103,7 +103,13 @@ function dt_options_scripts() {
         }
 
         // Prepare duplicate fields data for general tab
-        $duplicate_fields_data = [];
+        // Initialize as object (associative array) to ensure consistent structure
+        $duplicate_fields_data = [
+            'config' => [],
+            'post_types' => [],
+            'fields' => [],
+            'defaults' => [],
+        ];
         if ( isset( $_GET['tab'] ) && $_GET['tab'] === 'general' ) {
             // Check if we're processing a duplicate fields form submission
             // If so, read from POST data to get the latest values before they're saved
@@ -160,7 +166,8 @@ function dt_options_scripts() {
             }
 
             $duplicate_fields_data['config'] = $duplicates_config;
-            $duplicate_fields_data['post_types'] = DT_Posts::get_post_types();
+            // Use array_values() to ensure sequential array keys (0, 1, 2...) for proper JSON encoding as array
+            $duplicate_fields_data['post_types'] = array_values( DT_Posts::get_post_types() );
 
             // Pre-load field settings and defaults for all post types
             $fields_data = [];
