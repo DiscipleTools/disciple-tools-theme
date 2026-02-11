@@ -479,19 +479,24 @@
         (f) => f.fieldKey === 'share',
       );
       if (shareFieldData) {
-        // Collect user ID from input
+        // Collect user IDs from component (supports multiple selections)
         const shareFieldWrapper = $(
           `.bulk-edit-field-wrapper[data-field-key="share"]`,
         );
-        const shareUserId = collectFieldValue(
+        const shareUserIds = collectFieldValue(
           'share',
           'share',
           shareFieldWrapper,
         );
-        if (shareUserId) {
+        if (
+          shareUserIds &&
+          Array.isArray(shareUserIds) &&
+          shareUserIds.length > 0
+        ) {
+          // Use legacy format for multiple users (backward compatible)
           sharePayload = {
-            user_id: shareUserId,
-            action: 'add',
+            users: shareUserIds,
+            unshare: false,
           };
         }
       }
@@ -763,36 +768,76 @@
 
     // Special case: share field (not a real post field type)
     if (fieldType === 'share') {
-      const shareInputId = `bulk_share_${fieldKey}`;
-      const shareInput = fieldWrapper.find(`.js-typeahead-${shareInputId}`);
+      const shareComponentId = `bulk_share_${fieldKey}`;
+      const shareComponent =
+        fieldWrapper.find(`#${shareComponentId}`)[0] ||
+        document.getElementById(shareComponentId);
 
-      if (shareInput.length > 0) {
-        // Get selected user ID from input data
-        let selectedUserId = shareInput.data('selected-user-id');
+      // Get fieldData to check if we have cached user IDs
+      const fieldData = bulkEditSelectedFields.find(
+        (f) => f.fieldKey === fieldKey,
+      );
 
-        // Fallback: check typeahead instance
-        if (!selectedUserId) {
-          const typeaheadSelector = `.js-typeahead-${shareInputId}`;
-          const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
-          if (
-            typeaheadInstance &&
-            typeaheadInstance.items &&
-            typeaheadInstance.items.length > 0
-          ) {
-            selectedUserId = typeaheadInstance.items[0].ID;
-          }
-        }
-
-        // Also store in fieldData for later use
-        const fieldData = bulkEditSelectedFields.find(
-          (f) => f.fieldKey === fieldKey,
-        );
-        if (fieldData && selectedUserId) {
-          fieldData.shareUserId = selectedUserId;
-        }
-
-        return selectedUserId || null;
+      // Return array of user IDs if available (supports multiple selections)
+      if (
+        fieldData &&
+        fieldData.shareUserIds &&
+        fieldData.shareUserIds.length > 0
+      ) {
+        return fieldData.shareUserIds;
       }
+
+      // Fallback: check component value directly
+      // dt-users-connection provides user IDs directly, so extract them
+      if (shareComponent && shareComponent.value) {
+        try {
+          let value;
+          if (typeof shareComponent.value === 'string') {
+            const trimmed = shareComponent.value.trim();
+            if (trimmed === '' || trimmed === '[]' || trimmed === 'null') {
+              return null;
+            }
+            value = JSON.parse(shareComponent.value);
+          } else if (Array.isArray(shareComponent.value)) {
+            value = shareComponent.value;
+          } else {
+            return null;
+          }
+
+          if (Array.isArray(value) && value.length > 0) {
+            // Extract user IDs directly from dt-users-connection format
+            const userIds = value
+              .map((item) => {
+                const userId = item.id || item.user_id || null;
+                return userId ? parseInt(userId, 10) : null;
+              })
+              .filter((id) => id !== null);
+
+            if (userIds.length > 0) {
+              // Cache in fieldData for future use
+              if (fieldData) {
+                fieldData.shareUserIds = userIds;
+                fieldData.shareUserId = userIds[0];
+                // Store labels if available
+                fieldData.shareUserLabels = {};
+                value.forEach((item) => {
+                  const userId = item.id || item.user_id;
+                  if (userId) {
+                    fieldData.shareUserLabels[userId] = item.label || '';
+                  }
+                });
+              }
+              return userIds;
+            }
+          }
+        } catch (e) {
+          console.error(
+            'Error parsing share component value in collectFieldValue:',
+            e,
+          );
+        }
+      }
+
       return null;
     }
 
@@ -913,7 +958,7 @@
     const component = fieldWrapper.find(
       'dt-text, dt-textarea, dt-number, dt-toggle, dt-date, dt-single-select, ' +
         'dt-multi-select, dt-multi-select-button-group, dt-multi-text, dt-tags, ' +
-        'dt-connection, dt-location, dt-location-map, dt-user-select',
+        'dt-connection, dt-users-connection, dt-location, dt-location-map, dt-user-select',
     )[0];
 
     if (!component?.value) {
@@ -1409,7 +1454,10 @@
               fieldType: 'share',
               fieldName: window.wpApiShare?.translations?.share || 'Share',
               cleared: false,
-              shareUserId: null, // Store selected user ID for clear/restore
+              shareUserId: null, // Store selected user ID for clear/restore (backward compat)
+              shareUserIds: [], // Store array of selected user IDs (supports multiple)
+              shareUserLabel: null, // Store selected user label (backward compat)
+              shareUserLabels: {}, // Store user labels by user ID (supports multiple)
             });
 
             // Render the share field
@@ -1717,121 +1765,255 @@
 
     // Handle share field specially
     if (fieldType === 'share') {
-      const shareInputId = `bulk_share_${fieldKey}`;
-      const shareResultContainerId = `bulk_share-result-container_${fieldKey}`;
+      const shareComponentId = `bulk_share_${fieldKey}`;
 
-      // Build share HTML with typeahead input
+      // Get field data to check if we need to restore a previous selection
+      const fieldData = bulkEditSelectedFields.find(
+        (f) => f.fieldKey === fieldKey,
+      );
+      const previousUserId = fieldData?.shareUserId || null;
+
+      // Build initial value if we have previous user IDs (supports multiple)
+      // dt-users-connection format: [{id: <userId>, type: 'user', label: <displayName>}]
+      let initialValue = '[]';
+      if (fieldData?.shareUserIds && fieldData.shareUserIds.length > 0) {
+        // Use array of user IDs if available
+        initialValue = JSON.stringify(
+          fieldData.shareUserIds.map((userId) => ({
+            id: userId,
+            type: 'user',
+            label: fieldData.shareUserLabels?.[userId] || '',
+          })),
+        );
+      } else if (previousUserId) {
+        // Fallback to single user ID for backward compatibility
+        initialValue = JSON.stringify([
+          {
+            id: previousUserId,
+            type: 'user',
+            label: fieldData?.shareUserLabel || '',
+          },
+        ]);
+      }
+
+      // Build share HTML with dt-users-connection component
+      // This component is specifically designed for selecting system users
       let shareHtml = '<div class="auto cell">';
       shareHtml +=
-        '<var id="' +
-        shareResultContainerId +
-        '" class="result-container share-result-container"></var>';
-      shareHtml +=
-        '<div id="share_t_' +
-        fieldKey +
-        '" name="form-share" class="scrollable-typeahead">';
-      shareHtml += '<div class="typeahead__container">';
-      shareHtml += '<div class="typeahead__field">';
-      shareHtml += '<span class="typeahead__query">';
-      shareHtml +=
-        '<input class="js-typeahead-' +
-        shareInputId +
-        ' input-height" name="share[query]" placeholder="' +
-        (window.wpApiShare?.translations?.search_users || 'Search Users') +
-        '" autocomplete="off">';
-      shareHtml += '</span>';
-      shareHtml += '</div>';
-      shareHtml += '</div>';
-      shareHtml += '</div>';
+        '<dt-users-connection id="' +
+        shareComponentId +
+        '" name="' +
+        shareComponentId +
+        '" field="share" value=\'' +
+        window.SHAREDFUNCTIONS.escapeHTML(initialValue) +
+        "'></dt-users-connection>";
       shareHtml += '</div>';
 
       container.html(shareHtml);
 
-      // Initialize typeahead for share field
+      // Initialize component and set up value change listener
       requestAnimationFrame(() => {
-        const shareInput = $(`.js-typeahead-${shareInputId}`);
-        if (shareInput.length === 0) {
+        const shareComponent = document.getElementById(shareComponentId);
+        if (!shareComponent) {
           return;
         }
 
-        // Get field data to check if we need to restore a previous user selection
-        const fieldData = bulkEditSelectedFields.find(
-          (f) => f.fieldKey === fieldKey,
-        );
-        const previousUserId = fieldData?.shareUserId || null;
+        // Initialize ComponentService if available
+        if (window.componentService && window.componentService.initialize) {
+          try {
+            window.componentService.initialize();
+          } catch (e) {
+            // ComponentService initialization error - component should still work
+          }
+        }
 
-        // Initialize typeahead (adapted from shared-functions.js share typeahead)
-        const typeaheadSelector = `.js-typeahead-${shareInputId}`;
-        window.Typeahead[typeaheadSelector] = jQuery.typeahead({
-          input: typeaheadSelector,
-          minLength: 0,
-          maxItem: 0,
-          accent: true,
-          searchOnFocus: true,
-          display: ['name'],
-          template:
-            '<div class="typeahead-contacts {{ if (data.starred) { }}typeahead-record-starred{{ } }}">' +
-            '<span class="typeahead-images">' +
-            '<img src="{{image}}" class="list-image">' +
-            '</span>' +
-            '<div class="typeahead-content">' +
-            '<span class="typhead-name">{{name}}</span>' +
-            '<span class="typhead-subtitle">{{subtitle}}</span>' +
-            '</div>' +
-            '</div>',
-          emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(
-            window.wpApiShare?.translations?.no_records_found ||
-              'No records found',
-          ),
-          source: window.TYPEAHEADS.typeaheadUserSource(),
-          displayField: 'name',
-          matcher: window.TYPEAHEADS.typeaheadMatcher,
-          callback: {
-            onClick: function (node, a, item, event) {
-              // Get fresh reference to fieldData from the array (closure might have stale reference)
-              const currentFieldData = bulkEditSelectedFields.find(
-                (f) => f.fieldKey === fieldKey,
+        // Function to process component value and update fieldData
+        // dt-users-connection provides user IDs directly, so no conversion needed
+        const processShareComponentValue = async function (componentValue) {
+          const currentFieldData = bulkEditSelectedFields.find(
+            (f) => f.fieldKey === fieldKey,
+          );
+          if (!currentFieldData) {
+            return;
+          }
+
+          // Handle empty or invalid values
+          // componentValue might be a string, array, or object
+          if (
+            !componentValue ||
+            componentValue === null ||
+            componentValue === undefined
+          ) {
+            // Value is null/undefined
+            currentFieldData.shareUserIds = [];
+            currentFieldData.shareUserLabels = {};
+            currentFieldData.shareUserId = null;
+            currentFieldData.shareUserLabel = null;
+            return;
+          }
+
+          // Handle if componentValue is already an array or object
+          let value;
+          if (Array.isArray(componentValue)) {
+            value = componentValue;
+          } else if (typeof componentValue === 'object') {
+            // If it's an object, try to convert to array format
+            value = Array.isArray(componentValue.value)
+              ? componentValue.value
+              : [componentValue];
+          } else if (typeof componentValue === 'string') {
+            // Handle string values
+            const trimmed = componentValue.trim();
+            if (
+              trimmed === '' ||
+              trimmed === 'null' ||
+              trimmed === '[]' ||
+              trimmed === 'undefined'
+            ) {
+              // Value is empty/null/empty array string
+              currentFieldData.shareUserIds = [];
+              currentFieldData.shareUserLabels = {};
+              currentFieldData.shareUserId = null;
+              currentFieldData.shareUserLabel = null;
+              return;
+            }
+            // Try to parse as JSON
+            try {
+              value = JSON.parse(componentValue);
+            } catch (e) {
+              console.error(
+                'Error parsing share component value as JSON:',
+                e,
+                'Value was:',
+                componentValue,
               );
+              // Clear field data on parse error
+              currentFieldData.shareUserIds = [];
+              currentFieldData.shareUserLabels = {};
+              currentFieldData.shareUserId = null;
+              currentFieldData.shareUserLabel = null;
+              return;
+            }
+          } else {
+            // Unknown type
+            console.error(
+              'Share component value has unexpected type:',
+              typeof componentValue,
+              componentValue,
+            );
+            return;
+          }
 
-              // Store selected user ID in fieldData
-              if (currentFieldData) {
-                currentFieldData.shareUserId = item.ID;
-              }
-              // Store in input data for easy retrieval
-              shareInput.data('selected-user-id', item.ID);
-              shareInput.data('selected-user-name', item.name);
-              // Add visual feedback
-              shareInput.attr('data-selected', 'true');
-              // Update input value to show selected user
-              shareInput.val(item.name);
+          // Now process the value (should be an array at this point)
+          try {
+            if (Array.isArray(value) && value.length > 0) {
+              // dt-users-connection format: [{id: <userId>, type: 'user', label: <displayName>}]
+              // Extract user IDs directly - no conversion needed!
+              const userIds = value
+                .map((item) => {
+                  // item.id is the user ID directly
+                  const userId = item.id || item.user_id || null;
+                  return userId ? parseInt(userId, 10) : null;
+                })
+                .filter((id) => id !== null);
 
-              // Prevent default and hide layout
-              event.preventDefault();
-              this.hideLayout();
-            },
-            onResult: function (node, query, result, resultCount) {
-              if (query === '') {
-                $(`#${shareResultContainerId}`).html('');
-              } else {
-                let text = window.TYPEAHEADS.typeaheadHelpText(
-                  resultCount,
-                  query,
-                  result,
-                );
-                $(`#${shareResultContainerId}`).html(text);
-              }
-            },
-            onHideLayout: function () {
-              $(`#${shareResultContainerId}`).html('');
-            },
-          },
+              // Store user IDs and labels
+              currentFieldData.shareUserIds = userIds;
+              currentFieldData.shareUserLabels = {};
+              value.forEach((item) => {
+                const userId = item.id || item.user_id;
+                if (userId) {
+                  currentFieldData.shareUserLabels[userId] = item.label || '';
+                }
+              });
+
+              // For backward compatibility, also store first user ID
+              currentFieldData.shareUserId =
+                userIds.length > 0 ? userIds[0] : null;
+              currentFieldData.shareUserLabel =
+                userIds.length > 0
+                  ? currentFieldData.shareUserLabels[userIds[0]] || ''
+                  : null;
+            } else {
+              // Value is empty array or invalid format
+              currentFieldData.shareUserIds = [];
+              currentFieldData.shareUserLabels = {};
+              currentFieldData.shareUserId = null;
+              currentFieldData.shareUserLabel = null;
+            }
+          } catch (e) {
+            // Invalid format - log error but don't crash
+            console.error(
+              'Error processing share component value:',
+              e,
+              'Value was:',
+              componentValue,
+            );
+            // Clear field data on error
+            currentFieldData.shareUserIds = [];
+            currentFieldData.shareUserLabels = {};
+            currentFieldData.shareUserId = null;
+            currentFieldData.shareUserLabel = null;
+          }
+        };
+
+        // Process initial value if present (fire and forget - will update fieldData asynchronously)
+        if (shareComponent.value) {
+          processShareComponentValue(shareComponent.value).catch((err) => {
+            // Silently handle errors - component should still work
+          });
+        }
+
+        // Listen for value changes to store user IDs (supports multiple selections)
+        shareComponent.addEventListener('change', async function () {
+          await processShareComponentValue(this.value);
         });
 
-        // Restore previous selection if available
+        // If we have a previous user ID, restore it in the component
         if (previousUserId) {
-          shareInput.data('selected-user-id', previousUserId);
-          // Note: We don't know the previous user name here, so we leave the input value as-is
-          shareInput.attr('data-selected', 'true');
+          // Fetch user details to set component value
+          fetch(`${window.wpApiShare.root}dt/v1/users/get_users?s=&get_all=1`, {
+            headers: {
+              'X-WP-Nonce': window.wpApiShare.nonce,
+            },
+          })
+            .then((response) => response.json())
+            .then((usersData) => {
+              const users = Array.isArray(usersData)
+                ? usersData
+                : usersData.posts || [];
+              const user = users.find(
+                (u) => u.ID === parseInt(previousUserId, 10),
+              );
+              if (user && shareComponent) {
+                const value = JSON.stringify([
+                  {
+                    id: user.ID,
+                    type: 'user',
+                    label: user.name || user.display_name || '',
+                  },
+                ]);
+                shareComponent.value = value;
+                // Update fieldData
+                const currentFieldData = bulkEditSelectedFields.find(
+                  (f) => f.fieldKey === fieldKey,
+                );
+                if (currentFieldData) {
+                  currentFieldData.shareUserId = previousUserId;
+                  currentFieldData.shareUserIds = [
+                    parseInt(previousUserId, 10),
+                  ];
+                  currentFieldData.shareUserLabel =
+                    user.name || user.display_name || '';
+                  currentFieldData.shareUserLabels = {
+                    [previousUserId]: user.name || user.display_name || '',
+                  };
+                }
+              }
+            })
+            .catch((err) => {
+              console.error('Error fetching user for restoration:', err);
+            });
         }
       });
 
