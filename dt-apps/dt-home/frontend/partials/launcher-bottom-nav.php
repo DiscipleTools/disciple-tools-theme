@@ -6,6 +6,7 @@
  * Only shown on app-type pages (not home screen or link-type apps).
  *
  * @var array $apps Array of all apps for the apps selector
+ * @var int $user_id The current user ID based on the magic link key
  * @var bool $is_wrapper_context Optional. If true, uses wrapper-specific class names to avoid conflicts.
  */
 
@@ -46,7 +47,7 @@ error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_a
             <i class="mdi mdi-apps"></i>
             <?php esc_html_e( 'Apps', 'disciple_tools' ); ?>
         </button>
-        <a href="<?php echo esc_url( dt_home_magic_url( '' ) ); ?>" class="nav-item nav-item-home" aria-label="<?php esc_attr_e( 'Home', 'disciple_tools' ); ?>">
+        <a href="<?php echo esc_url( dt_home_magic_url( '', '', $user_id ) ); ?>" class="nav-item nav-item-home" aria-label="<?php esc_attr_e( 'Home', 'disciple_tools' ); ?>">
             <i class="mdi mdi-home"></i>
         </a>
         <a href="<?php echo esc_url( dt_home_get_logout_url() ); ?>" class="nav-item nav-item-logout" aria-label="<?php esc_attr_e( 'Log Out', 'disciple_tools' ); ?>">
