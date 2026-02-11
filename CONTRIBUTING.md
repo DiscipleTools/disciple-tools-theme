@@ -30,6 +30,39 @@ Checking out a PR and seeing the orange debug table is disappointing.
 
 We look forward to hearing from you!
 
+### Local Development & HMR
+
+We use [SASS](https://sass-lang.com/) for styling, pulling in JS and SCSS components
+from foundation-sites. The build process is handled by Vite, which compiles and minifies the assets for production.
+
+#### Prerequisites
+
+1.  **Composer Dependencies**: You must run `composer install` in the theme directory. This installs `kucrut/vite-for-wp`, which is required for HMR to work with WordPress.
+2.  **NPM Dependencies**: Run `npm install` to install Vite and other build tools.
+
+#### Starting the Dev Server
+
+When developing styles locally, you can run `npm run dev` to start the Vite dev server.
+This will watch for changes to the SCSS files and automatically recompile them and instantly
+load them in your browser. To do that, it will run a local server on port 5173 using a generated SSL.
+
+**Note on SSL**: On initial load from your DT site, it will reject the SSL certificate. You must go to https://localhost:5173 and click through the prompts to proceed anyway.
+
+#### Syncing with Development Site
+
+When the dev server is running, you need to ensure that the development site (where WordPress is running) has access to the latest files:
+
+1.  **Sync the `vendor` directory**: Ensure the `vendor` directory (created by `composer install`) is synced to your development site.
+2.  **Sync `vite-dev-server.json`**: This file is generated in `dt-assets/build` when `npm run dev` is running. It must be present on your development site for WordPress to know it should load assets from the Vite dev server.
+3.  **Removing the json file**: Running `npm run build` will remove `vite-dev-server.json`, reverting the theme to using the production assets.
+
+#### Troubleshooting
+
+-   **Assets not loading**: Check if `dt-assets/build/vite-dev-server.json` exists on your development site.
+-   **SSL Errors**: If assets fail to load due to certificate errors, visit `https://localhost:5173` directly in your browser and accept the risk/exception.
+-   **Vite for WP missing**: If you see PHP errors related to `Kucrut\Vite`, ensure you have run `composer install` and the `vendor` directory is correctly synced.
+-   **Port Conflicts**: Vite uses port 5173 by default. Ensure this port is available or update `vite.config.js`.
+
 ### Web Components
 When working on updates to the web components package and wanting to test them here in the theme, you can use NPM Link to streamline local testing.
 

@@ -77,12 +77,26 @@ function dt_site_scripts() {
     wp_register_script( 'jquery-ui', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', false, '1.12.1' );
     wp_enqueue_script( 'jquery-ui' );
 
-
+    // Register site scripts
     dt_theme_enqueue_script( 'site-js', 'dt-assets/build/js/scripts.min.js', array( 'jquery' ), true );
 
-    // Register main stylesheet
-    dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
+    // Register main stylesheet. Enable HMR by loading from vite if possible
+    $vite_dev_server_running = false;
+    if ( function_exists( 'Kucrut\Vite\enqueue_asset' ) ) {
+        $vite_dev_server_running = is_file( get_template_directory() . '/dt-assets/build/vite-dev-server.json' );
+    }
 
+    if ( $vite_dev_server_running ) {
+        Kucrut\Vite\enqueue_asset(
+            get_template_directory() . '/dt-assets/build',
+            'dt-assets/scss/style.scss',
+            [
+                'handle' => 'site-css',
+            ]
+        );
+    } else {
+        dt_theme_enqueue_style( 'site-css', 'dt-assets/build/css/style.min.css', array() );
+    }
     // Register web components
     dt_theme_enqueue_script( 'web-components', 'dt-assets/build/components/index.js', array(), false );
     dt_theme_enqueue_style( 'web-components-css', 'dt-assets/build/css/light.min.css', array() );
@@ -370,7 +384,10 @@ function dt_site_scripts() {
             'delete_any' => current_user_can( 'delete_any_' . $post_type )
         ];
         dt_theme_enqueue_script( 'drag-n-drop-table-columns', 'dt-core/dependencies/drag-n-drop-table-columns.js', array( 'jquery' ), true );
-        dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' ), true );
+        $list_deps = array( 'jquery', 'lodash', 'shared-functions', 'typeahead-jquery', 'site-js', 'drag-n-drop-table-columns' );
+        dt_theme_enqueue_script( 'modular-list-js', 'dt-assets/js/modular-list.js', $list_deps, true );
+        dt_theme_enqueue_script( 'modular-list-bulk-js', 'dt-assets/js/modular-list-bulk.js', array_merge( $list_deps, array( 'modular-list-js' ) ), true );
+        dt_theme_enqueue_script( 'modular-list-exports-js', 'dt-assets/js/modular-list-exports.js', array_merge( $list_deps, array( 'modular-list-js' ) ), true );
         wp_localize_script( 'modular-list-js', 'list_settings', array(
             'post_type' => $post_type,
             'post_type_settings' => $post_settings,
