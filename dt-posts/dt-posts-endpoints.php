@@ -527,6 +527,54 @@ class Disciple_Tools_Posts_Endpoints {
             ]
         );
 
+        //Storage Delete Single File
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/storage_delete_single', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'storage_delete_single' ],
+                'args'     => [
+                    'post_type' => $arg_schemas['post_type'],
+                    'id' => $arg_schemas['id']
+                ],
+                'permission_callback' => function ( WP_REST_Request $request ) {
+                    $params = $request->get_params();
+                    return DT_Posts::can_update( sanitize_text_field( wp_unslash( $params['post_type'] ) ), sanitize_text_field( wp_unslash( $params['id'] ) ) );
+                }
+            ]
+        );
+
+        //Storage Rename Single File
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/storage_rename_single', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'storage_rename_single' ],
+                'args'     => [
+                    'post_type' => $arg_schemas['post_type'],
+                    'id' => $arg_schemas['id']
+                ],
+                'permission_callback' => function ( WP_REST_Request $request ) {
+                    $params = $request->get_params();
+                    return DT_Posts::can_update( sanitize_text_field( wp_unslash( $params['post_type'] ) ), sanitize_text_field( wp_unslash( $params['id'] ) ) );
+                }
+            ]
+        );
+
+        //Storage Download Single File
+        register_rest_route(
+            $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/storage_download', [
+                'methods'  => 'POST',
+                'callback' => [ $this, 'storage_download' ],
+                'args'     => [
+                    'post_type' => $arg_schemas['post_type'],
+                    'id' => $arg_schemas['id']
+                ],
+                'permission_callback' => function ( WP_REST_Request $request ) {
+                    $params = $request->get_params();
+                    return DT_Posts::can_view( sanitize_text_field( wp_unslash( $params['post_type'] ) ), sanitize_text_field( wp_unslash( $params['id'] ) ) );
+                }
+            ]
+        );
+
         //Storage Delete
         register_rest_route(
             $this->namespace, '/(?P<post_type>\w+)/(?P<id>\d+)/storage_delete', [
@@ -857,88 +905,617 @@ class Disciple_Tools_Posts_Endpoints {
             return new WP_Error( __METHOD__, 'DT_Storage_API Unavailable.' );
         }
 
-        $uploaded = false;
-        $uploaded_key = '';
-
         $post_type = $params['post_type'];
         $post_id = $params['id'];
         $meta_key = $params['meta_key'];
         $key_prefix = $params['key_prefix'] ?? '';
         $files = dt_recursive_sanitize_array( $_FILES['storage_upload_files'] ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
 
-        // Only process the first file within the uploaded array.
-        $uploaded_file = [
-            'name' => $files['name'][0],
-            'full_path' => $files['full_path'][0],
-            'type' => $files['type'][0],
-            'tmp_name' => $files['tmp_name'][0],
-            'error' => $files['error'][0],
-            'size' => $files['size'][0]
-        ];
-
         // Determine storage upload requester type.
         $upload_type = $params['upload_type'] ?? 'post';
+
+        // Check if this is a multi-file field (file_upload type)
+        $is_multi_file = isset( $params['is_multi_file'] ) && $params['is_multi_file'] === 'true';
+
+        // Validate storage_s3_url_duration for presigned URL expiration (e.g. '+10 years', '+24 hours')
+        $storage_s3_url_duration = isset( $params['storage_s3_url_duration'] ) ? sanitize_text_field( wp_unslash( $params['storage_s3_url_duration'] ) ) : '';
+        $url_params = [];
+        if ( !empty( $storage_s3_url_duration ) ) {
+            try {
+                new \DateTimeImmutable( $storage_s3_url_duration );
+                $url_params = [ 'duration' => $storage_s3_url_duration ];
+            } catch ( \Exception $e ) {
+                // Invalid duration string, fall back to default (+24 hours).
+                $url_params = [];
+            }
+        }
 
         // Process accordingly by requested upload type.
         $meta_key_value = '';
         switch ( $upload_type ) {
             case 'post':
-                // To avoid a buildup of stale object storage keys, reuse existing keys.
-                $meta_key_value = get_post_meta( $post_id, $meta_key, true );
+                // To avoid a buildup of stale object storage keys, reuse existing keys for single file.
+                // For multi-file, get existing array or initialize empty array.
+                if ( $is_multi_file ) {
+                    $meta_key_value = get_post_meta( $post_id, $meta_key, true );
+                    if ( !is_array( $meta_key_value ) ) {
+                        $meta_key_value = [];
+                    }
+                } else {
+                    $meta_key_value = get_post_meta( $post_id, $meta_key, true );
+                }
                 break;
         }
 
-        // Push an uploaded file to backend storage service.
-        $uploaded = DT_Storage_API::upload_file( $key_prefix, $uploaded_file, $meta_key_value );
+        // Process all uploaded files.
+        $uploaded_files = [];
+        $uploaded_keys = [];
+        $file_count = is_array( $files['name'] ) ? count( $files['name'] ) : 1;
 
-        // Handle WP_Error returns from DT_Storage_API::upload_file()
-        if ( is_wp_error( $uploaded ) ) {
-            return [
-                'uploaded' => false,
-                'uploaded_key' => '',
-                'uploaded_msg' => $uploaded->get_error_message()
+        for ( $i = 0; $i < $file_count; $i++ ) {
+            $uploaded_file = [
+                'name' => $files['name'][$i],
+                'full_path' => $files['full_path'][$i] ?? '',
+                'type' => $files['type'][$i],
+                'tmp_name' => $files['tmp_name'][$i],
+                'error' => $files['error'][$i],
+                'size' => $files['size'][$i]
             ];
-        }
 
-        // If successful, persist an uploaded object file key.
-        if ( $uploaded['uploaded'] === true ) {
-            if ( !empty( $uploaded['uploaded_key'] ) ) {
+            // For multi-file fields, don't reuse keys (always create new)
+            $existing_key = $is_multi_file ? '' : $meta_key_value;
+
+            // Push an uploaded file to backend storage service.
+            $uploaded = DT_Storage_API::upload_file( $key_prefix, $uploaded_file, $existing_key );
+
+            // Handle WP_Error returns from DT_Storage_API::upload_file()
+            if ( is_wp_error( $uploaded ) ) {
+                // Continue processing other files even if one fails
+                $uploaded_files[] = [
+                    'uploaded' => false,
+                    'uploaded_key' => '',
+                    'name' => $uploaded_file['name'],
+                    'uploaded_msg' => $uploaded->get_error_message()
+                ];
+                continue;
+            }
+
+            // If successful, collect uploaded file info.
+            if ( $uploaded['uploaded'] === true && !empty( $uploaded['uploaded_key'] ) ) {
                 $uploaded_key = $uploaded['uploaded_key'];
+                $uploaded_keys[] = $uploaded_key;
 
-                switch ( $upload_type ) {
-                    case 'post':
-                        update_post_meta( $post_id, $meta_key, $uploaded_key );
-                        break;
+                // Build file object with metadata
+                $file_object = [
+                    'key' => $uploaded_key,
+                    'name' => $uploaded_file['name'],
+                    'type' => $uploaded_file['type'],
+                    'size' => $uploaded_file['size'],
+                    'uploaded_at' => current_time( 'mysql' ),
+                ];
 
-                    case 'image_comment':
-                        $comment = apply_filters( 'dt_upload_image_comment', ' ', $uploaded_file );
-                        // Proceed with associated comment creation.
-                        DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'comment', [
-                            'comment_meta' => [
-                                $meta_key => $uploaded_key
-                            ]
-                        ], true, true );
-                        break;
-                    case 'audio_comment':
-                        $uploaded_file['audio_language'] = $params['audio_language'] ?? 'en';
-
-                        $comment = apply_filters( 'dt_upload_audio_comment', ' ', $uploaded_file );
-                        // Proceed with associated comment creation.
-                        DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'comment', [
-                            'comment_meta' => [
-                                $meta_key => $uploaded_key
-                            ]
-                        ], true, true );
-                        break;
+                // Add file URL
+                if ( DT_Storage_API::is_enabled() ) {
+                    $file_object['url'] = DT_Storage_API::get_file_url( $uploaded_key, $url_params );
                 }
+
+                // Add thumbnail keys and URLs if available (for images)
+                if ( !empty( $uploaded['uploaded_thumbnail_key'] ) ) {
+                    $file_object['thumbnail_key'] = $uploaded['uploaded_thumbnail_key'];
+                    if ( DT_Storage_API::is_enabled() ) {
+                        $file_object['thumbnail_url'] = DT_Storage_API::get_file_url( $uploaded['uploaded_thumbnail_key'], $url_params );
+                    }
+                }
+                if ( !empty( $uploaded['uploaded_large_thumbnail_key'] ) ) {
+                    $file_object['large_thumbnail_key'] = $uploaded['uploaded_large_thumbnail_key'];
+                    if ( DT_Storage_API::is_enabled() ) {
+                        $file_object['large_thumbnail_url'] = DT_Storage_API::get_file_url( $uploaded['uploaded_large_thumbnail_key'], $url_params );
+                    }
+                }
+
+                $uploaded_files[] = [
+                    'uploaded' => true,
+                    'uploaded_key' => $uploaded_key,
+                    'file' => $file_object,
+                    'uploaded_msg' => null
+                ];
             }
         }
 
-        return [
-            'uploaded' => $uploaded['uploaded'],
-            'uploaded_key' => $uploaded_key,
-            'uploaded_msg' => $uploaded['uploaded_msg'] ?? null
-        ];
+        // If successful, persist uploaded file keys.
+        if ( !empty( $uploaded_keys ) ) {
+            switch ( $upload_type ) {
+                case 'post':
+                    // Store old value for activity logging
+                    $old_meta_value = $meta_key_value;
+
+                    if ( $is_multi_file ) {
+                        // Append new files to existing array
+                        $existing_files = is_array( $meta_key_value ) ? $meta_key_value : [];
+                        foreach ( $uploaded_files as $uploaded_file_data ) {
+                            if ( $uploaded_file_data['uploaded'] && isset( $uploaded_file_data['file'] ) ) {
+                                $existing_files[] = $uploaded_file_data['file'];
+                            }
+                        }
+                        update_post_meta( $post_id, $meta_key, $existing_files );
+
+                        // Log activity for file upload
+                        $post_settings = DT_Posts::get_post_settings( $post_type );
+                        $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
+                        $uploaded_file_names = [];
+                        foreach ( $uploaded_files as $uploaded_file_data ) {
+                            if ( $uploaded_file_data['uploaded'] && isset( $uploaded_file_data['file']['name'] ) ) {
+                                $uploaded_file_names[] = $uploaded_file_data['file']['name'];
+                            }
+                        }
+                        $file_count = count( $uploaded_file_names );
+                        if ( $file_count === 1 ) {
+                            $object_note = sprintf( _x( 'Uploaded file: %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $uploaded_file_names[0], $field_name );
+                        } else {
+                            $file_list = implode( ', ', array_slice( $uploaded_file_names, 0, 3 ) );
+                            if ( $file_count > 3 ) {
+                                $file_list .= sprintf( _x( ' and %d more', 'file_upload activity', 'disciple_tools' ), $file_count - 3 );
+                            }
+                            $object_note = sprintf( _x( 'Uploaded %1$d files: %2$s to %3$s', 'file_upload activity', 'disciple_tools' ), $file_count, $file_list, $field_name );
+                        }
+
+                        dt_activity_insert( [
+                            'action'            => 'field_update',
+                            'object_type'       => $post_type,
+                            'object_id'         => $post_id,
+                            'object_name'       => get_the_title( $post_id ),
+                            'meta_key'          => $meta_key,
+                            'meta_value'        => maybe_serialize( $existing_files ),
+                            'old_value'         => maybe_serialize( $old_meta_value ),
+                            'field_type'        => 'file_upload',
+                            'object_note'       => $object_note,
+                        ] );
+                    } else {
+                        // Single file: use first uploaded key (backward compatibility)
+                        update_post_meta( $post_id, $meta_key, $uploaded_keys[0] );
+
+                        // Log activity for single file upload
+                        $post_settings = DT_Posts::get_post_settings( $post_type );
+                        $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
+                        $file_name = '';
+                        if ( !empty( $uploaded_files[0]['file']['name'] ) ) {
+                            $file_name = $uploaded_files[0]['file']['name'];
+                        } else {
+                            $file_name = basename( $uploaded_keys[0] );
+                        }
+                        $object_note = sprintf( _x( 'Uploaded file: %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+
+                        dt_activity_insert( [
+                            'action'            => 'field_update',
+                            'object_type'       => $post_type,
+                            'object_id'         => $post_id,
+                            'object_name'       => get_the_title( $post_id ),
+                            'meta_key'          => $meta_key,
+                            'meta_value'        => $uploaded_keys[0],
+                            'old_value'         => $old_meta_value ? $old_meta_value : '',
+                            'field_type'        => 'file_upload',
+                            'object_note'       => $object_note,
+                        ] );
+                    }
+                    break;
+
+                case 'image_comment':
+                    $comment = apply_filters( 'dt_upload_image_comment', ' ', $uploaded_file );
+                    // Proceed with associated comment creation (only first file for comments).
+                    DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'comment', [
+                        'comment_meta' => [
+                            $meta_key => $uploaded_keys[0]
+                        ]
+                    ], true, true );
+                    break;
+                case 'audio_comment':
+                    $uploaded_file['audio_language'] = $params['audio_language'] ?? 'en';
+
+                    $comment = apply_filters( 'dt_upload_audio_comment', ' ', $uploaded_file );
+                    // Proceed with associated comment creation (only first file for comments).
+                    DT_Posts::add_post_comment( $post_type, $post_id, $comment, 'comment', [
+                        'comment_meta' => [
+                            $meta_key => $uploaded_keys[0]
+                        ]
+                    ], true, true );
+                    break;
+            }
+        }
+
+        // Return results
+        if ( $is_multi_file ) {
+            return [
+                'uploaded' => !empty( $uploaded_keys ),
+                'uploaded_keys' => $uploaded_keys,
+                'uploaded_files' => $uploaded_files,
+                'uploaded_msg' => null
+            ];
+        } else {
+            // Backward compatibility: return single file format
+            $first_result = !empty( $uploaded_files ) ? $uploaded_files[0] : [
+                'uploaded' => false,
+                'uploaded_key' => '',
+                'uploaded_msg' => null
+            ];
+            return [
+                'uploaded' => $first_result['uploaded'] ?? false,
+                'uploaded_key' => $first_result['uploaded_key'] ?? '',
+                'uploaded_msg' => $first_result['uploaded_msg'] ?? null
+            ];
+        }
+    }
+
+    public function storage_delete_single( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( !isset( $params['post_type'], $params['id'], $params['meta_key'], $params['file_key'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
+        }
+
+        if ( !( method_exists( 'DT_Storage_API', 'delete_file' ) && DT_Storage_API::is_enabled() ) ) {
+            return new WP_Error( __METHOD__, 'DT_Storage_API Delete Function Unavailable.' );
+        }
+
+        $post_type = $params['post_type'];
+        $post_id = $params['id'];
+        $meta_key = $params['meta_key'];
+        $file_key_to_delete = sanitize_text_field( wp_unslash( $params['file_key'] ) );
+
+        // Fetch existing meta key value (should be an array for multi-file fields).
+        $meta_key_value = get_post_meta( $post_id, $meta_key, true );
+
+        if ( empty( $meta_key_value ) ) {
+            return [
+                'deleted' => false,
+                'deleted_key' => '',
+                'error' => 'No files found for this field.'
+            ];
+        }
+
+        // Handle array of files (multi-file field).
+        if ( is_array( $meta_key_value ) ) {
+            $file_found = false;
+            $updated_files = [];
+            $deleted_file_name = '';
+
+            foreach ( $meta_key_value as $file_object ) {
+                // Handle both array format (with 'key') and string format (backward compatibility).
+                $file_key = is_array( $file_object ) && isset( $file_object['key'] )
+                    ? $file_object['key']
+                    : ( is_string( $file_object ) ? $file_object : '' );
+
+                if ( $file_key === $file_key_to_delete ) {
+                    $file_found = true;
+                    // Extract file name before deletion
+                    if ( is_array( $file_object ) && isset( $file_object['name'] ) ) {
+                        $deleted_file_name = $file_object['name'];
+                    } else {
+                        $deleted_file_name = basename( $file_key );
+                    }
+                    // Delete file from storage.
+                    $result = DT_Storage_API::delete_file( $file_key );
+                    if ( $result && isset( $result['file_deleted'] ) && $result['file_deleted'] ) {
+                        // File deleted successfully, don't add it back to array.
+                        continue;
+                    }
+                }
+
+                // Keep file in array.
+                $updated_files[] = $file_object;
+            }
+
+            if ( $file_found ) {
+                // Store old value for activity logging
+                $old_meta_value = $meta_key_value;
+
+                // Update post meta with remaining files.
+                if ( !empty( $updated_files ) ) {
+                    update_post_meta( $post_id, $meta_key, $updated_files );
+                    $new_meta_value = $updated_files;
+                } else {
+                    // No files left, delete meta key.
+                    delete_post_meta( $post_id, $meta_key );
+                    $new_meta_value = '';
+                }
+
+                // Log activity for file deletion
+                $post_settings = DT_Posts::get_post_settings( $post_type );
+                $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
+                $object_note = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $deleted_file_name, $field_name );
+
+                dt_activity_insert( [
+                    'action'            => 'field_update',
+                    'object_type'       => $post_type,
+                    'object_id'         => $post_id,
+                    'object_name'       => get_the_title( $post_id ),
+                    'meta_key'          => $meta_key,
+                    'meta_value'        => maybe_serialize( $new_meta_value ),
+                    'old_value'         => maybe_serialize( $old_meta_value ),
+                    'field_type'        => 'file_upload',
+                    'object_note'       => $object_note,
+                ] );
+
+                return [
+                    'deleted' => true,
+                    'deleted_key' => $file_key_to_delete
+                ];
+            } else {
+                return [
+                    'deleted' => false,
+                    'deleted_key' => '',
+                    'error' => 'File not found in field.'
+                ];
+            }
+        } else {
+            // Single file format (backward compatibility).
+            if ( $meta_key_value === $file_key_to_delete ) {
+                $result = DT_Storage_API::delete_file( $file_key_to_delete );
+                $deleted = $result['file_deleted'] ?? false;
+
+                if ( $deleted ) {
+                    // Store old value for activity logging
+                    $old_meta_value = $meta_key_value;
+                    delete_post_meta( $post_id, $meta_key );
+
+                    // Log activity for file deletion
+                    $post_settings = DT_Posts::get_post_settings( $post_type );
+                    $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
+                    $file_name = basename( $file_key_to_delete );
+                    $object_note = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+
+                    dt_activity_insert( [
+                        'action'            => 'field_update',
+                        'object_type'       => $post_type,
+                        'object_id'         => $post_id,
+                        'object_name'       => get_the_title( $post_id ),
+                        'meta_key'          => $meta_key,
+                        'meta_value'        => '',
+                        'old_value'         => $old_meta_value,
+                        'field_type'        => 'file_upload',
+                        'object_note'       => $object_note,
+                    ] );
+                }
+
+                return [
+                    'deleted' => $deleted,
+                    'deleted_key' => $file_key_to_delete
+                ];
+            } else {
+                return [
+                    'deleted' => false,
+                    'deleted_key' => '',
+                    'error' => 'File key does not match.'
+                ];
+            }
+        }
+    }
+
+    public function storage_rename_single( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( !isset( $params['post_type'], $params['id'], $params['meta_key'], $params['file_key'], $params['new_name'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
+        }
+
+        $post_type = $params['post_type'];
+        $post_id = $params['id'];
+        $meta_key = sanitize_text_field( wp_unslash( $params['meta_key'] ) );
+        $file_key_to_rename = sanitize_text_field( wp_unslash( $params['file_key'] ) );
+        $new_name = trim( sanitize_file_name( wp_unslash( $params['new_name'] ) ) );
+
+        if ( empty( $new_name ) ) {
+            return [
+                'renamed' => false,
+                'error' => 'File name cannot be empty.',
+            ];
+        }
+
+        $meta_key_value = get_post_meta( $post_id, $meta_key, true );
+
+        if ( empty( $meta_key_value ) ) {
+            return [
+                'renamed' => false,
+                'error' => 'No files found for this field.',
+            ];
+        }
+
+        if ( is_array( $meta_key_value ) ) {
+            $file_found = false;
+            $updated_files = [];
+            $old_file_name = '';
+
+            foreach ( $meta_key_value as $file_object ) {
+                $file_key = is_array( $file_object ) && isset( $file_object['key'] )
+                    ? $file_object['key']
+                    : ( is_string( $file_object ) ? $file_object : '' );
+
+                if ( $file_key === $file_key_to_rename ) {
+                    $file_found = true;
+                    // Extract old file name before renaming
+                    if ( is_array( $file_object ) && isset( $file_object['name'] ) ) {
+                        $old_file_name = $file_object['name'];
+                    } else {
+                        $old_file_name = basename( $file_key );
+                    }
+
+                    if ( is_array( $file_object ) ) {
+                        $file_object['name'] = $new_name;
+                        $updated_files[] = $file_object;
+                    } else {
+                        $updated_files[] = [
+                            'key' => $file_key,
+                            'name' => $new_name,
+                        ];
+                    }
+                } else {
+                    $updated_files[] = $file_object;
+                }
+            }
+
+            if ( $file_found ) {
+                // Store old value for activity logging
+                $old_meta_value = $meta_key_value;
+                update_post_meta( $post_id, $meta_key, $updated_files );
+
+                // Log activity for file rename
+                $post_settings = DT_Posts::get_post_settings( $post_type );
+                $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
+                $object_note = sprintf( _x( 'Renamed file from %1$s to %2$s in %3$s', 'file_upload activity', 'disciple_tools' ), $old_file_name, $new_name, $field_name );
+
+                dt_activity_insert( [
+                    'action'            => 'field_update',
+                    'object_type'       => $post_type,
+                    'object_id'         => $post_id,
+                    'object_name'       => get_the_title( $post_id ),
+                    'meta_key'          => $meta_key,
+                    'meta_value'        => maybe_serialize( $updated_files ),
+                    'old_value'         => maybe_serialize( $old_meta_value ),
+                    'field_type'        => 'file_upload',
+                    'object_note'       => $object_note,
+                ] );
+
+                return [
+                    'renamed' => true,
+                    'file_key' => $file_key_to_rename,
+                    'new_name' => $new_name,
+                ];
+            } else {
+                return [
+                    'renamed' => false,
+                    'error' => 'File not found in field.',
+                ];
+            }
+        } else {
+            return [
+                'renamed' => false,
+                'error' => 'Invalid file data format.',
+            ];
+        }
+    }
+
+    public function storage_download( WP_REST_Request $request ) {
+        $params = $request->get_params();
+        if ( !isset( $params['post_type'], $params['id'], $params['meta_key'], $params['file_key'] ) ) {
+            return new WP_Error( __METHOD__, 'Missing parameters.' );
+        }
+
+        if ( !( method_exists( 'DT_Storage_API', 'get_file_url' ) && DT_Storage_API::is_enabled() ) ) {
+            return new WP_Error( __METHOD__, 'DT_Storage_API Download Function Unavailable.' );
+        }
+
+        $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
+        $post_id = sanitize_text_field( wp_unslash( $params['id'] ) );
+        $meta_key = sanitize_text_field( wp_unslash( $params['meta_key'] ) );
+        $file_key = sanitize_text_field( wp_unslash( $params['file_key'] ) );
+
+        // Verify file exists in post meta and extract file info
+        $meta_key_value = get_post_meta( $post_id, $meta_key, true );
+        $file_found = false;
+        $file_name = '';
+        $file_type = '';
+
+        if ( is_array( $meta_key_value ) ) {
+            foreach ( $meta_key_value as $file_object ) {
+                $file_key_from_meta = is_array( $file_object ) && isset( $file_object['key'] )
+                    ? $file_object['key']
+                    : ( is_string( $file_object ) ? $file_object : '' );
+
+                if ( $file_key_from_meta === $file_key ) {
+                    $file_found = true;
+                    $file_name = is_array( $file_object ) && isset( $file_object['name'] )
+                        ? $file_object['name']
+                        : basename( $file_key );
+
+                    // Extract type from metadata (priority 1 for content-type)
+                    $file_type = is_array( $file_object ) && isset( $file_object['type'] )
+                        ? $file_object['type']
+                        : '';
+                    break;
+                }
+            }
+        } elseif ( $meta_key_value === $file_key ) {
+            $file_found = true;
+            $file_name = basename( $file_key );
+            $file_type = '';
+        }
+
+        if ( !$file_found ) {
+            return new WP_Error( __METHOD__, 'File not found in post meta.' );
+        }
+
+        // Generate presigned URL
+        $presigned_url = DT_Storage_API::get_file_url( $file_key );
+
+        if ( empty( $presigned_url ) ) {
+            return new WP_Error( __METHOD__, 'Failed to generate download URL.' );
+        }
+
+        // Fetch file from S3 (server-side, no CORS)
+        // Note: Do not use 'stream' => true as it tries to use URL as filename, causing "File name too long" errors
+        $response = wp_remote_get( $presigned_url, [
+            'timeout' => 300, // 5 minutes for large files
+            'redirection' => 5,
+        ] );
+
+        if ( is_wp_error( $response ) ) {
+            return new WP_Error( __METHOD__, 'Failed to fetch file from storage: ' . $response->get_error_message() );
+        }
+
+        $response_code = wp_remote_retrieve_response_code( $response );
+        if ( $response_code !== 200 ) {
+            return new WP_Error( __METHOD__, 'Failed to fetch file from storage. Response code: ' . $response_code );
+        }
+
+        // Get file content
+        $file_content = wp_remote_retrieve_body( $response );
+
+        // Determine content type with priority:
+        // 1. From metadata (file_type variable)
+        // 2. From S3 response header
+        // 3. From file extension (fallback)
+        $content_type = 'application/octet-stream'; // Default fallback
+
+        if ( !empty( $file_type ) ) {
+            // Priority 1: Use type from metadata database
+            $content_type = $file_type;
+        } else {
+            // Priority 2: Try S3 response header
+            $content_type = wp_remote_retrieve_header( $response, 'content-type' );
+
+            if ( empty( $content_type ) ) {
+                // Priority 3: Extension-based detection
+                $file_ext = strtolower( pathinfo( $file_name, PATHINFO_EXTENSION ) );
+                $mime_types = [
+                    'pdf' => 'application/pdf',
+                    'doc' => 'application/msword',
+                    'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'txt' => 'text/plain',
+                    'csv' => 'text/csv',
+                    'json' => 'application/json',
+                    'xml' => 'application/xml',
+                    'html' => 'text/html',
+                    'htm' => 'text/html',
+                    'jpg' => 'image/jpeg',
+                    'jpeg' => 'image/jpeg',
+                    'png' => 'image/png',
+                    'gif' => 'image/gif',
+                ];
+                $content_type = isset( $mime_types[ $file_ext ] )
+                    ? $mime_types[ $file_ext ]
+                    : 'application/octet-stream';
+            }
+        }
+
+        // Set headers for file download
+        header( 'Content-Type: ' . $content_type );
+        header( 'Content-Disposition: attachment; filename="' . esc_attr( $file_name ) . '"' );
+        header( 'Content-Length: ' . strlen( $file_content ) );
+        header( 'Cache-Control: no-cache, must-revalidate' );
+        header( 'Pragma: no-cache' );
+
+        // Output file content
+        echo $file_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+        // Exit to prevent REST API wrapper from interfering
+        exit;
     }
 
     public function storage_delete( WP_REST_Request $request ) {
@@ -951,9 +1528,6 @@ class Disciple_Tools_Posts_Endpoints {
             return new WP_Error( __METHOD__, 'DT_Storage_API Delete Function Unavailable.' );
         }
 
-        $deleted = false;
-        $deleted_key = '';
-
         $post_type = $params['post_type'];
         $post_id = $params['id'];
         $meta_key = $params['meta_key'];
@@ -961,18 +1535,110 @@ class Disciple_Tools_Posts_Endpoints {
         // Fetch existing meta key value.
         $meta_key_value = get_post_meta( $post_id, $meta_key, true );
 
-        if ( !empty( $meta_key_value ) ) {
+        if ( empty( $meta_key_value ) ) {
+            return [
+                'deleted' => false,
+                'deleted_key' => '',
+                'error' => 'No files found for this field.'
+            ];
+        }
+
+        // Handle array of files (multi-file field).
+        if ( is_array( $meta_key_value ) ) {
+            $deleted_keys = [];
+            $deleted_count = 0;
+            $old_meta_value = $meta_key_value;
+
+            foreach ( $meta_key_value as $file_object ) {
+                // Handle both array format (with 'key') and string format.
+                $file_key = is_array( $file_object ) && isset( $file_object['key'] )
+                    ? $file_object['key']
+                    : ( is_string( $file_object ) ? $file_object : '' );
+
+                if ( !empty( $file_key ) ) {
+                    $result = DT_Storage_API::delete_file( $file_key );
+                    if ( $result && isset( $result['file_deleted'] ) && $result['file_deleted'] ) {
+                        $deleted_keys[] = $file_key;
+                        $deleted_count++;
+                    }
+                }
+            }
+
+            // Delete corresponding meta data.
+            delete_post_meta( $post_id, $meta_key );
+
+            // Log activity for deleting all files
+            if ( $deleted_count > 0 ) {
+                $post_settings = DT_Posts::get_post_settings( $post_type );
+                $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
+                if ( $deleted_count === 1 ) {
+                    $file_name = '';
+                    foreach ( $meta_key_value as $file_object ) {
+                        if ( is_array( $file_object ) && isset( $file_object['name'] ) ) {
+                            $file_name = $file_object['name'];
+                            break;
+                        }
+                    }
+                    if ( empty( $file_name ) && !empty( $deleted_keys[0] ) ) {
+                        $file_name = basename( $deleted_keys[0] );
+                    }
+                    $object_note = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+                } else {
+                    $object_note = sprintf( _x( 'Deleted all %1$d files from %2$s', 'file_upload activity', 'disciple_tools' ), $deleted_count, $field_name );
+                }
+
+                dt_activity_insert( [
+                    'action'            => 'field_update',
+                    'object_type'       => $post_type,
+                    'object_id'         => $post_id,
+                    'object_name'       => get_the_title( $post_id ),
+                    'meta_key'          => $meta_key,
+                    'meta_value'        => '',
+                    'old_value'         => maybe_serialize( $old_meta_value ),
+                    'field_type'        => 'file_upload',
+                    'object_note'       => $object_note,
+                ] );
+            }
+
+            return [
+                'deleted' => $deleted_count > 0,
+                'deleted_count' => $deleted_count,
+                'deleted_keys' => $deleted_keys
+            ];
+        } else {
+            // Single file format (backward compatibility).
+            $old_meta_value = $meta_key_value;
             $result = DT_Storage_API::delete_file( $meta_key_value );
             $deleted = $result['file_deleted'] ?? false;
             $deleted_key = $result['file_key'] ?? '';
+
+            // Finally, delete corresponding meta data.
+            delete_post_meta( $post_id, $meta_key );
+
+            // Log activity for file deletion
+            if ( $deleted ) {
+                $post_settings = DT_Posts::get_post_settings( $post_type );
+                $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
+                $file_name = basename( $old_meta_value );
+                $object_note = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+
+                dt_activity_insert( [
+                    'action'            => 'field_update',
+                    'object_type'       => $post_type,
+                    'object_id'         => $post_id,
+                    'object_name'       => get_the_title( $post_id ),
+                    'meta_key'          => $meta_key,
+                    'meta_value'        => '',
+                    'old_value'         => $old_meta_value,
+                    'field_type'        => 'file_upload',
+                    'object_note'       => $object_note,
+                ] );
+            }
+
+            return [
+                'deleted' => $deleted,
+                'deleted_key' => $deleted_key
+            ];
         }
-
-        // Finally, delete corresponding meta data.
-        delete_post_meta( $post_id, $meta_key );
-
-        return [
-            'deleted' => $deleted,
-            'deleted_key' => $deleted_key
-        ];
     }
 }

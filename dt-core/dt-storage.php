@@ -106,16 +106,17 @@ class DT_Storage_API {
         return $url;
     }
 
-    public static function get_file_url( string $key ): string {
+    public static function get_file_url( string $key, array $params = [] ): string {
         [ $client, $bucket ] = self::build_client_and_config();
         if ( !$client ) {
             return '';
         }
+        $duration = $params['duration'] ?? '+24 hours';
         try {
             $input_class = '\\AsyncAws\\S3\\Input\\GetObjectRequest';
             if ( class_exists( $input_class ) ) {
                 $input = new $input_class( [ 'Bucket' => $bucket, 'Key' => $key ] );
-                $presigned = $client->presign( $input, new \DateTimeImmutable( '+24 hours' ) );
+                $presigned = $client->presign( $input, new \DateTimeImmutable( $duration ) );
                 return (string) $presigned;
             }
             return '';
@@ -124,12 +125,12 @@ class DT_Storage_API {
         }
     }
 
-    public static function get_thumbnail_url( string $key ): string {
-        return self::get_file_url( self::generate_thumbnail_key_name( $key ) );
+    public static function get_thumbnail_url( string $key, array $params = [] ): string {
+        return self::get_file_url( self::generate_thumbnail_key_name( $key ), $params );
     }
 
-    public static function get_large_thumbnail_url( string $key ): string {
-        return self::get_file_url( self::generate_large_thumbnail_key_name( $key ) );
+    public static function get_large_thumbnail_url( string $key, array $params = [] ): string {
+        return self::get_file_url( self::generate_large_thumbnail_key_name( $key ), $params );
     }
 
     public static function upload_file( string $key_prefix = '', array $upload = [], string $existing_key = '', array $args = [] ){
