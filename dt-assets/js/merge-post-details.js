@@ -122,41 +122,47 @@ jQuery(function ($) {
           init_fields(primary_post['record'], main_primary_fields_div, true);
           init_fields(null, main_updated_fields_div, false);
 
-          // Adjust & trigger field selections to default states; which should set updating fields accordingly
-          main_primary_fields_div
-            .find('.field-select')
-            .each(function (idx, input) {
-              let post_field_id = $(input).data('merge_update_field_id');
+          // Set all primary fields as baseline (always selected, even if empty)
+          // This ensures the Updated column reflects primary values and visually indicates primary is the baseline
+          // Use setTimeout to ensure all field initialization is complete before triggering change events
+          setTimeout(function () {
+            main_primary_fields_div
+              .find('.field-select')
+              .each(function (idx, input) {
+                let $input = $(input);
+                let input_type = $input.attr('type');
+                let post_field_id = $input.data('merge_update_field_id');
 
-              if (
-                primary_post['record'][post_field_id] &&
-                can_select_field($(input).parent().parent())
-              ) {
-                $(input).prop('checked', true);
-                $(input).trigger('change');
-              } else {
-                // Otherwise, attempt to default to valid corresponding archiving field
-                if ($(input).attr('type') === 'radio') {
-                  // Attempt to identify corresponding archive radio input
-                  let archive_input = main_archiving_fields_div.find(
-                    'input[data-merge_field_id="' +
-                      archiving_post['record']['ID'] +
-                      '_' +
-                      post_field_id +
-                      '"]',
+                // Always check primary inputs to show they're the baseline
+                $input.prop('checked', true);
+
+                // Trigger change to populate Updated column with primary values (even if empty)
+                $input.trigger('change');
+
+                // For radios, ensure corresponding archiving radio is unchecked
+                if (input_type === 'radio') {
+                  let archiving_radio = main_archiving_fields_div.find(
+                    'input[data-merge_update_field_id="' + post_field_id + '"]',
                   );
-                  if (
-                    archiving_post['record'][post_field_id] &&
-                    archive_input &&
-                    can_select_field($(archive_input).parent().parent())
-                  ) {
-                    $(archive_input).prop('checked', true);
-                    $(archive_input).trigger('change');
+                  if (archiving_radio.length > 0) {
+                    archiving_radio.prop('checked', false);
                   }
                 }
-              }
+              });
+          }, 0);
+
+          // Ensure all archiving checkboxes are unchecked initially
+          // Archiving values are opt-in only - users must explicitly select them
+          main_archiving_fields_div
+            .find('.field-select[type="checkbox"]')
+            .each(function (idx, input) {
+              $(input).prop('checked', false);
             });
 
+          // COMMENTED OUT: Previous archiving auto-select logic
+          // This was removed to ensure primary fields are always the baseline.
+          // If auto-merging archiving values is needed in the future, uncomment this block.
+          /*
           // Select any archiving fields suitable for auto merging
           main_archiving_fields_div
             .find('.field-select')
@@ -172,6 +178,7 @@ jQuery(function ($) {
                 }
               }
             });
+          */
 
           // Display refreshed post fields
           main_archiving_fields_div.fadeIn('fast', function () {
@@ -490,8 +497,17 @@ jQuery(function ($) {
 
       case 'date':
         if (is_selected) {
-          mergedField.removeAttr('timestamp');
+          // Copy timestamp attribute if it exists on source field
+          const sourceTimestamp = sourceField.attr('timestamp');
+          if (sourceTimestamp) {
+            mergedField.attr('timestamp', sourceTimestamp);
+          } else {
+            mergedField.removeAttr('timestamp');
+          }
+          // Copy the date value
           mergedField.val(sourceField.val());
+          // Trigger change event on the merged field to ensure date picker updates
+          mergedField.trigger('change');
         }
         break;
 
