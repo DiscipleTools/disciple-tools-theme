@@ -1028,10 +1028,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                         self::admin_notice( __( 'This option already exists', 'disciple_tools' ), 'error' );
                     }
                 }
-                // Support seeker path option triggers
-                if ( $field_key === 'seeker_path' ) {
-                    dt_seeker_path_triggers_update( $field_options );
-                }
             }
             $field_customizations[$post_type][$field_key] = $custom_field;
             update_option( 'dt_field_customizations', $field_customizations );

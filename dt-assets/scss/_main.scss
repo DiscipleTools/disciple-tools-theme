@@ -1315,7 +1315,7 @@ div.help-more h5 {
 
 #generation_map ul {
     list-style: none;
-    background: url("../../../dt-assets/images/vline.png") repeat-y;
+    background: url("../images/vline.png") repeat-y;
     margin: 0;
     padding: 0;
     margin-left: 50px;
@@ -1329,13 +1329,13 @@ div.help-more h5 {
     margin: 0;
     padding: 0 12px;
     line-height: 20px;
-    background: url("../../../dt-assets/images/node.png") no-repeat;
+    background: url("../images/node.png") no-repeat;
     color: #369;
     font-weight: bold;
 }
 
 #generation_map ul li.last {
-    background: #fff url("../../../dt-assets/images/lastnode.png") no-repeat;
+    background: #fff url("../images/lastnode.png") no-repeat;
 }
 
 #generation_map .first-section {

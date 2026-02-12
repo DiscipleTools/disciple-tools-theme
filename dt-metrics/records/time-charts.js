@@ -1049,7 +1049,7 @@ function getData() {
         default: {
           window.dtMetricsProject.cumulative_offset =
             response.cumulative_offset !== undefined
-              ? response.cumulative_offset
+              ? parseInt(response.cumulative_offset)
               : 0;
           window.dtMetricsProject.data = isAllTime
             ? formatYearData(data)
