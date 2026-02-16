@@ -6,6 +6,13 @@
   const MAX_CANVAS_HEIGHT = 320;
   const MIN_CANVAS_HEIGHT = 220;
   const LAYOUT_STORAGE_KEY = 'group_genmap_layout';
+
+  // Node dimensions constants
+  const NODE_WIDTH = 72; // Increased from 60px to prevent text clipping
+  const NODE_HEIGHT = 30;
+  const NODE_HALF_WIDTH = NODE_WIDTH / 2; // 36px
+  const NODE_HALF_HEIGHT = NODE_HEIGHT / 2; // 15px
+  const NODE_FONT_SIZE = 9; // Reduced from 10px for better fit
   const DEFAULT_PAYLOAD = {
     p2p_type: 'groups_to_groups',
     p2p_direction: 'to',
@@ -318,6 +325,67 @@
   }
 
   /**
+   * Calculate relative luminance of a color (for WCAG contrast)
+   * @param {string} hexColor - Color in hex format (e.g., '#4CAF50')
+   * @returns {number} - Relative luminance value (0-1)
+   */
+  function getRelativeLuminance(hexColor) {
+    // Remove # if present
+    const hex = hexColor.replace('#', '');
+
+    // Convert to RGB
+    const r = parseInt(hex.substring(0, 2), 16) / 255;
+    const g = parseInt(hex.substring(2, 4), 16) / 255;
+    const b = parseInt(hex.substring(4, 6), 16) / 255;
+
+    // Apply gamma correction
+    const rsRGB = r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
+    const gsRGB = g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4);
+    const bsRGB = b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4);
+
+    // Calculate relative luminance
+    return 0.2126 * rsRGB + 0.7152 * gsRGB + 0.0722 * bsRGB;
+  }
+
+  /**
+   * Determine appropriate text color based on background color
+   * Uses WCAG contrast guidelines - returns white for dark backgrounds, dark for light backgrounds
+   * @param {string} backgroundColor - Background color in hex format (e.g., '#4CAF50')
+   * @returns {string} - Text color ('#ffffff' for dark backgrounds, '#333333' for light backgrounds)
+   */
+  function getTextColorForBackground(backgroundColor) {
+    if (!backgroundColor) {
+      return '#333333'; // Default dark text
+    }
+
+    // Normalize color format - handle both with and without #
+    let hexColor = String(backgroundColor).trim();
+    if (!hexColor.startsWith('#')) {
+      hexColor = '#' + hexColor;
+    }
+
+    // Validate hex color format (should be #RRGGBB)
+    if (!/^#[0-9A-Fa-f]{6}$/.test(hexColor)) {
+      console.warn(
+        'Invalid color format:',
+        backgroundColor,
+        'using default dark text',
+      );
+      return '#333333';
+    }
+
+    // Calculate relative luminance
+    const luminance = getRelativeLuminance(hexColor);
+
+    // Use white text for dark backgrounds (luminance < 0.5), dark text for light backgrounds
+    // This ensures good contrast for green (#4CAF50), blue (#366184), and gray (#808080)
+    // Lower threshold to ensure white text on medium-dark colors
+    const textColor = luminance < 0.5 ? '#ffffff' : '#333333';
+
+    return textColor;
+  }
+
+  /**
    * Enhance node data with computed properties for D3 visualization
    * @param {Object} node - The node data from API
    * @param {number} generation - Current generation level (0 = root)
@@ -342,8 +410,8 @@
 
       // Visual properties
       nodeSize: {
-        width: 60,
-        height: 30,
+        width: NODE_WIDTH,
+        height: NODE_HEIGHT,
       },
 
       // Display properties
@@ -425,7 +493,7 @@
     root.each((node) => {
       // Ensure each node has the enhanced properties
       if (!node.data.nodeSize) {
-        node.data.nodeSize = { width: 60, height: 30 };
+        node.data.nodeSize = { width: NODE_WIDTH, height: NODE_HEIGHT };
       }
       if (!node.data.displayName) {
         node.data.displayName = ellipsizeName(node.data.name || '', 15);
@@ -876,20 +944,20 @@
         let bgX, bgY, iconX, iconY;
         if (graphOrientation === 'l2r') {
           // Horizontal mode: icon on bottom center
-          // Node is 30px tall (from y=-15 to y=+15), bottom edge at y=15
+          // Node is NODE_HEIGHT tall (from y=-NODE_HALF_HEIGHT to y=+NODE_HALF_HEIGHT), bottom edge at y=NODE_HALF_HEIGHT
           // Background is 20px tall, icon is 16px tall
-          // Position background to overlap node bottom border (extend below y=15)
+          // Position background to overlap node bottom border (extend below y=NODE_HALF_HEIGHT)
           // Then center icon on background
-          bgY = 8; // Background: top y=8, bottom y=28 (overlaps node bottom at y=15)
+          bgY = 8; // Background: top y=8, bottom y=28 (overlaps node bottom at y=NODE_HALF_HEIGHT)
           bgX = -10; // Background centered behind icon
           iconY = 9; // Icon center at y=9 (centered on background)
           iconX = -8; // Horizontally centered (slight left offset for better visual alignment)
         } else {
           // Vertical mode: icon on right side
-          bgX = 20; // Background centered behind icon (22 - 2 = 20)
+          bgX = NODE_HALF_WIDTH + 2; // Background centered behind icon (NODE_HALF_WIDTH + 2px margin)
           bgY = -10; // Background centered behind icon (-8 - 2 = -10)
-          iconX = 22; // Right side of 60px node (leaving 8px margin from right edge)
-          iconY = -8; // Vertically centered in 30px node
+          iconX = NODE_HALF_WIDTH + 4; // Right side of NODE_WIDTH node (leaving 4px margin from right edge)
+          iconY = -8; // Vertically centered in NODE_HEIGHT node
         }
 
         // Add background rectangle
@@ -967,10 +1035,10 @@
           iconX = -8;
         } else {
           // Vertical mode: icon on right side
-          bgX = 20;
-          bgY = -10;
-          iconX = 22;
-          iconY = -8;
+          bgX = NODE_HALF_WIDTH + 2; // Background centered behind icon
+          bgY = -10; // Background centered behind icon
+          iconX = NODE_HALF_WIDTH + 4; // Right side of NODE_WIDTH node (leaving 4px margin)
+          iconY = -8; // Vertically centered in NODE_HEIGHT node
         }
 
         bgRect.attr('x', bgX).attr('y', bgY);
@@ -1040,8 +1108,6 @@
 
     // Update links based on graph orientation
     const links = treeData.links();
-    const NODE_HALF_WIDTH = 30; // 60px / 2
-    const NODE_HALF_HEIGHT = 15; // 30px / 2
 
     // Create link generator connecting to node edges
     const linkPath = (link) => {
@@ -1050,7 +1116,7 @@
 
       if (graphOrientation === 'l2r') {
         // Horizontal layout: Nodes positioned with translate(d.x, d.y)
-        // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
+        // Node rectangle: NODE_WIDTH wide × NODE_HEIGHT tall, centered at (0,0) relative to node group
         // In SVG: node center is at (d.x, d.y)
         // Always connect: parent bottom center → child top center (consistent with tree hierarchy)
         sourceX = link.source.x; // Horizontal center of parent
@@ -1065,7 +1131,7 @@
         return pathData;
       } else {
         // Vertical layout: Nodes positioned with translate(d.y, d.x)
-        // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
+        // Node rectangle: NODE_WIDTH wide × NODE_HEIGHT tall, centered at (0,0) relative to node group
         // In SVG: node center is at (d.y, d.x) - coordinates are swapped!
         // Always connect: parent right center → child left center (consistent with tree hierarchy)
         // In SVG: x = d.y, y = d.x
@@ -1137,10 +1203,10 @@
     // Add rectangle for new nodes
     nodeEnter
       .append('rect')
-      .attr('width', 60)
-      .attr('height', 30)
-      .attr('x', -30)
-      .attr('y', -15)
+      .attr('width', NODE_WIDTH)
+      .attr('height', NODE_HEIGHT)
+      .attr('x', -NODE_HALF_WIDTH)
+      .attr('y', -NODE_HALF_HEIGHT)
       .attr('rx', 4)
       .attr('fill', (d) => {
         // Ensure statusColor is computed from status property (matching legacy flow)
@@ -1206,9 +1272,46 @@
       .attr('y', 0)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', '10px')
+      .attr('font-size', NODE_FONT_SIZE + 'px')
       .attr('font-weight', '500')
-      .attr('fill', '#333')
+      .style('fill', (d) => {
+        // Ensure statusColor is set before calculating text color
+        if (!d.data.statusColor && d.data.status) {
+          const colors = window.dtGroupGenmap?.statusField?.colors || {};
+          const archivedKey =
+            window.dtGroupGenmap?.statusField?.archived_key || '';
+          if (colors[d.data.status]) {
+            d.data.statusColor = colors[d.data.status];
+          } else if (archivedKey && d.data.status === archivedKey) {
+            d.data.statusColor = '#808080';
+          } else {
+            d.data.statusColor = getStatusColor(d.data.status);
+          }
+        } else if (!d.data.statusColor) {
+          d.data.statusColor = getStatusColor(null);
+        }
+        const textColor = getTextColorForBackground(d.data.statusColor);
+        // Use both attr and style to ensure it works, and set important flag
+        return textColor;
+      })
+      .attr('fill', (d) => {
+        // Also set as attribute as fallback
+        if (!d.data.statusColor && d.data.status) {
+          const colors = window.dtGroupGenmap?.statusField?.colors || {};
+          const archivedKey =
+            window.dtGroupGenmap?.statusField?.archived_key || '';
+          if (colors[d.data.status]) {
+            d.data.statusColor = colors[d.data.status];
+          } else if (archivedKey && d.data.status === archivedKey) {
+            d.data.statusColor = '#808080';
+          } else {
+            d.data.statusColor = getStatusColor(d.data.status);
+          }
+        } else if (!d.data.statusColor) {
+          d.data.statusColor = getStatusColor(null);
+        }
+        return getTextColorForBackground(d.data.statusColor);
+      })
       .attr('class', 'node-title')
       .text((d) => {
         const name = d.data.displayName || '';
@@ -1260,6 +1363,30 @@
         containerWidth,
         containerHeight,
       );
+
+      // Update text color for existing nodes
+      const textSelection = d3.select(this).select('.node-title');
+      if (!textSelection.empty()) {
+        // Ensure statusColor is set
+        if (!d.data.statusColor && d.data.status) {
+          const colors = window.dtGroupGenmap?.statusField?.colors || {};
+          const archivedKey =
+            window.dtGroupGenmap?.statusField?.archived_key || '';
+          if (colors[d.data.status]) {
+            d.data.statusColor = colors[d.data.status];
+          } else if (archivedKey && d.data.status === archivedKey) {
+            d.data.statusColor = '#808080';
+          } else {
+            d.data.statusColor = getStatusColor(d.data.status);
+          }
+        } else if (!d.data.statusColor) {
+          d.data.statusColor = getStatusColor(null);
+        }
+        // Update text color using both style() and attr() to override CSS
+        const textColor = getTextColorForBackground(d.data.statusColor);
+        textSelection.style('fill', textColor);
+        textSelection.attr('fill', textColor);
+      }
     });
 
     // Update link positions with transition
@@ -1578,14 +1705,15 @@
 
     // Add clipping path for text overflow protection (create once per SVG)
     const defs = svg.append('defs');
+    const clipPadding = 2; // 2px padding on each side
     defs
       .append('clipPath')
       .attr('id', 'node-text-clip')
       .append('rect')
-      .attr('x', -28) // Leave 2px padding on each side (60px width - 4px = 56px)
-      .attr('y', -13) // Leave 2px padding on top/bottom (30px height - 4px = 26px)
-      .attr('width', 56)
-      .attr('height', 26);
+      .attr('x', -(NODE_HALF_WIDTH - clipPadding)) // Leave 2px padding on each side
+      .attr('y', -(NODE_HALF_HEIGHT - clipPadding)) // Leave 2px padding on top/bottom
+      .attr('width', NODE_WIDTH - clipPadding * 2) // 72px - 4px = 68px
+      .attr('height', NODE_HEIGHT - clipPadding * 2); // 30px - 4px = 26px
 
     // Store references for later use (collapse/expand, popover, etc.)
     wrapper.data('d3Svg', svg);
@@ -1597,8 +1725,6 @@
 
     // Render links (edges) connecting to center of side facing parent
     const links = treeData.links();
-    const NODE_HALF_WIDTH = 30; // 60px / 2
-    const NODE_HALF_HEIGHT = 15; // 30px / 2
 
     // Create link generator connecting to node edges
     const linkPath = (link) => {
@@ -1607,7 +1733,7 @@
 
       if (graphOrientation === 'l2r') {
         // Horizontal layout: Nodes positioned with translate(d.x, d.y)
-        // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
+        // Node rectangle: NODE_WIDTH wide × NODE_HEIGHT tall, centered at (0,0) relative to node group
         // In SVG: node center is at (d.x, d.y)
         // Always connect: parent bottom center → child top center (consistent with tree hierarchy)
         sourceX = link.source.x; // Horizontal center of parent
@@ -1622,7 +1748,7 @@
         return pathData;
       } else {
         // Vertical layout: Nodes positioned with translate(d.y, d.x)
-        // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
+        // Node rectangle: NODE_WIDTH wide × NODE_HEIGHT tall, centered at (0,0) relative to node group
         // In SVG: node center is at (d.y, d.x) - coordinates are swapped!
         // Always connect: parent right center → child left center (consistent with tree hierarchy)
         // In SVG: x = d.y, y = d.x
@@ -1681,10 +1807,10 @@
     // Add node rectangle with status color
     nodeGroup
       .append('rect')
-      .attr('width', 60)
-      .attr('height', 30)
-      .attr('x', -30) // Center horizontally
-      .attr('y', -15) // Center vertically
+      .attr('width', NODE_WIDTH)
+      .attr('height', NODE_HEIGHT)
+      .attr('x', -NODE_HALF_WIDTH) // Center horizontally
+      .attr('y', -NODE_HALF_HEIGHT) // Center vertically
       .attr('rx', 4)
       .attr('fill', (d) => {
         // statusColor should already be set by sanitizeNode, but ensure it's computed if missing
@@ -1756,9 +1882,46 @@
       .attr('y', 0)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', '10px') // Slightly smaller to ensure fit
+      .attr('font-size', NODE_FONT_SIZE + 'px') // Reduced font size for better fit
       .attr('font-weight', '500')
-      .attr('fill', '#333')
+      .style('fill', (d) => {
+        // Ensure statusColor is set before calculating text color
+        if (!d.data.statusColor && d.data.status) {
+          const colors = window.dtGroupGenmap?.statusField?.colors || {};
+          const archivedKey =
+            window.dtGroupGenmap?.statusField?.archived_key || '';
+          if (colors[d.data.status]) {
+            d.data.statusColor = colors[d.data.status];
+          } else if (archivedKey && d.data.status === archivedKey) {
+            d.data.statusColor = '#808080';
+          } else {
+            d.data.statusColor = getStatusColor(d.data.status);
+          }
+        } else if (!d.data.statusColor) {
+          d.data.statusColor = getStatusColor(null);
+        }
+        const textColor = getTextColorForBackground(d.data.statusColor);
+        // Use both attr and style to ensure it works, and set important flag
+        return textColor;
+      })
+      .attr('fill', (d) => {
+        // Also set as attribute as fallback
+        if (!d.data.statusColor && d.data.status) {
+          const colors = window.dtGroupGenmap?.statusField?.colors || {};
+          const archivedKey =
+            window.dtGroupGenmap?.statusField?.archived_key || '';
+          if (colors[d.data.status]) {
+            d.data.statusColor = colors[d.data.status];
+          } else if (archivedKey && d.data.status === archivedKey) {
+            d.data.statusColor = '#808080';
+          } else {
+            d.data.statusColor = getStatusColor(d.data.status);
+          }
+        } else if (!d.data.statusColor) {
+          d.data.statusColor = getStatusColor(null);
+        }
+        return getTextColorForBackground(d.data.statusColor);
+      })
       .attr('class', 'node-title')
       .text((d) => {
         // Use displayName which is already ellipsized, but ensure it fits with padding
