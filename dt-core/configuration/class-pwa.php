@@ -172,23 +172,23 @@ class Disciple_Tools_PWA
 
         // Check if referrer is a dt-home page: apps/launcher/{magic_key}
         // Path segments should be: ['apps', 'launcher', '{magic_key}']
-        if ( count( $path_segments ) >= 3 
-            && $path_segments[0] === 'apps' 
-            && $path_segments[1] === 'launcher' 
+        if ( count( $path_segments ) >= 3
+            && $path_segments[0] === 'apps'
+            && $path_segments[1] === 'launcher'
             && ! empty( $path_segments[2] ) ) {
-            
+
             // Extract the magic key (third segment)
             $magic_key = sanitize_text_field( $path_segments[2] );
-            
+
             // Validate magic key format (should be alphanumeric, typically 32+ chars)
             if ( ! empty( $magic_key ) && strlen( $magic_key ) >= 16 ) {
                 // Build the dt-home URL path (base URL only, no additional path segments)
                 // This ensures the app always starts at the home screen, not a sub-page
                 $dt_home_path = '/apps/launcher/' . $magic_key;
-                
+
                 // Note: We intentionally don't preserve query strings or additional path segments
                 // to ensure consistent behavior when launching from home screen
-                
+
                 return $dt_home_path;
             }
         }
