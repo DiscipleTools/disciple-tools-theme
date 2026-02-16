@@ -1204,7 +1204,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 if ( $field_key === 'title' ) {
                     continue;
                 }
-                
+
                 // Skip hidden fields unless they have custom_display
                 if ( !empty( $field_setting['hidden'] ) && empty( $field_setting['custom_display'] ) ) {
                     continue;
@@ -1220,7 +1220,7 @@ class DT_Groups_Base extends DT_Module_Base {
                     }
                 }
             }
-            
+
             // Add title field settings separately for JavaScript to use when rendering title explicitly
             // We need title field settings available but not in the main fieldsToRender loop
             if ( isset( $field_settings['title'] ) ) {
