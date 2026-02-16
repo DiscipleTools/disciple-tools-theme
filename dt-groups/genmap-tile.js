@@ -627,14 +627,6 @@
       html += '</div>';
     }
 
-    // Generation
-    if (data.content) {
-      html += '<div class="popover-field">';
-      html += '<strong>Generation:</strong>';
-      html += `<span>${window.lodash.escape(data.content)}</span>`;
-      html += '</div>';
-    }
-
     // Actions
     html += '<div class="popover-actions">';
 
@@ -2182,19 +2174,117 @@
     }
 
     const modalStrings = window.dtGroupGenmap?.strings?.modal || {};
-    const listHtml = `
-      <input id="group_genmap_add_child_post_type" type="hidden" value="${window.lodash.escape(
+    const fieldSettings = window.dtGroupGenmap?.fieldSettings || {};
+    const fieldPrefix = 'group_genmap_add_child_';
+
+    // Build hidden inputs for post type and parent ID
+    let listHtml = `
+      <input id="${fieldPrefix}post_type" type="hidden" value="${window.lodash.escape(
         postType,
       )}" />
-      <input id="group_genmap_add_child_post_id" type="hidden" value="${window.lodash.escape(
+      <input id="${fieldPrefix}post_id" type="hidden" value="${window.lodash.escape(
         postId,
-      )}" />
-      <label>
-        ${window.lodash.escape(modalStrings.add_child_name_title || 'Name')}
-        <input id="group_genmap_add_child_name" type="text" />
-      </label>`;
+      )}" />`;
 
-    const buttonsHtml = `<button id="group_genmap_add_child_but" class="button" type="button">${window.lodash.escape(
+    // Create a copy of fieldSettings without title/_title/name to avoid duplication
+    // We only want to show title field, not name field
+    const fieldsToRender = {};
+    Object.keys(fieldSettings).forEach((key) => {
+      // Exclude title, _title, and name (title is rendered separately, name is redundant)
+      if (key !== 'title' && key !== '_title' && key !== 'name') {
+        fieldsToRender[key] = fieldSettings[key];
+      }
+    });
+
+    // Render fields using DT Web Components
+    // Always include title field first
+    // Check for _title (from PHP) or title (fallback)
+    const titleFieldSetting = fieldSettings._title ||
+      fieldSettings.title || {
+        name: modalStrings.add_child_name_title || 'Name',
+        type: 'text',
+      };
+
+    if (window.SHAREDFUNCTIONS && window.SHAREDFUNCTIONS.renderField) {
+      const titleFieldHtml = window.SHAREDFUNCTIONS.renderField(
+        'title',
+        titleFieldSetting,
+        fieldPrefix,
+      );
+      if (titleFieldHtml) {
+        listHtml += `<div class="form-field">${titleFieldHtml}</div>`;
+      } else {
+        // Fallback if renderField returns null
+        listHtml += `
+          <label>
+            ${window.lodash.escape(titleFieldSetting.name)}
+            <input id="${fieldPrefix}title" name="title" type="text" />
+          </label>`;
+      }
+    } else {
+      // Fallback if web components not available
+      listHtml += `
+        <label>
+          ${window.lodash.escape(titleFieldSetting.name)}
+          <input id="${fieldPrefix}title" name="title" type="text" />
+        </label>`;
+    }
+
+    // Render other fields that have in_create_form => true
+    Object.keys(fieldsToRender).forEach((fieldKey) => {
+      // Double-check: skip title and name fields if they somehow still exist
+      if (
+        fieldKey === 'title' ||
+        fieldKey === 'name' ||
+        fieldKey === '_title'
+      ) {
+        return;
+      }
+
+      const fieldSetting = fieldsToRender[fieldKey];
+      // Only render fields that are supported by renderField
+      if (
+        window.SHAREDFUNCTIONS &&
+        window.SHAREDFUNCTIONS.renderField &&
+        fieldSetting &&
+        fieldSetting.type
+      ) {
+        let fieldHtml = window.SHAREDFUNCTIONS.renderField(
+          fieldKey,
+          fieldSetting,
+          fieldPrefix,
+        );
+
+        // Override mapbox token for location fields if available from dtGroupGenmap
+        if (
+          fieldHtml &&
+          (fieldSetting.type === 'location' ||
+            fieldSetting.type === 'location_meta')
+        ) {
+          const mapboxKey = window.dtGroupGenmap?.mapboxKey || '';
+          // Replace mapbox-token attribute if present
+          if (mapboxKey) {
+            fieldHtml = fieldHtml.replace(
+              /mapbox-token="[^"]*"/,
+              `mapbox-token="${window.lodash.escape(mapboxKey)}"`,
+            );
+            // If mapbox-token attribute doesn't exist, add it
+            if (!fieldHtml.includes('mapbox-token=')) {
+              fieldHtml = fieldHtml.replace(
+                /(<dt-location-map[^>]*)/,
+                `$1 mapbox-token="${window.lodash.escape(mapboxKey)}"`,
+              );
+            }
+          }
+        }
+
+        if (fieldHtml) {
+          listHtml += `<div class="form-field">${fieldHtml}</div>`;
+        }
+      }
+    });
+
+    const buttonsHtml = `<button id="${fieldPrefix}but" class="button" type="button">${window.lodash.escape(
       modalStrings.add_child_but || 'Add Child',
     )}</button>`;
 
@@ -2215,29 +2305,169 @@
     jQuery('#template_metrics_modal_title')
       .empty()
       .html(window.lodash.escape(title));
-    jQuery(content).css('max-height', '300px');
+    jQuery(content).css('max-height', '400px');
     jQuery(content).css('overflow', 'auto');
     jQuery(content).empty().html(listHtml);
     jQuery(modal).foundation('open');
+
+    // Focus first field after modal opens
+    setTimeout(() => {
+      const firstField = content.find('[name], [id]').first();
+      if (firstField.length) {
+        firstField.focus();
+      }
+    }, 100);
   }
 
   function handleAddChild() {
-    const postType = jQuery('#group_genmap_add_child_post_type').val();
-    const parentId = jQuery('#group_genmap_add_child_post_id').val();
-    const childTitle = jQuery('#group_genmap_add_child_name').val();
+    const fieldPrefix = 'group_genmap_add_child_';
+    const postType = jQuery(`#${fieldPrefix}post_type`).val();
+    const parentId = jQuery(`#${fieldPrefix}post_id`).val();
+    const modalContent = jQuery('#template_metrics_modal_content');
 
-    if (!postType || !parentId || !childTitle) {
+    if (!postType || !parentId) {
       return;
     }
 
+    // Collect values from web components
+    const fields = {};
+    const fieldSettings = window.dtGroupGenmap?.fieldSettings || {};
+
+    // Get title field value (required)
+    const titleField = modalContent.find(`#${fieldPrefix}title`)[0];
+    if (titleField) {
+      if (titleField.tagName && titleField.tagName.startsWith('DT-')) {
+        // Web component - get value directly
+        if (titleField.value) {
+          fields.title = titleField.value;
+        }
+      } else {
+        // Fallback for regular input
+        const titleValue = jQuery(titleField).val();
+        if (titleValue) {
+          fields.title = titleValue;
+        }
+      }
+    }
+
+    // Validate title is present
+    if (
+      !fields.title ||
+      (typeof fields.title === 'string' && fields.title.trim() === '')
+    ) {
+      alert('Name is required');
+      return;
+    }
+
+    // Collect values from all other web components
+    modalContent
+      .find(
+        'dt-text, dt-textarea, dt-number, dt-toggle, dt-date, dt-single-select, dt-multi-select-button-group, dt-tags, dt-connection, dt-location-map, dt-multi-text',
+      )
+      .each(function () {
+        const component = this;
+        const fieldKey =
+          component.name || component.id?.replace(fieldPrefix, '');
+
+        // Skip hidden fields and system fields
+        if (
+          !fieldKey ||
+          fieldKey === 'post_type' ||
+          fieldKey === 'post_id' ||
+          fieldKey === 'title' ||
+          fieldKey === 'name'
+        ) {
+          return;
+        }
+
+        const fieldSetting = fieldSettings[fieldKey];
+        if (!fieldSetting) {
+          return;
+        }
+
+        // Get value from component
+        if (
+          component.value === undefined ||
+          component.value === null ||
+          component.value === ''
+        ) {
+          return;
+        }
+
+        let value = component.value;
+
+        // Convert value using ComponentService if available
+        if (window.DtWebComponents && window.DtWebComponents.ComponentService) {
+          try {
+            value = window.DtWebComponents.ComponentService.convertValue(
+              component.tagName,
+              value,
+            );
+          } catch (e) {
+            console.warn('Error converting value for field', fieldKey, e);
+            // Continue with original value if conversion fails
+          }
+        }
+
+        // Format value based on field type for API
+        const fieldType = fieldSetting.type;
+
+        switch (fieldType) {
+          case 'key_select':
+            // key_select: ComponentService returns the key, use directly
+            fields[fieldKey] = value;
+            break;
+          case 'multi_select':
+            // multi_select: ComponentService returns array, format for API
+            if (Array.isArray(value) && value.length > 0) {
+              fields[fieldKey] = { values: value.map((v) => ({ value: v })) };
+            }
+            break;
+          case 'connection':
+            // connection: ComponentService returns array of IDs, format for API
+            if (Array.isArray(value) && value.length > 0) {
+              fields[fieldKey] = { values: value.map((v) => ({ value: v })) };
+            } else if (value) {
+              fields[fieldKey] = { values: [{ value: value }] };
+            }
+            break;
+          case 'communication_channel':
+            // communication_channel: ComponentService returns array of objects
+            if (Array.isArray(value) && value.length > 0) {
+              fields[fieldKey] = value;
+            }
+            break;
+          case 'tags':
+            // tags: ComponentService returns array, format for API
+            if (Array.isArray(value) && value.length > 0) {
+              fields[fieldKey] = { values: value.map((v) => ({ value: v })) };
+            } else if (value) {
+              fields[fieldKey] = { values: [{ value: value }] };
+            }
+            break;
+          default:
+            // For text, textarea, number, boolean, date, etc., use value directly
+            fields[fieldKey] = value;
+            break;
+        }
+      });
+
+    // Add parent connection
+    fields.parent_groups = {
+      values: [{ value: parentId }],
+    };
+
+    // Add additional meta for tracking
+    const createPayload = {
+      ...fields,
+      additional_meta: {
+        created_from: parentId,
+        add_connection: 'child_groups',
+      },
+    };
+
     if (window.API && window.API.create_post) {
-      window.API.create_post(postType, {
-        title: childTitle,
-        additional_meta: {
-          created_from: parentId,
-          add_connection: 'child_groups',
-        },
-      })
+      window.API.create_post(postType, createPayload)
         .then((newPost) => {
           jQuery('#template_metrics_modal').foundation('close');
           // Refresh the page to show the new child
@@ -2290,7 +2520,8 @@
     'open.zf.reveal',
     '#template_metrics_modal[data-reveal]',
     function () {
-      jQuery('#group_genmap_add_child_name').focus();
+      // Focus on title field (name field is no longer used)
+      jQuery('#group_genmap_add_child_title').focus();
     },
   );
 

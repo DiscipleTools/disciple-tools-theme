@@ -1196,6 +1196,43 @@ class DT_Groups_Base extends DT_Module_Base {
                 }
             }
 
+            // Filter fields that should be shown in create form
+            // Note: title field is handled separately in JavaScript, so we exclude it here
+            $create_form_fields = [];
+            foreach ( $field_settings as $field_key => $field_setting ) {
+                // Skip title field - it's rendered separately in JavaScript
+                if ( $field_key === 'title' ) {
+                    continue;
+                }
+                
+                // Skip hidden fields unless they have custom_display
+                if ( !empty( $field_setting['hidden'] ) && empty( $field_setting['custom_display'] ) ) {
+                    continue;
+                }
+                // Skip fields explicitly set to not show in create form
+                if ( isset( $field_setting['in_create_form'] ) && $field_setting['in_create_form'] === false ) {
+                    continue;
+                }
+                // Include fields that have in_create_form => true or are in the in_create_form array
+                if ( !empty( $field_setting['in_create_form'] ) ) {
+                    if ( $field_setting['in_create_form'] === true || is_array( $field_setting['in_create_form'] ) ) {
+                        $create_form_fields[ $field_key ] = $field_setting;
+                    }
+                }
+            }
+            
+            // Add title field settings separately for JavaScript to use when rendering title explicitly
+            // We need title field settings available but not in the main fieldsToRender loop
+            if ( isset( $field_settings['title'] ) ) {
+                $create_form_fields['_title'] = $field_settings['title']; // Use _title as key to exclude from loop
+            }
+
+            // Get mapbox token for location fields
+            $mapbox_key = '';
+            if ( class_exists( 'DT_Mapbox_API' ) ) {
+                $mapbox_key = DT_Mapbox_API::get_key() ?? '';
+            }
+
             wp_localize_script( $genmap_script_handle, 'dtGroupGenmap', [
                 'statusField' => [
                     'key' => $status_key,
@@ -1204,6 +1241,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 ],
                 'groupTypes' => $group_type_labels,
                 'groupTypeIcons' => $group_type_icons,
+                'fieldSettings' => $create_form_fields,
+                'mapboxKey' => $mapbox_key,
                 'strings' => [
                     'loading' => __( 'Loading map…', 'disciple_tools' ),
                     'error' => __( 'Unable to load generational map.', 'disciple_tools' ),
