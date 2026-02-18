@@ -1,16 +1,4 @@
 {
-  "dt-assets/js/main-legacy.js": {
-    "file": "js/scripts-legacy.min.js",
-    "name": "scripts",
-    "src": "dt-assets/js/main-legacy.js",
-    "isEntry": true
-  },
-  "dt-assets/js/main.js": {
-    "file": "js/scripts.min.js",
-    "name": "scripts",
-    "src": "dt-assets/js/main.js",
-    "isEntry": true
-  },
   "dt-assets/scss/login.scss": {
     "file": "css/login.min.css",
     "src": "dt-assets/scss/login.scss",
@@ -55,11 +43,5 @@
     "names": [
       "light.css"
     ]
-  },
-  "vite/legacy-polyfills-legacy": {
-    "file": "js/polyfills-legacy.min.js",
-    "name": "polyfills",
-    "src": "vite/legacy-polyfills-legacy",
-    "isEntry": true
   }
 }

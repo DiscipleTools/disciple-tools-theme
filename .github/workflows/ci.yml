@@ -119,6 +119,7 @@ jobs:
       run : |
         find dt-assets/ -iname "*.min.js" -or -iname "*.map" -or -iname "*.min.css" -delete && rm -rf build/
         vite build
+        vite build --config vite.config.scripts.js
         git diff --exit-code -- . ':(exclude)package-lock.json'
 
     - name: Install Subversion

@@ -1313,6 +1313,12 @@
                 .map((v) => {
                   return `${window.SHAREDFUNCTIONS.escapeHTML(v.value.note)}`;
                 });
+            } else if (field_settings.type === 'datetime_series') {
+              if (Array.isArray(field_value)) {
+                values = field_value.map((v) => {
+                  return window.SHAREDFUNCTIONS.escapeHTML(v.formatted);
+                });
+              }
             } else if (field_settings.type === 'image') {
               values = [`<img src='${field_value.thumb}' class='list-image'>`];
             }

@@ -703,10 +703,12 @@ class DT_Home_Apps {
      * Get apps for frontend display
      *
      * @param string|null $type Optional. Filter by app type: 'app', 'link', or null for all apps.
+     * @param int|null $user_id Optional. Filter by user ID. Defaults to current user.
      * @return array Array of apps for frontend display
      */
-    public function get_apps_for_frontend( $type = null ) {
+    public function get_apps_for_frontend( $type = null, $user_id = null ) {
         $apps = $this->get_enabled_apps();
+        $user_id = $user_id ?? get_current_user_id();
 
         // Enrich coded magic-link app urls.
         $enriched_apps = [];
@@ -724,38 +726,21 @@ class DT_Home_Apps {
 
                 if ( isset( $app_meta['post_type'] ) && $app_meta['post_type'] === 'user' ) {
                     $meta_key = DT_Magic_URL::get_public_key_meta_key( $app_ml_root, $app_ml_type );
-                    $magic_url_key = get_user_option( $meta_key, get_current_user_id() );
+                    $magic_url_key = get_user_option( $meta_key, $user_id );
                     if ( !empty( $magic_url_key ) ) {
                         $app['url'] = DT_Magic_URL::get_link_url( $app_ml_root, $app_ml_type, $magic_url_key );
                     }
-                } elseif (
-                    isset( $app_meta['root'], $app_meta['post_type'] )
-                    && 'templates' === strtolower( (string) $app_meta['root'] )
-                    && in_array( $app_meta['post_type'], [ 'contacts' ], true )
-                ) {
-                    $post_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
+                } else if ( isset( $app_meta['post_type'] ) && $app_meta['post_type'] === 'contacts' ) {
+                    $post_id = get_user_option( 'corresponds_to_contact', $user_id );
+                    $url = DT_Magic_URL::get_link_url_for_post(
+                        $app_meta['post_type'],
+                        $post_id,
+                        $app_ml_root,
+                        $app_ml_type
+                    );
 
-                    if ( ! empty( $post_id ) ) {
-                        $post = DT_Posts::get_post( $app_meta['post_type'], $post_id );
-                        $meta_key = $app_meta['meta_key'] ?? '';
-
-                        // Ensure meta_key is set - if not, construct it from root and type
-                        if ( empty( $meta_key ) && ! empty( $app_ml_root ) && ! empty( $app_ml_type ) ) {
-                            $meta_key = $app_ml_root . '_' . $app_ml_type . '_magic_key';
-                        }
-
-                        if ( ! is_wp_error( $post ) && ! empty( $post ) && ! empty( $meta_key ) ) {
-                            if ( isset( $post[ $meta_key ] ) && ! empty( $post[ $meta_key ] ) ) {
-                                $magic_url_key = $post[ $meta_key ];
-                            } else {
-                                $magic_url_key = dt_create_unique_key();
-                                update_post_meta( $post_id, $meta_key, $magic_url_key );
-                            }
-
-                            if ( ! empty( $magic_url_key ) ) {
-                                $app['url'] = DT_Magic_URL::get_link_url( $app_ml_root, $app_ml_type, $magic_url_key );
-                            }
-                        }
+                    if ( ! empty( $url ) ) {
+                        $app['url'] = $url;
                     }
                 }
             }
@@ -800,7 +785,7 @@ class DT_Home_Apps {
      * Get apps filtered by user permissions
      */
     public function get_apps_for_user( $user_id = 0 ) {
-        $apps = $this->get_apps_for_frontend();
+        $apps = $this->get_apps_for_frontend( null, $user_id );
         // If roles permissions is not available, return all apps
         if ( !class_exists( 'DT_Home_Roles_Permissions' ) ) {
             return $apps;
