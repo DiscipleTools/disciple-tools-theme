@@ -601,7 +601,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
         if ( isset( $fields[$field_key]['type'] ) && !$custom_display && empty( $fields[$field_key]['hidden'] ) ) {
             /* breadrcrumb: new-field-type Add allowed field types */
-            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'boolean', 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'boolean', 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select', 'multi_text_groups' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -653,6 +653,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     break;
                 case 'user_select':
                     DT_Components::render_user_select( $field_key, $fields, $post, $params );
+                    break;
+                case 'multi_text_groups':
+                    DT_Components::render_multi_text_groups( $field_key, $fields, $post, $params );
                     break;
                 default:
                     $is_legacy = true;
