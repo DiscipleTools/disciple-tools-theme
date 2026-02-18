@@ -70,7 +70,7 @@
 /* Node Text */
 .group-genmap-chart .node text {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    fill: #333;
+    /* fill is set dynamically by JS - do not set here */
     pointer-events: none;
     text-anchor: middle;
     dominant-baseline: middle;
@@ -78,10 +78,10 @@
 
 /* Node Title - truncated text */
 .group-genmap-chart .node .node-title {
-    font-size: 11px;
+    font-size: 9px;
     font-weight: 500;
-    fill: #333;
-    max-width: 56px; /* Slightly less than node width for padding */
+    /* fill is set dynamically by JS - do not set here */
+    max-width: 68px; /* Slightly less than node width (72px) for padding */
 }
 
 /* Node Generation Text */
@@ -336,7 +336,7 @@
     }
     
     .group-genmap-chart .node text {
-        font-size: 10px;
+        font-size: 9px;
     }
     
     .genmap-popover {
