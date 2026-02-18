@@ -63,7 +63,7 @@ class DT_User_Metrics {
          * This hard coded array has come from the filter dt_render_field_for_display_allowed_types
          * and needs to be refactored for both here and there.
          */
-        $allowed_field_types = [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ];
+        $allowed_field_types = [ 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select', 'multi_text_groups' ];
         array_push( $allowed_field_types, '' );
         $allowed_field_types_sql = dt_array_to_sql( $allowed_field_types );
         $allowed_post_statuses_sql = dt_array_to_sql( [ 'publish' ] );

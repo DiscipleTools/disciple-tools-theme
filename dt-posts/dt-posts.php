@@ -3275,6 +3275,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'description' => 'Array of data',
                 'user_creatable' => false,
             ],
+            'multi_text_groups' => [
+                'label' => 'Multi Text Groups',
+                'description' => 'Field for multiple text inputs grouped together',
+                'user_creatable' => true,
+            ],
         ];
     }
 }

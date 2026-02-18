@@ -1283,6 +1283,7 @@ jQuery(document).ready(function ($) {
                     <option value="user_select">User Select</option>
                     <option value="location">Location (grid only)</option>
                     <option value="communication_channel">Communication Channel</option>
+                    <option value="multi_text_groups">Multi Text Groups</option>
                 </select>
                 <p id="field-type-select-description" style="margin:0.2em 0">
                     ${window.field_settings.field_types.key_select.description}

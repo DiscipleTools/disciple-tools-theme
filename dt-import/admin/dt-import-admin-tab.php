@@ -324,7 +324,8 @@ class DT_CSV_Import_Admin_Tab extends Disciple_Tools_Abstract_Menu_Base {
             'connection' => __( 'Connection', 'disciple_tools' ),
             'user_select' => __( 'User Select', 'disciple_tools' ),
             'location' => __( 'Location', 'disciple_tools' ),
-            'location_meta' => __( 'Location Meta', 'disciple_tools' )
+            'location_meta' => __( 'Location Meta', 'disciple_tools' ),
+            'multi_text_groups' => __( 'Multi Text Groups', 'disciple_tools' )
         ];
     }
 

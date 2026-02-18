@@ -34,7 +34,8 @@ class DT_Components
             'location_meta',
             'communication_channel',
             'tags',
-            'user_select'
+            'user_select',
+            'multi_text_groups',
         ] );
         if ( !in_array( $field_type, $allowed_types ) ){
             return;
@@ -319,6 +320,16 @@ class DT_Components
             value="<?php echo esc_attr( json_encode( $value ) ) ?>"
         single><?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-users-connection>
+        <?php
+    }
+
+    public static function render_multi_text_groups( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+        ?>
+        <dt-multi-text-groups <?php echo wp_kses_post( $shared_attributes ) ?>
+            value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>">
+            <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        </dt-multi-text-groups>
         <?php
     }
 }
