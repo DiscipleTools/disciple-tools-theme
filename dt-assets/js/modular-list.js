@@ -1097,6 +1097,12 @@
     window.location.reload();
   });
 
+  // ============================================
+  // Bulk Edit Field Selection with dt-multi-select
+  // NOTE: This functionality has been moved to modular-list-bulk.js
+  // The bulk module registers itself via DT_List.bulk and handles all bulk edit field selection
+  // ============================================
+
   archivedSwitch.on('click', function () {
     const showArchived = this.checked;
 
@@ -3060,6 +3066,928 @@
         $(this).toggleClass('selected');
       });
     });
+  }
+
+  /***
+   * Bulk Edit
+   * NOTE: Bulk edit functionality has been moved to modular-list-bulk.js
+   * The bulk module handles all bulk edit operations including checkbox events,
+   * field selection, and submit handling
+   */
+
+  /***
+   * Bulk Delete
+   */
+
+  let bulk_edit_delete_submit_button = $('#bulk_edit_delete_submit');
+  bulk_edit_delete_submit_button.on('click', function (e) {
+    let bulk_edit_total_checked = $(
+      '.bulk_edit_checkbox:not(#bulk_edit_master) input:checked',
+    ).length;
+
+    $('#bulk_edit_delete_submit-spinner').addClass('active');
+
+    if (bulk_edit_total_checked > 0) {
+      let bulk_edit_delete_submit_button_span = $(
+        '.bulk_edit_delete_submit_text',
+      );
+      let confirm_text = `${$(bulk_edit_delete_submit_button_span).data('pretext')} ${bulk_edit_total_checked} ${$(bulk_edit_delete_submit_button_span).data('posttext')}`;
+      let confirm_text_capitalise = window.lodash.startCase(
+        window.lodash.toLower(confirm_text),
+      );
+
+      if (
+        list_settings.permissions.delete_any &&
+        confirm(confirm_text_capitalise)
+      ) {
+        bulk_delete_submit();
+      } else {
+        window.location.reload();
+      }
+    } else {
+      window.location.reload();
+    }
+  });
+
+  function bulk_delete_submit() {
+    // Build queue of post ids.
+    let queue = [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        let postId = parseInt($(this).val());
+        queue.push(postId);
+      }
+    });
+    process(queue, 10, do_each, do_done, {}, null, {}, 'delete');
+  }
+
+  /**
+   * Bulk_Assigned_to
+   * NOTE: Bulk edit submit functionality has been moved to modular-list-bulk.js
+   */
+
+  let bulk_edit_picker_checkboxes = $('#bulk_edit_picker .update-needed');
+  bulk_edit_picker_checkboxes.on('click', function (e) {
+    if ($(this).is(':checked')) {
+      $(this).data('bulk_key_requires_update', true);
+    }
+  });
+
+  let bulk_edit_picker_select_field = $('#bulk_edit_picker select');
+  bulk_edit_picker_select_field.on('change', function (e) {
+    let field_key = this.id.replace('bulk_', '');
+    $(this).data(`bulk_key_${field_key}`, this.value);
+  });
+
+  let bulk_edit_picker_button_groups = $('#bulk_edit_picker .select-button');
+  bulk_edit_picker_button_groups.on('click', function (e) {
+    let field_key = $(this).data('field-key').replace('bulk_', '');
+    let optionKey = $(this).attr('id');
+
+    let fieldValue = {};
+
+    fieldValue.values = { value: optionKey };
+
+    $(this).addClass('selected-select-button');
+    $(this).data(`bulk_key_${field_key}`, fieldValue);
+  });
+
+  //Bulk Update Queue
+  function process(
+    q,
+    num,
+    fn,
+    done,
+    update,
+    share,
+    comment,
+    event_type = 'update',
+    responses = [],
+  ) {
+    // remove a batch of items from the queue
+    let items = q.splice(0, num),
+      count = items.length;
+
+    // no more items?
+    if (!count) {
+      // exec done callback if specified
+      done && done(responses);
+      // quit
+      return;
+    }
+
+    // loop over each item
+    for (let i = 0; i < count; i++) {
+      // call callback, passing item and
+      // a "done" callback
+      fn(
+        items[i],
+        function (response) {
+          // capture valid response
+          if (response) {
+            if (Array.isArray(response)) {
+              response.forEach((element) => responses.push(element));
+            } else {
+              responses.push(response);
+            }
+          }
+
+          // when done, decrement counter and
+          // if counter is 0, process next batch
+          --count ||
+            process(
+              q,
+              num,
+              fn,
+              done,
+              update,
+              share,
+              comment,
+              event_type,
+              responses,
+            );
+        },
+        update,
+        share,
+        comment,
+        event_type,
+      );
+    }
+  }
+
+  // a per-item action
+  function do_each(item, done, update, share, comment, event_type) {
+    let promises = [];
+
+    switch (event_type) {
+      case 'update': {
+        if (Object.keys(update).length) {
+          promises.push(
+            window.API.update_post(list_settings.post_type, item, update).catch(
+              (err) => {
+                // Error handled silently - user will see error via UI feedback
+              },
+            ),
+          );
+        }
+
+        // Handle new share payload format: { user_id: <userId>, action: 'add' }
+        if (share && share.user_id && share.action === 'add') {
+          promises.push(
+            window.API.add_shared(
+              list_settings.post_type,
+              item,
+              share.user_id,
+            ).catch((err) => {
+              console.error(err);
+            }),
+          );
+        }
+        // Legacy share format support (backward compatibility)
+        else if (share && share['users']) {
+          share['users'].forEach(function (value) {
+            let promise = share['unshare']
+              ? window.API.remove_shared(
+                  list_settings.post_type,
+                  item,
+                  value,
+                ).catch((err) => {
+                  console.error(err);
+                })
+              : window.API.add_shared(
+                  list_settings.post_type,
+                  item,
+                  value,
+                ).catch((err) => {
+                  console.error(err);
+                });
+            promises.push(promise);
+          });
+        }
+
+        if (comment.commentText) {
+          promises.push(
+            window.API.post_comment(
+              list_settings.post_type,
+              item,
+              comment.commentText,
+              comment.commentType,
+            ).catch((err) => {
+              console.error(err);
+            }),
+          );
+        }
+
+        break;
+      }
+      case 'delete': {
+        if (list_settings.permissions.delete_any) {
+          promises.push(
+            window.API.delete_post(list_settings.post_type, item).catch(
+              (err) => {
+                console.error(err);
+              },
+            ),
+          );
+        }
+        break;
+      }
+      case 'message': {
+        if (
+          update?.subject &&
+          update?.from_name &&
+          update?.send_method &&
+          update?.message
+        ) {
+          promises.push(
+            window
+              .makeRequestOnPosts(
+                'POST',
+                `${list_settings.post_type}/${item}/post_messaging`,
+                update,
+              )
+              .catch((err) => {
+                console.error(err);
+              }),
+          );
+        }
+        break;
+      }
+    }
+    Promise.all(promises).then(function (responses) {
+      done(responses);
+    });
+  }
+
+  function do_done() {
+    $('#bulk_edit_submit-spinner').removeClass('active');
+    $('#bulk_edit_delete_submit-spinner').removeClass('active');
+    window.location.reload();
+  }
+
+  let bulk_assigned_to_input = $(`.js-typeahead-bulk_assigned_to`);
+  if (bulk_assigned_to_input.length) {
+    $.typeahead({
+      input: '.js-typeahead-bulk_assigned_to',
+      minLength: 0,
+      maxItem: 0,
+      accent: true,
+      searchOnFocus: true,
+      source: window.TYPEAHEADS.typeaheadUserSource(),
+      templateValue: '{{name}}',
+      template: function (query, item) {
+        return `<div class="assigned-to-row" dir="auto">
+        <span>
+            <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
+            ${window.SHAREDFUNCTIONS.escapeHTML(item.name)}
+        </span>
+        ${item.status_color ? `<span class="status-square" style="background-color: ${window.SHAREDFUNCTIONS.escapeHTML(item.status_color)};">&nbsp;</span>` : ''}
+        ${
+          item.update_needed && item.update_needed > 0
+            ? `<span>
+          <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
+          <span style="font-size: 14px">${window.SHAREDFUNCTIONS.escapeHTML(item.update_needed)}</span>
+        </span>`
+            : ''
+        }
+      </div>`;
+      },
+      dynamic: true,
+      hint: true,
+      emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(
+        window.wpApiShare.translations.no_records_found,
+      ),
+      callback: {
+        onClick: function (node, a, item) {
+          node.data('bulk_key_assigned_to', `user-${item.ID}`);
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = window.TYPEAHEADS.typeaheadHelpText(
+            resultCount,
+            query,
+            result,
+          );
+          $('#bulk_assigned_to-result-container').html(text);
+        },
+        onHideLayout: function () {
+          $('.bulk_assigned_to-result-container').html('');
+        },
+        onReady: function () {},
+      },
+    });
+  }
+
+  /**
+   * Bulk Send Message
+   */
+
+  $('#bulk_send_msg_submit').on('click', function (e) {
+    handle_bulk_send_messages();
+  });
+
+  function handle_bulk_send_messages() {
+    const spinner = $('#bulk_send_msg_submit-spinner');
+
+    let subject = $('#bulk_send_msg_subject').val().trim();
+    let from_name = $('#bulk_send_msg_from_name').val().trim();
+    let reply_to = $('#bulk_send_msg_reply_to').val().trim();
+    let send_method = 'email';
+    let message = $('#bulk_send_msg').val().trim();
+
+    // If multiple options detected, ensure correct selection is made.
+    const checked_send_method = $('.bulk-send-msg-method:checked');
+    if ($(checked_send_method).length > 0) {
+      send_method = $(checked_send_method).val().trim();
+    }
+
+    let queue = [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        queue.push(parseInt($(this).val()));
+      }
+    });
+
+    // Validate entries.
+    if (!subject) {
+      $('#bulk_send_msg_subject_support_text').show();
+      return;
+    } else {
+      $('#bulk_send_msg_subject_support_text').hide();
+    }
+
+    if (!from_name) {
+      $('#bulk_send_msg_from_name_support_text').show();
+      return;
+    } else {
+      $('#bulk_send_msg_from_name_support_text').hide();
+    }
+
+    if (!send_method) {
+      $('#bulk_send_msg_method_support_text').show();
+      return;
+    } else {
+      $('#bulk_send_msg_method_support_text').hide();
+    }
+
+    if (!message) {
+      $('#bulk_send_msg_support_text').show();
+      return;
+    } else {
+      $('#bulk_send_msg_support_text').hide();
+    }
+
+    if (!queue || queue.length < 1) {
+      $('#bulk_send_msg_submit_support_text').show();
+      return;
+    } else {
+      $('#bulk_send_msg_submit_support_text').hide();
+    }
+
+    // Proceed with staged-based message send requests.
+    $(spinner).addClass('active');
+    process(
+      queue,
+      10,
+      do_each,
+      function (responses) {
+        // If available, extract response summary.
+        if (responses && responses.length > 0) {
+          let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">${list_settings.translations.see_queue}</a>`;
+          let count_sent = 0;
+          let count_fails = 0;
+          responses.forEach(function (response) {
+            if (response && response['sent'] !== undefined) {
+              if (response['sent']) {
+                count_sent++;
+              } else {
+                count_fails++;
+              }
+            }
+          });
+
+          $('#bulk_send_msg_submit-message').html(
+            `<strong>${count_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : ''}<br><strong>${count_fails}</strong> ${list_settings.translations.not_sent}`,
+          );
+        }
+
+        // Reset record selections.
+        $(spinner).removeClass('active');
+        $('#bulk_edit_master_checkbox').prop('checked', false);
+        $('.bulk_edit_checkbox input').prop('checked', false);
+        bulk_edit_count();
+        // window.location.reload();
+      },
+      {
+        subject: subject,
+        from_name: from_name,
+        reply_to: reply_to,
+        send_method: send_method,
+        message: message,
+      },
+      {},
+      {},
+      'message',
+    );
+  }
+
+  /**
+   * Bulk share (only initialize if element exists - field may be dynamically added)
+   */
+  let bulk_share_input = $('#bulk_share');
+  if (bulk_share_input.length) {
+    $.typeahead({
+      input: '#bulk_share',
+      minLength: 0,
+      maxItem: 0,
+      accent: true,
+      searchOnFocus: true,
+      source: window.TYPEAHEADS.typeaheadUserSource(),
+      templateValue: '{{name}}',
+      dynamic: true,
+      multiselect: {
+        matchOn: ['ID'],
+        callback: {
+          onCancel: function (node, item) {
+            $(node).removeData(`bulk_key_bulk_share`);
+            $('#share-result-container').html('');
+          },
+        },
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          let shareUserArray;
+          if (node.data('bulk_key_share')) {
+            shareUserArray = node.data('bulk_key_share');
+          } else {
+            shareUserArray = [];
+          }
+          shareUserArray.push(item.ID);
+          node.data(`bulk_key_share`, shareUserArray);
+        },
+        onResult: function (node, query, result, resultCount) {
+          if (query) {
+            let text = window.TYPEAHEADS.typeaheadHelpText(
+              resultCount,
+              query,
+              result,
+            );
+            $('#share-result-container').html(text);
+          }
+        },
+        onHideLayout: function () {
+          $('#share-result-container').html('');
+        },
+      },
+    });
+  }
+
+  /**
+   * Bulk Typeahead
+   */
+  let field_settings = window.list_settings.post_type_settings.fields;
+
+  $('#bulk_edit_picker .dt_typeahead').each((key, el) => {
+    let element_id = $(el)
+      .attr('id')
+      .replace(/_connection$/, '');
+    let div_id = $(el).attr('id');
+    let field_id = $(`#${div_id} input`).data('field');
+    if (element_id !== 'bulk_share') {
+      let listing_post_type = window.lodash.get(
+        window.list_settings.post_type_settings.fields[field_id],
+        'post_type',
+        'contacts',
+      );
+      $.typeahead({
+        input: `.js-typeahead-${element_id}`,
+        minLength: 0,
+        accent: true,
+        maxItem: 30,
+        searchOnFocus: true,
+        template: window.TYPEAHEADS.contactListRowTemplate,
+        source: window.TYPEAHEADS.typeaheadPostsSource(listing_post_type, {
+          field_key: field_id,
+        }),
+        display: 'name',
+        templateValue: '{{name}}',
+        dynamic: true,
+        multiselect: {
+          matchOn: ['ID'],
+          data: '',
+          callback: {
+            onCancel: function (node, item) {
+              $(node).removeData(`bulk_key_${field_id}`);
+            },
+          },
+          href: window.wpApiShare.site_url + `/${listing_post_type}/{{ID}}`,
+        },
+        callback: {
+          onClick: function (node, a, item, event) {
+            let multiUserArray;
+            if (node.data(`bulk_key_${field_id}`)) {
+              multiUserArray = node.data(`bulk_key_${field_id}`).values;
+            } else {
+              multiUserArray = [];
+            }
+            multiUserArray.push({ value: item.ID });
+
+            node.data(`bulk_key_${field_id}`, { values: multiUserArray });
+            this.addMultiselectItemLayout(item);
+            event.preventDefault();
+            this.hideLayout();
+            this.resetInput();
+          },
+          onResult: function (node, query, result, resultCount) {
+            let text = window.TYPEAHEADS.typeaheadHelpText(
+              resultCount,
+              query,
+              result,
+            );
+            $(`#${element_id}-result-container`).html(text);
+          },
+          onHideLayout: function (event, query) {
+            if (!query) {
+              $(`#${element_id}-result-container`).empty();
+            }
+          },
+          onShowLayout() {},
+        },
+      });
+    }
+  });
+
+  if ($('#bulk_edit_picker .js-typeahead-bulk_location_grid').length) {
+    $('#bulk_edit_picker .dt_location_grid').each(() => {
+      let field_id = 'location_grid';
+      let typeaheadTotals = {};
+      $.typeahead({
+        input: '.js-typeahead-bulk_location_grid',
+        minLength: 0,
+        accent: true,
+        searchOnFocus: true,
+        maxItem: 20,
+        dropdownFilter: [
+          {
+            key: 'group',
+            value: 'focus',
+            template: window.SHAREDFUNCTIONS.escapeHTML(
+              window.wpApiShare.translations.regions_of_focus,
+            ),
+            all: window.SHAREDFUNCTIONS.escapeHTML(
+              window.wpApiShare.translations.all_locations,
+            ),
+          },
+        ],
+        source: {
+          focus: {
+            display: 'name',
+            ajax: {
+              url:
+                window.wpApiShare.root +
+                'dt/v1/mapping_module/search_location_grid_by_name',
+              data: {
+                s: '{{query}}',
+                filter: function () {
+                  // return window.lodash.get(window.Typeahead['.js-typeahead-location_grid'].filters.dropdown, 'value', 'all')
+                },
+              },
+              beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+              },
+              callback: {
+                done: function (data) {
+                  if (typeof window.typeaheadTotals !== 'undefined') {
+                    window.typeaheadTotals.field = data.total;
+                  }
+                  return data.location_grid;
+                },
+              },
+            },
+          },
+        },
+        display: 'name',
+        templateValue: '{{name}}',
+        dynamic: true,
+        multiselect: {
+          matchOn: ['ID'],
+          data: '',
+          callback: {
+            onCancel: function (node, item) {
+              $(node).removeData(`bulk_key_${field_id}`);
+            },
+          },
+        },
+        callback: {
+          onClick: function (node, a, item, event) {
+            // $(`#${element_id}-spinner`).addClass('active');
+            node.data(`bulk_key_${field_id}`, { values: [{ value: item.ID }] });
+          },
+          onReady() {
+            this.filters.dropdown = {
+              key: 'group',
+              value: 'focus',
+              template: window.SHAREDFUNCTIONS.escapeHTML(
+                window.wpApiShare.translations.regions_of_focus,
+              ),
+            };
+            this.container
+              .removeClass('filter')
+              .find('.' + this.options.selector.filterButton)
+              .html(
+                window.SHAREDFUNCTIONS.escapeHTML(
+                  window.wpApiShare.translations.regions_of_focus,
+                ),
+              );
+          },
+          onResult: function (node, query, result, resultCount) {
+            resultCount = typeaheadTotals.location_grid;
+            let text = window.TYPEAHEADS.typeaheadHelpText(
+              resultCount,
+              query,
+              result,
+            );
+            $('#location_grid-result-container').html(text);
+          },
+          onHideLayout: function () {
+            $('#location_grid-result-container').html('');
+          },
+        },
+      });
+    });
+  }
+
+  $(
+    '#bulk_edit_picker .tags input, #bulk_edit_picker .multi_select input',
+  ).each((key, input) => {
+    let field = $(input).data('field') || 'tags';
+    let field_options = window.lodash.get(
+      list_settings,
+      `post_type_settings.fields.${field}.default`,
+      {},
+    );
+    $.typeahead({
+      input: input,
+      minLength: 0,
+      maxItem: 20,
+      searchOnFocus: true,
+      source: {
+        tags: {
+          display: ['name'],
+          ajax: {
+            url:
+              window.wpApiShare.root +
+              `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
+            data: {
+              s: '{{query}}',
+              field: field,
+            },
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+            },
+            callback: {
+              done: function (data) {
+                return (data || []).map((tag) => {
+                  let label = window.lodash.get(
+                    field_options,
+                    tag + '.label',
+                    tag,
+                  );
+                  return { name: label || tag, key: tag };
+                });
+              },
+            },
+          },
+        },
+      },
+      display: 'name',
+      templateValue: '{{name}}',
+      dynamic: true,
+      multiselect: {
+        matchOn: ['key'],
+        callback: {
+          onCancel: function (node, item) {
+            $(node).removeData(`bulk_key_${field}`);
+          },
+        },
+      },
+      callback: {
+        onClick: function (node, a, item, event) {
+          let multiUserArray;
+          if (node.data(`bulk_key_${field}`)) {
+            multiUserArray = node.data(`bulk_key_${field}`).values;
+          } else {
+            multiUserArray = [];
+          }
+          multiUserArray.push({ value: item.key });
+
+          node.data(`bulk_key_${field}`, { values: multiUserArray });
+          this.addMultiselectItemLayout(item);
+          event.preventDefault();
+          this.hideLayout();
+          this.resetInput();
+        },
+        onResult: function (node, query, result, resultCount) {
+          let text = window.TYPEAHEADS.typeaheadHelpText(
+            resultCount,
+            query,
+            result,
+          );
+          $(`#${field}-result-container`).html(text);
+        },
+        onHideLayout: function () {
+          $(`#${field}-result-container`).html('');
+        },
+      },
+    });
+  });
+
+  $('button.follow').on('click', function () {
+    let following = !($(this).data('value') === 'following');
+    $(this).data('value', following ? 'following' : '');
+    $(this).html(following ? 'Unfollow' : 'Follow');
+    $(this).toggleClass('hollow');
+    let follow = { values: [{ value: current_user_id, delete: !following }] };
+
+    let unfollow = { values: [{ value: current_user_id, delete: following }] };
+
+    $(this).data('bulk_key_follow', follow);
+    $(this).data('bulk_key_unfollow', unfollow);
+  });
+
+  $('#bulk_edit_picker input.text-input').change(function () {
+    const val = $(this).val();
+    let field_key = this.id.replace('bulk_', '');
+    $(this).data(`bulk_key_${field_key}`, val);
+  });
+
+  $('#bulk_edit_picker .dt_textarea').change(function () {
+    const val = $(this).val();
+    let field_key = this.id.replace('bulk_', '');
+    $(this).data(`bulk_key_${field_key}`, val);
+  });
+
+  $('#bulk_edit_picker .dt_date_picker')
+    .datepicker({
+      constrainInput: false,
+      dateFormat: 'yy-mm-dd',
+      onClose: function (date) {
+        date = window.SHAREDFUNCTIONS.convertArabicToEnglishNumbers(date);
+
+        if (!$(this).val()) {
+          date = ' '; //null;
+        }
+
+        let formattedDate = window.moment.utc(date).unix();
+
+        let field_key = this.id.replace('bulk_', '');
+        $(this).data(`bulk_key_${field_key}`, formattedDate);
+      },
+      changeMonth: true,
+      changeYear: true,
+      yearRange: '1900:2050',
+    })
+    .each(function () {
+      if (this.value && window.moment.unix(this.value).isValid()) {
+        this.value = window.SHAREDFUNCTIONS.formatDate(this.value);
+      }
+    });
+
+  let mcleardate = $('#bulk_edit_picker .clear-date-button');
+  mcleardate.click(function () {
+    let input_id = this.dataset.inputid;
+    let date = null;
+    // $(`#${input_id}-spinner`).addClass('active')
+    let field_key = this.id.replace('bulk_', '');
+    $(this).removeData(`bulk_key_${field_key}`);
+    $(`#${input_id}`).val('');
+  });
+
+  $('#bulk_edit_picker dt-single-select').change((e) => {
+    const val = $(e.currentTarget).val();
+
+    if (val === 'paused') {
+      $('#bulk_reason_paused').parent().toggle();
+    }
+  });
+
+  $('#bulk_edit_picker input.number-input').on('blur', function () {
+    const id = $(this).attr('id');
+    const val = $(this).val();
+
+    let field_key = this.id.replace('bulk_', '');
+    $(this).data(`bulk_key_${field_key}`, val);
+  });
+
+  $('#bulk_edit_picker .dt_contenteditable').on('blur', function () {
+    const id = $(this).attr('id');
+    let val = $(this).html();
+
+    let field_key = this.id.replace('bulk_', '');
+    $(this).data(`bulk_key_${field_key}`, val);
+  });
+
+  $('.list-dropdown-submenu-item-link').on('click', function () {
+    // Hide bulk select modals
+    $('#records-table').removeClass('bulk_edit_on');
+
+    // Close all open modals
+    $('.list-dropdown-submenu-item-link').each(function () {
+      let open_modals = $(this).data('modal');
+      $('#' + open_modals).hide();
+    });
+
+    // Open modal for clicked menu item
+    let display_modal = $(this).data('modal');
+    $('#' + display_modal).show();
+
+    // Show bulk select checkboxes if applicable
+    if ($(this).data('checkboxes') === true) {
+      $('#records-table').addClass('bulk_edit_on');
+    }
+  });
+
+  $('.list-action-close-button').on('click', function () {
+    let section = $(this).data('close');
+    if (section) {
+      $(`#${section}`).hide();
+      if (section === 'bulk_edit_picker') {
+        $('#records-table').toggleClass('bulk_edit_on');
+      }
+    } else {
+      $('#list-actions .list_action_section').hide();
+      $('#records-table').removeClass('bulk_edit_on');
+    }
+  });
+
+  /*****
+   * Bulk Send App
+   */
+  let bulk_send_app_button = $('#bulk_send_app_submit');
+  bulk_send_app_button.on('click', function (e) {
+    bulk_send_app();
+  });
+
+  function bulk_send_app() {
+    let subject = $('#bulk_send_app_subject').val();
+    let note = $('#bulk_send_app_msg').val();
+
+    let selected_input = jQuery(
+      '.bulk_send_app.dt-radio.button-group input:checked',
+    );
+    if (selected_input.length < 1) {
+      $('#bulk_send_app_required_selection').show();
+      return;
+    } else {
+      $('#bulk_send_app_required_selection').hide();
+    }
+
+    let root = selected_input.data('root');
+    let type = selected_input.data('type');
+
+    let queue = [];
+    $('.bulk_edit_checkbox input').each(function () {
+      if (this.checked && this.id !== 'bulk_edit_master_checkbox') {
+        let postId = parseInt($(this).val());
+        queue.push(postId);
+      }
+    });
+
+    if (queue.length < 1) {
+      $('#bulk_send_app_required_elements').show();
+      return;
+    } else {
+      $('#bulk_send_app_required_elements').hide();
+    }
+
+    $('#bulk_send_app_submit-spinner').addClass('active');
+
+    let email_queue_link = `<a target="_blank" href="${window.wpApiShare.site_url + '/wp-admin/admin.php?page=dt_utilities&tab=background_jobs'}">See queue</a>`;
+
+    window
+      .makeRequest('POST', list_settings.post_type + '/email_magic', {
+        root: root,
+        type: type,
+        subject: subject,
+        note: note,
+        post_ids: queue,
+      })
+      .done((data) => {
+        $('#bulk_send_app_submit-spinner').removeClass('active');
+        $('#bulk_send_app_submit-message').html(
+          `<strong>${data.total_sent}</strong> ${list_settings.translations.sent}! ${window.wpApiShare.can_manage_dt ? email_queue_link : ''}<br><strong>${data.total_unsent}</strong> ${list_settings.translations.not_sent}`,
+        );
+        $('#bulk_edit_master_checkbox').prop('checked', false);
+        $('.bulk_edit_checkbox input').prop('checked', false);
+        bulk_edit_count();
+        // window.location.reload();
+      })
+      .fail((e) => {
+        $('#bulk_send_app_submit-spinner').removeClass('active');
+        $('#bulk_send_app_submit-message').html(
+          'Oops. Something went wrong! Check log.',
+        );
+        console.log(e);
+      });
   }
 
   /**
