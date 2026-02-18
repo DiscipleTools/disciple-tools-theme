@@ -95,35 +95,127 @@ class DT_Duplicate_Checker_And_Merging {
     }
 
 
+    /**
+     * Extract field values for duplicate search based on field type
+     *
+     * @param array $post The post data array
+     * @param string $field_key The field key to extract
+     * @param array $field_settings The field settings array
+     * @param string $exact_template The exact match template (e.g., '^' for exact, '' for fuzzy)
+     * @return array|null Array of search values or null if no values found
+     */
+    private static function extract_field_values_for_duplicate_search( $post, $field_key, $field_settings, $exact_template ){
+        if ( !isset( $field_settings['type'] ) || empty( $field_settings['type'] ) ){
+            return null;
+        }
+
+        $field_type = $field_settings['type'];
+        $field_value = $post[$field_key] ?? null;
+
+        if ( empty( $field_value ) ){
+            return null;
+        }
+
+        $search_values = [];
+
+        switch ( $field_type ) {
+            case 'text':
+            case 'textarea':
+            case 'number':
+                // Direct string/number value
+                $search_values[] = $exact_template . $field_value;
+                break;
+
+            case 'communication_channel':
+                // Array of objects with 'value' key
+                if ( is_array( $field_value ) ){
+                    foreach ( $field_value as $value ){
+                        if ( !empty( $value['value'] ) ){
+                            $search_values[] = $exact_template . $value['value'];
+                        }
+                    }
+                }
+                break;
+
+            case 'tags':
+                // Array of tag values
+                if ( is_array( $field_value ) ){
+                    foreach ( $field_value as $tag ){
+                        $tag_value = is_array( $tag ) ? ( $tag['value'] ?? $tag['label'] ?? '' ) : $tag;
+                        if ( !empty( $tag_value ) ){
+                            $search_values[] = $exact_template . $tag_value;
+                        }
+                    }
+                }
+                break;
+
+            case 'multi_select':
+                // Array of selected keys
+                if ( is_array( $field_value ) ){
+                    foreach ( $field_value as $selected ){
+                        $selected_value = is_array( $selected ) ? ( $selected['key'] ?? $selected['value'] ?? '' ) : $selected;
+                        if ( !empty( $selected_value ) ){
+                            $search_values[] = $exact_template . $selected_value;
+                        }
+                    }
+                }
+                break;
+
+            default:
+                // For other types, try to extract as string
+                if ( is_scalar( $field_value ) ){
+                    $search_values[] = $exact_template . $field_value;
+                } else if ( is_array( $field_value ) && isset( $field_value['value'] ) ){
+                    $search_values[] = $exact_template . $field_value['value'];
+                }
+                break;
+        }
+
+        return !empty( $search_values ) ? $search_values : null;
+    }
+
     private static function query_for_duplicate_searches( $post_type, $post_id, $exact = true ){
         $post = DT_Posts::get_post( $post_type, $post_id );
         $fields = DT_Posts::get_post_field_settings( $post_type );
         $search_query = [];
         $exact_template = $exact ? '^' : '';
         $fields_with_values = [];
-        foreach ( $post as $field_key => $field_value ){
-            if ( ! isset( $fields[$field_key]['type'] ) || empty( $fields[$field_key]['type'] ) ){
+
+        // Get configured duplicate fields, or use defaults if not configured
+        $site_options = dt_get_option( 'dt_site_options' );
+        $duplicates_config = $site_options['duplicates'] ?? [];
+
+        // Check if valid configuration exists for this post type
+        // Use saved config if it exists and is not empty, otherwise use defaults
+        if ( isset( $duplicates_config[$post_type] ) && !empty( $duplicates_config[$post_type] ) ) {
+            // Use saved configuration
+            $configured_fields = $duplicates_config[$post_type];
+        } else {
+            // No valid configuration exists - use defaults
+            $configured_fields = dt_get_duplicate_fields_defaults( $post_type );
+        }
+
+        // Process each configured field
+        foreach ( $configured_fields as $field_key ){
+            // Skip if field doesn't exist in post or field settings
+            if ( !isset( $post[$field_key] ) || !isset( $fields[$field_key] ) ){
                 continue;
             }
-            if ( $fields[$field_key]['type'] === 'communication_channel' ){
-                if ( !empty( $field_value ) ){
-                    $channel_queries = [];
-                    foreach ( $field_value as $value ){
-                        if ( !empty( $value['value'] ) ){
-                             $channel_queries[] = $exact_template . $value['value'];
-                        }
-                    }
-                    if ( !empty( $channel_queries ) ){
-                        $fields_with_values[] = $field_key;
-                        $search_query[$field_key] = [];
-                        $search_query[$field_key] = $channel_queries;
-                    }
-                }
-            } else if ( $field_key === 'name' && !empty( $field_value ) ){
+
+            // Extract values based on field type
+            $search_values = self::extract_field_values_for_duplicate_search(
+                $post,
+                $field_key,
+                $fields[ $field_key ],
+                $exact_template
+            );
+
+            if ( !empty( $search_values ) ){
                 $fields_with_values[] = $field_key;
-                $search_query[$field_key] = [ $exact_template . $field_value ];
+                $search_query[ $field_key ] = $search_values;
             }
         }
+
         return [
             'query' => $search_query,
             'fields' => $fields_with_values,

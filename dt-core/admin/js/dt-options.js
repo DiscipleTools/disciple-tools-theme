@@ -1528,4 +1528,192 @@ jQuery(document).ready(function ($) {
   /**
    * Storage Test Connection - [END]
    */
+
+  /**
+   * Duplicate Fields Configuration
+   */
+  if (
+    window.dtOptionAPI &&
+    window.dtOptionAPI.duplicate_fields &&
+    window.dtOptionAPI.duplicate_fields.post_types &&
+    Array.isArray(window.dtOptionAPI.duplicate_fields.post_types) &&
+    window.dtOptionAPI.duplicate_fields.post_types.length > 0 &&
+    $('#duplicate-fields-form').length > 0
+  ) {
+    const duplicateFieldsConfig =
+      window.dtOptionAPI.duplicate_fields.config || {};
+    // Ensure post_types is an array (handle case where it might be an object due to non-sequential keys)
+    const postTypesRaw = window.dtOptionAPI.duplicate_fields.post_types || [];
+    const allPostTypes = Array.isArray(postTypesRaw)
+      ? postTypesRaw
+      : Object.values(postTypesRaw);
+    const fieldsData = window.dtOptionAPI.duplicate_fields.fields || {};
+    const defaultFields = window.dtOptionAPI.duplicate_fields.defaults || {};
+
+    // Transform field settings to dt-multi-select format
+    // Note: These types must match those supported in extract_field_values_for_duplicate_search()
+    // in dt-contacts/duplicates-merging.php
+    function transformFieldsForMultiSelect(fields) {
+      const allowedTypes = [
+        'text',
+        'textarea',
+        'number',
+        'communication_channel',
+        'tags',
+        'multi_select',
+      ];
+
+      const fieldsArray = Object.keys(fields || {}).map(function (fieldKey) {
+        const field = fields[fieldKey];
+        return {
+          key: fieldKey,
+          name: field.name || fieldKey,
+          type: field.type,
+          hidden: field.hidden || false,
+          private: field.private || false,
+          icon: field.icon || field['font-icon'] || null,
+        };
+      });
+
+      return fieldsArray
+        .filter(function (field) {
+          return (
+            !field.hidden && !field.private && allowedTypes.includes(field.type)
+          );
+        })
+        .sort(function (a, b) {
+          const nameA = (a.name || '').toLowerCase();
+          const nameB = (b.name || '').toLowerCase();
+          return nameA.localeCompare(nameB);
+        })
+        .map(function (field) {
+          return {
+            id: field.key,
+            label: field.name || field.key,
+            color: null,
+            icon: field.icon || null,
+          };
+        });
+    }
+
+    // Update field selector with fields
+    function updateFieldSelector(postType) {
+      const fieldSelector = document.querySelector(
+        '#duplicate_fields_selector',
+      );
+      if (!fieldSelector) return;
+
+      const fields = fieldsData[postType] || {};
+      const options = transformFieldsForMultiSelect(fields);
+      fieldSelector.options = options;
+
+      // Set selected values from config, or use defaults if no valid config exists
+      // Check if valid config exists for this post type
+      let selectedFields;
+      if (
+        duplicateFieldsConfig.hasOwnProperty(postType) &&
+        Array.isArray(duplicateFieldsConfig[postType]) &&
+        duplicateFieldsConfig[postType].length > 0
+      ) {
+        // Valid saved config exists - use it
+        selectedFields = duplicateFieldsConfig[postType];
+      } else {
+        // No valid config exists - use defaults
+        selectedFields = defaultFields[postType] || [];
+      }
+
+      // Filter selectedFields to only include fields that exist in options
+      // This prevents errors when a field was configured but later removed or filtered out
+      const availableOptionIds = options.map(function (opt) {
+        return opt.id;
+      });
+      const validSelectedFields = selectedFields.filter(function (fieldId) {
+        return availableOptionIds.includes(fieldId);
+      });
+
+      fieldSelector.value = validSelectedFields;
+    }
+
+    // Handle post type change
+    $('#duplicate_fields_post_type').on('change', function () {
+      const postType = $(this).val();
+      updateFieldSelector(postType);
+    });
+
+    // Handle form submission
+    $('#duplicate-fields-form').on('submit', function (e) {
+      e.preventDefault();
+
+      const postType = $('#duplicate_fields_post_type').val();
+      const fieldSelector = document.querySelector(
+        '#duplicate_fields_selector',
+      );
+
+      if (!fieldSelector) {
+        alert('Field selector not found');
+        return false;
+      }
+
+      // Collect all post type configurations
+      const allConfigs = {};
+
+      // Get current selection - always save current selection, even if empty
+      // (empty will be handled by PHP to use defaults)
+      const currentFields = Array.isArray(fieldSelector.value)
+        ? fieldSelector.value
+        : [];
+
+      // Always save the current post type selection (even if empty array)
+      // PHP will ensure 'name' is included and handle empty arrays
+      allConfigs[postType] = currentFields;
+
+      // Include other post types from existing config
+      Object.keys(duplicateFieldsConfig).forEach(function (pt) {
+        if (pt !== postType && duplicateFieldsConfig[pt]) {
+          allConfigs[pt] = duplicateFieldsConfig[pt];
+        }
+      });
+
+      // Set hidden input
+      $('#duplicate_fields_data').val(JSON.stringify(allConfigs));
+
+      // Submit form
+      this.submit();
+    });
+
+    // Initialize on page load - wait for web component to be defined
+    function initializeDuplicateFields() {
+      const fieldSelector = document.querySelector(
+        '#duplicate_fields_selector',
+      );
+      const postTypeSelect = $('#duplicate_fields_post_type');
+
+      if (!fieldSelector || !postTypeSelect.length) {
+        return;
+      }
+
+      // Check if component is defined
+      if (
+        window.customElements &&
+        window.customElements.get('dt-multi-select')
+      ) {
+        // Component is ready, initialize with the currently selected post type
+        const selectedPostType = postTypeSelect.val();
+        if (selectedPostType && fieldsData[selectedPostType]) {
+          updateFieldSelector(selectedPostType);
+        } else if (allPostTypes.length > 0) {
+          // Fallback to first post type if no selection
+          updateFieldSelector(allPostTypes[0]);
+        }
+      } else {
+        // Wait for component to be defined
+        setTimeout(initializeDuplicateFields, 100);
+      }
+    }
+
+    // Start initialization
+    $(document).ready(function () {
+      initializeDuplicateFields();
+    });
+  }
 });

@@ -347,6 +347,11 @@ function dt_get_site_options_defaults() {
             ]
         ]
     ];
+
+    // Duplicate detection fields configuration
+    // Empty by default - will use dt_get_duplicate_fields_defaults() function when empty
+    // Structure: ['duplicates' => ['contacts' => ['name', 'contact_phone', ...], 'groups' => ['name', ...], ...]]
+    $fields['duplicates'] = [];
     $fields['group_preferences'] = [
         'church_metrics' => true,
         'four_fields' => false,

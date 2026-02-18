@@ -1520,6 +1520,39 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
     }
 
     /**
+     * Get default duplicate detection fields for a post type
+     *
+     * Returns an array of field keys that should be checked for duplicates by default.
+     * - 'name' field is always included for all post types
+     * - 'communication_channel' type fields are included only for contacts post type
+     *
+     * @param string $post_type The post type to get defaults for
+     * @return array Array of field keys to check for duplicates
+     */
+    if ( !function_exists( 'dt_get_duplicate_fields_defaults' ) ) {
+        function dt_get_duplicate_fields_defaults( $post_type ) {
+            $default_fields = [];
+
+            // Name field is always included for all post types
+            $default_fields[] = 'name';
+
+            // Communication channel fields are only included for contacts post type
+            if ( $post_type === 'contacts' ) {
+                $field_settings = DT_Posts::get_post_field_settings( $post_type );
+
+                foreach ( $field_settings as $field_key => $field_setting ) {
+                    // Include all communication_channel type fields
+                    if ( isset( $field_setting['type'] ) && $field_setting['type'] === 'communication_channel' ) {
+                        $default_fields[] = $field_key;
+                    }
+                }
+            }
+
+            return apply_filters( 'dt_duplicate_fields_defaults', $default_fields, $post_type );
+        }
+    }
+
+    /**
      * All code above here.
      */
 } // end if ( ! defined( 'DT_FUNCTIONS_READY' ) )
