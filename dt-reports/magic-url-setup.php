@@ -817,7 +817,7 @@ Thanks!', 'disciple_tools' );
                                 <?php
                                 // Check if expiration is explicitly set to "Never" (only check if links_never_expires is true)
                                 $is_never_expires = ( $expiration_data['links_never_expires'] === true ||
-                                                      $expiration_data['ts_formatted'] === __( 'Never', 'disciple_tools' ) || 
+                                                      $expiration_data['ts_formatted'] === __( 'Never', 'disciple_tools' ) ||
                                                       $expiration_data['ts_formatted'] === 'Never' );
                                 ?>
                                 <input type="checkbox" 
