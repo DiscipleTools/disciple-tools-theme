@@ -647,13 +647,13 @@ Thanks!', 'disciple_tools' );
         $post_id = isset( $post['ID'] ) ? $post['ID'] : get_the_ID();
         $sys_type = $user_id ? 'wp_user' : 'post';
         $record_id = $user_id ? $user_id : $post_id;
-        
+
         if ( class_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API' ) ) {
             // Try to find matching link_obj for backward compatibility
             $link_obj_id = null;
             $matching_link_obj = null;
             $link_objs = Disciple_Tools_Bulk_Magic_Link_Sender_API::fetch_option_link_objs();
-            
+
             foreach ( $link_objs as $link_obj ) {
                 $generated_key = Disciple_Tools_Bulk_Magic_Link_Sender_API::generate_magic_link_type_key( $link_obj );
                 if ( $generated_key === $meta_key ) {
@@ -662,7 +662,7 @@ Thanks!', 'disciple_tools' );
                     break;
                 }
             }
-            
+
             // Fetch expiration using unified wrapper (checks meta first, then link_obj)
             $expiration_data_result = Disciple_Tools_Bulk_Magic_Link_Sender_API::capture_expiry_details(
                 $meta_key,
@@ -670,10 +670,10 @@ Thanks!', 'disciple_tools' );
                 $sys_type,
                 $matching_link_obj
             );
-            
+
             // Also fetch full expiration data to get links_never_expires flag
             $full_expiration_data = Disciple_Tools_Bulk_Magic_Link_Sender_API::fetch_link_expiration_from_meta( $meta_key, $record_id, $sys_type );
-            
+
             $expiration_data = array_merge( $expiration_data_result, [
                 'links_never_expires' => $full_expiration_data['links_never_expires'] ?? false
             ] );
@@ -814,9 +814,9 @@ Thanks!', 'disciple_tools' );
                                 </select>
                             </div>
                             <div style="display: flex; align-items: center; gap: 0.25rem;">
-                                <?php 
+                                <?php
                                 // Check if expiration is explicitly set to "Never" (only check if links_never_expires is true)
-                                $is_never_expires = ( $expiration_data['links_never_expires'] === true || 
+                                $is_never_expires = ( $expiration_data['links_never_expires'] === true ||
                                                       $expiration_data['ts_formatted'] === __( 'Never', 'disciple_tools' ) || 
                                                       $expiration_data['ts_formatted'] === 'Never' );
                                 ?>
