@@ -913,6 +913,54 @@ class Disciple_Tools_Posts
                             if ( empty( $query_value ) ){
                                 $where_sql .= " $table_key.meta_value IS NULL ";
                             }
+                        } else if ( in_array( $field_type, [ 'file_upload' ] ) ) {
+                            /**
+                             * file_upload
+                             * Supports:
+                             * ['*'] => has at least one file
+                             * []    => no files
+                             */
+                            if ( !is_array( $query_value ) ) {
+                                return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
+                            }
+
+                            $meta_table = $wpdb->postmeta;
+                            $user_condition = '';
+                            if ( isset( $field_settings[$query_key]['private'] ) && $field_settings[$query_key]['private'] ) {
+                                $meta_table = $wpdb->dt_post_user_meta;
+                                $user_condition = ' AND pm.user_id = ' . get_current_user_id();
+                            }
+
+                            // Detect "has files" query (supports '*' and prefixed legacy option id)
+                            $has_files = false;
+                            foreach ( $query_value as $value ) {
+                                if ( strpos( (string) $value, '-' ) !== 0 ) {
+                                    $normalized = ltrim( (string) $value, '^' );
+                                    if ( $normalized === '*' || $normalized === 'all-with-files' ) {
+                                        $has_files = true;
+                                    }
+                                }
+                            }
+
+                            $has_value_sql = "
+                                EXISTS (
+                                    SELECT 1
+                                    FROM $meta_table pm
+                                    WHERE pm.post_id = p.ID
+                                      AND pm.meta_key = '" . esc_sql( $query_key ) . "'
+                                      $user_condition
+                                      AND pm.meta_value <> ''
+                                      AND pm.meta_value <> 'a:0:{}'
+                                )
+                            ";
+
+                            if ( empty( $query_value ) ) {
+                                $where_sql .= " NOT $has_value_sql ";
+                            } elseif ( $has_files ) {
+                                $where_sql .= " $has_value_sql ";
+                            } else {
+                                return new WP_Error( __FUNCTION__, "Invalid file_upload filter values for $query_key", [ 'status' => 400 ] );
+                            }
                         } else if ( in_array( $field_type, [ 'connection' ] ) ){
                             /**
                              * connection

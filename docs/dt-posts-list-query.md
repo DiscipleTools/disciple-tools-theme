@@ -189,6 +189,16 @@ Different field types have different filter formats:
 'assigned_to' => []
 ```
 
+### File Upload Fields
+
+```php
+// Find posts with at least one uploaded file
+'documents' => ['*']
+
+// Find posts with no uploaded files
+'documents' => []
+```
+
 ## Combining Multiple Filters
 
 Multiple filters can be combined to create complex queries:

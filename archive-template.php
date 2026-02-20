@@ -948,7 +948,7 @@ Thanks!';
             <div class="grid-x">
                 <div class="cell small-4 filter-modal-left">
                     <?php $fields = [];
-                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'communication_channel' ];
+                    $allowed_types = [ 'user_select', 'multi_select', 'key_select', 'boolean', 'date', 'datetime', 'location', 'location_meta', 'connection', 'tags', 'text', 'communication_channel', 'file_upload' ];
                     //order fields alphabetically by Name
                     uasort( $field_options, function ( $a, $b ){
                         return strnatcmp( $a['name'] ?? 'z', $b['name'] ?? 'z' );
@@ -1104,6 +1104,29 @@ Thanks!';
                                             <label>
                                                 <input name="filter_by_text_comms_option" class="filter-by-text-comms-option" type="radio" value="all-without-set-value" data-field="<?php echo esc_html( $field ) ?>" />
                                                 <?php echo esc_html( sprintf( _x( 'All %1$s with no value in %2$s', 'All Contacts with no value in field', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                            </label>
+                                        </p>
+                                    <?php elseif ( isset( $field_options[$field] ) && $field_options[$field]['type'] === 'file_upload' ) : ?>
+                                        <p>
+                                            <label>
+                                                <input
+                                                    name="filter_by_file_upload_option_<?php echo esc_attr( $field ) ?>"
+                                                    class="filter-by-file-upload-option"
+                                                    type="radio"
+                                                    value="all-with-files"
+                                                    data-field="<?php echo esc_html( $field ) ?>"
+                                                />
+                                                <?php echo esc_html( sprintf( _x( 'All %1$s with files in %2$s', 'All Contacts with files in Documents', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                            </label>
+                                            <label>
+                                                <input
+                                                    name="filter_by_file_upload_option_<?php echo esc_attr( $field ) ?>"
+                                                    class="filter-by-file-upload-option"
+                                                    type="radio"
+                                                    value="all-without-files"
+                                                    data-field="<?php echo esc_html( $field ) ?>"
+                                                />
+                                                <?php echo esc_html( sprintf( _x( 'All %1$s without files in %2$s', 'All Contacts without files in Documents', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
                                             </label>
                                         </p>
                                     <?php endif; ?>
