@@ -1321,6 +1321,17 @@
               }
             } else if (field_settings.type === 'image') {
               values = [`<img src='${field_value.thumb}' class='list-image'>`];
+            } else if (field_settings.type === 'file_upload') {
+              const fileCount = Array.isArray(field_value)
+                ? field_value.length
+                : Array.isArray(field_value?.values)
+                  ? field_value.values.length
+                  : 0;
+              if (fileCount > 0) {
+                values = [
+                  `${window.SHAREDFUNCTIONS.escapeHTML(String(fileCount))} ${fileCount === 1 ? 'file' : 'files'}`,
+                ];
+              }
             }
           } else if (
             !field_value &&
@@ -1688,6 +1699,15 @@
             search_query.push({ [field]: value !== null ? [value] : [] });
             break;
           }
+        }
+      } else if (type === 'file_upload') {
+        const selectedOption = $(
+          `#${field}-options .filter-by-file-upload-option:checked`,
+        ).val();
+        if (selectedOption === 'all-with-files') {
+          search_query.push({ [field]: ['*'] });
+        } else if (selectedOption === 'all-without-files') {
+          search_query.push({ [field]: [] });
         }
       } else {
         let options = [];
@@ -2066,6 +2086,13 @@
     });
   });
 
+  $('.filter-by-file-upload-option').on('click', function (e) {
+    handle_filter_by_file_upload({
+      id: $(this).val(),
+      field: $(this).data('field'),
+    });
+  });
+
   function handle_filter_by_text_comms(options) {
     const { id, field } = options || { id: null, field: null };
     if (id && field) {
@@ -2141,6 +2168,32 @@
         new_filter_labels.push(newLabel);
       }
     }
+  }
+
+  function handle_filter_by_file_upload(options) {
+    const { id, field } = options || { id: null, field: null };
+    if (!id || !field) {
+      return;
+    }
+
+    const without = id === 'all-without-files';
+    const { newLabel, filterName } = create_label_all(
+      field,
+      without,
+      id,
+      list_settings,
+    );
+
+    // Replace existing label for this file_upload field.
+    new_filter_labels = new_filter_labels.filter(
+      (label) => label.field !== field,
+    );
+    $(selected_filters).find(`.current-filter.${field}`).remove();
+
+    selected_filters.append(
+      `<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`,
+    );
+    new_filter_labels.push(newLabel);
   }
 
   let load_multi_select_typeaheads =
@@ -2617,7 +2670,11 @@
           list_settings,
           `post_type_settings.fields.${label.field}.type`,
         );
-        if (type === 'key_select' || type === 'boolean') {
+        if (
+          type === 'key_select' ||
+          type === 'boolean' ||
+          type === 'file_upload'
+        ) {
           $(
             `#filter-modal #${label.field}-options input[value="${label.id}"]`,
           ).prop('checked', true);

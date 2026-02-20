@@ -16,6 +16,20 @@ jQuery(function ($) {
   window.post_type_fields =
     window.new_record_localized.post_type_settings.fields;
 
+  // New record flow: keep file uploads local until record is created.
+  // This prevents API upload attempts against non-existent post IDs.
+  const fileUploadComponents = Array.from(
+    document.querySelectorAll('dt-file-upload'),
+  );
+  fileUploadComponents.forEach((component) => {
+    // Keep configured auto/manual UI behavior, but clear API bindings so
+    // uploads are deferred until after the record is created.
+    component.removeAttribute('post-type');
+    component.removeAttribute('post-id');
+    component.removeAttribute('meta-key');
+    component.removeAttribute('key-prefix');
+  });
+
   // focus first field in the form
   document.querySelector('.form-fields [name]').focus();
 
@@ -199,6 +213,7 @@ jQuery(function ($) {
 
       // build form values
       const form = event.target;
+      const pendingFileUploads = [];
       Array.from(form.querySelectorAll('*')).forEach((el) => {
         // skip fields like `field_name[query]` that are from typeaheads
         // and skip values not from web components
@@ -207,6 +222,22 @@ jQuery(function ($) {
           el.name.includes('[') ||
           !el.tagName.startsWith('DT-')
         ) {
+          return;
+        }
+
+        // file_upload fields on new record are uploaded only after create succeeds
+        if (el.tagName === 'DT-FILE-UPLOAD') {
+          const files =
+            typeof el.getPendingFilesForUpload === 'function'
+              ? Array.from(el.getPendingFilesForUpload())
+              : Array.from(el.stagedFiles || []);
+          if (files.length > 0) {
+            pendingFileUploads.push({
+              fieldKey: el.name.trim(),
+              files,
+              component: el,
+            });
+          }
           return;
         }
 
@@ -254,11 +285,80 @@ jQuery(function ($) {
 
       window.componentService.api
         .createPost(window.new_record_localized.post_type, new_post)
-        .then((response) => {
+        .then(async (response) => {
+          const createdPostId = parseInt(
+            response?.ID || response?.id || response?.post_id,
+            10,
+          );
+
+          console.groupCollapsed('[new-record] upload debug');
+          console.log('post_type', window.new_record_localized.post_type);
+          console.log('createPost response', response);
+          console.log('resolved createdPostId', createdPostId);
+          console.log(
+            'pending file upload fields',
+            pendingFileUploads.map((upload) => ({
+              fieldKey: upload.fieldKey,
+              files: upload.files.map((file) => ({
+                name: file.name,
+                size: file.size,
+                type: file.type,
+              })),
+            })),
+          );
+          console.groupEnd();
+
+          if (pendingFileUploads.length > 0) {
+            if (!createdPostId) {
+              console.error(
+                '[new-record] missing createdPostId from createPost response',
+                response,
+              );
+              throw new Error(
+                'Unable to determine created record ID for file uploads.',
+              );
+            }
+            for (const upload of pendingFileUploads) {
+              const keyPrefix = `${window.new_record_localized.post_type}/${createdPostId}/${upload.fieldKey}`;
+              console.log('[new-record] uploadFiles request', {
+                postType: window.new_record_localized.post_type,
+                postId: createdPostId,
+                fieldKey: upload.fieldKey,
+                keyPrefix,
+                fileCount: upload.files.length,
+              });
+              try {
+                await window.componentService.api.uploadFiles(
+                  window.new_record_localized.post_type,
+                  createdPostId,
+                  upload.files,
+                  upload.fieldKey,
+                  keyPrefix,
+                );
+              } catch (uploadError) {
+                console.error('[new-record] uploadFiles failed', {
+                  fieldKey: upload.fieldKey,
+                  error: uploadError,
+                  args: uploadError?.args,
+                });
+                upload.component.setAttribute(
+                  'error',
+                  uploadError?.message || 'Upload failed',
+                );
+                throw uploadError;
+              }
+            }
+          }
+
           window.location = response.permalink;
         })
         .catch(function (error) {
-          const message = error.responseJSON?.message || error.responseText;
+          console.error('[new-record] submit failed', error);
+          const message =
+            error?.message ||
+            error?.responseJSON?.message ||
+            error?.responseText ||
+            'Unable to save record.';
           $('.js-create-post-button')
             .removeClass('loading')
             .addClass('alert')

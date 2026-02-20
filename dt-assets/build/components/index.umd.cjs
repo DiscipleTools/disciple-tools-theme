@@ -1,38 +1,38 @@
-(function($,P){typeof exports=="object"&&typeof module<"u"?P(exports):typeof define=="function"&&define.amd?define(["exports"],P):($=typeof globalThis<"u"?globalThis:$||self,P($.DtWebComponents={}))})(this,function($){"use strict";var Pr=Object.defineProperty;var Mr=($,P,W)=>P in $?Pr($,P,{enumerable:!0,configurable:!0,writable:!0,value:W}):$[P]=W;var Xe=($,P,W)=>Mr($,typeof P!="symbol"?P+"":P,W);/**
+(function($,I){typeof exports=="object"&&typeof module<"u"?I(exports):typeof define=="function"&&define.amd?define(["exports"],I):($=typeof globalThis<"u"?globalThis:$||self,I($.DtWebComponents={}))})(this,function($){"use strict";var Pn=Object.defineProperty;var Mn=($,I,W)=>I in $?Pn($,I,{enumerable:!0,configurable:!0,writable:!0,value:W}):$[I]=W;var Me=($,I,W)=>Mn($,typeof I!="symbol"?I+"":I,W);/**
  * @license
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */var As;const P=globalThis,W=P.ShadowRoot&&(P.ShadyCSS===void 0||P.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,Vt=Symbol(),Bt=new WeakMap;let qs=class{constructor(e,t,i){if(this._$cssResult$=!0,i!==Vt)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=e,this.t=t}get styleSheet(){let e=this.o;const t=this.t;if(W&&e===void 0){const i=t!==void 0&&t.length===1;i&&(e=Bt.get(t)),e===void 0&&((this.o=e=new CSSStyleSheet).replaceSync(this.cssText),i&&Bt.set(t,e))}return e}toString(){return this.cssText}};const Fs=o=>new qs(typeof o=="string"?o:o+"",void 0,Vt),Us=(o,e)=>{if(W)o.adoptedStyleSheets=e.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const t of e){const i=document.createElement("style"),s=P.litNonce;s!==void 0&&i.setAttribute("nonce",s),i.textContent=t.cssText,o.appendChild(i)}},Ht=W?o=>o:o=>o instanceof CSSStyleSheet?(e=>{let t="";for(const i of e.cssRules)t+=i.cssText;return Fs(t)})(o):o;/**
+ */var Oo;const I=globalThis,W=I.ShadowRoot&&(I.ShadyCSS===void 0||I.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,Ut=Symbol(),Vt=new WeakMap;let qo=class{constructor(e,t,i){if(this._$cssResult$=!0,i!==Ut)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=e,this.t=t}get styleSheet(){let e=this.o;const t=this.t;if(W&&e===void 0){const i=t!==void 0&&t.length===1;i&&(e=Vt.get(t)),e===void 0&&((this.o=e=new CSSStyleSheet).replaceSync(this.cssText),i&&Vt.set(t,e))}return e}toString(){return this.cssText}};const Uo=s=>new qo(typeof s=="string"?s:s+"",void 0,Ut),Vo=(s,e)=>{if(W)s.adoptedStyleSheets=e.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const t of e){const i=document.createElement("style"),o=I.litNonce;o!==void 0&&i.setAttribute("nonce",o),i.textContent=t.cssText,s.appendChild(i)}},Bt=W?s=>s:s=>s instanceof CSSStyleSheet?(e=>{let t="";for(const i of e.cssRules)t+=i.cssText;return Uo(t)})(s):s;/**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const{is:Vs,defineProperty:Bs,getOwnPropertyDescriptor:Hs,getOwnPropertyNames:Gs,getOwnPropertySymbols:Ws,getPrototypeOf:Ks}=Object,K=globalThis,Gt=K.trustedTypes,Zs=Gt?Gt.emptyScript:"",et=K.reactiveElementPolyfillSupport,he=(o,e)=>o,tt={toAttribute(o,e){switch(e){case Boolean:o=o?Zs:null;break;case Object:case Array:o=o==null?o:JSON.stringify(o)}return o},fromAttribute(o,e){let t=o;switch(e){case Boolean:t=o!==null;break;case Number:t=o===null?null:Number(o);break;case Object:case Array:try{t=JSON.parse(o)}catch{t=null}}return t}},Wt=(o,e)=>!Vs(o,e),Kt={attribute:!0,type:String,converter:tt,reflect:!1,hasChanged:Wt};Symbol.metadata??(Symbol.metadata=Symbol("metadata")),K.litPropertyMetadata??(K.litPropertyMetadata=new WeakMap);let pe=class extends HTMLElement{static addInitializer(e){this._$Ei(),(this.l??(this.l=[])).push(e)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(e,t=Kt){if(t.state&&(t.attribute=!1),this._$Ei(),this.elementProperties.set(e,t),!t.noAccessor){const i=Symbol(),s=this.getPropertyDescriptor(e,i,t);s!==void 0&&Bs(this.prototype,e,s)}}static getPropertyDescriptor(e,t,i){const{get:s,set:a}=Hs(this.prototype,e)??{get(){return this[t]},set(n){this[t]=n}};return{get(){return s==null?void 0:s.call(this)},set(n){const r=s==null?void 0:s.call(this);a.call(this,n),this.requestUpdate(e,r,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(e){return this.elementProperties.get(e)??Kt}static _$Ei(){if(this.hasOwnProperty(he("elementProperties")))return;const e=Ks(this);e.finalize(),e.l!==void 0&&(this.l=[...e.l]),this.elementProperties=new Map(e.elementProperties)}static finalize(){if(this.hasOwnProperty(he("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(he("properties"))){const t=this.properties,i=[...Gs(t),...Ws(t)];for(const s of i)this.createProperty(s,t[s])}const e=this[Symbol.metadata];if(e!==null){const t=litPropertyMetadata.get(e);if(t!==void 0)for(const[i,s]of t)this.elementProperties.set(i,s)}this._$Eh=new Map;for(const[t,i]of this.elementProperties){const s=this._$Eu(t,i);s!==void 0&&this._$Eh.set(s,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(e){const t=[];if(Array.isArray(e)){const i=new Set(e.flat(1/0).reverse());for(const s of i)t.unshift(Ht(s))}else e!==void 0&&t.push(Ht(e));return t}static _$Eu(e,t){const i=t.attribute;return i===!1?void 0:typeof i=="string"?i:typeof e=="string"?e.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){var e;this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),(e=this.constructor.l)==null||e.forEach(t=>t(this))}addController(e){var t;(this._$EO??(this._$EO=new Set)).add(e),this.renderRoot!==void 0&&this.isConnected&&((t=e.hostConnected)==null||t.call(e))}removeController(e){var t;(t=this._$EO)==null||t.delete(e)}_$E_(){const e=new Map,t=this.constructor.elementProperties;for(const i of t.keys())this.hasOwnProperty(i)&&(e.set(i,this[i]),delete this[i]);e.size>0&&(this._$Ep=e)}createRenderRoot(){const e=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return Us(e,this.constructor.elementStyles),e}connectedCallback(){var e;this.renderRoot??(this.renderRoot=this.createRenderRoot()),this.enableUpdating(!0),(e=this._$EO)==null||e.forEach(t=>{var i;return(i=t.hostConnected)==null?void 0:i.call(t)})}enableUpdating(e){}disconnectedCallback(){var e;(e=this._$EO)==null||e.forEach(t=>{var i;return(i=t.hostDisconnected)==null?void 0:i.call(t)})}attributeChangedCallback(e,t,i){this._$AK(e,i)}_$EC(e,t){var a;const i=this.constructor.elementProperties.get(e),s=this.constructor._$Eu(e,i);if(s!==void 0&&i.reflect===!0){const n=(((a=i.converter)==null?void 0:a.toAttribute)!==void 0?i.converter:tt).toAttribute(t,i.type);this._$Em=e,n==null?this.removeAttribute(s):this.setAttribute(s,n),this._$Em=null}}_$AK(e,t){var a;const i=this.constructor,s=i._$Eh.get(e);if(s!==void 0&&this._$Em!==s){const n=i.getPropertyOptions(s),r=typeof n.converter=="function"?{fromAttribute:n.converter}:((a=n.converter)==null?void 0:a.fromAttribute)!==void 0?n.converter:tt;this._$Em=s,this[s]=r.fromAttribute(t,n.type),this._$Em=null}}requestUpdate(e,t,i){if(e!==void 0){if(i??(i=this.constructor.getPropertyOptions(e)),!(i.hasChanged??Wt)(this[e],t))return;this.P(e,t,i)}this.isUpdatePending===!1&&(this._$ES=this._$ET())}P(e,t,i){this._$AL.has(e)||this._$AL.set(e,t),i.reflect===!0&&this._$Em!==e&&(this._$Ej??(this._$Ej=new Set)).add(e)}async _$ET(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const e=this.scheduleUpdate();return e!=null&&await e,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){var i;if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??(this.renderRoot=this.createRenderRoot()),this._$Ep){for(const[a,n]of this._$Ep)this[a]=n;this._$Ep=void 0}const s=this.constructor.elementProperties;if(s.size>0)for(const[a,n]of s)n.wrapped!==!0||this._$AL.has(a)||this[a]===void 0||this.P(a,this[a],n)}let e=!1;const t=this._$AL;try{e=this.shouldUpdate(t),e?(this.willUpdate(t),(i=this._$EO)==null||i.forEach(s=>{var a;return(a=s.hostUpdate)==null?void 0:a.call(s)}),this.update(t)):this._$EU()}catch(s){throw e=!1,this._$EU(),s}e&&this._$AE(t)}willUpdate(e){}_$AE(e){var t;(t=this._$EO)==null||t.forEach(i=>{var s;return(s=i.hostUpdated)==null?void 0:s.call(i)}),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(e)),this.updated(e)}_$EU(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(e){return!0}update(e){this._$Ej&&(this._$Ej=this._$Ej.forEach(t=>this._$EC(t,this[t]))),this._$EU()}updated(e){}firstUpdated(e){}};pe.elementStyles=[],pe.shadowRootOptions={mode:"open"},pe[he("elementProperties")]=new Map,pe[he("finalized")]=new Map,et==null||et({ReactiveElement:pe}),(K.reactiveElementVersions??(K.reactiveElementVersions=[])).push("2.0.4");/**
+ */const{is:Bo,defineProperty:Ho,getOwnPropertyDescriptor:Ko,getOwnPropertyNames:Wo,getOwnPropertySymbols:Go,getPrototypeOf:Zo}=Object,G=globalThis,Ht=G.trustedTypes,Jo=Ht?Ht.emptyScript:"",et=G.reactiveElementPolyfillSupport,fe=(s,e)=>s,tt={toAttribute(s,e){switch(e){case Boolean:s=s?Jo:null;break;case Object:case Array:s=s==null?s:JSON.stringify(s)}return s},fromAttribute(s,e){let t=s;switch(e){case Boolean:t=s!==null;break;case Number:t=s===null?null:Number(s);break;case Object:case Array:try{t=JSON.parse(s)}catch{t=null}}return t}},Kt=(s,e)=>!Bo(s,e),Wt={attribute:!0,type:String,converter:tt,reflect:!1,hasChanged:Kt};Symbol.metadata??(Symbol.metadata=Symbol("metadata")),G.litPropertyMetadata??(G.litPropertyMetadata=new WeakMap);let be=class extends HTMLElement{static addInitializer(e){this._$Ei(),(this.l??(this.l=[])).push(e)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(e,t=Wt){if(t.state&&(t.attribute=!1),this._$Ei(),this.elementProperties.set(e,t),!t.noAccessor){const i=Symbol(),o=this.getPropertyDescriptor(e,i,t);o!==void 0&&Ho(this.prototype,e,o)}}static getPropertyDescriptor(e,t,i){const{get:o,set:a}=Ko(this.prototype,e)??{get(){return this[t]},set(r){this[t]=r}};return{get(){return o==null?void 0:o.call(this)},set(r){const n=o==null?void 0:o.call(this);a.call(this,r),this.requestUpdate(e,n,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(e){return this.elementProperties.get(e)??Wt}static _$Ei(){if(this.hasOwnProperty(fe("elementProperties")))return;const e=Zo(this);e.finalize(),e.l!==void 0&&(this.l=[...e.l]),this.elementProperties=new Map(e.elementProperties)}static finalize(){if(this.hasOwnProperty(fe("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(fe("properties"))){const t=this.properties,i=[...Wo(t),...Go(t)];for(const o of i)this.createProperty(o,t[o])}const e=this[Symbol.metadata];if(e!==null){const t=litPropertyMetadata.get(e);if(t!==void 0)for(const[i,o]of t)this.elementProperties.set(i,o)}this._$Eh=new Map;for(const[t,i]of this.elementProperties){const o=this._$Eu(t,i);o!==void 0&&this._$Eh.set(o,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(e){const t=[];if(Array.isArray(e)){const i=new Set(e.flat(1/0).reverse());for(const o of i)t.unshift(Bt(o))}else e!==void 0&&t.push(Bt(e));return t}static _$Eu(e,t){const i=t.attribute;return i===!1?void 0:typeof i=="string"?i:typeof e=="string"?e.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){var e;this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),(e=this.constructor.l)==null||e.forEach(t=>t(this))}addController(e){var t;(this._$EO??(this._$EO=new Set)).add(e),this.renderRoot!==void 0&&this.isConnected&&((t=e.hostConnected)==null||t.call(e))}removeController(e){var t;(t=this._$EO)==null||t.delete(e)}_$E_(){const e=new Map,t=this.constructor.elementProperties;for(const i of t.keys())this.hasOwnProperty(i)&&(e.set(i,this[i]),delete this[i]);e.size>0&&(this._$Ep=e)}createRenderRoot(){const e=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return Vo(e,this.constructor.elementStyles),e}connectedCallback(){var e;this.renderRoot??(this.renderRoot=this.createRenderRoot()),this.enableUpdating(!0),(e=this._$EO)==null||e.forEach(t=>{var i;return(i=t.hostConnected)==null?void 0:i.call(t)})}enableUpdating(e){}disconnectedCallback(){var e;(e=this._$EO)==null||e.forEach(t=>{var i;return(i=t.hostDisconnected)==null?void 0:i.call(t)})}attributeChangedCallback(e,t,i){this._$AK(e,i)}_$EC(e,t){var a;const i=this.constructor.elementProperties.get(e),o=this.constructor._$Eu(e,i);if(o!==void 0&&i.reflect===!0){const r=(((a=i.converter)==null?void 0:a.toAttribute)!==void 0?i.converter:tt).toAttribute(t,i.type);this._$Em=e,r==null?this.removeAttribute(o):this.setAttribute(o,r),this._$Em=null}}_$AK(e,t){var a;const i=this.constructor,o=i._$Eh.get(e);if(o!==void 0&&this._$Em!==o){const r=i.getPropertyOptions(o),n=typeof r.converter=="function"?{fromAttribute:r.converter}:((a=r.converter)==null?void 0:a.fromAttribute)!==void 0?r.converter:tt;this._$Em=o,this[o]=n.fromAttribute(t,r.type),this._$Em=null}}requestUpdate(e,t,i){if(e!==void 0){if(i??(i=this.constructor.getPropertyOptions(e)),!(i.hasChanged??Kt)(this[e],t))return;this.P(e,t,i)}this.isUpdatePending===!1&&(this._$ES=this._$ET())}P(e,t,i){this._$AL.has(e)||this._$AL.set(e,t),i.reflect===!0&&this._$Em!==e&&(this._$Ej??(this._$Ej=new Set)).add(e)}async _$ET(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const e=this.scheduleUpdate();return e!=null&&await e,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){var i;if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??(this.renderRoot=this.createRenderRoot()),this._$Ep){for(const[a,r]of this._$Ep)this[a]=r;this._$Ep=void 0}const o=this.constructor.elementProperties;if(o.size>0)for(const[a,r]of o)r.wrapped!==!0||this._$AL.has(a)||this[a]===void 0||this.P(a,this[a],r)}let e=!1;const t=this._$AL;try{e=this.shouldUpdate(t),e?(this.willUpdate(t),(i=this._$EO)==null||i.forEach(o=>{var a;return(a=o.hostUpdate)==null?void 0:a.call(o)}),this.update(t)):this._$EU()}catch(o){throw e=!1,this._$EU(),o}e&&this._$AE(t)}willUpdate(e){}_$AE(e){var t;(t=this._$EO)==null||t.forEach(i=>{var o;return(o=i.hostUpdated)==null?void 0:o.call(i)}),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(e)),this.updated(e)}_$EU(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(e){return!0}update(e){this._$Ej&&(this._$Ej=this._$Ej.forEach(t=>this._$EC(t,this[t]))),this._$EU()}updated(e){}firstUpdated(e){}};be.elementStyles=[],be.shadowRootOptions={mode:"open"},be[fe("elementProperties")]=new Map,be[fe("finalized")]=new Map,et==null||et({ReactiveElement:be}),(G.reactiveElementVersions??(G.reactiveElementVersions=[])).push("2.0.4");/**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const fe=globalThis,Pe=fe.trustedTypes,Zt=Pe?Pe.createPolicy("lit-html",{createHTML:o=>o}):void 0,Jt="$lit$",Z=`lit$${Math.random().toFixed(9).slice(2)}$`,Qt="?"+Z,Js=`<${Qt}>`,te=document,be=()=>te.createComment(""),ge=o=>o===null||typeof o!="object"&&typeof o!="function",it=Array.isArray,Qs=o=>it(o)||typeof(o==null?void 0:o[Symbol.iterator])=="function",st=`[ 	
-\f\r]`,me=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,Yt=/-->/g,Xt=/>/g,ie=RegExp(`>|${st}(?:([^\\s"'>=/]+)(${st}*=${st}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`,"g"),ei=/'/g,ti=/"/g,ii=/^(?:script|style|textarea|title)$/i,Ys=o=>(e,...t)=>({_$litType$:o,strings:e,values:t}),f=Ys(1),U=Symbol.for("lit-noChange"),E=Symbol.for("lit-nothing"),si=new WeakMap,se=te.createTreeWalker(te,129);function oi(o,e){if(!it(o)||!o.hasOwnProperty("raw"))throw Error("invalid template strings array");return Zt!==void 0?Zt.createHTML(e):e}const Xs=(o,e)=>{const t=o.length-1,i=[];let s,a=e===2?"<svg>":e===3?"<math>":"",n=me;for(let r=0;r<t;r++){const l=o[r];let c,b,g=-1,v=0;for(;v<l.length&&(n.lastIndex=v,b=n.exec(l),b!==null);)v=n.lastIndex,n===me?b[1]==="!--"?n=Yt:b[1]!==void 0?n=Xt:b[2]!==void 0?(ii.test(b[2])&&(s=RegExp("</"+b[2],"g")),n=ie):b[3]!==void 0&&(n=ie):n===ie?b[0]===">"?(n=s??me,g=-1):b[1]===void 0?g=-2:(g=n.lastIndex-b[2].length,c=b[1],n=b[3]===void 0?ie:b[3]==='"'?ti:ei):n===ti||n===ei?n=ie:n===Yt||n===Xt?n=me:(n=ie,s=void 0);const y=n===ie&&o[r+1].startsWith("/>")?" ":"";a+=n===me?l+Js:g>=0?(i.push(c),l.slice(0,g)+Jt+l.slice(g)+Z+y):l+Z+(g===-2?r:y)}return[oi(o,a+(o[t]||"<?>")+(e===2?"</svg>":e===3?"</math>":"")),i]};class ve{constructor({strings:e,_$litType$:t},i){let s;this.parts=[];let a=0,n=0;const r=e.length-1,l=this.parts,[c,b]=Xs(e,t);if(this.el=ve.createElement(c,i),se.currentNode=this.el.content,t===2||t===3){const g=this.el.content.firstChild;g.replaceWith(...g.childNodes)}for(;(s=se.nextNode())!==null&&l.length<r;){if(s.nodeType===1){if(s.hasAttributes())for(const g of s.getAttributeNames())if(g.endsWith(Jt)){const v=b[n++],y=s.getAttribute(g).split(Z),w=/([.?@])?(.*)/.exec(v);l.push({type:1,index:a,name:w[2],strings:y,ctor:w[1]==="."?to:w[1]==="?"?io:w[1]==="@"?so:Me}),s.removeAttribute(g)}else g.startsWith(Z)&&(l.push({type:6,index:a}),s.removeAttribute(g));if(ii.test(s.tagName)){const g=s.textContent.split(Z),v=g.length-1;if(v>0){s.textContent=Pe?Pe.emptyScript:"";for(let y=0;y<v;y++)s.append(g[y],be()),se.nextNode(),l.push({type:2,index:++a});s.append(g[v],be())}}}else if(s.nodeType===8)if(s.data===Qt)l.push({type:2,index:a});else{let g=-1;for(;(g=s.data.indexOf(Z,g+1))!==-1;)l.push({type:7,index:a}),g+=Z.length-1}a++}}static createElement(e,t){const i=te.createElement("template");return i.innerHTML=e,i}}function de(o,e,t=o,i){var n,r;if(e===U)return e;let s=i!==void 0?(n=t._$Co)==null?void 0:n[i]:t._$Cl;const a=ge(e)?void 0:e._$litDirective$;return(s==null?void 0:s.constructor)!==a&&((r=s==null?void 0:s._$AO)==null||r.call(s,!1),a===void 0?s=void 0:(s=new a(o),s._$AT(o,t,i)),i!==void 0?(t._$Co??(t._$Co=[]))[i]=s:t._$Cl=s),s!==void 0&&(e=de(o,s._$AS(o,e.values),s,i)),e}let eo=class{constructor(e,t){this._$AV=[],this._$AN=void 0,this._$AD=e,this._$AM=t}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(e){const{el:{content:t},parts:i}=this._$AD,s=((e==null?void 0:e.creationScope)??te).importNode(t,!0);se.currentNode=s;let a=se.nextNode(),n=0,r=0,l=i[0];for(;l!==void 0;){if(n===l.index){let c;l.type===2?c=new ce(a,a.nextSibling,this,e):l.type===1?c=new l.ctor(a,l.name,l.strings,this,e):l.type===6&&(c=new oo(a,this,e)),this._$AV.push(c),l=i[++r]}n!==(l==null?void 0:l.index)&&(a=se.nextNode(),n++)}return se.currentNode=te,s}p(e){let t=0;for(const i of this._$AV)i!==void 0&&(i.strings!==void 0?(i._$AI(e,i,t),t+=i.strings.length-2):i._$AI(e[t])),t++}};class ce{get _$AU(){var e;return((e=this._$AM)==null?void 0:e._$AU)??this._$Cv}constructor(e,t,i,s){this.type=2,this._$AH=E,this._$AN=void 0,this._$AA=e,this._$AB=t,this._$AM=i,this.options=s,this._$Cv=(s==null?void 0:s.isConnected)??!0}get parentNode(){let e=this._$AA.parentNode;const t=this._$AM;return t!==void 0&&(e==null?void 0:e.nodeType)===11&&(e=t.parentNode),e}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(e,t=this){e=de(this,e,t),ge(e)?e===E||e==null||e===""?(this._$AH!==E&&this._$AR(),this._$AH=E):e!==this._$AH&&e!==U&&this._(e):e._$litType$!==void 0?this.$(e):e.nodeType!==void 0?this.T(e):Qs(e)?this.k(e):this._(e)}O(e){return this._$AA.parentNode.insertBefore(e,this._$AB)}T(e){this._$AH!==e&&(this._$AR(),this._$AH=this.O(e))}_(e){this._$AH!==E&&ge(this._$AH)?this._$AA.nextSibling.data=e:this.T(te.createTextNode(e)),this._$AH=e}$(e){var a;const{values:t,_$litType$:i}=e,s=typeof i=="number"?this._$AC(e):(i.el===void 0&&(i.el=ve.createElement(oi(i.h,i.h[0]),this.options)),i);if(((a=this._$AH)==null?void 0:a._$AD)===s)this._$AH.p(t);else{const n=new eo(s,this),r=n.u(this.options);n.p(t),this.T(r),this._$AH=n}}_$AC(e){let t=si.get(e.strings);return t===void 0&&si.set(e.strings,t=new ve(e)),t}k(e){it(this._$AH)||(this._$AH=[],this._$AR());const t=this._$AH;let i,s=0;for(const a of e)s===t.length?t.push(i=new ce(this.O(be()),this.O(be()),this,this.options)):i=t[s],i._$AI(a),s++;s<t.length&&(this._$AR(i&&i._$AB.nextSibling,s),t.length=s)}_$AR(e=this._$AA.nextSibling,t){var i;for((i=this._$AP)==null?void 0:i.call(this,!1,!0,t);e&&e!==this._$AB;){const s=e.nextSibling;e.remove(),e=s}}setConnected(e){var t;this._$AM===void 0&&(this._$Cv=e,(t=this._$AP)==null||t.call(this,e))}}class Me{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(e,t,i,s,a){this.type=1,this._$AH=E,this._$AN=void 0,this.element=e,this.name=t,this._$AM=s,this.options=a,i.length>2||i[0]!==""||i[1]!==""?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=E}_$AI(e,t=this,i,s){const a=this.strings;let n=!1;if(a===void 0)e=de(this,e,t,0),n=!ge(e)||e!==this._$AH&&e!==U,n&&(this._$AH=e);else{const r=e;let l,c;for(e=a[0],l=0;l<a.length-1;l++)c=de(this,r[i+l],t,l),c===U&&(c=this._$AH[l]),n||(n=!ge(c)||c!==this._$AH[l]),c===E?e=E:e!==E&&(e+=(c??"")+a[l+1]),this._$AH[l]=c}n&&!s&&this.j(e)}j(e){e===E?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,e??"")}}class to extends Me{constructor(){super(...arguments),this.type=3}j(e){this.element[this.name]=e===E?void 0:e}}class io extends Me{constructor(){super(...arguments),this.type=4}j(e){this.element.toggleAttribute(this.name,!!e&&e!==E)}}class so extends Me{constructor(e,t,i,s,a){super(e,t,i,s,a),this.type=5}_$AI(e,t=this){if((e=de(this,e,t,0)??E)===U)return;const i=this._$AH,s=e===E&&i!==E||e.capture!==i.capture||e.once!==i.once||e.passive!==i.passive,a=e!==E&&(i===E||s);s&&this.element.removeEventListener(this.name,this,i),a&&this.element.addEventListener(this.name,this,e),this._$AH=e}handleEvent(e){var t;typeof this._$AH=="function"?this._$AH.call(((t=this.options)==null?void 0:t.host)??this.element,e):this._$AH.handleEvent(e)}}class oo{constructor(e,t,i){this.element=e,this.type=6,this._$AN=void 0,this._$AM=t,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(e){de(this,e)}}const ao={I:ce},ot=fe.litHtmlPolyfillSupport;ot==null||ot(ve,ce),(fe.litHtmlVersions??(fe.litHtmlVersions=[])).push("3.2.1");const no=(o,e,t)=>{const i=(t==null?void 0:t.renderBefore)??e;let s=i._$litPart$;if(s===void 0){const a=(t==null?void 0:t.renderBefore)??null;i._$litPart$=s=new ce(e.insertBefore(be(),a),a,void 0,t??{})}return s._$AI(o),s};/**
+ */const me=globalThis,je=me.trustedTypes,Gt=je?je.createPolicy("lit-html",{createHTML:s=>s}):void 0,Zt="$lit$",Z=`lit$${Math.random().toFixed(9).slice(2)}$`,Jt="?"+Z,Qo=`<${Jt}>`,te=document,ge=()=>te.createComment(""),ve=s=>s===null||typeof s!="object"&&typeof s!="function",it=Array.isArray,Xo=s=>it(s)||typeof(s==null?void 0:s[Symbol.iterator])=="function",ot=`[ 	
+\f\r]`,ye=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,Qt=/-->/g,Xt=/>/g,ie=RegExp(`>|${ot}(?:([^\\s"'>=/]+)(${ot}*=${ot}*(?:[^ 	
+\f\r"'\`<>=]|("|')|))|$)`,"g"),Yt=/'/g,ei=/"/g,ti=/^(?:script|style|textarea|title)$/i,Yo=s=>(e,...t)=>({_$litType$:s,strings:e,values:t}),p=Yo(1),V=Symbol.for("lit-noChange"),O=Symbol.for("lit-nothing"),ii=new WeakMap,oe=te.createTreeWalker(te,129);function oi(s,e){if(!it(s)||!s.hasOwnProperty("raw"))throw Error("invalid template strings array");return Gt!==void 0?Gt.createHTML(e):e}const es=(s,e)=>{const t=s.length-1,i=[];let o,a=e===2?"<svg>":e===3?"<math>":"",r=ye;for(let n=0;n<t;n++){const l=s[n];let d,u,h=-1,g=0;for(;g<l.length&&(r.lastIndex=g,u=r.exec(l),u!==null);)g=r.lastIndex,r===ye?u[1]==="!--"?r=Qt:u[1]!==void 0?r=Xt:u[2]!==void 0?(ti.test(u[2])&&(o=RegExp("</"+u[2],"g")),r=ie):u[3]!==void 0&&(r=ie):r===ie?u[0]===">"?(r=o??ye,h=-1):u[1]===void 0?h=-2:(h=r.lastIndex-u[2].length,d=u[1],r=u[3]===void 0?ie:u[3]==='"'?ei:Yt):r===ei||r===Yt?r=ie:r===Qt||r===Xt?r=ye:(r=ie,o=void 0);const y=r===ie&&s[n+1].startsWith("/>")?" ":"";a+=r===ye?l+Qo:h>=0?(i.push(d),l.slice(0,h)+Zt+l.slice(h)+Z+y):l+Z+(h===-2?n:y)}return[oi(s,a+(s[t]||"<?>")+(e===2?"</svg>":e===3?"</math>":"")),i]};class _e{constructor({strings:e,_$litType$:t},i){let o;this.parts=[];let a=0,r=0;const n=e.length-1,l=this.parts,[d,u]=es(e,t);if(this.el=_e.createElement(d,i),oe.currentNode=this.el.content,t===2||t===3){const h=this.el.content.firstChild;h.replaceWith(...h.childNodes)}for(;(o=oe.nextNode())!==null&&l.length<n;){if(o.nodeType===1){if(o.hasAttributes())for(const h of o.getAttributeNames())if(h.endsWith(Zt)){const g=u[r++],y=o.getAttribute(h).split(Z),_=/([.?@])?(.*)/.exec(g);l.push({type:1,index:a,name:_[2],strings:y,ctor:_[1]==="."?is:_[1]==="?"?os:_[1]==="@"?ss:ze}),o.removeAttribute(h)}else h.startsWith(Z)&&(l.push({type:6,index:a}),o.removeAttribute(h));if(ti.test(o.tagName)){const h=o.textContent.split(Z),g=h.length-1;if(g>0){o.textContent=je?je.emptyScript:"";for(let y=0;y<g;y++)o.append(h[y],ge()),oe.nextNode(),l.push({type:2,index:++a});o.append(h[g],ge())}}}else if(o.nodeType===8)if(o.data===Jt)l.push({type:2,index:a});else{let h=-1;for(;(h=o.data.indexOf(Z,h+1))!==-1;)l.push({type:7,index:a}),h+=Z.length-1}a++}}static createElement(e,t){const i=te.createElement("template");return i.innerHTML=e,i}}function ce(s,e,t=s,i){var r,n;if(e===V)return e;let o=i!==void 0?(r=t._$Co)==null?void 0:r[i]:t._$Cl;const a=ve(e)?void 0:e._$litDirective$;return(o==null?void 0:o.constructor)!==a&&((n=o==null?void 0:o._$AO)==null||n.call(o,!1),a===void 0?o=void 0:(o=new a(s),o._$AT(s,t,i)),i!==void 0?(t._$Co??(t._$Co=[]))[i]=o:t._$Cl=o),o!==void 0&&(e=ce(s,o._$AS(s,e.values),o,i)),e}let ts=class{constructor(e,t){this._$AV=[],this._$AN=void 0,this._$AD=e,this._$AM=t}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(e){const{el:{content:t},parts:i}=this._$AD,o=((e==null?void 0:e.creationScope)??te).importNode(t,!0);oe.currentNode=o;let a=oe.nextNode(),r=0,n=0,l=i[0];for(;l!==void 0;){if(r===l.index){let d;l.type===2?d=new ue(a,a.nextSibling,this,e):l.type===1?d=new l.ctor(a,l.name,l.strings,this,e):l.type===6&&(d=new as(a,this,e)),this._$AV.push(d),l=i[++n]}r!==(l==null?void 0:l.index)&&(a=oe.nextNode(),r++)}return oe.currentNode=te,o}p(e){let t=0;for(const i of this._$AV)i!==void 0&&(i.strings!==void 0?(i._$AI(e,i,t),t+=i.strings.length-2):i._$AI(e[t])),t++}};class ue{get _$AU(){var e;return((e=this._$AM)==null?void 0:e._$AU)??this._$Cv}constructor(e,t,i,o){this.type=2,this._$AH=O,this._$AN=void 0,this._$AA=e,this._$AB=t,this._$AM=i,this.options=o,this._$Cv=(o==null?void 0:o.isConnected)??!0}get parentNode(){let e=this._$AA.parentNode;const t=this._$AM;return t!==void 0&&(e==null?void 0:e.nodeType)===11&&(e=t.parentNode),e}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(e,t=this){e=ce(this,e,t),ve(e)?e===O||e==null||e===""?(this._$AH!==O&&this._$AR(),this._$AH=O):e!==this._$AH&&e!==V&&this._(e):e._$litType$!==void 0?this.$(e):e.nodeType!==void 0?this.T(e):Xo(e)?this.k(e):this._(e)}O(e){return this._$AA.parentNode.insertBefore(e,this._$AB)}T(e){this._$AH!==e&&(this._$AR(),this._$AH=this.O(e))}_(e){this._$AH!==O&&ve(this._$AH)?this._$AA.nextSibling.data=e:this.T(te.createTextNode(e)),this._$AH=e}$(e){var a;const{values:t,_$litType$:i}=e,o=typeof i=="number"?this._$AC(e):(i.el===void 0&&(i.el=_e.createElement(oi(i.h,i.h[0]),this.options)),i);if(((a=this._$AH)==null?void 0:a._$AD)===o)this._$AH.p(t);else{const r=new ts(o,this),n=r.u(this.options);r.p(t),this.T(n),this._$AH=r}}_$AC(e){let t=ii.get(e.strings);return t===void 0&&ii.set(e.strings,t=new _e(e)),t}k(e){it(this._$AH)||(this._$AH=[],this._$AR());const t=this._$AH;let i,o=0;for(const a of e)o===t.length?t.push(i=new ue(this.O(ge()),this.O(ge()),this,this.options)):i=t[o],i._$AI(a),o++;o<t.length&&(this._$AR(i&&i._$AB.nextSibling,o),t.length=o)}_$AR(e=this._$AA.nextSibling,t){var i;for((i=this._$AP)==null?void 0:i.call(this,!1,!0,t);e&&e!==this._$AB;){const o=e.nextSibling;e.remove(),e=o}}setConnected(e){var t;this._$AM===void 0&&(this._$Cv=e,(t=this._$AP)==null||t.call(this,e))}}class ze{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(e,t,i,o,a){this.type=1,this._$AH=O,this._$AN=void 0,this.element=e,this.name=t,this._$AM=o,this.options=a,i.length>2||i[0]!==""||i[1]!==""?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=O}_$AI(e,t=this,i,o){const a=this.strings;let r=!1;if(a===void 0)e=ce(this,e,t,0),r=!ve(e)||e!==this._$AH&&e!==V,r&&(this._$AH=e);else{const n=e;let l,d;for(e=a[0],l=0;l<a.length-1;l++)d=ce(this,n[i+l],t,l),d===V&&(d=this._$AH[l]),r||(r=!ve(d)||d!==this._$AH[l]),d===O?e=O:e!==O&&(e+=(d??"")+a[l+1]),this._$AH[l]=d}r&&!o&&this.j(e)}j(e){e===O?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,e??"")}}class is extends ze{constructor(){super(...arguments),this.type=3}j(e){this.element[this.name]=e===O?void 0:e}}class os extends ze{constructor(){super(...arguments),this.type=4}j(e){this.element.toggleAttribute(this.name,!!e&&e!==O)}}class ss extends ze{constructor(e,t,i,o,a){super(e,t,i,o,a),this.type=5}_$AI(e,t=this){if((e=ce(this,e,t,0)??O)===V)return;const i=this._$AH,o=e===O&&i!==O||e.capture!==i.capture||e.once!==i.once||e.passive!==i.passive,a=e!==O&&(i===O||o);o&&this.element.removeEventListener(this.name,this,i),a&&this.element.addEventListener(this.name,this,e),this._$AH=e}handleEvent(e){var t;typeof this._$AH=="function"?this._$AH.call(((t=this.options)==null?void 0:t.host)??this.element,e):this._$AH.handleEvent(e)}}class as{constructor(e,t,i){this.element=e,this.type=6,this._$AN=void 0,this._$AM=t,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(e){ce(this,e)}}const rs={I:ue},st=me.litHtmlPolyfillSupport;st==null||st(_e,ue),(me.litHtmlVersions??(me.litHtmlVersions=[])).push("3.2.1");const ns=(s,e,t)=>{const i=(t==null?void 0:t.renderBefore)??e;let o=i._$litPart$;if(o===void 0){const a=(t==null?void 0:t.renderBefore)??null;i._$litPart$=o=new ue(e.insertBefore(ge(),a),a,void 0,t??{})}return o._$AI(s),o};/**
  * @license
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const je=globalThis,at=je.ShadowRoot&&(je.ShadyCSS===void 0||je.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,nt=Symbol(),ai=new WeakMap;let ni=class{constructor(e,t,i){if(this._$cssResult$=!0,i!==nt)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=e,this.t=t}get styleSheet(){let e=this.o;const t=this.t;if(at&&e===void 0){const i=t!==void 0&&t.length===1;i&&(e=ai.get(t)),e===void 0&&((this.o=e=new CSSStyleSheet).replaceSync(this.cssText),i&&ai.set(t,e))}return e}toString(){return this.cssText}};const ro=o=>new ni(typeof o=="string"?o:o+"",void 0,nt),x=(o,...e)=>{const t=o.length===1?o[0]:e.reduce((i,s,a)=>i+(n=>{if(n._$cssResult$===!0)return n.cssText;if(typeof n=="number")return n;throw Error("Value passed to 'css' function must be a 'css' function result: "+n+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(s)+o[a+1],o[0]);return new ni(t,o,nt)},lo=(o,e)=>{if(at)o.adoptedStyleSheets=e.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const t of e){const i=document.createElement("style"),s=je.litNonce;s!==void 0&&i.setAttribute("nonce",s),i.textContent=t.cssText,o.appendChild(i)}},ri=at?o=>o:o=>o instanceof CSSStyleSheet?(e=>{let t="";for(const i of e.cssRules)t+=i.cssText;return ro(t)})(o):o;/**
+ */const Fe=globalThis,at=Fe.ShadowRoot&&(Fe.ShadyCSS===void 0||Fe.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,rt=Symbol(),si=new WeakMap;let ai=class{constructor(e,t,i){if(this._$cssResult$=!0,i!==rt)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=e,this.t=t}get styleSheet(){let e=this.o;const t=this.t;if(at&&e===void 0){const i=t!==void 0&&t.length===1;i&&(e=si.get(t)),e===void 0&&((this.o=e=new CSSStyleSheet).replaceSync(this.cssText),i&&si.set(t,e))}return e}toString(){return this.cssText}};const ls=s=>new ai(typeof s=="string"?s:s+"",void 0,rt),x=(s,...e)=>{const t=s.length===1?s[0]:e.reduce((i,o,a)=>i+(r=>{if(r._$cssResult$===!0)return r.cssText;if(typeof r=="number")return r;throw Error("Value passed to 'css' function must be a 'css' function result: "+r+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(o)+s[a+1],s[0]);return new ai(t,s,rt)},ds=(s,e)=>{if(at)s.adoptedStyleSheets=e.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const t of e){const i=document.createElement("style"),o=Fe.litNonce;o!==void 0&&i.setAttribute("nonce",o),i.textContent=t.cssText,s.appendChild(i)}},ri=at?s=>s:s=>s instanceof CSSStyleSheet?(e=>{let t="";for(const i of e.cssRules)t+=i.cssText;return ls(t)})(s):s;/**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const{is:co,defineProperty:uo,getOwnPropertyDescriptor:ho,getOwnPropertyNames:po,getOwnPropertySymbols:fo,getPrototypeOf:bo}=Object,J=globalThis,li=J.trustedTypes,go=li?li.emptyScript:"",rt=J.reactiveElementPolyfillSupport,ye=(o,e)=>o,lt={toAttribute(o,e){switch(e){case Boolean:o=o?go:null;break;case Object:case Array:o=o==null?o:JSON.stringify(o)}return o},fromAttribute(o,e){let t=o;switch(e){case Boolean:t=o!==null;break;case Number:t=o===null?null:Number(o);break;case Object:case Array:try{t=JSON.parse(o)}catch{t=null}}return t}},di=(o,e)=>!co(o,e),ci={attribute:!0,type:String,converter:lt,reflect:!1,hasChanged:di};Symbol.metadata??(Symbol.metadata=Symbol("metadata")),J.litPropertyMetadata??(J.litPropertyMetadata=new WeakMap);class ue extends HTMLElement{static addInitializer(e){this._$Ei(),(this.l??(this.l=[])).push(e)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(e,t=ci){if(t.state&&(t.attribute=!1),this._$Ei(),this.elementProperties.set(e,t),!t.noAccessor){const i=Symbol(),s=this.getPropertyDescriptor(e,i,t);s!==void 0&&uo(this.prototype,e,s)}}static getPropertyDescriptor(e,t,i){const{get:s,set:a}=ho(this.prototype,e)??{get(){return this[t]},set(n){this[t]=n}};return{get(){return s==null?void 0:s.call(this)},set(n){const r=s==null?void 0:s.call(this);a.call(this,n),this.requestUpdate(e,r,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(e){return this.elementProperties.get(e)??ci}static _$Ei(){if(this.hasOwnProperty(ye("elementProperties")))return;const e=bo(this);e.finalize(),e.l!==void 0&&(this.l=[...e.l]),this.elementProperties=new Map(e.elementProperties)}static finalize(){if(this.hasOwnProperty(ye("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(ye("properties"))){const t=this.properties,i=[...po(t),...fo(t)];for(const s of i)this.createProperty(s,t[s])}const e=this[Symbol.metadata];if(e!==null){const t=litPropertyMetadata.get(e);if(t!==void 0)for(const[i,s]of t)this.elementProperties.set(i,s)}this._$Eh=new Map;for(const[t,i]of this.elementProperties){const s=this._$Eu(t,i);s!==void 0&&this._$Eh.set(s,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(e){const t=[];if(Array.isArray(e)){const i=new Set(e.flat(1/0).reverse());for(const s of i)t.unshift(ri(s))}else e!==void 0&&t.push(ri(e));return t}static _$Eu(e,t){const i=t.attribute;return i===!1?void 0:typeof i=="string"?i:typeof e=="string"?e.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){var e;this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),(e=this.constructor.l)==null||e.forEach(t=>t(this))}addController(e){var t;(this._$EO??(this._$EO=new Set)).add(e),this.renderRoot!==void 0&&this.isConnected&&((t=e.hostConnected)==null||t.call(e))}removeController(e){var t;(t=this._$EO)==null||t.delete(e)}_$E_(){const e=new Map,t=this.constructor.elementProperties;for(const i of t.keys())this.hasOwnProperty(i)&&(e.set(i,this[i]),delete this[i]);e.size>0&&(this._$Ep=e)}createRenderRoot(){const e=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return lo(e,this.constructor.elementStyles),e}connectedCallback(){var e;this.renderRoot??(this.renderRoot=this.createRenderRoot()),this.enableUpdating(!0),(e=this._$EO)==null||e.forEach(t=>{var i;return(i=t.hostConnected)==null?void 0:i.call(t)})}enableUpdating(e){}disconnectedCallback(){var e;(e=this._$EO)==null||e.forEach(t=>{var i;return(i=t.hostDisconnected)==null?void 0:i.call(t)})}attributeChangedCallback(e,t,i){this._$AK(e,i)}_$EC(e,t){var a;const i=this.constructor.elementProperties.get(e),s=this.constructor._$Eu(e,i);if(s!==void 0&&i.reflect===!0){const n=(((a=i.converter)==null?void 0:a.toAttribute)!==void 0?i.converter:lt).toAttribute(t,i.type);this._$Em=e,n==null?this.removeAttribute(s):this.setAttribute(s,n),this._$Em=null}}_$AK(e,t){var a;const i=this.constructor,s=i._$Eh.get(e);if(s!==void 0&&this._$Em!==s){const n=i.getPropertyOptions(s),r=typeof n.converter=="function"?{fromAttribute:n.converter}:((a=n.converter)==null?void 0:a.fromAttribute)!==void 0?n.converter:lt;this._$Em=s,this[s]=r.fromAttribute(t,n.type),this._$Em=null}}requestUpdate(e,t,i){if(e!==void 0){if(i??(i=this.constructor.getPropertyOptions(e)),!(i.hasChanged??di)(this[e],t))return;this.P(e,t,i)}this.isUpdatePending===!1&&(this._$ES=this._$ET())}P(e,t,i){this._$AL.has(e)||this._$AL.set(e,t),i.reflect===!0&&this._$Em!==e&&(this._$Ej??(this._$Ej=new Set)).add(e)}async _$ET(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const e=this.scheduleUpdate();return e!=null&&await e,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){var i;if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??(this.renderRoot=this.createRenderRoot()),this._$Ep){for(const[a,n]of this._$Ep)this[a]=n;this._$Ep=void 0}const s=this.constructor.elementProperties;if(s.size>0)for(const[a,n]of s)n.wrapped!==!0||this._$AL.has(a)||this[a]===void 0||this.P(a,this[a],n)}let e=!1;const t=this._$AL;try{e=this.shouldUpdate(t),e?(this.willUpdate(t),(i=this._$EO)==null||i.forEach(s=>{var a;return(a=s.hostUpdate)==null?void 0:a.call(s)}),this.update(t)):this._$EU()}catch(s){throw e=!1,this._$EU(),s}e&&this._$AE(t)}willUpdate(e){}_$AE(e){var t;(t=this._$EO)==null||t.forEach(i=>{var s;return(s=i.hostUpdated)==null?void 0:s.call(i)}),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(e)),this.updated(e)}_$EU(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(e){return!0}update(e){this._$Ej&&(this._$Ej=this._$Ej.forEach(t=>this._$EC(t,this[t]))),this._$EU()}updated(e){}firstUpdated(e){}}ue.elementStyles=[],ue.shadowRootOptions={mode:"open"},ue[ye("elementProperties")]=new Map,ue[ye("finalized")]=new Map,rt==null||rt({ReactiveElement:ue}),(J.reactiveElementVersions??(J.reactiveElementVersions=[])).push("2.0.4");/**
+ */const{is:cs,defineProperty:us,getOwnPropertyDescriptor:hs,getOwnPropertyNames:ps,getOwnPropertySymbols:fs,getPrototypeOf:bs}=Object,J=globalThis,ni=J.trustedTypes,ms=ni?ni.emptyScript:"",nt=J.reactiveElementPolyfillSupport,we=(s,e)=>s,lt={toAttribute(s,e){switch(e){case Boolean:s=s?ms:null;break;case Object:case Array:s=s==null?s:JSON.stringify(s)}return s},fromAttribute(s,e){let t=s;switch(e){case Boolean:t=s!==null;break;case Number:t=s===null?null:Number(s);break;case Object:case Array:try{t=JSON.parse(s)}catch{t=null}}return t}},li=(s,e)=>!cs(s,e),di={attribute:!0,type:String,converter:lt,reflect:!1,hasChanged:li};Symbol.metadata??(Symbol.metadata=Symbol("metadata")),J.litPropertyMetadata??(J.litPropertyMetadata=new WeakMap);class he extends HTMLElement{static addInitializer(e){this._$Ei(),(this.l??(this.l=[])).push(e)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(e,t=di){if(t.state&&(t.attribute=!1),this._$Ei(),this.elementProperties.set(e,t),!t.noAccessor){const i=Symbol(),o=this.getPropertyDescriptor(e,i,t);o!==void 0&&us(this.prototype,e,o)}}static getPropertyDescriptor(e,t,i){const{get:o,set:a}=hs(this.prototype,e)??{get(){return this[t]},set(r){this[t]=r}};return{get(){return o==null?void 0:o.call(this)},set(r){const n=o==null?void 0:o.call(this);a.call(this,r),this.requestUpdate(e,n,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(e){return this.elementProperties.get(e)??di}static _$Ei(){if(this.hasOwnProperty(we("elementProperties")))return;const e=bs(this);e.finalize(),e.l!==void 0&&(this.l=[...e.l]),this.elementProperties=new Map(e.elementProperties)}static finalize(){if(this.hasOwnProperty(we("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(we("properties"))){const t=this.properties,i=[...ps(t),...fs(t)];for(const o of i)this.createProperty(o,t[o])}const e=this[Symbol.metadata];if(e!==null){const t=litPropertyMetadata.get(e);if(t!==void 0)for(const[i,o]of t)this.elementProperties.set(i,o)}this._$Eh=new Map;for(const[t,i]of this.elementProperties){const o=this._$Eu(t,i);o!==void 0&&this._$Eh.set(o,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(e){const t=[];if(Array.isArray(e)){const i=new Set(e.flat(1/0).reverse());for(const o of i)t.unshift(ri(o))}else e!==void 0&&t.push(ri(e));return t}static _$Eu(e,t){const i=t.attribute;return i===!1?void 0:typeof i=="string"?i:typeof e=="string"?e.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){var e;this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this._$E_(),this.requestUpdate(),(e=this.constructor.l)==null||e.forEach(t=>t(this))}addController(e){var t;(this._$EO??(this._$EO=new Set)).add(e),this.renderRoot!==void 0&&this.isConnected&&((t=e.hostConnected)==null||t.call(e))}removeController(e){var t;(t=this._$EO)==null||t.delete(e)}_$E_(){const e=new Map,t=this.constructor.elementProperties;for(const i of t.keys())this.hasOwnProperty(i)&&(e.set(i,this[i]),delete this[i]);e.size>0&&(this._$Ep=e)}createRenderRoot(){const e=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return ds(e,this.constructor.elementStyles),e}connectedCallback(){var e;this.renderRoot??(this.renderRoot=this.createRenderRoot()),this.enableUpdating(!0),(e=this._$EO)==null||e.forEach(t=>{var i;return(i=t.hostConnected)==null?void 0:i.call(t)})}enableUpdating(e){}disconnectedCallback(){var e;(e=this._$EO)==null||e.forEach(t=>{var i;return(i=t.hostDisconnected)==null?void 0:i.call(t)})}attributeChangedCallback(e,t,i){this._$AK(e,i)}_$EC(e,t){var a;const i=this.constructor.elementProperties.get(e),o=this.constructor._$Eu(e,i);if(o!==void 0&&i.reflect===!0){const r=(((a=i.converter)==null?void 0:a.toAttribute)!==void 0?i.converter:lt).toAttribute(t,i.type);this._$Em=e,r==null?this.removeAttribute(o):this.setAttribute(o,r),this._$Em=null}}_$AK(e,t){var a;const i=this.constructor,o=i._$Eh.get(e);if(o!==void 0&&this._$Em!==o){const r=i.getPropertyOptions(o),n=typeof r.converter=="function"?{fromAttribute:r.converter}:((a=r.converter)==null?void 0:a.fromAttribute)!==void 0?r.converter:lt;this._$Em=o,this[o]=n.fromAttribute(t,r.type),this._$Em=null}}requestUpdate(e,t,i){if(e!==void 0){if(i??(i=this.constructor.getPropertyOptions(e)),!(i.hasChanged??li)(this[e],t))return;this.P(e,t,i)}this.isUpdatePending===!1&&(this._$ES=this._$ET())}P(e,t,i){this._$AL.has(e)||this._$AL.set(e,t),i.reflect===!0&&this._$Em!==e&&(this._$Ej??(this._$Ej=new Set)).add(e)}async _$ET(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const e=this.scheduleUpdate();return e!=null&&await e,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){var i;if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??(this.renderRoot=this.createRenderRoot()),this._$Ep){for(const[a,r]of this._$Ep)this[a]=r;this._$Ep=void 0}const o=this.constructor.elementProperties;if(o.size>0)for(const[a,r]of o)r.wrapped!==!0||this._$AL.has(a)||this[a]===void 0||this.P(a,this[a],r)}let e=!1;const t=this._$AL;try{e=this.shouldUpdate(t),e?(this.willUpdate(t),(i=this._$EO)==null||i.forEach(o=>{var a;return(a=o.hostUpdate)==null?void 0:a.call(o)}),this.update(t)):this._$EU()}catch(o){throw e=!1,this._$EU(),o}e&&this._$AE(t)}willUpdate(e){}_$AE(e){var t;(t=this._$EO)==null||t.forEach(i=>{var o;return(o=i.hostUpdated)==null?void 0:o.call(i)}),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(e)),this.updated(e)}_$EU(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(e){return!0}update(e){this._$Ej&&(this._$Ej=this._$Ej.forEach(t=>this._$EC(t,this[t]))),this._$EU()}updated(e){}firstUpdated(e){}}he.elementStyles=[],he.shadowRootOptions={mode:"open"},he[we("elementProperties")]=new Map,he[we("finalized")]=new Map,nt==null||nt({ReactiveElement:he}),(J.reactiveElementVersions??(J.reactiveElementVersions=[])).push("2.0.4");/**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */let oe=class extends ue{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){var t;const e=super.createRenderRoot();return(t=this.renderOptions).renderBefore??(t.renderBefore=e.firstChild),e}update(e){const t=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(e),this._$Do=no(t,this.renderRoot,this.renderOptions)}connectedCallback(){var e;super.connectedCallback(),(e=this._$Do)==null||e.setConnected(!0)}disconnectedCallback(){var e;super.disconnectedCallback(),(e=this._$Do)==null||e.setConnected(!1)}render(){return U}};oe._$litElement$=!0,oe.finalized=!0,(As=globalThis.litElementHydrateSupport)==null||As.call(globalThis,{LitElement:oe});const dt=globalThis.litElementPolyfillSupport;dt==null||dt({LitElement:oe}),(globalThis.litElementVersions??(globalThis.litElementVersions=[])).push("4.1.1");/**
+ */let se=class extends he{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){var t;const e=super.createRenderRoot();return(t=this.renderOptions).renderBefore??(t.renderBefore=e.firstChild),e}update(e){const t=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(e),this._$Do=ns(t,this.renderRoot,this.renderOptions)}connectedCallback(){var e;super.connectedCallback(),(e=this._$Do)==null||e.setConnected(!0)}disconnectedCallback(){var e;super.disconnectedCallback(),(e=this._$Do)==null||e.setConnected(!1)}render(){return V}};se._$litElement$=!0,se.finalized=!0,(Oo=globalThis.litElementHydrateSupport)==null||Oo.call(globalThis,{LitElement:se});const dt=globalThis.litElementPolyfillSupport;dt==null||dt({LitElement:se}),(globalThis.litElementVersions??(globalThis.litElementVersions=[])).push("4.1.1");/**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const ct={ATTRIBUTE:1,CHILD:2},ut=o=>(...e)=>({_$litDirective$:o,values:e});let ht=class{constructor(e){}get _$AU(){return this._$AM._$AU}_$AT(e,t,i){this._$Ct=e,this._$AM=t,this._$Ci=i}_$AS(e,t){return this.update(e,t)}update(e,t){return this.render(...t)}};/**
+ */const ct={ATTRIBUTE:1,CHILD:2},ut=s=>(...e)=>({_$litDirective$:s,values:e});let ht=class{constructor(e){}get _$AU(){return this._$AM._$AU}_$AT(e,t,i){this._$Ct=e,this._$AM=t,this._$Ci=i}_$AS(e,t){return this.update(e,t)}update(e,t){return this.render(...t)}};/**
  * @license
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const A=ut(class extends ht{constructor(o){var e;if(super(o),o.type!==ct.ATTRIBUTE||o.name!=="class"||((e=o.strings)==null?void 0:e.length)>2)throw Error("`classMap()` can only be used in the `class` attribute and must be the only part in the attribute.")}render(o){return" "+Object.keys(o).filter(e=>o[e]).join(" ")+" "}update(o,[e]){var i,s;if(this.st===void 0){this.st=new Set,o.strings!==void 0&&(this.nt=new Set(o.strings.join(" ").split(/\s/).filter(a=>a!=="")));for(const a in e)e[a]&&!((i=this.nt)!=null&&i.has(a))&&this.st.add(a);return this.render(e)}const t=o.element.classList;for(const a of this.st)a in e||(t.remove(a),this.st.delete(a));for(const a in e){const n=!!e[a];n===this.st.has(a)||(s=this.nt)!=null&&s.has(a)||(n?(t.add(a),this.st.add(a)):(t.remove(a),this.st.delete(a)))}return U}});/**
+ */const A=ut(class extends ht{constructor(s){var e;if(super(s),s.type!==ct.ATTRIBUTE||s.name!=="class"||((e=s.strings)==null?void 0:e.length)>2)throw Error("`classMap()` can only be used in the `class` attribute and must be the only part in the attribute.")}render(s){return" "+Object.keys(s).filter(e=>s[e]).join(" ")+" "}update(s,[e]){var i,o;if(this.st===void 0){this.st=new Set,s.strings!==void 0&&(this.nt=new Set(s.strings.join(" ").split(/\s/).filter(a=>a!=="")));for(const a in e)e[a]&&!((i=this.nt)!=null&&i.has(a))&&this.st.add(a);return this.render(e)}const t=s.element.classList;for(const a of this.st)a in e||(t.remove(a),this.st.delete(a));for(const a in e){const r=!!e[a];r===this.st.has(a)||(o=this.nt)!=null&&o.has(a)||(r?(t.add(a),this.st.add(a)):(t.remove(a),this.st.delete(a)))}return V}});/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
@@ -40,35 +40,38 @@
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const u=(o,...e)=>({strTag:!0,strings:o,values:e}),mo=o=>typeof o!="string"&&"strTag"in o,ui=(o,e,t)=>{let i=o[0];for(let s=1;s<o.length;s++)i+=e[t?t[s-1]:s-1],i+=o[s];return i};/**
+ */const m=(s,...e)=>({strTag:!0,strings:s,values:e}),gs=s=>typeof s!="string"&&"strTag"in s,ci=(s,e,t)=>{let i=s[0];for(let o=1;o<s.length;o++)i+=e[t?t[o-1]:o-1],i+=s[o];return i};/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const hi=o=>mo(o)?ui(o.strings,o.values):o;let O=hi,pi=!1;function vo(o){if(pi)throw new Error("lit-localize can only be configured once");O=o,pi=!0}/**
+ */const ui=s=>gs(s)?ci(s.strings,s.values):s;let R=ui,hi=!1;function vs(s){if(hi)throw new Error("lit-localize can only be configured once");R=s,hi=!0}/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */class yo{constructor(e){this.__litLocalizeEventHandler=t=>{t.detail.status==="ready"&&this.host.requestUpdate()},this.host=e}hostConnected(){window.addEventListener(pt,this.__litLocalizeEventHandler)}hostDisconnected(){window.removeEventListener(pt,this.__litLocalizeEventHandler)}}const wo=o=>o.addController(new yo(o));/**
+ */class ys{constructor(e){this.__litLocalizeEventHandler=t=>{t.detail.status==="ready"&&this.host.requestUpdate()},this.host=e}hostConnected(){window.addEventListener(pt,this.__litLocalizeEventHandler)}hostDisconnected(){window.removeEventListener(pt,this.__litLocalizeEventHandler)}}const _s=s=>s.addController(new ys(s));/**
  * @license
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */class fi{constructor(){this.settled=!1,this.promise=new Promise((e,t)=>{this._resolve=e,this._reject=t})}resolve(e){this.settled=!0,this._resolve(e)}reject(e){this.settled=!0,this._reject(e)}}/**
+ */class pi{constructor(){this.settled=!1,this.promise=new Promise((e,t)=>{this._resolve=e,this._reject=t})}resolve(e){this.settled=!0,this._resolve(e)}reject(e){this.settled=!0,this._reject(e)}}/**
  * @license
  * Copyright 2014 Travis Webb
  * SPDX-License-Identifier: MIT
- */const V=[];for(let o=0;o<256;o++)V[o]=(o>>4&15).toString(16)+(o&15).toString(16);function _o(o){let e=0,t=8997,i=0,s=33826,a=0,n=40164,r=0,l=52210;for(let c=0;c<o.length;c++)t^=o.charCodeAt(c),e=t*435,i=s*435,a=n*435,r=l*435,a+=t<<8,r+=s<<8,i+=e>>>16,t=e&65535,a+=i>>>16,s=i&65535,l=r+(a>>>16)&65535,n=a&65535;return V[l>>8]+V[l&255]+V[n>>8]+V[n&255]+V[s>>8]+V[s&255]+V[t>>8]+V[t&255]}/**
+ */const B=[];for(let s=0;s<256;s++)B[s]=(s>>4&15).toString(16)+(s&15).toString(16);function ws(s){let e=0,t=8997,i=0,o=33826,a=0,r=40164,n=0,l=52210;for(let d=0;d<s.length;d++)t^=s.charCodeAt(d),e=t*435,i=o*435,a=r*435,n=l*435,a+=t<<8,n+=o<<8,i+=e>>>16,t=e&65535,a+=i>>>16,o=i&65535,l=n+(a>>>16)&65535,r=a&65535;return B[l>>8]+B[l&255]+B[r>>8]+B[r&255]+B[o>>8]+B[o&255]+B[t>>8]+B[t&255]}/**
  * @license
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const $o="",xo="h",ko="s";function So(o,e){return(e?xo:ko)+_o(typeof o=="string"?o:o.join($o))}/**
+ */const $s="",xs="h",ks="s";function Ss(s,e){return(e?xs:ks)+ws(typeof s=="string"?s:s.join($s))}/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const bi=new WeakMap,gi=new Map;function To(o,e,t){if(o){const i=(t==null?void 0:t.id)??Ao(e),s=o[i];if(s){if(typeof s=="string")return s;if("strTag"in s)return ui(s.strings,e.values,s.values);{let a=bi.get(s);return a===void 0&&(a=s.values,bi.set(s,a)),{...s,values:a.map(n=>e.values[n])}}}}return hi(e)}function Ao(o){const e=typeof o=="string"?o:o.strings;let t=gi.get(e);return t===void 0&&(t=So(e,typeof o!="string"&&!("strTag"in o)),gi.set(e,t)),t}/**
+ */const fi=new WeakMap,bi=new Map;function Es(s,e,t){if(s){const i=(t==null?void 0:t.id)??As(e),o=s[i];if(o){if(typeof o=="string")return o;if("strTag"in o)return ci(o.strings,e.values,o.values);{let a=fi.get(o);return a===void 0&&(a=o.values,fi.set(o,a)),{...o,values:a.map(r=>e.values[r])}}}}return ui(e)}function As(s){const e=typeof s=="string"?s:s.strings;let t=bi.get(e);return t===void 0&&(t=Ss(e,typeof s!="string"&&!("strTag"in s)),bi.set(e,t)),t}/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */function ft(o){window.dispatchEvent(new CustomEvent(pt,{detail:o}))}let De="",bt,mi,ze,gt,vi,ae=new fi;ae.resolve();let Re=0;const Eo=o=>(vo((e,t)=>To(vi,e,t)),De=mi=o.sourceLocale,ze=new Set(o.targetLocales),ze.add(o.sourceLocale),gt=o.loadLocale,{getLocale:Oo,setLocale:Co}),Oo=()=>De,Co=o=>{if(o===(bt??De))return ae.promise;if(!ze||!gt)throw new Error("Internal error");if(!ze.has(o))throw new Error("Invalid locale code");Re++;const e=Re;return bt=o,ae.settled&&(ae=new fi),ft({status:"loading",loadingLocale:o}),(o===mi?Promise.resolve({templates:void 0}):gt(o)).then(i=>{Re===e&&(De=o,bt=void 0,vi=i.templates,ft({status:"ready",readyLocale:o}),ae.resolve())},i=>{Re===e&&(ft({status:"error",errorLocale:o,errorMessage:i.toString()}),ae.reject(i))}),ae.promise},Lo=(o,e,t)=>{const i=o[e];return i?typeof i=="function"?i():Promise.resolve(i):new Promise((s,a)=>{(typeof queueMicrotask=="function"?queueMicrotask:setTimeout)(a.bind(null,new Error("Unknown variable dynamic import: "+e+(e.split("/").length!==t?". Note that variables only represent file names one level deep.":""))))})},Io="en",Po=["am_ET","ar","ar_MA","bg_BG","bn_BD","bs_BA","cs","de_DE","el","en_US","es_419","es_ES","fa_IR","fr_FR","hi_IN","hr","hu_HU","id_ID","it_IT","ja","ko_KR","mk_MK","mr","my_MM","ne_NP","nl_NL","pa_IN","pl","pt_BR","ro_RO","ru_RU","sl_SI","sr_BA","sw","th","tl","tr_TR","uk","vi","zh_CN","zh_TW"],{setLocale:Mo}=Eo({sourceLocale:Io,targetLocales:Po,loadLocale:o=>Lo(Object.assign({"./generated/am_ET.js":()=>Promise.resolve().then(()=>Ba),"./generated/ar.js":()=>Promise.resolve().then(()=>Ga),"./generated/ar_MA.js":()=>Promise.resolve().then(()=>Ka),"./generated/bg_BG.js":()=>Promise.resolve().then(()=>Ja),"./generated/bn_BD.js":()=>Promise.resolve().then(()=>Ya),"./generated/bs_BA.js":()=>Promise.resolve().then(()=>en),"./generated/cs.js":()=>Promise.resolve().then(()=>sn),"./generated/de_DE.js":()=>Promise.resolve().then(()=>an),"./generated/el.js":()=>Promise.resolve().then(()=>rn),"./generated/en_US.js":()=>Promise.resolve().then(()=>dn),"./generated/es-419.js":()=>Promise.resolve().then(()=>un),"./generated/es_419.js":()=>Promise.resolve().then(()=>pn),"./generated/es_ES.js":()=>Promise.resolve().then(()=>bn),"./generated/fa_IR.js":()=>Promise.resolve().then(()=>mn),"./generated/fr_FR.js":()=>Promise.resolve().then(()=>yn),"./generated/hi_IN.js":()=>Promise.resolve().then(()=>_n),"./generated/hr.js":()=>Promise.resolve().then(()=>xn),"./generated/hu_HU.js":()=>Promise.resolve().then(()=>Sn),"./generated/id_ID.js":()=>Promise.resolve().then(()=>An),"./generated/it_IT.js":()=>Promise.resolve().then(()=>On),"./generated/ja.js":()=>Promise.resolve().then(()=>Ln),"./generated/ko_KR.js":()=>Promise.resolve().then(()=>Pn),"./generated/mk_MK.js":()=>Promise.resolve().then(()=>jn),"./generated/mr.js":()=>Promise.resolve().then(()=>zn),"./generated/my_MM.js":()=>Promise.resolve().then(()=>Nn),"./generated/ne_NP.js":()=>Promise.resolve().then(()=>Fn),"./generated/nl_NL.js":()=>Promise.resolve().then(()=>Vn),"./generated/pa_IN.js":()=>Promise.resolve().then(()=>Hn),"./generated/pl.js":()=>Promise.resolve().then(()=>Wn),"./generated/pt_BR.js":()=>Promise.resolve().then(()=>Zn),"./generated/ro_RO.js":()=>Promise.resolve().then(()=>Qn),"./generated/ru_RU.js":()=>Promise.resolve().then(()=>Xn),"./generated/sl_SI.js":()=>Promise.resolve().then(()=>tr),"./generated/sr_BA.js":()=>Promise.resolve().then(()=>sr),"./generated/sw.js":()=>Promise.resolve().then(()=>ar),"./generated/th.js":()=>Promise.resolve().then(()=>rr),"./generated/tl.js":()=>Promise.resolve().then(()=>dr),"./generated/tr_TR.js":()=>Promise.resolve().then(()=>ur),"./generated/uk.js":()=>Promise.resolve().then(()=>pr),"./generated/vi.js":()=>Promise.resolve().then(()=>br),"./generated/zh_CN.js":()=>Promise.resolve().then(()=>mr),"./generated/zh_TW.js":()=>Promise.resolve().then(()=>yr)}),`./generated/${o}.js`,3)});class mt{constructor(e,t="/wp-json"){this.nonce=e;let i=t;i.match("^http")&&(i=i.replace(/^http[s]?:\/\/.*?\//,"")),i=`/${i}/`.replace(/\/\//g,"/"),this.apiRoot=i}async makeRequest(e,t,i,s="dt/v1/"){let a=s;!a.endsWith("/")&&!t.startsWith("/")&&(a+="/");const n=t.startsWith("http")?t:`${this.apiRoot}${a}${t}`,r={method:e,credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":this.nonce}};e!=="GET"&&(r.body=JSON.stringify(i));const l=await fetch(n,r),c=await l.json();if(!l.ok){const b=new Error((c==null?void 0:c.message)||c.toString());throw b.args={status:l.status,statusText:l.statusText,body:c},b}return c}async makeRequestOnPosts(e,t,i={}){return this.makeRequest(e,t,i,"dt-posts/v2/")}async getPost(e,t){return this.makeRequestOnPosts("GET",`${e}/${t}`)}async createPost(e,t){return this.makeRequestOnPosts("POST",e,t)}async fetchPostsList(e,t){return this.makeRequestOnPosts("POST",`${e}/list`,t)}async updatePost(e,t,i){return this.makeRequestOnPosts("POST",`${e}/${t}`,i)}async deletePost(e,t){return this.makeRequestOnPosts("DELETE",`${e}/${t}`)}async listPostsCompact(e,t=""){const i=new URLSearchParams({s:t});return this.makeRequestOnPosts("GET",`${e}/compact?${i}`)}async getPostDuplicates(e,t,i){return this.makeRequestOnPosts("GET",`${e}/${t}/all_duplicates`,i)}async checkFieldValueExists(e,t){return this.makeRequestOnPosts("POST",`${e}/check_field_value_exists`,t)}async getMultiSelectValues(e,t,i=""){const s=new URLSearchParams({s:i,field:t});return this.makeRequestOnPosts("GET",`${e}/multi-select-values?${s}`)}async getLocations(e,t,i,s=""){const a=new URLSearchParams({s,field:t,filter:i});return this.makeRequest("GET",`mapping_module/search_location_grid_by_name?${a}`)}async transferContact(e,t){return this.makeRequestOnPosts("POST","contacts/transfer",{contact_id:e,site_post_id:t})}async transferContactSummaryUpdate(e,t){return this.makeRequestOnPosts("POST","contacts/transfer/summary/send-update",{contact_id:e,update:t})}async requestRecordAccess(e,t,i){return this.makeRequestOnPosts("POST",`${e}/${t}/request_record_access`,{user_id:i})}async createComment(e,t,i,s="comment"){return this.makeRequestOnPosts("POST",`${e}/${t}/comments`,{comment:i,comment_type:s})}async updateComment(e,t,i,s,a="comment"){return this.makeRequestOnPosts("POST",`${e}/${t}/comments/${i}`,{comment:s,comment_type:a})}async deleteComment(e,t,i){return this.makeRequestOnPosts("DELETE",`${e}/${t}/comments/${i}`)}async getComments(e,t){return this.makeRequestOnPosts("GET",`${e}/${t}/comments`)}async toggle_comment_reaction(e,t,i,s,a){return this.makeRequestOnPosts("POST",`${e}/${t}/comments/${i}/react`,{user_id:s,reaction:a})}async getPostActivity(e,t){return this.makeRequestOnPosts("GET",`${e}/${t}/activity`)}async getSingleActivity(e,t,i){return this.makeRequestOnPosts("GET",`${e}/${t}/activity/${i}`)}async revertActivity(e,t,i){return this.makeRequestOnPosts("GET",`${e}/${t}/revert/${i}`)}async getPostShares(e,t){return this.makeRequestOnPosts("GET",`${e}/${t}/shares`)}async addPostShare(e,t,i){return this.makeRequestOnPosts("POST",`${e}/${t}/shares`,{user_id:i})}async removePostShare(e,t,i){return this.makeRequestOnPosts("DELETE",`${e}/${t}/shares`,{user_id:i})}async getFilters(){return this.makeRequest("GET","users/get_filters")}async saveFilters(e,t){return this.makeRequest("POST","users/save_filters",{filter:t,postType:e})}async deleteFilter(e,t){return this.makeRequest("DELETE","users/save_filters",{id:t,postType:e})}async searchUsers(e,t=""){const i=new URLSearchParams({s:t});return this.makeRequest("GET",`users/get_users?${i}&post_type=${e}`)}async checkDuplicateUsers(e,t){return this.makeRequestOnPosts("GET",`${e}/${t}/duplicates`)}async getContactInfo(e,t){return this.makeRequestOnPosts("GET",`${e}/${t}/`)}async createUser(e){return this.makeRequest("POST","users/create",e)}async advanced_search(e,t,i,s){return this.makeRequest("GET","advanced_search",{query:e,postType:t,offset:i,post:s.post,comment:s.comment,meta:s.meta,status:s.status},"dt-posts/v2/posts/search/")}}(function(){(function(o){const e=new WeakMap,t=new WeakMap,i=new WeakMap,s=new WeakMap,a=new WeakMap,n=new WeakMap,r=new WeakMap,l=new WeakMap,c=new WeakMap,b=new WeakMap,g=new WeakMap,v=new WeakMap,y=new WeakMap,w=new WeakMap,L=new WeakMap,q={ariaAtomic:"aria-atomic",ariaAutoComplete:"aria-autocomplete",ariaBusy:"aria-busy",ariaChecked:"aria-checked",ariaColCount:"aria-colcount",ariaColIndex:"aria-colindex",ariaColIndexText:"aria-colindextext",ariaColSpan:"aria-colspan",ariaCurrent:"aria-current",ariaDescription:"aria-description",ariaDisabled:"aria-disabled",ariaExpanded:"aria-expanded",ariaHasPopup:"aria-haspopup",ariaHidden:"aria-hidden",ariaInvalid:"aria-invalid",ariaKeyShortcuts:"aria-keyshortcuts",ariaLabel:"aria-label",ariaLevel:"aria-level",ariaLive:"aria-live",ariaModal:"aria-modal",ariaMultiLine:"aria-multiline",ariaMultiSelectable:"aria-multiselectable",ariaOrientation:"aria-orientation",ariaPlaceholder:"aria-placeholder",ariaPosInSet:"aria-posinset",ariaPressed:"aria-pressed",ariaReadOnly:"aria-readonly",ariaRelevant:"aria-relevant",ariaRequired:"aria-required",ariaRoleDescription:"aria-roledescription",ariaRowCount:"aria-rowcount",ariaRowIndex:"aria-rowindex",ariaRowIndexText:"aria-rowindextext",ariaRowSpan:"aria-rowspan",ariaSelected:"aria-selected",ariaSetSize:"aria-setsize",ariaSort:"aria-sort",ariaValueMax:"aria-valuemax",ariaValueMin:"aria-valuemin",ariaValueNow:"aria-valuenow",ariaValueText:"aria-valuetext",role:"role"},j=(h,d)=>{for(let p in q){d[p]=null;let m=null;const _=q[p];Object.defineProperty(d,p,{get(){return m},set(k){m=k,h.isConnected?M(h,_,k):b.set(h,d)}})}};function I(h){const d=s.get(h),{form:p}=d;Ls(h,p,d),Cs(h,d.labels)}const Le=(h,d=!1)=>{const p=document.createTreeWalker(h,NodeFilter.SHOW_ELEMENT,{acceptNode(k){return s.has(k)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP}});let m=p.nextNode();const _=!d||h.disabled;for(;m;)m.formDisabledCallback&&_&&Rt(m,h.disabled),m=p.nextNode()},Ze={attributes:!0,attributeFilter:["disabled","name"]},X=Ye()?new MutationObserver(h=>{for(const d of h){const p=d.target;if(d.attributeName==="disabled"&&(p.constructor.formAssociated?Rt(p,p.hasAttribute("disabled")):p.localName==="fieldset"&&Le(p)),d.attributeName==="name"&&p.constructor.formAssociated){const m=s.get(p),_=c.get(p);m.setFormValue(_)}}}):{};function T(h){h.forEach(d=>{const{addedNodes:p,removedNodes:m}=d,_=Array.from(p),k=Array.from(m);_.forEach(S=>{var D;if(s.has(S)&&S.constructor.formAssociated&&I(S),b.has(S)){const C=b.get(S);Object.keys(q).filter(F=>C[F]!==null).forEach(F=>{M(S,q[F],C[F])}),b.delete(S)}if(L.has(S)){const C=L.get(S);M(S,"internals-valid",C.validity.valid.toString()),M(S,"internals-invalid",(!C.validity.valid).toString()),M(S,"aria-invalid",(!C.validity.valid).toString()),L.delete(S)}if(S.localName==="form"){const C=l.get(S),G=document.createTreeWalker(S,NodeFilter.SHOW_ELEMENT,{acceptNode(Ut){return s.has(Ut)&&Ut.constructor.formAssociated&&!(C&&C.has(Ut))?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP}});let F=G.nextNode();for(;F;)I(F),F=G.nextNode()}S.localName==="fieldset"&&((D=X.observe)===null||D===void 0||D.call(X,S,Ze),Le(S,!0))}),k.forEach(S=>{const D=s.get(S);D&&i.get(D)&&Es(D),r.has(S)&&r.get(S).disconnect()})})}function R(h){h.forEach(d=>{const{removedNodes:p}=d;p.forEach(m=>{const _=y.get(d.target);s.has(m)&&Ps(m),_.disconnect()})})}const le=h=>{var d,p;const m=new MutationObserver(R);!((d=window==null?void 0:window.ShadyDOM)===null||d===void 0)&&d.inUse&&h.mode&&h.host&&(h=h.host),(p=m.observe)===null||p===void 0||p.call(m,h,{childList:!0}),y.set(h,m)};Ye()&&new MutationObserver(T);const ee={childList:!0,subtree:!0},M=(h,d,p)=>{h.getAttribute(d)!==p&&h.setAttribute(d,p)},Rt=(h,d)=>{h.toggleAttribute("internals-disabled",d),d?M(h,"aria-disabled","true"):h.removeAttribute("aria-disabled"),h.formDisabledCallback&&h.formDisabledCallback.apply(h,[d])},Es=h=>{i.get(h).forEach(p=>{p.remove()}),i.set(h,[])},Os=(h,d)=>{const p=document.createElement("input");return p.type="hidden",p.name=h.getAttribute("name"),h.after(p),i.get(d).push(p),p},wr=(h,d)=>{var p;i.set(d,[]),(p=X.observe)===null||p===void 0||p.call(X,h,Ze)},Cs=(h,d)=>{if(d.length){Array.from(d).forEach(m=>m.addEventListener("click",h.click.bind(h)));let p=d[0].id;d[0].id||(p=`${d[0].htmlFor}_Label`,d[0].id=p),M(h,"aria-labelledby",p)}},Je=h=>{const d=Array.from(h.elements).filter(k=>!k.tagName.includes("-")&&k.validity).map(k=>k.validity.valid),p=l.get(h)||[],m=Array.from(p).filter(k=>k.isConnected).map(k=>s.get(k).validity.valid),_=[...d,...m].includes(!1);h.toggleAttribute("internals-invalid",_),h.toggleAttribute("internals-valid",!_)},_r=h=>{Je(Qe(h.target))},$r=h=>{Je(Qe(h.target))},xr=h=>{const d=["button[type=submit]","input[type=submit]","button:not([type])"].map(p=>`${p}:not([disabled])`).map(p=>`${p}:not([form])${h.id?`,${p}[form='${h.id}']`:""}`).join(",");h.addEventListener("click",p=>{if(p.target.closest(d)){const _=l.get(h);if(h.noValidate)return;_.size&&Array.from(_).reverse().map(D=>s.get(D).reportValidity()).includes(!1)&&p.preventDefault()}})},kr=h=>{const d=l.get(h.target);d&&d.size&&d.forEach(p=>{p.constructor.formAssociated&&p.formResetCallback&&p.formResetCallback.apply(p)})},Ls=(h,d,p)=>{if(d){const m=l.get(d);if(m)m.add(h);else{const _=new Set;_.add(h),l.set(d,_),xr(d),d.addEventListener("reset",kr),d.addEventListener("input",_r),d.addEventListener("change",$r)}n.set(d,{ref:h,internals:p}),h.constructor.formAssociated&&h.formAssociatedCallback&&setTimeout(()=>{h.formAssociatedCallback.apply(h,[d])},0),Je(d)}},Qe=h=>{let d=h.parentNode;return d&&d.tagName!=="FORM"&&(d=Qe(d)),d},H=(h,d,p=DOMException)=>{if(!h.constructor.formAssociated)throw new p(d)},Is=(h,d,p)=>{const m=l.get(h);return m&&m.size&&m.forEach(_=>{s.get(_)[p]()||(d=!1)}),d},Ps=h=>{if(h.constructor.formAssociated){const d=s.get(h),{labels:p,form:m}=d;Cs(h,p),Ls(h,m,d)}};function Ye(){return typeof MutationObserver<"u"}class Sr{constructor(){this.badInput=!1,this.customError=!1,this.patternMismatch=!1,this.rangeOverflow=!1,this.rangeUnderflow=!1,this.stepMismatch=!1,this.tooLong=!1,this.tooShort=!1,this.typeMismatch=!1,this.valid=!0,this.valueMissing=!1,Object.seal(this)}}const Tr=h=>(h.badInput=!1,h.customError=!1,h.patternMismatch=!1,h.rangeOverflow=!1,h.rangeUnderflow=!1,h.stepMismatch=!1,h.tooLong=!1,h.tooShort=!1,h.typeMismatch=!1,h.valid=!0,h.valueMissing=!1,h),Ar=(h,d,p)=>(h.valid=Er(d),Object.keys(d).forEach(m=>h[m]=d[m]),p&&Je(p),h),Er=h=>{let d=!0;for(let p in h)p!=="valid"&&h[p]!==!1&&(d=!1);return d},Nt=new WeakMap;function Ms(h,d){h.toggleAttribute(d,!0),h.part&&h.part.add(d)}class qt extends Set{static get isPolyfilled(){return!0}constructor(d){if(super(),!d||!d.tagName||d.tagName.indexOf("-")===-1)throw new TypeError("Illegal constructor");Nt.set(this,d)}add(d){if(!/^--/.test(d)||typeof d!="string")throw new DOMException(`Failed to execute 'add' on 'CustomStateSet': The specified value ${d} must start with '--'.`);const p=super.add(d),m=Nt.get(this),_=`state${d}`;return m.isConnected?Ms(m,_):setTimeout(()=>{Ms(m,_)}),p}clear(){for(let[d]of this.entries())this.delete(d);super.clear()}delete(d){const p=super.delete(d),m=Nt.get(this);return m.isConnected?(m.toggleAttribute(`state${d}`,!1),m.part&&m.part.remove(`state${d}`)):setTimeout(()=>{m.toggleAttribute(`state${d}`,!1),m.part&&m.part.remove(`state${d}`)}),p}}function js(h,d,p,m){if(typeof d=="function"?h!==d||!0:!d.has(h))throw new TypeError("Cannot read private member from an object whose class did not declare it");return p==="m"?m:p==="a"?m.call(h):m?m.value:d.get(h)}function Or(h,d,p,m,_){if(typeof d=="function"?h!==d||!0:!d.has(h))throw new TypeError("Cannot write private member to an object whose class did not declare it");return d.set(h,p),p}var Ie;class Cr{constructor(d){Ie.set(this,void 0),Or(this,Ie,d);for(let p=0;p<d.length;p++){let m=d[p];this[p]=m,m.hasAttribute("name")&&(this[m.getAttribute("name")]=m)}Object.freeze(this)}get length(){return js(this,Ie,"f").length}[(Ie=new WeakMap,Symbol.iterator)](){return js(this,Ie,"f")[Symbol.iterator]()}item(d){return this[d]==null?null:this[d]}namedItem(d){return this[d]==null?null:this[d]}}function Lr(){const h=HTMLFormElement.prototype.checkValidity;HTMLFormElement.prototype.checkValidity=p;const d=HTMLFormElement.prototype.reportValidity;HTMLFormElement.prototype.reportValidity=m;function p(...k){let S=h.apply(this,k);return Is(this,S,"checkValidity")}function m(...k){let S=d.apply(this,k);return Is(this,S,"reportValidity")}const{get:_}=Object.getOwnPropertyDescriptor(HTMLFormElement.prototype,"elements");Object.defineProperty(HTMLFormElement.prototype,"elements",{get(...k){const S=_.call(this,...k),D=Array.from(l.get(this)||[]);if(D.length===0)return S;const C=Array.from(S).concat(D).sort((G,F)=>G.compareDocumentPosition?G.compareDocumentPosition(F)&2?1:-1:0);return new Cr(C)}})}class Ds{static get isPolyfilled(){return!0}constructor(d){if(!d||!d.tagName||d.tagName.indexOf("-")===-1)throw new TypeError("Illegal constructor");const p=d.getRootNode(),m=new Sr;this.states=new qt(d),e.set(this,d),t.set(this,m),s.set(d,this),j(d,this),wr(d,this),Object.seal(this),p instanceof DocumentFragment&&le(p)}checkValidity(){const d=e.get(this);if(H(d,"Failed to execute 'checkValidity' on 'ElementInternals': The target element is not a form-associated custom element."),!this.willValidate)return!0;const p=t.get(this);if(!p.valid){const m=new Event("invalid",{bubbles:!1,cancelable:!0,composed:!1});d.dispatchEvent(m)}return p.valid}get form(){const d=e.get(this);H(d,"Failed to read the 'form' property from 'ElementInternals': The target element is not a form-associated custom element.");let p;return d.constructor.formAssociated===!0&&(p=Qe(d)),p}get labels(){const d=e.get(this);H(d,"Failed to read the 'labels' property from 'ElementInternals': The target element is not a form-associated custom element.");const p=d.getAttribute("id"),m=d.getRootNode();return m&&p?m.querySelectorAll(`[for="${p}"]`):[]}reportValidity(){const d=e.get(this);if(H(d,"Failed to execute 'reportValidity' on 'ElementInternals': The target element is not a form-associated custom element."),!this.willValidate)return!0;const p=this.checkValidity(),m=v.get(this);if(m&&!d.constructor.formAssociated)throw new DOMException("Failed to execute 'reportValidity' on 'ElementInternals': The target element is not a form-associated custom element.");return!p&&m&&(d.focus(),m.focus()),p}setFormValue(d){const p=e.get(this);if(H(p,"Failed to execute 'setFormValue' on 'ElementInternals': The target element is not a form-associated custom element."),Es(this),d!=null&&!(d instanceof FormData)){if(p.getAttribute("name")){const m=Os(p,this);m.value=d}}else d!=null&&d instanceof FormData&&Array.from(d).reverse().forEach(([m,_])=>{if(typeof _=="string"){const k=Os(p,this);k.name=m,k.value=_}});c.set(p,d)}setValidity(d,p,m){const _=e.get(this);if(H(_,"Failed to execute 'setValidity' on 'ElementInternals': The target element is not a form-associated custom element."),!d)throw new TypeError("Failed to execute 'setValidity' on 'ElementInternals': 1 argument required, but only 0 present.");v.set(this,m);const k=t.get(this),S={};for(const G in d)S[G]=d[G];Object.keys(S).length===0&&Tr(k);const D=Object.assign(Object.assign({},k),S);delete D.valid;const{valid:C}=Ar(k,D,this.form);if(!C&&!p)throw new DOMException("Failed to execute 'setValidity' on 'ElementInternals': The second argument should not be empty if one or more flags in the first argument are true.");a.set(this,C?"":p),_.isConnected?(_.toggleAttribute("internals-invalid",!C),_.toggleAttribute("internals-valid",C),M(_,"aria-invalid",`${!C}`)):L.set(_,this)}get shadowRoot(){const d=e.get(this),p=g.get(d);return p||null}get validationMessage(){const d=e.get(this);return H(d,"Failed to read the 'validationMessage' property from 'ElementInternals': The target element is not a form-associated custom element."),a.get(this)}get validity(){const d=e.get(this);return H(d,"Failed to read the 'validity' property from 'ElementInternals': The target element is not a form-associated custom element."),t.get(this)}get willValidate(){const d=e.get(this);return H(d,"Failed to read the 'willValidate' property from 'ElementInternals': The target element is not a form-associated custom element."),!(d.disabled||d.hasAttribute("disabled")||d.hasAttribute("readonly"))}}function Ir(){if(typeof window>"u"||!window.ElementInternals||!HTMLElement.prototype.attachInternals)return!1;class h extends HTMLElement{constructor(){super(),this.internals=this.attachInternals()}}const d=`element-internals-feature-detection-${Math.random().toString(36).replace(/[^a-z]+/g,"")}`;customElements.define(d,h);const p=new h;return["shadowRoot","form","willValidate","validity","validationMessage","labels","setFormValue","setValidity","checkValidity","reportValidity"].every(m=>m in p.internals)}let zs=!1,Rs=!1;function Ft(h){Rs||(Rs=!0,window.CustomStateSet=qt,h&&(HTMLElement.prototype.attachInternals=function(...d){const p=h.call(this,d);return p.states=new qt(this),p}))}function Ns(h=!0){if(!zs){if(zs=!0,typeof window<"u"&&(window.ElementInternals=Ds),typeof CustomElementRegistry<"u"){const d=CustomElementRegistry.prototype.define;CustomElementRegistry.prototype.define=function(p,m,_){if(m.formAssociated){const k=m.prototype.connectedCallback;m.prototype.connectedCallback=function(){w.has(this)||(w.set(this,!0),this.hasAttribute("disabled")&&Rt(this,!0)),k!=null&&k.apply(this),Ps(this)}}d.call(this,p,m,_)}}if(typeof HTMLElement<"u"&&(HTMLElement.prototype.attachInternals=function(){if(this.tagName){if(this.tagName.indexOf("-")===-1)throw new Error("Failed to execute 'attachInternals' on 'HTMLElement': Unable to attach ElementInternals to non-custom elements.")}else return{};if(s.has(this))throw new DOMException("DOMException: Failed to execute 'attachInternals' on 'HTMLElement': ElementInternals for the specified element was already attached.");return new Ds(this)}),typeof Element<"u"){let d=function(...m){const _=p.apply(this,m);if(g.set(this,_),Ye()){const k=new MutationObserver(T);window.ShadyDOM?k.observe(this,ee):k.observe(_,ee),r.set(this,k)}return _};const p=Element.prototype.attachShadow;Element.prototype.attachShadow=d}Ye()&&typeof document<"u"&&new MutationObserver(T).observe(document.documentElement,ee),typeof HTMLFormElement<"u"&&Lr(),(h||typeof window<"u"&&!window.CustomStateSet)&&Ft()}}return!!customElements.polyfillWrapFlushCallback||(Ir()?typeof window<"u"&&!window.CustomStateSet&&Ft(HTMLElement.prototype.attachInternals):Ns(!1)),o.forceCustomStateSetPolyfill=Ft,o.forceElementInternalsPolyfill=Ns,Object.defineProperty(o,"__esModule",{value:!0}),o})({})})();class N extends oe{static get properties(){return{RTL:{type:Boolean},locale:{type:String},apiRoot:{type:String,reflect:!1},postType:{type:String,reflect:!1},postID:{type:String,reflect:!1}}}get _focusTarget(){return this.shadowRoot.children[0]instanceof Element?this.shadowRoot.children[0]:null}constructor(){super(),wo(this),this.addEventListener("click",this._proxyClick.bind(this)),this.addEventListener("focus",this._proxyFocus.bind(this))}connectedCallback(){super.connectedCallback(),this.apiRoot=this.apiRoot?`${this.apiRoot}/`.replace("//","/"):"/",this.api=new mt(this.nonce,this.apiRoot)}willUpdate(e){if(this.RTL===void 0){const t=this.closest("[dir]");if(t){const i=t.getAttribute("dir");i&&(this.RTL=i.toLowerCase()==="rtl")}}if(!this.locale){const t=this.closest("[lang]");if(t){const i=t.getAttribute("lang");i&&(this.locale=i)}}if(!this.locale){const t=this.getRootNode();if(t instanceof ShadowRoot&&t.host){const i=t.host;i.locale&&(this.locale=i.locale)}}if(e&&e.has("locale")&&this.locale)try{Mo(this.locale)}catch(t){console.error(t)}}_proxyClick(){this.clicked=!0}_proxyFocus(){if(this._focusTarget){if(this.clicked){this.clicked=!1;return}this._focusTarget.focus()}}focus(){this._proxyFocus()}}class yi extends N{static get formAssociated(){return!0}static get styles(){return x`
+ */function ft(s){window.dispatchEvent(new CustomEvent(pt,{detail:s}))}let De="",bt,mi,Re,mt,gi,ae=new pi;ae.resolve();let Ne=0;const Os=s=>(vs((e,t)=>Es(gi,e,t)),De=mi=s.sourceLocale,Re=new Set(s.targetLocales),Re.add(s.sourceLocale),mt=s.loadLocale,{getLocale:Ts,setLocale:Cs}),Ts=()=>De,Cs=s=>{if(s===(bt??De))return ae.promise;if(!Re||!mt)throw new Error("Internal error");if(!Re.has(s))throw new Error("Invalid locale code");Ne++;const e=Ne;return bt=s,ae.settled&&(ae=new pi),ft({status:"loading",loadingLocale:s}),(s===mi?Promise.resolve({templates:void 0}):mt(s)).then(i=>{Ne===e&&(De=s,bt=void 0,gi=i.templates,ft({status:"ready",readyLocale:s}),ae.resolve())},i=>{Ne===e&&(ft({status:"error",errorLocale:s,errorMessage:i.toString()}),ae.reject(i))}),ae.promise},Ls=(s,e,t)=>{const i=s[e];return i?typeof i=="function"?i():Promise.resolve(i):new Promise((o,a)=>{(typeof queueMicrotask=="function"?queueMicrotask:setTimeout)(a.bind(null,new Error("Unknown variable dynamic import: "+e+(e.split("/").length!==t?". Note that variables only represent file names one level deep.":""))))})},Is="en",Ps=["am_ET","ar","ar_MA","bg_BG","bn_BD","bs_BA","cs","de_DE","el","en_US","es_419","es_ES","fa_IR","fr_FR","hi_IN","hr","hu_HU","id_ID","it_IT","ja","ko_KR","mk_MK","mr","my_MM","ne_NP","nl_NL","pa_IN","pl","pt_BR","ro_RO","ru_RU","sl_SI","sr_BA","sw","th","tl","tr_TR","uk","vi","zh_CN","zh_TW"],{setLocale:Ms}=Os({sourceLocale:Is,targetLocales:Ps,loadLocale:s=>Ls(Object.assign({"./generated/am_ET.js":()=>Promise.resolve().then(()=>Ba),"./generated/ar.js":()=>Promise.resolve().then(()=>Ka),"./generated/ar_MA.js":()=>Promise.resolve().then(()=>Ga),"./generated/bg_BG.js":()=>Promise.resolve().then(()=>Ja),"./generated/bn_BD.js":()=>Promise.resolve().then(()=>Xa),"./generated/bs_BA.js":()=>Promise.resolve().then(()=>er),"./generated/cs.js":()=>Promise.resolve().then(()=>ir),"./generated/de_DE.js":()=>Promise.resolve().then(()=>sr),"./generated/el.js":()=>Promise.resolve().then(()=>rr),"./generated/en_US.js":()=>Promise.resolve().then(()=>lr),"./generated/es-419.js":()=>Promise.resolve().then(()=>cr),"./generated/es_419.js":()=>Promise.resolve().then(()=>hr),"./generated/es_ES.js":()=>Promise.resolve().then(()=>fr),"./generated/fa_IR.js":()=>Promise.resolve().then(()=>mr),"./generated/fr_FR.js":()=>Promise.resolve().then(()=>vr),"./generated/hi_IN.js":()=>Promise.resolve().then(()=>_r),"./generated/hr.js":()=>Promise.resolve().then(()=>$r),"./generated/hu_HU.js":()=>Promise.resolve().then(()=>kr),"./generated/id_ID.js":()=>Promise.resolve().then(()=>Er),"./generated/it_IT.js":()=>Promise.resolve().then(()=>Or),"./generated/ja.js":()=>Promise.resolve().then(()=>Cr),"./generated/ko_KR.js":()=>Promise.resolve().then(()=>Ir),"./generated/mk_MK.js":()=>Promise.resolve().then(()=>Mr),"./generated/mr.js":()=>Promise.resolve().then(()=>zr),"./generated/my_MM.js":()=>Promise.resolve().then(()=>Dr),"./generated/ne_NP.js":()=>Promise.resolve().then(()=>Nr),"./generated/nl_NL.js":()=>Promise.resolve().then(()=>Ur),"./generated/pa_IN.js":()=>Promise.resolve().then(()=>Br),"./generated/pl.js":()=>Promise.resolve().then(()=>Kr),"./generated/pt_BR.js":()=>Promise.resolve().then(()=>Gr),"./generated/ro_RO.js":()=>Promise.resolve().then(()=>Jr),"./generated/ru_RU.js":()=>Promise.resolve().then(()=>Xr),"./generated/sl_SI.js":()=>Promise.resolve().then(()=>en),"./generated/sr_BA.js":()=>Promise.resolve().then(()=>on),"./generated/sw.js":()=>Promise.resolve().then(()=>an),"./generated/th.js":()=>Promise.resolve().then(()=>nn),"./generated/tl.js":()=>Promise.resolve().then(()=>dn),"./generated/tr_TR.js":()=>Promise.resolve().then(()=>un),"./generated/uk.js":()=>Promise.resolve().then(()=>pn),"./generated/vi.js":()=>Promise.resolve().then(()=>bn),"./generated/zh_CN.js":()=>Promise.resolve().then(()=>gn),"./generated/zh_TW.js":()=>Promise.resolve().then(()=>yn)}),`./generated/${s}.js`,3)});class vi{constructor(e,t="/wp-json"){this.nonce=e;let i=t;i.match("^http")&&(i=i.replace(/^http[s]?:\/\/.*?\//,"")),i=`/${i}/`.replace(/\/\//g,"/"),this.apiRoot=i}async makeRequest(e,t,i,o="dt/v1/"){let a=o;!a.endsWith("/")&&!t.startsWith("/")&&(a+="/");const r=t.startsWith("http")?t:`${this.apiRoot}${a}${t}`,n={method:e,credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":this.nonce}};e!=="GET"&&(n.body=JSON.stringify(i));const l=await fetch(r,n),d=await l.json();if(!l.ok){const u=new Error((d==null?void 0:d.message)||d.toString());throw u.args={status:l.status,statusText:l.statusText,body:d},u}return d}async makeRequestOnPosts(e,t,i={}){return this.makeRequest(e,t,i,"dt-posts/v2/")}async getPost(e,t){return this.makeRequestOnPosts("GET",`${e}/${t}`)}async createPost(e,t){return this.makeRequestOnPosts("POST",e,t)}async fetchPostsList(e,t){return this.makeRequestOnPosts("POST",`${e}/list`,t)}async updatePost(e,t,i){return this.makeRequestOnPosts("POST",`${e}/${t}`,i)}async deletePost(e,t){return this.makeRequestOnPosts("DELETE",`${e}/${t}`)}async listPostsCompact(e,t=""){const i=new URLSearchParams({s:t});return this.makeRequestOnPosts("GET",`${e}/compact?${i}`)}async getPostDuplicates(e,t,i){return this.makeRequestOnPosts("GET",`${e}/${t}/all_duplicates`,i)}async checkFieldValueExists(e,t){return this.makeRequestOnPosts("POST",`${e}/check_field_value_exists`,t)}async getMultiSelectValues(e,t,i=""){const o=new URLSearchParams({s:i,field:t});return this.makeRequestOnPosts("GET",`${e}/multi-select-values?${o}`)}async getLocations(e,t,i,o=""){const a=new URLSearchParams({s:o,field:t,filter:i});return this.makeRequest("GET",`mapping_module/search_location_grid_by_name?${a}`)}async transferContact(e,t){return this.makeRequestOnPosts("POST","contacts/transfer",{contact_id:e,site_post_id:t})}async transferContactSummaryUpdate(e,t){return this.makeRequestOnPosts("POST","contacts/transfer/summary/send-update",{contact_id:e,update:t})}async requestRecordAccess(e,t,i){return this.makeRequestOnPosts("POST",`${e}/${t}/request_record_access`,{user_id:i})}async createComment(e,t,i,o="comment"){return this.makeRequestOnPosts("POST",`${e}/${t}/comments`,{comment:i,comment_type:o})}async updateComment(e,t,i,o,a="comment"){return this.makeRequestOnPosts("POST",`${e}/${t}/comments/${i}`,{comment:o,comment_type:a})}async deleteComment(e,t,i){return this.makeRequestOnPosts("DELETE",`${e}/${t}/comments/${i}`)}async getComments(e,t){return this.makeRequestOnPosts("GET",`${e}/${t}/comments`)}async toggle_comment_reaction(e,t,i,o,a){return this.makeRequestOnPosts("POST",`${e}/${t}/comments/${i}/react`,{user_id:o,reaction:a})}async getPostActivity(e,t){return this.makeRequestOnPosts("GET",`${e}/${t}/activity`)}async getSingleActivity(e,t,i){return this.makeRequestOnPosts("GET",`${e}/${t}/activity/${i}`)}async revertActivity(e,t,i){return this.makeRequestOnPosts("GET",`${e}/${t}/revert/${i}`)}async getPostShares(e,t){return this.makeRequestOnPosts("GET",`${e}/${t}/shares`)}async addPostShare(e,t,i){return this.makeRequestOnPosts("POST",`${e}/${t}/shares`,{user_id:i})}async removePostShare(e,t,i){return this.makeRequestOnPosts("DELETE",`${e}/${t}/shares`,{user_id:i})}async getFilters(){return this.makeRequest("GET","users/get_filters")}async saveFilters(e,t){return this.makeRequest("POST","users/save_filters",{filter:t,postType:e})}async deleteFilter(e,t){return this.makeRequest("DELETE","users/save_filters",{id:t,postType:e})}async searchUsers(e,t=""){const i=new URLSearchParams({s:t});return this.makeRequest("GET",`users/get_users?${i}&post_type=${e}`)}async checkDuplicateUsers(e,t){return this.makeRequestOnPosts("GET",`${e}/${t}/duplicates`)}async getContactInfo(e,t){return this.makeRequestOnPosts("GET",`${e}/${t}/`)}async createUser(e){return this.makeRequest("POST","users/create",e)}async advanced_search(e,t,i,o){return this.makeRequest("GET","advanced_search",{query:e,postType:t,offset:i,post:o.post,comment:o.comment,meta:o.meta,status:o.status},"dt-posts/v2/posts/search/")}async uploadFiles(e,t,i,o,a="",r=null){const n=new FormData;i.forEach(d=>n.append("storage_upload_files[]",d)),n.append("meta_key",o),n.append("key_prefix",a),n.append("upload_type","post"),n.append("is_multi_file","true"),n.append("storage_s3_url_duration","+7 days");const l=`${this.apiRoot}dt-posts/v2/${e}/${t}/storage_upload`;return await new Promise((d,u)=>{const h=new XMLHttpRequest;h.open("POST",l,!0),h.withCredentials=!0,h.setRequestHeader("X-WP-Nonce",this.nonce),h.upload.onprogress=g=>{if(r&&g.lengthComputable){const y=Math.round(g.loaded/g.total*100);r(y)}},h.onload=()=>{let g={};try{g=JSON.parse(h.responseText||"{}")}catch{g={message:h.responseText||"Upload failed"}}if(h.status>=200&&h.status<300)d(g);else{const y=new Error((g==null?void 0:g.uploaded_msg)||(g==null?void 0:g.message)||"Upload failed");y.args={status:h.status,statusText:h.statusText,body:g},u(y)}},h.onerror=()=>u(new Error("Upload failed")),h.send(n)})}async deleteFile(e,t,i,o){return this.makeRequestOnPosts("POST",`${e}/${t}/storage_delete_single`,{meta_key:i,file_key:o})}async renameFile(e,t,i,o,a){return this.makeRequestOnPosts("POST",`${e}/${t}/storage_rename_single`,{meta_key:i,file_key:o,new_name:a})}async downloadFile(e,t,i,o){const a=`${this.apiRoot}dt-posts/v2/${e}/${t}/storage_download`,r=await fetch(a,{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","X-WP-Nonce":this.nonce},body:JSON.stringify({meta_key:i,file_key:o})});if(!r.ok){const n=await r.json().catch(()=>({message:"Download failed"}));throw new Error(n.message||"Download failed")}return await r.blob()}}(function(){(function(s){const e=new WeakMap,t=new WeakMap,i=new WeakMap,o=new WeakMap,a=new WeakMap,r=new WeakMap,n=new WeakMap,l=new WeakMap,d=new WeakMap,u=new WeakMap,h=new WeakMap,g=new WeakMap,y=new WeakMap,_=new WeakMap,C=new WeakMap,D={ariaAtomic:"aria-atomic",ariaAutoComplete:"aria-autocomplete",ariaBusy:"aria-busy",ariaChecked:"aria-checked",ariaColCount:"aria-colcount",ariaColIndex:"aria-colindex",ariaColIndexText:"aria-colindextext",ariaColSpan:"aria-colspan",ariaCurrent:"aria-current",ariaDescription:"aria-description",ariaDisabled:"aria-disabled",ariaExpanded:"aria-expanded",ariaHasPopup:"aria-haspopup",ariaHidden:"aria-hidden",ariaInvalid:"aria-invalid",ariaKeyShortcuts:"aria-keyshortcuts",ariaLabel:"aria-label",ariaLevel:"aria-level",ariaLive:"aria-live",ariaModal:"aria-modal",ariaMultiLine:"aria-multiline",ariaMultiSelectable:"aria-multiselectable",ariaOrientation:"aria-orientation",ariaPlaceholder:"aria-placeholder",ariaPosInSet:"aria-posinset",ariaPressed:"aria-pressed",ariaReadOnly:"aria-readonly",ariaRelevant:"aria-relevant",ariaRequired:"aria-required",ariaRoleDescription:"aria-roledescription",ariaRowCount:"aria-rowcount",ariaRowIndex:"aria-rowindex",ariaRowIndexText:"aria-rowindextext",ariaRowSpan:"aria-rowspan",ariaSelected:"aria-selected",ariaSetSize:"aria-setsize",ariaSort:"aria-sort",ariaValueMax:"aria-valuemax",ariaValueMin:"aria-valuemin",ariaValueNow:"aria-valuenow",ariaValueText:"aria-valuetext",role:"role"},j=(f,c)=>{for(let b in D){c[b]=null;let v=null;const w=D[b];Object.defineProperty(c,b,{get(){return v},set(k){v=k,f.isConnected?P(f,w,k):u.set(f,c)}})}};function L(f){const c=o.get(f),{form:b}=c;Io(f,b,c),Lo(f,c.labels)}const Ie=(f,c=!1)=>{const b=document.createTreeWalker(f,NodeFilter.SHOW_ELEMENT,{acceptNode(k){return o.has(k)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP}});let v=b.nextNode();const w=!c||f.disabled;for(;v;)v.formDisabledCallback&&w&&Ft(v,f.disabled),v=b.nextNode()},Je={attributes:!0,attributeFilter:["disabled","name"]},Y=Ye()?new MutationObserver(f=>{for(const c of f){const b=c.target;if(c.attributeName==="disabled"&&(b.constructor.formAssociated?Ft(b,b.hasAttribute("disabled")):b.localName==="fieldset"&&Ie(b)),c.attributeName==="name"&&b.constructor.formAssociated){const v=o.get(b),w=d.get(b);v.setFormValue(w)}}}):{};function E(f){f.forEach(c=>{const{addedNodes:b,removedNodes:v}=c,w=Array.from(b),k=Array.from(v);w.forEach(S=>{var z;if(o.has(S)&&S.constructor.formAssociated&&L(S),u.has(S)){const T=u.get(S);Object.keys(D).filter(U=>T[U]!==null).forEach(U=>{P(S,D[U],T[U])}),u.delete(S)}if(C.has(S)){const T=C.get(S);P(S,"internals-valid",T.validity.valid.toString()),P(S,"internals-invalid",(!T.validity.valid).toString()),P(S,"aria-invalid",(!T.validity.valid).toString()),C.delete(S)}if(S.localName==="form"){const T=l.get(S),K=document.createTreeWalker(S,NodeFilter.SHOW_ELEMENT,{acceptNode(qt){return o.has(qt)&&qt.constructor.formAssociated&&!(T&&T.has(qt))?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP}});let U=K.nextNode();for(;U;)L(U),U=K.nextNode()}S.localName==="fieldset"&&((z=Y.observe)===null||z===void 0||z.call(Y,S,Je),Ie(S,!0))}),k.forEach(S=>{const z=o.get(S);z&&i.get(z)&&To(z),n.has(S)&&n.get(S).disconnect()})})}function F(f){f.forEach(c=>{const{removedNodes:b}=c;b.forEach(v=>{const w=y.get(c.target);o.has(v)&&Mo(v),w.disconnect()})})}const de=f=>{var c,b;const v=new MutationObserver(F);!((c=window==null?void 0:window.ShadyDOM)===null||c===void 0)&&c.inUse&&f.mode&&f.host&&(f=f.host),(b=v.observe)===null||b===void 0||b.call(v,f,{childList:!0}),y.set(f,v)};Ye()&&new MutationObserver(E);const ee={childList:!0,subtree:!0},P=(f,c,b)=>{f.getAttribute(c)!==b&&f.setAttribute(c,b)},Ft=(f,c)=>{f.toggleAttribute("internals-disabled",c),c?P(f,"aria-disabled","true"):f.removeAttribute("aria-disabled"),f.formDisabledCallback&&f.formDisabledCallback.apply(f,[c])},To=f=>{i.get(f).forEach(b=>{b.remove()}),i.set(f,[])},Co=(f,c)=>{const b=document.createElement("input");return b.type="hidden",b.name=f.getAttribute("name"),f.after(b),i.get(c).push(b),b},_n=(f,c)=>{var b;i.set(c,[]),(b=Y.observe)===null||b===void 0||b.call(Y,f,Je)},Lo=(f,c)=>{if(c.length){Array.from(c).forEach(v=>v.addEventListener("click",f.click.bind(f)));let b=c[0].id;c[0].id||(b=`${c[0].htmlFor}_Label`,c[0].id=b),P(f,"aria-labelledby",b)}},Qe=f=>{const c=Array.from(f.elements).filter(k=>!k.tagName.includes("-")&&k.validity).map(k=>k.validity.valid),b=l.get(f)||[],v=Array.from(b).filter(k=>k.isConnected).map(k=>o.get(k).validity.valid),w=[...c,...v].includes(!1);f.toggleAttribute("internals-invalid",w),f.toggleAttribute("internals-valid",!w)},wn=f=>{Qe(Xe(f.target))},$n=f=>{Qe(Xe(f.target))},xn=f=>{const c=["button[type=submit]","input[type=submit]","button:not([type])"].map(b=>`${b}:not([disabled])`).map(b=>`${b}:not([form])${f.id?`,${b}[form='${f.id}']`:""}`).join(",");f.addEventListener("click",b=>{if(b.target.closest(c)){const w=l.get(f);if(f.noValidate)return;w.size&&Array.from(w).reverse().map(z=>o.get(z).reportValidity()).includes(!1)&&b.preventDefault()}})},kn=f=>{const c=l.get(f.target);c&&c.size&&c.forEach(b=>{b.constructor.formAssociated&&b.formResetCallback&&b.formResetCallback.apply(b)})},Io=(f,c,b)=>{if(c){const v=l.get(c);if(v)v.add(f);else{const w=new Set;w.add(f),l.set(c,w),xn(c),c.addEventListener("reset",kn),c.addEventListener("input",wn),c.addEventListener("change",$n)}r.set(c,{ref:f,internals:b}),f.constructor.formAssociated&&f.formAssociatedCallback&&setTimeout(()=>{f.formAssociatedCallback.apply(f,[c])},0),Qe(c)}},Xe=f=>{let c=f.parentNode;return c&&c.tagName!=="FORM"&&(c=Xe(c)),c},H=(f,c,b=DOMException)=>{if(!f.constructor.formAssociated)throw new b(c)},Po=(f,c,b)=>{const v=l.get(f);return v&&v.size&&v.forEach(w=>{o.get(w)[b]()||(c=!1)}),c},Mo=f=>{if(f.constructor.formAssociated){const c=o.get(f),{labels:b,form:v}=c;Lo(f,b),Io(f,v,c)}};function Ye(){return typeof MutationObserver<"u"}class Sn{constructor(){this.badInput=!1,this.customError=!1,this.patternMismatch=!1,this.rangeOverflow=!1,this.rangeUnderflow=!1,this.stepMismatch=!1,this.tooLong=!1,this.tooShort=!1,this.typeMismatch=!1,this.valid=!0,this.valueMissing=!1,Object.seal(this)}}const En=f=>(f.badInput=!1,f.customError=!1,f.patternMismatch=!1,f.rangeOverflow=!1,f.rangeUnderflow=!1,f.stepMismatch=!1,f.tooLong=!1,f.tooShort=!1,f.typeMismatch=!1,f.valid=!0,f.valueMissing=!1,f),An=(f,c,b)=>(f.valid=On(c),Object.keys(c).forEach(v=>f[v]=c[v]),b&&Qe(b),f),On=f=>{let c=!0;for(let b in f)b!=="valid"&&f[b]!==!1&&(c=!1);return c},Dt=new WeakMap;function jo(f,c){f.toggleAttribute(c,!0),f.part&&f.part.add(c)}class Rt extends Set{static get isPolyfilled(){return!0}constructor(c){if(super(),!c||!c.tagName||c.tagName.indexOf("-")===-1)throw new TypeError("Illegal constructor");Dt.set(this,c)}add(c){if(!/^--/.test(c)||typeof c!="string")throw new DOMException(`Failed to execute 'add' on 'CustomStateSet': The specified value ${c} must start with '--'.`);const b=super.add(c),v=Dt.get(this),w=`state${c}`;return v.isConnected?jo(v,w):setTimeout(()=>{jo(v,w)}),b}clear(){for(let[c]of this.entries())this.delete(c);super.clear()}delete(c){const b=super.delete(c),v=Dt.get(this);return v.isConnected?(v.toggleAttribute(`state${c}`,!1),v.part&&v.part.remove(`state${c}`)):setTimeout(()=>{v.toggleAttribute(`state${c}`,!1),v.part&&v.part.remove(`state${c}`)}),b}}function zo(f,c,b,v){if(typeof c=="function"?f!==c||!0:!c.has(f))throw new TypeError("Cannot read private member from an object whose class did not declare it");return b==="m"?v:b==="a"?v.call(f):v?v.value:c.get(f)}function Tn(f,c,b,v,w){if(typeof c=="function"?f!==c||!0:!c.has(f))throw new TypeError("Cannot write private member to an object whose class did not declare it");return c.set(f,b),b}var Pe;class Cn{constructor(c){Pe.set(this,void 0),Tn(this,Pe,c);for(let b=0;b<c.length;b++){let v=c[b];this[b]=v,v.hasAttribute("name")&&(this[v.getAttribute("name")]=v)}Object.freeze(this)}get length(){return zo(this,Pe,"f").length}[(Pe=new WeakMap,Symbol.iterator)](){return zo(this,Pe,"f")[Symbol.iterator]()}item(c){return this[c]==null?null:this[c]}namedItem(c){return this[c]==null?null:this[c]}}function Ln(){const f=HTMLFormElement.prototype.checkValidity;HTMLFormElement.prototype.checkValidity=b;const c=HTMLFormElement.prototype.reportValidity;HTMLFormElement.prototype.reportValidity=v;function b(...k){let S=f.apply(this,k);return Po(this,S,"checkValidity")}function v(...k){let S=c.apply(this,k);return Po(this,S,"reportValidity")}const{get:w}=Object.getOwnPropertyDescriptor(HTMLFormElement.prototype,"elements");Object.defineProperty(HTMLFormElement.prototype,"elements",{get(...k){const S=w.call(this,...k),z=Array.from(l.get(this)||[]);if(z.length===0)return S;const T=Array.from(S).concat(z).sort((K,U)=>K.compareDocumentPosition?K.compareDocumentPosition(U)&2?1:-1:0);return new Cn(T)}})}class Fo{static get isPolyfilled(){return!0}constructor(c){if(!c||!c.tagName||c.tagName.indexOf("-")===-1)throw new TypeError("Illegal constructor");const b=c.getRootNode(),v=new Sn;this.states=new Rt(c),e.set(this,c),t.set(this,v),o.set(c,this),j(c,this),_n(c,this),Object.seal(this),b instanceof DocumentFragment&&de(b)}checkValidity(){const c=e.get(this);if(H(c,"Failed to execute 'checkValidity' on 'ElementInternals': The target element is not a form-associated custom element."),!this.willValidate)return!0;const b=t.get(this);if(!b.valid){const v=new Event("invalid",{bubbles:!1,cancelable:!0,composed:!1});c.dispatchEvent(v)}return b.valid}get form(){const c=e.get(this);H(c,"Failed to read the 'form' property from 'ElementInternals': The target element is not a form-associated custom element.");let b;return c.constructor.formAssociated===!0&&(b=Xe(c)),b}get labels(){const c=e.get(this);H(c,"Failed to read the 'labels' property from 'ElementInternals': The target element is not a form-associated custom element.");const b=c.getAttribute("id"),v=c.getRootNode();return v&&b?v.querySelectorAll(`[for="${b}"]`):[]}reportValidity(){const c=e.get(this);if(H(c,"Failed to execute 'reportValidity' on 'ElementInternals': The target element is not a form-associated custom element."),!this.willValidate)return!0;const b=this.checkValidity(),v=g.get(this);if(v&&!c.constructor.formAssociated)throw new DOMException("Failed to execute 'reportValidity' on 'ElementInternals': The target element is not a form-associated custom element.");return!b&&v&&(c.focus(),v.focus()),b}setFormValue(c){const b=e.get(this);if(H(b,"Failed to execute 'setFormValue' on 'ElementInternals': The target element is not a form-associated custom element."),To(this),c!=null&&!(c instanceof FormData)){if(b.getAttribute("name")){const v=Co(b,this);v.value=c}}else c!=null&&c instanceof FormData&&Array.from(c).reverse().forEach(([v,w])=>{if(typeof w=="string"){const k=Co(b,this);k.name=v,k.value=w}});d.set(b,c)}setValidity(c,b,v){const w=e.get(this);if(H(w,"Failed to execute 'setValidity' on 'ElementInternals': The target element is not a form-associated custom element."),!c)throw new TypeError("Failed to execute 'setValidity' on 'ElementInternals': 1 argument required, but only 0 present.");g.set(this,v);const k=t.get(this),S={};for(const K in c)S[K]=c[K];Object.keys(S).length===0&&En(k);const z=Object.assign(Object.assign({},k),S);delete z.valid;const{valid:T}=An(k,z,this.form);if(!T&&!b)throw new DOMException("Failed to execute 'setValidity' on 'ElementInternals': The second argument should not be empty if one or more flags in the first argument are true.");a.set(this,T?"":b),w.isConnected?(w.toggleAttribute("internals-invalid",!T),w.toggleAttribute("internals-valid",T),P(w,"aria-invalid",`${!T}`)):C.set(w,this)}get shadowRoot(){const c=e.get(this),b=h.get(c);return b||null}get validationMessage(){const c=e.get(this);return H(c,"Failed to read the 'validationMessage' property from 'ElementInternals': The target element is not a form-associated custom element."),a.get(this)}get validity(){const c=e.get(this);return H(c,"Failed to read the 'validity' property from 'ElementInternals': The target element is not a form-associated custom element."),t.get(this)}get willValidate(){const c=e.get(this);return H(c,"Failed to read the 'willValidate' property from 'ElementInternals': The target element is not a form-associated custom element."),!(c.disabled||c.hasAttribute("disabled")||c.hasAttribute("readonly"))}}function In(){if(typeof window>"u"||!window.ElementInternals||!HTMLElement.prototype.attachInternals)return!1;class f extends HTMLElement{constructor(){super(),this.internals=this.attachInternals()}}const c=`element-internals-feature-detection-${Math.random().toString(36).replace(/[^a-z]+/g,"")}`;customElements.define(c,f);const b=new f;return["shadowRoot","form","willValidate","validity","validationMessage","labels","setFormValue","setValidity","checkValidity","reportValidity"].every(v=>v in b.internals)}let Do=!1,Ro=!1;function Nt(f){Ro||(Ro=!0,window.CustomStateSet=Rt,f&&(HTMLElement.prototype.attachInternals=function(...c){const b=f.call(this,c);return b.states=new Rt(this),b}))}function No(f=!0){if(!Do){if(Do=!0,typeof window<"u"&&(window.ElementInternals=Fo),typeof CustomElementRegistry<"u"){const c=CustomElementRegistry.prototype.define;CustomElementRegistry.prototype.define=function(b,v,w){if(v.formAssociated){const k=v.prototype.connectedCallback;v.prototype.connectedCallback=function(){_.has(this)||(_.set(this,!0),this.hasAttribute("disabled")&&Ft(this,!0)),k!=null&&k.apply(this),Mo(this)}}c.call(this,b,v,w)}}if(typeof HTMLElement<"u"&&(HTMLElement.prototype.attachInternals=function(){if(this.tagName){if(this.tagName.indexOf("-")===-1)throw new Error("Failed to execute 'attachInternals' on 'HTMLElement': Unable to attach ElementInternals to non-custom elements.")}else return{};if(o.has(this))throw new DOMException("DOMException: Failed to execute 'attachInternals' on 'HTMLElement': ElementInternals for the specified element was already attached.");return new Fo(this)}),typeof Element<"u"){let c=function(...v){const w=b.apply(this,v);if(h.set(this,w),Ye()){const k=new MutationObserver(E);window.ShadyDOM?k.observe(this,ee):k.observe(w,ee),n.set(this,k)}return w};const b=Element.prototype.attachShadow;Element.prototype.attachShadow=c}Ye()&&typeof document<"u"&&new MutationObserver(E).observe(document.documentElement,ee),typeof HTMLFormElement<"u"&&Ln(),(f||typeof window<"u"&&!window.CustomStateSet)&&Nt()}}return!!customElements.polyfillWrapFlushCallback||(In()?typeof window<"u"&&!window.CustomStateSet&&Nt(HTMLElement.prototype.attachInternals):No(!1)),s.forceCustomStateSetPolyfill=Nt,s.forceElementInternalsPolyfill=No,Object.defineProperty(s,"__esModule",{value:!0}),s})({})})();class N extends se{static get styles(){return[x`
+        :host {
+        }
+      `]}static get properties(){return{RTL:{type:Boolean},locale:{type:String}}}get _focusTarget(){return this.shadowRoot.children[0]instanceof Element?this.shadowRoot.children[0]:null}constructor(){super(),_s(this),this.addEventListener("click",this._proxyClick.bind(this)),this.addEventListener("focus",this._proxyFocus.bind(this))}willUpdate(e){if(this.RTL===void 0){const t=this.closest("[dir]");if(t){const i=t.getAttribute("dir");i&&(this.RTL=i.toLowerCase()==="rtl")}}if(!this.locale){const t=this.closest("[lang]");if(t){const i=t.getAttribute("lang");i&&(this.locale=i)}}if(!this.locale){const t=this.getRootNode();if(t instanceof ShadowRoot&&t.host){const i=t.host;i.locale&&(this.locale=i.locale)}}if(e&&e.has("locale")&&this.locale)try{Ms(this.locale)}catch(t){console.error(t)}}_proxyClick(){this.clicked=!0}_proxyFocus(){if(this._focusTarget){if(this.clicked){this.clicked=!1;return}this._focusTarget.focus()}}focus(){this._proxyFocus()}}class yi extends N{static get formAssociated(){return!0}static get styles(){return x`
       :host {
         display: inline-flex;
         width: fit-content;
@@ -205,7 +208,7 @@
           cursor: not-allowed;
         }
       }
-    `}static get properties(){return{label:{type:String},context:{type:String},type:{type:String},title:{type:String},outline:{type:Boolean},round:{type:Boolean},disabled:{type:Boolean}}}get classes(){const e={"dt-button":!0,"dt-button--outline":this.outline,"dt-button--round":this.round},t=`dt-button--${this.context}`;return e[t]=!0,e}get _field(){return this.shadowRoot.querySelector("button")}get _focusTarget(){return this._field}constructor(){super(),this.context="default",this.internals=this.attachInternals()}handleClick(e){e.preventDefault(),this.type==="submit"&&this.internals.form&&this.internals.form.dispatchEvent(new Event("submit",{cancelable:!0,bubbles:!0}))}render(){const e={...this.classes};return f`
+    `}static get properties(){return{label:{type:String},context:{type:String},type:{type:String},title:{type:String},outline:{type:Boolean},round:{type:Boolean},disabled:{type:Boolean}}}get classes(){const e={"dt-button":!0,"dt-button--outline":this.outline,"dt-button--round":this.round},t=`dt-button--${this.context}`;return e[t]=!0,e}get _field(){return this.shadowRoot.querySelector("button")}get _focusTarget(){return this._field}constructor(){super(),this.context="default",this.internals=this.attachInternals()}handleClick(e){e.preventDefault(),this.type==="submit"&&this.internals.form&&this.internals.form.dispatchEvent(new Event("submit",{cancelable:!0,bubbles:!0}))}render(){const e={...this.classes};return p`
       <button
         part="button"
         class=${A(e)}
@@ -220,12 +223,14 @@
  * @license
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const wi="important",jo=" !"+wi,Q=ut(class extends ht{constructor(o){var e;if(super(o),o.type!==ct.ATTRIBUTE||o.name!=="style"||((e=o.strings)==null?void 0:e.length)>2)throw Error("The `styleMap` directive must be used in the `style` attribute and must be the only part in the attribute.")}render(o){return Object.keys(o).reduce((e,t)=>{const i=o[t];return i==null?e:e+`${t=t.includes("-")?t:t.replace(/(?:^(webkit|moz|ms|o)|)(?=[A-Z])/g,"-$&").toLowerCase()}:${i};`},"")}update(o,[e]){const{style:t}=o.element;if(this.ft===void 0)return this.ft=new Set(Object.keys(e)),this.render(e);for(const i of this.ft)e[i]==null&&(this.ft.delete(i),i.includes("-")?t.removeProperty(i):t[i]=null);for(const i in e){const s=e[i];if(s!=null){this.ft.add(i);const a=typeof s=="string"&&s.endsWith(jo);i.includes("-")||a?t.setProperty(i,a?s.slice(0,-11):s,a?wi:""):t[i]=s}}return U}});class _i extends N{static get styles(){return x`
+ */const _i="important",js=" !"+_i,Q=ut(class extends ht{constructor(s){var e;if(super(s),s.type!==ct.ATTRIBUTE||s.name!=="style"||((e=s.strings)==null?void 0:e.length)>2)throw Error("The `styleMap` directive must be used in the `style` attribute and must be the only part in the attribute.")}render(s){return Object.keys(s).reduce((e,t)=>{const i=s[t];return i==null?e:e+`${t=t.includes("-")?t:t.replace(/(?:^(webkit|moz|ms|o)|)(?=[A-Z])/g,"-$&").toLowerCase()}:${i};`},"")}update(s,[e]){const{style:t}=s.element;if(this.ft===void 0)return this.ft=new Set(Object.keys(e)),this.render(e);for(const i of this.ft)e[i]==null&&(this.ft.delete(i),i.includes("-")?t.removeProperty(i):t[i]=null);for(const i in e){const o=e[i];if(o!=null){this.ft.add(i);const a=typeof o=="string"&&o.endsWith(js);i.includes("-")||a?t.setProperty(i,a?o.slice(0,-11):o,a?_i:""):t[i]=o}}return V}});class wi extends N{static get styles(){return x`
       :host {
+        --dt-label-font-size: 14px;
+
         font-family: var(--font-family);
         font-size: var(--dt-label-font-size, 14px);
         font-weight: var(--dt-label-font-weight, 700);
-        color: var(--dt-label-color, #000);
+        color: var(--dt-label-color, var(--dt-form-text-color, #000));
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -271,8 +276,8 @@
       .tooltip {
         display: none;
         position: absolute;
-        color: var(--dt-label-tooltip-color, #666);
-        background: var(--dt-label-tooltip-background, #eee);
+        color: var(--dt-label-tooltip-color, var(--gray-0));
+        background: var(--dt-label-tooltip-background, var(--surface-2));
         top: calc(100% + 0.5rem);
         inset-inline-start: -1rem;
         font-weight: normal;
@@ -286,23 +291,24 @@
         top: -0.5rem;
         height: 0;
         width: 0;
-        border-bottom: 0.5rem solid var(--dt-label-tooltip-background, #eee);
+        border-bottom: 0.5rem solid
+          var(--dt-label-tooltip-background, var(--surface-2));
         border-inline-start: 0.5rem solid transparent;
         border-inline-end: 0.5rem solid transparent;
       }
-    `}static get properties(){return{icon:{type:String},iconAltText:{type:String},private:{type:Boolean},privateLabel:{type:String}}}firstUpdated(){const e=this.shadowRoot.querySelectorAll("slot");if(e&&e.length)for(const n of e)n.addEventListener("slotchange",r=>{const l=r.target.assignedNodes();let c=!1;l.length&&(l[0].tagName==="SLOT"?c=l[0].assignedNodes().length||l[0].children.length:c=!0),c&&r.target.classList.add("slotted")});const i=this.shadowRoot.querySelector("slot[name=icon-start]").assignedElements({flatten:!0});for(const n of i)n.style.height="100%",n.style.width="auto";const s=this.shadowRoot.querySelector("slot:not([name])"),a=this.shadowRoot.querySelector(".label");if(s&&a){const n=s.assignedNodes().map(r=>{var l;return(l=r.textContent)==null?void 0:l.trim()}).filter(r=>r).join(" ");n&&a.setAttribute("title",n)}}get _slottedChildren(){return this.shadowRoot.querySelector("slot").assignedElements({flatten:!0})}render(){const e=f`<svg class="icon" height='100px' width='100px' fill="#000000" xmlns:x="http://ns.adobe.com/Extensibility/1.0/" xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve"><g><g i:extraneous="self"><g><path d="M5273.1,2400.1v-2c0-2.8-5-4-9.7-4s-9.7,1.3-9.7,4v2c0,1.8,0.7,3.6,2,4.9l5,4.9c0.3,0.3,0.4,0.6,0.4,1v6.4     c0,0.4,0.2,0.7,0.6,0.8l2.9,0.9c0.5,0.1,1-0.2,1-0.8v-7.2c0-0.4,0.2-0.7,0.4-1l5.1-5C5272.4,2403.7,5273.1,2401.9,5273.1,2400.1z      M5263.4,2400c-4.8,0-7.4-1.3-7.5-1.8v0c0.1-0.5,2.7-1.8,7.5-1.8c4.8,0,7.3,1.3,7.5,1.8C5270.7,2398.7,5268.2,2400,5263.4,2400z"></path><path d="M5268.4,2410.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1H5268.4z"></path><path d="M5272.7,2413.7h-4.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1C5273.7,2414.1,5273.3,2413.7,5272.7,2413.7z"></path><path d="M5272.7,2417h-4.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1C5273.7,2417.5,5273.3,2417,5272.7,2417z"></path></g><path d="M75.8,37.6v-9.3C75.8,14.1,64.2,2.5,50,2.5S24.2,14.1,24.2,28.3v9.3c-7,0.6-12.4,6.4-12.4,13.6v32.6    c0,7.6,6.1,13.7,13.7,13.7h49.1c7.6,0,13.7-6.1,13.7-13.7V51.2C88.3,44,82.8,38.2,75.8,37.6z M56,79.4c0.2,1-0.5,1.9-1.5,1.9h-9.1    c-1,0-1.7-0.9-1.5-1.9l3-11.8c-2.5-1.1-4.3-3.6-4.3-6.6c0-4,3.3-7.3,7.3-7.3c4,0,7.3,3.3,7.3,7.3c0,2.9-1.8,5.4-4.3,6.6L56,79.4z     M62.7,37.5H37.3v-9.1c0-7,5.7-12.7,12.7-12.7s12.7,5.7,12.7,12.7V37.5z"></path></g></g></svg>`;return f`
+    `}static get properties(){return{icon:{type:String},iconAltText:{type:String},private:{type:Boolean},privateLabel:{type:String}}}firstUpdated(){const e=this.shadowRoot.querySelectorAll("slot");if(e&&e.length)for(const r of e)r.addEventListener("slotchange",n=>{const l=n.target.assignedNodes();let d=!1;l.length&&(l[0].tagName==="SLOT"?d=l[0].assignedNodes().length||l[0].children.length:d=!0),d&&n.target.classList.add("slotted")});const i=this.shadowRoot.querySelector("slot[name=icon-start]").assignedElements({flatten:!0});for(const r of i)r.style.height="100%",r.style.width="auto";const o=this.shadowRoot.querySelector("slot:not([name])"),a=this.shadowRoot.querySelector(".label");if(o&&a){const r=o.assignedNodes().map(n=>{var l;return(l=n.textContent)==null?void 0:l.trim()}).filter(n=>n).join(" ");r&&a.setAttribute("title",r)}}get _slottedChildren(){return this.shadowRoot.querySelector("slot").assignedElements({flatten:!0})}render(){const e=p`<svg class="icon" height='100px' width='100px' fill="#000000" xmlns:x="http://ns.adobe.com/Extensibility/1.0/" xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve"><g><g i:extraneous="self"><g><path d="M5273.1,2400.1v-2c0-2.8-5-4-9.7-4s-9.7,1.3-9.7,4v2c0,1.8,0.7,3.6,2,4.9l5,4.9c0.3,0.3,0.4,0.6,0.4,1v6.4     c0,0.4,0.2,0.7,0.6,0.8l2.9,0.9c0.5,0.1,1-0.2,1-0.8v-7.2c0-0.4,0.2-0.7,0.4-1l5.1-5C5272.4,2403.7,5273.1,2401.9,5273.1,2400.1z      M5263.4,2400c-4.8,0-7.4-1.3-7.5-1.8v0c0.1-0.5,2.7-1.8,7.5-1.8c4.8,0,7.3,1.3,7.5,1.8C5270.7,2398.7,5268.2,2400,5263.4,2400z"></path><path d="M5268.4,2410.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1c0-0.6-0.4-1-1-1H5268.4z"></path><path d="M5272.7,2413.7h-4.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1C5273.7,2414.1,5273.3,2413.7,5272.7,2413.7z"></path><path d="M5272.7,2417h-4.3c-0.6,0-1,0.4-1,1c0,0.6,0.4,1,1,1h4.3c0.6,0,1-0.4,1-1C5273.7,2417.5,5273.3,2417,5272.7,2417z"></path></g><path d="M75.8,37.6v-9.3C75.8,14.1,64.2,2.5,50,2.5S24.2,14.1,24.2,28.3v9.3c-7,0.6-12.4,6.4-12.4,13.6v32.6    c0,7.6,6.1,13.7,13.7,13.7h49.1c7.6,0,13.7-6.1,13.7-13.7V51.2C88.3,44,82.8,38.2,75.8,37.6z M56,79.4c0.2,1-0.5,1.9-1.5,1.9h-9.1    c-1,0-1.7-0.9-1.5-1.9l3-11.8c-2.5-1.1-4.3-3.6-4.3-6.6c0-4,3.3-7.3,7.3-7.3c4,0,7.3,3.3,7.3,7.3c0,2.9-1.8,5.4-4.3,6.6L56,79.4z     M62.7,37.5H37.3v-9.1c0-7,5.7-12.7,12.7-12.7s12.7,5.7,12.7,12.7V37.5z"></path></g></g></svg>`;return p`
       <div class="label" part="label">
         <span class="icon icon-start">
           <slot name="icon-start"
-            >${this.icon?f`<img src="${this.icon}" alt="${this.iconAltText}" />`:null}</slot
+            >${this.icon?p`<img src="${this.icon}" alt="${this.iconAltText}" />`:null}</slot
           >
         </span>
         <span class="label-text"><slot></slot></span>
 
-        ${this.private?f`<span class="icon private">
+        ${this.private?p`<span class="icon private">
               ${e}
               <span class="tooltip"
-                >${this.privateLabel||O("Private Field: Only I can see its content")}</span
+                >${this.privateLabel||R("Private Field: Only I can see its content")}</span
               >
             </span> `:null}
 
@@ -310,7 +316,7 @@
           <slot name="icon-end"></slot>
         </span>
       </div>
-    `}}window.customElements.define("dt-label",_i);class Do extends oe{static get styles(){return x`
+    `}}window.customElements.define("dt-label",wi);class zs extends se{static get styles(){return x`
       @keyframes spin {
         0% {
           transform: rotate(0deg);
@@ -324,14 +330,14 @@
         content: '';
         animation: spin 1s linear infinite;
         border: var(--dt-spinner-thickness, 0.25rem) solid
-          var(--dt-spinner-color-1, #919191);
+          var(--dt-spinner-color-1, var(--gray-1));
         border-radius: 50%;
-        border-top-color: var(--dt-spinner-color-2, #000);
+        border-top-color: var(--dt-spinner-color-2, var(--black));
         display: inline-block;
         height: var(--dt-spinner-size, 1rem);
         width: var(--dt-spinner-size, 1rem);
       }
-    `}}window.customElements.define("dt-spinner",Do);/**
+    `}}window.customElements.define("dt-spinner",zs);/**
 * (c) Iconify
 *
 * For the full copyright and license information, please view the license.txt
@@ -341,7 +347,7 @@
 *
 * @license MIT
 * @version 1.0.2
-*/const $i=Object.freeze({left:0,top:0,width:16,height:16}),Ne=Object.freeze({rotate:0,vFlip:!1,hFlip:!1}),we=Object.freeze({...$i,...Ne}),vt=Object.freeze({...we,body:"",hidden:!1}),zo=Object.freeze({width:null,height:null}),xi=Object.freeze({...zo,...Ne});function Ro(o,e=0){const t=o.replace(/^-?[0-9.]*/,"");function i(s){for(;s<0;)s+=4;return s%4}if(t===""){const s=parseInt(o);return isNaN(s)?0:i(s)}else if(t!==o){let s=0;switch(t){case"%":s=25;break;case"deg":s=90}if(s){let a=parseFloat(o.slice(0,o.length-t.length));return isNaN(a)?0:(a=a/s,a%1===0?i(a):0)}}return e}const No=/[\s,]+/;function qo(o,e){e.split(No).forEach(t=>{switch(t.trim()){case"horizontal":o.hFlip=!0;break;case"vertical":o.vFlip=!0;break}})}const ki={...xi,preserveAspectRatio:""};function Si(o){const e={...ki},t=(i,s)=>o.getAttribute(i)||s;return e.width=t("width",null),e.height=t("height",null),e.rotate=Ro(t("rotate","")),qo(e,t("flip","")),e.preserveAspectRatio=t("preserveAspectRatio",t("preserveaspectratio","")),e}function Fo(o,e){for(const t in ki)if(o[t]!==e[t])return!0;return!1}const _e=/^[a-z0-9]+(-[a-z0-9]+)*$/,$e=(o,e,t,i="")=>{const s=o.split(":");if(o.slice(0,1)==="@"){if(s.length<2||s.length>3)return null;i=s.shift().slice(1)}if(s.length>3||!s.length)return null;if(s.length>1){const r=s.pop(),l=s.pop(),c={provider:s.length>0?s[0]:i,prefix:l,name:r};return e&&!qe(c)?null:c}const a=s[0],n=a.split("-");if(n.length>1){const r={provider:i,prefix:n.shift(),name:n.join("-")};return e&&!qe(r)?null:r}if(t&&i===""){const r={provider:i,prefix:"",name:a};return e&&!qe(r,t)?null:r}return null},qe=(o,e)=>o?!!((o.provider===""||o.provider.match(_e))&&(e&&o.prefix===""||o.prefix.match(_e))&&o.name.match(_e)):!1;function Uo(o,e){const t={};!o.hFlip!=!e.hFlip&&(t.hFlip=!0),!o.vFlip!=!e.vFlip&&(t.vFlip=!0);const i=((o.rotate||0)+(e.rotate||0))%4;return i&&(t.rotate=i),t}function Ti(o,e){const t=Uo(o,e);for(const i in vt)i in Ne?i in o&&!(i in t)&&(t[i]=Ne[i]):i in e?t[i]=e[i]:i in o&&(t[i]=o[i]);return t}function Vo(o,e){const t=o.icons,i=o.aliases||Object.create(null),s=Object.create(null);function a(n){if(t[n])return s[n]=[];if(!(n in s)){s[n]=null;const r=i[n]&&i[n].parent,l=r&&a(r);l&&(s[n]=[r].concat(l))}return s[n]}return Object.keys(t).concat(Object.keys(i)).forEach(a),s}function Bo(o,e,t){const i=o.icons,s=o.aliases||Object.create(null);let a={};function n(r){a=Ti(i[r]||s[r],a)}return n(e),t.forEach(n),Ti(o,a)}function Ai(o,e){const t=[];if(typeof o!="object"||typeof o.icons!="object")return t;o.not_found instanceof Array&&o.not_found.forEach(s=>{e(s,null),t.push(s)});const i=Vo(o);for(const s in i){const a=i[s];a&&(e(s,Bo(o,s,a)),t.push(s))}return t}const Ho={provider:"",aliases:{},not_found:{},...$i};function yt(o,e){for(const t in e)if(t in o&&typeof o[t]!=typeof e[t])return!1;return!0}function Ei(o){if(typeof o!="object"||o===null)return null;const e=o;if(typeof e.prefix!="string"||!o.icons||typeof o.icons!="object"||!yt(o,Ho))return null;const t=e.icons;for(const s in t){const a=t[s];if(!s.match(_e)||typeof a.body!="string"||!yt(a,vt))return null}const i=e.aliases||Object.create(null);for(const s in i){const a=i[s],n=a.parent;if(!s.match(_e)||typeof n!="string"||!t[n]&&!i[n]||!yt(a,vt))return null}return e}const Fe=Object.create(null);function Go(o,e){return{provider:o,prefix:e,icons:Object.create(null),missing:new Set}}function Y(o,e){const t=Fe[o]||(Fe[o]=Object.create(null));return t[e]||(t[e]=Go(o,e))}function wt(o,e){return Ei(e)?Ai(e,(t,i)=>{i?o.icons[t]=i:o.missing.add(t)}):[]}function Wo(o,e,t){try{if(typeof t.body=="string")return o.icons[e]={...t},!0}catch{}return!1}function Ko(o,e){let t=[];return(typeof o=="string"?[o]:Object.keys(Fe)).forEach(s=>{(typeof s=="string"&&typeof e=="string"?[e]:Object.keys(Fe[s]||{})).forEach(n=>{const r=Y(s,n);t=t.concat(Object.keys(r.icons).map(l=>(s!==""?"@"+s+":":"")+n+":"+l))})}),t}let xe=!1;function Oi(o){return typeof o=="boolean"&&(xe=o),xe}function ke(o){const e=typeof o=="string"?$e(o,!0,xe):o;if(e){const t=Y(e.provider,e.prefix),i=e.name;return t.icons[i]||(t.missing.has(i)?null:void 0)}}function Ci(o,e){const t=$e(o,!0,xe);if(!t)return!1;const i=Y(t.provider,t.prefix);return Wo(i,t.name,e)}function Li(o,e){if(typeof o!="object")return!1;if(typeof e!="string"&&(e=o.provider||""),xe&&!e&&!o.prefix){let s=!1;return Ei(o)&&(o.prefix="",Ai(o,(a,n)=>{n&&Ci(a,n)&&(s=!0)})),s}const t=o.prefix;if(!qe({provider:e,prefix:t,name:"a"}))return!1;const i=Y(e,t);return!!wt(i,o)}function Zo(o){return!!ke(o)}function Jo(o){const e=ke(o);return e?{...we,...e}:null}function Qo(o){const e={loaded:[],missing:[],pending:[]},t=Object.create(null);o.sort((s,a)=>s.provider!==a.provider?s.provider.localeCompare(a.provider):s.prefix!==a.prefix?s.prefix.localeCompare(a.prefix):s.name.localeCompare(a.name));let i={provider:"",prefix:"",name:""};return o.forEach(s=>{if(i.name===s.name&&i.prefix===s.prefix&&i.provider===s.provider)return;i=s;const a=s.provider,n=s.prefix,r=s.name,l=t[a]||(t[a]=Object.create(null)),c=l[n]||(l[n]=Y(a,n));let b;r in c.icons?b=e.loaded:n===""||c.missing.has(r)?b=e.missing:b=e.pending;const g={provider:a,prefix:n,name:r};b.push(g)}),e}function Ii(o,e){o.forEach(t=>{const i=t.loaderCallbacks;i&&(t.loaderCallbacks=i.filter(s=>s.id!==e))})}function Yo(o){o.pendingCallbacksFlag||(o.pendingCallbacksFlag=!0,setTimeout(()=>{o.pendingCallbacksFlag=!1;const e=o.loaderCallbacks?o.loaderCallbacks.slice(0):[];if(!e.length)return;let t=!1;const i=o.provider,s=o.prefix;e.forEach(a=>{const n=a.icons,r=n.pending.length;n.pending=n.pending.filter(l=>{if(l.prefix!==s)return!0;const c=l.name;if(o.icons[c])n.loaded.push({provider:i,prefix:s,name:c});else if(o.missing.has(c))n.missing.push({provider:i,prefix:s,name:c});else return t=!0,!0;return!1}),n.pending.length!==r&&(t||Ii([o],a.id),a.callback(n.loaded.slice(0),n.missing.slice(0),n.pending.slice(0),a.abort))})}))}let Xo=0;function ea(o,e,t){const i=Xo++,s=Ii.bind(null,t,i);if(!e.pending.length)return s;const a={id:i,icons:e,callback:o,abort:s};return t.forEach(n=>{(n.loaderCallbacks||(n.loaderCallbacks=[])).push(a)}),s}const _t=Object.create(null);function Pi(o,e){_t[o]=e}function $t(o){return _t[o]||_t[""]}function ta(o,e=!0,t=!1){const i=[];return o.forEach(s=>{const a=typeof s=="string"?$e(s,e,t):s;a&&i.push(a)}),i}var ia={resources:[],index:0,timeout:2e3,rotate:750,random:!1,dataAfterTimeout:!1};function sa(o,e,t,i){const s=o.resources.length,a=o.random?Math.floor(Math.random()*s):o.index;let n;if(o.random){let T=o.resources.slice(0);for(n=[];T.length>1;){const R=Math.floor(Math.random()*T.length);n.push(T[R]),T=T.slice(0,R).concat(T.slice(R+1))}n=n.concat(T)}else n=o.resources.slice(a).concat(o.resources.slice(0,a));const r=Date.now();let l="pending",c=0,b,g=null,v=[],y=[];typeof i=="function"&&y.push(i);function w(){g&&(clearTimeout(g),g=null)}function L(){l==="pending"&&(l="aborted"),w(),v.forEach(T=>{T.status==="pending"&&(T.status="aborted")}),v=[]}function q(T,R){R&&(y=[]),typeof T=="function"&&y.push(T)}function j(){return{startTime:r,payload:e,status:l,queriesSent:c,queriesPending:v.length,subscribe:q,abort:L}}function I(){l="failed",y.forEach(T=>{T(void 0,b)})}function Le(){v.forEach(T=>{T.status==="pending"&&(T.status="aborted")}),v=[]}function Ze(T,R,le){const ee=R!=="success";switch(v=v.filter(M=>M!==T),l){case"pending":break;case"failed":if(ee||!o.dataAfterTimeout)return;break;default:return}if(R==="abort"){b=le,I();return}if(ee){b=le,v.length||(n.length?X():I());return}if(w(),Le(),!o.random){const M=o.resources.indexOf(T.resource);M!==-1&&M!==o.index&&(o.index=M)}l="completed",y.forEach(M=>{M(le)})}function X(){if(l!=="pending")return;w();const T=n.shift();if(T===void 0){if(v.length){g=setTimeout(()=>{w(),l==="pending"&&(Le(),I())},o.timeout);return}I();return}const R={status:"pending",resource:T,callback:(le,ee)=>{Ze(R,le,ee)}};v.push(R),c++,g=setTimeout(X,o.rotate),t(T,e,R.callback)}return setTimeout(X),j}function Mi(o){const e={...ia,...o};let t=[];function i(){t=t.filter(r=>r().status==="pending")}function s(r,l,c){const b=sa(e,r,l,(g,v)=>{i(),c&&c(g,v)});return t.push(b),b}function a(r){return t.find(l=>r(l))||null}return{query:s,find:a,setIndex:r=>{e.index=r},getIndex:()=>e.index,cleanup:i}}function xt(o){let e;if(typeof o.resources=="string")e=[o.resources];else if(e=o.resources,!(e instanceof Array)||!e.length)return null;return{resources:e,path:o.path||"/",maxURL:o.maxURL||500,rotate:o.rotate||750,timeout:o.timeout||5e3,random:o.random===!0,index:o.index||0,dataAfterTimeout:o.dataAfterTimeout!==!1}}const Ue=Object.create(null),Se=["https://api.simplesvg.com","https://api.unisvg.com"],Ve=[];for(;Se.length>0;)Se.length===1||Math.random()>.5?Ve.push(Se.shift()):Ve.push(Se.pop());Ue[""]=xt({resources:["https://api.iconify.design"].concat(Ve)});function ji(o,e){const t=xt(e);return t===null?!1:(Ue[o]=t,!0)}function Be(o){return Ue[o]}function oa(){return Object.keys(Ue)}function Di(){}const kt=Object.create(null);function aa(o){if(!kt[o]){const e=Be(o);if(!e)return;const t=Mi(e),i={config:e,redundancy:t};kt[o]=i}return kt[o]}function zi(o,e,t){let i,s;if(typeof o=="string"){const a=$t(o);if(!a)return t(void 0,424),Di;s=a.send;const n=aa(o);n&&(i=n.redundancy)}else{const a=xt(o);if(a){i=Mi(a);const n=o.resources?o.resources[0]:"",r=$t(n);r&&(s=r.send)}}return!i||!s?(t(void 0,424),Di):i.query(e,s,t)().abort}const Ri="iconify2",Te="iconify",Ni=Te+"-count",qi=Te+"-version",Fi=36e5,na=168;function St(o,e){try{return o.getItem(e)}catch{}}function Tt(o,e,t){try{return o.setItem(e,t),!0}catch{}}function Ui(o,e){try{o.removeItem(e)}catch{}}function At(o,e){return Tt(o,Ni,e.toString())}function Et(o){return parseInt(St(o,Ni))||0}const ne={local:!0,session:!0},Vi={local:new Set,session:new Set};let Ot=!1;function ra(o){Ot=o}let He=typeof window>"u"?{}:window;function Bi(o){const e=o+"Storage";try{if(He&&He[e]&&typeof He[e].length=="number")return He[e]}catch{}ne[o]=!1}function Hi(o,e){const t=Bi(o);if(!t)return;const i=St(t,qi);if(i!==Ri){if(i){const r=Et(t);for(let l=0;l<r;l++)Ui(t,Te+l.toString())}Tt(t,qi,Ri),At(t,0);return}const s=Math.floor(Date.now()/Fi)-na,a=r=>{const l=Te+r.toString(),c=St(t,l);if(typeof c=="string"){try{const b=JSON.parse(c);if(typeof b=="object"&&typeof b.cached=="number"&&b.cached>s&&typeof b.provider=="string"&&typeof b.data=="object"&&typeof b.data.prefix=="string"&&e(b,r))return!0}catch{}Ui(t,l)}};let n=Et(t);for(let r=n-1;r>=0;r--)a(r)||(r===n-1?(n--,At(t,n)):Vi[o].add(r))}function Gi(){if(!Ot){ra(!0);for(const o in ne)Hi(o,e=>{const t=e.data,i=e.provider,s=t.prefix,a=Y(i,s);if(!wt(a,t).length)return!1;const n=t.lastModified||-1;return a.lastModifiedCached=a.lastModifiedCached?Math.min(a.lastModifiedCached,n):n,!0})}}function la(o,e){const t=o.lastModifiedCached;if(t&&t>=e)return t===e;if(o.lastModifiedCached=e,t)for(const i in ne)Hi(i,s=>{const a=s.data;return s.provider!==o.provider||a.prefix!==o.prefix||a.lastModified===e});return!0}function da(o,e){Ot||Gi();function t(i){let s;if(!ne[i]||!(s=Bi(i)))return;const a=Vi[i];let n;if(a.size)a.delete(n=Array.from(a).shift());else if(n=Et(s),!At(s,n+1))return;const r={cached:Math.floor(Date.now()/Fi),provider:o.provider,data:e};return Tt(s,Te+n.toString(),JSON.stringify(r))}e.lastModified&&!la(o,e.lastModified)||Object.keys(e.icons).length&&(e.not_found&&(e=Object.assign({},e),delete e.not_found),t("local")||t("session"))}function Wi(){}function ca(o){o.iconsLoaderFlag||(o.iconsLoaderFlag=!0,setTimeout(()=>{o.iconsLoaderFlag=!1,Yo(o)}))}function ua(o,e){o.iconsToLoad?o.iconsToLoad=o.iconsToLoad.concat(e).sort():o.iconsToLoad=e,o.iconsQueueFlag||(o.iconsQueueFlag=!0,setTimeout(()=>{o.iconsQueueFlag=!1;const{provider:t,prefix:i}=o,s=o.iconsToLoad;delete o.iconsToLoad;let a;if(!s||!(a=$t(t)))return;a.prepare(t,i,s).forEach(r=>{zi(t,r,l=>{if(typeof l!="object")r.icons.forEach(c=>{o.missing.add(c)});else try{const c=wt(o,l);if(!c.length)return;const b=o.pendingIcons;b&&c.forEach(g=>{b.delete(g)}),da(o,l)}catch(c){console.error(c)}ca(o)})})}))}const Ct=(o,e)=>{const t=ta(o,!0,Oi()),i=Qo(t);if(!i.pending.length){let l=!0;return e&&setTimeout(()=>{l&&e(i.loaded,i.missing,i.pending,Wi)}),()=>{l=!1}}const s=Object.create(null),a=[];let n,r;return i.pending.forEach(l=>{const{provider:c,prefix:b}=l;if(b===r&&c===n)return;n=c,r=b,a.push(Y(c,b));const g=s[c]||(s[c]=Object.create(null));g[b]||(g[b]=[])}),i.pending.forEach(l=>{const{provider:c,prefix:b,name:g}=l,v=Y(c,b),y=v.pendingIcons||(v.pendingIcons=new Set);y.has(g)||(y.add(g),s[c][b].push(g))}),a.forEach(l=>{const{provider:c,prefix:b}=l;s[c][b].length&&ua(l,s[c][b])}),e?ea(e,i,a):Wi},ha=o=>new Promise((e,t)=>{const i=typeof o=="string"?$e(o,!0):o;if(!i){t(o);return}Ct([i||o],s=>{if(s.length&&i){const a=ke(i);if(a){e({...we,...a});return}}t(o)})});function pa(o){try{const e=typeof o=="string"?JSON.parse(o):o;if(typeof e.body=="string")return{...e}}catch{}}function fa(o,e){const t=typeof o=="string"?$e(o,!0,!0):null;if(!t){const a=pa(o);return{value:o,data:a}}const i=ke(t);if(i!==void 0||!t.prefix)return{value:o,name:t,data:i};const s=Ct([t],()=>e(o,t,ke(t)));return{value:o,name:t,loading:s}}function Lt(o){return o.hasAttribute("inline")}let Ki=!1;try{Ki=navigator.vendor.indexOf("Apple")===0}catch{}function ba(o,e){switch(e){case"svg":case"bg":case"mask":return e}return e!=="style"&&(Ki||o.indexOf("<a")===-1)?"svg":o.indexOf("currentColor")===-1?"bg":"mask"}const ga=/(-?[0-9.]*[0-9]+[0-9.]*)/g,ma=/^-?[0-9.]*[0-9]+[0-9.]*$/g;function It(o,e,t){if(e===1)return o;if(t=t||100,typeof o=="number")return Math.ceil(o*e*t)/t;if(typeof o!="string")return o;const i=o.split(ga);if(i===null||!i.length)return o;const s=[];let a=i.shift(),n=ma.test(a);for(;;){if(n){const r=parseFloat(a);isNaN(r)?s.push(a):s.push(Math.ceil(r*e*t)/t)}else s.push(a);if(a=i.shift(),a===void 0)return s.join("");n=!n}}function Zi(o,e){const t={...we,...o},i={...xi,...e},s={left:t.left,top:t.top,width:t.width,height:t.height};let a=t.body;[t,i].forEach(y=>{const w=[],L=y.hFlip,q=y.vFlip;let j=y.rotate;L?q?j+=2:(w.push("translate("+(s.width+s.left).toString()+" "+(0-s.top).toString()+")"),w.push("scale(-1 1)"),s.top=s.left=0):q&&(w.push("translate("+(0-s.left).toString()+" "+(s.height+s.top).toString()+")"),w.push("scale(1 -1)"),s.top=s.left=0);let I;switch(j<0&&(j-=Math.floor(j/4)*4),j=j%4,j){case 1:I=s.height/2+s.top,w.unshift("rotate(90 "+I.toString()+" "+I.toString()+")");break;case 2:w.unshift("rotate(180 "+(s.width/2+s.left).toString()+" "+(s.height/2+s.top).toString()+")");break;case 3:I=s.width/2+s.left,w.unshift("rotate(-90 "+I.toString()+" "+I.toString()+")");break}j%2===1&&(s.left!==s.top&&(I=s.left,s.left=s.top,s.top=I),s.width!==s.height&&(I=s.width,s.width=s.height,s.height=I)),w.length&&(a='<g transform="'+w.join(" ")+'">'+a+"</g>")});const n=i.width,r=i.height,l=s.width,c=s.height;let b,g;return n===null?(g=r===null?"1em":r==="auto"?c:r,b=It(g,l/c)):(b=n==="auto"?l:n,g=r===null?It(b,c/l):r==="auto"?c:r),{attributes:{width:b.toString(),height:g.toString(),viewBox:s.left.toString()+" "+s.top.toString()+" "+l.toString()+" "+c.toString()},body:a}}let Ge=(()=>{let o;try{if(o=fetch,typeof o=="function")return o}catch{}})();function va(o){Ge=o}function ya(){return Ge}function wa(o,e){const t=Be(o);if(!t)return 0;let i;if(!t.maxURL)i=0;else{let s=0;t.resources.forEach(n=>{s=Math.max(s,n.length)});const a=e+".json?icons=";i=t.maxURL-s-t.path.length-a.length}return i}function _a(o){return o===404}const $a=(o,e,t)=>{const i=[],s=wa(o,e),a="icons";let n={type:a,provider:o,prefix:e,icons:[]},r=0;return t.forEach((l,c)=>{r+=l.length+1,r>=s&&c>0&&(i.push(n),n={type:a,provider:o,prefix:e,icons:[]},r=l.length),n.icons.push(l)}),i.push(n),i};function xa(o){if(typeof o=="string"){const e=Be(o);if(e)return e.path}return"/"}const ka={prepare:$a,send:(o,e,t)=>{if(!Ge){t("abort",424);return}let i=xa(e.provider);switch(e.type){case"icons":{const a=e.prefix,r=e.icons.join(","),l=new URLSearchParams({icons:r});i+=a+".json?"+l.toString();break}case"custom":{const a=e.uri;i+=a.slice(0,1)==="/"?a.slice(1):a;break}default:t("abort",400);return}let s=503;Ge(o+i).then(a=>{const n=a.status;if(n!==200){setTimeout(()=>{t(_a(n)?"abort":"next",n)});return}return s=501,a.json()}).then(a=>{if(typeof a!="object"||a===null){setTimeout(()=>{a===404?t("abort",a):t("next",s)});return}setTimeout(()=>{t("success",a)})}).catch(()=>{t("next",s)})}};function Ji(o,e){switch(o){case"local":case"session":ne[o]=e;break;case"all":for(const t in ne)ne[t]=e;break}}function Qi(){Pi("",ka),Oi(!0);let o;try{o=window}catch{}if(o){if(Gi(),o.IconifyPreload!==void 0){const t=o.IconifyPreload,i="Invalid IconifyPreload syntax.";typeof t=="object"&&t!==null&&(t instanceof Array?t:[t]).forEach(s=>{try{(typeof s!="object"||s===null||s instanceof Array||typeof s.icons!="object"||typeof s.prefix!="string"||!Li(s))&&console.error(i)}catch{console.error(i)}})}if(o.IconifyProviders!==void 0){const t=o.IconifyProviders;if(typeof t=="object"&&t!==null)for(const i in t){const s="IconifyProviders["+i+"] is invalid.";try{const a=t[i];if(typeof a!="object"||!a||a.resources===void 0)continue;ji(i,a)||console.error(s)}catch{console.error(s)}}}}return{enableCache:t=>Ji(t,!0),disableCache:t=>Ji(t,!1),iconExists:Zo,getIcon:Jo,listIcons:Ko,addIcon:Ci,addCollection:Li,calculateSize:It,buildIcon:Zi,loadIcons:Ct,loadIcon:ha,addAPIProvider:ji,_api:{getAPIConfig:Be,setAPIModule:Pi,sendAPIQuery:zi,setFetch:va,getFetch:ya,listAPIProviders:oa}}}function Yi(o,e){let t=o.indexOf("xlink:")===-1?"":' xmlns:xlink="http://www.w3.org/1999/xlink"';for(const i in e)t+=" "+i+'="'+e[i]+'"';return'<svg xmlns="http://www.w3.org/2000/svg"'+t+">"+o+"</svg>"}function Sa(o){return o.replace(/"/g,"'").replace(/%/g,"%25").replace(/#/g,"%23").replace(/</g,"%3C").replace(/>/g,"%3E").replace(/\s+/g," ")}function Ta(o){return'url("data:image/svg+xml,'+Sa(o)+'")'}const Pt={"background-color":"currentColor"},Xi={"background-color":"transparent"},es={image:"var(--svg)",repeat:"no-repeat",size:"100% 100%"},ts={"-webkit-mask":Pt,mask:Pt,background:Xi};for(const o in ts){const e=ts[o];for(const t in es)e[o+"-"+t]=es[t]}function is(o){return o+(o.match(/^[-0-9.]+$/)?"px":"")}function Aa(o,e,t){const i=document.createElement("span");let s=o.body;s.indexOf("<a")!==-1&&(s+="<!-- "+Date.now()+" -->");const a=o.attributes,n=Yi(s,{...a,width:e.width+"",height:e.height+""}),r=Ta(n),l=i.style,c={"--svg":r,width:is(a.width),height:is(a.height),...t?Pt:Xi};for(const b in c)l.setProperty(b,c[b]);return i}function Ea(o){const e=document.createElement("span");return e.innerHTML=Yi(o.body,o.attributes),e.firstChild}function ss(o,e){const t=e.icon.data,i=e.customisations,s=Zi(t,i);i.preserveAspectRatio&&(s.attributes.preserveAspectRatio=i.preserveAspectRatio);const a=e.renderedMode;let n;switch(a){case"svg":n=Ea(s);break;default:n=Aa(s,{...we,...t},a==="mask")}const r=Array.from(o.childNodes).find(l=>{const c=l.tagName&&l.tagName.toUpperCase();return c==="SPAN"||c==="SVG"});r?n.tagName==="SPAN"&&r.tagName===n.tagName?r.setAttribute("style",n.getAttribute("style")):o.replaceChild(n,r):o.appendChild(n)}const Mt="data-style";function os(o,e){let t=Array.from(o.childNodes).find(i=>i.hasAttribute&&i.hasAttribute(Mt));t||(t=document.createElement("style"),t.setAttribute(Mt,Mt),o.appendChild(t)),t.textContent=":host{display:inline-block;vertical-align:"+(e?"-0.125em":"0")+"}span,svg{display:block}"}function as(o,e,t){const i=t&&(t.rendered?t:t.lastRender);return{rendered:!1,inline:e,icon:o,lastRender:i}}function Oa(o="iconify-icon"){let e,t;try{e=window.customElements,t=window.HTMLElement}catch{return}if(!e||!t)return;const i=e.get(o);if(i)return i;const s=["icon","mode","inline","width","height","rotate","flip"],a=class extends t{constructor(){super();Xe(this,"_shadowRoot");Xe(this,"_state");Xe(this,"_checkQueued",!1);const l=this._shadowRoot=this.attachShadow({mode:"open"}),c=Lt(this);os(l,c),this._state=as({value:""},c),this._queueCheck()}static get observedAttributes(){return s.slice(0)}attributeChangedCallback(l){if(l==="inline"){const c=Lt(this),b=this._state;c!==b.inline&&(b.inline=c,os(this._shadowRoot,c))}else this._queueCheck()}get icon(){const l=this.getAttribute("icon");if(l&&l.slice(0,1)==="{")try{return JSON.parse(l)}catch{}return l}set icon(l){typeof l=="object"&&(l=JSON.stringify(l)),this.setAttribute("icon",l)}get inline(){return Lt(this)}set inline(l){this.setAttribute("inline",l?"true":null)}restartAnimation(){const l=this._state;if(l.rendered){const c=this._shadowRoot;if(l.renderedMode==="svg")try{c.lastChild.setCurrentTime(0);return}catch{}ss(c,l)}}get status(){const l=this._state;return l.rendered?"rendered":l.icon.data===null?"failed":"loading"}_queueCheck(){this._checkQueued||(this._checkQueued=!0,setTimeout(()=>{this._check()}))}_check(){if(!this._checkQueued)return;this._checkQueued=!1;const l=this._state,c=this.getAttribute("icon");if(c!==l.icon.value){this._iconChanged(c);return}if(!l.rendered)return;const b=this.getAttribute("mode"),g=Si(this);(l.attrMode!==b||Fo(l.customisations,g))&&this._renderIcon(l.icon,g,b)}_iconChanged(l){const c=fa(l,(b,g,v)=>{const y=this._state;if(y.rendered||this.getAttribute("icon")!==b)return;const w={value:b,name:g,data:v};w.data?this._gotIconData(w):y.icon=w});c.data?this._gotIconData(c):this._state=as(c,this._state.inline,this._state)}_gotIconData(l){this._checkQueued=!1,this._renderIcon(l,Si(this),this.getAttribute("mode"))}_renderIcon(l,c,b){const g=ba(l.data.body,b),v=this._state.inline;ss(this._shadowRoot,this._state={rendered:!0,icon:l,inline:v,customisations:c,attrMode:b,renderedMode:g})}};s.forEach(r=>{r in a.prototype||Object.defineProperty(a.prototype,r,{get:function(){return this.getAttribute(r)},set:function(l){this.setAttribute(r,l)}})});const n=Qi();for(const r in n)a[r]=a.prototype[r]=n[r];return e.define(o,a),a}const Ca=Oa()||Qi(),{enableCache:Nr,disableCache:qr,iconExists:Fr,getIcon:Ur,listIcons:Vr,addIcon:Br,addCollection:Hr,calculateSize:Gr,buildIcon:Wr,loadIcons:Kr,loadIcon:Zr,addAPIProvider:Jr,_api:Qr}=Ca;class ns extends N{static get styles(){return x`
+*/const $i=Object.freeze({left:0,top:0,width:16,height:16}),qe=Object.freeze({rotate:0,vFlip:!1,hFlip:!1}),$e=Object.freeze({...$i,...qe}),gt=Object.freeze({...$e,body:"",hidden:!1}),Fs=Object.freeze({width:null,height:null}),xi=Object.freeze({...Fs,...qe});function Ds(s,e=0){const t=s.replace(/^-?[0-9.]*/,"");function i(o){for(;o<0;)o+=4;return o%4}if(t===""){const o=parseInt(s);return isNaN(o)?0:i(o)}else if(t!==s){let o=0;switch(t){case"%":o=25;break;case"deg":o=90}if(o){let a=parseFloat(s.slice(0,s.length-t.length));return isNaN(a)?0:(a=a/o,a%1===0?i(a):0)}}return e}const Rs=/[\s,]+/;function Ns(s,e){e.split(Rs).forEach(t=>{switch(t.trim()){case"horizontal":s.hFlip=!0;break;case"vertical":s.vFlip=!0;break}})}const ki={...xi,preserveAspectRatio:""};function Si(s){const e={...ki},t=(i,o)=>s.getAttribute(i)||o;return e.width=t("width",null),e.height=t("height",null),e.rotate=Ds(t("rotate","")),Ns(e,t("flip","")),e.preserveAspectRatio=t("preserveAspectRatio",t("preserveaspectratio","")),e}function qs(s,e){for(const t in ki)if(s[t]!==e[t])return!0;return!1}const xe=/^[a-z0-9]+(-[a-z0-9]+)*$/,ke=(s,e,t,i="")=>{const o=s.split(":");if(s.slice(0,1)==="@"){if(o.length<2||o.length>3)return null;i=o.shift().slice(1)}if(o.length>3||!o.length)return null;if(o.length>1){const n=o.pop(),l=o.pop(),d={provider:o.length>0?o[0]:i,prefix:l,name:n};return e&&!Ue(d)?null:d}const a=o[0],r=a.split("-");if(r.length>1){const n={provider:i,prefix:r.shift(),name:r.join("-")};return e&&!Ue(n)?null:n}if(t&&i===""){const n={provider:i,prefix:"",name:a};return e&&!Ue(n,t)?null:n}return null},Ue=(s,e)=>s?!!((s.provider===""||s.provider.match(xe))&&(e&&s.prefix===""||s.prefix.match(xe))&&s.name.match(xe)):!1;function Us(s,e){const t={};!s.hFlip!=!e.hFlip&&(t.hFlip=!0),!s.vFlip!=!e.vFlip&&(t.vFlip=!0);const i=((s.rotate||0)+(e.rotate||0))%4;return i&&(t.rotate=i),t}function Ei(s,e){const t=Us(s,e);for(const i in gt)i in qe?i in s&&!(i in t)&&(t[i]=qe[i]):i in e?t[i]=e[i]:i in s&&(t[i]=s[i]);return t}function Vs(s,e){const t=s.icons,i=s.aliases||Object.create(null),o=Object.create(null);function a(r){if(t[r])return o[r]=[];if(!(r in o)){o[r]=null;const n=i[r]&&i[r].parent,l=n&&a(n);l&&(o[r]=[n].concat(l))}return o[r]}return Object.keys(t).concat(Object.keys(i)).forEach(a),o}function Bs(s,e,t){const i=s.icons,o=s.aliases||Object.create(null);let a={};function r(n){a=Ei(i[n]||o[n],a)}return r(e),t.forEach(r),Ei(s,a)}function Ai(s,e){const t=[];if(typeof s!="object"||typeof s.icons!="object")return t;s.not_found instanceof Array&&s.not_found.forEach(o=>{e(o,null),t.push(o)});const i=Vs(s);for(const o in i){const a=i[o];a&&(e(o,Bs(s,o,a)),t.push(o))}return t}const Hs={provider:"",aliases:{},not_found:{},...$i};function vt(s,e){for(const t in e)if(t in s&&typeof s[t]!=typeof e[t])return!1;return!0}function Oi(s){if(typeof s!="object"||s===null)return null;const e=s;if(typeof e.prefix!="string"||!s.icons||typeof s.icons!="object"||!vt(s,Hs))return null;const t=e.icons;for(const o in t){const a=t[o];if(!o.match(xe)||typeof a.body!="string"||!vt(a,gt))return null}const i=e.aliases||Object.create(null);for(const o in i){const a=i[o],r=a.parent;if(!o.match(xe)||typeof r!="string"||!t[r]&&!i[r]||!vt(a,gt))return null}return e}const Ve=Object.create(null);function Ks(s,e){return{provider:s,prefix:e,icons:Object.create(null),missing:new Set}}function X(s,e){const t=Ve[s]||(Ve[s]=Object.create(null));return t[e]||(t[e]=Ks(s,e))}function yt(s,e){return Oi(e)?Ai(e,(t,i)=>{i?s.icons[t]=i:s.missing.add(t)}):[]}function Ws(s,e,t){try{if(typeof t.body=="string")return s.icons[e]={...t},!0}catch{}return!1}function Gs(s,e){let t=[];return(typeof s=="string"?[s]:Object.keys(Ve)).forEach(o=>{(typeof o=="string"&&typeof e=="string"?[e]:Object.keys(Ve[o]||{})).forEach(r=>{const n=X(o,r);t=t.concat(Object.keys(n.icons).map(l=>(o!==""?"@"+o+":":"")+r+":"+l))})}),t}let Se=!1;function Ti(s){return typeof s=="boolean"&&(Se=s),Se}function Ee(s){const e=typeof s=="string"?ke(s,!0,Se):s;if(e){const t=X(e.provider,e.prefix),i=e.name;return t.icons[i]||(t.missing.has(i)?null:void 0)}}function Ci(s,e){const t=ke(s,!0,Se);if(!t)return!1;const i=X(t.provider,t.prefix);return Ws(i,t.name,e)}function Li(s,e){if(typeof s!="object")return!1;if(typeof e!="string"&&(e=s.provider||""),Se&&!e&&!s.prefix){let o=!1;return Oi(s)&&(s.prefix="",Ai(s,(a,r)=>{r&&Ci(a,r)&&(o=!0)})),o}const t=s.prefix;if(!Ue({provider:e,prefix:t,name:"a"}))return!1;const i=X(e,t);return!!yt(i,s)}function Zs(s){return!!Ee(s)}function Js(s){const e=Ee(s);return e?{...$e,...e}:null}function Qs(s){const e={loaded:[],missing:[],pending:[]},t=Object.create(null);s.sort((o,a)=>o.provider!==a.provider?o.provider.localeCompare(a.provider):o.prefix!==a.prefix?o.prefix.localeCompare(a.prefix):o.name.localeCompare(a.name));let i={provider:"",prefix:"",name:""};return s.forEach(o=>{if(i.name===o.name&&i.prefix===o.prefix&&i.provider===o.provider)return;i=o;const a=o.provider,r=o.prefix,n=o.name,l=t[a]||(t[a]=Object.create(null)),d=l[r]||(l[r]=X(a,r));let u;n in d.icons?u=e.loaded:r===""||d.missing.has(n)?u=e.missing:u=e.pending;const h={provider:a,prefix:r,name:n};u.push(h)}),e}function Ii(s,e){s.forEach(t=>{const i=t.loaderCallbacks;i&&(t.loaderCallbacks=i.filter(o=>o.id!==e))})}function Xs(s){s.pendingCallbacksFlag||(s.pendingCallbacksFlag=!0,setTimeout(()=>{s.pendingCallbacksFlag=!1;const e=s.loaderCallbacks?s.loaderCallbacks.slice(0):[];if(!e.length)return;let t=!1;const i=s.provider,o=s.prefix;e.forEach(a=>{const r=a.icons,n=r.pending.length;r.pending=r.pending.filter(l=>{if(l.prefix!==o)return!0;const d=l.name;if(s.icons[d])r.loaded.push({provider:i,prefix:o,name:d});else if(s.missing.has(d))r.missing.push({provider:i,prefix:o,name:d});else return t=!0,!0;return!1}),r.pending.length!==n&&(t||Ii([s],a.id),a.callback(r.loaded.slice(0),r.missing.slice(0),r.pending.slice(0),a.abort))})}))}let Ys=0;function ea(s,e,t){const i=Ys++,o=Ii.bind(null,t,i);if(!e.pending.length)return o;const a={id:i,icons:e,callback:s,abort:o};return t.forEach(r=>{(r.loaderCallbacks||(r.loaderCallbacks=[])).push(a)}),o}const _t=Object.create(null);function Pi(s,e){_t[s]=e}function wt(s){return _t[s]||_t[""]}function ta(s,e=!0,t=!1){const i=[];return s.forEach(o=>{const a=typeof o=="string"?ke(o,e,t):o;a&&i.push(a)}),i}var ia={resources:[],index:0,timeout:2e3,rotate:750,random:!1,dataAfterTimeout:!1};function oa(s,e,t,i){const o=s.resources.length,a=s.random?Math.floor(Math.random()*o):s.index;let r;if(s.random){let E=s.resources.slice(0);for(r=[];E.length>1;){const F=Math.floor(Math.random()*E.length);r.push(E[F]),E=E.slice(0,F).concat(E.slice(F+1))}r=r.concat(E)}else r=s.resources.slice(a).concat(s.resources.slice(0,a));const n=Date.now();let l="pending",d=0,u,h=null,g=[],y=[];typeof i=="function"&&y.push(i);function _(){h&&(clearTimeout(h),h=null)}function C(){l==="pending"&&(l="aborted"),_(),g.forEach(E=>{E.status==="pending"&&(E.status="aborted")}),g=[]}function D(E,F){F&&(y=[]),typeof E=="function"&&y.push(E)}function j(){return{startTime:n,payload:e,status:l,queriesSent:d,queriesPending:g.length,subscribe:D,abort:C}}function L(){l="failed",y.forEach(E=>{E(void 0,u)})}function Ie(){g.forEach(E=>{E.status==="pending"&&(E.status="aborted")}),g=[]}function Je(E,F,de){const ee=F!=="success";switch(g=g.filter(P=>P!==E),l){case"pending":break;case"failed":if(ee||!s.dataAfterTimeout)return;break;default:return}if(F==="abort"){u=de,L();return}if(ee){u=de,g.length||(r.length?Y():L());return}if(_(),Ie(),!s.random){const P=s.resources.indexOf(E.resource);P!==-1&&P!==s.index&&(s.index=P)}l="completed",y.forEach(P=>{P(de)})}function Y(){if(l!=="pending")return;_();const E=r.shift();if(E===void 0){if(g.length){h=setTimeout(()=>{_(),l==="pending"&&(Ie(),L())},s.timeout);return}L();return}const F={status:"pending",resource:E,callback:(de,ee)=>{Je(F,de,ee)}};g.push(F),d++,h=setTimeout(Y,s.rotate),t(E,e,F.callback)}return setTimeout(Y),j}function Mi(s){const e={...ia,...s};let t=[];function i(){t=t.filter(n=>n().status==="pending")}function o(n,l,d){const u=oa(e,n,l,(h,g)=>{i(),d&&d(h,g)});return t.push(u),u}function a(n){return t.find(l=>n(l))||null}return{query:o,find:a,setIndex:n=>{e.index=n},getIndex:()=>e.index,cleanup:i}}function $t(s){let e;if(typeof s.resources=="string")e=[s.resources];else if(e=s.resources,!(e instanceof Array)||!e.length)return null;return{resources:e,path:s.path||"/",maxURL:s.maxURL||500,rotate:s.rotate||750,timeout:s.timeout||5e3,random:s.random===!0,index:s.index||0,dataAfterTimeout:s.dataAfterTimeout!==!1}}const Be=Object.create(null),Ae=["https://api.simplesvg.com","https://api.unisvg.com"],He=[];for(;Ae.length>0;)Ae.length===1||Math.random()>.5?He.push(Ae.shift()):He.push(Ae.pop());Be[""]=$t({resources:["https://api.iconify.design"].concat(He)});function ji(s,e){const t=$t(e);return t===null?!1:(Be[s]=t,!0)}function Ke(s){return Be[s]}function sa(){return Object.keys(Be)}function zi(){}const xt=Object.create(null);function aa(s){if(!xt[s]){const e=Ke(s);if(!e)return;const t=Mi(e),i={config:e,redundancy:t};xt[s]=i}return xt[s]}function Fi(s,e,t){let i,o;if(typeof s=="string"){const a=wt(s);if(!a)return t(void 0,424),zi;o=a.send;const r=aa(s);r&&(i=r.redundancy)}else{const a=$t(s);if(a){i=Mi(a);const r=s.resources?s.resources[0]:"",n=wt(r);n&&(o=n.send)}}return!i||!o?(t(void 0,424),zi):i.query(e,o,t)().abort}const Di="iconify2",Oe="iconify",Ri=Oe+"-count",Ni=Oe+"-version",qi=36e5,ra=168;function kt(s,e){try{return s.getItem(e)}catch{}}function St(s,e,t){try{return s.setItem(e,t),!0}catch{}}function Ui(s,e){try{s.removeItem(e)}catch{}}function Et(s,e){return St(s,Ri,e.toString())}function At(s){return parseInt(kt(s,Ri))||0}const re={local:!0,session:!0},Vi={local:new Set,session:new Set};let Ot=!1;function na(s){Ot=s}let We=typeof window>"u"?{}:window;function Bi(s){const e=s+"Storage";try{if(We&&We[e]&&typeof We[e].length=="number")return We[e]}catch{}re[s]=!1}function Hi(s,e){const t=Bi(s);if(!t)return;const i=kt(t,Ni);if(i!==Di){if(i){const n=At(t);for(let l=0;l<n;l++)Ui(t,Oe+l.toString())}St(t,Ni,Di),Et(t,0);return}const o=Math.floor(Date.now()/qi)-ra,a=n=>{const l=Oe+n.toString(),d=kt(t,l);if(typeof d=="string"){try{const u=JSON.parse(d);if(typeof u=="object"&&typeof u.cached=="number"&&u.cached>o&&typeof u.provider=="string"&&typeof u.data=="object"&&typeof u.data.prefix=="string"&&e(u,n))return!0}catch{}Ui(t,l)}};let r=At(t);for(let n=r-1;n>=0;n--)a(n)||(n===r-1?(r--,Et(t,r)):Vi[s].add(n))}function Ki(){if(!Ot){na(!0);for(const s in re)Hi(s,e=>{const t=e.data,i=e.provider,o=t.prefix,a=X(i,o);if(!yt(a,t).length)return!1;const r=t.lastModified||-1;return a.lastModifiedCached=a.lastModifiedCached?Math.min(a.lastModifiedCached,r):r,!0})}}function la(s,e){const t=s.lastModifiedCached;if(t&&t>=e)return t===e;if(s.lastModifiedCached=e,t)for(const i in re)Hi(i,o=>{const a=o.data;return o.provider!==s.provider||a.prefix!==s.prefix||a.lastModified===e});return!0}function da(s,e){Ot||Ki();function t(i){let o;if(!re[i]||!(o=Bi(i)))return;const a=Vi[i];let r;if(a.size)a.delete(r=Array.from(a).shift());else if(r=At(o),!Et(o,r+1))return;const n={cached:Math.floor(Date.now()/qi),provider:s.provider,data:e};return St(o,Oe+r.toString(),JSON.stringify(n))}e.lastModified&&!la(s,e.lastModified)||Object.keys(e.icons).length&&(e.not_found&&(e=Object.assign({},e),delete e.not_found),t("local")||t("session"))}function Wi(){}function ca(s){s.iconsLoaderFlag||(s.iconsLoaderFlag=!0,setTimeout(()=>{s.iconsLoaderFlag=!1,Xs(s)}))}function ua(s,e){s.iconsToLoad?s.iconsToLoad=s.iconsToLoad.concat(e).sort():s.iconsToLoad=e,s.iconsQueueFlag||(s.iconsQueueFlag=!0,setTimeout(()=>{s.iconsQueueFlag=!1;const{provider:t,prefix:i}=s,o=s.iconsToLoad;delete s.iconsToLoad;let a;if(!o||!(a=wt(t)))return;a.prepare(t,i,o).forEach(n=>{Fi(t,n,l=>{if(typeof l!="object")n.icons.forEach(d=>{s.missing.add(d)});else try{const d=yt(s,l);if(!d.length)return;const u=s.pendingIcons;u&&d.forEach(h=>{u.delete(h)}),da(s,l)}catch(d){console.error(d)}ca(s)})})}))}const Tt=(s,e)=>{const t=ta(s,!0,Ti()),i=Qs(t);if(!i.pending.length){let l=!0;return e&&setTimeout(()=>{l&&e(i.loaded,i.missing,i.pending,Wi)}),()=>{l=!1}}const o=Object.create(null),a=[];let r,n;return i.pending.forEach(l=>{const{provider:d,prefix:u}=l;if(u===n&&d===r)return;r=d,n=u,a.push(X(d,u));const h=o[d]||(o[d]=Object.create(null));h[u]||(h[u]=[])}),i.pending.forEach(l=>{const{provider:d,prefix:u,name:h}=l,g=X(d,u),y=g.pendingIcons||(g.pendingIcons=new Set);y.has(h)||(y.add(h),o[d][u].push(h))}),a.forEach(l=>{const{provider:d,prefix:u}=l;o[d][u].length&&ua(l,o[d][u])}),e?ea(e,i,a):Wi},ha=s=>new Promise((e,t)=>{const i=typeof s=="string"?ke(s,!0):s;if(!i){t(s);return}Tt([i||s],o=>{if(o.length&&i){const a=Ee(i);if(a){e({...$e,...a});return}}t(s)})});function pa(s){try{const e=typeof s=="string"?JSON.parse(s):s;if(typeof e.body=="string")return{...e}}catch{}}function fa(s,e){const t=typeof s=="string"?ke(s,!0,!0):null;if(!t){const a=pa(s);return{value:s,data:a}}const i=Ee(t);if(i!==void 0||!t.prefix)return{value:s,name:t,data:i};const o=Tt([t],()=>e(s,t,Ee(t)));return{value:s,name:t,loading:o}}function Ct(s){return s.hasAttribute("inline")}let Gi=!1;try{Gi=navigator.vendor.indexOf("Apple")===0}catch{}function ba(s,e){switch(e){case"svg":case"bg":case"mask":return e}return e!=="style"&&(Gi||s.indexOf("<a")===-1)?"svg":s.indexOf("currentColor")===-1?"bg":"mask"}const ma=/(-?[0-9.]*[0-9]+[0-9.]*)/g,ga=/^-?[0-9.]*[0-9]+[0-9.]*$/g;function Lt(s,e,t){if(e===1)return s;if(t=t||100,typeof s=="number")return Math.ceil(s*e*t)/t;if(typeof s!="string")return s;const i=s.split(ma);if(i===null||!i.length)return s;const o=[];let a=i.shift(),r=ga.test(a);for(;;){if(r){const n=parseFloat(a);isNaN(n)?o.push(a):o.push(Math.ceil(n*e*t)/t)}else o.push(a);if(a=i.shift(),a===void 0)return o.join("");r=!r}}function Zi(s,e){const t={...$e,...s},i={...xi,...e},o={left:t.left,top:t.top,width:t.width,height:t.height};let a=t.body;[t,i].forEach(y=>{const _=[],C=y.hFlip,D=y.vFlip;let j=y.rotate;C?D?j+=2:(_.push("translate("+(o.width+o.left).toString()+" "+(0-o.top).toString()+")"),_.push("scale(-1 1)"),o.top=o.left=0):D&&(_.push("translate("+(0-o.left).toString()+" "+(o.height+o.top).toString()+")"),_.push("scale(1 -1)"),o.top=o.left=0);let L;switch(j<0&&(j-=Math.floor(j/4)*4),j=j%4,j){case 1:L=o.height/2+o.top,_.unshift("rotate(90 "+L.toString()+" "+L.toString()+")");break;case 2:_.unshift("rotate(180 "+(o.width/2+o.left).toString()+" "+(o.height/2+o.top).toString()+")");break;case 3:L=o.width/2+o.left,_.unshift("rotate(-90 "+L.toString()+" "+L.toString()+")");break}j%2===1&&(o.left!==o.top&&(L=o.left,o.left=o.top,o.top=L),o.width!==o.height&&(L=o.width,o.width=o.height,o.height=L)),_.length&&(a='<g transform="'+_.join(" ")+'">'+a+"</g>")});const r=i.width,n=i.height,l=o.width,d=o.height;let u,h;return r===null?(h=n===null?"1em":n==="auto"?d:n,u=Lt(h,l/d)):(u=r==="auto"?l:r,h=n===null?Lt(u,d/l):n==="auto"?d:n),{attributes:{width:u.toString(),height:h.toString(),viewBox:o.left.toString()+" "+o.top.toString()+" "+l.toString()+" "+d.toString()},body:a}}let Ge=(()=>{let s;try{if(s=fetch,typeof s=="function")return s}catch{}})();function va(s){Ge=s}function ya(){return Ge}function _a(s,e){const t=Ke(s);if(!t)return 0;let i;if(!t.maxURL)i=0;else{let o=0;t.resources.forEach(r=>{o=Math.max(o,r.length)});const a=e+".json?icons=";i=t.maxURL-o-t.path.length-a.length}return i}function wa(s){return s===404}const $a=(s,e,t)=>{const i=[],o=_a(s,e),a="icons";let r={type:a,provider:s,prefix:e,icons:[]},n=0;return t.forEach((l,d)=>{n+=l.length+1,n>=o&&d>0&&(i.push(r),r={type:a,provider:s,prefix:e,icons:[]},n=l.length),r.icons.push(l)}),i.push(r),i};function xa(s){if(typeof s=="string"){const e=Ke(s);if(e)return e.path}return"/"}const ka={prepare:$a,send:(s,e,t)=>{if(!Ge){t("abort",424);return}let i=xa(e.provider);switch(e.type){case"icons":{const a=e.prefix,n=e.icons.join(","),l=new URLSearchParams({icons:n});i+=a+".json?"+l.toString();break}case"custom":{const a=e.uri;i+=a.slice(0,1)==="/"?a.slice(1):a;break}default:t("abort",400);return}let o=503;Ge(s+i).then(a=>{const r=a.status;if(r!==200){setTimeout(()=>{t(wa(r)?"abort":"next",r)});return}return o=501,a.json()}).then(a=>{if(typeof a!="object"||a===null){setTimeout(()=>{a===404?t("abort",a):t("next",o)});return}setTimeout(()=>{t("success",a)})}).catch(()=>{t("next",o)})}};function Ji(s,e){switch(s){case"local":case"session":re[s]=e;break;case"all":for(const t in re)re[t]=e;break}}function Qi(){Pi("",ka),Ti(!0);let s;try{s=window}catch{}if(s){if(Ki(),s.IconifyPreload!==void 0){const t=s.IconifyPreload,i="Invalid IconifyPreload syntax.";typeof t=="object"&&t!==null&&(t instanceof Array?t:[t]).forEach(o=>{try{(typeof o!="object"||o===null||o instanceof Array||typeof o.icons!="object"||typeof o.prefix!="string"||!Li(o))&&console.error(i)}catch{console.error(i)}})}if(s.IconifyProviders!==void 0){const t=s.IconifyProviders;if(typeof t=="object"&&t!==null)for(const i in t){const o="IconifyProviders["+i+"] is invalid.";try{const a=t[i];if(typeof a!="object"||!a||a.resources===void 0)continue;ji(i,a)||console.error(o)}catch{console.error(o)}}}}return{enableCache:t=>Ji(t,!0),disableCache:t=>Ji(t,!1),iconExists:Zs,getIcon:Js,listIcons:Gs,addIcon:Ci,addCollection:Li,calculateSize:Lt,buildIcon:Zi,loadIcons:Tt,loadIcon:ha,addAPIProvider:ji,_api:{getAPIConfig:Ke,setAPIModule:Pi,sendAPIQuery:Fi,setFetch:va,getFetch:ya,listAPIProviders:sa}}}function Xi(s,e){let t=s.indexOf("xlink:")===-1?"":' xmlns:xlink="http://www.w3.org/1999/xlink"';for(const i in e)t+=" "+i+'="'+e[i]+'"';return'<svg xmlns="http://www.w3.org/2000/svg"'+t+">"+s+"</svg>"}function Sa(s){return s.replace(/"/g,"'").replace(/%/g,"%25").replace(/#/g,"%23").replace(/</g,"%3C").replace(/>/g,"%3E").replace(/\s+/g," ")}function Ea(s){return'url("data:image/svg+xml,'+Sa(s)+'")'}const It={"background-color":"currentColor"},Yi={"background-color":"transparent"},eo={image:"var(--svg)",repeat:"no-repeat",size:"100% 100%"},to={"-webkit-mask":It,mask:It,background:Yi};for(const s in to){const e=to[s];for(const t in eo)e[s+"-"+t]=eo[t]}function io(s){return s+(s.match(/^[-0-9.]+$/)?"px":"")}function Aa(s,e,t){const i=document.createElement("span");let o=s.body;o.indexOf("<a")!==-1&&(o+="<!-- "+Date.now()+" -->");const a=s.attributes,r=Xi(o,{...a,width:e.width+"",height:e.height+""}),n=Ea(r),l=i.style,d={"--svg":n,width:io(a.width),height:io(a.height),...t?It:Yi};for(const u in d)l.setProperty(u,d[u]);return i}function Oa(s){const e=document.createElement("span");return e.innerHTML=Xi(s.body,s.attributes),e.firstChild}function oo(s,e){const t=e.icon.data,i=e.customisations,o=Zi(t,i);i.preserveAspectRatio&&(o.attributes.preserveAspectRatio=i.preserveAspectRatio);const a=e.renderedMode;let r;switch(a){case"svg":r=Oa(o);break;default:r=Aa(o,{...$e,...t},a==="mask")}const n=Array.from(s.childNodes).find(l=>{const d=l.tagName&&l.tagName.toUpperCase();return d==="SPAN"||d==="SVG"});n?r.tagName==="SPAN"&&n.tagName===r.tagName?n.setAttribute("style",r.getAttribute("style")):s.replaceChild(r,n):s.appendChild(r)}const Pt="data-style";function so(s,e){let t=Array.from(s.childNodes).find(i=>i.hasAttribute&&i.hasAttribute(Pt));t||(t=document.createElement("style"),t.setAttribute(Pt,Pt),s.appendChild(t)),t.textContent=":host{display:inline-block;vertical-align:"+(e?"-0.125em":"0")+"}span,svg{display:block}"}function ao(s,e,t){const i=t&&(t.rendered?t:t.lastRender);return{rendered:!1,inline:e,icon:s,lastRender:i}}function Ta(s="iconify-icon"){let e,t;try{e=window.customElements,t=window.HTMLElement}catch{return}if(!e||!t)return;const i=e.get(s);if(i)return i;const o=["icon","mode","inline","width","height","rotate","flip"],a=class extends t{constructor(){super();Me(this,"_shadowRoot");Me(this,"_state");Me(this,"_checkQueued",!1);const l=this._shadowRoot=this.attachShadow({mode:"open"}),d=Ct(this);so(l,d),this._state=ao({value:""},d),this._queueCheck()}static get observedAttributes(){return o.slice(0)}attributeChangedCallback(l){if(l==="inline"){const d=Ct(this),u=this._state;d!==u.inline&&(u.inline=d,so(this._shadowRoot,d))}else this._queueCheck()}get icon(){const l=this.getAttribute("icon");if(l&&l.slice(0,1)==="{")try{return JSON.parse(l)}catch{}return l}set icon(l){typeof l=="object"&&(l=JSON.stringify(l)),this.setAttribute("icon",l)}get inline(){return Ct(this)}set inline(l){this.setAttribute("inline",l?"true":null)}restartAnimation(){const l=this._state;if(l.rendered){const d=this._shadowRoot;if(l.renderedMode==="svg")try{d.lastChild.setCurrentTime(0);return}catch{}oo(d,l)}}get status(){const l=this._state;return l.rendered?"rendered":l.icon.data===null?"failed":"loading"}_queueCheck(){this._checkQueued||(this._checkQueued=!0,setTimeout(()=>{this._check()}))}_check(){if(!this._checkQueued)return;this._checkQueued=!1;const l=this._state,d=this.getAttribute("icon");if(d!==l.icon.value){this._iconChanged(d);return}if(!l.rendered)return;const u=this.getAttribute("mode"),h=Si(this);(l.attrMode!==u||qs(l.customisations,h))&&this._renderIcon(l.icon,h,u)}_iconChanged(l){const d=fa(l,(u,h,g)=>{const y=this._state;if(y.rendered||this.getAttribute("icon")!==u)return;const _={value:u,name:h,data:g};_.data?this._gotIconData(_):y.icon=_});d.data?this._gotIconData(d):this._state=ao(d,this._state.inline,this._state)}_gotIconData(l){this._checkQueued=!1,this._renderIcon(l,Si(this),this.getAttribute("mode"))}_renderIcon(l,d,u){const h=ba(l.data.body,u),g=this._state.inline;oo(this._shadowRoot,this._state={rendered:!0,icon:l,inline:g,customisations:d,attrMode:u,renderedMode:h})}};o.forEach(n=>{n in a.prototype||Object.defineProperty(a.prototype,n,{get:function(){return this.getAttribute(n)},set:function(l){this.setAttribute(n,l)}})});const r=Qi();for(const n in r)a[n]=a.prototype[n]=r[n];return e.define(s,a),a}const Ca=Ta()||Qi(),{enableCache:Rn,disableCache:Nn,iconExists:qn,getIcon:Un,listIcons:Vn,addIcon:Bn,addCollection:Hn,calculateSize:Kn,buildIcon:Wn,loadIcons:Gn,loadIcon:Zn,addAPIProvider:Jn,_api:Qn}=Ca;class ro extends N{static get styles(){return x`
       :root {
         pointer-events: none;
       }
@@ -393,14 +399,14 @@
       .tooltip:hover {
         opacity: 0.25;
       }
-    `}static get properties(){return{...super.properties,icon:{type:String},tooltip:{type:String},tooltip_open:{type:Boolean},size:{type:String},slotted:{type:Boolean,attribute:!1}}}firstUpdated(){const e=this.shadowRoot.querySelector("slot[name=tooltip]");e&&e.addEventListener("slotchange",t=>{const s=t.target.assignedNodes();let a=!1;s.length>0&&(s[0].tagName==="SLOT"?a=s[0].assignedNodes().length>0:a=!0),this.slotted=a})}_toggleTooltip(){this.tooltip_open?this.tooltip_open=!1:this.tooltip_open=!0}tooltipClasses(){return{tooltip:!0,slotted:this.slotted}}render(){const e=this.tooltip?f`<div
+    `}static get properties(){return{...super.properties,icon:{type:String},tooltip:{type:String},tooltip_open:{type:Boolean},size:{type:String},slotted:{type:Boolean,attribute:!1}}}firstUpdated(){const e=this.shadowRoot.querySelector("slot[name=tooltip]");e&&e.addEventListener("slotchange",t=>{const o=t.target.assignedNodes();let a=!1;o.length>0&&(o[0].tagName==="SLOT"?a=o[0].assignedNodes().length>0:a=!0),this.slotted=a})}_toggleTooltip(){this.tooltip_open?this.tooltip_open=!1:this.tooltip_open=!0}tooltipClasses(){return{tooltip:!0,slotted:this.slotted}}render(){const e=this.tooltip?p`<div
           class="${A(this.tooltipClasses())}"
           ?hidden=${this.tooltip_open}
           @click="${this._toggleTooltip}"
         >
           <slot name="tooltip"></slot>
           <span class="attr-msg">${this.tooltip}</span>
-        </div>`:null;return f`
+        </div>`:null;return p`
       <div class="icon-container">
         <iconify-icon
           icon=${this.icon}
@@ -409,7 +415,7 @@
         ></iconify-icon>
         ${e}
       </div>
-    `}}window.customElements.define("dt-icon",ns);class La extends oe{static get styles(){return x`
+    `}}window.customElements.define("dt-icon",ro);class La extends se{static get styles(){return x`
       :host {
         margin-top: -0.25rem;
         width: 2rem;
@@ -420,14 +426,14 @@
         height: 1rem;
         width: 0.5rem;
         color: inherit;
-        border-bottom: var(--dt-checkmark-width) solid currentcolor;
-        border-right: var(--dt-checkmark-width) solid currentcolor;
+        border-bottom: var(--dt-checkmark-width, 3px) solid currentcolor;
+        border-right: var(--dt-checkmark-width, 3px) solid currentcolor;
       }
     `}}window.customElements.define("dt-checkmark",La);/**
  * @license
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const B=o=>o??E;class z extends N{static get formAssociated(){return!0}static get styles(){return[x`
+ */const ne=s=>s??O;class M extends N{static get formAssociated(){return!0}static get styles(){return[...super.styles,x`
         .input-group {
           position: relative;
         }
@@ -494,47 +500,47 @@
         .invalid ~ .error-container {
           border-top-width: 0;
         }
-      `]}static get properties(){return{...super.properties,name:{type:String},label:{type:String},icon:{type:String},iconAltText:{type:String},private:{type:Boolean},privateLabel:{type:String},disabled:{type:Boolean},required:{type:Boolean},requiredMessage:{type:String},touched:{type:Boolean,state:!0},invalid:{type:Boolean,state:!0},error:{type:String},loading:{type:Boolean},saved:{type:Boolean},errorSlotted:{type:Boolean,attribute:!1}}}get _field(){return this.shadowRoot.querySelector("input, textarea, select")}get _focusTarget(){return this._field}constructor(){super(),this.savedTimeout=null,this.touched=!1,this.invalid=!1,this.internals=this.attachInternals(),this.addEventListener("invalid",e=>{e&&e.preventDefault(),this.touched=!0,this._validateRequired()})}firstUpdated(...e){super.firstUpdated(...e);const t=this.shadowRoot.querySelector("slot[name=error]");t&&t.addEventListener("slotchange",s=>{const n=s.target.assignedNodes();let r=!1;n.length>0&&(n[0].tagName==="SLOT"?r=n[0].assignedNodes().length>0:r=!0),this.errorSlotted=r});const i=z._jsonToFormData(this.value,this.name);this.internals.setFormValue(i),this._validateRequired()}static _buildFormData(e,t,i){if(t&&typeof t=="object"&&!(t instanceof Date)&&!(t instanceof File))Object.keys(t).forEach(s=>{this._buildFormData(e,t[s],i?`${i}[${s}]`:s)});else{const s=t??"";e.append(i,s)}}static _jsonToFormData(e,t){const i=new FormData;return z._buildFormData(i,e,t),i}_setFormValue(e){const t=z._jsonToFormData(e,this.name);this.internals.setFormValue(t,e),this._validateRequired(),this.touched=!0}_validateRequired(){}labelTemplate(){return this.label?f`
+      `]}static get properties(){return{...super.properties,name:{type:String},label:{type:String},icon:{type:String},iconAltText:{type:String},private:{type:Boolean},privateLabel:{type:String},disabled:{type:Boolean},required:{type:Boolean},requiredMessage:{type:String},touched:{type:Boolean,state:!0},invalid:{type:Boolean,state:!0},error:{type:String},loading:{type:Boolean},saved:{type:Boolean},errorSlotted:{type:Boolean,attribute:!1}}}get _field(){return this.shadowRoot.querySelector("input, textarea, select")}get _focusTarget(){return this._field}constructor(){super(),this.savedTimeout=null,this.touched=!1,this.invalid=!1,this.internals=this.attachInternals(),this.addEventListener("invalid",e=>{e&&e.preventDefault(),this.touched=!0,this._validateRequired()})}firstUpdated(...e){super.firstUpdated(...e);const t=this.shadowRoot.querySelector("slot[name=error]");t&&t.addEventListener("slotchange",o=>{const r=o.target.assignedNodes();let n=!1;r.length>0&&(r[0].tagName==="SLOT"?n=r[0].assignedNodes().length>0:n=!0),this.errorSlotted=n});const i=M._jsonToFormData(this.value,this.name);this.internals.setFormValue(i),this._validateRequired()}static _buildFormData(e,t,i){if(t&&typeof t=="object"&&!(t instanceof Date)&&!(t instanceof File))Object.keys(t).forEach(o=>{this._buildFormData(e,t[o],i?`${i}[${o}]`:o)});else{const o=t??"";e.append(i,o)}}static _jsonToFormData(e,t){const i=new FormData;return M._buildFormData(i,e,t),i}_setFormValue(e){const t=M._jsonToFormData(e,this.name);this.internals.setFormValue(t,e),this._validateRequired(),this.touched=!0}_validateRequired(){}labelTemplate(){return this.label?p`
       <dt-label
         ?private=${this.private}
-        privateLabel="${B(this.privateLabel)}"
-        iconAltText="${B(this.iconAltText)}"
-        icon="${B(this.icon)}"
+        privateLabel="${ne(this.privateLabel)}"
+        iconAltText="${ne(this.iconAltText)}"
+        icon="${ne(this.icon)}"
         exportparts="label: label-container"
       >
-        ${this.icon?null:f`<slot name="icon-start" slot="icon-start"></slot>`}
+        ${this.icon?null:p`<slot name="icon-start" slot="icon-start"></slot>`}
         ${this.label}
       </dt-label>
-    `:""}_errorClasses(){return{"error-container":!0,slotted:this.errorSlotted}}renderIcons(){return f`
+    `:""}_errorClasses(){return{"error-container":!0,slotted:this.errorSlotted}}renderIcons(){return p`
       ${this.renderIconInvalid()} ${this.renderError()}
       ${this.renderIconLoading()} ${this.renderIconSaved()}
-    `}renderIconInvalid(){return this.touched&&this.invalid?f`<div class="${A(this._errorClasses())}">
+    `}renderIconInvalid(){return this.touched&&this.invalid?p`<div class="${A(this._errorClasses())}">
           <dt-icon
             icon="mdi:alert-circle"
             class="alert"
             size="1.4rem"
           ></dt-icon>
           <span class="error-text"> ${this.internals.validationMessage} </span>
-        </div> `:null}renderIconLoading(){return this.loading?f`<dt-spinner class="icon-overlay"></dt-spinner>`:null}renderIconSaved(){return this.saved&&(this.savedTimeout&&clearTimeout(this.savedTimeout),this.savedTimeout=setTimeout(()=>{this.savedTimeout=null,this.saved=!1},5e3)),this.saved?f`<dt-checkmark
+        </div> `:null}renderIconLoading(){return this.loading?p`<dt-spinner class="icon-overlay"></dt-spinner>`:null}renderIconSaved(){return this.saved&&(this.savedTimeout&&clearTimeout(this.savedTimeout),this.savedTimeout=setTimeout(()=>{this.savedTimeout=null,this.saved=!1},5e3)),this.saved?p`<dt-checkmark
           class="icon-overlay success fade-out"
-        ></dt-checkmark>`:null}renderError(){return this.error?f`<div class="${A(this._errorClasses())}">
+        ></dt-checkmark>`:null}renderError(){return this.error?p`<div class="${A(this._errorClasses())}">
           <dt-icon icon="mdi:alert-circle" class="alert" size="1rem"></dt-icon>
           <span class="error-text">
             <slot name="error"></slot>
             <span class="attr-msg">${this.error}</span>
           </span>
-        </div>`:null}render(){return f`
+        </div>`:null}render(){return p`
       ${this.labelTemplate()}
       <slot></slot>
     `}reset(){var e;(e=this._field)!=null&&e.reset&&this._field.reset(),this.value="",this._setFormValue("")}}/**
  * @license
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const{I:Ia}=ao,rs=()=>document.createComment(""),Ae=(o,e,t)=>{var a;const i=o._$AA.parentNode,s=e===void 0?o._$AB:e._$AA;if(t===void 0){const n=i.insertBefore(rs(),s),r=i.insertBefore(rs(),s);t=new Ia(n,r,o,o.options)}else{const n=t._$AB.nextSibling,r=t._$AM,l=r!==o;if(l){let c;(a=t._$AQ)==null||a.call(t,o),t._$AM=o,t._$AP!==void 0&&(c=o._$AU)!==r._$AU&&t._$AP(c)}if(n!==s||l){let c=t._$AA;for(;c!==n;){const b=c.nextSibling;i.insertBefore(c,s),c=b}}}return t},re=(o,e,t=o)=>(o._$AI(e,t),o),Pa={},Ma=(o,e=Pa)=>o._$AH=e,ja=o=>o._$AH,jt=o=>{var i;(i=o._$AP)==null||i.call(o,!1,!0);let e=o._$AA;const t=o._$AB.nextSibling;for(;e!==t;){const s=e.nextSibling;e.remove(),e=s}};/**
+ */const{I:Ia}=rs,no=()=>document.createComment(""),Te=(s,e,t)=>{var a;const i=s._$AA.parentNode,o=e===void 0?s._$AB:e._$AA;if(t===void 0){const r=i.insertBefore(no(),o),n=i.insertBefore(no(),o);t=new Ia(r,n,s,s.options)}else{const r=t._$AB.nextSibling,n=t._$AM,l=n!==s;if(l){let d;(a=t._$AQ)==null||a.call(t,s),t._$AM=s,t._$AP!==void 0&&(d=s._$AU)!==n._$AU&&t._$AP(d)}if(r!==o||l){let d=t._$AA;for(;d!==r;){const u=d.nextSibling;i.insertBefore(d,o),d=u}}}return t},le=(s,e,t=s)=>(s._$AI(e,t),s),Pa={},Ma=(s,e=Pa)=>s._$AH=e,ja=s=>s._$AH,Mt=s=>{var i;(i=s._$AP)==null||i.call(s,!1,!0);let e=s._$AA;const t=s._$AB.nextSibling;for(;e!==t;){const o=e.nextSibling;e.remove(),e=o}};/**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const ls=(o,e,t)=>{const i=new Map;for(let s=e;s<=t;s++)i.set(o[s],s);return i},Ee=ut(class extends ht{constructor(o){if(super(o),o.type!==ct.CHILD)throw Error("repeat() can only be used in text expressions")}dt(o,e,t){let i;t===void 0?t=e:e!==void 0&&(i=e);const s=[],a=[];let n=0;for(const r of o)s[n]=i?i(r,n):n,a[n]=t(r,n),n++;return{values:a,keys:s}}render(o,e,t){return this.dt(o,e,t).values}update(o,[e,t,i]){const s=ja(o),{values:a,keys:n}=this.dt(e,t,i);if(!Array.isArray(s))return this.ut=n,a;const r=this.ut??(this.ut=[]),l=[];let c,b,g=0,v=s.length-1,y=0,w=a.length-1;for(;g<=v&&y<=w;)if(s[g]===null)g++;else if(s[v]===null)v--;else if(r[g]===n[y])l[y]=re(s[g],a[y]),g++,y++;else if(r[v]===n[w])l[w]=re(s[v],a[w]),v--,w--;else if(r[g]===n[w])l[w]=re(s[g],a[w]),Ae(o,l[w+1],s[g]),g++,w--;else if(r[v]===n[y])l[y]=re(s[v],a[y]),Ae(o,s[g],s[v]),v--,y++;else if(c===void 0&&(c=ls(n,y,w),b=ls(r,g,v)),c.has(r[g]))if(c.has(r[v])){const L=b.get(n[y]),q=L!==void 0?s[L]:null;if(q===null){const j=Ae(o,s[g]);re(j,a[y]),l[y]=j}else l[y]=re(q,a[y]),Ae(o,s[g],q),s[L]=null;y++}else jt(s[v]),v--;else jt(s[g]),g++;for(;y<=w;){const L=Ae(o,l[w+1]);re(L,a[y]),l[y++]=L}for(;g<=v;){const L=s[g++];L!==null&&jt(L)}return this.ut=n,Ma(o,l),U}}),Da=o=>class extends o{constructor(){super(),this.activeIndex=-1,this.filteredOptions=[],this.detectTap=!1}static get properties(){return{...super.properties,value:{type:Array,reflect:!0},query:{type:String,state:!0},options:{type:Array},filteredOptions:{type:Array,state:!0},open:{type:Boolean,state:!0},canUpdate:{type:Boolean,state:!0},activeIndex:{type:Number,state:!0},containerHeight:{type:Number,state:!0},loading:{type:Boolean}}}willUpdate(e){if(super.willUpdate(e),e&&!this.containerHeight&&this.shadowRoot.children&&this.shadowRoot.children.length){const t=this.shadowRoot.querySelector(".input-group");t&&(this.containerHeight=t.offsetHeight)}}updated(){this._scrollOptionListToActive();const e=this.shadowRoot.querySelector(".input-group");!e.style.getPropertyValue("--container-width")&&e.clientWidth>0&&e.style.setProperty("--container-width",`${e.clientWidth}px`)}_select(){console.error("Must implement `_select(value)` function"),this._clearSearch()}static _focusInput(e){e.target===e.currentTarget&&e.target.getElementsByTagName("input")[0].focus()}_inputFocusIn(e){(!e.relatedTarget||!["BUTTON","LI"].includes(e.relatedTarget.nodeName))&&(this.open=!0,this.activeIndex=-1)}_inputFocusOut(e){(!e.relatedTarget||!["BUTTON","LI"].includes(e.relatedTarget.nodeName))&&(this.open=!1,this.canUpdate=!0)}_inputKeyDown(e){}_inputKeyUp(e){switch(e.keyCode||e.which){case 38:this.open=!0,this._listHighlightPrevious();break;case 40:this.open=!0,this._listHighlightNext();break;case 9:this.activeIndex<0?this.open=!1:e.preventDefault(),this._keyboardSelectOption();break;case 13:this._keyboardSelectOption();break;case 27:this.open=!1,this.activeIndex=-1;break;default:this.open=!0,this.query=e.target.value;break}}_scrollOptionListToActive(){const e=this.shadowRoot.querySelector(".option-list"),t=this.shadowRoot.querySelector("button.active");if(e&&t){const i=t.offsetTop,s=t.offsetTop+t.clientHeight,a=e.scrollTop,n=e.scrollTop+e.clientHeight;s>n?e.scrollTo({top:s-e.clientHeight,behavior:"smooth"}):i<a&&e.scrollTo({top:i,behavior:"smooth"})}}_touchStart(e){e.target&&(this.detectTap=!1)}_touchMove(e){e.target&&(this.detectTap=!0)}_touchEnd(e){this.detectTap||(e.target&&e.target.value&&this._clickOption(e),this.detectTap=!1)}_keyboardSelectOption(){this.activeIndex>-1&&(this.activeIndex+1>this.filteredOptions.length?this._select(this.query):this._select(this.filteredOptions[this.activeIndex].id))}_clickOption(e){e.target&&e.target.value&&this._select(e.target.value)}_clickAddNew(e){var t;e.target&&this._select((t=e.target.dataset)==null?void 0:t.label)}_clearSearch(){const e=this.shadowRoot.querySelector("input");e&&(e.value="")}_listHighlightNext(){this.allowAdd?this.activeIndex=Math.min(this.filteredOptions.length,this.activeIndex+1):this.activeIndex=Math.min(this.filteredOptions.length-1,this.activeIndex+1)}_listHighlightPrevious(){this.activeIndex=Math.max(0,this.activeIndex-1)}_renderOption(e,t){return f`
+ */const lo=(s,e,t)=>{const i=new Map;for(let o=e;o<=t;o++)i.set(s[o],o);return i},pe=ut(class extends ht{constructor(s){if(super(s),s.type!==ct.CHILD)throw Error("repeat() can only be used in text expressions")}dt(s,e,t){let i;t===void 0?t=e:e!==void 0&&(i=e);const o=[],a=[];let r=0;for(const n of s)o[r]=i?i(n,r):r,a[r]=t(n,r),r++;return{values:a,keys:o}}render(s,e,t){return this.dt(s,e,t).values}update(s,[e,t,i]){const o=ja(s),{values:a,keys:r}=this.dt(e,t,i);if(!Array.isArray(o))return this.ut=r,a;const n=this.ut??(this.ut=[]),l=[];let d,u,h=0,g=o.length-1,y=0,_=a.length-1;for(;h<=g&&y<=_;)if(o[h]===null)h++;else if(o[g]===null)g--;else if(n[h]===r[y])l[y]=le(o[h],a[y]),h++,y++;else if(n[g]===r[_])l[_]=le(o[g],a[_]),g--,_--;else if(n[h]===r[_])l[_]=le(o[h],a[_]),Te(s,l[_+1],o[h]),h++,_--;else if(n[g]===r[y])l[y]=le(o[g],a[y]),Te(s,o[h],o[g]),g--,y++;else if(d===void 0&&(d=lo(r,y,_),u=lo(n,h,g)),d.has(n[h]))if(d.has(n[g])){const C=u.get(r[y]),D=C!==void 0?o[C]:null;if(D===null){const j=Te(s,o[h]);le(j,a[y]),l[y]=j}else l[y]=le(D,a[y]),Te(s,o[h],D),o[C]=null;y++}else Mt(o[g]),g--;else Mt(o[h]),h++;for(;y<=_;){const C=Te(s,l[_+1]);le(C,a[y]),l[y++]=C}for(;h<=g;){const C=o[h++];C!==null&&Mt(C)}return this.ut=r,Ma(s,l),V}}),za=s=>class extends s{constructor(){super(),this.activeIndex=-1,this.filteredOptions=[],this.detectTap=!1}static get properties(){return{...super.properties,value:{type:Array,reflect:!0},query:{type:String,state:!0},options:{type:Array},filteredOptions:{type:Array,state:!0},open:{type:Boolean,state:!0},canUpdate:{type:Boolean,state:!0},activeIndex:{type:Number,state:!0},containerHeight:{type:Number,state:!0},loading:{type:Boolean}}}willUpdate(e){if(super.willUpdate(e),e&&!this.containerHeight&&this.shadowRoot.children&&this.shadowRoot.children.length){const t=this.shadowRoot.querySelector(".input-group");t&&(this.containerHeight=t.offsetHeight)}}updated(){this._scrollOptionListToActive();const e=this.shadowRoot.querySelector(".input-group");!e.style.getPropertyValue("--container-width")&&e.clientWidth>0&&e.style.setProperty("--container-width",`${e.clientWidth}px`)}_select(){console.error("Must implement `_select(value)` function"),this._clearSearch()}static _focusInput(e){e.target===e.currentTarget&&e.target.getElementsByTagName("input")[0].focus()}_inputFocusIn(e){(!e.relatedTarget||!["BUTTON","LI"].includes(e.relatedTarget.nodeName))&&(this.open=!0,this.activeIndex=-1)}_inputFocusOut(e){(!e.relatedTarget||!["BUTTON","LI"].includes(e.relatedTarget.nodeName))&&(this.open=!1,this.canUpdate=!0)}_inputKeyDown(e){}_inputKeyUp(e){switch(e.keyCode||e.which){case 38:this.open=!0,this._listHighlightPrevious();break;case 40:this.open=!0,this._listHighlightNext();break;case 9:this.activeIndex<0?this.open=!1:e.preventDefault(),this._keyboardSelectOption();break;case 13:this._keyboardSelectOption();break;case 27:this.open=!1,this.activeIndex=-1;break;default:this.open=!0,this.query=e.target.value;break}}_scrollOptionListToActive(){const e=this.shadowRoot.querySelector(".option-list"),t=this.shadowRoot.querySelector("button.active");if(e&&t){const i=t.offsetTop,o=t.offsetTop+t.clientHeight,a=e.scrollTop,r=e.scrollTop+e.clientHeight;o>r?e.scrollTo({top:o-e.clientHeight,behavior:"smooth"}):i<a&&e.scrollTo({top:i,behavior:"smooth"})}}_touchStart(e){e.target&&(this.detectTap=!1)}_touchMove(e){e.target&&(this.detectTap=!0)}_touchEnd(e){this.detectTap||(e.target&&e.target.value&&this._clickOption(e),this.detectTap=!1)}_keyboardSelectOption(){this.activeIndex>-1&&(this.activeIndex+1>this.filteredOptions.length?this._select(this.query):this._select(this.filteredOptions[this.activeIndex].id))}_clickOption(e){e.target&&e.target.value&&this._select(e.target.value)}_clickAddNew(e){var t;e.target&&this._select((t=e.target.dataset)==null?void 0:t.label)}_clearSearch(){const e=this.shadowRoot.querySelector("input");e&&(e.value="")}_listHighlightNext(){this.allowAdd?this.activeIndex=Math.min(this.filteredOptions.length,this.activeIndex+1):this.activeIndex=Math.min(this.filteredOptions.length-1,this.activeIndex+1)}_listHighlightPrevious(){this.activeIndex=Math.max(0,this.activeIndex-1)}_renderOption(e,t){return p`
       <li tabindex="-1">
         <button
           value="${e.id}"
@@ -550,7 +556,7 @@
           ${e.label}
         </button>
       </li>
-    `}_baseRenderOptions(){return this.filteredOptions.length?Ee(this.filteredOptions,e=>e.id,(e,t)=>this._renderOption(e,t)):this.loading?f`<li><div>${O("Loading options...")}</div></li>`:f`<li><div>${O("No Data Available")}</div></li>`}_renderOptions(){let e=this._baseRenderOptions();return this.allowAdd&&this.query&&(Array.isArray(e)||(e=[e]),e.push(f`<li tabindex="-1">
+    `}_baseRenderOptions(){return this.filteredOptions.length?pe(this.filteredOptions,e=>e.id,(e,t)=>this._renderOption(e,t)):this.loading?p`<li><div>${R("Loading options...")}</div></li>`:p`<li><div>${R("No Data Available")}</div></li>`}_renderOptions(){let e=this._baseRenderOptions();return this.allowAdd&&this.query&&(Array.isArray(e)||(e=[e]),e.push(p`<li tabindex="-1">
         <button
           data-label="${this.query}"
           @click="${this._clickAddNew}"
@@ -559,21 +565,27 @@
           @touchend="${this._touchEnd}"
           class="${this.activeIndex>-1&&this.activeIndex>=this.filteredOptions.length?"active":""}"
         >
-          ${O("Add")} "${this.query}"
+          ${R("Add")} "${this.query}"
         </button>
-      </li>`)),e}};class We extends Da(z){static get styles(){return[...super.styles,x`
+      </li>`)),e}};class Ze extends za(M){static get styles(){return[...super.styles,x`
         :host {
           position: relative;
-          font-family: Helvetica, Arial, sans-serif;
+          font-family: var(--font-family, Helvetica, Arial, sans-serif);
         }
 
         .input-group {
           cursor: text; /* Indicates the area is clickable */
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
         }
         .input-group.disabled input,
         .input-group.disabled .field-container {
-          background-color: var(--disabled-color);
+          background-color: var(
+            --dt-multi-select-disabled-background-color,
+            var(--dt-form-disabled-background-color, var(--disabled-color))
+          );
         }
         .input-group.disabled a,
         .input-group.disabled button {
@@ -585,10 +597,23 @@
         }
 
         .field-container {
-          background-color: var(--dt-multi-select-background-color, #fefefe);
-          border: 1px solid var(--dt-form-border-color, #cacaca);
-          border-radius: 0;
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+          background-color: var(
+            --dt-multi-select-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(
+              --dt-multi-select-border-color,
+              var(--dt-form-border-color, #cacaca)
+            );
+          border-radius: var(
+            --dt-multi-select-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           font-size: 1rem;
           font-weight: 300;
           min-height: 2.5rem;
@@ -605,6 +630,11 @@
           row-gap: 0.2rem;
           flex-wrap: wrap;
           min-width: 0;
+          transition: var(
+            --dt-form-transition,
+            box-shadow 0.5s,
+            border-color 0.25s ease-in-out
+          );
         }
 
         .field-container input,
@@ -614,10 +644,14 @@
 
         .selected-option {
           cursor: default;
-          border: 1px solid var(--dt-multi-select-tag-border-color, #c2e0ff);
+          border: 1px solid
+            var(
+              --dt-multi-select-tag-border-color,
+              var(--primary-color-light-1, #c2e0ff)
+            );
           background-color: var(
             --dt-multi-select-tag-background-color,
-            #c2e0ff
+            var(--primary-color-light-0, #ecf5fc)
           );
 
           display: flex;
@@ -651,8 +685,14 @@
           outline: 0;
           border: 0;
           border-inline-start: 1px solid
-            var(--dt-multi-select-tag-border-color, #c2e0ff);
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+            var(
+              --dt-multi-select-tag-border-color,
+              var(--primary-color-light-1, #c2e0ff)
+            );
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           margin-inline-start: 4px;
         }
         .selected-option button:hover {
@@ -660,13 +700,18 @@
         }
 
         .field-container input {
-          background-color: var(--dt-form-background-color, #fff);
-          color: var(--dt-form-text-color, #000);
+          background-color: transparent;
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           flex-grow: 1;
           min-width: 50px;
           flex-basis: 50px;
           border: 0;
           margin-block-start: 0.375rem;
+          font-family: inherit;
+          font-size: inherit;
         }
         .field-container input:focus,
         .field-container input:focus-visible,
@@ -675,7 +720,10 @@
           outline: 0;
         }
         .field-container input::placeholder {
-          color: var(--dt-text-placeholder-color, #999);
+          color: var(
+            --dt-multi-select-placeholder-color,
+            var(--dt-form-placeholder-color, #999)
+          );
           opacity: 1;
         }
 
@@ -684,8 +732,15 @@
           list-style: none;
           margin: 0;
           padding: 0;
-          border: 1px solid var(--dt-form-border-color, #cacaca);
-          background: var(--dt-form-background-color, #fefefe);
+          border: 1px solid
+            var(
+              --dt-multi-select-border-color,
+              var(--dt-form-border-color, #cacaca)
+            );
+          background: var(
+            --dt-multi-select-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
           z-index: 10;
           position: absolute;
           width: 100%;
@@ -696,13 +751,20 @@
           overflow-y: scroll;
         }
         .option-list li {
-          border-block-start: 1px solid var(--dt-form-border-color, #cacaca);
+          border-block-start: 1px solid
+            var(
+              --dt-multi-select-border-color,
+              var(--dt-form-border-color, #cacaca)
+            );
           outline: 0;
         }
         .option-list li div,
         .option-list li button {
           padding: 0.5rem 0.75rem;
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           font-weight: 100;
           font-size: 1rem;
           text-decoration: none;
@@ -717,40 +779,57 @@
         .option-list li button:hover,
         .option-list li button.active {
           cursor: pointer;
-          background: var(--dt-multi-select-option-hover-background, #f5f5f5);
+          background: var(
+            --dt-multi-select-option-hover-background,
+            var(--dt-form-option-hover-background, var(--surface-2))
+          );
         }
 
         .field-container.invalid {
-          border: 1px solid var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(
+            --dt-multi-select-border-color-alert,
+            var(--dt-form-border-color-alert, var(--alert-color))
+          );
         }
-      `]}static get properties(){return{...super.properties,placeholder:{type:String},containerHeight:{type:Number,state:!0}}}_select(e){const t=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.value}});if(this.value&&this.value.length)if(typeof this.value[0]=="string")this.value=[...this.value.filter(i=>i!==`-${e}`),e];else{let i=!1;const s=this.value.map(a=>{const n={...a};return a.id===e.id&&a.delete&&(delete n.delete,i=!0),n});i||s.push(e),this.value=s}else this.value=[e];t.detail.newValue=this.value,this.open=!1,this.activeIndex=-1,this.canUpdate=!0,this.dispatchEvent(t),this._setFormValue(this.value),this.query&&(this.query=""),this._clearSearch()}_remove(e){if(e.stopPropagation(),e.target&&e.target.dataset&&e.target.dataset.value){const t=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.value}});this.value=(this.value||[]).map(i=>i===e.target.dataset.value?`-${i}`:i),t.detail.newValue=this.value,this.dispatchEvent(t),this._setFormValue(this.value),this.open&&this.shadowRoot.querySelector("input").focus()}document.activeElement.blur()}updated(){super.updated(),this._updateContainerHeight()}_updateContainerHeight(){const e=this.shadowRoot.querySelector(".field-container");if(e){const t=e.offsetHeight;this.containerHeight!==t&&(this.containerHeight=t,this.requestUpdate())}}_filterOptions(){return this.filteredOptions=(this.options||[]).filter(e=>!(this.value||[]).includes(e.id)&&(!this.query||e.label.toLocaleLowerCase().includes(this.query.toLocaleLowerCase()))),this.filteredOptions}willUpdate(e){if(super.willUpdate(e),e){const t=e.has("value"),i=e.has("query"),s=e.has("options");(t||i||s)&&this._filterOptions()}}_handleDivClick(){const e=this.renderRoot.querySelector("input");e&&e.focus()}_handleItemClick(e){e.stopPropagation(),document.activeElement.blur()}_renderSelectedOptions(){return this.options&&this.value&&this.value.filter(e=>e.charAt(0)!=="-").map(e=>f`
-            <div class="selected-option"
+      `]}static get properties(){return{...super.properties,placeholder:{type:String},containerHeight:{type:Number,state:!0}}}_select(e){const t=this.value,i=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:t}});if(this.value&&this.value.length)if(typeof this.value[0]=="string")this.value=[...this.value.filter(o=>o!==`-${e}`),e];else{let o=!1;const a=this.value.map(r=>{const n={...r};return r.id===e.id&&r.delete&&(delete n.delete,o=!0),n});o||a.push(e),this.value=a}else this.value=[e];i.detail.newValue=this.value,this.open=!1,this.activeIndex=-1,this.canUpdate=!0,this.dispatchEvent(i),this._setFormValue(this.value),this.query&&(this.query=""),this._clearSearch()}_remove(e){if(e.stopPropagation(),e.target&&e.target.dataset&&e.target.dataset.value){const t=this.value,i=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:t}});this.value=(this.value||[]).map(o=>o===e.target.dataset.value?`-${o}`:o),i.detail.newValue=this.value,this.dispatchEvent(i),this._setFormValue(this.value),this.open&&this.shadowRoot.querySelector("input").focus()}document.activeElement.blur()}updated(){super.updated(),this._updateContainerHeight()}_updateContainerHeight(){const e=this.shadowRoot.querySelector(".field-container");if(e){const t=e.offsetHeight;this.containerHeight!==t&&(this.containerHeight=t,this.requestUpdate())}}_filterOptions(){return this.filteredOptions=(this.options||[]).filter(e=>!(this.value||[]).includes(e.id)&&(!this.query||e.label.toLocaleLowerCase().includes(this.query.toLocaleLowerCase()))),this.filteredOptions}willUpdate(e){if(super.willUpdate(e),e){const t=e.has("value"),i=e.has("query"),o=e.has("options");(t||i||o)&&this._filterOptions()}}_handleDivClick(){const e=this.renderRoot.querySelector("input");e&&e.focus()}_handleItemClick(e){e.stopPropagation(),document.activeElement.blur()}_renderSelectedOptions(){return this.options&&this.value&&this.value.filter(e=>e.charAt(0)!=="-").map(e=>p`
+            <div
+              class="selected-option"
               @click="${this._handleItemClick}"
-              @keydown="${this._handleItemClick}">
-              <span>${this.options.find(t=>t.id===e).label}</span>
+              @keydown="${this._handleItemClick}"
+              part="tag"
+            >
+              <span
+                >${this.options.find(t=>t.id===e).label}</span
+              >
               <button
                 @click="${this._remove}"
                 ?disabled="${this.disabled}"
                 data-value="${e}"
+                part="remove-button"
               >
                 x
               </button>
             </div>
-          `)}_validateRequired(){const{value:e}=this;this.required&&(!e||e.every(t=>!t||t.charAt(0)==="-"))?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"field-container":!0,invalid:this.touched&&this.invalid}}render(){const e={display:this.open?"block":"none",top:this.containerHeight?`${this.containerHeight}px`:"2.5rem"};return f`
+          `)}_validateRequired(){const{value:e}=this;this.required&&(!e||e.every(t=>!t||t.charAt(0)==="-"))?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"field-container":!0,invalid:this.touched&&this.invalid}}render(){const e={display:this.open?"block":"none",top:this.containerHeight?`${this.containerHeight}px`:"2.5rem"};return p`
       ${this.labelTemplate()}
 
-      <div class="input-group ${this.disabled?"disabled":""}"
-          @click="${this._handleDivClick}"
-          @keydown="${this._handleDivClick}">
+      <div
+        class="input-group ${this.disabled?"disabled":""}"
+        @click="${this._handleDivClick}"
+        @keydown="${this._handleDivClick}"
+        part="input-group"
+      >
         <div
           class="${A(this.classes)}"
           @click="${this._focusInput}"
           @keydown="${this._focusInput}"
+          part="field-container"
         >
           ${this._renderSelectedOptions()}
           <input
             type="text"
-            placeholder="${this.placeholder}"
+            placeholder="${this.placeholder||""}"
+            aria-label="${this.label||""}"
             autocomplete="off"
             @focusin="${this._inputFocusIn}"
             @blur="${this._inputFocusOut}"
@@ -758,15 +837,20 @@
             @keyup="${this._inputKeyUp}"
             ?disabled="${this.disabled}"
             ?required=${this.required}
+            part="input"
           />
         </div>
-        <ul class="option-list" style=${Q(e)}>
+        <ul
+          class="option-list"
+          style=${Q(e)}
+          part="option-list"
+        >
           ${this._renderOptions()}
         </ul>
 
         ${this.renderIcons()}
       </div>
-    `}}window.customElements.define("dt-multi-select",We);class za extends N{static get styles(){return x`
+    `}}window.customElements.define("dt-multi-select",Ze);class Fa extends N{static get styles(){return x`
       root {
         display: block;
       }
@@ -795,16 +879,16 @@
           }
         }
       }
-    `}static get properties(){return{key:{type:String},metric:{type:Object},active:{type:Boolean,reflect:!0},disabled:{type:Boolean},missingIcon:{type:String}}}renderIcon(){var s;const e=(s=window==null?void 0:window.wpApiShare)==null?void 0:s.template_dir,{metric:t,missingIcon:i=`${e}/dt-assets/images/groups/missing.svg`}=this;if(t["font-icon"]){const a=t["font-icon"].replace("mdi mdi-","mdi:");return f`<dt-icon icon="${a}" size="unset"></dt-icon>`}return f`<img
+    `}static get properties(){return{key:{type:String},metric:{type:Object},active:{type:Boolean,reflect:!0},disabled:{type:Boolean},missingIcon:{type:String}}}renderIcon(){var o;const e=(o=window==null?void 0:window.wpApiShare)==null?void 0:o.template_dir,{metric:t,missingIcon:i=`${e}/dt-assets/images/groups/missing.svg`}=this;if(t["font-icon"]){const a=t["font-icon"].replace("mdi mdi-","mdi:");return p`<dt-icon icon="${a}" size="unset"></dt-icon>`}return p`<img
       src="${t.icon?t.icon:i}"
       alt="${t}"
-    />`}render(){const{metric:e,active:t,disabled:i}=this;return f`<div
+    />`}render(){const{metric:e,active:t,disabled:i}=this;return p`<div
       class=${A({"health-item":!0,"health-item--active":t,"health-item--disabled":i})}
       title="${e.description}"
       @click="${this._handleClick}"
     >
       ${this.renderIcon()}
-    </div>`}async _handleClick(e){if(this.disabled)return;const t=!this.active;this.active=t;const i=new CustomEvent("change",{detail:{key:this.key,active:t}});this.dispatchEvent(i)}}window.customElements.define("dt-church-health-icon",za);class ds extends z{static get styles(){return[...super.styles,x`
+    </div>`}async _handleClick(e){if(this.disabled)return;const t=!this.active;this.active=t;const i=new CustomEvent("change",{detail:{key:this.key,active:t}});this.dispatchEvent(i)}}window.customElements.define("dt-church-health-icon",Fa);class co extends M{static get styles(){return[...super.styles,x`
         .root {
           display: block;
         }
@@ -822,7 +906,10 @@
           align-items: center;
           width: fit-content;
           cursor: pointer;
-          min-height: var(--dt-form-input-height, 2.5rem);
+          min-height: var(
+            --dt-toggle-input-height,
+            var(--dt-form-input-height, 2.5rem)
+          );
         }
 
         .icon-overlay {
@@ -853,12 +940,12 @@
           box-sizing: content-box;
           width: calc(var(--diameter) * 2 + var(--offset) * 2);
           height: calc(var(--diameter) + var(--offset) * 2);
-          border: 0.1em solid rgb(0 0 0 / 0.2);
+          border: 0.1em solid var(--dt-toggle-border-color, rgb(0 0 0 / 0.2));
           position: relative;
           border-radius: 100vw;
           background-color: var(
             --dt-toggle-background-color-off,
-            var(--gray-2)
+            var(--dt-form-background-color-off, #e6e6e6)
           );
           transition: 250ms;
         }
@@ -873,7 +960,7 @@
           width: var(--diameter);
           height: var(--diameter);
           border-radius: 50%;
-          background-color: white;
+          background-color: var(--dt-toggle-handle-color, white);
           transform: translate(0, -50%);
           will-change: transform;
           transition: inherit;
@@ -894,7 +981,10 @@
 
         .toggle[aria-pressed='true'] .toggle-display,
         .toggle-input:checked + .toggle-display {
-          background-color: var(--primary-color);
+          background-color: var(
+            --dt-toggle-background-color-on,
+            var(--dt-form-primary-color, var(--primary-color))
+          );
         }
 
         .toggle[aria-pressed='true'] .toggle-display::before,
@@ -904,7 +994,7 @@
 
         .toggle[disabled] .toggle-display,
         .toggle-input:disabled + .toggle-display {
-          opacity: 0.6;
+          opacity: var(--dt-toggle-disabled-opacity, 0.6);
           filter: grayscale(40%);
           cursor: not-allowed;
         }
@@ -929,15 +1019,15 @@
         }
 
         .toggle-icon--cross {
-          color: var(--alert-color);
+          color: var(--dt-toggle-icon-color-off, var(--alert-color));
           font-size: 0.55em;
         }
 
         .toggle-icon--checkmark {
           font-size: 0.65em;
-          color: var(--success-color);
+          color: var(--dt-toggle-icon-color-on, var(--success-color));
         }
-      `]}static get properties(){return{...super.properties,id:{type:String},checked:{type:Boolean,reflect:!0},icons:{type:Boolean,default:!1}}}constructor(){super(),this.icons=!1}firstUpdated(){this.checked===void 0&&(this.checked=!1);const e=this.checked?"1":"0";this._setFormValue(e),this.value=this.checked}onChange(e){const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.checked,newValue:e.target.checked}});this.checked=e.target.checked,this.value=e.target.checked,this._setFormValue(this.checked?"1":"0"),this.dispatchEvent(t)}onClickToggle(e){e.preventDefault(),e.target.closest("label").querySelector("input").click()}render(){const e=f`<svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="toggle-icon toggle-icon--checkmark"><path d="M6.08471 10.6237L2.29164 6.83059L1 8.11313L6.08471 13.1978L17 2.28255L15.7175 1L6.08471 10.6237Z" fill="currentcolor" stroke="currentcolor" /></svg>`,t=f`<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="toggle-icon toggle-icon--cross"><path d="M11.167 0L6.5 4.667L1.833 0L0 1.833L4.667 6.5L0 11.167L1.833 13L6.5 8.333L11.167 13L13 11.167L8.333 6.5L13 1.833L11.167 0Z" fill="currentcolor" /></svg>`;return f`
+      `]}static get properties(){return{...super.properties,id:{type:String},checked:{type:Boolean,reflect:!0},icons:{type:Boolean,default:!1}}}constructor(){super(),this.icons=!1}firstUpdated(){super.firstUpdated(),this.checked===void 0&&(this.checked=!1);const e=this.checked?"1":"0";this._setFormValue(e),this.value=this.checked}onChange(e){const t=e.target.checked,i=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.checked,newValue:t}});this.checked=t,this.value=t,this._setFormValue(this.checked?"1":"0"),this.dispatchEvent(i)}onClickToggle(e){e.preventDefault(),e.target.closest("label").querySelector("input").click()}render(){const e=p`<svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="toggle-icon toggle-icon--checkmark"><path d="M6.08471 10.6237L2.29164 6.83059L1 8.11313L6.08471 13.1978L17 2.28255L15.7175 1L6.08471 10.6237Z" fill="currentcolor" stroke="currentcolor" /></svg>`,t=p`<svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" class="toggle-icon toggle-icon--cross"><path d="M11.167 0L6.5 4.667L1.833 0L0 1.833L4.667 6.5L0 11.167L1.833 13L6.5 8.333L11.167 13L13 11.167L8.333 6.5L13 1.833L11.167 0Z" fill="currentcolor" /></svg>`;return p`
       <div class="root" part="root">
         ${this.labelTemplate()}
 
@@ -958,13 +1048,13 @@
               ?disabled=${this.disabled}
             />
             <span class="toggle-display" @click=${this.onClickToggle}>
-              ${this.icons?f` ${e} ${t} `:f``}
+              ${this.icons?p` ${e} ${t} `:p``}
             </span>
           </label>
           ${this.renderIcons()}
         </div>
       </div>
-    `}}window.customElements.define("dt-toggle",ds);class cs extends We{static get styles(){return[...super.styles,x`
+    `}}window.customElements.define("dt-toggle",co);class uo extends Ze{static get styles(){return[...super.styles,x`
         .health-circle__container {
           --icon-count: 9;
           /* Updated circle size based on dynamic width */
@@ -1054,7 +1144,7 @@
         .error-container {
           margin-block-start: 0.5rem;
         }
-      `]}static get properties(){const e={...super.properties,settings:{type:Object,reflect:!1},missingIcon:{type:String}};return delete e.placeholder,delete e.containerHeight,e}_filterOptions(){const e=this.options||[];if(!Object.values(e).length)return[];const t=Object.entries(e);return this.filteredOptions=t.filter(([i,s])=>i!=="church_commitment"),this.filteredOptions}willUpdate(e){if(super.willUpdate(e),e){const t=e.has("value"),i=e.has("options");(t||i)&&this._filterOptions()}}get isCommited(){return this.value?this.value.includes("church_commitment"):!1}render(){return f`
+      `]}static get properties(){const e={...super.properties,missingIcon:{type:String}};return delete e.placeholder,delete e.containerHeight,e}_filterOptions(){const e=this.options||[];if(!Object.values(e).length)return[];const t=Object.entries(e);return this.filteredOptions=t.filter(([i,o])=>i!=="church_commitment"),this.filteredOptions}willUpdate(e){if(super.willUpdate(e),e){const t=e.has("value"),i=e.has("options");(t||i)&&this._filterOptions()}}get isCommited(){return this.value?this.value.includes("church_commitment"):!1}render(){var e,t;return p`
       <div class="health-circle__wrapper input-group">
         <div
           class="health-circle__container"
@@ -1064,14 +1154,14 @@
             class=${A({"health-circle":!0,"health-circle--committed":this.isCommited,"health-circle--disabled":this.disabled})}
           >
             <div class="health-circle__grid">
-              ${this.filteredOptions.map(([e,t],i)=>f`<dt-church-health-icon
-                    key="${e}"
-                    .metric=${t}
-                    .active=${(this.value||[]).indexOf(e)!==-1}
-                    .style="--i: ${i+1}"
+              ${this.filteredOptions.map(([i,o],a)=>p`<dt-church-health-icon
+                    key="${i}"
+                    .metric=${o}
+                    .active=${(this.value||[]).indexOf(i)!==-1}
+                    .style="--i: ${a+1}"
                     .missingIcon="${this.missingIcon}"
                     ?disabled=${this.disabled}
-                    data-value="${e}"
+                    data-value="${i}"
                     @change="${this.handleIconClick}"
                   >
                   </dt-church-health-icon>`)}
@@ -1082,7 +1172,7 @@
 
         <dt-toggle
           name="church_commitment"
-          label="${this.options.church_commitment.label}"
+          label="${(t=(e=this.options)==null?void 0:e.church_commitment)==null?void 0:t.label}"
           @change="${this.handleToggleChange}"
           ?disabled=${this.disabled}
           ?checked=${this.isCommited}
@@ -1091,20 +1181,32 @@
         </dt-toggle>
         ${this.renderError()}
       </div>
-    `}handleIconClick(e){const{key:t,active:i}=e.detail;i?this._select(t):this._remove(e)}async handleToggleChange(e){const{field:t,newValue:i}=e.detail;i?this._select(t):this._remove(e)}}window.customElements.define("dt-church-health-circle",cs);class Oe extends We{static get properties(){return{...super.properties,allowAdd:{type:Boolean}}}static get styles(){return[...super.styles,x`
+    `}handleIconClick(e){const{key:t,active:i}=e.detail;i?this._select(t):this._remove(e)}async handleToggleChange(e){const{field:t,newValue:i}=e.detail;i?this._select(t):this._remove(e)}}window.customElements.define("dt-church-health-circle",uo);class Ce extends Ze{static get properties(){return{...super.properties,postType:{type:String,reflect:!1},allowAdd:{type:Boolean}}}static get styles(){return[...super.styles,x`
         .selected-option a,
         .selected-option a:active,
         .selected-option a:visited {
           text-decoration: none;
-          color: var(--primary-color, #3f729b);
+          color: var(
+            --dt-tags-selected-link-color,
+            var(--primary-color, #3f729b)
+          );
         }
-        .selected-option a[href="#"],
-        .selected-option a[href=""] {
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+        .selected-option a[href='#'],
+        .selected-option a[href=''] {
+          color: var(
+            --dt-tags-selected-text-color,
+            var(
+              --dt-multi-select-text-color,
+              var(--dt-form-text-color, #0a0a0a)
+            )
+          );
           pointer-events: none;
         }
         .invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(
+            --dt-tags-invalid-border-color,
+            var(--dt-form-border-color-alert, var(--alert-color))
+          );
         }
 
         .input-group {
@@ -1121,21 +1223,37 @@
         }
 
         .input-addon.btn-add {
-          background-color: var(--dt-multi-text-background-color, #fefefe);
-          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
+          background-color: var(
+            --dt-tags-add-button-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(
+              --dt-tags-add-button-border-color,
+              var(--dt-form-border-color, #fefefe)
+            );
           width: 37.5px;
           &:disabled {
-            color: var(--dt-text-placeholder-color, #999);
+            color: var(
+              --dt-tags-add-button-disabled-color,
+              var(--dt-form-placeholder-color, #999)
+            );
           }
           &:hover:not([disabled]) {
-            background-color: var(--success-color, #cc4b37);
-            color: var(--dt-multi-text-button-hover-color, #ffffff);
+            background-color: var(
+              --dt-tags-add-button-hover-background-color,
+              var(--success-color, #4caf50)
+            );
+            color: var(
+              --dt-tags-add-button-hover-color,
+              var(--dt-form-text-color-light, #ffffff)
+            );
           }
         }
         .input-group.allowAdd .icon-overlay {
           inset-inline-end: 3rem;
         }
-      `]}_addRecord(){const e=new CustomEvent("dt:add-new",{detail:{field:this.name,value:this.query}});this.dispatchEvent(e)}willUpdate(e){super.willUpdate(e),e&&e.has("open")&&this.open&&(!this.filteredOptions||!this.filteredOptions.length)&&this._filterOptions()}_filterOptions(){var t;const e=(this.value||[]).filter(i=>!i.startsWith("-"));if((t=this.options)!=null&&t.length)this.filteredOptions=(this.options||[]).filter(i=>!e.includes(i.id)&&(!this.query||i.id.toLocaleLowerCase().includes(this.query.toLocaleLowerCase())));else if(this.open||this.canUpdate){this.loading=!0,this.filteredOptions=[];const i=this,s=new CustomEvent("dt:get-data",{bubbles:!0,detail:{field:this.name,postType:this.postType,query:this.query,onSuccess:a=>{i.loading=!1;let n=a;n.length&&typeof n[0]=="string"&&(n=n.map(r=>({id:r}))),i.allOptions=n,i.filteredOptions=n.filter(r=>!e.includes(r.id))},onError:a=>{console.warn(a),i.loading=!1,this.canUpdate=!1}}});this.dispatchEvent(s)}return this.filteredOptions}_renderOption(e,t){return f`
+      `]}_addRecord(){const e=new CustomEvent("dt:add-new",{detail:{field:this.name,value:this.query}});this.dispatchEvent(e)}willUpdate(e){super.willUpdate(e),e&&e.has("open")&&this.open&&(!this.filteredOptions||!this.filteredOptions.length)&&this._filterOptions()}_filterOptions(){var t;const e=(this.value||[]).filter(i=>!i.startsWith("-"));if((t=this.options)!=null&&t.length)this.filteredOptions=(this.options||[]).filter(i=>!e.includes(i.id)&&(!this.query||i.id.toLocaleLowerCase().includes(this.query.toLocaleLowerCase())));else if(this.open||this.canUpdate){this.loading=!0,this.filteredOptions=[];const i=this,o=new CustomEvent("dt:get-data",{bubbles:!0,detail:{field:this.name,postType:this.postType,query:this.query,onSuccess:a=>{i.loading=!1;let r=a;r.length&&typeof r[0]=="string"&&(r=r.map(n=>({id:n}))),i.allOptions=r,i.filteredOptions=r.filter(n=>!e.includes(n.id))},onError:a=>{console.warn(a),i.loading=!1,this.canUpdate=!1}}});this.dispatchEvent(o)}return this.filteredOptions}_renderOption(e,t){return p`
       <li tabindex="-1">
         <button
           value="${e.id}"
@@ -1152,13 +1270,13 @@
           ${e.label||e.id}
         </button>
       </li>
-    `}_validateRequired(){const{value:e}=this;this.required&&(!e||e.every(t=>!t||typeof t=="string"&&t.charAt(0)==="-"))?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}_renderSelectedOptions(){const e=this.options||this.allOptions;return(this.value||[]).filter(t=>!t.startsWith("-")).map(t=>{var a;let i=t;if(e){const n=e.filter(r=>r===t||r.id===t);n.length&&(i=n[0].label||n[0].id||t)}let s;if(!s&&((a=window==null?void 0:window.SHAREDFUNCTIONS)!=null&&a.createCustomFilter)){const n=window.SHAREDFUNCTIONS.createCustomFilter(this.name,[t]),r=this.label||this.name,l=[{id:`${this.name}_${t}`,name:`${r}: ${t}`}];s=window.SHAREDFUNCTIONS.create_url_for_list_query(this.postType,n,l)}return f`
+    `}_validateRequired(){const{value:e}=this;this.required&&(!e||e.every(t=>!t||typeof t=="string"&&t.charAt(0)==="-"))?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}_renderSelectedOptions(){const e=this.options||this.allOptions;return(this.value||[]).filter(t=>!t.startsWith("-")).map(t=>{var a;let i=t;if(e){const r=e.filter(n=>n===t||n.id===t);r.length&&(i=r[0].label||r[0].id||t)}let o;if(!o&&((a=window==null?void 0:window.SHAREDFUNCTIONS)!=null&&a.createCustomFilter)){const r=window.SHAREDFUNCTIONS.createCustomFilter(this.name,[t]),n=this.label||this.name,l=[{id:`${this.name}_${t}`,name:`${n}: ${t}`}];o=window.SHAREDFUNCTIONS.create_url_for_list_query(this.postType,r,l)}return p`
           <div
             class="selected-option"
             @click="${this._handleItemClick}"
             @keydown="${this._handleItemClick}"
           >
-            <a href="${s}" ?disabled="${this.disabled}" alt="${t}"
+            <a href="${o}" ?disabled="${this.disabled}" alt="${t}"
               >${i}</a
             >
             <button
@@ -1169,7 +1287,7 @@
               x
             </button>
           </div>
-        `})}render(){const e={display:this.open?"block":"none",top:this.containerHeight?`${this.containerHeight}px`:"2.5rem"};return f`
+        `})}render(){const e={display:this.open?"block":"none",top:this.containerHeight?`${this.containerHeight}px`:"2.5rem"};return p`
       ${this.labelTemplate()}
 
       <div
@@ -1195,7 +1313,7 @@
             ?required=${this.required}
           />
         </div>
-        ${this.allowAdd?f`<button class="input-addon btn-add" @click=${this._addRecord}>
+        ${this.allowAdd?p`<button class="input-addon btn-add" @click=${this._addRecord}>
               <dt-icon icon="mdi:tag-plus-outline"></dt-icon>
             </button>`:null}
         <ul class="option-list" style=${Q(e)}>
@@ -1203,7 +1321,7 @@
         </ul>
         ${this.renderIcons()}
       </div>
-    `}}window.customElements.define("dt-tags",Oe);class us extends Oe{static get styles(){return[...super.styles,x`
+    `}}window.customElements.define("dt-tags",Ce);class ho extends Ce{static get styles(){return[...super.styles,x`
         .selected-option a {
           border-inline-start: solid 3px transparent;
         }
@@ -1238,9 +1356,9 @@
           fill: var(--dt-connection-icon-fill, var(--primary-color));
         }
         .invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(--dt-form-border-color-alert, var(--alert-color));
         }
-      `]}_clickOption(e){if(e.target&&e.target.value){const t=parseInt(e.target.value,10),i=this.filteredOptions.reduce((s,a)=>!s&&a.id==t?a:s,null);i&&this._select(i)}}_clickAddNew(e){var t,i;if(e.target){this._select({id:(t=e.target.dataset)==null?void 0:t.label,label:(i=e.target.dataset)==null?void 0:i.label,isNew:!0});const s=this.shadowRoot.querySelector("input");s&&(s.value="")}}_keyboardSelectOption(){this.activeIndex>-1&&(this.activeIndex+1>this.filteredOptions.length?this._select({id:this.query,label:this.query,isNew:!0}):this._select(this.filteredOptions[this.activeIndex]))}_remove(e){if(e.stopPropagation(),e.target&&e.target.dataset&&e.target.dataset.value){let t=e.target.dataset.value;const i=Number.parseInt(t);Number.isNaN(i)||(t=i);const s=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value}});this.value=(this.value||[]).map(a=>{const n={...a};return a.id===t&&(n.delete=!0),n}),s.detail.newValue=this.value,this.dispatchEvent(s),this.open&&this.shadowRoot.querySelector("input").focus(),this._validateRequired()}document.activeElement.blur()}_filterOptions(){var t;const e=(this.value||[]).filter(i=>!i.delete).map(i=>i==null?void 0:i.id);if((t=this.options)!=null&&t.length)this.filteredOptions=(this.options||[]).filter(i=>!e.includes(i.id)&&(!this.query||i.label.toLocaleLowerCase().includes(this.query.toLocaleLowerCase())));else if(this.open||this.canUpdate){this.loading=!0,this.filteredOptions=[];const i=this,s=new CustomEvent("dt:get-data",{bubbles:!0,detail:{field:this.name,postType:this.postType,query:this.query,onSuccess:a=>{i.loading=!1,i.filteredOptions=a.filter(n=>!e.includes(n.id))},onError:a=>{console.warn(a),i.loading=!1,this.canUpdate=!1}}});this.dispatchEvent(s)}return this.filteredOptions}_validateRequired(){const{value:e}=this;this.required&&(!e||e.every(t=>!t||t.delete))?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}_renderSelectedOptions(){return(this.value||[]).filter(e=>!e.delete).map(e=>f`
+      `]}_clickOption(e){if(e.target&&e.target.value){const t=parseInt(e.target.value,10),i=this.filteredOptions.reduce((o,a)=>!o&&a.id==t?a:o,null);i&&this._select(i)}}_clickAddNew(e){var t,i;if(e.target){this._select({id:(t=e.target.dataset)==null?void 0:t.label,label:(i=e.target.dataset)==null?void 0:i.label,isNew:!0});const o=this.shadowRoot.querySelector("input");o&&(o.value="")}}_keyboardSelectOption(){this.activeIndex>-1&&(this.activeIndex+1>this.filteredOptions.length?this._select({id:this.query,label:this.query,isNew:!0}):this._select(this.filteredOptions[this.activeIndex]))}_remove(e){if(e.stopPropagation(),e.target&&e.target.dataset&&e.target.dataset.value){let t=e.target.dataset.value;const i=Number.parseInt(t);Number.isNaN(i)||(t=i);const o=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value}});this.value=(this.value||[]).map(a=>{const r={...a};return a.id===t&&(r.delete=!0),r}),o.detail.newValue=this.value,this.dispatchEvent(o),this.open&&this.shadowRoot.querySelector("input").focus(),this._validateRequired()}document.activeElement.blur()}_filterOptions(){var t;const e=(this.value||[]).filter(i=>!i.delete).map(i=>i==null?void 0:i.id);if((t=this.options)!=null&&t.length)this.filteredOptions=(this.options||[]).filter(i=>!e.includes(i.id)&&(!this.query||i.label.toLocaleLowerCase().includes(this.query.toLocaleLowerCase())));else if(this.open||this.canUpdate){this.loading=!0,this.filteredOptions=[];const i=this,o=new CustomEvent("dt:get-data",{bubbles:!0,detail:{field:this.name,postType:this.postType,query:this.query,onSuccess:a=>{i.loading=!1,i.filteredOptions=a.filter(r=>!e.includes(r.id))},onError:a=>{console.warn(a),i.loading=!1,this.canUpdate=!1}}});this.dispatchEvent(o)}return this.filteredOptions}_validateRequired(){const{value:e}=this;this.required&&(!e||e.every(t=>!t||t.delete))?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}_renderSelectedOptions(){return(this.value||[]).filter(e=>!e.delete).map(e=>p`
           <div
             class="selected-option"
             @click="${this._handleItemClick}"
@@ -1262,8 +1380,8 @@
               x
             </button>
           </div>
-        `)}_renderOption(e,t){const i=f`<svg width="24" height="24" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>circle-08 2</title><desc>Created using Figma</desc><g id="Canvas" transform="translate(1457 4940)"><g id="circle-08 2"><g id="Group"><g id="Vector"><use xlink:href="#path0_fill" transform="translate(-1457 -4940)" fill="#000000"/></g></g></g></g><defs><path id="path0_fill" d="M 12 0C 5.383 0 0 5.383 0 12C 0 18.617 5.383 24 12 24C 18.617 24 24 18.617 24 12C 24 5.383 18.617 0 12 0ZM 8 10C 8 7.791 9.844 6 12 6C 14.156 6 16 7.791 16 10L 16 11C 16 13.209 14.156 15 12 15C 9.844 15 8 13.209 8 11L 8 10ZM 12 22C 9.567 22 7.335 21.124 5.599 19.674C 6.438 18.091 8.083 17 10 17L 14 17C 15.917 17 17.562 18.091 18.401 19.674C 16.665 21.124 14.433 22 12 22Z"/></defs></svg>`,s=e.status||{label:"",color:""};return f`
-      <li tabindex="-1" style="border-inline-start-color:${s.color}">
+        `)}_renderOption(e,t){const i=p`<svg width="24" height="24" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title>circle-08 2</title><desc>Created using Figma</desc><g id="Canvas" transform="translate(1457 4940)"><g id="circle-08 2"><g id="Group"><g id="Vector"><use xlink:href="#path0_fill" transform="translate(-1457 -4940)" fill="#000000"/></g></g></g></g><defs><path id="path0_fill" d="M 12 0C 5.383 0 0 5.383 0 12C 0 18.617 5.383 24 12 24C 18.617 24 24 18.617 24 12C 24 5.383 18.617 0 12 0ZM 8 10C 8 7.791 9.844 6 12 6C 14.156 6 16 7.791 16 10L 16 11C 16 13.209 14.156 15 12 15C 9.844 15 8 13.209 8 11L 8 10ZM 12 22C 9.567 22 7.335 21.124 5.599 19.674C 6.438 18.091 8.083 17 10 17L 14 17C 15.917 17 17.562 18.091 18.401 19.674C 16.665 21.124 14.433 22 12 22Z"/></defs></svg>`,o=e.status||{label:"",color:""};return p`
+      <li tabindex="-1" style="border-inline-start-color:${o.color}">
         <button
           value="${e.id}"
           type="button"
@@ -1278,11 +1396,11 @@
         >
           <span class="label">${e.label}</span>
           <span class="connection-id">(#${e.id})</span>
-          ${s.label?f`<span class="status">${s.label}</span>`:null}
+          ${o.label?p`<span class="status">${o.label}</span>`:null}
           ${e.user?i:null}
         </button>
       </li>
-    `}render(){const e={display:this.open?"block":"none",top:this.containerHeight?`${this.containerHeight}px`:"2.5rem"};return f`
+    `}render(){const e={display:this.open?"block":"none",top:this.containerHeight?`${this.containerHeight}px`:"2.5rem"};return p`
       ${this.labelTemplate()}
 
       <div
@@ -1308,7 +1426,7 @@
             ?required=${this.required}
           />
         </div>
-        ${this.allowAdd?f`<button class="input-addon btn-add" @click=${this._addRecord}>
+        ${this.allowAdd?p`<button class="input-addon btn-add" @click=${this._addRecord}>
               <dt-icon icon="mdi:account-plus-outline"></dt-icon>
             </button>`:null}
         <ul class="option-list" style=${Q(e)}>
@@ -1316,7 +1434,7 @@
         </ul>
         ${this.renderIcons()}
       </div>
-    `}}window.customElements.define("dt-connection",us);class hs extends Oe{static get styles(){return[...super.styles,x`
+    `}}window.customElements.define("dt-connection",ho);class po extends Ce{static get styles(){return[...super.styles,x`
         .selected-option a {
           border-inline-start: solid 3px transparent;
         }
@@ -1342,15 +1460,19 @@
           font-style: normal;
         }
 
+        li button .avatar {
+          margin-inline-end: 1ch;
+        }
+
         li button svg {
           width: 20px;
           height: auto;
           margin-bottom: -4px;
         }
         li button svg use {
-          fill: var(--dt-connection-icon-fill, var(--primary-color));
+          fill: var(--dt-users-connection-icon-fill, var(--primary-color));
         }
-      `]}static get properties(){return{...super.properties,single:{type:Boolean}}}_select(e){const t=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.value}});if(this.value&&this.value.length&&!this.single){let i=!1;const s=this.value.map(a=>{const n={...a};return a.id===e.id&&a.delete?(delete n.delete,i=!0):this.single&&!a.delete&&(n.delete=!0),n});i||s.push(e),this.value=s}else this.value=[e];t.detail.newValue=this.value,this.open=!1,this.activeIndex=-1,this.canUpdate=!0,this.dispatchEvent(t),this._clearSearch()}_clickOption(e){if(e.target&&e.target.value){const t=parseInt(e.target.value,10),i=this.filteredOptions.reduce((s,a)=>!s&&a.id==t?a:s,null);i&&this._select(i),this.query=""}}_clickAddNew(e){var t,i;if(e.target){this._select({id:(t=e.target.dataset)==null?void 0:t.label,label:(i=e.target.dataset)==null?void 0:i.label,isNew:!0});const s=this.shadowRoot.querySelector("input");s&&(s.value="",this.query="")}}_keyboardSelectOption(){this.activeIndex>-1&&(this.activeIndex+1>this.filteredOptions.length?this._select({id:this.query,label:this.query,isNew:!0}):this._select(this.filteredOptions[this.activeIndex]),this.query="")}_remove(e){if(e.target&&e.target.dataset&&e.target.dataset.value){const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value,remove:!0}});this.value=(this.value||[]).map(i=>{const s={...i};return i.id.toString()===e.target.dataset.value&&(s.delete=!0),s}),t.detail.newValue=this.value,this.dispatchEvent(t),this.open&&this.shadowRoot.querySelector("input").focus()}}_filterOptions(){var t;const e=(this.value||[]).filter(i=>!i.delete).map(i=>Number(i==null?void 0:i.id));if((t=this.options)!=null&&t.length)this.filteredOptions=(this.options||[]).filter(i=>!e.includes(i.id)&&(!this.query||i.label.toLocaleLowerCase().includes(this.query.toLocaleLowerCase())));else if(this.open||this.canUpdate){this.loading=!0,this.filteredOptions=[];const i=this,s=new CustomEvent("dt:get-data",{bubbles:!0,detail:{field:this.name,postType:this.postType,query:this.query,onSuccess:a=>{i.loading=!1,i.filteredOptions=a.filter(n=>!e.includes(n.id))},onError:a=>{console.warn(a),i.loading=!1,this.canUpdate=!1}}});this.dispatchEvent(s)}return this.filteredOptions}_renderSelectedOptions(){return(this.value||[]).filter(e=>!e.delete).map(e=>f`
+      `]}static get properties(){return{...super.properties,single:{type:Boolean}}}_select(e){const t=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.value}});if(this.value&&this.value.length){let i=!1,o=this.value.map(a=>{const r={...a};return a.id===e.id&&a.delete?(delete r.delete,i=!0):this.single&&!a.delete&&(r.delete=!0),r});i||o.push(e),this.single&&(o=o.filter(a=>!a.delete)),this.value=o}else this.value=[e];t.detail.newValue=this.value,this.open=!1,this.activeIndex=-1,this.canUpdate=!0,this.dispatchEvent(t),this._clearSearch()}_clickOption(e){if(e.target&&e.target.value){const t=parseInt(e.target.value,10),i=this.filteredOptions.reduce((o,a)=>!o&&a.id==t?a:o,null);i&&this._select(i),this.query=""}}_clickAddNew(e){var t,i;if(e.target){this._select({id:(t=e.target.dataset)==null?void 0:t.label,label:(i=e.target.dataset)==null?void 0:i.label,isNew:!0});const o=this.shadowRoot.querySelector("input");o&&(o.value="",this.query="")}}_keyboardSelectOption(){this.activeIndex>-1&&(this.activeIndex+1>this.filteredOptions.length?this._select({id:this.query,label:this.query,isNew:!0}):this._select(this.filteredOptions[this.activeIndex]),this.query="")}_remove(e){if(e.target&&e.target.dataset&&e.target.dataset.value){const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value,remove:!0}});this.value=(this.value||[]).map(i=>{const o={...i};return i.id.toString()===e.target.dataset.value&&(o.delete=!0),o}),t.detail.newValue=this.value,this.dispatchEvent(t),this.open&&this.shadowRoot.querySelector("input").focus()}}_filterOptions(){var t;const e=(this.value||[]).filter(i=>!i.delete).map(i=>Number(i==null?void 0:i.id));if((t=this.options)!=null&&t.length)this.filteredOptions=(this.options||[]).filter(i=>!e.includes(i.id)&&(!this.query||i.label.toLocaleLowerCase().includes(this.query.toLocaleLowerCase())));else if(this.open||this.canUpdate){this.loading=!0,this.filteredOptions=[];const i=this,o=new CustomEvent("dt:get-data",{bubbles:!0,detail:{field:this.name,postType:this.postType,query:this.query,onSuccess:a=>{i.loading=!1,i.filteredOptions=a.filter(r=>!e.includes(r.id))},onError:a=>{console.warn(a),i.loading=!1,this.canUpdate=!1}}});this.dispatchEvent(o)}return this.filteredOptions}_renderSelectedOptions(){return(this.value||[]).filter(e=>!e.delete).map(e=>p`
           <div class="selected-option">
             <a
               href="${e.link}"
@@ -1367,7 +1489,9 @@
               x
             </button>
           </div>
-        `)}_renderOption(e,t){return f`
+        `)}_renderOption(e,t){const i=e.avatar?p`<span class="avatar"
+          ><img src="${e.avatar}" alt="${e.label}"
+        /></span>`:p`<span class="avatar"></span>`;return p`
       <li tabindex="-1" style="border-inline-start-color:${e.status}">
         <button
           value="${e.id}"
@@ -1381,11 +1505,11 @@
           tabindex="-1"
           class="${this.activeIndex>-1&&this.activeIndex===t?"active":""}"
         >
-          <span class="avatar"><img src="${e.avatar}" alt="${e.label}"/></span> &nbsp;
+          ${i}
           <span class="connection-id">${e.label}</span>
         </button>
       </li>
-    `}}window.customElements.define("dt-users-connection",hs);class ps extends N{static get styles(){return x`
+    `}}window.customElements.define("dt-users-connection",po);class fo extends N{static get styles(){return x`
       :root {
         font-size: inherit;
         --dt-copy-text-color: #575757;
@@ -1414,7 +1538,7 @@
       :host([dir='rtl']) .copy_icon {
         transform: translate(1.5em, -0.3125em);
       }
-    `}static get properties(){return{value:{type:String},success:{type:Boolean},error:{type:Boolean}}}get inputStyles(){return this.success?{"--dt-text-border-color":"var(--copy-text-success-color, var(--success-color))","--dt-form-text-color":"var( --copy-text-success-color, var(--success-color))",color:"var( --copy-text-success-color, var(--success-color))"}:this.error?{"---dt-text-border-color":"var(--copy-text-alert-color, var(--alert-color))","--dt-form-text-color":"var(--copy-text-alert-color, var(--alert-color))"}:{}}get icon(){return this.success?"ic:round-check":"ic:round-content-copy"}async copy(){try{this.success=!1,this.error=!1,await navigator.clipboard.writeText(this.value),this.success=!0,this.error=!1}catch(e){console.log(e),this.success=!1,this.error=!0}}render(){return f`
+    `}static get properties(){return{value:{type:String},success:{type:Boolean},error:{type:Boolean}}}get inputStyles(){return this.success?{"--dt-text-border-color":"var(--copy-text-success-color, var(--success-color))","--dt-form-text-color":"var( --copy-text-success-color, var(--success-color))",color:"var( --copy-text-success-color, var(--success-color))"}:this.error?{"---dt-text-border-color":"var(--copy-text-alert-color, var(--alert-color))","--dt-form-text-color":"var(--copy-text-alert-color, var(--alert-color))"}:{}}get icon(){return this.success?"ic:round-check":"ic:round-content-copy"}async copy(){try{this.success=!1,this.error=!1,await navigator.clipboard.writeText(this.value),this.success=!0,this.error=!1}catch(e){console.log(e),this.success=!1,this.error=!0}}render(){return p`
       <div class="copy-text" style=${Q(this.inputStyles)}>
         <dt-text
           class="copy-text__input"
@@ -1427,13 +1551,20 @@
           @click="${this.copy}"
         ></dt-icon>
       </div>
-    `}}window.customElements.define("dt-copy-text",ps);class Dt extends z{static get styles(){return[...super.styles,x`
+    `}}window.customElements.define("dt-copy-text",fo);class jt extends M{static get styles(){return[...super.styles,x`
         input {
-          color: var(--dt-form-text-color, #000);
+          color: var(--dt-date-text-color, var(--dt-form-text-color, #000));
           appearance: none;
-          background-color: var(--dt-form-background-color, #cecece);
-          border: 1px solid var(--dt-form-border-color, #cacaca);
-          border-radius: var(--dt-date-border-radius, 0);
+          background-color: var(
+            --dt-date-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(--dt-date-border-color, var(--dt-form-border-color, #cacaca));
+          border-radius: var(
+            --dt-date-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           box-shadow: var(
             --dt-date-box-shadow,
             var(
@@ -1499,15 +1630,17 @@
           align-items: center;
           aspect-ratio: 1/1;
           padding: 10px;
-          border: solid 1px gray;
           border-collapse: collapse;
           background-color: var(
             --dt-date-background-color,
-            var(--dt-form-background-color, buttonface)
+            var(--dt-form-background-color, #fefefe)
           );
           border: 1px solid
-            var(--dt-date-border-color, var(--dt-form-border-color, #fefefe));
-          border-radius: var(--dt-date-border-radius, 0);
+            var(--dt-date-border-color, var(--dt-form-border-color, #cacaca));
+          border-radius: var(
+            --dt-date-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           box-shadow: var(
             --dt-date-box-shadow,
             var(
@@ -1542,7 +1675,7 @@
         .icon-overlay {
           inset-inline-end: 5rem;
         }
-      `]}static get properties(){return{...super.properties,value:{type:String,reflect:!0},timestamp:{converter:e=>{let t=Number(e);if(t<1e12&&(t*=1e3),t)return t},reflect:!0}}}updateTimestamp(e){const t=new Date(e).getTime(),i=t/1e3,s=new CustomEvent("change",{detail:{field:this.name,oldValue:this.timestamp,newValue:i}});this.timestamp=t,this.value=e,this._setFormValue(e),this.dispatchEvent(s)}_change(e){this.updateTimestamp(e.target.value)}clearInput(){this.updateTimestamp("")}showDatePicker(){this.shadowRoot.querySelector("input").showPicker()}_validateRequired(){const{value:e}=this;this.required&&!e?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"text-input":!0,invalid:this.touched&&this.invalid,disabled:this.disabled}}get fieldContainerClasses(){return{"field-container":!0,invalid:this.touched&&this.invalid}}render(){return this.timestamp?this.value=new Date(this.timestamp).toISOString().substring(0,10):this.value&&(this.timestamp=new Date(this.value).getTime()),f`
+      `]}static get properties(){return{...super.properties,value:{type:String,reflect:!0},timestamp:{converter:e=>{let t=Number(e);if(t<1e12&&(t*=1e3),t)return t},reflect:!0}}}updateTimestamp(e){const t=e?new Date(e).getTime():0,i=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.value,newValue:e}});this.timestamp=t,this.value=e,this._setFormValue(e),this.dispatchEvent(i)}_change(e){this.updateTimestamp(e.target.value)}clearInput(){this.updateTimestamp("")}showDatePicker(){this.shadowRoot.querySelector("input").showPicker()}_validateRequired(){const{value:e}=this;this.required&&!e?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"text-input":!0,invalid:this.touched&&this.invalid,disabled:this.disabled}}get fieldContainerClasses(){return{"field-container":!0,invalid:this.touched&&this.invalid}}render(){return this.timestamp?this.value=new Date(this.timestamp).toISOString().substring(0,10):this.value&&(this.timestamp=new Date(this.value).getTime()),p`
       ${this.labelTemplate()}
 
       <div class="input-group">
@@ -1576,11 +1709,11 @@
 
         ${this.renderIcons()}
       </div>
-    `}reset(){this.updateTimestamp(""),super.reset()}}window.customElements.define("dt-date",Dt);class fs extends Dt{static get styles(){return[...super.styles,x`
+    `}reset(){this.updateTimestamp(""),super.reset()}}window.customElements.define("dt-date",jt);class bo extends jt{static get styles(){return[...super.styles,x`
         input[type='datetime-local'] {
           max-width: calc(100% - 22px - 1rem);
         }
-      `]}static get properties(){return{...super.properties,tzoffset:{type:Number}}}constructor(){super(),this.tzoffset=new Date().getTimezoneOffset()*6e4}render(){return this.timestamp?this.value=new Date(this.timestamp-this.tzoffset).toISOString().substring(0,16):this.value&&(this.timestamp=new Date(this.value).getTime()),f`
+      `]}static get properties(){return{...super.properties,tzoffset:{type:Number}}}constructor(){super(),this.tzoffset=new Date().getTimezoneOffset()*6e4}render(){return this.timestamp?this.value=new Date(this.timestamp-this.tzoffset).toISOString().substring(0,16):this.value&&(this.timestamp=new Date(this.value).getTime()),p`
       ${this.labelTemplate()}
 
       <div class="input-group">
@@ -1606,6 +1739,7 @@
             data-inputid="${this.id}"
             ?disabled=${this.disabled}
             part="clear-button"
+            aria-label="Clear date and time"
           >
             <dt-icon icon="mdi:close"></dt-icon>
           </button>
@@ -1613,11 +1747,11 @@
 
         ${this.renderIcons()}
       </div>
-    `}}window.customElements.define("dt-datetime",fs);/**
+    `}}window.customElements.define("dt-datetime",bo);/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */function*Ke(o,e){if(o!==void 0){let t=0;for(const i of o)yield e(i,t++)}}class bs extends Oe{static get properties(){return{...super.properties,filters:{type:Array}}}static get styles(){return[...super.styles,x`
+ */function*Da(s,e){if(s!==void 0){let t=0;for(const i of s)yield e(i,t++)}}class mo extends Ce{static get properties(){return{...super.properties,filters:{type:Array}}}static get styles(){return[...super.styles,x`
         .input-group {
           display: flex;
         }
@@ -1638,7 +1772,7 @@
               8px
           );
         }
-      `]}_clickOption(e){if(e.target&&e.target.value){const t=e.target.value,i=this.filteredOptions.reduce((s,a)=>!s&&a.id===t?a:s,null);this._select(i)}}_clickAddNew(e){var t,i;if(e.target){this._select({id:(t=e.target.dataset)==null?void 0:t.label,label:(i=e.target.dataset)==null?void 0:i.label,isNew:!0});const s=this.shadowRoot.querySelector("input");s&&(s.value="")}}_keyboardSelectOption(){this.activeIndex>-1&&(this.activeIndex+1>this.filteredOptions.length?this._select({id:this.query,label:this.query,isNew:!0}):this._select(this.filteredOptions[this.activeIndex]))}_remove(e){if(e.target&&e.target.dataset&&e.target.dataset.value){const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value}});this.value=(this.value||[]).map(i=>{const s={...i};return i.id.toString()===e.target.dataset.value&&(s.delete=!0),s}),t.detail.newValue=this.value,this.dispatchEvent(t),this.open&&this.shadowRoot.querySelector("input").focus()}}updated(){super.updated();const e=this.shadowRoot.querySelector(".input-group"),t=e.style.getPropertyValue("--select-width"),i=this.shadowRoot.querySelector("select");!t&&(i==null?void 0:i.clientWidth)>0&&e.style.setProperty("--select-width",`${i.clientWidth}px`)}_filterOptions(){var t;const e=(this.value||[]).filter(i=>!i.delete).map(i=>i==null?void 0:i.id.toString());if((t=this.options)!=null&&t.length)this.filteredOptions=(this.options||[]).filter(i=>!e.includes(i.id)&&(!this.query||i.label.toLocaleLowerCase().includes(this.query.toLocaleLowerCase())));else if(this.open||this.canUpdate){this.loading=!0,this.filteredOptions=[];const i=this,s=this.shadowRoot.querySelector("select"),a=new CustomEvent("dt:get-data",{bubbles:!0,detail:{field:this.name,query:this.query,filter:s==null?void 0:s.value,onSuccess:n=>{i.loading=!1,i.filteredOptions=n.filter(r=>!e.includes(r.id))},onError:n=>{console.warn(n),i.loading=!1}}});this.dispatchEvent(a)}return this.filteredOptions}_renderOption(e,t){return f`
+      `]}_clickOption(e){if(e.target&&e.target.value){const t=e.target.value,i=this.filteredOptions.reduce((o,a)=>!o&&a.id===t?a:o,null);this._select(i)}}_clickAddNew(e){var t,i;if(e.target){this._select({id:(t=e.target.dataset)==null?void 0:t.label,label:(i=e.target.dataset)==null?void 0:i.label,isNew:!0});const o=this.shadowRoot.querySelector("input");o&&(o.value="")}}_keyboardSelectOption(){this.activeIndex>-1&&(this.activeIndex+1>this.filteredOptions.length?this._select({id:this.query,label:this.query,isNew:!0}):this._select(this.filteredOptions[this.activeIndex]))}_remove(e){if(e.target&&e.target.dataset&&e.target.dataset.value){const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value}});this.value=(this.value||[]).map(i=>{const o={...i};return i.id.toString()===e.target.dataset.value&&(o.delete=!0),o}),t.detail.newValue=this.value,this.dispatchEvent(t),this.open&&this.shadowRoot.querySelector("input").focus()}}updated(){super.updated();const e=this.shadowRoot.querySelector(".input-group"),t=e.style.getPropertyValue("--select-width"),i=this.shadowRoot.querySelector("select");!t&&(i==null?void 0:i.clientWidth)>0&&e.style.setProperty("--select-width",`${i.clientWidth}px`)}_filterOptions(){var t;const e=(this.value||[]).filter(i=>!i.delete).map(i=>i==null?void 0:i.id.toString());if((t=this.options)!=null&&t.length)this.filteredOptions=(this.options||[]).filter(i=>!e.includes(i.id)&&(!this.query||i.label.toLocaleLowerCase().includes(this.query.toLocaleLowerCase())));else if(this.open||this.canUpdate){this.loading=!0,this.filteredOptions=[];const i=this,o=this.shadowRoot.querySelector("select"),a=new CustomEvent("dt:get-data",{bubbles:!0,detail:{field:this.name,query:this.query,filter:o==null?void 0:o.value,onSuccess:r=>{i.loading=!1,i.filteredOptions=r.filter(n=>!e.includes(n.id))},onError:r=>{console.warn(r),i.loading=!1}}});this.dispatchEvent(a)}return this.filteredOptions}_renderOption(e,t){return p`
       <li tabindex="-1">
         <button
           value="${e.id}"
@@ -1654,7 +1788,7 @@
           ${e.label}
         </button>
       </li>
-    `}_renderSelectedOptions(){return(this.value||[]).filter(e=>!e.delete).map(e=>f`
+    `}_renderSelectedOptions(){return(this.value||[]).filter(e=>!e.delete).map(e=>p`
           <div class="selected-option">
             <a
               href="${e.link}"
@@ -1670,7 +1804,7 @@
               x
             </button>
           </div>
-        `)}render(){const e={display:this.open?"block":"none",top:`${this.containerHeight}px`};return f`
+        `)}render(){const e={display:this.open?"block":"none",top:`${this.containerHeight}px`};return p`
       ${this.labelTemplate()}
 
       <div class="input-group ${this.disabled?"disabled":""}">
@@ -1697,14 +1831,14 @@
           ?disabled="${this.disabled}"
           @change="${this._filterOptions}"
         >
-          ${Ke(this.filters,t=>f`<option value="${t.id}">${t.label}</option>`)}
+          ${Da(this.filters,t=>p`<option value="${t.id}">${t.label}</option>`)}
         </select>
         <ul class="option-list" style=${Q(e)}>
           ${this._renderOptions()}
         </ul>
         ${this.renderIconInvalid()} ${this.renderError()}
       </div>
-    `}}window.customElements.define("dt-location",bs);class Ra{constructor(e){this.token=e}async searchPlaces(e,t="en"){const i=new URLSearchParams({types:["country","region","postcode","district","place","locality","neighborhood","address"],limit:6,access_token:this.token,language:t}),s={method:"GET",headers:{"Content-Type":"application/json"}},a=`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(e)}.json?${i}`,r=await(await fetch(a,s)).json();return r==null?void 0:r.features}async reverseGeocode(e,t,i="en"){const s=new URLSearchParams({types:["country","region","postcode","district","place","locality","neighborhood","address"],access_token:this.token,language:i}),a={method:"GET",headers:{"Content-Type":"application/json"}},n=`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(e)},${encodeURI(t)}.json?${s}`,l=await(await fetch(n,a)).json();return l==null?void 0:l.features}}class Na{constructor(e,t,i){var s,a,n;if(this.token=e,this.window=t,!((n=(a=(s=t.google)==null?void 0:s.maps)==null?void 0:a.places)!=null&&n.AutocompleteService)){const r=i.createElement("script");r.src=`https://maps.googleapis.com/maps/api/js?libraries=places&key=${e}`,i.body.appendChild(r)}}async getPlacePredictions(e,t="en"){try{return await this._getPlacePredictionsLegacy(e,t)}catch(i){const s=await this._getPlaceSuggestionsRest(e,t);if(s)return s;throw{message:i}}}async _getPlacePredictionsLegacy(e,t="en"){return this.window.google?new Promise((i,s)=>{const a=new this.window.google.maps.places.AutocompleteService;window.gm_authFailure=function(){s("Google Maps API Key authentication failed")},a.getPlacePredictions({input:e,language:t},(n,r)=>{r!=="OK"?s(r):i(n)})}):null}async _getPlaceSuggestionsRest(e,t="en"){const i="https://places.googleapis.com/v1/places:autocomplete?key="+encodeURIComponent(this.token),a=await fetch(i,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({input:e})}),n=await a.json();if(!a.ok&&n.error)throw n.error;return(Array.isArray(n&&n.suggestions)?n.suggestions:[]).map(b=>b&&b.placePrediction?b.placePrediction:null).filter(Boolean).map(b=>{const g=b.placeId||(b.place?String(b.place).replace("places/",""):null),v=b.text&&b.text.text||[b.structuredFormat&&b.structuredFormat.mainText&&b.structuredFormat.mainText.text,b.structuredFormat&&b.structuredFormat.secondaryText&&b.structuredFormat.secondaryText.text].filter(Boolean).join(", ");return g&&v?{description:v,place_id:g}:null}).filter(Boolean)}async getPlaceDetails(e,t="en"){let i=null;if(this.window.google){const s=new window.google.maps.Geocoder;try{const{results:a}=await s.geocode({placeId:e.place_id,language:t}),n=a[0];i={lng:n.geometry.location.lng(),lat:n.geometry.location.lat(),level:this.convert_level(n.types[0]),label:e.description||n.formatted_address}}catch(a){i={error:a}}}return i}async reverseGeocode(e,t,i="en"){const a=`https://maps.googleapis.com/maps/api/geocode/json?${new URLSearchParams({key:this.token,latlng:`${t},${e}`,language:i,result_type:["point_of_interest","establishment","premise","street_address","neighborhood","sublocality","locality","colloquial_area","political","country"].join("|")})}`,r=await(await fetch(a,{method:"GET"})).json();return r==null?void 0:r.results}convert_level(e){switch(e){case"administrative_area_level_0":e="admin0";break;case"administrative_area_level_1":e="admin1";break;case"administrative_area_level_2":e="admin2";break;case"administrative_area_level_3":e="admin3";break;case"administrative_area_level_4":e="admin4";break;case"administrative_area_level_5":e="admin5";break}return e}}class gs extends N{static get styles(){return x`
+    `}}window.customElements.define("dt-location",mo);class Ra{constructor(e){this.token=e}async searchPlaces(e,t="en"){const i=new URLSearchParams({types:["country","region","postcode","district","place","locality","neighborhood","address"],limit:6,access_token:this.token,language:t}),o={method:"GET",headers:{"Content-Type":"application/json"}},a=`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(e)}.json?${i}`,n=await(await fetch(a,o)).json();return n==null?void 0:n.features}async reverseGeocode(e,t,i="en"){const o=new URLSearchParams({types:["country","region","postcode","district","place","locality","neighborhood","address"],access_token:this.token,language:i}),a={method:"GET",headers:{"Content-Type":"application/json"}},r=`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURI(e)},${encodeURI(t)}.json?${o}`,l=await(await fetch(r,a)).json();return l==null?void 0:l.features}}class Na{constructor(e,t,i){var o,a,r;if(this.token=e,this.window=t,!((r=(a=(o=t.google)==null?void 0:o.maps)==null?void 0:a.places)!=null&&r.AutocompleteService)){const n=i.createElement("script");n.src=`https://maps.googleapis.com/maps/api/js?libraries=places&key=${e}`,i.body.appendChild(n)}}async getPlacePredictions(e,t="en"){try{return await this._getPlacePredictionsLegacy(e,t)}catch(i){const o=await this._getPlaceSuggestionsRest(e,t);if(o)return o;throw{message:i}}}async _getPlacePredictionsLegacy(e,t="en"){return this.window.google?new Promise((i,o)=>{const a=new this.window.google.maps.places.AutocompleteService;window.gm_authFailure=function(){o("Google Maps API Key authentication failed")},a.getPlacePredictions({input:e,language:t},(r,n)=>{n!=="OK"?o(n):i(r)})}):null}async _getPlaceSuggestionsRest(e,t="en"){const i="https://places.googleapis.com/v1/places:autocomplete?key="+encodeURIComponent(this.token),a=await fetch(i,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({input:e})}),r=await a.json();if(!a.ok&&r.error)throw r.error;return(Array.isArray(r&&r.suggestions)?r.suggestions:[]).map(u=>u&&u.placePrediction?u.placePrediction:null).filter(Boolean).map(u=>{const h=u.placeId||(u.place?String(u.place).replace("places/",""):null),g=u.text&&u.text.text||[u.structuredFormat&&u.structuredFormat.mainText&&u.structuredFormat.mainText.text,u.structuredFormat&&u.structuredFormat.secondaryText&&u.structuredFormat.secondaryText.text].filter(Boolean).join(", ");return h&&g?{description:g,place_id:h}:null}).filter(Boolean)}async getPlaceDetails(e,t="en"){let i=null;if(this.window.google){const o=new window.google.maps.Geocoder;try{const{results:a}=await o.geocode({placeId:e.place_id,language:t}),r=a[0];i={lng:r.geometry.location.lng(),lat:r.geometry.location.lat(),level:this.convert_level(r.types[0]),label:e.description||r.formatted_address}}catch(a){i={error:a}}}return i}async reverseGeocode(e,t,i="en"){const a=`https://maps.googleapis.com/maps/api/geocode/json?${new URLSearchParams({key:this.token,latlng:`${t},${e}`,language:i,result_type:["point_of_interest","establishment","premise","street_address","neighborhood","sublocality","locality","colloquial_area","political","country"].join("|")})}`,n=await(await fetch(a,{method:"GET"})).json();return n==null?void 0:n.results}convert_level(e){switch(e){case"administrative_area_level_0":e="admin0";break;case"administrative_area_level_1":e="admin1";break;case"administrative_area_level_2":e="admin2";break;case"administrative_area_level_3":e="admin3";break;case"administrative_area_level_4":e="admin4";break;case"administrative_area_level_5":e="admin5";break}return e}}class go extends N{static get styles(){return x`
       :host {
         display: block;
         font-family: var(--font-family);
@@ -1922,23 +2056,23 @@
       /* Styles for the content inside the named slot */
       font-size: 15px;;
     }
-    `}static get properties(){return{title:{type:String},context:{type:String},isHelp:{type:Boolean},isOpen:{type:Boolean},hideHeader:{type:Boolean},hideButton:{type:Boolean},buttonClass:{type:Object},buttonStyle:{type:Object},headerClass:{type:Object},imageSrc:{type:String},imageStyle:{type:Object},tileLabel:{type:String},buttonLabel:{type:String},dropdownListImg:{type:String},submitButton:{type:Boolean},closeButton:{type:Boolean},bottom:{type:Boolean}}}constructor(){super(),this.context="default",this.addEventListener("open",()=>this._openModal()),this.addEventListener("close",()=>this._closeModal())}_openModal(){this.isOpen=!0,this.shadowRoot.querySelector("dialog").showModal(),document.querySelector("body").style.overflow="hidden"}get formattedTitle(){if(!this.title)return"";const e=this.title.replace(/_/g," ");return e.charAt(0).toUpperCase()+e.slice(1)}_dialogHeader(e){return this.hideHeader?f``:f`
+    `}static get properties(){return{title:{type:String},context:{type:String},isHelp:{type:Boolean},isOpen:{type:Boolean},hideHeader:{type:Boolean},hideButton:{type:Boolean},buttonClass:{type:Object},buttonStyle:{type:Object},headerClass:{type:Object},imageSrc:{type:String},imageStyle:{type:Object},tileLabel:{type:String},buttonLabel:{type:String},dropdownListImg:{type:String},submitButton:{type:Boolean},closeButton:{type:Boolean},bottom:{type:Boolean}}}constructor(){super(),this.context="default",this.addEventListener("open",()=>this._openModal()),this.addEventListener("close",()=>this._closeModal())}_openModal(){this.isOpen=!0,this.shadowRoot.querySelector("dialog").showModal(),document.querySelector("body").style.overflow="hidden"}get formattedTitle(){if(!this.title)return"";const e=this.title.replace(/_/g," ");return e.charAt(0).toUpperCase()+e.slice(1)}_dialogHeader(e){return this.hideHeader?p``:p`
       <header>
             <h1 id="modal-field-title" class="modal-header">${this.formattedTitle}</h1>
             <button @click="${this._cancelModal}" class="toggle">${e}</button>
           </header>
-      `}_closeModal(){this.isOpen=!1,this.shadowRoot.querySelector("dialog").close(),document.querySelector("body").style.overflow="initial"}_cancelModal(){this._triggerClose("cancel")}_triggerClose(e){this.dispatchEvent(new CustomEvent("close",{detail:{action:e}}))}_dialogClick(e){if(e.target.tagName!=="DIALOG")return;const t=e.target.getBoundingClientRect();(t.top<=e.clientY&&e.clientY<=t.top+t.height&&t.left<=e.clientX&&e.clientX<=t.left+t.width)===!1&&this._cancelModal()}_dialogKeypress(e){e.key==="Escape"&&this._cancelModal()}_helpMore(){return this.isHelp?f`
+      `}_closeModal(){this.isOpen=!1,this.shadowRoot.querySelector("dialog").close(),document.querySelector("body").style.overflow="initial"}_cancelModal(){this._triggerClose("cancel")}_triggerClose(e){this.dispatchEvent(new CustomEvent("close",{detail:{action:e}}))}_dialogClick(e){if(e.target.tagName!=="DIALOG")return;const t=e.target.getBoundingClientRect();(t.top<=e.clientY&&e.clientY<=t.top+t.height&&t.left<=e.clientX&&e.clientX<=t.left+t.width)===!1&&this._cancelModal()}_dialogKeypress(e){e.key==="Escape"&&this._cancelModal()}_helpMore(){return this.isHelp?p`
           <div class="help-more">
-            <h5>${O("Need more help?")}</h5>
+            <h5>${R("Need more help?")}</h5>
             <a
               class="button small"
               id="docslink"
               href="https://disciple.tools/user-docs"
               target="_blank"
-              >${O("Read the documentation")}</a
+              >${R("Read the documentation")}</a
             >
           </div>
-        `:null}firstUpdated(){this.isOpen&&this._openModal()}_onButtonClick(){this._triggerClose("button")}get classes(){return{...this.headerClass,"no-header":this.hideHeader,bottom:this.bottom}}render(){const e=f`
+        `:null}firstUpdated(){this.isOpen&&this._openModal()}_onButtonClick(){this._triggerClose("button")}get classes(){return{...this.headerClass,"no-header":this.hideHeader,bottom:this.bottom}}render(){const e=p`
       <svg viewPort="0 0 12 12" version="1.1" width='12' height='12'>
           xmlns="http://www.w3.org/2000/svg">
         <line x1="1" y1="11"
@@ -1950,7 +2084,7 @@
               stroke="currentColor"
               stroke-width="2"/>
       </svg>
-    `;return f`
+    `;return p`
       <dialog
         id=""
         class="dt-modal dt-modal--width ${A(this.classes)}"
@@ -1964,7 +2098,7 @@
           </article>
           <footer>
           <div class=footer-button>
-          ${this.closeButton?f`
+          ${this.closeButton?p`
             <button
               class="button small"
               data-close=""
@@ -1972,11 +2106,11 @@
               type="button"
               @click=${this._onButtonClick}
             >
-              <slot name="close-button">${O("Close")}</slot>
+              <slot name="close-button">${R("Close")}</slot>
               </button>
 
             `:""}
-              ${this.submitButton?f`
+              ${this.submitButton?p`
                 <slot name="submit-button"></span>
 
                 `:""}
@@ -1986,7 +2120,7 @@
         </form>
       </dialog>
 
-      ${this.hideButton?null:f`
+      ${this.hideButton?null:p`
       <button
         class="button small opener ${A(this.buttonClass||{})}"
         data-open=""
@@ -1995,23 +2129,23 @@
         @click="${this._openModal}"
         style=${Q(this.buttonStyle||{})}
       >
-      ${this.dropdownListImg?f`<img src=${this.dropdownListImg} alt="" style="width = 15px; height : 15px">`:""}
-      ${this.imageSrc?f`<img
+      ${this.dropdownListImg?p`<img src=${this.dropdownListImg} alt="" style="width = 15px; height : 15px">`:""}
+      ${this.imageSrc?p`<img
                    src="${this.imageSrc}"
                    alt="${this.buttonLabel} icon"
                    class="help-icon"
                    style=${Q(this.imageStyle||{})}
                  />`:""}
-      ${this.buttonLabel?f`${this.buttonLabel}`:""}
+      ${this.buttonLabel?p`${this.buttonLabel}`:""}
       </button>
       `}
-    `}}window.customElements.define("dt-modal",gs);class ms extends N{static get properties(){return{...super.properties,title:{type:String},isOpen:{type:Boolean},canEdit:{type:Boolean,state:!0},metadata:{type:Object},center:{type:Array},mapboxToken:{type:String,attribute:"mapbox-token"}}}static get styles(){return[x`
+    `}}window.customElements.define("dt-modal",go);class vo extends N{static get properties(){return{...super.properties,title:{type:String},isOpen:{type:Boolean},canEdit:{type:Boolean,state:!0},metadata:{type:Object},center:{type:Array},mapboxToken:{type:String,attribute:"mapbox-token"}}}static get styles(){return[x`
         .map {
           width: 100%;
           min-width: 50vw;
           min-height: 50dvb;
         }
-      `]}constructor(){super(),this.addEventListener("open",e=>{this.shadowRoot.querySelector("dt-modal").dispatchEvent(new Event("open")),this.isOpen=!0}),this.addEventListener("close",e=>{this.shadowRoot.querySelector("dt-modal").dispatchEvent(new Event("close")),this.isOpen=!1})}connectedCallback(){if(super.connectedCallback(),this.canEdit=!this.metadata,window.mapboxgl)this.initMap();else{const e=document.createElement("script");e.src="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js",e.onload=this.initMap.bind(this),document.body.appendChild(e)}}initMap(){if(!this.isOpen||!window.mapboxgl||!this.mapboxToken)return;const e=this.shadowRoot.querySelector("#map");if(e&&!this.map){this.map=new window.mapboxgl.Map({accessToken:this.mapboxToken,container:e,style:"mapbox://styles/mapbox/streets-v12",minZoom:1}),this.map.on("load",()=>this.map.resize()),this.center&&this.center.length&&(this.map.setCenter(this.center),this.map.setZoom(15));const t=new mapboxgl.NavigationControl;this.map.addControl(t,"bottom-right"),this.addPinFromMetadata(),this.map.on("click",i=>{this.canEdit&&(this.marker?this.marker.setLngLat(i.lngLat):this.marker=new mapboxgl.Marker().setLngLat(i.lngLat).addTo(this.map))})}}addPinFromMetadata(){if(this.metadata){const{lng:e,lat:t,level:i}=this.metadata;let s=15;i==="admin0"?s=3:i==="admin1"?s=6:i==="admin2"&&(s=10),this.map&&(this.map.setCenter([e,t]),this.map.setZoom(s),this.marker=new mapboxgl.Marker().setLngLat([e,t]).addTo(this.map))}}updated(e){window.mapboxgl&&(e.has("metadata")&&this.metadata&&this.metadata.lat&&this.addPinFromMetadata(),e.has("isOpen")&&this.isOpen&&this.initMap())}onClose(e){var t;((t=e==null?void 0:e.detail)==null?void 0:t.action)==="button"&&this.marker&&this.dispatchEvent(new CustomEvent("submit",{detail:{location:this.marker.getLngLat()}}))}render(){var e;return f`
+      `]}constructor(){super(),this.addEventListener("open",e=>{this.shadowRoot.querySelector("dt-modal").dispatchEvent(new Event("open")),this.isOpen=!0}),this.addEventListener("close",e=>{this.shadowRoot.querySelector("dt-modal").dispatchEvent(new Event("close")),this.isOpen=!1})}connectedCallback(){if(super.connectedCallback(),this.canEdit=!this.metadata,window.mapboxgl)this.initMap();else{const e=document.createElement("script");e.src="https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.js",e.onload=this.initMap.bind(this),document.body.appendChild(e)}}initMap(){if(!this.isOpen||!window.mapboxgl||!this.mapboxToken)return;const e=this.shadowRoot.querySelector("#map");if(e&&!this.map){this.map=new window.mapboxgl.Map({accessToken:this.mapboxToken,container:e,style:"mapbox://styles/mapbox/streets-v12",minZoom:1}),this.map.on("load",()=>this.map.resize()),this.center&&this.center.length&&(this.map.setCenter(this.center),this.map.setZoom(15));const t=new mapboxgl.NavigationControl;this.map.addControl(t,"bottom-right"),this.addPinFromMetadata(),this.map.on("click",i=>{this.canEdit&&(this.marker?this.marker.setLngLat(i.lngLat):this.marker=new mapboxgl.Marker().setLngLat(i.lngLat).addTo(this.map))})}}addPinFromMetadata(){if(this.metadata){const{lng:e,lat:t,level:i}=this.metadata;let o=15;i==="admin0"?o=3:i==="admin1"?o=6:i==="admin2"&&(o=10),this.map&&(this.map.setCenter([e,t]),this.map.setZoom(o),this.marker=new mapboxgl.Marker().setLngLat([e,t]).addTo(this.map))}}updated(e){window.mapboxgl&&(e.has("metadata")&&this.metadata&&this.metadata.lat&&this.addPinFromMetadata(),e.has("isOpen")&&this.isOpen&&this.initMap())}onClose(e){var t;((t=e==null?void 0:e.detail)==null?void 0:t.action)==="button"&&this.marker&&this.dispatchEvent(new CustomEvent("submit",{detail:{location:this.marker.getLngLat()}}))}render(){var e;return p`
       <dt-modal
         .title=${(e=this.metadata)==null?void 0:e.label}
         ?isopen=${this.isOpen}
@@ -2023,11 +2157,11 @@
           <div class="map" id="map"></div>
         </div>
 
-        ${this.canEdit?f`<div slot="close-button">${O("Save")}</div>`:null}
+        ${this.canEdit?p`<div slot="close-button">${R("Save")}</div>`:null}
       </dt-modal>
 
       <link href='https://api.mapbox.com/mapbox-gl-js/v2.11.0/mapbox-gl.css' rel='stylesheet' />
-    `}}window.customElements.define("dt-map-modal",ms);class qa extends N{static get properties(){return{id:{type:String,reflect:!0},placeholder:{type:String},mapboxToken:{type:String,attribute:"mapbox-token"},googleToken:{type:String,attribute:"google-token"},metadata:{type:Object},disabled:{type:Boolean},open:{type:Boolean,state:!0},query:{type:String,state:!0},activeIndex:{type:Number,state:!0},containerHeight:{type:Number,state:!0},loading:{type:Boolean},saved:{type:Boolean},invalid:{type:Boolean},filteredOptions:{type:Array,state:!0}}}static get styles(){return[x`
+    `}}window.customElements.define("dt-map-modal",vo);class qa extends N{static get properties(){return{id:{type:String,reflect:!0},placeholder:{type:String},mapboxToken:{type:String,attribute:"mapbox-token"},googleToken:{type:String,attribute:"google-token"},metadata:{type:Object},disabled:{type:Boolean},open:{type:Boolean,state:!0},query:{type:String,state:!0},activeIndex:{type:Number,state:!0},containerHeight:{type:Number,state:!0},loading:{type:Boolean},saved:{type:Boolean},invalid:{type:Boolean},filteredOptions:{type:Array,state:!0}}}static get styles(){return[...super.styles,x`
         :host {
           --dt-location-map-border-color: var(--dt-form-border-color, #fefefe);
           position: relative;
@@ -2036,7 +2170,10 @@
         }
 
         .input-group {
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
         }
         .input-group.disabled input,
         .input-group.disabled .field-container {
@@ -2075,7 +2212,10 @@
         .option-list li div,
         .option-list li button {
           padding: 0.5rem 0.75rem;
-          color: var(--dt-multi-select-text-color, #0a0a0a);
+          color: var(
+            --dt-multi-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           font-weight: 100;
           font-size: 1rem;
           text-decoration: none;
@@ -2090,7 +2230,10 @@
         .option-list li button:hover,
         .option-list li button.active {
           cursor: pointer;
-          background: var(--dt-multi-select-option-hover-background, #f5f5f5);
+          background: var(
+            --dt-multi-select-option-hover-background,
+            var(--surface-2)
+          );
         }
       `,x`
         input {
@@ -2145,7 +2288,7 @@
           letter-spacing: var(--dt-text-placeholder-letter-spacing, normal);
         }
         input.invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(--dt-form-border-color-alert, var(--alert-color));
         }
 
         .field-container {
@@ -2199,7 +2342,7 @@
         }
         .field-container.invalid {
           border: 1px solid
-            var(--dt-text-border-color-alert, var(--alert-color));
+            var(--dt-form-border-color-alert, var(--alert-color));
         }
 
         .input-addon:disabled {
@@ -2247,7 +2390,7 @@
           opacity: 0;
           animation: fadeOut 4s;
         }
-      `]}constructor(){super(),this.activeIndex=-1,this.filteredOptions=[],this.detectTap=!1,this.debounceTimer=null}connectedCallback(){super.connectedCallback(),this.addEventListener("autofocus",async()=>{await this.updateComplete;const e=this.shadowRoot.querySelector("input");e&&e.focus()}),this.mapboxToken&&(this.mapboxService=new Ra(this.mapboxToken))}firstUpdated(){var e;this.googleToken&&!((e=this.metadata)!=null&&e.lat)&&(this.googleGeocodeService=new Na(this.googleToken,window,document))}disconnectedCallback(){super.disconnectedCallback(),this.removeEventListener("autofocus",this.handleAutofocus)}updated(){this._scrollOptionListToActive();const e=this.shadowRoot.querySelector(".input-group");e.style.getPropertyValue("--container-width")||e.style.setProperty("--container-width",`${e.clientWidth}px`)}_scrollOptionListToActive(){const e=this.shadowRoot.querySelector(".option-list"),t=this.shadowRoot.querySelector("button.active");if(e&&t){const i=t.offsetTop,s=t.offsetTop+t.clientHeight,a=e.scrollTop,n=e.scrollTop+e.clientHeight;s>n?e.scrollTo({top:s-e.clientHeight,behavior:"smooth"}):i<a&&e.scrollTo({top:i,behavior:"smooth"})}}_clickOption(e){var i;const t=e.currentTarget??e.target;if(t&&t.value){const s=JSON.parse(t.value);this._select({...s,key:(i=this.metadata)==null?void 0:i.key})}}_touchStart(e){e.target&&(this.detectTap=!1)}_touchMove(e){e.target&&(this.detectTap=!0)}_touchEnd(e){this.detectTap||(e.target&&e.target.value&&this._clickOption(e),this.detectTap=!1)}_keyboardSelectOption(){var e;this.activeIndex>-1&&(this.activeIndex<this.filteredOptions.length?this._select(this.filteredOptions[this.activeIndex]):this._select({value:this.query,label:this.query,key:(e=this.metadata)==null?void 0:e.key}))}async _select(e){if(e.place_id&&this.googleGeocodeService){this.saved=!1,this.loading=!0;const s=await this.googleGeocodeService.getPlaceDetails(e,this.locale);if(this.loading=!1,s){if(s.error){console.error(s.error),this.error=s.error.message;return}e.lat=s.lat,e.lng=s.lng,e.level=s.level}}const t={detail:{metadata:e},bubbles:!1};this.dispatchEvent(new CustomEvent("select",t)),this.metadata=e;const i=this.shadowRoot.querySelector("input");i&&(i.value=e==null?void 0:e.label),this.open=!1,this.activeIndex=-1}_inputFocusIn(){this.activeIndex=-1}_inputFocusOut(e){(!e.relatedTarget||!["BUTTON","LI"].includes(e.relatedTarget.nodeName))&&(this.open=!1)}_inputKeyDown(e){switch(e.keyCode||e.which){case 38:this.open=!0,this._listHighlightPrevious();break;case 40:this.open=!0,this._listHighlightNext();break;case 9:this.activeIndex<0?this.open=!1:e.preventDefault(),this._keyboardSelectOption();break;case 13:this._keyboardSelectOption();break;case 27:this.open=!1,this.activeIndex=-1;break;default:this.open=!0;break}}_inputKeyUp(e){const t=e.keyCode||e.which,i=[9,13];e.target.value&&!i.includes(t)&&(this.open=!0),this.query=e.target.value}_listHighlightNext(){this.activeIndex=Math.min(this.filteredOptions.length,this.activeIndex+1)}_listHighlightPrevious(){this.activeIndex=Math.max(0,this.activeIndex-1)}async _filterOptions(){if(this.query){if(this.googleToken&&this.googleGeocodeService){this.saved=!1,this.loading=!0;try{const e=await this.googleGeocodeService.getPlacePredictions(this.query,this.locale);this.filteredOptions=(e||[]).map(t=>({label:t.description,place_id:t.place_id,source:"user",raw:t})),this.loading=!1}catch(e){console.error(e),this.error=e.message||"An error occurred while searching for locations.",this.loading=!1;return}}else if(this.mapboxToken&&this.mapboxService){this.saved=!1,this.loading=!0;const e=await this.mapboxService.searchPlaces(this.query,this.locale);this.filteredOptions=e.map(t=>({lng:t.center[0],lat:t.center[1],level:t.place_type[0],label:t.place_name,source:"user"})),this.loading=!1}}return this.filteredOptions}willUpdate(e){if(super.willUpdate(e),e&&(e.has("query")&&(this.error=!1,clearTimeout(this.debounceTimer),this.debounceTimer=setTimeout(()=>this._filterOptions(),300)),!this.containerHeight&&this.shadowRoot.children&&this.shadowRoot.children.length)){const i=this.shadowRoot.querySelector(".input-group");i&&(this.containerHeight=i.offsetHeight)}}_change(){}_delete(){const e={detail:{metadata:this.metadata},bubbles:!1};this.dispatchEvent(new CustomEvent("delete",e))}_openMapModal(){this.shadowRoot.querySelector("dt-map-modal").dispatchEvent(new Event("open"))}async _onMapModalSubmit(e){var t,i;if((i=(t=e==null?void 0:e.detail)==null?void 0:t.location)!=null&&i.lat){const{location:s}=e==null?void 0:e.detail,{lat:a,lng:n}=s;if(this.googleGeocodeService){const r=await this.googleGeocodeService.reverseGeocode(n,a,this.locale);if(r&&r.length){const l=r[0];this._select({lng:l.geometry.location.lng,lat:l.geometry.location.lat,level:l.types&&l.types.length?l.types[0]:null,label:l.formatted_address,source:"user"})}}else if(this.mapboxService){const r=await this.mapboxService.reverseGeocode(n,a,this.locale);if(r&&r.length){const l=r[0];this._select({lng:l.center[0],lat:l.center[1],level:l.place_type[0],label:l.place_name,source:"user"})}}}}_renderOption(e,t,i){return f`
+      `]}constructor(){super(),this.activeIndex=-1,this.filteredOptions=[],this.detectTap=!1,this.debounceTimer=null}connectedCallback(){super.connectedCallback(),this.addEventListener("autofocus",async()=>{await this.updateComplete;const e=this.shadowRoot.querySelector("input");e&&e.focus()}),this.mapboxToken&&(this.mapboxService=new Ra(this.mapboxToken))}firstUpdated(){var e;this.googleToken&&!((e=this.metadata)!=null&&e.lat)&&(this.googleGeocodeService=new Na(this.googleToken,window,document))}disconnectedCallback(){super.disconnectedCallback(),this.removeEventListener("autofocus",this.handleAutofocus)}updated(){this._scrollOptionListToActive();const e=this.shadowRoot.querySelector(".input-group");e.style.getPropertyValue("--container-width")||e.style.setProperty("--container-width",`${e.clientWidth}px`)}_scrollOptionListToActive(){const e=this.shadowRoot.querySelector(".option-list"),t=this.shadowRoot.querySelector("button.active");if(e&&t){const i=t.offsetTop,o=t.offsetTop+t.clientHeight,a=e.scrollTop,r=e.scrollTop+e.clientHeight;o>r?e.scrollTo({top:o-e.clientHeight,behavior:"smooth"}):i<a&&e.scrollTo({top:i,behavior:"smooth"})}}_clickOption(e){var i;const t=e.currentTarget??e.target;if(t&&t.value){const o=JSON.parse(t.value);this._select({...o,key:(i=this.metadata)==null?void 0:i.key})}}_touchStart(e){e.target&&(this.detectTap=!1)}_touchMove(e){e.target&&(this.detectTap=!0)}_touchEnd(e){this.detectTap||(e.target&&e.target.value&&this._clickOption(e),this.detectTap=!1)}_keyboardSelectOption(){var e;this.activeIndex>-1&&(this.activeIndex<this.filteredOptions.length?this._select(this.filteredOptions[this.activeIndex]):this._select({value:this.query,label:this.query,key:(e=this.metadata)==null?void 0:e.key}))}async _select(e){if(e.place_id&&this.googleGeocodeService){this.saved=!1,this.loading=!0;const o=await this.googleGeocodeService.getPlaceDetails(e,this.locale);if(this.loading=!1,o){if(o.error){console.error(o.error),this.error=o.error.message;return}e.lat=o.lat,e.lng=o.lng,e.level=o.level}}const t={detail:{metadata:e},bubbles:!1};this.dispatchEvent(new CustomEvent("select",t)),this.metadata=e;const i=this.shadowRoot.querySelector("input");i&&(i.value=e==null?void 0:e.label),this.open=!1,this.activeIndex=-1}_inputFocusIn(){this.activeIndex=-1}_inputFocusOut(e){(!e.relatedTarget||!["BUTTON","LI"].includes(e.relatedTarget.nodeName))&&(this.open=!1)}_inputKeyDown(e){switch(e.keyCode||e.which){case 38:this.open=!0,this._listHighlightPrevious();break;case 40:this.open=!0,this._listHighlightNext();break;case 9:this.activeIndex<0?this.open=!1:e.preventDefault(),this._keyboardSelectOption();break;case 13:this._keyboardSelectOption();break;case 27:this.open=!1,this.activeIndex=-1;break;default:this.open=!0;break}}_inputKeyUp(e){const t=e.keyCode||e.which,i=[9,13];e.target.value&&!i.includes(t)&&(this.open=!0),this.query=e.target.value}_listHighlightNext(){this.activeIndex=Math.min(this.filteredOptions.length,this.activeIndex+1)}_listHighlightPrevious(){this.activeIndex=Math.max(0,this.activeIndex-1)}async _filterOptions(){if(this.query){if(this.googleToken&&this.googleGeocodeService){this.saved=!1,this.loading=!0;try{const e=await this.googleGeocodeService.getPlacePredictions(this.query,this.locale);this.filteredOptions=(e||[]).map(t=>({label:t.description,place_id:t.place_id,source:"user",raw:t})),this.loading=!1}catch(e){console.error(e),this.error=e.message||"An error occurred while searching for locations.",this.loading=!1;return}}else if(this.mapboxToken&&this.mapboxService){this.saved=!1,this.loading=!0;const e=await this.mapboxService.searchPlaces(this.query,this.locale);this.filteredOptions=e.map(t=>({lng:t.center[0],lat:t.center[1],level:t.place_type[0],label:t.place_name,source:"user"})),this.loading=!1}}return this.filteredOptions}willUpdate(e){if(super.willUpdate(e),e&&(e.has("query")&&(this.error=!1,clearTimeout(this.debounceTimer),this.debounceTimer=setTimeout(()=>this._filterOptions(),300)),!this.containerHeight&&this.shadowRoot.children&&this.shadowRoot.children.length)){const i=this.shadowRoot.querySelector(".input-group");i&&(this.containerHeight=i.offsetHeight)}}_change(){}_delete(){const e={detail:{metadata:this.metadata},bubbles:!1};this.dispatchEvent(new CustomEvent("delete",e))}_openMapModal(){this.shadowRoot.querySelector("dt-map-modal").dispatchEvent(new Event("open"))}async _onMapModalSubmit(e){var t,i;if((i=(t=e==null?void 0:e.detail)==null?void 0:t.location)!=null&&i.lat){const{location:o}=e==null?void 0:e.detail,{lat:a,lng:r}=o;if(this.googleGeocodeService){const n=await this.googleGeocodeService.reverseGeocode(r,a,this.locale);if(n&&n.length){const l=n[0];this._select({lng:l.geometry.location.lng,lat:l.geometry.location.lat,level:l.types&&l.types.length?l.types[0]:null,label:l.formatted_address,source:"user"})}}else if(this.mapboxService){const n=await this.mapboxService.reverseGeocode(r,a,this.locale);if(n&&n.length){const l=n[0];this._select({lng:l.center[0],lat:l.center[1],level:l.place_type[0],label:l.place_name,source:"user"})}}}}_renderOption(e,t,i){return p`
       <li tabindex="-1">
         <button
           value="${JSON.stringify(e)}"
@@ -2262,14 +2405,14 @@
           ${i??e.label}
         </button>
       </li>
-    `}_renderOptions(){const e=[];return this.filteredOptions.length?e.push(...this.filteredOptions.map((t,i)=>this._renderOption(t,i))):this.loading?e.push(f`<li><div>${O("Loading...")}</div></li>`):e.push(f`<li><div>${O("No Data Available")}</div></li>`),e.push(this._renderOption({value:this.query,label:this.query},(this.filteredOptions||[]).length,f`<strong>${O("Use")}: "${this.query}"</strong>`)),e}get classes(){return{"field-container":!0,invalid:this.invalid}}render(){var s,a,n,r;const e={display:this.open?"block":"none",top:this.containerHeight?`${this.containerHeight}px`:"2.5rem"},t=!!((s=this.metadata)!=null&&s.label),i=((a=this.metadata)==null?void 0:a.lat)&&((n=this.metadata)==null?void 0:n.lng);return f`
+    `}_renderOptions(){const e=[];return this.filteredOptions.length?e.push(...this.filteredOptions.map((t,i)=>this._renderOption(t,i))):this.loading?e.push(p`<li><div>${R("Loading...")}</div></li>`):e.push(p`<li><div>${R("No Data Available")}</div></li>`),e.push(this._renderOption({value:this.query,label:this.query},(this.filteredOptions||[]).length,p`<strong>${R("Use")}: "${this.query}"</strong>`)),e}get classes(){return{"field-container":!0,invalid:this.invalid}}render(){var o,a,r,n;const e={display:this.open?"block":"none",top:this.containerHeight?`${this.containerHeight}px`:"2.5rem"},t=!!((o=this.metadata)!=null&&o.label),i=((a=this.metadata)==null?void 0:a.lat)&&((r=this.metadata)==null?void 0:r.lng);return p`
       <div class="input-group">
         <div class="${A(this.classes)}">
           <input
             type="text"
             class="${this.disabled?"disabled":null}"
             placeholder="${this.placeholder}"
-            .value="${((r=this.metadata)==null?void 0:r.label)??""}"
+            .value="${((n=this.metadata)==null?void 0:n.label)??""}"
             .disabled=${t&&i||this.disabled}
             @focusin="${this._inputFocusIn}"
             @blur="${this._inputFocusOut}"
@@ -2277,7 +2420,7 @@
             @keyup="${this._inputKeyUp}"
           />
 
-          ${t&&i?f`
+          ${t&&i?p`
                 <button
                   class="input-addon btn-map"
                   @click=${this._openMapModal}
@@ -2288,7 +2431,7 @@
                   ></slot>
                 </button>
               `:null}
-          ${t?f`
+          ${t?p`
                 <button
                   class="input-addon btn-delete"
                   @click=${this._delete}
@@ -2298,7 +2441,7 @@
                     ><dt-icon icon="mdi:trash-can-outline"></dt-icon
                   ></slot>
                 </button>
-              `:f`
+              `:p`
                 <button
                   class="input-addon btn-pin"
                   @click=${this._openMapModal}
@@ -2313,7 +2456,7 @@
         <ul class="option-list" style=${Q(e)}>
           ${this._renderOptions()}
         </ul>
-        ${this.loading?f`<dt-spinner
+        ${this.loading?p`<dt-spinner
               class="icon-overlay ${i?"selected":""}"
             ></dt-spinner>`:null}
         ${this.renderIconSaved(i)}
@@ -2324,9 +2467,9 @@
         mapbox-token="${this.mapboxToken}"
         @submit=${this._onMapModalSubmit}
       ></dt-map-modal>
-    `}renderIconSaved(e){return this.saved&&(this.savedTimeout&&clearTimeout(this.savedTimeout),this.savedTimeout=setTimeout(()=>{this.savedTimeout=null,this.saved=!1},5e3)),this.saved?f`<dt-checkmark
-              class="icon-overlay success fade-out ${e?"selected":""}"
-            ></dt-checkmark>`:null}}window.customElements.define("dt-location-map-item",qa);class vs extends z{static get properties(){return{...super.properties,placeholder:{type:String},value:{type:Array,reflect:!0},locations:{type:Array,state:!0},open:{type:Boolean,state:!0},limit:{type:Number,attribute:"limit"},onchange:{type:String},mapboxToken:{type:String,attribute:"mapbox-token"},googleToken:{type:String,attribute:"google-token"},activeItem:{type:String,state:!0}}}static get styles(){return[...super.styles,x`
+    `}renderIconSaved(e){return this.saved&&(this.savedTimeout&&clearTimeout(this.savedTimeout),this.savedTimeout=setTimeout(()=>{this.savedTimeout=null,this.saved=!1},5e3)),this.saved?p`<dt-checkmark
+          class="icon-overlay success fade-out ${e?"selected":""}"
+        ></dt-checkmark>`:null}}window.customElements.define("dt-location-map-item",qa);class yo extends M{static get properties(){return{...super.properties,placeholder:{type:String},value:{type:Array},locations:{type:Array,state:!0},open:{type:Boolean,state:!0},limit:{type:Number,attribute:"limit"},mapboxToken:{type:String,attribute:"mapbox-token"},googleToken:{type:String,attribute:"google-token"},activeItem:{type:String,state:!0}}}static get styles(){return[...super.styles,x`
         :host {
           font-family: Helvetica, Arial, sans-serif;
         }
@@ -2349,16 +2492,16 @@
           color: var(--success-color, #cc4b37);
           transform: scale(1.5);
         }
-      `]}constructor(){super(),this.limit=0,this.value=[],this.locations=[{id:Date.now()}]}_setFormValue(e){super._setFormValue(e),this.internals.setFormValue(JSON.stringify(e))}willUpdate(...e){super.willUpdate(...e),this.value&&this.value.filter(t=>!t.id)&&(this.value=[...this.value.map(t=>({...t,id:t.id||t.grid_meta_id}))]),this.updateLocationList()}firstUpdated(...e){super.firstUpdated(...e),this.internals.setFormValue(JSON.stringify(this.value))}updated(e){var t,i;if(e.has("value")){const s=e.get("value");s&&(s==null?void 0:s.length)!==((t=this.value)==null?void 0:t.length)&&this.focusNewLocation()}if(e.has("locations")){const s=e.get("locations");s&&(s==null?void 0:s.length)!==((i=this.locations)==null?void 0:i.length)&&this.focusNewLocation()}}focusNewLocation(){const e=this.shadowRoot.querySelectorAll("dt-location-map-item");e&&e.length&&e[e.length-1].dispatchEvent(new Event("autofocus"))}updateLocationList(){if(!this.disabled&&(this.open||!this.value||!this.value.length)){this.open=!0;const e=(this.value||[]).filter(i=>i.label),t=this.limit===0||e.length<this.limit;this.locations=[...e,...t?[{id:Date.now()}]:[]]}else this.locations=[...(this.value||[]).filter(e=>e.label)]}selectLocation(e){const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value}}),i={...e.detail.metadata,id:Date.now()};if(i.lat){const s=Math.round(i.lat*1e7)/1e7,a=Math.round(i.lng*10**7)/10**7;this.activeItem=`${s}/${a}`}else this.activeItem=i.label;this.value=[...(this.value||[]).filter(s=>s.label&&(!s.key||s.key!==i.key)&&(!s.id||s.id!==i.id)),i],this.updateLocationList(),t.detail.newValue=this.value,this.dispatchEvent(t),this._setFormValue(this.value)}deleteItem(e){var a;this.activeItem=void 0;const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value}}),i=(a=e.detail)==null?void 0:a.metadata,s=i==null?void 0:i.grid_meta_id;s?this.value=(this.value||[]).filter(n=>n.grid_meta_id!==s):i.lat&&i.lng?this.value=(this.value||[]).filter(n=>n.lat!==i.lat&&n.lng!==i.lng):this.value=(this.value||[]).filter(n=>(!n.key||n.key!==i.key)&&(!n.id||n.id!==i.id)),this.updateLocationList(),t.detail.newValue=this.value,this.dispatchEvent(t),this._setFormValue(this.value)}addNew(){const e=(this.value||[]).filter(t=>t.label);(this.limit===0||e.length<this.limit)&&(this.open=!0,this.updateLocationList())}_validateRequired(){const{value:e}=this;this.required&&(!e||e.every(t=>!t.value))?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required")):(this.invalid=!1,this.internals.setValidity({}))}labelTemplate(){return this.label?f`
+      `]}constructor(){super(),this.limit=0,this.value=[],this.locations=[{id:Date.now()}]}_setFormValue(e){super._setFormValue(e),this.internals.setFormValue(JSON.stringify(e))}willUpdate(...e){super.willUpdate(...e),this.value&&this.value.filter(t=>!t.id)&&(this.value=[...this.value.map(t=>({...t,id:t.id||t.grid_meta_id}))]),this.updateLocationList()}firstUpdated(...e){super.firstUpdated(...e),this.internals.setFormValue(JSON.stringify(this.value))}updated(e){var t,i;if(e.has("value")){const o=e.get("value");o&&(o==null?void 0:o.length)!==((t=this.value)==null?void 0:t.length)&&this.focusNewLocation()}if(e.has("locations")){const o=e.get("locations");o&&(o==null?void 0:o.length)!==((i=this.locations)==null?void 0:i.length)&&this.focusNewLocation()}}focusNewLocation(){const e=this.shadowRoot.querySelectorAll("dt-location-map-item");e&&e.length&&e[e.length-1].dispatchEvent(new Event("autofocus"))}updateLocationList(){if(!this.disabled&&(this.open||!this.value||!this.value.length)){this.open=!0;const e=(this.value||[]).filter(i=>i.label),t=this.limit===0||e.length<this.limit;this.locations=[...e,...t?[{id:Date.now()}]:[]]}else this.locations=[...(this.value||[]).filter(e=>e.label)]}selectLocation(e){const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value}}),i={...e.detail.metadata,id:Date.now()};if(i.lat){const o=Math.round(i.lat*1e7)/1e7,a=Math.round(i.lng*10**7)/10**7;this.activeItem=`${o}/${a}`}else this.activeItem=i.label;this.value=[...(this.value||[]).filter(o=>o.label&&(!o.key||o.key!==i.key)&&(!o.id||o.id!==i.id)),i],this.updateLocationList(),t.detail.newValue=this.value,this.dispatchEvent(t),this._setFormValue(this.value)}deleteItem(e){var a;this.activeItem=void 0;const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value}}),i=(a=e.detail)==null?void 0:a.metadata,o=i==null?void 0:i.grid_meta_id;o?this.value=(this.value||[]).filter(r=>r.grid_meta_id!==o):i.lat&&i.lng?this.value=(this.value||[]).filter(r=>r.lat!==i.lat&&r.lng!==i.lng):this.value=(this.value||[]).filter(r=>(!r.key||r.key!==i.key)&&(!r.id||r.id!==i.id)),this.updateLocationList(),t.detail.newValue=this.value,this.dispatchEvent(t),this._setFormValue(this.value)}addNew(){const e=(this.value||[]).filter(t=>t.label);(this.limit===0||e.length<this.limit)&&(this.open=!0,this.updateLocationList())}reset(){this.value=[],this._setFormValue([])}_validateRequired(){const{value:e}=this;this.required&&(!e||e.every(t=>!t.label))?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required")):(this.invalid=!1,this.internals.setValidity({}))}labelTemplate(){return this.label?p`
       <dt-label
         ?private=${this.private}
         privateLabel="${this.privateLabel}"
         iconAltText="${this.iconAltText}"
         icon="${this.icon}"
       >
-        ${this.icon?null:f`<slot name="icon-start" slot="icon-start"></slot>`}
+        ${this.icon?null:p`<slot name="icon-start" slot="icon-start"></slot>`}
         ${this.label}
-        ${!this.open&&(this.limit==0||this.locations.length<this.limit)?f`
+        ${!this.open&&(this.limit==0||this.locations.length<this.limit)?p`
               <slot name="icon-end" slot="icon-end">
                 <button
                   @click="${this.addNew}"
@@ -2371,7 +2514,7 @@
               </slot>
             `:null}
       </dt-label>
-    `:""}renderItem(e,t){const i=Math.round(e.lat*1e7)/1e7,s=Math.round(e.lng*10**7)/10**7,a=`${i}/${s}`,n=this.activeItem&&(this.activeItem===e.label||this.activeItem===a)||t===0&&!this.activeItem;return f`
+    `:""}renderItem(e,t){const i=Math.round(e.lat*1e7)/1e7,o=Math.round(e.lng*10**7)/10**7,a=`${i}/${o}`,r=this.activeItem&&(this.activeItem===e.label||this.activeItem===a)||t===0&&!this.activeItem;return p`
       <dt-location-map-item
         placeholder="${this.placeholder}"
         .metadata=${e}
@@ -2381,22 +2524,32 @@
         @select=${this.selectLocation}
         ?disabled=${this.disabled}
         ?invalid=${this.invalid&&this.touched}
-        ?loading=${n?this.loading:!1}
-        ?saved=${n?this.saved:!1}
+        ?loading=${r?this.loading:!1}
+        ?saved=${r?this.saved:!1}
       ></dt-location-map-item>
-    `}render(){return[...this.value||[]],f`
+    `}render(){return[...this.value||[]],p`
       ${this.labelTemplate()}
       <div class="input-group">
-        ${Ee(this.locations||[],e=>e.id,(e,t)=>this.renderItem(e,t))}
+        ${pe(this.locations||[],e=>e.id,(e,t)=>this.renderItem(e,t))}
         ${this.renderError()} ${this.renderIconInvalid()}
       </div>
-    `}}window.customElements.define("dt-location-map",vs);class ys extends z{static get styles(){return[...super.styles,x`
+    `}}window.customElements.define("dt-location-map",yo);class _o extends M{static get styles(){return[...super.styles,x`
         input {
-          color: var(--dt-form-text-color, #000);
+          color: var(
+            --dt-number-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           appearance: none;
-          background-color: var(--dt-form-background-color, #fff);
-          border: 1px solid var(--dt-form-border-color, #ccc);
-          border-radius: 0;
+          background-color: var(
+            --dt-number-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(--dt-number-border-color, var(--dt-form-border-color, #cecece));
+          border-radius: var(
+            --dt-number-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           box-shadow: var(
             --dt-number-box-shadow,
             var(
@@ -2435,13 +2588,16 @@
           outline: none;
         }
         input.invalid {
-          border-color: var(--dt-form-invalid-border-color, #dc3545);
+          border-color: var(
+            --dt-number-border-color-alert,
+            var(--dt-form-border-color-alert, var(--alert-color))
+          );
         }
 
         .icon-overlay {
           inset-inline-end: 2rem;
         }
-      `]}static get properties(){return{...super.properties,value:{type:String,reflect:!0},min:{type:Number},max:{type:Number}}}_input(e){this.value=e.target.value,this._setFormValue(this.value)}_validateValue(e){return!(e<this.min||e>this.max)}async _change(e){if(this._validateValue(e.target.value)){const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value,newValue:e.target.value},bubbles:!0,composed:!0});this.value=e.target.value,this._setFormValue(this.value),this.dispatchEvent(t)}else e.currentTarget.value="",this.value=void 0}implicitFormSubmit(e){if((e.keyCode||e.which)===13&&this.internals.form){const i=this.internals.form.querySelector("button[type=submit]");i&&i.click()}}_validateRequired(){const{value:e}=this;this.required&&!e?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"text-input":!0,invalid:this.touched&&this.invalid,disabled:this.disabled}}render(){return f`
+      `]}static get properties(){return{...super.properties,value:{type:String,reflect:!0},min:{type:Number},max:{type:Number}}}_input(e){this.value=e.target.value,this._setFormValue(this.value)}_validateValue(e){return!(e<this.min||e>this.max)}async _change(e){if(this._validateValue(e.target.value)){const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value,newValue:e.target.value},bubbles:!0});this.value=e.target.value,this._setFormValue(this.value),this.dispatchEvent(t)}else e.currentTarget.value="",this.value=void 0}implicitFormSubmit(e){if((e.keyCode||e.which)===13&&this.internals.form){const i=this.internals.form.querySelector("button[type=submit]");i&&i.click()}}_validateRequired(){const{value:e}=this;this.required&&!e?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"text-input":!0,invalid:this.touched&&this.invalid,disabled:this.disabled}}render(){return p`
       ${this.labelTemplate()}
 
       <div class="input-group">
@@ -2454,8 +2610,8 @@
           ?required=${this.required}
           class="${A(this.classes)}"
           .value="${this.value}"
-          min="${B(this.min)}"
-          max="${B(this.max)}"
+          min="${ne(this.min)}"
+          max="${ne(this.max)}"
           @change=${this._change}
           @input=${this._input}
           novalidate
@@ -2465,41 +2621,78 @@
 
         ${this.renderIcons()}
       </div>
-    `}}window.customElements.define("dt-number",ys);class ws extends z{static get styles(){return[...super.styles,x`
+    `}}window.customElements.define("dt-number",_o);class wo extends M{static get styles(){return[...super.styles,x`
         :host {
+          --dt-single-select-text-color: var(--dt-form-text-color, #0a0a0a);
           position: relative;
         }
 
         select {
           appearance: none;
-          background-color: var(--dt-form-background-color, #fefefe);
-          background-image: linear-gradient(
+          background-color: var(
+            --dt-single-select-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          background-image:
+            linear-gradient(
               45deg,
               transparent 50%,
-              var(--dt-single-select-text-color) 50%
+              var(
+                  --dt-single-select-icon-color,
+                  var(
+                    --dt-single-select-text-color,
+                    var(--dt-form-text-color, #0a0a0a)
+                  )
+                )
+                50%
             ),
             linear-gradient(
               135deg,
-              var(--dt-single-select-text-color) 50%,
+              var(
+                  --dt-single-select-icon-color,
+                  var(
+                    --dt-single-select-text-color,
+                    var(--dt-form-text-color, #0a0a0a)
+                  )
+                )
+                50%,
               transparent 50%
             );
-          background-position: calc(100% - 20px) calc(1em + 2px),
-            calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
-          background-size: 5px 5px, 5px 5px, 1px 1.5em;
+          background-position:
+            calc(100% - 20px) calc(1em + 2px),
+            calc(100% - 15px) calc(1em + 2px),
+            calc(100% - 2.5em) 0.5em;
+          background-size:
+            5px 5px,
+            5px 5px,
+            1px 1.5em;
           background-repeat: no-repeat;
-          border: 1px solid var(--dt-form-border-color, #cacaca);
-          border-radius: 0;
-          color: var(--dt-single-select-text-color, #0a0a0a);
+          border: 1px solid
+            var(
+              --dt-single-select-border-color,
+              var(--dt-form-border-color, #cacaca)
+            );
+          border-radius: var(
+            --dt-single-select-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
+          color: var(
+            --dt-single-select-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           font-family: var(--font-family, sans-serif);
           font-size: 1rem;
           font-weight: 300;
           height: 2.5rem;
           line-height: 1.5;
           margin: 0;
-          padding: 0.53rem;
+          padding: var(--dt-form-padding, 0.5333333333rem);
           padding-inline-end: 1.6rem;
-          transition: border-color 0.25s ease-in-out;
-          transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+          transition: var(
+            --dt-form-transition,
+            box-shadow 0.5s,
+            border-color 0.25s ease-in-out
+          );
           box-sizing: border-box;
           width: 100%;
           text-transform: none;
@@ -2513,24 +2706,25 @@
           cursor: not-allowed;
         }
         [dir='rtl'] select {
-          background-position: 15px calc(1em + 2px), 20px calc(1em + 2px),
+          background-position:
+            15px calc(1em + 2px),
+            20px calc(1em + 2px),
             2.5em 0.5em;
         }
         select.color-select {
-          background-image: linear-gradient(
-              45deg,
-              transparent 50%,
-              currentColor 50%
-            ),
-            linear-gradient(
-              135deg,
-              currentColor 50%,
-              transparent 50%
-            );
-          background-color: var(--dt-form-border-color, #cacaca);
+          background-image:
+            linear-gradient(45deg, transparent 50%, currentColor 50%),
+            linear-gradient(135deg, currentColor 50%, transparent 50%);
+          background-color: var(
+            --dt-single-select-border-color,
+            var(--dt-form-border-color, #cacaca)
+          );
           border: none;
           border-radius: 10px;
-          color: var(--dt-single-select-text-color-inverse, #fff);
+          color: var(
+            --dt-single-select-text-color-inverse,
+            var(--dt-form-text-color-inverse, #fff)
+          );
           font-weight: 700;
           text-shadow: rgb(0 0 0 / 45%) 0 0 6px;
         }
@@ -2540,25 +2734,31 @@
           inset-inline-end: 2.5rem;
         }
         select.invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(
+            --dt-single-select-border-color-alert,
+            var(--dt-form-border-color-alert, var(--alert-color))
+          );
         }
-      `]}static get properties(){return{...super.properties,placeholder:{type:String},options:{type:Array},value:{type:String,reflect:!0},color:{type:String,state:!0},onchange:{type:String}}}updateColor(){if(this.value&&this.options){const e=this.options.filter(t=>t.id===this.value);e&&e.length&&(this.color=e[0].color)}}isColorSelect(){return(this.options||[]).reduce((e,t)=>e||t.color,!1)}willUpdate(e){super.willUpdate(e),e.has("value")&&this.updateColor()}_change(e){const t=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value,newValue:e.target.value}});this.value=e.target.value,this._setFormValue(this.value),this.dispatchEvent(t)}_validateRequired(){const{value:e}=this;this.required&&!e?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{invalid:this.touched&&this.invalid,"color-select":this.isColorSelect()}}render(){return f`
+      `]}static get properties(){return{...super.properties,placeholder:{type:String},options:{type:Array},value:{type:String,reflect:!0},color:{type:String,state:!0},onchange:{type:String}}}updateColor(){if(this.value&&this.options){const e=this.options.filter(t=>t.id===this.value);e&&e.length&&(this.color=e[0].color)}}isColorSelect(){return(this.options||[]).reduce((e,t)=>e||t.color,!1)}willUpdate(e){super.willUpdate(e),e.has("value")&&this.updateColor()}_change(e){const t=e.target.value,i=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.value,newValue:t}});this.value=t,this._setFormValue(this.value),this.dispatchEvent(i)}_validateRequired(){const{value:e}=this;this.required&&!e?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{invalid:this.touched&&this.invalid,"color-select":this.isColorSelect()}}render(){return p`
       ${this.labelTemplate()}
 
-      <div class="input-group ${this.disabled?"disabled":""}" dir="${this.RTL?"rtl":"ltr"}">
+      <div
+        class="input-group ${this.disabled?"disabled":""}"
+        dir="${this.RTL?"rtl":"ltr"}"
+      >
         <select
           name="${this.name}"
           aria-label="${this.name}"
           @change="${this._change}"
           class="${A(this.classes)}"
-          style="background-color: ${this.color};"
+          style="${this.color?"background-color: "+this.color+";":""}"
           ?disabled="${this.disabled}"
           ?required=${this.required}
           part="select"
         >
           <option disabled selected hidden value="">${this.placeholder}</option>
 
-          ${this.options&&this.options.map(e=>f`
+          ${this.options&&this.options.map(e=>p`
               <option value="${e.id}" ?selected="${e.id===this.value}">
                 ${e.label}
               </option>
@@ -2567,13 +2767,20 @@
 
         ${this.renderIcons()}
       </div>
-    `}}window.customElements.define("dt-single-select",ws);class zt extends z{static get styles(){return[...super.styles,x`
+    `}}window.customElements.define("dt-single-select",wo);class zt extends M{static get styles(){return[...super.styles,x`
         input {
-          color: var(--dt-form-text-color, #000);
+          color: var(--dt-text-text-color, var(--dt-form-text-color, #0a0a0a));
           appearance: none;
-          background-color: var(--dt-text-background-color, #fefefe);
-          border: 1px solid var(--dt-text-border-color, #fefefe);
-          border-radius: var(--dt-text-border-radius, 0);
+          background-color: var(
+            --dt-text-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(--dt-text-border-color, var(--dt-form-border-color, #cecece));
+          border-radius: var(
+            --dt-text-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           box-shadow: var(
             --dt-text-box-shadow,
             var(
@@ -2612,16 +2819,22 @@
           outline: none;
         }
         input::placeholder {
-          color: var(--dt-text-placeholder-color, #999);
+          color: var(
+            --dt-text-placeholder-color,
+            var(--dt-form-placeholder-color, #999)
+          );
           text-transform: var(--dt-text-placeholder-transform, none);
           font-size: var(--dt-text-placeholder-font-size, 1rem);
           font-weight: var(--dt-text-placeholder-font-weight, 400);
           letter-spacing: var(--dt-text-placeholder-letter-spacing, normal);
         }
         input.invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(
+            --dt-text-border-color-alert,
+            var(--dt-form-border-color-alert, var(--alert-color))
+          );
         }
-      `]}static get properties(){return{...super.properties,type:{type:String},placeholder:{type:String},value:{type:String,reflect:!0}}}_input(e){this.value=e.target.value,this._setFormValue(this.value)}_change(e){const t=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.value,newValue:e.target.value}});this.value=e.target.value,this._setFormValue(this.value),this.dispatchEvent(t)}implicitFormSubmit(e){if((e.keyCode||e.which)===13&&this.internals.form){const i=this.internals.form.querySelector("button[type=submit]");i&&i.click()}}_validateRequired(){const{value:e}=this;this.required&&!e?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"text-input":!0,invalid:this.touched&&this.invalid,disabled:this.disabled}}render(){return f`
+      `]}static get properties(){return{...super.properties,type:{type:String},placeholder:{type:String},value:{type:String,reflect:!0}}}_input(e){this.value=e.target.value,this._setFormValue(this.value)}_change(e){const t=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.value,newValue:e.target.value}});this.value=e.target.value,this._setFormValue(this.value),this.dispatchEvent(t)}implicitFormSubmit(e){if((e.keyCode||e.which)===13&&this.internals.form){const i=this.internals.form.querySelector("button[type=submit]");i&&i.click()}}_validateRequired(){const{value:e}=this;this.required&&!e?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"text-input":!0,invalid:this.touched&&this.invalid,disabled:this.disabled}}render(){return p`
       ${this.labelTemplate()}
 
       <div class="input-group">
@@ -2644,16 +2857,32 @@
 
         ${this.renderIcons()}
       </div>
-    `}}window.customElements.define("dt-text",zt);class _s extends z{static get styles(){return[...super.styles,x`
+    `}}window.customElements.define("dt-text",zt);class $o extends M{static get styles(){return[...super.styles,x`
         textarea {
-          color: var(--dt-textarea-text-color, #0a0a0a);
+          color: var(
+            --dt-textarea-text-color,
+            var(--dt-form-text-color, #0a0a0a)
+          );
           appearance: none;
-          background-color: var(--dt-textarea-background-color, #fefefe);
-          border: 1px solid var(--dt-textarea-border-color, #cecece);
-          border-radius: 3px;
+          background-color: var(
+            --dt-textarea-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(
+              --dt-textarea-border-color,
+              var(--dt-form-border-color, #cecece)
+            );
+          border-radius: var(
+            --dt-textarea-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           box-shadow: var(
             --dt-textarea-input-box-shadow,
-            inset 0 1px 2px hsl(0deg 0% 4% / 10%)
+            var(
+              --dt-form-input-box-shadow,
+              inset 0 1px 2px hsl(0deg 0% 4% / 10%)
+            )
           );
           box-sizing: border-box;
           display: block;
@@ -2680,15 +2909,18 @@
         textarea[readonly] {
           background-color: var(
             --dt-textarea-disabled-background-color,
-            #e6e6e6
+            var(--dt-form-disabled-background-color, #e6e6e6)
           );
           cursor: not-allowed;
         }
 
         textarea.invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(
+            --dt-textarea-border-color-alert,
+            var(--dt-form-border-color-alert, var(--alert-color))
+          );
         }
-      `]}static get properties(){return{...super.properties,id:{type:String},value:{type:String,reflect:!0}}}_input(e){this.value=e.target.value,this._setFormValue(this.value)}_change(e){const t=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.value,newValue:e.target.value}});this.value=e.target.value,this._setFormValue(this.value),this.dispatchEvent(t)}_validateRequired(){const{value:e}=this;!e&&this.required?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"text-input":!0,invalid:this.touched&&this.invalid}}render(){return f`
+      `]}static get properties(){return{...super.properties,id:{type:String},value:{type:String,reflect:!0}}}_input(e){this.value=e.target.value,this._setFormValue(this.value)}_change(e){const{value:t}=this,i=e.target.value,o=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:t,newValue:i}});this.value=i,this._setFormValue(this.value),this.dispatchEvent(o)}_validateRequired(){const{value:e}=this;!e&&this.required?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"text-input":!0,invalid:this.touched&&this.invalid}}render(){return p`
       ${this.labelTemplate()}
 
       <div class="input-group">
@@ -2707,20 +2939,30 @@
 
         ${this.renderIcons()}
       </div>
-    `}}window.customElements.define("dt-textarea",_s);/**
+    `}}window.customElements.define("dt-textarea",$o);/**
  * @license
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */function Fa(o,e,t){return o?e(o):t==null?void 0:t(o)}class $s extends zt{static get styles(){return[...super.styles,x`
+ */function q(s,e,t){return s?e(s):t==null?void 0:t(s)}class xo extends zt{static get styles(){return[...super.styles,x`
         :host {
           display: block;
         }
         input {
           color: var(--dt-form-text-color, #000);
           appearance: none;
-          background-color: var(--dt-multi-text-background-color, #fefefe);
-          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
-          border-radius: var(--dt-multi-text-border-radius, 0);
+          background-color: var(
+            --dt-multi-text-background-color,
+            var(--dt-form-background-color, #fefefe)
+          );
+          border: 1px solid
+            var(
+              --dt-multi-text-border-color,
+              var(--dt-form-border-color, #fefefe)
+            );
+          border-radius: var(
+            --dt-multi-text-border-radius,
+            var(--dt-form-border-radius, 0)
+          );
           box-shadow: var(
             --dt-multi-text-box-shadow,
             var(
@@ -2748,13 +2990,20 @@
         textarea:disabled,
         textarea[readonly] {
           background-color: var(
-            --dt-text-disabled-background-color,
+            --dt-multi-text-disabled-background-color,
             var(--dt-form-disabled-background-color, #e6e6e6)
+          );
+          color: var(
+            --dt-multi-text-disabled-color,
+            var(--dt-form-placeholder-color, #999)
           );
           cursor: not-allowed;
         }
         input.disabled {
-          color: var(--dt-text-placeholder-color, #999);
+          color: var(
+            --dt-multi-text-disabled-color,
+            var(--dt-form-placeholder-color, #999)
+          );
         }
         input:focus-within,
         input:focus-visible {
@@ -2768,7 +3017,7 @@
           letter-spacing: var(--dt-text-placeholder-letter-spacing, normal);
         }
         input.invalid {
-          border-color: var(--dt-text-border-color-alert, var(--alert-color));
+          border-color: var(--dt-form-border-color-alert, var(--alert-color));
         }
       `,x`
         .input-group {
@@ -2792,8 +3041,15 @@
           padding: 10px;
           border: solid 1px gray;
           border-collapse: collapse;
-          background-color: var(--dt-multi-text-background-color, buttonface);
-          border: 1px solid var(--dt-multi-text-border-color, #fefefe);
+          background-color: var(
+            --dt-multi-text-background-color,
+            var(--dt-form-background-color, buttonface)
+          );
+          border: 1px solid
+            var(
+              --dt-multi-text-border-color,
+              var(--dt-form-border-color, #fefefe)
+            );
           border-radius: var(--dt-multi-text-border-radius, 0);
           box-shadow: var(
             --dt-multi-text-box-shadow,
@@ -2815,34 +3071,52 @@
         }
 
         .input-addon.btn-remove {
-          color: var(--alert-color, #cc4b37);
+          color: var(
+            --dt-multi-text-remove-button-color,
+            var(--alert-color, #cc4b37)
+          );
           &:disabled {
-            color: var(--dt-text-placeholder-color, #999);
+            color: var(
+              --dt-multi-text-disabled-color,
+              var(--dt-form-placeholder-color, #999)
+            );
           }
           &:hover:not([disabled]) {
-            background-color: var(--alert-color, #cc4b37);
-            color: var(--dt-multi-text-button-hover-color, #ffffff);
+            background-color: var(
+              --dt-multi-text-remove-button-hover-background-color,
+              var(--alert-color, #cc4b37)
+            );
+            color: var(--dt-multi-text-remove-button-hover-color, #ffffff);
           }
         }
         .input-addon.btn-add {
-          color: var(--success-color, #cc4b37);
+          color: var(
+            --dt-multi-text-add-button-color,
+            var(--success-color, #cc4b37)
+          );
           &:disabled {
-            color: var(--dt-text-placeholder-color, #999);
+            color: var(
+              --dt-multi-text-disabled-color,
+              var(--dt-form-placeholder-color, #999)
+            );
           }
           &:hover:not([disabled]) {
-            background-color: var(--success-color, #cc4b37);
-            color: var(--dt-multi-text-button-hover-color, #ffffff);
+            background-color: var(
+              --dt-multi-text-add-button-hover-background-color,
+              var(--success-color, #cc4b37)
+            );
+            color: var(--dt-multi-text-add-button-hover-color, #ffffff);
           }
         }
 
         .icon-overlay {
-          inset-inline-end: 4rem;
+          inset-inline-end: 3.5rem;
           height: 100%;
         }
         .field-container:has(.btn-remove) ~ .icon-overlay {
           inset-inline-end: 5.5rem;
         }
-      `]}static get properties(){return{...super.properties,value:{type:Array,reflect:!0}}}updated(e){var t;if(e.has("value")){const i=e.get("value");i&&(i==null?void 0:i.length)!==((t=this.value)==null?void 0:t.length)&&this.focusNewItem()}}focusNewItem(){const e=this.shadowRoot.querySelectorAll("input");e&&e.length&&e[e.length-1].focus()}_addItem(){const e={verified:!1,value:"",tempKey:Date.now().toString()};this.value=[...this.value,e]}_removeItem(e){const t=e.currentTarget.dataset.key;if(t){const i=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.value}}),s=this.value.filter(a=>a.tempKey!==t).map(a=>{const n={...a};return a.key===t&&(n.delete=!0),n});s.filter(a=>!a.delete).length||s.push({value:"",tempKey:Date.now().toString()}),this.value=s,i.detail.newValue=this.value,this.dispatchEvent(i),this._setFormValue(this.value)}}_change(e){var i,s;const t=(s=(i=e==null?void 0:e.currentTarget)==null?void 0:i.dataset)==null?void 0:s.key;if(t){const a=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value}});this.value=this.value.map(n=>{var r;return{...n,value:n.key===t||n.tempKey===t?(r=e.target)==null?void 0:r.value:n.value}}),a.detail.newValue=this.value,this._setFormValue(this.value),this.dispatchEvent(a)}}_inputFieldTemplate(e,t){return f`
+      `]}static get properties(){return{...super.properties,value:{type:Array,reflect:!0}}}updated(e){var t;if(e.has("value")){const i=e.get("value");i&&(i==null?void 0:i.length)!==((t=this.value)==null?void 0:t.length)&&this.focusNewItem()}}focusNewItem(){const e=this.shadowRoot.querySelectorAll("input");e&&e.length&&e[e.length-1].focus()}_addItem(){const e={verified:!1,value:"",tempKey:Date.now().toString()};this.value=[...this.value,e]}_removeItem(e){const t=e.currentTarget.dataset.key;if(t){const i=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.value}}),o=this.value.filter(a=>a.tempKey!==t).map(a=>{const r={...a};return a.key===t&&(r.delete=!0),r});o.filter(a=>!a.delete).length||o.push({value:"",tempKey:Date.now().toString()}),this.value=o,i.detail.newValue=this.value,this.dispatchEvent(i),this._setFormValue(this.value)}}_change(e){var i,o;const t=(o=(i=e==null?void 0:e.currentTarget)==null?void 0:i.dataset)==null?void 0:o.key;if(t){const a=new CustomEvent("change",{detail:{field:this.name,oldValue:this.value}});this.value=this.value.map(r=>{var n;return{...r,value:r.key===t||r.tempKey===t?(n=e.target)==null?void 0:n.value:r.value}}),a.detail.newValue=this.value,this._setFormValue(this.value),this.dispatchEvent(a)}}_inputFieldTemplate(e,t){return p`
       <div class="field-container">
         <input
           data-key="${e.key??e.tempKey}"
@@ -2858,7 +3132,7 @@
           novalidate
         />
 
-        ${Fa(t>1||e.key||e.value,()=>f`
+        ${q(t>1||e.key||e.value,()=>p`
             <button
               class="input-addon btn-remove"
               @click=${this._removeItem}
@@ -2867,7 +3141,7 @@
             >
               <dt-icon icon="mdi:close"></dt-icon>
             </button>
-          `,()=>f``)}
+          `,()=>p``)}
         <button
           class="input-addon btn-add"
           @click=${this._addItem}
@@ -2876,27 +3150,42 @@
           <dt-icon icon="mdi:plus-thick"></dt-icon>
         </button>
       </div>
-    `}renderIcons(){let e=0,t=!1;for(const[a,n]of(this.value||[]).entries())!n.value&&a!==0?e+=1:n.delete&&!t&&(t=!0);let i=.5;t===!1&&(i+=3*e);const s=`padding-block-end: ${i.toString()}rem`;return f`
+    `}renderIcons(){let e=0,t=!1;for(const[a,r]of(this.value||[]).entries())!r.value&&a!==0?e+=1:r.delete&&!t&&(t=!0);let i=.5;t===!1&&(i+=3*e);const o=`padding-block-end: ${i.toString()}rem`;return p`
       ${this.renderIconInvalid()} ${this.renderError()}
-      ${this.renderIconLoading(s)} ${this.renderIconSaved(s)}
-    `}renderIconLoading(e){return this.loading?f`<dt-spinner class="icon-overlay" style="${e}"></dt-spinner>`:null}renderIconSaved(e){return this.saved&&(this.savedTimeout&&clearTimeout(this.savedTimeout),this.savedTimeout=setTimeout(()=>{this.savedTimeout=null,this.saved=!1},5e3)),this.saved?f`<dt-checkmark
+      ${this.renderIconLoading(o)} ${this.renderIconSaved(o)}
+    `}renderIconLoading(e){return this.loading?p`<dt-spinner class="icon-overlay" style="${e}"></dt-spinner>`:null}renderIconSaved(e){return this.saved&&(this.savedTimeout&&clearTimeout(this.savedTimeout),this.savedTimeout=setTimeout(()=>{this.savedTimeout=null,this.saved=!1},5e3)),this.saved?p`<dt-checkmark
           class="icon-overlay success fade-out"
           style="${e}"
-        ></dt-checkmark>`:null}_renderInputFields(){return(!this.value||!this.value.length)&&(this.value=[{verified:!1,value:"",tempKey:Date.now().toString()}]),f`
-      ${Ee((this.value??[]).filter(e=>!e.delete),e=>e.id,e=>this._inputFieldTemplate(e,this.value.length))}
-    `}_validateRequired(){const{value:e}=this;this.required&&(!e||e.every(t=>!t.value))?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"text-input":!0,invalid:this.touched&&this.invalid}}render(){return f`
+        ></dt-checkmark>`:null}_renderInputFields(){return(!this.value||!this.value.length)&&(this.value=[{verified:!1,value:"",tempKey:Date.now().toString()}]),p`
+      ${pe((this.value??[]).filter(e=>!e.delete),e=>e.id,e=>this._inputFieldTemplate(e,this.value.length))}
+    `}_validateRequired(){const{value:e}=this;this.required&&(!e||e.every(t=>!t.value))?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"text-input":!0,invalid:this.touched&&this.invalid}}render(){return p`
       ${this.labelTemplate()}
       <div class="input-group">
         ${this._renderInputFields()} ${this.renderIcons()}
       </div>
-    `}}window.customElements.define("dt-multi-text",$s);class xs extends z{static get styles(){return[...super.styles,x`
+    `}}window.customElements.define("dt-multi-text",xo);class ko extends M{static get styles(){return[...super.styles,x`
         :host {
-          margin-bottom: 5px;
-          --dt-button-font-size: 0.75rem;
-          --dt-button-font-weight: 0;
-          --dt-button-line-height: 1em;
-          --dt-button-padding-y: 0.85em;
-          --dt-button-padding-x: 1em;
+          margin-bottom: var(--dt-multi-select-button-group-margin-bottom, 5px);
+          --dt-button-font-size: var(
+            --dt-multi-select-button-group-button-font-size,
+            0.75rem
+          );
+          --dt-button-font-weight: var(
+            --dt-multi-select-button-group-button-font-weight,
+            0
+          );
+          --dt-button-line-height: var(
+            --dt-multi-select-button-group-button-line-height,
+            1em
+          );
+          --dt-button-padding-y: var(
+            --dt-multi-select-button-group-button-padding-y,
+            0.85em
+          );
+          --dt-button-padding-x: var(
+            --dt-multi-select-button-group-button-padding-x,
+            1em
+          );
         }
         span .icon {
           vertical-align: middle;
@@ -2912,7 +3201,8 @@
           display: inline-flex;
           flex-direction: row;
           flex-wrap: wrap;
-          gap: 5px 10px;
+          gap: var(--dt-multi-select-button-group-gap-y, 5px)
+            var(--dt-multi-select-button-group-gap-x, 10px);
         }
         dt-button {
           margin: 0px;
@@ -2927,12 +3217,15 @@
         }
 
         .error-container {
-          margin-block-start: 5px;
+          margin-block-start: var(
+            --dt-multi-select-button-group-error-margin-top,
+            5px
+          );
         }
         .invalid ~ .error-container {
           border-top-width: 1px;
         }
-      `]}constructor(){super(),this.options=[]}static get properties(){return{value:{type:Array,reflect:!0},context:{type:String},options:{type:Array},outline:{type:Boolean}}}get _field(){return this.shadowRoot.querySelector(".input-group")}_select(e){const t=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:this.value}});if(this.value&&this.value.length){const i=this.value.includes(e);this.value=[...this.value.filter(s=>s!==e&&s!==`-${e}`),i?`-${e}`:e]}else this.value=[e];t.detail.newValue=this.value,this.dispatchEvent(t),this._setFormValue(this.value)}_clickOption(e){var t;(t=e==null?void 0:e.currentTarget)!=null&&t.value&&this._select(e.currentTarget.value)}_inputKeyUp(e){switch(e.keyCode||e.which){case 13:this._clickOption(e);break}}_renderButton(e){const i=(this.value??[]).includes(e.id)?"success":this.touched&&this.invalid?"alert":"inactive",s=this.outline??(this.touched&&this.invalid);return f`
+      `]}constructor(){super(),this.options=[]}static get properties(){return{value:{type:Array,reflect:!0},context:{type:String},options:{type:Array},outline:{type:Boolean}}}get _field(){return this.shadowRoot.querySelector(".input-group")}_select(e){const t=this.value,i=new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:t}});if(this.value&&this.value.length){const o=this.value.includes(e);this.value=[...this.value.filter(a=>a!==e&&a!==`-${e}`),o?`-${e}`:e]}else this.value=[e];i.detail.newValue=this.value,this._setFormValue(this.value),this.dispatchEvent(i)}_clickOption(e){var t;(t=e==null?void 0:e.currentTarget)!=null&&t.value&&this._select(e.currentTarget.value)}_inputKeyUp(e){switch(e.keyCode||e.which){case 13:this._clickOption(e);break}}_renderButton(e){const i=(this.value??[]).includes(e.id)?"success":this.touched&&this.invalid?"alert":"inactive",o=this.outline??(this.touched&&this.invalid);return p`
       <dt-button
         custom
         type="success"
@@ -2940,24 +3233,552 @@
         .value=${e.id}
         @click="${this._clickOption}"
         ?disabled="${this.disabled}"
-        ?outline="${s}"
+        ?outline="${o}"
         role="button"
         value="${e.id}"
+        part="button"
       >
-        ${e.icon?f`<span class="icon"
+        ${e.icon?p`<span class="icon"
               ><img src="${e.icon}" alt="${this.iconAltText}"
             /></span>`:null}
         ${e.label}
       </dt-button>
-    `}_validateRequired(){const{value:e}=this;this.required&&(!e||e.every(t=>!t||t.charAt(0)==="-"))?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"button-group":!0,invalid:this.touched&&this.invalid}}render(){return f`
+    `}_validateRequired(){const{value:e}=this;this.required&&(!e||e.every(t=>!t||t.charAt(0)==="-"))?(this.invalid=!0,this.internals.setValidity({valueMissing:!0},this.requiredMessage||"This field is required",this._field)):(this.invalid=!1,this.internals.setValidity({}))}get classes(){return{"button-group":!0,invalid:this.touched&&this.invalid}}render(){return p`
       ${this.labelTemplate()}
-      <div class="input-group ${this.disabled?"disabled":""}">
-        <div class="${A(this.classes)}">
-          ${Ee(this.options??[],e=>e.id,e=>this._renderButton(e))}
+      <div
+        class="input-group ${this.disabled?"disabled":""}"
+        part="input-group"
+      >
+        <div class="${A(this.classes)}" part="button-group">
+          ${pe(this.options??[],e=>e.id,e=>this._renderButton(e))}
         </div>
         ${this.renderIcons()}
       </div>
-    `}}window.customElements.define("dt-multi-select-button-group",xs);class ks extends N{static get styles(){return x`
+    `}}window.customElements.define("dt-multi-select-button-group",ko);class So extends M{constructor(){super();Me(this,"_handleUploadStagedEvent",()=>{this.uploadStagedFiles()});this.value=[],this.acceptedFileTypes=["image/*","application/pdf"],this.maxFileSize=null,this.maxFiles=null,this.deleteEnabled=!0,this.downloadEnabled=!0,this.renameEnabled=!0,this.displayLayout="grid",this.fileTypeIcon="",this.autoUpload=!0,this.postType="",this.postId="",this.metaKey="",this.keyPrefix="",this.uploading=!1,this.uploadProgress=0,this.stagedFiles=[],this._uploadZoneExpanded=!1,this._dragOver=!1,this._editingFileKey="",this._editingFileName="",this._dragLeaveTimeout=null,this._resizeObserver=null,this._keydownAttached=!1,this._suppressRenameBlurCommit=!1,this._standaloneFilesByKey=new Map}static get styles(){return[...super.styles,x`
+        :host {
+          display: block;
+        }
+
+        .upload-zone {
+          border: 2px dashed var(--dt-upload-border-color, #ccc);
+          border-radius: 4px;
+          text-align: center;
+          background-color: var(--dt-upload-background-color, #fafafa);
+          transition: padding 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+          cursor: pointer;
+          position: relative;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .upload-zone.compact {
+          padding: 0.75rem;
+        }
+
+        .upload-zone.expanded {
+          padding: 2rem;
+        }
+
+        .upload-zone:hover:not(.disabled):not(.uploading) {
+          border-color: var(--dt-upload-border-color-hover, #999);
+          background-color: var(--dt-upload-background-color-hover, #f0f0f0);
+        }
+
+        .upload-zone.drag-over {
+          border-color: var(--primary-color, #0073aa);
+          background-color: var(--dt-upload-background-color-drag, #e8f4f8);
+        }
+
+        .upload-zone.disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        .upload-zone.uploading {
+          pointer-events: none;
+        }
+
+        .upload-zone-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .upload-zone-content .expandable {
+          transition: opacity 0.2s ease;
+        }
+
+        .upload-zone.compact .upload-zone-content .expandable {
+          display: none;
+        }
+
+        .upload-zone.expanded .upload-zone-content .expandable {
+          display: block;
+        }
+
+        .upload-icon {
+          color: var(--dt-upload-icon-color, #999);
+          flex-shrink: 0;
+          transition: font-size 0.2s ease;
+        }
+
+        .upload-zone.compact .upload-icon {
+          font-size: 1.75rem;
+        }
+
+        .upload-zone.expanded .upload-icon {
+          font-size: 3rem;
+        }
+
+        .upload-text {
+          font-size: 1rem;
+          color: var(--dt-upload-text-color, #666);
+        }
+
+        .upload-hint {
+          font-size: 0.875rem;
+          color: var(--dt-upload-hint-color, #999);
+        }
+
+        input[type='file'] {
+          position: absolute;
+          width: 0;
+          height: 0;
+          opacity: 0;
+          overflow: hidden;
+        }
+
+        .files-container {
+          margin-top: 1rem;
+        }
+
+        .files-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+          gap: 1rem;
+        }
+
+        .files-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .file-item {
+          position: relative;
+          border: 1px solid var(--dt-file-upload-border-color, #ddd);
+          border-radius: 4px;
+          overflow: hidden;
+          background-color: var(--dt-file-upload-background-color, #fff);
+        }
+
+        .file-item-grid {
+          aspect-ratio: 1;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .file-item-list {
+          display: grid;
+          grid-template-columns: 40px 1fr auto;
+          grid-template-rows: auto auto;
+          align-items: center;
+          padding: 0.5rem;
+          gap: 0 0.75rem;
+          row-gap: 0.125rem;
+        }
+
+        .file-item-list .file-preview-link,
+        .file-item-list .file-icon-area {
+          grid-column: 1;
+          grid-row: 1 / -1;
+          width: 40px;
+          height: 40px;
+          min-width: 40px;
+          min-height: 40px;
+          border-radius: 6px;
+          overflow: hidden;
+        }
+
+        .file-item-list .file-name,
+        .file-item-list .file-name-edit,
+        .file-item-list input.file-name-edit {
+          grid-column: 2;
+          grid-row: 1;
+          min-width: 0;
+        }
+
+        .file-item-list .file-size {
+          grid-column: 2;
+          grid-row: 2;
+        }
+
+        .file-item-list .file-actions {
+          grid-column: 3;
+          grid-row: 1 / -1;
+          position: relative;
+        }
+
+        .upload-status {
+          margin-top: 0.5rem;
+        }
+
+        .status-indicators {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          justify-content: flex-end;
+        }
+
+        .status-indicators .icon-overlay {
+          position: static;
+          inset-inline-end: auto;
+          top: auto;
+          height: auto;
+          padding-block: 0;
+        }
+
+        .upload-progress-text {
+          display: block;
+          font-size: 0.75rem;
+          color: var(--dt-upload-hint-color, #999);
+          text-align: end;
+          margin-bottom: 0.25rem;
+        }
+
+        .file-item-list .file-icon-area dt-icon {
+          font-size: 1.25rem;
+        }
+
+        .file-preview-link {
+          display: block;
+          cursor: pointer;
+          flex: 1;
+          min-height: 0;
+          height: calc(100% - 1.5rem);
+        }
+
+        .file-preview-link img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .file-icon-area {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: var(--dt-file-upload-icon-background, #f5f5f5);
+          color: var(--dt-file-upload-icon-color, #999);
+          flex: 1;
+          min-height: 0;
+          height: calc(100% - 1.5rem);
+        }
+
+        .file-icon-area dt-icon {
+          font-size: 2rem;
+        }
+
+        .file-icon-area img {
+          max-width: 100%;
+          max-height: 100%;
+          object-fit: contain;
+        }
+
+        .file-name {
+          font-size: 0.75rem;
+          color: var(--dt-file-upload-name-color, #333);
+          padding: 0.25rem 0.5rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .file-name-editable {
+          cursor: pointer;
+          position: relative;
+          z-index: 2;
+        }
+
+        .file-name-editable:hover {
+          text-decoration: underline;
+        }
+
+        .file-name-edit {
+          font-size: 0.75rem;
+          color: var(--dt-file-upload-name-color, #333);
+          padding: 0.25rem 0.5rem;
+          width: 100%;
+          box-sizing: border-box;
+          border: 1px solid var(--primary-color, #0073aa);
+          border-radius: 2px;
+          background: var(--dt-file-upload-background-color, #fff);
+        }
+
+        .file-name-edit:focus {
+          outline: none;
+          border-color: var(--primary-color, #0073aa);
+        }
+
+        .file-size {
+          font-size: 0.7rem;
+          color: var(--dt-file-upload-size-color, #999);
+          padding: 0 0.5rem 0.25rem;
+        }
+
+        .file-actions {
+          position: absolute;
+          top: 0.25rem;
+          inset-inline-end: 0.25rem;
+          display: flex;
+          gap: 0.25rem;
+          z-index: 1;
+          pointer-events: none;
+        }
+
+        .file-actions button {
+          pointer-events: auto;
+          background: rgba(255, 255, 255, 0.9);
+          border: none;
+          border-radius: 4px;
+          padding: 0.25rem;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .file-actions button:hover {
+          background: #fff;
+        }
+
+        .file-actions button dt-icon {
+          font-size: 1rem;
+        }
+
+        .file-actions button.download {
+          color: var(--primary-color, #0073aa);
+        }
+
+        .file-actions button.delete {
+          color: var(--alert-color, #dc3545);
+        }
+
+        .staged-files {
+          margin-top: 1rem;
+          padding: 1rem;
+          border: 1px dashed var(--dt-upload-border-color, #ccc);
+          border-radius: 4px;
+          background: var(--dt-upload-background-color, #fafafa);
+        }
+
+        .staged-files-title {
+          font-size: 0.875rem;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+        }
+
+        .staged-file-item {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.25rem 0;
+          font-size: 0.875rem;
+        }
+
+        .staged-file-item span {
+          flex: 1;
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .staged-file-item button.remove {
+          flex-shrink: 0;
+          margin-inline-start: auto;
+          padding: 0.25rem;
+          background: transparent;
+          border: none;
+          color: var(--alert-color, #dc3545);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .staged-file-item button.remove:hover {
+          opacity: 0.8;
+        }
+
+        .upload-staged-btn {
+          margin-top: 0.5rem;
+          padding: 0.5rem 1rem;
+          background: var(--primary-color, #0073aa);
+          color: #fff;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 0.875rem;
+        }
+
+        .upload-staged-btn:hover:not(:disabled) {
+          opacity: 0.9;
+        }
+
+        .upload-staged-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        .error-container {
+          margin-top: 1rem;
+          max-width: 100%;
+          overflow: hidden;
+        }
+
+        .error-container .error-text {
+          flex: 1;
+          min-width: 0;
+          overflow-wrap: break-word;
+          word-wrap: break-word;
+          word-break: break-word;
+        }
+      `]}static get properties(){return{...super.properties,value:{type:Array,reflect:!0},acceptedFileTypes:{type:Array,attribute:"accepted-file-types"},maxFileSize:{type:Number,attribute:"max-file-size"},maxFiles:{type:Number,attribute:"max-files"},deleteEnabled:{type:Boolean,attribute:"delete-enabled",converter:{fromAttribute:t=>t==null||t===""?!0:t!=="false"&&t!==!1}},downloadEnabled:{type:Boolean,attribute:"download-enabled",converter:{fromAttribute:t=>t==null||t===""?!0:t!=="false"&&t!==!1}},renameEnabled:{type:Boolean,attribute:"rename-enabled",converter:{fromAttribute:t=>t==null||t===""?!0:t!=="false"&&t!==!1}},displayLayout:{type:String,attribute:"display-layout"},fileTypeIcon:{type:String,attribute:"file-type-icon"},autoUpload:{type:Boolean,attribute:"auto-upload",converter:{fromAttribute:t=>{if(t==null)return!0;const i=String(t).toLowerCase().trim();return i!=="false"&&i!=="0"&&t!==!1}}},postType:{type:String,attribute:"post-type"},postId:{type:String,attribute:"post-id"},metaKey:{type:String,attribute:"meta-key"},keyPrefix:{type:String,attribute:"key-prefix"},uploading:{type:Boolean,state:!0},uploadProgress:{type:Number,state:!0},stagedFiles:{type:Array,state:!0},_uploadZoneExpanded:{type:Boolean,state:!0},_dragOver:{type:Boolean,state:!0},_editingFileKey:{type:String,state:!0},_editingFileName:{type:String,state:!0}}}connectedCallback(){super.connectedCallback(),this.addEventListener("dt:upload-files",this._handleUploadStagedEvent),this._boundKeydown=this._handleHostKeydown.bind(this)}disconnectedCallback(){var t;super.disconnectedCallback(),this.removeEventListener("dt:upload-files",this._handleUploadStagedEvent),this._removeKeydownListener(),this._cancelScheduledCollapse(),(t=this._resizeObserver)==null||t.disconnect()}_addKeydownListener(){this._keydownAttached||(this._keydownAttached=!0,this.addEventListener("keydown",this._boundKeydown,{capture:!0}))}_removeKeydownListener(){this._keydownAttached&&(this._keydownAttached=!1,this.removeEventListener("keydown",this._boundKeydown,{capture:!0}))}_handleHostKeydown(t){var o;if(!this._editingFileKey)return;const i=(o=this.shadowRoot)==null?void 0:o.querySelector(".file-name-edit");i&&(t.key==="Enter"||t.keyCode===13?(t.preventDefault(),t.stopPropagation(),t.stopImmediatePropagation(),this._commitRename(this._editingFileKey,i.value)):(t.key==="Escape"||t.keyCode===27)&&(t.preventDefault(),t.stopPropagation(),t.stopImmediatePropagation(),this._cancelRename()))}firstUpdated(t){super.firstUpdated(t),this._setupResizeObserver()}updated(t){super.updated(t),(t.has("value")||t.has("stagedFiles")||t.has("error"))&&this.updateComplete.then(()=>this._refreshMasonry()),t.has("_editingFileKey")&&(this._editingFileKey?(this._addKeydownListener(),this.updateComplete.then(()=>{var o;const i=(o=this.shadowRoot)==null?void 0:o.querySelector(".file-name-edit");i&&(i.focus(),i.select())})):this._removeKeydownListener())}_setupResizeObserver(){typeof ResizeObserver>"u"||(this._resizeObserver=new ResizeObserver(()=>{this._refreshMasonry()}),this._resizeObserver.observe(this))}_refreshMasonry(){if(typeof window<"u"&&window.jQuery){const t=this;requestAnimationFrame(()=>{let i=null;window.masonGrid&&window.masonGrid.length&&window.masonGrid.masonry?i=window.masonGrid:i=window.jQuery(t).closest(".grid, .masonry-container, .masonry, [data-masonry]"),i&&i.length&&i.masonry&&i.masonry("layout")})}}_expandUploadZone(){this._uploadZoneExpanded=!0}_scheduleCollapse(){this._cancelScheduledCollapse(),this._dragLeaveTimeout=setTimeout(()=>{this._uploadZoneExpanded=!1,this._dragLeaveTimeout=null},300)}_cancelScheduledCollapse(){this._dragLeaveTimeout&&(clearTimeout(this._dragLeaveTimeout),this._dragLeaveTimeout=null)}uploadStagedFiles(){this.stagedFiles.length>0&&this._uploadFiles(this.stagedFiles)}_removeStagedFile(t){t>=0&&t<this.stagedFiles.length&&(this.stagedFiles=this.stagedFiles.filter((i,o)=>o!==t),this.requestUpdate())}_parseValue(t){if(Array.isArray(t))return t;if(typeof t=="string")try{const i=JSON.parse(t);return Array.isArray(i)?i:[]}catch{return[]}return[]}_formatFileSize(t){return t<1024?`${t} B`:t<1024*1024?`${(t/1024).toFixed(1)} KB`:`${(t/(1024*1024)).toFixed(1)} MB`}_isImage(t){return(t.type||"").toLowerCase().startsWith("image/")}_mdiToIconify(t){if(!t||typeof t!="string")return"";const i=t.trim();return i.startsWith("mdi:")?i:i.includes("mdi-")?`mdi:${i.replace(/.*mdi-/,"").replace(/\s/g,"-")}`:i.startsWith("mdi ")?`mdi:${i.replace(/^mdi\s+/,"").replace(/\s/g,"-")}`:i}_getFileTypeIconMapping(){return{"application/pdf":"mdi:file-pdf-box","text/plain":"mdi:text-box-edit-outline","application/rtf":"mdi:text-box-edit-outline","text/rtf":"mdi:text-box-edit-outline","text/csv":"mdi:text-box-edit-outline","text/html":"mdi:language-html5","application/msword":"mdi:microsoft-word","application/json":"mdi:code-json","application/xml":"mdi:file-xml-box",".pdf":"mdi:file-pdf-box",".txt":"mdi:text-box-edit-outline",".rtf":"mdi:text-box-edit-outline",".csv":"mdi:text-box-edit-outline",".html":"mdi:language-html5",".htm":"mdi:language-html5",".docx":"mdi:microsoft-word",".doc":"mdi:microsoft-word",".json":"mdi:code-json",".xml":"mdi:file-xml-box"}}_getFileTypeIcon(t){if(this.fileTypeIcon&&this.fileTypeIcon.trim())return this.fileTypeIcon.trim();const i=(t.type||"").toLowerCase(),o=this._getFileTypeIconMapping();if(i&&o[i])return o[i];if(t.name){const a=t.name.split(".");if(a.length>1){const r="."+a.pop().toLowerCase();if(o[r])return o[r]}}return null}_renderFileTypeIcon(t){const i=this._getFileTypeIcon(t);if(!i)return null;if(/^(https?:|\/|data:)/.test(i))return p`<img src="${i}" alt="" />`;const a=this._mdiToIconify(i);return a?p`<dt-icon icon="${a}"></dt-icon>`:null}_getFilePreviewUrl(t){const i=t.thumbnail_key||t.large_thumbnail_key;if(this._isImage(t)){if(t.large_thumbnail_url)return t.large_thumbnail_url;if(t.thumbnail_url)return t.thumbnail_url;if(t.url)return t.url;if(i)return null}return null}_handleFileSelect(t){const i=Array.from(t.target.files||[]);i.length!==0&&(t.target.value="",this._processFiles(i))}_handleDrop(t){if(t.preventDefault(),t.stopPropagation(),this._dragOver=!1,t.currentTarget.classList.remove("drag-over"),this.disabled||this.uploading)return;const i=Array.from(t.dataTransfer.files||[]);i.length!==0&&this._processFiles(i)}_handleDragOver(t){t.preventDefault(),t.stopPropagation(),!this.disabled&&!this.uploading&&(this._dragOver=!0,this._expandUploadZone(),this._cancelScheduledCollapse(),t.currentTarget.classList.add("drag-over"))}_handleDragLeave(t){t.preventDefault(),t.stopPropagation(),this._dragOver=!1,t.currentTarget.classList.remove("drag-over"),this._scheduleCollapse()}_handleZoneClick(t){var i;if(!t.target.closest('input[type="file"]')&&(this._expandUploadZone(),this._cancelScheduledCollapse(),!this.disabled&&!this.uploading)){const o=(i=this.shadowRoot)==null?void 0:i.querySelector('input[type="file"]');o&&o.click()}}_handleZoneMouseEnter(){!this.disabled&&!this.uploading&&(this._expandUploadZone(),this._cancelScheduledCollapse())}_handleZoneMouseLeave(){this._scheduleCollapse()}_processFiles(t){const i=this._validateFiles(t);if(i.length===0)return;this.error="";const o=(this.value||[]).length+this.stagedFiles.length;if(this.maxFiles&&o+i.length>this.maxFiles){this.error=`${this.maxFiles} files allowed`;return}this.autoUpload?this._uploadFiles(i):(this.stagedFiles=[...this.stagedFiles,...i],this._uploadZoneExpanded=!1,this.requestUpdate(),this.updateComplete.then(()=>this._refreshMasonry()))}_validateFiles(t){const i=[],o=this.maxFileSize?this.maxFileSize*1024*1024:null,a=Array.isArray(this.acceptedFileTypes)?this.acceptedFileTypes:["image/*","application/pdf"],r=a.join(",");for(const n of t){if(o&&n.size>o){this.error=`File "${n.name}" exceeds ${this.maxFileSize} MB`;continue}if(r&&r!=="*"&&!a.some(d=>{if(d.startsWith("."))return n.name.toLowerCase().endsWith(d.toLowerCase());if(d.endsWith("/*")){const u=d.slice(0,-2);return(n.type||"").startsWith(u)}return n.type===d||n.name&&n.name.toLowerCase().endsWith(`.${d.split("/")[1]}`)})){this.error=`File type not allowed: ${n.name}`;continue}i.push(n)}return i}_isStandaloneMode(){return!this.postType||!this.postId||!this.metaKey}async _filesToMockFileObjects(t){const i=[];for(const o of t){const r={key:`standalone_${Date.now()}_${Math.random().toString(36).slice(2)}_${o.name}`,name:o.name,type:o.type||"application/octet-stream",size:o.size};if(this._isImage({type:o.type}))try{const n=URL.createObjectURL(o);i.push({...r,url:n,thumbnail_url:n})}catch{i.push({...r,url:"#"})}else i.push({...r,url:"#"})}return i}getPendingFilesForUpload(){const t=[...this.stagedFiles||[]],i=new Set(t.map(a=>`${(a==null?void 0:a.name)||""}::${(a==null?void 0:a.size)||0}::${(a==null?void 0:a.lastModified)||0}`)),o=this._parseValue(this.value);for(const a of o){const r=String((a==null?void 0:a.key)||a||"");if(!r)continue;const n=this._standaloneFilesByKey.get(r);if(!n)continue;const l=`${(n==null?void 0:n.name)||""}::${(n==null?void 0:n.size)||0}::${(n==null?void 0:n.lastModified)||0}`;i.has(l)||(t.push(n),i.add(l))}return t}async _uploadFiles(t){if(this._isStandaloneMode()){const o=this._parseValue(this.value);this.uploading=!0,this.uploadProgress=0,this.loading=!0,this.error="";try{const a=await this._filesToMockFileObjects(t);a.forEach((n,l)=>{n!=null&&n.key&&t[l]&&this._standaloneFilesByKey.set(String(n.key),t[l])});const r=[...o,...a];this.value=r,this.stagedFiles=[],this._uploadZoneExpanded=!1,this.saved=!0,this.dispatchEvent(new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:o,newValue:r}})),this._refreshMasonry()}catch(a){this.error=(a==null?void 0:a.message)||"Upload failed"}finally{this.uploading=!1,this.uploadProgress=0,this.loading=!1}return}this.uploading=!0,this.uploadProgress=0,this.loading=!0,this.error="";const i=new CustomEvent("dt:upload",{bubbles:!0,detail:{files:t,metaKey:this.metaKey,keyPrefix:this.keyPrefix||"",onProgress:o=>{this.uploadProgress=Number.isFinite(o)?o:0},onSuccess:({result:o,fieldValue:a})=>{const r=this._parseValue(this.value);let n=r;const l=(o.uploaded_files||[]).filter(d=>d.uploaded&&d.file).map(d=>d.file);if(l.length>0){const d=new Set(r.map(h=>String(h.key||h))),u=[...r];for(const h of l){const g=String(h.key||h);d.has(g)||(u.push(h),d.add(g))}n=u,this.value=n}else Array.isArray(a)&&a.length>0&&(n=a,this.value=n);this.stagedFiles=[],this.dispatchEvent(new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:r,newValue:n}})),this._refreshMasonry(),this._uploadZoneExpanded=!1,this.saved=!0,this.uploading=!1,this.uploadProgress=0,this.loading=!1},onError:o=>{console.error("Upload error:",o),this.error=o.message||"Upload failed",this.uploading=!1,this.uploadProgress=0,this.loading=!1}}});this.dispatchEvent(i)}async _deleteFile(t){if(!this.deleteEnabled||!confirm("Are you sure you want to delete this file?"))return;if(this._isStandaloneMode()){const o=this._parseValue(this.value),a=o.find(n=>(n.key||n)===t);a&&a.url&&a.url.startsWith("blob:")&&URL.revokeObjectURL(a.url),a&&a.thumbnail_url&&a.thumbnail_url.startsWith("blob:")&&a.thumbnail_url!==a.url&&URL.revokeObjectURL(a.thumbnail_url),this._standaloneFilesByKey.delete(String(t));const r=o.filter(n=>(n.key||n)!==t);this.value=r,this.dispatchEvent(new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:o,newValue:r}})),this.dispatchEvent(new CustomEvent("dt:delete-file",{bubbles:!0,detail:{fileKey:t,metaKey:this.metaKey||""}})),this.updateComplete.then(()=>this._refreshMasonry());return}if(!this.postType||!this.postId||!this.metaKey)return;this.loading=!0,this.error="";const i=new CustomEvent("dt:delete-file",{bubbles:!0,detail:{fileKey:t,metaKey:this.metaKey,onSuccess:()=>{const o=this._parseValue(this.value),a=o.filter(r=>(r.key||r)!==t);this.value=a,this.dispatchEvent(new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:o,newValue:a}})),this.updateComplete.then(()=>this._refreshMasonry()),this.loading=!1},onError:o=>{console.error("Delete error:",o),this.error=o.message||"Delete failed",this.loading=!1}}});this.dispatchEvent(i)}async _renameFile(t,i){if(!this.renameEnabled)return;if(this._isStandaloneMode()){const a=this._parseValue(this.value),r=a.map(n=>(n.key||n)===t?{...n,name:i}:n);this.value=r,this._editingFileKey="",this.dispatchEvent(new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:a,newValue:r}})),this.dispatchEvent(new CustomEvent("dt:rename-file",{bubbles:!0,detail:{fileKey:t,newName:i,metaKey:this.metaKey||""}})),this.updateComplete.then(()=>this._refreshMasonry());return}if(!this.postType||!this.postId||!this.metaKey)return;this.loading=!0,this.error="";const o=new CustomEvent("dt:rename-file",{bubbles:!0,detail:{fileKey:t,newName:i,metaKey:this.metaKey,onSuccess:()=>{const a=this._parseValue(this.value),r=a.map(n=>(n.key||n)===t?{...n,name:i}:n);this.value=r,this._editingFileKey="",this.dispatchEvent(new CustomEvent("change",{bubbles:!0,detail:{field:this.name,oldValue:a,newValue:r}})),this.updateComplete.then(()=>this._refreshMasonry()),this.loading=!1},onError:a=>{console.error("Rename error:",a),this.error=(a==null?void 0:a.message)||"Rename failed",this.loading=!1}}});this.dispatchEvent(o)}_startRename(t,i){!this.renameEnabled||this.disabled||(this._editingFileKey=typeof t=="string"?t:String(t),this._editingFileName=i||"")}_commitRename(t,i){if(this._suppressRenameBlurCommit){this._suppressRenameBlurCommit=!1;return}if(!this._editingFileKey||this._editingFileKey!==t)return;const o=(i??this._editingFileName??"").trim();if(this._editingFileKey="",this._editingFileName="",!o)return;const r=this._parseValue(this.value).find(l=>(l.key||l)===t),n=(r==null?void 0:r.name)||(typeof t=="string"?t.split("/").pop():"");o!==n&&this._renameFile(t,o)}_cancelRename(){this._suppressRenameBlurCommit=!0,this._editingFileKey="",this._editingFileName="",setTimeout(()=>{this._suppressRenameBlurCommit=!1},0)}_handleRenameBlur(t,i){if(this._suppressRenameBlurCommit){this._suppressRenameBlurCommit=!1;return}this._commitRename(t,i)}_downloadFile(t){if(!this.downloadEnabled)return;if(this._isStandaloneMode()){const r=t.url;if(!r)return;const n=t.key||t,l=t.name||(typeof n=="string"?n.split("/").pop():"download")||"download",d=document.createElement("a");d.href=r,d.download=l,d.target="_blank",d.rel="noopener",document.body.appendChild(d),d.click(),document.body.removeChild(d),this.dispatchEvent(new CustomEvent("dt:download-file",{bubbles:!0,detail:{fileKey:n,fileName:l,metaKey:this.metaKey||""}}));return}const i=t.key||t,o=t.name||(typeof i=="string"?i.split("/").pop():"download")||"download",a=new CustomEvent("dt:download-file",{bubbles:!0,detail:{fileKey:i,fileName:o,metaKey:this.metaKey,onSuccess:()=>{},onError:r=>{console.error("Download error:",r),this.error=r.message||"Download failed"}}});this.dispatchEvent(a)}_validateRequired(){var i,o,a,r;const t=Array.isArray(this.value)?this.value:[];this.required&&t.length===0?(this.invalid=!0,(o=(i=this.internals)==null?void 0:i.setValidity)==null||o.call(i,{valueMissing:!0},this.requiredMessage||"This field is required")):(this.invalid=!1,(r=(a=this.internals)==null?void 0:a.setValidity)==null||r.call(a,{}))}labelTemplate(){if(!this.label)return"";let t=null;if(this.icon&&this.icon.trim()){const i=this.icon.trim();if(i.startsWith("http://")||i.startsWith("https://")||i.startsWith("/")||i.startsWith("data:"))t=p`<img src="${i}" alt="${this.iconAltText||""}" />`;else if(i.toLowerCase().includes("mdi")){const a=this._mdiToIconify(i);a&&(t=p`<dt-icon icon="${a}" size="1em"></dt-icon>`)}}return p`
+      <dt-label
+        ?private=${this.private}
+        privateLabel="${ne(this.privateLabel)}"
+        iconAltText="${ne(this.iconAltText)}"
+        icon=""
+        exportparts="label: label-container"
+      >
+        ${t?p`<span slot="icon-start">${t}</span>`:p`<slot name="icon-start" slot="icon-start"></slot>`}
+        ${this.label}
+      </dt-label>
+    `}render(){const t=this._parseValue(this.value),o=(this.displayLayout||"grid")==="grid";return p`
+      <div class="input-group">
+        ${this.labelTemplate()}
+        <div
+          class="upload-zone ${A({compact:!this._uploadZoneExpanded,expanded:this._uploadZoneExpanded,disabled:this.disabled,"drag-over":this._dragOver,uploading:this.uploading})}"
+          @click=${this._handleZoneClick}
+          @mouseenter=${this._handleZoneMouseEnter}
+          @mouseleave=${this._handleZoneMouseLeave}
+          @dragover=${this._handleDragOver}
+          @dragleave=${this._handleDragLeave}
+          @drop=${this._handleDrop}
+        >
+          <input
+            type="file"
+            ?multiple=${!0}
+            accept=${(this.acceptedFileTypes||[]).join(",")}
+            @change=${this._handleFileSelect}
+          />
+          <div class="upload-zone-content">
+            <span class="upload-icon"><dt-icon icon="mdi:cloud-upload"></dt-icon></span>
+            <span class="expandable upload-text">Drag files here or click to upload</span>
+            <span class="expandable upload-hint">${(this.acceptedFileTypes||[]).join(", ")}${this.maxFileSize?` • Max ${this.maxFileSize} MB`:""}</span>
+          </div>
+        </div>
+
+        ${q(this.stagedFiles.length>0&&!this.autoUpload,()=>p`
+          <div class="staged-files">
+            <div class="staged-files-title">Staged files (${this.stagedFiles.length})</div>
+            ${pe(this.stagedFiles,(a,r)=>`${a.name}-${a.size}-${r}`,(a,r)=>p`
+              <div class="staged-file-item">
+                <span>${a.name} (${this._formatFileSize(a.size)})</span>
+                <button class="remove" type="button" title="Remove" @click=${n=>{n.stopPropagation(),this._removeStagedFile(r)}}>
+                  <dt-icon icon="mdi:trash-can"></dt-icon>
+                </button>
+              </div>
+            `)}
+            <button class="upload-staged-btn" type="button" ?disabled=${this.uploading} @click=${()=>this.uploadStagedFiles()}>
+              Upload
+            </button>
+          </div>
+        `)}
+
+        ${q(this.loading||this.saved,()=>p`
+            <div class="upload-status">
+              ${q(this.loading&&this.uploadProgress>0,()=>p`<span class="upload-progress-text">${Math.round(this.uploadProgress)}%</span>`)}
+              <div class="status-indicators">
+                ${this.renderIconLoading()}
+                ${this.renderIconSaved()}
+              </div>
+            </div>
+          `)}
+
+        ${q(t.length>0,()=>p`
+          <div class="files-container">
+            <div class=${o?"files-grid":"files-list"}>
+              ${pe(t,a=>a.key||a,a=>{const r=typeof a.key=="string"?a.key:typeof a=="string"?a:String(a.key??a.name??""),n=a.name||(typeof r=="string"?r.split("/").pop():""),l=a.size,d=this._getFilePreviewUrl(a),u=this._isImage(a),h=this._editingFileKey===r;return p`
+                    <div class="file-item ${o?"file-item-grid":"file-item-list"}">
+                      ${q(d,()=>p`
+                          <a
+                            class="file-preview-link"
+                            href=${d||a.url||"#"}
+                            target="_blank"
+                            rel="noopener"
+                            @click=${g=>{!d&&!a.url&&g.preventDefault()}}
+                          >
+                            <img src="${d}" alt="${n}" loading="lazy" />
+                          </a>
+                        `,()=>p`
+                          ${a.url?p`
+                                <a
+                                  class="file-preview-link file-icon-area"
+                                  href=${a.url}
+                                  target="_blank"
+                                  rel="noopener"
+                                >
+                                  ${this._renderFileTypeIcon(a)||(u?p`<dt-icon icon="mdi:image"></dt-icon>`:p`<dt-icon icon="mdi:file-outline"></dt-icon>`)}
+                                </a>
+                              `:p`
+                                <div class="file-icon-area">
+                                  ${this._renderFileTypeIcon(a)||(u?p`<dt-icon icon="mdi:image"></dt-icon>`:p`<dt-icon icon="mdi:file-outline"></dt-icon>`)}
+                                </div>
+                              `}
+                        `)}
+                      ${q(h,()=>p`
+                          <input
+                            class="file-name-edit"
+                            type="text"
+                            .value=${this._editingFileName}
+                            @input=${g=>{this._editingFileName=g.target.value}}
+                            @keydown=${g=>{g.key==="Enter"||g.keyCode===13?(g.preventDefault(),g.stopPropagation(),this._commitRename(r,g.target.value)):(g.key==="Escape"||g.keyCode===27)&&(g.preventDefault(),this._cancelRename())}}
+                            @blur=${g=>this._handleRenameBlur(r,g.target.value)}
+                            @click=${g=>g.stopPropagation()}
+                          />
+                        `,()=>p`
+                          <div
+                            class="file-name ${this.renameEnabled&&!this.disabled?"file-name-editable":""}"
+                            role=${this.renameEnabled&&!this.disabled?"button":void 0}
+                            tabindex=${this.renameEnabled&&!this.disabled?0:void 0}
+                            @click=${g=>{g.stopPropagation(),this.renameEnabled&&!this.disabled&&this._startRename(r,n)}}
+                            @keydown=${g=>{this.renameEnabled&&!this.disabled&&(g.key==="Enter"||g.key===" ")&&(g.preventDefault(),this._startRename(r,n))}}
+                          >
+                            ${n}
+                          </div>
+                        `)}
+                      ${q(l!=null,()=>p`<div class="file-size">${this._formatFileSize(l)}</div>`)}
+                      <div class="file-actions">
+                        ${q(this.downloadEnabled&&a.url,()=>p`
+                            <button class="download" type="button" @click=${g=>{g.stopPropagation(),this._downloadFile(a)}} title="Download"><dt-icon icon="mdi:cloud-download"></dt-icon></button>
+                          `)}
+                        ${q(this.deleteEnabled&&!this.disabled,()=>p`
+                            <button class="delete" type="button" @click=${g=>{g.stopPropagation(),this._deleteFile(r)}} title="Delete"><dt-icon icon="mdi:trash-can"></dt-icon></button>
+                          `)}
+                      </div>
+                    </div>
+                  `})}
+            </div>
+          </div>
+        `)}
+
+        ${this.renderIconInvalid()}
+        ${this.renderError()}
+      </div>
+    `}}customElements.define("dt-file-upload",So);class Eo extends N{static get styles(){return x`
       :host {
         display: block;
       }
@@ -3064,7 +3885,7 @@
         display: flex;
         align-items: center;
       }
-    `}static get properties(){return{context:{type:String},dismissable:{type:Boolean},timeout:{type:Number},hide:{type:Boolean},outline:{type:Boolean}}}get classes(){const e={"dt-alert":!0,"dt-alert--outline":this.outline},t=`dt-alert--${this.context}`;return e[t]=!0,e}constructor(){super(),this.context="default"}connectedCallback(){super.connectedCallback(),this.timeout&&setTimeout(()=>{this._dismiss()},this.timeout)}_dismiss(){this.hide=!0}render(){if(this.hide)return f``;const e=f`
+    `}static get properties(){return{context:{type:String},dismissable:{type:Boolean},timeout:{type:Number},hide:{type:Boolean},outline:{type:Boolean}}}get classes(){const e={"dt-alert":!0,"dt-alert--outline":this.outline},t=`dt-alert--${this.context}`;return e[t]=!0,e}constructor(){super(),this.context="default"}connectedCallback(){super.connectedCallback(),this.timeout&&setTimeout(()=>{this._dismiss()},this.timeout)}_dismiss(){this.hide=!0}render(){if(this.hide)return p``;const e=p`
       <svg viewPort="0 0 12 12" version="1.1" width='12' height='12'>
            xmlns="http://www.w3.org/2000/svg">
         <line x1="1" y1="11"
@@ -3076,626 +3897,16 @@
               stroke="currentColor"
               stroke-width="2"/>
       </svg>
-    `;return f`
+    `;return p`
       <div role="alert" class=${A(this.classes)}>
         <div>
           <slot></slot>
         </div>
-        ${this.dismissable?f`
+        ${this.dismissable?p`
               <button @click="${this._dismiss}" class="toggle">${e}</button>
             `:null}
       </div>
-    `}}window.customElements.define("dt-alert",ks);class Ss extends N{static get styles(){return x`
-      :host {
-        --number-of-columns: 7;
-        font-family: var(--dt-list-font-family, var(--font-family));
-        font-size: var(--dt-list-font-size, 15px);
-        font-weight: var(--dt-list-font-weight, 300);
-        line-height: var(--dt-list-line-height, 1.5);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .section {
-        container-type: inline-size;
-        background-color: var(--dt-list-background-color, #fefefe);
-        border: 1px solid var(--dt-list-border-color, #f1f1f1);
-        border-radius: var(--dt-list-border-radius, 10px);
-        box-shadow: var(--dt-list-box-shadow, 0 2px 4px rgb(0 0 0 / 25%));
-        padding: var(--dt-list-section-padding, 1rem);
-      }
-
-      .header {
-        display: flex;
-        justify-content: flex-start;
-        align-items: baseline;
-        gap: var(--dt-list-header-gap, 1.5em);
-        flex-wrap: wrap;
-      }
-
-      .section-header {
-        color: var(--dt-list-header-color, var(--primary-color));
-        font-size: 1.5rem;
-        display: inline-block;
-        text-transform: capitalize;
-      }
-
-      .toggleButton {
-        color: var(--dt-list-header-color, var(--primary-color));
-        font-size: 1rem;
-        background: transparent;
-        border: var(--dt-list-toggleButton, 0.1em solid rgb(0 0 0 / 0.2));
-        border-radius: 0.25em;
-        padding: 0.25em 0.5em;
-        cursor: pointer;
-      }
-
-      .toggleButton svg {
-        height: 0.9rem;
-        transform: translateY(-2px);
-        vertical-align: bottom;
-        width: 1rem;
-        fill: var(--dt-list-header-color, var(--primary-color));
-        stroke: var(--dt-list-header-color, var(--primary-color));
-      }
-
-      .list_action_section {
-        background-color: var(
-          --dt-list-action-section-background-color,
-          #ecf5fc
-        );
-        border-radius: var(--dt-list-border-radius, 10px);
-        margin: var(--dt-list-action-section-margin, 30px 0);
-        padding: var(--dt-list-action-section-padding, 20px);
-      }
-      .list_action_section_header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-      }
-      .close-button {
-        outline: none;
-        font-size: 2.5em;
-        line-height: 1;
-        color: var(--dt-list-action-close-button, var(--inactive-color));
-        background: transparent;
-        border: none;
-        cursor: pointer;
-      }
-      .fieldsList {
-        list-style-type: none;
-        column-count: 1;
-      }
-
-      .list-field-picker-item {
-        list-style-type: none;
-      }
-
-      .list-field-picker-item input {
-        margin: 1rem;
-      }
-
-      .list-field-picker-item .dt-icon {
-        height: var(--dt-list-field-picker-icon-size, 1rem);
-        width: var(--dt-list-field-picker-icon-size, 1rem);
-      }
-
-      table {
-        display: grid;
-        border: 1px solid var(--dt-list-border-color, #f1f1f1);
-        border-top: 0;
-        border-collapse: collapse;
-        min-width: 100%;
-        grid-template-columns: 1fr;
-      }
-
-      /* table.table-contacts {
-        display: table !important;
-        width: 100%;
-        border-collapse: collapse;
-        border-radius: 0;
-        margin-bottom: 1rem;
-      } */
-
-      table td:last-child {
-        border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
-        padding-bottom: 2rem;
-      }
-
-      tbody,
-      tr {
-        display: contents;
-      }
-
-      thead {
-        display: none;
-      }
-      /* table.table-contacts thead {
-        display: table-header-group;
-      }
-      table.table-contacts tr {
-        display: table-row;
-      }
-      table.table-contacts tbody {
-        display: table-row-group;
-      } */
-      tr {
-        cursor: pointer;
-      }
-
-      /* table.table-contacts tr:nth-child(2n + 1) {
-        background: #fefefe;
-      } */
-
-      tr:nth-child(2n + 1) {
-        background: #f1f1f1;
-      }
-
-      tr:hover {
-        background-color: var(--dt-list-hover-background-color, #ecf5fc);
-      }
-
-      tr a {
-        color: var(--dt-list-link-color, var(--primary-color));
-      }
-
-      .column-name {
-        pointer-events: none;
-        font-size: 15px;
-        font-weight: 700;
-      }
-      #sort-arrows {
-        grid-template-columns: 4fr 1fr;
-        display: flex;
-        flex-direction: column;
-        height: 1em;
-        justify-content: space-evenly;
-      }
-      th.all span.sort-arrow-up {
-        border-color: transparent transparent
-          var(--dt-list-sort-arrow-color, #dcdcdc) transparent;
-        border-style: solid;
-        border-width: 0 0.3em 0.3em 0.3em;
-      }
-
-      th.all span.sort-arrow-down {
-        content: '';
-        border-color: var(--dt-list-sort-arrow-color, #dcdcdc) transparent
-          transparent;
-        border-style: solid;
-        border-width: 0.3em 0.3em 0;
-      }
-
-      th.all span.sort-arrow-up.sortedBy {
-        border-color: transparent transparent
-          var(--dt-list-sort-arrow-color-highlight, #41739c) transparent;
-      }
-
-      th.all span.sort-arrow-down.sortedBy {
-        border-color: var(--dt-list-sort-arrow-color-highlight, #41739c)
-          transparent transparent;
-      }
-
-      td {
-        border: 0;
-        grid-column: 1 / span 3;
-        padding-inline-start: 1em;
-      }
-
-      td::before {
-        content: attr(title) ': ';
-        padding-inline-end: 1em;
-      }
-
-      td.no-title {
-        grid-column: 1 / span 3;
-      }
-
-      td.line-count {
-        padding-block-start: 0.8em;
-        padding-inline-start: 1em;
-      }
-
-      td.no-title::before {
-        content: '';
-        padding-inline-end: 0.25em;
-      }
-
-      th.bulk_edit_checkbox,
-      td.bulk_edit_checkbox {
-        grid-column: 1 / auto;
-        padding: 0;
-        width: 0; /* Initially no width */
-      }
-
-      .bulk_edit_checkbox input {
-        display: none;
-        margin: 0;
-      }
-
-      .bulk_editing .bulk_edit_checkbox {
-        grid-column: 1 / auto;
-        padding: 0;
-        width: auto; /* Width when parent has .bulk_editing */
-      }
-      .bulk_editing .bulk_edit_checkbox input {
-        display: initial;
-      }
-
-      ul {
-        margin: 0;
-        padding: 0;
-      }
-
-      ul li {
-        list-style-type: none;
-      }
-
-      input[type='checkbox'] {
-        margin: 1rem;
-      }
-      table thead th,
-      table tr td {
-        padding: 0.5333333333rem 0.6666666667rem 0.6666666667rem;
-      }
-
-      ::slotted(svg) {
-        fill: var(--fav-star-not-selected-color, #c7c6c1);
-      }
-
-      .icon-star {
-        fill: var(--fav-star-not-selected-color, #c7c6c1); /* Default to gray (non-favorite) */
-        margin: 0;
-      }
-      .icon-star.selected {
-        fill: var(--fav-star-selected-color, #ffc105); /* Favorite state in yellow */
-      }
-
-      @media (min-width: 650px) {
-        .fieldsList {
-          column-count: 2;
-        }
-        table {
-          grid-template-columns:
-            minmax(0px, 0fr)
-            minmax(32px, 0.25fr)
-            minmax(32px, 0.25fr)
-            repeat(var(--number-of-columns, 6), minmax(50px, 1fr));
-        }
-
-        table.bulk_editing {
-          grid-template-columns:
-            minmax(32px, 0.25fr)
-            minmax(32px, 0.25fr)
-            minmax(32px, 0.25fr)
-            repeat(var(--number-of-columns, 6), minmax(50px, 1fr));
-        }
-
-        thead {
-          display: contents;
-        }
-
-        th {
-          position: sticky;
-          top: 0;
-          background: var(
-            --dt-list-header-background-color,
-            var(--dt-tile-background-color, #fefefe)
-          );
-          text-align: start;
-          justify-self: start;
-          font-weight: normal;
-          font-size: 1.1rem;
-          color: var(--dt-list-header-color, #0a0a0a);
-          white-space: pre-wrap;
-          display: grid;
-          place-items: center;
-          grid-template-columns: 2fr 1fr;
-        }
-
-        th:last-child {
-          border: 0;
-        }
-        td {
-          display: flex;
-          align-items: center;
-          grid-column: auto;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          padding-top: 0.5rem;
-          padding-bottom: 0.5rem;
-          padding-inline-start: 0;
-          color: var(--text-color-mid);
-          border-bottom: 1px solid var(--dt-list-border-color, #f1f1f1);
-        }
-        td::before {
-          content: '';
-          display: none;
-        }
-
-        td.no-title {
-          grid-column: auto;
-        }
-      }
-
-        .btn {
-        -webkit-appearance: none;
-        border: 1px solid transparent;
-        border-radius: 5px;
-        cursor: pointer;
-        display: inline-block;
-        font-family: inherit;
-        font-size: .9rem;
-        line-height: 1;
-        margin: 0 !important;
-        text-align: center;
-        -webkit-transition: background-color .25s ease-out, color .25s ease-out;
-        transition: background-color .25s ease-out, color .25s ease-out;
-        vertical-align: middle;
-      }
-
-      .btn.btn-primary {
-        background-color: #3f729b;
-        color: #fefefe;
-        border-radius: 5px;
-      }
-
-      .btn.btn-primary:hover, .btn.btn-primary:focus {
-        background-color: #366184;
-        color: #fefefe;
-      }
-
-      .text-center {
-        text-align: center;
-      }
-
-      .btn.btn-primary .dt-button {
-        margin: 0;
-        border-radius: 5px;
-      }
-
-
-      @media (min-width: 950px) {
-        .fieldsList {
-          column-count: 3;
-        }
-      }
-
-      @media (min-width: 1500px) {
-        .fieldsList {
-          column-count: 4;
-        }
-      }
-    `}static get properties(){return{postType:{type:String},postTypeLabel:{type:String},posttypesettings:{type:Object,attribute:!0},posts:{type:Array},total:{type:Number},columns:{type:Array},sortedBy:{type:String},loading:{type:Boolean,default:!0},offset:{type:Number},showArchived:{type:Boolean,default:!1},showFieldsSelector:{type:Boolean,default:!1},showBulkEditSelector:{type:Boolean,default:!1},nonce:{type:String},payload:{type:Object},favorite:{type:Boolean},initialLoadPost:{type:Boolean,default:!1},loadMore:{type:Boolean,default:!1},headerClick:{type:Boolean,default:!1}}}constructor(){super(),this.sortedBy="name",this.payload={sort:this.sortedBy,overall_status:["-closed"],fields_to_return:this.sortedColumns},this.initalLoadPost=!1,this.initalLoadPost||(this.posts=[],this.limit=100)}firstUpdated(){this.postTypeSettings=window.post_type_fields,this.sortedColumns=this.columns.includes("favorite")?["favorite",...this.columns.filter(e=>e!=="favorite")]:this.columns,this.style.setProperty("--number-of-columns",this.columns.length-1)}async _getPosts(e){const t=await new CustomEvent("dt:get-data",{bubbles:!0,detail:{field:this.name,postType:this.postType,query:e,onSuccess:i=>{this.initalLoadPost&&this.loadMore&&(this.posts=[...this.posts,...i],this.postsLength=this.posts.length,this.total=i.length,this.loadMore=!1),this.initalLoadPost||(this.posts=[...i],this.offset=this.posts.length,this.initalLoadPost=!0,this.total=i.length),this.headerClick&&(this.posts=i,this.offset=this.posts.length,this.headerClick=!1),this.total=i.length},onError:i=>{console.warn(i)}}});this.dispatchEvent(t)}_headerClick(e){const t=e.target.dataset.id;this.sortedBy===t?t.startsWith("-")?this.sortedBy=t.replace("-",""):this.sortedBy=`-${t}`:this.sortedBy=t,this.payload={sort:this.sortedBy,overall_status:["-closed"],limit:this.limit,fields_to_return:this.columns},this.headerClick=!0,this._getPosts(this.payload)}static _rowClick(e){window.open(e,"_self")}_bulkEdit(){this.showBulkEditSelector=!this.showBulkEditSelector}_fieldsEdit(){this.showFieldsSelector=!this.showFieldsSelector}_toggleShowArchived(){if(this.showArchived=!this.showArchived,this.headerClick=!0,this.showArchived){const{overall_status:e,offset:t,...i}=this.payload;this.payload=i}else this.payload.overall_status=["-closed"];this._getPosts(this.payload)}_sortArrowsClass(e){return this.sortedBy===e?"sortedBy":""}_sortArrowsToggle(e){return this.sortedBy!==`-${e}`?`-${e}`:e}_headerTemplate(){return this.postTypeSettings?f`
-        <thead>
-          <tr>
-            <th id="bulk_edit_master" class="bulk_edit_checkbox">
-              <input
-                type="checkbox"
-                name="bulk_send_app_id"
-                value=""
-                id="bulk_edit_master_checkbox"
-              />
-            </th>
-            <th class="no-title line-count"></th>
-            ${Ke(this.sortedColumns,e=>{const t=e==="favorite";return f`<th
-                class="all"
-                data-id="${this._sortArrowsToggle(e)}"
-                @click=${this._headerClick}
-              >
-                  <span class="column-name"
-                     >${t?null:this.postTypeSettings[e].name}</span
-                  >
-                  ${t?"":f`<span id="sort-arrows">
-                        <span
-                          class="sort-arrow-up ${this._sortArrowsClass(e)}"
-                          data-id="${e}"
-                        ></span>
-                        <span
-                          class="sort-arrow-down ${this._sortArrowsClass(`-${e}`)}"
-                          data-id="-${e}"
-                        ></span>
-                      </span>`}
-              </th>`})}
-          </tr>
-        </thead>
-      `:null}_rowTemplate(){if(this.posts&&Array.isArray(this.posts)){const e=this.posts.map((t,i)=>this.showArchived||!this.showArchived&&t.overall_status!=="closed"?f`
-              <tr class="dnd-moved" data-link="${t.permalink}" @click=${()=>this._rowClick(t.permalink)}>
-                <td class="bulk_edit_checkbox no-title">
-                  <input type="checkbox" name="bulk_edit_id" .value="${t.ID}" />
-                </td>
-                <td class="no-title line-count">${i+1}.</td>
-                ${this._cellTemplate(t)}
-              </tr>
-            `:null).filter(t=>t!==null);return e.length>0?e:f`<p>No contacts available</p>`}return null}formatDate(e){const t=new Date(e);return new Intl.DateTimeFormat("en-US",{month:"long",day:"numeric",year:"numeric"}).format(t)}_cellTemplate(e){return Ke(this.sortedColumns,t=>{if(["text","textarea","number"].includes(this.postTypeSettings[t].type))return f` <td
-          dir="auto"
-          title="${this.postTypeSettings[t].name}"
-        >
-          ${e[t]}
-        </td>`;if(this.postTypeSettings[t].type==="date")return f` <td
-          dir="auto"
-          title="${this.postTypeSettings[t].name}"
-        >
-          ${this.formatDate(e[t].formatted)}
-        </td>`;if(this.postTypeSettings[t].type==="user_select"&&e[t]&&e[t].display)return f` <td
-          dir="auto"
-          title="${this.postTypeSettings[t].name}"
-        >
-          ${B(e[t].display)}
-        </td>`;if(this.postTypeSettings[t].type==="key_select"&&e[t]&&(e[t].label||e[t].name))return f` <td
-          dir="auto"
-          title="${this.postTypeSettings[t].name}"
-        >
-          ${e[t].label||e[t].name}
-        </td>`;if(this.postTypeSettings[t].type==="multi_select"||this.postTypeSettings[t].type==="tags"&&e[t]&&e[t].length>0)return f` <td
-          dir="auto"
-          title="${this.postTypeSettings[t].name}"
-        >
-          <ul>
-            ${Ke(e[t],i=>f`<li>
-                  ${this.postTypeSettings[t].default[i].label}
-                </li>`)}
-          </ul>
-        </td>`;if(this.postTypeSettings[t].type==="location"||this.postTypeSettings[t].type==="location_meta")return f` <td
-          dir="auto"
-          title="${this.postTypeSettings[t].name}"
-        >
-          ${B(e[t].label)}
-        </td>`;if(this.postTypeSettings[t].type==="communication_channel")return f` <td
-          dir="auto"
-          title="${this.postTypeSettings[t].name}"
-        >
-          ${B(e[t].value)}
-        </td>`;if(this.postTypeSettings[t].type==="connection")return f` <td
-          dir="auto"
-          title="${this.postTypeSettings[t].name}"
-        >
-          <!-- TODO: look at this, it doesn't match the current theme. -->
-          ${B(e[t].value)}
-        </td>`;if(this.postTypeSettings[t].type==="boolean"){if(t==="favorite")return f`<td
-            dir="auto"
-            title="${this.postTypeSettings[t].name}"
-            class=""
-          >
-            <dt-button
-              id="favorite-button-${e.ID}"
-              label="favorite"
-              title="favorite"
-              type="button"
-              posttype="contacts"
-              context="star"
-              .favorited=${e.favorite?e.favorite:!1}
-              .listButton=${!0}
-            >
-              <svg
-                class="${A({"icon-star":!0,selected:e.favorite})}"
-                height="15"
-                viewBox="0 0 32 32"
-              >
-                <path
-                  d="M 31.916 12.092 C 31.706 11.417 31.131 10.937 30.451 10.873 L 21.215 9.996 L 17.564 1.077 C 17.295 0.423 16.681 0 16 0 C 15.318 0 14.706 0.423 14.435 1.079 L 10.784 9.996 L 1.546 10.873 C 0.868 10.937 0.295 11.417 0.084 12.092 C -0.126 12.769 0.068 13.51 0.581 13.978 L 7.563 20.367 L 5.503 29.83 C 5.354 30.524 5.613 31.245 6.165 31.662 C 6.462 31.886 6.811 32 7.161 32 C 7.463 32 7.764 31.915 8.032 31.747 L 16 26.778 L 23.963 31.747 C 24.546 32.113 25.281 32.08 25.834 31.662 C 26.386 31.243 26.645 30.524 26.494 29.83 L 24.436 20.367 L 31.417 13.978 C 31.931 13.51 32.127 12.769 31.916 12.092 Z M 31.916 12.092"
-                />
-              </svg>
-            </dt-button>
-          </td>`;if(this.postTypeSettings[t]===!0)return f`<td
-            dir="auto"
-            title="${this.postTypeSettings[t].name}"
-          >
-            ['&check;']
-          </td>`}return f`<td
-        dir="auto"
-        title="${this.postTypeSettings[t].name}"
-      ></td>`})}_fieldListIconTemplate(e){return this.postTypeSettings[e].icon?f`<img
-        class="dt-icon"
-        src="${this.postTypeSettings[e].icon}"
-        alt="${this.postTypeSettings[e].name}"
-      />`:null}_fieldsListTemplate(){return Ee(Object.keys(this.postTypeSettings).sort((e,t)=>{const i=this.postTypeSettings[e].name.toUpperCase(),s=this.postTypeSettings[t].name.toUpperCase();return i<s?-1:i>s?1:0}),e=>e,e=>this.postTypeSettings[e].hidden?null:f`<li class="list-field-picker-item">
-            <label>
-              <input
-                type="checkbox"
-                id="${e}"
-                name="${e}"
-                .value="${e}"
-                @change=${this._updateFields}
-                ?checked=${this.columns.includes(e)}
-              />
-              ${this._fieldListIconTemplate(e)}
-              ${this.postTypeSettings[e].name}</label
-            >
-          </li> `)}_fieldsSelectorTemplate(){return this.showFieldsSelector?f`<div
-        id="list_column_picker"
-        class="list_field_picker list_action_section"
-      >
-        <div class="list_action_section_header">
-          <p style="font-weight:bold">
-            ${O("Choose which fields to display as columns in the list")}
-          </p>
-          <button
-            class="close-button list-action-close-button"
-            data-close="list_column_picker"
-            aria-label="Close modal"
-            type="button"
-            @click=${this._fieldsEdit}
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <ul class="fieldsList">
-          ${this._fieldsListTemplate()}
-        </ul>
-      </div>`:null}_updateFields(e){const t=e.target.value,i=this.columns;i.includes(t)?(i.filter(s=>s!==t),i.splice(i.indexOf(t),1)):i.push(t),this.columns=i,this.style.setProperty("--number-of-columns",this.columns.length-1),this.requestUpdate()}_bulkSelectorTemplate(){return this.showBulkEditSelector?f`<div id="bulk_edit_picker" class="list_action_section">
-        <div class="list_action_section_header">
-          <p style="font-weight:bold">
-            ${O(u`Select all the ${this.postType} you want to update from the list, and update them below`)}
-          </p>
-          <button
-            class="close-button list-action-close-button"
-            aria-label="Close modal"
-            type="button"
-            @click=${this._bulkEdit}
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <ul class="fieldsList">
-          This is where the bulk edit form will go.
-        </ul>
-      </div>`:null}connectedCallback(){super.connectedCallback(),this.payload={sort:this.sortedBy,overall_status:["-closed"],fields_to_return:this.columns},this.posts.length===0&&this._getPosts(this.payload).then(e=>{this.posts=e})}_handleLoadMore(){this.limit=500,this.payload={sort:this.sortedBy,overall_status:["-closed"],fields_to_return:this.columns,offset:this.offset,limit:this.limit},this.loadMore=!0,this._getPosts(this.payload).then(e=>{console.log(e)})}render(){const e={bulk_editing:this.showBulkEditSelector,hidden:!1};this.posts&&(this.total=this.posts.length);const t=f`
-      <svg viewBox="0 0 100 100" fill="#000000" style="enable-background:new 0 0 100 100;" xmlns="http://www.w3.org/2000/svg">
-        <line style="stroke-linecap: round; paint-order: fill; fill: none; stroke-width: 15px;" x1="7.97" y1="50.199" x2="76.069" y2="50.128" transform="matrix(0.999999, 0.001017, -0.001017, 0.999999, 0.051038, -0.042708)"/>
-        <line style="stroke-linecap: round; stroke-width: 15px;" x1="7.97" y1="17.751" x2="92.058" y2="17.751"/>
-        <line style="stroke-linecap: round; stroke-width: 15px;" x1="7.97" y1="82.853" x2="42.343" y2="82.853"/>
-        <polygon style="stroke-linecap: round; stroke-miterlimit: 1; stroke-linejoin: round; fill: rgb(255, 255, 255); paint-order: stroke; stroke-width: 9px;" points="22.982 64.982 33.592 53.186 50.916 70.608 82.902 21.308 95 30.85 52.256 95"/>
-      </svg>
-    `,i=f`<svg height='100px' width='100px'  fill="#000000" xmlns:x="http://ns.adobe.com/Extensibility/1.0/" xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve"><g><g i:extraneous="self"><g><path d="M94.4,63c0-5.7-3.6-10.5-8.6-12.5V7.3c0-2.7-2.2-4.8-4.8-4.8c-2.7,0-4.8,2.2-4.8,4.8v43.2c-5,1.9-8.6,6.8-8.6,12.5     s3.6,10.5,8.6,12.5v17.2c0,2.7,2.2,4.8,4.8,4.8c2.7,0,4.8-2.2,4.8-4.8V75.5C90.9,73.6,94.4,68.7,94.4,63z M81,66.7     c-2,0-3.7-1.7-3.7-3.7c0-2,1.7-3.7,3.7-3.7s3.7,1.7,3.7,3.7C84.7,65.1,83.1,66.7,81,66.7z"></path><path d="M54.8,24.5V7.3c0-2.7-2.2-4.8-4.8-4.8c-2.7,0-4.8,2.2-4.8,4.8v17.2c-5,1.9-8.6,6.8-8.6,12.5s3.6,10.5,8.6,12.5v43.2     c0,2.7,2.2,4.8,4.8,4.8c2.7,0,4.8-2.2,4.8-4.8V49.5c5-1.9,8.6-6.8,8.6-12.5S59.8,26.5,54.8,24.5z M50,40.7c-2,0-3.7-1.7-3.7-3.7     c0-2,1.7-3.7,3.7-3.7c2,0,3.7,1.7,3.7,3.7C53.7,39.1,52,40.7,50,40.7z"></path><path d="M23.8,50.5V7.3c0-2.7-2.2-4.8-4.8-4.8c-2.7,0-4.8,2.2-4.8,4.8v43.2c-5,1.9-8.6,6.8-8.6,12.5s3.6,10.5,8.6,12.5v17.2     c0,2.7,2.2,4.8,4.8,4.8c2.7,0,4.8-2.2,4.8-4.8V75.5c5-1.9,8.6-6.8,8.6-12.5S28.8,52.5,23.8,50.5z M19,66.7c-2,0-3.7-1.7-3.7-3.7     c0-2,1.7-3.7,3.7-3.7c2,0,3.7,1.7,3.7,3.7C22.7,65.1,21,66.7,19,66.7z"></path></g></g></g></svg>`;return f`
-      <div class="section">
-        <div class="header">
-          <div class="section-header">
-            <span
-              class="section-header posts-header"
-              style="display: inline-block"
-              >${O(u`${this.postTypeLabel?this.postTypeLabel:this.postType} List`)}</span
-            >
-          </div>
-          <span class="filter-result-text"
-            >${O(u`Showing ${this.total} of ${this.total}`)}</span
-          >
-
-          <button
-            class="bulkToggle toggleButton"
-            id="bulk_edit_button"
-            @click=${this._bulkEdit}
-          >
-            ${t} ${O("Bulk Edit")}
-          </button>
-          <button
-            class="fieldsToggle toggleButton"
-            id="fields_edit_button"
-            @click=${this._fieldsEdit}
-          >
-            ${i} ${O("Fields")}
-          </button>
-
-          <dt-toggle
-            name="showArchived"
-            label=${O("Show Archived")}
-            ?checked=${this.showArchived}
-            hideIcons
-            onchange=${this._toggleShowArchived}
-            @click=${this._toggleShowArchived}
-          ></dt-toggle>
-        </div>
-
-        ${this._fieldsSelectorTemplate()} ${this._bulkSelectorTemplate()}
-        <table class="table-contacts ${A(e)}">
-          ${this._headerTemplate()}
-          ${this.posts?this._rowTemplate():O("Loading")}
-        </table>
-          ${this.total>=100?f`<div class="text-center"><dt-button buttonStyle=${JSON.stringify({margin:"0"})} class="loadMoreButton btn btn-primary" @click=${this._handleLoadMore}>Load More</dt-button></div>`:""}
-      </div>
-    `}}window.customElements.define("dt-list",Ss);class Ts extends N{static get styles(){return x`
+    `}}window.customElements.define("dt-alert",Eo);class Ao extends N{static get styles(){return x`
       :host {
         font-family: var(--dt-tile-font-family, var(--font-family));
         font-size: var(--dt-tile-font-size, 14px);
@@ -3705,13 +3916,28 @@
       }
 
       section {
-        background-color: var(--dt-tile-background-color, #fefefe);
-        border-top: var(--dt-tile-border-top, 1px solid #cecece);
-        border-bottom: var(--dt-tile-border-bottom, 1px solid #cecece);
-        border-right: var(--dt-tile-border-right, 1px solid #cecece);
-        border-left: var(--dt-tile-border-left, 1px solid #cecece);
+        background-color: var(
+          --dt-tile-background-color,
+          var(--surface-1, #fefefe)
+        );
+        border-top: var(
+          --dt-tile-border-top,
+          1px solid var(--dt-tile-border-color, var(--border-color))
+        );
+        border-bottom: var(
+          --dt-tile-border-bottom,
+          1px solid var(--dt-tile-border-color, var(--border-color))
+        );
+        border-right: var(
+          --dt-tile-border-right,
+          1px solid var(--dt-tile-border-color, var(--border-color))
+        );
+        border-left: var(
+          --dt-tile-border-left,
+          1px solid var(--dt-tile-border-color, var(--border-color))
+        );
         border-radius: var(--dt-tile-border-radius, 10px);
-        box-shadow: var(--dt-tile-box-shadow, 0 2px 4px rgb(0 0 0 / 25%));
+        box-shadow: var(--dt-tile-box-shadow, var(--shadow-0));
         padding: 1rem;
         margin: var(--dt-tile-margin, 0);
       }
@@ -3726,7 +3952,7 @@
       }
 
       .section-header {
-        color: var(--dt-tile-header-color, #3f729b);
+        color: var(--dt-tile-header-color, var(--primary-color));
         font-size: 1.5rem;
         display: flex;
         text-transform: var(--dt-tile-header-text-transform, capitalize);
@@ -3774,10 +4000,10 @@
         top: 0;
         transform: rotate(135deg);
       }
-    `}static get properties(){return{title:{type:String},expands:{type:Boolean},collapsed:{type:Boolean},gap:{type:String}}}get hasHeading(){return this.title||this.expands}_toggle(){this.collapsed=!this.collapsed}renderHeading(){return this.hasHeading?f`
+    `}static get properties(){return{title:{type:String},expands:{type:Boolean},collapsed:{type:Boolean},gap:{type:String}}}get hasHeading(){return this.title||this.expands}_toggle(){this.collapsed=!this.collapsed}renderHeading(){return this.hasHeading?p`
       <h3 class="section-header">
         ${this.title}
-        ${this.expands?f`
+        ${this.expands?p`
               <button
                 @click="${this._toggle}"
                 class="toggle chevron ${this.collapsed?"down":"up"}"
@@ -3786,7 +4012,7 @@
               </button>
             `:null}
       </h3>
-    `:E}render(){return f`
+    `:O}render(){return p`
       <section>
         ${this.renderHeading()}
         <div
@@ -3797,4 +4023,4 @@
           <slot></slot>
         </div>
       </section>
-    `}}window.customElements.define("dt-tile",Ts);class Ce{get api(){return this._api}constructor(e,t,i,s="wp-json"){this.postType=e,this.postId=t,this.nonce=i,this.debounceTimers={},this._api=new mt(this.nonce,s),this.apiRoot=this._api.apiRoot,this.autoSaveComponents=["dt-connection","dt-users-connection","dt-date","dt-datetime","dt-location","dt-location-map","dt-multi-select","dt-number","dt-single-select","dt-tags","dt-text","dt-textarea","dt-toggle","dt-multi-text","dt-multi-select-button-group","dt-list","dt-button","dt-church-health-circle"],this.dynamicLoadComponents=["dt-connection","dt-tags","dt-modal","dt-list","dt-button","dt-location","dt-users-connection"]}initialize(){this.postId&&this.enableAutoSave(),this.attachLoadEvents()}async attachLoadEvents(e){const t=document.querySelectorAll(e||this.dynamicLoadComponents.join(","));t&&t.forEach(i=>{i.dataset.eventDtGetData||(i.addEventListener("dt:get-data",this.handleGetDataEvent.bind(this)),i.dataset.eventDtGetData=!0)})}async checkDuplicates(e,t){const i=document.querySelector("dt-modal.duplicate-detected");if(i){const s=i.shadowRoot.querySelector(".duplicates-detected-button");s&&(s.style.display="none");const a=await this._api.checkDuplicateUsers(this.postType,this.postId);t&&a.ids.length>0&&s&&(s.style.display="block")}}enableAutoSave(e){const t=document.querySelectorAll(e||this.autoSaveComponents.join(","));t&&t.forEach(i=>{i.addEventListener("change",this.handleChangeEvent.bind(this))})}async handleGetDataEvent(e){const t=e.detail;if(t){const{field:i,query:s,onSuccess:a,onError:n}=t;try{const r=e.target.tagName.toLowerCase();let l=[];switch(r){case"dt-button":l=await this._api.getContactInfo(this.postType,this.postId);break;case"dt-list":l=(await this._api.fetchPostsList(this.postType,s)).posts;break;case"dt-connection":{const c=t.postType||this.postType,b=await this._api.listPostsCompact(c,s),g={...b,posts:b.posts.filter(v=>v.ID!==parseInt(this.postId,10))};g!=null&&g.posts&&(l=Ce.convertApiValue("dt-connection",g==null?void 0:g.posts));break}case"dt-users-connection":{const c=t.postType||this.postType,b=await this._api.searchUsers(c,s),g={...b,posts:b.filter(v=>v.ID!==parseInt(this.postId,10))};g!=null&&g.posts&&(l=Ce.convertApiValue("dt-users-connection",g==null?void 0:g.posts));break}case"dt-location":{l=await this._api.getLocations(this.postType,i,t.filter,s),l=l.location_grid.map(c=>({id:c.ID,label:c.name}));break}case"dt-tags":default:l=await this._api.getMultiSelectValues(this.postType,i,s),l=l.map(c=>({id:c,label:c}));break}a(l)}catch(r){n(r)}}}async handleChangeEvent(e){const t=e.detail;if(t){const{field:i,newValue:s,oldValue:a,remove:n}=t,r=e.target.tagName.toLowerCase(),l=Ce.convertValue(r,s,a);if(e.target.removeAttribute("saved"),e.target.setAttribute("loading",!0),r==="dt-number"){const c=`${this.postType}-${this.postId}-${i}`;this.debounce(c,async()=>{try{const b=await this._api.updatePost(this.postType,this.postId,{[i]:l});document.dispatchEvent(new CustomEvent("dt:post:update",{detail:{response:b,field:i,value:l,component:r}})),e.target.removeAttribute("loading"),e.target.setAttribute("error",""),e.target.setAttribute("saved",!0)}catch(b){console.error(b),e.target.removeAttribute("loading"),e.target.setAttribute("invalid",!0),e.target.setAttribute("error",b.message||b.toString())}},1e3)}else try{const c={[i]:l};if(r==="dt-location-map"){const g=l.values.filter(v=>!v.lng||!v.lat);c[i].values=l.values.filter(v=>v.lng&&v.lat),c.contact_address=g,c.contact_address.length===0&&delete c.contact_address,c[i].values.length===0&&delete c[i]}const b=await this._api.updatePost(this.postType,this.postId,c);if(document.dispatchEvent(new CustomEvent("dt:post:update",{detail:{response:b,field:i,value:l,component:r}})),r==="dt-location-map"){const g=e.target;g.value=b[i]}e.target.removeAttribute("loading"),e.target.setAttribute("error",""),e.target.setAttribute("saved",!0)}catch(c){console.error(c),e.target.removeAttribute("loading"),e.target.setAttribute("invalid",!0),e.target.setAttribute("error",c.message||c.toString())}}}debounce(e,t,i){this.debounceTimers[e]&&clearTimeout(this.debounceTimers[e]),this.debounceTimers[e]=setTimeout(()=>{t()},i)}static convertApiValue(e,t){let i=t;switch(e){case"dt-connection":i=t.map(s=>({id:s.ID,label:s.name??s.post_title,link:s.permalink,status:s.status}));break;case"dt-users-connection":t&&!Array.isArray(t)&&(t.id||t.ID)?i=[{id:t.id||t.ID,label:t.display,avatar:t.avatar||""}]:Array.isArray(t)&&(i=t.map(s=>({id:s.id||s.ID,label:s.display||s.name,avatar:s.avatar||""})));break}return i}static convertValue(e,t,i=null){let s=t;if(t)switch(e.toLowerCase()){case"dt-toggle":typeof t=="string"&&(s=t.toLowerCase()==="true");break;case"dt-church-health-circle":case"dt-multi-select":case"dt-multi-select-button-group":case"dt-tags":typeof t=="string"&&(s=[t]),s={values:s.map(n=>{if(typeof n=="string"){const l={value:n};return n.startsWith("-")&&(l.delete=!0,l.value=n.substring(1)),l}const r={value:n.id};return n.delete&&(r.delete=n.delete),r}),force_values:!1};break;case"dt-users-connection":{const n=[],r=s.filter(c=>!c.delete);if(r.length<=1){s=r.length===1?parseInt(r[0].id,10):"";break}const l=new Map((i||[]).map(c=>[c.id,c]));for(const c of s){const b=l.get(c.id),g={id:c.id,changes:{}};if(b){let v=!1;const y=new Set([...Object.keys(b),...Object.keys(c)]);for(const w of y)c[w]!==b[w]&&(g.changes[w]=Object.prototype.hasOwnProperty.call(c,w)?c[w]:void 0,v=!0);if(v){n.push(g);break}}else{g.changes={...c},n.push(g);break}}s=n[0].id;break}case"dt-connection":typeof t=="string"&&(s=[{id:t}]),s={values:s.map(n=>{const r={value:n.id};return n.delete&&(r.delete=n.delete),r}),force_values:!1};break;case"dt-location":const a=new Set((i||[]).map(n=>n.id));typeof t=="string"?s=[{id:t}]:s=t.filter(n=>!(a.has(n.id)&&!n.delete)),s={values:s.map(n=>{const r={value:n.id};return n.delete&&(r.delete=n.delete),r}),force_values:!1};break;case"dt-location-map":if(s=t.filter(n=>!((i||[]).includes(n)&&!n.delete)),i)for(const n of i)t.some(l=>n.id&&l.id&&n.id===l.id||n.key&&l.key&&n.key===l.key&&(!l.lat||!l.lng))||(n.delete=!0,s.push(n));s={values:s.map(n=>{const r=n;return n.delete&&(r.delete=n.delete),r}),force_values:!1};break;case"dt-multi-text":Array.isArray(t)?s=t.map(n=>{const r={...n};return delete r.tempKey,r}):typeof t=="string"&&(s=[{value:t}]);break}return s}static valueArrayDiff(e,t){const i={value1:[],value2:[]};if(Array.isArray(e)||(e=[]),Array.isArray(t)||(t=[]),e.length>0&&typeof e[0]!="object")return i.value1=e.filter(r=>!t.includes(r)),i.value2=t.filter(r=>!e.includes(r)),i;const s=r=>JSON.stringify(r),a=new Map(e.map(r=>[s(r),r])),n=new Map(t.map(r=>[s(r),r]));for(const[r,l]of a)n.has(r)||i.value1.push(l);for(const[r,l]of n)a.has(r)||i.value2.push(l);return i}}const Ua="0.8.9",Va={s226be12a5b1a27e8:"ሰነዶቹን ያንብቡ",s33f85f24c0f5f008:"አስቀምጥ",s36cb242ac90353bc:"መስኮች",s41cb4006238ebd3b:"የጅምላ አርትዕ",s5e8250fb85d64c23:"ገጠመ",s625ad019db843f94:"ተጠቀም",sac83d7f9358b43db:u`${0} ዝርዝር`,sbf1ca928ec1deb62:"ተጨማሪ እገዛ ይፈልጋሉ?",sd1a8dc951b2b6a98:"በዝርዝሩ ውስጥ እንደ ዓምዶች የትኞቹን መስኮች እንደሚያሳዩ ይምረጡ",sf9aee319a006c9b4:"አክል",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Ba=Object.freeze(Object.defineProperty({__proto__:null,templates:Va},Symbol.toStringTag,{value:"Module"})),Ha={s04ceadb276bbe149:"خيارات التحميل...",s226be12a5b1a27e8:"اقرأ الوثائق",s29e25f5e4622f847:"افتح",s33f85f24c0f5f008:"حفظ",s36cb242ac90353bc:"مجالات",s41cb4006238ebd3b:"التحرير بالجملة",s5e8250fb85d64c23:"غلق",s625ad019db843f94:"استخدام",s9d51bfd93b5dbeca:"عرض المحفوظات",sac83d7f9358b43db:u`${0}قائمة الأعضاء`,sb1bd536b63e9e995:"المجال الخاص: أنا فقط أستطيع رؤية محتواه",sb59d68ed12d46377:"جار التحميل",sbf1ca928ec1deb62:"هل تريد المزيد من المساعدة؟",scb9a1ff437efbd2a:u`حَدِّد جميع ${0} التي تريد تحديثها من القائمة ، وقم بتحديثها أدناه`,sd1a8dc951b2b6a98:"اختر المجالات المراد عرضها كأعمدة في القائمة",seafe6ef133ede7da:u`عرض 1 of ${0}`,sf9aee319a006c9b4:"لأضف",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},Ga=Object.freeze(Object.defineProperty({__proto__:null,templates:Ha},Symbol.toStringTag,{value:"Module"})),Wa={s226be12a5b1a27e8:"اقرأ الوثائق",s33f85f24c0f5f008:"حفظ",s36cb242ac90353bc:"مجالات",s41cb4006238ebd3b:"التحرير بالجملة",s5e8250fb85d64c23:"أغلق",s625ad019db843f94:"استخدام",sbf1ca928ec1deb62:"هل تريد المزيد من المساعدة؟",sd1a8dc951b2b6a98:"اختر المجالات المراد عرضها كأعمدة في القائمة",sf9aee319a006c9b4:"إضافة",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Ka=Object.freeze(Object.defineProperty({__proto__:null,templates:Wa},Symbol.toStringTag,{value:"Module"})),Za={s226be12a5b1a27e8:"Прочетете документацията",s33f85f24c0f5f008:"Запазете",s36cb242ac90353bc:"Полета",s41cb4006238ebd3b:"Групово редактиране",s5e8250fb85d64c23:"Близо",s625ad019db843f94:"Използвайте",sbf1ca928ec1deb62:"Имате нужда от повече помощ?",sd1a8dc951b2b6a98:"Изберете кои полета да се показват като колони в списъка",sf9aee319a006c9b4:"Добавяне",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Ja=Object.freeze(Object.defineProperty({__proto__:null,templates:Za},Symbol.toStringTag,{value:"Module"})),Qa={s226be12a5b1a27e8:"নথিপত্রাদি পাঠ করুন",s33f85f24c0f5f008:"সংরক্ষণ করুন",s36cb242ac90353bc:"ক্ষেত্র",s41cb4006238ebd3b:"বাল্ক এডিট",s5e8250fb85d64c23:"বন্ধ",s625ad019db843f94:"ব্যবহার",sbf1ca928ec1deb62:"আরও সাহায্য প্রয়োজন?",sd1a8dc951b2b6a98:"তালিকার কলাম হিসাবে কোন ক্ষেত্রগুলি প্রদর্শিত হবে তা চয়ন করুন",sf9aee319a006c9b4:"অ্যাড",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Ya=Object.freeze(Object.defineProperty({__proto__:null,templates:Qa},Symbol.toStringTag,{value:"Module"})),Xa={s04ceadb276bbe149:"Učitavanje opcija...",s226be12a5b1a27e8:"Pročitajte dokumentaciju",s29e25f5e4622f847:"Otvorite dijalog",s33f85f24c0f5f008:"Sačuvaj",s36cb242ac90353bc:"Polja",s41cb4006238ebd3b:"Skupno uređivanje",s5e8250fb85d64c23:"Zatvori",s625ad019db843f94:"Koristi",s9d51bfd93b5dbeca:"Prikaži arhivirano",sac83d7f9358b43db:u`${0} Lista`,sb1bd536b63e9e995:"Privatno polje: Samo ja mogu vidjeti njegov sadržaj",sb59d68ed12d46377:"Učitavanje",sbf1ca928ec1deb62:"Trebate više pomoći?",scb9a1ff437efbd2a:u`Odaberite sve ${0} koje želite ažurirati sa liste i ažurirajte ih ispod`,sd1a8dc951b2b6a98:"Odaberite koja polja će se prikazati kao kolone na listi",seafe6ef133ede7da:u`Prikazuje se 1 od ${0}`,sf9aee319a006c9b4:"Dodati",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},en=Object.freeze(Object.defineProperty({__proto__:null,templates:Xa},Symbol.toStringTag,{value:"Module"})),tn={s226be12a5b1a27e8:"Přečtěte si dokumentaci",s33f85f24c0f5f008:"Uložit",s36cb242ac90353bc:"Pole",s41cb4006238ebd3b:"Hromadná úprava",s5e8250fb85d64c23:"Zavřít",s625ad019db843f94:"Použití",sbf1ca928ec1deb62:"Potřebujete další pomoc?",sd1a8dc951b2b6a98:"Vyberte pole, která chcete v seznamu zobrazit jako sloupce",sf9aee319a006c9b4:"Přidat",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},sn=Object.freeze(Object.defineProperty({__proto__:null,templates:tn},Symbol.toStringTag,{value:"Module"})),on={s226be12a5b1a27e8:"Lesen Sie die Dokumentation",s33f85f24c0f5f008:"Speichern",s36cb242ac90353bc:"Felder",s41cb4006238ebd3b:"Im Stapel bearbeiten",s5e8250fb85d64c23:"Schließen",s625ad019db843f94:"Verwenden",sbf1ca928ec1deb62:"Benötigen Sie weitere Hilfe?",sd1a8dc951b2b6a98:"Wählen Sie aus, welche Felder in der Liste als Spalte angezeigt werden sollen",sf9aee319a006c9b4:"Hinzufügen",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},an=Object.freeze(Object.defineProperty({__proto__:null,templates:on},Symbol.toStringTag,{value:"Module"})),nn={s226be12a5b1a27e8:"Διαβάστε την τεκμηρίωση",s33f85f24c0f5f008:"Αποθήκευση",s36cb242ac90353bc:"Πεδία",s41cb4006238ebd3b:"Μαζική Επεξεργασία",s5e8250fb85d64c23:"Κλείσιμο",s625ad019db843f94:"Χρήση",sbf1ca928ec1deb62:"Χρειάζεστε περισσότερη βοήθεια;",sd1a8dc951b2b6a98:"Επιλέξτε ποια πεδία θα εμφανίζονται ως στήλες στη λίστα",sf9aee319a006c9b4:"Προσθήκη",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},rn=Object.freeze(Object.defineProperty({__proto__:null,templates:nn},Symbol.toStringTag,{value:"Module"})),ln={sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",sf9aee319a006c9b4:"Add",sbf1ca928ec1deb62:"Need more help?",s226be12a5b1a27e8:"Read the documentation",s5e8250fb85d64c23:"Close",s29e25f5e4622f847:"Open Dialog",s33f85f24c0f5f008:"Save",s49730f3d5751a433:"Loading...",s625ad019db843f94:"Use",sd1a8dc951b2b6a98:"Choose which fields to display as columns in the list",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s41cb4006238ebd3b:"Bulk Edit",s36cb242ac90353bc:"Fields",s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},dn=Object.freeze(Object.defineProperty({__proto__:null,templates:ln},Symbol.toStringTag,{value:"Module"})),cn={s8900c9de2dbae68b:"No hay opciones disponibles",sb1bd536b63e9e995:"Campo Privado: Solo yo puedo ver su contenido",sf9aee319a006c9b4:"Añadir",sd1a8dc951b2b6a98:"Choose which fields to display as columns in the list",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sb9b8c412407d5691:"This is where the bulk edit form will go.",sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s41cb4006238ebd3b:"Bulk Edit",s36cb242ac90353bc:"Fields",s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading",sbf1ca928ec1deb62:"Need more help?",s226be12a5b1a27e8:"Read the documentation",s5e8250fb85d64c23:"Close",s29e25f5e4622f847:"Open Dialog"},un=Object.freeze(Object.defineProperty({__proto__:null,templates:cn},Symbol.toStringTag,{value:"Module"})),hn={s04ceadb276bbe149:"Cargando opciones...",s226be12a5b1a27e8:"Leer la documentación",s29e25f5e4622f847:"Abrir Diálogo",s33f85f24c0f5f008:"Guardar",s36cb242ac90353bc:"Campos",s41cb4006238ebd3b:"Edición masiva",s5e8250fb85d64c23:"Cerrar",s625ad019db843f94:"Usar",s9d51bfd93b5dbeca:"Mostrar archivado",sac83d7f9358b43db:u`${0} Lista`,sb1bd536b63e9e995:"Campo Privado: Solo yo puedo ver su contenido",sb59d68ed12d46377:"Cargando",sbf1ca928ec1deb62:"¿Necesitas más ayuda?",scb9a1ff437efbd2a:u`Selecciona todos los ${0} que quieras actualizar del listado y actualízalos debajo`,sd1a8dc951b2b6a98:"Elige qué campos mostrar como columnas en el listado",seafe6ef133ede7da:u`Mostrando 1 de ${0}`,sf9aee319a006c9b4:"Agregar",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},pn=Object.freeze(Object.defineProperty({__proto__:null,templates:hn},Symbol.toStringTag,{value:"Module"})),fn={s04ceadb276bbe149:"Cargando opciones...",s226be12a5b1a27e8:"Lee la documentación",s29e25f5e4622f847:"Abrir Diálogo",s33f85f24c0f5f008:"Guardar",s36cb242ac90353bc:"Campos",s41cb4006238ebd3b:"Edición masiva",s5e8250fb85d64c23:"Cerrar",s625ad019db843f94:"Usar",s9d51bfd93b5dbeca:"Mostrar archivado",sac83d7f9358b43db:u`${0} Lista`,sb1bd536b63e9e995:"Campo Privado: Solo yo puedo ver su contenido",sb59d68ed12d46377:"Cargando",sbf1ca928ec1deb62:"¿Necesitas más ayuda?",scb9a1ff437efbd2a:u`Selecciona todos los ${0} que quieras actualizar del listado y actualízalos debajo`,sd1a8dc951b2b6a98:"Elige qué campos mostrar como columnas en el listado",seafe6ef133ede7da:u`Mostrando 1 de ${0}`,sf9aee319a006c9b4:"Agregar",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},bn=Object.freeze(Object.defineProperty({__proto__:null,templates:fn},Symbol.toStringTag,{value:"Module"})),gn={s04ceadb276bbe149:"در حال بارگیری گزینه‌ها...",s226be12a5b1a27e8:"راهنمای سایت",s29e25f5e4622f847:"جعبه محاوره ای را باز کنید",s33f85f24c0f5f008:"صرفه جویی",s36cb242ac90353bc:"حوزه‌ها",s41cb4006238ebd3b:"ویرایش انبوه",s5e8250fb85d64c23:"بستن",s625ad019db843f94:"استفاده کنید",s9d51bfd93b5dbeca:"نمایش بایگانی شده",sac83d7f9358b43db:u`لیست ${0}`,sb1bd536b63e9e995:"زمینه خصوصی: فقط من می توانم محتوای آن را داشته باشم",sb59d68ed12d46377:"بارگیری",sbf1ca928ec1deb62:"آیا به راهنمایی بیشتری نیاز دارید؟",scb9a1ff437efbd2a:u`همۀ ${0} مورد نظر برای به روزرسانی را از لیست انتخاب کنید و آن‌ها را در زیر به روز کنید`,sd1a8dc951b2b6a98:"انتخاب کنید که کدام یک از حوزه‌ها به‌عنوان ستون در لیست نمایش داده شوند",seafe6ef133ede7da:u`نمایش 1 از ${0}`,sf9aee319a006c9b4:"افزودن",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},mn=Object.freeze(Object.defineProperty({__proto__:null,templates:gn},Symbol.toStringTag,{value:"Module"})),vn={s04ceadb276bbe149:"Chargement les options...",s226be12a5b1a27e8:"Lire la documentation",s29e25f5e4622f847:"Ouvrir la boîte de dialogue",s33f85f24c0f5f008:"sauver",s36cb242ac90353bc:"Champs",s41cb4006238ebd3b:"Modification groupée",s5e8250fb85d64c23:"Fermer",s625ad019db843f94:"Utiliser",s9d51bfd93b5dbeca:"Afficher Archivé",sac83d7f9358b43db:u`${0} Liste`,sb1bd536b63e9e995:"Champ privé : je suis le seul à voir son contenu",sb59d68ed12d46377:"Chargement",sbf1ca928ec1deb62:"Besoin d'aide ?",scb9a1ff437efbd2a:u`Sélectionnez tous les ${0} que vous souhaitez mettre à jour dans la liste et mettez-les à jour ci-dessous`,sd1a8dc951b2b6a98:"Choisissez les champs à afficher sous forme de colonnes dans la liste",seafe6ef133ede7da:u`Affichage de 1 sur ${0}`,sf9aee319a006c9b4:"Ajouter",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},yn=Object.freeze(Object.defineProperty({__proto__:null,templates:vn},Symbol.toStringTag,{value:"Module"})),wn={s226be12a5b1a27e8:"डॉक्यूमेंटेशन पढ़ें",s33f85f24c0f5f008:"बचाना",s36cb242ac90353bc:"खेत",s41cb4006238ebd3b:"थोक संपादित",s5e8250fb85d64c23:"बंद",s625ad019db843f94:"उपयोग",sbf1ca928ec1deb62:"क्या और मदद चाहिये?",sd1a8dc951b2b6a98:"सूची में कॉलम के रूप में प्रदर्शित करने के लिए कौन से फ़ील्ड चुनें",sf9aee319a006c9b4:"जोडें",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},_n=Object.freeze(Object.defineProperty({__proto__:null,templates:wn},Symbol.toStringTag,{value:"Module"})),$n={s04ceadb276bbe149:"Učitavanje opcija...",s226be12a5b1a27e8:"Pročitaj dokumentaciju",s29e25f5e4622f847:"Otvorite dijalog",s33f85f24c0f5f008:"Spremi",s36cb242ac90353bc:"Polja",s41cb4006238ebd3b:"Skupno uređivanje",s5e8250fb85d64c23:"Zatvoriti",s625ad019db843f94:"Koristi",s9d51bfd93b5dbeca:"Prikaži arhivirano",sac83d7f9358b43db:u`${0} Lista`,sb1bd536b63e9e995:"Privatno polje: Samo ja mogu vidjeti njegov sadržaj",sb59d68ed12d46377:"Učitavanje",sbf1ca928ec1deb62:"Trebate li pomoć?",scb9a1ff437efbd2a:u`Odaberite sve${0}koje želite ažurirati s liste i ažurirajte ih ispod`,sd1a8dc951b2b6a98:"Izaberite polja koja će se prikazivati kao stupci na popisu",seafe6ef133ede7da:u`Prikazuje se 1 od${0}`,sf9aee319a006c9b4:"Dodaj",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},xn=Object.freeze(Object.defineProperty({__proto__:null,templates:$n},Symbol.toStringTag,{value:"Module"})),kn={s226be12a5b1a27e8:"Olvasd el a dokumentációt",s33f85f24c0f5f008:"Megment",s36cb242ac90353bc:"Mezők",s41cb4006238ebd3b:"Tömeges Szerkesztés",s5e8250fb85d64c23:"Bezár",s625ad019db843f94:"Használ",sbf1ca928ec1deb62:"Több segítség szükséges?",sd1a8dc951b2b6a98:"Válassza ki, melyik mezők jelenjenek meg oszlopként a listában",sf9aee319a006c9b4:"Hozzáadás",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Sn=Object.freeze(Object.defineProperty({__proto__:null,templates:kn},Symbol.toStringTag,{value:"Module"})),Tn={s226be12a5b1a27e8:"Bacalah dokumentasi",s33f85f24c0f5f008:"Simpan",s36cb242ac90353bc:"Larik",s41cb4006238ebd3b:"Edit Massal",s5e8250fb85d64c23:"Menutup",s625ad019db843f94:"Gunakan",sbf1ca928ec1deb62:"Perlukan bantuan lagi?",sd1a8dc951b2b6a98:"Pilih larik mana yang akan ditampilkan sebagai kolom dalam daftar",sf9aee319a006c9b4:"Tambah",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},An=Object.freeze(Object.defineProperty({__proto__:null,templates:Tn},Symbol.toStringTag,{value:"Module"})),En={s04ceadb276bbe149:"Caricando opzioni...",s226be12a5b1a27e8:"Leggi la documentazione",s29e25f5e4622f847:"Apri Dialogo",s33f85f24c0f5f008:"Salvare",s36cb242ac90353bc:"Campi",s41cb4006238ebd3b:"Modifica in blocco",s5e8250fb85d64c23:"Chiudi",s625ad019db843f94:"Uso",s9d51bfd93b5dbeca:"Visualizza Archiviati",sac83d7f9358b43db:u`${0} Lista`,sb1bd536b63e9e995:"Campo Privato: Solo io posso vedere i suoi contenuti",sb59d68ed12d46377:"Caricando",sbf1ca928ec1deb62:"Hai bisogno di ulteriore assistenza?",scb9a1ff437efbd2a:u`Seleziona tutti i ${0}vuoi aggiornare dalla lista e aggiornali sotto`,sd1a8dc951b2b6a98:"Scegli quali campi visualizzare come colonne nell'elenco",seafe6ef133ede7da:u`Visualizzando 1 di ${0}`,sf9aee319a006c9b4:"Inserisci",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},On=Object.freeze(Object.defineProperty({__proto__:null,templates:En},Symbol.toStringTag,{value:"Module"})),Cn={s226be12a5b1a27e8:"ドキュメントを読む",s33f85f24c0f5f008:"セーブ",s36cb242ac90353bc:"田畑",s41cb4006238ebd3b:"一括編集",s5e8250fb85d64c23:"閉じる",s625ad019db843f94:"使用する",sbf1ca928ec1deb62:"もっと助けが必要ですか？",sd1a8dc951b2b6a98:"リストの列として表示するフィールドを選択します",sf9aee319a006c9b4:"追加",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Ln=Object.freeze(Object.defineProperty({__proto__:null,templates:Cn},Symbol.toStringTag,{value:"Module"})),In={s226be12a5b1a27e8:"문서 읽기",s33f85f24c0f5f008:"구하다",s36cb242ac90353bc:"필드",s41cb4006238ebd3b:"대량 수정",s5e8250fb85d64c23:"닫기",s625ad019db843f94:"사용",sbf1ca928ec1deb62:"더 많은 도움이 필요하신가요?",sd1a8dc951b2b6a98:"목록에서 어떤 필드를 표시할지 고르세요",sf9aee319a006c9b4:"추가",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Pn=Object.freeze(Object.defineProperty({__proto__:null,templates:In},Symbol.toStringTag,{value:"Module"})),Mn={s226be12a5b1a27e8:"Прочитај ја документацијата",s33f85f24c0f5f008:"Зачувај",s36cb242ac90353bc:"Полиња",s41cb4006238ebd3b:"Уреди повеќе",s5e8250fb85d64c23:"Затвори",s625ad019db843f94:"Користи",sbf1ca928ec1deb62:"Дали ти треба повеќе помош?",sd1a8dc951b2b6a98:"Избери кои полиња да се прикажат како колони во листата",sf9aee319a006c9b4:"Додади",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},jn=Object.freeze(Object.defineProperty({__proto__:null,templates:Mn},Symbol.toStringTag,{value:"Module"})),Dn={s226be12a5b1a27e8:"कागदपत्रे वाचा.",s33f85f24c0f5f008:"जतन करा",s36cb242ac90353bc:"क्षेत्रे",s41cb4006238ebd3b:"बल्क एडिट करा",s5e8250fb85d64c23:"बंद करा",s625ad019db843f94:"वापर",sbf1ca928ec1deb62:"अधिक मदत आवश्यक आहे का?",sd1a8dc951b2b6a98:"यादीत कोणती क्षेत्रे स्तंभ म्हणून दर्शवली जावीत हे निवडा",sf9aee319a006c9b4:"समाविष्ट करा",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},zn=Object.freeze(Object.defineProperty({__proto__:null,templates:Dn},Symbol.toStringTag,{value:"Module"})),Rn={s226be12a5b1a27e8:"စာရွက်စာတမ်းများကိုဖတ်ပါ",s33f85f24c0f5f008:"သိမ်းဆည်းပါ",s36cb242ac90353bc:"နယ်ပယ်ဒေသများ",s5e8250fb85d64c23:"ပိတ်သည်",s625ad019db843f94:"အသုံးပြုပါ",sbf1ca928ec1deb62:"နောက်ထပ်အကူအညီလိုပါသလား။",sd1a8dc951b2b6a98:"စာရင်းရှိကော်လံများအနေဖြင့်ဖော်ပြမည့်မည်သည့်နယ်ပယ်ဒေသများကိုရွေးချယ်ပါ",sf9aee319a006c9b4:"ထည့်ပါ",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s41cb4006238ebd3b:"Bulk Edit",s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Nn=Object.freeze(Object.defineProperty({__proto__:null,templates:Rn},Symbol.toStringTag,{value:"Module"})),qn={s226be12a5b1a27e8:"कागजात पढ्नुहोस्",s33f85f24c0f5f008:"सुरक्षित गर्नुहोस",s36cb242ac90353bc:"क्षेत्रहरू",s41cb4006238ebd3b:"थोक सम्पादन",s5e8250fb85d64c23:"बन्द गर्नुहोस",s625ad019db843f94:"प्रयोग गर्नुहोस्",sbf1ca928ec1deb62:"थप मद्दत चाहिन्छ?",sd1a8dc951b2b6a98:"सूचीमा स्तम्भहरूको रूपमा कुन क्षेत्रहरू प्रदर्शन गर्ने छनौट गर्नुहोस्",sf9aee319a006c9b4:"थप",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Fn=Object.freeze(Object.defineProperty({__proto__:null,templates:qn},Symbol.toStringTag,{value:"Module"})),Un={s04ceadb276bbe149:"aan het laden.....",s226be12a5b1a27e8:"Lees de documentatie",s29e25f5e4622f847:"Dialoogvenster openen",s33f85f24c0f5f008:"Opslaan",s36cb242ac90353bc:"Velden",s41cb4006238ebd3b:"Bulkbewerking",s5e8250fb85d64c23:"sluit",s625ad019db843f94:"Gebruiken",sac83d7f9358b43db:u`${0} Lijst`,sb1bd536b63e9e995:"Privéveld: alleen ik kan de inhoud zien",sb59d68ed12d46377:"aan het laden",sbf1ca928ec1deb62:"Meer hulp nodig?",sd1a8dc951b2b6a98:"Kies welke velden u als kolommen in de lijst wilt weergeven",seafe6ef133ede7da:u`1 van ${0} laten zien`,sf9aee319a006c9b4:"Toevoegen",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,s9d51bfd93b5dbeca:"Show Archived"},Vn=Object.freeze(Object.defineProperty({__proto__:null,templates:Un},Symbol.toStringTag,{value:"Module"})),Bn={s226be12a5b1a27e8:"ਦਸਤਾਵੇਜ਼ ਪੜ੍ਹੋ",s33f85f24c0f5f008:"ਸੇਵ",s36cb242ac90353bc:"ਖੇਤਰ",s41cb4006238ebd3b:"ਥੋਕ ਸੰਪਾਦਨ",s5e8250fb85d64c23:"ਬੰਦ ਕਰੋ",s625ad019db843f94:"ਵਰਤੋਂ",sbf1ca928ec1deb62:"ਹੋਰ ਮਦਦ ਦੀ ਲੋੜ ਹੈ?",sd1a8dc951b2b6a98:"ਸੂਚੀ ਵਿੱਚ ਕਾਲਮ ਦੇ ਰੂਪ ਵਿੱਚ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰਨ ਲਈ ਕਿਹੜੇ ਖੇਤਰ ਚੁਣੋ",sf9aee319a006c9b4:"ਸ਼ਾਮਲ ਕਰੋ",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Hn=Object.freeze(Object.defineProperty({__proto__:null,templates:Bn},Symbol.toStringTag,{value:"Module"})),Gn={s226be12a5b1a27e8:"Przeczytaj dokumentację",s33f85f24c0f5f008:"Zapisać",s36cb242ac90353bc:"Pola",s41cb4006238ebd3b:"Edycja zbiorcza",s5e8250fb85d64c23:"Zamknij",s625ad019db843f94:"Posługiwać się",sbf1ca928ec1deb62:"Potrzebujesz pomocy?",sd1a8dc951b2b6a98:"Wybierz, które pola mają być wyświetlane jako kolumny na liście",sf9aee319a006c9b4:"Dodaj",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Wn=Object.freeze(Object.defineProperty({__proto__:null,templates:Gn},Symbol.toStringTag,{value:"Module"})),Kn={s226be12a5b1a27e8:"Leia a documentação",s33f85f24c0f5f008:"Salvar",s36cb242ac90353bc:"Campos",s41cb4006238ebd3b:"Edição em massa",s5e8250fb85d64c23:"Fechar",s625ad019db843f94:"Usar",sbf1ca928ec1deb62:"Precisa de mais ajuda?",sd1a8dc951b2b6a98:"Escolha quais campos exibir como colunas na lista",sf9aee319a006c9b4:"Adicionar",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Zn=Object.freeze(Object.defineProperty({__proto__:null,templates:Kn},Symbol.toStringTag,{value:"Module"})),Jn={s226be12a5b1a27e8:"Citiți documentația",s33f85f24c0f5f008:"Salvați",s36cb242ac90353bc:"Câmpuri",s41cb4006238ebd3b:"Editare masivă",s5e8250fb85d64c23:"Închide",s625ad019db843f94:"Utilizare",sbf1ca928ec1deb62:"Ai nevoie de mai mult ajutor?",sd1a8dc951b2b6a98:"Alegeți câmpurile care să fie afișate în coloane în listă",sf9aee319a006c9b4:"Adăuga",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Qn=Object.freeze(Object.defineProperty({__proto__:null,templates:Jn},Symbol.toStringTag,{value:"Module"})),Yn={s226be12a5b1a27e8:"Читать документацию",s33f85f24c0f5f008:"Сохранить",s36cb242ac90353bc:"Поля",s41cb4006238ebd3b:"Массовое редактирование",s5e8250fb85d64c23:"Закрыть",s625ad019db843f94:"Использовать",sbf1ca928ec1deb62:"Нужна дополнительная помощь?",sd1a8dc951b2b6a98:"Выберите, какие поля отображать как столбцы в списке",sf9aee319a006c9b4:"Добавить",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Xn=Object.freeze(Object.defineProperty({__proto__:null,templates:Yn},Symbol.toStringTag,{value:"Module"})),er={s226be12a5b1a27e8:"Preberite dokumentacijo",s33f85f24c0f5f008:"Shrani",s36cb242ac90353bc:"Polja",s41cb4006238ebd3b:"Urejanje v velikem obsegu",s5e8250fb85d64c23:"Zapri",s625ad019db843f94:"Uporaba",sbf1ca928ec1deb62:"Potrebujete več pomoči?",sd1a8dc951b2b6a98:"Izberite, katera polja naj bodo prikazana kot stolpci na seznamu",sf9aee319a006c9b4:"Dodaj",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},tr=Object.freeze(Object.defineProperty({__proto__:null,templates:er},Symbol.toStringTag,{value:"Module"})),ir={s226be12a5b1a27e8:"Pročitajte dokumentaciju",s33f85f24c0f5f008:"Sačuvaj",s36cb242ac90353bc:"Polja",s41cb4006238ebd3b:"masovno uređivanje",s5e8250fb85d64c23:"Zatvori",s625ad019db843f94:"Koristiti",sbf1ca928ec1deb62:"Treba vam više pomoći?",sd1a8dc951b2b6a98:"Izaberite koja polja da se prikazuju kao kolone na listi",sf9aee319a006c9b4:"Dodaj",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},sr=Object.freeze(Object.defineProperty({__proto__:null,templates:ir},Symbol.toStringTag,{value:"Module"})),or={s04ceadb276bbe149:"Inapakia chaguo...",s226be12a5b1a27e8:"Soma nyaraka",s29e25f5e4622f847:"Fungua Kidirisha",s33f85f24c0f5f008:"Hifadhi",s36cb242ac90353bc:"Mashamba",s41cb4006238ebd3b:"Hariri kwa Wingi",s5e8250fb85d64c23:"Funga",s625ad019db843f94:"Tumia",s9d51bfd93b5dbeca:"Onyesha Kumbukumbu",sac83d7f9358b43db:u`Orodha ya${0}`,sb1bd536b63e9e995:"Sehemu ya Faragha: Ni mimi pekee ninayeweza kuona maudhui yake",sb59d68ed12d46377:"Inapakia",sbf1ca928ec1deb62:"Unahitaji msaada zaidi?",scb9a1ff437efbd2a:u`Chagua ${0} zote ungependa kusasisha kutoka kwenye orodha, na uzisasishe hapa chini.`,sd1a8dc951b2b6a98:"Chagua ni sehemu zipi zitaonyeshwa kama safu wima kwenye orodha",seafe6ef133ede7da:u`Inaonyesha 1 kati ya ${0}`,sf9aee319a006c9b4:"Ongeza",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},ar=Object.freeze(Object.defineProperty({__proto__:null,templates:or},Symbol.toStringTag,{value:"Module"})),nr={s226be12a5b1a27e8:"อ่านเอกสาร",s33f85f24c0f5f008:"บันทึก",s36cb242ac90353bc:"ฟิลด์",s41cb4006238ebd3b:"แก้ไขเป็นกลุ่ม",s5e8250fb85d64c23:"ปิด",s625ad019db843f94:"ใช้",sbf1ca928ec1deb62:"ต้องการความช่วยเหลือเพิ่มเติมหรือไม่?",sd1a8dc951b2b6a98:"เลือกฟิลด์ที่จะแสดงเป็นคอลัมน์ในรายการ",sf9aee319a006c9b4:"เพิ่ม",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},rr=Object.freeze(Object.defineProperty({__proto__:null,templates:nr},Symbol.toStringTag,{value:"Module"})),lr={s226be12a5b1a27e8:"Basahin ang dokumentasyon",s33f85f24c0f5f008:"I-save",s36cb242ac90353bc:"Mga Field",s41cb4006238ebd3b:"Maramihang Pag-edit",s5e8250fb85d64c23:"Isara",s625ad019db843f94:"Gamitin",sbf1ca928ec1deb62:"Kailangan mo pa ba ng tulong?",sd1a8dc951b2b6a98:"Piliin kung aling mga field ang ipapakita bilang mga column sa listahan",sf9aee319a006c9b4:"Idagdag",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},dr=Object.freeze(Object.defineProperty({__proto__:null,templates:lr},Symbol.toStringTag,{value:"Module"})),cr={s04ceadb276bbe149:"Seçenekler Yükleniyor...",s226be12a5b1a27e8:"Belgeleri oku",s29e25f5e4622f847:"İletişim Kutusunu Aç",s33f85f24c0f5f008:"Kaydet",s36cb242ac90353bc:"Alanlar",s41cb4006238ebd3b:"Toplu Düzenleme",s5e8250fb85d64c23:"Kapat",s625ad019db843f94:"Kullan",s9d51bfd93b5dbeca:"Arşivlenmiş Göster",sac83d7f9358b43db:u`${0} Listesi`,sb1bd536b63e9e995:"Özel Alan: İçeriğini sadece ben görebilirim",sb59d68ed12d46377:"Yükleniyor",sbf1ca928ec1deb62:"Daha fazla yardıma ihtiyacınız var mı?",scb9a1ff437efbd2a:u`Listeden güncellemek istediğiniz tüm ${0} 'i seçin ve aşağıda güncelleyin`,sd1a8dc951b2b6a98:"Listede Hangi Alanların Sütun Olarak Görüntüleneceğini Seçin",seafe6ef133ede7da:u`Gösteriliyor 1 of ${0}`,sf9aee319a006c9b4:"Ekle",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},ur=Object.freeze(Object.defineProperty({__proto__:null,templates:cr},Symbol.toStringTag,{value:"Module"})),hr={s226be12a5b1a27e8:"Прочитайте документацію",s33f85f24c0f5f008:"Зберегти",s36cb242ac90353bc:"Поля",s41cb4006238ebd3b:"Масове редагування",s5e8250fb85d64c23:"Закрити",s625ad019db843f94:"Використати",sbf1ca928ec1deb62:"Потрібна додаткова допомога?",sd1a8dc951b2b6a98:"Виберіть, яке поле відображати у вигляді стовпців у списку",sf9aee319a006c9b4:"Додати",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},pr=Object.freeze(Object.defineProperty({__proto__:null,templates:hr},Symbol.toStringTag,{value:"Module"})),fr={s226be12a5b1a27e8:"Đọc tài liệu",s33f85f24c0f5f008:"Lưu",s36cb242ac90353bc:"Trường",s41cb4006238ebd3b:"Chỉnh sửa Hàng loạt",s5e8250fb85d64c23:"Đóng",s625ad019db843f94:"Sử dụng",sbf1ca928ec1deb62:"Bạn cần trợ giúp thêm?",sd1a8dc951b2b6a98:"Chọn các trường để hiển thị dưới dạng cột trong danh sách",sf9aee319a006c9b4:"Bổ sung",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},br=Object.freeze(Object.defineProperty({__proto__:null,templates:fr},Symbol.toStringTag,{value:"Module"})),gr={s226be12a5b1a27e8:"阅读文档",s33f85f24c0f5f008:"保存",s36cb242ac90353bc:"字段",s41cb4006238ebd3b:"批量编辑",s5e8250fb85d64c23:"关",s625ad019db843f94:"使用",sbf1ca928ec1deb62:"需要更多帮助吗？",sd1a8dc951b2b6a98:"选择哪些字段要在列表中显示为列",sf9aee319a006c9b4:"添加",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:u`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:u`${0} List`,seafe6ef133ede7da:u`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},mr=Object.freeze(Object.defineProperty({__proto__:null,templates:gr},Symbol.toStringTag,{value:"Module"})),vr={s04ceadb276bbe149:"正在載入選項...",s226be12a5b1a27e8:"閱讀文檔",s29e25f5e4622f847:"開啟對話視窗",s33f85f24c0f5f008:"儲存",s36cb242ac90353bc:"欄位",s41cb4006238ebd3b:"大量編輯",s5e8250fb85d64c23:"關",s625ad019db843f94:"使用",s9d51bfd93b5dbeca:"顯示已儲存",sac83d7f9358b43db:u`${0} 清單`,sb1bd536b63e9e995:"私人欄位：只有我可以看見內容",sb59d68ed12d46377:"載入中",sbf1ca928ec1deb62:"需要更多幫助嗎？",scb9a1ff437efbd2a:u`從清單中選取要更新的項目${0}，並在下面進行更新`,sd1a8dc951b2b6a98:"選擇哪些欄位要顯示為列表中的直行",seafe6ef133ede7da:u`第1頁 （共${0}頁）`,sf9aee319a006c9b4:"新增",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},yr=Object.freeze(Object.defineProperty({__proto__:null,templates:vr},Symbol.toStringTag,{value:"Module"}));$.ApiService=mt,$.ComponentService=Ce,$.DtAlert=ks,$.DtBase=N,$.DtButton=yi,$.DtChurchHealthCircle=cs,$.DtConnection=us,$.DtCopyText=ps,$.DtDate=Dt,$.DtDatetime=fs,$.DtFormBase=z,$.DtIcon=ns,$.DtLabel=_i,$.DtList=Ss,$.DtLocation=bs,$.DtLocationMap=vs,$.DtMapModal=ms,$.DtModal=gs,$.DtMultiSelect=We,$.DtMultiSelectButtonGroup=xs,$.DtMultiText=$s,$.DtNumberField=ys,$.DtSingleSelect=ws,$.DtTags=Oe,$.DtText=zt,$.DtTextArea=_s,$.DtTile=Ts,$.DtToggle=ds,$.DtUsersConnection=hs,$.version=Ua,Object.defineProperty($,Symbol.toStringTag,{value:"Module"})});
+    `}}window.customElements.define("dt-tile",Ao);class Le{get api(){return this._api}constructor(e,t,i,o="wp-json"){this.postType=e,this.postId=t,this.nonce=i,this.debounceTimers={},this._api=new vi(this.nonce,o),this.apiRoot=this._api.apiRoot,this.autoSaveComponents=["dt-connection","dt-users-connection","dt-date","dt-datetime","dt-location","dt-location-map","dt-multi-select","dt-number","dt-single-select","dt-tags","dt-text","dt-textarea","dt-toggle","dt-multi-text","dt-multi-select-button-group","dt-button","dt-church-health-circle"],this.dynamicLoadComponents=["dt-connection","dt-tags","dt-modal","dt-button","dt-location","dt-users-connection"]}initialize(){this.postId&&this.enableAutoSave(),this.attachLoadEvents(),this.attachFileUploadEvents()}async attachLoadEvents(e){const t=document.querySelectorAll(e||this.dynamicLoadComponents.join(","));t&&t.forEach(i=>{i.dataset.eventDtGetData||(i.addEventListener("dt:get-data",this.handleGetDataEvent.bind(this)),i.dataset.eventDtGetData=!0)})}async checkDuplicates(e,t){const i=document.querySelector("dt-modal.duplicate-detected");if(i){const o=i.shadowRoot.querySelector(".duplicates-detected-button");o&&(o.style.display="none");const a=await this._api.checkDuplicateUsers(this.postType,this.postId);t&&a.ids.length>0&&o&&(o.style.display="block")}}enableAutoSave(e){const t=document.querySelectorAll(e||this.autoSaveComponents.join(","));t&&t.forEach(i=>{i.addEventListener("change",this.handleChangeEvent.bind(this))})}attachFileUploadEvents(e){const t=document.querySelectorAll(e||"dt-file-upload");t&&t.forEach(i=>{i.dataset.eventDtUpload||(i.addEventListener("dt:upload",this.handleUploadEvent.bind(this)),i.addEventListener("dt:delete-file",this.handleDeleteFileEvent.bind(this)),i.addEventListener("dt:rename-file",this.handleRenameFileEvent.bind(this)),i.addEventListener("dt:download-file",this.handleDownloadFileEvent.bind(this)),i.dataset.eventDtUpload=!0)})}async handleGetDataEvent(e){const t=e.detail;if(t){const{field:i,query:o,onSuccess:a,onError:r}=t;try{const n=e.target.tagName.toLowerCase();let l=[];switch(n){case"dt-button":l=await this._api.getContactInfo(this.postType,this.postId);break;case"dt-connection":{const d=t.postType||this.postType,u=await this._api.listPostsCompact(d,o),h={...u,posts:u.posts.filter(g=>g.ID!==parseInt(this.postId,10))};h!=null&&h.posts&&(l=Le.convertApiValue("dt-connection",h==null?void 0:h.posts));break}case"dt-users-connection":{const d=t.postType||this.postType,u=await this._api.searchUsers(d,o),h={...u,posts:u.filter(g=>g.ID!==parseInt(this.postId,10))};h!=null&&h.posts&&(l=Le.convertApiValue("dt-users-connection",h==null?void 0:h.posts));break}case"dt-location":{l=await this._api.getLocations(this.postType,i,t.filter,o),l=l.location_grid.map(d=>({id:d.ID,label:d.name}));break}case"dt-tags":default:l=await this._api.getMultiSelectValues(this.postType,i,o),l=l.map(d=>({id:d,label:d}));break}a(l)}catch(n){r(n)}}}async handleChangeEvent(e){const t=e.detail;if(t){const{field:i,newValue:o,oldValue:a,remove:r}=t,n=e.target.tagName.toLowerCase(),l=Le.convertValue(n,o,a);if(e.target.removeAttribute("saved"),e.target.setAttribute("loading",!0),n==="dt-number"){const d=`${this.postType}-${this.postId}-${i}`;this.debounce(d,async()=>{try{const u=await this._api.updatePost(this.postType,this.postId,{[i]:l});document.dispatchEvent(new CustomEvent("dt:post:update",{detail:{response:u,field:i,value:l,component:n}})),e.target.removeAttribute("loading"),e.target.setAttribute("error",""),e.target.setAttribute("saved",!0)}catch(u){console.error(u),e.target.removeAttribute("loading"),e.target.setAttribute("invalid",!0),e.target.setAttribute("error",u.message||u.toString())}},1e3)}else try{const d={[i]:l};if(n==="dt-location-map"){const h=l.values.filter(g=>!g.lng||!g.lat);d[i].values=l.values.filter(g=>g.lng&&g.lat),d.contact_address=h,d.contact_address.length===0&&delete d.contact_address,d[i].values.length===0&&delete d[i]}const u=await this._api.updatePost(this.postType,this.postId,d);if(document.dispatchEvent(new CustomEvent("dt:post:update",{detail:{response:u,field:i,value:l,component:n}})),n==="dt-location-map"){const h=e.target;h.value=u[i]}e.target.removeAttribute("loading"),e.target.setAttribute("error",""),e.target.setAttribute("saved",!0)}catch(d){console.error(d),e.target.removeAttribute("loading"),e.target.setAttribute("invalid",!0),e.target.setAttribute("error",d.message||d.toString())}}}async handleUploadEvent(e){const t=e.detail;if(!t)return;const{files:i,metaKey:o,keyPrefix:a,onSuccess:r,onError:n,onProgress:l}=t,d=e.target;d.setAttribute("loading",!0),d.uploadProgress=0,d.removeAttribute("saved"),d.removeAttribute("error");try{const u=await this._api.uploadFiles(this.postType,this.postId,i,o,a||"",y=>{d.uploadProgress=y,l&&l(y)}),g=(await this._api.getPost(this.postType,this.postId))[o]||[];r&&r({result:u,fieldValue:g})}catch(u){d.setAttribute("error",u.message||"Upload failed"),n&&n(u)}finally{d.removeAttribute("loading"),d.uploadProgress=0}}async handleDeleteFileEvent(e){const t=e.detail;if(!t)return;const{fileKey:i,metaKey:o,onSuccess:a,onError:r}=t,n=e.target;n.setAttribute("loading",!0),n.removeAttribute("saved"),n.removeAttribute("error");try{await this._api.deleteFile(this.postType,this.postId,o,i),a&&a()}catch(l){n.setAttribute("error",l.message||"Delete failed"),r&&r(l)}finally{n.removeAttribute("loading")}}async handleRenameFileEvent(e){const t=e.detail;if(!t)return;const{fileKey:i,newName:o,metaKey:a,onSuccess:r,onError:n}=t,l=e.target;l.setAttribute("loading",!0),l.removeAttribute("saved"),l.removeAttribute("error");try{const d=await this._api.renameFile(this.postType,this.postId,a,i,o);r&&r(d)}catch(d){l.setAttribute("error",d.message||"Rename failed"),n&&n(d)}finally{l.removeAttribute("loading")}}async handleDownloadFileEvent(e){const t=e.detail;if(!t)return;const{fileKey:i,fileName:o,metaKey:a,onSuccess:r,onError:n}=t,l=e.target;try{const d=await this._api.downloadFile(this.postType,this.postId,a,i),u=window.URL.createObjectURL(d),h=document.createElement("a");h.href=u,h.download=o||"download",document.body.appendChild(h),h.click(),document.body.removeChild(h),window.URL.revokeObjectURL(u),r&&r()}catch(d){l.setAttribute("error",d.message||"Download failed"),n&&n(d)}}debounce(e,t,i){this.debounceTimers[e]&&clearTimeout(this.debounceTimers[e]),this.debounceTimers[e]=setTimeout(()=>{t()},i)}static convertApiValue(e,t){let i=t;switch(e){case"dt-connection":i=t.map(o=>({id:o.ID,label:o.name??o.post_title,link:o.permalink,status:o.status}));break;case"dt-users-connection":t&&!Array.isArray(t)&&(t.id||t.ID)?i=[{id:t.id||t.ID,label:t.display,avatar:t.avatar||""}]:Array.isArray(t)&&(i=t.map(o=>({id:o.id||o.ID,label:o.display||o.name,avatar:o.avatar||""})));break}return i}static convertValue(e,t,i=null){let o=t;if(t)switch(e.toLowerCase()){case"dt-toggle":typeof t=="string"&&(o=t.toLowerCase()==="true");break;case"dt-church-health-circle":case"dt-multi-select":case"dt-multi-select-button-group":case"dt-tags":typeof t=="string"&&(o=[t]),o={values:o.map(r=>{if(typeof r=="string"){const l={value:r};return r.startsWith("-")&&(l.delete=!0,l.value=r.substring(1)),l}const n={value:r.id};return r.delete&&(n.delete=r.delete),n}),force_values:!1};break;case"dt-users-connection":{const r=[],n=o.filter(d=>!d.delete);if(n.length<=1){o=n.length===1?parseInt(n[0].id,10):"";break}const l=new Map((i||[]).map(d=>[d.id,d]));for(const d of o){const u=l.get(d.id),h={id:d.id,changes:{}};if(u){let g=!1;const y=new Set([...Object.keys(u),...Object.keys(d)]);for(const _ of y)d[_]!==u[_]&&(h.changes[_]=Object.prototype.hasOwnProperty.call(d,_)?d[_]:void 0,g=!0);if(g){r.push(h);break}}else{h.changes={...d},r.push(h);break}}o=r[0].id;break}case"dt-connection":typeof t=="string"&&(o=[{id:t}]),o={values:o.map(r=>{const n={value:r.id};return r.delete&&(n.delete=r.delete),n}),force_values:!1};break;case"dt-location":const a=new Set((i||[]).map(r=>r.id));typeof t=="string"?o=[{id:t}]:o=t.filter(r=>!(a.has(r.id)&&!r.delete)),o={values:o.map(r=>{const n={value:r.id};return r.delete&&(n.delete=r.delete),n}),force_values:!1};break;case"dt-location-map":if(o=t.filter(r=>!((i||[]).includes(r)&&!r.delete)),i)for(const r of i)t.some(l=>r.id&&l.id&&r.id===l.id||r.key&&l.key&&r.key===l.key&&(!l.lat||!l.lng))||(r.delete=!0,o.push(r));o={values:o.map(r=>{const n=r;return r.delete&&(n.delete=r.delete),n}),force_values:!1};break;case"dt-multi-text":Array.isArray(t)?o=t.map(r=>{const n={...r};return delete n.tempKey,n}):typeof t=="string"&&(o=[{value:t}]);break}return o}static valueArrayDiff(e,t){const i={value1:[],value2:[]};if(Array.isArray(e)||(e=[]),Array.isArray(t)||(t=[]),e.length>0&&typeof e[0]!="object")return i.value1=e.filter(n=>!t.includes(n)),i.value2=t.filter(n=>!e.includes(n)),i;const o=n=>JSON.stringify(n),a=new Map(e.map(n=>[o(n),n])),r=new Map(t.map(n=>[o(n),n]));for(const[n,l]of a)r.has(n)||i.value1.push(l);for(const[n,l]of r)a.has(n)||i.value2.push(l);return i}}const Ua="0.8.9",Va={s226be12a5b1a27e8:"ሰነዶቹን ያንብቡ",s33f85f24c0f5f008:"አስቀምጥ",s36cb242ac90353bc:"መስኮች",s41cb4006238ebd3b:"የጅምላ አርትዕ",s5e8250fb85d64c23:"ገጠመ",s625ad019db843f94:"ተጠቀም",sac83d7f9358b43db:m`${0} ዝርዝር`,sbf1ca928ec1deb62:"ተጨማሪ እገዛ ይፈልጋሉ?",sd1a8dc951b2b6a98:"በዝርዝሩ ውስጥ እንደ ዓምዶች የትኞቹን መስኮች እንደሚያሳዩ ይምረጡ",sf9aee319a006c9b4:"አክል",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Ba=Object.freeze(Object.defineProperty({__proto__:null,templates:Va},Symbol.toStringTag,{value:"Module"})),Ha={s04ceadb276bbe149:"خيارات التحميل...",s226be12a5b1a27e8:"اقرأ الوثائق",s29e25f5e4622f847:"افتح",s33f85f24c0f5f008:"حفظ",s36cb242ac90353bc:"مجالات",s41cb4006238ebd3b:"التحرير بالجملة",s5e8250fb85d64c23:"غلق",s625ad019db843f94:"استخدام",s9d51bfd93b5dbeca:"عرض المحفوظات",sac83d7f9358b43db:m`${0}قائمة الأعضاء`,sb1bd536b63e9e995:"المجال الخاص: أنا فقط أستطيع رؤية محتواه",sb59d68ed12d46377:"جار التحميل",sbf1ca928ec1deb62:"هل تريد المزيد من المساعدة؟",scb9a1ff437efbd2a:m`حَدِّد جميع ${0} التي تريد تحديثها من القائمة ، وقم بتحديثها أدناه`,sd1a8dc951b2b6a98:"اختر المجالات المراد عرضها كأعمدة في القائمة",seafe6ef133ede7da:m`عرض 1 of ${0}`,sf9aee319a006c9b4:"لأضف",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},Ka=Object.freeze(Object.defineProperty({__proto__:null,templates:Ha},Symbol.toStringTag,{value:"Module"})),Wa={s226be12a5b1a27e8:"اقرأ الوثائق",s33f85f24c0f5f008:"حفظ",s36cb242ac90353bc:"مجالات",s41cb4006238ebd3b:"التحرير بالجملة",s5e8250fb85d64c23:"أغلق",s625ad019db843f94:"استخدام",sbf1ca928ec1deb62:"هل تريد المزيد من المساعدة؟",sd1a8dc951b2b6a98:"اختر المجالات المراد عرضها كأعمدة في القائمة",sf9aee319a006c9b4:"إضافة",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Ga=Object.freeze(Object.defineProperty({__proto__:null,templates:Wa},Symbol.toStringTag,{value:"Module"})),Za={s226be12a5b1a27e8:"Прочетете документацията",s33f85f24c0f5f008:"Запазете",s36cb242ac90353bc:"Полета",s41cb4006238ebd3b:"Групово редактиране",s5e8250fb85d64c23:"Близо",s625ad019db843f94:"Използвайте",sbf1ca928ec1deb62:"Имате нужда от повече помощ?",sd1a8dc951b2b6a98:"Изберете кои полета да се показват като колони в списъка",sf9aee319a006c9b4:"Добавяне",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Ja=Object.freeze(Object.defineProperty({__proto__:null,templates:Za},Symbol.toStringTag,{value:"Module"})),Qa={s226be12a5b1a27e8:"নথিপত্রাদি পাঠ করুন",s33f85f24c0f5f008:"সংরক্ষণ করুন",s36cb242ac90353bc:"ক্ষেত্র",s41cb4006238ebd3b:"বাল্ক এডিট",s5e8250fb85d64c23:"বন্ধ",s625ad019db843f94:"ব্যবহার",sbf1ca928ec1deb62:"আরও সাহায্য প্রয়োজন?",sd1a8dc951b2b6a98:"তালিকার কলাম হিসাবে কোন ক্ষেত্রগুলি প্রদর্শিত হবে তা চয়ন করুন",sf9aee319a006c9b4:"অ্যাড",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Xa=Object.freeze(Object.defineProperty({__proto__:null,templates:Qa},Symbol.toStringTag,{value:"Module"})),Ya={s04ceadb276bbe149:"Učitavanje opcija...",s226be12a5b1a27e8:"Pročitajte dokumentaciju",s29e25f5e4622f847:"Otvorite dijalog",s33f85f24c0f5f008:"Sačuvaj",s36cb242ac90353bc:"Polja",s41cb4006238ebd3b:"Skupno uređivanje",s5e8250fb85d64c23:"Zatvori",s625ad019db843f94:"Koristi",s9d51bfd93b5dbeca:"Prikaži arhivirano",sac83d7f9358b43db:m`${0} Lista`,sb1bd536b63e9e995:"Privatno polje: Samo ja mogu vidjeti njegov sadržaj",sb59d68ed12d46377:"Učitavanje",sbf1ca928ec1deb62:"Trebate više pomoći?",scb9a1ff437efbd2a:m`Odaberite sve ${0} koje želite ažurirati sa liste i ažurirajte ih ispod`,sd1a8dc951b2b6a98:"Odaberite koja polja će se prikazati kao kolone na listi",seafe6ef133ede7da:m`Prikazuje se 1 od ${0}`,sf9aee319a006c9b4:"Dodati",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},er=Object.freeze(Object.defineProperty({__proto__:null,templates:Ya},Symbol.toStringTag,{value:"Module"})),tr={s226be12a5b1a27e8:"Přečtěte si dokumentaci",s33f85f24c0f5f008:"Uložit",s36cb242ac90353bc:"Pole",s41cb4006238ebd3b:"Hromadná úprava",s5e8250fb85d64c23:"Zavřít",s625ad019db843f94:"Použití",sbf1ca928ec1deb62:"Potřebujete další pomoc?",sd1a8dc951b2b6a98:"Vyberte pole, která chcete v seznamu zobrazit jako sloupce",sf9aee319a006c9b4:"Přidat",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},ir=Object.freeze(Object.defineProperty({__proto__:null,templates:tr},Symbol.toStringTag,{value:"Module"})),or={s226be12a5b1a27e8:"Lesen Sie die Dokumentation",s33f85f24c0f5f008:"Speichern",s36cb242ac90353bc:"Felder",s41cb4006238ebd3b:"Im Stapel bearbeiten",s5e8250fb85d64c23:"Schließen",s625ad019db843f94:"Verwenden",sbf1ca928ec1deb62:"Benötigen Sie weitere Hilfe?",sd1a8dc951b2b6a98:"Wählen Sie aus, welche Felder in der Liste als Spalte angezeigt werden sollen",sf9aee319a006c9b4:"Hinzufügen",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},sr=Object.freeze(Object.defineProperty({__proto__:null,templates:or},Symbol.toStringTag,{value:"Module"})),ar={s226be12a5b1a27e8:"Διαβάστε την τεκμηρίωση",s33f85f24c0f5f008:"Αποθήκευση",s36cb242ac90353bc:"Πεδία",s41cb4006238ebd3b:"Μαζική Επεξεργασία",s5e8250fb85d64c23:"Κλείσιμο",s625ad019db843f94:"Χρήση",sbf1ca928ec1deb62:"Χρειάζεστε περισσότερη βοήθεια;",sd1a8dc951b2b6a98:"Επιλέξτε ποια πεδία θα εμφανίζονται ως στήλες στη λίστα",sf9aee319a006c9b4:"Προσθήκη",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},rr=Object.freeze(Object.defineProperty({__proto__:null,templates:ar},Symbol.toStringTag,{value:"Module"})),nr={sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",sf9aee319a006c9b4:"Add",sbf1ca928ec1deb62:"Need more help?",s226be12a5b1a27e8:"Read the documentation",s5e8250fb85d64c23:"Close",s29e25f5e4622f847:"Open Dialog",s33f85f24c0f5f008:"Save",s49730f3d5751a433:"Loading...",s625ad019db843f94:"Use",sd1a8dc951b2b6a98:"Choose which fields to display as columns in the list",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s41cb4006238ebd3b:"Bulk Edit",s36cb242ac90353bc:"Fields",s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},lr=Object.freeze(Object.defineProperty({__proto__:null,templates:nr},Symbol.toStringTag,{value:"Module"})),dr={s8900c9de2dbae68b:"No hay opciones disponibles",sb1bd536b63e9e995:"Campo Privado: Solo yo puedo ver su contenido",sf9aee319a006c9b4:"Añadir",sd1a8dc951b2b6a98:"Choose which fields to display as columns in the list",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sb9b8c412407d5691:"This is where the bulk edit form will go.",sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s41cb4006238ebd3b:"Bulk Edit",s36cb242ac90353bc:"Fields",s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading",sbf1ca928ec1deb62:"Need more help?",s226be12a5b1a27e8:"Read the documentation",s5e8250fb85d64c23:"Close",s29e25f5e4622f847:"Open Dialog"},cr=Object.freeze(Object.defineProperty({__proto__:null,templates:dr},Symbol.toStringTag,{value:"Module"})),ur={s04ceadb276bbe149:"Cargando opciones...",s226be12a5b1a27e8:"Leer la documentación",s29e25f5e4622f847:"Abrir Diálogo",s33f85f24c0f5f008:"Guardar",s36cb242ac90353bc:"Campos",s41cb4006238ebd3b:"Edición masiva",s5e8250fb85d64c23:"Cerrar",s625ad019db843f94:"Usar",s9d51bfd93b5dbeca:"Mostrar archivado",sac83d7f9358b43db:m`${0} Lista`,sb1bd536b63e9e995:"Campo Privado: Solo yo puedo ver su contenido",sb59d68ed12d46377:"Cargando",sbf1ca928ec1deb62:"¿Necesitas más ayuda?",scb9a1ff437efbd2a:m`Selecciona todos los ${0} que quieras actualizar del listado y actualízalos debajo`,sd1a8dc951b2b6a98:"Elige qué campos mostrar como columnas en el listado",seafe6ef133ede7da:m`Mostrando 1 de ${0}`,sf9aee319a006c9b4:"Agregar",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},hr=Object.freeze(Object.defineProperty({__proto__:null,templates:ur},Symbol.toStringTag,{value:"Module"})),pr={s04ceadb276bbe149:"Cargando opciones...",s226be12a5b1a27e8:"Lee la documentación",s29e25f5e4622f847:"Abrir Diálogo",s33f85f24c0f5f008:"Guardar",s36cb242ac90353bc:"Campos",s41cb4006238ebd3b:"Edición masiva",s5e8250fb85d64c23:"Cerrar",s625ad019db843f94:"Usar",s9d51bfd93b5dbeca:"Mostrar archivado",sac83d7f9358b43db:m`${0} Lista`,sb1bd536b63e9e995:"Campo Privado: Solo yo puedo ver su contenido",sb59d68ed12d46377:"Cargando",sbf1ca928ec1deb62:"¿Necesitas más ayuda?",scb9a1ff437efbd2a:m`Selecciona todos los ${0} que quieras actualizar del listado y actualízalos debajo`,sd1a8dc951b2b6a98:"Elige qué campos mostrar como columnas en el listado",seafe6ef133ede7da:m`Mostrando 1 de ${0}`,sf9aee319a006c9b4:"Agregar",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},fr=Object.freeze(Object.defineProperty({__proto__:null,templates:pr},Symbol.toStringTag,{value:"Module"})),br={s04ceadb276bbe149:"در حال بارگیری گزینه‌ها...",s226be12a5b1a27e8:"راهنمای سایت",s29e25f5e4622f847:"جعبه محاوره ای را باز کنید",s33f85f24c0f5f008:"صرفه جویی",s36cb242ac90353bc:"حوزه‌ها",s41cb4006238ebd3b:"ویرایش انبوه",s5e8250fb85d64c23:"بستن",s625ad019db843f94:"استفاده کنید",s9d51bfd93b5dbeca:"نمایش بایگانی شده",sac83d7f9358b43db:m`لیست ${0}`,sb1bd536b63e9e995:"زمینه خصوصی: فقط من می توانم محتوای آن را داشته باشم",sb59d68ed12d46377:"بارگیری",sbf1ca928ec1deb62:"آیا به راهنمایی بیشتری نیاز دارید؟",scb9a1ff437efbd2a:m`همۀ ${0} مورد نظر برای به روزرسانی را از لیست انتخاب کنید و آن‌ها را در زیر به روز کنید`,sd1a8dc951b2b6a98:"انتخاب کنید که کدام یک از حوزه‌ها به‌عنوان ستون در لیست نمایش داده شوند",seafe6ef133ede7da:m`نمایش 1 از ${0}`,sf9aee319a006c9b4:"افزودن",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},mr=Object.freeze(Object.defineProperty({__proto__:null,templates:br},Symbol.toStringTag,{value:"Module"})),gr={s04ceadb276bbe149:"Chargement les options...",s226be12a5b1a27e8:"Lire la documentation",s29e25f5e4622f847:"Ouvrir la boîte de dialogue",s33f85f24c0f5f008:"sauver",s36cb242ac90353bc:"Champs",s41cb4006238ebd3b:"Modification groupée",s5e8250fb85d64c23:"Fermer",s625ad019db843f94:"Utiliser",s9d51bfd93b5dbeca:"Afficher Archivé",sac83d7f9358b43db:m`${0} Liste`,sb1bd536b63e9e995:"Champ privé : je suis le seul à voir son contenu",sb59d68ed12d46377:"Chargement",sbf1ca928ec1deb62:"Besoin d'aide ?",scb9a1ff437efbd2a:m`Sélectionnez tous les ${0} que vous souhaitez mettre à jour dans la liste et mettez-les à jour ci-dessous`,sd1a8dc951b2b6a98:"Choisissez les champs à afficher sous forme de colonnes dans la liste",seafe6ef133ede7da:m`Affichage de 1 sur ${0}`,sf9aee319a006c9b4:"Ajouter",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},vr=Object.freeze(Object.defineProperty({__proto__:null,templates:gr},Symbol.toStringTag,{value:"Module"})),yr={s226be12a5b1a27e8:"डॉक्यूमेंटेशन पढ़ें",s33f85f24c0f5f008:"बचाना",s36cb242ac90353bc:"खेत",s41cb4006238ebd3b:"थोक संपादित",s5e8250fb85d64c23:"बंद",s625ad019db843f94:"उपयोग",sbf1ca928ec1deb62:"क्या और मदद चाहिये?",sd1a8dc951b2b6a98:"सूची में कॉलम के रूप में प्रदर्शित करने के लिए कौन से फ़ील्ड चुनें",sf9aee319a006c9b4:"जोडें",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},_r=Object.freeze(Object.defineProperty({__proto__:null,templates:yr},Symbol.toStringTag,{value:"Module"})),wr={s04ceadb276bbe149:"Učitavanje opcija...",s226be12a5b1a27e8:"Pročitaj dokumentaciju",s29e25f5e4622f847:"Otvorite dijalog",s33f85f24c0f5f008:"Spremi",s36cb242ac90353bc:"Polja",s41cb4006238ebd3b:"Skupno uređivanje",s5e8250fb85d64c23:"Zatvoriti",s625ad019db843f94:"Koristi",s9d51bfd93b5dbeca:"Prikaži arhivirano",sac83d7f9358b43db:m`${0} Lista`,sb1bd536b63e9e995:"Privatno polje: Samo ja mogu vidjeti njegov sadržaj",sb59d68ed12d46377:"Učitavanje",sbf1ca928ec1deb62:"Trebate li pomoć?",scb9a1ff437efbd2a:m`Odaberite sve${0}koje želite ažurirati s liste i ažurirajte ih ispod`,sd1a8dc951b2b6a98:"Izaberite polja koja će se prikazivati kao stupci na popisu",seafe6ef133ede7da:m`Prikazuje se 1 od${0}`,sf9aee319a006c9b4:"Dodaj",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},$r=Object.freeze(Object.defineProperty({__proto__:null,templates:wr},Symbol.toStringTag,{value:"Module"})),xr={s226be12a5b1a27e8:"Olvasd el a dokumentációt",s33f85f24c0f5f008:"Megment",s36cb242ac90353bc:"Mezők",s41cb4006238ebd3b:"Tömeges Szerkesztés",s5e8250fb85d64c23:"Bezár",s625ad019db843f94:"Használ",sbf1ca928ec1deb62:"Több segítség szükséges?",sd1a8dc951b2b6a98:"Válassza ki, melyik mezők jelenjenek meg oszlopként a listában",sf9aee319a006c9b4:"Hozzáadás",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},kr=Object.freeze(Object.defineProperty({__proto__:null,templates:xr},Symbol.toStringTag,{value:"Module"})),Sr={s226be12a5b1a27e8:"Bacalah dokumentasi",s33f85f24c0f5f008:"Simpan",s36cb242ac90353bc:"Larik",s41cb4006238ebd3b:"Edit Massal",s5e8250fb85d64c23:"Menutup",s625ad019db843f94:"Gunakan",sbf1ca928ec1deb62:"Perlukan bantuan lagi?",sd1a8dc951b2b6a98:"Pilih larik mana yang akan ditampilkan sebagai kolom dalam daftar",sf9aee319a006c9b4:"Tambah",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Er=Object.freeze(Object.defineProperty({__proto__:null,templates:Sr},Symbol.toStringTag,{value:"Module"})),Ar={s04ceadb276bbe149:"Caricando opzioni...",s226be12a5b1a27e8:"Leggi la documentazione",s29e25f5e4622f847:"Apri Dialogo",s33f85f24c0f5f008:"Salvare",s36cb242ac90353bc:"Campi",s41cb4006238ebd3b:"Modifica in blocco",s5e8250fb85d64c23:"Chiudi",s625ad019db843f94:"Uso",s9d51bfd93b5dbeca:"Visualizza Archiviati",sac83d7f9358b43db:m`${0} Lista`,sb1bd536b63e9e995:"Campo Privato: Solo io posso vedere i suoi contenuti",sb59d68ed12d46377:"Caricando",sbf1ca928ec1deb62:"Hai bisogno di ulteriore assistenza?",scb9a1ff437efbd2a:m`Seleziona tutti i ${0}vuoi aggiornare dalla lista e aggiornali sotto`,sd1a8dc951b2b6a98:"Scegli quali campi visualizzare come colonne nell'elenco",seafe6ef133ede7da:m`Visualizzando 1 di ${0}`,sf9aee319a006c9b4:"Inserisci",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},Or=Object.freeze(Object.defineProperty({__proto__:null,templates:Ar},Symbol.toStringTag,{value:"Module"})),Tr={s226be12a5b1a27e8:"ドキュメントを読む",s33f85f24c0f5f008:"セーブ",s36cb242ac90353bc:"田畑",s41cb4006238ebd3b:"一括編集",s5e8250fb85d64c23:"閉じる",s625ad019db843f94:"使用する",sbf1ca928ec1deb62:"もっと助けが必要ですか？",sd1a8dc951b2b6a98:"リストの列として表示するフィールドを選択します",sf9aee319a006c9b4:"追加",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Cr=Object.freeze(Object.defineProperty({__proto__:null,templates:Tr},Symbol.toStringTag,{value:"Module"})),Lr={s226be12a5b1a27e8:"문서 읽기",s33f85f24c0f5f008:"구하다",s36cb242ac90353bc:"필드",s41cb4006238ebd3b:"대량 수정",s5e8250fb85d64c23:"닫기",s625ad019db843f94:"사용",sbf1ca928ec1deb62:"더 많은 도움이 필요하신가요?",sd1a8dc951b2b6a98:"목록에서 어떤 필드를 표시할지 고르세요",sf9aee319a006c9b4:"추가",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Ir=Object.freeze(Object.defineProperty({__proto__:null,templates:Lr},Symbol.toStringTag,{value:"Module"})),Pr={s226be12a5b1a27e8:"Прочитај ја документацијата",s33f85f24c0f5f008:"Зачувај",s36cb242ac90353bc:"Полиња",s41cb4006238ebd3b:"Уреди повеќе",s5e8250fb85d64c23:"Затвори",s625ad019db843f94:"Користи",sbf1ca928ec1deb62:"Дали ти треба повеќе помош?",sd1a8dc951b2b6a98:"Избери кои полиња да се прикажат како колони во листата",sf9aee319a006c9b4:"Додади",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Mr=Object.freeze(Object.defineProperty({__proto__:null,templates:Pr},Symbol.toStringTag,{value:"Module"})),jr={s226be12a5b1a27e8:"कागदपत्रे वाचा.",s33f85f24c0f5f008:"जतन करा",s36cb242ac90353bc:"क्षेत्रे",s41cb4006238ebd3b:"बल्क एडिट करा",s5e8250fb85d64c23:"बंद करा",s625ad019db843f94:"वापर",sbf1ca928ec1deb62:"अधिक मदत आवश्यक आहे का?",sd1a8dc951b2b6a98:"यादीत कोणती क्षेत्रे स्तंभ म्हणून दर्शवली जावीत हे निवडा",sf9aee319a006c9b4:"समाविष्ट करा",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},zr=Object.freeze(Object.defineProperty({__proto__:null,templates:jr},Symbol.toStringTag,{value:"Module"})),Fr={s226be12a5b1a27e8:"စာရွက်စာတမ်းများကိုဖတ်ပါ",s33f85f24c0f5f008:"သိမ်းဆည်းပါ",s36cb242ac90353bc:"နယ်ပယ်ဒေသများ",s5e8250fb85d64c23:"ပိတ်သည်",s625ad019db843f94:"အသုံးပြုပါ",sbf1ca928ec1deb62:"နောက်ထပ်အကူအညီလိုပါသလား။",sd1a8dc951b2b6a98:"စာရင်းရှိကော်လံများအနေဖြင့်ဖော်ပြမည့်မည်သည့်နယ်ပယ်ဒေသများကိုရွေးချယ်ပါ",sf9aee319a006c9b4:"ထည့်ပါ",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s41cb4006238ebd3b:"Bulk Edit",s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Dr=Object.freeze(Object.defineProperty({__proto__:null,templates:Fr},Symbol.toStringTag,{value:"Module"})),Rr={s226be12a5b1a27e8:"कागजात पढ्नुहोस्",s33f85f24c0f5f008:"सुरक्षित गर्नुहोस",s36cb242ac90353bc:"क्षेत्रहरू",s41cb4006238ebd3b:"थोक सम्पादन",s5e8250fb85d64c23:"बन्द गर्नुहोस",s625ad019db843f94:"प्रयोग गर्नुहोस्",sbf1ca928ec1deb62:"थप मद्दत चाहिन्छ?",sd1a8dc951b2b6a98:"सूचीमा स्तम्भहरूको रूपमा कुन क्षेत्रहरू प्रदर्शन गर्ने छनौट गर्नुहोस्",sf9aee319a006c9b4:"थप",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Nr=Object.freeze(Object.defineProperty({__proto__:null,templates:Rr},Symbol.toStringTag,{value:"Module"})),qr={s04ceadb276bbe149:"aan het laden.....",s226be12a5b1a27e8:"Lees de documentatie",s29e25f5e4622f847:"Dialoogvenster openen",s33f85f24c0f5f008:"Opslaan",s36cb242ac90353bc:"Velden",s41cb4006238ebd3b:"Bulkbewerking",s5e8250fb85d64c23:"sluit",s625ad019db843f94:"Gebruiken",sac83d7f9358b43db:m`${0} Lijst`,sb1bd536b63e9e995:"Privéveld: alleen ik kan de inhoud zien",sb59d68ed12d46377:"aan het laden",sbf1ca928ec1deb62:"Meer hulp nodig?",sd1a8dc951b2b6a98:"Kies welke velden u als kolommen in de lijst wilt weergeven",seafe6ef133ede7da:m`1 van ${0} laten zien`,sf9aee319a006c9b4:"Toevoegen",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,s9d51bfd93b5dbeca:"Show Archived"},Ur=Object.freeze(Object.defineProperty({__proto__:null,templates:qr},Symbol.toStringTag,{value:"Module"})),Vr={s226be12a5b1a27e8:"ਦਸਤਾਵੇਜ਼ ਪੜ੍ਹੋ",s33f85f24c0f5f008:"ਸੇਵ",s36cb242ac90353bc:"ਖੇਤਰ",s41cb4006238ebd3b:"ਥੋਕ ਸੰਪਾਦਨ",s5e8250fb85d64c23:"ਬੰਦ ਕਰੋ",s625ad019db843f94:"ਵਰਤੋਂ",sbf1ca928ec1deb62:"ਹੋਰ ਮਦਦ ਦੀ ਲੋੜ ਹੈ?",sd1a8dc951b2b6a98:"ਸੂਚੀ ਵਿੱਚ ਕਾਲਮ ਦੇ ਰੂਪ ਵਿੱਚ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰਨ ਲਈ ਕਿਹੜੇ ਖੇਤਰ ਚੁਣੋ",sf9aee319a006c9b4:"ਸ਼ਾਮਲ ਕਰੋ",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Br=Object.freeze(Object.defineProperty({__proto__:null,templates:Vr},Symbol.toStringTag,{value:"Module"})),Hr={s226be12a5b1a27e8:"Przeczytaj dokumentację",s33f85f24c0f5f008:"Zapisać",s36cb242ac90353bc:"Pola",s41cb4006238ebd3b:"Edycja zbiorcza",s5e8250fb85d64c23:"Zamknij",s625ad019db843f94:"Posługiwać się",sbf1ca928ec1deb62:"Potrzebujesz pomocy?",sd1a8dc951b2b6a98:"Wybierz, które pola mają być wyświetlane jako kolumny na liście",sf9aee319a006c9b4:"Dodaj",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Kr=Object.freeze(Object.defineProperty({__proto__:null,templates:Hr},Symbol.toStringTag,{value:"Module"})),Wr={s226be12a5b1a27e8:"Leia a documentação",s33f85f24c0f5f008:"Salvar",s36cb242ac90353bc:"Campos",s41cb4006238ebd3b:"Edição em massa",s5e8250fb85d64c23:"Fechar",s625ad019db843f94:"Usar",sbf1ca928ec1deb62:"Precisa de mais ajuda?",sd1a8dc951b2b6a98:"Escolha quais campos exibir como colunas na lista",sf9aee319a006c9b4:"Adicionar",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Gr=Object.freeze(Object.defineProperty({__proto__:null,templates:Wr},Symbol.toStringTag,{value:"Module"})),Zr={s226be12a5b1a27e8:"Citiți documentația",s33f85f24c0f5f008:"Salvați",s36cb242ac90353bc:"Câmpuri",s41cb4006238ebd3b:"Editare masivă",s5e8250fb85d64c23:"Închide",s625ad019db843f94:"Utilizare",sbf1ca928ec1deb62:"Ai nevoie de mai mult ajutor?",sd1a8dc951b2b6a98:"Alegeți câmpurile care să fie afișate în coloane în listă",sf9aee319a006c9b4:"Adăuga",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Jr=Object.freeze(Object.defineProperty({__proto__:null,templates:Zr},Symbol.toStringTag,{value:"Module"})),Qr={s226be12a5b1a27e8:"Читать документацию",s33f85f24c0f5f008:"Сохранить",s36cb242ac90353bc:"Поля",s41cb4006238ebd3b:"Массовое редактирование",s5e8250fb85d64c23:"Закрыть",s625ad019db843f94:"Использовать",sbf1ca928ec1deb62:"Нужна дополнительная помощь?",sd1a8dc951b2b6a98:"Выберите, какие поля отображать как столбцы в списке",sf9aee319a006c9b4:"Добавить",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},Xr=Object.freeze(Object.defineProperty({__proto__:null,templates:Qr},Symbol.toStringTag,{value:"Module"})),Yr={s226be12a5b1a27e8:"Preberite dokumentacijo",s33f85f24c0f5f008:"Shrani",s36cb242ac90353bc:"Polja",s41cb4006238ebd3b:"Urejanje v velikem obsegu",s5e8250fb85d64c23:"Zapri",s625ad019db843f94:"Uporaba",sbf1ca928ec1deb62:"Potrebujete več pomoči?",sd1a8dc951b2b6a98:"Izberite, katera polja naj bodo prikazana kot stolpci na seznamu",sf9aee319a006c9b4:"Dodaj",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},en=Object.freeze(Object.defineProperty({__proto__:null,templates:Yr},Symbol.toStringTag,{value:"Module"})),tn={s226be12a5b1a27e8:"Pročitajte dokumentaciju",s33f85f24c0f5f008:"Sačuvaj",s36cb242ac90353bc:"Polja",s41cb4006238ebd3b:"masovno uređivanje",s5e8250fb85d64c23:"Zatvori",s625ad019db843f94:"Koristiti",sbf1ca928ec1deb62:"Treba vam više pomoći?",sd1a8dc951b2b6a98:"Izaberite koja polja da se prikazuju kao kolone na listi",sf9aee319a006c9b4:"Dodaj",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},on=Object.freeze(Object.defineProperty({__proto__:null,templates:tn},Symbol.toStringTag,{value:"Module"})),sn={s04ceadb276bbe149:"Inapakia chaguo...",s226be12a5b1a27e8:"Soma nyaraka",s29e25f5e4622f847:"Fungua Kidirisha",s33f85f24c0f5f008:"Hifadhi",s36cb242ac90353bc:"Mashamba",s41cb4006238ebd3b:"Hariri kwa Wingi",s5e8250fb85d64c23:"Funga",s625ad019db843f94:"Tumia",s9d51bfd93b5dbeca:"Onyesha Kumbukumbu",sac83d7f9358b43db:m`Orodha ya${0}`,sb1bd536b63e9e995:"Sehemu ya Faragha: Ni mimi pekee ninayeweza kuona maudhui yake",sb59d68ed12d46377:"Inapakia",sbf1ca928ec1deb62:"Unahitaji msaada zaidi?",scb9a1ff437efbd2a:m`Chagua ${0} zote ungependa kusasisha kutoka kwenye orodha, na uzisasishe hapa chini.`,sd1a8dc951b2b6a98:"Chagua ni sehemu zipi zitaonyeshwa kama safu wima kwenye orodha",seafe6ef133ede7da:m`Inaonyesha 1 kati ya ${0}`,sf9aee319a006c9b4:"Ongeza",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},an=Object.freeze(Object.defineProperty({__proto__:null,templates:sn},Symbol.toStringTag,{value:"Module"})),rn={s226be12a5b1a27e8:"อ่านเอกสาร",s33f85f24c0f5f008:"บันทึก",s36cb242ac90353bc:"ฟิลด์",s41cb4006238ebd3b:"แก้ไขเป็นกลุ่ม",s5e8250fb85d64c23:"ปิด",s625ad019db843f94:"ใช้",sbf1ca928ec1deb62:"ต้องการความช่วยเหลือเพิ่มเติมหรือไม่?",sd1a8dc951b2b6a98:"เลือกฟิลด์ที่จะแสดงเป็นคอลัมน์ในรายการ",sf9aee319a006c9b4:"เพิ่ม",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},nn=Object.freeze(Object.defineProperty({__proto__:null,templates:rn},Symbol.toStringTag,{value:"Module"})),ln={s226be12a5b1a27e8:"Basahin ang dokumentasyon",s33f85f24c0f5f008:"I-save",s36cb242ac90353bc:"Mga Field",s41cb4006238ebd3b:"Maramihang Pag-edit",s5e8250fb85d64c23:"Isara",s625ad019db843f94:"Gamitin",sbf1ca928ec1deb62:"Kailangan mo pa ba ng tulong?",sd1a8dc951b2b6a98:"Piliin kung aling mga field ang ipapakita bilang mga column sa listahan",sf9aee319a006c9b4:"Idagdag",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},dn=Object.freeze(Object.defineProperty({__proto__:null,templates:ln},Symbol.toStringTag,{value:"Module"})),cn={s04ceadb276bbe149:"Seçenekler Yükleniyor...",s226be12a5b1a27e8:"Belgeleri oku",s29e25f5e4622f847:"İletişim Kutusunu Aç",s33f85f24c0f5f008:"Kaydet",s36cb242ac90353bc:"Alanlar",s41cb4006238ebd3b:"Toplu Düzenleme",s5e8250fb85d64c23:"Kapat",s625ad019db843f94:"Kullan",s9d51bfd93b5dbeca:"Arşivlenmiş Göster",sac83d7f9358b43db:m`${0} Listesi`,sb1bd536b63e9e995:"Özel Alan: İçeriğini sadece ben görebilirim",sb59d68ed12d46377:"Yükleniyor",sbf1ca928ec1deb62:"Daha fazla yardıma ihtiyacınız var mı?",scb9a1ff437efbd2a:m`Listeden güncellemek istediğiniz tüm ${0} 'i seçin ve aşağıda güncelleyin`,sd1a8dc951b2b6a98:"Listede Hangi Alanların Sütun Olarak Görüntüleneceğini Seçin",seafe6ef133ede7da:m`Gösteriliyor 1 of ${0}`,sf9aee319a006c9b4:"Ekle",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},un=Object.freeze(Object.defineProperty({__proto__:null,templates:cn},Symbol.toStringTag,{value:"Module"})),hn={s226be12a5b1a27e8:"Прочитайте документацію",s33f85f24c0f5f008:"Зберегти",s36cb242ac90353bc:"Поля",s41cb4006238ebd3b:"Масове редагування",s5e8250fb85d64c23:"Закрити",s625ad019db843f94:"Використати",sbf1ca928ec1deb62:"Потрібна додаткова допомога?",sd1a8dc951b2b6a98:"Виберіть, яке поле відображати у вигляді стовпців у списку",sf9aee319a006c9b4:"Додати",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},pn=Object.freeze(Object.defineProperty({__proto__:null,templates:hn},Symbol.toStringTag,{value:"Module"})),fn={s226be12a5b1a27e8:"Đọc tài liệu",s33f85f24c0f5f008:"Lưu",s36cb242ac90353bc:"Trường",s41cb4006238ebd3b:"Chỉnh sửa Hàng loạt",s5e8250fb85d64c23:"Đóng",s625ad019db843f94:"Sử dụng",sbf1ca928ec1deb62:"Bạn cần trợ giúp thêm?",sd1a8dc951b2b6a98:"Chọn các trường để hiển thị dưới dạng cột trong danh sách",sf9aee319a006c9b4:"Bổ sung",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},bn=Object.freeze(Object.defineProperty({__proto__:null,templates:fn},Symbol.toStringTag,{value:"Module"})),mn={s226be12a5b1a27e8:"阅读文档",s33f85f24c0f5f008:"保存",s36cb242ac90353bc:"字段",s41cb4006238ebd3b:"批量编辑",s5e8250fb85d64c23:"关",s625ad019db843f94:"使用",sbf1ca928ec1deb62:"需要更多帮助吗？",sd1a8dc951b2b6a98:"选择哪些字段要在列表中显示为列",sf9aee319a006c9b4:"添加",sb1bd536b63e9e995:"Private Field: Only I can see its content",s04ceadb276bbe149:"Loading options...",sd2e180dab4fbcfb9:"No Data Available",s29e25f5e4622f847:"Open Dialog",s49730f3d5751a433:"Loading...",scb9a1ff437efbd2a:m`Select all the ${0} you want to update from the list, and update them below`,sac83d7f9358b43db:m`${0} List`,seafe6ef133ede7da:m`Showing 1 of ${0}`,s9d51bfd93b5dbeca:"Show Archived",sb59d68ed12d46377:"Loading"},gn=Object.freeze(Object.defineProperty({__proto__:null,templates:mn},Symbol.toStringTag,{value:"Module"})),vn={s04ceadb276bbe149:"正在載入選項...",s226be12a5b1a27e8:"閱讀文檔",s29e25f5e4622f847:"開啟對話視窗",s33f85f24c0f5f008:"儲存",s36cb242ac90353bc:"欄位",s41cb4006238ebd3b:"大量編輯",s5e8250fb85d64c23:"關",s625ad019db843f94:"使用",s9d51bfd93b5dbeca:"顯示已儲存",sac83d7f9358b43db:m`${0} 清單`,sb1bd536b63e9e995:"私人欄位：只有我可以看見內容",sb59d68ed12d46377:"載入中",sbf1ca928ec1deb62:"需要更多幫助嗎？",scb9a1ff437efbd2a:m`從清單中選取要更新的項目${0}，並在下面進行更新`,sd1a8dc951b2b6a98:"選擇哪些欄位要顯示為列表中的直行",seafe6ef133ede7da:m`第1頁 （共${0}頁）`,sf9aee319a006c9b4:"新增",sd2e180dab4fbcfb9:"No Data Available",s49730f3d5751a433:"Loading..."},yn=Object.freeze(Object.defineProperty({__proto__:null,templates:vn},Symbol.toStringTag,{value:"Module"}));$.ApiService=vi,$.ComponentService=Le,$.DtAlert=Eo,$.DtBase=N,$.DtButton=yi,$.DtChurchHealthCircle=uo,$.DtConnection=ho,$.DtCopyText=fo,$.DtDate=jt,$.DtDatetime=bo,$.DtFileUpload=So,$.DtFormBase=M,$.DtIcon=ro,$.DtLabel=wi,$.DtLocation=mo,$.DtLocationMap=yo,$.DtMapModal=vo,$.DtModal=go,$.DtMultiSelect=Ze,$.DtMultiSelectButtonGroup=ko,$.DtMultiText=xo,$.DtNumberField=_o,$.DtSingleSelect=wo,$.DtTags=Ce,$.DtText=zt,$.DtTextArea=$o,$.DtTile=Ao,$.DtToggle=co,$.DtUsersConnection=po,$.version=Ua,Object.defineProperty($,Symbol.toStringTag,{value:"Module"})});

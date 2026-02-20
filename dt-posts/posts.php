@@ -408,7 +408,94 @@ class Disciple_Tools_Posts
         $fields = $post_type_settings['fields'];
         $message = '';
         if ( $activity->action == 'field_update' ){
-            if ( isset( $fields[$activity->meta_key] ) ){
+            // Check if this is a file_upload field by checking field_type or field settings
+            $is_file_upload_field = false;
+            if ( isset( $activity->field_type ) && $activity->field_type === 'file_upload' ) {
+                $is_file_upload_field = true;
+            } elseif ( isset( $fields[$activity->meta_key]['type'] ) && $fields[$activity->meta_key]['type'] === 'file_upload' ) {
+                $is_file_upload_field = true;
+            }
+
+            if ( $is_file_upload_field ) {
+                // Handle file_upload field formatting
+                if ( !empty( $activity->object_note ) ) {
+                    $message = $activity->object_note;
+                } else {
+                    // Parse meta_value to determine action
+                    $new_value = maybe_unserialize( $activity->meta_value );
+                    $old_value = maybe_unserialize( $activity->old_value );
+                    $field_name = isset( $fields[$activity->meta_key]['name'] ) ? $fields[$activity->meta_key]['name'] : $activity->meta_key;
+
+                    if ( empty( $new_value ) || $new_value === 'value_deleted' ) {
+                        // File(s) deleted
+                        if ( is_array( $old_value ) ) {
+                            $file_count = count( $old_value );
+                            if ( $file_count === 1 ) {
+                                $file_name = is_array( $old_value[0] ) && isset( $old_value[0]['name'] )
+                                    ? $old_value[0]['name']
+                                    : basename( is_string( $old_value[0] ) ? $old_value[0] : '' );
+                                $message = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+                            } else {
+                                $message = sprintf( _x( 'Deleted all %1$d files from %2$s', 'file_upload activity', 'disciple_tools' ), $file_count, $field_name );
+                            }
+                        } else {
+                            $file_name = basename( $old_value );
+                            $message = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+                        }
+                    } else if ( empty( $old_value ) ) {
+                        // File(s) uploaded
+                        if ( is_array( $new_value ) ) {
+                            $file_count = count( $new_value );
+                            $file_names = [];
+                            foreach ( $new_value as $file ) {
+                                if ( is_array( $file ) && isset( $file['name'] ) ) {
+                                    $file_names[] = $file['name'];
+                                } elseif ( is_string( $file ) ) {
+                                    $file_names[] = basename( $file );
+                                }
+                            }
+                            if ( $file_count === 1 ) {
+                                $message = sprintf( _x( 'Uploaded file: %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $file_names[0], $field_name );
+                            } else {
+                                $file_list = implode( ', ', array_slice( $file_names, 0, 3 ) );
+                                if ( $file_count > 3 ) {
+                                    $file_list .= sprintf( _x( ' and %d more', 'file_upload activity', 'disciple_tools' ), $file_count - 3 );
+                                }
+                                $message = sprintf( _x( 'Uploaded %1$d files: %2$s to %3$s', 'file_upload activity', 'disciple_tools' ), $file_count, $file_list, $field_name );
+                            }
+                        } else {
+                            $file_name = basename( $new_value );
+                            $message = sprintf( _x( 'Uploaded file: %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+                        }
+                    } else {
+                        // File renamed or updated
+                        $old_file_names = [];
+                        $new_file_names = [];
+
+                        if ( is_array( $old_value ) ) {
+                            foreach ( $old_value as $file ) {
+                                if ( is_array( $file ) && isset( $file['name'] ) ) {
+                                    $old_file_names[] = $file['name'];
+                                }
+                            }
+                        }
+                        if ( is_array( $new_value ) ) {
+                            foreach ( $new_value as $file ) {
+                                if ( is_array( $file ) && isset( $file['name'] ) ) {
+                                    $new_file_names[] = $file['name'];
+                                }
+                            }
+                        }
+
+                        // Check if it's a rename (one file, names differ)
+                        if ( count( $old_file_names ) === 1 && count( $new_file_names ) === 1 && $old_file_names[0] !== $new_file_names[0] ) {
+                            $message = sprintf( _x( 'Renamed file from %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $old_file_names[0], $new_file_names[0] );
+                        } else {
+                            $message = $field_name . ': ' . __( 'File updated', 'disciple_tools' );
+                        }
+                    }
+                }
+            } elseif ( isset( $fields[$activity->meta_key] ) ){
                 if ( $fields[$activity->meta_key]['type'] === 'user_select' ){
                     $meta_array = explode( '-', $activity->meta_value ); // Separate the type and id
                     if ( isset( $meta_array[1] ) ) {
@@ -825,6 +912,54 @@ class Disciple_Tools_Posts
                             }
                             if ( empty( $query_value ) ){
                                 $where_sql .= " $table_key.meta_value IS NULL ";
+                            }
+                        } else if ( in_array( $field_type, [ 'file_upload' ] ) ) {
+                            /**
+                             * file_upload
+                             * Supports:
+                             * ['*'] => has at least one file
+                             * []    => no files
+                             */
+                            if ( !is_array( $query_value ) ) {
+                                return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
+                            }
+
+                            $meta_table = $wpdb->postmeta;
+                            $user_condition = '';
+                            if ( isset( $field_settings[$query_key]['private'] ) && $field_settings[$query_key]['private'] ) {
+                                $meta_table = $wpdb->dt_post_user_meta;
+                                $user_condition = ' AND pm.user_id = ' . get_current_user_id();
+                            }
+
+                            // Detect "has files" query (supports '*' and prefixed legacy option id)
+                            $has_files = false;
+                            foreach ( $query_value as $value ) {
+                                if ( strpos( (string) $value, '-' ) !== 0 ) {
+                                    $normalized = ltrim( (string) $value, '^' );
+                                    if ( $normalized === '*' || $normalized === 'all-with-files' ) {
+                                        $has_files = true;
+                                    }
+                                }
+                            }
+
+                            $has_value_sql = "
+                                EXISTS (
+                                    SELECT 1
+                                    FROM $meta_table pm
+                                    WHERE pm.post_id = p.ID
+                                      AND pm.meta_key = '" . esc_sql( $query_key ) . "'
+                                      $user_condition
+                                      AND pm.meta_value <> ''
+                                      AND pm.meta_value <> 'a:0:{}'
+                                )
+                            ";
+
+                            if ( empty( $query_value ) ) {
+                                $where_sql .= " NOT $has_value_sql ";
+                            } elseif ( $has_files ) {
+                                $where_sql .= " $has_value_sql ";
+                            } else {
+                                return new WP_Error( __FUNCTION__, "Invalid file_upload filter values for $query_key", [ 'status' => 400 ] );
                             }
                         } else if ( in_array( $field_type, [ 'connection' ] ) ){
                             /**
