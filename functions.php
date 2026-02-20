@@ -12,6 +12,10 @@ if ( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
+if ( file_exists( get_template_directory() . '/vendor/autoload.php' ) ) {
+    require_once get_template_directory() . '/vendor/autoload.php';
+}
+
 /**
  * Test for minimum required PHP version
  */
@@ -103,7 +107,7 @@ class Disciple_Tools
          * Prepare variables
          */
         $this->token = 'disciple_tools';
-        $this->version = '1.77.2';
+        $this->version = '1.78.0';
 
         $this->theme_url = get_template_directory_uri() . '/';
         $this->theme_path = get_template_directory() . '/';

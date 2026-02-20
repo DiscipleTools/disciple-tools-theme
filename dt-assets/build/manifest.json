@@ -1,0 +1,47 @@
+{
+  "dt-assets/scss/login.scss": {
+    "file": "css/login.min.css",
+    "src": "dt-assets/scss/login.scss",
+    "isEntry": true,
+    "name": "login",
+    "names": [
+      "login.css"
+    ]
+  },
+  "dt-assets/scss/style.scss": {
+    "file": "css/style.min.css",
+    "src": "dt-assets/scss/style.scss",
+    "isEntry": true,
+    "name": "style",
+    "names": [
+      "style.css"
+    ]
+  },
+  "node_modules/@disciple.tools/web-components/src/styles/dark.css": {
+    "file": "css/dark.min.css",
+    "src": "node_modules/@disciple.tools/web-components/src/styles/dark.css",
+    "isEntry": true,
+    "name": "dark",
+    "names": [
+      "dark.css"
+    ]
+  },
+  "node_modules/@disciple.tools/web-components/src/styles/dim.css": {
+    "file": "css/dim.min.css",
+    "src": "node_modules/@disciple.tools/web-components/src/styles/dim.css",
+    "isEntry": true,
+    "name": "dim",
+    "names": [
+      "dim.css"
+    ]
+  },
+  "node_modules/@disciple.tools/web-components/src/styles/light.css": {
+    "file": "css/light.min.css",
+    "src": "node_modules/@disciple.tools/web-components/src/styles/light.css",
+    "isEntry": true,
+    "name": "light",
+    "names": [
+      "light.css"
+    ]
+  }
+}

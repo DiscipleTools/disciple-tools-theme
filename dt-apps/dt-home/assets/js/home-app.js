@@ -7,7 +7,7 @@ class HomeApp {
   constructor() {
     // Check authentication before loading content
     // If user is not authenticated, they will be redirected by PHP before this JavaScript runs
-    if (jsObject.user_id === 0) {
+    if (jsObject.user_id === 0 && jsObject.require_login) {
       // This should not happen as PHP redirects unauthenticated users
       // But as a fallback, redirect to login
       const currentUrl = window.location.href;
@@ -202,15 +202,31 @@ class HomeApp {
   displayLinks(links) {
     let html = '';
 
+    const linksSection = document.querySelector('.links-section');
+
     // Safety check: ensure links is an array
     if (!Array.isArray(this.links)) {
       console.error('Links is not an array:', this.links);
       html =
         '<div class="link-item"><div class="link-item__title">Error loading links.</div></div>';
     } else if (this.links.length === 0) {
-      html =
-        '<div class="link-item"><div class="link-item__title">No links available.</div></div>';
+      // When there are no links, hide the entire links section (including header)
+      if (linksSection) {
+        linksSection.style.display = 'none';
+      }
+
+      const linksListEmpty = document.getElementById('links-list');
+      if (linksListEmpty) {
+        linksListEmpty.innerHTML = '';
+      }
+
+      return;
     } else {
+      // Ensure the links section is visible when there are links
+      if (linksSection) {
+        linksSection.style.display = '';
+      }
+
       for (const link of this.links) {
         // Escape HTML to prevent XSS
         const safeUrl = (link.url || '#')
