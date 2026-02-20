@@ -1321,6 +1321,17 @@
               }
             } else if (field_settings.type === 'image') {
               values = [`<img src='${field_value.thumb}' class='list-image'>`];
+            } else if (field_settings.type === 'file_upload') {
+              const fileCount = Array.isArray(field_value)
+                ? field_value.length
+                : Array.isArray(field_value?.values)
+                  ? field_value.values.length
+                  : 0;
+              if (fileCount > 0) {
+                values = [
+                  `${window.SHAREDFUNCTIONS.escapeHTML(String(fileCount))} ${fileCount === 1 ? 'file' : 'files'}`,
+                ];
+              }
             }
           } else if (
             !field_value &&
