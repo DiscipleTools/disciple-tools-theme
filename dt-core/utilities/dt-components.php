@@ -321,4 +321,14 @@ class DT_Components
         </dt-users-connection>
         <?php
     }
+
+    public static function render_link( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+        ?>
+        <dt-multi-text-groups <?php echo wp_kses_post( $shared_attributes ) ?>
+            value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>">
+            <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        </dt-multi-text-groups>
+        <?php
+    }
 }
