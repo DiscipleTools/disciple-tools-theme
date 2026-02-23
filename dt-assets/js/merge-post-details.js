@@ -161,10 +161,7 @@ jQuery(function ($) {
                 let record_has_value = !window.lodash.isEmpty(
                   archiving_post['record'][post_field_id],
                 );
-                if (
-                  row.length &&
-                  (can_select_field(row) || record_has_value)
-                ) {
+                if (row.length && (can_select_field(row) || record_has_value)) {
                   $input.prop('checked', true);
                   $input.trigger('change');
                 }
@@ -243,7 +240,9 @@ jQuery(function ($) {
 
       case 'location_meta': {
         // Web component (dt-location-map) stores value as JSON string in 'value' attribute
-        const fieldElement = $(td_field_input).find('[id="' + field_id + '"]')[0];
+        const fieldElement = $(td_field_input).find(
+          '[id="' + field_id + '"]',
+        )[0];
         if (!fieldElement) {
           return false;
         }
@@ -253,7 +252,8 @@ jQuery(function ($) {
           fieldElement.value ||
           '[]';
         try {
-          let arr = typeof valueStr === 'string' ? JSON.parse(valueStr) : valueStr;
+          let arr =
+            typeof valueStr === 'string' ? JSON.parse(valueStr) : valueStr;
           return Array.isArray(arr) && arr.length > 0;
         } catch (e) {
           return false;
