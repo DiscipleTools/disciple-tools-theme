@@ -149,6 +149,26 @@ jQuery(function ($) {
                   }
                 }
               });
+
+            // Auto-select archiving checkboxes (within .td-field-select only) when the
+            // Archiving record has a value, so those values appear alongside primary in Updated
+            main_archiving_fields_div
+              .find('.td-field-select .field-select[type="checkbox"]')
+              .each(function (idx, input) {
+                let $input = $(input);
+                let row = $input.closest('tr');
+                let post_field_id = $input.data('merge_update_field_id');
+                let record_has_value = !window.lodash.isEmpty(
+                  archiving_post['record'][post_field_id],
+                );
+                if (
+                  row.length &&
+                  (can_select_field(row) || record_has_value)
+                ) {
+                  $input.prop('checked', true);
+                  $input.trigger('change');
+                }
+              });
           }, 0);
 
           // Ensure all archiving checkboxes are unchecked initially
@@ -158,27 +178,6 @@ jQuery(function ($) {
             .each(function (idx, input) {
               $(input).prop('checked', false);
             });
-
-          // COMMENTED OUT: Previous archiving auto-select logic
-          // This was removed to ensure primary fields are always the baseline.
-          // If auto-merging archiving values is needed in the future, uncomment this block.
-          /*
-          // Select any archiving fields suitable for auto merging
-          main_archiving_fields_div
-            .find('.field-select')
-            .each(function (idx, input) {
-              if ($(input).attr('type') === 'checkbox') {
-                let post_field_id = $(input).data('merge_update_field_id');
-                if (archiving_post['record'][post_field_id]) {
-                  $(input).prop(
-                    'checked',
-                    can_select_field($(input).parent().parent()),
-                  );
-                  $(input).trigger('change');
-                }
-              }
-            });
-          */
 
           // Display refreshed post fields
           main_archiving_fields_div.fadeIn('fast', function () {
@@ -238,10 +237,28 @@ jQuery(function ($) {
         );
 
       case 'communication_channel':
-      case 'location_meta':
         return !window.lodash.isEmpty(
           $(td_field_input).find('input.input-group-field').not('[value=""]'),
         );
+
+      case 'location_meta': {
+        // Web component (dt-location-map) stores value as JSON string in 'value' attribute
+        const fieldElement = $(td_field_input).find('[id="' + field_id + '"]')[0];
+        if (!fieldElement) {
+          return false;
+        }
+        let valueStr =
+          fieldElement.getAttribute('value') ||
+          $(fieldElement).attr('value') ||
+          fieldElement.value ||
+          '[]';
+        try {
+          let arr = typeof valueStr === 'string' ? JSON.parse(valueStr) : valueStr;
+          return Array.isArray(arr) && arr.length > 0;
+        } catch (e) {
+          return false;
+        }
+      }
 
       case 'user_select': {
         let user_select_typeahead =
