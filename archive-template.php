@@ -720,12 +720,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                     <!-- Field input will be rendered here -->
                                 </div>
                                 <div class="bulk-edit-field-actions">
-                                    <button type="button" class="button small bulk-edit-clear-field-btn" data-field-key="" style="display:none;">
-                                        <?php esc_html_e( 'Clear/Unset Field', 'disciple_tools' ); ?>
-                                    </button>
-                                    <button type="button" class="button small bulk-edit-restore-field-btn" data-field-key="" style="display:none;">
-                                        <?php esc_html_e( 'Restore Field', 'disciple_tools' ); ?>
-                                    </button>
+                                    <dt-toggle class="bulk-edit-mode-toggle" data-field-key="" label="<?php esc_attr_e( 'Remove Values', 'disciple_tools' ); ?>" style="display:none;"></dt-toggle>
                                 </div>
                             </div>
                         </div>

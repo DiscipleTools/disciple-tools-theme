@@ -70,53 +70,6 @@
     } else {
       updateButton.prop('disabled', true);
     }
-
-    // Update clear button labels based on whether fields have values
-    $('.bulk-edit-field-wrapper').each(function () {
-      updateClearButtonLabel(this);
-    });
-  }
-
-  function updateClearButtonLabel(fieldWrapper) {
-    const $wrapper = $(fieldWrapper);
-    const fieldKey = $wrapper.data('field-key');
-    const clearBtn = $wrapper.find('.bulk-edit-clear-field-btn');
-    if (!clearBtn.is(':visible')) return;
-
-    const fieldData = bulkEditSelectedFields.find(
-      (f) => f.fieldKey === fieldKey,
-    );
-    if (!fieldData) return;
-
-    const currentValue = collectFieldValue(
-      fieldKey,
-      fieldData.fieldType,
-      $wrapper,
-    );
-
-    let hasValues = false;
-    if (
-      currentValue !== null &&
-      currentValue !== undefined &&
-      currentValue !== ''
-    ) {
-      if (
-        fieldData.fieldType === 'multi_select' ||
-        fieldData.fieldType === 'tags' ||
-        fieldData.fieldType === 'connection'
-      ) {
-        const values = currentValue?.values || currentValue;
-        hasValues = Array.isArray(values) && values.length > 0;
-      } else {
-        hasValues = true;
-      }
-    }
-
-    clearBtn.text(
-      hasValues
-        ? list_settings.translations.remove_values
-        : list_settings.translations.clear_unset_field,
-    );
   }
 
   function bulk_edit_count() {
@@ -1503,10 +1456,8 @@
     wrapper
       .find('.bulk-edit-remove-field-btn')
       .attr('data-field-key', fieldKey);
-    wrapper.find('.bulk-edit-clear-field-btn').attr('data-field-key', fieldKey);
-    wrapper
-      .find('.bulk-edit-restore-field-btn')
-      .attr('data-field-key', fieldKey);
+    const modeToggle = wrapper.find('.bulk-edit-mode-toggle');
+    modeToggle.attr('data-field-key', fieldKey);
 
     // Set icon
     const iconContainer = wrapper.find('.bulk-edit-field-icon');
@@ -1522,9 +1473,12 @@
     const inputContainer = wrapper.find('.bulk-edit-field-input-container');
     renderBulkEditFieldInput(fieldKey, fieldType, inputContainer);
 
-    // Show clear button for fields that support clearing (exclude comment fields)
+    // Show remove toggle for fields that support clearing (exclude comment fields)
     if (supportsFieldClearing(fieldType) && fieldType !== 'comment') {
-      wrapper.find('.bulk-edit-clear-field-btn').show();
+      modeToggle.show();
+      modeToggle[0].addEventListener('change', function () {
+        handleModeToggleChange(this);
+      });
     }
 
     // Append to container
@@ -1739,18 +1693,6 @@
   }
 
   function initializeBulkEditFieldHandlers(fieldKey, fieldType) {
-    // Attach change listener to web component for clear button label updates
-    const wrapper = $(`.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`);
-    const component = wrapper.find(
-      'dt-single-select, dt-multi-select, dt-multi-select-button-group, ' +
-        'dt-tags, dt-connection, dt-text, dt-textarea, dt-number',
-    )[0];
-    if (component) {
-      component.addEventListener('change', function () {
-        updateClearButtonLabel(wrapper[0]);
-      });
-    }
-
     // Special case: user_select uses typeahead (not a web component)
     if (fieldType === 'user_select') {
       const fieldId = `bulk_${fieldKey}`;
@@ -1820,10 +1762,6 @@
               userInput.data('selected-user-name', item.name);
               resultContainer.data('selected-user-id', item.ID);
               resultContainer.data('selected-user-name', item.name);
-              const wrapper = userInput.closest('.bulk-edit-field-wrapper')[0];
-              if (wrapper) {
-                updateClearButtonLabel(wrapper);
-              }
             },
             onResult: function (node, query, result, resultCount) {
               const resultContainer = $(`#${fieldId}-result-container`);
@@ -2011,9 +1949,9 @@
     return displayHtml;
   }
 
-  // Clear/unset field value
-  $(document).on('click', '.bulk-edit-clear-field-btn', function () {
-    const fieldKey = $(this).data('field-key');
+  // Remove toggle handler: switches between add and remove/clear modes
+  function handleModeToggleChange(toggle) {
+    const fieldKey = $(toggle).attr('data-field-key');
     const fieldWrapper = $(
       `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
     );
@@ -2027,145 +1965,96 @@
     const inputContainer = fieldWrapper.find(
       '.bulk-edit-field-input-container',
     );
+    const isRemoveMode = toggle.checked;
 
-    // Check if field supports selective removal (not location/location_meta)
-    const supportsSelectiveRemoval = [
-      'key_select',
-      'multi_select',
-      'connection',
-      'tags',
-      'user_select',
-    ].includes(fieldType);
+    if (isRemoveMode) {
+      // Toggle ON: enter remove/clear mode
+      const supportsSelectiveRemoval = [
+        'key_select',
+        'multi_select',
+        'connection',
+        'tags',
+        'user_select',
+      ].includes(fieldType);
 
-    // Collect current field value
-    const currentValue = collectFieldValue(fieldKey, fieldType, fieldWrapper);
+      const currentValue = collectFieldValue(fieldKey, fieldType, fieldWrapper);
 
-    // For connection fields, also get raw value from component to preserve labels
-    let rawValueWithLabels = null;
-    if (fieldType === 'connection') {
-      const component = fieldWrapper.find('dt-connection')[0];
-      if (component && component.value) {
-        // Get raw value before conversion (contains id and label)
-        rawValueWithLabels = component.value;
+      let rawValueWithLabels = null;
+      if (fieldType === 'connection') {
+        const component = fieldWrapper.find('dt-connection')[0];
+        if (component && component.value) {
+          rawValueWithLabels = component.value;
+        }
       }
-    }
 
-    // Determine if we have values to remove or should clear all
-    let hasValues = false;
-    if (
-      currentValue !== null &&
-      currentValue !== undefined &&
-      currentValue !== ''
-    ) {
+      let hasValues = false;
       if (
-        fieldType === 'multi_select' ||
-        fieldType === 'tags' ||
-        fieldType === 'connection'
+        currentValue !== null &&
+        currentValue !== undefined &&
+        currentValue !== ''
       ) {
-        // Check if values array has items
-        const values = currentValue?.values || currentValue;
-        hasValues = Array.isArray(values) && values.length > 0;
-      } else if (fieldType === 'key_select' || fieldType === 'user_select') {
-        hasValues = true; // Single value fields
+        if (
+          fieldType === 'multi_select' ||
+          fieldType === 'tags' ||
+          fieldType === 'connection'
+        ) {
+          const values = currentValue?.values || currentValue;
+          hasValues = Array.isArray(values) && values.length > 0;
+        } else if (fieldType === 'key_select' || fieldType === 'user_select') {
+          hasValues = true;
+        }
       }
-    }
 
-    // If field supports selective removal AND has values, use remove mode
-    if (supportsSelectiveRemoval && hasValues) {
-      // Set remove operation mode
-      fieldData.operation = 'remove';
-      fieldData.valuesToRemove = currentValue; // Store converted value for transmission
-      fieldData.rawValueWithLabels = rawValueWithLabels; // Store raw value with labels for display
+      if (supportsSelectiveRemoval && hasValues) {
+        fieldData.operation = 'remove';
+        fieldData.valuesToRemove = currentValue;
+        fieldData.rawValueWithLabels = rawValueWithLabels;
 
-      // Render disabled display showing values to be removed
-      // Use rawValueWithLabels for connection fields to show labels
-      const displayValue =
-        fieldType === 'connection' && rawValueWithLabels
-          ? rawValueWithLabels
-          : currentValue;
-      const displayHtml = renderValuesToRemoveDisplay(
-        fieldKey,
-        fieldType,
-        displayValue,
-      );
-      inputContainer.html(displayHtml);
+        const displayValue =
+          fieldType === 'connection' && rawValueWithLabels
+            ? rawValueWithLabels
+            : currentValue;
+        const displayHtml = renderValuesToRemoveDisplay(
+          fieldKey,
+          fieldType,
+          displayValue,
+        );
+        inputContainer.html(displayHtml);
+      } else {
+        fieldData.cleared = true;
+        fieldData.operation = undefined;
+        fieldData.valuesToRemove = undefined;
+
+        inputContainer.html(
+          '<div class="alert-box secondary" style="margin: 0;">Field will be cleared/unset</div>',
+        );
+      }
     } else {
-      // Use existing clear-all behavior
-      fieldData.cleared = true;
+      // Toggle OFF: restore normal add mode
+      fieldData.cleared = false;
       fieldData.operation = undefined;
       fieldData.valuesToRemove = undefined;
+      fieldData.rawValueWithLabels = undefined;
 
-      // Clear the input visually
-      inputContainer.html(
-        '<div class="alert-box secondary" style="margin: 0;">Field will be cleared/unset</div>',
-      );
+      inputContainer.empty();
+      renderBulkEditFieldInput(fieldKey, fieldType, inputContainer);
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (window.componentService && window.componentService.initialize) {
+            try {
+              window.componentService.initialize();
+            } catch (e) {
+              // ComponentService initialization error
+            }
+          }
+          initializeBulkEditFieldHandlers(fieldKey, fieldType);
+        });
+      });
     }
 
-    // Hide clear button, show undo button
-    $(this).hide();
-    const restoreBtn = fieldWrapper.find('.bulk-edit-restore-field-btn');
-    restoreBtn.text(list_settings.translations.undo);
-    restoreBtn.show();
-  });
-
-  // Restore field value (undo clear)
-  $(document).on('click', '.bulk-edit-restore-field-btn', function () {
-    const fieldKey = $(this).data('field-key');
-    const fieldWrapper = $(
-      `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
-    );
-    const fieldData = bulkEditSelectedFields.find(
-      (f) => f.fieldKey === fieldKey,
-    );
-
-    if (!fieldData) return;
-
-    // Remove cleared flag and operation mode
-    fieldData.cleared = false;
-    fieldData.operation = undefined;
-    fieldData.valuesToRemove = undefined;
-    fieldData.rawValueWithLabels = undefined;
-
-    // Re-render field input
-    const inputContainer = fieldWrapper.find(
-      '.bulk-edit-field-input-container',
-    );
-
-    // Clear the container first to ensure clean re-render
-    inputContainer.empty();
-
-    // Re-render the field input (this will call initialization internally)
-    renderBulkEditFieldInput(fieldKey, fieldData.fieldType, inputContainer);
-
-    // Ensure proper initialization after restore
-    // renderBulkEditFieldInput already initializes, but we do an extra pass
-    // to ensure everything is ready, especially for user_select typeahead
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        // Re-initialize ComponentService for web components (in case they weren't ready)
-        if (window.componentService && window.componentService.initialize) {
-          try {
-            window.componentService.initialize();
-          } catch (e) {
-            // ComponentService initialization error - components should still work
-          }
-        }
-
-        // Re-initialize field-specific handlers (especially for user_select typeahead)
-        // This will destroy and recreate typeahead if needed
-        initializeBulkEditFieldHandlers(fieldKey, fieldData.fieldType);
-      });
-    });
-
-    // Show clear button, hide undo button
-    $(this).hide();
-    const clearBtn = fieldWrapper.find('.bulk-edit-clear-field-btn');
-    clearBtn.text(list_settings.translations.clear_unset_field);
-    clearBtn.show();
-
-    // Update update button state (field is no longer cleared/removed)
     updateBulkEditButtonState();
-  });
+  }
 
   // Remove field when clicking X button
   $(document).on('click', '.bulk-edit-remove-field-btn', function () {
