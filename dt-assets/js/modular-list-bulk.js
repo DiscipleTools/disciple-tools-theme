@@ -70,6 +70,53 @@
     } else {
       updateButton.prop('disabled', true);
     }
+
+    // Update clear button labels based on whether fields have values
+    $('.bulk-edit-field-wrapper').each(function () {
+      updateClearButtonLabel(this);
+    });
+  }
+
+  function updateClearButtonLabel(fieldWrapper) {
+    const $wrapper = $(fieldWrapper);
+    const fieldKey = $wrapper.data('field-key');
+    const clearBtn = $wrapper.find('.bulk-edit-clear-field-btn');
+    if (!clearBtn.is(':visible')) return;
+
+    const fieldData = bulkEditSelectedFields.find(
+      (f) => f.fieldKey === fieldKey,
+    );
+    if (!fieldData) return;
+
+    const currentValue = collectFieldValue(
+      fieldKey,
+      fieldData.fieldType,
+      $wrapper,
+    );
+
+    let hasValues = false;
+    if (
+      currentValue !== null &&
+      currentValue !== undefined &&
+      currentValue !== ''
+    ) {
+      if (
+        fieldData.fieldType === 'multi_select' ||
+        fieldData.fieldType === 'tags' ||
+        fieldData.fieldType === 'connection'
+      ) {
+        const values = currentValue?.values || currentValue;
+        hasValues = Array.isArray(values) && values.length > 0;
+      } else {
+        hasValues = true;
+      }
+    }
+
+    clearBtn.text(
+      hasValues
+        ? list_settings.translations.remove_values
+        : list_settings.translations.clear_unset_field,
+    );
   }
 
   function bulk_edit_count() {
@@ -1435,6 +1482,7 @@
     }
   }
 
+  // Update clear button labels when field values change
   /**
    * Field Rendering
    */
@@ -1691,6 +1739,18 @@
   }
 
   function initializeBulkEditFieldHandlers(fieldKey, fieldType) {
+    // Attach change listener to web component for clear button label updates
+    const wrapper = $(`.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`);
+    const component = wrapper.find(
+      'dt-single-select, dt-multi-select, dt-multi-select-button-group, ' +
+        'dt-tags, dt-connection, dt-text, dt-textarea, dt-number',
+    )[0];
+    if (component) {
+      component.addEventListener('change', function () {
+        updateClearButtonLabel(wrapper[0]);
+      });
+    }
+
     // Special case: user_select uses typeahead (not a web component)
     if (fieldType === 'user_select') {
       const fieldId = `bulk_${fieldKey}`;
@@ -1760,6 +1820,10 @@
               userInput.data('selected-user-name', item.name);
               resultContainer.data('selected-user-id', item.ID);
               resultContainer.data('selected-user-name', item.name);
+              const wrapper = userInput.closest('.bulk-edit-field-wrapper')[0];
+              if (wrapper) {
+                updateClearButtonLabel(wrapper);
+              }
             },
             onResult: function (node, query, result, resultCount) {
               const resultContainer = $(`#${fieldId}-result-container`);
@@ -2037,9 +2101,11 @@
       );
     }
 
-    // Hide clear button, show restore button
+    // Hide clear button, show undo button
     $(this).hide();
-    fieldWrapper.find('.bulk-edit-restore-field-btn').show();
+    const restoreBtn = fieldWrapper.find('.bulk-edit-restore-field-btn');
+    restoreBtn.text(list_settings.translations.undo);
+    restoreBtn.show();
   });
 
   // Restore field value (undo clear)
@@ -2091,9 +2157,11 @@
       });
     });
 
-    // Show clear button, hide restore button
+    // Show clear button, hide undo button
     $(this).hide();
-    fieldWrapper.find('.bulk-edit-clear-field-btn').show();
+    const clearBtn = fieldWrapper.find('.bulk-edit-clear-field-btn');
+    clearBtn.text(list_settings.translations.clear_unset_field);
+    clearBtn.show();
 
     // Update update button state (field is no longer cleared/removed)
     updateBulkEditButtonState();
