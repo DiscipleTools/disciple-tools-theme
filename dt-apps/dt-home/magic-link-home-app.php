@@ -105,6 +105,11 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
             return;
         }
 
+        // Set manifest start_url to this launcher page
+        add_filter( 'dt_manifest_url', function ( $url ) {
+            return add_query_arg( 'start', '/' . $this->root . '/' . $this->type . '/' . $this->parts['public_key'], $url );
+        });
+
         // load if valid url
         add_action( 'dt_blank_body', [ $this, 'body' ] );
         add_filter( 'dt_magic_url_base_allowed_css', [ $this, 'dt_magic_url_base_allowed_css' ], 10, 1 );
