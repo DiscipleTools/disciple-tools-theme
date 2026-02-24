@@ -386,6 +386,31 @@
   }
 
   /**
+   * Ensure statusColor is set on a node's data, computing it from status if missing.
+   * @param {Object} data - The node data object (d.data)
+   * @returns {string} - The resolved status color
+   */
+  function ensureStatusColor(data) {
+    if (!data.statusColor) {
+      if (data.status) {
+        const colors = window.dtGroupGenmap?.statusField?.colors || {};
+        const archivedKey =
+          window.dtGroupGenmap?.statusField?.archived_key || '';
+        if (colors[data.status]) {
+          data.statusColor = colors[data.status];
+        } else if (archivedKey && data.status === archivedKey) {
+          data.statusColor = '#808080';
+        } else {
+          data.statusColor = getStatusColor(data.status);
+        }
+      } else {
+        data.statusColor = getStatusColor(null);
+      }
+    }
+    return data.statusColor;
+  }
+
+  /**
    * Enhance node data with computed properties for D3 visualization
    * @param {Object} node - The node data from API
    * @param {number} generation - Current generation level (0 = root)
@@ -498,26 +523,7 @@
       if (!node.data.displayName) {
         node.data.displayName = ellipsizeName(node.data.name || '', 15);
       }
-      // Always ensure statusColor is set - compute from status if missing
-      // This ensures status colors are properly applied even if sanitizeNode didn't set it
-      if (!node.data.statusColor) {
-        if (node.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-
-          if (colors[node.data.status]) {
-            node.data.statusColor = colors[node.data.status];
-          } else if (archivedKey && node.data.status === archivedKey) {
-            node.data.statusColor = '#808080';
-          } else {
-            node.data.statusColor = getStatusColor(node.data.status);
-          }
-        } else {
-          // No status - use default
-          node.data.statusColor = getStatusColor(null);
-        }
-      }
+      ensureStatusColor(node.data);
       // Note: iconPath removed - icons will be in popover (Phase 5)
       if (node.data.isNonShared) {
         node.data.displayName = '.......';
@@ -1208,49 +1214,9 @@
       .attr('x', -NODE_HALF_WIDTH)
       .attr('y', -NODE_HALF_HEIGHT)
       .attr('rx', 4)
-      .attr('fill', (d) => {
-        // Ensure statusColor is computed from status property (matching legacy flow)
-        if (!d.data.statusColor && d.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-
-          if (colors[d.data.status]) {
-            d.data.statusColor = colors[d.data.status];
-          } else if (archivedKey && d.data.status === archivedKey) {
-            d.data.statusColor = '#808080';
-          } else {
-            d.data.statusColor = getStatusColor(d.data.status);
-          }
-        } else if (!d.data.statusColor) {
-          d.data.statusColor = getStatusColor(null);
-        }
-        return d.data.statusColor || '#3f729b';
-      })
-      .style('fill', (d) => {
-        // Use style() to ensure it overrides CSS - ensure statusColor is set
-        if (!d.data.statusColor && d.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-
-          if (colors[d.data.status]) {
-            d.data.statusColor = colors[d.data.status];
-          } else if (archivedKey && d.data.status === archivedKey) {
-            d.data.statusColor = '#808080';
-          } else {
-            d.data.statusColor = getStatusColor(d.data.status);
-          }
-        } else if (!d.data.statusColor) {
-          d.data.statusColor = getStatusColor(null);
-        }
-        return d.data.statusColor || '#3f729b';
-      })
+      .attr('fill', (d) => ensureStatusColor(d.data) || '#3f729b')
       .attr('stroke', (d) => {
-        // Ensure statusColor is set
-        if (!d.data.statusColor && d.data.status) {
-          d.data.statusColor = getStatusColor(d.data.status);
-        }
+        ensureStatusColor(d.data);
         return d.data.status ===
           (window.dtGroupGenmap?.statusField?.archived_key || 'inactive')
           ? '#666'
@@ -1274,44 +1240,7 @@
       .attr('dominant-baseline', 'middle')
       .attr('font-size', NODE_FONT_SIZE + 'px')
       .attr('font-weight', '500')
-      .style('fill', (d) => {
-        // Ensure statusColor is set before calculating text color
-        if (!d.data.statusColor && d.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-          if (colors[d.data.status]) {
-            d.data.statusColor = colors[d.data.status];
-          } else if (archivedKey && d.data.status === archivedKey) {
-            d.data.statusColor = '#808080';
-          } else {
-            d.data.statusColor = getStatusColor(d.data.status);
-          }
-        } else if (!d.data.statusColor) {
-          d.data.statusColor = getStatusColor(null);
-        }
-        const textColor = getTextColorForBackground(d.data.statusColor);
-        // Use both attr and style to ensure it works, and set important flag
-        return textColor;
-      })
-      .attr('fill', (d) => {
-        // Also set as attribute as fallback
-        if (!d.data.statusColor && d.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-          if (colors[d.data.status]) {
-            d.data.statusColor = colors[d.data.status];
-          } else if (archivedKey && d.data.status === archivedKey) {
-            d.data.statusColor = '#808080';
-          } else {
-            d.data.statusColor = getStatusColor(d.data.status);
-          }
-        } else if (!d.data.statusColor) {
-          d.data.statusColor = getStatusColor(null);
-        }
-        return getTextColorForBackground(d.data.statusColor);
-      })
+      .attr('fill', (d) => getTextColorForBackground(ensureStatusColor(d.data)))
       .attr('class', 'node-title')
       .text((d) => {
         const name = d.data.displayName || '';
@@ -1367,25 +1296,10 @@
       // Update text color for existing nodes
       const textSelection = d3.select(this).select('.node-title');
       if (!textSelection.empty()) {
-        // Ensure statusColor is set
-        if (!d.data.statusColor && d.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-          if (colors[d.data.status]) {
-            d.data.statusColor = colors[d.data.status];
-          } else if (archivedKey && d.data.status === archivedKey) {
-            d.data.statusColor = '#808080';
-          } else {
-            d.data.statusColor = getStatusColor(d.data.status);
-          }
-        } else if (!d.data.statusColor) {
-          d.data.statusColor = getStatusColor(null);
-        }
-        // Update text color using both style() and attr() to override CSS
-        const textColor = getTextColorForBackground(d.data.statusColor);
-        textSelection.style('fill', textColor);
-        textSelection.attr('fill', textColor);
+        textSelection.attr(
+          'fill',
+          getTextColorForBackground(ensureStatusColor(d.data)),
+        );
       }
     });
 
@@ -1812,54 +1726,9 @@
       .attr('x', -NODE_HALF_WIDTH) // Center horizontally
       .attr('y', -NODE_HALF_HEIGHT) // Center vertically
       .attr('rx', 4)
-      .attr('fill', (d) => {
-        // statusColor should already be set by sanitizeNode, but ensure it's computed if missing
-        if (!d.data.statusColor) {
-          if (d.data.status) {
-            const colors = window.dtGroupGenmap?.statusField?.colors || {};
-            const archivedKey =
-              window.dtGroupGenmap?.statusField?.archived_key || '';
-
-            if (colors[d.data.status]) {
-              d.data.statusColor = colors[d.data.status];
-            } else if (archivedKey && d.data.status === archivedKey) {
-              d.data.statusColor = '#808080';
-            } else {
-              d.data.statusColor = getStatusColor(d.data.status);
-            }
-          } else {
-            d.data.statusColor = getStatusColor(null);
-          }
-        }
-
-        // Use computed status color, fallback to default blue
-        return d.data.statusColor || '#3f729b';
-      })
-      .style('fill', (d) => {
-        // Use style() instead of attr() to ensure it overrides CSS
-        // statusColor should already be set, but ensure it's computed if missing
-        if (!d.data.statusColor && d.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-
-          if (colors[d.data.status]) {
-            d.data.statusColor = colors[d.data.status];
-          } else if (archivedKey && d.data.status === archivedKey) {
-            d.data.statusColor = '#808080';
-          } else {
-            d.data.statusColor = getStatusColor(d.data.status);
-          }
-        }
-        return d.data.statusColor || '#3f729b';
-      })
+      .attr('fill', (d) => ensureStatusColor(d.data) || '#3f729b')
       .attr('stroke', (d) => {
-        // Ensure statusColor is set
-        if (!d.data.statusColor && d.data.status) {
-          d.data.statusColor = getStatusColor(d.data.status);
-        }
-        const color = d.data.statusColor || '#3f729b';
-        // Lighten stroke for archived/inactive
+        ensureStatusColor(d.data);
         return d.data.status ===
           (window.dtGroupGenmap?.statusField?.archived_key || 'inactive')
           ? '#666'
@@ -1884,44 +1753,7 @@
       .attr('dominant-baseline', 'middle')
       .attr('font-size', NODE_FONT_SIZE + 'px') // Reduced font size for better fit
       .attr('font-weight', '500')
-      .style('fill', (d) => {
-        // Ensure statusColor is set before calculating text color
-        if (!d.data.statusColor && d.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-          if (colors[d.data.status]) {
-            d.data.statusColor = colors[d.data.status];
-          } else if (archivedKey && d.data.status === archivedKey) {
-            d.data.statusColor = '#808080';
-          } else {
-            d.data.statusColor = getStatusColor(d.data.status);
-          }
-        } else if (!d.data.statusColor) {
-          d.data.statusColor = getStatusColor(null);
-        }
-        const textColor = getTextColorForBackground(d.data.statusColor);
-        // Use both attr and style to ensure it works, and set important flag
-        return textColor;
-      })
-      .attr('fill', (d) => {
-        // Also set as attribute as fallback
-        if (!d.data.statusColor && d.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-          if (colors[d.data.status]) {
-            d.data.statusColor = colors[d.data.status];
-          } else if (archivedKey && d.data.status === archivedKey) {
-            d.data.statusColor = '#808080';
-          } else {
-            d.data.statusColor = getStatusColor(d.data.status);
-          }
-        } else if (!d.data.statusColor) {
-          d.data.statusColor = getStatusColor(null);
-        }
-        return getTextColorForBackground(d.data.statusColor);
-      })
+      .attr('fill', (d) => getTextColorForBackground(ensureStatusColor(d.data)))
       .attr('class', 'node-title')
       .text((d) => {
         // Use displayName which is already ellipsized, but ensure it fits with padding
