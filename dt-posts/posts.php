@@ -1472,6 +1472,84 @@ class Disciple_Tools_Posts
         return $options;
     }
 
+    /**
+     * Removes any S3-backed storage objects associated with a post (post meta image fields,
+     * comment/activity audio and image attachments, and dt_post_user_meta image fields).
+     * No-op if DT_Storage_API is not available or not enabled.
+     *
+     * @param string $post_type Post type.
+     * @param int    $post_id   Post ID.
+     */
+    private static function purge_post_storage_objects( string $post_type, int $post_id ) {
+        if ( !class_exists( 'DT_Storage_API' ) || !method_exists( 'DT_Storage_API', 'delete_file' ) || !DT_Storage_API::is_enabled() ) {
+            return;
+        }
+
+        global $wpdb;
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+
+        // Delete S3 objects for image-type post fields stored in post meta.
+        if ( is_array( $field_settings ) ) {
+            foreach ( $field_settings as $field_key => $settings ) {
+                if ( isset( $settings['type'] ) && $settings['type'] === 'image' ) {
+                    $storage_key = get_post_meta( $post_id, $field_key, true );
+                    if ( !empty( $storage_key ) ) {
+                        DT_Storage_API::delete_file( $storage_key );
+                    }
+                }
+            }
+        }
+
+        // Delete S3 objects referenced by comment meta attached to this post (e.g., audio_url, image_url).
+        $comment_storage_keys = $wpdb->get_col(
+            $wpdb->prepare(
+                "
+                SELECT cm.meta_value
+                FROM $wpdb->commentmeta cm
+                INNER JOIN $wpdb->comments c ON c.comment_ID = cm.comment_id
+                WHERE c.comment_post_ID = %d
+                AND cm.meta_key IN ( 'audio_url', 'image_url' )
+                ",
+                $post_id
+            )
+        );
+
+        if ( !empty( $comment_storage_keys ) ) {
+            foreach ( array_unique( array_filter( $comment_storage_keys ) ) as $storage_key ) {
+                DT_Storage_API::delete_file( $storage_key );
+            }
+        }
+
+        // Delete any S3 objects that might be stored in dt_post_user_meta for image-type fields.
+        $post_user_meta_rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "
+                SELECT meta_key, meta_value
+                FROM $wpdb->dt_post_user_meta
+                WHERE post_id = %d
+                ",
+                $post_id
+            ),
+            ARRAY_A
+        );
+
+        if ( !empty( $post_user_meta_rows ) && is_array( $field_settings ) ) {
+            foreach ( $post_user_meta_rows as $row ) {
+                $meta_key   = isset( $row['meta_key'] ) ? $row['meta_key'] : '';
+                $meta_value = isset( $row['meta_value'] ) ? $row['meta_value'] : '';
+
+                if ( empty( $meta_key ) || $meta_value === '' ) {
+                    continue;
+                }
+
+                $field_key = self::get_field_key_from_meta( $meta_key, $field_settings );
+                if ( $field_key && isset( $field_settings[ $field_key ]['type'] ) && $field_settings[ $field_key ]['type'] === 'image' ) {
+                    DT_Storage_API::delete_file( $meta_value );
+                }
+            }
+        }
+    }
+
     public static function delete_post( string $post_type, int $post_id, bool $check_permissions = true ){
         if ( $check_permissions && !self::can_delete( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
@@ -1480,6 +1558,8 @@ class Disciple_Tools_Posts
         global $wpdb;
 
         do_action( 'dt_before_post_deleted', $post_type, $post_id );
+
+        self::purge_post_storage_objects( $post_type, $post_id );
 
         $post_title = $wpdb->get_var( $wpdb->prepare( "SELECT post_title FROM $wpdb->posts WHERE ID = %d AND post_type = %s", $post_id, $post_type ) );
 
