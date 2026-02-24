@@ -388,41 +388,6 @@ Thanks!', 'disciple_tools' );
                     })
                 }
 
-                function toggle_expiration_controls(metaKey) {
-                    const neverExpiresCheckbox = document.getElementById('app-expiration-never-' + metaKey);
-                    const amountInput = document.getElementById('app-expiration-amount-' + metaKey);
-                    const timeUnitSelect = document.getElementById('app-expiration-time-unit-' + metaKey);
-                    
-                    if (neverExpiresCheckbox && amountInput && timeUnitSelect) {
-                        const isChecked = neverExpiresCheckbox.checked;
-                        amountInput.disabled = isChecked;
-                        timeUnitSelect.disabled = isChecked;
-                        
-                        // Clear values when disabled
-                        if (isChecked) {
-                            amountInput.value = '';
-                            timeUnitSelect.value = 'days';
-                        }
-                    }
-                }
-
-                // Initialize expiration controls on page load
-                function initialize_expiration_controls() {
-                    const checkboxes = document.querySelectorAll('input[id^="app-expiration-never-"]');
-                    checkboxes.forEach(function(checkbox) {
-                        const metaKey = checkbox.getAttribute('data-meta-key') || checkbox.id.replace('app-expiration-never-', '');
-                        toggle_expiration_controls(metaKey);
-                    });
-                }
-
-                // Run initialization when DOM is ready
-                if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', initialize_expiration_controls);
-                } else {
-                    // DOM is already ready
-                    initialize_expiration_controls();
-                }
-
                 function clear_expiration_after_reset(metaKey, id, sysType) {
                     if (!window.wpApiShare) return;
                     
@@ -454,17 +419,13 @@ Thanks!', 'disciple_tools' );
                                 if (expirationDisplay) {
                                     expirationDisplay.textContent = '---';
                                 }
-                                
-                                // Uncheck "Never expires" checkbox
-                                const neverExpiresCheckbox = document.getElementById('app-expiration-never-' + metaKey);
-                                if (neverExpiresCheckbox) {
-                                    neverExpiresCheckbox.checked = false;
-                                    toggle_expiration_controls(metaKey);
-                                }
-                                
-                                // Remove expiration badge if it exists
+
+                                // Remove expiration badge and clear data attributes
                                 const appAccordion = document.querySelector('.app-accordion.' + metaKey);
                                 if (appAccordion) {
+                                    appAccordion.dataset.expiresTs = '';
+                                    appAccordion.dataset.expiresFormatted = '---';
+                                    appAccordion.dataset.expiresFormattedShort = '';
                                     const badge = appAccordion.querySelector('.app-expiration-badge');
                                     if (badge) {
                                         badge.remove();
@@ -506,11 +467,10 @@ Thanks!', 'disciple_tools' );
                     const metaKey = key;
                     const expirationAmount = document.getElementById('app-expiration-amount-' + metaKey).value;
                     const expirationTimeUnit = document.getElementById('app-expiration-time-unit-' + metaKey).value;
-                    const neverExpires = document.getElementById('app-expiration-never-' + metaKey).checked;
 
-                    // Validate input
-                    if (!neverExpires && (!expirationAmount || expirationAmount <= 0)) {
-                        alert('<?php echo esc_js( __( 'Please enter a valid expiration amount or select "Never expires".', 'disciple_tools' ) ) ?>');
+                    // Validate input (amount and unit required)
+                    if (!expirationAmount || parseInt(expirationAmount, 10) <= 0 || !expirationTimeUnit) {
+                        alert('<?php echo esc_js( __( 'Please enter a valid expiration amount and time unit.', 'disciple_tools' ) ) ?>');
                         return;
                     }
 
@@ -522,9 +482,8 @@ Thanks!', 'disciple_tools' );
                     const payload = {
                         meta_key: metaKey,
                         sys_type: sys_type,
-                        links_expire_within_amount: neverExpires ? '' : expirationAmount,
-                        links_expire_within_time_unit: neverExpires ? '' : expirationTimeUnit,
-                        links_never_expires: neverExpires ? 'true' : 'false'
+                        links_expire_within_amount: expirationAmount,
+                        links_expire_within_time_unit: expirationTimeUnit
                     };
 
                     // Add id based on sys_type
@@ -553,32 +512,40 @@ Thanks!', 'disciple_tools' );
                         },
                         success: function(data) {
                             if (data && data.success) {
-                                // Update expiration display
+                                // Update expiration display (full date inside accordion)
                                 const expirationDisplay = document.getElementById('app-expiration-display-' + metaKey);
                                 if (data.expires) {
-                                    const formatted = data.expires.ts_formatted || '<?php echo esc_js( __( 'Never', 'disciple_tools' ) ) ?>';
-                                    expirationDisplay.textContent = formatted;
-                                    
+                                    const formatted = data.expires.ts_formatted || '---';
+                                    if (expirationDisplay) {
+                                        expirationDisplay.textContent = formatted;
+                                    }
+
                                     // Update data attributes
                                     appAccordion.dataset.expiresTs = data.expires.ts || '';
                                     appAccordion.dataset.expiresFormatted = data.expires.ts_formatted || '---';
-                                    
-                                    // Update summary badge if it exists
+                                    appAccordion.dataset.expiresFormattedShort = data.expires.ts_formatted_short || '';
+
+                                    // Update or create summary badge with short format (Exp: M/D/YY H:mm)
+                                    const shortFormatted = data.expires.ts_formatted_short || '';
                                     const badge = appAccordion.querySelector('.app-expiration-badge');
-                                    if (badge) {
-                                        badge.textContent = formatted !== '<?php echo esc_js( __( 'Never', 'disciple_tools' ) ) ?>' ? 
-                                            ('<?php echo esc_js( __( 'Expires: ', 'disciple_tools' ) ) ?>' + formatted) : 
-                                            '<?php echo esc_js( __( 'Never expires', 'disciple_tools' ) ) ?>';
-                                    } else if (formatted !== '<?php echo esc_js( __( 'Never', 'disciple_tools' ) ) ?>') {
-                                        // Create badge if it doesn't exist
-                                        const appLabel = appAccordion.querySelector('.app-label');
+                                    if (shortFormatted) {
+                                        const badgeText = '<?php echo esc_js( __( 'Exp: ', 'disciple_tools' ) ) ?>' + shortFormatted;
+                                        if (badge) {
+                                            badge.textContent = badgeText;
+                                        } else {
+                                            const appLabel = appAccordion.querySelector('.app-label');
                                         if (appLabel) {
                                             const newBadge = document.createElement('span');
                                             newBadge.className = 'app-expiration-badge';
-                                            newBadge.style.cssText = 'font-size: 0.85em; color: #666; margin-left: 0.5rem;';
-                                            newBadge.textContent = '<?php echo esc_js( __( 'Expires: ', 'disciple_tools' ) ) ?>' + formatted;
-                                            appLabel.appendChild(newBadge);
+                                            newBadge.style.cssText = 'font-size: 0.85em; color: #666; margin-top: 0.25rem;';
+                                            newBadge.textContent = badgeText;
+                                            // Insert under the title (after first child)
+                                            const insertBefore = appLabel.children[1] || null;
+                                            appLabel.insertBefore(newBadge, insertBefore);
                                         }
+                                        }
+                                    } else if (badge) {
+                                        badge.remove();
                                     }
                                 }
 
@@ -641,8 +608,7 @@ Thanks!', 'disciple_tools' );
         $expiration_data = [
             'ts' => '',
             'ts_formatted' => '---',
-            'ts_base' => '',
-            'links_never_expires' => false
+            'ts_base' => ''
         ];
         $post_id = isset( $post['ID'] ) ? $post['ID'] : get_the_ID();
         $sys_type = $user_id ? 'wp_user' : 'post';
@@ -664,19 +630,12 @@ Thanks!', 'disciple_tools' );
             }
 
             // Fetch expiration using unified wrapper (checks meta first, then link_obj)
-            $expiration_data_result = Disciple_Tools_Bulk_Magic_Link_Sender_API::capture_expiry_details(
+            $expiration_data = Disciple_Tools_Bulk_Magic_Link_Sender_API::capture_expiry_details(
                 $meta_key,
                 $record_id,
                 $sys_type,
                 $matching_link_obj
             );
-
-            // Also fetch full expiration data to get links_never_expires flag
-            $full_expiration_data = Disciple_Tools_Bulk_Magic_Link_Sender_API::fetch_link_expiration_from_meta( $meta_key, $record_id, $sys_type );
-
-            $expiration_data = array_merge( $expiration_data_result, [
-                'links_never_expires' => $full_expiration_data['links_never_expires'] ?? false
-            ] );
         }
         ?>
         <details class="app-accordion <?php echo esc_attr( $meta_key ); ?>"
@@ -692,23 +651,29 @@ Thanks!', 'disciple_tools' );
                  data-record-id="<?php echo esc_attr( $record_id ) ?>"
                  data-expires-ts="<?php echo esc_attr( $expiration_data['ts'] ?? '' ) ?>"
                  data-expires-formatted="<?php echo esc_attr( $expiration_data['ts_formatted'] ?? '---' ) ?>"
+                 data-expires-formatted-short="<?php echo esc_attr( ! empty( $expiration_data['ts'] ) ? date_i18n( 'n/j/y G:i', (int) $expiration_data['ts'] ) : '' ) ?>"
         >
             <summary class="app-summary">
-                <div class="app-label"><?php echo esc_html( $app['label'] ) ?>
-                <?php if ( !empty( $expiration_data ) && !empty( $expiration_data['ts_formatted'] ) && $expiration_data['ts_formatted'] !== '---' ): ?>
-                    <span class="app-expiration-badge" style="font-size: 0.85em; color: #666; margin-left: 0.5rem;">
-                        <?php echo esc_html( sprintf( __( 'Expires: %s', 'disciple_tools' ), $expiration_data['ts_formatted'] ) ) ?>
-                    </span>
-                <?php endif; ?>
-                <?php if ( !empty( $app['description'] ) ): ?>
-                <div class="dt-tooltip">
-                    <span class="tooltiptext"><?php echo esc_attr( $app['description'] ) ?></span>
-                    <img class="help-icon app-description-tooltip"
-                         src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"
-                         title="<?php echo esc_attr( $app['description'] ) ?>"
-                    />
-                </div>
-                <?php endif; ?>
+                <div class="app-label" style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <span class="app-label-title"><?php echo esc_html( $app['label'] ) ?></span>
+                    <?php
+                    $exp_ts = $expiration_data['ts'] ?? '';
+                    $exp_short = ! empty( $exp_ts ) ? date_i18n( 'n/j/y G:i', (int) $exp_ts ) : '';
+                    if ( ! empty( $exp_short ) ) :
+                        ?>
+                        <span class="app-expiration-badge" style="font-size: 0.85em; color: #666; margin-top: 0.25rem;">
+                            <?php echo esc_html( sprintf( __( 'Exp: %s', 'disciple_tools' ), $exp_short ) ) ?>
+                        </span>
+                    <?php endif; ?>
+                    <?php if ( !empty( $app['description'] ) ): ?>
+                    <div class="dt-tooltip" style="margin-top: 0.25rem;">
+                        <span class="tooltiptext"><?php echo esc_attr( $app['description'] ) ?></span>
+                        <img class="help-icon app-description-tooltip"
+                             src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"
+                             title="<?php echo esc_attr( $app['description'] ) ?>"
+                        />
+                    </div>
+                    <?php endif; ?>
                 </div>
 
                 <a class="app-link dt-action-button small button view"
@@ -782,12 +747,12 @@ Thanks!', 'disciple_tools' );
                     </div>
                     <div class="app-link-row">
                         <a data-tooltip
-                           title="<?php esc_html_e( 'Reset', 'disciple_tools' ) ?>"
+                           title="<?php esc_html_e( 'Reset link', 'disciple_tools' ) ?>"
                            type="button"
                            onclick="app_link_reset(event)"
                            class="dt-action-button small button reset"
                         ><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
-                        <span class="app-link-label"><?php esc_html_e( 'Reset link', 'disciple_tools' ) ?></span>
+                        <span class="app-link-label"><?php esc_html_e( 'Reset link (also clears expiration)', 'disciple_tools' ) ?></span>
                     </div>
                     <?php if ( class_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API' ) ): ?>
                     <div class="app-link-row" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e0e0;">
@@ -795,12 +760,12 @@ Thanks!', 'disciple_tools' );
                             <div style="display: flex; align-items: center; gap: 0.5rem;">
                                 <label style="font-weight: bold; min-width: 120px;"><?php esc_html_e( 'Link Expiration', 'disciple_tools' ) ?>:</label>
                                 <span id="app-expiration-display-<?php echo esc_attr( $meta_key ) ?>" style="flex-grow: 1;">
-                                    <?php echo esc_html( $expiration_data['ts_formatted'] ?? __( 'Never', 'disciple_tools' ) ) ?>
+                                    <?php echo esc_html( $expiration_data['ts_formatted'] ?? '---' ) ?>
                                 </span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 0.5rem; width: 100%; box-sizing: border-box;">
-                                <input type="number" 
-                                       id="app-expiration-amount-<?php echo esc_attr( $meta_key ) ?>" 
+                                <input type="number"
+                                       id="app-expiration-amount-<?php echo esc_attr( $meta_key ) ?>"
                                        placeholder="<?php esc_attr_e( 'Amount', 'disciple_tools' ) ?>"
                                        style="flex: 2; min-width: 0; box-sizing: border-box;"
                                        min="1"
@@ -812,23 +777,6 @@ Thanks!', 'disciple_tools' );
                                     <option value="weeks"><?php esc_html_e( 'Weeks', 'disciple_tools' ) ?></option>
                                     <option value="months"><?php esc_html_e( 'Months', 'disciple_tools' ) ?></option>
                                 </select>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 0.25rem;">
-                                <?php
-                                // Check if expiration is explicitly set to "Never" (only check if links_never_expires is true)
-                                $is_never_expires = ( $expiration_data['links_never_expires'] === true ||
-                                                      $expiration_data['ts_formatted'] === __( 'Never', 'disciple_tools' ) ||
-                                                      $expiration_data['ts_formatted'] === 'Never' );
-                                ?>
-                                <input type="checkbox" 
-                                       id="app-expiration-never-<?php echo esc_attr( $meta_key ) ?>"
-                                       style="margin: 0; vertical-align: middle;"
-                                       onchange="toggle_expiration_controls('<?php echo esc_js( $meta_key ) ?>')"
-                                       <?php echo $is_never_expires ? 'checked' : ''; ?>
-                                       data-meta-key="<?php echo esc_attr( $meta_key ) ?>">
-                                <label for="app-expiration-never-<?php echo esc_attr( $meta_key ) ?>" style="display: flex; align-items: center; margin: 0; vertical-align: middle;">
-                                    <?php esc_html_e( 'Never expires', 'disciple_tools' ) ?>
-                                </label>
                             </div>
                             <button type="button" 
                                     class="button small" 
