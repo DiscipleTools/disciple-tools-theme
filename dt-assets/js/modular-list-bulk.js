@@ -1862,7 +1862,7 @@
             typeof val === 'object' ? val.value || val.id || val : val;
           // Get the label for display
           const label = getOptionLabel(fieldKey, fieldType, valueKey);
-          displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS?.escapeHTML(label) || label}</span>`;
+          displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS.escapeHTML(label)}</span>`;
         });
       } else {
         displayHtml += '<em>No values selected</em>';
@@ -1909,7 +1909,7 @@
             label = `Connection ${connectionId}`;
           }
 
-          displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS?.escapeHTML(label) || label}</span>`;
+          displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS.escapeHTML(label)}</span>`;
         });
       } else {
         displayHtml += '<em>No connections selected</em>';
@@ -1919,7 +1919,7 @@
       if (valuesToRemove) {
         // Get label from field settings
         const label = getOptionLabel(fieldKey, fieldType, valuesToRemove);
-        displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS?.escapeHTML(label) || label}</span>`;
+        displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS.escapeHTML(label)}</span>`;
       } else {
         displayHtml += '<em>No option selected</em>';
       }
@@ -1937,7 +1937,7 @@
             userName = storedName;
           }
         }
-        displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS?.escapeHTML(userName) || userName}</span>`;
+        displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS.escapeHTML(userName)}</span>`;
       } else {
         displayHtml += '<em>No user selected</em>';
       }
