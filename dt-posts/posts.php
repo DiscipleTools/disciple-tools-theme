@@ -1494,7 +1494,10 @@ class Disciple_Tools_Posts
                 if ( isset( $settings['type'] ) && $settings['type'] === 'image' ) {
                     $storage_key = get_post_meta( $post_id, $field_key, true );
                     if ( !empty( $storage_key ) ) {
-                        DT_Storage_API::delete_file( $storage_key );
+                        $result = DT_Storage_API::delete_file( $storage_key );
+                        if ( $result === null ) {
+                            dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$storage_key}' for post {$post_id}" );
+                        }
                     }
                 }
             }
@@ -1516,7 +1519,10 @@ class Disciple_Tools_Posts
 
         if ( !empty( $comment_storage_keys ) ) {
             foreach ( array_unique( array_filter( $comment_storage_keys ) ) as $storage_key ) {
-                DT_Storage_API::delete_file( $storage_key );
+                $result = DT_Storage_API::delete_file( $storage_key );
+                if ( $result === null ) {
+                    dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$storage_key}' for post {$post_id}" );
+                }
             }
         }
 
@@ -1538,13 +1544,16 @@ class Disciple_Tools_Posts
                 $meta_key   = isset( $row['meta_key'] ) ? $row['meta_key'] : '';
                 $meta_value = isset( $row['meta_value'] ) ? $row['meta_value'] : '';
 
-                if ( empty( $meta_key ) || $meta_value === '' ) {
+                if ( empty( $meta_key ) || empty( $meta_value ) ) {
                     continue;
                 }
 
                 $field_key = self::get_field_key_from_meta( $meta_key, $field_settings );
                 if ( $field_key && isset( $field_settings[ $field_key ]['type'] ) && $field_settings[ $field_key ]['type'] === 'image' ) {
-                    DT_Storage_API::delete_file( $meta_value );
+                    $result = DT_Storage_API::delete_file( $meta_value );
+                    if ( $result === null ) {
+                        dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$meta_value}' for post {$post_id}" );
+                    }
                 }
             }
         }
