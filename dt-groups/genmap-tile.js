@@ -718,8 +718,8 @@
     ) {
       const isCollapsed = nodeData.data.collapsed || false;
       const collapseText = isCollapsed
-        ? (detailsStrings.expand || 'Expand')
-        : (detailsStrings.collapse || 'Collapse');
+        ? detailsStrings.expand || 'Expand'
+        : detailsStrings.collapse || 'Collapse';
       html += `<button class="popover-button secondary genmap-popover-collapse" data-node-id="${data.id}">${window.lodash.escape(collapseText)}</button>`;
     }
 
@@ -2309,23 +2309,15 @@
 
     // Allow location dropdown to extend outside modal (avoid overflow clipping)
     content.css('overflow-x', 'visible').css('overflow-y', 'auto');
-
-    // Focus first field after modal opens
-    setTimeout(() => {
-      const firstField = content.find('[name], [id]').first();
-      if (firstField.length) {
-        firstField.focus();
-      }
-    }, 100);
   }
 
   function handleAddChild() {
     const fieldPrefix = 'group_genmap_add_child_';
     const postType = jQuery(`#${fieldPrefix}post_type`).val();
-    const parentId = jQuery(`#${fieldPrefix}post_id`).val();
+    const parentId = parseInt(jQuery(`#${fieldPrefix}post_id`).val(), 10);
     const modalContent = jQuery('#template_metrics_modal_content');
 
-    if (!postType || !parentId) {
+    if (!postType || !parentId || Number.isNaN(parentId)) {
       return;
     }
 
@@ -2356,7 +2348,8 @@
       (typeof fields.title === 'string' && fields.title.trim() === '')
     ) {
       const msg =
-        window.dtGroupGenmap?.strings?.modal?.name_required || 'Name is required';
+        window.dtGroupGenmap?.strings?.modal?.name_required ||
+        'Name is required';
       alert(msg);
       return;
     }
@@ -2457,12 +2450,7 @@
         }
       });
 
-    // Add parent connection
-    fields.parent_groups = {
-      values: [{ value: parentId }],
-    };
-
-    // Add additional meta for tracking
+    // Parent connection is set via additional_meta (API overwrites connection from it)
     const createPayload = {
       ...fields,
       additional_meta: {
@@ -2486,8 +2474,9 @@
             window.dtGroupGenmap?.strings?.modal?.error_creating_child ||
             'Error creating child group: %s';
           const unknownErr =
-            window.dtGroupGenmap?.strings?.modal?.unknown_error || 'Unknown error';
-          const msg = (template && template.replace('%s', error.message || unknownErr)) || ('Error creating child group: ' + (error.message || unknownErr));
+            window.dtGroupGenmap?.strings?.modal?.unknown_error ||
+            'Unknown error';
+          const msg = template.replace('%s', error.message || unknownErr);
           alert(msg);
         });
     } else {
@@ -2532,8 +2521,10 @@
     'open.zf.reveal',
     '#template_metrics_modal[data-reveal]',
     function () {
-      // Focus on title field (name field is no longer used)
-      jQuery('#group_genmap_add_child_title').focus();
+      const titleField = jQuery('#group_genmap_add_child_title');
+      if (titleField.length) {
+        titleField[0].focus();
+      }
     },
   );
 

@@ -1205,6 +1205,11 @@ class DT_Groups_Base extends DT_Module_Base {
                     continue;
                 }
 
+                // Skip user_select (e.g. assigned_to) - not part of Add Child flow; uses legacy typeahead, not collected
+                if ( isset( $field_setting['type'] ) && $field_setting['type'] === 'user_select' ) {
+                    continue;
+                }
+
                 // Skip hidden fields unless they have custom_display
                 if ( !empty( $field_setting['hidden'] ) && empty( $field_setting['custom_display'] ) ) {
                     continue;
