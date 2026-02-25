@@ -1540,14 +1540,24 @@ jQuery(document).ready(function ($) {
     window.dtOptionAPI.duplicate_fields.post_types.length > 0 &&
     $('#duplicate-fields-form').length > 0
   ) {
+    // Safe config: ensure object (avoid accessing from prototype)
     const duplicateFieldsConfig =
-      window.dtOptionAPI.duplicate_fields.config || {};
+      window.dtOptionAPI.duplicate_fields.config != null &&
+      typeof window.dtOptionAPI.duplicate_fields.config === 'object' &&
+      !Array.isArray(window.dtOptionAPI.duplicate_fields.config)
+        ? window.dtOptionAPI.duplicate_fields.config
+        : {};
     // Ensure post_types is an array (handle case where it might be an object due to non-sequential keys)
     const postTypesRaw = window.dtOptionAPI.duplicate_fields.post_types || [];
     const allPostTypes = Array.isArray(postTypesRaw)
       ? postTypesRaw
       : Object.values(postTypesRaw);
-    const fieldsData = window.dtOptionAPI.duplicate_fields.fields || {};
+    // Prefer shared post_field_settings; fallback to duplicate_fields.fields for backward compatibility
+    const fieldsData =
+      window.dtOptionAPI.post_field_settings &&
+      typeof window.dtOptionAPI.post_field_settings === 'object'
+        ? window.dtOptionAPI.post_field_settings
+        : window.dtOptionAPI.duplicate_fields.fields || {};
     const defaultFields = window.dtOptionAPI.duplicate_fields.defaults || {};
 
     // Transform field settings to dt-multi-select format
@@ -1608,10 +1618,10 @@ jQuery(document).ready(function ($) {
       fieldSelector.options = options;
 
       // Set selected values from config, or use defaults if no valid config exists
-      // Check if valid config exists for this post type
+      // Check if valid config exists for this post type (use Object.prototype.hasOwnProperty.call to avoid unsafe hasOwnProperty from target object)
       let selectedFields;
       if (
-        duplicateFieldsConfig.hasOwnProperty(postType) &&
+        Object.prototype.hasOwnProperty.call(duplicateFieldsConfig, postType) &&
         Array.isArray(duplicateFieldsConfig[postType]) &&
         duplicateFieldsConfig[postType].length > 0
       ) {

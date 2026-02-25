@@ -73,6 +73,9 @@ function dt_options_scripts() {
 
     if ( isset( $_GET['page'] ) && ( in_array( $_GET['page'], $allowed_pages, true ) ) ) {
 
+        // Normalize active tab so page=dt_options without tab param works (defaults to general)
+        $active_tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'general';
+
         wp_register_script( 'jquery-ui-js', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', [ 'jquery' ], '1.12.1', true );
         wp_enqueue_script( 'jquery-ui-js' );
 
@@ -90,16 +93,25 @@ function dt_options_scripts() {
         dt_theme_enqueue_style( 'material-font-icons-local', 'dt-core/dependencies/mdi/css/materialdesignicons.min.css', array() );
         wp_enqueue_style( 'material-font-icons', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css' );
 
-        // Enqueue web components for dt-multi-select and other components
+        // Enqueue web components for dt-multi-select and other components (available on entire dt_options page)
         dt_theme_enqueue_script( 'web-components', 'dt-assets/build/components/index.js', array(), false );
         dt_theme_enqueue_style( 'web-components-css', 'dt-assets/build/css/light.min.css', array() );
 
-        if ( isset( $_GET['tab'] ) && ( ( $_GET['tab'] === 'people-groups' ) || ( $_GET['tab'] === 'general' ) ) ) {
+        if ( ( $active_tab === 'people-groups' ) || ( $active_tab === 'general' ) ) {
             wp_enqueue_script( 'dt_peoplegroups_scripts', get_template_directory_uri() . '/dt-people-groups/people-groups.js', [
                 'jquery',
                 'jquery-ui-core',
             ], filemtime( get_template_directory() . '/dt-people-groups/people-groups.js' ), true );
             wp_localize_script( 'dt_peoplegroups_scripts', 'dtPeopleGroupsAPI', build_people_groups_api_object() );
+        }
+
+        // Field settings for all post types: expose under dtOptionAPI for use by duplicate-fields and other settings
+        $post_field_settings = [];
+        if ( $_GET['page'] === 'dt_options' ) {
+            $post_types = DT_Posts::get_post_types();
+            foreach ( $post_types as $post_type ) {
+                $post_field_settings[ $post_type ] = DT_Posts::get_post_field_settings( $post_type );
+            }
         }
 
         // Prepare duplicate fields data for general tab
@@ -110,7 +122,7 @@ function dt_options_scripts() {
             'fields' => [],
             'defaults' => [],
         ];
-        if ( isset( $_GET['tab'] ) && $_GET['tab'] === 'general' ) {
+        if ( $active_tab === 'general' ) {
             // Check if we're processing a duplicate fields form submission
             // If so, read from POST data to get the latest values before they're saved
             $duplicates_config = null; // Use null to distinguish "no POST data" from "empty config"
@@ -169,17 +181,12 @@ function dt_options_scripts() {
             // Use array_values() to ensure sequential array keys (0, 1, 2...) for proper JSON encoding as array
             $duplicate_fields_data['post_types'] = array_values( DT_Posts::get_post_types() );
 
-            // Pre-load field settings and defaults for all post types
-            $fields_data = [];
+            // Use shared post_field_settings; build defaults per post type
             $defaults_data = [];
             foreach ( $duplicate_fields_data['post_types'] as $post_type ) {
-                $field_settings = DT_Posts::get_post_field_settings( $post_type );
-                $fields_data[$post_type] = $field_settings;
-
-                // Get default fields for this post type
-                $defaults_data[$post_type] = dt_get_duplicate_fields_defaults( $post_type );
+                $defaults_data[ $post_type ] = dt_get_duplicate_fields_defaults( $post_type );
             }
-            $duplicate_fields_data['fields'] = $fields_data;
+            $duplicate_fields_data['fields'] = $post_field_settings;
             $duplicate_fields_data['defaults'] = $defaults_data;
         }
 
@@ -194,6 +201,7 @@ function dt_options_scripts() {
                 'available_languages' => dt_get_available_languages(),
                 'site_options' => dt_get_option( 'dt_site_options' ),
                 'contacts_field_settings' => DT_Posts::get_post_field_settings( 'contacts' ),
+                'post_field_settings' => $post_field_settings,
                 'duplicate_fields' => $duplicate_fields_data,
             )
         );

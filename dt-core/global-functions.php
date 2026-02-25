@@ -1526,30 +1526,31 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
      * - 'name' field is always included for all post types
      * - 'communication_channel' type fields are included only for contacts post type
      *
+     * Used by: admin general settings (duplicate fields UI) and duplicate detection logic
+     * in dt-contacts/duplicates-merging.php when no saved configuration exists.
+     *
      * @param string $post_type The post type to get defaults for
      * @return array Array of field keys to check for duplicates
      */
-    if ( !function_exists( 'dt_get_duplicate_fields_defaults' ) ) {
-        function dt_get_duplicate_fields_defaults( $post_type ) {
-            $default_fields = [];
+    function dt_get_duplicate_fields_defaults( $post_type ) {
+        $default_fields = [];
 
-            // Name field is always included for all post types
-            $default_fields[] = 'name';
+        // Name field is always included for all post types
+        $default_fields[] = 'name';
 
-            // Communication channel fields are only included for contacts post type
-            if ( $post_type === 'contacts' ) {
-                $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        // Communication channel fields are only included for contacts post type
+        if ( $post_type === 'contacts' ) {
+            $field_settings = DT_Posts::get_post_field_settings( $post_type );
 
-                foreach ( $field_settings as $field_key => $field_setting ) {
-                    // Include all communication_channel type fields
-                    if ( isset( $field_setting['type'] ) && $field_setting['type'] === 'communication_channel' ) {
-                        $default_fields[] = $field_key;
-                    }
+            foreach ( $field_settings as $field_key => $field_setting ) {
+                // Include all communication_channel type fields
+                if ( isset( $field_setting['type'] ) && $field_setting['type'] === 'communication_channel' ) {
+                    $default_fields[] = $field_key;
                 }
             }
-
-            return apply_filters( 'dt_duplicate_fields_defaults', $default_fields, $post_type );
         }
+
+        return apply_filters( 'dt_duplicate_fields_defaults', $default_fields, $post_type );
     }
 
     /**
