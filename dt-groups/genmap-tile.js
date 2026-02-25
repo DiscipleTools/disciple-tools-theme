@@ -677,13 +677,13 @@
     // Build HTML with header containing title and close button
     let html = '<div class="popover-header">';
     html += `<h4>${window.lodash.escape(data.name || '')}</h4>`;
-    html += '<button class="popover-close" aria-label="Close">&times;</button>';
+    html += `<button class="popover-close" aria-label="${window.lodash.escape(detailsStrings.close || 'Close')}">&times;</button>`;
     html += '</div>';
 
     // Group type with icon
     if (groupTypeLabel) {
       html += '<div class="popover-field">';
-      html += '<strong>Type:</strong>';
+      html += `<strong>${window.lodash.escape(detailsStrings.type || 'Type')}:</strong>`;
       if (groupTypeIcon) {
         html += `<span><img src="${window.lodash.escape(groupTypeIcon)}" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;" />${window.lodash.escape(groupTypeLabel)}</span>`;
       } else {
@@ -696,7 +696,7 @@
     if (status) {
       const statusColor = data.statusColor || '#3f729b';
       html += '<div class="popover-field">';
-      html += '<strong>Status:</strong>';
+      html += `<strong>${window.lodash.escape(detailsStrings.status || 'Status')}:</strong>`;
       html += `<span><span style="display: inline-block; width: 12px; height: 12px; background-color: ${statusColor}; border-radius: 2px; margin-right: 6px; vertical-align: middle;"></span>${window.lodash.escape(status)}</span>`;
       html += '</div>';
     }
@@ -717,8 +717,10 @@
       (nodeData._children && nodeData._children.length > 0)
     ) {
       const isCollapsed = nodeData.data.collapsed || false;
-      const collapseText = isCollapsed ? 'Expand' : 'Collapse';
-      html += `<button class="popover-button secondary genmap-popover-collapse" data-node-id="${data.id}">${collapseText}</button>`;
+      const collapseText = isCollapsed
+        ? (detailsStrings.expand || 'Expand')
+        : (detailsStrings.collapse || 'Collapse');
+      html += `<button class="popover-button secondary genmap-popover-collapse" data-node-id="${data.id}">${window.lodash.escape(collapseText)}</button>`;
     }
 
     html += '</div>';
@@ -1985,7 +1987,7 @@
            style="width: 100%; height: 100%;">
         <div class="group-genmap-message" aria-live="polite" style="display: none;"></div>
         <div class="group-genmap-chart" role="region"
-             aria-label="${window.dtGroupGenmap?.strings?.loading || 'Group generational map'}"
+             aria-label="${window.dtGroupGenmap?.strings?.chart_aria || 'Group generational map'}"
              style="width: 100%; height: 100%;"></div>
       </div>
     `;
@@ -2095,27 +2097,36 @@
     let detailsHtml = '<div class="grid-x grid-padding-x">';
     detailsHtml += '<div class="cell">';
 
+    const detailsLabels = window.dtGroupGenmap?.strings?.details || {};
     if (data.group_status && data.group_status.label) {
       detailsHtml +=
-        '<p><strong>Status:</strong> ' +
+        '<p><strong>' +
+        window.lodash.escape(detailsLabels.status || 'Status') +
+        ':</strong> ' +
         window.lodash.escape(data.group_status.label) +
         '</p>';
     }
     if (data.group_type && data.group_type.label) {
       detailsHtml +=
-        '<p><strong>Type:</strong> ' +
+        '<p><strong>' +
+        window.lodash.escape(detailsLabels.type || 'Type') +
+        ':</strong> ' +
         window.lodash.escape(data.group_type.label) +
         '</p>';
     }
     if (data.member_count !== undefined) {
       detailsHtml +=
-        '<p><strong>Members:</strong> ' +
+        '<p><strong>' +
+        window.lodash.escape(detailsLabels.members || 'Members') +
+        ':</strong> ' +
         window.lodash.escape(data.member_count) +
         '</p>';
     }
     if (data.assigned_to && data.assigned_to.display) {
       detailsHtml +=
-        '<p><strong>Assigned:</strong> ' +
+        '<p><strong>' +
+        window.lodash.escape(detailsLabels.assigned || 'Assigned') +
+        ':</strong> ' +
         window.lodash.escape(data.assigned_to.display) +
         '</p>';
     }
@@ -2250,31 +2261,14 @@
           fieldPrefix,
         );
 
-        // Override mapbox token for location fields if available from dtGroupGenmap
-        if (
-          fieldHtml &&
-          (fieldSetting.type === 'location' ||
-            fieldSetting.type === 'location_meta')
-        ) {
-          const mapboxKey = window.dtGroupGenmap?.mapboxKey || '';
-          // Replace mapbox-token attribute if present
-          if (mapboxKey) {
-            fieldHtml = fieldHtml.replace(
-              /mapbox-token="[^"]*"/,
-              `mapbox-token="${window.lodash.escape(mapboxKey)}"`,
-            );
-            // If mapbox-token attribute doesn't exist, add it
-            if (!fieldHtml.includes('mapbox-token=')) {
-              fieldHtml = fieldHtml.replace(
-                /(<dt-location-map[^>]*)/,
-                `$1 mapbox-token="${window.lodash.escape(mapboxKey)}"`,
-              );
-            }
-          }
-        }
-
         if (fieldHtml) {
-          listHtml += `<div class="form-field">${fieldHtml}</div>`;
+          const isLocation =
+            fieldSetting.type === 'location' ||
+            fieldSetting.type === 'location_meta';
+          const fieldClass = isLocation
+            ? 'form-field form-field-location'
+            : 'form-field';
+          listHtml += `<div class="${fieldClass}">${fieldHtml}</div>`;
         }
       }
     });
@@ -2301,9 +2295,20 @@
       .empty()
       .html(window.lodash.escape(title));
     jQuery(content).css('max-height', '400px');
-    jQuery(content).css('overflow', 'auto');
+    jQuery(content).css('overflow-y', 'auto');
     jQuery(content).empty().html(listHtml);
     jQuery(modal).foundation('open');
+
+    // Set mapbox token on location components after insertion (avoids fragile HTML string replace)
+    const mapboxKey = window.dtGroupGenmap?.mapboxKey || '';
+    if (mapboxKey) {
+      content.find('dt-location-map').each(function () {
+        this.setAttribute('mapbox-token', mapboxKey);
+      });
+    }
+
+    // Allow location dropdown to extend outside modal (avoid overflow clipping)
+    content.css('overflow-x', 'visible').css('overflow-y', 'auto');
 
     // Focus first field after modal opens
     setTimeout(() => {
@@ -2350,9 +2355,14 @@
       !fields.title ||
       (typeof fields.title === 'string' && fields.title.trim() === '')
     ) {
-      alert('Name is required');
+      const msg =
+        window.dtGroupGenmap?.strings?.modal?.name_required || 'Name is required';
+      alert(msg);
       return;
     }
+
+    const submitBtn = jQuery(`#${fieldPrefix}but`);
+    submitBtn.attr('disabled', true).addClass('loading');
 
     // Collect values from all other web components
     modalContent
@@ -2464,17 +2474,24 @@
     if (window.API && window.API.create_post) {
       window.API.create_post(postType, createPayload)
         .then((newPost) => {
+          submitBtn.attr('disabled', false).removeClass('loading');
           jQuery('#template_metrics_modal').foundation('close');
           // Refresh the page to show the new child
           window.location.reload();
         })
         .catch(function (error) {
+          submitBtn.attr('disabled', false).removeClass('loading');
           console.error(error);
-          alert(
-            'Error creating child group: ' + (error.message || 'Unknown error'),
-          );
+          const template =
+            window.dtGroupGenmap?.strings?.modal?.error_creating_child ||
+            'Error creating child group: %s';
+          const unknownErr =
+            window.dtGroupGenmap?.strings?.modal?.unknown_error || 'Unknown error';
+          const msg = (template && template.replace('%s', error.message || unknownErr)) || ('Error creating child group: ' + (error.message || unknownErr));
+          alert(msg);
         });
     } else {
+      submitBtn.attr('disabled', false).removeClass('loading');
       console.error('window.API.create_post is not available');
     }
   }

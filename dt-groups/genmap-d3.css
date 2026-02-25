@@ -396,3 +396,8 @@
     outline: 2px solid #eed936;
     outline-offset: 2px;
 }
+
+/* Add Child modal: allow location dropdown to extend outside (avoid clipping) */
+#template_metrics_modal_content .form-field-location {
+    overflow: visible;
+}
