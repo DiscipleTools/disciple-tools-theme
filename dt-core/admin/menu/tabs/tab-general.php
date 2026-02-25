@@ -1088,9 +1088,6 @@ class Disciple_Tools_General_Tab extends Disciple_Tools_Abstract_Menu_Base
      * Display duplicate fields settings
      */
     public function display_duplicate_fields_settings() {
-        // Read fresh data (bypass any potential cache)
-        // This ensures we get the latest saved configuration
-        wp_cache_delete( 'dt_site_options', 'options' );
         $site_options = dt_get_option( 'dt_site_options' );
         $duplicates_config = $site_options['duplicates'] ?? [];
         $post_types = DT_Posts::get_post_types();

@@ -323,24 +323,77 @@ class DT_Duplicate_Checker_And_Merging {
             $match_on = [];
             $points = 0;
             foreach ( $fuzzy_query['fields'] as $field_key ){
-                if ( $field_settings[$field_key]['type'] === 'text' ){
-                    if ( $post[$field_key] === $possible_duplicate[$field_key] ){
-                        $match_on[] = [ 'field' => $field_key, 'value' => $post[$field_key] ];
+                if ( !isset( $field_settings[$field_key]['type'] ) ){
+                    continue;
+                }
+                $field_type = $field_settings[$field_key]['type'];
+                $post_val = $post[$field_key] ?? null;
+                $dup_val = $possible_duplicate[$field_key] ?? null;
+                if ( $post_val === null || $post_val === '' || $dup_val === null ){
+                    continue;
+                }
+
+                // text, textarea, number: scalar comparison
+                if ( in_array( $field_type, [ 'text', 'textarea', 'number' ], true ) ){
+                    $post_str = is_scalar( $post_val ) ? (string) $post_val : '';
+                    $dup_str = is_scalar( $dup_val ) ? (string) $dup_val : '';
+                    if ( $post_str === $dup_str ){
+                        $match_on[] = [ 'field' => $field_key, 'value' => $post_str ];
                         $points += 4;
-                    } else if ( stripos( $post[$field_key], $possible_duplicate[$field_key] ) !== false || stripos( $possible_duplicate[$field_key], $post[$field_key] ) !== false ){
-                        $match_on[] = [ 'field' => $field_key, 'value' => $post[$field_key] ];
+                    } else if ( $post_str !== '' && $dup_str !== '' && ( stripos( $post_str, $dup_str ) !== false || stripos( $dup_str, $post_str ) !== false ) ){
+                        $match_on[] = [ 'field' => $field_key, 'value' => $post_str ];
                         $points++;
                     }
                 }
-                if ( $field_settings[$field_key]['type'] === 'communication_channel' ){
-                    foreach ( $post[$field_key] as $value ){
-                        foreach ( $possible_duplicate[$field_key] as $dup_value ){
-                            $points++;
+                if ( $field_type === 'communication_channel' ){
+                    if ( !is_array( $post_val ) || !is_array( $dup_val ) ){
+                        continue;
+                    }
+                    foreach ( $post_val as $value ){
+                        if ( empty( $value['value'] ) ){
+                            continue;
+                        }
+                        foreach ( $dup_val as $dup_value ){
+                            if ( empty( $dup_value['value'] ) ){
+                                continue;
+                            }
                             if ( $value['value'] === $dup_value['value'] ){
                                 $match_on[] = [ 'field' => $field_key, 'value' => $dup_value['value'] ];
                                 $points += 4;
                             } else if ( stripos( $value['value'], $dup_value['value'] ) !== false || stripos( $dup_value['value'], $value['value'] ) !== false ){
                                 $match_on[] = [ 'field' => $field_key, 'value' => $dup_value['value'] ];
+                                $points++;
+                            }
+                        }
+                    }
+                }
+                // tags, multi_select: array comparison (value or key)
+                if ( in_array( $field_type, [ 'tags', 'multi_select' ], true ) ){
+                    $post_arr = is_array( $post_val ) ? $post_val : [];
+                    $dup_arr = is_array( $dup_val ) ? $dup_val : [];
+                    $post_values = [];
+                    foreach ( $post_arr as $v ){
+                        $post_values[] = is_array( $v ) ? ( $v['value'] ?? $v['key'] ?? $v['label'] ?? '' ) : (string) $v;
+                    }
+                    $post_values = array_filter( array_unique( $post_values ) );
+                    $dup_values = [];
+                    foreach ( $dup_arr as $v ){
+                        $dup_values[] = is_array( $v ) ? ( $v['value'] ?? $v['key'] ?? $v['label'] ?? '' ) : (string) $v;
+                    }
+                    $dup_values = array_filter( array_unique( $dup_values ) );
+                    foreach ( $post_values as $pv ){
+                        if ( $pv === '' ){
+                            continue;
+                        }
+                        foreach ( $dup_values as $dv ){
+                            if ( $dv === '' ){
+                                continue;
+                            }
+                            if ( $pv === $dv ){
+                                $match_on[] = [ 'field' => $field_key, 'value' => $pv ];
+                                $points += 4;
+                            } else if ( stripos( $pv, $dv ) !== false || stripos( $dv, $pv ) !== false ){
+                                $match_on[] = [ 'field' => $field_key, 'value' => $pv ];
                                 $points++;
                             }
                         }
@@ -798,71 +851,106 @@ class DT_Duplicate_Checker_And_Merging {
     }
 
     /**
-     * Search for potential duplicates on a post
+     * Search for potential duplicates on a post (raw SQL path used by View Duplicates bulk page).
+     * Uses the same configurable duplicate fields as query_for_duplicate_searches().
      *
-     * @param $post_type
-     * @param int $post_id the post to look for duplicates on
-     * @param bool $exact search only for exact matches
-     * @return array|object|null, the array of matches
+     * @param string $post_type Post type.
+     * @param int    $post_id   The post to look for duplicates on.
+     * @param bool   $exact     Search only for exact matches.
+     * @return array Array of matches with ID, field, value.
      */
     private static function query_for_duplicate_searches_v2( $post_type, $post_id, bool $exact = true ){
         $post = DT_Posts::get_post( $post_type, $post_id );
         $fields = DT_Posts::get_post_field_settings( $post_type );
-        $search_query = [];
         $exact_template = $exact ? '^' : '';
-        $fields_with_values = [];
         global $wpdb;
         $all_sql = '';
-        foreach ( $post as $field_key => $field_value ){
-            if ( ! isset( $fields[$field_key]['type'] ) || empty( $fields[$field_key]['type'] ) ){
+
+        // Use same configured duplicate fields as query_for_duplicate_searches()
+        $site_options = dt_get_option( 'dt_site_options' );
+        $duplicates_config = $site_options['duplicates'] ?? [];
+        if ( isset( $duplicates_config[ $post_type ] ) && !empty( $duplicates_config[ $post_type ] ) ) {
+            $configured_fields = $duplicates_config[ $post_type ];
+        } else {
+            $configured_fields = dt_get_duplicate_fields_defaults( $post_type );
+        }
+
+        foreach ( $configured_fields as $field_key ){
+            if ( !isset( $fields[ $field_key ]['type'] ) || !isset( $post[ $field_key ] ) ){
                 continue;
             }
-            $table_key = esc_sql( 'field_' . $field_key );
-            if ( $fields[$field_key]['type'] === 'communication_channel' ){
-                if ( !empty( $field_value ) ){
-                    $sql_joins = '';
-                    $where_sql = '';
-                    $sql_joins .= " LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key LIKE '" . esc_sql( $field_key ) . "%' AND $table_key.meta_key NOT LIKE '%_details' )";
-                    $sql_joins .= " INNER JOIN $wpdb->postmeta as type ON ( type.post_id = p.ID AND type.meta_key = 'type' AND type.meta_value = 'access' )";
-                    $channel_queries = [];
-                    foreach ( $field_value as $value ){
-                        if ( !empty( $value['value'] ) ){
-                            $where_sql .= ( empty( $where_sql ) ? '' : ' OR ' ) .  " $table_key.meta_value = '" . esc_sql( $value['value'] ) . "'";
-                            $channel_queries[] = $exact_template . $value['value'];
-                        }
-                    }
-                    if ( !empty( $channel_queries ) ){
-                        if ( !empty( $all_sql ) ){
-                            $all_sql .= ' UNION ';
-                        }
-                        $all_sql .= "SELECT p.ID, p.post_title, '" . esc_sql( $field_key ) . "' as field, $table_key.meta_value as value
-                            FROM $wpdb->posts p
-                            $sql_joins
-                            WHERE
-                            ( $where_sql )
-                            AND p.ID != " . esc_sql( $post_id ) . '
-                        ';
-                    }
-                }
-            } else if ( $field_key === 'name' && !empty( $field_value ) ){
-                if ( !empty( $all_sql ) ){
-                    $all_sql .= ' UNION ';
-                }
-                $all_sql .= "
-                    SELECT
-                    p.ID, p.post_title, 'post_title' as field, p.post_title as value
-                    FROM $wpdb->posts p
-                    JOIN $wpdb->postmeta pm ON ( p.ID = pm.post_id AND pm.meta_key = 'type' AND pm.meta_value = 'access' )
-                    WHERE p.post_title = '" . esc_sql( $field_value ) . "'
-                    AND p.post_type = 'contacts'
-                    AND p.ID != " . esc_sql( $post_id ) . '
-                ';
+            $search_values = self::extract_field_values_for_duplicate_search(
+                $post,
+                $field_key,
+                $fields[ $field_key ],
+                $exact_template
+            );
+            if ( empty( $search_values ) ){
+                continue;
+            }
 
-                $fields_with_values[] = $field_key;
-                $search_query[$field_key] = [ $exact_template . $field_value ];
+            $field_type = $fields[ $field_key ]['type'];
+            $table_key = esc_sql( 'field_' . str_replace( '-', '_', $field_key ) );
+
+            if ( $field_key === 'name' ){
+                foreach ( $search_values as $search_val ){
+                    $val = ( strpos( $search_val, '^' ) === 0 ) ? substr( $search_val, 1 ) : $search_val;
+                    $op = ( strpos( $search_val, '^' ) === 0 ) ? "=" : "LIKE";
+                    $esc_val = esc_sql( $val );
+                    if ( $op === 'LIKE' ){
+                        $esc_val = '%' . $esc_val . '%';
+                    }
+                    if ( !empty( $all_sql ) ){
+                        $all_sql .= ' UNION ';
+                    }
+                    $all_sql .= "SELECT p.ID, p.post_title, 'post_title' as field, p.post_title as value
+                        FROM $wpdb->posts p
+                        JOIN $wpdb->postmeta pm ON ( p.ID = pm.post_id AND pm.meta_key = 'type' AND pm.meta_value = 'access' )
+                        WHERE p.post_type = 'contacts' AND p.post_title $op '" . $esc_val . "'
+                        AND p.ID != " . (int) $post_id;
+                }
+            } else if ( $field_type === 'communication_channel' ){
+                $where_parts = [];
+                foreach ( $search_values as $search_val ){
+                    $val = ( strpos( $search_val, '^' ) === 0 ) ? substr( $search_val, 1 ) : $search_val;
+                    $where_parts[] = " $table_key.meta_value = '" . esc_sql( $val ) . "'";
+                }
+                if ( !empty( $where_parts ) ){
+                    if ( !empty( $all_sql ) ){
+                        $all_sql .= ' UNION ';
+                    }
+                    $all_sql .= "SELECT p.ID, p.post_title, '" . esc_sql( $field_key ) . "' as field, $table_key.meta_value as value
+                        FROM $wpdb->posts p
+                        LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key LIKE '" . esc_sql( $field_key ) . "%' AND $table_key.meta_key NOT LIKE '%_details' )
+                        INNER JOIN $wpdb->postmeta as type ON ( type.post_id = p.ID AND type.meta_key = 'type' AND type.meta_value = 'access' )
+                        WHERE ( " . implode( ' OR ', $where_parts ) . " )
+                        AND p.ID != " . (int) $post_id;
+                }
+            } else {
+                // text, textarea, number, tags, multi_select: postmeta with meta_key = field_key
+                foreach ( $search_values as $search_val ){
+                    $val = ( strpos( $search_val, '^' ) === 0 ) ? substr( $search_val, 1 ) : $search_val;
+                    $op = ( strpos( $search_val, '^' ) === 0 ) ? "=" : "LIKE";
+                    $esc_val = esc_sql( $val );
+                    if ( $op === 'LIKE' ){
+                        $esc_val = '%' . $esc_val . '%';
+                    }
+                    if ( !empty( $all_sql ) ){
+                        $all_sql .= ' UNION ';
+                    }
+                    $all_sql .= "SELECT p.ID, p.post_title, '" . esc_sql( $field_key ) . "' as field, pm.meta_value as value
+                        FROM $wpdb->posts p
+                        INNER JOIN $wpdb->postmeta pm ON ( p.ID = pm.post_id AND pm.meta_key = '" . esc_sql( $field_key ) . "' AND pm.meta_value $op '" . $esc_val . "' )
+                        INNER JOIN $wpdb->postmeta type ON ( p.ID = type.post_id AND type.meta_key = 'type' AND type.meta_value = 'access' )
+                        WHERE p.post_type = '" . esc_sql( $post_type ) . "' AND p.ID != " . (int) $post_id;
+                }
             }
         }
-        $contacts = $wpdb->get_results( $all_sql, ARRAY_A ); // @phpcs:ignore
-        return $contacts;
+
+        if ( $all_sql === '' ){
+            return [];
+        }
+        $contacts = $wpdb->get_results( $all_sql, ARRAY_A ); // phpcs:ignore
+        return is_array( $contacts ) ? $contacts : [];
     }
 }
