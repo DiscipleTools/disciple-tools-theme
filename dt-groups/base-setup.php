@@ -1226,11 +1226,8 @@ class DT_Groups_Base extends DT_Module_Base {
                 }
             }
 
-            // Add title field settings separately for JavaScript to use when rendering title explicitly
-            // We need title field settings available but not in the main fieldsToRender loop
-            if ( isset( $field_settings['title'] ) ) {
-                $create_form_fields['_title'] = $field_settings['title']; // Use _title as key to exclude from loop
-            }
+            // Title field is rendered separately in JS; pass its settings as a dedicated key (not in fieldSettings loop).
+            $title_field_setting = isset( $field_settings['title'] ) ? $field_settings['title'] : null;
 
             // Get mapbox token for location fields
             $mapbox_key = '';
@@ -1247,6 +1244,7 @@ class DT_Groups_Base extends DT_Module_Base {
                 'groupTypes' => $group_type_labels,
                 'groupTypeIcons' => $group_type_icons,
                 'fieldSettings' => $create_form_fields,
+                'titleFieldSetting' => $title_field_setting,
                 'mapboxKey' => $mapbox_key,
                 'strings' => [
                     'loading' => __( 'Loading map…', 'disciple_tools' ),

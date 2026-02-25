@@ -658,6 +658,7 @@
    * @returns {string} HTML content
    */
   function buildPopoverContent(nodeData) {
+    // Generation number is intentionally not shown in the popover (see issue #2878).
     const data = nodeData.data;
     const strings = window.dtGroupGenmap?.strings || {};
     const detailsStrings = strings.details || {};
@@ -2192,24 +2193,19 @@
         postId,
       )}" />`;
 
-    // Create a copy of fieldSettings without title/_title/name to avoid duplication
-    // We only want to show title field, not name field
+    // fieldSettings contains only in_create_form fields (title excluded in PHP). Title is rendered from titleFieldSetting.
     const fieldsToRender = {};
     Object.keys(fieldSettings).forEach((key) => {
-      // Exclude title, _title, and name (title is rendered separately, name is redundant)
-      if (key !== 'title' && key !== '_title' && key !== 'name') {
+      if (key !== 'title' && key !== 'name') {
         fieldsToRender[key] = fieldSettings[key];
       }
     });
 
-    // Render fields using DT Web Components
-    // Always include title field first
-    // Check for _title (from PHP) or title (fallback)
-    const titleFieldSetting = fieldSettings._title ||
-      fieldSettings.title || {
-        name: modalStrings.add_child_name_title || 'Name',
-        type: 'text',
-      };
+    // Title field is passed as a separate top-level key from PHP (titleFieldSetting)
+    const titleFieldSetting = window.dtGroupGenmap?.titleFieldSetting || {
+      name: modalStrings.add_child_name_title || 'Name',
+      type: 'text',
+    };
 
     if (window.SHAREDFUNCTIONS && window.SHAREDFUNCTIONS.renderField) {
       const titleFieldHtml = window.SHAREDFUNCTIONS.renderField(
@@ -2237,25 +2233,23 @@
     }
 
     // Render other fields that have in_create_form => true
+    const hasRenderField = !!(
+      window.SHAREDFUNCTIONS && window.SHAREDFUNCTIONS.renderField
+    );
+    if (Object.keys(fieldsToRender).length > 0 && !hasRenderField) {
+      console.warn(
+        'Genmapper Add Child: SHAREDFUNCTIONS.renderField is unavailable; in_create_form fields other than title will not be rendered.',
+      );
+    }
     Object.keys(fieldsToRender).forEach((fieldKey) => {
-      // Double-check: skip title and name fields if they somehow still exist
-      if (
-        fieldKey === 'title' ||
-        fieldKey === 'name' ||
-        fieldKey === '_title'
-      ) {
+      if (fieldKey === 'title' || fieldKey === 'name') {
         return;
       }
 
       const fieldSetting = fieldsToRender[fieldKey];
       // Only render fields that are supported by renderField
-      if (
-        window.SHAREDFUNCTIONS &&
-        window.SHAREDFUNCTIONS.renderField &&
-        fieldSetting &&
-        fieldSetting.type
-      ) {
-        let fieldHtml = window.SHAREDFUNCTIONS.renderField(
+      if (hasRenderField && fieldSetting && fieldSetting.type) {
+        const fieldHtml = window.SHAREDFUNCTIONS.renderField(
           fieldKey,
           fieldSetting,
           fieldPrefix,
@@ -2306,9 +2300,7 @@
         this.setAttribute('mapbox-token', mapboxKey);
       });
     }
-
-    // Allow location dropdown to extend outside modal (avoid overflow clipping)
-    content.css('overflow-x', 'visible').css('overflow-y', 'auto');
+    // Location dropdown visibility is handled by #template_metrics_modal_content .form-field-location { overflow: visible } in genmap-d3.css
   }
 
   function handleAddChild() {
@@ -2317,7 +2309,7 @@
     const parentId = parseInt(jQuery(`#${fieldPrefix}post_id`).val(), 10);
     const modalContent = jQuery('#template_metrics_modal_content');
 
-    if (!postType || !parentId || Number.isNaN(parentId)) {
+    if (!postType || !parentId) {
       return;
     }
 
