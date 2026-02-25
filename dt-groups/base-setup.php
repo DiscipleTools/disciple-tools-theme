@@ -1218,9 +1218,12 @@ class DT_Groups_Base extends DT_Module_Base {
                 if ( isset( $field_setting['in_create_form'] ) && $field_setting['in_create_form'] === false ) {
                     continue;
                 }
-                // Include fields that have in_create_form => true or are in the in_create_form array
+                // Include fields that have in_create_form => true or list this post type in the array
                 if ( !empty( $field_setting['in_create_form'] ) ) {
-                    if ( $field_setting['in_create_form'] === true || is_array( $field_setting['in_create_form'] ) ) {
+                    $in_form = $field_setting['in_create_form'];
+                    if ( $in_form === true ) {
+                        $create_form_fields[ $field_key ] = $field_setting;
+                    } elseif ( is_array( $in_form ) && in_array( $this->post_type, $in_form, true ) ) {
                         $create_form_fields[ $field_key ] = $field_setting;
                     }
                 }
