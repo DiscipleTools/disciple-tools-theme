@@ -430,6 +430,16 @@ Thanks!', 'disciple_tools' );
                                     if (badge) {
                                         badge.remove();
                                     }
+
+                                    // Reset label text when expiration has been cleared
+                                    const resetButton = appAccordion.querySelector('.app-link-row .reset');
+                                    if (resetButton) {
+                                        const resetRow = resetButton.closest('.app-link-row');
+                                        const resetLabel = resetRow ? resetRow.querySelector('.app-link-label') : null;
+                                        if (resetLabel) {
+                                            resetLabel.textContent = '<?php echo esc_js( __( 'Reset link', 'disciple_tools' ) ) ?>';
+                                        }
+                                    }
                                 }
                             }
                         },
@@ -534,18 +544,28 @@ Thanks!', 'disciple_tools' );
                                             badge.textContent = badgeText;
                                         } else {
                                             const appLabel = appAccordion.querySelector('.app-label');
-                                        if (appLabel) {
-                                            const newBadge = document.createElement('span');
-                                            newBadge.className = 'app-expiration-badge';
-                                            newBadge.style.cssText = 'font-size: 0.85em; color: #666; margin-top: 0.25rem;';
-                                            newBadge.textContent = badgeText;
-                                            // Insert under the title (after first child)
-                                            const insertBefore = appLabel.children[1] || null;
-                                            appLabel.insertBefore(newBadge, insertBefore);
-                                        }
+                                            if (appLabel) {
+                                                const newBadge = document.createElement('span');
+                                                newBadge.className = 'app-expiration-badge';
+                                                newBadge.style.cssText = 'font-size: 0.85em; color: #666; margin-top: 0.25rem;';
+                                                newBadge.textContent = badgeText;
+                                                // Insert under the title (after first child)
+                                                const insertBefore = appLabel.children[1] || null;
+                                                appLabel.insertBefore(newBadge, insertBefore);
+                                            }
                                         }
                                     } else if (badge) {
                                         badge.remove();
+                                    }
+
+                                    // Update reset label to mention clearing expiration
+                                    const resetButton = appAccordion.querySelector('.app-link-row .reset');
+                                    if (resetButton) {
+                                        const resetRow = resetButton.closest('.app-link-row');
+                                        const resetLabel = resetRow ? resetRow.querySelector('.app-link-label') : null;
+                                        if (resetLabel) {
+                                            resetLabel.textContent = '<?php echo esc_js( __( 'Reset link (clears expiration)', 'disciple_tools' ) ) ?>';
+                                        }
                                     }
                                 }
 
@@ -752,7 +772,23 @@ Thanks!', 'disciple_tools' );
                            onclick="app_link_reset(event)"
                            class="dt-action-button small button reset"
                         ><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
-                        <span class="app-link-label"><?php esc_html_e( 'Reset link (also clears expiration)', 'disciple_tools' ) ?></span>
+                        <?php if ( class_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API' ) ) : ?>
+                            <?php
+                            $has_expiration = ! empty( $expiration_data['ts'] )
+                                || ( ! empty( $expiration_data['ts_formatted'] ) && $expiration_data['ts_formatted'] !== '---' );
+                            ?>
+                            <span class="app-link-label">
+                                <?php
+                                if ( $has_expiration ) {
+                                    esc_html_e( 'Reset link (clears expiration)', 'disciple_tools' );
+                                } else {
+                                    esc_html_e( 'Reset link', 'disciple_tools' );
+                                }
+                                ?>
+                            </span>
+                        <?php else : ?>
+                            <span class="app-link-label"><?php esc_html_e( 'Reset link', 'disciple_tools' ) ?></span>
+                        <?php endif; ?>
                     </div>
                     <?php if ( class_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API' ) ): ?>
                     <div class="app-link-row" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e0e0;">
