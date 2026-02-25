@@ -895,7 +895,7 @@ class DT_Duplicate_Checker_And_Merging {
             if ( $field_key === 'name' ){
                 foreach ( $search_values as $search_val ){
                     $val = ( strpos( $search_val, '^' ) === 0 ) ? substr( $search_val, 1 ) : $search_val;
-                    $op = ( strpos( $search_val, '^' ) === 0 ) ? "=" : "LIKE";
+                    $op = ( strpos( $search_val, '^' ) === 0 ) ? '=' : 'LIKE';
                     $esc_val = esc_sql( $val );
                     if ( $op === 'LIKE' ){
                         $esc_val = '%' . $esc_val . '%';
@@ -903,11 +903,11 @@ class DT_Duplicate_Checker_And_Merging {
                     if ( !empty( $all_sql ) ){
                         $all_sql .= ' UNION ';
                     }
-                    $all_sql .= "SELECT p.ID, p.post_title, 'post_title' as field, p.post_title as value
-                        FROM $wpdb->posts p
-                        JOIN $wpdb->postmeta pm ON ( p.ID = pm.post_id AND pm.meta_key = 'type' AND pm.meta_value = 'access' )
-                        WHERE p.post_type = 'contacts' AND p.post_title $op '" . $esc_val . "'
-                        AND p.ID != " . (int) $post_id;
+                    $all_sql .= 'SELECT p.ID, p.post_title, \'post_title\' as field, p.post_title as value
+                        FROM ' . $wpdb->posts . ' p
+                        JOIN ' . $wpdb->postmeta . ' pm ON ( p.ID = pm.post_id AND pm.meta_key = \'type\' AND pm.meta_value = \'access\' )
+                        WHERE p.post_type = \'contacts\' AND p.post_title ' . $op . ' \'' . $esc_val . '\'
+                        AND p.ID != ' . (int) $post_id;
                 }
             } else if ( $field_type === 'communication_channel' ){
                 $where_parts = [];
@@ -919,18 +919,18 @@ class DT_Duplicate_Checker_And_Merging {
                     if ( !empty( $all_sql ) ){
                         $all_sql .= ' UNION ';
                     }
-                    $all_sql .= "SELECT p.ID, p.post_title, '" . esc_sql( $field_key ) . "' as field, $table_key.meta_value as value
-                        FROM $wpdb->posts p
-                        LEFT JOIN $wpdb->postmeta as $table_key ON ( $table_key.post_id = p.ID AND $table_key.meta_key LIKE '" . esc_sql( $field_key ) . "%' AND $table_key.meta_key NOT LIKE '%_details' )
-                        INNER JOIN $wpdb->postmeta as type ON ( type.post_id = p.ID AND type.meta_key = 'type' AND type.meta_value = 'access' )
-                        WHERE ( " . implode( ' OR ', $where_parts ) . " )
-                        AND p.ID != " . (int) $post_id;
+                    $all_sql .= 'SELECT p.ID, p.post_title, \'' . esc_sql( $field_key ) . '\' as field, ' . $table_key . '.meta_value as value
+                        FROM ' . $wpdb->posts . ' p
+                        LEFT JOIN ' . $wpdb->postmeta . ' as ' . $table_key . ' ON ( ' . $table_key . '.post_id = p.ID AND ' . $table_key . '.meta_key LIKE \'' . esc_sql( $field_key ) . '%\' AND ' . $table_key . '.meta_key NOT LIKE \'%_details\' )
+                        INNER JOIN ' . $wpdb->postmeta . ' as type ON ( type.post_id = p.ID AND type.meta_key = \'type\' AND type.meta_value = \'access\' )
+                        WHERE ( ' . implode( ' OR ', $where_parts ) . ' )
+                        AND p.ID != ' . (int) $post_id;
                 }
             } else {
                 // text, textarea, number, tags, multi_select: postmeta with meta_key = field_key
                 foreach ( $search_values as $search_val ){
                     $val = ( strpos( $search_val, '^' ) === 0 ) ? substr( $search_val, 1 ) : $search_val;
-                    $op = ( strpos( $search_val, '^' ) === 0 ) ? "=" : "LIKE";
+                    $op = ( strpos( $search_val, '^' ) === 0 ) ? '=' : 'LIKE';
                     $esc_val = esc_sql( $val );
                     if ( $op === 'LIKE' ){
                         $esc_val = '%' . $esc_val . '%';
@@ -938,11 +938,11 @@ class DT_Duplicate_Checker_And_Merging {
                     if ( !empty( $all_sql ) ){
                         $all_sql .= ' UNION ';
                     }
-                    $all_sql .= "SELECT p.ID, p.post_title, '" . esc_sql( $field_key ) . "' as field, pm.meta_value as value
-                        FROM $wpdb->posts p
-                        INNER JOIN $wpdb->postmeta pm ON ( p.ID = pm.post_id AND pm.meta_key = '" . esc_sql( $field_key ) . "' AND pm.meta_value $op '" . $esc_val . "' )
-                        INNER JOIN $wpdb->postmeta type ON ( p.ID = type.post_id AND type.meta_key = 'type' AND type.meta_value = 'access' )
-                        WHERE p.post_type = '" . esc_sql( $post_type ) . "' AND p.ID != " . (int) $post_id;
+                    $all_sql .= 'SELECT p.ID, p.post_title, \'' . esc_sql( $field_key ) . '\' as field, pm.meta_value as value
+                        FROM ' . $wpdb->posts . ' p
+                        INNER JOIN ' . $wpdb->postmeta . ' pm ON ( p.ID = pm.post_id AND pm.meta_key = \'' . esc_sql( $field_key ) . '\' AND pm.meta_value ' . $op . ' \'' . $esc_val . '\' )
+                        INNER JOIN ' . $wpdb->postmeta . ' type ON ( p.ID = type.post_id AND type.meta_key = \'type\' AND type.meta_value = \'access\' )
+                        WHERE p.post_type = \'' . esc_sql( $post_type ) . '\' AND p.ID != ' . (int) $post_id;
                 }
             }
         }
