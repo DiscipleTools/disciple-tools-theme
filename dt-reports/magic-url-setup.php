@@ -391,7 +391,7 @@ Thanks!', 'disciple_tools' );
                 function clear_expiration_after_reset(metaKey, id, sysType) {
                     if (!window.wpApiShare) return;
                     
-                    const endpointUrl = window.wpApiShare.site_url + '/wp-json/disciple_tools_magic_links/v1/clear_link_expiration';
+                    const endpointUrl = window.wpApiShare.root + 'disciple_tools_magic_links/v1/clear_link_expiration';
                     
                     const payload = {
                         meta_key: metaKey,
@@ -510,7 +510,7 @@ Thanks!', 'disciple_tools' );
                     button.textContent = '<?php echo esc_js( __( 'Setting...', 'disciple_tools' ) ) ?>';
 
                     // Build endpoint URL
-                    const endpointUrl = window.wpApiShare.site_url + '/wp-json/disciple_tools_magic_links/v1/set_link_expiration_direct';
+                    const endpointUrl = window.wpApiShare.root + 'disciple_tools_magic_links/v1/set_link_expiration_direct';
 
                     // Make request
                     $.ajax({
