@@ -896,9 +896,10 @@ class DT_Duplicate_Checker_And_Merging {
                 foreach ( $search_values as $search_val ){
                     $val = ( strpos( $search_val, '^' ) === 0 ) ? substr( $search_val, 1 ) : $search_val;
                     $op = ( strpos( $search_val, '^' ) === 0 ) ? '=' : 'LIKE';
-                    $esc_val = esc_sql( $val );
                     if ( $op === 'LIKE' ){
-                        $esc_val = '%' . $esc_val . '%';
+                        $esc_val = '%' . esc_sql( $wpdb->esc_like( $val ) ) . '%';
+                    } else {
+                        $esc_val = esc_sql( $val );
                     }
                     if ( !empty( $all_sql ) ){
                         $all_sql .= ' UNION ';
@@ -906,7 +907,7 @@ class DT_Duplicate_Checker_And_Merging {
                     $all_sql .= 'SELECT p.ID, p.post_title, \'post_title\' as field, p.post_title as value
                         FROM ' . $wpdb->posts . ' p
                         JOIN ' . $wpdb->postmeta . ' pm ON ( p.ID = pm.post_id AND pm.meta_key = \'type\' AND pm.meta_value = \'access\' )
-                        WHERE p.post_type = \'contacts\' AND p.post_title ' . $op . ' \'' . $esc_val . '\'
+                        WHERE p.post_type = \'' . esc_sql( $post_type ) . '\' AND p.post_title ' . $op . ' \'' . $esc_val . '\'
                         AND p.ID != ' . (int) $post_id;
                 }
             } else if ( $field_type === 'communication_channel' ){
@@ -931,9 +932,10 @@ class DT_Duplicate_Checker_And_Merging {
                 foreach ( $search_values as $search_val ){
                     $val = ( strpos( $search_val, '^' ) === 0 ) ? substr( $search_val, 1 ) : $search_val;
                     $op = ( strpos( $search_val, '^' ) === 0 ) ? '=' : 'LIKE';
-                    $esc_val = esc_sql( $val );
                     if ( $op === 'LIKE' ){
-                        $esc_val = '%' . $esc_val . '%';
+                        $esc_val = '%' . esc_sql( $wpdb->esc_like( $val ) ) . '%';
+                    } else {
+                        $esc_val = esc_sql( $val );
                     }
                     if ( !empty( $all_sql ) ){
                         $all_sql .= ' UNION ';
