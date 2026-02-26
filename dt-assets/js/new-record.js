@@ -291,42 +291,14 @@ jQuery(function ($) {
             10,
           );
 
-          console.groupCollapsed('[new-record] upload debug');
-          console.log('post_type', window.new_record_localized.post_type);
-          console.log('createPost response', response);
-          console.log('resolved createdPostId', createdPostId);
-          console.log(
-            'pending file upload fields',
-            pendingFileUploads.map((upload) => ({
-              fieldKey: upload.fieldKey,
-              files: upload.files.map((file) => ({
-                name: file.name,
-                size: file.size,
-                type: file.type,
-              })),
-            })),
-          );
-          console.groupEnd();
-
           if (pendingFileUploads.length > 0) {
             if (!createdPostId) {
-              console.error(
-                '[new-record] missing createdPostId from createPost response',
-                response,
-              );
               throw new Error(
                 'Unable to determine created record ID for file uploads.',
               );
             }
             for (const upload of pendingFileUploads) {
               const keyPrefix = `${window.new_record_localized.post_type}/${createdPostId}/${upload.fieldKey}`;
-              console.log('[new-record] uploadFiles request', {
-                postType: window.new_record_localized.post_type,
-                postId: createdPostId,
-                fieldKey: upload.fieldKey,
-                keyPrefix,
-                fileCount: upload.files.length,
-              });
               try {
                 await window.componentService.api.uploadFiles(
                   window.new_record_localized.post_type,
@@ -336,11 +308,6 @@ jQuery(function ($) {
                   keyPrefix,
                 );
               } catch (uploadError) {
-                console.error('[new-record] uploadFiles failed', {
-                  fieldKey: upload.fieldKey,
-                  error: uploadError,
-                  args: uploadError?.args,
-                });
                 upload.component.setAttribute(
                   'error',
                   uploadError?.message || 'Upload failed',
@@ -353,11 +320,10 @@ jQuery(function ($) {
           window.location = response.permalink;
         })
         .catch(function (error) {
-          console.error('[new-record] submit failed', error);
           const message =
-            error?.message ||
             error?.responseJSON?.message ||
             error?.responseText ||
+            error?.message ||
             'Unable to save record.';
           $('.js-create-post-button')
             .removeClass('loading')
