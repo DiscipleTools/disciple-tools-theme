@@ -349,6 +349,7 @@ function dt_site_scripts() {
             'sent' => _x( 'scheduled to be sent', 'Number of emails sent. i.e. 20 sent!', 'disciple_tools' ),
             'not_sent' => _x( 'not sent (likely missing valid email)', 'Preceded with number of emails not sent. i.e. 20 not sent!', 'disciple_tools' ),
             'see_queue' => _x( 'See queue', 'See queue of messages to be sent.', 'disciple_tools' ),
+            'remove_values' => __( 'Remove Values', 'disciple_tools' ),
             'exclude_item' => __( 'Exclude Item', 'disciple_tools' ),
             'exports' => [
                 'csv' => [
