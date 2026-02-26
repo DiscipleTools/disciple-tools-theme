@@ -1504,6 +1504,12 @@ class Disciple_Tools_Posts_Endpoints {
             }
         }
 
+        // Sanitize Content-Type to prevent HTTP header injection (e.g. newlines from S3 or meta).
+        $content_type = sanitize_mime_type( $content_type );
+        if ( $content_type === '' ) {
+            $content_type = 'application/octet-stream';
+        }
+
         // Set headers for file download
         header( 'Content-Type: ' . $content_type );
         header( 'Content-Disposition: attachment; filename="' . esc_attr( $file_name ) . '"' );

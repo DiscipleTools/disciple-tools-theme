@@ -1299,7 +1299,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             if ( isset( $post_fields[$field_key]['type'] ) && $post_fields[$field_key]['type'] === 'file_upload' ) {
                 // Accepted file types
                 if ( isset( $post_submission['visibility']['accepted_file_types'] ) && !empty( $post_submission['visibility']['accepted_file_types'] ) ) {
-                    $types = array_map( 'trim', explode( ',', $post_submission['visibility']['accepted_file_types'] ) );
+                    $types = array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $post_submission['visibility']['accepted_file_types'] ) ) );
                     $custom_field['accepted_file_types'] = $types;
                 }
 

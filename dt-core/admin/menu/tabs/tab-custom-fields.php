@@ -1070,7 +1070,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             if ( $field['type'] === 'file_upload' ) {
                 // Accepted file types
                 if ( isset( $post_submission['accepted_file_types'] ) && !empty( $post_submission['accepted_file_types'] ) ) {
-                    $types = array_map( 'trim', explode( ',', $post_submission['accepted_file_types'] ) );
+                    $types = array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $post_submission['accepted_file_types'] ) ) );
                     $custom_field['accepted_file_types'] = $types;
                 }
 
