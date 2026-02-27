@@ -558,34 +558,29 @@
     let sharePayload = null;
 
     // Check for share field in dynamically selected fields
-    const shareFieldSelected = bulkEditSelectedFields?.some(
+    const shareFieldData = bulkEditSelectedFields?.find(
       (f) => f.fieldKey === 'share',
     );
-    if (shareFieldSelected) {
-      const shareFieldData = bulkEditSelectedFields.find(
-        (f) => f.fieldKey === 'share',
+    if (shareFieldData) {
+      // Collect user IDs from component (supports multiple selections)
+      const shareFieldWrapper = $(
+        `.bulk-edit-field-wrapper[data-field-key="share"]`,
       );
-      if (shareFieldData) {
-        // Collect user IDs from component (supports multiple selections)
-        const shareFieldWrapper = $(
-          `.bulk-edit-field-wrapper[data-field-key="share"]`,
-        );
-        const shareUserIds = collectFieldValue(
-          'share',
-          'share',
-          shareFieldWrapper,
-        );
-        if (
-          shareUserIds &&
-          Array.isArray(shareUserIds) &&
-          shareUserIds.length > 0
-        ) {
-          // Use legacy format for multiple users (backward compatible)
-          sharePayload = {
-            users: shareUserIds,
-            unshare: false,
-          };
-        }
+      const shareUserIds = collectFieldValue(
+        'share',
+        'share',
+        shareFieldWrapper,
+      );
+      if (
+        shareUserIds &&
+        Array.isArray(shareUserIds) &&
+        shareUserIds.length > 0
+      ) {
+        // Use legacy format for multiple users (backward compatible)
+        sharePayload = {
+          users: shareUserIds,
+          unshare: false,
+        };
       }
     }
 
@@ -1039,7 +1034,7 @@
 
         // Get current user ID
         const currentUserId =
-          window.wpApiNotifications?.current_user_id || current_user_id;
+          window.wpApiNotifications?.current_user_id || DT_List.current_user_id;
 
         if (currentUserId) {
           // Return follow/unfollow structure
@@ -1983,7 +1978,7 @@
 
         // Function to process component value and update fieldData
         // dt-users-connection provides user IDs directly
-        const processShareComponentValue = async function (componentValue) {
+        function processShareComponentValue(componentValue) {
           const currentFieldData = bulkEditSelectedFields.find(
             (f) => f.fieldKey === fieldKey,
           );
@@ -1993,115 +1988,90 @@
 
           const items = normalizeShareComponentItems(componentValue);
 
-          try {
-            if (items.length > 0) {
-              // dt-users-connection format: [{id: <userId>, type: 'user', label: <displayName>}]
-              // Extract user IDs directly - no conversion needed!
-              const userIds = items
-                .map((item) => {
-                  // item.id is the user ID directly
-                  const userId = item.id || item.user_id || null;
-                  return userId ? parseInt(userId, 10) : null;
-                })
-                .filter((id) => id !== null);
+          if (items.length > 0) {
+            // dt-users-connection format: [{id: <userId>, type: 'user', label: <displayName>}]
+            // Extract user IDs directly - no conversion needed!
+            const userIds = items
+              .map((item) => {
+                // item.id is the user ID directly
+                const userId = item.id || item.user_id || null;
+                return userId ? parseInt(userId, 10) : null;
+              })
+              .filter((id) => id !== null);
 
-              // Store user IDs and labels
-              currentFieldData.shareUserIds = userIds;
-              currentFieldData.shareUserLabels = {};
-              items.forEach((item) => {
-                const userId = item.id || item.user_id;
-                if (userId) {
-                  currentFieldData.shareUserLabels[userId] = item.label || '';
-                }
-              });
+            // Store user IDs and labels
+            currentFieldData.shareUserIds = userIds;
+            currentFieldData.shareUserLabels = {};
+            items.forEach((item) => {
+              const userId = item.id || item.user_id;
+              if (userId) {
+                currentFieldData.shareUserLabels[userId] = item.label || '';
+              }
+            });
 
-              // For backward compatibility, also store first user ID
-              currentFieldData.shareUserId =
-                userIds.length > 0 ? userIds[0] : null;
-              currentFieldData.shareUserLabel =
-                userIds.length > 0
-                  ? currentFieldData.shareUserLabels[userIds[0]] || ''
-                  : null;
-            } else {
-              // Value is empty array or invalid format
-              currentFieldData.shareUserIds = [];
-              currentFieldData.shareUserLabels = {};
-              currentFieldData.shareUserId = null;
-              currentFieldData.shareUserLabel = null;
-            }
-          } catch (e) {
-            // Invalid format - log error but don't crash
-            console.error(
-              'Error processing share component value:',
-              e,
-              'Value was:',
-              componentValue,
-            );
-            // Clear field data on error
+            // For backward compatibility, also store first user ID
+            currentFieldData.shareUserId =
+              userIds.length > 0 ? userIds[0] : null;
+            currentFieldData.shareUserLabel =
+              userIds.length > 0
+                ? currentFieldData.shareUserLabels[userIds[0]] || ''
+                : null;
+          } else {
+            // Value is empty array or invalid format
             currentFieldData.shareUserIds = [];
             currentFieldData.shareUserLabels = {};
             currentFieldData.shareUserId = null;
             currentFieldData.shareUserLabel = null;
           }
-        };
+        }
 
-        // Process initial value if present (fire and forget - will update fieldData asynchronously)
+        // Process initial value if present
         if (shareComponent.value) {
-          processShareComponentValue(shareComponent.value).catch((err) => {
-            // Silently handle errors - component should still work
-          });
+          try {
+            processShareComponentValue(shareComponent.value);
+          } catch (err) {
+            console.error('Error processing initial share value:', err);
+          }
         }
 
         // Listen for value changes to store user IDs (supports multiple selections)
-        shareComponent.addEventListener('change', async function () {
-          await processShareComponentValue(this.value);
+        shareComponent.addEventListener('change', function () {
+          try {
+            processShareComponentValue(this.value);
+          } catch (err) {
+            console.error('Error processing share change value:', err);
+          }
         });
 
         // If we have a previous user ID, restore it in the component
         if (previousUserId) {
-          // Fetch user details to set component value
-          fetch(`${window.wpApiShare.root}dt/v1/users/get_users?s=&get_all=1`, {
-            headers: {
-              'X-WP-Nonce': window.wpApiShare.nonce,
-            },
-          })
-            .then((response) => response.json())
-            .then((usersData) => {
-              const users = Array.isArray(usersData)
-                ? usersData
-                : usersData.posts || [];
-              const user = users.find(
-                (u) => u.ID === parseInt(previousUserId, 10),
-              );
-              if (user && shareComponent) {
-                const value = JSON.stringify([
-                  {
-                    id: user.ID,
-                    type: 'user',
-                    label: user.name || user.display_name || '',
-                  },
-                ]);
-                shareComponent.value = value;
-                // Update fieldData
-                const currentFieldData = bulkEditSelectedFields.find(
-                  (f) => f.fieldKey === fieldKey,
-                );
-                if (currentFieldData) {
-                  currentFieldData.shareUserId = previousUserId;
-                  currentFieldData.shareUserIds = [
-                    parseInt(previousUserId, 10),
-                  ];
-                  currentFieldData.shareUserLabel =
-                    user.name || user.display_name || '';
-                  currentFieldData.shareUserLabels = {
-                    [previousUserId]: user.name || user.display_name || '',
-                  };
-                }
-              }
-            })
-            .catch((err) => {
-              console.error('Error fetching user for restoration:', err);
-            });
+          const label =
+            fieldData?.shareUserLabels?.[previousUserId] ||
+            fieldData?.shareUserLabel ||
+            '';
+
+          if (label && shareComponent) {
+            const value = JSON.stringify([
+              {
+                id: parseInt(previousUserId, 10),
+                type: 'user',
+                label,
+              },
+            ]);
+            shareComponent.value = value;
+            // Update fieldData
+            const currentFieldData = bulkEditSelectedFields.find(
+              (f) => f.fieldKey === fieldKey,
+            );
+            if (currentFieldData) {
+              currentFieldData.shareUserId = previousUserId;
+              currentFieldData.shareUserIds = [parseInt(previousUserId, 10)];
+              currentFieldData.shareUserLabel = label;
+              currentFieldData.shareUserLabels = {
+                [previousUserId]: label,
+              };
+            }
+          }
         }
       });
 
