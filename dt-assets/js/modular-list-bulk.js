@@ -1,7 +1,11 @@
 'use strict';
 /**
  * Bulk Edit Operations for Modular List
- * Handles bulk edit, bulk delete, bulk messaging functionality
+ * Handles bulk edit, bulk delete, bulk messaging functionality.
+ *
+ * This module is the primary home for bulk behavior on modular lists.
+ * New bulk-related features (edit, delete, share/follow, messaging, app actions)
+ * should be implemented here rather than in modular-list.js.
  *
  * Organized into three main sections:
  * 1. Bulk Operations & List Controls - Checkbox handling, record counting, shared queue processing
@@ -878,6 +882,41 @@
    * Field Value Collection
    */
 
+  function normalizeShareComponentItems(rawValue) {
+    if (rawValue === null || rawValue === undefined) {
+      return [];
+    }
+
+    let value = rawValue;
+
+    if (typeof rawValue === 'string') {
+      const trimmed = rawValue.trim();
+      if (!trimmed || trimmed === 'null' || trimmed === '[]') {
+        return [];
+      }
+      try {
+        value = JSON.parse(trimmed);
+      } catch (e) {
+        console.error(
+          'Error parsing share component string value as JSON:',
+          e,
+          'Value was:',
+          rawValue,
+        );
+        return [];
+      }
+    } else if (Array.isArray(rawValue)) {
+      value = rawValue;
+    } else if (typeof rawValue === 'object') {
+      value = Array.isArray(rawValue.value) ? rawValue.value : [rawValue];
+    } else {
+      // Unexpected primitive type (number, boolean, etc.)
+      return [];
+    }
+
+    return Array.isArray(value) ? value : [];
+  }
+
   function collectFieldValue(fieldKey, fieldType, fieldWrapper) {
     // Special case: comment field (not a real post field type)
     if (fieldType === 'comment') {
@@ -922,54 +961,37 @@
       }
 
       // Fallback: check component value directly
-      // dt-users-connection provides user IDs directly, so extract them
+      // dt-users-connection should expose an array (or JSON string) of items
       if (shareComponent && shareComponent.value) {
-        try {
-          let value;
-          if (typeof shareComponent.value === 'string') {
-            const trimmed = shareComponent.value.trim();
-            if (trimmed === '' || trimmed === '[]' || trimmed === 'null') {
-              return null;
-            }
-            value = JSON.parse(shareComponent.value);
-          } else if (Array.isArray(shareComponent.value)) {
-            value = shareComponent.value;
-          } else {
-            return null;
-          }
-
-          if (Array.isArray(value) && value.length > 0) {
-            // Extract user IDs directly from dt-users-connection format
-            const userIds = value
-              .map((item) => {
-                const userId = item.id || item.user_id || null;
-                return userId ? parseInt(userId, 10) : null;
-              })
-              .filter((id) => id !== null);
-
-            if (userIds.length > 0) {
-              // Cache in fieldData for future use
-              if (fieldData) {
-                fieldData.shareUserIds = userIds;
-                fieldData.shareUserId = userIds[0];
-                // Store labels if available
-                fieldData.shareUserLabels = {};
-                value.forEach((item) => {
-                  const userId = item.id || item.user_id;
-                  if (userId) {
-                    fieldData.shareUserLabels[userId] = item.label || '';
-                  }
-                });
-              }
-              return userIds;
-            }
-          }
-        } catch (e) {
-          console.error(
-            'Error parsing share component value in collectFieldValue:',
-            e,
-          );
+        const items = normalizeShareComponentItems(shareComponent.value);
+        if (items.length === 0) {
+          return null;
         }
+
+        const userIds = items
+          .map((item) => {
+            const userId = item.id || item.user_id || null;
+            return userId ? parseInt(userId, 10) : null;
+          })
+          .filter((id) => id !== null);
+
+        if (userIds.length === 0) {
+          return null;
+        }
+
+        if (fieldData) {
+          fieldData.shareUserIds = userIds;
+          fieldData.shareUserId = userIds[0];
+          fieldData.shareUserLabels = {};
+          items.forEach((item) => {
+            const userId = item.id || item.user_id;
+            if (userId) {
+              fieldData.shareUserLabels[userId] = item.label || '';
+            }
+          });
+        }
+
+        return userIds;
       }
 
       return null;
@@ -1960,7 +1982,7 @@
         }
 
         // Function to process component value and update fieldData
-        // dt-users-connection provides user IDs directly, so no conversion needed
+        // dt-users-connection provides user IDs directly
         const processShareComponentValue = async function (componentValue) {
           const currentFieldData = bulkEditSelectedFields.find(
             (f) => f.fieldKey === fieldKey,
@@ -1969,79 +1991,13 @@
             return;
           }
 
-          // Handle empty or invalid values
-          // componentValue might be a string, array, or object
-          if (
-            !componentValue ||
-            componentValue === null ||
-            componentValue === undefined
-          ) {
-            // Value is null/undefined
-            currentFieldData.shareUserIds = [];
-            currentFieldData.shareUserLabels = {};
-            currentFieldData.shareUserId = null;
-            currentFieldData.shareUserLabel = null;
-            return;
-          }
+          const items = normalizeShareComponentItems(componentValue);
 
-          // Handle if componentValue is already an array or object
-          let value;
-          if (Array.isArray(componentValue)) {
-            value = componentValue;
-          } else if (typeof componentValue === 'object') {
-            // If it's an object, try to convert to array format
-            value = Array.isArray(componentValue.value)
-              ? componentValue.value
-              : [componentValue];
-          } else if (typeof componentValue === 'string') {
-            // Handle string values
-            const trimmed = componentValue.trim();
-            if (
-              trimmed === '' ||
-              trimmed === 'null' ||
-              trimmed === '[]' ||
-              trimmed === 'undefined'
-            ) {
-              // Value is empty/null/empty array string
-              currentFieldData.shareUserIds = [];
-              currentFieldData.shareUserLabels = {};
-              currentFieldData.shareUserId = null;
-              currentFieldData.shareUserLabel = null;
-              return;
-            }
-            // Try to parse as JSON
-            try {
-              value = JSON.parse(componentValue);
-            } catch (e) {
-              console.error(
-                'Error parsing share component value as JSON:',
-                e,
-                'Value was:',
-                componentValue,
-              );
-              // Clear field data on parse error
-              currentFieldData.shareUserIds = [];
-              currentFieldData.shareUserLabels = {};
-              currentFieldData.shareUserId = null;
-              currentFieldData.shareUserLabel = null;
-              return;
-            }
-          } else {
-            // Unknown type
-            console.error(
-              'Share component value has unexpected type:',
-              typeof componentValue,
-              componentValue,
-            );
-            return;
-          }
-
-          // Now process the value (should be an array at this point)
           try {
-            if (Array.isArray(value) && value.length > 0) {
+            if (items.length > 0) {
               // dt-users-connection format: [{id: <userId>, type: 'user', label: <displayName>}]
               // Extract user IDs directly - no conversion needed!
-              const userIds = value
+              const userIds = items
                 .map((item) => {
                   // item.id is the user ID directly
                   const userId = item.id || item.user_id || null;
@@ -2052,7 +2008,7 @@
               // Store user IDs and labels
               currentFieldData.shareUserIds = userIds;
               currentFieldData.shareUserLabels = {};
-              value.forEach((item) => {
+              items.forEach((item) => {
                 const userId = item.id || item.user_id;
                 if (userId) {
                   currentFieldData.shareUserLabels[userId] = item.label || '';
