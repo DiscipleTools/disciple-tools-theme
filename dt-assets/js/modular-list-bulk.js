@@ -290,7 +290,7 @@
           }
         }
 
-        // Handle new share payload format: { user_id: <userId>, action: 'add' }
+        // Single-user add format (reserved for future use); new share UI uses legacy format below
         if (share && share.user_id && share.action === 'add') {
           promises.push(
             window.API.add_shared(
@@ -576,7 +576,8 @@
         Array.isArray(shareUserIds) &&
         shareUserIds.length > 0
       ) {
-        // Use legacy format for multiple users (backward compatible)
+        // Use legacy format for multiple users (backward compatible).
+        // Bulk unshare via this component is out of scope for now; unshare remains false.
         sharePayload = {
           users: shareUserIds,
           unshare: false,
@@ -1741,12 +1742,13 @@
     const inputContainer = wrapper.find('.bulk-edit-field-input-container');
     renderBulkEditFieldInput(fieldKey, fieldType, inputContainer);
 
-    // Show clear button for fields that support clearing (exclude comment, follow, and share fields)
+    // Show "Remove Values" mode toggle for clearable fields (exclude comment, follow, and share)
+    // Template uses .bulk-edit-mode-toggle (dt-toggle), not .bulk-edit-clear-field-btn
     if (
       supportsFieldClearing(fieldType) &&
       !['comment', 'share', 'follow'].includes(fieldType)
     ) {
-      wrapper.find('.bulk-edit-clear-field-btn').show();
+      wrapper.find('.bulk-edit-mode-toggle').show();
     }
 
     // Append to container
@@ -2082,20 +2084,23 @@
     if (fieldType === 'follow') {
       const followToggleId = `bulk_follow_${fieldKey}`;
 
-      // Build follow HTML with dt-toggle component
+      // Build follow HTML with dt-toggle component (escape label/help-text to prevent attribute/HTML injection)
+      const followLabel = window.SHAREDFUNCTIONS.escapeHTML(
+        window.wpApiShare?.translations?.follow || 'Follow',
+      );
+      const followHelpText = window.SHAREDFUNCTIONS.escapeHTML(
+        window.wpApiShare?.translations?.follow_help ||
+          'Toggle to follow or unfollow records',
+      );
       let followHtml = '<div class="auto cell">';
       followHtml +=
         '<dt-toggle id="' +
         followToggleId +
-        '" ' +
-        'label="' +
-        (window.wpApiShare?.translations?.follow || 'Follow') +
-        '" ' +
-        'help-text="' +
-        (window.wpApiShare?.translations?.follow_help ||
-          'Toggle to follow or unfollow records') +
-        '" ' +
-        '></dt-toggle>';
+        '" label="' +
+        followLabel +
+        '" help-text="' +
+        followHelpText +
+        '"></dt-toggle>';
       followHtml += '</div>';
 
       container.html(followHtml);
@@ -2514,6 +2519,11 @@
 
     updateBulkEditButtonState();
   }
+
+  // Delegate "Remove Values" mode toggle (dt-toggle) so handleModeToggleChange runs for clearable fields
+  $(document).on('change', '.bulk-edit-mode-toggle', function () {
+    handleModeToggleChange(this);
+  });
 
   // Remove field when clicking X button
   $(document).on('click', '.bulk-edit-remove-field-btn', function () {
