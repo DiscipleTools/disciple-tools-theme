@@ -1563,7 +1563,8 @@ class DT_Posts extends Disciple_Tools_Posts {
 
                 // Provide space for the reshaping of meta-values.
                 $meta_value = $meta->meta_value;
-                if ( in_array( $meta->meta_key, [ 'audio_url', 'image_url' ] ) && !empty( $meta_value ) && DT_Storage_API::is_enabled() ) {
+                $comment_storage_meta_keys = apply_filters( 'dt_post_comment_storage_meta_keys', [ 'audio_url', 'image_url' ] );
+                if ( in_array( $meta->meta_key, $comment_storage_meta_keys ) && !empty( $meta_value ) && DT_Storage_API::is_enabled() ) {
                     $storage_obj_url = DT_Storage_API::get_file_url( $meta_value );
                     $meta_value = !empty( $storage_obj_url ) ? $storage_obj_url : $meta_value;
                 }
