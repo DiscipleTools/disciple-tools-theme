@@ -138,24 +138,24 @@ class DT_Duplicate_Checker_And_Merging {
                 break;
 
             case 'tags':
-                // Array of tag values
+                // Array of tag values — no exact prefix; these are discrete keys, always matched with =
                 if ( is_array( $field_value ) ){
                     foreach ( $field_value as $tag ){
                         $tag_value = is_array( $tag ) ? ( $tag['value'] ?? $tag['label'] ?? '' ) : $tag;
                         if ( !empty( $tag_value ) ){
-                            $search_values[] = $exact_template . $tag_value;
+                            $search_values[] = $tag_value;
                         }
                     }
                 }
                 break;
 
             case 'multi_select':
-                // Array of selected keys
+                // Array of selected keys — no exact prefix; these are discrete keys, always matched with =
                 if ( is_array( $field_value ) ){
                     foreach ( $field_value as $selected ){
                         $selected_value = is_array( $selected ) ? ( $selected['key'] ?? $selected['value'] ?? '' ) : $selected;
                         if ( !empty( $selected_value ) ){
-                            $search_values[] = $exact_template . $selected_value;
+                            $search_values[] = $selected_value;
                         }
                     }
                 }
