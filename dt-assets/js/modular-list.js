@@ -1097,12 +1097,6 @@
     window.location.reload();
   });
 
-  // ============================================
-  // Bulk Edit Field Selection with dt-multi-select
-  // NOTE: This functionality has been moved to modular-list-bulk.js
-  // The bulk module registers itself via DT_List.bulk and handles all bulk edit field selection
-  // ============================================
-
   archivedSwitch.on('click', function () {
     const showArchived = this.checked;
 
@@ -3067,13 +3061,6 @@
       });
     });
   }
-
-  /***
-   * Bulk Edit
-   * NOTE: Bulk edit functionality has been moved to modular-list-bulk.js
-   * The bulk module handles all bulk edit operations including checkbox events,
-   * field selection, and submit handling
-   */
 
   /**
    * Split By Feature
