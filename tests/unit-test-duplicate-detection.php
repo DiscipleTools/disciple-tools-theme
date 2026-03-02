@@ -782,4 +782,123 @@ class DuplicateDetectionTest extends WP_UnitTestCase {
 
         $this->assertNotSame( $contact1['ID'], $contact2['ID'] );
     }
+
+    // =========================================================================
+    // Groups post type — duplicate detection works across post types
+    // =========================================================================
+
+    /**
+     * @testdox Duplicate detection finds groups with matching names using default config
+     */
+    public function test_groups_duplicate_detection_by_name_default_config() {
+        $group1 = DT_Posts::create_post( 'groups', [
+            'title' => 'UniqueGroupDupTest789',
+        ], true, false );
+        $this->assertNotWPError( $group1 );
+
+        $group2 = DT_Posts::create_post( 'groups', [
+            'title' => 'UniqueGroupDupTest789',
+        ], true, false );
+        $this->assertNotWPError( $group2 );
+
+        // Default config for groups is just ['name']
+        $site_options = dt_get_option( 'dt_site_options' );
+        $site_options['duplicates'] = [];
+        update_option( 'dt_site_options', $site_options );
+
+        $duplicates = DT_Duplicate_Checker_And_Merging::ids_of_non_dismissed_duplicates( 'groups', $group1['ID'] );
+        $this->assertNotWPError( $duplicates );
+        $this->assertContains( (string) $group2['ID'], $duplicates['ids'] );
+    }
+
+    /**
+     * @testdox Duplicate detection on groups does not match different names
+     */
+    public function test_groups_no_duplicate_with_different_names() {
+        $group1 = DT_Posts::create_post( 'groups', [
+            'title' => 'GroupNoDup Alpha',
+        ], true, false );
+        $this->assertNotWPError( $group1 );
+
+        $group2 = DT_Posts::create_post( 'groups', [
+            'title' => 'GroupNoDup Beta',
+        ], true, false );
+        $this->assertNotWPError( $group2 );
+
+        $site_options = dt_get_option( 'dt_site_options' );
+        $site_options['duplicates'] = [];
+        update_option( 'dt_site_options', $site_options );
+
+        $duplicates = DT_Duplicate_Checker_And_Merging::ids_of_non_dismissed_duplicates( 'groups', $group1['ID'] );
+        $this->assertNotWPError( $duplicates );
+        $this->assertNotContains( (string) $group2['ID'], $duplicates['ids'] );
+    }
+
+    /**
+     * @testdox Custom duplicate config works for groups post type
+     */
+    public function test_groups_custom_config_with_tags() {
+        $group1 = DT_Posts::create_post( 'groups', [
+            'title' => 'GroupTagDup Alpha',
+            'tags' => [ 'values' => [ [ 'value' => 'group-dup-tag-unique-321' ] ] ],
+        ], true, false );
+        $this->assertNotWPError( $group1 );
+
+        $group2 = DT_Posts::create_post( 'groups', [
+            'title' => 'GroupTagDup Beta',
+            'tags' => [ 'values' => [ [ 'value' => 'group-dup-tag-unique-321' ] ] ],
+        ], true, false );
+        $this->assertNotWPError( $group2 );
+
+        // Configure groups to check tags
+        $site_options = dt_get_option( 'dt_site_options' );
+        $site_options['duplicates'] = [ 'groups' => [ 'tags' ] ];
+        update_option( 'dt_site_options', $site_options );
+
+        $duplicates = DT_Duplicate_Checker_And_Merging::ids_of_non_dismissed_duplicates( 'groups', $group1['ID'] );
+        $this->assertNotWPError( $duplicates );
+        $this->assertContains( (string) $group2['ID'], $duplicates['ids'] );
+
+        $site_options['duplicates'] = [];
+        update_option( 'dt_site_options', $site_options );
+    }
+
+    /**
+     * @testdox get_all_duplicates_on_post works for groups with exact and fuzzy name matching
+     */
+    public function test_groups_all_duplicates_exact_and_fuzzy_name() {
+        $group1 = DT_Posts::create_post( 'groups', [
+            'title' => 'FuzzyGroup',
+        ], true, false );
+        $this->assertNotWPError( $group1 );
+
+        // Exact match
+        $group_exact = DT_Posts::create_post( 'groups', [
+            'title' => 'FuzzyGroup',
+        ], true, false );
+        $this->assertNotWPError( $group_exact );
+
+        // Fuzzy match (group1's name is a substring)
+        $group_fuzzy = DT_Posts::create_post( 'groups', [
+            'title' => 'FuzzyGroupExtended',
+        ], true, false );
+        $this->assertNotWPError( $group_fuzzy );
+
+        $site_options = dt_get_option( 'dt_site_options' );
+        $site_options['duplicates'] = [ 'groups' => [ 'name' ] ];
+        update_option( 'dt_site_options', $site_options );
+
+        $results = DT_Duplicate_Checker_And_Merging::get_all_duplicates_on_post( 'groups', $group1['ID'] );
+        $this->assertNotWPError( $results );
+
+        $exact_match = $this->find_dup_in_results( $results, $group_exact['ID'] );
+        $fuzzy_match = $this->find_dup_in_results( $results, $group_fuzzy['ID'] );
+
+        $this->assertNotNull( $exact_match, 'Exact group name match should be found' );
+        $this->assertNotNull( $fuzzy_match, 'Fuzzy group name match should be found' );
+        $this->assertGreaterThan( $fuzzy_match['points'], $exact_match['points'] );
+
+        $site_options['duplicates'] = [];
+        update_option( 'dt_site_options', $site_options );
+    }
 }

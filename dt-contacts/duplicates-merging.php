@@ -235,7 +235,7 @@ class DT_Duplicate_Checker_And_Merging {
         }
         global $wpdb;
         $search_query = self::query_for_duplicate_searches( $post_type, $post_id, $exact );
-        $res = DT_Posts::search_viewable_post( 'contacts', [ $search_query['query'] ] );
+        $res = DT_Posts::search_viewable_post( $post_type, [ $search_query['query'] ] );
         if ( is_wp_error( $res ) ){
             return $res;
         }
@@ -924,7 +924,7 @@ class DT_Duplicate_Checker_And_Merging {
                         FROM ' . $wpdb->posts . ' p
                         LEFT JOIN ' . $wpdb->postmeta . ' as ' . $table_key . ' ON ( ' . $table_key . '.post_id = p.ID AND ' . $table_key . '.meta_key LIKE \'' . esc_sql( $field_key ) . '%\' AND ' . $table_key . '.meta_key NOT LIKE \'%_details\' )
                         INNER JOIN ' . $wpdb->postmeta . ' as type ON ( type.post_id = p.ID AND type.meta_key = \'type\' AND type.meta_value = \'access\' )
-                        WHERE ( ' . implode( ' OR ', $where_parts ) . ' )
+                        WHERE p.post_type = \'' . esc_sql( $post_type ) . '\' AND ( ' . implode( ' OR ', $where_parts ) . ' )
                         AND p.ID != ' . (int) $post_id;
                 }
             } else {
