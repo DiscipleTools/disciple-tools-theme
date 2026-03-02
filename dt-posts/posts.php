@@ -1505,18 +1505,16 @@ class Disciple_Tools_Posts
 
         // Delete S3 objects referenced by comment meta attached to this post (e.g., audio_url, image_url).
         $comment_storage_meta_keys = apply_filters( 'dt_post_comment_storage_meta_keys', [ 'audio_url', 'image_url' ] );
-        $placeholders = implode( ', ', array_fill( 0, count( $comment_storage_meta_keys ), '%s' ) );
+        $meta_keys_sql = dt_array_to_sql( $comment_storage_meta_keys );
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $meta_keys_sql is escaped via dt_array_to_sql().
         $comment_storage_keys = $wpdb->get_col(
             $wpdb->prepare(
-                "
-                SELECT cm.meta_value
-                FROM $wpdb->commentmeta cm
-                INNER JOIN $wpdb->comments c ON c.comment_ID = cm.comment_id
+                "SELECT cm.meta_value
+                FROM {$wpdb->commentmeta} cm
+                INNER JOIN {$wpdb->comments} c ON c.comment_ID = cm.comment_id
                 WHERE c.comment_post_ID = %d
-                AND cm.meta_key IN ( $placeholders )
-                ",
-                $post_id,
-                ...$comment_storage_meta_keys
+                AND cm.meta_key IN ( $meta_keys_sql )",
+                $post_id
             )
         );
 
