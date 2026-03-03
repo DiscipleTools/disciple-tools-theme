@@ -1524,7 +1524,7 @@ class Disciple_Tools_Posts
         if ( !empty( $comment_storage_meta_keys ) ) {
             $placeholders = implode( ', ', array_fill( 0, count( $comment_storage_meta_keys ), '%s' ) );
             $params = array_merge( [ $post_id ], $comment_storage_meta_keys );
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $placeholders is safely constructed and all values are passed via $wpdb->prepare().
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
             $comment_storage_keys = $wpdb->get_col(
                 $wpdb->prepare(
                     "
@@ -1537,6 +1537,7 @@ class Disciple_Tools_Posts
                     $params
                 )
             );
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
             if ( !empty( $comment_storage_keys ) ) {
                 foreach ( array_unique( array_filter( $comment_storage_keys ) ) as $storage_key ) {
