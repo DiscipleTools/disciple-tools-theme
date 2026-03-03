@@ -1475,6 +1475,10 @@ class Disciple_Tools_Posts
     /**
      * Removes any S3-backed storage objects associated with a post (post meta image fields,
      * comment/activity audio and image attachments, and dt_post_user_meta image fields).
+     *
+     * This is a best-effort cleanup: S3 deletion failures are logged but do not block
+     * the overall record deletion. The purge runs before database deletes so that
+     * storage keys can be read while meta and related rows still exist.
      * No-op if DT_Storage_API is not available or not enabled.
      *
      * @param string $post_type Post type.
@@ -1495,7 +1499,7 @@ class Disciple_Tools_Posts
                     $storage_key = get_post_meta( $post_id, $field_key, true );
                     if ( !empty( $storage_key ) ) {
                         $result = DT_Storage_API::delete_file( $storage_key );
-                        if ( $result === null ) {
+                        if ( !is_array( $result ) || empty( $result['file_deleted'] ) ) {
                             dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$storage_key}' for post {$post_id}" );
                         }
                     }
@@ -1505,29 +1509,32 @@ class Disciple_Tools_Posts
 
         // Delete S3 objects referenced by comment meta attached to this post (e.g., audio_url, image_url).
         $comment_storage_meta_keys = apply_filters( 'dt_post_comment_storage_meta_keys', [ 'audio_url', 'image_url' ] );
-        $meta_keys_sql = dt_array_to_sql( $comment_storage_meta_keys );
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $meta_keys_sql is escaped via dt_array_to_sql().
-        $comment_storage_keys = $wpdb->get_col(
-            $wpdb->prepare(
-                "SELECT cm.meta_value
-                FROM {$wpdb->commentmeta} cm
-                INNER JOIN {$wpdb->comments} c ON c.comment_ID = cm.comment_id
-                WHERE c.comment_post_ID = %d
-                AND cm.meta_key IN ( $meta_keys_sql )",
-                $post_id
-            )
-        );
+        if ( !empty( $comment_storage_meta_keys ) ) {
+            $meta_keys_sql = dt_array_to_sql( $comment_storage_meta_keys );
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $meta_keys_sql is escaped via dt_array_to_sql().
+            $comment_storage_keys = $wpdb->get_col(
+                $wpdb->prepare(
+                    "SELECT cm.meta_value
+                    FROM {$wpdb->commentmeta} cm
+                    INNER JOIN {$wpdb->comments} c ON c.comment_ID = cm.comment_id
+                    WHERE c.comment_post_ID = %d
+                    AND cm.meta_key IN ( $meta_keys_sql )",
+                    $post_id
+                )
+            );
 
-        if ( !empty( $comment_storage_keys ) ) {
-            foreach ( array_unique( array_filter( $comment_storage_keys ) ) as $storage_key ) {
-                $result = DT_Storage_API::delete_file( $storage_key );
-                if ( $result === null ) {
-                    dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$storage_key}' for post {$post_id}" );
+            if ( !empty( $comment_storage_keys ) ) {
+                foreach ( array_unique( array_filter( $comment_storage_keys ) ) as $storage_key ) {
+                    $result = DT_Storage_API::delete_file( $storage_key );
+                    if ( !is_array( $result ) || empty( $result['file_deleted'] ) ) {
+                        dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$storage_key}' for post {$post_id}" );
+                    }
                 }
             }
         }
 
         // Delete any S3 objects that might be stored in dt_post_user_meta for image-type fields.
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $wpdb->dt_post_user_meta is a $wpdb table name property.
         $post_user_meta_rows = $wpdb->get_results(
             $wpdb->prepare(
                 "
@@ -1542,8 +1549,8 @@ class Disciple_Tools_Posts
 
         if ( !empty( $post_user_meta_rows ) && is_array( $field_settings ) ) {
             foreach ( $post_user_meta_rows as $row ) {
-                $meta_key   = isset( $row['meta_key'] ) ? $row['meta_key'] : '';
-                $meta_value = isset( $row['meta_value'] ) ? $row['meta_value'] : '';
+                $meta_key   = $row['meta_key'] ?? '';
+                $meta_value = $row['meta_value'] ?? '';
 
                 if ( empty( $meta_key ) || empty( $meta_value ) ) {
                     continue;
@@ -1552,12 +1559,14 @@ class Disciple_Tools_Posts
                 $field_key = self::get_field_key_from_meta( $meta_key, $field_settings );
                 if ( $field_key && isset( $field_settings[ $field_key ]['type'] ) && $field_settings[ $field_key ]['type'] === 'image' ) {
                     $result = DT_Storage_API::delete_file( $meta_value );
-                    if ( $result === null ) {
+                    if ( !is_array( $result ) || empty( $result['file_deleted'] ) ) {
                         dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$meta_value}' for post {$post_id}" );
                     }
                 }
             }
         }
+
+        do_action( 'dt_purge_post_storage_objects', $post_type, $post_id );
     }
 
     public static function delete_post( string $post_type, int $post_id, bool $check_permissions = true ){
