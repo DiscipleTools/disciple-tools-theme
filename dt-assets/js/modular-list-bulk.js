@@ -1,7 +1,11 @@
 'use strict';
 /**
  * Bulk Edit Operations for Modular List
- * Handles bulk edit, bulk delete, bulk messaging functionality
+ * Handles bulk edit, bulk delete, bulk messaging functionality.
+ *
+ * This module is the primary home for bulk behavior on modular lists.
+ * New bulk-related features (edit, delete, share/follow, messaging, app actions)
+ * should be implemented here rather than in modular-list.js.
  *
  * Organized into three main sections:
  * 1. Bulk Operations & List Controls - Checkbox handling, record counting, shared queue processing
@@ -193,17 +197,113 @@
 
     switch (event_type) {
       case 'update': {
-        if (Object.keys(update).length) {
+        // Handle conditional removals for key_select and user_select
+        let itemUpdatePayload = { ...update };
+        const conditionalRemovals = itemUpdatePayload._conditionalRemovals;
+        delete itemUpdatePayload._conditionalRemovals; // Remove metadata from payload
+
+        if (
+          conditionalRemovals &&
+          Object.keys(conditionalRemovals).length > 0
+        ) {
+          // Fetch current record to check values, then update
+          const updatePromise = window.API.get_post(
+            list_settings.post_type,
+            item,
+          )
+            .then((currentRecord) => {
+              // Process each conditional removal
+              const finalPayload = { ...itemUpdatePayload };
+              Object.keys(conditionalRemovals).forEach((fieldKey) => {
+                const removalInfo = conditionalRemovals[fieldKey];
+                const fieldType = removalInfo.fieldType;
+                const valueToRemove = removalInfo.valueToRemove;
+
+                // Get current value from record
+                let currentValue = null;
+                if (fieldType === 'key_select') {
+                  // key_select stores as { key: 'value', label: 'Label' } or just the key string
+                  const fieldData = currentRecord[fieldKey];
+                  if (fieldData) {
+                    currentValue =
+                      typeof fieldData === 'object'
+                        ? fieldData.key || fieldData.value
+                        : fieldData;
+                  }
+                } else if (fieldType === 'user_select') {
+                  // user_select stores as { id: X, assigned-to: 'user-X', display: 'Name' }
+                  const fieldData = currentRecord[fieldKey];
+                  if (fieldData) {
+                    currentValue =
+                      typeof fieldData === 'object'
+                        ? fieldData['assigned-to'] || `user-${fieldData.id}`
+                        : fieldData;
+                  }
+                }
+
+                // Only add removal to payload if current value matches value to remove
+                if (currentValue && currentValue === valueToRemove) {
+                  finalPayload[fieldKey] = ''; // Clear the field
+                }
+              });
+
+              // Proceed with update if payload has changes
+              if (Object.keys(finalPayload).length > 0) {
+                return window.API.update_post(
+                  list_settings.post_type,
+                  item,
+                  finalPayload,
+                );
+              }
+              return null;
+            })
+            .catch((err) => {
+              // If fetch fails, skip conditional removal for this item
+              // Still proceed with regular update if payload exists
+              if (Object.keys(itemUpdatePayload).length > 0) {
+                return window.API.update_post(
+                  list_settings.post_type,
+                  item,
+                  itemUpdatePayload,
+                );
+              }
+              return null;
+            });
+
           promises.push(
-            window.API.update_post(list_settings.post_type, item, update).catch(
-              (err) => {
-                // Error handled silently - user will see error via UI feedback
-              },
-            ),
+            updatePromise.catch((err) => {
+              // Error handled silently - user will see error via UI feedback
+            }),
           );
+        } else {
+          // No conditional removals, proceed with normal update
+          if (Object.keys(itemUpdatePayload).length > 0) {
+            promises.push(
+              window.API.update_post(
+                list_settings.post_type,
+                item,
+                itemUpdatePayload,
+              ).catch((err) => {
+                // Error handled silently - user will see error via UI feedback
+              }),
+            );
+          }
         }
 
-        if (share && share['users']) {
+        // Single-user add format { user_id, action: 'add' } — reserved for future use; no code path produces it yet (new share UI uses legacy { users, unshare } below)
+        if (share && share.user_id && share.action === 'add') {
+          promises.push(
+            window.API.add_shared(
+              list_settings.post_type,
+              item,
+              share.user_id,
+            ).catch((err) => {
+              console.error(err);
+            }),
+          );
+        }
+        // Legacy share format support (backward compatibility)
+        else if (share && share['users']) {
           share['users'].forEach(function (value) {
             let promise = share['unshare']
               ? window.API.remove_shared(
@@ -455,7 +555,35 @@
     }
 
     let updatePayload = {};
-    let sharePayload;
+    let sharePayload = null;
+
+    // Check for share field in dynamically selected fields
+    const shareFieldData = bulkEditSelectedFields?.find(
+      (f) => f.fieldKey === 'share',
+    );
+    if (shareFieldData) {
+      // Collect user IDs from component (supports multiple selections)
+      const shareFieldWrapper = $(
+        `.bulk-edit-field-wrapper[data-field-key="share"]`,
+      );
+      const shareUserIds = collectFieldValue(
+        'share',
+        'share',
+        shareFieldWrapper,
+      );
+      if (
+        shareUserIds &&
+        Array.isArray(shareUserIds) &&
+        shareUserIds.length > 0
+      ) {
+        // Use legacy format for multiple users (backward compatible).
+        // Bulk unshare via this component is out of scope for now; unshare remains false.
+        sharePayload = {
+          users: shareUserIds,
+          unshare: false,
+        };
+      }
+    }
 
     // Process web component values
     const form = document.getElementById('bulk_edit_picker');
@@ -572,8 +700,65 @@
         const fieldKey = fieldData.fieldKey;
         const fieldType = fieldData.fieldType;
 
+        // Handle remove operation (remove selected values)
+        if (fieldData.operation === 'remove' && fieldData.valuesToRemove) {
+          // Transform valuesToRemove into delete payload
+          if (
+            fieldType === 'multi_select' ||
+            fieldType === 'tags' ||
+            fieldType === 'connection'
+          ) {
+            // Extract values array
+            const values =
+              fieldData.valuesToRemove?.values ||
+              fieldData.valuesToRemove ||
+              [];
+            const deleteValues = [];
+
+            if (Array.isArray(values)) {
+              values.forEach((val) => {
+                // Extract the actual value (could be object with value/id property or direct value)
+                const valueToDelete =
+                  typeof val === 'object' ? val.value || val.id || val : val;
+                if (valueToDelete !== null && valueToDelete !== undefined) {
+                  deleteValues.push({
+                    value: valueToDelete,
+                    delete: true,
+                  });
+                }
+              });
+            }
+
+            if (deleteValues.length > 0) {
+              updatePayload[fieldKey] = {
+                values: deleteValues,
+              };
+            }
+          } else if (
+            fieldType === 'key_select' ||
+            fieldType === 'user_select'
+          ) {
+            // For single-value fields, store removal info for per-record conditional removal
+            // We'll handle this in do_each() function
+            if (!updatePayload._conditionalRemovals) {
+              updatePayload._conditionalRemovals = {};
+            }
+            updatePayload._conditionalRemovals[fieldKey] = {
+              fieldType: fieldType,
+              valueToRemove: fieldData.valuesToRemove,
+            };
+          }
+          return; // Skip normal processing for remove operations
+        }
+
+        // Skip share field - it's handled separately via sharePayload
+        if (fieldType === 'share') {
+          return;
+        }
+
         // Skip if field is marked as cleared - set cleared value and ensure it's not overwritten
-        if (fieldData.cleared) {
+        // Note: follow field doesn't support clearing (users toggle between states)
+        if (fieldData.cleared && fieldType !== 'follow') {
           const clearedValue = getClearedFieldValue(fieldType);
           // For communication_channel, backend expects: {"contact_email":[],"force_values":true}
           // We need to create an object that has array-like structure with force_values property
@@ -600,8 +785,16 @@
         const fieldValue = collectFieldValue(fieldKey, fieldType, fieldWrapper);
 
         if (fieldValue !== null && fieldValue !== undefined) {
+          // Handle follow field specially - add both follow and unfollow to payload
+          if (fieldType === 'follow') {
+            // Follow field returns { follow: {...}, unfollow: {...} } structure
+            if (fieldValue.follow && fieldValue.unfollow) {
+              updatePayload['follow'] = fieldValue.follow;
+              updatePayload['unfollow'] = fieldValue.unfollow;
+            }
+          }
           // Handle communication_channel fields specially (direct array format, not wrapped)
-          if (fieldType === 'communication_channel') {
+          else if (fieldType === 'communication_channel') {
             // Communication channel expects direct array: [{"value":"...","key":"..."}]
             if (Array.isArray(fieldValue)) {
               updatePayload[fieldKey] = fieldValue;
@@ -642,16 +835,19 @@
       });
     }
 
+    // Legacy share input handling (for backward compatibility)
     shareInput.each(function () {
-      sharePayload = $(this).data('bulk_key_share');
+      const legacySharePayload = $(this).data('bulk_key_share');
+      // Only use legacy sharePayload if new sharePayload is not set
+      if (!sharePayload && legacySharePayload) {
+        sharePayload = {
+          users: legacySharePayload,
+          unshare: $('#bulk_share_unshare').length
+            ? $('#bulk_share_unshare').prop('checked')
+            : false,
+        };
+      }
     });
-
-    let shares = {
-      users: sharePayload,
-      unshare: $('#bulk_share_unshare').length
-        ? $('#bulk_share_unshare').prop('checked')
-        : false,
-    };
 
     let queue = [];
     let count = 0;
@@ -670,7 +866,7 @@
         do_each,
         do_done,
         updatePayload,
-        shares,
+        sharePayload,
         commentPayload,
       );
     } else {
@@ -681,6 +877,89 @@
   /**
    * Field Value Collection
    */
+
+  /**
+   * Normalize dt-users-connection value into an array of items.
+   * In practice the component typically provides a JSON string of [{id, label}] or an array;
+   * other branches (string 'null'/'[]', object .value, primitives) are defensive for robustness.
+   */
+  function normalizeShareComponentItems(rawValue) {
+    if (rawValue === null || rawValue === undefined) {
+      return [];
+    }
+
+    let value = rawValue;
+
+    if (typeof rawValue === 'string') {
+      const trimmed = rawValue.trim();
+      if (!trimmed || trimmed === 'null' || trimmed === '[]') {
+        return [];
+      }
+      try {
+        value = JSON.parse(trimmed);
+      } catch (e) {
+        console.error(
+          'Error parsing share component string value as JSON:',
+          e,
+          'Value was:',
+          rawValue,
+        );
+        return [];
+      }
+    } else if (Array.isArray(rawValue)) {
+      value = rawValue;
+    } else if (typeof rawValue === 'object') {
+      value = Array.isArray(rawValue.value) ? rawValue.value : [rawValue];
+    } else {
+      // Unexpected primitive type (number, boolean, etc.)
+      return [];
+    }
+
+    return Array.isArray(value) ? value : [];
+  }
+
+  /**
+   * Update bulkEditSelectedFields for the share field from dt-users-connection value.
+   * Called on initial value and on change; lives at module scope to avoid redefining per render.
+   */
+  function processShareComponentValue(fieldKey, componentValue) {
+    const currentFieldData = bulkEditSelectedFields.find(
+      (f) => f.fieldKey === fieldKey,
+    );
+    if (!currentFieldData) {
+      return;
+    }
+
+    const items = normalizeShareComponentItems(componentValue);
+
+    if (items.length > 0) {
+      const userIds = items
+        .map((item) => {
+          const userId = item.id || item.user_id || null;
+          return userId ? parseInt(userId, 10) : null;
+        })
+        .filter((id) => id !== null);
+
+      currentFieldData.shareUserIds = userIds;
+      currentFieldData.shareUserLabels = {};
+      items.forEach((item) => {
+        const userId = item.id || item.user_id;
+        if (userId) {
+          currentFieldData.shareUserLabels[userId] = item.label || '';
+        }
+      });
+      currentFieldData.shareUserId = userIds.length > 0 ? userIds[0] : null;
+      currentFieldData.shareUserLabel =
+        userIds.length > 0
+          ? currentFieldData.shareUserLabels[userIds[0]] || ''
+          : null;
+    } else {
+      currentFieldData.shareUserIds = [];
+      currentFieldData.shareUserLabels = {};
+      currentFieldData.shareUserId = null;
+      currentFieldData.shareUserLabel = null;
+    }
+  }
 
   function collectFieldValue(fieldKey, fieldType, fieldWrapper) {
     // Special case: comment field (not a real post field type)
@@ -700,6 +979,123 @@
         return commentText && commentText.trim() !== ''
           ? commentText.trim()
           : null;
+      }
+      return null;
+    }
+
+    // Special case: share field (not a real post field type)
+    if (fieldType === 'share') {
+      const shareComponentId = `bulk_share_${fieldKey}`;
+      const shareComponent =
+        fieldWrapper.find(`#${shareComponentId}`)[0] ||
+        document.getElementById(shareComponentId);
+
+      // Get fieldData to check if we have cached user IDs
+      const fieldData = bulkEditSelectedFields.find(
+        (f) => f.fieldKey === fieldKey,
+      );
+
+      // Return array of user IDs if available (supports multiple selections)
+      if (
+        fieldData &&
+        fieldData.shareUserIds &&
+        fieldData.shareUserIds.length > 0
+      ) {
+        return fieldData.shareUserIds;
+      }
+
+      // Fallback: check component value directly
+      // dt-users-connection should expose an array (or JSON string) of items
+      if (shareComponent && shareComponent.value) {
+        const items = normalizeShareComponentItems(shareComponent.value);
+        if (items.length === 0) {
+          return null;
+        }
+
+        const userIds = items
+          .map((item) => {
+            const userId = item.id || item.user_id || null;
+            return userId ? parseInt(userId, 10) : null;
+          })
+          .filter((id) => id !== null);
+
+        if (userIds.length === 0) {
+          return null;
+        }
+
+        if (fieldData) {
+          fieldData.shareUserIds = userIds;
+          fieldData.shareUserId = userIds[0];
+          fieldData.shareUserLabels = {};
+          items.forEach((item) => {
+            const userId = item.id || item.user_id;
+            if (userId) {
+              fieldData.shareUserLabels[userId] = item.label || '';
+            }
+          });
+        }
+
+        return userIds;
+      }
+
+      return null;
+    }
+
+    // Special case: follow field (not a real post field type)
+    if (fieldType === 'follow') {
+      const followToggleId = `bulk_follow_${fieldKey}`;
+      const toggleComponent =
+        fieldWrapper.find(`#${followToggleId}`)[0] ||
+        document.getElementById(followToggleId);
+
+      if (toggleComponent) {
+        // Get toggle value (true/false)
+        // dt-toggle component may expose 'value' property (for ComponentService compatibility)
+        // or 'checked' property, or we need to check internal input element
+        let toggleValue = false;
+
+        // First, try to get value property (ComponentService expects this)
+        if (
+          toggleComponent.value !== undefined &&
+          toggleComponent.value !== null
+        ) {
+          if (typeof toggleComponent.value === 'boolean') {
+            toggleValue = toggleComponent.value === true;
+          } else if (typeof toggleComponent.value === 'string') {
+            toggleValue = toggleComponent.value.toLowerCase() === 'true';
+          } else {
+            toggleValue = Boolean(toggleComponent.value);
+          }
+        }
+        // Fallback to checked property
+        else if (toggleComponent.checked !== undefined) {
+          toggleValue = toggleComponent.checked === true;
+        }
+        // Last resort: check internal input element
+        else {
+          const internalInput = toggleComponent.querySelector(
+            'input[type="checkbox"]',
+          );
+          if (internalInput) {
+            toggleValue = internalInput.checked === true;
+          }
+        }
+
+        // Get current user ID
+        const currentUserId =
+          window.wpApiNotifications?.current_user_id || DT_List.current_user_id;
+
+        if (currentUserId) {
+          // Return follow/unfollow structure
+          return {
+            follow: {
+              values: [{ value: String(currentUserId), delete: !toggleValue }],
+            },
+            unfollow: {
+              values: [{ value: String(currentUserId), delete: toggleValue }],
+            },
+          };
+        }
       }
       return null;
     }
@@ -762,7 +1158,7 @@
     const component = fieldWrapper.find(
       'dt-text, dt-textarea, dt-number, dt-toggle, dt-date, dt-single-select, ' +
         'dt-multi-select, dt-multi-select-button-group, dt-multi-text, dt-tags, ' +
-        'dt-connection, dt-location, dt-location-map, dt-user-select',
+        'dt-connection, dt-users-connection, dt-location, dt-location-map, dt-user-select',
     )[0];
 
     if (!component?.value) {
@@ -1020,6 +1416,22 @@
       icon: null,
     });
 
+    // Add synthetic "Share" option (not a real post field)
+    transformedFields.push({
+      id: 'share',
+      label: window.wpApiShare?.translations?.share || 'Share',
+      color: null,
+      icon: null,
+    });
+
+    // Add synthetic "Follow" option (not a real post field)
+    transformedFields.push({
+      id: 'follow',
+      label: window.wpApiShare?.translations?.follow || 'Follow',
+      color: null,
+      icon: null,
+    });
+
     return transformedFields;
   }
 
@@ -1234,6 +1646,46 @@
               $(), // No icon for comments
             );
           }
+        } else if (fieldKey === 'share') {
+          // Handle special 'share' field (not a real post field)
+          if (!bulkEditSelectedFields.some((f) => f.fieldKey === fieldKey)) {
+            bulkEditSelectedFields.push({
+              fieldKey: fieldKey,
+              fieldType: 'share',
+              fieldName: window.wpApiShare?.translations?.share || 'Share',
+              cleared: false,
+              shareUserId: null, // Store selected user ID for clear/restore (backward compat)
+              shareUserIds: [], // Store array of selected user IDs (supports multiple)
+              shareUserLabel: null, // Store selected user label (backward compat)
+              shareUserLabels: {}, // Store user labels by user ID (supports multiple)
+            });
+
+            // Render the share field
+            renderBulkEditField(
+              fieldKey,
+              'share',
+              window.wpApiShare?.translations?.share || 'Share',
+              $(), // No icon for share
+            );
+          }
+        } else if (fieldKey === 'follow') {
+          // Handle special 'follow' field (not a real post field)
+          if (!bulkEditSelectedFields.some((f) => f.fieldKey === fieldKey)) {
+            bulkEditSelectedFields.push({
+              fieldKey: fieldKey,
+              fieldType: 'follow',
+              fieldName: window.wpApiShare?.translations?.follow || 'Follow',
+              cleared: false,
+            });
+
+            // Render the follow field
+            renderBulkEditField(
+              fieldKey,
+              'follow',
+              window.wpApiShare?.translations?.follow || 'Follow',
+              $(), // No icon for follow
+            );
+          }
         } else {
           // Handle regular post fields
           const fieldData = window.post_type_fields[fieldKey];
@@ -1321,10 +1773,8 @@
     wrapper
       .find('.bulk-edit-remove-field-btn')
       .attr('data-field-key', fieldKey);
-    wrapper.find('.bulk-edit-clear-field-btn').attr('data-field-key', fieldKey);
-    wrapper
-      .find('.bulk-edit-restore-field-btn')
-      .attr('data-field-key', fieldKey);
+    const modeToggle = wrapper.find('.bulk-edit-mode-toggle');
+    modeToggle.attr('data-field-key', fieldKey);
 
     // Set icon
     const iconContainer = wrapper.find('.bulk-edit-field-icon');
@@ -1340,9 +1790,13 @@
     const inputContainer = wrapper.find('.bulk-edit-field-input-container');
     renderBulkEditFieldInput(fieldKey, fieldType, inputContainer);
 
-    // Show clear button for fields that support clearing (exclude comment fields)
-    if (supportsFieldClearing(fieldType) && fieldType !== 'comment') {
-      wrapper.find('.bulk-edit-clear-field-btn').show();
+    // Show "Remove Values" mode toggle for clearable fields (exclude comment, follow, and share)
+    // Template uses .bulk-edit-mode-toggle (dt-toggle), not .bulk-edit-clear-field-btn
+    if (
+      supportsFieldClearing(fieldType) &&
+      !['comment', 'share', 'follow'].includes(fieldType)
+    ) {
+      wrapper.find('.bulk-edit-mode-toggle').show();
     }
 
     // Append to container
@@ -1508,6 +1962,123 @@
       return;
     }
 
+    // Handle share field specially
+    if (fieldType === 'share') {
+      const shareComponentId = `bulk_share_${fieldKey}`;
+
+      // Get field data to check if we need to restore a previous selection
+      const fieldData = bulkEditSelectedFields.find(
+        (f) => f.fieldKey === fieldKey,
+      );
+      const previousUserId = fieldData?.shareUserId || null;
+
+      // Build initial value if we have previous user IDs (supports multiple)
+      // dt-users-connection format: [{id: <userId>, type: 'user', label: <displayName>}]
+      let initialValue = '[]';
+      if (fieldData?.shareUserIds && fieldData.shareUserIds.length > 0) {
+        // Use array of user IDs if available
+        initialValue = JSON.stringify(
+          fieldData.shareUserIds.map((userId) => ({
+            id: userId,
+            type: 'user',
+            label: fieldData.shareUserLabels?.[userId] || '',
+          })),
+        );
+      } else if (previousUserId) {
+        // Fallback to single user ID for backward compatibility
+        initialValue = JSON.stringify([
+          {
+            id: previousUserId,
+            type: 'user',
+            label: fieldData?.shareUserLabel || '',
+          },
+        ]);
+      }
+
+      // Build share HTML with dt-users-connection component
+      // This component is specifically designed for selecting system users
+      let shareHtml = '<div class="auto cell">';
+      shareHtml +=
+        '<dt-users-connection id="' +
+        shareComponentId +
+        '" name="' +
+        shareComponentId +
+        '" field="share" value=\'' +
+        window.SHAREDFUNCTIONS.escapeHTML(initialValue) +
+        "'></dt-users-connection>";
+      shareHtml += '</div>';
+
+      container.html(shareHtml);
+
+      // Initialize component and set up value change listener
+      requestAnimationFrame(() => {
+        const shareComponent = document.getElementById(shareComponentId);
+        if (!shareComponent) {
+          return;
+        }
+
+        // Initialize ComponentService if available
+        if (window.componentService && window.componentService.initialize) {
+          try {
+            window.componentService.initialize();
+          } catch (e) {
+            console.error(
+              'ComponentService initialization error (share field):',
+              e,
+            );
+          }
+        }
+
+        // Process initial value (initialValue is already set via HTML value attribute)
+        if (shareComponent.value) {
+          try {
+            processShareComponentValue(fieldKey, shareComponent.value);
+          } catch (err) {
+            console.error('Error processing initial share value:', err);
+          }
+        }
+
+        // Listen for value changes to store user IDs (supports multiple selections)
+        shareComponent.addEventListener('change', function () {
+          try {
+            processShareComponentValue(fieldKey, this.value);
+          } catch (err) {
+            console.error('Error processing share change value:', err);
+          }
+        });
+      });
+
+      return;
+    }
+
+    // Handle follow field specially
+    if (fieldType === 'follow') {
+      const followToggleId = `bulk_follow_${fieldKey}`;
+
+      // Build follow HTML with dt-toggle component (escape label/help-text to prevent attribute/HTML injection)
+      const followLabel = window.SHAREDFUNCTIONS.escapeHTML(
+        window.wpApiShare?.translations?.follow || 'Follow',
+      );
+      const followHelpText = window.SHAREDFUNCTIONS.escapeHTML(
+        window.wpApiShare?.translations?.follow_help ||
+          'Toggle to follow or unfollow records',
+      );
+      let followHtml = '<div class="auto cell">';
+      followHtml +=
+        '<dt-toggle id="' +
+        followToggleId +
+        '" label="' +
+        followLabel +
+        '" help-text="' +
+        followHelpText +
+        '"></dt-toggle>';
+      followHtml += '</div>';
+
+      container.html(followHtml);
+
+      return;
+    }
+
     // Get field settings from list_settings
     const fieldSettings = window.lodash.get(
       list_settings,
@@ -1547,7 +2118,7 @@
         try {
           window.componentService.initialize();
         } catch (e) {
-          // ComponentService initialization error - components should still work
+          console.error('ComponentService initialization error:', e);
         }
       }
 
@@ -1562,7 +2133,23 @@
       const fieldId = `bulk_${fieldKey}`;
       const userInput = $(`.js-typeahead-${fieldId}`);
 
-      if (userInput.length && !window.Typeahead[`.js-typeahead-${fieldId}`]) {
+      if (userInput.length) {
+        // Destroy existing typeahead instance if it exists (for restore scenarios)
+        const typeaheadSelector = `.js-typeahead-${fieldId}`;
+        if (window.Typeahead && window.Typeahead[typeaheadSelector]) {
+          try {
+            // Try to destroy the existing instance
+            if (window.Typeahead[typeaheadSelector].destroy) {
+              window.Typeahead[typeaheadSelector].destroy();
+            }
+            delete window.Typeahead[typeaheadSelector];
+          } catch (e) {
+            // If destroy fails, just delete the reference
+            delete window.Typeahead[typeaheadSelector];
+          }
+        }
+
+        // Initialize typeahead
         $.typeahead({
           input: `.js-typeahead-${fieldId}`,
           minLength: 0,
@@ -1659,9 +2246,147 @@
     return clearableTypes.includes(fieldType);
   }
 
-  // Clear/unset field value
-  $(document).on('click', '.bulk-edit-clear-field-btn', function () {
-    const fieldKey = $(this).data('field-key');
+  /**
+   * Get label for a field option value
+   */
+  function getOptionLabel(fieldKey, fieldType, value) {
+    if (!value) return value;
+
+    const fieldSettings = window.lodash.get(
+      list_settings,
+      `post_type_settings.fields.${fieldKey}`,
+      null,
+    );
+
+    if (!fieldSettings) return value;
+
+    // For key_select and multi_select, look up label from default options
+    if (fieldType === 'key_select' || fieldType === 'multi_select') {
+      if (fieldSettings.default && fieldSettings.default[value]) {
+        const option = fieldSettings.default[value];
+        return typeof option === 'object' ? option.label || value : option;
+      }
+    }
+
+    // For tags, the value itself is usually the label
+    if (fieldType === 'tags') {
+      // Tags might have labels in default, but usually value is the label
+      if (fieldSettings.default && fieldSettings.default[value]) {
+        const option = fieldSettings.default[value];
+        return typeof option === 'object' ? option.label || value : option;
+      }
+      return value; // Tags are usually self-labeling
+    }
+
+    return value;
+  }
+
+  /**
+   * Render disabled display of values that will be removed
+   */
+  function renderValuesToRemoveDisplay(fieldKey, fieldType, valuesToRemove) {
+    let displayHtml = '<div class="alert-box secondary" style="margin: 0;">';
+    displayHtml += '<strong>Selected values will be removed:</strong><br>';
+    displayHtml += '<div style="margin-top: 10px;">';
+
+    if (fieldType === 'multi_select' || fieldType === 'tags') {
+      // Extract values from the structure
+      const values = valuesToRemove?.values || valuesToRemove || [];
+      if (Array.isArray(values) && values.length > 0) {
+        values.forEach((val) => {
+          // Extract the key/value (what we'll transmit)
+          const valueKey =
+            typeof val === 'object' ? val.value || val.id || val : val;
+          // Get the label for display
+          const label = getOptionLabel(fieldKey, fieldType, valueKey);
+          displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS.escapeHTML(label)}</span>`;
+        });
+      } else {
+        displayHtml += '<em>No values selected</em>';
+      }
+    } else if (fieldType === 'connection') {
+      // Connection values: can be raw array with {id, label} objects or converted {values: [{value: id}]}
+      let values = [];
+
+      // Check if this is raw value (array of objects with id/label) or converted value
+      if (Array.isArray(valuesToRemove)) {
+        // Raw value format: [{id: 123, label: "Group Name", ...}, ...]
+        values = valuesToRemove;
+      } else if (
+        valuesToRemove?.values &&
+        Array.isArray(valuesToRemove.values)
+      ) {
+        // Converted value format: {values: [{value: 123}, ...]}
+        // We need to map back to get labels - but if we have rawValueWithLabels, use that
+        values = valuesToRemove.values;
+      } else {
+        values = [];
+      }
+
+      if (values.length > 0) {
+        values.forEach((val) => {
+          // Extract the connection ID (what we'll transmit)
+          const connectionId =
+            typeof val === 'object' ? val.value || val.id || val : val;
+
+          // Get label from object (raw value has label property)
+          let label = connectionId;
+          if (typeof val === 'object') {
+            if (val.label) {
+              label = val.label;
+            } else if (val.title) {
+              label = val.title;
+            } else if (val.name) {
+              label = val.name;
+            } else {
+              // Fallback: try to fetch from component if available
+              label = `Connection ${connectionId}`;
+            }
+          } else {
+            label = `Connection ${connectionId}`;
+          }
+
+          displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS.escapeHTML(label)}</span>`;
+        });
+      } else {
+        displayHtml += '<em>No connections selected</em>';
+      }
+    } else if (fieldType === 'key_select') {
+      // key_select returns a string value (the key)
+      if (valuesToRemove) {
+        // Get label from field settings
+        const label = getOptionLabel(fieldKey, fieldType, valuesToRemove);
+        displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS.escapeHTML(label)}</span>`;
+      } else {
+        displayHtml += '<em>No option selected</em>';
+      }
+    } else if (fieldType === 'user_select') {
+      // user_select returns "user-{id}" format
+      if (valuesToRemove) {
+        const userId = valuesToRemove.replace('user-', '');
+        // Try to get user name from typeahead data or make a simple display
+        const fieldId = `bulk_${fieldKey}`;
+        const userInput = $(`.js-typeahead-${fieldId}`);
+        let userName = `User ${userId}`;
+        if (userInput.length > 0) {
+          const storedName = userInput.data('selected-user-name');
+          if (storedName) {
+            userName = storedName;
+          }
+        }
+        displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS.escapeHTML(userName)}</span>`;
+      } else {
+        displayHtml += '<em>No user selected</em>';
+      }
+    }
+
+    displayHtml += '</div></div>';
+    return displayHtml;
+  }
+
+  // Remove toggle handler: switches between add and remove/clear modes
+  function handleModeToggleChange(toggle) {
+    const fieldKey = $(toggle).attr('data-field-key');
     const fieldWrapper = $(
       `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
     );
@@ -1671,49 +2396,104 @@
 
     if (!fieldData) return;
 
-    // Mark field as cleared
-    fieldData.cleared = true;
-
-    // Clear the input visually
+    const fieldType = fieldData.fieldType;
     const inputContainer = fieldWrapper.find(
       '.bulk-edit-field-input-container',
     );
-    inputContainer.html(
-      '<div class="alert-box secondary" style="margin: 0;">Field will be cleared/unset</div>',
-    );
+    const isRemoveMode = toggle.checked;
 
-    // Hide clear button, show restore button
-    $(this).hide();
-    fieldWrapper.find('.bulk-edit-restore-field-btn').show();
-  });
+    if (isRemoveMode) {
+      // Toggle ON: enter remove/clear mode
+      const supportsSelectiveRemoval = [
+        'key_select',
+        'multi_select',
+        'connection',
+        'tags',
+        'user_select',
+      ].includes(fieldType);
 
-  // Restore field value (undo clear)
-  $(document).on('click', '.bulk-edit-restore-field-btn', function () {
-    const fieldKey = $(this).data('field-key');
-    const fieldWrapper = $(
-      `.bulk-edit-field-wrapper[data-field-key="${fieldKey}"]`,
-    );
-    const fieldData = bulkEditSelectedFields.find(
-      (f) => f.fieldKey === fieldKey,
-    );
+      const currentValue = collectFieldValue(fieldKey, fieldType, fieldWrapper);
 
-    if (!fieldData) return;
+      let rawValueWithLabels = null;
+      if (fieldType === 'connection') {
+        const component = fieldWrapper.find('dt-connection')[0];
+        if (component && component.value) {
+          rawValueWithLabels = component.value;
+        }
+      }
 
-    // Remove cleared flag
-    fieldData.cleared = false;
+      let hasValues = false;
+      if (
+        currentValue !== null &&
+        currentValue !== undefined &&
+        currentValue !== ''
+      ) {
+        if (
+          fieldType === 'multi_select' ||
+          fieldType === 'tags' ||
+          fieldType === 'connection'
+        ) {
+          const values = currentValue?.values || currentValue;
+          hasValues = Array.isArray(values) && values.length > 0;
+        } else if (fieldType === 'key_select' || fieldType === 'user_select') {
+          hasValues = true;
+        }
+      }
 
-    // Re-render field input
-    const inputContainer = fieldWrapper.find(
-      '.bulk-edit-field-input-container',
-    );
-    renderBulkEditFieldInput(fieldKey, fieldData.fieldType, inputContainer);
+      if (supportsSelectiveRemoval && hasValues) {
+        fieldData.operation = 'remove';
+        fieldData.valuesToRemove = currentValue;
+        fieldData.rawValueWithLabels = rawValueWithLabels;
 
-    // Show clear button, hide restore button
-    $(this).hide();
-    fieldWrapper.find('.bulk-edit-clear-field-btn').show();
+        const displayValue =
+          fieldType === 'connection' && rawValueWithLabels
+            ? rawValueWithLabels
+            : currentValue;
+        const displayHtml = renderValuesToRemoveDisplay(
+          fieldKey,
+          fieldType,
+          displayValue,
+        );
+        inputContainer.html(displayHtml);
+      } else {
+        fieldData.cleared = true;
+        fieldData.operation = undefined;
+        fieldData.valuesToRemove = undefined;
 
-    // Update update button state (field is no longer cleared)
+        inputContainer.html(
+          '<div class="alert-box secondary" style="margin: 0;">Field will be cleared/unset</div>',
+        );
+      }
+    } else {
+      // Toggle OFF: restore normal add mode
+      fieldData.cleared = false;
+      fieldData.operation = undefined;
+      fieldData.valuesToRemove = undefined;
+      fieldData.rawValueWithLabels = undefined;
+
+      inputContainer.empty();
+      renderBulkEditFieldInput(fieldKey, fieldType, inputContainer);
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (window.componentService && window.componentService.initialize) {
+            try {
+              window.componentService.initialize();
+            } catch (e) {
+              console.error('ComponentService initialization error:', e);
+            }
+          }
+          initializeBulkEditFieldHandlers(fieldKey, fieldType);
+        });
+      });
+    }
+
     updateBulkEditButtonState();
+  }
+
+  // Delegate "Remove Values" mode toggle (dt-toggle) so handleModeToggleChange runs for clearable fields
+  $(document).on('change', '.bulk-edit-mode-toggle', function () {
+    handleModeToggleChange(this);
   });
 
   // Remove field when clicking X button
