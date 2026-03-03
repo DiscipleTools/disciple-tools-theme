@@ -934,6 +934,12 @@
       return null;
     }
 
+    // Numbers (ComponentService.convertValue for dt-users-connection in single
+    // mode returns a plain integer user ID, or 0/"" when empty)
+    if (typeof rawValue === 'number') {
+      return rawValue > 0 ? `user-${rawValue}` : null;
+    }
+
     // Strings
     if (typeof rawValue === 'string') {
       const trimmed = rawValue.trim();
@@ -946,7 +952,9 @@
       if (/^\d+$/.test(trimmed)) {
         return `user-${trimmed}`;
       }
-      return trimmed;
+      // Any other free-form string (e.g. display name) is not a valid payload
+      // for the backend user_select handler.
+      return null;
     }
 
     // Arrays – use the first entry
