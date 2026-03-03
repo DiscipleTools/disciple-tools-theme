@@ -1473,6 +1473,17 @@ class Disciple_Tools_Posts
     }
 
     /**
+     * Returns the list of comment meta keys that are backed by storage
+     * (e.g. S3) and should be treated as file keys.
+     *
+     * @return array
+     */
+    protected static function get_comment_storage_meta_keys(): array {
+        $keys = apply_filters( 'dt_post_comment_storage_meta_keys', [ 'audio_url', 'image_url' ] );
+        return is_array( $keys ) ? $keys : [ 'audio_url', 'image_url' ];
+    }
+
+    /**
      * Removes any S3-backed storage objects associated with a post (post meta image fields,
      * comment/activity audio and image attachments, and dt_post_user_meta image fields).
      *
@@ -1491,12 +1502,13 @@ class Disciple_Tools_Posts
 
         global $wpdb;
         $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        $all_post_meta  = get_post_meta( $post_id );
 
         // Delete S3 objects for image-type post fields stored in post meta.
-        if ( is_array( $field_settings ) ) {
+        if ( is_array( $field_settings ) && !empty( $all_post_meta ) ) {
             foreach ( $field_settings as $field_key => $settings ) {
-                if ( isset( $settings['type'] ) && $settings['type'] === 'image' ) {
-                    $storage_key = get_post_meta( $post_id, $field_key, true );
+                if ( isset( $settings['type'] ) && $settings['type'] === 'image' && isset( $all_post_meta[ $field_key ][0] ) ) {
+                    $storage_key = $all_post_meta[ $field_key ][0];
                     if ( !empty( $storage_key ) ) {
                         $result = DT_Storage_API::delete_file( $storage_key );
                         if ( !is_array( $result ) || empty( $result['file_deleted'] ) ) {
@@ -1508,20 +1520,19 @@ class Disciple_Tools_Posts
         }
 
         // Delete S3 objects referenced by comment meta attached to this post (e.g., audio_url, image_url).
-        $comment_storage_meta_keys = apply_filters( 'dt_post_comment_storage_meta_keys', [ 'audio_url', 'image_url' ] );
+        $comment_storage_meta_keys = self::get_comment_storage_meta_keys();
         if ( !empty( $comment_storage_meta_keys ) ) {
-            $meta_keys_sql = dt_array_to_sql( $comment_storage_meta_keys );
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $meta_keys_sql is escaped via dt_array_to_sql().
-            $comment_storage_keys = $wpdb->get_col(
-                $wpdb->prepare(
-                    "SELECT cm.meta_value
-                    FROM {$wpdb->commentmeta} cm
-                    INNER JOIN {$wpdb->comments} c ON c.comment_ID = cm.comment_id
-                    WHERE c.comment_post_ID = %d
-                    AND cm.meta_key IN ( $meta_keys_sql )",
-                    $post_id
-                )
-            );
+            $placeholders = implode( ', ', array_fill( 0, count( $comment_storage_meta_keys ), '%s' ) );
+            $sql          = "
+                SELECT cm.meta_value
+                FROM {$wpdb->commentmeta} cm
+                INNER JOIN {$wpdb->comments} c ON c.comment_ID = cm.comment_id
+                WHERE c.comment_post_ID = %d
+                AND cm.meta_key IN ( $placeholders )
+            ";
+
+            $params = array_merge( [ $post_id ], $comment_storage_meta_keys );
+            $comment_storage_keys = $wpdb->get_col( $wpdb->prepare( $sql, $params ) );
 
             if ( !empty( $comment_storage_keys ) ) {
                 foreach ( array_unique( array_filter( $comment_storage_keys ) ) as $storage_key ) {

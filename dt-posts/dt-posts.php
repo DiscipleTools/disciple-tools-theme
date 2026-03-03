@@ -1409,7 +1409,7 @@ class DT_Posts extends Disciple_Tools_Posts {
         // Provide space for any additional processing of metadata values.
         if ( DT_Storage_API::is_enabled() ) {
             $comment_meta = get_comment_meta( $comment_id );
-            $comment_storage_meta_keys = apply_filters( 'dt_post_comment_storage_meta_keys', [ 'audio_url', 'image_url' ] );
+            $comment_storage_meta_keys = self::get_comment_storage_meta_keys();
             if ( !empty( $comment_storage_meta_keys ) && is_array( $comment_meta ) ) {
                 foreach ( $comment_storage_meta_keys as $meta_key ) {
                     if ( isset( $comment_meta[ $meta_key ] ) && is_array( $comment_meta[ $meta_key ] ) && count( $comment_meta[ $meta_key ] ) > 0 ) {
@@ -1544,7 +1544,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $comments_reactions_dict = [];
         $comments_meta_dict = [];
-        $comment_storage_meta_keys = apply_filters( 'dt_post_comment_storage_meta_keys', [ 'audio_url', 'image_url' ] );
+        $comment_storage_meta_keys = self::get_comment_storage_meta_keys();
 
         foreach ( $comments_meta as $meta ) {
 
