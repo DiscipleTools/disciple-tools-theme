@@ -1523,16 +1523,20 @@ class Disciple_Tools_Posts
         $comment_storage_meta_keys = self::get_comment_storage_meta_keys();
         if ( !empty( $comment_storage_meta_keys ) ) {
             $placeholders = implode( ', ', array_fill( 0, count( $comment_storage_meta_keys ), '%s' ) );
-            $sql          = "
-                SELECT cm.meta_value
-                FROM {$wpdb->commentmeta} cm
-                INNER JOIN {$wpdb->comments} c ON c.comment_ID = cm.comment_id
-                WHERE c.comment_post_ID = %d
-                AND cm.meta_key IN ( $placeholders )
-            ";
-
             $params = array_merge( [ $post_id ], $comment_storage_meta_keys );
-            $comment_storage_keys = $wpdb->get_col( $wpdb->prepare( $sql, $params ) );
+            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $placeholders is safely constructed and all values are passed via $wpdb->prepare().
+            $comment_storage_keys = $wpdb->get_col(
+                $wpdb->prepare(
+                    "
+                    SELECT cm.meta_value
+                    FROM {$wpdb->commentmeta} cm
+                    INNER JOIN {$wpdb->comments} c ON c.comment_ID = cm.comment_id
+                    WHERE c.comment_post_ID = %d
+                    AND cm.meta_key IN ( $placeholders )
+                    ",
+                    $params
+                )
+            );
 
             if ( !empty( $comment_storage_keys ) ) {
                 foreach ( array_unique( array_filter( $comment_storage_keys ) ) as $storage_key ) {
