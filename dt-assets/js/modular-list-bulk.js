@@ -822,6 +822,11 @@
             // For boolean fields, include even if false (false is a valid value)
             if (fieldType === 'boolean') {
               updatePayload[fieldKey] = fieldValue === true;
+            } else if (fieldType === 'user_select') {
+              const normalizedUser = normalizeUserSelectValue(fieldValue);
+              if (normalizedUser !== null) {
+                updatePayload[fieldKey] = normalizedUser;
+              }
             } else {
               updatePayload[fieldKey] = fieldValue;
             }
@@ -916,6 +921,73 @@
     }
 
     return Array.isArray(value) ? value : [];
+  }
+
+  /**
+   * Normalize a user_select value to the "user-{id}" string format expected by
+   * the backend and conditional-removal logic. Accepts values from
+   * ComponentService.convertValue(dt-users-connection), dt-users-connection.value,
+   * or legacy shapes.
+   */
+  function normalizeUserSelectValue(rawValue) {
+    if (rawValue === null || rawValue === undefined) {
+      return null;
+    }
+
+    // Strings
+    if (typeof rawValue === 'string') {
+      const trimmed = rawValue.trim();
+      if (!trimmed) {
+        return null;
+      }
+      if (trimmed.startsWith('user-')) {
+        return trimmed;
+      }
+      if (/^\d+$/.test(trimmed)) {
+        return `user-${trimmed}`;
+      }
+      return trimmed;
+    }
+
+    // Arrays – use the first entry
+    if (Array.isArray(rawValue)) {
+      if (rawValue.length === 0) {
+        return null;
+      }
+      return normalizeUserSelectValue(rawValue[0]);
+    }
+
+    // Objects
+    if (typeof rawValue === 'object') {
+      // Legacy stored shape { 'assigned-to': 'user-5', ... }
+      if (
+        typeof rawValue['assigned-to'] === 'string' &&
+        rawValue['assigned-to'].trim()
+      ) {
+        return normalizeUserSelectValue(rawValue['assigned-to']);
+      }
+
+      // Common id fields
+      let possibleId =
+        rawValue.value ||
+        rawValue.id ||
+        rawValue.user_id ||
+        (Array.isArray(rawValue.values) ? rawValue.values[0] : null);
+
+      if (possibleId === null || possibleId === undefined) {
+        return null;
+      }
+
+      if (typeof possibleId === 'string') {
+        return normalizeUserSelectValue(possibleId);
+      }
+
+      if (typeof possibleId === 'number') {
+        return `user-${possibleId}`;
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -2330,6 +2402,7 @@
       }
 
       let hasValues = false;
+      let normalizedUserValueToRemove = null;
       if (
         currentValue !== null &&
         currentValue !== undefined &&
@@ -2342,14 +2415,20 @@
         ) {
           const values = currentValue?.values || currentValue;
           hasValues = Array.isArray(values) && values.length > 0;
-        } else if (fieldType === 'key_select' || fieldType === 'user_select') {
+        } else if (fieldType === 'key_select') {
           hasValues = true;
+        } else if (fieldType === 'user_select') {
+          normalizedUserValueToRemove = normalizeUserSelectValue(currentValue);
+          hasValues = !!normalizedUserValueToRemove;
         }
       }
 
       if (supportsSelectiveRemoval && hasValues) {
         fieldData.operation = 'remove';
-        fieldData.valuesToRemove = currentValue;
+        fieldData.valuesToRemove =
+          fieldType === 'user_select'
+            ? normalizedUserValueToRemove
+            : currentValue;
         fieldData.rawValueWithLabels = rawValueWithLabels;
 
         const displayValue =
