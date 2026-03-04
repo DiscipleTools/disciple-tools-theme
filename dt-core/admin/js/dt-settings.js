@@ -1609,19 +1609,18 @@ jQuery(document).ready(function ($) {
 
     // Add file_upload field-specific options
     if (field_type === 'file_upload') {
-      let accepted_file_types =
-        field_settings['accepted_file_types'] || [
-          'image/*',
-          'application/pdf',
-          'audio/*',
-          'video/*',
-          'application/msword',
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-          'application/vnd.ms-excel',
-          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          'text/plain',
-          'text/markdown',
-        ];
+      let accepted_file_types = field_settings['accepted_file_types'] || [
+        'image/*',
+        'application/pdf',
+        'audio/*',
+        'video/*',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'text/plain',
+        'text/markdown',
+      ];
       let max_file_size = field_settings['max_file_size'] || '';
       let delete_enabled = field_settings['delete_enabled'] !== false; // default true
       let display_layout = field_settings['display_layout'] || 'grid';
