@@ -654,6 +654,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 case 'user_select':
                     DT_Components::render_user_select( $field_key, $fields, $post, $params );
                     break;
+                case 'link':
+                    DT_Components::render_link( $field_key, $fields, $post, $params );
+                    break;
                 default:
                     $is_legacy = true;
                     break;
@@ -663,60 +666,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                 $is_empty_post = !is_array( $post ) || count( array_keys( $post ) ) <= 1; // if this is a new post, it only has a post_type key
                 $hide_label = isset( $params['hide_label'] ) && $params['hide_label'] === true;
                 ?>
-                <?php if ( !$hide_label || $field_type === 'link' ) : ?>
-                <div class="section-subheader" <?php echo ( $hide_label && $field_type === 'link' ) ? 'style="display: flex; align-items: center; justify-content: flex-start;"' : ''; ?>>
-                    <?php if ( !$hide_label ) : ?>
-                        <?php dt_render_field_icon( $fields[$field_key] );
-
-                        echo esc_html( $fields[$field_key]['name'] );
-                        ?> <span id="<?php echo esc_html( $display_field_id ); ?>-spinner" class="loading-spinner"></span>
-                        <?php if ( $is_private ) : ?>
-                            <i class="fi-lock small" title="<?php _x( "Private Field: Only I can see it's content", 'disciple_tools' )?>"></i>
-                        <?php endif; ?>
-                    <?php endif; ?>
-
-                    <?php if ( $field_type === 'link' ) : ?>
-                        <?php $only_one_option = count( $fields[$field_key]['default'] ) === 1 ? esc_attr( array_keys( $fields[$field_key]['default'] )[0] ) : '' ?>
-
-                        <div class="add-link-dropdown"
-                            <?php echo !empty( $only_one_option ) ? 'data-only-one-option' : '' ?>
-                             data-link-type="<?php echo esc_attr( $only_one_option ) ?>"
-                             data-field-key="<?php echo esc_attr( $field_key ) ?>">
-                            <button
-                                class="add-button add-link-dropdown__button"
-                                type="button"
-                                data-field-type="<?php echo esc_html( $field_type ) ?>"
-                                data-list-class="<?php echo esc_html( $display_field_id ); ?>"
-                                <?php echo esc_html( $disabled ); ?>
-                            >
-                                <img src="<?php echo esc_html( get_template_directory_uri() . '/dt-assets/images/small-add.svg' ) ?>"/>
-                            </button>
-
-                            <div class="add-link-dropdown__content add-link-<?php echo esc_attr( $display_field_id ) ?>"
-                                 style="<?php echo count( $fields[$field_key]['default'] ) < 2 ? 'display: none' : '' ?>">
-                                <?php foreach ( $fields[$field_key]['default'] as $option_key => $option_value ): ?>
-
-                                    <?php if ( isset( $option_value['deleted'] ) && $option_value['deleted'] === true ) {
-                                        continue;
-                                    } ?>
-
-                                    <div
-                                        class="add-link__option"
-                                        <?php echo !empty( $only_one_option ) ? 'data-only-one-option' : '' ?>
-                                        data-link-type="<?php echo esc_attr( $option_key ) ?>"
-                                        data-field-key="<?php echo esc_attr( $field_key ) ?>"
-                                    >
-                                        <span style="margin: 0 5px 1rem 0;"><?php dt_render_field_icon( $option_value ) ?></span>
-                                        <?php echo esc_html( $option_value['label'] ) ?>
-                                    </div>
-
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-
-                    <?php endif; ?>
-                </div>
-                <?php endif; ?>
                 <?php
                 // render fields
                 if ( $field_type === 'boolean' ):
@@ -736,62 +685,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                             class="text-input" value="<?php echo esc_html( $post[$field_key] ?? '' ) ?>" <?php echo esc_html( $disabled ); ?>
                             min="<?php echo esc_html( $fields[$field_key]['min_option'] ?? '' ) ?>"
                             max="<?php echo esc_html( $fields[$field_key]['max_option'] ?? '' ) ?>" onwheel="return false;" />
-                <?php elseif ( $field_type === 'link' ): ?>
-
-                    <div class="link-group">
-
-                        <div class="link-list-<?php echo esc_attr( $field_key ) ?>">
-
-                            <?php
-                            $links_sorted_by_type = [];
-                            foreach ( $post[$field_key] ?? [] as $link_item ) {
-                                if ( !isset( $link_item['type'] ) ) {
-                                    continue;
-                                }
-                                $link_type = $link_item['type'];
-                                if ( !isset( $links_sorted_by_type[$link_type] ) ) {
-                                    $links_sorted_by_type[$link_type] = [];
-                                }
-                                $links_sorted_by_type[$link_type][] = $link_item;
-                            }
-
-                            $only_one_option = count( $fields[$field_key]['default'] ) === 1;
-                            foreach ( $fields[$field_key]['default'] as $link_type => $link_value ) : ?>
-
-                                <div class="link-section link-section--<?php echo esc_attr( $link_type ) ?>">
-                                    <div class="section-subheader" <?php echo $only_one_option ? 'style="display: none"' : '' ?> >
-                                        <?php dt_render_field_icon( $link_value ) ?>
-                                        <?php echo esc_html( $link_value['label'] ); ?>
-                                    </div>
-
-                                        <?php if ( isset( $links_sorted_by_type[$link_type] ) ) : ?>
-                                            <?php foreach ( $links_sorted_by_type[$link_type] as $link_item ) : ?>
-
-                                                <?php render_link_field( $field_key, $link_type, $link_item['value'], $display_field_id, $link_item['meta_id'], $required_tag, $disabled ); ?>
-
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
-
-                                </div>
-
-                            <?php endforeach; ?>
-
-                        </div>
-
-                        <?php foreach ( $fields[$field_key]['default'] as $option_key => $option_value ): ?>
-
-                            <?php if ( isset( $option_value['deleted'] ) && $option_value['deleted'] === true ) {
-                                continue;
-                            } ?>
-
-                            <div style="display: none" id="link-template-<?php echo esc_html( $field_key ) ?>-<?php echo esc_html( $option_key ) ?>">
-                                <?php render_link_field( $field_key, $option_key, '', $display_field_id, '', $required_tag, $disabled ) ?>
-                            </div>
-
-                        <?php endforeach; ?>
-
-                    </div>
-
                 <?php elseif ( $field_type === 'datetime' ): ?>
                     <?php $timestamp = $post[$field_key]['timestamp'] ?? '' ?>
                     <div class="<?php echo esc_html( $display_field_id ); ?> input-group dt_date_time_group" data-timestamp="<?php echo esc_html( $timestamp ) ?>">
@@ -832,34 +725,6 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
             }
         }
         do_action( 'dt_render_field_for_display_template', $post, $field_type, $field_key, $required_tag, $display_field_id, $custom_display, $fields );
-    }
-
-    function render_link_field( $field_key, $option_key, $value, $display_field_id, $meta_id, $required_tag, $disabled ) {
-        ?>
-
-        <div class="input-group">
-            <input
-                type="text"
-                class="link-input input-group-field"
-                value="<?php echo esc_html( $value ) ?>"
-                data-meta-id="<?php echo esc_html( $meta_id ) ?>"
-                data-field-key="<?php echo esc_html( $display_field_id ) ?>"
-                data-type="<?php echo esc_html( $option_key ) ?>"
-                <?php echo esc_html( $required_tag ) ?>
-                <?php echo esc_html( $disabled ) ?>
-            >
-            <div class="input-group-button">
-                <button
-                    class="button alert delete-button-style input-height link-delete-button delete-button"
-                    data-meta-id="<?php echo esc_html( $meta_id ) ?>"
-                    data-field-key="<?php echo esc_html( $field_key ) ?>"
-                >
-                    &times;
-                </button>
-            </div>
-        </div>
-
-        <?php
     }
 
     function dt_increment( &$var, $val ){
