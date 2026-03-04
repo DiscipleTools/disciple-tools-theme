@@ -905,10 +905,10 @@ class Disciple_Tools_Posts_Endpoints {
             return new WP_Error( __METHOD__, 'DT_Storage_API Unavailable.' );
         }
 
-        $post_type = $params['post_type'];
-        $post_id = $params['id'];
-        $meta_key = $params['meta_key'];
-        $key_prefix = $params['key_prefix'] ?? '';
+        $post_type  = sanitize_text_field( wp_unslash( $params['post_type'] ) );
+        $post_id    = absint( $params['id'] );
+        $meta_key   = sanitize_text_field( wp_unslash( $params['meta_key'] ) );
+        $key_prefix = isset( $params['key_prefix'] ) ? sanitize_text_field( wp_unslash( $params['key_prefix'] ) ) : '';
         $files = dt_recursive_sanitize_array( $_FILES['storage_upload_files'] ); //phpcs:ignore WordPress.Security.NonceVerification.Missing
 
         // Determine storage upload requester type.
@@ -954,13 +954,20 @@ class Disciple_Tools_Posts_Endpoints {
 
         for ( $i = 0; $i < $file_count; $i++ ) {
             $uploaded_file = [
-                'name' => $files['name'][$i],
-                'full_path' => $files['full_path'][$i] ?? '',
-                'type' => $files['type'][$i],
-                'tmp_name' => $files['tmp_name'][$i],
-                'error' => $files['error'][$i],
-                'size' => $files['size'][$i]
+                'name'      => $files['name'][ $i ],
+                'full_path' => $files['full_path'][ $i ] ?? '',
+                'type'      => $files['type'][ $i ],
+                'tmp_name'  => $files['tmp_name'][ $i ],
+                'error'     => $files['error'][ $i ],
+                'size'      => $files['size'][ $i ],
             ];
+
+            // Normalize basic metadata for safety.
+            $safe_file_name = str_replace( [ "\r", "\n" ], '', (string) $uploaded_file['name'] );
+            $safe_file_type = sanitize_mime_type( (string) $uploaded_file['type'] );
+            if ( $safe_file_type === '' ) {
+                $safe_file_type = (string) $uploaded_file['type'];
+            }
 
             // For multi-file fields, don't reuse keys (always create new)
             $existing_key = $is_multi_file ? '' : $meta_key_value;
@@ -987,10 +994,10 @@ class Disciple_Tools_Posts_Endpoints {
 
                 // Build file object with metadata
                 $file_object = [
-                    'key' => $uploaded_key,
-                    'name' => $uploaded_file['name'],
-                    'type' => $uploaded_file['type'],
-                    'size' => $uploaded_file['size'],
+                    'key'         => $uploaded_key,
+                    'name'        => $safe_file_name,
+                    'type'        => $safe_file_type,
+                    'size'        => $uploaded_file['size'],
                     'uploaded_at' => current_time( 'mysql' ),
                 ];
 
@@ -1014,10 +1021,10 @@ class Disciple_Tools_Posts_Endpoints {
                 }
 
                 $uploaded_files[] = [
-                    'uploaded' => true,
+                    'uploaded'     => true,
                     'uploaded_key' => $uploaded_key,
-                    'file' => $file_object,
-                    'uploaded_msg' => null
+                    'file'         => $file_object,
+                    'uploaded_msg' => null,
                 ];
             }
         }
@@ -1155,9 +1162,9 @@ class Disciple_Tools_Posts_Endpoints {
             return new WP_Error( __METHOD__, 'DT_Storage_API Delete Function Unavailable.' );
         }
 
-        $post_type = $params['post_type'];
-        $post_id = $params['id'];
-        $meta_key = $params['meta_key'];
+        $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
+        $post_id   = absint( $params['id'] );
+        $meta_key  = sanitize_text_field( wp_unslash( $params['meta_key'] ) );
         $file_key_to_delete = sanitize_text_field( wp_unslash( $params['file_key'] ) );
 
         // Fetch existing meta key value (should be an array for multi-file fields).
@@ -1512,7 +1519,8 @@ class Disciple_Tools_Posts_Endpoints {
 
         // Set headers for file download
         header( 'Content-Type: ' . $content_type );
-        header( 'Content-Disposition: attachment; filename="' . esc_attr( $file_name ) . '"' );
+        $download_name = str_replace( [ "\r", "\n" ], '', (string) $file_name );
+        header( 'Content-Disposition: attachment; filename="' . $download_name . '"' );
         header( 'Content-Length: ' . strlen( $file_content ) );
         header( 'Cache-Control: no-cache, must-revalidate' );
         header( 'Pragma: no-cache' );
