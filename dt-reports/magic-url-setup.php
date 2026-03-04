@@ -331,11 +331,7 @@ Thanks!', 'disciple_tools' );
 
                     const button = modalContent.querySelector('.button');
                     const loadingSpinner = modalContent.querySelector('.loading-spinner');
-                    
-                    // Store old hash before reset
-                    const appAccordion = evt.target.closest('.app-accordion');
-                    const oldHash = url ? url.replace(appAccordion.dataset.urlBase, '') : '';
-                    
+
                     button.addEventListener('click', function () {
                         this.disabled = true;
                         loadingSpinner.classList.add('active');
@@ -640,18 +636,20 @@ Thanks!', 'disciple_tools' );
             && method_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API', 'capture_expiry_details' )
         );
 
-        $link_obj_id = null;
-
         if ( $magic_link_expiration_supported ) {
             // Try to find matching link_obj for backward compatibility
             $matching_link_obj = null;
-            $link_objs = Disciple_Tools_Bulk_Magic_Link_Sender_API::fetch_option_link_objs();
+
+            static $cached_link_objs = null;
+            if ( is_null( $cached_link_objs ) ) {
+                $cached_link_objs = Disciple_Tools_Bulk_Magic_Link_Sender_API::fetch_option_link_objs();
+            }
+            $link_objs = $cached_link_objs;
 
             foreach ( $link_objs as $link_obj ) {
                 $generated_key = Disciple_Tools_Bulk_Magic_Link_Sender_API::generate_magic_link_type_key( $link_obj );
                 if ( $generated_key === $meta_key ) {
                     $matching_link_obj = $link_obj;
-                    $link_obj_id = $link_obj->id;
                     break;
                 }
             }
@@ -664,6 +662,11 @@ Thanks!', 'disciple_tools' );
                 $matching_link_obj
             );
         }
+
+        // Prepare short expiration format using site date/time settings
+        $date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+        $exp_ts = $expiration_data['ts'] ?? '';
+        $exp_short = ! empty( $exp_ts ) ? date_i18n( $date_time_format, (int) $exp_ts ) : '';
         ?>
         <details class="app-accordion <?php echo esc_attr( $meta_key ); ?>"
                  data-url-base="<?php echo esc_url( $app_url_base ) ?>"
@@ -673,19 +676,16 @@ Thanks!', 'disciple_tools' );
                  data-root="<?php echo esc_attr( $app['root'] ) ?>"
                  data-type="<?php echo esc_attr( $app['type'] ) ?>"
                  data-key="<?php echo esc_attr( $app['meta_key'] ) ?>"
-                 data-link-obj-id="<?php echo esc_attr( $link_obj_id ?? '' ) ?>"
                  data-sys-type="<?php echo esc_attr( $sys_type ) ?>"
                  data-record-id="<?php echo esc_attr( $record_id ) ?>"
                  data-expires-ts="<?php echo esc_attr( $expiration_data['ts'] ?? '' ) ?>"
                  data-expires-formatted="<?php echo esc_attr( $expiration_data['ts_formatted'] ?? '---' ) ?>"
-                 data-expires-formatted-short="<?php echo esc_attr( ! empty( $expiration_data['ts'] ) ? date_i18n( 'n/j/y G:i', (int) $expiration_data['ts'] ) : '' ) ?>"
+                 data-expires-formatted-short="<?php echo esc_attr( $exp_short ) ?>"
         >
             <summary class="app-summary">
                 <div class="app-label" style="display: flex; flex-direction: column; align-items: flex-start;">
                     <span class="app-label-title"><?php echo esc_html( $app['label'] ) ?></span>
                     <?php
-                    $exp_ts = $expiration_data['ts'] ?? '';
-                    $exp_short = ! empty( $exp_ts ) ? date_i18n( 'n/j/y G:i', (int) $exp_ts ) : '';
                     if ( ! empty( $exp_short ) ) :
                         ?>
                         <span class="app-expiration-badge" style="font-size: 0.85em; color: #666; margin-top: 0.25rem;">
