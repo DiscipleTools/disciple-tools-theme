@@ -562,8 +562,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $display_layout = $custom_field['display_layout'] ?? 'grid';
                 $auto_upload = isset( $custom_field['auto_upload'] ) ? $custom_field['auto_upload'] : true;
                 $download_enabled = isset( $custom_field['download_enabled'] ) ? $custom_field['download_enabled'] : true;
-                $rename_enabled = isset( $custom_field['rename_enabled'] ) ? $custom_field['rename_enabled'] : true;
-            ?>
+                $rename_enabled = isset( $custom_field['rename_enabled'] ) ? $custom_field['rename_enabled'] : true; ?>
 
             <h3><?php esc_html_e( 'Field Options', 'disciple_tools' ) ?></h3>
             <table id="file_upload_options">
