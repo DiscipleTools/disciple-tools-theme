@@ -634,9 +634,16 @@ Thanks!', 'disciple_tools' );
         $sys_type = $user_id ? 'wp_user' : 'post';
         $record_id = $user_id ? $user_id : $post_id;
 
-        if ( class_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API' ) ) {
+        // Determine if the active magic link plugin version supports expiration helpers
+        $magic_link_expiration_supported = (
+            class_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API' )
+            && method_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API', 'capture_expiry_details' )
+        );
+
+        $link_obj_id = null;
+
+        if ( $magic_link_expiration_supported ) {
             // Try to find matching link_obj for backward compatibility
-            $link_obj_id = null;
             $matching_link_obj = null;
             $link_objs = Disciple_Tools_Bulk_Magic_Link_Sender_API::fetch_option_link_objs();
 
@@ -772,7 +779,7 @@ Thanks!', 'disciple_tools' );
                            onclick="app_link_reset(event)"
                            class="dt-action-button small button reset"
                         ><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
-                        <?php if ( class_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API' ) ) : ?>
+                        <?php if ( $magic_link_expiration_supported ) : ?>
                             <?php
                             $has_expiration = ! empty( $expiration_data['ts'] )
                                 || ( ! empty( $expiration_data['ts_formatted'] ) && $expiration_data['ts_formatted'] !== '---' );
@@ -790,7 +797,7 @@ Thanks!', 'disciple_tools' );
                             <span class="app-link-label"><?php esc_html_e( 'Reset link', 'disciple_tools' ) ?></span>
                         <?php endif; ?>
                     </div>
-                    <?php if ( class_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API' ) ): ?>
+                    <?php if ( $magic_link_expiration_supported ): ?>
                     <div class="app-link-row" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e0e0;">
                         <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%; box-sizing: border-box;">
                             <div style="display: flex; align-items: center; gap: 0.5rem;">
