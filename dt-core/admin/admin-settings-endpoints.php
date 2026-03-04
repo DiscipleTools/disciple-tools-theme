@@ -1298,9 +1298,15 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             // Upload File Field Types: Field-specific options
             if ( isset( $post_fields[$field_key]['type'] ) && $post_fields[$field_key]['type'] === 'file_upload' ) {
                 // Accepted file types
-                if ( isset( $post_submission['visibility']['accepted_file_types'] ) && !empty( $post_submission['visibility']['accepted_file_types'] ) ) {
-                    $types = array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $post_submission['visibility']['accepted_file_types'] ) ) );
-                    $custom_field['accepted_file_types'] = $types;
+                if ( isset( $post_submission['visibility']['accepted_file_types'] ) ) {
+                    $raw_accepted = trim( $post_submission['visibility']['accepted_file_types'] );
+                    if ( $raw_accepted === '' ) {
+                        // Clear any previously saved override so defaults are used
+                        unset( $custom_field['accepted_file_types'] );
+                    } else {
+                        $types = array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $raw_accepted ) ) );
+                        $custom_field['accepted_file_types'] = $types;
+                    }
                 }
 
                 // Max file size
@@ -1308,16 +1314,6 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     $custom_field['max_file_size'] = (int) $post_submission['visibility']['max_file_size'];
                 } else if ( isset( $custom_field['max_file_size'] ) ) {
                     unset( $custom_field['max_file_size'] );
-                }
-
-                // File type icon
-                if ( isset( $post_submission['visibility']['file_type_icon'] ) ) {
-                    $file_type_icon = sanitize_text_field( wp_unslash( $post_submission['visibility']['file_type_icon'] ) );
-                    if ( !empty( $file_type_icon ) ) {
-                        $custom_field['file_type_icon'] = $file_type_icon;
-                    } else {
-                        unset( $custom_field['file_type_icon'] );
-                    }
                 }
 
                 // Delete enabled

@@ -545,9 +545,19 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <?php
                 $custom_fields = dt_get_option( 'dt_field_customizations' );
                 $custom_field = $custom_fields[ $post_type ][ $field_key ] ?? [];
-                $accepted_file_types = $custom_field['accepted_file_types'] ?? [ 'image/*', 'application/pdf' ];
+                $accepted_file_types = $custom_field['accepted_file_types'] ?? [
+                    'image/*',
+                    'application/pdf',
+                    'audio/*',
+                    'video/*',
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'application/vnd.ms-excel',
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'text/plain',
+                    'text/markdown',
+                ];
                 $max_file_size = $custom_field['max_file_size'] ?? '';
-                $file_type_icon = $custom_field['file_type_icon'] ?? '';
                 $delete_enabled = isset( $custom_field['delete_enabled'] ) ? $custom_field['delete_enabled'] : true;
                 $display_layout = $custom_field['display_layout'] ?? 'grid';
                 $auto_upload = isset( $custom_field['auto_upload'] ) ? $custom_field['auto_upload'] : true;
@@ -564,10 +574,13 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                         <input type="text" name="accepted_file_types" id="accepted_file_types"
                                value="<?php echo esc_attr( implode( ', ', $accepted_file_types ) ) ?>"
-                               placeholder="e.g., image/*, application/pdf, .doc, .docx"
+                               placeholder="e.g., image/*, audio/*, video/*, application/pdf, .docx"
                                style="width: 100%;" />
                         <p style="font-size: 11px; color: #666; margin-top: 5px;">
-                            <?php esc_html_e( 'Comma-separated list of MIME types or file extensions (e.g., image/*, application/pdf, .doc)', 'disciple_tools' ) ?>
+                            <?php esc_html_e( 'Optional. Comma-separated list of MIME types or file extensions to override the default set (images, PDFs, audio, video, common documents). Leave empty to use the default types.', 'disciple_tools' ); ?>
+                            <a href="<?php echo esc_url( 'https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types' ); ?>" target="_blank" rel="noopener noreferrer">
+                                <?php esc_html_e( 'View common MIME types.', 'disciple_tools' ); ?>
+                            </a>
                         </p>
                     </td>
                 </tr>
@@ -580,41 +593,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                value="<?php echo esc_attr( $max_file_size ) ?>"
                                min="0" step="0.1"
                                placeholder="<?php esc_attr_e( 'Leave empty for no limit', 'disciple_tools' ) ?>" />
-                    </td>
-                </tr>
-                <tr>
-                    <td style="vertical-align: middle">
-                        <label for="file_type_icon"><b><?php esc_html_e( 'File Type Icon', 'disciple_tools' ) ?></b></label>
-                    </td>
-                    <td>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <?php if ( !empty( $file_type_icon ) ) : ?>
-                                        <?php if ( strpos( $file_type_icon, 'mdi' ) === 0 || strpos( $file_type_icon, 'mdi mdi-' ) === 0 ) : ?>
-                                            <i class="<?php echo esc_attr( $file_type_icon ); ?>" style="font-size: 20px; vertical-align: middle;"></i>
-                                        <?php else : ?>
-                                            <img src="<?php echo esc_attr( $file_type_icon ); ?>" style="width: 20px; vertical-align: middle;">
-                                        <?php endif; ?>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <input type="text" name="file_type_icon" id="file_type_icon"
-                                           placeholder="<?php esc_attr_e( 'Icon url', 'disciple_tools' ); ?>"
-                                           value="<?php echo esc_attr( $file_type_icon ); ?>">
-                                </td>
-                                <td>
-                                    <button class="button change-icon-button"
-                                            data-form="<?php echo esc_html( $form_name ) ?>"
-                                            data-icon-input="file_type_icon"><?php esc_html_e( 'Change Icon', 'disciple_tools' ); ?></button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <p style="font-size: 11px; color: #666; margin-top: 5px;">
-                            <?php esc_html_e( 'Icon to display for non-image files (e.g., PDFs, documents)', 'disciple_tools' ) ?>
-                        </p>
                     </td>
                 </tr>
                 <tr>
@@ -1069,9 +1047,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             // file_upload field options
             if ( $field['type'] === 'file_upload' ) {
                 // Accepted file types
-                if ( isset( $post_submission['accepted_file_types'] ) && !empty( $post_submission['accepted_file_types'] ) ) {
-                    $types = array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $post_submission['accepted_file_types'] ) ) );
-                    $custom_field['accepted_file_types'] = $types;
+                if ( isset( $post_submission['accepted_file_types'] ) ) {
+                    $raw_accepted = trim( $post_submission['accepted_file_types'] );
+                    if ( $raw_accepted === '' ) {
+                        // Clear any previously saved override so defaults are used
+                        unset( $custom_field['accepted_file_types'] );
+                    } else {
+                        $types = array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $raw_accepted ) ) );
+                        $custom_field['accepted_file_types'] = $types;
+                    }
                 }
 
                 // Max file size
@@ -1079,16 +1063,6 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     $custom_field['max_file_size'] = (int) $post_submission['max_file_size'];
                 } else if ( isset( $custom_field['max_file_size'] ) ) {
                     unset( $custom_field['max_file_size'] );
-                }
-
-                // File type icon
-                if ( isset( $post_submission['file_type_icon'] ) ) {
-                    $file_type_icon = sanitize_text_field( wp_unslash( $post_submission['file_type_icon'] ) );
-                    if ( !empty( $file_type_icon ) ) {
-                        $custom_field['file_type_icon'] = $file_type_icon;
-                    } else {
-                        unset( $custom_field['file_type_icon'] );
-                    }
                 }
 
                 // Delete enabled

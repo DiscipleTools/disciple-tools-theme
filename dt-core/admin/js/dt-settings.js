@@ -1609,30 +1609,25 @@ jQuery(document).ready(function ($) {
 
     // Add file_upload field-specific options
     if (field_type === 'file_upload') {
-      let accepted_file_types = field_settings['accepted_file_types'] || [
-        'image/*',
-        'application/pdf',
-      ];
+      let accepted_file_types =
+        field_settings['accepted_file_types'] || [
+          'image/*',
+          'application/pdf',
+          'audio/*',
+          'video/*',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'text/plain',
+          'text/markdown',
+        ];
       let max_file_size = field_settings['max_file_size'] || '';
-      let file_type_icon = field_settings['file_type_icon'] || '';
       let delete_enabled = field_settings['delete_enabled'] !== false; // default true
       let display_layout = field_settings['display_layout'] || 'grid';
       let auto_upload = field_settings['auto_upload'] !== false; // default true
       let download_enabled = field_settings['download_enabled'] !== false; // default true
       let rename_enabled = field_settings['rename_enabled'] !== false; // default true
-
-      let file_type_icon_html = '';
-      if (
-        file_type_icon &&
-        typeof file_type_icon !== 'undefined' &&
-        file_type_icon !== 'undefined'
-      ) {
-        if (file_type_icon.trim().toLowerCase().startsWith('mdi')) {
-          file_type_icon_html = `<i class="${file_type_icon} field-icon" style="font-size: 20px; vertical-align: middle;"></i>`;
-        } else {
-          file_type_icon_html = `<img src="${file_type_icon}" class="field-icon" style="vertical-align: middle; max-width: 20px;">`;
-        }
-      }
 
       modal_html_content += `
         <tr>
@@ -1642,10 +1637,13 @@ jQuery(document).ready(function ($) {
             <td>
                 <input type="text" name="accepted_file_types" id="accepted_file_types" 
                   value="${accepted_file_types.join(', ')}" 
-                  placeholder="e.g., image/*, application/pdf, .doc, .docx"
+                  placeholder="e.g., image/*, audio/*, video/*, application/pdf, .docx"
                   style="width: 100%;">
                 <p style="font-size: 11px; color: #666; margin-top: 5px;">
-                  Comma-separated list of MIME types or file extensions (e.g., image/*, application/pdf, .doc)
+                  Optional. Comma-separated list of MIME types or file extensions to override the default set (images, PDFs, audio, video, common documents). Leave empty to use the default types.
+                  <a href="https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types" target="_blank" rel="noopener noreferrer">
+                    View common MIME types.
+                  </a>
                 </p>
             </td>
         </tr>
@@ -1657,23 +1655,6 @@ jQuery(document).ready(function ($) {
                 <input type="number" name="max_file_size" id="max_file_size" 
                   value="${max_file_size}" min="0" step="0.1"
                   placeholder="Leave empty for no limit">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="file_type_icon"><b>File Type Icon</b></label>
-            </td>
-            <td>
-                <div class="input-group">
-                    ${file_type_icon_html}
-                    <input name="file_type_icon" id="file_type_icon" type="text" 
-                      value="${file_type_icon}" style="vertical-align: middle;">
-                    <button class="button change-icon-button" style="vertical-align: middle;"
-                            data-icon-input="file_type_icon">Select Icon</button>
-                </div>
-                <p style="font-size: 11px; color: #666; margin-top: 5px;">
-                  Icon to display for non-image files (e.g., PDFs, documents)
-                </p>
             </td>
         </tr>
         <tr>
@@ -2445,7 +2426,6 @@ jQuery(document).ready(function ($) {
         .val()
         .trim();
       visibility['max_file_size'] = $('#max_file_size').val().trim();
-      visibility['file_type_icon'] = $('#file_type_icon').val().trim();
       visibility['delete_enabled'] = $('#delete_enabled').is(':checked');
       visibility['display_layout'] = $('#display_layout').val();
       visibility['auto_upload'] = $('#auto_upload').is(':checked');

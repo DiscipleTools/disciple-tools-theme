@@ -332,11 +332,21 @@ class DT_Components
         }
 
         // Get field settings for configuration
-        $accepted_file_types = $fields[ $field_key ]['accepted_file_types'] ?? [ 'image/*', 'application/pdf' ];
+        $accepted_file_types = $fields[ $field_key ]['accepted_file_types'] ?? [
+            'image/*',
+            'application/pdf',
+            'audio/*',
+            'video/*',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'text/plain',
+            'text/markdown',
+        ];
         $max_file_size = $fields[$field_key]['max_file_size'] ?? null;
         $delete_enabled = isset( $fields[$field_key]['delete_enabled'] ) ? $fields[$field_key]['delete_enabled'] : true;
         $display_layout = $fields[$field_key]['display_layout'] ?? 'grid';
-        $file_type_icon = $fields[$field_key]['file_type_icon'] ?? '';
         $auto_upload = isset( $fields[$field_key]['auto_upload'] ) ? $fields[$field_key]['auto_upload'] : true;
         $download_enabled = isset( $fields[$field_key]['download_enabled'] ) ? $fields[$field_key]['download_enabled'] : true;
         $rename_enabled = isset( $fields[$field_key]['rename_enabled'] ) ? $fields[$field_key]['rename_enabled'] : true;
@@ -417,9 +427,6 @@ class DT_Components
                 delete-enabled="false"
             <?php endif; ?>
             display-layout="<?php echo esc_attr( $display_layout ) ?>"
-            <?php if ( $file_type_icon ): ?>
-                file-type-icon="<?php echo esc_attr( $file_type_icon ) ?>"
-            <?php endif; ?>
             auto-upload="<?php echo $auto_upload ? 'true' : 'false' ?>"
             <?php if ( !$download_enabled ): ?>
                 download-enabled="false"
