@@ -379,7 +379,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $params = $request->get_params();
         $response = [];
         if ( isset( $params['key'], $params['single'], $params['plural'] ) ){
-            $key = $params['key'];
+            $key = dt_create_field_key( $params['key'] );
             $single = $params['single'];
             $plural = $params['plural'];
 
