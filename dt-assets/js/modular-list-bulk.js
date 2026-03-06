@@ -822,6 +822,11 @@
             // For boolean fields, include even if false (false is a valid value)
             if (fieldType === 'boolean') {
               updatePayload[fieldKey] = fieldValue === true;
+            } else if (fieldType === 'user_select') {
+              const normalizedUser = normalizeUserSelectValue(fieldValue);
+              if (normalizedUser !== null) {
+                updatePayload[fieldKey] = normalizedUser;
+              }
             } else {
               updatePayload[fieldKey] = fieldValue;
             }
@@ -916,6 +921,81 @@
     }
 
     return Array.isArray(value) ? value : [];
+  }
+
+  /**
+   * Normalize a user_select value to the "user-{id}" string format expected by
+   * the backend and conditional-removal logic. Accepts values from
+   * ComponentService.convertValue(dt-users-connection), dt-users-connection.value,
+   * or legacy shapes.
+   */
+  function normalizeUserSelectValue(rawValue) {
+    if (rawValue === null || rawValue === undefined) {
+      return null;
+    }
+
+    // Numbers (ComponentService.convertValue for dt-users-connection in single
+    // mode returns a plain integer user ID, or 0/"" when empty)
+    if (typeof rawValue === 'number') {
+      return rawValue > 0 ? `user-${rawValue}` : null;
+    }
+
+    // Strings
+    if (typeof rawValue === 'string') {
+      const trimmed = rawValue.trim();
+      if (!trimmed) {
+        return null;
+      }
+      if (trimmed.startsWith('user-')) {
+        return trimmed;
+      }
+      if (/^\d+$/.test(trimmed)) {
+        return `user-${trimmed}`;
+      }
+      // Any other free-form string (e.g. display name) is not a valid payload
+      // for the backend user_select handler.
+      return null;
+    }
+
+    // Arrays – use the first entry
+    if (Array.isArray(rawValue)) {
+      if (rawValue.length === 0) {
+        return null;
+      }
+      return normalizeUserSelectValue(rawValue[0]);
+    }
+
+    // Objects
+    if (typeof rawValue === 'object') {
+      // Legacy stored shape { 'assigned-to': 'user-5', ... }
+      if (
+        typeof rawValue['assigned-to'] === 'string' &&
+        rawValue['assigned-to'].trim()
+      ) {
+        return normalizeUserSelectValue(rawValue['assigned-to']);
+      }
+
+      // Common id fields
+      let possibleId =
+        rawValue.value ||
+        rawValue.id ||
+        rawValue.user_id ||
+        (Array.isArray(rawValue.values) ? rawValue.values[0] : null);
+
+      if (possibleId === null || possibleId === undefined) {
+        return null;
+      }
+
+      if (typeof possibleId === 'string') {
+        return normalizeUserSelectValue(possibleId);
+      }
+
+      if (typeof possibleId === 'number') {
+        return `user-${possibleId}`;
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -1095,32 +1175,6 @@
               values: [{ value: String(currentUserId), delete: toggleValue }],
             },
           };
-        }
-      }
-      return null;
-    }
-
-    // Special case: user_select (uses typeahead, not web component)
-    if (fieldType === 'user_select') {
-      const fieldId = `bulk_${fieldKey}`;
-      const userInput = fieldWrapper.find(`.js-typeahead-${fieldId}`);
-      if (userInput.length > 0) {
-        const selectedUserId = userInput.data('selected-user-id');
-        if (selectedUserId) {
-          return `user-${selectedUserId}`;
-        }
-        // Fallback: check typeahead instance
-        const typeaheadSelector = `.js-typeahead-${fieldId}`;
-        const typeaheadInstance = window.Typeahead?.[typeaheadSelector];
-        if (
-          typeaheadInstance &&
-          typeaheadInstance.items &&
-          typeaheadInstance.items.length > 0
-        ) {
-          const selectedItem = typeaheadInstance.items[0];
-          if (selectedItem && selectedItem.ID) {
-            return `user-${selectedItem.ID}`;
-          }
         }
       }
       return null;
@@ -2128,98 +2182,10 @@
   }
 
   function initializeBulkEditFieldHandlers(fieldKey, fieldType) {
-    // Special case: user_select uses typeahead (not a web component)
-    if (fieldType === 'user_select') {
-      const fieldId = `bulk_${fieldKey}`;
-      const userInput = $(`.js-typeahead-${fieldId}`);
-
-      if (userInput.length) {
-        // Destroy existing typeahead instance if it exists (for restore scenarios)
-        const typeaheadSelector = `.js-typeahead-${fieldId}`;
-        if (window.Typeahead && window.Typeahead[typeaheadSelector]) {
-          try {
-            // Try to destroy the existing instance
-            if (window.Typeahead[typeaheadSelector].destroy) {
-              window.Typeahead[typeaheadSelector].destroy();
-            }
-            delete window.Typeahead[typeaheadSelector];
-          } catch (e) {
-            // If destroy fails, just delete the reference
-            delete window.Typeahead[typeaheadSelector];
-          }
-        }
-
-        // Initialize typeahead
-        $.typeahead({
-          input: `.js-typeahead-${fieldId}`,
-          minLength: 0,
-          maxItem: 0,
-          accent: true,
-          searchOnFocus: true,
-          source: window.TYPEAHEADS.typeaheadUserSource(),
-          templateValue: '{{name}}',
-          template: function (query, item) {
-            return `<div class="assigned-to-row" dir="auto">
-              <span>
-                  <span class="avatar"><img style="vertical-align: text-bottom" src="{{avatar}}"/></span>
-                  ${window.SHAREDFUNCTIONS.escapeHTML(item.name)}
-              </span>
-              ${item.status_color ? `<span class="status-square" style="background-color: ${window.SHAREDFUNCTIONS.escapeHTML(item.status_color)};">&nbsp;</span>` : ''}
-              ${
-                item.update_needed && item.update_needed > 0
-                  ? `<span>
-                <img style="height: 12px;" src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/broken.svg"/>
-                <span style="font-size: 14px">${window.SHAREDFUNCTIONS.escapeHTML(item.update_needed)}</span>
-              </span>`
-                  : ''
-              }
-            </div>`;
-          },
-          dynamic: true,
-          hint: true,
-          emptyTemplate: window.SHAREDFUNCTIONS.escapeHTML(
-            window.wpApiShare.translations.no_records_found,
-          ),
-          callback: {
-            onClick: function (node, a, item, event) {
-              event.preventDefault();
-              this.hideLayout();
-              this.resetInput();
-
-              // Set the selected user value
-              const resultContainer = $(`#${fieldId}-result-container`);
-              resultContainer.html(
-                `<span class="selected-result">${window.SHAREDFUNCTIONS.escapeHTML(item.name)}</span>`,
-              );
-
-              // Store the selected user ID in data attributes for later collection
-              userInput.data('selected-user-id', item.ID);
-              userInput.data('selected-user-name', item.name);
-              resultContainer.data('selected-user-id', item.ID);
-              resultContainer.data('selected-user-name', item.name);
-            },
-            onResult: function (node, query, result, resultCount) {
-              const resultContainer = $(`#${fieldId}-result-container`);
-              if (resultCount > 0) {
-                resultContainer.html(
-                  `${resultCount} ${window.wpApiShare.translations.user_found || 'user(s) found'}`,
-                );
-              } else {
-                resultContainer.html('');
-              }
-            },
-            onHideLayout: function () {
-              $(`#${fieldId}-result-container`).html('');
-            },
-          },
-        });
-      }
-      return;
-    }
-
-    // For all web components: ComponentService.initialize() handles initialization
-    // The global dt:get-data listener handles data fetching
-    // No per-field-type initialization needed
+    // For all web components (including user_select via dt-users-connection),
+    // ComponentService.initialize() and the global dt:get-data listener handle
+    // initialization and data wiring. No per-field-type handlers are required
+    // at this time.
   }
 
   /**
@@ -2361,20 +2327,33 @@
         displayHtml += '<em>No option selected</em>';
       }
     } else if (fieldType === 'user_select') {
-      // user_select returns "user-{id}" format
+      // user_select returns "user-{id}" for payloads, but the dt-users-connection
+      // component exposes richer objects for display. Support both shapes.
       if (valuesToRemove) {
-        const userId = valuesToRemove.replace('user-', '');
-        // Try to get user name from typeahead data or make a simple display
-        const fieldId = `bulk_${fieldKey}`;
-        const userInput = $(`.js-typeahead-${fieldId}`);
-        let userName = `User ${userId}`;
-        if (userInput.length > 0) {
-          const storedName = userInput.data('selected-user-name');
-          if (storedName) {
-            userName = storedName;
+        let userId = null;
+        let userName = null;
+
+        if (Array.isArray(valuesToRemove)) {
+          const first = valuesToRemove[0];
+          if (first) {
+            userId = first.id || first.user_id || null;
+            userName = first.label || first.name || null;
           }
+        } else if (typeof valuesToRemove === 'object') {
+          userId = valuesToRemove.id || valuesToRemove.user_id || null;
+          userName = valuesToRemove.label || valuesToRemove.name || null;
+        } else if (typeof valuesToRemove === 'string') {
+          userId = valuesToRemove.replace('user-', '');
         }
-        displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS.escapeHTML(userName)}</span>`;
+
+        if (userId) {
+          if (!userName) {
+            userName = `User ${userId}`;
+          }
+          displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS.escapeHTML(userName)}</span>`;
+        } else {
+          displayHtml += '<em>No user selected</em>';
+        }
       } else {
         displayHtml += '<em>No user selected</em>';
       }
@@ -2420,9 +2399,18 @@
         if (component && component.value) {
           rawValueWithLabels = component.value;
         }
+      } else if (fieldType === 'user_select') {
+        const usersComponent = fieldWrapper.find('dt-users-connection')[0];
+        if (usersComponent && usersComponent.value) {
+          const items = normalizeShareComponentItems(usersComponent.value);
+          if (items.length > 0) {
+            rawValueWithLabels = items;
+          }
+        }
       }
 
       let hasValues = false;
+      let normalizedUserValueToRemove = null;
       if (
         currentValue !== null &&
         currentValue !== undefined &&
@@ -2435,18 +2423,25 @@
         ) {
           const values = currentValue?.values || currentValue;
           hasValues = Array.isArray(values) && values.length > 0;
-        } else if (fieldType === 'key_select' || fieldType === 'user_select') {
+        } else if (fieldType === 'key_select') {
           hasValues = true;
+        } else if (fieldType === 'user_select') {
+          normalizedUserValueToRemove = normalizeUserSelectValue(currentValue);
+          hasValues = !!normalizedUserValueToRemove;
         }
       }
 
       if (supportsSelectiveRemoval && hasValues) {
         fieldData.operation = 'remove';
-        fieldData.valuesToRemove = currentValue;
+        fieldData.valuesToRemove =
+          fieldType === 'user_select'
+            ? normalizedUserValueToRemove
+            : currentValue;
         fieldData.rawValueWithLabels = rawValueWithLabels;
 
         const displayValue =
-          fieldType === 'connection' && rawValueWithLabels
+          (fieldType === 'connection' || fieldType === 'user_select') &&
+          rawValueWithLabels
             ? rawValueWithLabels
             : currentValue;
         const displayHtml = renderValuesToRemoveDisplay(
