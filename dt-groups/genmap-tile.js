@@ -2283,13 +2283,17 @@
       return;
     }
 
+    // Mark this usage so CSS can safely relax overflow rules without affecting other metrics modals
+    modal.addClass('genmap-add-child-modal');
+    modal.css('overflow', 'visible');
+
     jQuery(modalButtons).empty().html(buttonsHtml);
 
     jQuery('#template_metrics_modal_title')
       .empty()
       .html(window.lodash.escape(title));
     jQuery(content).css('max-height', '400px');
-    jQuery(content).css('overflow-y', 'auto');
+    jQuery(content).css('overflow-y', 'visible');
     jQuery(content).empty().html(listHtml);
     jQuery(modal).foundation('open');
 
@@ -2508,6 +2512,15 @@
     e.preventDefault();
     handleAddChild();
   });
+
+  // When the shared metrics modal closes, clear any Genmapper-specific modal classes
+  jQuery(document).on(
+    'closed.zf.reveal',
+    '#template_metrics_modal[data-reveal]',
+    function () {
+      jQuery('#template_metrics_modal').removeClass('genmap-add-child-modal');
+    },
+  );
 
   jQuery(document).on(
     'open.zf.reveal',
