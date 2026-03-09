@@ -6,6 +6,7 @@
   const MAX_CANVAS_HEIGHT = 320;
   const MIN_CANVAS_HEIGHT = 220;
   const LAYOUT_STORAGE_KEY = 'group_genmap_layout';
+  const GENMAP_ADD_CHILD_FIELD_PREFIX = 'group_genmap_add_child_';
 
   // Node dimensions constants
   const NODE_WIDTH = 72; // Increased from 60px to prevent text clipping
@@ -2182,7 +2183,7 @@
 
     const modalStrings = window.dtGroupGenmap?.strings?.modal || {};
     const fieldSettings = window.dtGroupGenmap?.fieldSettings || {};
-    const fieldPrefix = 'group_genmap_add_child_';
+    const fieldPrefix = GENMAP_ADD_CHILD_FIELD_PREFIX;
 
     // Build hidden inputs for post type and parent ID
     let listHtml = `
@@ -2196,6 +2197,7 @@
     // fieldSettings contains only in_create_form fields (title excluded in PHP). Title is rendered from titleFieldSetting.
     const fieldsToRender = {};
     Object.keys(fieldSettings).forEach((key) => {
+      // Skip title (handled separately) and legacy "name" field if present to avoid duplicating the label.
       if (key !== 'title' && key !== 'name') {
         fieldsToRender[key] = fieldSettings[key];
       }
@@ -2242,6 +2244,7 @@
       );
     }
     Object.keys(fieldsToRender).forEach((fieldKey) => {
+      // Safety guard in case title/name ever slip into fieldsToRender.
       if (fieldKey === 'title' || fieldKey === 'name') {
         return;
       }
@@ -2308,7 +2311,7 @@
   }
 
   function handleAddChild() {
-    const fieldPrefix = 'group_genmap_add_child_';
+    const fieldPrefix = GENMAP_ADD_CHILD_FIELD_PREFIX;
     const postType = jQuery(`#${fieldPrefix}post_type`).val();
     const parentId = parseInt(jQuery(`#${fieldPrefix}post_id`).val(), 10);
     const modalContent = jQuery('#template_metrics_modal_content');
@@ -2351,7 +2354,7 @@
     }
 
     const submitBtn = jQuery(`#${fieldPrefix}but`);
-    submitBtn.attr('disabled', true).addClass('loading');
+    submitBtn.prop('disabled', true).addClass('loading');
 
     // Collect values from all other web components
     modalContent
@@ -2360,8 +2363,11 @@
       )
       .each(function () {
         const component = this;
-        const fieldKey =
-          component.name || component.id?.replace(fieldPrefix, '');
+        const rawId = component.id || '';
+        const idWithoutPrefix = rawId.startsWith(fieldPrefix)
+          ? rawId.slice(fieldPrefix.length)
+          : rawId;
+        const fieldKey = component.name || idWithoutPrefix;
 
         // Skip hidden fields and system fields
         if (
@@ -2458,13 +2464,13 @@
     if (window.API && window.API.create_post) {
       window.API.create_post(postType, createPayload)
         .then((newPost) => {
-          submitBtn.attr('disabled', false).removeClass('loading');
+          submitBtn.prop('disabled', false).removeClass('loading');
           jQuery('#template_metrics_modal').foundation('close');
           // Refresh the page to show the new child
           window.location.reload();
         })
         .catch(function (error) {
-          submitBtn.attr('disabled', false).removeClass('loading');
+          submitBtn.prop('disabled', false).removeClass('loading');
           console.error(error);
           const template =
             window.dtGroupGenmap?.strings?.modal?.error_creating_child ||
@@ -2476,7 +2482,7 @@
           alert(msg);
         });
     } else {
-      submitBtn.attr('disabled', false).removeClass('loading');
+      submitBtn.prop('disabled', false).removeClass('loading');
       console.error('window.API.create_post is not available');
     }
   }
