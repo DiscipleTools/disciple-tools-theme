@@ -925,9 +925,11 @@
 
   /**
    * Normalize a user_select value to the "user-{id}" string format expected by
-   * the backend and conditional-removal logic. Accepts values from
-   * ComponentService.convertValue(dt-users-connection), dt-users-connection.value,
-   * or legacy shapes.
+   * the backend and conditional-removal logic.
+   *
+   * In practice we only see:
+   * - numbers from ComponentService.convertValue('DT-USERS-CONNECTION', ...)
+   * - strings like "user-5" or "5" from API/legacy data
    */
   function normalizeUserSelectValue(rawValue) {
     if (rawValue === null || rawValue === undefined) {
@@ -955,44 +957,6 @@
       // Any other free-form string (e.g. display name) is not a valid payload
       // for the backend user_select handler.
       return null;
-    }
-
-    // Arrays – use the first entry
-    if (Array.isArray(rawValue)) {
-      if (rawValue.length === 0) {
-        return null;
-      }
-      return normalizeUserSelectValue(rawValue[0]);
-    }
-
-    // Objects
-    if (typeof rawValue === 'object') {
-      // Legacy stored shape { 'assigned-to': 'user-5', ... }
-      if (
-        typeof rawValue['assigned-to'] === 'string' &&
-        rawValue['assigned-to'].trim()
-      ) {
-        return normalizeUserSelectValue(rawValue['assigned-to']);
-      }
-
-      // Common id fields
-      let possibleId =
-        rawValue.value ||
-        rawValue.id ||
-        rawValue.user_id ||
-        (Array.isArray(rawValue.values) ? rawValue.values[0] : null);
-
-      if (possibleId === null || possibleId === undefined) {
-        return null;
-      }
-
-      if (typeof possibleId === 'string') {
-        return normalizeUserSelectValue(possibleId);
-      }
-
-      if (typeof possibleId === 'number') {
-        return `user-${possibleId}`;
-      }
     }
 
     return null;
