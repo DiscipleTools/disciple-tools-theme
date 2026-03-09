@@ -2139,17 +2139,7 @@
           console.error('ComponentService initialization error:', e);
         }
       }
-
-      // Initialize field-specific handlers if needed
-      initializeBulkEditFieldHandlers(fieldKey, fieldType);
     });
-  }
-
-  function initializeBulkEditFieldHandlers(fieldKey, fieldType) {
-    // For all web components (including user_select via dt-users-connection),
-    // ComponentService.initialize() and the global dt:get-data listener handle
-    // initialization and data wiring. No per-field-type handlers are required
-    // at this time.
   }
 
   /**
