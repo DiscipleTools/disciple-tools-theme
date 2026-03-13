@@ -321,4 +321,22 @@ class DT_Components
         </dt-users-connection>
         <?php
     }
+
+    public static function render_link( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+        $default_options = $fields[$field_key]['default'];
+        $options_array = array_map(function ( $key, $value ) {
+            return [
+                'id' => (string) $key,
+                'label' => $value['label'] ?? $key
+            ];
+        }, array_keys( $default_options ), $default_options);
+        ?>
+        <dt-multi-text-groups <?php echo wp_kses_post( $shared_attributes ) ?>
+            groups='<?php echo esc_attr( json_encode( $options_array ) ) ?>'
+            value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>">
+            <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        </dt-multi-text-groups>
+        <?php
+    }
 }
