@@ -1058,6 +1058,7 @@ jQuery(document).ready(function ($) {
 
   dt_admin_modal_box.on('click', '.change-icon-button', function (e) {
     e.preventDefault();
+    e.stopPropagation(); // Prevent the dt-options.js handler from also firing
     enableModalBackDiv('modal-back-icon-picker');
     flip_card();
   });
@@ -1283,6 +1284,7 @@ jQuery(document).ready(function ($) {
                     <option value="user_select">User Select</option>
                     <option value="location">Location (grid only)</option>
                     <option value="communication_channel">Communication Channel</option>
+                    <option value="file_upload">File Upload</option>
                 </select>
                 <p id="field-type-select-description" style="margin:0.2em 0">
                     ${window.field_settings.field_types.key_select.description}
@@ -1603,7 +1605,119 @@ jQuery(document).ready(function ($) {
                 <input type="checkbox" name="show-in-creation" id="show-in-creation" ${field_settings.in_create_form ? 'checked' : ''}>
             </td>
         </tr>
-        ${type_visibility_html}
+        ${type_visibility_html}`;
+
+    // Add file_upload field-specific options
+    if (field_type === 'file_upload') {
+      let accepted_file_types = field_settings['accepted_file_types'] || [
+        'image/*',
+        'application/pdf',
+        'audio/*',
+        'video/*',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'text/plain',
+        'text/markdown',
+      ];
+      let max_file_size = field_settings['max_file_size'] || '';
+      let delete_enabled = field_settings['delete_enabled'] !== false; // default true
+      let display_layout = field_settings['display_layout'] || 'grid';
+      let auto_upload = field_settings['auto_upload'] !== false; // default true
+      let download_enabled = field_settings['download_enabled'] !== false; // default true
+      let rename_enabled = field_settings['rename_enabled'] !== false; // default true
+
+      modal_html_content += `
+        <tr>
+            <td>
+                <label for="accepted_file_types"><b>Accepted File Types</b></label>
+            </td>
+            <td>
+                <input type="text" name="accepted_file_types" id="accepted_file_types" 
+                  value="${accepted_file_types.join(', ')}" 
+                  placeholder="e.g., image/*, audio/*, video/*, application/pdf, .docx"
+                  style="width: 100%;">
+                <p style="font-size: 11px; color: #666; margin-top: 5px;">
+                  Optional. Comma-separated list of MIME types or file extensions to override the default set (images, PDFs, audio, video, common documents). Leave empty to use the default types.
+                  <a href="https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types" target="_blank" rel="noopener noreferrer">
+                    View common MIME types.
+                  </a>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="max_file_size"><b>Max File Size (MB)</b></label>
+            </td>
+            <td>
+                <input type="number" name="max_file_size" id="max_file_size" 
+                  value="${max_file_size}" min="0" step="0.1"
+                  placeholder="Leave empty for no limit">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Delete Enabled</b>
+            </td>
+            <td>
+                <input type="checkbox" name="delete_enabled" id="delete_enabled" 
+                  ${delete_enabled ? 'checked' : ''}>
+                <label for="delete_enabled" style="margin-left: 0.5em;">
+                  Allow users to delete uploaded files
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Download Enabled</b>
+            </td>
+            <td>
+                <input type="checkbox" name="download_enabled" id="download_enabled" 
+                  ${download_enabled ? 'checked' : ''}>
+                <label for="download_enabled" style="margin-left: 0.5em;">
+                  Allow users to download uploaded files
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Rename Enabled</b>
+            </td>
+            <td>
+                <input type="checkbox" name="rename_enabled" id="rename_enabled" 
+                  ${rename_enabled ? 'checked' : ''}>
+                <label for="rename_enabled" style="margin-left: 0.5em;">
+                  Allow users to rename uploaded files
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="display_layout"><b>Display Layout</b></label>
+            </td>
+            <td>
+                <select name="display_layout" id="display_layout">
+                  <option value="grid" ${display_layout === 'grid' ? 'selected' : ''}>Grid</option>
+                  <option value="list" ${display_layout === 'list' ? 'selected' : ''}>List</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Auto Upload</b>
+            </td>
+            <td>
+                <input type="checkbox" name="auto_upload" id="auto_upload" 
+                  ${auto_upload ? 'checked' : ''}>
+                <label for="auto_upload" style="margin-left: 0.5em;">
+                  Automatically upload files when selected (uncheck to require manual upload)
+                </label>
+            </td>
+        </tr>`;
+    }
+
+    modal_html_content += `
         <tr class="last-row">
             <td>
                 ${delete_field_html_content}
@@ -2303,6 +2417,19 @@ jQuery(document).ready(function ($) {
       visibility['checked_by_default'] = $('#checked_by_default').is(
         ':checked',
       );
+    }
+
+    // Add file_upload field-specific options to visibility object
+    if (field_settings['type'] && field_settings['type'] === 'file_upload') {
+      visibility['accepted_file_types'] = $('#accepted_file_types')
+        .val()
+        .trim();
+      visibility['max_file_size'] = $('#max_file_size').val().trim();
+      visibility['delete_enabled'] = $('#delete_enabled').is(':checked');
+      visibility['display_layout'] = $('#display_layout').val();
+      visibility['auto_upload'] = $('#auto_upload').is(':checked');
+      visibility['download_enabled'] = $('#download_enabled').is(':checked');
+      visibility['rename_enabled'] = $('#rename_enabled').is(':checked');
     }
 
     if (custom_name === '') {

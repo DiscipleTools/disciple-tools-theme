@@ -445,12 +445,16 @@ function dt_site_scripts() {
             [
                 'rest_url' => esc_url_raw( rest_url() ),
                 'accepted_file_types' => [
-                    'image/png',
-                    'image/gif',
-                    'image/jpeg',
-                    'image/jpg',
+                    'image/*',
+                    'application/pdf',
                     'audio/*',
-                    'video/*'
+                    'video/*',
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'application/vnd.ms-excel',
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'text/plain',
+                    'text/markdown',
                 ],
                 'translations' => [
                     'modals' => [
