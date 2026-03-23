@@ -16,6 +16,20 @@ jQuery(function ($) {
   window.post_type_fields =
     window.new_record_localized.post_type_settings.fields;
 
+  // New record flow: keep file uploads local until record is created.
+  // This prevents API upload attempts against non-existent post IDs.
+  const fileUploadComponents = Array.from(
+    document.querySelectorAll('dt-file-upload'),
+  );
+  fileUploadComponents.forEach((component) => {
+    // Keep configured auto/manual UI behavior, but clear API bindings so
+    // uploads are deferred until after the record is created.
+    component.removeAttribute('post-type');
+    component.removeAttribute('post-id');
+    component.removeAttribute('meta-key');
+    component.removeAttribute('key-prefix');
+  });
+
   // focus first field in the form
   document.querySelector('.form-fields [name]').focus();
 
@@ -199,6 +213,7 @@ jQuery(function ($) {
 
       // build form values
       const form = event.target;
+      const pendingFileUploads = [];
       Array.from(form.querySelectorAll('*')).forEach((el) => {
         // skip fields like `field_name[query]` that are from typeaheads
         // and skip values not from web components
@@ -207,6 +222,22 @@ jQuery(function ($) {
           el.name.includes('[') ||
           !el.tagName.startsWith('DT-')
         ) {
+          return;
+        }
+
+        // file_upload fields on new record are uploaded only after create succeeds
+        if (el.tagName === 'DT-FILE-UPLOAD') {
+          const files =
+            typeof el.getPendingFilesForUpload === 'function'
+              ? Array.from(el.getPendingFilesForUpload())
+              : Array.from(el.stagedFiles || []);
+          if (files.length > 0) {
+            pendingFileUploads.push({
+              fieldKey: el.name.trim(),
+              files,
+              component: el,
+            });
+          }
           return;
         }
 
@@ -254,11 +285,46 @@ jQuery(function ($) {
 
       window.componentService.api
         .createPost(window.new_record_localized.post_type, new_post)
-        .then((response) => {
+        .then(async (response) => {
+          const createdPostId = parseInt(
+            response?.ID || response?.id || response?.post_id,
+            10,
+          );
+
+          if (pendingFileUploads.length > 0) {
+            if (!createdPostId) {
+              throw new Error(
+                'Unable to determine created record ID for file uploads.',
+              );
+            }
+            for (const upload of pendingFileUploads) {
+              const keyPrefix = `${window.new_record_localized.post_type}/${createdPostId}/${upload.fieldKey}`;
+              try {
+                await window.componentService.api.uploadFiles(
+                  window.new_record_localized.post_type,
+                  createdPostId,
+                  upload.files,
+                  upload.fieldKey,
+                  keyPrefix,
+                );
+              } catch (uploadError) {
+                upload.component.setAttribute(
+                  'error',
+                  uploadError?.message || 'Upload failed',
+                );
+                throw uploadError;
+              }
+            }
+          }
+
           window.location = response.permalink;
         })
         .catch(function (error) {
-          const message = error.responseJSON?.message || error.responseText;
+          const message =
+            error?.responseJSON?.message ||
+            error?.responseText ||
+            error?.message ||
+            'Unable to save record.';
           $('.js-create-post-button')
             .removeClass('loading')
             .addClass('alert')

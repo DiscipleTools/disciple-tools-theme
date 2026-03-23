@@ -43,18 +43,63 @@ jobs:
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
 
-            Please review this pull request and provide feedback on:
-            - Code quality and best practices
-            - Potential bugs or issues
-            - Performance considerations
-            - Security concerns
-            - Test coverage
+            ## Before reviewing
 
-            Use the repository's CLAUDE.md for guidance on style and conventions. Be constructive and helpful in your feedback.
+            1. Run `gh pr diff ${{ github.event.pull_request.number }}` to get the full diff.
+            2. Run `gh pr view ${{ github.event.pull_request.number }} --comments` to read existing comments. Do NOT repeat issues that have already been raised.
+            3. For each changed file, read surrounding context beyond the diff to understand how changes fit into the codebase.
+            4. Use grep/glob to trace callers, imports, and dependencies of changed functions to verify nothing is broken.
+
+            ## What to check
+
+            ### Correctness
+            - Logic errors, off-by-one mistakes, missing edge cases
+            - Null/undefined handling
+            - Broken callers — if a function signature, return type, or API response shape changed, check that all call sites are updated
+            - Dead code left behind (unused imports, unreachable branches, orphaned functions)
+
+            ### Security
+            - SQL injection, XSS, command injection (OWASP top 10)
+            - Authentication/authorization bypasses
+            - Exposed secrets or credentials
+            - Unsafe user input handling
+
+            ### Database
+            - Destructive changes (DROP, column removal) that could lose data
+            - Query performance: missing indexes, N+1 queries, full table scans
+            - Transaction safety in concurrent environments
+
+            ### Breaking changes
+            - API contract changes (added/removed/renamed fields in request or response)
+            - Changed database schema that other code depends on
+            - Removed or renamed exports or hooks
+
+            ### WordPress & Disciple.Tools patterns
+            - Proper use of DT_Posts API, field definitions, and post type registration
+            - Translation: all user-facing strings use esc_html_e(), __(), etc. with 'disciple_tools' text domain
+            - REST endpoint authentication and capability checks
+
+            ## Severity — only report High and Medium
+
+            **High**: Will cause bugs, data loss, security vulnerabilities, or broken functionality.
+            **Medium**: May cause problems under certain conditions, hurt maintainability, or deviate from established patterns.
+
+            Skip nitpicks, style issues, and low-severity items entirely.
+
+            ## Rules
+            - Do NOT suggest changes beyond what the PR is trying to do — review the changes, don't expand scope.
+            - Do NOT flag things that are intentionally removed or refactored as "missing" — understand the intent.
+            - Be specific. Reference `file_path:line_number`. Explain what the issue is and what would trigger it.
+            - Read surrounding code before flagging — the answer may already be handled nearby.
+            - Use the repository's CLAUDE.md for guidance on conventions.
+
+            ## Output
+
+            Group findings by severity (High, then Medium). End with a one-sentence summary of whether the PR looks ready to merge.
 
             Use `gh pr comment` with your Bash tool to leave your review as a comment on the PR.
 
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
-          claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
+          claude_args: '--allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*),Bash(gh api:*)"'
 

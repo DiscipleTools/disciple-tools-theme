@@ -444,14 +444,7 @@ function dt_site_scripts() {
         wp_localize_script( 'dt-storage', 'storage_settings',
             [
                 'rest_url' => esc_url_raw( rest_url() ),
-                'accepted_file_types' => [
-                    'image/png',
-                    'image/gif',
-                    'image/jpeg',
-                    'image/jpg',
-                    'audio/*',
-                    'video/*'
-                ],
+                'accepted_file_types' => dt_get_default_accepted_file_types(),
                 'translations' => [
                     'modals' => [
                         'upload' => [
