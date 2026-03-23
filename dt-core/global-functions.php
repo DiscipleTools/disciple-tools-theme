@@ -601,7 +601,7 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
         if ( isset( $fields[$field_key]['type'] ) && !$custom_display && empty( $fields[$field_key]['hidden'] ) ) {
             /* breadrcrumb: new-field-type Add allowed field types */
-            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'boolean', 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select' ] );
+            $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [ 'boolean', 'key_select', 'multi_select', 'date', 'datetime', 'text', 'textarea', 'number', 'link', 'connection', 'location', 'location_meta', 'communication_channel', 'tags', 'user_select', 'file_upload' ] );
             if ( !in_array( $field_type, $allowed_types ) ){
                 return;
             }
@@ -653,6 +653,9 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
                     break;
                 case 'user_select':
                     DT_Components::render_user_select( $field_key, $fields, $post, $params );
+                    break;
+                case 'file_upload':
+                    DT_Components::render_file_upload( $field_key, $fields, $post, $params );
                     break;
                 default:
                     $is_legacy = true;
@@ -1551,6 +1554,44 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
 
         return apply_filters( 'dt_duplicate_fields_defaults', $default_fields, $post_type );
+    }
+
+    function dt_get_file_type_categories() {
+        return [
+            'images' => [
+                'label' => __( 'Images', 'disciple_tools' ),
+                'types' => [ 'image/*' ],
+            ],
+            'pdfs' => [
+                'label' => __( 'PDFs', 'disciple_tools' ),
+                'types' => [ 'application/pdf' ],
+            ],
+            'documents' => [
+                'label' => __( 'Documents', 'disciple_tools' ),
+                'description' => __( 'Word, Excel, CSV, text, markdown', 'disciple_tools' ),
+                'types' => [
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'application/vnd.ms-excel',
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'text/csv',
+                    'text/plain',
+                    'text/markdown',
+                ],
+            ],
+            'audio' => [
+                'label' => __( 'Audio', 'disciple_tools' ),
+                'types' => [ 'audio/*' ],
+            ],
+            'video' => [
+                'label' => __( 'Video', 'disciple_tools' ),
+                'types' => [ 'video/*' ],
+            ],
+        ];
+    }
+
+    function dt_get_default_accepted_file_types() {
+        return array_merge( ...array_column( dt_get_file_type_categories(), 'types' ) );
     }
 
     /**
