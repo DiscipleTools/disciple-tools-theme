@@ -83,7 +83,10 @@ jobs:
     - name: Install npm Dependencies
       if: steps.cache-nodemodules.outputs.cache-hit != 'true'
       run: |
-        npm install
+        npm install --ignore-scripts
+
+    - name: Build assets
+      run: npm run build
 
     - name: Test Syntax
       run: ./tests/test_for_syntax_errors.sh
