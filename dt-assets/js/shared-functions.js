@@ -1040,29 +1040,7 @@ window.SHAREDFUNCTIONS = {
       }
 
       case 'user_select': {
-        // user_select uses legacy typeahead (not a web component)
-        const fieldId = id;
-        return `<div id="${fieldKey}" class="${fieldId} dt_user_select">
-          <var id="${fieldId}-result-container" class="result-container ${fieldId}-result-container"></var>
-          <div id="${fieldId}_t" name="form-${fieldId}" class="scrollable-typeahead">
-            <div class="typeahead__container" style="margin-bottom: 0">
-              <div class="typeahead__field">
-                <span class="typeahead__query">
-                  <input class="js-typeahead-${fieldId} input-height" dir="auto"
-                         name="${fieldId}[query]" placeholder="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare?.translations?.search_users || 'Search Users')}"
-                         data-field_type="user_select"
-                         data-field="${fieldKey}"
-                         autocomplete="off">
-                </span>
-                <span class="typeahead__button">
-                  <button type="button" class="search_${fieldKey} typeahead__image_button input-height" data-id="${fieldKey}">
-                    <img src="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.template_dir)}/dt-assets/images/chevron_down.svg"/>
-                  </button>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>`;
+        return `<dt-users-connection ${baseAttrs} single></dt-users-connection>`;
       }
 
       case 'communication_channel':
