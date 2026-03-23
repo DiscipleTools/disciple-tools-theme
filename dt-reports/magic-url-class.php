@@ -344,6 +344,11 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     $elements['post_type'] = $all_types[$elements['root']][$elements['type']]['post_type'];
                 }
 
+                $instance_id = $types[ $elements['type'] ]['instance_id'] ?? '';
+                if ( ! empty( $instance_id ) ) {
+                    $elements['instance_id'] = $instance_id;
+                }
+
                 return $elements;
             }
             return false;
@@ -374,6 +379,21 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             if ( (int) $parts['post_id'] !== (int) $params['parts']['post_id'] ){
                 return false;
             }
+
+            // Align with HTML magic-link flow: deny REST when expiration metadata / link_obj says expired.
+            if ( class_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API' ) ) {
+                $link_args = [
+                    'meta_key' => $parts['meta_key'],
+                    'public_key' => $parts['public_key'],
+                    'post_id' => $parts['post_id'],
+                    'post_type' => $parts['post_type'] ?? '',
+                    'instance_id' => $parts['instance_id'] ?? null,
+                ];
+                if ( Disciple_Tools_Bulk_Magic_Link_Sender_API::evaluate_magic_link_continue( true, $link_args ) === false ) {
+                    return false;
+                }
+            }
+
             return $return_parts ? $parts : true;
         }
 

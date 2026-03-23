@@ -209,6 +209,43 @@ class DT_Magic_URL_Setup {
                     const appAccordion = target.closest('.app-accordion');
                     return appAccordion.dataset;
                 }
+
+                /**
+                 * Format expiry Unix timestamp (seconds) in the browser's local timezone.
+                 * @param {string|number} tsSec
+                 * @returns {string}
+                 */
+                function formatMagicLinkExpiryLocal(tsSec) {
+                    const n = parseInt(tsSec, 10);
+                    if (!n) {
+                        return '';
+                    }
+                    return new Date(n * 1000).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' });
+                }
+
+                /**
+                 * Update summary badge and accordion expiration line from data-expires-ts on the accordion.
+                 * @param {HTMLElement} appAccordion
+                 * @param {string|number} tsSec
+                 */
+                function updateAppAccordionExpiryLocalDisplay(appAccordion, tsSec) {
+                    const local = formatMagicLinkExpiryLocal(tsSec);
+                    const metaKey = appAccordion.dataset.key;
+                    const expPrefix = '<?php echo esc_js( __( 'Exp: ', 'disciple_tools' ) ) ?>';
+                    if (local) {
+                        const badge = appAccordion.querySelector('.app-expiration-badge');
+                        if (badge) {
+                            badge.textContent = expPrefix + local;
+                        }
+                        if (metaKey) {
+                            const expirationDisplay = document.getElementById('app-expiration-display-' + metaKey);
+                            if (expirationDisplay) {
+                                expirationDisplay.textContent = local;
+                            }
+                        }
+                    }
+                }
+
                 function app_link_toggle(evt, user_id = null, app_key = null) {
                     window.makeRequest('post', 'users/app_switch', { user_id, app_key })
                         .done(function (data) {
@@ -518,36 +555,34 @@ Thanks!', 'disciple_tools' );
                         },
                         success: function(data) {
                             if (data && data.success) {
-                                // Update expiration display (full date inside accordion)
+                                // Update expiration display (local timezone via epoch from API)
                                 const expirationDisplay = document.getElementById('app-expiration-display-' + metaKey);
                                 if (data.expires) {
-                                    const formatted = data.expires.ts_formatted || '---';
-                                    if (expirationDisplay) {
-                                        expirationDisplay.textContent = formatted;
+                                    const tsVal = data.expires.ts;
+                                    if (expirationDisplay && tsVal) {
+                                        expirationDisplay.textContent = formatMagicLinkExpiryLocal(tsVal);
+                                    } else if (expirationDisplay) {
+                                        expirationDisplay.textContent = data.expires.ts_formatted || '---';
                                     }
 
-                                    // Update data attributes
-                                    appAccordion.dataset.expiresTs = data.expires.ts || '';
+                                    // Update data attributes (ts is Unix seconds for client formatting)
+                                    appAccordion.dataset.expiresTs = tsVal ? String(tsVal) : '';
                                     appAccordion.dataset.expiresFormatted = data.expires.ts_formatted || '---';
                                     appAccordion.dataset.expiresFormattedShort = data.expires.ts_formatted_short || '';
 
-                                    // Update or create summary badge with short format (Exp: M/D/YY H:mm)
-                                    const shortFormatted = data.expires.ts_formatted_short || '';
                                     const badge = appAccordion.querySelector('.app-expiration-badge');
-                                    if (shortFormatted) {
-                                        const badgeText = '<?php echo esc_js( __( 'Exp: ', 'disciple_tools' ) ) ?>' + shortFormatted;
+                                    if (tsVal) {
                                         if (badge) {
-                                            badge.textContent = badgeText;
+                                            updateAppAccordionExpiryLocalDisplay(appAccordion, tsVal);
                                         } else {
                                             const appLabel = appAccordion.querySelector('.app-label');
                                             if (appLabel) {
                                                 const newBadge = document.createElement('span');
                                                 newBadge.className = 'app-expiration-badge';
                                                 newBadge.style.cssText = 'font-size: 0.85em; color: #666; margin-top: 0.25rem;';
-                                                newBadge.textContent = badgeText;
-                                                // Insert under the title (after first child)
                                                 const insertBefore = appLabel.children[1] || null;
                                                 appLabel.insertBefore(newBadge, insertBefore);
+                                                updateAppAccordionExpiryLocalDisplay(appAccordion, tsVal);
                                             }
                                         }
                                     } else if (badge) {
@@ -583,6 +618,15 @@ Thanks!', 'disciple_tools' );
                         }
                     });
                 }
+
+                (function initLocalMagicLinkExpiryDisplay() {
+                    document.querySelectorAll('.app-accordion[data-expires-ts]').forEach(function (acc) {
+                        const ts = acc.dataset.expiresTs;
+                        if (ts) {
+                            updateAppAccordionExpiryLocalDisplay(acc, ts);
+                        }
+                    });
+                }());
             </script>
             <?php
         }
@@ -685,12 +729,13 @@ Thanks!', 'disciple_tools' );
             <summary class="app-summary">
                 <div class="app-label" style="display: flex; flex-direction: column; align-items: flex-start;">
                     <span class="app-label-title"><?php echo esc_html( $app['label'] ) ?></span>
-                    <?php
-                    if ( ! empty( $exp_short ) ) :
-                        ?>
-                        <span class="app-expiration-badge" style="font-size: 0.85em; color: #666; margin-top: 0.25rem;">
-                            <?php echo esc_html( sprintf( __( 'Exp: %s', 'disciple_tools' ), $exp_short ) ) ?>
-                        </span>
+                    <?php if ( ! empty( $exp_ts ) ) : ?>
+                        <span class="app-expiration-badge" style="font-size: 0.85em; color: #667; margin-top: 0.25rem;" aria-live="polite"></span>
+                        <noscript>
+                            <span class="app-expiration-badge-noscript" style="font-size: 0.85em; color: #667; margin-top: 0.25rem;">
+                                <?php echo esc_html( sprintf( __( 'Exp: %s', 'disciple_tools' ), $exp_short ) ); ?>
+                            </span>
+                        </noscript>
                     <?php endif; ?>
                     <?php if ( !empty( $app['description'] ) ): ?>
                     <div class="dt-tooltip" style="margin-top: 0.25rem;">
