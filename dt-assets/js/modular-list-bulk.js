@@ -923,42 +923,15 @@
     return Array.isArray(value) ? value : [];
   }
 
-  /**
-   * Normalize a user_select value to the "user-{id}" string format expected by
-   * the backend and conditional-removal logic.
-   *
-   * In practice we only see:
-   * - numbers from ComponentService.convertValue('DT-USERS-CONNECTION', ...)
-   * - strings like "user-5" or "5" from API/legacy data
-   */
   function normalizeUserSelectValue(rawValue) {
-    if (rawValue === null || rawValue === undefined) {
-      return null;
-    }
-
-    // Numbers (ComponentService.convertValue for dt-users-connection in single
-    // mode returns a plain integer user ID, or 0/"" when empty)
+    if (!rawValue) return null;
     if (typeof rawValue === 'number') {
       return rawValue > 0 ? `user-${rawValue}` : null;
     }
-
-    // Strings
-    if (typeof rawValue === 'string') {
-      const trimmed = rawValue.trim();
-      if (!trimmed) {
-        return null;
-      }
-      if (trimmed.startsWith('user-')) {
-        return trimmed;
-      }
-      if (/^\d+$/.test(trimmed)) {
-        return `user-${trimmed}`;
-      }
-      // Any other free-form string (e.g. display name) is not a valid payload
-      // for the backend user_select handler.
-      return null;
-    }
-
+    const str = String(rawValue).trim();
+    if (!str) return null;
+    if (str.startsWith('user-')) return str;
+    if (/^\d+$/.test(str)) return `user-${str}`;
     return null;
   }
 
@@ -1550,7 +1523,8 @@
         fieldType === 'connection' ||
         fieldType === 'location' ||
         fieldType === 'location_meta' ||
-        fieldType === 'tags'
+        fieldType === 'tags' ||
+        fieldType === 'user_select'
       ) {
         return;
       }
@@ -2281,33 +2255,17 @@
         displayHtml += '<em>No option selected</em>';
       }
     } else if (fieldType === 'user_select') {
-      // user_select returns "user-{id}" for payloads, but the dt-users-connection
-      // component exposes richer objects for display. Support both shapes.
-      if (valuesToRemove) {
-        let userId = null;
-        let userName = null;
-
-        if (Array.isArray(valuesToRemove)) {
-          const first = valuesToRemove[0];
-          if (first) {
-            userId = first.id || first.user_id || null;
-            userName = first.label || first.name || null;
-          }
-        } else if (typeof valuesToRemove === 'object') {
-          userId = valuesToRemove.id || valuesToRemove.user_id || null;
-          userName = valuesToRemove.label || valuesToRemove.name || null;
-        } else if (typeof valuesToRemove === 'string') {
-          userId = valuesToRemove.replace('user-', '');
-        }
-
-        if (userId) {
-          if (!userName) {
-            userName = `User ${userId}`;
-          }
-          displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS.escapeHTML(userName)}</span>`;
-        } else {
-          displayHtml += '<em>No user selected</em>';
-        }
+      const item = Array.isArray(valuesToRemove)
+        ? valuesToRemove[0]
+        : valuesToRemove;
+      const userId =
+        item?.id ||
+        item?.user_id ||
+        (typeof item === 'string' ? item.replace('user-', '') : null);
+      const userName =
+        item?.label || item?.name || (userId ? `User ${userId}` : null);
+      if (userName) {
+        displayHtml += `<span class="label" style="opacity: 0.6; margin-right: 5px; margin-bottom: 5px; display: inline-block;">${window.SHAREDFUNCTIONS.escapeHTML(userName)}</span>`;
       } else {
         displayHtml += '<em>No user selected</em>';
       }
@@ -2432,7 +2390,6 @@
               console.error('ComponentService initialization error:', e);
             }
           }
-          initializeBulkEditFieldHandlers(fieldKey, fieldType);
         });
       });
     }
