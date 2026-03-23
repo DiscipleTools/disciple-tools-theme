@@ -1607,6 +1607,119 @@ class Disciple_Tools_Posts
         return $options;
     }
 
+    /**
+     * Returns the list of comment meta keys that are backed by storage
+     * (e.g. S3) and should be treated as file keys.
+     *
+     * @return array
+     */
+    protected static function get_comment_storage_meta_keys(): array {
+        $keys = apply_filters( 'dt_post_comment_storage_meta_keys', [ 'audio_url', 'image_url' ] );
+        return is_array( $keys ) ? $keys : [ 'audio_url', 'image_url' ];
+    }
+
+    /**
+     * Removes any S3-backed storage objects associated with a post (post meta image fields,
+     * comment/activity audio and image attachments, and dt_post_user_meta image fields).
+     *
+     * This is a best-effort cleanup: S3 deletion failures are logged but do not block
+     * the overall record deletion. The purge runs before database deletes so that
+     * storage keys can be read while meta and related rows still exist.
+     * No-op if DT_Storage_API is not available or not enabled.
+     *
+     * @param string $post_type Post type.
+     * @param int    $post_id   Post ID.
+     */
+    private static function purge_post_storage_objects( string $post_type, int $post_id ) {
+        if ( !class_exists( 'DT_Storage_API' ) || !method_exists( 'DT_Storage_API', 'delete_file' ) || !DT_Storage_API::is_enabled() ) {
+            return;
+        }
+
+        global $wpdb;
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        $all_post_meta  = get_post_meta( $post_id );
+
+        // Delete S3 objects for image-type post fields stored in post meta.
+        if ( is_array( $field_settings ) && !empty( $all_post_meta ) ) {
+            foreach ( $field_settings as $field_key => $settings ) {
+                if ( isset( $settings['type'] ) && $settings['type'] === 'image' && isset( $all_post_meta[ $field_key ][0] ) ) {
+                    $storage_key = $all_post_meta[ $field_key ][0];
+                    if ( !empty( $storage_key ) ) {
+                        $result = DT_Storage_API::delete_file( $storage_key );
+                        if ( !is_array( $result ) || empty( $result['file_deleted'] ) ) {
+                            dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$storage_key}' for post {$post_id}" );
+                        }
+                    }
+                }
+            }
+        }
+
+        // Delete S3 objects referenced by comment meta attached to this post (e.g., audio_url, image_url).
+        $comment_storage_meta_keys = self::get_comment_storage_meta_keys();
+        if ( !empty( $comment_storage_meta_keys ) ) {
+            $placeholders = implode( ', ', array_fill( 0, count( $comment_storage_meta_keys ), '%s' ) );
+            $params = array_merge( [ $post_id ], $comment_storage_meta_keys );
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            $comment_storage_keys = $wpdb->get_col(
+                $wpdb->prepare(
+                    "
+                    SELECT cm.meta_value
+                    FROM {$wpdb->commentmeta} cm
+                    INNER JOIN {$wpdb->comments} c ON c.comment_ID = cm.comment_id
+                    WHERE c.comment_post_ID = %d
+                    AND cm.meta_key IN ( $placeholders )
+                    ",
+                    $params
+                )
+            );
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+            if ( !empty( $comment_storage_keys ) ) {
+                foreach ( array_unique( array_filter( $comment_storage_keys ) ) as $storage_key ) {
+                    $result = DT_Storage_API::delete_file( $storage_key );
+                    if ( !is_array( $result ) || empty( $result['file_deleted'] ) ) {
+                        dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$storage_key}' for post {$post_id}" );
+                    }
+                }
+            }
+        }
+
+        // Delete any S3 objects that might be stored in dt_post_user_meta for image-type fields.
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $wpdb->dt_post_user_meta is a $wpdb table name property.
+        $post_user_meta_rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "
+                SELECT meta_key, meta_value
+                FROM $wpdb->dt_post_user_meta
+                WHERE post_id = %d
+                ",
+                $post_id
+            ),
+            ARRAY_A
+        );
+
+        if ( !empty( $post_user_meta_rows ) && is_array( $field_settings ) ) {
+            foreach ( $post_user_meta_rows as $row ) {
+                $meta_key   = $row['meta_key'] ?? '';
+                $meta_value = $row['meta_value'] ?? '';
+
+                if ( empty( $meta_key ) || empty( $meta_value ) ) {
+                    continue;
+                }
+
+                $field_key = self::get_field_key_from_meta( $meta_key, $field_settings );
+                if ( $field_key && isset( $field_settings[ $field_key ]['type'] ) && $field_settings[ $field_key ]['type'] === 'image' ) {
+                    $result = DT_Storage_API::delete_file( $meta_value );
+                    if ( !is_array( $result ) || empty( $result['file_deleted'] ) ) {
+                        dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$meta_value}' for post {$post_id}" );
+                    }
+                }
+            }
+        }
+
+        do_action( 'dt_purge_post_storage_objects', $post_type, $post_id );
+    }
+
     public static function delete_post( string $post_type, int $post_id, bool $check_permissions = true ){
         if ( $check_permissions && !self::can_delete( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
@@ -1615,6 +1728,8 @@ class Disciple_Tools_Posts
         global $wpdb;
 
         do_action( 'dt_before_post_deleted', $post_type, $post_id );
+
+        self::purge_post_storage_objects( $post_type, $post_id );
 
         $post_title = $wpdb->get_var( $wpdb->prepare( "SELECT post_title FROM $wpdb->posts WHERE ID = %d AND post_type = %s", $post_id, $post_type ) );
 
