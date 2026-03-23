@@ -76,3 +76,5 @@ If you discover a security vulnerability in these WordPress plugins and/or theme
 ## License
 
 Disciple.Tools is licensed under the GNU General Public License v3.0. For more information, see the [license](./LICENSE) file.
+
+## Thank You
