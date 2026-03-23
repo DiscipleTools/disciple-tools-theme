@@ -1623,8 +1623,7 @@ jQuery(document).ready(function ($) {
       let categoryCheckboxes = '';
       for (const [catKey, cat] of Object.entries(fileTypeCategories)) {
         let isChecked =
-          !hasStoredTypes ||
-          cat.types.every((t) => storedTypes.includes(t));
+          !hasStoredTypes || cat.types.every((t) => storedTypes.includes(t));
         categoryCheckboxes += `
             <label style="margin-right: 1em;">
                 <input type="checkbox" class="accepted-file-category"
@@ -2447,7 +2446,10 @@ jQuery(document).ready(function ($) {
       });
       let otherVal = $('#other_file_types').val().trim();
       let otherList = otherVal
-        ? otherVal.split(',').map((s) => s.trim()).filter(Boolean)
+        ? otherVal
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean)
         : [];
       let allTypes = checkedTypes.concat(otherList);
       let allCategoriesChecked =
