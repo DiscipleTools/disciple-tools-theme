@@ -947,6 +947,11 @@ class Disciple_Tools_Posts_Endpoints {
                 break;
         }
 
+        // Load field settings for server-side validation of file type and size.
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        $allowed_types = $field_settings[ $meta_key ]['accepted_file_types'] ?? [];
+        $max_file_size_mb = $field_settings[ $meta_key ]['max_file_size'] ?? null;
+
         // Process all uploaded files.
         $uploaded_files = [];
         $uploaded_keys = [];
@@ -966,7 +971,59 @@ class Disciple_Tools_Posts_Endpoints {
             $safe_file_name = str_replace( [ "\r", "\n" ], '', (string) $uploaded_file['name'] );
             $safe_file_type = sanitize_mime_type( (string) $uploaded_file['type'] );
             if ( $safe_file_type === '' ) {
-                $safe_file_type = (string) $uploaded_file['type'];
+                $safe_file_type = 'application/octet-stream';
+            }
+
+            // Server-side file size validation.
+            if ( !empty( $max_file_size_mb ) && $uploaded_file['size'] > ( (float) $max_file_size_mb * 1024 * 1024 ) ) {
+                $uploaded_files[] = [
+                    'uploaded'     => false,
+                    'uploaded_key' => '',
+                    'name'         => $uploaded_file['name'],
+                    'uploaded_msg' => sprintf( 'File "%s" exceeds the maximum allowed size of %s MB.', $safe_file_name, $max_file_size_mb ),
+                ];
+                continue;
+            }
+
+            // Server-side file type validation.
+            if ( !empty( $allowed_types ) ) {
+                $file_ext_check = wp_check_filetype( $safe_file_name );
+                $detected_type = !empty( $file_ext_check['type'] ) ? $file_ext_check['type'] : $safe_file_type;
+                $type_allowed = false;
+                foreach ( $allowed_types as $allowed ) {
+                    $allowed = trim( $allowed );
+                    // Match wildcard patterns like "image/*" or "audio/*".
+                    if ( str_ends_with( $allowed, '/*' ) ) {
+                        $prefix = substr( $allowed, 0, -1 );
+                        if ( strpos( $detected_type, $prefix ) === 0 ) {
+                            $type_allowed = true;
+                            break;
+                        }
+                    } elseif ( strpos( $allowed, '/' ) !== false ) {
+                        // Exact MIME match.
+                        if ( $detected_type === $allowed ) {
+                            $type_allowed = true;
+                            break;
+                        }
+                    } else {
+                        // Extension match (e.g. ".docx").
+                        $allowed_ext = ltrim( $allowed, '.' );
+                        $file_ext = strtolower( pathinfo( $safe_file_name, PATHINFO_EXTENSION ) );
+                        if ( $file_ext === strtolower( $allowed_ext ) ) {
+                            $type_allowed = true;
+                            break;
+                        }
+                    }
+                }
+                if ( !$type_allowed ) {
+                    $uploaded_files[] = [
+                        'uploaded'     => false,
+                        'uploaded_key' => '',
+                        'name'         => $uploaded_file['name'],
+                        'uploaded_msg' => sprintf( 'File type "%s" is not allowed for this field.', $detected_type ),
+                    ];
+                    continue;
+                }
             }
 
             // For multi-file fields, don't reuse keys (always create new)
@@ -1181,6 +1238,7 @@ class Disciple_Tools_Posts_Endpoints {
         // Handle array of files (multi-file field).
         if ( is_array( $meta_key_value ) ) {
             $file_found = false;
+            $s3_deleted = false;
             $updated_files = [];
             $deleted_file_name = '';
 
@@ -1202,6 +1260,7 @@ class Disciple_Tools_Posts_Endpoints {
                     $result = DT_Storage_API::delete_file( $file_key );
                     if ( $result && isset( $result['file_deleted'] ) && $result['file_deleted'] ) {
                         // File deleted successfully, don't add it back to array.
+                        $s3_deleted = true;
                         continue;
                     }
                 }
@@ -1210,48 +1269,56 @@ class Disciple_Tools_Posts_Endpoints {
                 $updated_files[] = $file_object;
             }
 
-            if ( $file_found ) {
-                // Store old value for activity logging
-                $old_meta_value = $meta_key_value;
-
-                // Update post meta with remaining files.
-                if ( !empty( $updated_files ) ) {
-                    update_post_meta( $post_id, $meta_key, $updated_files );
-                    $new_meta_value = $updated_files;
-                } else {
-                    // No files left, delete meta key.
-                    delete_post_meta( $post_id, $meta_key );
-                    $new_meta_value = '';
-                }
-
-                // Log activity for file deletion
-                $post_settings = DT_Posts::get_post_settings( $post_type );
-                $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
-                $object_note = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $deleted_file_name, $field_name );
-
-                dt_activity_insert( [
-                    'action'            => 'field_update',
-                    'object_type'       => $post_type,
-                    'object_id'         => $post_id,
-                    'object_name'       => get_the_title( $post_id ),
-                    'meta_key'          => $meta_key,
-                    'meta_value'        => maybe_serialize( $new_meta_value ),
-                    'old_value'         => maybe_serialize( $old_meta_value ),
-                    'field_type'        => 'file_upload',
-                    'object_note'       => $object_note,
-                ] );
-
-                return [
-                    'deleted' => true,
-                    'deleted_key' => $file_key_to_delete
-                ];
-            } else {
+            if ( !$file_found ) {
                 return [
                     'deleted' => false,
                     'deleted_key' => '',
                     'error' => 'File not found in field.'
                 ];
             }
+
+            if ( !$s3_deleted ) {
+                return [
+                    'deleted' => false,
+                    'deleted_key' => '',
+                    'error' => 'Failed to delete file from storage.'
+                ];
+            }
+
+            // Store old value for activity logging
+            $old_meta_value = $meta_key_value;
+
+            // Update post meta with remaining files.
+            if ( !empty( $updated_files ) ) {
+                update_post_meta( $post_id, $meta_key, $updated_files );
+                $new_meta_value = $updated_files;
+            } else {
+                // No files left, delete meta key.
+                delete_post_meta( $post_id, $meta_key );
+                $new_meta_value = '';
+            }
+
+            // Log activity for file deletion
+            $post_settings = DT_Posts::get_post_settings( $post_type );
+            $field_name = $post_settings['fields'][ $meta_key ]['name'] ?? $meta_key;
+            $object_note = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $deleted_file_name, $field_name );
+
+            dt_activity_insert( [
+                'action'            => 'field_update',
+                'object_type'       => $post_type,
+                'object_id'         => $post_id,
+                'object_name'       => get_the_title( $post_id ),
+                'meta_key'          => $meta_key,
+                'meta_value'        => maybe_serialize( $new_meta_value ),
+                'old_value'         => maybe_serialize( $old_meta_value ),
+                'field_type'        => 'file_upload',
+                'object_note'       => $object_note,
+            ] );
+
+            return [
+                'deleted' => true,
+                'deleted_key' => $file_key_to_delete
+            ];
         } else {
             // Single file format (backward compatibility).
             if ( $meta_key_value === $file_key_to_delete ) {
@@ -1302,9 +1369,9 @@ class Disciple_Tools_Posts_Endpoints {
             return new WP_Error( __METHOD__, 'Missing parameters.' );
         }
 
-        $post_type = $params['post_type'];
-        $post_id = $params['id'];
-        $meta_key = sanitize_text_field( wp_unslash( $params['meta_key'] ) );
+        $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
+        $post_id   = absint( $params['id'] );
+        $meta_key  = sanitize_text_field( wp_unslash( $params['meta_key'] ) );
         $file_key_to_rename = sanitize_text_field( wp_unslash( $params['file_key'] ) );
         $new_name = trim( sanitize_file_name( wp_unslash( $params['new_name'] ) ) );
 
@@ -1409,9 +1476,9 @@ class Disciple_Tools_Posts_Endpoints {
         }
 
         $post_type = sanitize_text_field( wp_unslash( $params['post_type'] ) );
-        $post_id = sanitize_text_field( wp_unslash( $params['id'] ) );
-        $meta_key = sanitize_text_field( wp_unslash( $params['meta_key'] ) );
-        $file_key = sanitize_text_field( wp_unslash( $params['file_key'] ) );
+        $post_id   = absint( $params['id'] );
+        $meta_key  = sanitize_text_field( wp_unslash( $params['meta_key'] ) );
+        $file_key  = sanitize_text_field( wp_unslash( $params['file_key'] ) );
 
         // Verify file exists in post meta and extract file info
         $meta_key_value = get_post_meta( $post_id, $meta_key, true );
@@ -1448,87 +1515,43 @@ class Disciple_Tools_Posts_Endpoints {
             return new WP_Error( __METHOD__, 'File not found in post meta.' );
         }
 
-        // Generate presigned URL
+        // Generate presigned URL for download.
         $presigned_url = DT_Storage_API::get_file_url( $file_key );
 
         if ( empty( $presigned_url ) ) {
             return new WP_Error( __METHOD__, 'Failed to generate download URL.' );
         }
 
-        // Fetch file from S3 (server-side, no CORS)
-        // Note: Do not use 'stream' => true as it tries to use URL as filename, causing "File name too long" errors
-        $response = wp_remote_get( $presigned_url, [
-            'timeout' => 300, // 5 minutes for large files
-            'redirection' => 5,
-        ] );
-
-        if ( is_wp_error( $response ) ) {
-            return new WP_Error( __METHOD__, 'Failed to fetch file from storage: ' . $response->get_error_message() );
+        // Determine content type from metadata or fallback to octet-stream.
+        $content_type = !empty( $file_type ) ? sanitize_mime_type( $file_type ) : '';
+        if ( empty( $content_type ) ) {
+            $ext_check = wp_check_filetype( $file_name );
+            $content_type = !empty( $ext_check['type'] ) ? $ext_check['type'] : 'application/octet-stream';
         }
 
-        $response_code = wp_remote_retrieve_response_code( $response );
-        if ( $response_code !== 200 ) {
-            return new WP_Error( __METHOD__, 'Failed to fetch file from storage. Response code: ' . $response_code );
-        }
-
-        // Get file content
-        $file_content = wp_remote_retrieve_body( $response );
-
-        // Determine content type with priority:
-        // 1. From metadata (file_type variable)
-        // 2. From S3 response header
-        // 3. From file extension (fallback)
-        $content_type = 'application/octet-stream'; // Default fallback
-
-        if ( !empty( $file_type ) ) {
-            // Priority 1: Use type from metadata database
-            $content_type = $file_type;
-        } else {
-            // Priority 2: Try S3 response header
-            $content_type = wp_remote_retrieve_header( $response, 'content-type' );
-
-            if ( empty( $content_type ) ) {
-                // Priority 3: Extension-based detection
-                $file_ext = strtolower( pathinfo( $file_name, PATHINFO_EXTENSION ) );
-                $mime_types = [
-                    'pdf' => 'application/pdf',
-                    'doc' => 'application/msword',
-                    'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                    'txt' => 'text/plain',
-                    'csv' => 'text/csv',
-                    'json' => 'application/json',
-                    'xml' => 'application/xml',
-                    'html' => 'text/html',
-                    'htm' => 'text/html',
-                    'jpg' => 'image/jpeg',
-                    'jpeg' => 'image/jpeg',
-                    'png' => 'image/png',
-                    'gif' => 'image/gif',
-                ];
-                $content_type = isset( $mime_types[ $file_ext ] )
-                    ? $mime_types[ $file_ext ]
-                    : 'application/octet-stream';
-            }
-        }
-
-        // Sanitize Content-Type to prevent HTTP header injection (e.g. newlines from S3 or meta).
-        $content_type = sanitize_mime_type( $content_type );
-        if ( $content_type === '' ) {
-            $content_type = 'application/octet-stream';
-        }
-
-        // Set headers for file download
+        // Stream file from S3 through PHP to the client. This avoids CORS issues
+        // (the web component fetches this endpoint via fetch(), which would fail on
+        // a cross-origin redirect to S3). Using fpassthru() streams data without
+        // buffering the entire file in PHP memory.
+        wp_raise_memory_limit( 'admin' );
+        $download_name = sanitize_file_name( $file_name );
         header( 'Content-Type: ' . $content_type );
-        $download_name = str_replace( [ "\r", "\n" ], '', (string) $file_name );
         header( 'Content-Disposition: attachment; filename="' . $download_name . '"' );
-        header( 'Content-Length: ' . strlen( $file_content ) );
-        header( 'Cache-Control: no-cache, must-revalidate' );
-        header( 'Pragma: no-cache' );
 
-        // Output file content
-        echo $file_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
-        // Exit to prevent REST API wrapper from interfering
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+        $stream = fopen( $presigned_url, 'r' );
+        if ( $stream ) {
+            // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fpassthru
+            fpassthru( $stream );
+            fclose( $stream );
+        } else {
+            // Fallback: buffer via WP HTTP API if fopen wrappers are disabled.
+            $response = wp_remote_get( $presigned_url, [ 'timeout' => 300 ] );
+            if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
+                return new WP_Error( __METHOD__, 'Failed to fetch file from storage.' );
+            }
+            echo wp_remote_retrieve_body( $response ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        }
         exit;
     }
 
