@@ -470,7 +470,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     <td>
                     <?php
                     $custom_fields = dt_get_option( 'dt_field_customizations' );
-                    $custom_field = $custom_fields[$post_type][$field_key] ?? [];
+                    $custom_field = $custom_fields[ $post_type ][ $field_key ] ?? [];
                     if ( isset( $custom_field['customizable'] ) && $custom_field['customizable'] == 'all' ) : ?>
                         <button type="button" name="delete" id='open-delete-confirm-modal' class="button"><?php esc_html_e( 'Delete', 'disciple_tools' ) ?></button>
                     <?php endif ?>
@@ -513,7 +513,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
             <?php
                 $custom_fields = dt_get_option( 'dt_field_customizations' );
-                $custom_field = $custom_fields[$post_type][$field_key] ?? [];
+                $custom_field = $custom_fields[ $post_type ][ $field_key ] ?? [];
             ?>
 
             <h3><?php esc_html_e( 'Field Options', 'disciple_tools' ) ?></h3>
@@ -532,6 +532,131 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     </td>
                     <td>
                         <input type="number" name="max_option" value="<?php echo isset( $custom_field['max_option'] ) ? esc_html( $custom_field['max_option'] ) : '' ?>" />
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+            <button type="submit" class="button dt-custom-fields-save-button" data-post_type="<?php echo esc_attr( $post_type )?>" data-field_id="<?php echo esc_attr( $field_key )?>" data-field_type="<?php echo esc_attr( $field['type'] )?>" data-form_id="<?php echo esc_attr( $form_name )?>"><?php esc_html_e( 'Save', 'disciple_tools' ) ?></button>
+
+        <?php endif; ?>
+
+        <?php if ( $field['type'] === 'file_upload' ) : ?>
+            <?php
+                $custom_fields = dt_get_option( 'dt_field_customizations' );
+                $custom_field = $custom_fields[ $post_type ][ $field_key ] ?? [];
+                $file_type_categories = dt_get_file_type_categories();
+                $has_stored_types = isset( $custom_field['accepted_file_types'] );
+                $stored_types = $custom_field['accepted_file_types'] ?? [];
+                $all_category_types = array_merge( ...array_column( $file_type_categories, 'types' ) );
+                $other_types = $has_stored_types ? array_values( array_diff( $stored_types, $all_category_types ) ) : [];
+                $max_file_size = $custom_field['max_file_size'] ?? '';
+                $delete_enabled = isset( $custom_field['delete_enabled'] ) ? $custom_field['delete_enabled'] : true;
+                $display_layout = $custom_field['display_layout'] ?? 'grid';
+                $auto_upload = isset( $custom_field['auto_upload'] ) ? $custom_field['auto_upload'] : true;
+                $download_enabled = isset( $custom_field['download_enabled'] ) ? $custom_field['download_enabled'] : true;
+                $rename_enabled = isset( $custom_field['rename_enabled'] ) ? $custom_field['rename_enabled'] : true; ?>
+
+            <h3><?php esc_html_e( 'Field Options', 'disciple_tools' ) ?></h3>
+            <table id="file_upload_options">
+                <tr>
+                    <td style="vertical-align: top">
+                        <b><?php esc_html_e( 'Accepted File Types', 'disciple_tools' ) ?></b>
+                    </td>
+                    <td>
+                        <?php foreach ( $file_type_categories as $cat_key => $cat ) :
+                            $is_checked = ! $has_stored_types || empty( array_diff( $cat['types'], $stored_types ) );
+                            ?>
+                            <label style="margin-right: 1em;">
+                                <input type="checkbox" name="accepted_file_categories[]"
+                                       value="<?php echo esc_attr( $cat_key ) ?>"
+                                       <?php echo $is_checked ? 'checked' : ''; ?>>
+                                <?php echo esc_html( $cat['label'] ) ?>
+                            </label>
+                        <?php endforeach; ?>
+                        <div style="margin-top: 6px;">
+                            <label for="other_file_types"><b><?php esc_html_e( 'Other', 'disciple_tools' ) ?></b></label>
+                            <input type="text" name="other_file_types" id="other_file_types"
+                                   value="<?php echo esc_attr( implode( ', ', $other_types ) ) ?>"
+                                   placeholder="<?php esc_attr_e( 'e.g., application/zip, .csv', 'disciple_tools' ) ?>"
+                                   style="width: 100%;" />
+                            <p style="font-size: 11px; color: #666; margin-top: 3px;">
+                                <?php esc_html_e( 'Comma-separated MIME types or file extensions for additional file types.', 'disciple_tools' ); ?>
+                            </p>
+                        </div>
+                        <p style="font-size: 11px; color: #666; margin-top: 5px;">
+                            <?php esc_html_e( 'Select which file type categories are allowed for upload. If none are selected, all types will be accepted.', 'disciple_tools' ); ?>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <label for="max_file_size"><b><?php esc_html_e( 'Max File Size (MB)', 'disciple_tools' ) ?></b></label>
+                    </td>
+                    <td>
+                        <input type="number" name="max_file_size" id="max_file_size"
+                               value="<?php echo esc_attr( $max_file_size ) ?>"
+                               min="0" step="0.1"
+                               placeholder="<?php esc_attr_e( 'Leave empty for no limit', 'disciple_tools' ) ?>" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <b><?php esc_html_e( 'Delete Enabled', 'disciple_tools' ) ?></b>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="delete_enabled" id="delete_enabled"
+                                   <?php echo $delete_enabled ? 'checked' : ''; ?>>
+                            <?php esc_html_e( 'Allow users to delete uploaded files', 'disciple_tools' ) ?>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <b><?php esc_html_e( 'Download Enabled', 'disciple_tools' ) ?></b>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="download_enabled" id="download_enabled"
+                                   <?php echo $download_enabled ? 'checked' : ''; ?>>
+                            <?php esc_html_e( 'Allow users to download uploaded files', 'disciple_tools' ) ?>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <b><?php esc_html_e( 'Rename Enabled', 'disciple_tools' ) ?></b>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="rename_enabled" id="rename_enabled"
+                                   <?php echo $rename_enabled ? 'checked' : ''; ?>>
+                            <?php esc_html_e( 'Allow users to rename uploaded files', 'disciple_tools' ) ?>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <label for="display_layout"><b><?php esc_html_e( 'Display Layout', 'disciple_tools' ) ?></b></label>
+                    </td>
+                    <td>
+                        <select name="display_layout" id="display_layout">
+                            <option value="grid" <?php selected( $display_layout, 'grid' ); ?>><?php esc_html_e( 'Grid', 'disciple_tools' ) ?></option>
+                            <option value="list" <?php selected( $display_layout, 'list' ); ?>><?php esc_html_e( 'List', 'disciple_tools' ) ?></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: middle">
+                        <b><?php esc_html_e( 'Auto Upload', 'disciple_tools' ) ?></b>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="auto_upload" id="auto_upload"
+                                   <?php echo $auto_upload ? 'checked' : ''; ?>>
+                            <?php esc_html_e( 'Automatically upload files when selected (uncheck to require manual upload)', 'disciple_tools' ) ?>
+                        </label>
                     </td>
                 </tr>
             </table>
@@ -924,6 +1049,78 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 }
             }
 
+            // file_upload field options
+            if ( $field['type'] === 'file_upload' ) {
+                // Accepted file types from category checkboxes
+                $category_mime_map = array_map( function ( $cat ) {
+                    return $cat['types'];
+                }, dt_get_file_type_categories() );
+                $selected_categories = isset( $post_submission['accepted_file_categories'] )
+                    ? array_map( 'sanitize_text_field', $post_submission['accepted_file_categories'] )
+                    : [];
+
+                $raw_other = isset( $post_submission['other_file_types'] ) ? trim( $post_submission['other_file_types'] ) : '';
+                $other_types = $raw_other !== ''
+                    ? array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $raw_other ) ) )
+                    : [];
+
+                $all_categories_selected = count( $selected_categories ) === count( $category_mime_map );
+                if ( $all_categories_selected && empty( $other_types ) ) {
+                    unset( $custom_field['accepted_file_types'] );
+                } else if ( empty( $selected_categories ) && empty( $other_types ) ) {
+                    unset( $custom_field['accepted_file_types'] );
+                } else {
+                    $types = [];
+                    foreach ( $selected_categories as $cat_key ) {
+                        if ( isset( $category_mime_map[ $cat_key ] ) ) {
+                            $types = array_merge( $types, $category_mime_map[ $cat_key ] );
+                        }
+                    }
+                    $types = array_merge( $types, $other_types );
+                    $custom_field['accepted_file_types'] = $types;
+                }
+
+                // Max file size
+                if ( isset( $post_submission['max_file_size'] ) && $post_submission['max_file_size'] !== '' ) {
+                    $custom_field['max_file_size'] = (int) $post_submission['max_file_size'];
+                } else if ( isset( $custom_field['max_file_size'] ) ) {
+                    unset( $custom_field['max_file_size'] );
+                }
+
+                // Delete enabled
+                if ( isset( $post_submission['delete_enabled'] ) ) {
+                    $custom_field['delete_enabled'] = true;
+                } else {
+                    $custom_field['delete_enabled'] = false;
+                }
+
+                // Display layout
+                if ( isset( $post_submission['display_layout'] ) ) {
+                    $custom_field['display_layout'] = sanitize_text_field( wp_unslash( $post_submission['display_layout'] ) );
+                }
+
+                // Auto upload
+                if ( isset( $post_submission['auto_upload'] ) ) {
+                    $custom_field['auto_upload'] = true;
+                } else {
+                    $custom_field['auto_upload'] = false;
+                }
+
+                // Download enabled
+                if ( isset( $post_submission['download_enabled'] ) ) {
+                    $custom_field['download_enabled'] = true;
+                } else {
+                    $custom_field['download_enabled'] = false;
+                }
+
+                // Rename enabled
+                if ( isset( $post_submission['rename_enabled'] ) ) {
+                    $custom_field['rename_enabled'] = true;
+                } else {
+                    $custom_field['rename_enabled'] = false;
+                }
+            }
+
             // key_select, multi_options & links
             if ( isset( $post_fields[$field_key]['default'] ) && ( $field['type'] === 'multi_select' || $field['type'] === 'key_select' || $field['type'] === 'link' ) ){
                 $field_options = $field['default'];
@@ -1080,6 +1277,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="datetime"><?php esc_html_e( 'DateTime', 'disciple_tools' ) ?></option>
                             <option value="connection"><?php esc_html_e( 'Connection', 'disciple_tools' ) ?></option>
                             <option value="user_select"><?php esc_html_e( 'User Select', 'disciple_tools' ) ?></option>
+                            <option value="file_upload"><?php esc_html_e( 'File Upload', 'disciple_tools' ) ?></option>
                         </select>
                     </td>
                 </tr>
@@ -1194,6 +1392,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( 'Link: Create a collection of links', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'Connection: An autocomplete picker to connect to another record.', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'User Select: An autocomplete picker to connect to a user account.', 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( 'File Upload: A field for uploading multiple files (pictures, documents, PDFs, voice messages, etc.)', 'disciple_tools' ) ?></li>
         </ul>
         <strong><?php esc_html_e( 'Private Field:', 'disciple_tools' ) ?></strong>
         <ul style="list-style: disc; padding-left:40px">
@@ -1344,6 +1543,15 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'user_select',
                     'default'     => '',
+                    'tile'     => $field_tile,
+                    'customizable' => 'all',
+                    'private' => $field_private
+                ];
+            } elseif ( $field_type === 'file_upload' ) {
+                $new_field = [
+                    'name'        => $post_submission['new_field_name'],
+                    'type'        => 'file_upload',
+                    'default'     => [],
                     'tile'     => $field_tile,
                     'customizable' => 'all',
                     'private' => $field_private
