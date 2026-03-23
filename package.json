@@ -56,7 +56,7 @@
   },
   "lint-staged": {
     "*.php": [
-      "./phpcbf.sh"
+      "bash ./phpcbf.sh"
     ],
     "*.js": [
       "eslint --no-warn-ignored",
