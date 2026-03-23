@@ -1556,6 +1556,44 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         return apply_filters( 'dt_duplicate_fields_defaults', $default_fields, $post_type );
     }
 
+    function dt_get_file_type_categories() {
+        return [
+            'images' => [
+                'label' => __( 'Images', 'disciple_tools' ),
+                'types' => [ 'image/*' ],
+            ],
+            'pdfs' => [
+                'label' => __( 'PDFs', 'disciple_tools' ),
+                'types' => [ 'application/pdf' ],
+            ],
+            'documents' => [
+                'label' => __( 'Documents', 'disciple_tools' ),
+                'description' => __( 'Word, Excel, CSV, text, markdown', 'disciple_tools' ),
+                'types' => [
+                    'application/msword',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'application/vnd.ms-excel',
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'text/csv',
+                    'text/plain',
+                    'text/markdown',
+                ],
+            ],
+            'audio' => [
+                'label' => __( 'Audio', 'disciple_tools' ),
+                'types' => [ 'audio/*' ],
+            ],
+            'video' => [
+                'label' => __( 'Video', 'disciple_tools' ),
+                'types' => [ 'video/*' ],
+            ],
+        ];
+    }
+
+    function dt_get_default_accepted_file_types() {
+        return array_merge( ...array_column( dt_get_file_type_categories(), 'types' ) );
+    }
+
     /**
      * All code above here.
      */

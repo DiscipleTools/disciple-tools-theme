@@ -444,18 +444,7 @@ function dt_site_scripts() {
         wp_localize_script( 'dt-storage', 'storage_settings',
             [
                 'rest_url' => esc_url_raw( rest_url() ),
-                'accepted_file_types' => [
-                    'image/*',
-                    'application/pdf',
-                    'audio/*',
-                    'video/*',
-                    'application/msword',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                    'application/vnd.ms-excel',
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    'text/plain',
-                    'text/markdown',
-                ],
+                'accepted_file_types' => dt_get_default_accepted_file_types(),
                 'translations' => [
                     'modals' => [
                         'upload' => [

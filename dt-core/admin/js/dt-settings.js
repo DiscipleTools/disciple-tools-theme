@@ -1609,18 +1609,10 @@ jQuery(document).ready(function ($) {
 
     // Add file_upload field-specific options
     if (field_type === 'file_upload') {
-      let accepted_file_types = field_settings['accepted_file_types'] || [
-        'image/*',
-        'application/pdf',
-        'audio/*',
-        'video/*',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'text/plain',
-        'text/markdown',
-      ];
+      const fileTypeCategories = all_settings.file_type_categories || {};
+      let storedTypes = field_settings['accepted_file_types'] || null;
+      let hasStoredTypes = storedTypes !== null;
+
       let max_file_size = field_settings['max_file_size'] || '';
       let delete_enabled = field_settings['delete_enabled'] !== false; // default true
       let display_layout = field_settings['display_layout'] || 'grid';
@@ -1628,21 +1620,46 @@ jQuery(document).ready(function ($) {
       let download_enabled = field_settings['download_enabled'] !== false; // default true
       let rename_enabled = field_settings['rename_enabled'] !== false; // default true
 
+      let categoryCheckboxes = '';
+      for (const [catKey, cat] of Object.entries(fileTypeCategories)) {
+        let isChecked =
+          !hasStoredTypes ||
+          cat.types.every((t) => storedTypes.includes(t));
+        categoryCheckboxes += `
+            <label style="margin-right: 1em;">
+                <input type="checkbox" class="accepted-file-category"
+                  data-types='${JSON.stringify(cat.types)}' ${isChecked ? 'checked' : ''}>
+                ${cat.label}
+            </label>`;
+      }
+
+      // Compute "other" types not covered by any category
+      let allCategoryTypes = Object.values(fileTypeCategories).flatMap(
+        (c) => c.types,
+      );
+      let otherTypes = hasStoredTypes
+        ? storedTypes.filter((t) => !allCategoryTypes.includes(t)).join(', ')
+        : '';
+
       modal_html_content += `
         <tr>
             <td>
-                <label for="accepted_file_types"><b>Accepted File Types</b></label>
+                <b>Accepted File Types</b>
             </td>
             <td>
-                <input type="text" name="accepted_file_types" id="accepted_file_types" 
-                  value="${accepted_file_types.join(', ')}" 
-                  placeholder="e.g., image/*, audio/*, video/*, application/pdf, .docx"
-                  style="width: 100%;">
+                ${categoryCheckboxes}
+                <div style="margin-top: 6px;">
+                    <label for="other_file_types"><b>Other</b></label>
+                    <input type="text" name="other_file_types" id="other_file_types"
+                      value="${otherTypes}"
+                      placeholder="e.g., application/zip, .csv"
+                      style="width: 100%;">
+                    <p style="font-size: 11px; color: #666; margin-top: 3px;">
+                      Comma-separated MIME types or file extensions for additional file types.
+                    </p>
+                </div>
                 <p style="font-size: 11px; color: #666; margin-top: 5px;">
-                  Optional. Comma-separated list of MIME types or file extensions to override the default set (images, PDFs, audio, video, common documents). Leave empty to use the default types.
-                  <a href="https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types" target="_blank" rel="noopener noreferrer">
-                    View common MIME types.
-                  </a>
+                  Select which file type categories are allowed for upload. If none are selected, all types will be accepted.
                 </p>
             </td>
         </tr>
@@ -2421,9 +2438,24 @@ jQuery(document).ready(function ($) {
 
     // Add file_upload field-specific options to visibility object
     if (field_settings['type'] && field_settings['type'] === 'file_upload') {
-      visibility['accepted_file_types'] = $('#accepted_file_types')
-        .val()
-        .trim();
+      let checkedTypes = [];
+      let totalCategories = $('.accepted-file-category').length;
+      $('.accepted-file-category:checked').each(function () {
+        checkedTypes = checkedTypes.concat(
+          JSON.parse($(this).attr('data-types')),
+        );
+      });
+      let otherVal = $('#other_file_types').val().trim();
+      let otherList = otherVal
+        ? otherVal.split(',').map((s) => s.trim()).filter(Boolean)
+        : [];
+      let allTypes = checkedTypes.concat(otherList);
+      let allCategoriesChecked =
+        $('.accepted-file-category:checked').length === totalCategories;
+      visibility['accepted_file_types'] =
+        allCategoriesChecked && otherList.length === 0
+          ? ''
+          : allTypes.join(', ');
       visibility['max_file_size'] = $('#max_file_size').val().trim();
       visibility['delete_enabled'] = $('#delete_enabled').is(':checked');
       visibility['display_layout'] = $('#display_layout').val();

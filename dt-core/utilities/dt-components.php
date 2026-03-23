@@ -332,18 +332,19 @@ class DT_Components
         }
 
         // Get field settings for configuration
-        $accepted_file_types = $fields[ $field_key ]['accepted_file_types'] ?? [
-            'image/*',
-            'application/pdf',
-            'audio/*',
-            'video/*',
-            'application/msword',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'application/vnd.ms-excel',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'text/plain',
-            'text/markdown',
-        ];
+        $accepted_file_types = $fields[ $field_key ]['accepted_file_types'] ?? dt_get_default_accepted_file_types();
+        $categories = dt_get_file_type_categories();
+        $all_category_types = array_merge( ...array_column( $categories, 'types' ) );
+        $labels = [];
+        foreach ( $categories as $cat ) {
+            if ( !empty( array_intersect( $cat['types'], $accepted_file_types ) ) ) {
+                $labels[] = $cat['label'];
+            }
+        }
+        $other_types = array_diff( $accepted_file_types, $all_category_types );
+        $labels = array_merge( $labels, array_values( $other_types ) );
+        $accepted_file_types_label = implode( ', ', $labels );
+
         $max_file_size = $fields[$field_key]['max_file_size'] ?? null;
         $delete_enabled = isset( $fields[$field_key]['delete_enabled'] ) ? $fields[$field_key]['delete_enabled'] : true;
         $display_layout = $fields[$field_key]['display_layout'] ?? 'grid';
@@ -420,6 +421,7 @@ class DT_Components
             <?php endif; ?>
             value="<?php echo esc_attr( json_encode( $enhanced_value ) ) ?>"
             accepted-file-types='<?php echo esc_attr( json_encode( $accepted_file_types ) ) ?>'
+            accepted-file-types-label="<?php echo esc_attr( $accepted_file_types_label ) ?>"
             <?php if ( $max_file_size ): ?>
                 max-file-size="<?php echo esc_attr( $max_file_size ) ?>"
             <?php endif; ?>

@@ -545,18 +545,11 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <?php
                 $custom_fields = dt_get_option( 'dt_field_customizations' );
                 $custom_field = $custom_fields[ $post_type ][ $field_key ] ?? [];
-                $accepted_file_types = $custom_field['accepted_file_types'] ?? [
-                    'image/*',
-                    'application/pdf',
-                    'audio/*',
-                    'video/*',
-                    'application/msword',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                    'application/vnd.ms-excel',
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    'text/plain',
-                    'text/markdown',
-                ];
+                $file_type_categories = dt_get_file_type_categories();
+                $has_stored_types = isset( $custom_field['accepted_file_types'] );
+                $stored_types = $custom_field['accepted_file_types'] ?? [];
+                $all_category_types = array_merge( ...array_column( $file_type_categories, 'types' ) );
+                $other_types = $has_stored_types ? array_values( array_diff( $stored_types, $all_category_types ) ) : [];
                 $max_file_size = $custom_field['max_file_size'] ?? '';
                 $delete_enabled = isset( $custom_field['delete_enabled'] ) ? $custom_field['delete_enabled'] : true;
                 $display_layout = $custom_field['display_layout'] ?? 'grid';
@@ -567,19 +560,32 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <h3><?php esc_html_e( 'Field Options', 'disciple_tools' ) ?></h3>
             <table id="file_upload_options">
                 <tr>
-                    <td style="vertical-align: middle">
-                        <label for="accepted_file_types"><b><?php esc_html_e( 'Accepted File Types', 'disciple_tools' ) ?></b></label>
+                    <td style="vertical-align: top">
+                        <b><?php esc_html_e( 'Accepted File Types', 'disciple_tools' ) ?></b>
                     </td>
                     <td>
-                        <input type="text" name="accepted_file_types" id="accepted_file_types"
-                               value="<?php echo esc_attr( implode( ', ', $accepted_file_types ) ) ?>"
-                               placeholder="e.g., image/*, audio/*, video/*, application/pdf, .docx"
-                               style="width: 100%;" />
+                        <?php foreach ( $file_type_categories as $cat_key => $cat ) :
+                            $is_checked = ! $has_stored_types || empty( array_diff( $cat['types'], $stored_types ) );
+                            ?>
+                            <label style="margin-right: 1em;">
+                                <input type="checkbox" name="accepted_file_categories[]"
+                                       value="<?php echo esc_attr( $cat_key ) ?>"
+                                       <?php echo $is_checked ? 'checked' : ''; ?>>
+                                <?php echo esc_html( $cat['label'] ) ?>
+                            </label>
+                        <?php endforeach; ?>
+                        <div style="margin-top: 6px;">
+                            <label for="other_file_types"><b><?php esc_html_e( 'Other', 'disciple_tools' ) ?></b></label>
+                            <input type="text" name="other_file_types" id="other_file_types"
+                                   value="<?php echo esc_attr( implode( ', ', $other_types ) ) ?>"
+                                   placeholder="<?php esc_attr_e( 'e.g., application/zip, .csv', 'disciple_tools' ) ?>"
+                                   style="width: 100%;" />
+                            <p style="font-size: 11px; color: #666; margin-top: 3px;">
+                                <?php esc_html_e( 'Comma-separated MIME types or file extensions for additional file types.', 'disciple_tools' ); ?>
+                            </p>
+                        </div>
                         <p style="font-size: 11px; color: #666; margin-top: 5px;">
-                            <?php esc_html_e( 'Optional. Comma-separated list of MIME types or file extensions to override the default set (images, PDFs, audio, video, common documents). Leave empty to use the default types.', 'disciple_tools' ); ?>
-                            <a href="<?php echo esc_url( 'https://developer.mozilla.org/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types' ); ?>" target="_blank" rel="noopener noreferrer">
-                                <?php esc_html_e( 'View common MIME types.', 'disciple_tools' ); ?>
-                            </a>
+                            <?php esc_html_e( 'Select which file type categories are allowed for upload. If none are selected, all types will be accepted.', 'disciple_tools' ); ?>
                         </p>
                     </td>
                 </tr>
@@ -1045,16 +1051,33 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
 
             // file_upload field options
             if ( $field['type'] === 'file_upload' ) {
-                // Accepted file types
-                if ( isset( $post_submission['accepted_file_types'] ) ) {
-                    $raw_accepted = trim( $post_submission['accepted_file_types'] );
-                    if ( $raw_accepted === '' ) {
-                        // Clear any previously saved override so defaults are used
-                        unset( $custom_field['accepted_file_types'] );
-                    } else {
-                        $types = array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $raw_accepted ) ) );
-                        $custom_field['accepted_file_types'] = $types;
+                // Accepted file types from category checkboxes
+                $category_mime_map = array_map( function ( $cat ) {
+                    return $cat['types'];
+                }, dt_get_file_type_categories() );
+                $selected_categories = isset( $post_submission['accepted_file_categories'] )
+                    ? array_map( 'sanitize_text_field', $post_submission['accepted_file_categories'] )
+                    : [];
+
+                $raw_other = isset( $post_submission['other_file_types'] ) ? trim( $post_submission['other_file_types'] ) : '';
+                $other_types = $raw_other !== ''
+                    ? array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $raw_other ) ) )
+                    : [];
+
+                $all_categories_selected = count( $selected_categories ) === count( $category_mime_map );
+                if ( $all_categories_selected && empty( $other_types ) ) {
+                    unset( $custom_field['accepted_file_types'] );
+                } else if ( empty( $selected_categories ) && empty( $other_types ) ) {
+                    unset( $custom_field['accepted_file_types'] );
+                } else {
+                    $types = [];
+                    foreach ( $selected_categories as $cat_key ) {
+                        if ( isset( $category_mime_map[ $cat_key ] ) ) {
+                            $types = array_merge( $types, $category_mime_map[ $cat_key ] );
+                        }
                     }
+                    $types = array_merge( $types, $other_types );
+                    $custom_field['accepted_file_types'] = $types;
                 }
 
                 // Max file size
