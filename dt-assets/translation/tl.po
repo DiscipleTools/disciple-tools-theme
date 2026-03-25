@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2026-01-09T14:54:09+00:00\n"
+"POT-Creation-Date: 2026-02-02T21:51:18+00:00\n"
 "PO-Revision-Date: 2025-03-05 16:00+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Tagalog <https://translate.disciple.tools/projects/disciple-"
@@ -27,8 +27,13 @@ msgstr "https://github.com/DiscipleTools/disciple-tools-theme"
 
 #. Description of the theme
 #: style.css
+#, fuzzy
+#| msgid ""
+#| "Disciple.Tools is a coalition management system for disciple "
+#| "makingmovements."
 msgid ""
-"Disciple.Tools is a coalition management system for disciple makingmovements."
+"Disciple.Tools is a coalition management system for disciple making "
+"movements."
 msgstr ""
 "Ang Disciple.Tools ay sistema ng pamamahala ng koalisyon para sa mgakilusang "
 "gumagawa ng disipulo."
@@ -74,24 +79,24 @@ msgstr ""
 msgid "Submit Request"
 msgstr "Isumite ang Kahilingan"
 
-#: 403.php:55 archive-template.php:1202
+#: 403.php:55 archive-template.php:1122
 #: dt-assets/parts/loop-activity-comment.php:141
 #: dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
 #: dt-assets/parts/modals/modal-filters.php:9
 #: dt-assets/parts/modals/modal-filters.php:28
 #: dt-assets/parts/modals/modal-new-contact.php:14
-#: dt-assets/parts/modals/modal-new-tag.php:12 dt-contacts/base-setup.php:475
-#: dt-contacts/base-setup.php:510 dt-contacts/module-access.php:451
-#: dt-contacts/module-access.php:482 dt-contacts/module-access.php:510
+#: dt-assets/parts/modals/modal-new-tag.php:12 dt-contacts/base-setup.php:483
+#: dt-contacts/base-setup.php:518 dt-contacts/module-access.php:443
+#: dt-contacts/module-access.php:474 dt-contacts/module-access.php:502
 #: dt-contacts/user-module.php:159 single-template.php:413
 #: template-new-bulk-post.php:229 template-new-bulk-post.php:262
 #: template-new-bulk-post.php:290 template-new-post.php:162
 msgid "Cancel"
 msgstr "Kanselahin"
 
-#: 403.php:59 archive-template.php:552 archive-template.php:627
-#: archive-template.php:814 archive-template.php:1226
+#: 403.php:59 archive-template.php:551 archive-template.php:626
+#: archive-template.php:734 archive-template.php:1146
 #: dt-assets/functions/enqueue-scripts.php:449
 #: dt-assets/parts/loop-activity-comment.php:225
 #: dt-assets/parts/loop-activity-comment.php:230
@@ -119,12 +124,12 @@ msgstr "Kanselahin"
 #: dt-assets/parts/modals/modal-tasks.php:54
 #: dt-assets/parts/modals/modal-template-metrics.php:8
 #: dt-assets/parts/modals/modal-template-metrics.php:13
-#: dt-contacts/base-setup.php:480 dt-contacts/base-setup.php:515
-#: dt-contacts/module-access.php:456 dt-contacts/module-access.php:487
-#: dt-contacts/module-access.php:515 dt-contacts/module-access.php:606
+#: dt-contacts/base-setup.php:488 dt-contacts/base-setup.php:523
+#: dt-contacts/module-access.php:448 dt-contacts/module-access.php:479
+#: dt-contacts/module-access.php:507 dt-contacts/module-access.php:598
 #: dt-contacts/module-baptisms.php:201 dt-contacts/module-baptisms.php:203
-#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:587
-#: dt-groups/base-setup.php:592 dt-reports/magic-url-bulk-send.php:34
+#: dt-contacts/user-module.php:168 dt-groups/base-setup.php:530
+#: dt-groups/base-setup.php:535 dt-reports/magic-url-bulk-send.php:34
 #: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
 #: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
 #: dt-users/user-initial-setup.php:82 single-template.php:418
@@ -141,243 +146,265 @@ msgstr "Epic 404 - Hindi Nakita"
 msgid "The page you were looking for was not found or was deleted"
 msgstr "Hindi nakita ang pahinang hinahanap mo o tinanggal ito"
 
-#: archive-template.php:34 dt-assets/parts/loop-activity-comment.php:49
+#: archive-template.php:33 archive-template.php:663
+#: dt-assets/parts/loop-activity-comment.php:49
 #: dt-assets/parts/loop-activity-comment.php:166
 #: dt-assets/parts/loop-activity-comment.php:250
 #: dt-assets/parts/modals/modal-advanced-search.php:96
 msgid "Comments"
 msgstr "Mga komento"
 
-#: archive-template.php:53
+#: archive-template.php:52
 #, php-format
 msgctxt "Create New record"
 msgid "Create New %s"
 msgstr "Gumawa ng Bagong %s"
 
-#: archive-template.php:57
+#: archive-template.php:56
 msgid "Filters"
 msgstr "Mga Filter"
 
-#: archive-template.php:64 archive-template.php:136 archive-template.php:706
-#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:252
+#: archive-template.php:63 archive-template.php:135
+#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:262
 #: dt-posts/custom-post-type.php:20 template-settings.php:393
 #, php-format
 msgctxt "Search 'something'"
 msgid "Search %s"
 msgstr "Maghanap ng %s"
 
-#: archive-template.php:65 archive-template.php:137
+#: archive-template.php:64 archive-template.php:136
 #: dt-mapping/geocode-api/mapbox-api.php:328
 msgid "Clear"
 msgstr "I-clear"
 
-#: archive-template.php:69 archive-template.php:70 archive-template.php:141
-#: archive-template.php:142 dt-assets/functions/menu.php:57
+#: archive-template.php:68 archive-template.php:69 archive-template.php:140
+#: archive-template.php:141 dt-assets/functions/menu.php:57
 #: dt-assets/parts/modals/modal-advanced-search.php:2
 msgid "Advanced Search"
 msgstr "Advanced na Paghahanap"
 
-#: archive-template.php:76 dt-users/user-management.php:234
+#: archive-template.php:75 dt-users/user-management.php:234
 msgid "Search"
 msgstr "Hanapin"
 
-#: archive-template.php:85 archive-template.php:161
+#: archive-template.php:84 archive-template.php:160
 msgid "Choose which fields to search"
 msgstr "Piliin kung anong mga field ang paghahanapan"
 
-#: archive-template.php:94 archive-template.php:170
+#: archive-template.php:93 archive-template.php:169
 msgid "Search All Fields"
 msgstr "Maghanap sa Lahat ng Field"
 
-#: archive-template.php:104 archive-template.php:180
+#: archive-template.php:103 archive-template.php:179
 msgid "Communication Channels"
 msgstr "Mga Paraan ng Komunikasyon"
 
-#: archive-template.php:124 archive-template.php:200 archive-template.php:621
+#: archive-template.php:123 archive-template.php:199 archive-template.php:620
 #: template-new-bulk-post.php:132
 msgid "Apply"
 msgstr "I-apply"
 
-#: archive-template.php:125 archive-template.php:201 archive-template.php:622
+#: archive-template.php:124 archive-template.php:200 archive-template.php:621
 #: template-new-bulk-post.php:134
 msgid "reset to default"
 msgstr "i-reset sa default"
 
-#: archive-template.php:209
+#: archive-template.php:208
 #, php-format
 msgctxt "Contacts Filters"
 msgid "%s Filters"
 msgstr "%s (na) Filter"
 
-#: archive-template.php:220
+#: archive-template.php:219
 msgid "Create custom filter"
 msgstr "Gumawa ng custom na filter"
 
-#: archive-template.php:227
+#: archive-template.php:226
 msgctxt "List Exports"
 msgid "List Exports"
 msgstr "Pag-export ng Listahan"
 
-#: archive-template.php:239 archive-template.php:262
+#: archive-template.php:238 archive-template.php:261
 msgid "CSV List"
 msgstr "Listahan ng CSV"
 
-#: archive-template.php:243 archive-template.php:266
+#: archive-template.php:242 archive-template.php:265
 msgid "BCC Email List"
 msgstr "Listahan ng BCC Email"
 
-#: archive-template.php:244
+#: archive-template.php:243
 msgid "Phone List"
 msgstr "Listahan ng Telepono"
 
-#: archive-template.php:249 archive-template.php:274
+#: archive-template.php:248 archive-template.php:273
 msgid "Map List"
 msgstr "Listahan ng Mapa"
 
-#: archive-template.php:258
+#: archive-template.php:257
 msgid "List Exports Help"
 msgstr "Tulong sa Pag-export ng Listahan"
 
-#: archive-template.php:263
+#: archive-template.php:262
+#, fuzzy
+#| msgid ""
+#| "Using the current filter, this is a simple way to export basic "
+#| "informationand use it in other applications."
 msgid ""
-"Using the current filter, this is a simple way to export basic "
-"informationand use it in other applications."
+"Using the current filter, this is a simple way to export basic information "
+"and use it in other applications."
 msgstr ""
 "Gamit ang kasalukuyang filter, ito ay isang simpleng paraan upang i-"
 "exportang pangunahing impormasyon at gamitin ito sa ibang mga aplikasyon."
 
-#: archive-template.php:267
+#: archive-template.php:266
+#, fuzzy
+#| msgid ""
+#| "Using the current filter, the available emails are grouped by 50 and can "
+#| "belaunched into your default email client by group. Many email providers "
+#| "put alimit of 50 on BCC emails. You can open all groups at once using the "
+#| "\"OpenAll\" button. If the list is too large, this might alert your "
+#| "emailprovider. The BCC email tool is meant to assist small group emails. "
+#| "Bulkemail should be handled through bulk email providers."
 msgid ""
-"Using the current filter, the available emails are grouped by 50 and can "
-"belaunched into your default email client by group. Many email providers put "
-"alimit of 50 on BCC emails. You can open all groups at once using the "
-"\"OpenAll\" button. If the list is too large, this might alert your "
-"emailprovider. The BCC email tool is meant to assist small group emails. "
-"Bulkemail should be handled through bulk email providers."
+"Using the current filter, the available emails are grouped by 50 and can be "
+"launched into your default email client by group. Many email providers put a "
+"limit of 50 on BCC emails. You can open all groups at once using the \"Open "
+"All\" button. If the list is too large, this might alert your email "
+"provider. The BCC email tool is meant to assist small group emails. Bulk "
+"email should be handled through bulk email providers."
 msgstr ""
 "Gamit ang kasalukuyang filter, ang mga available na email ay naka-grupo ng50 "
 "at maaaring ilunsad sa iyong default na email client ayon sa grupo.Maraming "
 "email provider ang may limitasyon ng 50 sa BCC emails. Maaari mongbuksan ang "
-"lahat ng grupo nang sabay-sabay gamit ang \"Buksan Lahat\" na "
-"button. Kung masyadong malaki ang listahan, maaaring alerto ito saiyong "
-"email provider. Ang BCC email tool ay para sa maliliit na grupo ngemail. Ang "
-"bulk email ay dapat pangasiwaan sa pamamagitan ng bulk emailproviders."
+"lahat ng grupo nang sabay-sabay gamit ang \"Buksan Lahat\" na button. Kung "
+"masyadong malaki ang listahan, maaaring alerto ito saiyong email provider. "
+"Ang BCC email tool ay para sa maliliit na grupo ngemail. Ang bulk email ay "
+"dapat pangasiwaan sa pamamagitan ng bulk emailproviders."
 
-#: archive-template.php:270
+#: archive-template.php:269
 msgid "Phone Number List"
 msgstr "Listahan ng mga Numero ng Telepono"
 
-#: archive-template.php:271
+#: archive-template.php:270
+#, fuzzy
+#| msgid ""
+#| "Using the current filter, this is intended for copy pasting a list "
+#| "ofnumbers into a messaging app, WhatsApp, Signal, etc. This is a quick "
+#| "way ofstarting a group conversation."
 msgid ""
-"Using the current filter, this is intended for copy pasting a list ofnumbers "
-"into a messaging app, WhatsApp, Signal, etc. This is a quick way ofstarting "
-"a group conversation."
+"Using the current filter, this is intended for copy pasting a list of "
+"numbers into a messaging app, WhatsApp, Signal, etc. This is a quick way of "
+"starting a group conversation."
 msgstr ""
 "Gamit ang kasalukuyang filter, ito ay para sa pag-copy paste ng listahan "
 "ngmga numero sa isang messaging app, WhatsApp, Signal, atbp. Ito ay "
 "isangmabilis na paraan upang magsimula ng group conversation."
 
-#: archive-template.php:275
+#: archive-template.php:274
+#, fuzzy
+#| msgid ""
+#| "Using the current filter, this creates a basic points map of known "
+#| "locationsof listed individuals."
 msgid ""
-"Using the current filter, this creates a basic points map of known "
-"locationsof listed individuals."
+"Using the current filter, this creates a basic points map of known locations "
+"of listed individuals."
 msgstr ""
 "Gamit ang kasalukuyang filter, ito ay gumagawa ng basic points map ng "
 "mgakilalang lokasyon ng mga nakalista."
 
-#: archive-template.php:339
+#: archive-template.php:338
 msgid "No results found"
 msgstr "Walang nahanap na resulta"
 
-#: archive-template.php:348
+#: archive-template.php:347
 #, php-format
 msgctxt "Contacts List"
 msgid "%s List"
 msgstr "%s (na) Listahan"
 
-#: archive-template.php:357
+#: archive-template.php:356
 msgid "Sort"
 msgstr "Pagbukud-bukurin"
 
-#: archive-template.php:362
+#: archive-template.php:361
 msgid "Newest"
 msgstr "Pinakabago"
 
-#: archive-template.php:367
+#: archive-template.php:366
 msgid "Oldest"
 msgstr "Pinakaluma"
 
-#: archive-template.php:372
+#: archive-template.php:371
 msgid "Most recently modified"
 msgstr "Pinakahuling binago"
 
-#: archive-template.php:377
+#: archive-template.php:376
 msgid "Least recently modified"
 msgstr "Kamakailan lang binago"
 
-#: archive-template.php:387 template-new-bulk-post.php:89
+#: archive-template.php:386 template-new-bulk-post.php:89
 msgid "Fields"
 msgstr "Mga Field"
 
-#: archive-template.php:394
+#: archive-template.php:393
 msgid "Bulk Edit"
 msgstr "Maramihang Pag-edit"
 
-#: archive-template.php:401
+#: archive-template.php:400
 msgid "Bulk Send Message"
 msgstr "Maramihang Pagpapadala ng Mensahe"
 
-#: archive-template.php:435 dt-assets/parts/nav-topbar.php:65
+#: archive-template.php:434 dt-assets/parts/nav-topbar.php:65
 #: dt-metrics/personal/activity-log.php:53 dt-users/user-management.php:192
 msgid "More"
 msgstr "Higit pa"
 
-#: archive-template.php:456
+#: archive-template.php:455
 #: dt-assets/parts/modals/modal-advanced-search.php:108
-#: dt-contacts/base-setup.php:329 dt-users/users.php:554
+#: dt-contacts/base-setup.php:337 dt-users/users.php:554
 msgid "Archived"
 msgstr "Naka-archive"
 
-#: archive-template.php:460
+#: archive-template.php:459
 #, php-format
 msgctxt "Show archived"
 msgid "Show %s"
 msgstr "Ipakita ang %s"
 
-#: archive-template.php:538 dt-apps/dt-home/magic-link-home-app.php:238
+#: archive-template.php:537 dt-apps/dt-home/magic-link-home-app.php:238
 msgid "Loading..."
 msgstr "Naglo-load..."
 
-#: archive-template.php:543 dt-assets/functions/enqueue-scripts.php:418
+#: archive-template.php:542 dt-assets/functions/enqueue-scripts.php:418
 msgid "Load More"
 msgstr "Mag-load ng Higit Pa"
 
-#: archive-template.php:551
+#: archive-template.php:550
 msgid "Actions"
 msgstr "Mga Aksyon"
 
-#: archive-template.php:563
+#: archive-template.php:562
 msgid "Choose which fields to display as columns in the list"
 msgstr ""
 "Piliin kung aling mga field ang ipapakita bilang mga column sa listahan"
 
-#: archive-template.php:569
+#: archive-template.php:568
 msgid "Add fields:"
 msgstr "Magdagdag ng mga field:"
 
-#: archive-template.php:572
+#: archive-template.php:571
 msgid "Search for fields to add..."
 msgstr "Maghanap ng mga field na idadagdag..."
 
-#: archive-template.php:594
+#: archive-template.php:593
 msgid "Enabled fields:"
 msgstr "Mga naka-enable na field:"
 
-#: archive-template.php:598
+#: archive-template.php:597
 msgid "No fields selected"
 msgstr "Walang napiling field"
 
-#: archive-template.php:631
+#: archive-template.php:630
 #, php-format
 msgid ""
 "Select all the %1$s you want to update from the list, and update them below"
@@ -385,62 +412,34 @@ msgstr ""
 "Piliin ang lahat ng %1$s na gusto mong i-update mula sa listahan, at i-"
 "update ang mga ito sa ibaba"
 
-#: archive-template.php:649 dt-assets/parts/modals/modal-share.php:27
-#: dt-contacts/module-access.php:539 dt-contacts/user-module.php:137
-#: dt-core/global-functions.php:808
-msgctxt "input field placeholder"
-msgid "Search Users"
-msgstr "Maghanap ng mga User"
+#: archive-template.php:635
+#, fuzzy
+#| msgid "Failed to update app."
+msgid "Add Fields to Update"
+msgstr "Nabigong i-update ang app."
 
-#: archive-template.php:694
-msgid "Share with:"
-msgstr "I-share kay:"
+#: archive-template.php:643
+#, fuzzy
+#| msgid "Search for fields to add..."
+msgid "Search and add fields..."
+msgstr "Maghanap ng mga field na idadagdag..."
 
-#: archive-template.php:714
-msgid "Unshare with selected user"
-msgstr "I-unshare sa napiling user"
+#: archive-template.php:679
+msgid "Please select records from the displayed list, to enable bulk actions."
+msgstr ""
 
-#: archive-template.php:726 dt-assets/functions/details-bar.php:199
-#: dt-posts/custom-post-type.php:217
-msgid "Follow"
-msgstr "I-follow"
-
-#: archive-template.php:731 dt-assets/parts/loop-activity-comment.php:22
-#: dt-assets/parts/modals/modal-help.php:41
-msgid "Comments and Activity"
-msgstr "Mga Komento at Aktibidad"
-
-#: archive-template.php:736 dt-assets/parts/loop-activity-comment.php:39
-msgctxt "input field placeholder"
-msgid "Write your comment or note here"
-msgstr "Isulat ang iyong komento o tala dito"
-
-#: archive-template.php:744 dt-assets/parts/loop-activity-comment.php:59
-msgid "Type:"
-msgstr "I-type ang:"
-
-#: archive-template.php:764 dt-users/template-new-user.php:127
-#: dt-users/template-new-user.php:234
-msgid "See More Options"
-msgstr "Tumingin ng Iba Pang mga Opsyon"
-
-#: archive-template.php:765 dt-users/template-new-user.php:130
-#: dt-users/template-new-user.php:237
-msgid "See Fewer Options"
-msgstr "Tumingin ng mas Kaunting mga Opsyon"
-
-#: archive-template.php:792 dt-assets/parts/loop-activity-comment.php:276
+#: archive-template.php:686 dt-assets/parts/loop-activity-comment.php:276
 #: template-new-bulk-post.php:232
 msgid "Update"
 msgstr "I-update"
 
-#: archive-template.php:793 archive-template.php:997
+#: archive-template.php:687 archive-template.php:917
 #: dt-assets/functions/enqueue-scripts.php:333
 #: dt-reports/magic-url-bulk-send.php:94
 msgid "Make Selections Below"
 msgstr "Mamili sa Ibaba"
 
-#: archive-template.php:801 dt-assets/functions/enqueue-scripts.php:186
+#: archive-template.php:695 dt-assets/functions/enqueue-scripts.php:186
 #: dt-assets/functions/enqueue-scripts.php:227
 #: dt-assets/functions/enqueue-scripts.php:280
 #: dt-assets/functions/enqueue-scripts.php:320
@@ -448,137 +447,153 @@ msgstr "Mamili sa Ibaba"
 msgid "Delete"
 msgstr "Tanggalin"
 
-#: archive-template.php:804 dt-assets/functions/enqueue-scripts.php:334
+#: archive-template.php:698 dt-assets/functions/enqueue-scripts.php:334
 msgid "Delete Selections Below"
 msgstr "Tanggalin ang mga Napili sa Ibaba"
 
-#: archive-template.php:818
+#: archive-template.php:714
+#, fuzzy
+#| msgid "Removed User"
+msgid "Remove field"
+msgstr "Tinanggal na User"
+
+#: archive-template.php:724
+msgid "Clear/Unset Field"
+msgstr ""
+
+#: archive-template.php:727
+#, fuzzy
+#| msgid "Restore"
+msgid "Restore Field"
+msgstr "I-restore"
+
+#: archive-template.php:738
 #, php-format
 msgid "Select all the %1$s to whom you want to message."
 msgstr "Piliin ang lahat ng %1$s kung kanino mo gustong magpadala ng mensahe."
 
-#: archive-template.php:856
+#: archive-template.php:776
 msgid "Message subject"
 msgstr "Paksa ng mensahe"
 
-#: archive-template.php:858
+#: archive-template.php:778
 msgid "A valid message subject must be entered."
 msgstr "Dapat maglagay ng valid na paksa ng mensahe."
 
-#: archive-template.php:860
+#: archive-template.php:780
 msgid "Message from name"
 msgstr "Mensahe mula sa pangalan"
 
-#: archive-template.php:862
+#: archive-template.php:782
 msgid "A valid from name must be specified."
 msgstr "Dapat maglagay ng valid na pangalan ng nagpadala."
 
-#: archive-template.php:864
+#: archive-template.php:784
 msgid "Message reply to"
 msgstr "Mensahe na tumugon sa"
 
-#: archive-template.php:866
+#: archive-template.php:786
 msgid "A valid reply to email address must be specified."
 msgstr "Dapat maglagay ng valid na reply-to email address."
 
-#: archive-template.php:868
+#: archive-template.php:788
 #, php-format
 msgid "Emails will be sent from: %s"
 msgstr "Ang mga email ay ipapadala mula sa: %s"
 
-#: archive-template.php:891
+#: archive-template.php:811
 msgid "Please ensure a valid send method has been specified."
 msgstr "Siguraduhing may valid na paraan ng pagpapadala."
 
-#: archive-template.php:893
+#: archive-template.php:813
 msgid "Message"
 msgstr "Mensahe"
 
-#: archive-template.php:895
+#: archive-template.php:815
 msgid "Please ensure a valid send message has been entered."
 msgstr "Siguraduhing may valid na mensahe na ipinasok."
 
-#: archive-template.php:896 dt-reports/magic-url-bulk-send.php:57
+#: archive-template.php:816 dt-reports/magic-url-bulk-send.php:57
 #: dt-reports/magic-url-setup.php:254
 msgid "Message placeholders"
 msgstr "Mga placeholder ng mensahe"
 
-#: archive-template.php:927 dt-reports/magic-url-bulk-send.php:63
+#: archive-template.php:847 dt-reports/magic-url-bulk-send.php:63
 #: dt-reports/magic-url-setup.php:260
 msgid "Name of the Record"
 msgstr "Pangalan ng Rekord"
 
-#: archive-template.php:949
+#: archive-template.php:869
 msgid "Message Placeholder Help"
 msgstr "Tulong sa Placeholder ng Mensahe"
 
-#: archive-template.php:992 dt-reports/magic-url-bulk-send.php:89
+#: archive-template.php:912 dt-reports/magic-url-bulk-send.php:89
 msgid "Send to selected records"
 msgstr "Ipadala sa mga napiling rekord"
 
-#: archive-template.php:993 dt-reports/magic-url-bulk-send.php:90
+#: archive-template.php:913 dt-reports/magic-url-bulk-send.php:90
 msgid "You must select at least one record"
 msgstr "Dapat kang pumili ng kahit isang rekord"
 
-#: archive-template.php:996 dt-reports/magic-url-bulk-send.php:93
+#: archive-template.php:916 dt-reports/magic-url-bulk-send.php:93
 #: dt-reports/magic-url-setup.php:503
 msgid "Send"
 msgstr "Ipadala"
 
-#: archive-template.php:996 dt-reports/magic-url-bulk-send.php:93
+#: archive-template.php:916 dt-reports/magic-url-bulk-send.php:93
 msgid "Links"
 msgstr "Mga Link"
 
-#: archive-template.php:1001
+#: archive-template.php:921
 msgid "Ensure valid record selections have been made."
 msgstr "Siguraduhing may valid na mga napiling rekord."
 
-#: archive-template.php:1020
+#: archive-template.php:940
 msgid "Field Name"
 msgstr "Pangalan ng Field"
 
-#: archive-template.php:1076
+#: archive-template.php:996
 msgctxt "input field placeholder"
 msgid "Type to search"
 msgstr "Mag-type para maghanap"
 
-#: archive-template.php:1085
+#: archive-template.php:1005
 #, php-format
 msgctxt "All Contacts with Is Coaching"
 msgid "All %1$s with %2$s"
 msgstr "Lahat ng %1$s na may %2$s"
 
-#: archive-template.php:1088
+#: archive-template.php:1008
 #, php-format
 msgctxt "All Contacts without Is Coaching"
 msgid "All %1$s without %2$s"
 msgstr "Lahat ng %1$s na walang %2$s"
 
-#: archive-template.php:1095
+#: archive-template.php:1015
 msgid "Filter for subassigned OR Assigned To"
 msgstr "Filter para sa subassigned O Assigned To"
 
-#: archive-template.php:1104 dt-assets/functions/enqueue-scripts.php:323
+#: archive-template.php:1024 dt-assets/functions/enqueue-scripts.php:323
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "Petsa ng Paggawa"
 
-#: archive-template.php:1111 archive-template.php:1118
+#: archive-template.php:1031 archive-template.php:1038
 #: dt-contacts/contacts-transfer.php:157 dt-metrics/combined/site-links.php:74
 #: dt-metrics/combined/site-links.php:76 dt-posts/dt-posts.php:970
 msgid "None Set"
 msgstr "Walang Naka-set"
 
-#: archive-template.php:1132 archive-template.php:1133
-#: dt-assets/functions/enqueue-scripts.php:243 dt-core/global-functions.php:723
+#: archive-template.php:1052 archive-template.php:1053
+#: dt-assets/functions/enqueue-scripts.php:243 dt-core/global-functions.php:731
 #: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
 #: dt-reports/magic-url-setup.php:474 dt-users/user-management.php:196
 #: template-settings.php:314 template-settings.php:571
 msgid "No"
 msgstr "Hindi"
 
-#: archive-template.php:1139 archive-template.php:1140
-#: dt-assets/functions/enqueue-scripts.php:242 dt-core/global-functions.php:724
+#: archive-template.php:1059 archive-template.php:1060
+#: dt-assets/functions/enqueue-scripts.php:242 dt-core/global-functions.php:732
 #: dt-metrics/records/genmap.php:170 dt-metrics/records/time-charts.php:119
 #: dt-posts/posts.php:460 dt-reports/magic-url-setup.php:473
 #: dt-users/user-management.php:195 template-settings.php:313
@@ -586,59 +601,59 @@ msgstr "Hindi"
 msgid "Yes"
 msgstr "Oo"
 
-#: archive-template.php:1144
+#: archive-template.php:1064
 msgctxt "The start date of a date range"
 msgid "Range Start"
 msgstr "Simula ng Saklaw"
 
-#: archive-template.php:1147 archive-template.php:1158
+#: archive-template.php:1067 archive-template.php:1078
 msgctxt "Clear/empty input"
 msgid "Clear"
 msgstr "I-clear"
 
-#: archive-template.php:1154
+#: archive-template.php:1074
 msgctxt "The end date of a date range"
 msgid "Range End"
 msgstr "Katapusan ng Saklaw"
 
-#: archive-template.php:1169
+#: archive-template.php:1089
 msgctxt "The value to be searched for"
 msgid "Filter By Value"
 msgstr "I-filter Ayon sa Halaga"
 
-#: archive-template.php:1174
+#: archive-template.php:1094
 #, php-format
 msgctxt "All Contacts with filtered value in Emails"
 msgid "All %1$s with filtered value in %2$s"
 msgstr "Lahat ng %1$s na may na-filter na halaga sa %2$s"
 
-#: archive-template.php:1178
+#: archive-template.php:1098
 #, php-format
 msgctxt "All Contacts without filtered value in Emails"
 msgid "All %1$s without filtered value in %2$s"
 msgstr "Lahat ng %1$s na walang na-filter na halaga sa %2$s"
 
-#: archive-template.php:1182
+#: archive-template.php:1102
 #, php-format
 msgctxt "All Contacts with any value in field"
 msgid "All %1$s with any value in %2$s"
 msgstr "Lahat ng %1$s na may anumang halaga sa %2$s"
 
-#: archive-template.php:1186
+#: archive-template.php:1106
 #, php-format
 msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "Lahat ng %1$s na walang halaga sa %2$s"
 
-#: archive-template.php:1210
+#: archive-template.php:1130
 msgid "Filter Name"
 msgstr "Pangalan ng Filter"
 
-#: archive-template.php:1215
+#: archive-template.php:1135
 msgid "Filter Records"
 msgstr "Mag-filter ng mga Rekord"
 
-#: archive-template.php:1219 dt-assets/functions/enqueue-scripts.php:283
+#: archive-template.php:1139 dt-assets/functions/enqueue-scripts.php:283
 #: dt-assets/functions/enqueue-scripts.php:318
 #: dt-users/user-initial-setup.php:79 template-settings.php:739
 msgid "Save"
@@ -712,7 +727,7 @@ msgid "Training Videos"
 msgstr "Mga Training Video"
 
 #: dt-apps/dt-home/includes/class-home-apps.php:305
-#: dt-apps/dt-home/includes/class-home-apps.php:807
+#: dt-apps/dt-home/includes/class-home-apps.php:820
 msgid "App title is required."
 msgstr "Kailangan ang pamagat ng app."
 
@@ -738,11 +753,11 @@ msgstr "Nabigong tanggalin ang app."
 msgid "Failed to reorder apps."
 msgstr "Nabigong ayusin muli ang mga app."
 
-#: dt-apps/dt-home/includes/class-home-apps.php:811
+#: dt-apps/dt-home/includes/class-home-apps.php:824
 msgid "App URL must be a valid URL."
 msgstr "Dapat valid na URL ang URL ng app."
 
-#: dt-apps/dt-home/includes/class-home-apps.php:815
+#: dt-apps/dt-home/includes/class-home-apps.php:828
 msgid "App color must be a valid hex color."
 msgstr "Dapat valid na hex color ang kulay ng app."
 
@@ -882,6 +897,10 @@ msgstr "Mga Gawain"
 msgid "Following"
 msgstr "Nag-fa-follow"
 
+#: dt-assets/functions/details-bar.php:199 dt-posts/custom-post-type.php:217
+msgid "Follow"
+msgstr "I-follow"
+
 #: dt-assets/functions/details-bar.php:209
 msgid "Share"
 msgstr "I-share"
@@ -989,8 +1008,8 @@ msgstr "Nag-react sina %3$s at %1$s nang may emoji na %2$s"
 #: dt-assets/functions/enqueue-scripts.php:192
 msgid "Select spoken language and click \"Start Recording\" to begin."
 msgstr ""
-"Piliin ang wikang sinasalita at i-click ang \"Magsimula ng Pagre-"
-"record\" upang magsimula."
+"Piliin ang wikang sinasalita at i-click ang \"Magsimula ng Pagre-record\" "
+"upang magsimula."
 
 #: dt-assets/functions/enqueue-scripts.php:193
 msgid "Click \"Start Recording\" to begin."
@@ -1127,8 +1146,8 @@ msgstr "Walang mga filter, gumawa ng isa sa ibaba"
 msgid "No records found matching your filter."
 msgstr "Walang nakitang mga rekord na tumutugma sa iyong filter."
 
-#: dt-assets/functions/enqueue-scripts.php:327 dt-contacts/base-setup.php:679
-#: dt-groups/base-setup.php:1040 dt-posts/custom-post-type.php:489
+#: dt-assets/functions/enqueue-scripts.php:327 dt-contacts/base-setup.php:687
+#: dt-groups/base-setup.php:985 dt-posts/custom-post-type.php:489
 #, php-format
 msgctxt "All records"
 msgid "All %s"
@@ -1148,7 +1167,7 @@ msgstr "katapusan"
 
 #: dt-assets/functions/enqueue-scripts.php:331
 #: dt-assets/parts/modals/modal-advanced-search.php:73
-#: dt-contacts/module-access.php:1183 dt-groups/base-setup.php:958
+#: dt-contacts/module-access.php:1101 dt-groups/base-setup.php:903
 #: dt-metrics/personal/activity-highlights.php:56
 #: dt-metrics/records/dynamic-records-map.php:100
 #: dt-users/mapbox-coverage-map.php:74
@@ -1253,8 +1272,8 @@ msgstr "Buksan ang mga Naka-zoom na Map Records"
 msgid "Filtered Map"
 msgstr "Na-filter na Mapa"
 
-#: dt-assets/functions/enqueue-scripts.php:391 dt-contacts/base-setup.php:55
-#: dt-contacts/base-setup.php:67 dt-metrics/personal/activity-highlights.php:57
+#: dt-assets/functions/enqueue-scripts.php:391 dt-contacts/base-setup.php:59
+#: dt-contacts/base-setup.php:71 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "Kontak"
 
@@ -1346,8 +1365,8 @@ msgstr "Settings"
 msgid "Admin"
 msgstr "Admin"
 
-#: dt-assets/functions/menu.php:94 dt-contacts/base-setup.php:694
-#: dt-contacts/base-setup.php:698 dt-mapping/columns/add-users-column.php:56
+#: dt-assets/functions/menu.php:94 dt-contacts/base-setup.php:702
+#: dt-contacts/base-setup.php:706 dt-mapping/columns/add-users-column.php:56
 #: dt-metrics/combined/hover-map.php:269
 #: dt-metrics/combined/locations-list.php:95
 #: dt-metrics/combined/locations-list.php:270
@@ -1363,6 +1382,20 @@ msgstr "Tulong"
 #: dt-assets/functions/menu.php:106
 msgid "D.T Forum"
 msgstr "D.T Forum"
+
+#: dt-assets/parts/loop-activity-comment.php:22
+#: dt-assets/parts/modals/modal-help.php:41
+msgid "Comments and Activity"
+msgstr "Mga Komento at Aktibidad"
+
+#: dt-assets/parts/loop-activity-comment.php:39
+msgctxt "input field placeholder"
+msgid "Write your comment or note here"
+msgstr "Isulat ang iyong komento o tala dito"
+
+#: dt-assets/parts/loop-activity-comment.php:59
+msgid "Type:"
+msgstr "I-type ang:"
 
 #: dt-assets/parts/loop-activity-comment.php:84
 msgid "Add Image Comment"
@@ -1521,21 +1554,33 @@ msgid "Quick Action Buttons"
 msgstr "Mga Button ng Mabilisang Aksyon"
 
 #: dt-assets/parts/modals/modal-help.php:14
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "These quick action buttons are here to aid you in updating the "
+#| "contactrecord faster and keep a count of how many times each action has "
+#| "be done."
 msgctxt "Optional Documentation"
 msgid ""
-"These quick action buttons are here to aid you in updating the contactrecord "
-"faster and keep a count of how many times each action has be done."
+"These quick action buttons are here to aid you in updating the contact "
+"record faster and keep a count of how many times each action has be done."
 msgstr ""
 "Ang mga buton ng pangmabilisang aksyon na ito ay narito upang tulungan ka "
 "sapag-update ng rekord ng kontak nang mas mabilis at bilangin kung "
 "gaanokaraming beses nagawa ang bawa't aksyon."
 
 #: dt-assets/parts/modals/modal-help.php:15
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "For example, If you click the 'No Answer' button 4 times, we will log "
+#| "thatyou attempted to reach this contact 4 times, but they did not answer. "
+#| "Thisaction will also change the 'Seeker Path' to 'Contact Attempted'."
 msgctxt "Optional Documentation"
 msgid ""
-"For example, If you click the 'No Answer' button 4 times, we will log "
-"thatyou attempted to reach this contact 4 times, but they did not answer. "
-"Thisaction will also change the 'Seeker Path' to 'Contact Attempted'."
+"For example, If you click the 'No Answer' button 4 times, we will log that "
+"you attempted to reach this contact 4 times, but they did not answer. This "
+"action will also change the 'Seeker Path' to 'Contact Attempted'."
 msgstr ""
 "Halimbawa, kung 4 na beses kang nag-click sa button na 'Walang Sagot', ila-"
 "log namin na tinangka mong makipag-ugnayan sa contact na ito nang 4 nabeses, "
@@ -1558,20 +1603,30 @@ msgid "This is where you can record notes from meetings and conversations."
 msgstr "Dito ka maaaring magtala ng mga tala mula sa mga miting at pag-uusap."
 
 #: dt-assets/parts/modals/modal-help.php:43
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "Type @ and the name of a user to mention them in a comment. This user "
+#| "willthen receive a notification."
 msgctxt "Optional Documentation"
 msgid ""
-"Type @ and the name of a user to mention them in a comment. This user "
-"willthen receive a notification."
+"Type @ and the name of a user to mention them in a comment. This user will "
+"then receive a notification."
 msgstr ""
 "I-type ang @ at ang pangalan ng gumagamit upang banggitin sila sa "
 "isangkomento. Pagkatapos ay makakatanggap ang gumagamit na ito ng "
 "notipikasyon."
 
 #: dt-assets/parts/modals/modal-help.php:44
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "This section also includes the history of activity, such as when the "
+#| "contactor group status became active etc."
 msgctxt "Optional Documentation"
 msgid ""
-"This section also includes the history of activity, such as when the "
-"contactor group status became active etc."
+"This section also includes the history of activity, such as when the contact "
+"or group status became active etc."
 msgstr ""
 "Kasama rin sa seksyong ito ang kasaysayan ng aktibidad, tulad ng kung "
 "kailannaging aktibo ang kontak o katayuan ng grupo atbp."
@@ -1593,20 +1648,29 @@ msgid "In this area you can see your user profile."
 msgstr "Sa lugar na ito maaari mong makita ang iyong profile ng gumagamit."
 
 #: dt-assets/parts/modals/modal-help.php:60
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "You are not required to fill out any of these profile fields. They "
+#| "areoptional to meet your team’s needs."
 msgctxt "Optional Documentation"
 msgid ""
-"You are not required to fill out any of these profile fields. They "
-"areoptional to meet your team’s needs."
+"You are not required to fill out any of these profile fields. They are "
+"optional to meet your team’s needs."
 msgstr ""
-"Hindi mo kinakailangang punan ang alinman sa mga profile field na "
-"ito.Opsyonal ang mga ito upang matugunan ang mga pangangailangan ng "
-"iyongpangkat."
+"Hindi mo kinakailangang punan ang alinman sa mga profile field na ito."
+"Opsyonal ang mga ito upang matugunan ang mga pangangailangan ng iyongpangkat."
 
 #: dt-assets/parts/modals/modal-help.php:61
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "By clicking 'Edit', you will be able adjust things like the language "
+#| "thatthis system operates in."
 msgctxt "Optional Documentation"
 msgid ""
-"By clicking 'Edit', you will be able adjust things like the language "
-"thatthis system operates in."
+"By clicking 'Edit', you will be able adjust things like the language that "
+"this system operates in."
 msgstr ""
 "Sa pamamagitan ng pag-click sa 'I-edit', magagawa mong ayusin ang mga "
 "bagaytulad ng wikang gamit sa pagpapatakbo ng sistemang ito."
@@ -1617,10 +1681,15 @@ msgid "Locations"
 msgstr "Mga lokasyon"
 
 #: dt-assets/parts/modals/modal-help.php:67
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "These are the areas you are responsible for. Clicking the 'Add' button "
+#| "willbring up a list of locations to choose from."
 msgctxt "Optional Documentation"
 msgid ""
-"These are the areas you are responsible for. Clicking the 'Add' button "
-"willbring up a list of locations to choose from."
+"These are the areas you are responsible for. Clicking the 'Add' button will "
+"bring up a list of locations to choose from."
 msgstr ""
 "Ito ang mga lugar na iyong responsibilidad. Sa pag-click sa buton "
 "na'Idagdag' ay may lalabas na listahan ng mga lokasyong mapagpipilian."
@@ -1631,11 +1700,17 @@ msgid "Your Notifications"
 msgstr "Ang Iyong mga Notipikasyon"
 
 #: dt-assets/parts/modals/modal-help.php:73
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "You will receive web notifications and email notifications based on "
+#| "yournotification preferences. To change your preference, click the "
+#| "togglebuttons."
 msgctxt "Optional Documentation"
 msgid ""
-"You will receive web notifications and email notifications based on "
-"yournotification preferences. To change your preference, click the "
-"togglebuttons."
+"You will receive web notifications and email notifications based on your "
+"notification preferences. To change your preference, click the toggle "
+"buttons."
 msgstr ""
 "Makakatanggap ka ng mga notipikasyon sa web at mga notipikasyon sa "
 "emailbatay sa iyong mga kagustuhan sa notipikasyon. Upang baguhin ang "
@@ -1652,26 +1727,38 @@ msgid "Notifications Turned Off: The toggle will appear grey."
 msgstr "Naka-off ang mga Notipikasyon: Ang toggle ay lalabas na kulay-abo."
 
 #: dt-assets/parts/modals/modal-help.php:78
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "Some of the types of notifications cannot be adjusted because they "
+#| "arerequired by the system."
 msgctxt "Optional Documentation"
 msgid ""
-"Some of the types of notifications cannot be adjusted because they "
-"arerequired by the system."
+"Some of the types of notifications cannot be adjusted because they are "
+"required by the system."
 msgstr ""
 "Ang ilan sa mga uri ng notipikasyon ay hindi maaaring ayusin dahil ang "
 "mgaito ay kinakailangan ng sistema."
 
 #: dt-assets/parts/modals/modal-help.php:79
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "Adjust whether you want to see notifications about new comments, "
+#| "contactinformation changes, Contact Milestones and Group Health metrics, "
+#| "andwhether to you will receive a notification for any update that happens "
+#| "inthe system."
 msgctxt "Optional Documentation"
 msgid ""
-"Adjust whether you want to see notifications about new comments, "
-"contactinformation changes, Contact Milestones and Group Health metrics, "
-"andwhether to you will receive a notification for any update that happens "
-"inthe system."
+"Adjust whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
 "Isaayos kung gusto mong makakita ng mga notipikasyon tungkol sa mga "
-"bagongkomento, mga pagbabago sa impormasyon para sa pakikipag-"
-"ugnayan,Mahahalagang Pangyayari sa Kontak at sukatan ng Kalusugan ng Grupo, "
-"at kungmakakatanggap ka ng notipikasyon para sa anumang pag-update na "
+"bagongkomento, mga pagbabago sa impormasyon para sa pakikipag-ugnayan,"
+"Mahahalagang Pangyayari sa Kontak at sukatan ng Kalusugan ng Grupo, at "
+"kungmakakatanggap ka ng notipikasyon para sa anumang pag-update na "
 "nangyayari sasistema."
 
 #: dt-assets/parts/modals/modal-help.php:87
@@ -1680,10 +1767,15 @@ msgid "Notifications Page"
 msgstr "Pahina ng mga Notipikasyon"
 
 #: dt-assets/parts/modals/modal-help.php:88
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "This Notifications Page is where you can read updates to users and groups."
+#| "It displays notifications about activity on your records."
 msgctxt "Optional Documentation"
 msgid ""
-"This Notifications Page is where you can read updates to users and groups.It "
-"displays notifications about activity on your records."
+"This Notifications Page is where you can read updates to users and groups. "
+"It displays notifications about activity on your records."
 msgstr ""
 "Ang Pahina ng mga Notipikasyon na ito ay kung saan maaari mong mabasa angmga "
 "update para sa mga gumagamit at grupo. Nagpapakita ito ng mganotipikasyon "
@@ -1703,10 +1795,15 @@ msgstr ""
 "ngiyong notipikasyon."
 
 #: dt-assets/parts/modals/modal-help.php:91
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "Click the 'Unread' button to show the list of all of your "
+#| "unreadnotifications."
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Unread' button to show the list of all of your "
-"unreadnotifications."
+"Click the 'Unread' button to show the list of all of your unread "
+"notifications."
 msgstr ""
 "I-click ang buton na 'Hindi Nabasa' upang ipakita ang listahan ng lahat "
 "ngiyong hindi nabasang notipikasyon."
@@ -1717,12 +1814,19 @@ msgid "Mark all as read"
 msgstr "Markahan ang lahat bilang nabasa na"
 
 #: dt-assets/parts/modals/modal-help.php:93
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "If you don't want to click each filled in circle on the right side of "
+#| "eachrow to indicate the notification has been read, then click the 'Mark "
+#| "All asRead' link at the top to quickly adjust all the messages that they "
+#| "have allbeen read."
 msgctxt "Optional Documentation"
 msgid ""
-"If you don't want to click each filled in circle on the right side of "
-"eachrow to indicate the notification has been read, then click the 'Mark All "
-"asRead' link at the top to quickly adjust all the messages that they have "
-"allbeen read."
+"If you don't want to click each filled in circle on the right side of each "
+"row to indicate the notification has been read, then click the 'Mark All as "
+"Read' link at the top to quickly adjust all the messages that they have all "
+"been read."
 msgstr ""
 "Kung hindi mo gustong i-click ang bawa't napunan na bilog sa kanang bahaging "
 "bawa't hanay upang ipahiwatig na nabasa na ang notipikasyon, i-click anglink "
@@ -1730,13 +1834,21 @@ msgstr ""
 "ng mensahe na ang lahat ng ito ay nabasa na."
 
 #: dt-assets/parts/modals/modal-help.php:95
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "Click the 'Settings' link to go to the notifications settings area to "
+#| "adjustwhether you want to see notifications about new comments, "
+#| "contactinformation changes, Contact Milestones and Group Health metrics, "
+#| "andwhether to you will receive a notification for any update that happens "
+#| "inthe system."
 msgctxt "Optional Documentation"
 msgid ""
-"Click the 'Settings' link to go to the notifications settings area to "
-"adjustwhether you want to see notifications about new comments, "
-"contactinformation changes, Contact Milestones and Group Health metrics, "
-"andwhether to you will receive a notification for any update that happens "
-"inthe system."
+"Click the 'Settings' link to go to the notifications settings area to adjust "
+"whether you want to see notifications about new comments, contact "
+"information changes, Contact Milestones and Group Health metrics, and "
+"whether to you will receive a notification for any update that happens in "
+"the system."
 msgstr ""
 "I-click ang link na 'Mga Setting' upang pumunta sa lugar ng mga setting "
 "ngmga notipikasyon at upang ayusin kung gusto mong makakita ng "
@@ -1751,16 +1863,23 @@ msgid "Duplicate Contact page"
 msgstr "Pahina ng Magkakatulad na Kontak"
 
 #: dt-assets/parts/modals/modal-help.php:101
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "This Duplicate Contact Page is where you can review, decline or "
+#| "mergecontacts that have been picked up by the system (checking against "
+#| "theirname, email and phone) as possibly being duplicates of another "
+#| "alreadyexisting contact."
 msgctxt "Optional Documentation"
 msgid ""
-"This Duplicate Contact Page is where you can review, decline or "
-"mergecontacts that have been picked up by the system (checking against "
-"theirname, email and phone) as possibly being duplicates of another "
-"alreadyexisting contact."
+"This Duplicate Contact Page is where you can review, decline or merge "
+"contacts that have been picked up by the system (checking against their "
+"name, email and phone) as possibly being duplicates of another already "
+"existing contact."
 msgstr ""
-"Ang Pahina ng Magkakatulad na Kontak na ito ay kung saan maaari mong "
-"suriin,tanggihan o pagsamahin ang mga kontak na nakuha ng sistema (sinusuri "
-"ayon sakanilang pangalan, email at telepono) na posibleng mga kopya ng isa "
+"Ang Pahina ng Magkakatulad na Kontak na ito ay kung saan maaari mong suriin,"
+"tanggihan o pagsamahin ang mga kontak na nakuha ng sistema (sinusuri ayon "
+"sakanilang pangalan, email at telepono) na posibleng mga kopya ng isa "
 "pangkasalukuyan nang kontak."
 
 #: dt-assets/parts/modals/modal-help.php:124
@@ -1795,9 +1914,13 @@ msgstr ""
 "I-scan ang QR code upang buksan ang magic na link sa isang mobile na device."
 
 #: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
+#, fuzzy
+#| msgid ""
+#| "Reset the security code. No data is removed. Only access. The previous "
+#| "linkwill be disabled and another one created."
 msgid ""
-"Reset the security code. No data is removed. Only access. The previous "
-"linkwill be disabled and another one created."
+"Reset the security code. No data is removed. Only access. The previous link "
+"will be disabled and another one created."
 msgstr ""
 "I-reset ang code para sa seguridad. Walang inaalis na datos. Pag-accesslang. "
 "Ang dating link ay hindi na pagaganahin at gagawa ng isa pa."
@@ -1893,10 +2016,20 @@ msgstr "Ang grupong ito ay ibinabahagi sa:"
 msgid "This contact is shared with:"
 msgstr "Ang contact na ito ay ibinabahagi sa:"
 
+#: dt-assets/parts/modals/modal-share.php:27 dt-contacts/module-access.php:531
+#: dt-contacts/user-module.php:137 dt-core/global-functions.php:816
+msgctxt "input field placeholder"
+msgid "Search Users"
+msgstr "Maghanap ng mga User"
+
 #: dt-assets/parts/modals/modal-tasks.php:12
+#, fuzzy
+#| msgid ""
+#| "Set a reminder or a task with a note and receive a notification on the "
+#| "duedate."
 msgid ""
-"Set a reminder or a task with a note and receive a notification on the "
-"duedate."
+"Set a reminder or a task with a note and receive a notification on the due "
+"date."
 msgstr ""
 "Magtakda ng paalala o gawain na may tala at makatanggap ng notipikasyon "
 "satakdang petsa."
@@ -1950,8 +2083,8 @@ msgstr "Tingnan Lahat"
 msgid "Mark All"
 msgstr "Markahan Lahat"
 
-#: dt-contacts/base-setup.php:55 dt-contacts/base-setup.php:68
-#: dt-contacts/base-setup.php:266 dt-mapping/columns/add-contacts-column.php:59
+#: dt-contacts/base-setup.php:59 dt-contacts/base-setup.php:72
+#: dt-contacts/base-setup.php:274 dt-mapping/columns/add-contacts-column.php:59
 #: dt-metrics/combined/daily-activity.php:89
 #: dt-metrics/combined/hover-map.php:132
 #: dt-metrics/combined/locations-list.php:92
@@ -1963,83 +2096,83 @@ msgstr "Markahan Lahat"
 msgid "Contacts"
 msgstr "Mga Contact"
 
-#: dt-contacts/base-setup.php:113
+#: dt-contacts/base-setup.php:121
 msgid "Nickname"
 msgstr "Nickname"
 
-#: dt-contacts/base-setup.php:121
+#: dt-contacts/base-setup.php:129
 msgid "Contact Type"
 msgstr "Uri ng Kontak"
 
-#: dt-contacts/base-setup.php:125
+#: dt-contacts/base-setup.php:133
 msgid "User"
 msgstr "User"
 
-#: dt-contacts/base-setup.php:126
+#: dt-contacts/base-setup.php:134
 msgid "Representing a User in the system"
 msgstr "Kumakatawan sa isang User sa system"
 
-#: dt-contacts/base-setup.php:132
+#: dt-contacts/base-setup.php:140
 msgid "Private Contact"
 msgstr "Pribadong Kontak"
 
-#: dt-contacts/base-setup.php:134
+#: dt-contacts/base-setup.php:142
 msgid "A friend, family member or acquaintance"
 msgstr "Isang kaibigan, kamag-anak o kakilala"
 
-#: dt-contacts/base-setup.php:135 dt-contacts/base-setup.php:165
+#: dt-contacts/base-setup.php:143 dt-contacts/base-setup.php:173
 msgid "Only me"
 msgstr "Ako lang"
 
-#: dt-contacts/base-setup.php:142
+#: dt-contacts/base-setup.php:150
 msgid "Standard Contact"
 msgstr "Karaniwang Kontak"
 
-#: dt-contacts/base-setup.php:144
+#: dt-contacts/base-setup.php:152
 msgid "A contact to collaborate on"
 msgstr "Isang kontak na makikipagtulungan sa"
 
-#: dt-contacts/base-setup.php:145
+#: dt-contacts/base-setup.php:153
 msgid "Me and project leadership"
 msgstr "Ako at ang pamunuan ng proyekto"
 
-#: dt-contacts/base-setup.php:151
+#: dt-contacts/base-setup.php:159
 msgid "Connection"
 msgstr "Koneksyon"
 
-#: dt-contacts/base-setup.php:153 dt-contacts/base-setup.php:162
+#: dt-contacts/base-setup.php:161 dt-contacts/base-setup.php:170
 msgid "Connected to a contact, or generational fruit"
 msgstr "Nakakonekta sa isang contact, o bunga (generational fruit)"
 
-#: dt-contacts/base-setup.php:156
+#: dt-contacts/base-setup.php:164
 msgid "Collaborators"
 msgstr "Mga Tumutulong"
 
-#: dt-contacts/base-setup.php:160
+#: dt-contacts/base-setup.php:168
 msgid "Private Connection"
 msgstr "Pribadong Koneksyon"
 
-#: dt-contacts/base-setup.php:189 dt-users/users.php:162
+#: dt-contacts/base-setup.php:197 dt-users/users.php:162
 msgid "Languages"
 msgstr "Mga wika"
 
-#: dt-contacts/base-setup.php:198 template-settings.php:180
+#: dt-contacts/base-setup.php:206 template-settings.php:180
 msgid "Phone"
 msgstr "Telepono"
 
-#: dt-contacts/base-setup.php:206
+#: dt-contacts/base-setup.php:214
 msgid "Signal"
 msgstr "Signal"
 
-#: dt-contacts/base-setup.php:211
+#: dt-contacts/base-setup.php:219
 msgid "Viber"
 msgstr "Viber"
 
-#: dt-contacts/base-setup.php:216
+#: dt-contacts/base-setup.php:224
 msgid "WhatsApp"
 msgstr "WhatsApp"
 
-#: dt-contacts/base-setup.php:223
+#: dt-contacts/base-setup.php:231
 #: dt-core/configuration/config-site-defaults.php:253
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:223
@@ -2047,297 +2180,304 @@ msgstr "WhatsApp"
 msgid "Email"
 msgstr "Email"
 
-#: dt-contacts/base-setup.php:232 dt-groups/base-setup.php:358
+#: dt-contacts/base-setup.php:240 dt-groups/base-setup.php:358
 #: dt-people-groups/people-groups-base.php:210 template-settings.php:191
 msgid "Address"
 msgstr "Address"
 
-#: dt-contacts/base-setup.php:249
+#: dt-contacts/base-setup.php:257
 msgid "Facebook"
 msgstr "Facebook"
 
-#: dt-contacts/base-setup.php:257
+#: dt-contacts/base-setup.php:265
 msgid "Other Social Links"
 msgstr "Iba pang Mga Social Link"
 
-#: dt-contacts/base-setup.php:266
+#: dt-contacts/base-setup.php:274
 #, php-format
 msgctxt "connections to other records"
 msgid "Connections to other %s"
 msgstr "Mga koneksyon sa ibang %s"
 
-#: dt-contacts/base-setup.php:267
+#: dt-contacts/base-setup.php:275
 msgctxt "Optional Documentation"
 msgid "Relationship this contact has with another contact in the system."
 msgstr "Kaugnayang mayroon ang contact na ito sa ibang contact na nasa system."
 
-#: dt-contacts/base-setup.php:278 dt-contacts/module-access.php:1189
+#: dt-contacts/base-setup.php:286 dt-contacts/module-access.php:1107
 #: dt-users/template-new-user.php:185 dt-users/template-user-management.php:231
 #: template-settings.php:708
 msgid "Gender"
 msgstr "Kasarian"
 
-#: dt-contacts/base-setup.php:281 dt-users/template-user-management.php:235
+#: dt-contacts/base-setup.php:289 dt-users/template-user-management.php:235
 msgid "Male"
 msgstr "Lalaki"
 
-#: dt-contacts/base-setup.php:282 dt-users/template-user-management.php:236
+#: dt-contacts/base-setup.php:290 dt-users/template-user-management.php:236
 msgid "Female"
 msgstr "Babae"
 
-#: dt-contacts/base-setup.php:289
+#: dt-contacts/base-setup.php:297
 msgid "Age"
 msgstr "Edad"
 
-#: dt-contacts/base-setup.php:293
+#: dt-contacts/base-setup.php:301
 msgid "Under 18 years old"
 msgstr "Wala pang 18 taong gulang"
 
-#: dt-contacts/base-setup.php:294
+#: dt-contacts/base-setup.php:302
 msgid "18-25 years old"
 msgstr "18-25 taong gulang"
 
-#: dt-contacts/base-setup.php:295
+#: dt-contacts/base-setup.php:303
 msgid "26-40 years old"
 msgstr "26-40 taong gulang"
 
-#: dt-contacts/base-setup.php:296
+#: dt-contacts/base-setup.php:304
 msgid "Over 40 years old"
 msgstr "Mahigit 40 taong gulang"
 
-#: dt-contacts/base-setup.php:304 dt-groups/base-setup.php:105
+#: dt-contacts/base-setup.php:312 dt-groups/base-setup.php:105
 #: dt-people-groups/people-groups-base.php:166
 msgid "Requires Update"
 msgstr "Nangangailangan ng Update"
 
-#: dt-contacts/base-setup.php:310 dt-contacts/module-access.php:142
+#: dt-contacts/base-setup.php:318 dt-contacts/module-access.php:134
 #: dt-metrics/combined/site-links.php:78 dt-metrics/combined/site-links.php:81
 msgid "Contact Status"
 msgstr "Katayuan ng Kontak"
 
-#: dt-contacts/base-setup.php:311
+#: dt-contacts/base-setup.php:319
 msgctxt "Contact Status field description"
 msgid ""
 "The Contact Status describes the progress in communicating with the contact."
 msgstr ""
 "Inilalarawan ng Status ng Kontak ang pagsulong sa pakikipag-ugnayan sakontak."
 
-#: dt-contacts/base-setup.php:318 dt-groups/base-setup.php:121
+#: dt-contacts/base-setup.php:326 dt-groups/base-setup.php:121
 #: dt-users/users.php:177
 msgid "Active"
 msgstr "Aktibo"
 
-#: dt-contacts/base-setup.php:319
+#: dt-contacts/base-setup.php:327
 msgctxt "Contact Status field description"
 msgid "The contact is progressing and/or continually being updated."
 msgstr "Ang kontak na ito ay sumusulong at/o patuloy na ina-update."
 
-#: dt-contacts/base-setup.php:324
+#: dt-contacts/base-setup.php:332
 msgid "New Contact"
 msgstr "Bagong Contact"
 
-#: dt-contacts/base-setup.php:325
+#: dt-contacts/base-setup.php:333
 msgctxt "Contact Status field description"
 msgid "The contact is new in the system."
 msgstr "Ang kontak ay bago sa system."
 
-#: dt-contacts/base-setup.php:331
+#: dt-contacts/base-setup.php:339
+#, fuzzy
+#| msgctxt "Contact Status field description"
+#| msgid ""
+#| "This contact has made it known that they no longer want to continue or "
+#| "youhave decided not to continue with him/her."
 msgctxt "Contact Status field description"
 msgid ""
-"This contact has made it known that they no longer want to continue or "
-"youhave decided not to continue with him/her."
+"This contact has made it known that they no longer want to continue or you "
+"have decided not to continue with him/her."
 msgstr ""
 "Ipinaalam ng kontak na ito na ayaw na niyang magpatuloy o nagpasya kanghuwag "
 "nang magpatuloy kasama niya."
 
-#: dt-contacts/base-setup.php:337 dt-groups/base-setup.php:138
+#: dt-contacts/base-setup.php:345 dt-groups/base-setup.php:138
 #: dt-metrics/records/genmap.php:147 dt-metrics/records/genmap.php:154
 msgid "Assigned To"
 msgstr "Itinalaga Kay"
 
-#: dt-contacts/base-setup.php:338
+#: dt-contacts/base-setup.php:346
 msgid ""
 "Select the main person who is responsible for reporting on this contact."
 msgstr ""
 "Piliin ang pangunahing taong responsable para sa pag-uulat tungkol sa "
 "kontakna ito."
 
-#: dt-contacts/base-setup.php:348
+#: dt-contacts/base-setup.php:356
 msgid "Sub-assigned to"
 msgstr "Naka-sub-assign kay"
 
-#: dt-contacts/base-setup.php:349
+#: dt-contacts/base-setup.php:357
 msgid ""
 "Contact or User assisting the Assigned To user to follow up with the contact."
 msgstr ""
 "Contact o User na tinutulungan ang Assigned To user na mag-follow up "
 "sacontact."
 
-#: dt-contacts/base-setup.php:360
+#: dt-contacts/base-setup.php:368
 msgid "Sub-assigned on other Contacts"
 msgstr "Naka-sub-assign sa ibang Mga Contact"
 
-#: dt-contacts/base-setup.php:361
+#: dt-contacts/base-setup.php:369
 msgid "Contacts this contacts is subassigned on"
 msgstr "Ang mga contact sa mga contact na ito ay naka-subassign sa"
 
-#: dt-contacts/base-setup.php:373 dt-contacts/base-setup.php:754
+#: dt-contacts/base-setup.php:381 dt-contacts/base-setup.php:762
 #: dt-metrics/metrics.php:41 dt-metrics/metrics.php:43
 #: dt-metrics/metrics.php:93 dt-metrics/personal/activity-highlights.php:23
 #: dt-metrics/personal/activity-log.php:23 dt-metrics/personal/overview.php:23
 msgid "Personal"
 msgstr "Personal"
 
-#: dt-contacts/base-setup.php:377
+#: dt-contacts/base-setup.php:385
 #: dt-core/configuration/config-site-defaults.php:256
 msgid "Web"
 msgstr "Web"
 
-#: dt-contacts/base-setup.php:381
+#: dt-contacts/base-setup.php:389
 msgid "Transfer"
 msgstr "Ilipat"
 
-#: dt-contacts/base-setup.php:383
+#: dt-contacts/base-setup.php:391
 msgid ""
 "Contacts transferred from a partnership with another Disciple.Tools site."
 msgstr ""
 "Inilipat ang mga kontak mula sa isang samahan na may katuwang na isa "
 "pangAlagad. Lugar ng tools."
 
-#: dt-contacts/base-setup.php:396 dt-metrics/contacts/sources.php:90
+#: dt-contacts/base-setup.php:404 dt-metrics/contacts/sources.php:90
 #: dt-users/user-hooks-and-config.php:616
 msgid "Sources"
 msgstr "Mga Sanggunian"
 
-#: dt-contacts/base-setup.php:397
+#: dt-contacts/base-setup.php:405
 msgctxt "Optional Documentation"
 msgid "The website, event or location this contact came from."
 msgstr "Ang website, event o lokasyon kung saan nanggaling ang contact na ito."
 
-#: dt-contacts/base-setup.php:438 dt-contacts/base-setup.php:470
+#: dt-contacts/base-setup.php:446 dt-contacts/base-setup.php:478
 #, php-format
 msgctxt "Archive Contact"
 msgid "Archive %s"
 msgstr "I-archive si %s"
 
-#: dt-contacts/base-setup.php:445
+#: dt-contacts/base-setup.php:453
 #, php-format
 msgctxt "Change Record Type"
 msgid "Change %s Type"
 msgstr "Palitan ang Uri ng %s"
 
-#: dt-contacts/base-setup.php:451
+#: dt-contacts/base-setup.php:459
 msgid "See duplicates"
 msgstr "Tingnan ang mga kopya"
 
-#: dt-contacts/base-setup.php:471
+#: dt-contacts/base-setup.php:479
 #, php-format
 msgctxt "Are you sure you want to archive name?"
 msgid "Are you sure you want to archive %s?"
 msgstr "Sigurado ka bang gusto mong i-archive si %s?"
 
-#: dt-contacts/base-setup.php:478
+#: dt-contacts/base-setup.php:486
 msgid "Archive"
 msgstr "I-archive"
 
-#: dt-contacts/base-setup.php:489 dt-contacts/module-access.php:432
-#: dt-contacts/module-access.php:463 dt-contacts/module-access.php:494
+#: dt-contacts/base-setup.php:497 dt-contacts/module-access.php:424
+#: dt-contacts/module-access.php:455 dt-contacts/module-access.php:486
 msgid "Choose an option:"
 msgstr "Pumili ng opsyon:"
 
-#: dt-contacts/base-setup.php:513 dt-contacts/module-access.php:454
-#: dt-contacts/module-access.php:485 dt-contacts/module-access.php:513
+#: dt-contacts/base-setup.php:521 dt-contacts/module-access.php:446
+#: dt-contacts/module-access.php:477 dt-contacts/module-access.php:505
 msgid "Confirm"
 msgstr "Kompirmahin"
 
-#: dt-contacts/base-setup.php:537
+#: dt-contacts/base-setup.php:545
 #: dt-core/configuration/config-site-defaults.php:444
-#: dt-groups/base-setup.php:611 template-settings.php:213
+#: dt-groups/base-setup.php:556 template-settings.php:213
 msgid "Other"
 msgstr "Iba pa"
 
-#: dt-contacts/base-setup.php:628
-msgid "This record might be a duplicate of:"
+#: dt-contacts/base-setup.php:636
+#, fuzzy
+#| msgid "This record might be a duplicate of:"
+msgid "This record might be a duplicate of: "
 msgstr "Ang talang ito ay maaaring kopya ng:"
 
-#: dt-contacts/base-setup.php:634 dt-contacts/duplicates-merging.php:513
+#: dt-contacts/base-setup.php:642 dt-contacts/duplicates-merging.php:513
 #: dt-contacts/duplicates-merging.php:595
 msgid "Duplicate Checker"
 msgstr "Kopyahin ang Checker"
 
-#: dt-contacts/base-setup.php:673 dt-groups/base-setup.php:1032
+#: dt-contacts/base-setup.php:681 dt-groups/base-setup.php:977
 #: dt-posts/custom-post-type.php:468
 msgid "Default Filters"
 msgstr "Mga Default na Filter"
 
-#: dt-contacts/base-setup.php:683
+#: dt-contacts/base-setup.php:691
 #, php-format
 msgctxt "All records I can view"
 msgid "All %s I can view"
 msgstr "Lahat ng %s na pwede kong matingnan"
 
-#: dt-contacts/base-setup.php:710 dt-groups/base-setup.php:1046
+#: dt-contacts/base-setup.php:718 dt-groups/base-setup.php:991
 #: dt-posts/custom-post-type.php:501
 #, php-format
 msgctxt "Favorite Contacts"
 msgid "Favorite %s"
 msgstr "Paboritong mga %s"
 
-#: dt-contacts/base-setup.php:716 dt-groups/base-setup.php:1051
+#: dt-contacts/base-setup.php:724 dt-groups/base-setup.php:996
 #: dt-posts/custom-post-type.php:201 dt-posts/custom-post-type.php:507
 msgid "Favorite"
 msgstr "Paborito"
 
-#: dt-contacts/base-setup.php:722 dt-groups/base-setup.php:1057
+#: dt-contacts/base-setup.php:730 dt-groups/base-setup.php:1002
 #: dt-posts/custom-post-type.php:516
 msgid "My Recently Viewed"
 msgstr "Ang Tiningnan Ko Kamakailan"
 
-#: dt-contacts/base-setup.php:727 dt-groups/base-setup.php:1062
+#: dt-contacts/base-setup.php:735 dt-groups/base-setup.php:1007
 #: dt-posts/custom-post-type.php:521
 msgid "Last 30 viewed"
 msgstr "Huling 30 tiningnan"
 
-#: dt-contacts/base-setup.php:734
+#: dt-contacts/base-setup.php:742
 msgid "My Assigned Contacts"
 msgstr "Aking mga Itinalagang Contact"
 
-#: dt-contacts/base-setup.php:744
+#: dt-contacts/base-setup.php:752
 msgid "My Follow-Up"
 msgstr "Ang Follow-Up Ko"
 
-#: dt-contacts/base-setup.php:745 dt-contacts/module-access.php:873
-#: dt-contacts/module-access.php:895 dt-contacts/module-access.php:920
-#: dt-groups/base-setup.php:950
+#: dt-contacts/base-setup.php:753 dt-contacts/module-access.php:865
+#: dt-contacts/module-access.php:887 dt-contacts/module-access.php:912
+#: dt-groups/base-setup.php:895
 msgid "Assigned to me"
 msgstr "Naka-assign sa akin"
 
-#: dt-contacts/base-setup.php:746 dt-contacts/module-access.php:874
-#: dt-contacts/module-access.php:896 dt-contacts/module-access.php:921
+#: dt-contacts/base-setup.php:754 dt-contacts/module-access.php:866
+#: dt-contacts/module-access.php:888 dt-contacts/module-access.php:913
 msgid "Sub-assigned to me"
 msgstr "Naka-sub-assign sa akin"
 
-#: dt-contacts/base-setup.php:766
+#: dt-contacts/base-setup.php:774
 #, php-format
 msgctxt "Personal records"
 msgid "Connected %s"
 msgstr "Nakakonekta %s"
 
-#: dt-contacts/base-setup.php:790 dt-contacts/base-setup.php:798
-#: dt-contacts/base-setup.php:834 dt-contacts/base-setup.php:835
+#: dt-contacts/base-setup.php:798 dt-contacts/base-setup.php:806
+#: dt-contacts/base-setup.php:842 dt-contacts/base-setup.php:843
 msgid "Shared with me"
 msgstr "Ibinahagi sa akin"
 
-#: dt-contacts/base-setup.php:838 dt-contacts/base-setup.php:839
+#: dt-contacts/base-setup.php:846 dt-contacts/base-setup.php:847
 msgid "Subassigned only"
 msgstr "Pangalawang itinalaga lang"
 
-#: dt-contacts/base-setup.php:992
+#: dt-contacts/base-setup.php:1000
 #, php-format
 msgid "This %s is archived"
 msgstr "Ang %s ay naka-archive na"
 
-#: dt-contacts/base-setup.php:994
+#: dt-contacts/base-setup.php:1002
 msgid "Restore"
 msgstr "I-restore"
 
@@ -2391,10 +2531,15 @@ msgid "Already transfered to %s"
 msgstr "Nailipat na sa %s"
 
 #: dt-contacts/contacts-transfer.php:277
+#, fuzzy
+#| msgid ""
+#| "NOTE: You have already transferred this contact. Transferring again "
+#| "mightcreate duplicates. Do you still want to override this warning and "
+#| "continuewith your transfer?"
 msgid ""
-"NOTE: You have already transferred this contact. Transferring again "
-"mightcreate duplicates. Do you still want to override this warning and "
-"continuewith your transfer?"
+"NOTE: You have already transferred this contact. Transferring again might "
+"create duplicates. Do you still want to override this warning and continue "
+"with your transfer?"
 msgstr ""
 "PAALALA: Nailipat mo na ang contact na ito. Kapag inilipat ulit, "
 "pwedengmadoble. Gusto mo pa rin bang balewalain ang babalang ito at ituloy "
@@ -2473,282 +2618,304 @@ msgstr "Isinama ni %1$s si %2$s sa record na ito"
 msgid "View Duplicates"
 msgstr "Tingnan ang mga Duplicate"
 
-#: dt-contacts/module-access.php:59
+#: dt-contacts/module-access.php:56
 msgid "Dispatcher"
 msgstr "Dispatcher"
 
-#: dt-contacts/module-access.php:66
+#: dt-contacts/module-access.php:63
 msgid "Partner"
 msgstr "Ka-partner"
 
-#: dt-contacts/module-access.php:73
+#: dt-contacts/module-access.php:70
 msgid "Digital Responder"
 msgstr "Digital Responder"
 
-#: dt-contacts/module-access.php:102 dt-metrics/combined/site-links.php:79
+#: dt-contacts/module-access.php:94 dt-metrics/combined/site-links.php:79
 #: dt-metrics/combined/site-links.php:82
 msgid "Seeker Path"
 msgstr "Landas ng Naghahanap"
 
-#: dt-contacts/module-access.php:103
+#: dt-contacts/module-access.php:95
+#, fuzzy
+#| msgctxt "Seeker Path field description"
+#| msgid ""
+#| "Set the status of your progression with the contact. These are the "
+#| "stepsthat happen in a specific order to help a contact move forward."
 msgctxt "Seeker Path field description"
 msgid ""
-"Set the status of your progression with the contact. These are the stepsthat "
-"happen in a specific order to help a contact move forward."
+"Set the status of your progression with the contact. These are the steps "
+"that happen in a specific order to help a contact move forward."
 msgstr ""
 "Itakda ang status ng iyong pagsulong kasama ang kontak. Ito ang mga "
 "hakbangna nagaganap sa nakatakdang pagkakasunod-sunod upang "
 "matulungangmakapagpatuloy ang isang kontak."
 
-#: dt-contacts/module-access.php:107
+#: dt-contacts/module-access.php:99
 msgid "Contact Attempt Needed"
 msgstr "Kailangang Subukang Makipag-ugnayan"
 
-#: dt-contacts/module-access.php:111 dt-contacts/module-access.php:273
+#: dt-contacts/module-access.php:103 dt-contacts/module-access.php:265
 msgid "Contact Attempted"
 msgstr "Sinubukang Makipag-ugnayan"
 
-#: dt-contacts/module-access.php:115 dt-contacts/module-access.php:282
+#: dt-contacts/module-access.php:107 dt-contacts/module-access.php:274
 msgid "Contact Established"
 msgstr "Mayroon Nang Ugnayan"
 
-#: dt-contacts/module-access.php:119
+#: dt-contacts/module-access.php:111
 msgid "First Meeting Scheduled"
 msgstr "Naiskedyul ang Unang Miting"
 
-#: dt-contacts/module-access.php:123
+#: dt-contacts/module-access.php:115
 msgid "First Meeting Complete"
 msgstr "Nakumpleto ang Unang Miting"
 
-#: dt-contacts/module-access.php:127 dt-metrics/counter.php:140
+#: dt-contacts/module-access.php:119 dt-metrics/counter.php:140
 msgid "Ongoing Meetings"
 msgstr "Mga Nagaganap na Pulong"
 
-#: dt-contacts/module-access.php:131
+#: dt-contacts/module-access.php:123
 msgid "Being Coached"
 msgstr "Kasalukuyang Tinuturuan"
 
-#: dt-contacts/module-access.php:148
+#: dt-contacts/module-access.php:140
 msgid "Not Ready"
 msgstr "Hindi Handa"
 
-#: dt-contacts/module-access.php:149
+#: dt-contacts/module-access.php:141
+#, fuzzy
+#| msgctxt "Contact Status field description"
+#| msgid ""
+#| "There is not enough information to move forward with the contact at "
+#| "thistime."
 msgctxt "Contact Status field description"
 msgid ""
-"There is not enough information to move forward with the contact at thistime."
+"There is not enough information to move forward with the contact at this "
+"time."
 msgstr "Walang sapat na impormasyon para isulong ang kontak sa ngayon."
 
-#: dt-contacts/module-access.php:153
+#: dt-contacts/module-access.php:145
 msgid "Dispatch Needed"
 msgstr "Kailangang Ipadala"
 
-#: dt-contacts/module-access.php:154
+#: dt-contacts/module-access.php:146
 msgctxt "Contact Status field description"
 msgid "This contact needs to be assigned to a multiplier."
 msgstr "Kailangang itakda ang kontak na ito sa isang multiplier."
 
-#: dt-contacts/module-access.php:158
+#: dt-contacts/module-access.php:150
 msgid "Waiting to be accepted"
 msgstr "Naghihintay na matanggap"
 
-#: dt-contacts/module-access.php:159
+#: dt-contacts/module-access.php:151
+#, fuzzy
+#| msgctxt "Contact Status field description"
+#| msgid ""
+#| "The contact has been assigned to someone, but has not yet been accepted "
+#| "bythat person."
 msgctxt "Contact Status field description"
 msgid ""
-"The contact has been assigned to someone, but has not yet been accepted "
-"bythat person."
+"The contact has been assigned to someone, but has not yet been accepted by "
+"that person."
 msgstr ""
 "Itinakda ang kontak na ito sa isang tao, ngunit hindi pa natatanggap ngtaong "
 "iyon."
 
-#: dt-contacts/module-access.php:164
+#: dt-contacts/module-access.php:156
 msgid "Paused"
 msgstr "Sandaling inihinto"
 
-#: dt-contacts/module-access.php:165
+#: dt-contacts/module-access.php:157
 msgctxt "Contact Status field description"
 msgid "This contact is currently on hold (i.e. on vacation or not responding)."
 msgstr ""
 "Ang kontak na ito ay kasalukuyang nakahinto (ibig sabihin, nakabakasyon "
 "ohindi tumutugon)."
 
-#: dt-contacts/module-access.php:180
+#: dt-contacts/module-access.php:172
 msgid "Reason Not Ready"
 msgstr "Dahilan Kung Bakit Hindi Handa"
 
-#: dt-contacts/module-access.php:181
+#: dt-contacts/module-access.php:173
 msgctxt "Optional Documentation"
 msgid "The main reason the contact is not ready to be assigned to a user."
 msgstr ""
-"Ang pangunahing dahilan kung bakit hindi handang maitakda ang contact sa user."
+"Ang pangunahing dahilan kung bakit hindi handang maitakda ang contact sa "
+"user."
 
-#: dt-contacts/module-access.php:188
+#: dt-contacts/module-access.php:180
 msgid "Insufficient Contact Information"
 msgstr "Kulang na Impormasyon ng Contact"
 
-#: dt-contacts/module-access.php:191
+#: dt-contacts/module-access.php:183
 msgid "Unknown Location"
 msgstr "Hindi alam ang Lokasyon"
 
-#: dt-contacts/module-access.php:194
+#: dt-contacts/module-access.php:186
 msgid "Only wants media"
 msgstr "Gusto lang ng media"
 
-#: dt-contacts/module-access.php:197
+#: dt-contacts/module-access.php:189
 msgid "Outside Area"
 msgstr "Hindi Sakop"
 
-#: dt-contacts/module-access.php:200
+#: dt-contacts/module-access.php:192
 msgid "Needs Review"
 msgstr "Kailangan ng Pagsusuri"
 
-#: dt-contacts/module-access.php:203
+#: dt-contacts/module-access.php:195
 msgid "Waiting for Confirmation"
 msgstr "Naghihintay ng Kompirmasyon"
 
-#: dt-contacts/module-access.php:211
+#: dt-contacts/module-access.php:203
 msgid "Reason Paused"
 msgstr "Dahilan kung bakit Naka-pause"
 
-#: dt-contacts/module-access.php:212
+#: dt-contacts/module-access.php:204
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "A paused contact is one you are not currently interacting with but expect "
+#| "toin the future."
 msgctxt "Optional Documentation"
 msgid ""
-"A paused contact is one you are not currently interacting with but expect "
-"toin the future."
+"A paused contact is one you are not currently interacting with but expect to "
+"in the future."
 msgstr ""
 "Ang naka-pause na contact ay ang hindi mo pakikipag-ugnayan sa "
 "kasalukuyanngunit asahan na gagawin mo sa hinaharap with but expect to in "
 "the future."
 
-#: dt-contacts/module-access.php:216
+#: dt-contacts/module-access.php:208
 msgctxt "Reason Paused label"
 msgid "Contact on vacation"
 msgstr "Nakabakasyon ang kontak"
 
-#: dt-contacts/module-access.php:217
+#: dt-contacts/module-access.php:209
 msgctxt "Reason Paused label"
 msgid "Contact not responding"
 msgstr "Hindi tumutugon ang kontak"
 
-#: dt-contacts/module-access.php:218
+#: dt-contacts/module-access.php:210
 msgctxt "Reason Paused label"
 msgid "Contact not available"
 msgstr "Hindi pwede ang kontak"
 
-#: dt-contacts/module-access.php:219
+#: dt-contacts/module-access.php:211
 msgctxt "Reason Paused label"
 msgid "Contact has little interest/hunger"
 msgstr "Kaunti ang interes/pananabik ng kontak"
 
-#: dt-contacts/module-access.php:220
+#: dt-contacts/module-access.php:212
 msgctxt "Reason Paused label"
 msgid "Contact shows no initiative"
 msgstr "Walang inisyatibong ipinapakita ang kontak"
 
-#: dt-contacts/module-access.php:221
+#: dt-contacts/module-access.php:213
 msgctxt "Reason Paused label"
 msgid "Contact has questionable motives"
 msgstr "Kaduda-duda ang mga motibo ng kontak"
 
-#: dt-contacts/module-access.php:222
+#: dt-contacts/module-access.php:214
 msgctxt "Reason Paused label"
 msgid "Ball is in the contact's court"
 msgstr "Nasa kontak na ang bola"
 
-#: dt-contacts/module-access.php:223
+#: dt-contacts/module-access.php:215
 msgctxt "Reason Paused label"
 msgid "We want to see if/how the contact responds to automated text messages"
 msgstr ""
 "Gusto naming makita kung/kung paano tutugon ang kontak sa naka-automate "
 "natext message"
 
-#: dt-contacts/module-access.php:230
+#: dt-contacts/module-access.php:222
 msgid "Reason Archived"
 msgstr "Dahilan ng Pagkakalagay sa Artsibo"
 
-#: dt-contacts/module-access.php:231
+#: dt-contacts/module-access.php:223
 msgctxt "Optional Documentation"
 msgid "A closed contact is one you can't or don't wish to interact with."
 msgstr "Ang saradong contact ay ang hindi mo o ayaw mong makipag-ugnayan."
 
-#: dt-contacts/module-access.php:235
+#: dt-contacts/module-access.php:227
 msgctxt "Reason Closed label"
 msgid "Duplicate"
 msgstr "Kopyahin"
 
-#: dt-contacts/module-access.php:236
+#: dt-contacts/module-access.php:228
 msgctxt "Reason Closed label"
 msgid "Insufficient contact info"
 msgstr "Di-sapat ang impormasyon ng kontak"
 
-#: dt-contacts/module-access.php:237
+#: dt-contacts/module-access.php:229
 msgctxt "Reason Closed label"
 msgid "Denies submitting contact request"
 msgstr "Ayaw magsumite ng request sa kontak"
 
-#: dt-contacts/module-access.php:238
+#: dt-contacts/module-access.php:230
 msgctxt "Reason Closed label"
 msgid "Hostile, playing games or self gain"
 msgstr "Laban, naglalaro o sariling pakinabang"
 
-#: dt-contacts/module-access.php:239
+#: dt-contacts/module-access.php:231
 msgctxt "Reason Closed label"
 msgid "Only wants to argue or debate"
 msgstr "Gusto lang makipag-argumento o makipagdebate"
 
-#: dt-contacts/module-access.php:240
+#: dt-contacts/module-access.php:232
 msgctxt "Reason Closed label"
 msgid "Just wanted media or book"
 msgstr "Gusto lang ng media o libro"
 
-#: dt-contacts/module-access.php:241
+#: dt-contacts/module-access.php:233
 msgctxt "Reason Closed label"
 msgid "No longer interested"
 msgstr "Hindi na interesado"
 
-#: dt-contacts/module-access.php:242
+#: dt-contacts/module-access.php:234
 msgctxt "Reason Closed label"
 msgid "No longer responding"
 msgstr "Hindi na tumutugon"
 
-#: dt-contacts/module-access.php:243
+#: dt-contacts/module-access.php:235
 msgctxt "Reason Closed label"
 msgid "Already in church or connected with others"
 msgstr "Nasa simabahan na o konektado sa iba"
 
-#: dt-contacts/module-access.php:244
+#: dt-contacts/module-access.php:236
 msgctxt "Reason Closed label"
 msgid "Transferred contact to partner"
 msgstr "Inilipat ang kontak sa ka-partner"
 
-#: dt-contacts/module-access.php:245
+#: dt-contacts/module-access.php:237
 msgctxt "Reason Closed label"
 msgid "Martyred"
 msgstr "Nagpakamartir"
 
-#: dt-contacts/module-access.php:246
+#: dt-contacts/module-access.php:238
 msgctxt "Reason Closed label"
 msgid "Moved or relocated"
 msgstr "Inilipat o iniba ang lokasyon"
 
-#: dt-contacts/module-access.php:247
+#: dt-contacts/module-access.php:239
 msgctxt "Reason Closed label"
 msgid "GDPR request"
 msgstr "GDPR na request"
 
-#: dt-contacts/module-access.php:248
+#: dt-contacts/module-access.php:240
 msgctxt "Reason Closed label"
 msgid "Unknown"
 msgstr "Di-alam"
 
-#: dt-contacts/module-access.php:255
+#: dt-contacts/module-access.php:247
 msgid "Accepted"
 msgstr "Tanggap"
 
-#: dt-contacts/module-access.php:263
+#: dt-contacts/module-access.php:255
 msgid "Campaigns"
 msgstr "Mga Kampanya"
 
-#: dt-contacts/module-access.php:264
+#: dt-contacts/module-access.php:256
 msgctxt "Optional Documentation"
 msgid ""
 "Marketing campaigns or access activities that this contact interacted with."
@@ -2756,82 +2923,82 @@ msgstr ""
 "Mga kampanyang pang-marketing o mga aktibidad sa pag-access kung saannakipag-"
 "ugnayan ang kontak na ito."
 
-#: dt-contacts/module-access.php:291
+#: dt-contacts/module-access.php:283
 msgid "Meeting Scheduled"
 msgstr "Naiskedyul ang Pagpupulong"
 
-#: dt-contacts/module-access.php:300
+#: dt-contacts/module-access.php:292
 msgid "Meeting Complete"
 msgstr "Nakumpleto ang Pagpupulong"
 
-#: dt-contacts/module-access.php:309
+#: dt-contacts/module-access.php:301
 msgid "Meeting No-show"
 msgstr "Di-dumalo sa Pagpupulong"
 
-#: dt-contacts/module-access.php:358 dt-metrics/combined/critical-path.php:77
+#: dt-contacts/module-access.php:350 dt-metrics/combined/critical-path.php:77
 msgid "Follow Up"
 msgstr "Follow Up"
 
-#: dt-contacts/module-access.php:557
+#: dt-contacts/module-access.php:549
 msgid "Multipliers"
 msgstr "Mga Multiplier"
 
-#: dt-contacts/module-access.php:560
+#: dt-contacts/module-access.php:552
 msgid "Dispatchers"
 msgstr "Mga Dispatcher"
 
-#: dt-contacts/module-access.php:563
+#: dt-contacts/module-access.php:555
 msgid "Digital Responders"
 msgstr "Mga Digital na Responder"
 
-#: dt-contacts/module-access.php:570
+#: dt-contacts/module-access.php:562
 msgid "Assign To"
 msgstr "Italaga Kay"
 
-#: dt-contacts/module-access.php:628
+#: dt-contacts/module-access.php:620
 msgid "This contact has been assigned to you."
 msgstr "Itinalaga sa iyo ang contact na ito."
 
-#: dt-contacts/module-access.php:629
+#: dt-contacts/module-access.php:621
 msgid "Accept"
 msgstr "Tanggapin"
 
-#: dt-contacts/module-access.php:630
+#: dt-contacts/module-access.php:622
 msgid "Decline"
 msgstr "Tanggihan"
 
-#: dt-contacts/module-access.php:960
+#: dt-contacts/module-access.php:952
 #, php-format
 msgctxt "All records"
 msgid "Follow-Up %s"
 msgstr "Follow-Up %s"
 
-#: dt-contacts/module-access.php:968
+#: dt-contacts/module-access.php:960
 msgid "All Follow-Up"
 msgstr "Lahat ng Follow-Up"
 
-#: dt-contacts/module-access.php:1184
+#: dt-contacts/module-access.php:1102
 msgid "Ready"
 msgstr "Handa"
 
-#: dt-contacts/module-access.php:1185
+#: dt-contacts/module-access.php:1103
 msgid "Recent"
 msgstr "Kamakailan"
 
-#: dt-contacts/module-access.php:1186
+#: dt-contacts/module-access.php:1104
 msgid "Location"
 msgstr "Lokasyon"
 
-#: dt-contacts/module-access.php:1187
+#: dt-contacts/module-access.php:1105
 msgid "Assign"
 msgstr "Magtalaga"
 
-#: dt-contacts/module-access.php:1188 dt-users/template-new-user.php:134
+#: dt-contacts/module-access.php:1106 dt-users/template-new-user.php:134
 #: template-settings.php:227
 msgid "Language"
 msgstr "Lingguwahe"
 
-#: dt-contacts/module-access.php:1210
+#: dt-contacts/module-access.php:1128
 #: dt-metrics/personal/activity-highlights.php:233
 msgid "Quick Actions"
 msgstr "Mga Mabilisang Aksyon"
@@ -2900,11 +3067,17 @@ msgid "Faith Milestones"
 msgstr "Makasaysayang Pangyayari sa Pananampalataya"
 
 #: dt-contacts/module-faith.php:44
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "Assign which milestones the contact has reached in their faith journey."
+#| "These are points in a contact’s spiritual journey worth celebrating but "
+#| "canhappen in any order."
 msgctxt "Optional Documentation"
 msgid ""
-"Assign which milestones the contact has reached in their faith journey.These "
-"are points in a contact’s spiritual journey worth celebrating but canhappen "
-"in any order."
+"Assign which milestones the contact has reached in their faith journey. "
+"These are points in a contact’s spiritual journey worth celebrating but can "
+"happen in any order."
 msgstr ""
 "Italaga kung aling mahahalagang pangyayari ang naabot ng kontak sa "
 "kanilangpaglalakbay sa pananampalataya. Ito ang mga puntos sa espiritwal "
@@ -3069,9 +3242,13 @@ msgid "Contact Milestones and Group Health metrics"
 msgstr "Mga Milestone ng Contact at mga sukatan ng Kalusugan ng Grupo"
 
 #: dt-core/configuration/config-site-defaults.php:300
+#, fuzzy
+#| msgid ""
+#| "This contact is active but there is no record of anybody contacting them."
+#| "Please do contact them."
 msgid ""
-"This contact is active but there is no record of anybody contacting "
-"them.Please do contact them."
+"This contact is active but there is no record of anybody contacting them. "
+"Please do contact them."
 msgstr ""
 "Aktibo ang contact na ito ngunit walang rekord ng kahit na sinong "
 "kumokontaksa kanila. Pakikontak sila."
@@ -3085,9 +3262,13 @@ msgstr "Pakisubukang kumonekta ulit sa contact na ito."
 #: dt-core/configuration/config-site-defaults.php:324
 #: dt-core/configuration/config-site-defaults.php:330
 #: dt-core/configuration/config-site-defaults.php:336
+#, fuzzy
+#| msgid ""
+#| "We haven't heard about this person in a while. Do you have an update "
+#| "forthis contact?"
 msgid ""
-"We haven't heard about this person in a while. Do you have an update forthis "
-"contact?"
+"We haven't heard about this person in a while. Do you have an update for "
+"this contact?"
 msgstr ""
 "Matagal-tagal na kaming hindi nakakarinig mula sa taong ito. May update "
 "bakayo para sa contact na ito?"
@@ -3251,9 +3432,13 @@ msgid "To reset your password, visit the following address:"
 msgstr "Upang i-reset ang iyong password, bisitahin ang sumusunod na address:"
 
 #: dt-core/dt-storage.php:223
+#, fuzzy
+#| msgid ""
+#| "Something went wrong. Please try again or have an admin check the "
+#| "connectionsettings."
 msgid ""
-"Something went wrong. Please try again or have an admin check the "
-"connectionsettings."
+"Something went wrong. Please try again or have an admin check the connection "
+"settings."
 msgstr ""
 "May nangyaring mali. Subukan muli o magpatulong sa admin na suriin ang "
 "mgasetting ng koneksyon."
@@ -3288,9 +3473,13 @@ msgid "Freely given, but not cheap"
 msgstr "Libreng ibinigay, ngunit hindi mura"
 
 #: dt-core/release-notifications.php:119
+#, fuzzy
+#| msgid ""
+#| "Disciple.Tools relies on contributions for continued development "
+#| "andmaintenance. Will you join the team?"
 msgid ""
-"Disciple.Tools relies on contributions for continued development "
-"andmaintenance. Will you join the team?"
+"Disciple.Tools relies on contributions for continued development and "
+"maintenance. Will you join the team?"
 msgstr ""
 "Umaasa ang Disciple.Tools sa mga kontribusyon para sa patuloy napagpapaunlad "
 "at pagpapanatili. Sasali ka ba sa team?"
@@ -3305,8 +3494,13 @@ msgstr "Isalin"
 
 #: dt-core/release-notifications.php:127 dt-users/user-initial-setup.php:68
 #: template-settings.php:729
+#, fuzzy
+#| msgid ""
+#| "Translate Disciple.Tools into your language or help make a "
+#| "translationbetter."
 msgid ""
-"Translate Disciple.Tools into your language or help make a translationbetter."
+"Translate Disciple.Tools into your language or help make a translation "
+"better."
 msgstr ""
 "Isalin ang Disciple.Tools sa iyong wika o tumulong na pahusayin "
 "angpagsasalin."
@@ -3316,9 +3510,13 @@ msgid "Build or Document"
 msgstr "Bumuo o Magdokumento"
 
 #: dt-core/release-notifications.php:136
+#, fuzzy
+#| msgid ""
+#| "Make Disciple.Tools better by building a feature or helping us make "
+#| "thedocumentation better."
 msgid ""
-"Make Disciple.Tools better by building a feature or helping us make "
-"thedocumentation better."
+"Make Disciple.Tools better by building a feature or helping us make the "
+"documentation better."
 msgstr ""
 "Pahusayin ang Disciple.Tools sa pamamagitan ng pagbuo ng feature o "
 "pagtulongsa pagpapabuti ng dokumentasyon."
@@ -3327,7 +3525,7 @@ msgstr ""
 msgid "Find out more"
 msgstr "Alamin pa"
 
-#: dt-core/utilities/dt-components.php:135
+#: dt-core/utilities/dt-components.php:138
 msgid "Search Locations"
 msgstr "Hanapin ang Lokasyon"
 
@@ -3337,7 +3535,7 @@ msgid "Group"
 msgstr "Grupo"
 
 #: dt-groups/base-setup.php:48 dt-groups/base-setup.php:61
-#: dt-groups/base-setup.php:426 dt-groups/base-setup.php:610
+#: dt-groups/base-setup.php:426 dt-groups/base-setup.php:555
 #: dt-mapping/columns/add-groups-column.php:57
 #: dt-metrics/combined/daily-activity.php:90
 #: dt-metrics/combined/hover-map.php:177
@@ -3383,11 +3581,17 @@ msgid "Group Coach / Church Planter"
 msgstr "Tagapagturo ng Grupo / Tagapagtatag ng Iglesia"
 
 #: dt-groups/base-setup.php:148
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "The person who planted and/or is coaching this group. Only one person can "
+#| "beassigned to a group while multiple people can be coaches / church "
+#| "plantersof this group."
 msgctxt "Optional Documentation"
 msgid ""
-"The person who planted and/or is coaching this group. Only one person can "
-"beassigned to a group while multiple people can be coaches / church "
-"plantersof this group."
+"The person who planted and/or is coaching this group. Only one person can be "
+"assigned to a group while multiple people can be coaches / church planters "
+"of this group."
 msgstr ""
 "Ang taong nagtatag at/o nagtuturo sa grupong ito. Isang tao lang angmaaaring "
 "italaga sa isang grupo habang maraming tao ang maaaring magingtagapaguro / "
@@ -3435,7 +3639,7 @@ msgstr ""
 "Isang espesyal na grupo na hindi bilang isang iglesia (o sinusubukang "
 "magingiglesia)."
 
-#: dt-groups/base-setup.php:192 dt-groups/base-setup.php:603
+#: dt-groups/base-setup.php:192 dt-groups/base-setup.php:547
 msgid "Church Health"
 msgstr "Kalusugan ng Iglesia"
 
@@ -3570,20 +3774,27 @@ msgid "Member Count"
 msgstr "Bilang ng Miyembro"
 
 #: dt-groups/base-setup.php:281
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "The number of members in this group. It will automatically be updated "
+#| "whennew members are added or removed in the member list. Change this "
+#| "numbermanually to include people who may not be in the system but are "
+#| "also membersof the group."
 msgctxt "Optional Documentation"
 msgid ""
-"The number of members in this group. It will automatically be updated "
-"whennew members are added or removed in the member list. Change this "
-"numbermanually to include people who may not be in the system but are also "
-"membersof the group."
+"The number of members in this group. It will automatically be updated when "
+"new members are added or removed in the member list. Change this number "
+"manually to include people who may not be in the system but are also members "
+"of the group."
 msgstr ""
 "Ang numero ng mga miyembro sa grupong ito. Awtomatikong maa-update ito "
 "kapagmay mga bagong miyembro na idinagdag o inalis sa listahan ng mga "
 "miyembro.Baguhin ang numerong ito nang mano-mano upang isama ang mga taong "
 "maaaringwala sa sistema nguni't miyembro rin ng grupo."
 
-#: dt-groups/base-setup.php:289 dt-groups/base-setup.php:558
-#: dt-groups/base-setup.php:602
+#: dt-groups/base-setup.php:289 dt-groups/base-setup.php:501
+#: dt-groups/base-setup.php:545
 msgid "Member List"
 msgstr "Listahan ng Miyembro"
 
@@ -3610,10 +3821,15 @@ msgid "Peer Group"
 msgstr "Grupo ng Kaedad"
 
 #: dt-groups/base-setup.php:330
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "A related group that isn't a parent/child in relationship. It might "
+#| "indicategroups that collaborate, are about to merge, recently split, etc."
 msgctxt "Optional Documentation"
 msgid ""
-"A related group that isn't a parent/child in relationship. It might "
-"indicategroups that collaborate, are about to merge, recently split, etc."
+"A related group that isn't a parent/child in relationship. It might indicate "
+"groups that collaborate, are about to merge, recently split, etc."
 msgstr ""
 "Isang magka-ugnay na grupo na hindi magulang/anak ang relasyon. "
 "Maaaringmagpahiwatig ito ng mga grupo na nagtutulungan, malapit nang "
@@ -3665,9 +3881,15 @@ msgid "Multiplying"
 msgstr "Dumarami"
 
 #: dt-groups/base-setup.php:414
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "Number of people helping start other groups. How many members "
+#| "aremultiplying?"
 msgctxt "Optional Documentation"
 msgid ""
-"Number of people helping start other groups. How many members aremultiplying?"
+"Number of people helping start other groups. How many members are "
+"multiplying?"
 msgstr ""
 "Bilang ng mga taong tumutulong na simulan ang ibang mga grupo. Ilangmiyembro "
 "ang nagpaparami?"
@@ -3685,52 +3907,67 @@ msgstr "Lider ng Grupo"
 msgid "Coach of Group"
 msgstr "Tagapagturo ng Grupo"
 
-#: dt-groups/base-setup.php:561
+#: dt-groups/base-setup.php:504
 msgid "Create"
 msgstr "Gumawa"
 
-#: dt-groups/base-setup.php:566
+#: dt-groups/base-setup.php:509
 msgid "Select"
 msgstr "Piliin"
 
-#: dt-groups/base-setup.php:571
+#: dt-groups/base-setup.php:514
 msgid "To add new members, click on 'Create' or 'Select'."
 msgstr ""
 "Upang magdagdag ng mga bagong miyembro, mag-click sa 'Gumawa' o 'Pumili'."
 
-#: dt-groups/base-setup.php:577
+#: dt-groups/base-setup.php:520
 msgctxt "Add members modal"
 msgid "Add members from existing contacts"
 msgstr "Magdagdag ng mga miyembro mula sa mga kasalukuyang kontak"
 
-#: dt-groups/base-setup.php:578
+#: dt-groups/base-setup.php:521
+#, fuzzy
+#| msgctxt "Add members modal"
+#| msgid ""
+#| "In the 'Member List' field, type the name of an existing contact to add "
+#| "themto this group."
 msgctxt "Add members modal"
 msgid ""
-"In the 'Member List' field, type the name of an existing contact to add "
-"themto this group."
+"In the 'Member List' field, type the name of an existing contact to add them "
+"to this group."
 msgstr ""
 "Sa blangkong 'Listahan ng Miyembro', mag-type ng pangalan ng umiiral "
 "nakontak para maidagdag siya sa grupong ito."
 
-#: dt-groups/base-setup.php:606
+#: dt-groups/base-setup.php:551
 msgid "Four Fields"
 msgstr "Four Fields"
 
-#: dt-groups/base-setup.php:607
+#: dt-groups/base-setup.php:552
+#, fuzzy
+#| msgctxt "Optional Documentation"
+#| msgid ""
+#| "There are 5 squares in the Four Fields diagram. Starting in the top "
+#| "leftquadrant and going clockwise and the fifth being in the middle, they "
+#| "standfor:"
 msgctxt "Optional Documentation"
 msgid ""
-"There are 5 squares in the Four Fields diagram. Starting in the top "
-"leftquadrant and going clockwise and the fifth being in the middle, they "
-"standfor:"
+"There are 5 squares in the Four Fields diagram. Starting in the top left "
+"quadrant and going clockwise and the fifth being in the middle, they stand "
+"for:"
 msgstr ""
 "Mayroong 5 parisukat sa dayagram na Apat na Field. Simula sa kuwadrante "
 "sakaliwang itaas at paikot na pakanan at ang ikalima ay nasa gitna, ang "
 "mgaito ay kumakatawan sa:"
 
 #: dt-login/login-template.php:68
+#, fuzzy
+#| msgid ""
+#| "Your password reset link appears to be invalid. Please request a new "
+#| "linkbelow."
 msgid ""
-"Your password reset link appears to be invalid. Please request a new "
-"linkbelow."
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
 msgstr ""
 "Mukhang hindi valid ang iyong password reset link. Mangyaring humiling "
 "ngbagong link sa ibaba."
@@ -3750,9 +3987,13 @@ msgid "Email Address"
 msgstr "Email Address"
 
 #: dt-login/login-template.php:112
+#, fuzzy
+#| msgid ""
+#| "Your password reset email has been sent. Check your email or junk mail "
+#| "forthe link to reset your password."
 msgid ""
-"Your password reset email has been sent. Check your email or junk mail "
-"forthe link to reset your password."
+"Your password reset email has been sent. Check your email or junk mail for "
+"the link to reset your password."
 msgstr ""
 "Naipadala na ang iyong password reset email. Tingnan ang iyong email o "
 "junkmail para sa link upang i-reset ang iyong password."
@@ -3943,9 +4184,13 @@ msgid "Baptisms"
 msgstr "Mga Binyag"
 
 #: dt-metrics/combined/critical-path.php:260
+#, fuzzy
+#| msgid ""
+#| "Number of baptized contact with a baptism date in date range and baptized "
+#| "byconnection"
 msgid ""
-"Number of baptized contact with a baptism date in date range and baptized "
-"byconnection"
+"Number of baptized contact with a baptism date in date range and baptized by "
+"connection"
 msgstr ""
 "Bilang ng nabautismuhang kontak na may petsa ng bautismo sa saklaw na "
 "petsaat nabautismuhan sa pamamagitan ng koneksyon"
@@ -4000,9 +4245,13 @@ msgid "Church Planters"
 msgstr "Mga Tagatanim ng Simbahan"
 
 #: dt-metrics/combined/critical-path.php:333
+#, fuzzy
+#| msgid ""
+#| "Number of contacts or users who have started a church and are marked as "
+#| "thechurch coach"
 msgid ""
-"Number of contacts or users who have started a church and are marked as "
-"thechurch coach"
+"Number of contacts or users who have started a church and are marked as the "
+"church coach"
 msgstr ""
 "Bilang ng mga kontak o user na nakapagsimula ng simbahan at namarkahanbilang "
 "ang tagapagturo ng simbahan"
@@ -4218,9 +4467,13 @@ msgstr ""
 "Mga aktibong contact, ayon sa pinagmulan at milestone sa pananampalataya"
 
 #: dt-metrics/contacts/sources.php:98
+#, fuzzy
+#| msgid ""
+#| "A contact can come from more than one source, and it can have more than "
+#| "onefaith milestone at the same time."
 msgid ""
-"A contact can come from more than one source, and it can have more than "
-"onefaith milestone at the same time."
+"A contact can come from more than one source, and it can have more than one "
+"faith milestone at the same time."
 msgstr ""
 "Maaaring magmula sa mahigit isang pinagmulan ang isang contact, at "
 "maaariitong magkaroon ng mahigit isang milestone sa pananampalataya "
@@ -4555,9 +4808,13 @@ msgid "Simple Chart"
 msgstr "Simpleng Chart"
 
 #: dt-metrics/records/select-tags-charts.php:85
+#, fuzzy
+#| msgid ""
+#| "This chart shows the total number for each field value at the end of "
+#| "theselected date."
 msgid ""
-"This chart shows the total number for each field value at the end of "
-"theselected date."
+"This chart shows the total number for each field value at the end of the "
+"selected date."
 msgstr ""
 "Ipinapakita ng chart na ito ang kabuuang bilang para sa bawat field value "
 "sapagtatapos ng napiling petsa."
@@ -4871,18 +5128,24 @@ msgid "Details"
 msgstr "Mga Detalye"
 
 #: dt-posts/dt-posts.php:2796
-#, php-format
+#, fuzzy, php-format
+#| msgctxt ""
+#| "@[user name][user_id] - User Fred has requested access to Contact "
+#| "[contactname][contact_id]. If desired, share this record with the user to "
+#| "grantaccess."
+#| msgid ""
+#| "@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). "
+#| "Ifdesired, share this record with the user to grant access."
 msgctxt ""
-"@[user name][user_id] - User Fred has requested access to Contact "
-"[contactname][contact_id]. If desired, share this record with the user to "
-"grantaccess."
-msgid ""
-"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). "
-"Ifdesired, share this record with the user to grant access."
-msgstr ""
-"@[%1$s](%2$s) - Nag-request ang user %3$s ng access sa %4$s [%5$s]"
-"(%6$s).Kung gusto mo, i-share ang talang ito sa user para maibigay ang "
+"@[user name][user_id] - User Fred has requested access to Contact [contact "
+"name][contact_id]. If desired, share this record with the user to grant "
 "access."
+msgid ""
+"@[%1$s](%2$s) - User %3$s has requested access to %4$s [%5$s](%6$s). If "
+"desired, share this record with the user to grant access."
+msgstr ""
+"@[%1$s](%2$s) - Nag-request ang user %3$s ng access sa %4$s [%5$s](%6$s)."
+"Kung gusto mo, i-share ang talang ito sa user para maibigay ang access."
 
 #: dt-posts/dt-posts.php:2802
 msgid "Access Request"
@@ -5253,7 +5516,7 @@ msgctxt "message"
 msgid "Unshared with %s"
 msgstr "In-unshare kay %s"
 
-#: dt-posts/posts.php:2527
+#: dt-posts/posts.php:2587
 msgid "Removed User"
 msgstr "Tinanggal na User"
 
@@ -5374,9 +5637,13 @@ msgid "Delete and replace the app link"
 msgstr "Tanggalin at palitan ang link sa app"
 
 #: dt-reports/magic-url-setup.php:462
+#, fuzzy
+#| msgid ""
+#| "This app is not yet activated for this user. Enable the app to generate "
+#| "alink."
 msgid ""
-"This app is not yet activated for this user. Enable the app to generate "
-"alink."
+"This app is not yet activated for this user. Enable the app to generate a "
+"link."
 msgstr ""
 "Hindi pa aktibo ang app na ito para sa user na ito. Paganahin ang app "
 "upangmakagawa ng link."
@@ -5483,6 +5750,14 @@ msgstr "Palayag (Pangalang Ipinakikita)"
 msgid "Username"
 msgstr "Username"
 
+#: dt-users/template-new-user.php:127 dt-users/template-new-user.php:234
+msgid "See More Options"
+msgstr "Tumingin ng Iba Pang mga Opsyon"
+
+#: dt-users/template-new-user.php:130 dt-users/template-new-user.php:237
+msgid "See Fewer Options"
+msgstr "Tumingin ng mas Kaunting mga Opsyon"
+
 #: dt-users/template-new-user.php:137
 msgid "Role"
 msgstr "Tungkulin"
@@ -5523,10 +5798,14 @@ msgid "Upgrading a contact"
 msgstr "Pag-a-upgrade ng kontak"
 
 #: dt-users/template-new-user.php:260
+#, fuzzy
+#| msgid ""
+#| "The new user will have access to all the fields and comments on this "
+#| "contactrecord. We suggest archiving the comments if they contain "
+#| "sensitive data."
 msgid ""
-"The new user will have access to all the fields and comments on this "
-"contactrecord. We suggest archiving the comments if they contain sensitive "
-"data."
+"The new user will have access to all the fields and comments on this contact "
+"record. We suggest archiving the comments if they contain sensitive data."
 msgstr ""
 "Ang bagong gumagamit ay magkakaroon ng pag-access sa lahat ng field "
 "atkomento sa rekord ng kontak na ito. Iminumungkahi naming ilagay sa "
@@ -5558,9 +5837,13 @@ msgstr ""
 "Gusto mo bang pagsamahin ang mga field mula sa lumang rekord hanggang sabago?"
 
 #: dt-users/template-no-permission.php:92
+#, fuzzy
+#| msgid ""
+#| "You are registered but an administrator needs to assign you "
+#| "accesspermissions."
 msgid ""
-"You are registered but an administrator needs to assign you "
-"accesspermissions."
+"You are registered but an administrator needs to assign you access "
+"permissions."
 msgstr ""
 "Ikaw ay nakarehistro nguni't kailangan ng isang administrator na magtalagasa "
 "iyo ng mga pahintulot para sa pag-access."
@@ -5592,9 +5875,13 @@ msgid "Availability"
 msgstr "Pagiging Available"
 
 #: dt-users/template-user-management.php:158
+#, fuzzy
+#| msgid ""
+#| "Set the dates you will be unavailable so the Dispatcher will know "
+#| "youravailability to receive new contacts"
 msgid ""
-"Set the dates you will be unavailable so the Dispatcher will know "
-"youravailability to receive new contacts"
+"Set the dates you will be unavailable so the Dispatcher will know your "
+"availability to receive new contacts"
 msgstr ""
 "Itakda ang mga petsa kung kailan ka hindi puwede para malaman ng "
 "Dispatcherkung kailan ka puwede para makatanggap ng bagong mga contact"
@@ -5652,9 +5939,13 @@ msgstr "Lahat ng Pinagmumulan - nagbibigay ng access sa lahat ng kontak"
 
 #: dt-users/template-user-management.php:334
 #: dt-users/user-hooks-and-config.php:630
+#, fuzzy
+#| msgid ""
+#| "Custom - Access own contacts and all the contacts of the selected "
+#| "sourcesbelow"
 msgid ""
-"Custom - Access own contacts and all the contacts of the selected "
-"sourcesbelow"
+"Custom - Access own contacts and all the contacts of the selected sources "
+"below"
 msgstr ""
 "Custom - pag-access sa sariling mga kontak at lahat ng kontak ng napilingmga "
 "pingmumulan sa ibaba"
@@ -5721,10 +6012,13 @@ msgstr ""
 "sahuling 10 kontak"
 
 #: dt-users/user-hooks-and-config.php:196
-#, php-format
+#, fuzzy, php-format
+#| msgid ""
+#| "Welcome %1$s, this is your personal contact record. Feel free to update "
+#| "thefields and @mention me or other users"
 msgid ""
-"Welcome %1$s, this is your personal contact record. Feel free to update "
-"thefields and @mention me or other users"
+"Welcome %1$s, this is your personal contact record. Feel free to update the "
+"fields and @mention me or other users"
 msgstr ""
 "Maligayang pagdating %1$s, ito ang iyong personal na rekord ng kontak. "
 "Huwagmag-atubiling i-update ang mga field at @banggitin ako o iba pang "
@@ -5753,8 +6047,8 @@ msgstr "Kumusta %s,"
 #: dt-users/user-hooks-and-config.php:389
 #, php-format
 msgctxt ""
-"You've been invited to join Awesome Site at https://"
-"awesome_site.disciple.tools"
+"You've been invited to join Awesome Site at https://awesome_site.disciple."
+"tools"
 msgid "You've been invited to join %1$s at %2$s"
 msgstr "Naimbitahan kang sumali sa %1$s sa %2$s"
 
@@ -5957,10 +6251,15 @@ msgid "Javascript must be enabled for this site to function correctly."
 msgstr "Dapat i-enable ang Javascript para maayos na gumana ang site na ito."
 
 #: header.php:61
+#, fuzzy
+#| msgid ""
+#| "You seem to be using an out-of-date web browser. Without the most up-to-"
+#| "dateversion of your browser, this may site may not function correctly. "
+#| "Pleasenote that Internet Explorer is not supported."
 msgid ""
-"You seem to be using an out-of-date web browser. Without the most up-to-"
-"dateversion of your browser, this may site may not function correctly. "
-"Pleasenote that Internet Explorer is not supported."
+"You seem to be using an out-of-date web browser. Without the most up-to-date "
+"version of your browser, this may site may not function correctly. Please "
+"note that Internet Explorer is not supported."
 msgstr ""
 "Mukhang gumagamit ka ng lumang web browser. Kapag wala ang "
 "pinakabagongbersyon ng iyong browser, maaaring hindi gumana nang maayos ang "
@@ -6003,10 +6302,15 @@ msgid "Merge Duplicate %s"
 msgstr "Pagsamahin ang Kaparehong %s"
 
 #: template-merge-post-details.php:126
+#, fuzzy
+#| msgid ""
+#| "When you merge, the primary record is updated with the values you choose,"
+#| "and relationships to other items are shifted to the primary record; "
+#| "whichcan be switched below."
 msgid ""
-"When you merge, the primary record is updated with the values you choose,and "
-"relationships to other items are shifted to the primary record; whichcan be "
-"switched below."
+"When you merge, the primary record is updated with the values you choose, "
+"and relationships to other items are shifted to the primary record; which "
+"can be switched below."
 msgstr ""
 "Kapag pinagsama mo, ina-update ang pangunahing rekord sa mga "
 "halagangpipiliin mo, at ang mga kaugnayan sa iba pang mga item ay inililipat "
@@ -6120,9 +6424,13 @@ msgid "Availability to receive contacts from the Dispatcher"
 msgstr "Libreng iskedyul upang makatanggap ng mga kontak mula sa Dispatcher"
 
 #: template-settings.php:428
+#, fuzzy
+#| msgid ""
+#| "Set the dates you will be traveling or unavailable so the Dispatcher "
+#| "willknow your availability to receive new contacts"
 msgid ""
-"Set the dates you will be traveling or unavailable so the Dispatcher "
-"willknow your availability to receive new contacts"
+"Set the dates you will be traveling or unavailable so the Dispatcher will "
+"know your availability to receive new contacts"
 msgstr ""
 "I-set ang mga petsa kung kailan ka magbibiyahe o hindi pwede para malaman "
 "ngDispatcher kung kailan ka pwedeng tumanggap ng mga bagong kontak"
@@ -6177,11 +6485,17 @@ msgstr ""
 "sasystem."
 
 #: template-settings.php:624
+#, fuzzy
+#| msgid ""
+#| "Disciple Tools System does not store images. For profile images we "
+#| "useGravatar (Globally Recognized Avatar). If you have security concerns, "
+#| "wesuggest not using a personal photo, but instead choose a cartoon, "
+#| "abstract,or alias photo to represent you."
 msgid ""
-"Disciple Tools System does not store images. For profile images we "
-"useGravatar (Globally Recognized Avatar). If you have security concerns, "
-"wesuggest not using a personal photo, but instead choose a cartoon, "
-"abstract,or alias photo to represent you."
+"Disciple Tools System does not store images. For profile images we use "
+"Gravatar (Globally Recognized Avatar). If you have security concerns, we "
+"suggest not using a personal photo, but instead choose a cartoon, abstract, "
+"or alias photo to represent you."
 msgstr ""
 "Hindi nag-iimbak ng mga imahe ang Disciple Tools System. Para sa mga imaheng "
 "profile, gumagamit kami ng Gravatar (Globally Recognized Avatar). "
@@ -6194,11 +6508,17 @@ msgid "edit image on gravatar.com"
 msgstr "i-edit ang imahe sa gravatar.com"
 
 #: template-settings.php:631
+#, fuzzy
+#| msgid ""
+#| "Disciple Tools System does not store images. All media assets will be "
+#| "placedwithin specified media connection storage service. If you have "
+#| "securityconcerns, we suggest not using a personal photo, but instead "
+#| "choose acartoon, abstract, or alias photo to represent you."
 msgid ""
-"Disciple Tools System does not store images. All media assets will be "
-"placedwithin specified media connection storage service. If you have "
-"securityconcerns, we suggest not using a personal photo, but instead choose "
-"acartoon, abstract, or alias photo to represent you."
+"Disciple Tools System does not store images. All media assets will be placed "
+"within specified media connection storage service. If you have security "
+"concerns, we suggest not using a personal photo, but instead choose a "
+"cartoon, abstract, or alias photo to represent you."
 msgstr ""
 "Hindi nag-iimbak ng mga imahe ang Disciple Tools System. Lahat ng "
 "mediaassets ay ilalagay sa tinukoy na media connection storage service. "
@@ -6235,9 +6555,13 @@ msgid "Duplicate Access Contacts"
 msgstr "Kopyahin ang mga Access Contact"
 
 #: template-view-duplicates.php:27
+#, fuzzy
+#| msgid ""
+#| "Scanning for duplicates starting with the most recently modified contacts."
+#| "Results are limited to ones that have less than 10 exact matches."
 msgid ""
-"Scanning for duplicates starting with the most recently modified "
-"contacts.Results are limited to ones that have less than 10 exact matches."
+"Scanning for duplicates starting with the most recently modified contacts. "
+"Results are limited to ones that have less than 10 exact matches."
 msgstr ""
 "Nagsa-scan para sa mga kopyang nagsisimula sa pinakakamakailang nabagong "
 "mgacontact. Limitado ang mga resulta sa mga may mas mababa sa 10 eksaktong "
@@ -6252,3 +6576,9 @@ msgstr "Na-scan na mga access contact:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "Mga nahanap na kopya:"
+
+#~ msgid "Share with:"
+#~ msgstr "I-share kay:"
+
+#~ msgid "Unshare with selected user"
+#~ msgstr "I-unshare sa napiling user"

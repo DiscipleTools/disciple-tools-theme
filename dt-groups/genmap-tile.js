@@ -6,6 +6,14 @@
   const MAX_CANVAS_HEIGHT = 320;
   const MIN_CANVAS_HEIGHT = 220;
   const LAYOUT_STORAGE_KEY = 'group_genmap_layout';
+  const GENMAP_ADD_CHILD_FIELD_PREFIX = 'group_genmap_add_child_';
+
+  // Node dimensions constants
+  const NODE_WIDTH = 72; // Increased from 60px to prevent text clipping
+  const NODE_HEIGHT = 30;
+  const NODE_HALF_WIDTH = NODE_WIDTH / 2; // 36px
+  const NODE_HALF_HEIGHT = NODE_HEIGHT / 2; // 15px
+  const NODE_FONT_SIZE = 9; // Reduced from 10px for better fit
   const DEFAULT_PAYLOAD = {
     p2p_type: 'groups_to_groups',
     p2p_direction: 'to',
@@ -318,6 +326,92 @@
   }
 
   /**
+   * Calculate relative luminance of a color (for WCAG contrast)
+   * @param {string} hexColor - Color in hex format (e.g., '#4CAF50')
+   * @returns {number} - Relative luminance value (0-1)
+   */
+  function getRelativeLuminance(hexColor) {
+    // Remove # if present
+    const hex = hexColor.replace('#', '');
+
+    // Convert to RGB
+    const r = parseInt(hex.substring(0, 2), 16) / 255;
+    const g = parseInt(hex.substring(2, 4), 16) / 255;
+    const b = parseInt(hex.substring(4, 6), 16) / 255;
+
+    // Apply gamma correction
+    const rsRGB = r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
+    const gsRGB = g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4);
+    const bsRGB = b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4);
+
+    // Calculate relative luminance
+    return 0.2126 * rsRGB + 0.7152 * gsRGB + 0.0722 * bsRGB;
+  }
+
+  /**
+   * Determine appropriate text color based on background color
+   * Uses WCAG contrast guidelines - returns white for dark backgrounds, dark for light backgrounds
+   * @param {string} backgroundColor - Background color in hex format (e.g., '#4CAF50')
+   * @returns {string} - Text color ('#ffffff' for dark backgrounds, '#333333' for light backgrounds)
+   */
+  function getTextColorForBackground(backgroundColor) {
+    if (!backgroundColor) {
+      return '#333333'; // Default dark text
+    }
+
+    // Normalize color format - handle both with and without #
+    let hexColor = String(backgroundColor).trim();
+    if (!hexColor.startsWith('#')) {
+      hexColor = '#' + hexColor;
+    }
+
+    // Validate hex color format (should be #RRGGBB)
+    if (!/^#[0-9A-Fa-f]{6}$/.test(hexColor)) {
+      console.warn(
+        'Invalid color format:',
+        backgroundColor,
+        'using default dark text',
+      );
+      return '#333333';
+    }
+
+    // Calculate relative luminance
+    const luminance = getRelativeLuminance(hexColor);
+
+    // Use white text for dark backgrounds (luminance < 0.5), dark text for light backgrounds
+    // This ensures good contrast for green (#4CAF50), blue (#366184), and gray (#808080)
+    // Lower threshold to ensure white text on medium-dark colors
+    const textColor = luminance < 0.5 ? '#ffffff' : '#333333';
+
+    return textColor;
+  }
+
+  /**
+   * Ensure statusColor is set on a node's data, computing it from status if missing.
+   * @param {Object} data - The node data object (d.data)
+   * @returns {string} - The resolved status color
+   */
+  function ensureStatusColor(data) {
+    if (!data.statusColor) {
+      if (data.status) {
+        const colors = window.dtGroupGenmap?.statusField?.colors || {};
+        const archivedKey =
+          window.dtGroupGenmap?.statusField?.archived_key || '';
+        if (colors[data.status]) {
+          data.statusColor = colors[data.status];
+        } else if (archivedKey && data.status === archivedKey) {
+          data.statusColor = '#808080';
+        } else {
+          data.statusColor = getStatusColor(data.status);
+        }
+      } else {
+        data.statusColor = getStatusColor(null);
+      }
+    }
+    return data.statusColor;
+  }
+
+  /**
    * Enhance node data with computed properties for D3 visualization
    * @param {Object} node - The node data from API
    * @param {number} generation - Current generation level (0 = root)
@@ -342,8 +436,8 @@
 
       // Visual properties
       nodeSize: {
-        width: 60,
-        height: 30,
+        width: NODE_WIDTH,
+        height: NODE_HEIGHT,
       },
 
       // Display properties
@@ -425,31 +519,12 @@
     root.each((node) => {
       // Ensure each node has the enhanced properties
       if (!node.data.nodeSize) {
-        node.data.nodeSize = { width: 60, height: 30 };
+        node.data.nodeSize = { width: NODE_WIDTH, height: NODE_HEIGHT };
       }
       if (!node.data.displayName) {
         node.data.displayName = ellipsizeName(node.data.name || '', 15);
       }
-      // Always ensure statusColor is set - compute from status if missing
-      // This ensures status colors are properly applied even if sanitizeNode didn't set it
-      if (!node.data.statusColor) {
-        if (node.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-
-          if (colors[node.data.status]) {
-            node.data.statusColor = colors[node.data.status];
-          } else if (archivedKey && node.data.status === archivedKey) {
-            node.data.statusColor = '#808080';
-          } else {
-            node.data.statusColor = getStatusColor(node.data.status);
-          }
-        } else {
-          // No status - use default
-          node.data.statusColor = getStatusColor(null);
-        }
-      }
+      ensureStatusColor(node.data);
       // Note: iconPath removed - icons will be in popover (Phase 5)
       if (node.data.isNonShared) {
         node.data.displayName = '.......';
@@ -584,6 +659,7 @@
    * @returns {string} HTML content
    */
   function buildPopoverContent(nodeData) {
+    // Generation number is intentionally not shown in the popover (see issue #2878).
     const data = nodeData.data;
     const strings = window.dtGroupGenmap?.strings || {};
     const detailsStrings = strings.details || {};
@@ -603,13 +679,13 @@
     // Build HTML with header containing title and close button
     let html = '<div class="popover-header">';
     html += `<h4>${window.lodash.escape(data.name || '')}</h4>`;
-    html += '<button class="popover-close" aria-label="Close">&times;</button>';
+    html += `<button class="popover-close" aria-label="${window.lodash.escape(detailsStrings.close || 'Close')}">&times;</button>`;
     html += '</div>';
 
     // Group type with icon
     if (groupTypeLabel) {
       html += '<div class="popover-field">';
-      html += '<strong>Type:</strong>';
+      html += `<strong>${window.lodash.escape(detailsStrings.type || 'Type')}:</strong>`;
       if (groupTypeIcon) {
         html += `<span><img src="${window.lodash.escape(groupTypeIcon)}" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;" />${window.lodash.escape(groupTypeLabel)}</span>`;
       } else {
@@ -622,16 +698,8 @@
     if (status) {
       const statusColor = data.statusColor || '#3f729b';
       html += '<div class="popover-field">';
-      html += '<strong>Status:</strong>';
+      html += `<strong>${window.lodash.escape(detailsStrings.status || 'Status')}:</strong>`;
       html += `<span><span style="display: inline-block; width: 12px; height: 12px; background-color: ${statusColor}; border-radius: 2px; margin-right: 6px; vertical-align: middle;"></span>${window.lodash.escape(status)}</span>`;
-      html += '</div>';
-    }
-
-    // Generation
-    if (data.content) {
-      html += '<div class="popover-field">';
-      html += '<strong>Generation:</strong>';
-      html += `<span>${window.lodash.escape(data.content)}</span>`;
       html += '</div>';
     }
 
@@ -651,8 +719,10 @@
       (nodeData._children && nodeData._children.length > 0)
     ) {
       const isCollapsed = nodeData.data.collapsed || false;
-      const collapseText = isCollapsed ? 'Expand' : 'Collapse';
-      html += `<button class="popover-button secondary genmap-popover-collapse" data-node-id="${data.id}">${collapseText}</button>`;
+      const collapseText = isCollapsed
+        ? detailsStrings.expand || 'Expand'
+        : detailsStrings.collapse || 'Collapse';
+      html += `<button class="popover-button secondary genmap-popover-collapse" data-node-id="${data.id}">${window.lodash.escape(collapseText)}</button>`;
     }
 
     html += '</div>';
@@ -876,20 +946,20 @@
         let bgX, bgY, iconX, iconY;
         if (graphOrientation === 'l2r') {
           // Horizontal mode: icon on bottom center
-          // Node is 30px tall (from y=-15 to y=+15), bottom edge at y=15
+          // Node is NODE_HEIGHT tall (from y=-NODE_HALF_HEIGHT to y=+NODE_HALF_HEIGHT), bottom edge at y=NODE_HALF_HEIGHT
           // Background is 20px tall, icon is 16px tall
-          // Position background to overlap node bottom border (extend below y=15)
+          // Position background to overlap node bottom border (extend below y=NODE_HALF_HEIGHT)
           // Then center icon on background
-          bgY = 8; // Background: top y=8, bottom y=28 (overlaps node bottom at y=15)
+          bgY = 8; // Background: top y=8, bottom y=28 (overlaps node bottom at y=NODE_HALF_HEIGHT)
           bgX = -10; // Background centered behind icon
           iconY = 9; // Icon center at y=9 (centered on background)
           iconX = -8; // Horizontally centered (slight left offset for better visual alignment)
         } else {
           // Vertical mode: icon on right side
-          bgX = 20; // Background centered behind icon (22 - 2 = 20)
+          bgX = NODE_HALF_WIDTH + 2; // Background centered behind icon (NODE_HALF_WIDTH + 2px margin)
           bgY = -10; // Background centered behind icon (-8 - 2 = -10)
-          iconX = 22; // Right side of 60px node (leaving 8px margin from right edge)
-          iconY = -8; // Vertically centered in 30px node
+          iconX = NODE_HALF_WIDTH + 4; // Right side of NODE_WIDTH node (leaving 4px margin from right edge)
+          iconY = -8; // Vertically centered in NODE_HEIGHT node
         }
 
         // Add background rectangle
@@ -967,10 +1037,10 @@
           iconX = -8;
         } else {
           // Vertical mode: icon on right side
-          bgX = 20;
-          bgY = -10;
-          iconX = 22;
-          iconY = -8;
+          bgX = NODE_HALF_WIDTH + 2; // Background centered behind icon
+          bgY = -10; // Background centered behind icon
+          iconX = NODE_HALF_WIDTH + 4; // Right side of NODE_WIDTH node (leaving 4px margin)
+          iconY = -8; // Vertically centered in NODE_HEIGHT node
         }
 
         bgRect.attr('x', bgX).attr('y', bgY);
@@ -1040,8 +1110,6 @@
 
     // Update links based on graph orientation
     const links = treeData.links();
-    const NODE_HALF_WIDTH = 30; // 60px / 2
-    const NODE_HALF_HEIGHT = 15; // 30px / 2
 
     // Create link generator connecting to node edges
     const linkPath = (link) => {
@@ -1050,7 +1118,7 @@
 
       if (graphOrientation === 'l2r') {
         // Horizontal layout: Nodes positioned with translate(d.x, d.y)
-        // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
+        // Node rectangle: NODE_WIDTH wide × NODE_HEIGHT tall, centered at (0,0) relative to node group
         // In SVG: node center is at (d.x, d.y)
         // Always connect: parent bottom center → child top center (consistent with tree hierarchy)
         sourceX = link.source.x; // Horizontal center of parent
@@ -1065,7 +1133,7 @@
         return pathData;
       } else {
         // Vertical layout: Nodes positioned with translate(d.y, d.x)
-        // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
+        // Node rectangle: NODE_WIDTH wide × NODE_HEIGHT tall, centered at (0,0) relative to node group
         // In SVG: node center is at (d.y, d.x) - coordinates are swapped!
         // Always connect: parent right center → child left center (consistent with tree hierarchy)
         // In SVG: x = d.y, y = d.x
@@ -1137,54 +1205,14 @@
     // Add rectangle for new nodes
     nodeEnter
       .append('rect')
-      .attr('width', 60)
-      .attr('height', 30)
-      .attr('x', -30)
-      .attr('y', -15)
+      .attr('width', NODE_WIDTH)
+      .attr('height', NODE_HEIGHT)
+      .attr('x', -NODE_HALF_WIDTH)
+      .attr('y', -NODE_HALF_HEIGHT)
       .attr('rx', 4)
-      .attr('fill', (d) => {
-        // Ensure statusColor is computed from status property (matching legacy flow)
-        if (!d.data.statusColor && d.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-
-          if (colors[d.data.status]) {
-            d.data.statusColor = colors[d.data.status];
-          } else if (archivedKey && d.data.status === archivedKey) {
-            d.data.statusColor = '#808080';
-          } else {
-            d.data.statusColor = getStatusColor(d.data.status);
-          }
-        } else if (!d.data.statusColor) {
-          d.data.statusColor = getStatusColor(null);
-        }
-        return d.data.statusColor || '#3f729b';
-      })
-      .style('fill', (d) => {
-        // Use style() to ensure it overrides CSS - ensure statusColor is set
-        if (!d.data.statusColor && d.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-
-          if (colors[d.data.status]) {
-            d.data.statusColor = colors[d.data.status];
-          } else if (archivedKey && d.data.status === archivedKey) {
-            d.data.statusColor = '#808080';
-          } else {
-            d.data.statusColor = getStatusColor(d.data.status);
-          }
-        } else if (!d.data.statusColor) {
-          d.data.statusColor = getStatusColor(null);
-        }
-        return d.data.statusColor || '#3f729b';
-      })
+      .attr('fill', (d) => ensureStatusColor(d.data) || '#3f729b')
       .attr('stroke', (d) => {
-        // Ensure statusColor is set
-        if (!d.data.statusColor && d.data.status) {
-          d.data.statusColor = getStatusColor(d.data.status);
-        }
+        ensureStatusColor(d.data);
         return d.data.status ===
           (window.dtGroupGenmap?.statusField?.archived_key || 'inactive')
           ? '#666'
@@ -1206,9 +1234,9 @@
       .attr('y', 0)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', '10px')
+      .attr('font-size', NODE_FONT_SIZE + 'px')
       .attr('font-weight', '500')
-      .attr('fill', '#333')
+      .attr('fill', (d) => getTextColorForBackground(ensureStatusColor(d.data)))
       .attr('class', 'node-title')
       .text((d) => {
         const name = d.data.displayName || '';
@@ -1260,6 +1288,15 @@
         containerWidth,
         containerHeight,
       );
+
+      // Update text color for existing nodes
+      const textSelection = d3.select(this).select('.node-title');
+      if (!textSelection.empty()) {
+        textSelection.attr(
+          'fill',
+          getTextColorForBackground(ensureStatusColor(d.data)),
+        );
+      }
     });
 
     // Update link positions with transition
@@ -1578,14 +1615,15 @@
 
     // Add clipping path for text overflow protection (create once per SVG)
     const defs = svg.append('defs');
+    const clipPadding = 2; // 2px padding on each side
     defs
       .append('clipPath')
       .attr('id', 'node-text-clip')
       .append('rect')
-      .attr('x', -28) // Leave 2px padding on each side (60px width - 4px = 56px)
-      .attr('y', -13) // Leave 2px padding on top/bottom (30px height - 4px = 26px)
-      .attr('width', 56)
-      .attr('height', 26);
+      .attr('x', -(NODE_HALF_WIDTH - clipPadding)) // Leave 2px padding on each side
+      .attr('y', -(NODE_HALF_HEIGHT - clipPadding)) // Leave 2px padding on top/bottom
+      .attr('width', NODE_WIDTH - clipPadding * 2) // 72px - 4px = 68px
+      .attr('height', NODE_HEIGHT - clipPadding * 2); // 30px - 4px = 26px
 
     // Store references for later use (collapse/expand, popover, etc.)
     wrapper.data('d3Svg', svg);
@@ -1597,8 +1635,6 @@
 
     // Render links (edges) connecting to center of side facing parent
     const links = treeData.links();
-    const NODE_HALF_WIDTH = 30; // 60px / 2
-    const NODE_HALF_HEIGHT = 15; // 30px / 2
 
     // Create link generator connecting to node edges
     const linkPath = (link) => {
@@ -1607,7 +1643,7 @@
 
       if (graphOrientation === 'l2r') {
         // Horizontal layout: Nodes positioned with translate(d.x, d.y)
-        // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
+        // Node rectangle: NODE_WIDTH wide × NODE_HEIGHT tall, centered at (0,0) relative to node group
         // In SVG: node center is at (d.x, d.y)
         // Always connect: parent bottom center → child top center (consistent with tree hierarchy)
         sourceX = link.source.x; // Horizontal center of parent
@@ -1622,7 +1658,7 @@
         return pathData;
       } else {
         // Vertical layout: Nodes positioned with translate(d.y, d.x)
-        // Node rectangle: 60px wide × 30px tall, centered at (0,0) relative to node group
+        // Node rectangle: NODE_WIDTH wide × NODE_HEIGHT tall, centered at (0,0) relative to node group
         // In SVG: node center is at (d.y, d.x) - coordinates are swapped!
         // Always connect: parent right center → child left center (consistent with tree hierarchy)
         // In SVG: x = d.y, y = d.x
@@ -1681,59 +1717,14 @@
     // Add node rectangle with status color
     nodeGroup
       .append('rect')
-      .attr('width', 60)
-      .attr('height', 30)
-      .attr('x', -30) // Center horizontally
-      .attr('y', -15) // Center vertically
+      .attr('width', NODE_WIDTH)
+      .attr('height', NODE_HEIGHT)
+      .attr('x', -NODE_HALF_WIDTH) // Center horizontally
+      .attr('y', -NODE_HALF_HEIGHT) // Center vertically
       .attr('rx', 4)
-      .attr('fill', (d) => {
-        // statusColor should already be set by sanitizeNode, but ensure it's computed if missing
-        if (!d.data.statusColor) {
-          if (d.data.status) {
-            const colors = window.dtGroupGenmap?.statusField?.colors || {};
-            const archivedKey =
-              window.dtGroupGenmap?.statusField?.archived_key || '';
-
-            if (colors[d.data.status]) {
-              d.data.statusColor = colors[d.data.status];
-            } else if (archivedKey && d.data.status === archivedKey) {
-              d.data.statusColor = '#808080';
-            } else {
-              d.data.statusColor = getStatusColor(d.data.status);
-            }
-          } else {
-            d.data.statusColor = getStatusColor(null);
-          }
-        }
-
-        // Use computed status color, fallback to default blue
-        return d.data.statusColor || '#3f729b';
-      })
-      .style('fill', (d) => {
-        // Use style() instead of attr() to ensure it overrides CSS
-        // statusColor should already be set, but ensure it's computed if missing
-        if (!d.data.statusColor && d.data.status) {
-          const colors = window.dtGroupGenmap?.statusField?.colors || {};
-          const archivedKey =
-            window.dtGroupGenmap?.statusField?.archived_key || '';
-
-          if (colors[d.data.status]) {
-            d.data.statusColor = colors[d.data.status];
-          } else if (archivedKey && d.data.status === archivedKey) {
-            d.data.statusColor = '#808080';
-          } else {
-            d.data.statusColor = getStatusColor(d.data.status);
-          }
-        }
-        return d.data.statusColor || '#3f729b';
-      })
+      .attr('fill', (d) => ensureStatusColor(d.data) || '#3f729b')
       .attr('stroke', (d) => {
-        // Ensure statusColor is set
-        if (!d.data.statusColor && d.data.status) {
-          d.data.statusColor = getStatusColor(d.data.status);
-        }
-        const color = d.data.statusColor || '#3f729b';
-        // Lighten stroke for archived/inactive
+        ensureStatusColor(d.data);
         return d.data.status ===
           (window.dtGroupGenmap?.statusField?.archived_key || 'inactive')
           ? '#666'
@@ -1756,9 +1747,9 @@
       .attr('y', 0)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'middle')
-      .attr('font-size', '10px') // Slightly smaller to ensure fit
+      .attr('font-size', NODE_FONT_SIZE + 'px') // Reduced font size for better fit
       .attr('font-weight', '500')
-      .attr('fill', '#333')
+      .attr('fill', (d) => getTextColorForBackground(ensureStatusColor(d.data)))
       .attr('class', 'node-title')
       .text((d) => {
         // Use displayName which is already ellipsized, but ensure it fits with padding
@@ -1998,7 +1989,7 @@
            style="width: 100%; height: 100%;">
         <div class="group-genmap-message" aria-live="polite" style="display: none;"></div>
         <div class="group-genmap-chart" role="region"
-             aria-label="${window.dtGroupGenmap?.strings?.loading || 'Group generational map'}"
+             aria-label="${window.dtGroupGenmap?.strings?.chart_aria || 'Group generational map'}"
              style="width: 100%; height: 100%;"></div>
       </div>
     `;
@@ -2108,27 +2099,36 @@
     let detailsHtml = '<div class="grid-x grid-padding-x">';
     detailsHtml += '<div class="cell">';
 
+    const detailsLabels = window.dtGroupGenmap?.strings?.details || {};
     if (data.group_status && data.group_status.label) {
       detailsHtml +=
-        '<p><strong>Status:</strong> ' +
+        '<p><strong>' +
+        window.lodash.escape(detailsLabels.status || 'Status') +
+        ':</strong> ' +
         window.lodash.escape(data.group_status.label) +
         '</p>';
     }
     if (data.group_type && data.group_type.label) {
       detailsHtml +=
-        '<p><strong>Type:</strong> ' +
+        '<p><strong>' +
+        window.lodash.escape(detailsLabels.type || 'Type') +
+        ':</strong> ' +
         window.lodash.escape(data.group_type.label) +
         '</p>';
     }
     if (data.member_count !== undefined) {
       detailsHtml +=
-        '<p><strong>Members:</strong> ' +
+        '<p><strong>' +
+        window.lodash.escape(detailsLabels.members || 'Members') +
+        ':</strong> ' +
         window.lodash.escape(data.member_count) +
         '</p>';
     }
     if (data.assigned_to && data.assigned_to.display) {
       detailsHtml +=
-        '<p><strong>Assigned:</strong> ' +
+        '<p><strong>' +
+        window.lodash.escape(detailsLabels.assigned || 'Assigned') +
+        ':</strong> ' +
         window.lodash.escape(data.assigned_to.display) +
         '</p>';
     }
@@ -2182,19 +2182,95 @@
     }
 
     const modalStrings = window.dtGroupGenmap?.strings?.modal || {};
-    const listHtml = `
-      <input id="group_genmap_add_child_post_type" type="hidden" value="${window.lodash.escape(
+    const fieldSettings = window.dtGroupGenmap?.fieldSettings || {};
+    const fieldPrefix = GENMAP_ADD_CHILD_FIELD_PREFIX;
+
+    // Build hidden inputs for post type and parent ID
+    let listHtml = `
+      <input id="${fieldPrefix}post_type" type="hidden" value="${window.lodash.escape(
         postType,
       )}" />
-      <input id="group_genmap_add_child_post_id" type="hidden" value="${window.lodash.escape(
+      <input id="${fieldPrefix}post_id" type="hidden" value="${window.lodash.escape(
         postId,
-      )}" />
-      <label>
-        ${window.lodash.escape(modalStrings.add_child_name_title || 'Name')}
-        <input id="group_genmap_add_child_name" type="text" />
-      </label>`;
+      )}" />`;
 
-    const buttonsHtml = `<button id="group_genmap_add_child_but" class="button" type="button">${window.lodash.escape(
+    // fieldSettings contains only in_create_form fields (title excluded in PHP). Title is rendered from titleFieldSetting.
+    const fieldsToRender = {};
+    Object.keys(fieldSettings).forEach((key) => {
+      // Skip title (handled separately) and legacy "name" field if present to avoid duplicating the label.
+      if (key !== 'title' && key !== 'name') {
+        fieldsToRender[key] = fieldSettings[key];
+      }
+    });
+
+    // Title field is passed as a separate top-level key from PHP (titleFieldSetting)
+    const titleFieldSetting = window.dtGroupGenmap?.titleFieldSetting || {
+      name: modalStrings.add_child_name_title || 'Name',
+      type: 'text',
+    };
+
+    if (window.SHAREDFUNCTIONS && window.SHAREDFUNCTIONS.renderField) {
+      const titleFieldHtml = window.SHAREDFUNCTIONS.renderField(
+        'title',
+        titleFieldSetting,
+        fieldPrefix,
+      );
+      if (titleFieldHtml) {
+        listHtml += `<div class="form-field">${titleFieldHtml}</div>`;
+      } else {
+        // Fallback if renderField returns null
+        listHtml += `
+          <label>
+            ${window.lodash.escape(titleFieldSetting.name)}
+            <input id="${fieldPrefix}title" name="title" type="text" />
+          </label>`;
+      }
+    } else {
+      // Fallback if web components not available
+      listHtml += `
+        <label>
+          ${window.lodash.escape(titleFieldSetting.name)}
+          <input id="${fieldPrefix}title" name="title" type="text" />
+        </label>`;
+    }
+
+    // Render other fields that have in_create_form => true
+    const hasRenderField = !!(
+      window.SHAREDFUNCTIONS && window.SHAREDFUNCTIONS.renderField
+    );
+    if (Object.keys(fieldsToRender).length > 0 && !hasRenderField) {
+      console.warn(
+        'Genmapper Add Child: SHAREDFUNCTIONS.renderField is unavailable; in_create_form fields other than title will not be rendered.',
+      );
+    }
+    Object.keys(fieldsToRender).forEach((fieldKey) => {
+      // Safety guard in case title/name ever slip into fieldsToRender.
+      if (fieldKey === 'title' || fieldKey === 'name') {
+        return;
+      }
+
+      const fieldSetting = fieldsToRender[fieldKey];
+      // Only render fields that are supported by renderField
+      if (hasRenderField && fieldSetting && fieldSetting.type) {
+        const fieldHtml = window.SHAREDFUNCTIONS.renderField(
+          fieldKey,
+          fieldSetting,
+          fieldPrefix,
+        );
+
+        if (fieldHtml) {
+          const isLocation =
+            fieldSetting.type === 'location' ||
+            fieldSetting.type === 'location_meta';
+          const fieldClass = isLocation
+            ? 'form-field form-field-location'
+            : 'form-field';
+          listHtml += `<div class="${fieldClass}">${fieldHtml}</div>`;
+        }
+      }
+    });
+
+    const buttonsHtml = `<button id="${fieldPrefix}but" class="button" type="button">${window.lodash.escape(
       modalStrings.add_child_but || 'Add Child',
     )}</button>`;
 
@@ -2210,46 +2286,203 @@
       return;
     }
 
+    // Mark this usage so CSS can safely relax overflow rules without affecting other metrics modals
+    modal.addClass('genmap-add-child-modal');
+    modal.css('overflow', 'visible');
+
     jQuery(modalButtons).empty().html(buttonsHtml);
 
     jQuery('#template_metrics_modal_title')
       .empty()
       .html(window.lodash.escape(title));
-    jQuery(content).css('max-height', '300px');
-    jQuery(content).css('overflow', 'auto');
+    jQuery(content).css('max-height', '400px');
+    jQuery(content).css('overflow-y', 'visible');
     jQuery(content).empty().html(listHtml);
     jQuery(modal).foundation('open');
+
+    // Set mapbox token on location components after insertion (avoids fragile HTML string replace)
+    const mapboxKey = window.dtGroupGenmap?.mapboxKey || '';
+    if (mapboxKey) {
+      content.find('dt-location-map').each(function () {
+        this.setAttribute('mapbox-token', mapboxKey);
+      });
+    }
+    // Location dropdown visibility is handled by #template_metrics_modal_content .form-field-location { overflow: visible } in genmap-d3.css
   }
 
   function handleAddChild() {
-    const postType = jQuery('#group_genmap_add_child_post_type').val();
-    const parentId = jQuery('#group_genmap_add_child_post_id').val();
-    const childTitle = jQuery('#group_genmap_add_child_name').val();
+    const fieldPrefix = GENMAP_ADD_CHILD_FIELD_PREFIX;
+    const postType = jQuery(`#${fieldPrefix}post_type`).val();
+    const parentId = parseInt(jQuery(`#${fieldPrefix}post_id`).val(), 10);
+    const modalContent = jQuery('#template_metrics_modal_content');
 
-    if (!postType || !parentId || !childTitle) {
+    if (!postType || !parentId) {
       return;
     }
 
+    // Collect values from web components
+    const fields = {};
+    const fieldSettings = window.dtGroupGenmap?.fieldSettings || {};
+
+    // Get title field value (required)
+    const titleField = modalContent.find(`#${fieldPrefix}title`)[0];
+    if (titleField) {
+      if (titleField.tagName && titleField.tagName.startsWith('DT-')) {
+        // Web component - get value directly
+        if (titleField.value) {
+          fields.title = titleField.value;
+        }
+      } else {
+        // Fallback for regular input
+        const titleValue = jQuery(titleField).val();
+        if (titleValue) {
+          fields.title = titleValue;
+        }
+      }
+    }
+
+    // Validate title is present
+    if (
+      !fields.title ||
+      (typeof fields.title === 'string' && fields.title.trim() === '')
+    ) {
+      const msg =
+        window.dtGroupGenmap?.strings?.modal?.name_required ||
+        'Name is required';
+      alert(msg);
+      return;
+    }
+
+    const submitBtn = jQuery(`#${fieldPrefix}but`);
+    submitBtn.prop('disabled', true).addClass('loading');
+
+    // Collect values from all other web components
+    modalContent
+      .find(
+        'dt-text, dt-textarea, dt-number, dt-toggle, dt-date, dt-single-select, dt-multi-select-button-group, dt-tags, dt-connection, dt-location-map, dt-multi-text',
+      )
+      .each(function () {
+        const component = this;
+        const rawId = component.id || '';
+        const idWithoutPrefix = rawId.startsWith(fieldPrefix)
+          ? rawId.slice(fieldPrefix.length)
+          : rawId;
+        const fieldKey = component.name || idWithoutPrefix;
+
+        // Skip hidden fields and system fields
+        if (
+          !fieldKey ||
+          fieldKey === 'post_type' ||
+          fieldKey === 'post_id' ||
+          fieldKey === 'title' ||
+          fieldKey === 'name'
+        ) {
+          return;
+        }
+
+        const fieldSetting = fieldSettings[fieldKey];
+        if (!fieldSetting) {
+          return;
+        }
+
+        // Get value from component
+        if (
+          component.value === undefined ||
+          component.value === null ||
+          component.value === ''
+        ) {
+          return;
+        }
+
+        let value = component.value;
+
+        // Convert value using ComponentService if available
+        if (window.DtWebComponents && window.DtWebComponents.ComponentService) {
+          try {
+            value = window.DtWebComponents.ComponentService.convertValue(
+              component.tagName,
+              value,
+            );
+          } catch (e) {
+            console.warn('Error converting value for field', fieldKey, e);
+            // Continue with original value if conversion fails
+          }
+        }
+
+        // Format value based on field type for API
+        const fieldType = fieldSetting.type;
+
+        switch (fieldType) {
+          case 'key_select':
+            // key_select: ComponentService returns the key, use directly
+            fields[fieldKey] = value;
+            break;
+          case 'multi_select':
+            // multi_select: ComponentService returns array, format for API
+            if (Array.isArray(value) && value.length > 0) {
+              fields[fieldKey] = { values: value.map((v) => ({ value: v })) };
+            }
+            break;
+          case 'connection':
+            // connection: ComponentService returns array of IDs, format for API
+            if (Array.isArray(value) && value.length > 0) {
+              fields[fieldKey] = { values: value.map((v) => ({ value: v })) };
+            } else if (value) {
+              fields[fieldKey] = { values: [{ value: value }] };
+            }
+            break;
+          case 'communication_channel':
+            // communication_channel: ComponentService returns array of objects
+            if (Array.isArray(value) && value.length > 0) {
+              fields[fieldKey] = value;
+            }
+            break;
+          case 'tags':
+            // tags: ComponentService returns array, format for API
+            if (Array.isArray(value) && value.length > 0) {
+              fields[fieldKey] = { values: value.map((v) => ({ value: v })) };
+            } else if (value) {
+              fields[fieldKey] = { values: [{ value: value }] };
+            }
+            break;
+          default:
+            // For text, textarea, number, boolean, date, etc., use value directly
+            fields[fieldKey] = value;
+            break;
+        }
+      });
+
+    // Parent connection is set via additional_meta (API overwrites connection from it)
+    const createPayload = {
+      ...fields,
+      additional_meta: {
+        created_from: parentId,
+        add_connection: 'child_groups',
+      },
+    };
+
     if (window.API && window.API.create_post) {
-      window.API.create_post(postType, {
-        title: childTitle,
-        additional_meta: {
-          created_from: parentId,
-          add_connection: 'child_groups',
-        },
-      })
+      window.API.create_post(postType, createPayload)
         .then((newPost) => {
+          submitBtn.prop('disabled', false).removeClass('loading');
           jQuery('#template_metrics_modal').foundation('close');
           // Refresh the page to show the new child
           window.location.reload();
         })
         .catch(function (error) {
+          submitBtn.prop('disabled', false).removeClass('loading');
           console.error(error);
-          alert(
-            'Error creating child group: ' + (error.message || 'Unknown error'),
-          );
+          const template =
+            window.dtGroupGenmap?.strings?.modal?.error_creating_child ||
+            'Error creating child group: %s';
+          const unknownErr =
+            window.dtGroupGenmap?.strings?.modal?.unknown_error ||
+            'Unknown error';
+          const msg = template.replace('%s', error.message || unknownErr);
+          alert(msg);
         });
     } else {
+      submitBtn.prop('disabled', false).removeClass('loading');
       console.error('window.API.create_post is not available');
     }
   }
@@ -2286,11 +2519,23 @@
     handleAddChild();
   });
 
+  // When the shared metrics modal closes, clear any Genmapper-specific modal classes
+  jQuery(document).on(
+    'closed.zf.reveal',
+    '#template_metrics_modal[data-reveal]',
+    function () {
+      jQuery('#template_metrics_modal').removeClass('genmap-add-child-modal');
+    },
+  );
+
   jQuery(document).on(
     'open.zf.reveal',
     '#template_metrics_modal[data-reveal]',
     function () {
-      jQuery('#group_genmap_add_child_name').focus();
+      const titleField = jQuery('#group_genmap_add_child_title');
+      if (titleField.length) {
+        titleField[0].focus();
+      }
     },
   );
 
