@@ -379,7 +379,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         $params = $request->get_params();
         $response = [];
         if ( isset( $params['key'], $params['single'], $params['plural'] ) ){
-            $key = $params['key'];
+            $key = dt_create_field_key( $params['key'] );
             $single = $params['single'];
             $plural = $params['plural'];
 
@@ -1293,6 +1293,61 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             // Boolean Field Types: Checked by default
             if ( isset( $post_submission['visibility']['checked_by_default'] ) ) {
                 $custom_field['default'] = $post_submission['visibility']['checked_by_default'];
+            }
+
+            // Upload File Field Types: Field-specific options
+            if ( isset( $post_fields[$field_key]['type'] ) && $post_fields[$field_key]['type'] === 'file_upload' ) {
+                // Accepted file types
+                if ( isset( $post_submission['visibility']['accepted_file_types'] ) ) {
+                    $raw_accepted = trim( $post_submission['visibility']['accepted_file_types'] );
+                    if ( $raw_accepted === '' ) {
+                        // Clear any previously saved override so defaults are used
+                        unset( $custom_field['accepted_file_types'] );
+                    } else {
+                        $types = array_map( 'sanitize_text_field', array_map( 'trim', explode( ',', $raw_accepted ) ) );
+                        $custom_field['accepted_file_types'] = $types;
+                    }
+                }
+
+                // Max file size
+                if ( isset( $post_submission['visibility']['max_file_size'] ) && $post_submission['visibility']['max_file_size'] !== '' ) {
+                    $custom_field['max_file_size'] = (int) $post_submission['visibility']['max_file_size'];
+                } else if ( isset( $custom_field['max_file_size'] ) ) {
+                    unset( $custom_field['max_file_size'] );
+                }
+
+                // Delete enabled
+                if ( isset( $post_submission['visibility']['delete_enabled'] ) ) {
+                    $custom_field['delete_enabled'] = (bool) $post_submission['visibility']['delete_enabled'];
+                } else {
+                    $custom_field['delete_enabled'] = false;
+                }
+
+                // Display layout
+                if ( isset( $post_submission['visibility']['display_layout'] ) ) {
+                    $custom_field['display_layout'] = sanitize_text_field( wp_unslash( $post_submission['visibility']['display_layout'] ) );
+                }
+
+                // Auto upload
+                if ( isset( $post_submission['visibility']['auto_upload'] ) ) {
+                    $custom_field['auto_upload'] = (bool) $post_submission['visibility']['auto_upload'];
+                } else {
+                    $custom_field['auto_upload'] = false;
+                }
+
+                // Download enabled
+                if ( isset( $post_submission['visibility']['download_enabled'] ) ) {
+                    $custom_field['download_enabled'] = (bool) $post_submission['visibility']['download_enabled'];
+                } else {
+                    $custom_field['download_enabled'] = false;
+                }
+
+                // Rename enabled
+                if ( isset( $post_submission['visibility']['rename_enabled'] ) ) {
+                    $custom_field['rename_enabled'] = (bool) $post_submission['visibility']['rename_enabled'];
+                } else {
+                    $custom_field['rename_enabled'] = false;
+                }
             }
 
             $field_customizations[$post_type][$field_key] = $custom_field;

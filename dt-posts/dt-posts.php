@@ -1409,11 +1409,19 @@ class DT_Posts extends Disciple_Tools_Posts {
         // Provide space for any additional processing of metadata values.
         if ( DT_Storage_API::is_enabled() ) {
             $comment_meta = get_comment_meta( $comment_id );
-            if ( isset( $comment_meta, $comment_meta['audio_url'] ) && is_array( $comment_meta['audio_url'] ) && ( count( $comment_meta['audio_url'] ) > 0 ) ) {
-                DT_Storage_API::delete_file( $comment_meta['audio_url'][0] );
-            }
-            if ( isset( $comment_meta, $comment_meta['image_url'] ) && is_array( $comment_meta['image_url'] ) && ( count( $comment_meta['image_url'] ) > 0 ) ) {
-                DT_Storage_API::delete_file( $comment_meta['image_url'][0] );
+            $comment_storage_meta_keys = self::get_comment_storage_meta_keys();
+            if ( !empty( $comment_storage_meta_keys ) && is_array( $comment_meta ) ) {
+                foreach ( $comment_storage_meta_keys as $meta_key ) {
+                    if ( isset( $comment_meta[ $meta_key ] ) && is_array( $comment_meta[ $meta_key ] ) && count( $comment_meta[ $meta_key ] ) > 0 ) {
+                        $storage_key = $comment_meta[ $meta_key ][0];
+                        if ( !empty( $storage_key ) ) {
+                            $result = DT_Storage_API::delete_file( $storage_key );
+                            if ( !is_array( $result ) || empty( $result['file_deleted'] ) ) {
+                                dt_write_log( "delete_post_comment: failed to delete S3 object '{$storage_key}' for comment {$comment_id}" );
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -1536,6 +1544,8 @@ class DT_Posts extends Disciple_Tools_Posts {
 
         $comments_reactions_dict = [];
         $comments_meta_dict = [];
+        $comment_storage_meta_keys = self::get_comment_storage_meta_keys();
+
         foreach ( $comments_meta as $meta ) {
 
             // if meta_key starts with "reaction"...
@@ -1563,7 +1573,7 @@ class DT_Posts extends Disciple_Tools_Posts {
 
                 // Provide space for the reshaping of meta-values.
                 $meta_value = $meta->meta_value;
-                if ( in_array( $meta->meta_key, [ 'audio_url', 'image_url' ] ) && !empty( $meta_value ) && DT_Storage_API::is_enabled() ) {
+                if ( in_array( $meta->meta_key, $comment_storage_meta_keys, true ) && !empty( $meta_value ) && DT_Storage_API::is_enabled() ) {
                     $storage_obj_url = DT_Storage_API::get_file_url( $meta_value );
                     $meta_value = !empty( $storage_obj_url ) ? $storage_obj_url : $meta_value;
                 }
@@ -1708,6 +1718,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             'text',
             'textarea',
             'number',
+            'file_upload',
             'connection to',
             'connection from',
             ''
@@ -3264,6 +3275,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'label' => 'Location with Geocoding',
                 'description' => 'Location selected with the help of a geocoder (mapbox, google)',
                 'user_creatable' => false,
+            ],
+            'file_upload' => [
+                'label' => 'File Upload',
+                'description' => 'Field for uploading multiple files (images, documents, PDFs, etc.)',
+                'user_creatable' => true,
             ],
             'tasks' => [
                 'label' => 'Tasks',
