@@ -567,7 +567,9 @@ jQuery(function ($) {
         let baseURI = selector.prop('baseURI');
         let mergeFieldID = selector.prop('dataset').merge_field_id;
         let currentID = mergeFieldID.substring(0, mergeFieldID.indexOf('_'));
-        let dupeID = baseURI.substring(baseURI.indexOf('dupeid=') + 'dupeid='.length);
+        let dupeID = baseURI.substring(
+          baseURI.indexOf('dupeid=') + 'dupeid='.length,
+        );
         let mergeContact = currentID === dupeID;
 
         // Determine values to be updated
@@ -576,14 +578,16 @@ jQuery(function ($) {
 
         // Update values accordingly
         for (const sourceItem of sourceValue) {
-          const valIdx = mergedValue.findIndex((x) => x.meta_id === sourceItem.meta_id);
+          const valIdx = mergedValue.findIndex(
+            (x) => x.meta_id === sourceItem.meta_id,
+          );
           if (is_selected) {
             // Add, if not already present
             if (valIdx < 0 || mergeContact) {
               mergedValue.push(sourceItem);
               // Remove old meta_id if we're adding values from the merged contact
               if (mergeContact) {
-                sourceItem.meta_id = "";
+                sourceItem.meta_id = '';
               }
             }
           } else {
@@ -595,7 +599,7 @@ jQuery(function ($) {
                 sourceItem,
               )
             ) {
-              if (mergeContact){
+              if (mergeContact) {
                 mergedValue.splice(valIdx, 1);
               }
             }
@@ -603,7 +607,7 @@ jQuery(function ($) {
         }
 
         // set delete flag to remove values from primary record
-        if (!mergeContact){
+        if (!mergeContact) {
           for (const item of mergedValue) {
             if (item.meta_id !== '') {
               if (is_selected) {
