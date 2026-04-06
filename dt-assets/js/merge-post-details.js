@@ -225,10 +225,11 @@ jQuery(function ($) {
         return typeahead && !window.lodash.isEmpty(typeahead.items);
       }
 
-      case 'link':
+      case 'link': {
         return !window.lodash.isEmpty(
-          $(td_field_input).find('input.link-input').not('[value=""]'),
+          $(td_field_input).find('dt-multi-text-groups').not('[value=""]'),
         );
+      }
 
       case 'communication_channel':
       case 'location_meta':
@@ -502,73 +503,66 @@ jQuery(function ($) {
       }
 
       case 'link': {
-        // Determine selector source field link inputs to be processed.
-        let source_field_link_inputs = [];
-        let tr = $(selector).parent().parent();
-        $(tr)
-          .find('.td-field-input input.link-input')
-          .each(function (idx, input) {
-            if ($(input).val()) {
-              source_field_link_inputs.push(input);
-            }
-          });
+        // Determine if we are adding values from the merge contact or the primary contact
+        let baseURI = selector.prop('baseURI');
+        let mergeFieldID = selector.prop('dataset').merge_field_id;
+        let currentID = mergeFieldID.substring(0, mergeFieldID.indexOf('_'));
+        let dupeID = baseURI.substring(baseURI.indexOf('dupeid=') + 'dupeid='.length);
+        let mergeContact = currentID === dupeID;
 
-        // Delete/Add updated post record, based on identified source field inputs.
-        let main_updated_fields_div = $('#main_updated_fields_div');
-        let link_field_meta_input = $(main_updated_fields_div)
-          .find(`.link-list-${update_field_id}`)
-          .parent()
-          .parent()
-          .find('#field_meta');
-        let deleted_items = $(link_field_meta_input).val()
-          ? JSON.parse($(link_field_meta_input).val())
-          : [];
+        // Determine values to be updated
+        const sourceValue = sourceField.val() || [];
+        let mergedValue = mergedField.val() || [];
 
-        // Locate by link field values.
-        $.each(source_field_link_inputs, function (idx, input) {
-          let link_list_section_div = $(main_updated_fields_div).find(
-            `.link-list-${update_field_id} .link-section--${$(input).data('type')}`,
-          );
-          let matched_input = $(link_list_section_div).find(
-            `.input-group input[value="${$(input).val()}"].link-input`,
-          );
-
-          // Handle accordingly, based on incoming selected state.
+        // Update values accordingly
+        for (const sourceItem of sourceValue) {
+          const valIdx = mergedValue.findIndex((x) => x.meta_id === sourceItem.meta_id);
           if (is_selected) {
-            // Add new updated link fields.
-            if (matched_input.length === 0) {
-              $(link_list_section_div).append(`
-                <div class="input-group">
-                    <input type="text" class="link-input input-group-field" value="${window.SHAREDFUNCTIONS.escapeHTML($(input).val())}" data-meta-id="${window.SHAREDFUNCTIONS.escapeHTML($(input).data('meta-id'))}" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(update_field_id)}" data-type="${window.SHAREDFUNCTIONS.escapeHTML($(input).data('type'))}">
-                    <div class="input-group-button">
-                        <button class="button alert delete-button-style input-height link-delete-button delete-button" data-meta-id="${window.SHAREDFUNCTIONS.escapeHTML($(input).data('meta-id'))}" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(update_field_id)}">&times;</button>
-                    </div>
-                </div>`);
-
-              // Remove any previously deleted entries.
-              window.lodash.remove(deleted_items, function (meta_id) {
-                return meta_id === $(input).data('meta-id');
-              });
-              $(link_field_meta_input).val(JSON.stringify(deleted_items));
+            // Add, if not already present
+            if (valIdx < 0 || mergeContact) {
+              mergedValue.push(sourceItem);
+              // Remove old meta_id if we're adding values from the merged contact
+              if (mergeContact) {
+                sourceItem.meta_id = "";
+              }
             }
           } else {
-            // Remove new updated link fields.
-            if (matched_input.length > 0) {
-              $(matched_input).parent().remove();
-
-              // Keep a record of deleted meta_ids.
-              if (
-                !window.lodash.includes(
-                  deleted_items,
-                  $(matched_input).data('meta-id'),
-                )
-              ) {
-                deleted_items.push($(matched_input).data('meta-id'));
-                $(link_field_meta_input).val(JSON.stringify(deleted_items));
+            // Remove, if present and not still selected anywhere else!
+            if (
+              !is_field_value_still_selected(
+                update_field_id,
+                field_type,
+                sourceItem,
+              )
+            ) {
+              if (mergeContact){
+                mergedValue.splice(valIdx, 1);
               }
             }
           }
-        });
+        }
+
+        // set delete flag to remove values from primary record
+        if (!mergeContact){
+          for (const item of mergedValue) {
+            if (item.meta_id !== '') {
+              if (is_selected) {
+                item.delete = false;
+              } else {
+                item.delete = true;
+              }
+            }
+          }
+        }
+
+        // if there is an empty value, remove it
+        const emptyIdx = mergedValue.findIndex((x) => !x.value && x.tempKey);
+        if (mergedValue.length > 1 && emptyIdx > -1) {
+          mergedValue.splice(emptyIdx, 1);
+        }
+
+        // set value attribute of element
+        mergedField.attr('value', JSON.stringify(mergedValue));
 
         break;
       }
@@ -1202,61 +1196,6 @@ jQuery(function ($) {
             if (location_meta_entries) {
               values[post_field_id] = {
                 values: location_meta_entries,
-              };
-            }
-            break;
-          }
-
-          case 'link': {
-            // Determine values to be processed
-            let link_entries = [];
-            let link_deletions = field_meta.val()
-              ? JSON.parse(field_meta.val())
-              : [];
-
-            // Package values and any deletions
-            $(td)
-              .find('.input-group input.link-input')
-              .each(function (idx, input) {
-                let link_type = $(input).data('type');
-                let link_meta_id = $(input).data('meta-id');
-                let link_val = $(input).val();
-
-                let has_value = is_link_field_value_already_in_primary(
-                  post_field_id,
-                  link_type,
-                  link_meta_id,
-                  link_val,
-                  true,
-                );
-                let matched_meta_id = is_link_field_value_already_in_primary(
-                  post_field_id,
-                  link_type,
-                  link_meta_id,
-                  link_val,
-                  false,
-                );
-
-                if (link_val && !has_value) {
-                  link_entries.push({
-                    value: link_val,
-                    type: link_type,
-                    meta_id: matched_meta_id ? link_meta_id : '',
-                  });
-                }
-              });
-
-            $.each(link_deletions, function (idx, deleted_meta_id) {
-              link_entries.push({
-                meta_id: deleted_meta_id,
-                delete: true,
-              });
-            });
-
-            // If present, capture entries
-            if (link_entries) {
-              values[post_field_id] = {
-                values: link_entries,
               };
             }
             break;
