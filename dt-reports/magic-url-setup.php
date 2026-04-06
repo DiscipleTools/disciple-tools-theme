@@ -209,6 +209,44 @@ class DT_Magic_URL_Setup {
                     const appAccordion = target.closest('.app-accordion');
                     return appAccordion.dataset;
                 }
+
+                /**
+                 * Format expiry Unix timestamp (seconds) in the browser's local timezone.
+                 * @param {string|number} tsSec
+                 * @returns {string}
+                 */
+                function formatMagicLinkExpiryLocal(tsSec) {
+                    const n = parseInt(tsSec, 10);
+                    if (!n) {
+                        return '';
+                    }
+                    return new Date(n * 1000).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' });
+                }
+
+                /**
+                 * Update summary badge and accordion expiration line from data-expires-ts on the accordion.
+                 * @param {HTMLElement} appAccordion
+                 * @param {string|number} tsSec
+                 */
+                function updateAppAccordionExpiryLocalDisplay(appAccordion, tsSec) {
+                    const local = formatMagicLinkExpiryLocal(tsSec);
+                    const metaKey = appAccordion.dataset.key;
+                    const expPrefix = '<?php echo esc_js( __( 'Exp: ', 'disciple_tools' ) ) ?>';
+                    if (local) {
+                        const badge = appAccordion.querySelector('.app-expiration-badge');
+                        if (badge) {
+                            badge.textContent = expPrefix + local;
+                        }
+                        if (metaKey) {
+                            const expirationDisplay = document.getElementById('app-expiration-display-' + metaKey);
+                            if (expirationDisplay) {
+                                expirationDisplay.textContent = local;
+                                expirationDisplay.style.color = (parseInt(tsSec, 10) * 1000 < Date.now()) ? 'red' : '';
+                            }
+                        }
+                    }
+                }
+
                 function app_link_toggle(evt, user_id = null, app_key = null) {
                     window.makeRequest('post', 'users/app_switch', { user_id, app_key })
                         .done(function (data) {
@@ -320,7 +358,7 @@ Thanks!', 'disciple_tools' );
                     $('#modal-small').foundation('open')
                 }
                 function app_link_reset(evt) {
-                    const { url, title, key } = get_app(evt.target);
+                    const { url, title, key, sysType, recordId } = get_app(evt.target);
                     const { ID: post_id, post_type, corresponds_to_user } = window.detailsSettings.post_fields;
 
                     const modalTitle = document.getElementById('modal-small-title');
@@ -331,11 +369,14 @@ Thanks!', 'disciple_tools' );
 
                     const button = modalContent.querySelector('.button');
                     const loadingSpinner = modalContent.querySelector('.loading-spinner');
+
                     button.addEventListener('click', function () {
                         this.disabled = true;
                         loadingSpinner.classList.add('active');
 
                         try {
+                            const sys_type = sysType || (corresponds_to_user ? 'wp_user' : 'post');
+                            const id = recordId || (corresponds_to_user || post_id);
 
                             if (corresponds_to_user) {
                                 // to reset a user link, we'll just turn it off and back on again
@@ -351,6 +392,10 @@ Thanks!', 'disciple_tools' );
                                             .done(function (data2) {
                                                 if ('removed' !== data2) {
                                                     app_link_set_url(evt.target, key, data2);
+                                                    // Clear expiration data when link is reset
+                                                    if (window.wpApiShare) {
+                                                        clear_expiration_after_reset(key, id, sys_type);
+                                                    }
                                                 }
                                             })
                                         $('#modal-small').foundation('close')
@@ -358,18 +403,88 @@ Thanks!', 'disciple_tools' );
                                     }
                                 })
                             } else {
+                                const newHash = window.sha256( Date.now() );
                                 window.API.update_post(
                                     post_type,
-                                    post_id, {[key]: window.sha256( Date.now() )}
+                                    post_id, {[key]: newHash}
                                 ).done( newPost => {
                                     $('#modal-small').foundation('close')
                                     app_link_set_url(evt.target, key, newPost[key]);
+                                    // Clear expiration data when link is reset
+                                    if (window.wpApiShare) {
+                                        clear_expiration_after_reset(key, id, sys_type);
+                                    }
                                 })
                             }
                         } catch (err) {
                             console.error(err);
                         }
                     })
+                }
+
+                function clear_expiration_after_reset(metaKey, id, sysType) {
+                    if (!window.wpApiShare) return;
+                    
+                    const endpointUrl = window.wpApiShare.root + 'disciple_tools_magic_links/v1/clear_link_expiration';
+                    
+                    const payload = {
+                        meta_key: metaKey,
+                        sys_type: sysType
+                    };
+                    
+                    // Add user_id or post_id based on sys_type
+                    if (sysType === 'wp_user') {
+                        payload.user_id = id;
+                    } else {
+                        payload.post_id = id;
+                    }
+                    
+                    $.ajax({
+                        url: endpointUrl,
+                        method: 'POST',
+                        data: payload,
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+                        },
+                        success: function(data) {
+                            if (data && data.success) {
+                                // Clear expiration display on frontend
+                                const expirationDisplay = document.getElementById('app-expiration-display-' + metaKey);
+                                if (expirationDisplay) {
+                                    expirationDisplay.textContent = '<?php echo esc_js( __( 'Does not expire', 'disciple_tools' ) ) ?>';
+                                    expirationDisplay.style.color = '';
+                                }
+
+                                // Remove expiration badge and clear data attributes
+                                const appAccordion = document.querySelector('.app-accordion.' + metaKey);
+                                if (appAccordion) {
+                                    appAccordion.dataset.expiresTs = '';
+                                    appAccordion.dataset.expiresFormatted = '<?php echo esc_js( __( 'Does not expire', 'disciple_tools' ) ) ?>';
+                                    appAccordion.dataset.expiresFormattedShort = '';
+                                    const badge = appAccordion.querySelector('.app-expiration-badge');
+                                    if (badge) {
+                                        badge.remove();
+                                    }
+
+                                    // Reset label text when expiration has been cleared
+                                    const resetButton = appAccordion.querySelector('.app-link-row .reset');
+                                    if (resetButton) {
+                                        const resetRow = resetButton.closest('.app-link-row');
+                                        const resetLabel = resetRow ? resetRow.querySelector('.app-link-label') : null;
+                                        if (resetLabel) {
+                                            resetLabel.textContent = '<?php echo esc_js( __( 'Reset link', 'disciple_tools' ) ) ?>';
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            // Silently fail - not critical
+                            if (console && console.warn) {
+                                console.warn('Could not clear expiration:', error);
+                            }
+                        }
+                    });
                 }
 
                 function app_link_set_url(target, meta_key, value) {
@@ -388,6 +503,134 @@ Thanks!', 'disciple_tools' );
                     const appCopy = appAccordion.querySelector('.app-copy');
                     appCopy.dataset.value = url;
                 }
+
+                function app_link_set_expiration(evt) {
+                    const appAccordion = evt.target.closest('.app-accordion');
+                    const { key, sysType, recordId } = get_app(evt.target);
+                    const { ID: post_id, corresponds_to_user } = window.detailsSettings.post_fields;
+
+                    const metaKey = key;
+                    const expirationAmount = document.getElementById('app-expiration-amount-' + metaKey).value;
+                    const expirationTimeUnit = document.getElementById('app-expiration-time-unit-' + metaKey).value;
+
+                    // Validate input (amount and unit required)
+                    if (!expirationAmount || parseInt(expirationAmount, 10) <= 0 || !expirationTimeUnit) {
+                        alert('<?php echo esc_js( __( 'Please enter a valid expiration amount and time unit.', 'disciple_tools' ) ) ?>');
+                        return;
+                    }
+
+                    // Determine sys_type and id
+                    const sys_type = sysType || (corresponds_to_user ? 'wp_user' : 'post');
+                    const id = recordId || (corresponds_to_user || post_id);
+
+                    // Build request payload
+                    const payload = {
+                        meta_key: metaKey,
+                        sys_type: sys_type,
+                        links_expire_within_amount: expirationAmount,
+                        links_expire_within_time_unit: expirationTimeUnit
+                    };
+
+                    // Add id based on sys_type
+                    if (sys_type === 'wp_user') {
+                        payload.user_id = id;
+                    } else {
+                        payload.post_id = id;
+                    }
+
+                    // Disable button and show loading
+                    const button = evt.target;
+                    const originalText = button.textContent;
+                    button.disabled = true;
+                    button.textContent = '<?php echo esc_js( __( 'Setting...', 'disciple_tools' ) ) ?>';
+
+                    // Build endpoint URL
+                    const endpointUrl = window.wpApiShare.root + 'disciple_tools_magic_links/v1/set_link_expiration_direct';
+
+                    // Make request
+                    $.ajax({
+                        url: endpointUrl,
+                        method: 'POST',
+                        data: payload,
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
+                        },
+                        success: function(data) {
+                            if (data && data.success) {
+                                // Update expiration display (local timezone via epoch from API)
+                                const expirationDisplay = document.getElementById('app-expiration-display-' + metaKey);
+                                if (data.expires) {
+                                    const tsVal = data.expires.ts;
+                                    if (expirationDisplay && tsVal) {
+                                        expirationDisplay.textContent = formatMagicLinkExpiryLocal(tsVal);
+                                        expirationDisplay.style.color = (tsVal * 1000 < Date.now()) ? 'red' : '';
+                                    } else if (expirationDisplay) {
+                                        expirationDisplay.textContent = data.expires.ts_formatted || '<?php echo esc_js( __( 'Does not expire', 'disciple_tools' ) ) ?>';
+                                        expirationDisplay.style.color = '';
+                                    }
+
+                                    // Update data attributes (ts is Unix seconds for client formatting)
+                                    appAccordion.dataset.expiresTs = tsVal ? String(tsVal) : '';
+                                    appAccordion.dataset.expiresFormatted = data.expires.ts_formatted || '<?php echo esc_js( __( 'Does not expire', 'disciple_tools' ) ) ?>';
+                                    appAccordion.dataset.expiresFormattedShort = data.expires.ts_formatted_short || '';
+
+                                    const badge = appAccordion.querySelector('.app-expiration-badge');
+                                    if (tsVal) {
+                                        if (badge) {
+                                            updateAppAccordionExpiryLocalDisplay(appAccordion, tsVal);
+                                        } else {
+                                            const appLabel = appAccordion.querySelector('.app-label');
+                                            if (appLabel) {
+                                                const newBadge = document.createElement('span');
+                                                newBadge.className = 'app-expiration-badge';
+                                                newBadge.style.cssText = 'font-size: 0.85em; color: #666; margin-top: 0.25rem;';
+                                                const insertBefore = appLabel.children[1] || null;
+                                                appLabel.insertBefore(newBadge, insertBefore);
+                                                updateAppAccordionExpiryLocalDisplay(appAccordion, tsVal);
+                                            }
+                                        }
+                                    } else if (badge) {
+                                        badge.remove();
+                                    }
+
+                                    // Update reset label to mention clearing expiration
+                                    const resetButton = appAccordion.querySelector('.app-link-row .reset');
+                                    if (resetButton) {
+                                        const resetRow = resetButton.closest('.app-link-row');
+                                        const resetLabel = resetRow ? resetRow.querySelector('.app-link-label') : null;
+                                        if (resetLabel) {
+                                            resetLabel.textContent = '<?php echo esc_js( __( 'Reset link (clears expiration)', 'disciple_tools' ) ) ?>';
+                                        }
+                                    }
+                                }
+
+                                // Show success message
+                                if (window.toastr) {
+                                    window.toastr.success('<?php echo esc_js( __( 'Expiration updated successfully.', 'disciple_tools' ) ) ?>');
+                                }
+                            } else {
+                                alert(data.message || '<?php echo esc_js( __( 'Failed to update expiration.', 'disciple_tools' ) ) ?>');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error updating expiration:', error, xhr.responseJSON);
+                            alert('<?php echo esc_js( __( 'Error updating expiration. Please try again.', 'disciple_tools' ) ) ?>');
+                        },
+                        complete: function() {
+                            button.disabled = false;
+                            button.textContent = originalText;
+                        }
+                    });
+                }
+
+                (function initLocalMagicLinkExpiryDisplay() {
+                    document.querySelectorAll('.app-accordion[data-expires-ts]').forEach(function (acc) {
+                        const ts = acc.dataset.expiresTs;
+                        if (ts) {
+                            updateAppAccordionExpiryLocalDisplay(acc, ts);
+                        }
+                    });
+                }());
             </script>
             <?php
         }
@@ -424,6 +667,54 @@ Thanks!', 'disciple_tools' );
             $user_id = $post['corresponds_to_user'];
         }
         $app_link = $app_url_base . $key;
+
+        // Fetch expiration data for this magic link (independent of link_obj)
+        $expiration_data = [
+            'ts' => '',
+            'ts_formatted' => __( 'Does not expire', 'disciple_tools' ),
+            'ts_base' => ''
+        ];
+        $post_id = isset( $post['ID'] ) ? $post['ID'] : get_the_ID();
+        $sys_type = $user_id ? 'wp_user' : 'post';
+        $record_id = $user_id ? $user_id : $post_id;
+
+        // Determine if the active magic link plugin version supports expiration helpers
+        $magic_link_expiration_supported = (
+            class_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API' )
+            && method_exists( 'Disciple_Tools_Bulk_Magic_Link_Sender_API', 'capture_expiry_details' )
+        );
+
+        if ( $magic_link_expiration_supported ) {
+            // Try to find matching link_obj for backward compatibility
+            $matching_link_obj = null;
+
+            static $cached_link_objs = null;
+            if ( is_null( $cached_link_objs ) ) {
+                $cached_link_objs = Disciple_Tools_Bulk_Magic_Link_Sender_API::fetch_option_link_objs();
+            }
+            $link_objs = $cached_link_objs;
+
+            foreach ( $link_objs as $link_obj ) {
+                $generated_key = Disciple_Tools_Bulk_Magic_Link_Sender_API::generate_magic_link_type_key( $link_obj );
+                if ( $generated_key === $meta_key ) {
+                    $matching_link_obj = $link_obj;
+                    break;
+                }
+            }
+
+            // Fetch expiration using unified wrapper (checks meta first, then link_obj)
+            $expiration_data = Disciple_Tools_Bulk_Magic_Link_Sender_API::capture_expiry_details(
+                $meta_key,
+                $record_id,
+                $sys_type,
+                $matching_link_obj
+            );
+        }
+
+        // Prepare short expiration format using site date/time settings
+        $date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+        $exp_ts = $expiration_data['ts'] ?? '';
+        $exp_short = ! empty( $exp_ts ) ? date_i18n( $date_time_format, (int) $exp_ts ) : '';
         ?>
         <details class="app-accordion <?php echo esc_attr( $meta_key ); ?>"
                  data-url-base="<?php echo esc_url( $app_url_base ) ?>"
@@ -433,18 +724,32 @@ Thanks!', 'disciple_tools' );
                  data-root="<?php echo esc_attr( $app['root'] ) ?>"
                  data-type="<?php echo esc_attr( $app['type'] ) ?>"
                  data-key="<?php echo esc_attr( $app['meta_key'] ) ?>"
+                 data-sys-type="<?php echo esc_attr( $sys_type ) ?>"
+                 data-record-id="<?php echo esc_attr( $record_id ) ?>"
+                 data-expires-ts="<?php echo esc_attr( $expiration_data['ts'] ?? '' ) ?>"
+                 data-expires-formatted="<?php echo esc_attr( $expiration_data['ts_formatted'] ?? __( 'Does not expire', 'disciple_tools' ) ) ?>"
+                 data-expires-formatted-short="<?php echo esc_attr( $exp_short ) ?>"
         >
             <summary class="app-summary">
-                <div class="app-label"><?php echo esc_html( $app['label'] ) ?>
-                <?php if ( !empty( $app['description'] ) ): ?>
-                <div class="dt-tooltip">
-                    <span class="tooltiptext"><?php echo esc_attr( $app['description'] ) ?></span>
-                    <img class="help-icon app-description-tooltip"
-                         src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"
-                         title="<?php echo esc_attr( $app['description'] ) ?>"
-                    />
-                </div>
-                <?php endif; ?>
+                <div class="app-label" style="display: flex; flex-direction: column; align-items: flex-start;">
+                    <span class="app-label-title"><?php echo esc_html( $app['label'] ) ?></span>
+                    <?php if ( ! empty( $exp_ts ) ) : ?>
+                        <span class="app-expiration-badge" style="font-size: 0.85em; color: #667; margin-top: 0.25rem;" aria-live="polite"></span>
+                        <noscript>
+                            <span class="app-expiration-badge-noscript" style="font-size: 0.85em; color: #667; margin-top: 0.25rem;">
+                                <?php echo esc_html( sprintf( __( 'Exp: %s', 'disciple_tools' ), $exp_short ) ); ?>
+                            </span>
+                        </noscript>
+                    <?php endif; ?>
+                    <?php if ( !empty( $app['description'] ) ): ?>
+                    <div class="dt-tooltip" style="margin-top: 0.25rem;">
+                        <span class="tooltiptext"><?php echo esc_attr( $app['description'] ) ?></span>
+                        <img class="help-icon app-description-tooltip"
+                             src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/help.svg' ) ?>"
+                             title="<?php echo esc_attr( $app['description'] ) ?>"
+                        />
+                    </div>
+                    <?php endif; ?>
                 </div>
 
                 <a class="app-link dt-action-button small button view"
@@ -518,13 +823,63 @@ Thanks!', 'disciple_tools' );
                     </div>
                     <div class="app-link-row">
                         <a data-tooltip
-                           title="<?php esc_html_e( 'Reset', 'disciple_tools' ) ?>"
+                           title="<?php esc_html_e( 'Reset link', 'disciple_tools' ) ?>"
                            type="button"
                            onclick="app_link_reset(event)"
                            class="dt-action-button small button reset"
                         ><img class="dt-icon" alt="undo" src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/undo.svg' ) ?>" /></a>
-                        <span class="app-link-label"><?php esc_html_e( 'Reset link', 'disciple_tools' ) ?></span>
+                        <?php if ( $magic_link_expiration_supported ) : ?>
+                            <?php
+                            $has_expiration = ! empty( $expiration_data['ts'] )
+                                || ( ! empty( $expiration_data['ts_formatted'] ) && $expiration_data['ts_formatted'] !== __( 'Does not expire', 'disciple_tools' ) );
+                            ?>
+                            <span class="app-link-label">
+                                <?php
+                                if ( $has_expiration ) {
+                                    esc_html_e( 'Reset link (clears expiration)', 'disciple_tools' );
+                                } else {
+                                    esc_html_e( 'Reset link', 'disciple_tools' );
+                                }
+                                ?>
+                            </span>
+                        <?php else : ?>
+                            <span class="app-link-label"><?php esc_html_e( 'Reset link', 'disciple_tools' ) ?></span>
+                        <?php endif; ?>
                     </div>
+                    <?php if ( $magic_link_expiration_supported ): ?>
+                    <div class="app-link-row" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e0e0;">
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%; box-sizing: border-box;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <label style="font-weight: bold; min-width: 120px;"><?php esc_html_e( 'Link Expiration', 'disciple_tools' ) ?>:</label>
+                                <?php $is_expired = ! empty( $expiration_data['ts'] ) && (int) $expiration_data['ts'] < time(); ?>
+                                <span id="app-expiration-display-<?php echo esc_attr( $meta_key ) ?>" style="flex-grow: 1;<?php echo $is_expired ? ' color: red;' : ''; ?>">
+                                    <?php echo esc_html( $expiration_data['ts_formatted'] ?? __( 'Does not expire', 'disciple_tools' ) ) ?>
+                                </span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; width: 100%; box-sizing: border-box;">
+                                <input type="number"
+                                       id="app-expiration-amount-<?php echo esc_attr( $meta_key ) ?>"
+                                       placeholder="<?php esc_attr_e( 'Amount', 'disciple_tools' ) ?>"
+                                       style="flex: 2; min-width: 0; box-sizing: border-box;"
+                                       min="1"
+                                       value="">
+                                <select id="app-expiration-time-unit-<?php echo esc_attr( $meta_key ) ?>" style="flex: 1; min-width: 0; box-sizing: border-box;">
+                                    <option value="minutes"><?php esc_html_e( 'Minutes', 'disciple_tools' ) ?></option>
+                                    <option value="hours"><?php esc_html_e( 'Hours', 'disciple_tools' ) ?></option>
+                                    <option value="days" selected><?php esc_html_e( 'Days', 'disciple_tools' ) ?></option>
+                                    <option value="weeks"><?php esc_html_e( 'Weeks', 'disciple_tools' ) ?></option>
+                                    <option value="months"><?php esc_html_e( 'Months', 'disciple_tools' ) ?></option>
+                                </select>
+                            </div>
+                            <button type="button" 
+                                    class="button small" 
+                                    onclick="app_link_set_expiration(event)"
+                                    style="width: 100%; max-width: 100%; box-sizing: border-box;">
+                                <?php esc_html_e( 'Set Expiration', 'disciple_tools' ) ?>
+                            </button>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     <p class="app-disabled-notice"><?php esc_html_e( 'This app is currently disabled.', 'disciple_tools' ) ?></p>
                 </div>
             </div>
