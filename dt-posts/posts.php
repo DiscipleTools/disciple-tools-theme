@@ -1541,7 +1541,7 @@ class Disciple_Tools_Posts
                 'post_type'              => $post_type,
                 'title'                  => $title,
                 'posts_per_page'         => 1,
-                'post_status'            => 'all',
+                'post_status'            => 'any',
                 'no_found_rows'          => true,
                 'update_post_meta_cache' => false,
                 'update_post_term_cache' => false,
