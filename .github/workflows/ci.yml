@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: ["7.4", "8.4"]
+        php: ["8.1", "8.4"]
 
     name: PHP ${{ matrix.php }}
     steps:
@@ -55,7 +55,7 @@ jobs:
       with:
         # caching node_modules
         path: vendor
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.json') }}
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.json') }}-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
@@ -131,10 +131,8 @@ jobs:
       run: ./tests/install-wp-tests.sh wordpress_test root rootpassword 127.0.0.0 latest
       shell: bash
 
-    - name: PHPunit
+    - name: PHPUnit
       run: |
-        composer require "phpunit/phpunit=8.*"
-        composer require "yoast/phpunit-polyfills"
-        vendor/phpunit/phpunit/phpunit --version
-        WP_MULTISITE=1 vendor/phpunit/phpunit/phpunit
+        vendor/bin/phpunit --version
+        WP_MULTISITE=1 vendor/bin/phpunit
 
