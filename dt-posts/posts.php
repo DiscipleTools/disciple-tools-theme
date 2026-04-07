@@ -1537,7 +1537,16 @@ class Disciple_Tools_Posts
         $cache_key = $connection_type . '_' . sanitize_key( $title );
         $page_id = wp_cache_get( $cache_key, 'get_page_by_title' );
         if ( $page_id === false ) {
-            $page = get_page_by_title( $title, OBJECT, $post_type );
+            $query = new WP_Query( [
+                'post_type'              => $post_type,
+                'title'                  => $title,
+                'posts_per_page'         => 1,
+                'post_status'            => 'all',
+                'no_found_rows'          => true,
+                'update_post_meta_cache' => false,
+                'update_post_term_cache' => false,
+            ] );
+            $page = $query->have_posts() ? $query->next_post() : null;
             $page_id = $page ? $page->ID : 0;
             wp_cache_set( $cache_key, $page_id, 'get_page_by_title', 3 * HOUR_IN_SECONDS ); // We only store the ID to keep our footprint small
         }
