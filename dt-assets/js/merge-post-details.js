@@ -315,53 +315,12 @@ jQuery(function ($) {
           case 'communication_channel':
           case 'location_meta':
           case 'location':
+          case 'link':
             // Disable field accordingly, based on read-only flag
             $(td)
               .find('#' + field_id)
               .prop('disabled', read_only);
             break;
-
-          case 'link': {
-            // Disable/Display field accordingly, based on read-only flag
-            $(td).find('input.link-input').prop('disabled', read_only);
-            $(td).find('button.link-delete-button').prop('disabled', read_only);
-
-            // Ensure add link functionality is suppressed.
-            $(td).find('div.add-link-dropdown').remove();
-
-            if (!read_only) {
-              $(td)
-                .find('input.link-input')
-                .each(function (idx, input) {
-                  if (window.lodash.isEmpty($(input).val())) {
-                    $(input).parent().hide();
-                  }
-                });
-
-              /**
-               * Remove
-               */
-
-              $(document).on('click', '.link-delete-button', (evt) => {
-                const delete_but = $(evt.currentTarget);
-
-                // Keep a record of deleted meta_ids.
-                let meta_id = $(delete_but).data('meta-id');
-                let deleted_items = $(field_meta).val()
-                  ? JSON.parse($(field_meta).val())
-                  : [];
-                if (!window.lodash.includes(deleted_items, meta_id)) {
-                  deleted_items.push(meta_id);
-                  $(field_meta).val(JSON.stringify(deleted_items));
-                }
-
-                // Finally, remove from parent.
-                $(delete_but).parent().parent().remove();
-              });
-            }
-
-            break;
-          }
 
           case 'user_select': {
             let user_select_typeahead_field_input = '.js-typeahead-' + field_id;
@@ -582,12 +541,18 @@ jQuery(function ($) {
             (x) => x.meta_id === sourceItem.meta_id,
           );
           if (is_selected) {
-            // Add, if not already present
-            if (valIdx < 0 || mergeContact) {
+            if (mergeContact) {
+              sourceItem.tempKey = sourceItem.meta_id;
+              sourceItem.meta_id = null;
               mergedValue.push(sourceItem);
-              // Remove old meta_id if we're adding values from the merged contact
-              if (mergeContact) {
-                sourceItem.meta_id = '';
+            } else {
+              if (valIdx < 0) {
+                mergedValue.push(sourceItem);
+              } else {
+                // set delete to false IF source item has delete as false
+                if (!sourceItem.delete) {
+                  mergedValue[valIdx].delete = false;
+                }
               }
             }
           } else {
@@ -601,19 +566,11 @@ jQuery(function ($) {
             ) {
               if (mergeContact) {
                 mergedValue.splice(valIdx, 1);
-              }
-            }
-          }
-        }
-
-        // set delete flag to remove values from primary record
-        if (!mergeContact) {
-          for (const item of mergedValue) {
-            if (item.meta_id !== '') {
-              if (is_selected) {
-                item.delete = false;
               } else {
-                item.delete = true;
+                if (valIdx >= 0) {
+                  // set delete to true
+                  mergedValue[valIdx].delete = true;
+                }
               }
             }
           }
