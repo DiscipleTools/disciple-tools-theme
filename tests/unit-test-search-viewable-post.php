@@ -33,7 +33,7 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
 
     private function map_ids( $posts ){
         return array_map(  function ( $post ){
-            return $post->ID;
+            return (int) $post->ID;
         }, $posts );
     }
 
