@@ -126,7 +126,9 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                 $by_key = [];
                 foreach ( $apps as $root => $types ) {
                     foreach ( $types as $type => $values ) {
-                        $by_key[$values['meta_key']] = $values;
+                        if ( isset( $values['meta_key'] ) ) {
+                            $by_key[$values['meta_key']] = $values;
+                        }
                     }
                 }
                 return $by_key;
