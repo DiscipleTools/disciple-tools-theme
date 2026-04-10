@@ -48,7 +48,7 @@ abstract class DT_Magic_Url_Base {
         }
 
         $this->magic->determine_post_id( $this->parts );
-        if ( empty( $this->parts['post_id'] ) ){
+        if ( !empty( $this->parts['public_key'] ) && empty( $this->parts['post_id'] ) ){
             $this->magic->redirect_to_expired_landing_page();
         }
 
