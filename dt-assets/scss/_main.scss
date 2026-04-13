@@ -1488,6 +1488,119 @@ label.dt-switch:active:after {
             }
             margin-bottom: 4px;
         }
+
+        /* Use primary blue for selected language buttons (web component defaults to success/green). */
+        .settings-user-languages-multiselect {
+            --success-color: var(--primary-color);
+        }
+    }
+
+    /* Your Apps: center App Link + App Activation; hide visible dt-toggle label (app name is in first column; label prop still sets aria-label for assistive tech). */
+    #apps {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+
+        .form-table {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .form-table tbody td {
+            vertical-align: middle;
+        }
+
+        .form-table thead td:nth-child(3),
+        .form-table thead td:nth-child(4),
+        .form-table tbody td:nth-child(3),
+        .form-table tbody td:nth-child(4) {
+            text-align: center;
+        }
+
+        /* Icon-only link + copy: same footprint so stacked buttons align. */
+        .form-table tbody td:nth-child(3) .app-link,
+        .form-table tbody td:nth-child(3) .app-copy {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            min-width: 2.5rem;
+            min-height: 2.5rem;
+            margin-inline: auto;
+            margin-bottom: 0.35rem;
+            padding: 0;
+            box-sizing: border-box;
+            line-height: 1;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .form-table tbody td:nth-child(4) dt-toggle.settings-app-toggle {
+            display: block;
+            width: fit-content;
+            max-width: 100%;
+            margin-inline: auto;
+        }
+
+        .form-table tbody td dt-toggle.settings-app-toggle::part(label-container) {
+            display: none;
+        }
+
+        .form-table tbody td dt-toggle.settings-app-toggle::part(root) {
+            margin-bottom: 0;
+        }
+    }
+
+    /* Notifications matrix: dt-toggle label duplicates row + column headers; hide visually only (control keeps aria-label). */
+    #notifications {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+
+        .form-table {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .form-table tbody td {
+            vertical-align: middle;
+        }
+
+        /* Channel columns: compact, centered headers and content (toggles / “required”). */
+        .form-table thead td:not(:first-child),
+        .form-table tbody td:not(:first-child) {
+            width: 1%;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .form-table thead td:first-child {
+            text-align: start;
+        }
+
+        .form-table tbody td:not(:first-child) dt-toggle {
+            display: block;
+            width: fit-content;
+            max-width: 100%;
+            margin-inline: auto;
+        }
+
+        .form-table tbody td:first-child {
+            word-break: break-word;
+        }
+
+        .form-table tbody td dt-toggle.settings-notification-toggle:not(.settings-follow-all-toggle)::part(label-container) {
+            display: none;
+        }
+
+        .form-table tbody td dt-toggle.settings-notification-toggle:not(.settings-follow-all-toggle)::part(root) {
+            margin-bottom: 0;
+        }
+
+        .settings-follow-all-toggle {
+            margin-top: 0.5rem;
+        }
     }
 }
 

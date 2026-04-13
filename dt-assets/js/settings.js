@@ -16,14 +16,16 @@ jQuery(document).ready(function () {
       el.addEventListener('change', handleLocationChangeEvent);
     });
   }
+
+  initSettingsWebComponents();
 });
 window.wpApiSettingsPage.translations = window.SHAREDFUNCTIONS.escapeObject(
   window.wpApiSettingsPage.translations,
 );
 
-function app_switch(user_id = null, app_key = null) {
+function app_switch(user_id = null, app_key = null, onFail = null) {
   let a = jQuery('#app_link_' + app_key);
-  window
+  return window
     .makeRequest('post', 'users/app_switch', { user_id, app_key })
     .done(function (data) {
       if ('removed' === data) {
@@ -41,7 +43,11 @@ function app_switch(user_id = null, app_key = null) {
     .fail(function (err) {
       console.log('error');
       console.log(err);
-      a.empty().html(`error`);
+      if (typeof onFail === 'function') {
+        onFail();
+      } else {
+        a.empty().html(`error`);
+      }
     });
 }
 
@@ -52,10 +58,180 @@ function app_switch(user_id = null, app_key = null) {
  * @param type
  * @returns {*}
  */
-function switch_preference(preference_key, type = null) {
-  return window.makeRequest('post', 'users/switch_preference', {
-    preference_key,
-    type,
+function switch_preference(preference_key, type = null, onFail = null) {
+  return window
+    .makeRequest('post', 'users/switch_preference', {
+      preference_key,
+      type,
+    })
+    .fail(function () {
+      if (typeof onFail === 'function') {
+        onFail();
+      }
+    });
+}
+
+function settingsEffectiveMultiValues(arr) {
+  if (!arr || !arr.length) {
+    return [];
+  }
+  return arr.filter((x) => !String(x).startsWith('-')).map(String);
+}
+
+function settingsDiffStringSets(prev, next) {
+  const a = new Set(prev);
+  const b = new Set(next);
+  return {
+    added: [...b].filter((x) => !a.has(x)),
+    removed: [...a].filter((x) => !b.has(x)),
+  };
+}
+
+function initSettingsWebComponents() {
+  initSettingsAppToggles();
+  initSettingsLanguageMultiselect();
+  initSettingsPeopleGroupsMultiselect();
+  initSettingsNotificationToggles();
+}
+
+function initSettingsAppToggles() {
+  document.querySelectorAll('.settings-app-toggle').forEach((el) => {
+    el.addEventListener('change', (e) => {
+      const appKey = e.currentTarget.dataset.appKey;
+      const oldChecked = e.detail.oldValue;
+      app_switch(window.wpApiSettingsPage.current_user_id, appKey, () => {
+        e.currentTarget.checked = oldChecked;
+      });
+    });
+  });
+}
+
+function initSettingsLanguageMultiselect() {
+  const el = document.querySelector('#settings-user-languages');
+  if (!el) {
+    return;
+  }
+  el.addEventListener('change', (e) => {
+    const prev = settingsEffectiveMultiValues(e.detail.oldValue);
+    const next = settingsEffectiveMultiValues(e.detail.newValue);
+    const { added, removed } = settingsDiffStringSets(prev, next);
+    let chain = Promise.resolve();
+    removed.forEach((id) => {
+      chain = chain.then(() => update_user('remove_languages', id));
+    });
+    added.forEach((id) => {
+      chain = chain.then(() => update_user('add_languages', id));
+    });
+    el.setAttribute('loading', true);
+    chain
+      .then(() => {
+        el.removeAttribute('loading');
+        el.setAttribute('saved', true);
+      })
+      .catch((err) => {
+        el.removeAttribute('loading');
+        el.value = [...prev];
+        window.handleAjaxError(err);
+      });
+  });
+}
+
+function initSettingsPeopleGroupsMultiselect() {
+  const el = document.querySelector('#settings-people-groups');
+  if (!el) {
+    return;
+  }
+
+  const mergeCompactPosts = (posts) => {
+    const byId = new Map((el.options || []).map((o) => [String(o.id), o]));
+    for (const p of posts || []) {
+      const id = String(p.ID);
+      const label = p.label || p.name || p.post_title || id;
+      if (!byId.has(id)) {
+        byId.set(id, { id, label });
+      }
+    }
+    el.options = Array.from(byId.values());
+  };
+
+  const attachInputHandlers = () => {
+    const input =
+      el.shadowRoot && el.shadowRoot.querySelector('input[part=input]');
+    if (!input) {
+      return;
+    }
+    let debounceTimer;
+    const runFetch = (q) => {
+      el.setAttribute('loading', true);
+      window
+        .makeRequestOnPosts('GET', 'peoplegroups/compact', { s: q || '' })
+        .done((data) => {
+          mergeCompactPosts(data.posts);
+        })
+        .always(() => {
+          el.removeAttribute('loading');
+        });
+    };
+    input.addEventListener('focusin', () => {
+      if (!el._dtPgFocusFetched) {
+        el._dtPgFocusFetched = true;
+        runFetch('');
+      }
+    });
+    input.addEventListener('keyup', (e) => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        runFetch((e.target.value || '').trim());
+      }, 200);
+    });
+  };
+
+  if (el.shadowRoot) {
+    attachInputHandlers();
+  } else {
+    customElements.whenDefined('dt-multi-select').then(() => {
+      Promise.resolve().then(() => attachInputHandlers());
+    });
+  }
+
+  el.addEventListener('change', (e) => {
+    const prev = settingsEffectiveMultiValues(e.detail.oldValue);
+    const next = settingsEffectiveMultiValues(e.detail.newValue);
+    const { added, removed } = settingsDiffStringSets(prev, next);
+    let chain = Promise.resolve();
+    removed.forEach((id) => {
+      chain = chain.then(() => update_user('remove_people_groups', id));
+    });
+    added.forEach((id) => {
+      chain = chain.then(() => update_user('add_people_groups', id));
+    });
+    el.setAttribute('loading', true);
+    chain
+      .then(() => {
+        el.removeAttribute('loading');
+        el.setAttribute('saved', true);
+      })
+      .catch((err) => {
+        el.removeAttribute('loading');
+        el.value = [...prev];
+        window.handleAjaxError(err);
+      });
+  });
+}
+
+function initSettingsNotificationToggles() {
+  document.querySelectorAll('.settings-notification-toggle').forEach((el) => {
+    el.addEventListener('change', (e) => {
+      const key = e.currentTarget.dataset.preferenceKey;
+      if (!key) {
+        return;
+      }
+      const type = e.currentTarget.dataset.preferenceType ?? null;
+      const oldVal = e.detail.oldValue;
+      switch_preference(key, type, () => {
+        e.currentTarget.checked = oldVal;
+      });
+    });
   });
 }
 
@@ -269,39 +445,6 @@ status_buttons.on('click', function () {
     });
 });
 
-jQuery('button.dt_multi_select').on('click', function () {
-  let fieldKey = jQuery(this).data('field-key');
-  let optionKey = jQuery(this).attr('id');
-  jQuery(`#${fieldKey}-spinner`).addClass('active');
-  let field = jQuery(`[data-field-key="${fieldKey}"]#${optionKey}`);
-  field.addClass('submitting-select-button');
-  let action = 'add';
-  let update_request = null;
-  if (field.hasClass('selected-select-button')) {
-    action = 'delete';
-    update_request = update_user('remove_' + fieldKey, optionKey);
-  } else {
-    field.removeClass('empty-select-button');
-    field.addClass('selected-select-button');
-    update_request = update_user('add_' + fieldKey, optionKey);
-  }
-  update_request
-    .then(() => {
-      field.removeClass('submitting-select-button selected-select-button');
-      field.blur();
-      field.addClass(
-        action === 'delete' ? 'empty-select-button' : 'selected-select-button',
-      );
-      jQuery(`#${fieldKey}-spinner`).removeClass('active');
-    })
-    .catch((err) => {
-      field.removeClass('submitting-select-button selected-select-button');
-      field.addClass(
-        action === 'add' ? 'empty-select-button' : 'selected-select-button',
-      );
-      window.handleAjaxError(err);
-    });
-});
 jQuery('select.select-field').change((e) => {
   const id = jQuery(e.currentTarget).attr('id');
   const val = jQuery(e.currentTarget).val();
@@ -325,59 +468,3 @@ jQuery('input[name="email-preference"]').on('change', (e) => {
     });
 });
 
-/**
- * People groups
- */
-if (jQuery('.js-typeahead-people_groups').length) {
-  jQuery.typeahead({
-    input: '.js-typeahead-people_groups',
-    minLength: 0,
-    accent: true,
-    searchOnFocus: true,
-    maxItem: 20,
-    template: window.TYPEAHEADS.contactListRowTemplate,
-    source: window.TYPEAHEADS.typeaheadPostsSource('peoplegroups'),
-    display: ['name', 'label'],
-    templateValue: function () {
-      if (this.items[this.items.length - 1].label) {
-        return '{{label}}';
-      } else {
-        return '{{name}}';
-      }
-    },
-    dynamic: true,
-    multiselect: {
-      matchOn: ['ID'],
-      data: function () {
-        return window.wpApiSettingsPage.user_people_groups.map((g) => {
-          return { ID: g.ID, name: g.post_title };
-        });
-      },
-      callback: {
-        onCancel: function (node, item) {
-          update_user('remove_people_groups', item.ID);
-        },
-      },
-    },
-    callback: {
-      onClick: function (node, a, item, event) {
-        update_user('add_people_groups', item.ID);
-        this.addMultiselectItemLayout(item);
-        event.preventDefault();
-        this.hideLayout();
-        this.resetInput();
-      },
-      onResult: function (node, query, result, resultCount) {
-        let text = window.TYPEAHEADS.typeaheadHelpText(
-          resultCount,
-          query,
-          result,
-        );
-        jQuery('#people_groups-result-container').html(text);
-      },
-      onHideLayout: function () {
-        jQuery('#people_groups-result-container').html('');
-      },
-    },
-  });
-}
