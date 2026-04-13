@@ -467,4 +467,3 @@ jQuery('input[name="email-preference"]').on('change', (e) => {
       loadingSpinner.removeClass('active');
     });
 });
-
