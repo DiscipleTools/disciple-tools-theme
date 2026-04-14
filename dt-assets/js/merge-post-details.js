@@ -566,10 +566,10 @@ jQuery(function ($) {
                 sourceItem,
               )
             ) {
-              if (mergeContact) {
-                mergedValue.splice(valIdx, 1);
-              } else {
-                if (valIdx >= 0) {
+              if (valIdx >= 0) {
+                if (mergeContact) {
+                  mergedValue.splice(valIdx, 1);
+                } else {
                   // set delete to true
                   mergedValue[valIdx].delete = true;
                 }
