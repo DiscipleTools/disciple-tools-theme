@@ -542,8 +542,10 @@ jQuery(function ($) {
           );
           if (is_selected) {
             if (mergeContact) {
-              sourceItem.tempKey = sourceItem.meta_id;
-              sourceItem.meta_id = null;
+              if (sourceItem.meta_id != null) {
+                sourceItem.tempKey = sourceItem.meta_id;
+                sourceItem.meta_id = null;
+              }
               mergedValue.push(sourceItem);
             } else {
               if (valIdx < 0) {
