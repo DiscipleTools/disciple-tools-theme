@@ -253,7 +253,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
 
                     </div>
                 </div>
-                <div id="export_help_text" class="large reveal" data-reveal data-v-offset="10px">
+                <div id="export_help_text" class="large reveal" style="display: none;" data-reveal data-v-offset="10px">
                     <span class="section-header"><?php esc_html_e( 'List Exports Help', 'disciple_tools' ) ?></span>
                     <hr>
                     <div class="grid-x">
@@ -860,7 +860,7 @@ Thanks!';
 
                                         <?php if ( isset( $placeholder['help'] ) ) : ?>
 
-                                            <div id="placeholder_help_text_<?php echo esc_attr( $placeholder['help']['id'] ); ?>" class="large reveal" data-reveal data-v-offset="10px">
+                                            <div id="placeholder_help_text_<?php echo esc_attr( $placeholder['help']['id'] ); ?>" class="large reveal" style="display: none;" data-reveal data-v-offset="10px">
                                                 <span class="section-header"><?php esc_html_e( 'Message Placeholder Help', 'disciple_tools' ) ?></span>
                                                 <hr>
                                                 <div class="grid-x">

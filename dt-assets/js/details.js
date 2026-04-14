@@ -1,3 +1,6 @@
+/*
+global ResizeObserver
+ */
 'use strict';
 jQuery(document).ready(function ($) {
   let post_id = window.detailsSettings.post_id;
@@ -1201,6 +1204,22 @@ jQuery(document).ready(function ($) {
     );
     service.initialize();
     window.componentService = service;
+  }
+
+  // When components are resized, re-layout the masonry grid
+  const targetElement = document.querySelectorAll('.grid .bordered-box .cell');
+  let resizeTimeout;
+  const resizeObserver = new ResizeObserver((entries) => {
+    for (let entry of entries) {
+      // many of these can be triggered on initial load, so debounce them with a timeout
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        window.masonGrid.masonry('layout');
+      }, 100);
+    }
+  });
+  for (let element of targetElement) {
+    resizeObserver.observe(element);
   }
 });
 

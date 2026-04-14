@@ -259,10 +259,25 @@ class DT_Components
         $value = array_map(function ( $value ) {
             return $value;
         }, $post[$field_key] ?? []);
+
+        $options = null;
+        if ( isset( $params['static_options'] ) && $params['static_options'] ) {
+            $raw_options = DT_Posts::get_multi_select_options( $post['post_type'] ?? 'contacts', $field_key );
+            if ( is_array( $raw_options ) ) {
+                foreach ( $raw_options as $option ) {
+                    if ( is_string( $option ) ) {
+                        $options[] = [ 'id' => $option ];
+                    } elseif ( is_array( $option ) && isset( $option['label'] ) ) {
+                        $options[] = [ 'id' => $option['label'] ];
+                    }
+                }
+            }
+        }
         ?>
         <dt-tags <?php echo wp_kses_post( $shared_attributes ) ?>
             value='<?php echo esc_attr( json_encode( $value ) ) ?>'
             placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) ) ?>"
+            <?php echo $options ? "options='" . esc_attr( json_encode( $options ) ) . "'" : null ?>
             allowAdd>
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-tags>
