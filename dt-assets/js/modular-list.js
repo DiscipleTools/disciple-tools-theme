@@ -3120,10 +3120,10 @@
   }
 
   /**
-   * Split By Feature
+   * Split By Feature — delegate so clicks work after setup_filters() replaces
+   * #list-filter-tabs HTML (e.g. when get_filter_counts refreshes filter payload).
    */
-
-  $('#split_by_current_filter_button').on('click', function () {
+  $(document).on('click', '#split_by_current_filter_button', function () {
     refresh_split_by_view();
   });
 
