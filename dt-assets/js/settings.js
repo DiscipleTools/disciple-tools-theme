@@ -87,10 +87,20 @@ function settingsDiffStringSets(prev, next) {
   };
 }
 
+/** Active connection-style values (objects with id; omit deleted). */
+function settingsEffectiveConnectionIds(arr) {
+  if (!arr || !arr.length) {
+    return [];
+  }
+  return arr
+    .filter((i) => i && !i.delete)
+    .map((i) => String(i.id));
+}
+
 function initSettingsWebComponents() {
   initSettingsAppToggles();
   initSettingsLanguageMultiselect();
-  initSettingsPeopleGroupsMultiselect();
+  initSettingsPeopleGroupsConnection();
   initSettingsNotificationToggles();
 }
 
@@ -136,67 +146,50 @@ function initSettingsLanguageMultiselect() {
   });
 }
 
-function initSettingsPeopleGroupsMultiselect() {
+function initSettingsPeopleGroupsConnection() {
   const el = document.querySelector('#settings-people-groups');
   if (!el) {
     return;
   }
 
-  const mergeCompactPosts = (posts) => {
-    const byId = new Map((el.options || []).map((o) => [String(o.id), o]));
-    for (const p of posts || []) {
-      const id = String(p.ID);
-      const label = p.label || p.name || p.post_title || id;
-      if (!byId.has(id)) {
-        byId.set(id, { id, label });
+  /**
+   * dt-connection loads via dt:get-data. ComponentService also listens but filters out
+   * any post whose ID equals the current user ID — wrong for people groups (post IDs can
+   * match user IDs). Handle compact search here and stop the shared handler.
+   */
+  el.addEventListener(
+    'dt:get-data',
+    (event) => {
+      if (event.target !== el) {
+        return;
       }
-    }
-    el.options = Array.from(byId.values());
-  };
-
-  const attachInputHandlers = () => {
-    const input =
-      el.shadowRoot && el.shadowRoot.querySelector('input[part=input]');
-    if (!input) {
-      return;
-    }
-    let debounceTimer;
-    const runFetch = (q) => {
-      el.setAttribute('loading', true);
+      event.stopImmediatePropagation();
+      const { query, onSuccess, onError } = event.detail;
       window
-        .makeRequestOnPosts('GET', 'peoplegroups/compact', { s: q || '' })
+        .makeRequestOnPosts('GET', 'peoplegroups/compact', { s: query || '' })
         .done((data) => {
-          mergeCompactPosts(data.posts);
+          const posts = data.posts || [];
+          const values = posts.map((post) => ({
+            id: post.ID,
+            label: post.name ?? post.post_title ?? post.label,
+            link: post.permalink ?? '',
+            status: post.status,
+          }));
+          onSuccess(values);
         })
-        .always(() => {
-          el.removeAttribute('loading');
+        .fail((_xhr, status, err) => {
+          if (typeof onError === 'function') {
+            onError(err || new Error(status));
+          }
         });
-    };
-    input.addEventListener('focusin', () => {
-      if (!el._dtPgFocusFetched) {
-        el._dtPgFocusFetched = true;
-        runFetch('');
-      }
-    });
-    input.addEventListener('keyup', (e) => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        runFetch((e.target.value || '').trim());
-      }, 200);
-    });
-  };
-
-  if (el.shadowRoot) {
-    attachInputHandlers();
-  } else {
-    customElements.whenDefined('dt-multi-select').then(() => {
-      Promise.resolve().then(() => attachInputHandlers());
-    });
-  }
+    },
+    true,
+  );
 
   el.addEventListener('change', (e) => {
-    const prev = settingsEffectiveMultiValues(e.detail.oldValue);
-    const next = settingsEffectiveMultiValues(e.detail.newValue);
+    const prev = settingsEffectiveConnectionIds(e.detail.oldValue);
+    const next = settingsEffectiveConnectionIds(e.detail.newValue);
+    const prevObjects = (e.detail.oldValue || []).filter((i) => i && !i.delete);
     const { added, removed } = settingsDiffStringSets(prev, next);
     let chain = Promise.resolve();
     removed.forEach((id) => {
@@ -213,7 +206,7 @@ function initSettingsPeopleGroupsMultiselect() {
       })
       .catch((err) => {
         el.removeAttribute('loading');
-        el.value = [...prev];
+        el.value = prevObjects.map((o) => ({ ...o }));
         window.handleAjaxError(err);
       });
   });

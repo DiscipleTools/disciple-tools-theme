@@ -389,29 +389,31 @@ $user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
                                 <?php
                                 $settings_people_group_ids = get_user_option( 'user_people_groups', get_current_user_id() ) ?: [];
                                 $settings_people_group_rows = DT_Posts::get_post_names_from_ids( $settings_people_group_ids );
-                                $settings_people_groups_options = array_map(
+                                $settings_people_groups_connection_value = array_map(
                                     function ( $row ) {
+                                        $pid = (int) $row['ID'];
+                                        $permalink = get_permalink( $pid );
                                         return [
-                                            'id' => (string) $row['ID'],
+                                            'id' => $pid,
                                             'label' => $row['post_title'],
+                                            'link' => $permalink ? $permalink : '',
                                         ];
                                     },
                                     $settings_people_group_rows
                                 );
-                                $settings_people_groups_value = array_map( 'strval', $settings_people_group_ids );
                                 ?>
                             <div class="section-subheader cell" style="margin-top:20px">
                                 <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/people-group.svg' ?>">
                                 <?php esc_html_e( 'People Groups you wish to serve', 'disciple_tools' ); ?>
                             </div>
-                            <dt-multi-select
+                            <dt-connection
                                 id="settings-people-groups"
                                 name="people_groups"
-                                class="settings-people-groups-multiselect"
+                                class="settings-people-groups-connection"
+                                postType="peoplegroups"
                                 placeholder="<?php echo esc_attr( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $contact_fields['people_groups']['name'] ) ); ?>"
-                                value="<?php echo esc_attr( wp_json_encode( $settings_people_groups_value ) ); ?>"
-                                options="<?php echo esc_attr( wp_json_encode( $settings_people_groups_options ) ); ?>"
-                            ></dt-multi-select>
+                                value="<?php echo esc_attr( wp_json_encode( $settings_people_groups_connection_value ) ); ?>"
+                            ></dt-connection>
                             <?php endif; ?>
                         </div>
 
