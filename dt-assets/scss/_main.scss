@@ -1489,9 +1489,21 @@ label.dt-switch:active:after {
             margin-bottom: 4px;
         }
 
-        /* Use primary blue for selected language buttons (web component defaults to success/green). */
+        /* Custom elements default to inline; block + margin-bottom so gaps apply reliably. */
+        dt-location,
+        dt-location-map {
+            display: block;
+            margin-bottom: 2rem;
+        }
+
         .settings-user-languages-multiselect {
+            display: block;
             --success-color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .settings-people-groups-connection {
+            display: block;
         }
     }
 

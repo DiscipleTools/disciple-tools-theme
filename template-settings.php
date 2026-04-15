@@ -356,7 +356,6 @@ $user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
                                 ], $user_location ) ?>
                             <?php endif; ?>
 
-
                             <!-- Languages -->
                             <?php
                             $settings_user_languages = get_user_option( 'user_languages', get_current_user_id() ) ?: [];
@@ -370,16 +369,16 @@ $user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
                                 array_keys( $contact_fields['languages']['default'] ),
                                 $contact_fields['languages']['default']
                             );
-                            $settings_language_value = array_map( 'strval', $settings_user_languages );
+                            // Sequential keys => JSON array; sparse/assoc user meta encodes as object and breaks Lit (.includes).
+                            $settings_language_value = array_values( array_map( 'strval', $settings_user_languages ) );
                             ?>
-                            <div class="section-subheader cell" style="margin-top:30px">
-                                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/languages.svg' ?>">
-                                <strong style="display: inline-block;"><?php esc_html_e( 'Languages you are comfortable speaking', 'disciple_tools' )?></strong>
-                            </div>
                             <dt-multi-select-button-group
                                 id="settings-user-languages"
                                 name="languages"
                                 class="settings-user-languages-multiselect"
+                                label="<?php echo esc_attr( __( 'Languages you are comfortable speaking', 'disciple_tools' ) ); ?>"
+                                icon="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>"
+                                iconAltText="<?php echo esc_attr( __( 'Languages', 'disciple_tools' ) ); ?>"
                                 value="<?php echo esc_attr( wp_json_encode( $settings_language_value ) ); ?>"
                                 options="<?php echo esc_attr( wp_json_encode( $settings_language_options ) ); ?>"
                             ></dt-multi-select-button-group>
@@ -402,15 +401,14 @@ $user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
                                     $settings_people_group_rows
                                 );
                                 ?>
-                            <div class="section-subheader cell" style="margin-top:20px">
-                                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/people-group.svg' ?>">
-                                <?php esc_html_e( 'People Groups you wish to serve', 'disciple_tools' ); ?>
-                            </div>
                             <dt-connection
                                 id="settings-people-groups"
                                 name="people_groups"
                                 class="settings-people-groups-connection"
                                 postType="peoplegroups"
+                                label="<?php echo esc_attr( __( 'People Groups you wish to serve', 'disciple_tools' ) ); ?>"
+                                icon="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/people-group.svg' ); ?>"
+                                iconAltText="<?php echo esc_attr( __( 'People groups', 'disciple_tools' ) ); ?>"
                                 placeholder="<?php echo esc_attr( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $contact_fields['people_groups']['name'] ) ); ?>"
                                 value="<?php echo esc_attr( wp_json_encode( $settings_people_groups_connection_value ) ); ?>"
                             ></dt-connection>
