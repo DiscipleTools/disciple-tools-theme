@@ -92,9 +92,7 @@ function settingsEffectiveConnectionIds(arr) {
   if (!arr || !arr.length) {
     return [];
   }
-  return arr
-    .filter((i) => i && !i.delete)
-    .map((i) => String(i.id));
+  return arr.filter((i) => i && !i.delete).map((i) => String(i.id));
 }
 
 function initSettingsWebComponents() {
@@ -153,9 +151,14 @@ function initSettingsPeopleGroupsConnection() {
   }
 
   /**
-   * dt-connection loads via dt:get-data. ComponentService also listens but filters out
-   * any post whose ID equals the current user ID — wrong for people groups (post IDs can
-   * match user IDs). Handle compact search here and stop the shared handler.
+   * People groups on settings: the template only sets `value` (current selections), not
+   * `options`. dt-connection uses typeahead + dt:get-data to search the post index via
+   * peoplegroups/compact — that is not redundant with `value`; there is no static options
+   * list (unlike languages’ fixed working-languages set).
+   *
+   * ComponentService’s dt:get-data handler also filters out posts whose ID equals the
+   * current *user* ID, which wrongly drops a people-group post when its post ID matches
+   * the logged-in user. Handle compact search here and stopImmediatePropagation.
    */
   el.addEventListener(
     'dt:get-data',
