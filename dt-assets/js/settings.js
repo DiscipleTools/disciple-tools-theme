@@ -145,7 +145,7 @@ function initSettingsLanguageMultiselect() {
 }
 
 function initSettingsPeopleGroupsConnection() {
-  const el = document.querySelector('#settings-people-groups');
+  const el = document.querySelector('#settings-people_groups');
   if (!el) {
     return;
   }

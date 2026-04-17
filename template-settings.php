@@ -36,7 +36,57 @@ $contact_fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
  */
 $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
+// Multiplier locations
 $user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
+
+// Multiplier Languages
+$settings_user_languages = get_user_option( 'user_languages', get_current_user_id() ) ?: [];
+// Sequential keys => JSON array; sparse/assoc user meta encodes as object and breaks Lit (.includes).
+$settings_language_value = array_values( array_map( 'strval', $settings_user_languages ) );
+
+// Multiplier People Groups
+$settings_people_group_ids = get_user_option( 'user_people_groups', get_current_user_id() ) ?: [];
+$settings_people_group_rows = DT_Posts::get_post_names_from_ids( $settings_people_group_ids );
+$settings_people_groups_connection_value = array_map(
+    function ( $row ) {
+        $row['ID'] = (int) $row['ID'];
+        if ( !isset( $row['permalink'] ) ) {
+            $row['permalink'] = get_permalink( $row['ID'] );
+        }
+        return $row;
+    },
+    $settings_people_group_rows
+);
+
+$multiplier_values = array_merge([
+    'languages' => $settings_language_value,
+    'people_groups' => $settings_people_groups_connection_value,
+], $user_location);
+
+$multiplier_fields = [
+    'location_grid_meta' => [
+        'name' => __( 'Locations you are willing to be responsible for', 'disciple_tools' ),
+        'type'        => 'location_meta',
+        'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
+    ],
+    'location_grid' => [
+        'name' => __( 'Locations you are willing to be responsible for', 'disciple_tools' ),
+        'type'        => 'location',
+        'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
+    ],
+    'languages' => [
+        'name' => __( 'Languages you are comfortable speaking', 'disciple_tools' ),
+        'type' => 'multi_select',
+        'icon' => get_template_directory_uri() . '/dt-assets/images/languages.svg',
+        'default' => $contact_fields['languages']['default'],
+    ],
+    'people_groups' => [
+        'name' => __( 'People Groups you wish to serve', 'disciple_tools' ),
+        'type' => 'connection',
+        'post_type' => 'peoplegroups',
+        'icon' => get_template_directory_uri() . '/dt-assets/images/people-group.svg',
+    ],
+];
 ?>
 
 <?php get_header(); ?>
@@ -339,79 +389,27 @@ $user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
 
                             <!-- Locations -->
                             <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
-                                <?php DT_Components::render_location_meta( 'location_grid_meta', [
-                                    'location_grid_meta' => [
-                                        'name' => __( 'Locations you are willing to be responsible for', 'disciple_tools' ),
-                                        'type'        => 'location_meta',
-                                        'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
-                                    ]
-                                ], $user_location ) ?>
+                                <?php DT_Components::render_location_meta( 'location_grid_meta', $multiplier_fields, $multiplier_values ) ?>
                             <?php else : ?>
-                                <?php DT_Components::render_location( 'location_grid', [
-                                    'location_grid' => [
-                                        'name' => __( 'Locations you are willing to be responsible for', 'disciple_tools' ),
-                                        'type'        => 'location',
-                                        'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
-                                    ]
-                                ], $user_location ) ?>
+                                <?php DT_Components::render_location( 'location_grid', $multiplier_fields, $multiplier_values ) ?>
                             <?php endif; ?>
 
                             <!-- Languages -->
-                            <?php
-                            $settings_user_languages = get_user_option( 'user_languages', get_current_user_id() ) ?: [];
-                            $settings_language_options = array_map(
-                                function ( $key, $val ) {
-                                    return [
-                                        'id' => (string) $key,
-                                        'label' => $val['label'] ?? $key,
-                                    ];
-                                },
-                                array_keys( $contact_fields['languages']['default'] ),
-                                $contact_fields['languages']['default']
-                            );
-                            // Sequential keys => JSON array; sparse/assoc user meta encodes as object and breaks Lit (.includes).
-                            $settings_language_value = array_values( array_map( 'strval', $settings_user_languages ) );
-                            ?>
-                            <dt-multi-select-button-group
-                                id="settings-user-languages"
-                                name="languages"
-                                class="settings-user-languages-multiselect"
-                                label="<?php echo esc_attr( __( 'Languages you are comfortable speaking', 'disciple_tools' ) ); ?>"
-                                icon="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>"
-                                iconAltText="<?php echo esc_attr( __( 'Languages', 'disciple_tools' ) ); ?>"
-                                value="<?php echo esc_attr( wp_json_encode( $settings_language_value ) ); ?>"
-                                options="<?php echo esc_attr( wp_json_encode( $settings_language_options ) ); ?>"
-                            ></dt-multi-select-button-group>
+                            <?php DT_Components::render_multi_select( 'languages', $multiplier_fields, $multiplier_values, [
+                                'class' => 'settings-user-languages-multiselect',
+                                'field_id_prefix' => 'settings-user-',
+                                'icon_alt_text' => __( 'Languages', 'disciple_tools' ),
+                            ]) ?>
 
                             <!-- People Groups -->
                             <?php if ( isset( $contact_fields['people_groups']['name'] ) ) : ?>
-                                <?php
-                                $settings_people_group_ids = get_user_option( 'user_people_groups', get_current_user_id() ) ?: [];
-                                $settings_people_group_rows = DT_Posts::get_post_names_from_ids( $settings_people_group_ids );
-                                $settings_people_groups_connection_value = array_map(
-                                    function ( $row ) {
-                                        $pid = (int) $row['ID'];
-                                        $permalink = get_permalink( $pid );
-                                        return [
-                                            'id' => $pid,
-                                            'label' => $row['post_title'],
-                                            'link' => $permalink ? $permalink : '',
-                                        ];
-                                    },
-                                    $settings_people_group_rows
-                                );
-                                ?>
-                            <dt-connection
-                                id="settings-people-groups"
-                                name="people_groups"
-                                class="settings-people-groups-connection"
-                                postType="peoplegroups"
-                                label="<?php echo esc_attr( __( 'People Groups you wish to serve', 'disciple_tools' ) ); ?>"
-                                icon="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/people-group.svg' ); ?>"
-                                iconAltText="<?php echo esc_attr( __( 'People groups', 'disciple_tools' ) ); ?>"
-                                placeholder="<?php echo esc_attr( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $contact_fields['people_groups']['name'] ) ); ?>"
-                                value="<?php echo esc_attr( wp_json_encode( $settings_people_groups_connection_value ) ); ?>"
-                            ></dt-connection>
+                                <?php DT_Components::render_connection( 'people_groups', $multiplier_fields, $multiplier_values, [
+                                    'class' => 'settings-people-groups-connection',
+                                    'field_id_prefix' => 'settings-',
+                                    'icon_alt_text' => __( 'People groups', 'disciple_tools' ),
+                                    'allow_add' => false,
+                                ]) ?>
+
                             <?php endif; ?>
                         </div>
 
