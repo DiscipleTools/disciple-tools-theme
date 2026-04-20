@@ -1036,7 +1036,7 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             //restore field icon
             if ( isset( $post_submission['restore_field_icon'] ) ) {
                 $restore_icon_defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
-                $custom_field['icon'] = $restore_icon_defaults[ $field_key ]['icon'] ?? '';
+                $custom_field['icon'] = $restore_icon_defaults[ $field_key ]['icon'] ?? null;
                 $custom_field['font-icon'] = $restore_icon_defaults[ $field_key ]['font-icon'] ?? null;
             }
 
