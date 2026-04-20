@@ -36,7 +36,57 @@ $contact_fields = DT_Posts::get_post_settings( 'contacts' )['fields'];
  */
 $apps_list = apply_filters( 'dt_settings_apps_list', $apps_list = [] );
 
+// Multiplier locations
 $user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
+
+// Multiplier Languages
+$settings_user_languages = get_user_option( 'user_languages', get_current_user_id() ) ?: [];
+// Sequential keys => JSON array; sparse/assoc user meta encodes as object and breaks Lit (.includes).
+$settings_language_value = array_values( array_map( 'strval', $settings_user_languages ) );
+
+// Multiplier People Groups
+$settings_people_group_ids = get_user_option( 'user_people_groups', get_current_user_id() ) ?: [];
+$settings_people_group_rows = DT_Posts::get_post_names_from_ids( $settings_people_group_ids );
+$settings_people_groups_connection_value = array_map(
+    function ( $row ) {
+        $row['ID'] = (int) $row['ID'];
+        if ( !isset( $row['permalink'] ) ) {
+            $row['permalink'] = get_permalink( $row['ID'] );
+        }
+        return $row;
+    },
+    $settings_people_group_rows
+);
+
+$multiplier_values = array_merge([
+    'languages' => $settings_language_value,
+    'people_groups' => $settings_people_groups_connection_value,
+], $user_location);
+
+$multiplier_fields = [
+    'location_grid_meta' => [
+        'name' => __( 'Locations you are willing to be responsible for', 'disciple_tools' ),
+        'type'        => 'location_meta',
+        'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
+    ],
+    'location_grid' => [
+        'name' => __( 'Locations you are willing to be responsible for', 'disciple_tools' ),
+        'type'        => 'location',
+        'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
+    ],
+    'languages' => [
+        'name' => __( 'Languages you are comfortable speaking', 'disciple_tools' ),
+        'type' => 'multi_select',
+        'icon' => get_template_directory_uri() . '/dt-assets/images/languages.svg',
+        'default' => $contact_fields['languages']['default'],
+    ],
+    'people_groups' => [
+        'name' => __( 'People Groups you wish to serve', 'disciple_tools' ),
+        'type' => 'connection',
+        'post_type' => 'peoplegroups',
+        'icon' => get_template_directory_uri() . '/dt-assets/images/people-group.svg',
+    ],
+];
 ?>
 
 <?php get_header(); ?>
@@ -306,13 +356,14 @@ $user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
                                                 </button>
                                             </td>
                                             <td class="tall-3">
-                                                <input class="switch-input" id="app_state_<?php echo esc_attr( $app_key )?>" type="checkbox" name="follow_all"
-                                                       onclick="app_switch('<?php echo esc_attr( get_current_user_id() )?>', '<?php echo esc_attr( $app_key )?>');" <?php ( isset( $dt_user_meta[ $wpdb->prefix . $app_key] ) ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
-                                                <label class="switch-paddle" for="app_state_<?php echo esc_attr( $app_key )?>">
-                                                    <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
-                                                    <span class="switch-active" aria-hidden="true" style="color:white;"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
-                                                    <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
-                                                </label>
+                                                <dt-toggle
+                                                    id="<?php echo esc_attr( 'app_state_' . $app_key ); ?>"
+                                                    name="<?php echo esc_attr( 'app_state_' . $app_key ); ?>"
+                                                    class="settings-app-toggle"
+                                                    data-app-key="<?php echo esc_attr( $app_key ); ?>"
+                                                    label="<?php echo esc_attr( __( 'Enable', 'disciple_tools' ) ); ?>"
+                                                    <?php echo isset( $dt_user_meta[ $wpdb->prefix . $app_key ] ) ? 'checked' : ''; ?>
+                                                ></dt-toggle>
                                             </td>
                                         </tr>
                                         <?php
@@ -338,65 +389,27 @@ $user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
 
                             <!-- Locations -->
                             <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
-                                <?php DT_Components::render_location_meta( 'location_grid_meta', [
-                                    'location_grid_meta' => [
-                                        'name' => __( 'Locations you are willing to be responsible for', 'disciple_tools' ),
-                                        'type'        => 'location_meta',
-                                        'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
-                                    ]
-                                ], $user_location ) ?>
+                                <?php DT_Components::render_location_meta( 'location_grid_meta', $multiplier_fields, $multiplier_values ) ?>
                             <?php else : ?>
-                                <?php DT_Components::render_location( 'location_grid', [
-                                    'location_grid' => [
-                                        'name' => __( 'Locations you are willing to be responsible for', 'disciple_tools' ),
-                                        'type'        => 'location',
-                                        'icon' => get_template_directory_uri() . '/dt-assets/images/map-marker-multiple.svg?v=2',
-                                    ]
-                                ], $user_location ) ?>
+                                <?php DT_Components::render_location( 'location_grid', $multiplier_fields, $multiplier_values ) ?>
                             <?php endif; ?>
 
-
                             <!-- Languages -->
-                            <div class="section-subheader cell" style="margin-top:30px">
-                                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/languages.svg' ?>">
-                                <strong style="display: inline-block;"><?php esc_html_e( 'Languages you are comfortable speaking', 'disciple_tools' )?></strong>
-                                <span id="languages-spinner" style="display: inline-block" class="loading-spinner"></span>
-                            </div>
-                            <div class="small button-group" style="display: inline-block">
-                                <?php foreach ( $contact_fields['languages']['default'] as $option_key => $option_value ): ?>
-                                    <?php
-                                    $user_languages = get_user_option( 'user_languages', get_current_user_id() );
-                                    $class = ( in_array( $option_key, $user_languages ?: [] ) ) ?
-                                        'selected-select-button' : 'empty-select-button'; ?>
-                                    <button id="<?php echo esc_html( $option_key ) ?>" data-field-key="<?php echo esc_html( 'languages' ) ?>"
-                                            class="dt_multi_select <?php echo esc_html( $class ) ?> select-button button ">
-                                        <?php echo esc_html( $contact_fields['languages']['default'][$option_key]['label'] ) ?>
-                                    </button>
-                                <?php endforeach; ?>
-                            </div>
-
+                            <?php DT_Components::render_multi_select( 'languages', $multiplier_fields, $multiplier_values, [
+                                'class' => 'settings-user-languages-multiselect',
+                                'field_id_prefix' => 'settings-user-',
+                                'icon_alt_text' => __( 'Languages', 'disciple_tools' ),
+                            ]) ?>
 
                             <!-- People Groups -->
-                            <?php if ( isset( $contact_fields['people_groups']['name'] ) ): ?>
-                            <div class="section-subheader cell" style="margin-top:20px">
-                                <img src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/people-group.svg' ?>">
-                                <?php esc_html_e( 'People Groups you wish to serve', 'disciple_tools' ); ?>
-                            </div>
-                            <div class="people_groups full-width">
-                                <var id="people_groups-result-container" class="result-container"></var>
-                                <div id="people_groups_t" name="form-people_groups" class="scrollable-typeahead">
-                                    <div class="typeahead__container">
-                                        <div class="typeahead__field">
-                                            <span class="typeahead__query">
-                                                <input class="js-typeahead-people_groups"
-                                                       name="people_groups[query]"
-                                                       placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $contact_fields['people_groups']['name'] ) )?>"
-                                                       autocomplete="off">
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <?php if ( isset( $contact_fields['people_groups']['name'] ) ) : ?>
+                                <?php DT_Components::render_connection( 'people_groups', $multiplier_fields, $multiplier_values, [
+                                    'class' => 'settings-people-groups-connection',
+                                    'field_id_prefix' => 'settings-',
+                                    'icon_alt_text' => __( 'People groups', 'disciple_tools' ),
+                                    'allow_add' => false,
+                                ]) ?>
+
                             <?php endif; ?>
                         </div>
 
@@ -539,16 +552,22 @@ $user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
                                             <?php else :
                                                 $channel_notification_key = $dt_notification_key . '_' . $channel_key;
                                                 $checked = dt_user_notification_is_enabled( $dt_notification_key, $channel_key, $dt_user_meta, $dt_user->ID );
+                                                $toggle_notice_label = sprintf(
+                                                    /* translators: 1: notification type, 2: channel (e.g. email) */
+                                                    __( '%1$s — %2$s', 'disciple_tools' ),
+                                                    $dt_notification_default['label'],
+                                                    $channel_value['label']
+                                                );
                                                 ?>
-                                                <div class="switch">
-                                                    <input class="switch-input" id="<?php echo esc_html( $channel_notification_key ) ?>" type="checkbox"
-                                                           name="<?php echo esc_html( $channel_notification_key ) ?>"
-                                                           onclick="switch_preference( '<?php echo esc_html( $channel_notification_key ) ?>', 'notifications' );"
-                                                           <?php checked( $checked ) ?>>
-                                                    <label class="switch-paddle inactive" for="<?php echo esc_html( $channel_notification_key ) ?>">
-                                                        <span class="show-for-sr"><?php echo esc_html( $dt_notification_default['label'] ) ?></span>
-                                                    </label>
-                                                </div>
+                                                <dt-toggle
+                                                    id="<?php echo esc_attr( $channel_notification_key ); ?>"
+                                                    name="<?php echo esc_attr( $channel_notification_key ); ?>"
+                                                    class="settings-notification-toggle"
+                                                    data-preference-key="<?php echo esc_attr( $channel_notification_key ); ?>"
+                                                    data-preference-type="notifications"
+                                                    label="<?php echo esc_attr( $toggle_notice_label ); ?>"
+                                                    <?php checked( $checked ); ?>
+                                                ></dt-toggle>
                                             <?php endif; ?>
                                         </td>
                                     <?php endforeach; ?>
@@ -562,15 +581,14 @@ $user_location = Disciple_Tools_Users::get_user_location( $dt_user->ID );
                                 <strong><?php esc_html_e( 'Follow all contacts', 'disciple_tools' )?></strong>
                             </p>
                             <p><?php esc_html_e( 'You will receive a notification for any update that happens in the system.', 'disciple_tools' ) ?></p>
-                            <div class="switch large">
-                                <input class="switch-input" id="follow_all" type="checkbox" name="follow_all"
-                                       onclick="switch_preference('dt_follow_all');" <?php ( isset( $dt_user_meta['dt_follow_all'] ) && $dt_user_meta['dt_follow_all'][0] == true ) ? print esc_attr( 'checked' ) : print esc_attr( '' ); ?> />
-                                <label class="switch-paddle" for="follow_all">
-                                    <span class="show-for-sr"><?php esc_html_e( 'Enable', 'disciple_tools' )?></span>
-                                    <span class="switch-active" aria-hidden="true"><?php esc_html_e( 'Yes', 'disciple_tools' )?></span>
-                                    <span class="switch-inactive" aria-hidden="false"><?php esc_html_e( 'No', 'disciple_tools' )?></span>
-                                </label>
-                            </div>
+                            <dt-toggle
+                                id="follow_all"
+                                name="follow_all"
+                                class="settings-notification-toggle settings-follow-all-toggle"
+                                data-preference-key="dt_follow_all"
+                                label="<?php esc_attr_e( 'Follow all contacts', 'disciple_tools' ); ?>"
+                                <?php echo ( isset( $dt_user_meta['dt_follow_all'] ) && $dt_user_meta['dt_follow_all'][0] == true ) ? 'checked' : ''; ?>
+                            ></dt-toggle>
                         <?php endif; ?>
                     </div>
                 </div>

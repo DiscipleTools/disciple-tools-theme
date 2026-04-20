@@ -18,6 +18,7 @@ class DT_Components
         $field_type = $fields[$field_key]['type'] ?? null;
         $is_private = isset( $fields[$field_key]['private'] ) && $fields[$field_key]['private'] === true;
         $display_field_id = ( isset( $params['field_id_prefix'] ) ? $params['field_id_prefix'] : '' ) . $field_key;
+        $class = ( isset( $params['class'] ) ? 'class="' . esc_attr( $params['class'] ) . '"' : '' );
 
         $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [
             'boolean',
@@ -50,6 +51,10 @@ class DT_Components
         } else if ( isset( $fields[$field_key]['icon'] ) && !empty( $fields[$field_key]['icon'] ) ) {
             $icon = 'icon="' . esc_attr( $fields[$field_key]['icon'] ) . '"';
         }
+        if ( isset( $icon ) && isset( $params['icon_alt_text'] ) ) {
+            $icon .= ' iconAltText="' . esc_attr( $params['icon_alt_text'] ) . '"';
+        }
+
         if ( isset( $fields[$field_key]['post_type'] ) ) {
             $post_type = 'postType=' . esc_attr( $fields[$field_key]['post_type'] );
         } else if ( isset( $post ) && isset( $post['post_type'] ) ) {
@@ -62,6 +67,7 @@ class DT_Components
         $shared_attributes = '
               id="' . esc_attr( $display_field_id ) . '"
               name="' . esc_attr( $field_key ) . '"
+              ' . $class . '
               ' . $label_attr . '
               ' . esc_html( $post_type ?? '' ) . '
               ' . $icon . '
