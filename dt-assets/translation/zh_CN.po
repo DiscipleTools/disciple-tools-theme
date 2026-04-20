@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2026-03-04T15:36:58+00:00\n"
+"POT-Creation-Date: 2026-03-31T10:21:03+00:00\n"
 "PO-Revision-Date: 2026-01-09 14:51+0000\n"
 "Last-Translator: Anonymous <translator@disciple.tools>\n"
 "Language-Team: Chinese (Simplified Han script) <https://translate.disciple."
@@ -75,7 +75,7 @@ msgstr "记录所有者将收到访问请求通知。你是否愿意继续？"
 msgid "Submit Request"
 msgstr "提交请求"
 
-#: 403.php:55 archive-template.php:1117
+#: 403.php:55 archive-template.php:1140
 #: dt-assets/parts/loop-activity-comment.php:141
 #: dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
@@ -92,8 +92,8 @@ msgid "Cancel"
 msgstr "取消"
 
 #: 403.php:59 archive-template.php:551 archive-template.php:626
-#: archive-template.php:729 archive-template.php:1141
-#: dt-assets/functions/enqueue-scripts.php:470
+#: archive-template.php:729 archive-template.php:1164
+#: dt-assets/functions/enqueue-scripts.php:463
 #: dt-assets/parts/loop-activity-comment.php:225
 #: dt-assets/parts/loop-activity-comment.php:230
 #: dt-assets/parts/loop-activity-comment.php:273
@@ -126,12 +126,12 @@ msgstr "取消"
 #: dt-contacts/module-baptisms.php:201 dt-contacts/module-baptisms.php:203
 #: dt-contacts/user-module.php:168 dt-groups/base-setup.php:532
 #: dt-groups/base-setup.php:537 dt-groups/base-setup.php:585
-#: dt-groups/base-setup.php:592 dt-reports/magic-url-bulk-send.php:34
-#: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
-#: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
-#: dt-users/user-initial-setup.php:82 single-template.php:418
-#: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-settings.php:596
+#: dt-groups/base-setup.php:592 dt-groups/base-setup.php:1260
+#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:270
+#: dt-users/template-new-user.php:291 dt-users/template-new-user.php:295
+#: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
+#: single-template.php:418 template-new-bulk-post.php:223
+#: template-new-bulk-post.php:295 template-settings.php:596
 msgid "Close"
 msgstr "关"
 
@@ -162,7 +162,7 @@ msgid "Filters"
 msgstr "筛选器"
 
 #: archive-template.php:63 archive-template.php:135
-#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:262
+#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:265
 #: dt-posts/custom-post-type.php:20 template-settings.php:393
 #, php-format
 msgctxt "Search 'something'"
@@ -496,12 +496,12 @@ msgid "Please ensure a valid send message has been entered."
 msgstr "请确保已输入有效的发送消息。"
 
 #: archive-template.php:811 dt-reports/magic-url-bulk-send.php:57
-#: dt-reports/magic-url-setup.php:254
+#: dt-reports/magic-url-setup.php:292
 msgid "Message placeholders"
 msgstr "消息占位符"
 
 #: archive-template.php:842 dt-reports/magic-url-bulk-send.php:63
-#: dt-reports/magic-url-setup.php:260
+#: dt-reports/magic-url-setup.php:298
 msgid "Name of the Record"
 msgstr "记录名称"
 
@@ -518,7 +518,7 @@ msgid "You must select at least one record"
 msgstr "您必须至少选择一条记录"
 
 #: archive-template.php:911 dt-reports/magic-url-bulk-send.php:93
-#: dt-reports/magic-url-setup.php:503
+#: dt-reports/magic-url-setup.php:808
 msgid "Send"
 msgstr "发送"
 
@@ -567,17 +567,17 @@ msgid "None Set"
 msgstr "没有设置"
 
 #: archive-template.php:1047 archive-template.php:1048
-#: dt-assets/functions/enqueue-scripts.php:260 dt-core/global-functions.php:731
-#: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
-#: dt-reports/magic-url-setup.php:474 dt-users/user-management.php:196
+#: dt-assets/functions/enqueue-scripts.php:260 dt-core/global-functions.php:734
+#: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:549
+#: dt-reports/magic-url-setup.php:779 dt-users/user-management.php:196
 #: template-settings.php:314 template-settings.php:571
 msgid "No"
 msgstr "没有"
 
 #: archive-template.php:1054 archive-template.php:1055
-#: dt-assets/functions/enqueue-scripts.php:259 dt-core/global-functions.php:732
+#: dt-assets/functions/enqueue-scripts.php:259 dt-core/global-functions.php:735
 #: dt-metrics/records/genmap.php:176 dt-metrics/records/time-charts.php:119
-#: dt-posts/posts.php:460 dt-reports/magic-url-setup.php:473
+#: dt-posts/posts.php:547 dt-reports/magic-url-setup.php:778
 #: dt-users/user-management.php:195 template-settings.php:313
 #: template-settings.php:570
 msgid "Yes"
@@ -627,15 +627,31 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "所有在 %2$s 中无值的 %1$s"
 
-#: archive-template.php:1125
+#: archive-template.php:1114
+#, fuzzy, php-format
+#| msgctxt "All Contacts with no value in field"
+#| msgid "All %1$s with no value in %2$s"
+msgctxt "All Contacts with files in Documents"
+msgid "All %1$s with files in %2$s"
+msgstr "所有在 %2$s 中无值的 %1$s"
+
+#: archive-template.php:1124
+#, fuzzy, php-format
+#| msgctxt "All Contacts without filtered value in Emails"
+#| msgid "All %1$s without filtered value in %2$s"
+msgctxt "All Contacts without files in Documents"
+msgid "All %1$s without files in %2$s"
+msgstr "所有在 %2$s 中不包含筛选值的 %1$s"
+
+#: archive-template.php:1148
 msgid "Filter Name"
 msgstr "筛选器名称"
 
-#: archive-template.php:1130
+#: archive-template.php:1153
 msgid "Filter Records"
 msgstr "筛选记录"
 
-#: archive-template.php:1134 dt-assets/functions/enqueue-scripts.php:300
+#: archive-template.php:1157 dt-assets/functions/enqueue-scripts.php:300
 #: dt-assets/functions/enqueue-scripts.php:335
 #: dt-users/user-initial-setup.php:79 template-settings.php:739
 msgid "Save"
@@ -789,7 +805,7 @@ msgstr "视频URL必须是有效的URL。"
 
 #: dt-apps/dt-home/magic-link-home-app.php:64
 #: dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9 dt-groups/base-setup.php:1217
+#: dt-assets/parts/modals/modal-new-contact.php:9 dt-groups/base-setup.php:1270
 #: dt-mapping/mapping.php:303 dt-metrics/combined/locations-list.php:90
 #: dt-metrics/records/genmap.php:172 dt-posts/custom-post-type.php:170
 #: dt-users/template-user-management.php:190 template-settings.php:147
@@ -935,7 +951,7 @@ msgid "Edit"
 msgstr "编辑"
 
 #: dt-assets/functions/enqueue-scripts.php:137
-#: dt-reports/magic-url-setup.php:496 template-settings.php:304
+#: dt-reports/magic-url-setup.php:801 template-settings.php:304
 msgid "Copy"
 msgstr "复制"
 
@@ -966,7 +982,7 @@ msgid "A new version of Disciple.Tools is available"
 msgstr "Disciple.Tools 的新版本可用"
 
 #: dt-assets/functions/enqueue-scripts.php:166
-#: dt-reports/magic-url-setup.php:483
+#: dt-reports/magic-url-setup.php:788
 msgid "View"
 msgstr "查看"
 
@@ -1086,13 +1102,13 @@ msgstr "您确定要将记录状态恢复到 %s 吗？"
 msgid "Locations you are responsible for"
 msgstr "您负责的位置"
 
-#: dt-assets/functions/enqueue-scripts.php:299 dt-groups/base-setup.php:1213
+#: dt-assets/functions/enqueue-scripts.php:299 dt-groups/base-setup.php:1259
 #: dt-metrics/records/genmap.php:166
 msgid "Add"
 msgstr "添加"
 
 #: dt-assets/functions/enqueue-scripts.php:301
-#: dt-reports/magic-url-setup.php:453 template-settings.php:297
+#: dt-reports/magic-url-setup.php:758 template-settings.php:297
 msgid "link"
 msgstr "关联"
 
@@ -1266,51 +1282,51 @@ msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr "%s 已存在"
 
-#: dt-assets/functions/enqueue-scripts.php:458
+#: dt-assets/functions/enqueue-scripts.php:451
 msgid "File Upload"
 msgstr "文件上传"
 
-#: dt-assets/functions/enqueue-scripts.php:459
+#: dt-assets/functions/enqueue-scripts.php:452
 msgid "Choose a file"
 msgstr "选择文件"
 
-#: dt-assets/functions/enqueue-scripts.php:460
+#: dt-assets/functions/enqueue-scripts.php:453
 msgid "or drag it here"
 msgstr "或拖放到此处"
 
-#: dt-assets/functions/enqueue-scripts.php:461
+#: dt-assets/functions/enqueue-scripts.php:454
 msgid "Successfully Uploaded!"
 msgstr "上传成功！"
 
-#: dt-assets/functions/enqueue-scripts.php:462
+#: dt-assets/functions/enqueue-scripts.php:455
 msgid "Error!"
 msgstr "错误！"
 
-#: dt-assets/functions/enqueue-scripts.php:463
+#: dt-assets/functions/enqueue-scripts.php:456
 msgid "Unable to upload, please try again"
 msgstr "无法上传，请重试"
 
-#: dt-assets/functions/enqueue-scripts.php:464
+#: dt-assets/functions/enqueue-scripts.php:457
 msgid "Upload"
 msgstr "上传"
 
-#: dt-assets/functions/enqueue-scripts.php:465
+#: dt-assets/functions/enqueue-scripts.php:458
 msgid "Delete Existing File"
 msgstr "删除现有文件"
 
-#: dt-assets/functions/enqueue-scripts.php:466
+#: dt-assets/functions/enqueue-scripts.php:459
 msgid "Replace Existing Image"
 msgstr "替换现有图片"
 
-#: dt-assets/functions/enqueue-scripts.php:467
+#: dt-assets/functions/enqueue-scripts.php:460
 msgid "Are you sure you wish to delete existing file?"
 msgstr "您确定要删除现有文件吗？"
 
-#: dt-assets/functions/enqueue-scripts.php:468
+#: dt-assets/functions/enqueue-scripts.php:461
 msgid "Successfully Deleted!"
 msgstr "删除成功！"
 
-#: dt-assets/functions/enqueue-scripts.php:469
+#: dt-assets/functions/enqueue-scripts.php:462
 msgid "Delete failed, please try again"
 msgstr "删除失败，请重试"
 
@@ -1842,25 +1858,25 @@ msgctxt "Optional Documentation"
 msgid "Read the documentation"
 msgstr "阅读文档"
 
-#: dt-assets/parts/modals/modal-help.php:143 dt-reports/magic-url-setup.php:491
+#: dt-assets/parts/modals/modal-help.php:143 dt-reports/magic-url-setup.php:796
 msgid "Open the link"
 msgstr "打开链接"
 
-#: dt-assets/parts/modals/modal-help.php:147 dt-reports/magic-url-setup.php:499
+#: dt-assets/parts/modals/modal-help.php:147 dt-reports/magic-url-setup.php:804
 msgid "Copy the link to the clipboard"
 msgstr "复制链接到剪贴板"
 
-#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
-#: dt-reports/magic-url-setup.php:508
+#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:286
+#: dt-reports/magic-url-setup.php:813
 msgid "Send the link via email."
 msgstr "通过电子邮件发送链接。"
 
-#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:312
-#: dt-reports/magic-url-setup.php:517
+#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:350
+#: dt-reports/magic-url-setup.php:822
 msgid "Scan the QR code to open the magic link on a mobile device."
 msgstr "扫描二维码在移动设备上打开魔术链接。"
 
-#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
+#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:365
 #, fuzzy
 #| msgid ""
 #| "Reset the security code. No data is removed. Only access. The previous "
@@ -1963,7 +1979,7 @@ msgid "This contact is shared with:"
 msgstr "此联系人共享给："
 
 #: dt-assets/parts/modals/modal-share.php:27 dt-contacts/module-access.php:531
-#: dt-contacts/user-module.php:137 dt-core/global-functions.php:816
+#: dt-contacts/user-module.php:137 dt-core/global-functions.php:819
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "搜索用户"
@@ -3330,7 +3346,7 @@ msgstr "如果这是一个错误，请忽略此电子邮件，将不会发生任
 msgid "To reset your password, visit the following address:"
 msgstr "要重置密码，请访问以下地址："
 
-#: dt-core/dt-storage.php:223
+#: dt-core/dt-storage.php:224
 #, fuzzy
 #| msgid ""
 #| "Something went wrong. Please try again or have an admin check the "
@@ -3339,6 +3355,32 @@ msgid ""
 "Something went wrong. Please try again or have an admin check the connection "
 "settings."
 msgstr "出现问题。请重试或让管理员检查连接设置。"
+
+#: dt-core/global-functions.php:1562
+msgid "Images"
+msgstr ""
+
+#: dt-core/global-functions.php:1566
+msgid "PDFs"
+msgstr ""
+
+#: dt-core/global-functions.php:1570
+#, fuzzy
+#| msgid "Comments"
+msgid "Documents"
+msgstr "注释"
+
+#: dt-core/global-functions.php:1571
+msgid "Word, Excel, CSV, text, markdown"
+msgstr ""
+
+#: dt-core/global-functions.php:1583
+msgid "Audio"
+msgstr ""
+
+#: dt-core/global-functions.php:1587
+msgid "Video"
+msgstr ""
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3416,7 +3458,7 @@ msgstr "通过开发功能或帮助改进文档来使 Disciple.Tools 变得更�
 msgid "Find out more"
 msgstr "了解更多"
 
-#: dt-core/utilities/dt-components.php:138
+#: dt-core/utilities/dt-components.php:141
 msgid "Search Locations"
 msgstr "搜索地点"
 
@@ -3823,11 +3865,11 @@ msgstr "切换菜单"
 msgid "Maximize generational map"
 msgstr "洗礼代"
 
-#: dt-groups/base-setup.php:569 dt-groups/base-setup.php:1208
+#: dt-groups/base-setup.php:569 dt-groups/base-setup.php:1253
 msgid "Loading map…"
 msgstr ""
 
-#: dt-groups/base-setup.php:572
+#: dt-groups/base-setup.php:572 dt-groups/base-setup.php:1256
 #, fuzzy
 #| msgid "Generation"
 msgid "Group generational map"
@@ -3864,27 +3906,74 @@ msgid ""
 msgstr ""
 "四场图中有5个正方形。从左上象限开始，顺时针旋转，第五个在中间，它们代表："
 
-#: dt-groups/base-setup.php:1209
+#: dt-groups/base-setup.php:1254
 #, fuzzy
 #| msgid "Unable to upload, please try again"
 msgid "Unable to load generational map."
 msgstr "无法上传，请重试"
 
-#: dt-groups/base-setup.php:1210
+#: dt-groups/base-setup.php:1255
 msgid "No child groups to display."
 msgstr ""
 
-#: dt-groups/base-setup.php:1212 dt-metrics/records/genmap.php:165
+#: dt-groups/base-setup.php:1258 dt-metrics/records/genmap.php:165
 msgid "Open"
 msgstr "打开"
 
-#: dt-groups/base-setup.php:1216 dt-metrics/records/genmap.php:171
+#: dt-groups/base-setup.php:1261 dt-metrics/records/genmap.php:162
+msgid "Type"
+msgstr "类型"
+
+#: dt-groups/base-setup.php:1262 dt-metrics/records/genmap.php:154
+#: dt-metrics/records/genmap.php:158 dt-posts/dt-posts.php:2728
+#: dt-users/template-user-management.php:378 dt-users/users.php:175
+#: single-template.php:127
+msgid "Status"
+msgstr "状态"
+
+#: dt-groups/base-setup.php:1263 dt-metrics/records/genmap.php:151
+#: dt-metrics/records/genmap.php:164
+msgid "Members"
+msgstr "会员"
+
+#: dt-groups/base-setup.php:1264
+#, fuzzy
+#| msgid "Assign"
+msgid "Assigned"
+msgstr "分配"
+
+#: dt-groups/base-setup.php:1265
+msgid "Expand"
+msgstr ""
+
+#: dt-groups/base-setup.php:1266
+msgid "Collapse"
+msgstr ""
+
+#: dt-groups/base-setup.php:1269 dt-metrics/records/genmap.php:171
 msgid "Add Child To"
 msgstr "添加子项到"
 
-#: dt-groups/base-setup.php:1218 dt-metrics/records/genmap.php:173
+#: dt-groups/base-setup.php:1271 dt-metrics/records/genmap.php:173
 msgid "Add Child"
 msgstr "添加子项"
+
+#: dt-groups/base-setup.php:1272
+#, fuzzy
+#| msgid "This is required"
+msgid "Name is required"
+msgstr "这是必需的"
+
+#: dt-groups/base-setup.php:1273
+#, php-format
+msgid "Error creating child group: %s"
+msgstr ""
+
+#: dt-groups/base-setup.php:1274
+#, fuzzy
+#| msgid "Unknown error."
+msgid "Unknown error"
+msgstr "未知错误。"
 
 #: dt-login/login-template.php:68
 #, fuzzy
@@ -4647,19 +4736,9 @@ msgstr "凸显活跃用户"
 msgid "Highlight Churches"
 msgstr "凸显教堂"
 
-#: dt-metrics/records/genmap.php:151 dt-metrics/records/genmap.php:164
-msgid "Members"
-msgstr "会员"
-
 #: dt-metrics/records/genmap.php:152
 msgid "View Record"
 msgstr "查看记录"
-
-#: dt-metrics/records/genmap.php:154 dt-metrics/records/genmap.php:158
-#: dt-posts/dt-posts.php:2727 dt-users/template-user-management.php:378
-#: dt-users/users.php:175 single-template.php:127
-msgid "Status"
-msgstr "状态"
 
 #: dt-metrics/records/genmap.php:155
 msgid "Total Members"
@@ -4672,10 +4751,6 @@ msgstr "查看群组"
 #: dt-metrics/records/genmap.php:161
 msgid "Coaches"
 msgstr "培训员"
-
-#: dt-metrics/records/genmap.php:162
-msgid "Type"
-msgstr "类型"
 
 #: dt-metrics/records/genmap.php:167
 msgid "Focus"
@@ -4984,6 +5059,56 @@ msgstr "此记录所在的大致位置。"
 msgid "Locations or Address"
 msgstr "位置或地址"
 
+#: dt-posts/dt-posts-endpoints.php:1117 dt-posts/dt-posts-endpoints.php:1150
+#: dt-posts/posts.php:458 dt-posts/posts.php:468
+#, fuzzy, php-format
+#| msgctxt "ex: Update on Contact #323"
+#| msgid "Update on %1$s #%2$s"
+msgctxt "file_upload activity"
+msgid "Uploaded file: %1$s to %2$s"
+msgstr "更新 %1$s ＃%2$s"
+
+#: dt-posts/dt-posts-endpoints.php:1121 dt-posts/posts.php:462
+#, fuzzy, php-format
+#| msgid "Find out more"
+msgctxt "file_upload activity"
+msgid " and %d more"
+msgstr "了解更多"
+
+#: dt-posts/dt-posts-endpoints.php:1123 dt-posts/posts.php:464
+#, fuzzy, php-format
+#| msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
+#| msgid "Updated %1$s from %2$s to %3$s"
+msgctxt "file_upload activity"
+msgid "Uploaded %1$d files: %2$s to %3$s"
+msgstr "已将 %1$s 从%2$s更新为%3$s"
+
+#: dt-posts/dt-posts-endpoints.php:1304 dt-posts/dt-posts-endpoints.php:1337
+#: dt-posts/dt-posts-endpoints.php:1622 dt-posts/dt-posts-endpoints.php:1660
+#: dt-posts/posts.php:437 dt-posts/posts.php:443
+#, fuzzy, php-format
+#| msgctxt "Deleted Facebook: facebook.com/123"
+#| msgid "Deleted %1$s: %2$s"
+msgctxt "file_upload activity"
+msgid "Deleted file: %1$s from %2$s"
+msgstr "删除的 %1$s ：%2$s"
+
+#: dt-posts/dt-posts-endpoints.php:1435
+#, fuzzy, php-format
+#| msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
+#| msgid "Updated %1$s from %2$s to %3$s"
+msgctxt "file_upload activity"
+msgid "Renamed file from %1$s to %2$s in %3$s"
+msgstr "已将 %1$s 从%2$s更新为%3$s"
+
+#: dt-posts/dt-posts-endpoints.php:1624 dt-posts/posts.php:439
+#, fuzzy, php-format
+#| msgctxt "Deleted Facebook: facebook.com/123"
+#| msgid "Deleted %1$s: %2$s"
+msgctxt "file_upload activity"
+msgid "Deleted all %1$d files from %2$s"
+msgstr "删除的 %1$s ：%2$s"
+
 #: dt-posts/dt-posts.php:101
 msgid ""
 "This record was automatically updated rather than creating a new record."
@@ -4998,19 +5123,19 @@ msgstr "%s 提交"
 msgid "Magic Link"
 msgstr "魔术链接"
 
-#: dt-posts/dt-posts.php:1662 dt-posts/dt-posts.php:2209
+#: dt-posts/dt-posts.php:1662 dt-posts/dt-posts.php:2210
 msgid "Revert Bot"
 msgstr "恢复机器人"
 
-#: dt-posts/dt-posts.php:2449
+#: dt-posts/dt-posts.php:2450
 msgid "Record already shared with user."
 msgstr "记录已与用户共享。"
 
-#: dt-posts/dt-posts.php:2728 single-template.php:174
+#: dt-posts/dt-posts.php:2729 single-template.php:174
 msgid "Details"
 msgstr "详情"
 
-#: dt-posts/dt-posts.php:2806
+#: dt-posts/dt-posts.php:2807
 #, fuzzy, php-format
 #| msgctxt ""
 #| "@[user name][user_id] - User Fred has requested access to Contact "
@@ -5030,7 +5155,7 @@ msgstr ""
 "@[%1$s](%2$s) - 用户 %3$s 已请求访问 %4$s [%5$s](%6$s) 。如果需要，请与该用户"
 "分享此记录以授予访问权。"
 
-#: dt-posts/dt-posts.php:2812
+#: dt-posts/dt-posts.php:2813
 msgid "Access Request"
 msgstr "访问请求"
 
@@ -5264,142 +5389,156 @@ msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s 已从 %2$s 中移除"
 
-#: dt-posts/posts.php:416
+#: dt-posts/posts.php:492
+#, fuzzy, php-format
+#| msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
+#| msgid "Updated %1$s from %2$s to %3$s"
+msgctxt "file_upload activity"
+msgid "Renamed file from %1$s to %2$s"
+msgstr "已将 %1$s 从%2$s更新为%3$s"
+
+#: dt-posts/posts.php:494
+#, fuzzy
+#| msgid "File Upload"
+msgid "File updated"
+msgstr "文件上传"
+
+#: dt-posts/posts.php:503
 #, php-format
 msgctxt "User Select: User1"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: dt-posts/posts.php:416
+#: dt-posts/posts.php:503
 msgid "Nobody"
 msgstr "没有人"
 
-#: dt-posts/posts.php:421 dt-posts/posts.php:426
+#: dt-posts/posts.php:508 dt-posts/posts.php:513
 #, php-format
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "%1$s 更改为%2$s"
 
-#: dt-posts/posts.php:434 dt-posts/posts.php:445
+#: dt-posts/posts.php:521 dt-posts/posts.php:532
 #, php-format
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
 msgstr "已从%2$s中删除 %1$s"
 
-#: dt-posts/posts.php:437 dt-posts/posts.php:448
+#: dt-posts/posts.php:524 dt-posts/posts.php:535
 #, php-format
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
 msgstr "已将 %1$s 添加到%2$s"
 
-#: dt-posts/posts.php:470
+#: dt-posts/posts.php:557
 #, php-format
 msgid "%s removed"
 msgstr "%s 已移除"
 
-#: dt-posts/posts.php:478 dt-posts/posts.php:491
+#: dt-posts/posts.php:565 dt-posts/posts.php:578
 #, php-format
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
 msgstr "从位置删除了 %1$s"
 
-#: dt-posts/posts.php:481 dt-posts/posts.php:498
+#: dt-posts/posts.php:568 dt-posts/posts.php:585
 #, php-format
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "已将 %1$s 添加到位置"
 
-#: dt-posts/posts.php:512
+#: dt-posts/posts.php:599
 #, php-format
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
 msgstr "%1$s 已从 %2$s 链接中移除"
 
-#: dt-posts/posts.php:515
+#: dt-posts/posts.php:602
 #, php-format
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
 msgstr "%1$s 已添加到 %2$s 链接"
 
-#: dt-posts/posts.php:536
+#: dt-posts/posts.php:623
 msgctxt "message"
 msgid "verified"
 msgstr "已验证"
 
-#: dt-posts/posts.php:536
+#: dt-posts/posts.php:623
 msgctxt "message"
 msgid "not verified"
 msgstr "未经审核的"
 
-#: dt-posts/posts.php:539
+#: dt-posts/posts.php:626
 msgctxt "message"
 msgid "invalidated"
 msgstr "无效"
 
-#: dt-posts/posts.php:539
+#: dt-posts/posts.php:626
 msgctxt "message"
 msgid "not invalidated"
 msgstr "没有失效"
 
-#: dt-posts/posts.php:566
+#: dt-posts/posts.php:653
 #, php-format
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
 msgstr "添加了 %1$s ：%2$s"
 
-#: dt-posts/posts.php:568
+#: dt-posts/posts.php:655
 #, php-format
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
 msgstr "已将 %1$s 从%2$s更新为%3$s"
 
-#: dt-posts/posts.php:570
+#: dt-posts/posts.php:657
 #, php-format
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "删除的 %1$s ：%2$s"
 
-#: dt-posts/posts.php:574
+#: dt-posts/posts.php:661
 #, php-format
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "名称已更改为: %s"
 
-#: dt-posts/posts.php:576
+#: dt-posts/posts.php:663
 msgctxt "message"
 msgid "Created from Demo Plugin"
 msgstr "从演示插件创建"
 
-#: dt-posts/posts.php:583
+#: dt-posts/posts.php:670
 #, php-format
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr "%s 拒绝了分配"
 
-#: dt-posts/posts.php:583 dt-posts/posts.php:586
+#: dt-posts/posts.php:670 dt-posts/posts.php:673
 msgctxt "message"
 msgid "A user"
 msgstr "一个用户"
 
-#: dt-posts/posts.php:586
+#: dt-posts/posts.php:673
 #, php-format
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr "%s 接受了分配"
 
-#: dt-posts/posts.php:591
+#: dt-posts/posts.php:678
 #, php-format
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "已与 %s 共享"
 
-#: dt-posts/posts.php:593
+#: dt-posts/posts.php:680
 #, php-format
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "已取消与 %s 的共享"
 
-#: dt-posts/posts.php:2702
+#: dt-posts/posts.php:2837
 msgid "Removed User"
 msgstr "已移除的用户"
 
@@ -5442,11 +5581,11 @@ msgstr "{{app}} 将被替换为所选的应用名称。"
 msgid "Configure email message"
 msgstr "配置邮件内容"
 
-#: dt-reports/magic-url-bulk-send.php:60 dt-reports/magic-url-setup.php:257
+#: dt-reports/magic-url-bulk-send.php:60 dt-reports/magic-url-setup.php:295
 msgid "Selected app name"
 msgstr "所选应用名称"
 
-#: dt-reports/magic-url-bulk-send.php:66 dt-reports/magic-url-setup.php:263
+#: dt-reports/magic-url-bulk-send.php:66 dt-reports/magic-url-setup.php:301
 msgid "Unique link to access the app."
 msgstr "访问应用的唯一链接。"
 
@@ -5484,7 +5623,11 @@ msgstr "魔术链接"
 msgid "Magic Links available on this record."
 msgstr "此记录上可用的魔术链接。"
 
-#: dt-reports/magic-url-setup.php:236
+#: dt-reports/magic-url-setup.php:234
+msgid "Exp: "
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:274
 msgid ""
 "Hello,\n"
 "\n"
@@ -5502,23 +5645,72 @@ msgstr ""
 "\n"
 "谢谢！"
 
-#: dt-reports/magic-url-setup.php:248
+#: dt-reports/magic-url-setup.php:286
 msgid "Add email address"
 msgstr "添加电子邮件地址"
 
-#: dt-reports/magic-url-setup.php:253
+#: dt-reports/magic-url-setup.php:291
 msgid "Add a note"
 msgstr "添加注释"
 
-#: dt-reports/magic-url-setup.php:267
+#: dt-reports/magic-url-setup.php:305
 msgid "Send email with link"
 msgstr "发送带有链接的电子邮件"
 
-#: dt-reports/magic-url-setup.php:329
+#: dt-reports/magic-url-setup.php:367
 msgid "Delete and replace the app link"
 msgstr "删除并替换应用链接"
 
-#: dt-reports/magic-url-setup.php:462
+#: dt-reports/magic-url-setup.php:454 dt-reports/magic-url-setup.php:462
+#: dt-reports/magic-url-setup.php:568 dt-reports/magic-url-setup.php:574
+#: dt-reports/magic-url-setup.php:674 dt-reports/magic-url-setup.php:730
+#: dt-reports/magic-url-setup.php:834 dt-reports/magic-url-setup.php:856
+msgid "Does not expire"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:475 dt-reports/magic-url-setup.php:826
+#: dt-reports/magic-url-setup.php:841 dt-reports/magic-url-setup.php:846
+msgid "Reset link"
+msgstr "重置链接"
+
+#: dt-reports/magic-url-setup.php:518
+msgid "Please enter a valid expiration amount and time unit."
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:545
+#, fuzzy
+#| msgid "Settings"
+msgid "Setting..."
+msgstr "设定值"
+
+#: dt-reports/magic-url-setup.php:602 dt-reports/magic-url-setup.php:839
+msgid "Reset link (clears expiration)"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:609
+#, fuzzy
+#| msgid "Transfer update successful."
+msgid "Expiration updated successfully."
+msgstr "传输更新成功。"
+
+#: dt-reports/magic-url-setup.php:612
+#, fuzzy
+#| msgid "Failed to update video."
+msgid "Failed to update expiration."
+msgstr "更新视频失败。"
+
+#: dt-reports/magic-url-setup.php:617
+#, fuzzy
+#| msgid "Voice recording upload failed. Please try again."
+msgid "Error updating expiration. Please try again."
+msgstr "语音录音上传失败。请重试。"
+
+#: dt-reports/magic-url-setup.php:740
+#, php-format
+msgid "Exp: %s"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:767
 #, fuzzy
 #| msgid ""
 #| "This app is not yet activated for this user. Enable the app to generate "
@@ -5528,28 +5720,56 @@ msgid ""
 "link."
 msgstr "此应用尚未为此用户激活。启用应用以生成链接。"
 
-#: dt-reports/magic-url-setup.php:465 template-settings.php:266
+#: dt-reports/magic-url-setup.php:770 template-settings.php:266
 msgid "App Activation"
 msgstr "应用激活"
 
-#: dt-reports/magic-url-setup.php:472 dt-users/user-management.php:194
+#: dt-reports/magic-url-setup.php:777 dt-users/user-management.php:194
 #: template-settings.php:312 template-settings.php:569
 msgid "Enable"
 msgstr "启用"
 
-#: dt-reports/magic-url-setup.php:512
+#: dt-reports/magic-url-setup.php:817
 msgid "QR code"
 msgstr "二维码"
 
-#: dt-reports/magic-url-setup.php:521
-msgid "Reset"
-msgstr "重置"
+#: dt-reports/magic-url-setup.php:853
+msgid "Link Expiration"
+msgstr ""
 
-#: dt-reports/magic-url-setup.php:526
-msgid "Reset link"
-msgstr "重置链接"
+#: dt-reports/magic-url-setup.php:862
+#, fuzzy
+#| msgid "Count"
+msgid "Amount"
+msgstr "数数"
 
-#: dt-reports/magic-url-setup.php:528
+#: dt-reports/magic-url-setup.php:867
+msgid "Minutes"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:868
+msgid "Hours"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:869
+msgid "Days"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:870
+msgid "Weeks"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:871
+#, fuzzy
+#| msgid "This Month"
+msgid "Months"
+msgstr "这个月"
+
+#: dt-reports/magic-url-setup.php:878
+msgid "Set Expiration"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:883
 msgid "This app is currently disabled."
 msgstr "此应用当前已禁用。"
 
@@ -6424,6 +6644,9 @@ msgstr "已扫描的访问联系人："
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "已找到的重复内容："
+
+#~ msgid "Reset"
+#~ msgstr "重置"
 
 #, fuzzy
 #~| msgid "Restore"

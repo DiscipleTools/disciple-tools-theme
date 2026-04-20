@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2026-03-04T15:36:58+00:00\n"
+"POT-Creation-Date: 2026-03-31T10:21:03+00:00\n"
 "PO-Revision-Date: 2025-03-05 16:00+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Urdu <https://translate.disciple.tools/projects/disciple-"
@@ -73,7 +73,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "گزارش جمع کیجیے"
 
-#: 403.php:55 archive-template.php:1117
+#: 403.php:55 archive-template.php:1140
 #: dt-assets/parts/loop-activity-comment.php:141
 #: dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
@@ -90,8 +90,8 @@ msgid "Cancel"
 msgstr "منسوخ کریں"
 
 #: 403.php:59 archive-template.php:551 archive-template.php:626
-#: archive-template.php:729 archive-template.php:1141
-#: dt-assets/functions/enqueue-scripts.php:470
+#: archive-template.php:729 archive-template.php:1164
+#: dt-assets/functions/enqueue-scripts.php:463
 #: dt-assets/parts/loop-activity-comment.php:225
 #: dt-assets/parts/loop-activity-comment.php:230
 #: dt-assets/parts/loop-activity-comment.php:273
@@ -124,12 +124,12 @@ msgstr "منسوخ کریں"
 #: dt-contacts/module-baptisms.php:201 dt-contacts/module-baptisms.php:203
 #: dt-contacts/user-module.php:168 dt-groups/base-setup.php:532
 #: dt-groups/base-setup.php:537 dt-groups/base-setup.php:585
-#: dt-groups/base-setup.php:592 dt-reports/magic-url-bulk-send.php:34
-#: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
-#: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
-#: dt-users/user-initial-setup.php:82 single-template.php:418
-#: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-settings.php:596
+#: dt-groups/base-setup.php:592 dt-groups/base-setup.php:1260
+#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:270
+#: dt-users/template-new-user.php:291 dt-users/template-new-user.php:295
+#: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
+#: single-template.php:418 template-new-bulk-post.php:223
+#: template-new-bulk-post.php:295 template-settings.php:596
 msgid "Close"
 msgstr "بند کریں"
 
@@ -160,7 +160,7 @@ msgid "Filters"
 msgstr "فلٹرز"
 
 #: archive-template.php:63 archive-template.php:135
-#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:262
+#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:265
 #: dt-posts/custom-post-type.php:20 template-settings.php:393
 #, php-format
 msgctxt "Search 'something'"
@@ -483,12 +483,12 @@ msgid "Please ensure a valid send message has been entered."
 msgstr "براہ کرم یقینی بنائیں کہ درست پیغام درج کیا گیا ہے۔"
 
 #: archive-template.php:811 dt-reports/magic-url-bulk-send.php:57
-#: dt-reports/magic-url-setup.php:254
+#: dt-reports/magic-url-setup.php:292
 msgid "Message placeholders"
 msgstr "پیغام پلیس ہولڈرز"
 
 #: archive-template.php:842 dt-reports/magic-url-bulk-send.php:63
-#: dt-reports/magic-url-setup.php:260
+#: dt-reports/magic-url-setup.php:298
 msgid "Name of the Record"
 msgstr "ریکارڈ کا نام"
 
@@ -505,7 +505,7 @@ msgid "You must select at least one record"
 msgstr "آپ کو کم از کم ایک ریکارڈ منتخب کرنا چاہیے۔"
 
 #: archive-template.php:911 dt-reports/magic-url-bulk-send.php:93
-#: dt-reports/magic-url-setup.php:503
+#: dt-reports/magic-url-setup.php:808
 msgid "Send"
 msgstr "بھیجیں"
 
@@ -554,17 +554,17 @@ msgid "None Set"
 msgstr "کوئی سیٹ نہیں"
 
 #: archive-template.php:1047 archive-template.php:1048
-#: dt-assets/functions/enqueue-scripts.php:260 dt-core/global-functions.php:731
-#: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
-#: dt-reports/magic-url-setup.php:474 dt-users/user-management.php:196
+#: dt-assets/functions/enqueue-scripts.php:260 dt-core/global-functions.php:734
+#: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:549
+#: dt-reports/magic-url-setup.php:779 dt-users/user-management.php:196
 #: template-settings.php:314 template-settings.php:571
 msgid "No"
 msgstr "نہیں"
 
 #: archive-template.php:1054 archive-template.php:1055
-#: dt-assets/functions/enqueue-scripts.php:259 dt-core/global-functions.php:732
+#: dt-assets/functions/enqueue-scripts.php:259 dt-core/global-functions.php:735
 #: dt-metrics/records/genmap.php:176 dt-metrics/records/time-charts.php:119
-#: dt-posts/posts.php:460 dt-reports/magic-url-setup.php:473
+#: dt-posts/posts.php:547 dt-reports/magic-url-setup.php:778
 #: dt-users/user-management.php:195 template-settings.php:313
 #: template-settings.php:570
 msgid "Yes"
@@ -614,15 +614,31 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "تمام %1$s جن میں %2$s میں کوئی قدر نہیں ہے"
 
-#: archive-template.php:1125
+#: archive-template.php:1114
+#, fuzzy, php-format
+#| msgctxt "All Contacts with no value in field"
+#| msgid "All %1$s with no value in %2$s"
+msgctxt "All Contacts with files in Documents"
+msgid "All %1$s with files in %2$s"
+msgstr "تمام %1$s جن میں %2$s میں کوئی قدر نہیں ہے"
+
+#: archive-template.php:1124
+#, fuzzy, php-format
+#| msgctxt "All Contacts without filtered value in Emails"
+#| msgid "All %1$s without filtered value in %2$s"
+msgctxt "All Contacts without files in Documents"
+msgid "All %1$s without files in %2$s"
+msgstr "تمام %1$s جن میں %2$s میں فلٹر شدہ قدر نہیں ہے"
+
+#: archive-template.php:1148
 msgid "Filter Name"
 msgstr "فلٹر کا نام"
 
-#: archive-template.php:1130
+#: archive-template.php:1153
 msgid "Filter Records"
 msgstr "فلٹر ریکارڈز"
 
-#: archive-template.php:1134 dt-assets/functions/enqueue-scripts.php:300
+#: archive-template.php:1157 dt-assets/functions/enqueue-scripts.php:300
 #: dt-assets/functions/enqueue-scripts.php:335
 #: dt-users/user-initial-setup.php:79 template-settings.php:739
 msgid "Save"
@@ -776,7 +792,7 @@ msgstr "ویڈیو URL ایک درست URL ہونا ضروری ہے۔"
 
 #: dt-apps/dt-home/magic-link-home-app.php:64
 #: dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9 dt-groups/base-setup.php:1217
+#: dt-assets/parts/modals/modal-new-contact.php:9 dt-groups/base-setup.php:1270
 #: dt-mapping/mapping.php:303 dt-metrics/combined/locations-list.php:90
 #: dt-metrics/records/genmap.php:172 dt-posts/custom-post-type.php:170
 #: dt-users/template-user-management.php:190 template-settings.php:147
@@ -922,7 +938,7 @@ msgid "Edit"
 msgstr "ترمیم"
 
 #: dt-assets/functions/enqueue-scripts.php:137
-#: dt-reports/magic-url-setup.php:496 template-settings.php:304
+#: dt-reports/magic-url-setup.php:801 template-settings.php:304
 msgid "Copy"
 msgstr "کاپی کریں"
 
@@ -953,7 +969,7 @@ msgid "A new version of Disciple.Tools is available"
 msgstr "Disciple.Tools کا نیا ورژن دستیاب ہے"
 
 #: dt-assets/functions/enqueue-scripts.php:166
-#: dt-reports/magic-url-setup.php:483
+#: dt-reports/magic-url-setup.php:788
 msgid "View"
 msgstr "دیکھیں"
 
@@ -1075,13 +1091,13 @@ msgstr "کیا آپ واقعی ریکارڈ کی حالت %s پر واپس لے 
 msgid "Locations you are responsible for"
 msgstr "وہ مقامات جن کے لئے آپ ذمہ دار ہیں"
 
-#: dt-assets/functions/enqueue-scripts.php:299 dt-groups/base-setup.php:1213
+#: dt-assets/functions/enqueue-scripts.php:299 dt-groups/base-setup.php:1259
 #: dt-metrics/records/genmap.php:166
 msgid "Add"
 msgstr "شامل کریں"
 
 #: dt-assets/functions/enqueue-scripts.php:301
-#: dt-reports/magic-url-setup.php:453 template-settings.php:297
+#: dt-reports/magic-url-setup.php:758 template-settings.php:297
 msgid "link"
 msgstr "لنک"
 
@@ -1257,51 +1273,51 @@ msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr "%s پہلے سے موجود ہے"
 
-#: dt-assets/functions/enqueue-scripts.php:458
+#: dt-assets/functions/enqueue-scripts.php:451
 msgid "File Upload"
 msgstr "فائل اپ لوڈ"
 
-#: dt-assets/functions/enqueue-scripts.php:459
+#: dt-assets/functions/enqueue-scripts.php:452
 msgid "Choose a file"
 msgstr "فائل منتخب کریں"
 
-#: dt-assets/functions/enqueue-scripts.php:460
+#: dt-assets/functions/enqueue-scripts.php:453
 msgid "or drag it here"
 msgstr "یا اسے یہاں گھسیٹیں"
 
-#: dt-assets/functions/enqueue-scripts.php:461
+#: dt-assets/functions/enqueue-scripts.php:454
 msgid "Successfully Uploaded!"
 msgstr "کامیابی سے اپ لوڈ ہو گیا!"
 
-#: dt-assets/functions/enqueue-scripts.php:462
+#: dt-assets/functions/enqueue-scripts.php:455
 msgid "Error!"
 msgstr "خرابی!"
 
-#: dt-assets/functions/enqueue-scripts.php:463
+#: dt-assets/functions/enqueue-scripts.php:456
 msgid "Unable to upload, please try again"
 msgstr "اپ لوڈ کرنے سے قاصر، براہ کرم دوبارہ کوشش کریں"
 
-#: dt-assets/functions/enqueue-scripts.php:464
+#: dt-assets/functions/enqueue-scripts.php:457
 msgid "Upload"
 msgstr "اپ لوڈ کریں"
 
-#: dt-assets/functions/enqueue-scripts.php:465
+#: dt-assets/functions/enqueue-scripts.php:458
 msgid "Delete Existing File"
 msgstr "موجودہ فائل حذف کریں"
 
-#: dt-assets/functions/enqueue-scripts.php:466
+#: dt-assets/functions/enqueue-scripts.php:459
 msgid "Replace Existing Image"
 msgstr "موجودہ تصویر تبدیل کریں"
 
-#: dt-assets/functions/enqueue-scripts.php:467
+#: dt-assets/functions/enqueue-scripts.php:460
 msgid "Are you sure you wish to delete existing file?"
 msgstr "کیا آپ واقعی موجودہ فائل حذف کرنا چاہتے ہیں؟"
 
-#: dt-assets/functions/enqueue-scripts.php:468
+#: dt-assets/functions/enqueue-scripts.php:461
 msgid "Successfully Deleted!"
 msgstr "کامیابی سے حذف ہو گیا!"
 
-#: dt-assets/functions/enqueue-scripts.php:469
+#: dt-assets/functions/enqueue-scripts.php:462
 msgid "Delete failed, please try again"
 msgstr "حذف کرنا ناکام، براہ کرم دوبارہ کوشش کریں"
 
@@ -1769,25 +1785,25 @@ msgctxt "Optional Documentation"
 msgid "Read the documentation"
 msgstr "دستاویزات پڑھیں"
 
-#: dt-assets/parts/modals/modal-help.php:143 dt-reports/magic-url-setup.php:491
+#: dt-assets/parts/modals/modal-help.php:143 dt-reports/magic-url-setup.php:796
 msgid "Open the link"
 msgstr "لنک کھولیں"
 
-#: dt-assets/parts/modals/modal-help.php:147 dt-reports/magic-url-setup.php:499
+#: dt-assets/parts/modals/modal-help.php:147 dt-reports/magic-url-setup.php:804
 msgid "Copy the link to the clipboard"
 msgstr "لنک کو کلپ بورڈ میں کاپی کریں"
 
-#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
-#: dt-reports/magic-url-setup.php:508
+#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:286
+#: dt-reports/magic-url-setup.php:813
 msgid "Send the link via email."
 msgstr "ای میل کے ذریعے لنک بھیجیں۔"
 
-#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:312
-#: dt-reports/magic-url-setup.php:517
+#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:350
+#: dt-reports/magic-url-setup.php:822
 msgid "Scan the QR code to open the magic link on a mobile device."
 msgstr "موبائل ڈیوائس پر میجک لنک کھولنے کے لیے QR کوڈ اسکین کریں۔"
 
-#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
+#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:365
 msgid ""
 "Reset the security code. No data is removed. Only access. The previous link "
 "will be disabled and another one created."
@@ -1887,7 +1903,7 @@ msgid "This contact is shared with:"
 msgstr "اس رابطے کے ساتھ اشتراک کیا گیا ہے:"
 
 #: dt-assets/parts/modals/modal-share.php:27 dt-contacts/module-access.php:531
-#: dt-contacts/user-module.php:137 dt-core/global-functions.php:816
+#: dt-contacts/user-module.php:137 dt-core/global-functions.php:819
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "صارفین تلاش کریں"
@@ -3234,13 +3250,39 @@ msgstr "اگر یہ غلطی تھی تو صرف اس ای میل کو نظر ا�
 msgid "To reset your password, visit the following address:"
 msgstr "اپنا پاس ورڈ دوبارہ ترتیب دینے کیلئے ، درج ذیل ایڈریس پر جائیں:"
 
-#: dt-core/dt-storage.php:223
+#: dt-core/dt-storage.php:224
 msgid ""
 "Something went wrong. Please try again or have an admin check the connection "
 "settings."
 msgstr ""
 "کچھ غلط ہو گیا۔ براہ کرم دوبارہ کوشش کریں یا ایڈمن سے کنکشن سیٹنگز چیک "
 "کروائیں۔"
+
+#: dt-core/global-functions.php:1562
+msgid "Images"
+msgstr ""
+
+#: dt-core/global-functions.php:1566
+msgid "PDFs"
+msgstr ""
+
+#: dt-core/global-functions.php:1570
+#, fuzzy
+#| msgid "Comments"
+msgid "Documents"
+msgstr "تبصرے"
+
+#: dt-core/global-functions.php:1571
+msgid "Word, Excel, CSV, text, markdown"
+msgstr ""
+
+#: dt-core/global-functions.php:1583
+msgid "Audio"
+msgstr ""
+
+#: dt-core/global-functions.php:1587
+msgid "Video"
+msgstr ""
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3311,7 +3353,7 @@ msgstr ""
 msgid "Find out more"
 msgstr "مزید جانیں"
 
-#: dt-core/utilities/dt-components.php:138
+#: dt-core/utilities/dt-components.php:141
 msgid "Search Locations"
 msgstr "تلاش مقامات"
 
@@ -3703,11 +3745,11 @@ msgstr "مینو ٹوگل کریں"
 msgid "Maximize generational map"
 msgstr "بپتسمہ جنریشن"
 
-#: dt-groups/base-setup.php:569 dt-groups/base-setup.php:1208
+#: dt-groups/base-setup.php:569 dt-groups/base-setup.php:1253
 msgid "Loading map…"
 msgstr ""
 
-#: dt-groups/base-setup.php:572
+#: dt-groups/base-setup.php:572 dt-groups/base-setup.php:1256
 #, fuzzy
 #| msgid "Generation"
 msgid "Group generational map"
@@ -3739,27 +3781,74 @@ msgstr ""
 "فور فیلڈز آریگرام میں 5 مربع ہیں۔ اوپری بائیں کواڈرینٹ سے شروع ہو کر گھڑی کی "
 "سمت جاتے ہوئے اور پانچواں وجود درمیان میں ہوتا ہے ، ان کے لئے کھڑے ہوتے ہیں:"
 
-#: dt-groups/base-setup.php:1209
+#: dt-groups/base-setup.php:1254
 #, fuzzy
 #| msgid "Unable to upload, please try again"
 msgid "Unable to load generational map."
 msgstr "اپ لوڈ کرنے سے قاصر، براہ کرم دوبارہ کوشش کریں"
 
-#: dt-groups/base-setup.php:1210
+#: dt-groups/base-setup.php:1255
 msgid "No child groups to display."
 msgstr ""
 
-#: dt-groups/base-setup.php:1212 dt-metrics/records/genmap.php:165
+#: dt-groups/base-setup.php:1258 dt-metrics/records/genmap.php:165
 msgid "Open"
 msgstr "کھولیں"
 
-#: dt-groups/base-setup.php:1216 dt-metrics/records/genmap.php:171
+#: dt-groups/base-setup.php:1261 dt-metrics/records/genmap.php:162
+msgid "Type"
+msgstr "قسم"
+
+#: dt-groups/base-setup.php:1262 dt-metrics/records/genmap.php:154
+#: dt-metrics/records/genmap.php:158 dt-posts/dt-posts.php:2728
+#: dt-users/template-user-management.php:378 dt-users/users.php:175
+#: single-template.php:127
+msgid "Status"
+msgstr "حالت"
+
+#: dt-groups/base-setup.php:1263 dt-metrics/records/genmap.php:151
+#: dt-metrics/records/genmap.php:164
+msgid "Members"
+msgstr "ممبران"
+
+#: dt-groups/base-setup.php:1264
+#, fuzzy
+#| msgid "Assign"
+msgid "Assigned"
+msgstr "تفویض"
+
+#: dt-groups/base-setup.php:1265
+msgid "Expand"
+msgstr ""
+
+#: dt-groups/base-setup.php:1266
+msgid "Collapse"
+msgstr ""
+
+#: dt-groups/base-setup.php:1269 dt-metrics/records/genmap.php:171
 msgid "Add Child To"
 msgstr "چائلڈ شامل کریں"
 
-#: dt-groups/base-setup.php:1218 dt-metrics/records/genmap.php:173
+#: dt-groups/base-setup.php:1271 dt-metrics/records/genmap.php:173
 msgid "Add Child"
 msgstr "چائلڈ شامل کریں"
+
+#: dt-groups/base-setup.php:1272
+#, fuzzy
+#| msgid "This is required"
+msgid "Name is required"
+msgstr "اس کی ضرورت ہے"
+
+#: dt-groups/base-setup.php:1273
+#, php-format
+msgid "Error creating child group: %s"
+msgstr ""
+
+#: dt-groups/base-setup.php:1274
+#, fuzzy
+#| msgid "Unknown error."
+msgid "Unknown error"
+msgstr "نامعلوم خامی."
 
 #: dt-login/login-template.php:68
 msgid ""
@@ -4517,19 +4606,9 @@ msgstr "نمایاں کریں"
 msgid "Highlight Churches"
 msgstr "گرجا گھروں کو نمایاں کریں"
 
-#: dt-metrics/records/genmap.php:151 dt-metrics/records/genmap.php:164
-msgid "Members"
-msgstr "ممبران"
-
 #: dt-metrics/records/genmap.php:152
 msgid "View Record"
 msgstr "ریکارڈ دیکھیں"
-
-#: dt-metrics/records/genmap.php:154 dt-metrics/records/genmap.php:158
-#: dt-posts/dt-posts.php:2727 dt-users/template-user-management.php:378
-#: dt-users/users.php:175 single-template.php:127
-msgid "Status"
-msgstr "حالت"
 
 #: dt-metrics/records/genmap.php:155
 msgid "Total Members"
@@ -4542,10 +4621,6 @@ msgstr "گروپ دیکھیں"
 #: dt-metrics/records/genmap.php:161
 msgid "Coaches"
 msgstr "کوچز"
-
-#: dt-metrics/records/genmap.php:162
-msgid "Type"
-msgstr "قسم"
 
 #: dt-metrics/records/genmap.php:167
 msgid "Focus"
@@ -4856,6 +4931,56 @@ msgstr "عمومی مقام جہاں یہ ریکارڈ واقع ہے۔"
 msgid "Locations or Address"
 msgstr "مقامات یا پتہ"
 
+#: dt-posts/dt-posts-endpoints.php:1117 dt-posts/dt-posts-endpoints.php:1150
+#: dt-posts/posts.php:458 dt-posts/posts.php:468
+#, fuzzy, php-format
+#| msgctxt "ex: Update on Contact #323"
+#| msgid "Update on %1$s #%2$s"
+msgctxt "file_upload activity"
+msgid "Uploaded file: %1$s to %2$s"
+msgstr "%1$s #%2$s پر اپ ڈیٹ"
+
+#: dt-posts/dt-posts-endpoints.php:1121 dt-posts/posts.php:462
+#, fuzzy, php-format
+#| msgid "Find out more"
+msgctxt "file_upload activity"
+msgid " and %d more"
+msgstr "مزید جانیں"
+
+#: dt-posts/dt-posts-endpoints.php:1123 dt-posts/posts.php:464
+#, fuzzy, php-format
+#| msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
+#| msgid "Updated %1$s from %2$s to %3$s"
+msgctxt "file_upload activity"
+msgid "Uploaded %1$d files: %2$s to %3$s"
+msgstr "%1$s کو %2$s سے %3$s میں اپ ڈیٹ کیا گیا"
+
+#: dt-posts/dt-posts-endpoints.php:1304 dt-posts/dt-posts-endpoints.php:1337
+#: dt-posts/dt-posts-endpoints.php:1622 dt-posts/dt-posts-endpoints.php:1660
+#: dt-posts/posts.php:437 dt-posts/posts.php:443
+#, fuzzy, php-format
+#| msgctxt "Deleted Facebook: facebook.com/123"
+#| msgid "Deleted %1$s: %2$s"
+msgctxt "file_upload activity"
+msgid "Deleted file: %1$s from %2$s"
+msgstr "%1$s حذف کیا: %2$s"
+
+#: dt-posts/dt-posts-endpoints.php:1435
+#, fuzzy, php-format
+#| msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
+#| msgid "Updated %1$s from %2$s to %3$s"
+msgctxt "file_upload activity"
+msgid "Renamed file from %1$s to %2$s in %3$s"
+msgstr "%1$s کو %2$s سے %3$s میں اپ ڈیٹ کیا گیا"
+
+#: dt-posts/dt-posts-endpoints.php:1624 dt-posts/posts.php:439
+#, fuzzy, php-format
+#| msgctxt "Deleted Facebook: facebook.com/123"
+#| msgid "Deleted %1$s: %2$s"
+msgctxt "file_upload activity"
+msgid "Deleted all %1$d files from %2$s"
+msgstr "%1$s حذف کیا: %2$s"
+
 #: dt-posts/dt-posts.php:101
 msgid ""
 "This record was automatically updated rather than creating a new record."
@@ -4870,19 +4995,19 @@ msgstr "%s جمع کرانا"
 msgid "Magic Link"
 msgstr "میجک لنک"
 
-#: dt-posts/dt-posts.php:1662 dt-posts/dt-posts.php:2209
+#: dt-posts/dt-posts.php:1662 dt-posts/dt-posts.php:2210
 msgid "Revert Bot"
 msgstr "ریورٹ بوٹ"
 
-#: dt-posts/dt-posts.php:2449
+#: dt-posts/dt-posts.php:2450
 msgid "Record already shared with user."
 msgstr "ریکارڈ پہلے ہی صارف کے ساتھ شیئر ہے۔"
 
-#: dt-posts/dt-posts.php:2728 single-template.php:174
+#: dt-posts/dt-posts.php:2729 single-template.php:174
 msgid "Details"
 msgstr "تفصیلات"
 
-#: dt-posts/dt-posts.php:2806
+#: dt-posts/dt-posts.php:2807
 #, php-format
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
@@ -4895,7 +5020,7 @@ msgstr ""
 "@[%1$s](%2$s) - صارف %3$s نے %4$s [%5$s](%6$s) تک رسائی کی درخواست کی ہے۔ "
 "اگر چاہیں تو، رسائی دینے کے لیے یہ ریکارڈ صارف کے ساتھ شیئر کریں۔"
 
-#: dt-posts/dt-posts.php:2812
+#: dt-posts/dt-posts.php:2813
 msgid "Access Request"
 msgstr "رسائی کی درخواست"
 
@@ -5129,142 +5254,156 @@ msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s کو %2$s سے ہٹا دیا گیا"
 
-#: dt-posts/posts.php:416
+#: dt-posts/posts.php:492
+#, fuzzy, php-format
+#| msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
+#| msgid "Updated %1$s from %2$s to %3$s"
+msgctxt "file_upload activity"
+msgid "Renamed file from %1$s to %2$s"
+msgstr "%1$s کو %2$s سے %3$s میں اپ ڈیٹ کیا گیا"
+
+#: dt-posts/posts.php:494
+#, fuzzy
+#| msgid "File Upload"
+msgid "File updated"
+msgstr "فائل اپ لوڈ"
+
+#: dt-posts/posts.php:503
 #, php-format
 msgctxt "User Select: User1"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: dt-posts/posts.php:416
+#: dt-posts/posts.php:503
 msgid "Nobody"
 msgstr "کوئی نہیں"
 
-#: dt-posts/posts.php:421 dt-posts/posts.php:426
+#: dt-posts/posts.php:508 dt-posts/posts.php:513
 #, php-format
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "%1$s کو %2$s میں تبدیل کر دیا گیا"
 
-#: dt-posts/posts.php:434 dt-posts/posts.php:445
+#: dt-posts/posts.php:521 dt-posts/posts.php:532
 #, php-format
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s کو %2$s سے ہٹا دیا گیا"
 
-#: dt-posts/posts.php:437 dt-posts/posts.php:448
+#: dt-posts/posts.php:524 dt-posts/posts.php:535
 #, php-format
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
 msgstr "%1$s کو %2$s میں شامل کیا گیا"
 
-#: dt-posts/posts.php:470
+#: dt-posts/posts.php:557
 #, php-format
 msgid "%s removed"
 msgstr "%s ہٹا دیا گیا"
 
-#: dt-posts/posts.php:478 dt-posts/posts.php:491
+#: dt-posts/posts.php:565 dt-posts/posts.php:578
 #, php-format
 msgctxt "Location1 removed from locations"
 msgid "%1$s removed from locations"
 msgstr "%1$s کو مقامات سے ہٹا دیا گیا"
 
-#: dt-posts/posts.php:481 dt-posts/posts.php:498
+#: dt-posts/posts.php:568 dt-posts/posts.php:585
 #, php-format
 msgctxt "Location1 added to locations"
 msgid "%1$s added to locations"
 msgstr "%1$s کو مقامات میں شامل کیا گیا"
 
-#: dt-posts/posts.php:512
+#: dt-posts/posts.php:599
 #, php-format
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
 msgstr "%1$s کو %2$s لنکس سے ہٹا دیا گیا"
 
-#: dt-posts/posts.php:515
+#: dt-posts/posts.php:602
 #, php-format
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
 msgstr "%1$s کو %2$s لنکس میں شامل کیا گیا"
 
-#: dt-posts/posts.php:536
+#: dt-posts/posts.php:623
 msgctxt "message"
 msgid "verified"
 msgstr "تصدیق شدہ"
 
-#: dt-posts/posts.php:536
+#: dt-posts/posts.php:623
 msgctxt "message"
 msgid "not verified"
 msgstr "غیر تصدیق شدہ"
 
-#: dt-posts/posts.php:539
+#: dt-posts/posts.php:626
 msgctxt "message"
 msgid "invalidated"
 msgstr "ناجائز"
 
-#: dt-posts/posts.php:539
+#: dt-posts/posts.php:626
 msgctxt "message"
 msgid "not invalidated"
 msgstr "باطل نہیں"
 
-#: dt-posts/posts.php:566
+#: dt-posts/posts.php:653
 #, php-format
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
 msgstr "%1$s شامل کیا: %2$s"
 
-#: dt-posts/posts.php:568
+#: dt-posts/posts.php:655
 #, php-format
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
 msgstr "%1$s کو %2$s سے %3$s میں اپ ڈیٹ کیا گیا"
 
-#: dt-posts/posts.php:570
+#: dt-posts/posts.php:657
 #, php-format
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "%1$s حذف کیا: %2$s"
 
-#: dt-posts/posts.php:574
+#: dt-posts/posts.php:661
 #, php-format
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "نام تبدیل کر کے: %s کر دیا گیا"
 
-#: dt-posts/posts.php:576
+#: dt-posts/posts.php:663
 msgctxt "message"
 msgid "Created from Demo Plugin"
 msgstr "ڈیمو پلگ ان سے بنایا گیا ہے"
 
-#: dt-posts/posts.php:583
+#: dt-posts/posts.php:670
 #, php-format
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr "%s نے اسائنمنٹ سے انکار کر دیا"
 
-#: dt-posts/posts.php:583 dt-posts/posts.php:586
+#: dt-posts/posts.php:670 dt-posts/posts.php:673
 msgctxt "message"
 msgid "A user"
 msgstr "ایک صارف"
 
-#: dt-posts/posts.php:586
+#: dt-posts/posts.php:673
 #, php-format
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr "%s نے اسائنمنٹ قبول کر لی"
 
-#: dt-posts/posts.php:591
+#: dt-posts/posts.php:678
 #, php-format
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "%s کے ساتھ شیئر کیا گیا"
 
-#: dt-posts/posts.php:593
+#: dt-posts/posts.php:680
 #, php-format
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "%s کے ساتھ اشتراک ختم کیا گیا"
 
-#: dt-posts/posts.php:2702
+#: dt-posts/posts.php:2837
 msgid "Removed User"
 msgstr "صارف ہٹا دیا گیا"
 
@@ -5307,11 +5446,11 @@ msgstr "{{app}} منتخب ایپ کے نام سے بدل دیا جائے گا۔
 msgid "Configure email message"
 msgstr "ای میل پیغام ترتیب دیں"
 
-#: dt-reports/magic-url-bulk-send.php:60 dt-reports/magic-url-setup.php:257
+#: dt-reports/magic-url-bulk-send.php:60 dt-reports/magic-url-setup.php:295
 msgid "Selected app name"
 msgstr "منتخب ایپ کا نام"
 
-#: dt-reports/magic-url-bulk-send.php:66 dt-reports/magic-url-setup.php:263
+#: dt-reports/magic-url-bulk-send.php:66 dt-reports/magic-url-setup.php:301
 msgid "Unique link to access the app."
 msgstr "ایپ تک رسائی کا منفرد لنک۔"
 
@@ -5349,7 +5488,11 @@ msgstr "میجک لنکس"
 msgid "Magic Links available on this record."
 msgstr "اس ریکارڈ پر دستیاب میجک لنکس۔"
 
-#: dt-reports/magic-url-setup.php:236
+#: dt-reports/magic-url-setup.php:234
+msgid "Exp: "
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:274
 msgid ""
 "Hello,\n"
 "\n"
@@ -5367,51 +5510,128 @@ msgstr ""
 "\n"
 "شکریہ!"
 
-#: dt-reports/magic-url-setup.php:248
+#: dt-reports/magic-url-setup.php:286
 msgid "Add email address"
 msgstr "ای میل ایڈریس شامل کریں۔"
 
-#: dt-reports/magic-url-setup.php:253
+#: dt-reports/magic-url-setup.php:291
 msgid "Add a note"
 msgstr "ایک نوٹ شامل کریں۔"
 
-#: dt-reports/magic-url-setup.php:267
+#: dt-reports/magic-url-setup.php:305
 msgid "Send email with link"
 msgstr "لنک کے ساتھ ای میل بھیجیں۔"
 
-#: dt-reports/magic-url-setup.php:329
+#: dt-reports/magic-url-setup.php:367
 msgid "Delete and replace the app link"
 msgstr "ایپ لنک کو حذف اور تبدیل کریں۔"
 
-#: dt-reports/magic-url-setup.php:462
+#: dt-reports/magic-url-setup.php:454 dt-reports/magic-url-setup.php:462
+#: dt-reports/magic-url-setup.php:568 dt-reports/magic-url-setup.php:574
+#: dt-reports/magic-url-setup.php:674 dt-reports/magic-url-setup.php:730
+#: dt-reports/magic-url-setup.php:834 dt-reports/magic-url-setup.php:856
+msgid "Does not expire"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:475 dt-reports/magic-url-setup.php:826
+#: dt-reports/magic-url-setup.php:841 dt-reports/magic-url-setup.php:846
+msgid "Reset link"
+msgstr "لنک ری سیٹ کریں"
+
+#: dt-reports/magic-url-setup.php:518
+msgid "Please enter a valid expiration amount and time unit."
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:545
+#, fuzzy
+#| msgid "Settings"
+msgid "Setting..."
+msgstr "ترتیبات"
+
+#: dt-reports/magic-url-setup.php:602 dt-reports/magic-url-setup.php:839
+msgid "Reset link (clears expiration)"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:609
+#, fuzzy
+#| msgid "Transfer update successful."
+msgid "Expiration updated successfully."
+msgstr "ٹرانسفر اپ ڈیٹ کامیاب۔"
+
+#: dt-reports/magic-url-setup.php:612
+#, fuzzy
+#| msgid "Failed to update video."
+msgid "Failed to update expiration."
+msgstr "ویڈیو اپ ڈیٹ کرنے میں ناکامی۔"
+
+#: dt-reports/magic-url-setup.php:617
+#, fuzzy
+#| msgid "Voice recording upload failed. Please try again."
+msgid "Error updating expiration. Please try again."
+msgstr "وائس ریکارڈنگ اپ لوڈ ناکام ہو گئی۔ براہ کرم دوبارہ کوشش کریں۔"
+
+#: dt-reports/magic-url-setup.php:740
+#, php-format
+msgid "Exp: %s"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:767
 msgid ""
 "This app is not yet activated for this user. Enable the app to generate a "
 "link."
 msgstr ""
 "یہ ایپ ابھی اس صارف کے لیے فعال نہیں ہے۔ لنک بنانے کے لیے ایپ فعال کریں۔"
 
-#: dt-reports/magic-url-setup.php:465 template-settings.php:266
+#: dt-reports/magic-url-setup.php:770 template-settings.php:266
 msgid "App Activation"
 msgstr "ایپ ایکٹیویشن"
 
-#: dt-reports/magic-url-setup.php:472 dt-users/user-management.php:194
+#: dt-reports/magic-url-setup.php:777 dt-users/user-management.php:194
 #: template-settings.php:312 template-settings.php:569
 msgid "Enable"
 msgstr "فعال"
 
-#: dt-reports/magic-url-setup.php:512
+#: dt-reports/magic-url-setup.php:817
 msgid "QR code"
 msgstr "کیو آر کوڈ"
 
-#: dt-reports/magic-url-setup.php:521
-msgid "Reset"
-msgstr "ری سیٹ"
+#: dt-reports/magic-url-setup.php:853
+msgid "Link Expiration"
+msgstr ""
 
-#: dt-reports/magic-url-setup.php:526
-msgid "Reset link"
-msgstr "لنک ری سیٹ کریں"
+#: dt-reports/magic-url-setup.php:862
+#, fuzzy
+#| msgid "Count"
+msgid "Amount"
+msgstr "شمار"
 
-#: dt-reports/magic-url-setup.php:528
+#: dt-reports/magic-url-setup.php:867
+msgid "Minutes"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:868
+msgid "Hours"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:869
+msgid "Days"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:870
+msgid "Weeks"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:871
+#, fuzzy
+#| msgid "This Month"
+msgid "Months"
+msgstr "اس مہینے"
+
+#: dt-reports/magic-url-setup.php:878
+msgid "Set Expiration"
+msgstr ""
+
+#: dt-reports/magic-url-setup.php:883
 msgid "This app is currently disabled."
 msgstr "یہ ایپ فی الحال غیر فعال ہے۔"
 
@@ -6257,6 +6477,9 @@ msgstr "رابطوں تک رسائی اسکین:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "نقلیں ملی:"
+
+#~ msgid "Reset"
+#~ msgstr "ری سیٹ"
 
 #, fuzzy
 #~| msgid "Restore"
