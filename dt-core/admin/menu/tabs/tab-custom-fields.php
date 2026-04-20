@@ -1036,7 +1036,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             //restore field icon
             if ( isset( $post_submission['restore_field_icon'] ) ) {
                 $restore_icon_defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
-                $custom_field['icon']  = $restore_icon_defaults[ $field_key ]['icon'];
+                $custom_field['icon'] = $restore_icon_defaults[ $field_key ]['icon'] ?? '';
+                $custom_field['font-icon'] = $restore_icon_defaults[ $field_key ]['font-icon'] ?? null;
             }
 
             // number field options
@@ -1138,10 +1139,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                                 $null_icon_key = ( $icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
 
                                 // Update icon accordingly and nullify alternative
-                                if ( ! isset( $field_options[ $option_key ][ $icon_key ] ) || $field_options[ $option_key ][ $icon_key ] != $val ) {
-                                    $custom_field['default'][ $option_key ][ $icon_key ]      = $val;
-                                    $custom_field['default'][ $option_key ][ $null_icon_key ] = null;
-                                }
+                                $custom_field['default'][ $option_key ][ $icon_key ]      = $val;
+                                $custom_field['default'][ $option_key ][ $null_icon_key ] = null;
                                 $field_options[ $option_key ][ $icon_key ] = $val;
                             }
                         } else {
@@ -1179,14 +1178,23 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 }
                 //delete icon
                 if ( isset( $post_submission['delete_icon'] ) ) {
-                    $custom_field['default'][ $post_submission['delete_icon'] ]['icon'] = '';
-                    $field_options[ $post_submission['delete_icon'] ]['icon']           = '';
+                    $option_key = $post_submission['delete_icon'];
+                    $custom_field['default'][ $option_key ]['icon'] = null;
+                    $custom_field['default'][ $option_key ]['font-icon'] = null;
+                    $field_options[ $option_key ]['icon'] = null;
+                    $field_options[ $option_key ]['font-icon'] = null;
                 }
                 //restore icon
                 if ( isset( $post_submission['restore_icon'] ) ) {
-                    $restore_icon_defaults                                               = apply_filters( 'dt_custom_fields_settings', [], $post_type );
-                    $custom_field['default'][ $post_submission['restore_icon'] ]['icon'] = $restore_icon_defaults[ $field_key ]['default'][ $post_submission['restore_icon'] ]['icon'];
-                    $field_options[ $post_submission['restore_icon'] ]['icon']           = $restore_icon_defaults[ $field_key ]['default'][ $post_submission['restore_icon'] ]['icon'];
+                    $option_key = $post_submission['restore_icon'];
+                    $restore_icon_defaults = apply_filters( 'dt_custom_fields_settings', [], $post_type );
+                    $default_icon = $restore_icon_defaults[ $field_key ]['default'][ $option_key ]['icon'] ?? '';
+                    $default_font_icon = $restore_icon_defaults[ $field_key ]['default'][ $option_key ]['font-icon'] ?? null;
+
+                    $custom_field['default'][ $option_key ]['icon'] = $default_icon;
+                    $custom_field['default'][ $option_key ]['font-icon'] = $default_font_icon;
+                    $field_options[ $option_key ]['icon'] = $default_icon;
+                    $field_options[ $option_key ]['font-icon'] = $default_font_icon;
                 }
                 //delete option
                 if ( isset( $post_submission['delete_option'] ) ){
