@@ -975,14 +975,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                     'description' => $new_field_option_description,
                 ];
 
-            if ( $field_option_icon ){
+            if ( $field_option_icon ) {
                 $field_option_icon = strtolower( trim( $field_option_icon ) );
                 $icon_key = ( strpos( $field_option_icon, 'mdi' ) !== 0 ) ? 'icon' : 'font-icon';
-                $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key][$icon_key] = $field_option_icon;
+                $null_icon_key = ( $icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
 
-                if ( $icon_key == 'font-icon' ){
-                    $custom_field_options[$post_type][$field_key]['default'][$new_field_option_key]['icon'] = '';
-                }
+                // reset unused icon key
+                $custom_field_options[ $post_type ][ $field_key ]['default'][ $new_field_option_key ][ $icon_key ]      = $field_option_icon;
+                $custom_field_options[ $post_type ][ $field_key ]['default'][ $new_field_option_key ][ $null_icon_key ] = null;
             }
 
             update_option( 'dt_field_customizations', $custom_field_options );
@@ -1021,17 +1021,14 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             $custom_field_option['description'] = $new_field_option_description;
         }
 
-        if ( $field_option_icon && strpos( $field_option_icon, 'undefined' ) === false ){
+        if ( $field_option_icon && strpos( $field_option_icon, 'undefined' ) === false ) {
             $field_option_icon = strtolower( trim( $field_option_icon ) );
             $icon_key = ( strpos( $field_option_icon, 'mdi' ) !== 0 ) ? 'icon' : 'font-icon';
+            $null_icon_key = ( $icon_key === 'font-icon' ) ? 'icon' : 'font-icon';
 
-            if ( $field_option_icon !== $field_option[$icon_key] ){
-                $custom_field_option[$icon_key] = $field_option_icon;
-            }
-
-            if ( $icon_key == 'font-icon' ){
-                $custom_field_option['icon'] = '';
-            }
+            // reset unused icon key
+            $custom_field_option[ $icon_key ]      = $field_option_icon;
+            $custom_field_option[ $null_icon_key ] = null;
         }
 
         // Create default_name to store the default field option label if it changed
