@@ -408,6 +408,7 @@ class Disciple_Tools_Posts
         $fields = $post_type_settings['fields'];
         $message = '';
         if ( $activity->action == 'field_update' ){
+            $field_update_old = $activity->old_value ?? null;
             // Check if this is a file_upload field by checking field_type or field settings
             $is_file_upload_field = false;
             if ( isset( $activity->field_type ) && $activity->field_type === 'file_upload' ) {
@@ -423,7 +424,7 @@ class Disciple_Tools_Posts
                 } else {
                     // Parse meta_value to determine action
                     $new_value = maybe_unserialize( $activity->meta_value );
-                    $old_value = maybe_unserialize( $activity->old_value );
+                    $old_value = maybe_unserialize( $field_update_old );
                     $field_name = isset( $fields[$activity->meta_key]['name'] ) ? $fields[$activity->meta_key]['name'] : $activity->meta_key;
 
                     if ( empty( $new_value ) || $new_value === 'value_deleted' ) {
@@ -516,8 +517,9 @@ class Disciple_Tools_Posts
                 if ( $fields[$activity->meta_key]['type'] === 'multi_select' ){
                     $value = $activity->meta_value;
                     if ( $activity->meta_value == 'value_deleted' ){
-                        $value = $activity->old_value;
-                        $label = $fields[$activity->meta_key]['default'][$value]['label'] ?? $value;
+                        $value = $field_update_old;
+                        $default_options = $fields[$activity->meta_key]['default'] ?? [];
+                        $label = ( $value !== null && isset( $default_options[ $value ]['label'] ) ) ? $default_options[ $value ]['label'] : ( $value ?? '' );
                         $message = sprintf( _x( '%1$s removed from %2$s', 'Milestone1 removed from Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]['name'] );
                     } else {
                         $label = $fields[$activity->meta_key]['default'][$value]['label'] ?? $value;
@@ -527,8 +529,9 @@ class Disciple_Tools_Posts
                 if ( $fields[$activity->meta_key]['type'] === 'tags' ){
                     $value = $activity->meta_value;
                     if ( $activity->meta_value == 'value_deleted' ){
-                        $value = $activity->old_value;
-                        $label = $fields[$activity->meta_key]['default'][$value]['label'] ?? $value;
+                        $value = $field_update_old;
+                        $default_options = $fields[$activity->meta_key]['default'] ?? [];
+                        $label = ( $value !== null && isset( $default_options[ $value ]['label'] ) ) ? $default_options[ $value ]['label'] : ( $value ?? '' );
                         $message = sprintf( _x( '%1$s removed from %2$s', 'Milestone1 removed from Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]['name'] );
                     } else {
                         $label = $fields[$activity->meta_key]['default'][$value]['label'] ?? $value;
@@ -561,8 +564,8 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]['type'] === 'location' ){
                     if ( $activity->meta_value === 'value_deleted' ){
-                        $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->old_value );
-                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $location_grid ? $location_grid['name'] : $activity->old_value );
+                        $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $field_update_old );
+                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $location_grid ? $location_grid['name'] : ( $field_update_old ?? '' ) );
                     } else {
                         $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->meta_value );
                         $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $location_grid ? $location_grid['name'] : $activity->meta_value );
@@ -570,19 +573,19 @@ class Disciple_Tools_Posts
                 }
                 if ( $fields[$activity->meta_key]['type'] === 'location_meta' ){
                     if ( $activity->meta_value === 'value_deleted' ){
-                        $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $activity->old_value );
+                        $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $field_update_old );
                         // the meta address has been deleted, so get the address from the object note
                         if ( !$label || $label === '' ) {
                             $label = $activity->object_note;
                         }
-                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $label ?? $activity->old_value );
+                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $label ?? ( $field_update_old ?? '' ) );
                     } else {
                         $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $activity->meta_value );
                         // if the meta address has been deleted, then get the address from the object note
                         if ( !$label || $label === '' ) {
                             $label = $activity->object_note;
                         }
-                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $label ?? $activity->old_value );
+                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $label ?? ( $field_update_old ?? '' ) );
                     }
                 }
             } else {
@@ -595,7 +598,7 @@ class Disciple_Tools_Posts
                         $label = isset( $fields[$field_key]['default'][$link_type] ) ? $fields[$field_key]['default'][$link_type]['label'] : null;
                         if ( isset( $fields[$field_key] ) && $fields[$field_key]['type'] === 'link' ) {
                             if ( $activity->meta_value === 'value_deleted' ) {
-                                $value = $activity->old_value;
+                                $value = $field_update_old ?? '';
                                 $message = sprintf( _x( '%1$s removed from %2$s links', 'link1 removed from Social Links', 'disciple_tools' ), $value, $label ?? $fields[$field_key]['name'] );
                             } else {
                                 $value = $activity->meta_value;
@@ -615,7 +618,7 @@ class Disciple_Tools_Posts
                         $object_note = $name . ' "'. $original .'" ';
                         if ( is_array( $meta_value ) ){
                             foreach ( $meta_value as $k => $v ){
-                                $prev_value = $activity->old_value;
+                                $prev_value = $field_update_old;
                                 if ( is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v ){
                                     continue;
                                 }
@@ -649,12 +652,13 @@ class Disciple_Tools_Posts
                     }
                     if ( isset( $channel_key ) && isset( $post_type_settings['channels'][ $channel_key ] ) ){
                         $channel = $post_type_settings['channels'][ $channel_key ];
-                        if ( $activity->old_value === '' ){
+                        $channel_old_value = $field_update_old ?? '';
+                        if ( $channel_old_value === '' ){
                             $message = sprintf( _x( 'Added %1$s: %2$s', 'Added Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->meta_value );
                         } else if ( $activity->meta_value != 'value_deleted' ){
-                            $message = sprintf( _x( 'Updated %1$s from %2$s to %3$s', 'Update Facebook form facebook.com/123 to facebook.com/mark', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->old_value, $activity->meta_value );
+                            $message = sprintf( _x( 'Updated %1$s from %2$s to %3$s', 'Update Facebook form facebook.com/123 to facebook.com/mark', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $channel_old_value, $activity->meta_value );
                         } else {
-                            $message = sprintf( _x( 'Deleted %1$s: %2$s', 'Deleted Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->old_value );
+                            $message = sprintf( _x( 'Deleted %1$s: %2$s', 'Deleted Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $channel_old_value );
                         }
                     }
                 } else if ( $activity->meta_key == 'title' ){
