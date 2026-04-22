@@ -73,7 +73,10 @@ function dt_login_redirect_login_page() {
         //phpcs:enable
 
         if ( $page_viewed == 'wp-login.php' && isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] == 'GET' ) {
-            $action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : 'login';
+            $allowed_actions = [ 'login', 'register', 'lostpassword', 'logout' ];
+            $action = ( isset( $_GET['action'] ) && in_array( sanitize_text_field( wp_unslash( $_GET['action'] ) ), $allowed_actions, true ) )
+                ? sanitize_text_field( wp_unslash( $_GET['action'] ) )
+                : 'login';
             wp_redirect( dt_login_url( $action ) );
             exit;
         }
