@@ -360,16 +360,18 @@ switch ( $request_action ) {
                                     </div>
                                     <div>
                                         <label><?php esc_html_e( 'Re-enter Password', 'disciple_tools' ) ?> <strong>*</strong>
-                                            <input type="password" placeholder="yeti4preZ" aria-errormessage="password-error-2" data-equalto="password">
+                                            <input type="password" name="password2" placeholder="yeti4preZ" aria-errormessage="password-error-2" data-equalto="password">
                                             <span class="form-error" id="password-error-2">
                                             <?php esc_html_e( 'Passwords do not match. Please, try again.', 'disciple_tools' ) ?>
                                           </span>
                                         </label>
                                     </div>
                                 </div>
+                                <?php if ( empty( $dt_login['google_captcha_register_enabled'] ) || $dt_login['google_captcha_register_enabled'] !== 'off' ) : ?>
                                 <div>
                                     <div class="g-recaptcha" id="g-recaptcha"></div><br>
                                 </div>
+                                <?php endif; ?>
                                 <div>
                                     <input type="submit" class="button button-primary" id="submit"  value="<?php esc_html_e( 'Register', 'disciple_tools' ) ?>"/>
                                 </div>
@@ -377,7 +379,7 @@ switch ( $request_action ) {
                         </form>
 
                         <?php // @codingStandardsIgnoreStart
-                        if ( ! empty( $dt_login['google_captcha_client_key'] ) ) :
+                        if ( ( empty( $dt_login['google_captcha_register_enabled'] ) || $dt_login['google_captcha_register_enabled'] !== 'off' ) && ! empty( $dt_login['google_captcha_client_key'] ) ) :
                             ?>
                             <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
                         <?php // @codingStandardsIgnoreEnd
