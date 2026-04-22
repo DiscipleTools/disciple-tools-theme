@@ -31,6 +31,11 @@ class DT_Login_Email {
             return;
         }
 
+        // Only enqueue on login page
+        if ( !is_page( 'login' ) && !( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/login' ) !== false ) ) {
+            return;
+        }
+
         wp_register_script(
             'google-recaptcha-enterprise',
             'https://www.google.com/recaptcha/enterprise.js?render=' . esc_attr( $enterprise_key )
