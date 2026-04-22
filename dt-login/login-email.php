@@ -13,7 +13,29 @@ class DT_Login_Email {
 
     public function __construct() {
         // api vars
+        add_action( 'wp_enqueue_scripts', [ $this, 'dt_login_scripts' ], 99 );
         add_action( 'dt_login_head_bottom', [ $this, 'dt_login_head_bottom' ], 20 );
+        add_filter( 'dt_login_allowed_js', [ $this, 'dt_login_allowed_js' ] );
+    }
+
+    public function dt_login_allowed_js( $allowed_js ) {
+        $allowed_js[] = 'google-recaptcha-enterprise';
+        return $allowed_js;
+    }
+
+    public function dt_login_scripts() {
+        $dt_login = DT_Login_Fields::all_values();
+        $captcha_enabled = empty( $dt_login['google_captcha_register_enabled'] ) || $dt_login['google_captcha_register_enabled'] !== 'off';
+        $enterprise_key = ! empty( $dt_login['google_captcha_enterprise_key'] ) ? $dt_login['google_captcha_enterprise_key'] : '';
+        if ( ! $captcha_enabled || empty( $enterprise_key ) ) {
+            return;
+        }
+
+        wp_register_script(
+            'google-recaptcha-enterprise',
+            'https://www.google.com/recaptcha/enterprise.js?render=' . esc_attr( $enterprise_key )
+        );
+        wp_enqueue_script( 'google-recaptcha-enterprise' );
     }
 
     public function dt_login_head_bottom() {
@@ -25,7 +47,6 @@ class DT_Login_Email {
         }
         ?>
 
-        <script src="https://www.google.com/recaptcha/enterprise.js?render=<?php echo esc_attr( $enterprise_key ); ?>"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 var form = document.getElementById('register-form');
