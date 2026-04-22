@@ -649,12 +649,13 @@ class Disciple_Tools_Posts
                     }
                     if ( isset( $channel_key ) && isset( $post_type_settings['channels'][ $channel_key ] ) ){
                         $channel = $post_type_settings['channels'][ $channel_key ];
-                        if ( $activity->old_value === '' ){
+                        $channel_old_value = $activity->old_value ?? '';
+                        if ( $channel_old_value === '' ){
                             $message = sprintf( _x( 'Added %1$s: %2$s', 'Added Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->meta_value );
                         } else if ( $activity->meta_value != 'value_deleted' ){
-                            $message = sprintf( _x( 'Updated %1$s from %2$s to %3$s', 'Update Facebook form facebook.com/123 to facebook.com/mark', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->old_value, $activity->meta_value );
+                            $message = sprintf( _x( 'Updated %1$s from %2$s to %3$s', 'Update Facebook form facebook.com/123 to facebook.com/mark', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $channel_old_value, $activity->meta_value );
                         } else {
-                            $message = sprintf( _x( 'Deleted %1$s: %2$s', 'Deleted Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->old_value );
+                            $message = sprintf( _x( 'Deleted %1$s: %2$s', 'Deleted Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $channel_old_value );
                         }
                     }
                 } else if ( $activity->meta_key == 'title' ){
