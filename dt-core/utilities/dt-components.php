@@ -18,6 +18,7 @@ class DT_Components
         $field_type = $fields[$field_key]['type'] ?? null;
         $is_private = isset( $fields[$field_key]['private'] ) && $fields[$field_key]['private'] === true;
         $display_field_id = ( isset( $params['field_id_prefix'] ) ? $params['field_id_prefix'] : '' ) . $field_key;
+        $class = ( isset( $params['class'] ) ? 'class="' . esc_attr( $params['class'] ) . '"' : '' );
 
         $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [
             'boolean',
@@ -50,6 +51,10 @@ class DT_Components
         } else if ( isset( $fields[$field_key]['icon'] ) && !empty( $fields[$field_key]['icon'] ) ) {
             $icon = 'icon="' . esc_attr( $fields[$field_key]['icon'] ) . '"';
         }
+        if ( isset( $icon ) && isset( $params['icon_alt_text'] ) ) {
+            $icon .= ' iconAltText="' . esc_attr( $params['icon_alt_text'] ) . '"';
+        }
+
         if ( isset( $fields[$field_key]['post_type'] ) ) {
             $post_type = 'postType=' . esc_attr( $fields[$field_key]['post_type'] );
         } else if ( isset( $post ) && isset( $post['post_type'] ) ) {
@@ -62,6 +67,7 @@ class DT_Components
         $shared_attributes = '
               id="' . esc_attr( $display_field_id ) . '"
               name="' . esc_attr( $field_key ) . '"
+              ' . $class . '
               ' . $label_attr . '
               ' . esc_html( $post_type ?? '' ) . '
               ' . $icon . '
@@ -259,10 +265,25 @@ class DT_Components
         $value = array_map(function ( $value ) {
             return $value;
         }, $post[$field_key] ?? []);
+
+        $options = null;
+        if ( isset( $params['static_options'] ) && $params['static_options'] ) {
+            $raw_options = DT_Posts::get_multi_select_options( $post['post_type'] ?? 'contacts', $field_key );
+            if ( is_array( $raw_options ) ) {
+                foreach ( $raw_options as $option ) {
+                    if ( is_string( $option ) ) {
+                        $options[] = [ 'id' => $option ];
+                    } elseif ( is_array( $option ) && isset( $option['label'] ) ) {
+                        $options[] = [ 'id' => $option['label'] ];
+                    }
+                }
+            }
+        }
         ?>
         <dt-tags <?php echo wp_kses_post( $shared_attributes ) ?>
             value='<?php echo esc_attr( json_encode( $value ) ) ?>'
             placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) ) ?>"
+            <?php echo $options ? "options='" . esc_attr( json_encode( $options ) ) . "'" : null ?>
             allowAdd>
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-tags>
@@ -442,6 +463,24 @@ class DT_Components
             key-prefix="<?php echo esc_attr( $key_prefix ) ?>"
         >
         </dt-file-upload>
+        <?php
+    }
+
+    public static function render_link( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+        $default_options = $fields[$field_key]['default'];
+        $options_array = array_map(function ( $key, $value ) {
+            return [
+                'id' => (string) $key,
+                'label' => $value['label'] ?? $key
+            ];
+        }, array_keys( $default_options ), $default_options);
+        ?>
+        <dt-multi-text-groups <?php echo wp_kses_post( $shared_attributes ) ?>
+            groups='<?php echo esc_attr( json_encode( $options_array ) ) ?>'
+            value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>">
+            <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        </dt-multi-text-groups>
         <?php
     }
 }

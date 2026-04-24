@@ -7,7 +7,7 @@ D.T  is already being used in multiple languages. Please help us make D.T transl
 Make sure you look for these in PHP, HTML and JavaScript code.
 
 ### PHPCS
-We use [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) and [PHPCS WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards) to test for syntax errors, security vulnerabilities and some styling rules. We expect your commits to pass these tests.
+We use [PHPCS](https://github.com/PHPCSStandards/PHP_CodeSniffer) and [PHPCS WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards) to test for syntax errors, security vulnerabilities and some styling rules. We expect your commits to pass these tests.
 
 In the theme you can run `./tests/test_phpcs.sh` or create a pull request to our repo and Github Actions CI will run the tests for you.
 

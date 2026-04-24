@@ -19,11 +19,18 @@ npm run build        # Build CSS/JS for production (Vite)
 ```bash
 npm run lint                    # Run ESLint
 npm run prettier                # Format JS files with Prettier
-composer install                # Install PHP dependencies (required for PHPCS)
+composer install                # Install PHP dependencies (PHPCS, PHPUnit, etc.; requires PHP >= 8.1)
 ./tests/test_phpcs.sh           # Run PHP CodeSniffer
 ./tests/test_phpcs.sh file.php  # Run PHPCS on specific files
 ./vendor/bin/phpcbf             # Auto-fix PHPCS errors
 ./tests/test_eslint.sh          # Run ESLint + Prettier check
+```
+
+### PHPUnit (after WordPress test lib install)
+```bash
+./tests/install-wp-tests.sh <db-name> <db-user> <db-pass> [db-host]
+composer install
+composer run test             # or: WP_MULTISITE=1 vendor/bin/phpunit
 ```
 
 ## Architecture
@@ -92,7 +99,7 @@ Husky runs lint-staged on commit:
 ## CI Requirements
 
 Pull requests must pass:
-1. PHP syntax check
+1. PHP syntax check (PHP 8.1+ in CI)
 2. PHPCS on changed PHP files
 3. ESLint + Prettier
 4. Vite build (compiled assets must match expected output)

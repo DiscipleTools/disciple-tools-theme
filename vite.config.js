@@ -81,6 +81,9 @@ export default defineConfig(({ mode }) => {
       }),
     ],
     css: {
+      lightningcss: {
+        errorRecovery: true,
+      },
       preprocessorOptions: {
         scss: {
           api: 'modern-compiler',

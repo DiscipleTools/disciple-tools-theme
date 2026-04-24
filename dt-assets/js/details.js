@@ -1,3 +1,6 @@
+/*
+global ResizeObserver
+ */
 'use strict';
 jQuery(document).ready(function ($) {
   let post_id = window.detailsSettings.post_id;
@@ -78,53 +81,6 @@ jQuery(document).ready(function ($) {
         });
     };
   }
-
-  /* field type: link */
-  $('input.link-input').change(function () {
-    const link_input = $(this);
-    const fieldKey = $(link_input).data('field-key');
-    const type = $(link_input).data('type');
-    const meta_id = $(link_input).data('meta-id');
-    const value = $(link_input).val();
-
-    if ($(link_input).prop('required') && value === '') {
-      return;
-    }
-
-    const fieldValues = {
-      values: [
-        {
-          value,
-          type,
-          meta_id,
-        },
-      ],
-    };
-    $(`#${fieldKey}-spinner`).addClass('active');
-    rest_api
-      .update_post(post_type, post_id, { [fieldKey]: fieldValues })
-      .then((newPost) => {
-        $(`#${fieldKey}-spinner`).removeClass('active');
-        post = newPost;
-
-        // Make sure a key exists for the new link field.
-        if (post && post[fieldKey] && post[fieldKey].length > 0) {
-          let updated_values = post[fieldKey].filter((option) => {
-            return option['type'] === type && option['value'] === value;
-          });
-
-          // This ensures any immediate updates, are assigned to correct link input and not to a new/duplicated input field.
-          if (
-            updated_values &&
-            updated_values[0] &&
-            updated_values[0]['meta_id']
-          ) {
-            $(link_input).data('meta-id', updated_values[0]['meta_id']);
-          }
-        }
-      })
-      .catch(window.handleAjaxError);
-  });
 
   /* field type: datetime */
   $('.dt_date_time_group').each(function setTimePickers() {
@@ -1248,6 +1204,22 @@ jQuery(document).ready(function ($) {
     );
     service.initialize();
     window.componentService = service;
+  }
+
+  // When components are resized, re-layout the masonry grid
+  const targetElement = document.querySelectorAll('.grid .bordered-box .cell');
+  let resizeTimeout;
+  const resizeObserver = new ResizeObserver((entries) => {
+    for (let entry of entries) {
+      // many of these can be triggered on initial load, so debounce them with a timeout
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        window.masonGrid.masonry('layout');
+      }, 100);
+    }
+  });
+  for (let element of targetElement) {
+    resizeObserver.observe(element);
   }
 });
 

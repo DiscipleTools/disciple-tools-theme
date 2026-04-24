@@ -471,6 +471,9 @@ function dt_get_site_custom_lists( ?string $list_title = null ) {
 
     // $fields = apply_filters( 'dt_site_custom_lists', $fields );
 
+    if ( $list_title === null ) {
+        return $fields;
+    }
     return $fields[ $list_title ] ?? $fields;
 }
 

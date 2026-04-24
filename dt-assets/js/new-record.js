@@ -263,19 +263,6 @@ jQuery(function ($) {
           new_post[$(entry).attr('id')] = $(entry).val();
         }
       });
-      $('.link-input').each((index, entry) => {
-        let fieldKey = $(entry).data('field-key');
-        let type = $(entry).data('type');
-        if ($(entry).val()) {
-          if (!Object.prototype.hasOwnProperty.call(new_post, fieldKey)) {
-            new_post[fieldKey] = { values: [] };
-          }
-          new_post[fieldKey].values.push({
-            value: $(entry).val(),
-            type: type,
-          });
-        }
-      });
 
       // location_meta
       if (typeof window.selected_location_grid_meta !== 'undefined') {
