@@ -119,6 +119,10 @@ class DT_Login_Email {
                 'body' => $body,
             ];
             $post_result = wp_remote_post( $url, $args );
+            if ( is_wp_error( $post_result ) ) {
+                $error->add( __METHOD__, __( 'Could not verify captcha. Please try again.', 'disciple_tools' ) );
+                return $error;
+            }
             $post_body = json_decode( wp_remote_retrieve_body( $post_result ), true );
 
             if ( empty( $post_body['tokenProperties']['valid'] ) || $post_body['tokenProperties']['valid'] !== true ) {
