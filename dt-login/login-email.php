@@ -47,7 +47,10 @@ class DT_Login_Email {
         $dt_login = DT_Login_Fields::all_values();
         $captcha_enabled = empty( $dt_login['google_captcha_register_enabled'] ) || $dt_login['google_captcha_register_enabled'] !== 'off';
         $enterprise_key = ! empty( $dt_login['google_captcha_enterprise_key'] ) ? $dt_login['google_captcha_enterprise_key'] : '';
-        if ( ! $captcha_enabled || empty( $enterprise_key ) ) {
+        $api_key = ! empty( $dt_login['google_captcha_enterprise_api_key'] ) ? $dt_login['google_captcha_enterprise_api_key'] : '';
+        $project_id = ! empty( $dt_login['google_captcha_enterprise_project'] ) ? $dt_login['google_captcha_enterprise_project'] : '';
+
+        if ( !$captcha_enabled || empty( $enterprise_key ) || empty( $api_key ) || empty( $project_id ) ) {
             return;
         }
         ?>
