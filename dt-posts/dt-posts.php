@@ -3269,12 +3269,12 @@ class DT_Posts extends Disciple_Tools_Posts {
             'location' => [
                 'label' => 'Location',
                 'description' => 'Location selected from the predefined location grid list',
-                'user_creatable' => false,
+                'user_creatable' => true,
             ],
             'location_meta' => [
                 'label' => 'Location with Geocoding',
                 'description' => 'Location selected with the help of a geocoder (mapbox, google)',
-                'user_creatable' => false,
+                'user_creatable' => true,
             ],
             'file_upload' => [
                 'label' => 'File Upload',
