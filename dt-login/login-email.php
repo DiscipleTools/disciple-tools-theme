@@ -13,22 +13,70 @@ class DT_Login_Email {
 
     public function __construct() {
         // api vars
+        add_action( 'wp_enqueue_scripts', [ $this, 'dt_login_scripts' ], 99 );
         add_action( 'dt_login_head_bottom', [ $this, 'dt_login_head_bottom' ], 20 );
+        add_filter( 'dt_login_allowed_js', [ $this, 'dt_login_allowed_js' ] );
+    }
+
+    public function dt_login_allowed_js( $allowed_js ) {
+        $allowed_js[] = 'google-recaptcha-enterprise';
+        return $allowed_js;
+    }
+
+    public function dt_login_scripts() {
+        $dt_login = DT_Login_Fields::all_values();
+        $captcha_enabled = empty( $dt_login['google_captcha_register_enabled'] ) || $dt_login['google_captcha_register_enabled'] !== 'off';
+        $enterprise_key = ! empty( $dt_login['google_captcha_enterprise_key'] ) ? $dt_login['google_captcha_enterprise_key'] : '';
+        if ( ! $captcha_enabled || empty( $enterprise_key ) ) {
+            return;
+        }
+
+        // Only enqueue on login page
+        if ( !is_page( 'login' ) && !( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/login' ) !== false ) ) {
+            return;
+        }
+
+        wp_register_script(
+            'google-recaptcha-enterprise',
+            'https://www.google.com/recaptcha/enterprise.js?render=' . esc_attr( $enterprise_key )
+        );
+        wp_enqueue_script( 'google-recaptcha-enterprise' );
     }
 
     public function dt_login_head_bottom() {
         $dt_login = DT_Login_Fields::all_values();
+        $captcha_enabled = empty( $dt_login['google_captcha_register_enabled'] ) || $dt_login['google_captcha_register_enabled'] !== 'off';
+        $enterprise_key = ! empty( $dt_login['google_captcha_enterprise_key'] ) ? $dt_login['google_captcha_enterprise_key'] : '';
+        $api_key = ! empty( $dt_login['google_captcha_enterprise_api_key'] ) ? $dt_login['google_captcha_enterprise_api_key'] : '';
+        $project_id = ! empty( $dt_login['google_captcha_enterprise_project'] ) ? $dt_login['google_captcha_enterprise_project'] : '';
+
+        if ( !$captcha_enabled || empty( $enterprise_key ) || empty( $api_key ) || empty( $project_id ) ) {
+            return;
+        }
         ?>
+
         <script>
-            var verifyCallback = function(response) {
-                jQuery('#submit').prop("disabled", false);
-            };
-            var onloadCallback = function() {
-                grecaptcha.render('g-recaptcha', {
-                    'sitekey' : '<?php echo esc_attr( $dt_login['google_captcha_client_key'] ); ?>',
-                    'callback' : verifyCallback,
+            document.addEventListener('DOMContentLoaded', function() {
+                var form = document.getElementById('register-form');
+                if ( ! form ) return;
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    grecaptcha.enterprise.ready(function() {
+                        grecaptcha.enterprise.execute('<?php echo esc_attr( $enterprise_key ); ?>', { action: 'register' }).then(function(token) {
+                            var input = document.getElementById('recaptcha-token');
+                            if ( ! input ) {
+                                input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = 'recaptcha_token';
+                                input.id = 'recaptcha-token';
+                                form.appendChild(input);
+                            }
+                            input.value = token;
+                            HTMLFormElement.prototype.submit.call(form);
+                        });
+                    });
                 });
-            };
+            });
         </script>
         <?php
     }
@@ -49,23 +97,50 @@ class DT_Login_Email {
             $error->add( __METHOD__, esc_html( _x( 'You are not registered. Contact the site admin to get a user account.', 'disciple_tools' ) ), 999 );
             return $error;
         }
+        $captcha_enabled = empty( $dt_login['google_captcha_register_enabled'] ) || $dt_login['google_captcha_register_enabled'] !== 'off';
+        $enterprise_key = ! empty( $dt_login['google_captcha_enterprise_key'] ) ? $dt_login['google_captcha_enterprise_key'] : '';
+        $api_key = ! empty( $dt_login['google_captcha_enterprise_api_key'] ) ? $dt_login['google_captcha_enterprise_api_key'] : '';
+        $project_id = ! empty( $dt_login['google_captcha_enterprise_project'] ) ? $dt_login['google_captcha_enterprise_project'] : '';
 
-        if ( ! isset( $_POST['g-recaptcha-response'] ) ) {
-            $error->add( __METHOD__, __( 'Missing captcha response. How did you do that?', 'disciple_tools' ) );
-            return $error;
-        }
-        $args = array(
-            'method' => 'POST',
-            'body' => array(
-                'secret' => $dt_login['google_captcha_server_secret_key'],
-                'response' => isset( $_POST['g-recaptcha-response'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) ) : '',
-            ),
-        );
-        $post_result = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', $args );
-        $post_body = json_decode( wp_remote_retrieve_body( $post_result ), true );
-        if ( ! isset( $post_body['success'] ) || false === $post_body['success'] ) {
-            $error->add( __METHOD__, __( 'Captcha failure. Try again, if you are human.', 'disciple_tools' ) );
-            return $error;
+        if ( $captcha_enabled && ! empty( $enterprise_key ) && ! empty( $api_key ) && ! empty( $project_id ) ) {
+            if ( ! isset( $_POST['recaptcha_token'] ) || empty( $_POST['recaptcha_token'] ) ) {
+                $error->add( __METHOD__, __( 'Missing captcha response. How did you do that?', 'disciple_tools' ) );
+                return $error;
+            }
+            $token = trim( sanitize_text_field( wp_unslash( $_POST['recaptcha_token'] ) ) );
+            $url = 'https://recaptchaenterprise.googleapis.com/v1/projects/' . urlencode( $project_id ) . '/assessments?key=' . urlencode( $api_key );
+            $body = wp_json_encode( [
+                'event' => [
+                    'token' => $token,
+                    'siteKey' => $enterprise_key,
+                    'expectedAction' => 'register',
+                ],
+            ] );
+            $args = [
+                'method' => 'POST',
+                'headers' => [ 'Content-Type' => 'application/json' ],
+                'body' => $body,
+            ];
+            $post_result = wp_remote_post( $url, $args );
+            if ( is_wp_error( $post_result ) ) {
+                $error->add( __METHOD__, __( 'Could not verify captcha. Please try again.', 'disciple_tools' ) );
+                return $error;
+            }
+            $post_body = json_decode( wp_remote_retrieve_body( $post_result ), true );
+
+            if ( empty( $post_body['tokenProperties']['valid'] ) || $post_body['tokenProperties']['valid'] !== true ) {
+                $error->add( __METHOD__, __( 'Captcha failure. Try again, if you are human.', 'disciple_tools' ) );
+                return $error;
+            }
+            if ( isset( $post_body['tokenProperties']['action'] ) && $post_body['tokenProperties']['action'] !== 'register' ) {
+                $error->add( __METHOD__, __( 'Captcha action mismatch. Try again.', 'disciple_tools' ) );
+                return $error;
+            }
+            $score = isset( $post_body['riskAnalysis']['score'] ) ? (float) $post_body['riskAnalysis']['score'] : 0.0;
+            if ( $score < 0.5 ) {
+                $error->add( __METHOD__, __( 'Captcha failure. Try again, if you are human.', 'disciple_tools' ) );
+                return $error;
+            }
         }
         // validate elements
         if ( empty( $_POST['email'] ) || empty( $_POST['password'] ) || empty( $_POST['password2'] ) ) {

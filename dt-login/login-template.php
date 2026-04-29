@@ -334,7 +334,7 @@ switch ( $request_action ) {
                             meter[value="4"]::-moz-meter-bar { background: green; }
 
                         </style>
-                        <form action="" method="post" data-abide novalidate>
+                        <form id="register-form" action="" method="post" data-abide novalidate>
                             <?php wp_nonce_field( 'login_form', 'login_form_nonce' ) ?>
                             <div data-abide-error class="alert callout" style="display: none;">
                                 <p><i class="fi-alert"></i><?php esc_html_e( 'There are some errors in your form.', 'disciple_tools' ) ?></p>
@@ -360,7 +360,7 @@ switch ( $request_action ) {
                                     </div>
                                     <div>
                                         <label><?php esc_html_e( 'Re-enter Password', 'disciple_tools' ) ?> <strong>*</strong>
-                                            <input type="password" placeholder="yeti4preZ" aria-errormessage="password-error-2" data-equalto="password">
+                                            <input type="password" name="password2" placeholder="yeti4preZ" aria-errormessage="password-error-2" data-equalto="password">
                                             <span class="form-error" id="password-error-2">
                                             <?php esc_html_e( 'Passwords do not match. Please, try again.', 'disciple_tools' ) ?>
                                           </span>
@@ -368,21 +368,11 @@ switch ( $request_action ) {
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="g-recaptcha" id="g-recaptcha"></div><br>
-                                </div>
-                                <div>
                                     <input type="submit" class="button button-primary" id="submit"  value="<?php esc_html_e( 'Register', 'disciple_tools' ) ?>"/>
                                 </div>
                             </div>
                         </form>
 
-                        <?php // @codingStandardsIgnoreStart
-                        if ( ! empty( $dt_login['google_captcha_client_key'] ) ) :
-                            ?>
-                            <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
-                        <?php // @codingStandardsIgnoreEnd
-                        endif;
-                        ?>
                         <script>
                             var strength = {
                                 0: "Worst",

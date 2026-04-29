@@ -508,28 +508,50 @@ class DT_Login_Fields {
             ],
 
             // captcha
-            'google_captcha' => [
+            'google_captcha_register_enabled' => [
                 'tab' => 'google_captcha',
-                'key' => 'google_captcha_label',
-                'label' => 'Google Captcha Keys',
-                'description' => 'Put your google captcha keys here to enable google captcha in the login forms',
+                'key' => 'google_captcha_register_enabled',
+                'label' => 'Enable Captcha on Register Page',
+                'description' => 'Enable or disable captcha usage on the registration page',
+                'value' => 'on',
+                'type' => 'select',
+                'default' => [
+                    'on' => 'on',
+                    'off' => 'off',
+                ],
+                'multisite_level' => true,
+            ],
+            'google_captcha_enterprise' => [
+                'tab' => 'google_captcha',
+                'key' => 'google_captcha_enterprise_label',
+                'label' => 'Google Enterprise ReCaptcha',
+                'description' => 'Configure Google reCAPTCHA Enterprise for bot protection on login forms. Requires a site key, API key, and project ID from the Google Cloud Console.',
                 'value' => '',
                 'type' => 'label',
             ],
-            'google_captcha_client_key' => [
+            'google_captcha_enterprise_key' => [
                 'tab' => 'google_captcha',
-                'key' => 'google_captcha_client_key',
-                'label' => 'Google Captcha Client Key',
-                'description' => 'This is the key that doesn\'t matter if the public find out about it',
+                'key' => 'google_captcha_enterprise_key',
+                'label' => 'Enterprise Recaptcha Site Key',
+                'description' => 'The site key from Google reCAPTCHA Enterprise (created in Cloud Console > reCAPTCHA Enterprise).',
                 'value' => '',
                 'type' => 'text',
                 'multisite_level' => true,
             ],
-            'google_captcha_server_secret_key' => [
+            'google_captcha_enterprise_api_key' => [
                 'tab' => 'google_captcha',
-                'key' => 'google_captcha_server_secret_key',
-                'label' => 'Google Captcha Server Secret Key',
-                'description' => 'This is the one to keep secret from the public.',
+                'key' => 'google_captcha_enterprise_api_key',
+                'label' => 'Google Cloud API Key',
+                'description' => 'A Google Cloud API key for backend reCAPTCHA Enterprise assessment calls (created in Cloud Console > APIs & Services > Credentials).',
+                'value' => '',
+                'type' => 'text',
+                'multisite_level' => true,
+            ],
+            'google_captcha_enterprise_project' => [
+                'tab' => 'google_captcha',
+                'key' => 'google_captcha_enterprise_project',
+                'label' => 'Google Enterprise Recaptcha Project ID',
+                'description' => 'The Google project ID for enterprise captcha verification.',
                 'value' => '',
                 'type' => 'text',
                 'multisite_level' => true,
