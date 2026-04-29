@@ -215,8 +215,9 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
          * @param int         $value
          * @param array|null  $existing_post
          * @param string      $location_meta_field_key DT field key for postmeta pointers (default location_grid_meta).
+         * @param array|null  $location_meta_field_settings Field definitions for the post type; when set, shared dt rows are not removed while another location_meta field still references the grid_meta_id.
          */
-        public static function delete_location_grid_meta( int $post_id, $type, int $value, ?array $existing_post = null, string $location_meta_field_key = 'location_grid_meta' ) {
+        public static function delete_location_grid_meta( int $post_id, $type, int $value, ?array $existing_post = null, string $location_meta_field_key = 'location_grid_meta', ?array $location_meta_field_settings = null ) {
             global $wpdb;
 
             $status = false;
@@ -230,17 +231,31 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
 
                 switch ( $type ) {
                     case 'grid_meta_id':
-                        $postmeta_id_location_grid = $wpdb->get_var( $wpdb->prepare( "SELECT postmeta_id_location_grid FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $value ) );
+                        $grid_meta_id = (int) $value;
+                        if ( $grid_meta_id < 1 ) {
+                            break;
+                        }
+
+                        // Unlink this field only first; multiple location_meta fields can share one dt row (same lat/lng).
+                        delete_post_meta( $post_id, $location_meta_field_key, $grid_meta_id );
+
+                        if ( is_array( $location_meta_field_settings )
+                            && Disciple_Tools_Posts::post_references_grid_meta_id( $post_id, $grid_meta_id, $location_meta_field_settings ) ) {
+                            $status = true;
+                            break;
+                        }
+
+                        $postmeta_id_location_grid = $wpdb->get_var( $wpdb->prepare( "SELECT postmeta_id_location_grid FROM $wpdb->dt_location_grid_meta WHERE grid_meta_id = %d", $grid_meta_id ) );
 
                         delete_metadata_by_mid( 'post', $postmeta_id_location_grid );
-                        $wpdb->delete($wpdb->dt_location_grid_meta, [
-                            'post_id' => $post_id,
-                            'grid_meta_id' => $value
-                        ]);
-                        delete_post_meta( $post_id, 'location_grid_meta', $value );
-                        if ( $location_meta_field_key !== 'location_grid_meta' ) {
-                            delete_post_meta( $post_id, $location_meta_field_key, $value );
-                        }
+                        $wpdb->delete(
+                            $wpdb->dt_location_grid_meta,
+                            [
+                                'post_id' => $post_id,
+                                'grid_meta_id' => $grid_meta_id,
+                            ]
+                        );
+                        delete_post_meta( $post_id, 'location_grid_meta', $grid_meta_id );
                         $status = true;
                         break;
 

@@ -1870,7 +1870,7 @@ class Disciple_Tools_Posts
     /**
      * Whether a grid_meta_id is still referenced by any location_meta field postmeta on this post.
      */
-    private static function post_references_grid_meta_id( int $post_id, int $grid_meta_id, array $field_settings ): bool {
+    public static function post_references_grid_meta_id( int $post_id, int $grid_meta_id, array $field_settings ): bool {
         foreach ( $field_settings as $meta_key => $def ) {
             if ( ( $def['type'] ?? '' ) !== 'location_meta' ) {
                 continue;
@@ -1955,7 +1955,7 @@ class Disciple_Tools_Posts
                             continue;
                         }
                         if ( ! self::post_references_grid_meta_id( $post_id, $candidate_id, $field_settings ) ) {
-                            Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $candidate_id, $existing_post, $field_key );
+                            Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $candidate_id, $existing_post, $field_key, $field_settings );
                         }
                     }
                     $existing_post[ $field_key ] = [];
@@ -1966,7 +1966,7 @@ class Disciple_Tools_Posts
 
                     // delete
                     if ( isset( $value['delete'] ) && $value['delete'] == true ) {
-                        Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value['grid_meta_id'], $existing_post, $field_key );
+                        Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value['grid_meta_id'], $existing_post, $field_key, $field_settings );
                     }
 
                     // Add by pre-defined meta grid values.
