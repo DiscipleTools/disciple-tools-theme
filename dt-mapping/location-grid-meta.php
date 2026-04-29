@@ -118,7 +118,15 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             return $grid_meta_id;
         }
 
-        public static function add_location_grid_meta( $post_id, array $location_grid_meta, $postmeta_id_location_grid = null ) {
+        /**
+         * Insert a location grid meta row and link it on the post.
+         *
+         * @param int         $post_id
+         * @param array       $location_grid_meta
+         * @param int|null    $postmeta_id_location_grid
+         * @param string      $location_meta_post_key Post meta key storing grid_meta_id pointers (default location_grid_meta; use the DT field key for custom location_meta fields).
+         */
+        public static function add_location_grid_meta( $post_id, array $location_grid_meta, $postmeta_id_location_grid = null, string $location_meta_post_key = 'location_grid_meta' ) {
             global $wpdb;
             $geocoder = new Location_Grid_Geocoder();
 
@@ -142,6 +150,13 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
             $grid_meta_id = self::get_existing_grid_id_by_lat_lng( $post_id, $location_grid_meta['lat'], $location_grid_meta['lng'] );
             if ( isset( $grid_meta_id ) ) {
                 dt_write_log( 'Location lat/lng already exists for post_id: ' . $post_id . ' and lat,lng: ' . $location_grid_meta['lat'] . ',lng: ' . $location_grid_meta['lng'] );
+                if ( '' !== $location_meta_post_key ) {
+                    $linked = get_post_meta( $post_id, $location_meta_post_key, false );
+                    $ids    = array_map( 'intval', $linked );
+                    if ( ! in_array( (int) $grid_meta_id, $ids, true ) ) {
+                        add_post_meta( $post_id, $location_meta_post_key, $grid_meta_id );
+                    }
+                }
                 return $grid_meta_id;
             }
 
@@ -182,17 +197,26 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                 return new WP_Error( __METHOD__, 'Failed to insert location_grid_meta record.' );
             }
 
-            $location_grid_meta_mid = add_post_meta( $post_id, 'location_grid_meta', $wpdb->insert_id );
+            $location_grid_meta_mid = add_post_meta( $post_id, $location_meta_post_key, $wpdb->insert_id );
             if ( !$location_grid_meta_mid ) {
                 delete_meta( $postmeta_id_location_grid );
-                self::delete_location_grid_meta( $post_id, 'grid_meta_id', $wpdb->insert_id );
+                self::delete_location_grid_meta( $post_id, 'grid_meta_id', $wpdb->insert_id, null, $location_meta_post_key );
                 return new WP_Error( __METHOD__, 'Failed to add location_grid_meta' );
             }
 
             return $wpdb->insert_id;
         }
 
-        public static function delete_location_grid_meta( int $post_id, $type, int $value, ?array $existing_post = null ) {
+        /**
+         * Delete location grid meta rows and/or unlink postmeta pointers.
+         *
+         * @param int         $post_id
+         * @param string      $type
+         * @param int         $value
+         * @param array|null  $existing_post
+         * @param string      $location_meta_field_key DT field key for postmeta pointers (default location_grid_meta).
+         */
+        public static function delete_location_grid_meta( int $post_id, $type, int $value, ?array $existing_post = null, string $location_meta_field_key = 'location_grid_meta' ) {
             global $wpdb;
 
             $status = false;
@@ -214,6 +238,9 @@ if ( ! class_exists( 'Location_Grid_Meta' ) ) {
                             'grid_meta_id' => $value
                         ]);
                         delete_post_meta( $post_id, 'location_grid_meta', $value );
+                        if ( $location_meta_field_key !== 'location_grid_meta' ) {
+                            delete_post_meta( $post_id, $location_meta_field_key, $value );
+                        }
                         $status = true;
                         break;
 

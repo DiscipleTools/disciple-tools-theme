@@ -563,29 +563,31 @@ class Disciple_Tools_Posts
                     }
                 }
                 if ( $fields[$activity->meta_key]['type'] === 'location' ){
+                    $field_display = $fields[$activity->meta_key]['name'] ?? __( 'Locations', 'disciple_tools' );
                     if ( $activity->meta_value === 'value_deleted' ){
                         $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $field_update_old );
-                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $location_grid ? $location_grid['name'] : ( $field_update_old ?? '' ) );
+                        $message = sprintf( _x( '%1$s removed from %2$s', 'Location name removed from field label e.g. Spain removed from Locations', 'disciple_tools' ), $location_grid ? $location_grid['name'] : ( $field_update_old ?? '' ), $field_display );
                     } else {
                         $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->meta_value );
-                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $location_grid ? $location_grid['name'] : $activity->meta_value );
+                        $message = sprintf( _x( '%1$s added to %2$s', 'Location name added to field label e.g. Spain added to A-Locations', 'disciple_tools' ), $location_grid ? $location_grid['name'] : $activity->meta_value, $field_display );
                     }
                 }
                 if ( $fields[$activity->meta_key]['type'] === 'location_meta' ){
+                    $field_display = $fields[$activity->meta_key]['name'] ?? __( 'Locations', 'disciple_tools' );
                     if ( $activity->meta_value === 'value_deleted' ){
                         $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $field_update_old );
                         // the meta address has been deleted, so get the address from the object note
                         if ( !$label || $label === '' ) {
                             $label = $activity->object_note;
                         }
-                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $label ?? ( $field_update_old ?? '' ) );
+                        $message = sprintf( _x( '%1$s removed from %2$s', 'Location name removed from field label', 'disciple_tools' ), $label ?? ( $field_update_old ?? '' ), $field_display );
                     } else {
                         $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $activity->meta_value );
                         // if the meta address has been deleted, then get the address from the object note
                         if ( !$label || $label === '' ) {
                             $label = $activity->object_note;
                         }
-                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $label ?? ( $field_update_old ?? '' ) );
+                        $message = sprintf( _x( '%1$s added to %2$s', 'Location name added to field label', 'disciple_tools' ), $label ?? ( $field_update_old ?? '' ), $field_display );
                     }
                 }
             } else {
@@ -1865,6 +1867,23 @@ class Disciple_Tools_Posts
         return $fields;
     }
 
+    /**
+     * Whether a grid_meta_id is still referenced by any location_meta field postmeta on this post.
+     */
+    private static function post_references_grid_meta_id( int $post_id, int $grid_meta_id, array $field_settings ): bool {
+        foreach ( $field_settings as $meta_key => $def ) {
+            if ( ( $def['type'] ?? '' ) !== 'location_meta' ) {
+                continue;
+            }
+            foreach ( get_post_meta( $post_id, $meta_key, false ) as $v ) {
+                if ( (int) $v === (int) $grid_meta_id ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, ?array $existing_post = null ){
 
         global $wpdb;
@@ -1927,11 +1946,18 @@ class Disciple_Tools_Posts
                 }
                 $geocoder = new Location_Grid_Geocoder();
 
-                // delete everything
+                // Replace all values for this location_meta field only; remove orphan grid rows when safe.
                 if ( isset( $field['force_values'] ) && $field['force_values'] == true ){
-                    delete_post_meta( $post_id, 'location_grid' );
-                    delete_post_meta( $post_id, 'location_grid_meta' );
-                    Location_Grid_Meta::delete_location_grid_meta( $post_id, 'all', 0 );
+                    $orphan_candidates = array_map( 'intval', get_post_meta( $post_id, $field_key, false ) );
+                    delete_post_meta( $post_id, $field_key );
+                    foreach ( $orphan_candidates as $candidate_id ) {
+                        if ( $candidate_id < 1 ) {
+                            continue;
+                        }
+                        if ( ! self::post_references_grid_meta_id( $post_id, $candidate_id, $field_settings ) ) {
+                            Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $candidate_id, $existing_post, $field_key );
+                        }
+                    }
                     $existing_post[ $field_key ] = [];
                 }
 
@@ -1940,7 +1966,7 @@ class Disciple_Tools_Posts
 
                     // delete
                     if ( isset( $value['delete'] ) && $value['delete'] == true ) {
-                        Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value['grid_meta_id'], $existing_post );
+                        Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value['grid_meta_id'], $existing_post, $field_key );
                     }
 
                     // Add by pre-defined meta grid values.
@@ -1957,7 +1983,7 @@ class Disciple_Tools_Posts
                         $location_meta_grid['label'] = $value['label'];
 
                         // Proceed accordingly with addition.
-                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid, null, $field_key );
                         if ( is_wp_error( $potential_error ) ) {
                             return $potential_error;
                         }
@@ -1978,7 +2004,7 @@ class Disciple_Tools_Posts
                             $location_meta_grid['level'] = $grid['level_name'];
                             $location_meta_grid['label'] = $grid['name'];
 
-                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid, null, $field_key );
                             if ( is_wp_error( $potential_error ) ){
                                 return $potential_error;
                             }
@@ -2000,7 +2026,7 @@ class Disciple_Tools_Posts
                             $value['grid_id'] = $grid['grid_id'];
                             $value['post_type'] = $post_type;
 
-                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $value );
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $value, null, $field_key );
                             if ( is_wp_error( $potential_error ) ){
                                 return $potential_error;
                             }
@@ -2024,7 +2050,7 @@ class Disciple_Tools_Posts
                             $location_meta_grid['level'] = $grid['level_name'];
                             $location_meta_grid['label'] = $full_name;
 
-                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid, null, $field_key );
                             if ( is_wp_error( $potential_error ) ) {
                                 return $potential_error;
                             }
