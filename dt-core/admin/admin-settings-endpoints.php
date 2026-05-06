@@ -866,7 +866,7 @@ class Disciple_Tools_Admin_Settings_Endpoints {
                 'customizable' => 'all',
                 'private' => $field_private
             ];
-            if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'link' ] ) ){
+            if ( in_array( $field_type, [ 'key_select', 'multi_select', 'tags', 'link', 'location', 'location_meta' ], true ) ){
                 $new_field['default'] = [];
 
                 if ( $field_type === 'link' ) {
