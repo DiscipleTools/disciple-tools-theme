@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Disciple Tools 1.80.0\n"
+"Project-Id-Version: Disciple Tools 1.81.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-theme\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-20T13:45:26+00:00\n"
+"POT-Creation-Date: 2026-05-06T11:54:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: disciple_tools\n"
@@ -579,7 +579,7 @@ msgstr ""
 #: dt-assets/functions/enqueue-scripts.php:260
 #: dt-core/global-functions.php:683
 #: dt-metrics/records/time-charts.php:120
-#: dt-posts/posts.php:549
+#: dt-posts/posts.php:552
 #: dt-reports/magic-url-setup.php:779
 #: dt-users/user-management.php:196
 msgid "No"
@@ -591,7 +591,7 @@ msgstr ""
 #: dt-core/global-functions.php:684
 #: dt-metrics/records/genmap.php:176
 #: dt-metrics/records/time-charts.php:119
-#: dt-posts/posts.php:547
+#: dt-posts/posts.php:550
 #: dt-reports/magic-url-setup.php:778
 #: dt-users/user-management.php:195
 msgid "Yes"
@@ -704,7 +704,7 @@ msgstr ""
 
 #: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:50
 #: dt-core/configuration/config-site-defaults.php:447
-#: dt-login/login-template.php:529
+#: dt-login/login-template.php:519
 msgid "Home"
 msgstr ""
 
@@ -844,7 +844,7 @@ msgid "Username or Email"
 msgstr ""
 
 #: dt-apps/dt-home/magic-link-home-app.php:243
-#: dt-login/login-template.php:489
+#: dt-login/login-template.php:479
 #: dt-users/template-new-user.php:121
 #: dt-users/template-new-user.php:122
 #: template-settings.php:673
@@ -1657,6 +1657,8 @@ msgstr ""
 
 #: dt-assets/parts/modals/modal-help.php:66
 #: dt-posts/custom-post-type.php:247
+#: dt-posts/posts.php:566
+#: dt-posts/posts.php:576
 #: dt-users/users.php:169
 msgid "Locations"
 msgstr ""
@@ -3811,7 +3813,7 @@ msgid "Get New Password"
 msgstr ""
 
 #: dt-login/login-template.php:98
-#: dt-login/login-template.php:488
+#: dt-login/login-template.php:478
 msgid "Email Address"
 msgstr ""
 
@@ -3842,8 +3844,8 @@ msgid "Re-enter Password"
 msgstr ""
 
 #: dt-login/login-template.php:312
-#: dt-login/login-template.php:374
-#: dt-login/login-template.php:545
+#: dt-login/login-template.php:371
+#: dt-login/login-template.php:535
 msgid "Register"
 msgstr ""
 
@@ -3856,25 +3858,25 @@ msgstr ""
 msgid "Display Name (optional)"
 msgstr ""
 
-#: dt-login/login-template.php:456
+#: dt-login/login-template.php:446
 msgid "User action confirmed."
 msgstr ""
 
-#: dt-login/login-template.php:466
-#: dt-login/login-template.php:491
-#: dt-login/login-template.php:537
+#: dt-login/login-template.php:456
+#: dt-login/login-template.php:481
+#: dt-login/login-template.php:527
 msgid "Login"
 msgstr ""
 
-#: dt-login/login-template.php:472
+#: dt-login/login-template.php:462
 msgid "Username or password does not match. Try again."
 msgstr ""
 
-#: dt-login/login-template.php:490
+#: dt-login/login-template.php:480
 msgid "Remember Me"
 msgstr ""
 
-#: dt-login/login-template.php:552
+#: dt-login/login-template.php:542
 msgid "Lost Password"
 msgstr ""
 
@@ -4901,22 +4903,22 @@ msgstr ""
 
 #: dt-posts/dt-posts-endpoints.php:1117
 #: dt-posts/dt-posts-endpoints.php:1150
-#: dt-posts/posts.php:458
-#: dt-posts/posts.php:468
+#: dt-posts/posts.php:459
+#: dt-posts/posts.php:469
 #, php-format
 msgctxt "file_upload activity"
 msgid "Uploaded file: %1$s to %2$s"
 msgstr ""
 
 #: dt-posts/dt-posts-endpoints.php:1121
-#: dt-posts/posts.php:462
+#: dt-posts/posts.php:463
 #, php-format
 msgctxt "file_upload activity"
 msgid " and %d more"
 msgstr ""
 
 #: dt-posts/dt-posts-endpoints.php:1123
-#: dt-posts/posts.php:464
+#: dt-posts/posts.php:465
 #, php-format
 msgctxt "file_upload activity"
 msgid "Uploaded %1$d files: %2$s to %3$s"
@@ -4926,8 +4928,8 @@ msgstr ""
 #: dt-posts/dt-posts-endpoints.php:1337
 #: dt-posts/dt-posts-endpoints.php:1622
 #: dt-posts/dt-posts-endpoints.php:1660
-#: dt-posts/posts.php:437
-#: dt-posts/posts.php:443
+#: dt-posts/posts.php:438
+#: dt-posts/posts.php:444
 #, php-format
 msgctxt "file_upload activity"
 msgid "Deleted file: %1$s from %2$s"
@@ -4940,7 +4942,7 @@ msgid "Renamed file from %1$s to %2$s in %3$s"
 msgstr ""
 
 #: dt-posts/dt-posts-endpoints.php:1624
-#: dt-posts/posts.php:439
+#: dt-posts/posts.php:440
 #, php-format
 msgctxt "file_upload activity"
 msgid "Deleted all %1$d files from %2$s"
@@ -5221,158 +5223,168 @@ msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
 msgstr ""
 
-#: dt-posts/posts.php:492
+#: dt-posts/posts.php:493
 #, php-format
 msgctxt "file_upload activity"
 msgid "Renamed file from %1$s to %2$s"
 msgstr ""
 
-#: dt-posts/posts.php:494
+#: dt-posts/posts.php:495
 msgid "File updated"
 msgstr ""
 
-#: dt-posts/posts.php:503
+#: dt-posts/posts.php:504
 #, php-format
 msgctxt "User Select: User1"
 msgid "%1$s: %2$s"
 msgstr ""
 
-#: dt-posts/posts.php:503
+#: dt-posts/posts.php:504
 msgid "Nobody"
 msgstr ""
 
-#: dt-posts/posts.php:508
-#: dt-posts/posts.php:513
+#: dt-posts/posts.php:509
+#: dt-posts/posts.php:514
 #, php-format
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr ""
 
-#: dt-posts/posts.php:521
-#: dt-posts/posts.php:532
+#: dt-posts/posts.php:523
+#: dt-posts/posts.php:535
 #, php-format
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
 msgstr ""
 
-#: dt-posts/posts.php:524
-#: dt-posts/posts.php:535
+#: dt-posts/posts.php:526
+#: dt-posts/posts.php:538
 #, php-format
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
 msgstr ""
 
-#: dt-posts/posts.php:557
+#: dt-posts/posts.php:560
 #, php-format
 msgid "%s removed"
 msgstr ""
 
-#: dt-posts/posts.php:565
-#: dt-posts/posts.php:578
+#: dt-posts/posts.php:569
 #, php-format
-msgctxt "Location1 removed from locations"
-msgid "%1$s removed from locations"
+msgctxt "Location name removed from field label e.g. Spain removed from Locations"
+msgid "%1$s removed from %2$s"
 msgstr ""
 
-#: dt-posts/posts.php:568
-#: dt-posts/posts.php:585
+#: dt-posts/posts.php:572
 #, php-format
-msgctxt "Location1 added to locations"
-msgid "%1$s added to locations"
+msgctxt "Location name added to field label e.g. Spain added to A-Locations"
+msgid "%1$s added to %2$s"
 msgstr ""
 
-#: dt-posts/posts.php:599
+#: dt-posts/posts.php:583
+#, php-format
+msgctxt "Location name removed from field label"
+msgid "%1$s removed from %2$s"
+msgstr ""
+
+#: dt-posts/posts.php:590
+#, php-format
+msgctxt "Location name added to field label"
+msgid "%1$s added to %2$s"
+msgstr ""
+
+#: dt-posts/posts.php:604
 #, php-format
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
 msgstr ""
 
-#: dt-posts/posts.php:602
+#: dt-posts/posts.php:607
 #, php-format
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
 msgstr ""
 
-#: dt-posts/posts.php:623
+#: dt-posts/posts.php:628
 msgctxt "message"
 msgid "verified"
 msgstr ""
 
-#: dt-posts/posts.php:623
+#: dt-posts/posts.php:628
 msgctxt "message"
 msgid "not verified"
 msgstr ""
 
-#: dt-posts/posts.php:626
+#: dt-posts/posts.php:631
 msgctxt "message"
 msgid "invalidated"
 msgstr ""
 
-#: dt-posts/posts.php:626
+#: dt-posts/posts.php:631
 msgctxt "message"
 msgid "not invalidated"
 msgstr ""
 
-#: dt-posts/posts.php:653
+#: dt-posts/posts.php:659
 #, php-format
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
 msgstr ""
 
-#: dt-posts/posts.php:655
+#: dt-posts/posts.php:661
 #, php-format
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
 msgstr ""
 
-#: dt-posts/posts.php:657
+#: dt-posts/posts.php:663
 #, php-format
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr ""
 
-#: dt-posts/posts.php:661
+#: dt-posts/posts.php:667
 #, php-format
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr ""
 
-#: dt-posts/posts.php:663
+#: dt-posts/posts.php:669
 msgctxt "message"
 msgid "Created from Demo Plugin"
 msgstr ""
 
-#: dt-posts/posts.php:670
+#: dt-posts/posts.php:676
 #, php-format
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr ""
 
-#: dt-posts/posts.php:670
-#: dt-posts/posts.php:673
+#: dt-posts/posts.php:676
+#: dt-posts/posts.php:679
 msgctxt "message"
 msgid "A user"
 msgstr ""
 
-#: dt-posts/posts.php:673
+#: dt-posts/posts.php:679
 #, php-format
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr ""
 
-#: dt-posts/posts.php:678
+#: dt-posts/posts.php:684
 #, php-format
 msgctxt "message"
 msgid "Shared with %s"
 msgstr ""
 
-#: dt-posts/posts.php:680
+#: dt-posts/posts.php:686
 #, php-format
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr ""
 
-#: dt-posts/posts.php:2846
+#: dt-posts/posts.php:2876
 msgid "Removed User"
 msgstr ""
 
