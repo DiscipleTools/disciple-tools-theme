@@ -22,6 +22,7 @@ nocache_headers();
 // Fix for page title
 global $wp_query;
 $wp_query->is_404 = false;
+status_header( 200 );
 
 
 
