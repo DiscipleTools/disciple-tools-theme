@@ -15,6 +15,7 @@ class DT_Login_Page_Base
     }
 
     public function theme_redirect() {
+        status_header( 200 );
         $path = get_theme_file_path( 'template-blank.php' );
         include( $path );
         die();
