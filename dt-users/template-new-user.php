@@ -119,7 +119,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                             'type'        => 'text',
                                                             'default' => '',
                                                         ]
-                                                    ], [], ['placeholder' => 'Nickname (Display Name)'] ) ?>
+                                                ], [], [ 'placeholder' => 'Nickname (Display Name)' ] ) ?>
                                             </dd>
                                                 <dt></dt>
                                                 <dd>
@@ -130,7 +130,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                             'default' => '',
                                                             'required' => true,
                                                         ]
-                                                    ], [], ['placeholder' => 'Email'] ) ?>
+                                                ], [], [ 'placeholder' => 'Email' ] ) ?>
                                             </dd>
                                                 <div class="hidden-fields" style="display:none">
                                                     <dt></dt>
@@ -141,7 +141,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                             'type'        => 'text',
                                                             'default' => '',
                                                         ]
-                                                    ], [], ['placeholder' => 'Username'] ) ?>
+                                                    ], [], [ 'placeholder' => 'Username' ] ) ?>
                                                 </dd>
                                                     <dt></dt>
                                                     <dd>
@@ -151,7 +151,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                             'type'        => 'text',
                                                             'default' => '',
                                                         ]
-                                                    ], [], ['placeholder' => 'Password'] ) ?>
+                                                    ], [], [ 'placeholder' => 'Password' ] ) ?>
                                                 </dd>
                                                 </div>
                                                 <?php if ( $current_user_can_manage_users ) : ?>
@@ -216,7 +216,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                             'type'        => 'text',
                                                             'default' => '',
                                                         ]
-                                                    ], [], ['placeholder' => 'First Name'] ) ?>
+                                                    ], [], [ 'placeholder' => 'First Name' ] ) ?>
                                                 </dd>
                                                 <dt></dt>
                                                 <dd>
@@ -226,18 +226,18 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                             'type'        => 'text',
                                                             'default' => '',
                                                         ]
-                                                    ], [], ['placeholder' => 'Last Name'] ) ?>
+                                                    ], [], [ 'placeholder' => 'Last Name' ] ) ?>
                                                 </dd>
                                                 <dt></dt>
                                                 <dd>
-                                                   <?php DT_Components::render_key_select( 'gender', [
+                                                <?php DT_Components::render_key_select( 'gender', [
                                                         'gender' => [
                                                             'name' => __( 'Gender (optional)', 'disciple_tools' ),
                                                             'type'        => 'key_select',
                                                             'default' => $gender_fields['default'],
                                                             'select_cannot_be_empty' => true,
                                                         ]
-                                                    ], [ 'key_select' => [ 'key' => 'male' ] ], [] ) ?>
+                                                ], [ 'key_select' => [ 'key' => 'male' ] ], [] ) ?>
                                                 </dd>
 
                                                 <?php // site defined fields
@@ -255,7 +255,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                                 'type'        => 'text',
                                                                 'default' => '',
                                                             ]
-                                                        ], [], ['placeholder' => $dt_field['label'], 'data-optional' => true] ) ?>
+                                                        ], [], [ 'placeholder' => $dt_field['label'], 'data-optional' => true ] ) ?>
                                                     </dd>
                                                     <?php
                                                 } // end foreach

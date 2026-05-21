@@ -105,23 +105,23 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                         <h4><?php esc_html_e( 'User Status', 'disciple_tools' ); ?></h4>
                                         <?php DT_Components::render_key_select( 'user_status', [
                                                         'user_status' => [
-                                                            'name' => __( '', 'disciple_tools' ),
+                                                            'name' => '',
                                                             'type'        => 'key_select',
                                                             'default' => $dt_user_fields['user_status']['options'],
                                                             'select_cannot_be_empty' => true,
                                                         ]
-                                                    ], [ 'key_select' => [ 'key' => 'active' ] ], [] ) ?>
+                                        ], [ 'key_select' => [ 'key' => 'active' ] ], [] ) ?>
 
                                         <!-- Workload Status -->
                                         <h4><?php esc_html_e( 'Workload Status', 'disciple_tools' ); ?></h4>
                                         <?php DT_Components::render_key_select( 'workload_status', [
                                                          'workload_status' => [
-                                                             'name' => __( '', 'disciple_tools' ),
+                                                             'name' => '',
                                                              'type'        => 'key_select',
                                                              'default' => $dt_user_fields['workload_status']['options'],
                                                             'select_cannot_be_empty' => true,
                                                          ]
-                                                     ], [ 'key_select' => [ 'key' => 'active' ] ], [ 'key_select' => [ 'disable_color' => true ]] ) ?>
+                                        ], [ 'key_select' => [ 'key' => 'active' ] ], [ 'key_select' => [ 'disable_color' => true ] ] ) ?>
 
                                         <!-- Locations -->
                                         <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
@@ -231,23 +231,23 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                             <span id="<?php echo esc_html( 'update_display_name' ); ?>-spinner" class="loading-spinner"></span>
                                             <?php DT_Components::render_text( 'update_display_name', [
                                                 'update_display_name' => [
-                                                    'name' => __( '', 'disciple_tools' ),
+                                                    'name' => '',
                                                     'type'        => 'text',
                                                     'default' => '',
                                                 ]
-                                            ], [], ['placeholder' => __( 'Display Name', 'disciple_tools' )] ) ?>
+                                            ], [], [ 'placeholder' => __( 'Display Name', 'disciple_tools' ) ] ) ?>
                                         </p>
 
                                         <?php esc_html_e( 'Gender', 'disciple_tools' ); ?>
                                         <span id="<?php echo esc_html( 'gender' ); ?>-spinner" class="loading-spinner"></span>
                                         <?php DT_Components::render_key_select( 'gender', [
                                                         'gender' => [
-                                                            'name' => __( '', 'disciple_tools' ),
+                                                            'name' => '',
                                                             'type'        => 'key_select',
                                                             'default' => $gender_fields['default'],
                                                             'select_cannot_be_empty' => true,
                                                         ]
-                                                    ], [], [] ) ?>
+                                        ], [], [] ) ?>
 
                                         <?php // site defined fields
                                         $dt_user_fields = dt_get_site_custom_lists( 'user_fields' );
@@ -269,7 +269,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                          'default' => '',
                                                          'data-optional' => true,
                                                      ]
-                                                 ], [], ['placeholder' => $dt_field['label']] ) ?>
+                                                ], [], [ 'placeholder' => $dt_field['label'] ] ) ?>
                                             </dd>
                                             <?php
                                         } // end foreach
