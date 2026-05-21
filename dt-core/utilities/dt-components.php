@@ -59,6 +59,8 @@ class DT_Components
         $shared_attributes = '
               id="' . esc_attr( $display_field_id ) . '"
               name="' . esc_attr( $field_key ) . '"
+              placeholder="' . esc_attr( $params['placeholder'] ?? '' ) . '"
+              ' . $class . '
               ' . $label_attr . '
               ' . esc_html( $post_type ?? '' ) . '
               ' . esc_html( $icon ) . '

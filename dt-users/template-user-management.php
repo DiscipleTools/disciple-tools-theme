@@ -9,6 +9,7 @@ if ( !current_user_can( 'list_users' ) && !current_user_can( 'manage_dt' ) ) {
 $dt_url_path = dt_get_url_path();
 $dt_user_fields = Disciple_Tools_Users::get_users_fields();
 $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
+$gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
 
 ?>
 
@@ -102,22 +103,25 @@ $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
                                     <!-- User Status -->
                                     <div class="bordered-box" style="--dt-label-font-size: 1.2rem; --dt-label-font-weight: 300;">
                                         <h4><?php esc_html_e( 'User Status', 'disciple_tools' ); ?></h4>
-                                        <select id="user_status" class="select-field">
-                                            <option></option>
-                                            <?php foreach ( $dt_user_fields['user_status']['options'] as $status_key => $status_value ) : ?>
-                                                <option value="<?php echo esc_html( $status_key ); ?>"><?php echo esc_html( $status_value['label'] ); ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                        <?php DT_Components::render_key_select( 'user_status', [
+                                                        'user_status' => [
+                                                            'name' => __( '', 'disciple_tools' ),
+                                                            'type'        => 'key_select',
+                                                            'default' => $dt_user_fields['user_status']['options'],
+                                                            'select_cannot_be_empty' => true,
+                                                        ]
+                                                    ], [ 'key_select' => [ 'key' => 'active' ] ], [] ) ?>
 
                                         <!-- Workload Status -->
                                         <h4><?php esc_html_e( 'Workload Status', 'disciple_tools' ); ?></h4>
-                                        <select id="workload_status" class="select-field">
-                                            <?php $workload_status_options = $dt_user_fields['workload_status']['options'] ?? [] ?>
-                                            <option></option>
-                                            <?php foreach ( $workload_status_options as $key => $val ) : ?>
-                                                <option value="<?php echo esc_html( $key ) ?>"><?php echo esc_html( $val['label'] ) ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                        <?php DT_Components::render_key_select( 'workload_status', [
+                                                         'workload_status' => [
+                                                             'name' => __( '', 'disciple_tools' ),
+                                                             'type'        => 'key_select',
+                                                             'default' => $dt_user_fields['workload_status']['options'],
+                                                            'select_cannot_be_empty' => true,
+                                                         ]
+                                                     ], [ 'key_select' => [ 'key' => 'active' ] ], [ 'key_select' => [ 'disable_color' => true ]] ) ?>
 
                                         <!-- Locations -->
                                         <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
@@ -225,16 +229,25 @@ $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
                                         <p>
                                             <?php esc_html_e( 'Display Name', 'disciple_tools' ); ?>
                                             <span id="<?php echo esc_html( 'update_display_name' ); ?>-spinner" class="loading-spinner"></span>
-                                            <input type="text" id="update_display_name" class="text-input">
+                                            <?php DT_Components::render_text( 'update_display_name', [
+                                                'update_display_name' => [
+                                                    'name' => __( '', 'disciple_tools' ),
+                                                    'type'        => 'text',
+                                                    'default' => '',
+                                                ]
+                                            ], [], ['placeholder' => __( 'Display Name', 'disciple_tools' )] ) ?>
                                         </p>
 
                                         <?php esc_html_e( 'Gender', 'disciple_tools' ); ?>
                                         <span id="<?php echo esc_html( 'gender' ); ?>-spinner" class="loading-spinner"></span>
-                                        <select class="select-field" id="gender">
-                                            <option></option>
-                                            <option value="male"><?php esc_html_e( 'Male', 'disciple_tools' ); ?></option>
-                                            <option value="female"><?php esc_html_e( 'Female', 'disciple_tools' ); ?></option>
-                                        </select>
+                                        <?php DT_Components::render_key_select( 'gender', [
+                                                        'gender' => [
+                                                            'name' => __( '', 'disciple_tools' ),
+                                                            'type'        => 'key_select',
+                                                            'default' => $gender_fields['default'],
+                                                            'select_cannot_be_empty' => true,
+                                                        ]
+                                                    ], [], [] ) ?>
 
                                         <?php // site defined fields
                                         $dt_user_fields = dt_get_site_custom_lists( 'user_fields' );
@@ -248,13 +261,15 @@ $default_user_roles = Disciple_Tools_Roles::get_dt_roles_and_permissions();
                                                     <span id="<?php echo esc_html( $dt_field['key'] ); ?>-spinner" class="loading-spinner"></span>
                                                 </label>
                                             </dt>
-                                            <dd><input type="text"
-                                                       data-optional
-                                                       class="input text-input"
-                                                       id="<?php echo esc_attr( $dt_field['key'] ) ?>"
-                                                       name="<?php echo esc_attr( $dt_field['key'] ) ?>"
-                                                       placeholder="<?php echo esc_html( $dt_field['label'] ) ?>"
-                                                       value=""/>
+                                            <dd>
+                                                <?php DT_Components::render_text( $dt_field['key'], [
+                                                     $dt_field['key'] => [
+                                                         'name' => '',
+                                                         'type'        => 'text',
+                                                         'default' => '',
+                                                         'data-optional' => true,
+                                                     ]
+                                                 ], [], ['placeholder' => $dt_field['label']] ) ?>
                                             </dd>
                                             <?php
                                         } // end foreach

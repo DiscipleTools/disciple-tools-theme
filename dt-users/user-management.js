@@ -539,8 +539,8 @@ jQuery(document).ready(function ($) {
                 <a id="app_link_${app_key}" ${activated ? '' : 'disabled'} class="button" href="${url}" target="_blank" style="margin-right: 5px;">${window.SHAREDFUNCTIONS.escapeHTML(magic_link['label'])} <img class="dt-icon dt-white-icon" src="${window.SHAREDFUNCTIONS.escapeHTML(window.dt_user_management_localized?.theme_uri)}dt-assets/images/open-link.svg"/></a>
             </td>
             <td style="vertical-align: top;">
-                <input id="app_state_${app_key}"
-                        class="switch-input app-state-switches" type="checkbox"
+                <dt-toggle id="app_state_${app_key}"
+                        class="app-state-switches" type="checkbox"
                         data-user_id="${user_id}" data-app_key="${app_key}" data-app_root="${app?.root}" data-app_type="${app?.type}"
                         ${activated ? 'checked' : ''}
                 />
