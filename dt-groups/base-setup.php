@@ -1196,6 +1196,48 @@ class DT_Groups_Base extends DT_Module_Base {
                 }
             }
 
+            // Filter fields that should be shown in create form
+            // Note: title field is handled separately in JavaScript, so we exclude it here
+            $create_form_fields = [];
+            foreach ( $field_settings as $field_key => $field_setting ) {
+                // Skip title field - it's rendered separately in JavaScript
+                if ( $field_key === 'title' ) {
+                    continue;
+                }
+
+                // Skip user_select (e.g. assigned_to) - not part of Add Child flow; uses legacy typeahead, not collected
+                if ( isset( $field_setting['type'] ) && $field_setting['type'] === 'user_select' ) {
+                    continue;
+                }
+
+                // Skip hidden fields unless they have custom_display
+                if ( !empty( $field_setting['hidden'] ) && empty( $field_setting['custom_display'] ) ) {
+                    continue;
+                }
+                // Skip fields explicitly set to not show in create form
+                if ( isset( $field_setting['in_create_form'] ) && $field_setting['in_create_form'] === false ) {
+                    continue;
+                }
+                // Include fields that have in_create_form => true or list this post type in the array
+                if ( !empty( $field_setting['in_create_form'] ) ) {
+                    $in_form = $field_setting['in_create_form'];
+                    if ( $in_form === true ) {
+                        $create_form_fields[ $field_key ] = $field_setting;
+                    } elseif ( is_array( $in_form ) && in_array( $this->post_type, $in_form, true ) ) {
+                        $create_form_fields[ $field_key ] = $field_setting;
+                    }
+                }
+            }
+
+            // Title field is rendered separately in JS; pass its settings as a dedicated key (not in fieldSettings loop).
+            $title_field_setting = isset( $field_settings['title'] ) ? $field_settings['title'] : null;
+
+            // Get mapbox token for location fields
+            $mapbox_key = '';
+            if ( class_exists( 'DT_Mapbox_API' ) ) {
+                $mapbox_key = DT_Mapbox_API::get_key() ?? '';
+            }
+
             wp_localize_script( $genmap_script_handle, 'dtGroupGenmap', [
                 'statusField' => [
                     'key' => $status_key,
@@ -1204,18 +1246,32 @@ class DT_Groups_Base extends DT_Module_Base {
                 ],
                 'groupTypes' => $group_type_labels,
                 'groupTypeIcons' => $group_type_icons,
+                'fieldSettings' => $create_form_fields,
+                'titleFieldSetting' => $title_field_setting,
+                'mapboxKey' => $mapbox_key,
                 'strings' => [
                     'loading' => __( 'Loading map…', 'disciple_tools' ),
                     'error' => __( 'Unable to load generational map.', 'disciple_tools' ),
                     'empty' => __( 'No child groups to display.', 'disciple_tools' ),
+                    'chart_aria' => __( 'Group generational map', 'disciple_tools' ),
                     'details' => [
                         'open' => __( 'Open', 'disciple_tools' ),
                         'add' => __( 'Add', 'disciple_tools' ),
+                        'close' => __( 'Close', 'disciple_tools' ),
+                        'type' => __( 'Type', 'disciple_tools' ),
+                        'status' => __( 'Status', 'disciple_tools' ),
+                        'members' => __( 'Members', 'disciple_tools' ),
+                        'assigned' => __( 'Assigned', 'disciple_tools' ),
+                        'expand' => __( 'Expand', 'disciple_tools' ),
+                        'collapse' => __( 'Collapse', 'disciple_tools' ),
                     ],
                     'modal' => [
                         'add_child_title' => __( 'Add Child To', 'disciple_tools' ),
                         'add_child_name_title' => __( 'Name', 'disciple_tools' ),
                         'add_child_but' => __( 'Add Child', 'disciple_tools' ),
+                        'name_required' => __( 'Name is required', 'disciple_tools' ),
+                        'error_creating_child' => __( 'Error creating child group: %s', 'disciple_tools' ),
+                        'unknown_error' => __( 'Unknown error', 'disciple_tools' ),
                     ],
                 ],
                 'recordUrlBase' => trailingslashit( site_url() ),

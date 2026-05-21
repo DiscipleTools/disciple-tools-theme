@@ -18,7 +18,7 @@
     --success-color: #4caf50;
     --black: #000000;
     --app-icon-default: #0a0a0a;
-    --launcher-bottom-nav-height: 58px;
+    --launcher-bottom-nav-height: 65px;
     --max-bottom-width: 800px;
     --nav-home-bg-dark: #3a4fb8;
     --nav-text-white: #ffffff;
@@ -978,7 +978,7 @@ body.launcher {
         width: 100%;
         overflow: hidden;
         position: relative;
-        padding-bottom: var(--launcher-bottom-nav-height, 70px);
+        padding-bottom: var(--launcher-bottom-nav-height, 58px);
     }
 
     .launcher-iframe-container iframe {
@@ -994,7 +994,6 @@ body.launcher {
     left: 0;
     right: 0;
     height: var(--launcher-bottom-nav-height, 58px);
-    min-height: 86px;
     width: 100%;
     z-index: 1000;
     background-color: var(--surface-0, #ffffff);
@@ -1008,7 +1007,6 @@ body.launcher {
 
     .nav-container {
         height: var(--launcher-bottom-nav-height, 58px);
-        min-height: 86px;
         width: 100%;
         max-width: var(--max-bottom-width, 800px);
         display: flex;
@@ -1170,7 +1168,6 @@ body.launcher {
     }
 }
 
-body:has(.dt-launcher-bottom-nav),
 #wrapper:has(.dt-launcher-bottom-nav) {
     padding-bottom: var(--launcher-bottom-nav-height, 58px);
 }

@@ -60,6 +60,7 @@ export default [
         // Custom globals
         jQuery: 'readonly',
         Toastify: 'readonly',
+        d3: 'readonly',
       },
     },
     rules: {

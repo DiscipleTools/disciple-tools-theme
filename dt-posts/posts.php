@@ -408,7 +408,95 @@ class Disciple_Tools_Posts
         $fields = $post_type_settings['fields'];
         $message = '';
         if ( $activity->action == 'field_update' ){
-            if ( isset( $fields[$activity->meta_key] ) ){
+            $field_update_old = $activity->old_value ?? null;
+            // Check if this is a file_upload field by checking field_type or field settings
+            $is_file_upload_field = false;
+            if ( isset( $activity->field_type ) && $activity->field_type === 'file_upload' ) {
+                $is_file_upload_field = true;
+            } elseif ( isset( $fields[$activity->meta_key]['type'] ) && $fields[$activity->meta_key]['type'] === 'file_upload' ) {
+                $is_file_upload_field = true;
+            }
+
+            if ( $is_file_upload_field ) {
+                // Handle file_upload field formatting
+                if ( !empty( $activity->object_note ) ) {
+                    $message = $activity->object_note;
+                } else {
+                    // Parse meta_value to determine action
+                    $new_value = maybe_unserialize( $activity->meta_value );
+                    $old_value = maybe_unserialize( $field_update_old );
+                    $field_name = isset( $fields[$activity->meta_key]['name'] ) ? $fields[$activity->meta_key]['name'] : $activity->meta_key;
+
+                    if ( empty( $new_value ) || $new_value === 'value_deleted' ) {
+                        // File(s) deleted
+                        if ( is_array( $old_value ) ) {
+                            $file_count = count( $old_value );
+                            if ( $file_count === 1 ) {
+                                $file_name = is_array( $old_value[0] ) && isset( $old_value[0]['name'] )
+                                    ? $old_value[0]['name']
+                                    : basename( is_string( $old_value[0] ) ? $old_value[0] : '' );
+                                $message = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+                            } else {
+                                $message = sprintf( _x( 'Deleted all %1$d files from %2$s', 'file_upload activity', 'disciple_tools' ), $file_count, $field_name );
+                            }
+                        } else {
+                            $file_name = basename( $old_value );
+                            $message = sprintf( _x( 'Deleted file: %1$s from %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+                        }
+                    } else if ( empty( $old_value ) ) {
+                        // File(s) uploaded
+                        if ( is_array( $new_value ) ) {
+                            $file_count = count( $new_value );
+                            $file_names = [];
+                            foreach ( $new_value as $file ) {
+                                if ( is_array( $file ) && isset( $file['name'] ) ) {
+                                    $file_names[] = $file['name'];
+                                } elseif ( is_string( $file ) ) {
+                                    $file_names[] = basename( $file );
+                                }
+                            }
+                            if ( $file_count === 1 ) {
+                                $message = sprintf( _x( 'Uploaded file: %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $file_names[0], $field_name );
+                            } else {
+                                $file_list = implode( ', ', array_slice( $file_names, 0, 3 ) );
+                                if ( $file_count > 3 ) {
+                                    $file_list .= sprintf( _x( ' and %d more', 'file_upload activity', 'disciple_tools' ), $file_count - 3 );
+                                }
+                                $message = sprintf( _x( 'Uploaded %1$d files: %2$s to %3$s', 'file_upload activity', 'disciple_tools' ), $file_count, $file_list, $field_name );
+                            }
+                        } else {
+                            $file_name = basename( $new_value );
+                            $message = sprintf( _x( 'Uploaded file: %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $file_name, $field_name );
+                        }
+                    } else {
+                        // File renamed or updated
+                        $old_file_names = [];
+                        $new_file_names = [];
+
+                        if ( is_array( $old_value ) ) {
+                            foreach ( $old_value as $file ) {
+                                if ( is_array( $file ) && isset( $file['name'] ) ) {
+                                    $old_file_names[] = $file['name'];
+                                }
+                            }
+                        }
+                        if ( is_array( $new_value ) ) {
+                            foreach ( $new_value as $file ) {
+                                if ( is_array( $file ) && isset( $file['name'] ) ) {
+                                    $new_file_names[] = $file['name'];
+                                }
+                            }
+                        }
+
+                        // Check if it's a rename (one file, names differ)
+                        if ( count( $old_file_names ) === 1 && count( $new_file_names ) === 1 && $old_file_names[0] !== $new_file_names[0] ) {
+                            $message = sprintf( _x( 'Renamed file from %1$s to %2$s', 'file_upload activity', 'disciple_tools' ), $old_file_names[0], $new_file_names[0] );
+                        } else {
+                            $message = $field_name . ': ' . __( 'File updated', 'disciple_tools' );
+                        }
+                    }
+                }
+            } elseif ( isset( $fields[$activity->meta_key] ) ){
                 if ( $fields[$activity->meta_key]['type'] === 'user_select' ){
                     $meta_array = explode( '-', $activity->meta_value ); // Separate the type and id
                     if ( isset( $meta_array[1] ) ) {
@@ -429,8 +517,9 @@ class Disciple_Tools_Posts
                 if ( $fields[$activity->meta_key]['type'] === 'multi_select' ){
                     $value = $activity->meta_value;
                     if ( $activity->meta_value == 'value_deleted' ){
-                        $value = $activity->old_value;
-                        $label = $fields[$activity->meta_key]['default'][$value]['label'] ?? $value;
+                        $value = $field_update_old;
+                        $default_options = $fields[$activity->meta_key]['default'] ?? [];
+                        $label = ( $value !== null && isset( $default_options[ $value ]['label'] ) ) ? $default_options[ $value ]['label'] : ( $value ?? '' );
                         $message = sprintf( _x( '%1$s removed from %2$s', 'Milestone1 removed from Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]['name'] );
                     } else {
                         $label = $fields[$activity->meta_key]['default'][$value]['label'] ?? $value;
@@ -440,8 +529,9 @@ class Disciple_Tools_Posts
                 if ( $fields[$activity->meta_key]['type'] === 'tags' ){
                     $value = $activity->meta_value;
                     if ( $activity->meta_value == 'value_deleted' ){
-                        $value = $activity->old_value;
-                        $label = $fields[$activity->meta_key]['default'][$value]['label'] ?? $value;
+                        $value = $field_update_old;
+                        $default_options = $fields[$activity->meta_key]['default'] ?? [];
+                        $label = ( $value !== null && isset( $default_options[ $value ]['label'] ) ) ? $default_options[ $value ]['label'] : ( $value ?? '' );
                         $message = sprintf( _x( '%1$s removed from %2$s', 'Milestone1 removed from Milestones', 'disciple_tools' ), $label, $fields[$activity->meta_key]['name'] );
                     } else {
                         $label = $fields[$activity->meta_key]['default'][$value]['label'] ?? $value;
@@ -473,29 +563,31 @@ class Disciple_Tools_Posts
                     }
                 }
                 if ( $fields[$activity->meta_key]['type'] === 'location' ){
+                    $field_display = $fields[$activity->meta_key]['name'] ?? __( 'Locations', 'disciple_tools' );
                     if ( $activity->meta_value === 'value_deleted' ){
-                        $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->old_value );
-                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $location_grid ? $location_grid['name'] : $activity->old_value );
+                        $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $field_update_old );
+                        $message = sprintf( _x( '%1$s removed from %2$s', 'Location name removed from field label e.g. Spain removed from Locations', 'disciple_tools' ), $location_grid ? $location_grid['name'] : ( $field_update_old ?? '' ), $field_display );
                     } else {
                         $location_grid = Disciple_Tools_Mapping_Queries::get_by_grid_id( (int) $activity->meta_value );
-                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $location_grid ? $location_grid['name'] : $activity->meta_value );
+                        $message = sprintf( _x( '%1$s added to %2$s', 'Location name added to field label e.g. Spain added to A-Locations', 'disciple_tools' ), $location_grid ? $location_grid['name'] : $activity->meta_value, $field_display );
                     }
                 }
                 if ( $fields[$activity->meta_key]['type'] === 'location_meta' ){
+                    $field_display = $fields[$activity->meta_key]['name'] ?? __( 'Locations', 'disciple_tools' );
                     if ( $activity->meta_value === 'value_deleted' ){
-                        $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $activity->old_value );
+                        $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $field_update_old );
                         // the meta address has been deleted, so get the address from the object note
                         if ( !$label || $label === '' ) {
                             $label = $activity->object_note;
                         }
-                        $message = sprintf( _x( '%1$s removed from locations', 'Location1 removed from locations', 'disciple_tools' ), $label ?? $activity->old_value );
+                        $message = sprintf( _x( '%1$s removed from %2$s', 'Location name removed from field label', 'disciple_tools' ), $label ?? ( $field_update_old ?? '' ), $field_display );
                     } else {
                         $label = Disciple_Tools_Mapping_Queries::get_location_grid_meta_label( (int) $activity->meta_value );
                         // if the meta address has been deleted, then get the address from the object note
                         if ( !$label || $label === '' ) {
                             $label = $activity->object_note;
                         }
-                        $message = sprintf( _x( '%1$s added to locations', 'Location1 added to locations', 'disciple_tools' ), $label ?? $activity->old_value );
+                        $message = sprintf( _x( '%1$s added to %2$s', 'Location name added to field label', 'disciple_tools' ), $label ?? ( $field_update_old ?? '' ), $field_display );
                     }
                 }
             } else {
@@ -508,7 +600,7 @@ class Disciple_Tools_Posts
                         $label = isset( $fields[$field_key]['default'][$link_type] ) ? $fields[$field_key]['default'][$link_type]['label'] : null;
                         if ( isset( $fields[$field_key] ) && $fields[$field_key]['type'] === 'link' ) {
                             if ( $activity->meta_value === 'value_deleted' ) {
-                                $value = $activity->old_value;
+                                $value = $field_update_old ?? '';
                                 $message = sprintf( _x( '%1$s removed from %2$s links', 'link1 removed from Social Links', 'disciple_tools' ), $value, $label ?? $fields[$field_key]['name'] );
                             } else {
                                 $value = $activity->meta_value;
@@ -528,7 +620,7 @@ class Disciple_Tools_Posts
                         $object_note = $name . ' "'. $original .'" ';
                         if ( is_array( $meta_value ) ){
                             foreach ( $meta_value as $k => $v ){
-                                $prev_value = $activity->old_value;
+                                $prev_value = $field_update_old;
                                 if ( is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v ){
                                     continue;
                                 }
@@ -562,12 +654,13 @@ class Disciple_Tools_Posts
                     }
                     if ( isset( $channel_key ) && isset( $post_type_settings['channels'][ $channel_key ] ) ){
                         $channel = $post_type_settings['channels'][ $channel_key ];
-                        if ( $activity->old_value === '' ){
+                        $channel_old_value = $field_update_old ?? '';
+                        if ( $channel_old_value === '' ){
                             $message = sprintf( _x( 'Added %1$s: %2$s', 'Added Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->meta_value );
                         } else if ( $activity->meta_value != 'value_deleted' ){
-                            $message = sprintf( _x( 'Updated %1$s from %2$s to %3$s', 'Update Facebook form facebook.com/123 to facebook.com/mark', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->old_value, $activity->meta_value );
+                            $message = sprintf( _x( 'Updated %1$s from %2$s to %3$s', 'Update Facebook form facebook.com/123 to facebook.com/mark', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $channel_old_value, $activity->meta_value );
                         } else {
-                            $message = sprintf( _x( 'Deleted %1$s: %2$s', 'Deleted Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $activity->old_value );
+                            $message = sprintf( _x( 'Deleted %1$s: %2$s', 'Deleted Facebook: facebook.com/123', 'disciple_tools' ), $channel['label'] ?? $activity->meta_key, $channel_old_value );
                         }
                     }
                 } else if ( $activity->meta_key == 'title' ){
@@ -825,6 +918,54 @@ class Disciple_Tools_Posts
                             }
                             if ( empty( $query_value ) ){
                                 $where_sql .= " $table_key.meta_value IS NULL ";
+                            }
+                        } else if ( in_array( $field_type, [ 'file_upload' ] ) ) {
+                            /**
+                             * file_upload
+                             * Supports:
+                             * ['*'] => has at least one file
+                             * []    => no files
+                             */
+                            if ( !is_array( $query_value ) ) {
+                                return new WP_Error( __FUNCTION__, "$query_key must be an array", [ 'status' => 400 ] );
+                            }
+
+                            $meta_table = $wpdb->postmeta;
+                            $user_condition = '';
+                            if ( isset( $field_settings[$query_key]['private'] ) && $field_settings[$query_key]['private'] ) {
+                                $meta_table = $wpdb->dt_post_user_meta;
+                                $user_condition = ' AND pm.user_id = ' . get_current_user_id();
+                            }
+
+                            // Detect "has files" query (supports '*' and prefixed legacy option id)
+                            $has_files = false;
+                            foreach ( $query_value as $value ) {
+                                if ( strpos( (string) $value, '-' ) !== 0 ) {
+                                    $normalized = ltrim( (string) $value, '^' );
+                                    if ( $normalized === '*' || $normalized === 'all-with-files' ) {
+                                        $has_files = true;
+                                    }
+                                }
+                            }
+
+                            $has_value_sql = "
+                                EXISTS (
+                                    SELECT 1
+                                    FROM $meta_table pm
+                                    WHERE pm.post_id = p.ID
+                                      AND pm.meta_key = '" . esc_sql( $query_key ) . "'
+                                      $user_condition
+                                      AND pm.meta_value <> ''
+                                      AND pm.meta_value <> 'a:0:{}'
+                                )
+                            ";
+
+                            if ( empty( $query_value ) ) {
+                                $where_sql .= " NOT $has_value_sql ";
+                            } elseif ( $has_files ) {
+                                $where_sql .= " $has_value_sql ";
+                            } else {
+                                return new WP_Error( __FUNCTION__, "Invalid file_upload filter values for $query_key", [ 'status' => 400 ] );
                             }
                         } else if ( in_array( $field_type, [ 'connection' ] ) ){
                             /**
@@ -1402,7 +1543,16 @@ class Disciple_Tools_Posts
         $cache_key = $connection_type . '_' . sanitize_key( $title );
         $page_id = wp_cache_get( $cache_key, 'get_page_by_title' );
         if ( $page_id === false ) {
-            $page = get_page_by_title( $title, OBJECT, $post_type );
+            $query = new WP_Query( [
+                'post_type'              => $post_type,
+                'title'                  => $title,
+                'posts_per_page'         => 1,
+                'post_status'            => 'any',
+                'no_found_rows'          => true,
+                'update_post_meta_cache' => false,
+                'update_post_term_cache' => false,
+            ] );
+            $page = $query->have_posts() ? $query->next_post() : null;
             $page_id = $page ? $page->ID : 0;
             wp_cache_set( $cache_key, $page_id, 'get_page_by_title', 3 * HOUR_IN_SECONDS ); // We only store the ID to keep our footprint small
         }
@@ -1472,6 +1622,119 @@ class Disciple_Tools_Posts
         return $options;
     }
 
+    /**
+     * Returns the list of comment meta keys that are backed by storage
+     * (e.g. S3) and should be treated as file keys.
+     *
+     * @return array
+     */
+    protected static function get_comment_storage_meta_keys(): array {
+        $keys = apply_filters( 'dt_post_comment_storage_meta_keys', [ 'audio_url', 'image_url' ] );
+        return is_array( $keys ) ? $keys : [ 'audio_url', 'image_url' ];
+    }
+
+    /**
+     * Removes any S3-backed storage objects associated with a post (post meta image fields,
+     * comment/activity audio and image attachments, and dt_post_user_meta image fields).
+     *
+     * This is a best-effort cleanup: S3 deletion failures are logged but do not block
+     * the overall record deletion. The purge runs before database deletes so that
+     * storage keys can be read while meta and related rows still exist.
+     * No-op if DT_Storage_API is not available or not enabled.
+     *
+     * @param string $post_type Post type.
+     * @param int    $post_id   Post ID.
+     */
+    private static function purge_post_storage_objects( string $post_type, int $post_id ) {
+        if ( !class_exists( 'DT_Storage_API' ) || !method_exists( 'DT_Storage_API', 'delete_file' ) || !DT_Storage_API::is_enabled() ) {
+            return;
+        }
+
+        global $wpdb;
+        $field_settings = DT_Posts::get_post_field_settings( $post_type );
+        $all_post_meta  = get_post_meta( $post_id );
+
+        // Delete S3 objects for image-type post fields stored in post meta.
+        if ( is_array( $field_settings ) && !empty( $all_post_meta ) ) {
+            foreach ( $field_settings as $field_key => $settings ) {
+                if ( isset( $settings['type'] ) && $settings['type'] === 'image' && isset( $all_post_meta[ $field_key ][0] ) ) {
+                    $storage_key = $all_post_meta[ $field_key ][0];
+                    if ( !empty( $storage_key ) ) {
+                        $result = DT_Storage_API::delete_file( $storage_key );
+                        if ( !is_array( $result ) || empty( $result['file_deleted'] ) ) {
+                            dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$storage_key}' for post {$post_id}" );
+                        }
+                    }
+                }
+            }
+        }
+
+        // Delete S3 objects referenced by comment meta attached to this post (e.g., audio_url, image_url).
+        $comment_storage_meta_keys = self::get_comment_storage_meta_keys();
+        if ( !empty( $comment_storage_meta_keys ) ) {
+            $placeholders = implode( ', ', array_fill( 0, count( $comment_storage_meta_keys ), '%s' ) );
+            $params = array_merge( [ $post_id ], $comment_storage_meta_keys );
+            // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            $comment_storage_keys = $wpdb->get_col(
+                $wpdb->prepare(
+                    "
+                    SELECT cm.meta_value
+                    FROM {$wpdb->commentmeta} cm
+                    INNER JOIN {$wpdb->comments} c ON c.comment_ID = cm.comment_id
+                    WHERE c.comment_post_ID = %d
+                    AND cm.meta_key IN ( $placeholders )
+                    ",
+                    $params
+                )
+            );
+            // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+            if ( !empty( $comment_storage_keys ) ) {
+                foreach ( array_unique( array_filter( $comment_storage_keys ) ) as $storage_key ) {
+                    $result = DT_Storage_API::delete_file( $storage_key );
+                    if ( !is_array( $result ) || empty( $result['file_deleted'] ) ) {
+                        dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$storage_key}' for post {$post_id}" );
+                    }
+                }
+            }
+        }
+
+        // Delete any S3 objects that might be stored in dt_post_user_meta for image-type fields.
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $wpdb->dt_post_user_meta is a $wpdb table name property.
+        $post_user_meta_rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "
+                SELECT meta_key, meta_value
+                FROM $wpdb->dt_post_user_meta
+                WHERE post_id = %d
+                ",
+                $post_id
+            ),
+            ARRAY_A
+        );
+
+        if ( !empty( $post_user_meta_rows ) && is_array( $field_settings ) ) {
+            foreach ( $post_user_meta_rows as $row ) {
+                $meta_key   = $row['meta_key'] ?? '';
+                $meta_value = $row['meta_value'] ?? '';
+
+                if ( empty( $meta_key ) || empty( $meta_value ) ) {
+                    continue;
+                }
+
+                $field_key = self::get_field_key_from_meta( $meta_key, $field_settings );
+                if ( $field_key && isset( $field_settings[ $field_key ]['type'] ) && $field_settings[ $field_key ]['type'] === 'image' ) {
+                    $result = DT_Storage_API::delete_file( $meta_value );
+                    if ( !is_array( $result ) || empty( $result['file_deleted'] ) ) {
+                        dt_write_log( "purge_post_storage_objects: failed to delete S3 object '{$meta_value}' for post {$post_id}" );
+                    }
+                }
+            }
+        }
+
+        do_action( 'dt_purge_post_storage_objects', $post_type, $post_id );
+    }
+
     public static function delete_post( string $post_type, int $post_id, bool $check_permissions = true ){
         if ( $check_permissions && !self::can_delete( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
@@ -1480,6 +1743,8 @@ class Disciple_Tools_Posts
         global $wpdb;
 
         do_action( 'dt_before_post_deleted', $post_type, $post_id );
+
+        self::purge_post_storage_objects( $post_type, $post_id );
 
         $post_title = $wpdb->get_var( $wpdb->prepare( "SELECT post_title FROM $wpdb->posts WHERE ID = %d AND post_type = %s", $post_id, $post_type ) );
 
@@ -1602,6 +1867,23 @@ class Disciple_Tools_Posts
         return $fields;
     }
 
+    /**
+     * Whether a grid_meta_id is still referenced by any location_meta field postmeta on this post.
+     */
+    public static function post_references_grid_meta_id( int $post_id, int $grid_meta_id, array $field_settings ): bool {
+        foreach ( $field_settings as $meta_key => $def ) {
+            if ( ( $def['type'] ?? '' ) !== 'location_meta' ) {
+                continue;
+            }
+            foreach ( get_post_meta( $post_id, $meta_key, false ) as $v ) {
+                if ( (int) $v === (int) $grid_meta_id ) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static function update_location_grid_fields( array $field_settings, int $post_id, array $fields, $post_type, ?array $existing_post = null ){
 
         global $wpdb;
@@ -1664,11 +1946,18 @@ class Disciple_Tools_Posts
                 }
                 $geocoder = new Location_Grid_Geocoder();
 
-                // delete everything
+                // Replace all values for this location_meta field only; remove orphan grid rows when safe.
                 if ( isset( $field['force_values'] ) && $field['force_values'] == true ){
-                    delete_post_meta( $post_id, 'location_grid' );
-                    delete_post_meta( $post_id, 'location_grid_meta' );
-                    Location_Grid_Meta::delete_location_grid_meta( $post_id, 'all', 0 );
+                    $orphan_candidates = array_map( 'intval', get_post_meta( $post_id, $field_key, false ) );
+                    delete_post_meta( $post_id, $field_key );
+                    foreach ( $orphan_candidates as $candidate_id ) {
+                        if ( $candidate_id < 1 ) {
+                            continue;
+                        }
+                        if ( ! self::post_references_grid_meta_id( $post_id, $candidate_id, $field_settings ) ) {
+                            Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $candidate_id, $existing_post, $field_key, $field_settings );
+                        }
+                    }
                     $existing_post[ $field_key ] = [];
                 }
 
@@ -1677,7 +1966,7 @@ class Disciple_Tools_Posts
 
                     // delete
                     if ( isset( $value['delete'] ) && $value['delete'] == true ) {
-                        Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value['grid_meta_id'], $existing_post );
+                        Location_Grid_Meta::delete_location_grid_meta( $post_id, 'grid_meta_id', $value['grid_meta_id'], $existing_post, $field_key, $field_settings );
                     }
 
                     // Add by pre-defined meta grid values.
@@ -1694,7 +1983,7 @@ class Disciple_Tools_Posts
                         $location_meta_grid['label'] = $value['label'];
 
                         // Proceed accordingly with addition.
-                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                        $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid, null, $field_key );
                         if ( is_wp_error( $potential_error ) ) {
                             return $potential_error;
                         }
@@ -1715,7 +2004,7 @@ class Disciple_Tools_Posts
                             $location_meta_grid['level'] = $grid['level_name'];
                             $location_meta_grid['label'] = $grid['name'];
 
-                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid, null, $field_key );
                             if ( is_wp_error( $potential_error ) ){
                                 return $potential_error;
                             }
@@ -1737,7 +2026,7 @@ class Disciple_Tools_Posts
                             $value['grid_id'] = $grid['grid_id'];
                             $value['post_type'] = $post_type;
 
-                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $value );
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $value, null, $field_key );
                             if ( is_wp_error( $potential_error ) ){
                                 return $potential_error;
                             }
@@ -1761,7 +2050,7 @@ class Disciple_Tools_Posts
                             $location_meta_grid['level'] = $grid['level_name'];
                             $location_meta_grid['label'] = $full_name;
 
-                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid );
+                            $potential_error = Location_Grid_Meta::add_location_grid_meta( $post_id, $location_meta_grid, null, $field_key );
                             if ( is_wp_error( $potential_error ) ) {
                                 return $potential_error;
                             }

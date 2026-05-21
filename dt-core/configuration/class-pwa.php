@@ -77,6 +77,10 @@ class Disciple_Tools_PWA
         $instance_name = get_bloginfo( 'name' );
         $instance_desc = get_bloginfo( 'description' );
 
+        // Determine start_url based on referrer
+        // If manifest is requested from dt-home page, use that URL as start_url
+        $start_url = $this->get_start_url_from_referrer();
+
         $data = array(
             'id'               => home_url(),
             'name'             => $instance_name,
@@ -87,7 +91,7 @@ class Disciple_Tools_PWA
             'orientation'      => 'portrait',
             'display'          => 'minimal-ui',
             'scope'            => '/',
-            'start_url'        => '/',
+            'start_url'        => $start_url,
             'icons'            => [
                 [
                     'sizes' => '192x192',
@@ -139,6 +143,58 @@ class Disciple_Tools_PWA
         );
         echo json_encode( $data );
         exit;
+    }
+
+    /**
+     * Get start_url based on HTTP referrer.
+     * If referrer is a dt-home page (apps/launcher/{key}), return that URL.
+     * Otherwise, return default '/'.
+     *
+     * @since 1.0.0
+     * @return string The start_url to use in manifest
+     */
+    private function get_start_url_from_referrer() {
+        // Check if HTTP_REFERER is set
+        if ( ! isset( $_SERVER['HTTP_REFERER'] ) || empty( $_SERVER['HTTP_REFERER'] ) ) {
+            return '/';
+        }
+
+        $referer = esc_url_raw( wp_unslash( $_SERVER['HTTP_REFERER'] ) );
+
+        // Parse the referrer URL
+        $referer_parts = parse_url( $referer );
+        if ( ! isset( $referer_parts['path'] ) ) {
+            return '/';
+        }
+
+        $referer_path = trim( $referer_parts['path'], '/' );
+        $path_segments = explode( '/', $referer_path );
+
+        // Check if referrer is a dt-home page: apps/launcher/{magic_key}
+        // Path segments should be: ['apps', 'launcher', '{magic_key}']
+        if ( count( $path_segments ) >= 3
+            && $path_segments[0] === 'apps'
+            && $path_segments[1] === 'launcher'
+            && ! empty( $path_segments[2] ) ) {
+
+            // Extract the magic key (third segment)
+            $magic_key = sanitize_text_field( $path_segments[2] );
+
+            // Validate magic key format (should be alphanumeric, typically 32+ chars)
+            if ( ! empty( $magic_key ) && strlen( $magic_key ) >= 16 ) {
+                // Build the dt-home URL path (base URL only, no additional path segments)
+                // This ensures the app always starts at the home screen, not a sub-page
+                $dt_home_path = '/apps/launcher/' . $magic_key;
+
+                // Note: We intentionally don't preserve query strings or additional path segments
+                // to ensure consistent behavior when launching from home screen
+
+                return $dt_home_path;
+            }
+        }
+
+        // Default: return home page
+        return '/';
     }
 
     public function scripts() {

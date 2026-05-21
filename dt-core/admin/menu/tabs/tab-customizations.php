@@ -121,6 +121,7 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             'nonce' => wp_create_nonce( 'wp_rest' ),
             'site_url' => get_site_url(),
             'template_dir' => get_template_directory_uri(),
+            'file_type_categories' => dt_get_file_type_categories(),
         ];
 
         if ( !empty( $post_type ) ) {
@@ -523,9 +524,9 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
 
         $post_settings = DT_Posts::get_post_settings( $post_type );
         $tile_label = '';
-        if ( isset( $post_settings['tiles'][$tile_key]['label'] ) ) {
-            $tile_label = $post_settings['tiles'][$tile_key]['label'];
-        };
+        if ( $tile_key !== null && $tile_key !== '' && isset( $post_settings['tiles'][ $tile_key ]['label'] ) ) {
+            $tile_label = $post_settings['tiles'][ $tile_key ]['label'];
+        }
         ?>
         <table class="widefat" style="margin-top: 12px;">
             <thead>

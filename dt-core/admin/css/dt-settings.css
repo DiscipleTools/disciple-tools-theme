@@ -81,16 +81,20 @@
     width: auto;
     height: auto;
     min-width: 33%;
+    max-height: 90vh;
     background: #fefefe;
     border: 1px solid #cacaca;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    overflow: hidden;
 }
 .modal-back {
     transform: rotateY(180deg);
 }
 .dt-admin-modal-box-content {
     padding: 1rem;
+    max-height: calc(90vh - 2rem);
+    overflow-y: auto;
 }
 .tile-rundown-elements {
     margin-top: -1px;

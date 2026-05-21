@@ -18,6 +18,7 @@ class DT_Components
         $field_type = $fields[$field_key]['type'] ?? null;
         $is_private = isset( $fields[$field_key]['private'] ) && $fields[$field_key]['private'] === true;
         $display_field_id = ( isset( $params['field_id_prefix'] ) ? $params['field_id_prefix'] : '' ) . $field_key;
+        $class = ( isset( $params['class'] ) ? 'class="' . esc_attr( $params['class'] ) . '"' : '' );
 
         $allowed_types = apply_filters( 'dt_render_field_for_display_allowed_types', [
             'boolean',
@@ -34,7 +35,8 @@ class DT_Components
             'location_meta',
             'communication_channel',
             'tags',
-            'user_select'
+            'user_select',
+            'file_upload'
         ] );
         if ( !in_array( $field_type, $allowed_types ) ){
             return;
@@ -44,9 +46,15 @@ class DT_Components
         }
 
         $icon = null;
-        if ( isset( $fields[$field_key]['icon'] ) && !empty( $fields[$field_key]['icon'] ) ) {
-            $icon = 'icon=' . esc_attr( $fields[$field_key]['icon'] );
+        if ( isset( $fields[$field_key]['font-icon'] ) && !empty( $fields[$field_key]['font-icon'] ) ) {
+            $icon = 'icon="' . esc_attr( $fields[$field_key]['font-icon'] ) . '"';
+        } else if ( isset( $fields[$field_key]['icon'] ) && !empty( $fields[$field_key]['icon'] ) ) {
+            $icon = 'icon="' . esc_attr( $fields[$field_key]['icon'] ) . '"';
         }
+        if ( isset( $icon ) && isset( $params['icon_alt_text'] ) ) {
+            $icon .= ' iconAltText="' . esc_attr( $params['icon_alt_text'] ) . '"';
+        }
+
         if ( isset( $fields[$field_key]['post_type'] ) ) {
             $post_type = 'postType=' . esc_attr( $fields[$field_key]['post_type'] );
         } else if ( isset( $post ) && isset( $post['post_type'] ) ) {
@@ -63,7 +71,7 @@ class DT_Components
               ' . $class . '
               ' . $label_attr . '
               ' . esc_html( $post_type ?? '' ) . '
-              ' . esc_html( $icon ) . '
+              ' . $icon . '
               ' . esc_html( $required_tag ) . '
               ' . esc_html( $disabled ) . '
               ' . ( $is_private ? 'private' : null ) . '
@@ -258,10 +266,25 @@ class DT_Components
         $value = array_map(function ( $value ) {
             return $value;
         }, $post[$field_key] ?? []);
+
+        $options = null;
+        if ( isset( $params['static_options'] ) && $params['static_options'] ) {
+            $raw_options = DT_Posts::get_multi_select_options( $post['post_type'] ?? 'contacts', $field_key );
+            if ( is_array( $raw_options ) ) {
+                foreach ( $raw_options as $option ) {
+                    if ( is_string( $option ) ) {
+                        $options[] = [ 'id' => $option ];
+                    } elseif ( is_array( $option ) && isset( $option['label'] ) ) {
+                        $options[] = [ 'id' => $option['label'] ];
+                    }
+                }
+            }
+        }
         ?>
         <dt-tags <?php echo wp_kses_post( $shared_attributes ) ?>
             value='<?php echo esc_attr( json_encode( $value ) ) ?>'
             placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) ) ?>"
+            <?php echo $options ? "options='" . esc_attr( json_encode( $options ) ) . "'" : null ?>
             allowAdd>
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-tags>
@@ -321,6 +344,144 @@ class DT_Components
             value="<?php echo esc_attr( json_encode( $value ) ) ?>"
         single><?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-users-connection>
+        <?php
+    }
+
+    public static function render_file_upload( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+        if ( empty( $shared_attributes ) ) {
+            return;
+        }
+
+        // Get field settings for configuration
+        $accepted_file_types = $fields[ $field_key ]['accepted_file_types'] ?? dt_get_default_accepted_file_types();
+        $categories = dt_get_file_type_categories();
+        $all_category_types = array_merge( ...array_column( $categories, 'types' ) );
+        $labels = [];
+        foreach ( $categories as $cat ) {
+            if ( !empty( array_intersect( $cat['types'], $accepted_file_types ) ) ) {
+                $labels[] = $cat['label'];
+            }
+        }
+        $other_types = array_diff( $accepted_file_types, $all_category_types );
+        $labels = array_merge( $labels, array_values( $other_types ) );
+        $accepted_file_types_label = implode( ', ', $labels );
+
+        $max_file_size = $fields[$field_key]['max_file_size'] ?? null;
+        $delete_enabled = isset( $fields[$field_key]['delete_enabled'] ) ? $fields[$field_key]['delete_enabled'] : true;
+        $display_layout = $fields[$field_key]['display_layout'] ?? 'grid';
+        $auto_upload = isset( $fields[$field_key]['auto_upload'] ) ? $fields[$field_key]['auto_upload'] : true;
+        $download_enabled = isset( $fields[$field_key]['download_enabled'] ) ? $fields[$field_key]['download_enabled'] : true;
+        $rename_enabled = isset( $fields[$field_key]['rename_enabled'] ) ? $fields[$field_key]['rename_enabled'] : true;
+
+        // Get post type and ID for API calls
+        $post_type = $post['post_type'] ?? '';
+        $post_id = $post['ID'] ?? '';
+
+        // Get field value (array of file objects)
+        $value = $post[$field_key] ?? [];
+        if ( !is_array( $value ) ) {
+            $value = [];
+        }
+
+        // Enhance file objects with URLs for preview
+        $enhanced_value = array_map(function( $file ) {
+            $file_key = is_array( $file ) && isset( $file['key'] ) ? $file['key'] : ( is_string( $file ) ? $file : '' );
+
+            if ( empty( $file_key ) ) {
+                return $file;
+            }
+
+            // If already an array with all needed data, enhance with URLs (always regenerate to refresh expired presigned URLs)
+            if ( is_array( $file ) ) {
+                $file_type = $file['type'] ?? '';
+
+                // Add file URL
+                if ( DT_Storage_API::is_enabled() ) {
+                    $file['url'] = DT_Storage_API::get_file_url( $file_key );
+                }
+
+                // Add thumbnail URLs for images
+                if ( strpos( $file_type, 'image/' ) === 0 && DT_Storage_API::is_enabled() ) {
+                    // Use stored thumbnail_key if available, otherwise generate from original key
+                    if ( !empty( $file['thumbnail_key'] ) ) {
+                        $file['thumbnail_url'] = DT_Storage_API::get_file_url( $file['thumbnail_key'] );
+                    } else {
+                        $file['thumbnail_url'] = DT_Storage_API::get_thumbnail_url( $file_key );
+                    }
+
+                    // Use stored large_thumbnail_key if available, otherwise generate from original key
+                    if ( !empty( $file['large_thumbnail_key'] ) ) {
+                        $file['large_thumbnail_url'] = DT_Storage_API::get_file_url( $file['large_thumbnail_key'] );
+                    } else {
+                        $file['large_thumbnail_url'] = DT_Storage_API::get_large_thumbnail_url( $file_key );
+                    }
+                }
+            } else {
+                // Convert string key to array format
+                $file = [
+                    'key' => $file_key,
+                    'name' => basename( $file_key ),
+                    'type' => '',
+                ];
+                if ( DT_Storage_API::is_enabled() ) {
+                    $file['url'] = DT_Storage_API::get_file_url( $file_key );
+                }
+            }
+
+            return $file;
+        }, $value);
+
+        // Determine key prefix (use post type, post id and field key as prefix for better organization)
+        $key_prefix = $post_type . '/' . $post_id . '/' . $field_key;
+
+        // Output icon attribute directly to avoid wp_kses_post truncating font-icon values (e.g. "mdi mdi-file-arrow-up-down")
+        $field_icon = $fields[ $field_key ]['font-icon'] ?? $fields[ $field_key ]['icon'] ?? '';
+        ?>
+        <dt-file-upload <?php echo wp_kses_post( $shared_attributes ) ?>
+            <?php if ( !empty( $field_icon ) ) : ?>icon="<?php echo esc_attr( $field_icon ); ?>"
+            <?php endif; ?>
+            value="<?php echo esc_attr( json_encode( $enhanced_value ) ) ?>"
+            accepted-file-types='<?php echo esc_attr( json_encode( $accepted_file_types ) ) ?>'
+            accepted-file-types-label="<?php echo esc_attr( $accepted_file_types_label ) ?>"
+            <?php if ( $max_file_size ): ?>
+                max-file-size="<?php echo esc_attr( $max_file_size ) ?>"
+            <?php endif; ?>
+            <?php if ( !$delete_enabled ): ?>
+                delete-enabled="false"
+            <?php endif; ?>
+            display-layout="<?php echo esc_attr( $display_layout ) ?>"
+            auto-upload="<?php echo $auto_upload ? 'true' : 'false' ?>"
+            <?php if ( !$download_enabled ): ?>
+                download-enabled="false"
+            <?php endif; ?>
+            <?php if ( !$rename_enabled ): ?>
+                rename-enabled="false"
+            <?php endif; ?>
+            post-type="<?php echo esc_attr( $post_type ) ?>"
+            post-id="<?php echo esc_attr( $post_id ) ?>"
+            meta-key="<?php echo esc_attr( $field_key ) ?>"
+            key-prefix="<?php echo esc_attr( $key_prefix ) ?>"
+        >
+        </dt-file-upload>
+        <?php
+    }
+
+    public static function render_link( $field_key, $fields, $post, $params = [] ) {
+        $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
+        $default_options = $fields[$field_key]['default'];
+        $options_array = array_map(function ( $key, $value ) {
+            return [
+                'id' => (string) $key,
+                'label' => $value['label'] ?? $key
+            ];
+        }, array_keys( $default_options ), $default_options);
+        ?>
+        <dt-multi-text-groups <?php echo wp_kses_post( $shared_attributes ) ?>
+            groups='<?php echo esc_attr( json_encode( $options_array ) ) ?>'
+            value="<?php echo esc_attr( isset( $post[$field_key] ) ? json_encode( $post[$field_key] ) : '' ) ?>">
+            <?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        </dt-multi-text-groups>
         <?php
     }
 }

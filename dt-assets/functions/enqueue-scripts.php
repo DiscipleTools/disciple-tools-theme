@@ -136,6 +136,9 @@ function dt_site_scripts() {
                 'edit' => __( 'Edit', 'disciple_tools' ),
                 'copy' => __( 'Copy', 'disciple_tools' ),
                 'copied_text' => __( 'Copied: %s', 'disciple_tools' ),
+                'share' => __( 'Share', 'disciple_tools' ),
+                'follow' => __( 'Follow', 'disciple_tools' ),
+                'follow_help' => __( 'Toggle to follow or unfollow records', 'disciple_tools' ),
             ],
             'post_type' => $post_type,
             'url_path' => $url_path,
@@ -194,7 +197,7 @@ function dt_site_scripts() {
                     'post' => get_post(),
                     'post_with_fields' => $post,
                     'template_dir' => get_template_directory_uri(),
-                    'contact_author_name' => isset( $post['post_author'] ) && (int) $post['post_author'] > 0 ? get_user_by( 'id', intval( $post['post_author'] ) )->display_name : __( 'D.T System', 'disciple_tools' ),
+                    'contact_author_name' => ( isset( $post['post_author'] ) && (int) $post['post_author'] > 0 && ( $post_author_user = get_user_by( 'id', intval( $post['post_author'] ) ) ) ) ? $post_author_user->display_name : __( 'D.T System', 'disciple_tools' ),
                     'translations' => [
                         'edit' => strtolower( __( 'Edit', 'disciple_tools' ) ),
                         'delete' => strtolower( __( 'Delete', 'disciple_tools' ) ),
@@ -278,7 +281,7 @@ function dt_site_scripts() {
 
     if ( 'settings' === $url_path ) {
 
-        $dependencies = [ 'jquery', 'jquery-ui', 'lodash', 'moment' ];
+        $dependencies = [ 'jquery', 'jquery-ui', 'lodash', 'moment', 'web-components' ];
         $contact_id = Disciple_Tools_Users::get_contact_for_user( get_current_user_id() );
 
         dt_theme_enqueue_script( 'dt-settings', 'dt-assets/js/settings.js', $dependencies, true );
@@ -302,7 +305,6 @@ function dt_site_scripts() {
                 'custom_data'           => apply_filters( 'dt_settings_js_data', [] ), // nest associated array
                 'workload_status'       => get_user_option( 'workload_status', get_current_user_id() ),
                 'workload_status_options' => Disciple_Tools_Users::get_users_fields()['workload_status']['options'] ?? [],
-                'user_people_groups' => DT_Posts::get_post_names_from_ids( get_user_option( 'user_people_groups', get_current_user_id() ) ?: [] ),
             )
         );
     }
@@ -349,6 +351,7 @@ function dt_site_scripts() {
             'sent' => _x( 'scheduled to be sent', 'Number of emails sent. i.e. 20 sent!', 'disciple_tools' ),
             'not_sent' => _x( 'not sent (likely missing valid email)', 'Preceded with number of emails not sent. i.e. 20 not sent!', 'disciple_tools' ),
             'see_queue' => _x( 'See queue', 'See queue of messages to be sent.', 'disciple_tools' ),
+            'remove_values' => __( 'Remove Values', 'disciple_tools' ),
             'exclude_item' => __( 'Exclude Item', 'disciple_tools' ),
             'exports' => [
                 'csv' => [
@@ -440,14 +443,7 @@ function dt_site_scripts() {
         wp_localize_script( 'dt-storage', 'storage_settings',
             [
                 'rest_url' => esc_url_raw( rest_url() ),
-                'accepted_file_types' => [
-                    'image/png',
-                    'image/gif',
-                    'image/jpeg',
-                    'image/jpg',
-                    'audio/*',
-                    'video/*'
-                ],
+                'accepted_file_types' => dt_get_default_accepted_file_types(),
                 'translations' => [
                     'modals' => [
                         'upload' => [

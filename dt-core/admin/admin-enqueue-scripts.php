@@ -73,6 +73,9 @@ function dt_options_scripts() {
 
     if ( isset( $_GET['page'] ) && ( in_array( $_GET['page'], $allowed_pages, true ) ) ) {
 
+        // Normalize active tab so page=dt_options without tab param works (defaults to general)
+        $active_tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'general';
+
         wp_register_script( 'jquery-ui-js', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js', [ 'jquery' ], '1.12.1', true );
         wp_enqueue_script( 'jquery-ui-js' );
 
@@ -90,12 +93,45 @@ function dt_options_scripts() {
         dt_theme_enqueue_style( 'material-font-icons-local', 'dt-core/dependencies/mdi/css/materialdesignicons.min.css', array() );
         wp_enqueue_style( 'material-font-icons', 'https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css' );
 
-        if ( isset( $_GET['tab'] ) && ( ( $_GET['tab'] === 'people-groups' ) || ( $_GET['tab'] === 'general' ) ) ) {
+        // Enqueue web components for dt-multi-select and other components (available on entire dt_options page)
+        dt_theme_enqueue_script( 'web-components', 'dt-assets/build/components/index.js', array(), false );
+        dt_theme_enqueue_style( 'web-components-css', 'dt-assets/build/css/light.min.css', array() );
+
+        if ( ( $active_tab === 'people-groups' ) || ( $active_tab === 'general' ) ) {
             wp_enqueue_script( 'dt_peoplegroups_scripts', get_template_directory_uri() . '/dt-people-groups/people-groups.js', [
                 'jquery',
                 'jquery-ui-core',
             ], filemtime( get_template_directory() . '/dt-people-groups/people-groups.js' ), true );
             wp_localize_script( 'dt_peoplegroups_scripts', 'dtPeopleGroupsAPI', build_people_groups_api_object() );
+        }
+
+        // Field settings for all post types: expose under dtOptionAPI for use by duplicate-fields and other settings
+        $post_field_settings = [];
+        if ( $_GET['page'] === 'dt_options' ) {
+            $post_types = DT_Posts::get_post_types();
+            foreach ( $post_types as $post_type ) {
+                $post_field_settings[ $post_type ] = DT_Posts::get_post_field_settings( $post_type );
+            }
+        }
+
+        // Prepare duplicate fields data for general tab (read from database only; form processing is in tab-general.php)
+        $duplicate_fields_data = [
+            'config' => [],
+            'post_types' => [],
+            'fields' => [],
+            'defaults' => [],
+        ];
+        if ( $active_tab === 'general' ) {
+            $site_options = dt_get_option( 'dt_site_options' );
+            $duplicates_config = $site_options['duplicates'] ?? [];
+            $duplicate_fields_data['config'] = $duplicates_config;
+            $duplicate_fields_data['post_types'] = array_values( DT_Posts::get_post_types() );
+            $defaults_data = [];
+            foreach ( $duplicate_fields_data['post_types'] as $post_type ) {
+                $defaults_data[ $post_type ] = dt_get_duplicate_fields_defaults( $post_type );
+            }
+            $duplicate_fields_data['fields'] = $post_field_settings;
+            $duplicate_fields_data['defaults'] = $defaults_data;
         }
 
         wp_localize_script(
@@ -109,6 +145,8 @@ function dt_options_scripts() {
                 'available_languages' => dt_get_available_languages(),
                 'site_options' => dt_get_option( 'dt_site_options' ),
                 'contacts_field_settings' => DT_Posts::get_post_field_settings( 'contacts' ),
+                'post_field_settings' => $post_field_settings,
+                'duplicate_fields' => $duplicate_fields_data,
             )
         );
         wp_register_style( 'dt_admin_css', disciple_tools()->admin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->admin_css_path . 'disciple-tools-admin-styles.css' ) );

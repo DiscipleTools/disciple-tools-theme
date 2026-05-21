@@ -122,55 +122,58 @@ jQuery(function ($) {
           init_fields(primary_post['record'], main_primary_fields_div, true);
           init_fields(null, main_updated_fields_div, false);
 
-          // Adjust & trigger field selections to default states; which should set updating fields accordingly
-          main_primary_fields_div
-            .find('.field-select')
-            .each(function (idx, input) {
-              let post_field_id = $(input).data('merge_update_field_id');
+          // Set all primary fields as baseline (always selected, even if empty)
+          // This ensures the Updated column reflects primary values and visually indicates primary is the baseline
+          // Use setTimeout to ensure all field initialization is complete before triggering change events
+          setTimeout(function () {
+            main_primary_fields_div
+              .find('.field-select')
+              .each(function (idx, input) {
+                let $input = $(input);
+                let input_type = $input.attr('type');
+                let post_field_id = $input.data('merge_update_field_id');
 
-              if (
-                primary_post['record'][post_field_id] &&
-                can_select_field($(input).parent().parent())
-              ) {
-                $(input).prop('checked', true);
-                $(input).trigger('change');
-              } else {
-                // Otherwise, attempt to default to valid corresponding archiving field
-                if ($(input).attr('type') === 'radio') {
-                  // Attempt to identify corresponding archive radio input
-                  let archive_input = main_archiving_fields_div.find(
-                    'input[data-merge_field_id="' +
-                      archiving_post['record']['ID'] +
-                      '_' +
-                      post_field_id +
-                      '"]',
+                // Always check primary inputs to show they're the baseline
+                $input.prop('checked', true);
+
+                // Trigger change to populate Updated column with primary values (even if empty)
+                $input.trigger('change');
+
+                // For radios, ensure corresponding archiving radio is unchecked
+                if (input_type === 'radio') {
+                  let archiving_radio = main_archiving_fields_div.find(
+                    'input[data-merge_update_field_id="' + post_field_id + '"]',
                   );
-                  if (
-                    archiving_post['record'][post_field_id] &&
-                    archive_input &&
-                    can_select_field($(archive_input).parent().parent())
-                  ) {
-                    $(archive_input).prop('checked', true);
-                    $(archive_input).trigger('change');
+                  if (archiving_radio.length > 0) {
+                    archiving_radio.prop('checked', false);
                   }
                 }
-              }
-            });
+              });
 
-          // Select any archiving fields suitable for auto merging
-          main_archiving_fields_div
-            .find('.field-select')
-            .each(function (idx, input) {
-              if ($(input).attr('type') === 'checkbox') {
-                let post_field_id = $(input).data('merge_update_field_id');
-                if (archiving_post['record'][post_field_id]) {
-                  $(input).prop(
-                    'checked',
-                    can_select_field($(input).parent().parent()),
-                  );
-                  $(input).trigger('change');
+            // Auto-select archiving checkboxes (within .td-field-select only) when the
+            // Archiving record has a value, so those values appear alongside primary in Updated
+            main_archiving_fields_div
+              .find('.td-field-select .field-select[type="checkbox"]')
+              .each(function (idx, input) {
+                let $input = $(input);
+                let row = $input.closest('tr');
+                let post_field_id = $input.data('merge_update_field_id');
+                let record_has_value = !window.lodash.isEmpty(
+                  archiving_post['record'][post_field_id],
+                );
+                if (row.length && (can_select_field(row) || record_has_value)) {
+                  $input.prop('checked', true);
+                  $input.trigger('change');
                 }
-              }
+              });
+          }, 0);
+
+          // Ensure all archiving checkboxes are unchecked initially
+          // Archiving values are opt-in only - users must explicitly select them
+          main_archiving_fields_div
+            .find('.field-select[type="checkbox"]')
+            .each(function (idx, input) {
+              $(input).prop('checked', false);
             });
 
           // Display refreshed post fields
@@ -225,16 +228,38 @@ jQuery(function ($) {
         return typeahead && !window.lodash.isEmpty(typeahead.items);
       }
 
-      case 'link':
+      case 'link': {
         return !window.lodash.isEmpty(
-          $(td_field_input).find('input.link-input').not('[value=""]'),
+          $(td_field_input).find('dt-multi-text-groups').not('[value=""]'),
         );
+      }
 
       case 'communication_channel':
-      case 'location_meta':
         return !window.lodash.isEmpty(
           $(td_field_input).find('input.input-group-field').not('[value=""]'),
         );
+
+      case 'location_meta': {
+        // Web component (dt-location-map) stores value as JSON string in 'value' attribute
+        const fieldElement = $(td_field_input).find(
+          '[id="' + field_id + '"]',
+        )[0];
+        if (!fieldElement) {
+          return false;
+        }
+        let valueStr =
+          fieldElement.getAttribute('value') ||
+          $(fieldElement).attr('value') ||
+          fieldElement.value ||
+          '[]';
+        try {
+          let arr =
+            typeof valueStr === 'string' ? JSON.parse(valueStr) : valueStr;
+          return Array.isArray(arr) && arr.length > 0;
+        } catch (e) {
+          return false;
+        }
+      }
 
       case 'user_select': {
         let user_select_typeahead =
@@ -290,53 +315,12 @@ jQuery(function ($) {
           case 'communication_channel':
           case 'location_meta':
           case 'location':
+          case 'link':
             // Disable field accordingly, based on read-only flag
             $(td)
               .find('#' + field_id)
               .prop('disabled', read_only);
             break;
-
-          case 'link': {
-            // Disable/Display field accordingly, based on read-only flag
-            $(td).find('input.link-input').prop('disabled', read_only);
-            $(td).find('button.link-delete-button').prop('disabled', read_only);
-
-            // Ensure add link functionality is suppressed.
-            $(td).find('div.add-link-dropdown').remove();
-
-            if (!read_only) {
-              $(td)
-                .find('input.link-input')
-                .each(function (idx, input) {
-                  if (window.lodash.isEmpty($(input).val())) {
-                    $(input).parent().hide();
-                  }
-                });
-
-              /**
-               * Remove
-               */
-
-              $(document).on('click', '.link-delete-button', (evt) => {
-                const delete_but = $(evt.currentTarget);
-
-                // Keep a record of deleted meta_ids.
-                let meta_id = $(delete_but).data('meta-id');
-                let deleted_items = $(field_meta).val()
-                  ? JSON.parse($(field_meta).val())
-                  : [];
-                if (!window.lodash.includes(deleted_items, meta_id)) {
-                  deleted_items.push(meta_id);
-                  $(field_meta).val(JSON.stringify(deleted_items));
-                }
-
-                // Finally, remove from parent.
-                $(delete_but).parent().parent().remove();
-              });
-            }
-
-            break;
-          }
 
           case 'user_select': {
             let user_select_typeahead_field_input = '.js-typeahead-' + field_id;
@@ -453,18 +437,54 @@ jQuery(function ($) {
     switch (field_type) {
       case 'textarea':
       case 'number':
-      case 'boolean':
       case 'text':
-      case 'key_select':
         if (is_selected) {
           mergedField.val(sourceField.val());
         }
         break;
 
+      case 'boolean': {
+        // Web component: dt-toggle uses .value property (or .checked)
+        const sourceElement = sourceField[0];
+        const mergedElement = mergedField[0];
+        if (sourceElement && mergedElement && is_selected) {
+          // dt-toggle uses checked property for boolean values
+          mergedElement.checked = sourceElement.checked;
+          // Also update value property if it exists
+          if (sourceElement.value !== undefined) {
+            mergedElement.value = sourceElement.value;
+          }
+          // Trigger change event to update the component
+          mergedElement.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        break;
+      }
+
+      case 'key_select': {
+        // Web component: dt-single-select uses .value property
+        const sourceElement = sourceField[0];
+        const mergedElement = mergedField[0];
+        if (sourceElement && mergedElement && is_selected) {
+          mergedElement.value = sourceElement.value;
+          // Trigger change event to update the component
+          mergedElement.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        break;
+      }
+
       case 'date':
         if (is_selected) {
-          mergedField.removeAttr('timestamp');
+          // Copy timestamp attribute if it exists on source field
+          const sourceTimestamp = sourceField.attr('timestamp');
+          if (sourceTimestamp) {
+            mergedField.attr('timestamp', sourceTimestamp);
+          } else {
+            mergedField.removeAttr('timestamp');
+          }
+          // Copy the date value
           mergedField.val(sourceField.val());
+          // Trigger change event on the merged field to ensure date picker updates
+          mergedField.trigger('change');
         }
         break;
 
@@ -502,73 +522,70 @@ jQuery(function ($) {
       }
 
       case 'link': {
-        // Determine selector source field link inputs to be processed.
-        let source_field_link_inputs = [];
-        let tr = $(selector).parent().parent();
-        $(tr)
-          .find('.td-field-input input.link-input')
-          .each(function (idx, input) {
-            if ($(input).val()) {
-              source_field_link_inputs.push(input);
-            }
-          });
+        // Determine if we are adding values from the merge contact or the primary contact
+        let baseURI = selector.prop('baseURI');
+        let mergeFieldID = selector.prop('dataset').merge_field_id;
+        let currentID = mergeFieldID.substring(0, mergeFieldID.indexOf('_'));
+        let dupeID = baseURI.substring(
+          baseURI.indexOf('dupeid=') + 'dupeid='.length,
+        );
+        let mergeContact = currentID === dupeID;
 
-        // Delete/Add updated post record, based on identified source field inputs.
-        let main_updated_fields_div = $('#main_updated_fields_div');
-        let link_field_meta_input = $(main_updated_fields_div)
-          .find(`.link-list-${update_field_id}`)
-          .parent()
-          .parent()
-          .find('#field_meta');
-        let deleted_items = $(link_field_meta_input).val()
-          ? JSON.parse($(link_field_meta_input).val())
-          : [];
+        // Determine values to be updated
+        const sourceValue = sourceField.val() || [];
+        let mergedValue = mergedField.val() || [];
 
-        // Locate by link field values.
-        $.each(source_field_link_inputs, function (idx, input) {
-          let link_list_section_div = $(main_updated_fields_div).find(
-            `.link-list-${update_field_id} .link-section--${$(input).data('type')}`,
+        // Update values accordingly
+        for (const sourceItem of sourceValue) {
+          const valIdx = mergedValue.findIndex(
+            (x) => x.meta_id === sourceItem.meta_id,
           );
-          let matched_input = $(link_list_section_div).find(
-            `.input-group input[value="${$(input).val()}"].link-input`,
-          );
-
-          // Handle accordingly, based on incoming selected state.
           if (is_selected) {
-            // Add new updated link fields.
-            if (matched_input.length === 0) {
-              $(link_list_section_div).append(`
-                <div class="input-group">
-                    <input type="text" class="link-input input-group-field" value="${window.SHAREDFUNCTIONS.escapeHTML($(input).val())}" data-meta-id="${window.SHAREDFUNCTIONS.escapeHTML($(input).data('meta-id'))}" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(update_field_id)}" data-type="${window.SHAREDFUNCTIONS.escapeHTML($(input).data('type'))}">
-                    <div class="input-group-button">
-                        <button class="button alert delete-button-style input-height link-delete-button delete-button" data-meta-id="${window.SHAREDFUNCTIONS.escapeHTML($(input).data('meta-id'))}" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(update_field_id)}">&times;</button>
-                    </div>
-                </div>`);
-
-              // Remove any previously deleted entries.
-              window.lodash.remove(deleted_items, function (meta_id) {
-                return meta_id === $(input).data('meta-id');
-              });
-              $(link_field_meta_input).val(JSON.stringify(deleted_items));
+            if (mergeContact) {
+              if (sourceItem.meta_id != null) {
+                sourceItem.tempKey = sourceItem.meta_id;
+                sourceItem.meta_id = null;
+              }
+              mergedValue.push(sourceItem);
+            } else {
+              if (valIdx < 0) {
+                mergedValue.push(sourceItem);
+              } else {
+                // set delete to false IF source item has delete as false
+                if (!sourceItem.delete) {
+                  mergedValue[valIdx].delete = false;
+                }
+              }
             }
           } else {
-            // Remove new updated link fields.
-            if (matched_input.length > 0) {
-              $(matched_input).parent().remove();
-
-              // Keep a record of deleted meta_ids.
-              if (
-                !window.lodash.includes(
-                  deleted_items,
-                  $(matched_input).data('meta-id'),
-                )
-              ) {
-                deleted_items.push($(matched_input).data('meta-id'));
-                $(link_field_meta_input).val(JSON.stringify(deleted_items));
+            // Remove, if present and not still selected anywhere else!
+            if (
+              !is_field_value_still_selected(
+                update_field_id,
+                field_type,
+                sourceItem,
+              )
+            ) {
+              if (valIdx >= 0) {
+                if (mergeContact) {
+                  mergedValue.splice(valIdx, 1);
+                } else {
+                  // set delete to true
+                  mergedValue[valIdx].delete = true;
+                }
               }
             }
           }
-        });
+        }
+
+        // if there is an empty value, remove it
+        const emptyIdx = mergedValue.findIndex((x) => !x.value && x.tempKey);
+        if (mergedValue.length > 1 && emptyIdx > -1) {
+          mergedValue.splice(emptyIdx, 1);
+        }
+
+        // set value attribute of element
+        mergedField.attr('value', JSON.stringify(mergedValue));
 
         break;
       }
@@ -613,17 +630,55 @@ jQuery(function ($) {
       }
 
       case 'location_meta': {
-        // Determine values to be updated
-        let location_elements = $(selector.parent().parent()).find(
-          'input.input-group-field',
-        );
+        // Web component: dt-location-map stores value as JSON string in 'value' attribute
+        const sourceElement = sourceField[0];
+        const mergedElement = mergedField[0];
 
-        // Update values accordingly
-        if (location_elements) {
-          // Obtain handle to existing list
-          let td = $('#main_updated_fields_div')
-            .find('#mapbox-autocomplete')
-            .parent();
+        if (sourceElement && mergedElement) {
+          // Read from attribute first (as JSON string), fallback to property if needed
+          let sourceValueStr =
+            sourceElement.getAttribute('value') ||
+            sourceField.attr('value') ||
+            sourceElement.value ||
+            '[]';
+          let mergedValueStr =
+            mergedElement.getAttribute('value') ||
+            mergedField.attr('value') ||
+            mergedElement.value ||
+            '[]';
+
+          // Parse JSON strings to arrays
+          let sourceValue = [];
+          let mergedValue = [];
+
+          try {
+            // Handle both string and already-parsed values
+            if (typeof sourceValueStr === 'string') {
+              sourceValue = JSON.parse(sourceValueStr);
+            } else if (Array.isArray(sourceValueStr)) {
+              sourceValue = sourceValueStr;
+            }
+          } catch (e) {
+            sourceValue = [];
+          }
+
+          try {
+            if (typeof mergedValueStr === 'string') {
+              mergedValue = JSON.parse(mergedValueStr);
+            } else if (Array.isArray(mergedValueStr)) {
+              mergedValue = mergedValueStr;
+            }
+          } catch (e) {
+            mergedValue = [];
+          }
+
+          // Ensure they are arrays
+          if (!Array.isArray(sourceValue)) {
+            sourceValue = [];
+          }
+          if (!Array.isArray(mergedValue)) {
+            mergedValue = [];
+          }
 
           // Obtain handle onto update field meta - deletion array
           let update_field_meta = $('#main_updated_fields_div')
@@ -637,73 +692,77 @@ jQuery(function ($) {
               ? JSON.parse($(update_field_meta).val())
               : [];
 
-          // Iterate over values; processing accordingly
-          $.each(location_elements, function (idx, element) {
-            // Determine if the value already exists within update list
-            let has_value = false;
-            let value_ele = null;
+          // Update values accordingly
+          for (const sourceItem of sourceValue) {
+            // Compare by grid_meta_id if available, otherwise by label/value
+            const valIdx = mergedValue.findIndex((x) => {
+              if (sourceItem.grid_meta_id && x.grid_meta_id) {
+                return (
+                  String(x.grid_meta_id) === String(sourceItem.grid_meta_id)
+                );
+              }
+              // Fallback comparison by label or value
+              const sourceLabel = sourceItem.label || sourceItem.value || '';
+              const xLabel = x.label || x.value || '';
+              return sourceLabel === xLabel && sourceLabel !== '';
+            });
 
-            $(td)
-              .find('input.input-group-field')
-              .each(function (idx, input) {
-                if ($(input).val() === $(element).val()) {
-                  has_value = true;
-                  value_ele = input;
-                }
-              });
-
-            // Add/Remove accordingly
-            if (is_selected && !has_value) {
+            if (is_selected) {
               // Add, if not already present
-              let clone = $(element).clone();
-              $(clone).css('margin-bottom', '10px');
-              td.append(clone);
+              if (valIdx < 0) {
+                mergedValue.push(sourceItem);
 
-              // Keep deleted items in sync
-              if (
-                $(clone).attr('id') &&
-                $(clone).attr('id').length > 0 &&
-                $(clone).attr('id').indexOf('-') >= 0
-              ) {
-                let id = $(clone)
-                  .attr('id')
-                  .substring($(clone).attr('id').indexOf('-') + 1);
-                if (window.lodash.includes(deleted_items, id)) {
-                  window.lodash.remove(deleted_items, function (item) {
-                    return new String(item).valueOf() == new String(id);
-                  });
-
-                  $(update_field_meta).val(JSON.stringify(deleted_items));
+                // Remove from deleted items if it was previously deleted
+                if (sourceItem.grid_meta_id) {
+                  const deletedIdx = deleted_items.findIndex(
+                    (id) => String(id) === String(sourceItem.grid_meta_id),
+                  );
+                  if (deletedIdx >= 0) {
+                    deleted_items.splice(deletedIdx, 1);
+                    $(update_field_meta).val(JSON.stringify(deleted_items));
+                  }
                 }
               }
-            } else if (!is_selected && has_value && value_ele) {
+            } else {
               // Remove, if present and not still selected anywhere else!
               if (
+                valIdx >= 0 &&
                 !is_field_value_still_selected(
                   update_field_id,
                   field_type,
-                  $(value_ele).val(),
+                  sourceItem,
                 )
               ) {
-                $(value_ele).remove();
+                mergedValue.splice(valIdx, 1);
 
                 // Keep deleted items in sync
-                if (
-                  $(value_ele).attr('id') &&
-                  $(value_ele).attr('id').length > 0 &&
-                  $(value_ele).attr('id').indexOf('-') >= 0
-                ) {
-                  let id = $(value_ele)
-                    .attr('id')
-                    .substring($(value_ele).attr('id').indexOf('-') + 1);
-                  if (!window.lodash.includes(deleted_items, id)) {
-                    deleted_items.push(id);
+                if (sourceItem.grid_meta_id) {
+                  if (
+                    !window.lodash.includes(
+                      deleted_items,
+                      sourceItem.grid_meta_id,
+                    )
+                  ) {
+                    deleted_items.push(sourceItem.grid_meta_id);
                     $(update_field_meta).val(JSON.stringify(deleted_items));
                   }
                 }
               }
             }
-          });
+          }
+
+          // Update the web component's value attribute (as JSON string)
+          // Set both attribute and property for compatibility
+          mergedField.attr('value', JSON.stringify(mergedValue));
+          if (mergedElement) {
+            mergedElement.setAttribute('value', JSON.stringify(mergedValue));
+            // Also set property if component supports it
+            if (mergedElement.value !== undefined) {
+              mergedElement.value = mergedValue;
+            }
+            // Trigger change event to update the component UI
+            mergedElement.dispatchEvent(new Event('change', { bubbles: true }));
+          }
         }
 
         break;
@@ -972,12 +1031,66 @@ jQuery(function ($) {
           }
 
           case 'location_meta': {
-            let matched_value = $(td_field_select_input)
-              .parent()
-              .parent()
-              .find('input.input-group-field[value="' + field_value + '"]');
-            if (matched_value && $(matched_value).length > 0) {
-              still_selected = true;
+            // Web component: dt-location-map stores value as JSON string in 'value' attribute
+            const fieldElement = $(
+              '#' + merge_obj['post_id'] + '_' + field_id,
+            )[0];
+            const fieldJQuery = $('#' + merge_obj['post_id'] + '_' + field_id);
+
+            if (fieldElement) {
+              // Read from attribute first (as JSON string), fallback to property if needed
+              let selectedValueStr =
+                fieldElement.getAttribute('value') ||
+                fieldJQuery.attr('value') ||
+                fieldElement.value ||
+                '[]';
+
+              let selectedValue = [];
+              // Parse JSON string to array
+              try {
+                if (typeof selectedValueStr === 'string') {
+                  selectedValue = JSON.parse(selectedValueStr);
+                } else if (Array.isArray(selectedValueStr)) {
+                  selectedValue = selectedValueStr;
+                }
+              } catch (e) {
+                selectedValue = [];
+              }
+
+              if (!Array.isArray(selectedValue)) {
+                selectedValue = [];
+              }
+
+              // Compare field_value (which is a location object) with selectedValue array
+              // field_value could be a string (old format) or an object (new format)
+              if (typeof field_value === 'string') {
+                // Old format: compare by string value
+                const matched = selectedValue.some(
+                  (item) =>
+                    item.label === field_value || item.value === field_value,
+                );
+                if (matched) {
+                  still_selected = true;
+                }
+              } else if (field_value && typeof field_value === 'object') {
+                // New format: compare by grid_meta_id or label
+                const matched = selectedValue.some((item) => {
+                  if (field_value.grid_meta_id && item.grid_meta_id) {
+                    return (
+                      String(item.grid_meta_id) ===
+                      String(field_value.grid_meta_id)
+                    );
+                  }
+                  // Fallback: compare by label
+                  const fieldLabel =
+                    field_value.label || field_value.value || '';
+                  const itemLabel = item.label || item.value || '';
+                  return fieldLabel === itemLabel && fieldLabel !== '';
+                });
+                if (matched) {
+                  still_selected = true;
+                }
+              }
             }
 
             break;
@@ -1168,96 +1281,78 @@ jQuery(function ($) {
           }
 
           case 'location_meta': {
-            // Determine values to be processed
-            let location_meta_entries = [];
-            let location_meta_deletions = field_meta.val()
-              ? JSON.parse(field_meta.val())
-              : [];
+            // Get the web component element (dt-location-map)
+            const fieldElement = $(td).find('#' + field_id)[0];
 
-            // Package values and any deletions
-            $(td)
-              .find('input.input-group-field')
-              .each(function (idx, input) {
-                if ($(input).val()) {
+            if (fieldElement) {
+              // Read from value attribute (JSON string)
+              let locationValueStr =
+                fieldElement.getAttribute('value') ||
+                $(td)
+                  .find('#' + field_id)
+                  .attr('value') ||
+                fieldElement.value ||
+                '[]';
+
+              // Parse JSON to get array of location objects
+              let locationObjects = [];
+              try {
+                if (typeof locationValueStr === 'string') {
+                  locationObjects = JSON.parse(locationValueStr);
+                } else if (Array.isArray(locationValueStr)) {
+                  locationObjects = locationValueStr;
+                }
+              } catch (e) {
+                locationObjects = [];
+              }
+
+              if (!Array.isArray(locationObjects)) {
+                locationObjects = [];
+              }
+
+              // Get deletions from field_meta
+              let location_meta_deletions = field_meta.val()
+                ? JSON.parse(field_meta.val())
+                : [];
+
+              // Format location objects for backend
+              let location_meta_entries = [];
+
+              // Add each location with required fields
+              locationObjects.forEach((location) => {
+                // Backend requires: grid_id, label, level, lng, lat
+                if (
+                  location.grid_id &&
+                  location.label &&
+                  location.level &&
+                  location.lng &&
+                  location.lat
+                ) {
                   location_meta_entries.push({
-                    value: $(input).val(),
+                    grid_id: location.grid_id,
+                    label: location.label,
+                    level: location.level,
+                    lng: location.lng,
+                    lat: location.lat,
+                    source: location.source || 'user', // Default to 'user' if not set
                   });
                 }
               });
 
-            if (window.selected_location_grid_meta !== undefined) {
-              location_meta_entries.push({
-                value: window.selected_location_grid_meta,
-              });
-            }
-
-            $.each(location_meta_deletions, function (idx, id) {
-              location_meta_entries.push({
-                grid_meta_id: id,
-                delete: true,
-              });
-            });
-
-            // If present, capture entries
-            if (location_meta_entries) {
-              values[post_field_id] = {
-                values: location_meta_entries,
-              };
-            }
-            break;
-          }
-
-          case 'link': {
-            // Determine values to be processed
-            let link_entries = [];
-            let link_deletions = field_meta.val()
-              ? JSON.parse(field_meta.val())
-              : [];
-
-            // Package values and any deletions
-            $(td)
-              .find('.input-group input.link-input')
-              .each(function (idx, input) {
-                let link_type = $(input).data('type');
-                let link_meta_id = $(input).data('meta-id');
-                let link_val = $(input).val();
-
-                let has_value = is_link_field_value_already_in_primary(
-                  post_field_id,
-                  link_type,
-                  link_meta_id,
-                  link_val,
-                  true,
-                );
-                let matched_meta_id = is_link_field_value_already_in_primary(
-                  post_field_id,
-                  link_type,
-                  link_meta_id,
-                  link_val,
-                  false,
-                );
-
-                if (link_val && !has_value) {
-                  link_entries.push({
-                    value: link_val,
-                    type: link_type,
-                    meta_id: matched_meta_id ? link_meta_id : '',
-                  });
-                }
+              // Add deletions (format: { grid_meta_id: id, delete: true })
+              location_meta_deletions.forEach((id) => {
+                location_meta_entries.push({
+                  grid_meta_id: id,
+                  delete: true,
+                });
               });
 
-            $.each(link_deletions, function (idx, deleted_meta_id) {
-              link_entries.push({
-                meta_id: deleted_meta_id,
-                delete: true,
-              });
-            });
-
-            // If present, capture entries
-            if (link_entries) {
-              values[post_field_id] = {
-                values: link_entries,
-              };
+              // Package for submission
+              if (location_meta_entries.length > 0) {
+                values[post_field_id] = {
+                  values: location_meta_entries,
+                };
+              }
             }
             break;
           }
