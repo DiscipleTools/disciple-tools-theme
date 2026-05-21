@@ -237,7 +237,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                             'default' => $gender_fields['default'],
                                                             'select_cannot_be_empty' => true,
                                                         ]
-                                                ], [ 'key_select' => [ 'key' => 'male' ] ], [] ) ?>
+                                                ], [ 'gender' => [ 'key' => 'male' ] ], [] ) ?>
                                                 </dd>
 
                                                 <?php // site defined fields
