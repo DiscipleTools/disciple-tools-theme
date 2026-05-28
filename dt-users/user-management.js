@@ -540,7 +540,7 @@ jQuery(document).ready(function ($) {
             </td>
             <td style="vertical-align: top;">
                 <dt-toggle id="app_state_${app_key}"
-                        class="app-state-switches" type="checkbox"
+                        class="app-state-switches"
                         data-user_id="${user_id}" data-app_key="${app_key}" data-app_root="${app?.root}" data-app_type="${app?.type}"
                         ${activated ? 'checked' : ''}
                 />
@@ -567,7 +567,7 @@ jQuery(document).ready(function ($) {
     $('#magic_link_apps_spinner').hide();
   }
 
-  $(document).on('click', '.app-state-switches', function (e) {
+  $(document).on('change', '.app-state-switches', function (e) {
     const app_state = $(e.target);
     switch_magic_link_app_state(
       $(app_state).data('user_id'),
@@ -765,27 +765,31 @@ jQuery(document).ready(function ($) {
     );
   };
 
-  $('textarea.text-input, input.text-input').change(function () {
+  $('dt-textarea, dt-text').change(function () {
     const id = $(this).attr('id');
     const val = $(this).val();
-    $(`#${id}-spinner`).addClass('active');
-    update_user(window.current_user_lookup, id, val).then(() => {
-      $(`#${id}-spinner`).removeClass('active');
-    });
+    document.getElementById(id)?.setAttribute('loading', true);
+    if (window.current_user_lookup) {
+      update_user(window.current_user_lookup, id, val).then(() => {
+        document.getElementById(id)?.removeAttribute('loading');
+      });
+    } else {
+      document.getElementById(id)?.removeAttribute('loading');
+    }
   });
-  $('select.select-field').change((e) => {
+  $('select.select-field, dt-single-select').change((e) => {
     const id = $(e.currentTarget).attr('id');
     const val = $(e.currentTarget).val();
-    $(`#${id}-spinner`).addClass('active');
+    document.getElementById(id)?.setAttribute('loading', true);
 
     update_user(window.current_user_lookup, id, val).then(() => {
-      $(`#${id}-spinner`).removeClass('active');
+      document.getElementById(id)?.removeAttribute('loading');
     });
   });
   $('button.dt_multi_select').on('click', function () {
     let fieldKey = $(this).data('field-key');
     let optionKey = $(this).attr('id');
-    $(`#${fieldKey}-spinner`).addClass('active');
+    document.getElementById(fieldKey)?.setAttribute('loading', true);
     let field = $(`[data-field-key="${fieldKey}"]#${optionKey}`);
     field.addClass('submitting-select-button');
     let action = 'add';
@@ -815,7 +819,7 @@ jQuery(document).ready(function ($) {
             ? 'empty-select-button'
             : 'selected-select-button',
         );
-        $(`#${fieldKey}-spinner`).removeClass('active');
+        document.getElementById(fieldKey)?.removeAttribute('loading');
       })
       .catch((err) => {
         field.removeClass('submitting-select-button selected-select-button');
@@ -1083,12 +1087,12 @@ jQuery(document).ready(function ($) {
     });
 
     let create_user = (corresponds_to_contact, archive_comments = false) => {
-      let name = $('#eman').val();
-      let email = $('#liame').val();
+      let name = $('#nickname').val();
+      let email = $('#email').val();
       let locale = $('#locale').val();
 
-      const username = $('#emanresu').val();
-      const password = $('#drowssap').val();
+      const username = $('#username').val();
+      const password = $('#password').val();
 
       const optionalFields = document.querySelectorAll('[data-optional=""]');
       const optionalValues = {};

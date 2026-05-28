@@ -102,10 +102,9 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
 
                                     <!-- User Status -->
                                     <div class="bordered-box" style="--dt-label-font-size: 1.2rem; --dt-label-font-weight: 300;">
-                                        <h4><?php esc_html_e( 'User Status', 'disciple_tools' ); ?></h4>
                                         <?php DT_Components::render_key_select( 'user_status', [
                                                         'user_status' => [
-                                                            'name' => '',
+                                                            'name' => __( 'User Status', 'disciple_tools' ),
                                                             'type'        => 'key_select',
                                                             'default' => $dt_user_fields['user_status']['options'],
                                                             'select_cannot_be_empty' => true,
@@ -113,10 +112,9 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                         ], [ 'key_select' => [ 'key' => 'active' ] ], [] ) ?>
 
                                         <!-- Workload Status -->
-                                        <h4><?php esc_html_e( 'Workload Status', 'disciple_tools' ); ?></h4>
                                         <?php DT_Components::render_key_select( 'workload_status', [
                                                          'workload_status' => [
-                                                             'name' => '',
+                                                             'name' => __( 'Workload Status', 'disciple_tools' ),
                                                              'type'        => 'key_select',
                                                              'default' => $dt_user_fields['workload_status']['options'],
                                                             'select_cannot_be_empty' => true,
@@ -227,22 +225,18 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                             <?php esc_html_e( 'Email', 'disciple_tools' ); ?>: <span id="user_email"></span>
                                         </p>
                                         <p>
-                                            <?php esc_html_e( 'Display Name', 'disciple_tools' ); ?>
-                                            <span id="<?php echo esc_html( 'update_display_name' ); ?>-spinner" class="loading-spinner"></span>
                                             <?php DT_Components::render_text( 'update_display_name', [
                                                 'update_display_name' => [
-                                                    'name' => '',
+                                                    'name' => __( 'Display Name', 'disciple_tools' ),
                                                     'type'        => 'text',
                                                     'default' => '',
                                                 ]
                                             ], [], [ 'placeholder' => __( 'Display Name', 'disciple_tools' ) ] ) ?>
                                         </p>
 
-                                        <?php esc_html_e( 'Gender', 'disciple_tools' ); ?>
-                                        <span id="<?php echo esc_html( 'gender' ); ?>-spinner" class="loading-spinner"></span>
                                         <?php DT_Components::render_key_select( 'gender', [
                                                         'gender' => [
-                                                            'name' => '',
+                                                            'name' => __( 'Gender', 'disciple_tools' ),
                                                             'type'        => 'key_select',
                                                             'default' => $gender_fields['default'],
                                                             'select_cannot_be_empty' => true,
@@ -256,39 +250,25 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                 continue;
                                             }
                                             ?>
-                                            <dt>
-                                                <label for="<?php echo esc_attr( $dt_field['key'] ) ?>"><?php echo esc_html( $dt_field['label'] ) ?>
-                                                    <span id="<?php echo esc_html( $dt_field['key'] ); ?>-spinner" class="loading-spinner"></span>
-                                                </label>
-                                            </dt>
-                                            <dd>
                                                 <?php DT_Components::render_text( $dt_field['key'], [
                                                      $dt_field['key'] => [
-                                                         'name' => '',
+                                                         'name' => $dt_field['label'],
                                                          'type'        => 'text',
                                                          'default' => '',
                                                          'data-optional' => true,
                                                      ]
                                                 ], [], [ 'placeholder' => $dt_field['label'] ] ) ?>
-                                            </dd>
                                             <?php
                                         } // end foreach
                                         ?>
-                                        <dt>
-                                            <label for="description"><?php esc_html_e( 'Biography', 'disciple_tools' )?>
-                                                <span id="<?php echo esc_html( 'description' ); ?>-spinner" class="loading-spinner"></span>
-                                            </label>
-                                        </dt>
-                                            <dd><textarea
-                                                    type="text" class="input text-input" id="description"
-                                                    name="description"
-                                                    placeholder="<?php esc_html_e( 'Biography', 'disciple_tools' )?>"
-                                                    rows="5"
-                                                    data-optional
-                                                ></textarea>
-                                            </dd>
-
-
+                                            <?php DT_Components::render_textarea( 'description', [
+                                                'description' => [
+                                                    'name' => __( 'Biography', 'disciple_tools' ),
+                                                    'type'        => 'textarea',
+                                                    'default' => '',
+                                                    'data-optional' => true,
+                                                ]
+                                            ], [], [ 'placeholder' => __( 'Biography', 'disciple_tools' ), 'rows' => 5 ] ) ?>
                                     </div>
 
                                     <!-- Roles -->
