@@ -154,7 +154,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                 <dt><label for="new-user-language-dropdown"><?php esc_html_e( 'Language', 'disciple_tools' ); ?></label></dt>
                                                 <dd id="new-user-language-dropdown"></dd>
                                                 <?php if ( $current_user_can_manage_users ): ?>
-                                                <?php esc_html_e( 'Role', 'disciple_tools' ); ?>
+                                                    <?php esc_html_e( 'Role', 'disciple_tools' ); ?>
                                                     <?php
                                                     $user_roles = [ 'multiplier' ];
                                                     $roles = dt_list_roles( false );
