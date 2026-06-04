@@ -767,7 +767,6 @@ jQuery(document).ready(function ($) {
 
   $('dt-textarea, dt-text').change(function () {
     if (window.current_user_lookup) {
-
       const id = $(this).attr('id');
       const val = $(this).val();
 
@@ -777,12 +776,10 @@ jQuery(document).ready(function ($) {
         document.getElementById(id)?.removeAttribute('loading');
         document.getElementById(id)?.setAttribute('saved', true);
       });
-
     }
   });
   $('select.select-field, dt-single-select').change((e) => {
     if (window.current_user_lookup) {
-
       const id = $(e.currentTarget).attr('id');
       const val = $(e.currentTarget).val();
       document.getElementById(id)?.setAttribute('loading', true);
@@ -791,7 +788,6 @@ jQuery(document).ready(function ($) {
         document.getElementById(id)?.removeAttribute('loading');
         document.getElementById(id)?.setAttribute('saved', true);
       });
-
     }
   });
   $('button.dt_multi_select').on('click', function () {
