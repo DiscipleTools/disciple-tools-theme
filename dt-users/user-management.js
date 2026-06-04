@@ -766,25 +766,33 @@ jQuery(document).ready(function ($) {
   };
 
   $('dt-textarea, dt-text').change(function () {
-    const id = $(this).attr('id');
-    const val = $(this).val();
-    document.getElementById(id)?.setAttribute('loading', true);
     if (window.current_user_lookup) {
+
+      const id = $(this).attr('id');
+      const val = $(this).val();
+
+      document.getElementById(id)?.setAttribute('loading', true);
+
       update_user(window.current_user_lookup, id, val).then(() => {
         document.getElementById(id)?.removeAttribute('loading');
+        document.getElementById(id)?.setAttribute('saved', true);
       });
-    } else {
-      document.getElementById(id)?.removeAttribute('loading');
+
     }
   });
   $('select.select-field, dt-single-select').change((e) => {
-    const id = $(e.currentTarget).attr('id');
-    const val = $(e.currentTarget).val();
-    document.getElementById(id)?.setAttribute('loading', true);
+    if (window.current_user_lookup) {
 
-    update_user(window.current_user_lookup, id, val).then(() => {
-      document.getElementById(id)?.removeAttribute('loading');
-    });
+      const id = $(e.currentTarget).attr('id');
+      const val = $(e.currentTarget).val();
+      document.getElementById(id)?.setAttribute('loading', true);
+
+      update_user(window.current_user_lookup, id, val).then(() => {
+        document.getElementById(id)?.removeAttribute('loading');
+        document.getElementById(id)?.setAttribute('saved', true);
+      });
+
+    }
   });
   $('button.dt_multi_select').on('click', function () {
     let fieldKey = $(this).data('field-key');
@@ -1087,12 +1095,12 @@ jQuery(document).ready(function ($) {
     });
 
     let create_user = (corresponds_to_contact, archive_comments = false) => {
-      let name = $('#nickname').val();
-      let email = $('#email').val();
+      let name = $('#emankcin').val();
+      let email = $('#liame').val();
       let locale = $('#locale').val();
 
-      const username = $('#username').val();
-      const password = $('#password').val();
+      const username = $('#emanresu').val();
+      const password = $('#ddrowssap').val();
 
       const optionalFields = document.querySelectorAll('[data-optional=""]');
       const optionalValues = {};
@@ -1253,12 +1261,16 @@ jQuery(document).ready(function ($) {
   }
 
   function write_language_dropdown(translations, default_language) {
-    let select = '<select name="locale" id="locale">';
+    let options = [];
+
     for (const translation in translations) {
-      select += `<option value="${window.SHAREDFUNCTIONS.escapeHTML(translations[translation].language)}" ${translations[translation].language === default_language ? 'selected' : ''} > ${translations[translation].flag ? translations[translation].flag + ' ' : ''} ${window.SHAREDFUNCTIONS.escapeHTML(translations[translation].native_name)}</option>`;
+      options.push({
+        id: translations[translation].language,
+        label: `${translations[translation].flag ? translations[translation].flag + ' ' : ''}${translations[translation].native_name}`,
+      });
     }
-    select += '</select>';
-    return select;
+
+    return `<dt-single-select name="locale" id="locale" value="${default_language}" options='${JSON.stringify(options)}'></dt-single-select>`;
   }
 });
 
