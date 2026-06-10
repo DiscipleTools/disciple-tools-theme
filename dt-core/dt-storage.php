@@ -168,11 +168,14 @@ class DT_Storage_API {
         // Derive the real content type from the file's bytes rather than trusting the
         // client-supplied value, and never store uploads as inline-executable content:
         // anything that is not a known raster image is served as a download.
-        if ( $tmp && function_exists( 'finfo_open' ) && ( $finfo = finfo_open( FILEINFO_MIME_TYPE ) ) ) {
-            $detected = finfo_file( $finfo, $tmp );
-            finfo_close( $finfo );
-            if ( !empty( $detected ) ) {
-                $type = $detected;
+        if ( $tmp && function_exists( 'finfo_open' ) ) {
+            $finfo = finfo_open( FILEINFO_MIME_TYPE );
+            if ( $finfo ) {
+                $detected = finfo_file( $finfo, $tmp );
+                finfo_close( $finfo );
+                if ( !empty( $detected ) ) {
+                    $type = $detected;
+                }
             }
         }
         $safe_inline_types = [ 'image/gif', 'image/jpeg', 'image/png', 'image/webp' ];
