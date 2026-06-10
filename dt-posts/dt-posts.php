@@ -1775,8 +1775,8 @@ class DT_Posts extends Disciple_Tools_Posts {
     }
 
     public static function revert_post_activity_history( string $post_type, int $post_id, array $args = [] ){
-        if ( !self::can_view( $post_type, $post_id ) ){
-            return new WP_Error( __FUNCTION__, 'No permissions to read: ' . $post_type, [ 'status' => 403 ] );
+        if ( !self::can_update( $post_type, $post_id ) ){
+            return new WP_Error( __FUNCTION__, 'No permissions to update: ' . $post_type, [ 'status' => 403 ] );
         }
 
         /**
