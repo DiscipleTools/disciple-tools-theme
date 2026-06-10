@@ -55,8 +55,8 @@ class Disciple_Tools_Core_Endpoints {
      */
     public static function get_settings() {
         $user = wp_get_current_user();
-        if ( !$user ){
-            return new WP_Error( 'get_settings', 'Something went wrong. Are you a user?', [ 'status' => 400 ] );
+        if ( !$user->exists() ){
+            return new WP_Error( 'get_settings', 'Something went wrong. Are you a user?', [ 'status' => 401 ] );
         }
         $available_translations = dt_get_available_languages();
         $post_types = DT_Posts::get_post_types();
