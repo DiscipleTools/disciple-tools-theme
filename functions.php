@@ -150,6 +150,7 @@ class Disciple_Tools
         if ( !class_exists( 'Jwt_Auth' ) ) {
             require_once( 'dt-core/libraries/wp-api-jwt-auth/jwt-auth.php' );
         }
+        require_once( 'dt-core/jwt-rate-limit.php' ); // throttles brute-force attempts against the JWT token endpoint
         require_once( 'dt-core/configuration/config-site-defaults.php' ); // Force required site configurations
         require_once( 'dt-core/wp-async-request.php' ); // Async Task Processing
         require_once( 'dt-core/configuration/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.

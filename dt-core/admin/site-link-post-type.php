@@ -1419,7 +1419,7 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                  */
 
                 if ( isset( $array['token'], $array['token_as_transfer_key'] ) && $array['token_as_transfer_key'] ){
-                    if ( $array['token'] == $transfer_token ){
+                    if ( hash_equals( (string) $array['token'], (string) $transfer_token ) ){
                         return $key;
                     }
                 } else {
@@ -1429,9 +1429,9 @@ if ( ! class_exists( 'Site_Link_System' ) ) {
                     $next = gmdate( 'Y-m-dH', strtotime( current_time( 'Y-m-d H:i:s', 1 ) . '+1 hour' ) );
                     $next_hour = md5( $key . $next );
 
-                    if ( $current_hour == $transfer_token
-                        || $past_hour == $transfer_token
-                        || $next_hour == $transfer_token ){
+                    if ( hash_equals( $current_hour, (string) $transfer_token )
+                        || hash_equals( $past_hour, (string) $transfer_token )
+                        || hash_equals( $next_hour, (string) $transfer_token ) ){
 
                         return $key;
                     }

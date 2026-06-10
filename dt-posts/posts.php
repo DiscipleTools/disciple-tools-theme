@@ -1347,17 +1347,20 @@ class Disciple_Tools_Posts
                              AND meta_value LIKE '%" . esc_sql( $search ) . "%'
                 ) ";
             }
-            $post_query .= ' ) ';
-
             if ( $post_type === 'peoplegroups' ) {
 
                 $locale = get_user_locale();
 
-                $post_query .= " OR p.ID IN ( SELECT post_id
+                if ( substr( $post_query, -6 ) !== 'AND ( ' ) {
+                    $post_query .= 'OR ';
+                }
+                $post_query .= "p.ID IN ( SELECT post_id
                                   FROM $wpdb->postmeta
                                   WHERE meta_key LIKE '" . esc_sql( $locale ) . "'
-                                  AND meta_value LIKE '%" . esc_sql( $search ) . "%' )";
+                                  AND meta_value LIKE '%" . esc_sql( $search ) . "%' ) ";
             }
+
+            $post_query .= ' ) ';
         }
 
         $sort_sql = '';
