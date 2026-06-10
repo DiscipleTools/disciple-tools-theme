@@ -2336,7 +2336,11 @@ class DT_Posts extends Disciple_Tools_Posts {
                 && (int) $assigned_user_id === $user_id
                 && !current_user_can( 'update_any_' . $post_type ) ) {
             $name = dt_get_user_display_name( $user_id );
-            return new WP_Error( __FUNCTION__, 'You do not have permission to unshare with ' . $name, [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, sprintf(
+                /* translators: %s is the assigned user's display name */
+                __( '%s is assigned to this record, so their access cannot be removed by unsharing.', 'disciple_tools' ),
+                $name
+            ), [ 'status' => 403 ] );
         }
 
 
