@@ -2321,15 +2321,20 @@ class DT_Posts extends Disciple_Tools_Posts {
     public static function remove_shared( string $post_type, int $post_id, int $user_id, $check_permissions = true ) {
         global $wpdb;
 
-        if ( $check_permissions && !self::can_update( $post_type, $post_id ) ) {
+        $assigned_to_meta = get_post_meta( $post_id, 'assigned_to', true );
+        $assigned_user_id = dt_get_user_id_from_assigned_to( $assigned_to_meta );
+        $is_self_removal  = ( get_current_user_id() === $user_id );
+
+        // A user may always remove their own share; otherwise they need update permission on the record.
+        if ( $check_permissions && !$is_self_removal && !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, 'You do not have permission to unshare', [ 'status' => 403 ] );
         }
 
-        $assigned_to_meta = get_post_meta( $post_id, 'assigned_to', true );
-        if ( $check_permissions && !( self::can_update( $post_type, $post_id ) ||
-                 get_current_user_id() === $user_id ||
-                 dt_get_user_id_from_assigned_to( $assigned_to_meta ) === get_current_user_id() )
-        ){
+        // The assigned user's foundational share may only be removed by that user, or by someone with
+        // record-type update authority — not by a collaborator who merely holds a share on the record.
+        if ( $check_permissions && !$is_self_removal
+                && (int) $assigned_user_id === $user_id
+                && !current_user_can( 'update_any_' . $post_type ) ) {
             $name = dt_get_user_display_name( $user_id );
             return new WP_Error( __FUNCTION__, 'You do not have permission to unshare with ' . $name, [ 'status' => 403 ] );
         }
