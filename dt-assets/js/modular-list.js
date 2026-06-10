@@ -667,7 +667,7 @@
         <img style="padding: 0 4px" src="${window.wpApiShare.template_dir}/dt-assets/images/trash.svg">
       </span>`);
         delete_filter.on('click', function () {
-          $(`.delete-filter-name`).html(filter.name);
+          $(`.delete-filter-name`).text(filter.name);
           $('#delete-filter-modal').foundation('open');
           filter_to_delete = filter.ID;
         });

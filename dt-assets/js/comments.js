@@ -731,9 +731,9 @@ jQuery(document).ready(function ($) {
           );
         }
 
-        $('.revert-field').html(field || a.meta_key);
-        $('.revert-current-value').html(a.meta_value);
-        $('.revert-old-value').html(a.old_value || 0);
+        $('.revert-field').text(field || a.meta_key);
+        $('.revert-current-value').text(a.meta_value);
+        $('.revert-old-value').text(a.old_value || 0);
       })
       .catch((err) => {
         console.error(err);

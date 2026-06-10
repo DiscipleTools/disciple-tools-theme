@@ -1103,7 +1103,7 @@ jQuery(document).ready(function ($) {
           onClick: function (node, a, item) {
             $('.confirm-merge-with-post').show();
             $('#confirm-merge-with-post-id').val(item.ID);
-            $('#name-of-post-to-merge').html(item.name);
+            $('#name-of-post-to-merge').text(item.name);
           },
           onResult: function (node, query, result, resultCount) {
             let text = window.TYPEAHEADS.typeaheadHelpText(
