@@ -102,41 +102,47 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
 
                                     <!-- User Status -->
                                     <div class="bordered-box" style="--dt-label-font-size: 1.2rem; --dt-label-font-weight: 300;">
-                                        <?php DT_Components::render_key_select( 'user_status', [
-                                                        'user_status' => [
-                                                            'name' => __( 'User Status', 'disciple_tools' ),
-                                                            'type'        => 'key_select',
-                                                            'default' => $dt_user_fields['user_status']['options'],
-                                                            'select_cannot_be_empty' => true,
-                                                        ]
-                                        ], [ 'key_select' => [ 'key' => 'active' ] ], [] ) ?>
+                                        <div class="user-field">
+                                            <?php DT_Components::render_key_select( 'user_status', [
+                                                            'user_status' => [
+                                                                'name' => __( 'User Status', 'disciple_tools' ),
+                                                                'type'        => 'key_select',
+                                                                'default' => $dt_user_fields['user_status']['options'],
+                                                                'select_cannot_be_empty' => true,
+                                                            ]
+                                            ], [ 'key_select' => [ 'key' => 'active' ] ], [] ) ?>
+                                        </div>
 
                                         <!-- Workload Status -->
-                                        <?php DT_Components::render_key_select( 'workload_status', [
-                                                         'workload_status' => [
-                                                             'name' => __( 'Workload Status', 'disciple_tools' ),
-                                                             'type'        => 'key_select',
-                                                             'default' => $dt_user_fields['workload_status']['options'],
-                                                            'select_cannot_be_empty' => true,
-                                                         ]
-                                        ], [ 'key_select' => [ 'key' => 'active' ] ], [ 'key_select' => [ 'disable_color' => true ] ] ) ?>
+                                        <div class="user-field">
+                                            <?php DT_Components::render_key_select( 'workload_status', [
+                                                            'workload_status' => [
+                                                                'name' => __( 'Workload Status', 'disciple_tools' ),
+                                                                'type'        => 'key_select',
+                                                                'default' => $dt_user_fields['workload_status']['options'],
+                                                                'select_cannot_be_empty' => true,
+                                                            ]
+                                            ], [ 'key_select' => [ 'key' => 'active' ] ], [ 'key_select' => [ 'disable_color' => true ] ] ) ?>
+                                        </div>
 
                                         <!-- Locations -->
-                                        <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
-                                            <?php DT_Components::render_location_meta( 'location_grid_meta', [
-                                                'location_grid_meta' => [
-                                                    'name' => __( 'Location Responsibility', 'disciple_tools' ),
-                                                    'type'        => 'location_meta',
-                                                ]
-                                            ], null ) ?>
-                                        <?php else : ?>
-                                            <?php DT_Components::render_location( 'location_grid', [
-                                                'location_grid' => [
-                                                    'name' => __( 'Location Responsibility', 'disciple_tools' ),
-                                                    'type'        => 'location',
-                                                ]
-                                            ], null ) ?>
-                                        <?php endif; ?>
+                                        <div class="user-field">
+                                            <?php if ( DT_Mapbox_API::get_key() ) : /* If Mapbox is enabled. */?>
+                                                <?php DT_Components::render_location_meta( 'location_grid_meta', [
+                                                    'location_grid_meta' => [
+                                                        'name' => __( 'Location Responsibility', 'disciple_tools' ),
+                                                        'type'        => 'location_meta',
+                                                    ]
+                                                ], null ) ?>
+                                            <?php else : ?>
+                                                <?php DT_Components::render_location( 'location_grid', [
+                                                    'location_grid' => [
+                                                        'name' => __( 'Location Responsibility', 'disciple_tools' ),
+                                                        'type'        => 'location',
+                                                    ]
+                                                ], null ) ?>
+                                            <?php endif; ?>
+                                        </div>
 
                                         <h4 class="" style="margin-top:30px">
                                             <img class="dt-icon" src="<?php echo esc_url( get_template_directory_uri() ) . '/dt-assets/images/languages.svg' ?>">
@@ -224,7 +230,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                         <p>
                                             <?php esc_html_e( 'Email', 'disciple_tools' ); ?>: <span id="user_email"></span>
                                         </p>
-                                        <p>
+                                        <div class="user-field">
                                             <?php DT_Components::render_text( 'update_display_name', [
                                                 'update_display_name' => [
                                                     'name' => __( 'Display Name', 'disciple_tools' ),
@@ -232,16 +238,16 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                     'default' => '',
                                                 ]
                                             ], [], [ 'placeholder' => __( 'Display Name', 'disciple_tools' ) ] ) ?>
-                                        </p>
-
-                                        <?php DT_Components::render_key_select( 'gender', [
-                                                        'gender' => [
-                                                            'name' => __( 'Gender', 'disciple_tools' ),
-                                                            'type'        => 'key_select',
-                                                            'default' => $gender_fields['default'],
-                                                            'select_cannot_be_empty' => true,
-                                                        ]
-                                        ], [], [] ) ?>
+                                        </div>
+                                        <div class="user-field">
+                                            <?php DT_Components::render_key_select( 'gender', [
+                                                            'gender' => [
+                                                                'name' => __( 'Gender', 'disciple_tools' ),
+                                                                'type'        => 'key_select',
+                                                                'default' => $gender_fields['default'],
+                                                            ]
+                                            ], [], [] ) ?>
+                                        </div>
 
                                         <?php // site defined fields
                                         $dt_user_fields = dt_get_site_custom_lists( 'user_fields' );
@@ -250,6 +256,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                 continue;
                                             }
                                             ?>
+                                            <div class="user-field">
                                                 <?php DT_Components::render_text( $dt_field['key'], [
                                                      $dt_field['key'] => [
                                                          'name' => $dt_field['label'],
@@ -258,9 +265,11 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                          'data-optional' => true,
                                                      ]
                                                 ], [], [ 'placeholder' => $dt_field['label'] ] ) ?>
+                                            </div>
                                             <?php
                                         } // end foreach
                                         ?>
+                                        <div class="user-field">
                                             <?php DT_Components::render_textarea( 'description', [
                                                 'description' => [
                                                     'name' => __( 'Biography', 'disciple_tools' ),
@@ -269,6 +278,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                     'data-optional' => true,
                                                 ]
                                             ], [], [ 'placeholder' => __( 'Biography', 'disciple_tools' ), 'rows' => 5 ] ) ?>
+                                        </div>
                                     </div>
 
                                     <!-- Roles -->
@@ -476,5 +486,11 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
     </div> <!-- end #inner-content -->
 
 </div> <!-- end #content -->
+
+<style>
+    .user-field {
+        margin-bottom: 1rem;
+    }
+</style>
 
 <?php get_footer(); ?>

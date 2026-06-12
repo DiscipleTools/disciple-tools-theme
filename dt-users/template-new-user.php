@@ -90,23 +90,18 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
 
                                     <div class="grid-x row gutter-small">
                                         <div class="cell medium-6">
-                                            <dt-label for="subassigned[query]"><?php esc_html_e( 'Contact to make a user (optional)', 'disciple_tools' ); ?></dt-label>
-                                                <div class="subassigned details" style="margin-bottom: 16px;">
-                                                    <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
-                                                    <div id="subassigned_t" name="form-subassigned" class="scrollable-typeahead">
-                                                        <div class="typeahead__container">
-                                                            <div class="typeahead__field">
-                                                                <span class="typeahead__query">
-                                                                    <input id="subassigned[query]" class="js-typeahead-subassigned input-height"
-                                                                            name="subassigned[query]" placeholder="<?php esc_html_e( 'Search multipliers and contacts', 'disciple_tools' ); ?>"
-                                                                            autocomplete="off">
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                <div class="user-field">
+                                                <?php DT_Components::render_connection( 'subassigned[query]', [
+                                                        'subassigned[query]' => [
+                                                            'name' => __( 'Contact to make a user (optional)', 'disciple_tools' ),
+                                                            'default' => '',
+                                                            'type' => 'connection',
+                                                            'post_type' => 'contacts',
+                                                        ]
+                                                ], [], [ 'placeholder' => __( 'Search multipliers and contacts', 'disciple_tools' ) ] ) ?>
                                                 </div>
                                             <div id="contact-result"></div>
-                                                <div style="margin-bottom: 16px;">
+                                                <div class="user-field">
                                                 <?php DT_Components::render_text( 'emankcin', [
                                                         'emankcin' => [
                                                             'name' => __( 'Display Name', 'disciple_tools' ),
@@ -115,7 +110,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                         ]
                                                 ], [], [ 'placeholder' => __( 'Nickname (Display Name)', 'disciple_tools' ) ] ) ?>
                                                 </div>
-                                                <div style="margin-bottom: 16px;">
+                                                <div class="user-field">
                                                 <?php DT_Components::render_text( 'liame', [
                                                         'liame' => [
                                                             'name' => __( 'Email', 'disciple_tools' ),
@@ -126,7 +121,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                 ], [], [ 'placeholder' => __( 'Email', 'disciple_tools' ) ] ) ?>
                                                 </div>
                                                 <div class="hidden-fields" style="display:none">
-                                                    <div style="margin-bottom: 16px;">
+                                                    <div class="user-field">
                                                     <?php DT_Components::render_text( 'emanresu', [
                                                         'emanresu' => [
                                                             'name' => __( 'Username', 'disciple_tools' ),
@@ -135,7 +130,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                         ]
                                                     ], [], [ 'placeholder' => __( 'Username', 'disciple_tools' ) ] ) ?>
                                                     </div>
-                                                    <div style="margin-bottom: 16px;">
+                                                    <div class="user-field">
                                                     <?php DT_Components::render_text( 'ddrowssap', [
                                                         'ddrowssap' => [
                                                             'name' => __( 'Password', 'disciple_tools' ),
@@ -195,7 +190,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                         </div>
 
                                         <div id="optional-fields" class="cell medium-6 show-for-medium">
-                                            <div style="margin-bottom: 16px;">
+                                            <div class="user-field">
                                             <?php DT_Components::render_text( 'first_name', [
                                                     'first_name' => [
                                                         'name' => __( 'First Name (optional)', 'disciple_tools' ),
@@ -204,7 +199,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                     ]
                                             ], [], [ 'placeholder' => __( 'First Name', 'disciple_tools' ) ] ) ?>
                                             </div>
-                                            <div style="margin-bottom: 16px;">
+                                            <div class="user-field">
                                             <?php DT_Components::render_text( 'last_name', [
                                                     'last_name' => [
                                                         'name' => __( 'Last Name (optional)', 'disciple_tools' ),
@@ -213,15 +208,14 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                     ]
                                             ], [], [ 'placeholder' => __( 'Last Name', 'disciple_tools' ) ] ) ?>
                                             </div>
-                                            <div style="margin-bottom: 16px;">
+                                            <div class="user-field">
                                             <?php DT_Components::render_key_select( 'gender', [
                                                     'gender' => [
                                                         'name' => __( 'Gender (optional)', 'disciple_tools' ),
                                                         'type'        => 'key_select',
                                                         'default' => $gender_fields['default'],
-                                                        'select_cannot_be_empty' => true,
                                                     ]
-                                            ], [ 'gender' => [ 'key' => 'male' ] ], [] ) ?>
+                                            ], [], [] ) ?>
                                             </div>
 
                                             <?php // site defined fields
@@ -230,7 +224,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                     continue;
                                                 }
                                                 ?>
-                                                <div style="margin-bottom: 16px;">
+                                                <div class="user-field">
                                                     <?php DT_Components::render_text( $dt_field['key'], [
                                                         $dt_field['key'] => [
                                                             'name' => $dt_field['label'],
@@ -250,7 +244,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                 placeholder="<?php esc_html_e( 'Biography', 'disciple_tools' )?>"
                                                 rows="5"
                                                 data-optional
-                                            ></textarea>
+                                            ></dt-textarea>
                                         </div>
 
                                     </div>
@@ -325,5 +319,11 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
     </div>
 
 </div> <!-- end #content -->
+
+<style>
+    .user-field {
+        margin-bottom: 1rem;
+    }
+</style>
 
 <?php get_footer(); ?>

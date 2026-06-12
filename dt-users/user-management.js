@@ -1023,6 +1023,13 @@ jQuery(document).ready(function ($) {
   }
 
   function write_add_user() {
+    const componentService = new window.DtWebComponents.ComponentService(
+      'users',
+      window.current_user_lookup,
+      window.wpApiShare.nonce,
+    );
+    componentService.attachLoadEvents();
+
     const showOptionsButton = $('#show-hidden-fields');
     const hideOptionsButton = $('#hide-hidden-fields');
     const hiddenFields = $('.hidden-fields');
@@ -1208,6 +1215,7 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    // subassigned check here
     ['subassigned'].forEach((field_id) => {
       $.typeahead({
         input: `.js-typeahead-${field_id}`,
