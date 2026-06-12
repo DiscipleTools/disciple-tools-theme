@@ -272,7 +272,7 @@ class DT_Metrics_Date_Range_Activity extends DT_Metrics_Chart_Base
 
             } elseif ( $field_type == 'user_select' ){
                 $value = $params['value'];
-                $meta_value_sql = ( !empty( $value ) ? "AND meta_value LIKE 'user-" . $value['ID'] . "'" : "AND meta_value LIKE '%'" );
+                $meta_value_sql = ( !empty( $value['ID'] ) ? "AND meta_value LIKE 'user-" . intval( $value['ID'] ) . "'" : "AND meta_value LIKE '%'" );
 
             } else {
                 $meta_value_sql = "AND meta_value LIKE '" . ( empty( $params['value'] ) ? '%' : esc_sql( $params['value'] ) ) . "'";

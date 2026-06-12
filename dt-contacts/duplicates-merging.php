@@ -485,6 +485,11 @@ class DT_Duplicate_Checker_And_Merging {
             return $archiving_post;
         }
 
+        // A merge mutates both records, so the caller must be able to update both.
+        if ( !DT_Posts::can_update( $post_type, $primary_post_id ) || !DT_Posts::can_update( $post_type, $archiving_post_id ) ) {
+            return new WP_Error( __METHOD__, 'No permissions to merge these records', [ 'status' => 403 ] );
+        }
+
         // Ignore specified fields
         $ignored_fields = [
             'post_date'

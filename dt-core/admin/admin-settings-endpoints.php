@@ -787,20 +787,37 @@ class Disciple_Tools_Admin_Settings_Endpoints {
     public function plugin_install( WP_REST_Request $request ) {
         require_once( ABSPATH . 'wp-admin/includes/file.php' );
         $params = $request->get_params();
-        $download_url = sanitize_text_field( wp_unslash( $params['download_url'] ) );
+        $download_url = sanitize_text_field( wp_unslash( $params['download_url'] ?? '' ) );
+
+        // Only fetch validated, externally-routable http(s) URLs. wp_http_validate_url() rejects
+        // loopback, private and link-local addresses, closing server-side request forgery.
+        if ( empty( $download_url )
+            || ! wp_http_validate_url( $download_url )
+            || ! in_array( wp_parse_url( $download_url, PHP_URL_SCHEME ), [ 'http', 'https' ], true ) ) {
+            return new WP_Error( 'invalid_download_url', 'Invalid download URL.', [ 'status' => 400 ] );
+        }
+
+        // wp_http_validate_url() does not cover link-local (e.g. 169.254.169.254 cloud metadata)
+        // or all reserved ranges; reject any host that resolves into a private or reserved network.
+        $resolved_ip = gethostbyname( (string) wp_parse_url( $download_url, PHP_URL_HOST ) );
+        if ( filter_var( $resolved_ip, FILTER_VALIDATE_IP )
+            && ! filter_var( $resolved_ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
+            return new WP_Error( 'invalid_download_url', 'Invalid download URL.', [ 'status' => 400 ] );
+        }
+
         set_time_limit( 0 );
-        $folder_name = explode( '/', $download_url );
-        $folder_name = get_home_path() . 'wp-content/plugins/' . $folder_name[4] . '.zip';
-        if ( $folder_name != '' ) {
-            //download the zip file to plugins
-            file_put_contents( $folder_name, file_get_contents( $download_url ) );
-            // get the absolute path to $file
-            $folder_name = realpath( $folder_name );
-            //unzip
-            WP_Filesystem();
-            $unzip = unzip_file( $folder_name, realpath( get_home_path() . 'wp-content/plugins/' ) );
-            //remove the file
-            unlink( $folder_name );
+        WP_Filesystem();
+
+        // Download to a temp file through the HTTP API rather than reading the URL directly.
+        $tmp_file = download_url( $download_url );
+        if ( is_wp_error( $tmp_file ) ) {
+            return $tmp_file;
+        }
+
+        $unzip = unzip_file( $tmp_file, realpath( get_home_path() . 'wp-content/plugins/' ) );
+        unlink( $tmp_file );
+        if ( is_wp_error( $unzip ) ) {
+            return $unzip;
         }
         return true;
     }
