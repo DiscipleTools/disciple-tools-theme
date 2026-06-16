@@ -97,6 +97,13 @@ jQuery(document).ready(function ($) {
     $('#status-select').val('');
     $('#workload-select').val('');
 
+    // Reset form components
+    document.getElementById('update_display_name').reset();
+    document.getElementById('gender').reset();
+    document.getElementById('description').reset();
+    document.getElementById('user_status').reset();
+    document.getElementById('workload_status').reset();
+
     // Determine if provision for magic link apps should be made.
     const user_apps = get_magic_link_apps();
     if (user_apps) {
