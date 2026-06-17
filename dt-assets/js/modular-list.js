@@ -884,16 +884,6 @@
         '<span class="no-fields-message">No fields selected</span>',
       );
     }
-
-    // Refresh dropdown if it's currently visible to show the newly available field
-    if ($('#field_search_dropdown').is(':visible')) {
-      const searchTerm = $('#field_search_input').val().toLowerCase();
-      if (searchTerm.length === 0) {
-        showFieldDropdown();
-      } else {
-        filterFieldDropdown(searchTerm);
-      }
-    }
   });
 
   $('#save_column_choices').on('click', function () {
@@ -913,7 +903,6 @@
     window.location.reload();
   });
   $('#reset_column_choices').on('click', function () {
-    //sync selected after this, between fields_ and windw.
     fields_to_show_in_table = [];
     $('#selected_fields_input').val('[]');
     $('#enabled_fields_container').html(

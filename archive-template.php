@@ -468,11 +468,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                                 'name' => '',
                                                 'type' => 'boolean',
                                             ]
-                                        ], [], [] ); ?>
-                                <?php /*<input class="switch-input" id="archivedToggle" type="checkbox" name="archivedToggle">
-                                <label class="switch-paddle" for="archivedToggle">
-                                    <span class="show-for-sr"><?php echo esc_html( $archived_label ) ?></span>
-                                </label>*/?>
+                                ], [], [] ); ?>
                             </div>
                         </span>
                         <?php endif; ?>
@@ -595,7 +591,7 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
                                                     'display' => 'typeahead',
                                                     'default' => $field_search_options,
                                                 ],
-                                            ], [ 'field_search_input' => $enabled_fields ], [
+                                                ], [ 'field_search_input' => $enabled_fields ], [
                                                 'hide_label' => true,
                                                 'placeholder' => __( 'Search for fields to add...', 'disciple_tools' ),
                                             ] ); ?>
@@ -957,7 +953,6 @@ Thanks!';
                     </ul>
                 </div>
 
-                <!-- CUSTOM FILTER CREATION HERE -->
                 <div class="cell small-8 tabs-content filter-modal-right" data-tabs-content="filter-tabs">
                     <?php foreach ( $fields as $index => $field ) : ?>
                         <div class="tabs-panel <?php if ( $index === 0 ){ echo 'is-active'; } ?>" id="<?php echo esc_html( $field ) ?>">
@@ -965,64 +960,78 @@ Thanks!';
                             <div class="filter-field-component-wrapper">
                                 <?php
                                 $type = $field_options[$field]['type'] ?? '';
-                                dt_write_log($field);
-                                dt_write_log($field_options[$field]);
+                                dt_write_log( $field );
+                                dt_write_log( $field_options[$field] );
                                 switch ( $type ) {
                                     case 'key_select':
                                         DT_Components::render_key_select( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'multi_select':
                                         DT_Components::render_multi_select( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'tags':
                                         DT_Components::render_tags( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'user_select':
                                         DT_Components::render_user_select( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'connection':
                                         DT_Components::render_connection( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'location':
                                         DT_Components::render_location( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'location_meta':
                                         DT_Components::render_location_meta( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'date':
                                         DT_Components::render_date( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'datetime':
                                         DT_Components::render_datetime( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'boolean':
                                         DT_Components::render_toggle( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'text':
                                         DT_Components::render_text( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'textarea':
                                         DT_Components::render_textarea( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'number':
                                         DT_Components::render_number( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'communication_channel':
                                         DT_Components::render_communication_channel( $field, [
-                                            $field => $field_options[$field] ], [], [] );
+                                            $field => $field_options[$field]
+                                        ], [], [] );
                                         break;
                                     case 'file_upload':
                                         ?><p>

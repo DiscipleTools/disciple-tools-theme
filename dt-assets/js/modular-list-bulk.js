@@ -1617,7 +1617,7 @@
         (key) => !selectedFieldKeys.includes(key),
       );
 
-      // Add newly selected fields RENDER HERE
+      // Add newly selected fields
       newlySelected.forEach((fieldKey) => {
         // Handle special 'comments' field (not a real post field)
         if (fieldKey === 'comments') {
