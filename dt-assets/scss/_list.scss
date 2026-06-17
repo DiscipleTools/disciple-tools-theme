@@ -259,9 +259,12 @@ nav.second-bar.show-for-small-only {
 }
 
 .show-closed-switch {
-    display: inline-block;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
     .switch {
-        display: inline-block;
+        display: flex;
+        align-items: center;
         margin-bottom: 0;
         vertical-align: middle;
     }

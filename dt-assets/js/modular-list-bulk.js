@@ -1617,7 +1617,7 @@
         (key) => !selectedFieldKeys.includes(key),
       );
 
-      // Add newly selected fields
+      // Add newly selected fields RENDER HERE
       newlySelected.forEach((fieldKey) => {
         // Handle special 'comments' field (not a real post field)
         if (fieldKey === 'comments') {
@@ -1805,12 +1805,12 @@
       // Build comment HTML with proper spacing
       let commentHtml = '<div class="auto cell">';
       commentHtml +=
-        '<textarea class="mention" dir="auto" id="' +
+        '<dt-textarea class="mention" dir="auto" id="' +
         commentInputId +
         '" placeholder="' +
         (window.wpApiShare?.translations?.write_comment_placeholder ||
           'Write your comment or note here') +
-        '" style="margin-bottom: 15px;"></textarea>';
+        '" style="margin-bottom: 15px;"></dt-textarea>';
 
       // Add Type selector with proper spacing
       commentHtml += '<div class="grid-x" style="margin-top: 15px;">';
