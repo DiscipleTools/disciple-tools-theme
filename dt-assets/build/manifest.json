@@ -1,31 +1,4 @@
 {
-  "../../../../../../../Documents/XG/disciple-tools/disciple-tools-web-components/src/styles/dark.css": {
-    "file": "css/dark.min.css",
-    "src": "../../../../../../../Documents/XG/disciple-tools/disciple-tools-web-components/src/styles/dark.css",
-    "isEntry": true,
-    "name": "dark",
-    "names": [
-      "dark.css"
-    ]
-  },
-  "../../../../../../../Documents/XG/disciple-tools/disciple-tools-web-components/src/styles/dim.css": {
-    "file": "css/dim.min.css",
-    "src": "../../../../../../../Documents/XG/disciple-tools/disciple-tools-web-components/src/styles/dim.css",
-    "isEntry": true,
-    "name": "dim",
-    "names": [
-      "dim.css"
-    ]
-  },
-  "../../../../../../../Documents/XG/disciple-tools/disciple-tools-web-components/src/styles/light.css": {
-    "file": "css/light.min.css",
-    "src": "../../../../../../../Documents/XG/disciple-tools/disciple-tools-web-components/src/styles/light.css",
-    "isEntry": true,
-    "name": "light",
-    "names": [
-      "light.css"
-    ]
-  },
   "dt-assets/scss/login.scss": {
     "file": "css/login.min.css",
     "src": "dt-assets/scss/login.scss",
@@ -42,6 +15,33 @@
     "name": "style",
     "names": [
       "style.css"
+    ]
+  },
+  "node_modules/@disciple.tools/web-components/src/styles/dark.css": {
+    "file": "css/dark.min.css",
+    "src": "node_modules/@disciple.tools/web-components/src/styles/dark.css",
+    "isEntry": true,
+    "name": "dark",
+    "names": [
+      "dark.css"
+    ]
+  },
+  "node_modules/@disciple.tools/web-components/src/styles/dim.css": {
+    "file": "css/dim.min.css",
+    "src": "node_modules/@disciple.tools/web-components/src/styles/dim.css",
+    "isEntry": true,
+    "name": "dim",
+    "names": [
+      "dim.css"
+    ]
+  },
+  "node_modules/@disciple.tools/web-components/src/styles/light.css": {
+    "file": "css/light.min.css",
+    "src": "node_modules/@disciple.tools/web-components/src/styles/light.css",
+    "isEntry": true,
+    "name": "light",
+    "names": [
+      "light.css"
     ]
   }
 }
