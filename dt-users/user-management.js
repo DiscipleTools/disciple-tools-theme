@@ -1181,14 +1181,29 @@ jQuery(document).ready(function ($) {
         .makeRequest('GET', 'contacts/' + id, null, 'dt-posts/v2/')
         .done(function (response) {
           if (overwriteTypeahead) {
-            $('.js-typeahead-subassigned').val(
-              window.SHAREDFUNCTIONS.escapeHTML(response.name),
-            );
+            console.log('1');
+            const safeName = window.SHAREDFUNCTIONS.escapeHTML(response.name);
+
+            const dataArray = [
+              { 
+                id: response.ID, 
+                label: safeName, 
+                status: { 
+                  key: "active", 
+                  label: "Active", 
+                  color: "#4CAF50" 
+                } 
+              }
+            ];
+
+            const jsonString = JSON.stringify(dataArray);
+
+            $('#subassigned').attr('value', jsonString);
           }
           if (isUser || response.corresponds_to_user >= 0) {
-            $('#name').val(window.SHAREDFUNCTIONS.escapeHTML(response.name));
+            $('#emankcin').val(window.SHAREDFUNCTIONS.escapeHTML(response.name));
             if (response.contact_email && response.contact_email.length > 0) {
-              $('#email').val(
+              $('#liame').val(
                 window.SHAREDFUNCTIONS.escapeHTML(
                   response.contact_email[0].value,
                 ),
@@ -1206,61 +1221,50 @@ jQuery(document).ready(function ($) {
           } else {
             window.contact_record = response;
             submit_button.prop('disabled', false);
-            $('#name').val(window.SHAREDFUNCTIONS.escapeHTML(response.title));
+            $('#emankcin').val(window.SHAREDFUNCTIONS.escapeHTML(response.title));
             if (
               response.contact_email &&
               response.contact_email[0] !== 'undefined'
             ) {
-              $('#email').val(
+              $('#liame').val(
                 window.SHAREDFUNCTIONS.escapeHTML(
                   response.contact_email[0].value,
                 ),
               );
+            } else {
+              $('#liame').val(
+                window.SHAREDFUNCTIONS.escapeHTML(
+                  ''
+                ),
+              );
             }
+            $('#contact-result').empty();
           }
           $('.loading-spinner').removeClass('active');
         });
     }
 
-    // subassigned check here
-    ['subassigned'].forEach((field_id) => {
-      $.typeahead({
-        input: `.js-typeahead-${field_id}`,
-        minLength: 0,
-        accent: true,
-        maxItem: 30,
-        searchOnFocus: true,
-        template: window.TYPEAHEADS.contactListRowTemplate,
-        source: window.TYPEAHEADS.typeaheadContactsSource(),
-        display: 'name',
-        templateValue: '{{name}}',
-        dynamic: true,
-        callback: {
-          onClick: function (node, a, item, event) {
-            submit_button.prop('disabled', true);
+    $('#subassigned').on('change', function (e) {
 
-            getContact(item.ID, item.user);
-          },
-          onResult: function (node, query, result, resultCount) {
-            let text = window.TYPEAHEADS.typeaheadHelpText(
-              resultCount,
-              query,
-              result,
-            );
-            $(`#${field_id}-result-container`).html(text);
-            submit_button.prop('disabled', false);
-            $('#contact-result').html(``);
-          },
-          onHideLayout: function () {
-            $(`#${field_id}-result-container`).html('');
-          },
-          onReady: function () {
-            if (field_id === 'subassigned') {
-            }
-          },
-          onShowLayout() {},
-        },
-      });
+      submit_button.prop('disabled', true);
+
+      let contact_id = null;
+
+      // if a second is added, it is set as the only value
+      // else, 
+      if (e.target.value[1] && !e.target.value[1].delete) {
+        contact_id = e.target.value[1].id;
+        e.target.value = [e.target.value[1]];
+      } else if (!e.target.value[0].delete) {
+        contact_id = e.target.value[0].id;
+      } else {
+        contact_id = '';
+      }
+
+      getContact(contact_id, false);
+
+      submit_button.prop('disabled', false);
+
     });
 
     // Prefill the form if contact_id is in the query params

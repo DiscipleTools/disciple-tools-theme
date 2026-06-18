@@ -91,14 +91,14 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                     <div class="grid-x row gutter-small">
                                         <div class="cell medium-6">
                                                 <div class="user-field">
-                                                <?php DT_Components::render_connection( 'subassigned[query]', [
-                                                        'subassigned[query]' => [
+                                                <?php DT_Components::render_connection( 'subassigned', [
+                                                        'subassigned' => [
                                                             'name' => __( 'Contact to make a user (optional)', 'disciple_tools' ),
                                                             'default' => '',
                                                             'type' => 'connection',
                                                             'post_type' => 'contacts',
                                                         ]
-                                                ], [], [ 'placeholder' => __( 'Search multipliers and contacts', 'disciple_tools' ) ] ) ?>
+                                                ], [], [ 'placeholder' => __( 'Search multipliers and contacts', 'disciple_tools' ), 'allow_add' => false ] ) ?>
                                                 </div>
                                             <div id="contact-result"></div>
                                                 <div class="user-field">
@@ -319,11 +319,5 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
     </div>
 
 </div> <!-- end #content -->
-
-<style>
-    .user-field {
-        margin-bottom: 1rem;
-    }
-</style>
 
 <?php get_footer(); ?>

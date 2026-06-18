@@ -487,10 +487,4 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
 
 </div> <!-- end #content -->
 
-<style>
-    .user-field {
-        margin-bottom: 1rem;
-    }
-</style>
-
 <?php get_footer(); ?>
