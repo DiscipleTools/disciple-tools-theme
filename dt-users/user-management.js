@@ -1185,15 +1185,15 @@ jQuery(document).ready(function ($) {
             const safeName = window.SHAREDFUNCTIONS.escapeHTML(response.name);
 
             const dataArray = [
-              { 
-                id: response.ID, 
-                label: safeName, 
-                status: { 
-                  key: "active", 
-                  label: "Active", 
-                  color: "#4CAF50" 
-                } 
-              }
+              {
+                id: response.ID,
+                label: safeName,
+                status: {
+                  key: 'active',
+                  label: 'Active',
+                  color: '#4CAF50',
+                },
+              },
             ];
 
             const jsonString = JSON.stringify(dataArray);
@@ -1201,7 +1201,9 @@ jQuery(document).ready(function ($) {
             $('#subassigned').attr('value', jsonString);
           }
           if (isUser || response.corresponds_to_user >= 0) {
-            $('#emankcin').val(window.SHAREDFUNCTIONS.escapeHTML(response.name));
+            $('#emankcin').val(
+              window.SHAREDFUNCTIONS.escapeHTML(response.name),
+            );
             if (response.contact_email && response.contact_email.length > 0) {
               $('#liame').val(
                 window.SHAREDFUNCTIONS.escapeHTML(
@@ -1221,7 +1223,9 @@ jQuery(document).ready(function ($) {
           } else {
             window.contact_record = response;
             submit_button.prop('disabled', false);
-            $('#emankcin').val(window.SHAREDFUNCTIONS.escapeHTML(response.title));
+            $('#emankcin').val(
+              window.SHAREDFUNCTIONS.escapeHTML(response.title),
+            );
             if (
               response.contact_email &&
               response.contact_email[0] !== 'undefined'
@@ -1232,11 +1236,7 @@ jQuery(document).ready(function ($) {
                 ),
               );
             } else {
-              $('#liame').val(
-                window.SHAREDFUNCTIONS.escapeHTML(
-                  ''
-                ),
-              );
+              $('#liame').val(window.SHAREDFUNCTIONS.escapeHTML(''));
             }
             $('#contact-result').empty();
           }
@@ -1245,13 +1245,12 @@ jQuery(document).ready(function ($) {
     }
 
     $('#subassigned').on('change', function (e) {
-
       submit_button.prop('disabled', true);
 
       let contact_id = null;
 
       // if a second is added, it is set as the only value
-      // else, 
+      // else,
       if (e.target.value[1] && !e.target.value[1].delete) {
         contact_id = e.target.value[1].id;
         e.target.value = [e.target.value[1]];
@@ -1264,7 +1263,6 @@ jQuery(document).ready(function ($) {
       getContact(contact_id, false);
 
       submit_button.prop('disabled', false);
-
     });
 
     // Prefill the form if contact_id is in the query params
