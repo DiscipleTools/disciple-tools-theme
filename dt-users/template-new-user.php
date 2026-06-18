@@ -137,7 +137,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                             'type'        => 'text',
                                                             'default' => '',
                                                         ]
-                                                    ], [], [ 'placeholder' => __( 'Password', 'disciple_tools' ) ] ) ?>
+                                                    ], [], [ 'data_type' => 'password', 'placeholder' => __( 'Password', 'disciple_tools' ) ] ) ?>
                                                     </div>
                                                 </div>
                                                 <?php if ( $current_user_can_manage_users ) : ?>
@@ -197,7 +197,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                         'type'        => 'text',
                                                         'default' => '',
                                                     ]
-                                            ], [], [ 'placeholder' => __( 'First Name', 'disciple_tools' ) ] ) ?>
+                                            ], [], [ 'placeholder' => __( 'First Name', 'disciple_tools' ), 'data-optional' => true ] ) ?>
                                             </div>
                                             <div class="user-field">
                                             <?php DT_Components::render_text( 'last_name', [
@@ -206,7 +206,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                         'type'        => 'text',
                                                         'default' => '',
                                                     ]
-                                            ], [], [ 'placeholder' => __( 'Last Name', 'disciple_tools' ) ] ) ?>
+                                            ], [], [ 'placeholder' => __( 'Last Name', 'disciple_tools' ), 'data-optional' => true ] ) ?>
                                             </div>
                                             <div class="user-field">
                                             <?php DT_Components::render_key_select( 'gender', [
@@ -215,7 +215,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                         'type'        => 'key_select',
                                                         'default' => $gender_fields['default'],
                                                     ]
-                                            ], [], [] ) ?>
+                                            ], [], [ 'data-optional' => true ] ) ?>
                                             </div>
 
                                             <?php // site defined fields

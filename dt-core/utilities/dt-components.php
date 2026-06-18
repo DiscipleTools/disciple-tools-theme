@@ -64,10 +64,14 @@ class DT_Components
         $hide_label = isset( $params['hide_label'] ) && $params['hide_label'] === true;
         $label_attr = $hide_label ? '' : 'label="' . esc_attr( $fields[$field_key]['name'] ) . '"';
 
+        $data_optional = isset( $params['data-optional'] ) ? 'data-optional' : '';
+
         $shared_attributes = '
               id="' . esc_attr( $display_field_id ) . '"
               name="' . esc_attr( $field_key ) . '"
               placeholder="' . esc_attr( $params['placeholder'] ?? '' ) . '"
+              data_type="' . esc_attr( $params['data_type'] ?? '' ) . '"
+              ' . $data_optional . '
               ' . $class . '
               ' . $label_attr . '
               ' . esc_html( $post_type ?? '' ) . '

@@ -1221,7 +1221,11 @@ jQuery(document).ready(function ($) {
               `<br /> <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${id}">${escaped_translations.view_contact}</a>`,
             );
           } else {
-            window.contact_record = response;
+            if (response.ID) {
+              window.contact_record = response;
+            } else {
+              window.contact_record = undefined;
+            }
             submit_button.prop('disabled', false);
             $('#emankcin').val(
               window.SHAREDFUNCTIONS.escapeHTML(response.title),
