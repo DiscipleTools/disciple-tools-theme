@@ -7,7 +7,7 @@ jQuery(document).ready(function ($) {
   window.open_user_modal = (user_id) => {
     const componentService = new window.DtWebComponents.ComponentService(
       'users',
-      window.current_user_lookup,
+      user_id,
       window.wpApiShare.nonce,
     );
     componentService.attachLoadEvents();
