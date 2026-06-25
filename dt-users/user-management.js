@@ -551,11 +551,6 @@ jQuery(document).ready(function ($) {
                         data-user_id="${user_id}" data-app_key="${app_key}" data-app_root="${app?.root}" data-app_type="${app?.type}"
                         ${activated ? 'checked' : ''}
                 />
-                <label class="switch-paddle" for="app_state_${app_key}">
-                    <span class="show-for-sr">${window.SHAREDFUNCTIONS.escapeHTML(escaped_translations.app_state_enable)}</span>
-                    <span class="switch-active" aria-hidden="true" style="color:white;">${window.SHAREDFUNCTIONS.escapeHTML(escaped_translations.app_state_active)}</span>
-                    <span class="switch-inactive" aria-hidden="false">${window.SHAREDFUNCTIONS.escapeHTML(escaped_translations.app_state_inactive)}</span>
-                </label>
             </td>
           </tr>`;
         }
