@@ -1176,12 +1176,15 @@ jQuery(document).ready(function ($) {
     };
 
     function getContact(id, isUser = false, overwriteTypeahead = false) {
+      $('#contact-result').empty();
+      if (!id) {
+        return;
+      }
       $('.loading-spinner').addClass('active');
       window
         .makeRequest('GET', 'contacts/' + id, null, 'dt-posts/v2/')
         .done(function (response) {
           if (overwriteTypeahead) {
-            console.log('1');
             const safeName = window.SHAREDFUNCTIONS.escapeHTML(response.name);
 
             const dataArray = [
@@ -1242,7 +1245,6 @@ jQuery(document).ready(function ($) {
             } else {
               $('#liame').val(window.SHAREDFUNCTIONS.escapeHTML(''));
             }
-            $('#contact-result').empty();
           }
           $('.loading-spinner').removeClass('active');
         });
@@ -1253,15 +1255,11 @@ jQuery(document).ready(function ($) {
 
       let contact_id = null;
 
-      // if a second is added, it is set as the only value
-      // else,
-      if (e.target.value[1] && !e.target.value[1].delete) {
-        contact_id = e.target.value[1].id;
-        e.target.value = [e.target.value[1]];
-      } else if (!e.target.value[0].delete) {
-        contact_id = e.target.value[0].id;
-      } else {
-        contact_id = '';
+      if (e.target.value && e.target.value.length > 0) {
+        const firstValid = e.target.value.find((item) => !item.delete);
+        if (firstValid) {
+          contact_id = firstValid.id;
+        }
       }
 
       getContact(contact_id, false);
