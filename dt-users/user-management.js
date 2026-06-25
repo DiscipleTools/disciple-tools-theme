@@ -1178,6 +1178,8 @@ jQuery(document).ready(function ($) {
     function getContact(id, isUser = false, overwriteTypeahead = false) {
       $('#contact-result').empty();
       if (!id) {
+        window.contact_record = undefined;
+        submit_button.prop('disabled', false);
         return;
       }
       $('.loading-spinner').addClass('active');
