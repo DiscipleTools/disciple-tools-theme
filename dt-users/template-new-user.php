@@ -137,7 +137,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                             'type'        => 'text',
                                                             'default' => '',
                                                         ]
-                                                    ], [], [ 'data_type' => 'password', 'placeholder' => __( 'Password', 'disciple_tools' ) ] ) ?>
+                                                    ], [], [ 'type' => 'password', 'placeholder' => __( 'Password', 'disciple_tools' ) ] ) ?>
                                                     </div>
                                                 </div>
                                                 <?php if ( $current_user_can_manage_users ) : ?>

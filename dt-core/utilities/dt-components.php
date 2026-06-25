@@ -70,7 +70,7 @@ class DT_Components
               id="' . esc_attr( $display_field_id ) . '"
               name="' . esc_attr( $field_key ) . '"
               placeholder="' . esc_attr( $params['placeholder'] ?? '' ) . '"
-              data_type="' . esc_attr( $params['data_type'] ?? '' ) . '"
+              type="' . esc_attr( $params['type'] ?? '' ) . '"
               ' . $data_optional . '
               ' . $class . '
               ' . $label_attr . '
