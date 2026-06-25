@@ -120,7 +120,7 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                                 'name' => __( 'Workload Status', 'disciple_tools' ),
                                                                 'type'        => 'key_select',
                                                                 'default' => $dt_user_fields['workload_status']['options'],
-                                                                'select_cannot_be_empty' => true,
+                                                                'select_cannot_be_empty' => false,
                                                             ]
                                             ], [ 'key_select' => [ 'key' => 'active' ] ], [ 'key_select' => [ 'disable_color' => true ] ] ) ?>
                                         </div>
