@@ -65,13 +65,15 @@ class DT_Components
         $label_attr = $hide_label ? '' : 'label="' . esc_attr( $fields[$field_key]['name'] ) . '"';
 
         $data_optional = isset( $params['data-optional'] ) ? 'data-optional' : '';
+        $placeholder_attr = ( isset( $params['placeholder'] ) && $params['placeholder'] !== '' ) ? 'placeholder="' . esc_attr( $params['placeholder'] ) . '"' : '';
+        $type_attr = ( isset( $params['type'] ) && $params['type'] !== '' ) ? 'type="' . esc_attr( $params['type'] ) . '"' : '';
 
         $shared_attributes = '
               id="' . esc_attr( $display_field_id ) . '"
               name="' . esc_attr( $field_key ) . '"
-              placeholder="' . esc_attr( $params['placeholder'] ?? '' ) . '"
-              data_type="' . esc_attr( $params['data_type'] ?? '' ) . '"
+              ' . $type_attr . '
               ' . $data_optional . '
+              ' . $placeholder_attr . '
               ' . $class . '
               ' . $label_attr . '
               ' . esc_html( $post_type ?? '' ) . '

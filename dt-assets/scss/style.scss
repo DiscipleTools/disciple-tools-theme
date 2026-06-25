@@ -64,6 +64,7 @@ CSS file.
 //  @include foundation-float-classes;
 
 // Import your custom styles
+@import "components";
 @import "main";
 @import "details";
 @import "new_record";

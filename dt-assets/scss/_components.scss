@@ -1,0 +1,17 @@
+dt-text {
+    // override Foundation's default text input styles to use our own
+    &[type] {
+        border: unset;
+        box-shadow: unset;
+        padding: unset;
+        height: unset;
+        width: unset;
+
+        &:focus {
+            background-color: unset;
+            border: unset;
+            box-shadow: unset;
+        }
+    }
+
+}
