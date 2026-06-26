@@ -90,36 +90,55 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
 
                                     <div class="grid-x row gutter-small">
                                         <div class="cell medium-6">
-                                            <dl>
-                                                <dt><label for="subassigned[query]"><?php esc_html_e( 'Contact to make a user (optional)', 'disciple_tools' ); ?></label></dt>
-                                                <dd>
-                                                    <div class="subassigned details">
-                                                        <var id="subassigned-result-container" class="result-container subassigned-result-container"></var>
-                                                        <div id="subassigned_t" name="form-subassigned" class="scrollable-typeahead">
-                                                            <div class="typeahead__container">
-                                                                <div class="typeahead__field">
-                                                                    <span class="typeahead__query">
-                                                                        <input id="subassigned[query]" class="js-typeahead-subassigned input-height"
-                                                                               name="subassigned[query]" placeholder="<?php esc_html_e( 'Search multipliers and contacts', 'disciple_tools' ); ?>"
-                                                                               autocomplete="off">
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </dd>
-                                            </dl>
+                                                <div class="user-field">
+                                                <?php DT_Components::render_connection( 'subassigned', [
+                                                        'subassigned' => [
+                                                            'name' => __( 'Contact to make a user (optional)', 'disciple_tools' ),
+                                                            'default' => '',
+                                                            'type' => 'connection',
+                                                            'post_type' => 'contacts',
+                                                        ]
+                                                ], [], [ 'placeholder' => __( 'Search multipliers and contacts', 'disciple_tools' ), 'allow_add' => false ] ) ?>
+                                                </div>
                                             <div id="contact-result"></div>
-                                            <dl>
-                                                <dt><label for="eman"><?php esc_html_e( 'Display Name', 'disciple_tools' ); ?></label></dt>
-                                                <dd><input type="text" class="input" id="eman" placeholder="<?php esc_html_e( 'Nickname (Display Name)', 'disciple_tools' ); ?>" required autocomplete="off" /> </dd>
-                                                <dt><label for="liame"><?php esc_html_e( 'Email', 'disciple_tools' ); ?></label></dt>
-                                                <dd><input type="email" class="input" id="liame" placeholder="<?php esc_html_e( 'Email', 'disciple_tools' ); ?>" required autocomplete="off" /> </dd>
+                                                <div class="user-field">
+                                                <?php DT_Components::render_text( 'emankcin', [
+                                                        'emankcin' => [
+                                                            'name' => __( 'Display Name', 'disciple_tools' ),
+                                                            'type'        => 'text',
+                                                            'default' => '',
+                                                        ]
+                                                ], [], [ 'placeholder' => __( 'Nickname (Display Name)', 'disciple_tools' ) ] ) ?>
+                                                </div>
+                                                <div class="user-field">
+                                                <?php DT_Components::render_text( 'liame', [
+                                                        'liame' => [
+                                                            'name' => __( 'Email', 'disciple_tools' ),
+                                                            'type'        => 'text',
+                                                            'default' => '',
+                                                            'required' => true,
+                                                        ]
+                                                ], [], [ 'placeholder' => __( 'Email', 'disciple_tools' ) ] ) ?>
+                                                </div>
                                                 <div class="hidden-fields" style="display:none">
-                                                    <dt><label for="emanresu"><?php esc_html_e( 'Username', 'disciple_tools' ); ?></label></dt>
-                                                    <dd><input type="text" class="input" id="emanresu" placeholder="<?php esc_html_e( 'Username', 'disciple_tools' ); ?>" autocomplete="off" /> </dd>
-                                                    <dt><label for="drowssap"><?php esc_html_e( 'Password', 'disciple_tools' ); ?></label></dt>
-                                                    <dd><input type="password" class="input" id="drowssap" placeholder="<?php esc_html_e( 'Password', 'disciple_tools' ); ?>" autocomplete="off" /> </dd>
+                                                    <div class="user-field">
+                                                    <?php DT_Components::render_text( 'emanresu', [
+                                                        'emanresu' => [
+                                                            'name' => __( 'Username', 'disciple_tools' ),
+                                                            'type'        => 'text',
+                                                            'default' => '',
+                                                        ]
+                                                    ], [], [ 'placeholder' => __( 'Username', 'disciple_tools' ) ] ) ?>
+                                                    </div>
+                                                    <div class="user-field">
+                                                    <?php DT_Components::render_text( 'ddrowssap', [
+                                                        'ddrowssap' => [
+                                                            'name' => __( 'Password', 'disciple_tools' ),
+                                                            'type'        => 'text',
+                                                            'default' => '',
+                                                        ]
+                                                    ], [], [ 'type' => 'password', 'placeholder' => __( 'Password', 'disciple_tools' ) ] ) ?>
+                                                    </div>
                                                 </div>
                                                 <?php if ( $current_user_can_manage_users ) : ?>
                                                 <div id="show-shield-banner" style="text-align: center; background-color:rgb(236, 245, 252);margin: 3px -15px 15px -15px;">
@@ -131,11 +150,10 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                     </a>
                                                 </div>
                                                 <?php endif; ?>
-                                                <dt><label for="new-user-language-dropdown"><?php esc_html_e( 'Language', 'disciple_tools' ); ?></label></dt>
-                                                <dd id="new-user-language-dropdown"></dd>
+                                                <dt-label for="new-user-language-dropdown"><?php esc_html_e( 'Language', 'disciple_tools' ); ?></dt-label>
+                                                <div id="new-user-language-dropdown" style="margin-bottom: 16px;"></div>
                                                 <?php if ( $current_user_can_manage_users ): ?>
-                                                <dt><?php esc_html_e( 'Role', 'disciple_tools' ); ?></dt>
-                                                <dd>
+                                                    <dt-label><?php esc_html_e( 'Role', 'disciple_tools' ); ?></dt-label>
                                                     <?php
                                                     $user_roles = [ 'multiplier' ];
                                                     $roles = dt_list_roles( false );
@@ -167,64 +185,66 @@ $gender_fields = DT_Posts::get_post_settings( 'contacts' )['fields']['gender'];
                                                         <?php endforeach; ?>
                                                     </ul>
                                                     <p> <a href="https://disciple.tools/docs/roles-introduction/" target="_blank"><?php esc_html_e( 'Click here to see roles documentation', 'disciple_tools' ); ?></a>  </p>
-                                                </dd>
                                                 <?php endif; ?>
-                                            </dl>
                                             <button type="submit" class="submit button loader" id="create-user"><?php esc_html_e( 'Create User', 'disciple_tools' ); ?></button>
                                         </div>
 
                                         <div id="optional-fields" class="cell medium-6 show-for-medium">
-                                            <dl>
-                                                <dt><label for="first_name"><?php esc_html_e( 'First Name', 'disciple_tools' )?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)</label></dt>
-                                                <dd><input class="input" type="text" class="input" id="first_name" data-optional
-                                                        name="first_name" placeholder="<?php esc_html_e( 'First Name', 'disciple_tools' )?>" />
-                                                </dd>
-                                                <dt><label for="last_name"><?php esc_html_e( 'Last Name', 'disciple_tools' )?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)</label></dt>
-                                                <dd><input class="input" type="text" class="input" id="last_name" data-optional name="last_name" placeholder="<?php esc_html_e( 'Last Name', 'disciple_tools' )?>"/></dd>
-                                                <dt><label for="gender">
-                                                        <?php esc_html_e( 'Gender', 'disciple_tools' ) ?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)
-                                                    </label></dt>
-                                                <dd>
-                                                    <select class="select-field" id="gender" style="width:auto; display: block" data-optional>
-                                                        <?php foreach ( $gender_fields['default'] as $option_key => $option_value ): ?>
-                                                            <option value="<?php echo esc_html( $option_key )?>">
-                                                                <?php echo esc_html( $option_value['label'] ) ?>
-                                                            </option>
-                                                        <?php endforeach; ?>
-                                                    </select>
-                                                </dd>
+                                            <div class="user-field">
+                                            <?php DT_Components::render_text( 'first_name', [
+                                                    'first_name' => [
+                                                        'name' => __( 'First Name (optional)', 'disciple_tools' ),
+                                                        'type'        => 'text',
+                                                        'default' => '',
+                                                    ]
+                                            ], [], [ 'placeholder' => __( 'First Name', 'disciple_tools' ), 'data-optional' => true ] ) ?>
+                                            </div>
+                                            <div class="user-field">
+                                            <?php DT_Components::render_text( 'last_name', [
+                                                    'last_name' => [
+                                                        'name' => __( 'Last Name (optional)', 'disciple_tools' ),
+                                                        'type'        => 'text',
+                                                        'default' => '',
+                                                    ]
+                                            ], [], [ 'placeholder' => __( 'Last Name', 'disciple_tools' ), 'data-optional' => true ] ) ?>
+                                            </div>
+                                            <div class="user-field">
+                                            <?php DT_Components::render_key_select( 'gender', [
+                                                    'gender' => [
+                                                        'name' => __( 'Gender (optional)', 'disciple_tools' ),
+                                                        'type'        => 'key_select',
+                                                        'default' => $gender_fields['default'],
+                                                    ]
+                                            ], [], [ 'data-optional' => true ] ) ?>
+                                            </div>
 
-                                                <?php // site defined fields
-                                                foreach ( $dt_user_fields as $dt_field ) {
-                                                    if ( empty( $dt_field['enabled'] ) ){
-                                                        continue;
-                                                    }
-                                                    ?>
-                                                    <dt>
-                                                        <label for="<?php echo esc_attr( $dt_field['key'] ) ?>"><?php echo esc_html( $dt_field['label'] ) ?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)</label>
-                                                    </dt>
-                                                    <dd><input type="text"
-                                                            data-optional
-                                                            class="input"
-                                                            id="<?php echo esc_attr( $dt_field['key'] ) ?>"
-                                                            name="<?php echo esc_attr( $dt_field['key'] ) ?>"
-                                                            placeholder="<?php echo esc_html( $dt_field['label'] ) ?>"
-                                                            value=""/>
-                                                    </dd>
-                                                    <?php
-                                                } // end foreach
+                                            <?php // site defined fields
+                                            foreach ( $dt_user_fields as $dt_field ) {
+                                                if ( empty( $dt_field['enabled'] ) ){
+                                                    continue;
+                                                }
                                                 ?>
+                                                <div class="user-field">
+                                                    <?php DT_Components::render_text( $dt_field['key'], [
+                                                        $dt_field['key'] => [
+                                                            'name' => $dt_field['label'],
+                                                            'type'        => 'text',
+                                                            'default' => '',
+                                                        ]
+                                                    ], [], [ 'placeholder' => $dt_field['label'], 'data-optional' => true ] ) ?>
+                                                </div>
+                                                <?php
+                                            } // end foreach
+                                            ?>
 
-                                                <dt><label for="description"><?php esc_html_e( 'Biography', 'disciple_tools' )?> (<?php esc_html_e( 'optional', 'disciple_tools' )?>)</label></dt>
-                                                <dd><textarea
-                                                        type="text" class="input" id="description"
-                                                        name="description"
-                                                        placeholder="<?php esc_html_e( 'Biography', 'disciple_tools' )?>"
-                                                        rows="5"
-                                                        data-optional
-                                                    ></textarea>
-                                                </dd>
-                                            </dl>
+                                            <dt-textarea
+                                                class="input" id="description"
+                                                label="<?php esc_html_e( 'Biography', 'disciple_tools' )?>"
+                                                name="description"
+                                                placeholder="<?php esc_html_e( 'Biography', 'disciple_tools' )?>"
+                                                rows="5"
+                                                data-optional
+                                            ></dt-textarea>
                                         </div>
 
                                     </div>
