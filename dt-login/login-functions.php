@@ -43,7 +43,16 @@ function dt_login_redirect_login_page() {
         //}
 
         if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && ( $_GET['action'] === 'resetpass' || $_GET['action'] === 'rp' ) ) {
-            wp_redirect( dt_login_url( 'resetpass' ) );
+            $redirect_url = dt_login_url( 'resetpass' );
+            //phpcs:disable WordPress.Security.NonceVerification.Recommended
+            if ( isset( $_GET['key'] ) && isset( $_GET['login'] ) ) {
+                $redirect_url = add_query_arg( [
+                    'key'   => sanitize_text_field( wp_unslash( $_GET['key'] ) ),
+                    'login' => sanitize_text_field( wp_unslash( $_GET['login'] ) ),
+                ], $redirect_url );
+            }
+            //phpcs:enable WordPress.Security.NonceVerification.Recommended
+            wp_redirect( $redirect_url );
             exit;
         }
 
