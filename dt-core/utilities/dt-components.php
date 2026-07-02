@@ -341,7 +341,7 @@ class DT_Components
         ?>
         <dt-users-connection <?php echo wp_kses_post( $shared_attributes ) ?>
             value="<?php echo esc_attr( json_encode( $value ) ) ?>"
-        single><?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        <?php echo ( isset( $params['single'] ) && $params['single'] === true ) ? 'single' : '';?>><?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-users-connection>
         <?php
     }

@@ -960,8 +960,6 @@ Thanks!';
                             <div class="filter-field-component-wrapper">
                                 <?php
                                 $type = $field_options[$field]['type'] ?? '';
-                                dt_write_log( $field );
-                                dt_write_log( $field_options[$field] );
                                 switch ( $type ) {
                                     case 'key_select':
                                         DT_Components::render_key_select( $field, [
@@ -993,11 +991,6 @@ Thanks!';
                                             $field => $field_options[$field]
                                         ], [], [] );
                                         break;
-                                    case 'location_meta':
-                                        DT_Components::render_location_meta( $field, [
-                                            $field => $field_options[$field]
-                                        ], [], [] );
-                                        break;
                                     case 'date':
                                         DT_Components::render_date( $field, [
                                             $field => $field_options[$field]
@@ -1014,6 +1007,7 @@ Thanks!';
                                         ], [], [] );
                                         break;
                                     case 'text':
+                                    case 'communication_channel':
                                         DT_Components::render_text( $field, [
                                             $field => $field_options[$field]
                                         ], [], [] );
@@ -1025,11 +1019,6 @@ Thanks!';
                                         break;
                                     case 'number':
                                         DT_Components::render_number( $field, [
-                                            $field => $field_options[$field]
-                                        ], [], [] );
-                                        break;
-                                    case 'communication_channel':
-                                        DT_Components::render_communication_channel( $field, [
                                             $field => $field_options[$field]
                                         ], [], [] );
                                         break;
@@ -1060,6 +1049,43 @@ Thanks!';
                                     default:
                                         echo '<div class="alert-box alert">Unsupported field type: ' . esc_html( $type ) . '</div>';
                                 }
+                                if ( $field_options[$field]['type'] === 'connection' ) : ?>
+                                    <p>
+                                        <label><?php echo esc_html( sprintf( _x( 'All %1$s with %2$s', 'All Contacts with Is Coaching', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                            <input class="all-connections" type="checkbox" value="all-connections" />
+                                        </label>
+                                        <label><?php echo esc_html( sprintf( _x( 'All %1$s without %2$s', 'All Contacts without Is Coaching', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                            <input class="all-without-connections" type="checkbox" value="all-without-connections" />
+                                        </label>
+                                    </p>
+                                <?php endif;?>
+                                <?php if ( $field === 'subassigned' ): ?>
+                                    <p>
+                                        <label><?php esc_html_e( 'Filter for subassigned OR Assigned To', 'disciple_tools' ) ?>
+                                            <input id="combine_subassigned" type="checkbox" value="combine_subassigned" />
+                                        </label>
+                                    </p>
+                                <?php endif;?>
+                                <?php if ( isset( $field_options[$field] ) && in_array( $field_options[$field]['type'], [ 'text', 'communication_channel' ] ) ) : ?>
+                                    <p>
+                                        <label>
+                                            <input name="filter_by_text_comms_option_<?php echo esc_attr( $field ); ?>" class="filter-by-text-comms-option" type="radio" value="all-with-filtered-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                            <?php echo esc_html( sprintf( _x( 'All %1$s with filtered value in %2$s', 'All Contacts with filtered value in Emails', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                        </label>
+                                        <label>
+                                            <input name="filter_by_text_comms_option_<?php echo esc_attr( $field ); ?>" class="filter-by-text-comms-option" type="radio" value="all-without-filtered-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                            <?php echo esc_html( sprintf( _x( 'All %1$s without filtered value in %2$s', 'All Contacts without filtered value in Emails', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                        </label>
+                                        <label>
+                                            <input name="filter_by_text_comms_option_<?php echo esc_attr( $field ); ?>" class="filter-by-text-comms-option" type="radio" value="all-with-set-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                            <?php echo esc_html( sprintf( _x( 'All %1$s with any value in %2$s', 'All Contacts with any value in field', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                        </label>
+                                        <label>
+                                            <input name="filter_by_text_comms_option_<?php echo esc_attr( $field ); ?>" class="filter-by-text-comms-option" type="radio" value="all-without-set-value" data-field="<?php echo esc_html( $field ) ?>" />
+                                            <?php echo esc_html( sprintf( _x( 'All %1$s with no value in %2$s', 'All Contacts with no value in field', 'disciple_tools' ), $post_settings['label_plural'], $field_options[$field]['name'] ) ) ?>
+                                        </label>
+                                    </p>
+                                <?php endif;
                                 ?>
                             </div>
                         </div>
