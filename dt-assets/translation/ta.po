@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: Disciple.Tools\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
-"POT-Creation-Date: 2026-03-04T15:36:58+00:00\n"
-"PO-Revision-Date: 2025-03-05 16:00+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"POT-Creation-Date: 2026-05-06T11:54:54+00:00\n"
+"PO-Revision-Date: 2026-05-06 12:16+0000\n"
+"Last-Translator: DeepL <noreply-mt-deepl@weblate.org>\n"
 "Language-Team: Tamil <https://translate.disciple.tools/projects/disciple-"
 "tools/disciple-tools-theme/ta/>\n"
 "Language: ta\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Submit Request"
 msgstr "கோரிக்கையைச் சமர்ப்பிக்கவும்"
 
-#: 403.php:55 archive-template.php:1117
+#: 403.php:55 archive-template.php:1140
 #: dt-assets/parts/loop-activity-comment.php:141
 #: dt-assets/parts/merge-details.php:64
 #: dt-assets/parts/modals/modal-advanced-search.php:62
@@ -91,8 +91,8 @@ msgid "Cancel"
 msgstr "ரத்துசெய்"
 
 #: 403.php:59 archive-template.php:551 archive-template.php:626
-#: archive-template.php:729 archive-template.php:1141
-#: dt-assets/functions/enqueue-scripts.php:470
+#: archive-template.php:729 archive-template.php:1164
+#: dt-assets/functions/enqueue-scripts.php:462
 #: dt-assets/parts/loop-activity-comment.php:225
 #: dt-assets/parts/loop-activity-comment.php:230
 #: dt-assets/parts/loop-activity-comment.php:273
@@ -125,12 +125,12 @@ msgstr "ரத்துசெய்"
 #: dt-contacts/module-baptisms.php:201 dt-contacts/module-baptisms.php:203
 #: dt-contacts/user-module.php:168 dt-groups/base-setup.php:532
 #: dt-groups/base-setup.php:537 dt-groups/base-setup.php:585
-#: dt-groups/base-setup.php:592 dt-reports/magic-url-bulk-send.php:34
-#: dt-users/template-new-user.php:270 dt-users/template-new-user.php:291
-#: dt-users/template-new-user.php:295 dt-users/user-initial-setup.php:76
-#: dt-users/user-initial-setup.php:82 single-template.php:418
-#: template-new-bulk-post.php:223 template-new-bulk-post.php:295
-#: template-settings.php:596
+#: dt-groups/base-setup.php:592 dt-groups/base-setup.php:1260
+#: dt-reports/magic-url-bulk-send.php:34 dt-users/template-new-user.php:270
+#: dt-users/template-new-user.php:291 dt-users/template-new-user.php:295
+#: dt-users/user-initial-setup.php:76 dt-users/user-initial-setup.php:82
+#: single-template.php:418 template-new-bulk-post.php:223
+#: template-new-bulk-post.php:295 template-settings.php:614
 msgid "Close"
 msgstr "நெருக்கமான"
 
@@ -161,8 +161,8 @@ msgid "Filters"
 msgstr "வடிப்பான்கள்"
 
 #: archive-template.php:63 archive-template.php:135
-#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:262
-#: dt-posts/custom-post-type.php:20 template-settings.php:393
+#: dt-assets/parts/merge-details.php:45 dt-core/utilities/dt-components.php:285
+#: dt-posts/custom-post-type.php:20
 #, php-format
 msgctxt "Search 'something'"
 msgid "Search %s"
@@ -350,7 +350,7 @@ msgstr "%s காட்டு"
 msgid "Loading..."
 msgstr "ஏற்றுகிறது ..."
 
-#: archive-template.php:542 dt-assets/functions/enqueue-scripts.php:439
+#: archive-template.php:542 dt-assets/functions/enqueue-scripts.php:438
 msgid "Load More"
 msgstr "அதிகமாக ஏற்று"
 
@@ -387,20 +387,17 @@ msgstr ""
 "புதுப்பிக்கவும்"
 
 #: archive-template.php:635
-#, fuzzy
-#| msgid "Failed to update app."
 msgid "Add Fields to Update"
-msgstr "பயன்பாட்டைப் புதுப்பிக்க முடியவில்லை."
+msgstr "புதுப்பிக்க புலங்களைச் சேர்க்கவும்"
 
 #: archive-template.php:643
-#, fuzzy
-#| msgid "Search for fields to add..."
 msgid "Search and add fields..."
-msgstr "சேர்க்க வேண்டிய புலங்களைத் தேடுங்கள்..."
+msgstr "தேடி புலங்களைச் சேர்க்கவும்..."
 
 #: archive-template.php:679
 msgid "Please select records from the displayed list, to enable bulk actions."
 msgstr ""
+"மொத்த நடவடிக்கைகளை இயக்க, காட்டப்படும் பட்டியலிலிருந்து பதிவுகளைத் தேர்ந்தெடுக்கவும்."
 
 #: archive-template.php:686 dt-assets/parts/loop-activity-comment.php:276
 #: template-new-bulk-post.php:232
@@ -408,7 +405,7 @@ msgid "Update"
 msgstr "புதுப்பிப்பு"
 
 #: archive-template.php:687 archive-template.php:912
-#: dt-assets/functions/enqueue-scripts.php:350
+#: dt-assets/functions/enqueue-scripts.php:349
 #: dt-reports/magic-url-bulk-send.php:94
 msgid "Make Selections Below"
 msgstr "கீழே தேர்வு செய்யவும்"
@@ -416,26 +413,22 @@ msgstr "கீழே தேர்வு செய்யவும்"
 #: archive-template.php:695 dt-assets/functions/enqueue-scripts.php:203
 #: dt-assets/functions/enqueue-scripts.php:244
 #: dt-assets/functions/enqueue-scripts.php:297
-#: dt-assets/functions/enqueue-scripts.php:337
+#: dt-assets/functions/enqueue-scripts.php:336
 #: dt-assets/parts/loop-activity-comment.php:228 single-template.php:416
 msgid "Delete"
 msgstr "அழி"
 
-#: archive-template.php:698 dt-assets/functions/enqueue-scripts.php:351
+#: archive-template.php:698 dt-assets/functions/enqueue-scripts.php:350
 msgid "Delete Selections Below"
 msgstr "கீழே உள்ள தேர்வுகளை நீக்கு"
 
 #: archive-template.php:714
-#, fuzzy
-#| msgid "Removed User"
 msgid "Remove field"
-msgstr "அகற்றப்பட்ட பயனர்"
+msgstr "களத்தை நீக்கு"
 
-#: archive-template.php:723 dt-assets/functions/enqueue-scripts.php:355
-#, fuzzy
-#| msgid "Removed User"
+#: archive-template.php:723 dt-assets/functions/enqueue-scripts.php:354
 msgid "Remove Values"
-msgstr "அகற்றப்பட்ட பயனர்"
+msgstr "மதிப்புகளை நீக்கு"
 
 #: archive-template.php:733
 #, php-format
@@ -484,12 +477,12 @@ msgid "Please ensure a valid send message has been entered."
 msgstr "செல்லுபடியாகும் அனுப்பும் செய்தி உள்ளிடப்பட்டுள்ளதை உறுதிசெய்யவும்."
 
 #: archive-template.php:811 dt-reports/magic-url-bulk-send.php:57
-#: dt-reports/magic-url-setup.php:254
+#: dt-reports/magic-url-setup.php:292
 msgid "Message placeholders"
 msgstr "செய்தி ஒதுக்கிடங்கள்"
 
 #: archive-template.php:842 dt-reports/magic-url-bulk-send.php:63
-#: dt-reports/magic-url-setup.php:260
+#: dt-reports/magic-url-setup.php:298
 msgid "Name of the Record"
 msgstr "பதிவின் பெயர்"
 
@@ -506,7 +499,7 @@ msgid "You must select at least one record"
 msgstr "நீங்கள் குறைந்தது ஒரு பதிவையாவது தேர்ந்தெடுக்க வேண்டும்"
 
 #: archive-template.php:911 dt-reports/magic-url-bulk-send.php:93
-#: dt-reports/magic-url-setup.php:503
+#: dt-reports/magic-url-setup.php:808
 msgid "Send"
 msgstr "அனுப்பு"
 
@@ -543,7 +536,7 @@ msgstr "%2$s இல்லாமல் அனைத்து %1$s"
 msgid "Filter for subassigned OR Assigned To"
 msgstr "நியமிக்கப்பட்ட அல்லது ஒதுக்கப்பட்டவருக்கான வடிகட்டி"
 
-#: archive-template.php:1019 dt-assets/functions/enqueue-scripts.php:340
+#: archive-template.php:1019 dt-assets/functions/enqueue-scripts.php:339
 #: dt-posts/custom-post-type.php:194
 msgid "Creation Date"
 msgstr "உருவாக்கும் தேதி"
@@ -555,19 +548,17 @@ msgid "None Set"
 msgstr "எதுவும் அமைக்கப்படவில்லை"
 
 #: archive-template.php:1047 archive-template.php:1048
-#: dt-assets/functions/enqueue-scripts.php:260 dt-core/global-functions.php:731
-#: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:462
-#: dt-reports/magic-url-setup.php:474 dt-users/user-management.php:196
-#: template-settings.php:314 template-settings.php:571
+#: dt-assets/functions/enqueue-scripts.php:260 dt-core/global-functions.php:683
+#: dt-metrics/records/time-charts.php:120 dt-posts/posts.php:552
+#: dt-reports/magic-url-setup.php:779 dt-users/user-management.php:196
 msgid "No"
 msgstr "இல்லை"
 
 #: archive-template.php:1054 archive-template.php:1055
-#: dt-assets/functions/enqueue-scripts.php:259 dt-core/global-functions.php:732
+#: dt-assets/functions/enqueue-scripts.php:259 dt-core/global-functions.php:684
 #: dt-metrics/records/genmap.php:176 dt-metrics/records/time-charts.php:119
-#: dt-posts/posts.php:460 dt-reports/magic-url-setup.php:473
-#: dt-users/user-management.php:195 template-settings.php:313
-#: template-settings.php:570
+#: dt-posts/posts.php:550 dt-reports/magic-url-setup.php:778
+#: dt-users/user-management.php:195
 msgid "Yes"
 msgstr "ஆம்"
 
@@ -615,17 +606,29 @@ msgctxt "All Contacts with no value in field"
 msgid "All %1$s with no value in %2$s"
 msgstr "%2$s இல் மதிப்பு இல்லாத அனைத்து %1$s"
 
-#: archive-template.php:1125
+#: archive-template.php:1114
+#, php-format
+msgctxt "All Contacts with files in Documents"
+msgid "All %1$s with files in %2$s"
+msgstr "%2$s-ல் கோப்புகளுடன் உள்ள அனைத்து %1$s-களும்"
+
+#: archive-template.php:1124
+#, php-format
+msgctxt "All Contacts without files in Documents"
+msgid "All %1$s without files in %2$s"
+msgstr "அனைத்து கோப்புகளும் இல்லாத %1$s-கள் %2$s-இல்"
+
+#: archive-template.php:1148
 msgid "Filter Name"
 msgstr "வடிகட்டி பெயர்"
 
-#: archive-template.php:1130
+#: archive-template.php:1153
 msgid "Filter Records"
 msgstr "பதிவுகளை வடிகட்டவும்"
 
-#: archive-template.php:1134 dt-assets/functions/enqueue-scripts.php:300
-#: dt-assets/functions/enqueue-scripts.php:335
-#: dt-users/user-initial-setup.php:79 template-settings.php:739
+#: archive-template.php:1157 dt-assets/functions/enqueue-scripts.php:300
+#: dt-assets/functions/enqueue-scripts.php:334
+#: dt-users/user-initial-setup.php:79 template-settings.php:757
 msgid "Save"
 msgstr "சேமி"
 
@@ -646,7 +649,7 @@ msgid "Toggle menu"
 msgstr "மெனுவை மாற்று"
 
 #: dt-apps/dt-home/frontend/home-screen.php:93
-#: dt-apps/dt-home/magic-link-home-app.php:237 template-settings.php:258
+#: dt-apps/dt-home/magic-link-home-app.php:237 template-settings.php:308
 msgid "Your Apps"
 msgstr "உங்கள் பயன்பாடுகள்"
 
@@ -656,13 +659,13 @@ msgstr "உங்கள் இணைப்புகள்"
 
 #: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:46
 #: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:48
-#: template-settings.php:57
+#: template-settings.php:107
 msgid "Apps"
 msgstr "பயன்பாடுகள்"
 
 #: dt-apps/dt-home/frontend/partials/launcher-bottom-nav.php:50
 #: dt-core/configuration/config-site-defaults.php:447
-#: dt-login/login-template.php:529
+#: dt-login/login-template.php:519
 msgid "Home"
 msgstr "வீடு"
 
@@ -777,10 +780,10 @@ msgstr "வீடியோ URL செல்லுபடியாகும் URL
 
 #: dt-apps/dt-home/magic-link-home-app.php:64
 #: dt-assets/parts/modals/modal-new-contact.php:7
-#: dt-assets/parts/modals/modal-new-contact.php:9 dt-groups/base-setup.php:1217
+#: dt-assets/parts/modals/modal-new-contact.php:9 dt-groups/base-setup.php:1270
 #: dt-mapping/mapping.php:303 dt-metrics/combined/locations-list.php:90
 #: dt-metrics/records/genmap.php:172 dt-posts/custom-post-type.php:170
-#: dt-users/template-user-management.php:190 template-settings.php:147
+#: dt-users/template-user-management.php:190 template-settings.php:197
 msgid "Name"
 msgstr "பெயர்"
 
@@ -796,9 +799,9 @@ msgstr "உங்கள் முகப்புத் திரையை அண
 msgid "Username or Email"
 msgstr "பயனர்பெயர் அல்லது மின்னஞ்சல்"
 
-#: dt-apps/dt-home/magic-link-home-app.php:243 dt-login/login-template.php:489
+#: dt-apps/dt-home/magic-link-home-app.php:243 dt-login/login-template.php:479
 #: dt-users/template-new-user.php:121 dt-users/template-new-user.php:122
-#: template-settings.php:655
+#: template-settings.php:673
 msgid "Password"
 msgstr "கடவுச்சொல்"
 
@@ -917,13 +920,13 @@ msgstr "%2$s உடன் பொருந்தக்கூடிய %1$s உர
 
 #: dt-assets/functions/enqueue-scripts.php:136
 #: dt-assets/functions/enqueue-scripts.php:202
-#: dt-assets/functions/enqueue-scripts.php:336 template-settings.php:120
-#: template-settings.php:599
+#: dt-assets/functions/enqueue-scripts.php:335 template-settings.php:170
+#: template-settings.php:617
 msgid "Edit"
 msgstr "தொகு"
 
 #: dt-assets/functions/enqueue-scripts.php:137
-#: dt-reports/magic-url-setup.php:496 template-settings.php:304
+#: dt-reports/magic-url-setup.php:801 template-settings.php:354
 msgid "Copy"
 msgstr "நகலெடு"
 
@@ -934,7 +937,7 @@ msgstr "நகலெடுக்கப்பட்டது: %s"
 
 #: dt-assets/functions/enqueue-scripts.php:141
 msgid "Toggle to follow or unfollow records"
-msgstr ""
+msgstr "பதிவுகளைப் பின்தொடர அல்லது பின்தொடராமல் இருக்க மாற்று"
 
 #: dt-assets/functions/enqueue-scripts.php:162
 msgid "You don't have any unread notifications"
@@ -954,7 +957,7 @@ msgid "A new version of Disciple.Tools is available"
 msgstr "Disciple.Tools இன் புதிய பதிப்பு கிடைக்கிறது"
 
 #: dt-assets/functions/enqueue-scripts.php:166
-#: dt-reports/magic-url-setup.php:483
+#: dt-reports/magic-url-setup.php:788
 msgid "View"
 msgstr "காண்க"
 
@@ -1076,13 +1079,13 @@ msgstr "பதிவின் நிலையை %s க்கு மாற்ற
 msgid "Locations you are responsible for"
 msgstr "நீங்கள் பொறுப்பான இடங்கள்"
 
-#: dt-assets/functions/enqueue-scripts.php:299 dt-groups/base-setup.php:1213
+#: dt-assets/functions/enqueue-scripts.php:299 dt-groups/base-setup.php:1259
 #: dt-metrics/records/genmap.php:166
 msgid "Add"
 msgstr "கூட்டு"
 
 #: dt-assets/functions/enqueue-scripts.php:301
-#: dt-reports/magic-url-setup.php:453 template-settings.php:297
+#: dt-reports/magic-url-setup.php:758 template-settings.php:347
 msgid "link"
 msgstr "இணைப்பு"
 
@@ -1090,58 +1093,58 @@ msgstr "இணைப்பு"
 msgid "copy"
 msgstr "நகல்"
 
-#: dt-assets/functions/enqueue-scripts.php:318
+#: dt-assets/functions/enqueue-scripts.php:317
 msgctxt "Matches for duplicate contacts found: 230"
 msgid "Matches Found:"
 msgstr "போட்டிகள் கிடைத்தன:"
 
-#: dt-assets/functions/enqueue-scripts.php:319
+#: dt-assets/functions/enqueue-scripts.php:318
 #, php-format
 msgctxt "Dismiss all duplicate matches for Bob"
 msgid "Dismiss all matches for %s"
 msgstr "%s க்கான அனைத்து போட்டிகளையும் நிராகரிக்கவும்"
 
-#: dt-assets/functions/enqueue-scripts.php:338
+#: dt-assets/functions/enqueue-scripts.php:337
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
 msgstr "_TOTAL_ இன் _START_ ஐக் காட்டுகிறது"
 
-#: dt-assets/functions/enqueue-scripts.php:339
+#: dt-assets/functions/enqueue-scripts.php:338
 msgid "Sorting By"
 msgstr "மூலம் வரிசைப்படுத்துதல்"
 
-#: dt-assets/functions/enqueue-scripts.php:341
+#: dt-assets/functions/enqueue-scripts.php:340
 msgid "Date Modified"
 msgstr "தேதி மாற்றப்பட்டது"
 
-#: dt-assets/functions/enqueue-scripts.php:342
+#: dt-assets/functions/enqueue-scripts.php:341
 msgid "No filters, create one below"
 msgstr "வடிப்பான்கள் இல்லை, கீழே ஒன்றை உருவாக்கவும்"
 
-#: dt-assets/functions/enqueue-scripts.php:343
+#: dt-assets/functions/enqueue-scripts.php:342
 msgid "No records found matching your filter."
 msgstr "உங்கள் வடிப்பானுடன் பொருந்தக்கூடிய பதிவுகள் எதுவும் கிடைக்கவில்லை."
 
-#: dt-assets/functions/enqueue-scripts.php:344 dt-contacts/base-setup.php:687
+#: dt-assets/functions/enqueue-scripts.php:343 dt-contacts/base-setup.php:687
 #: dt-groups/base-setup.php:1047 dt-posts/custom-post-type.php:489
 #, php-format
 msgctxt "All records"
 msgid "All %s"
 msgstr "அனைத்து%s"
 
-#: dt-assets/functions/enqueue-scripts.php:345
+#: dt-assets/functions/enqueue-scripts.php:344
 msgid "Split By"
 msgstr "பிரிக்கும் அடிப்படை"
 
-#: dt-assets/functions/enqueue-scripts.php:346
+#: dt-assets/functions/enqueue-scripts.php:345
 msgid "start"
 msgstr "தொடங்கு"
 
-#: dt-assets/functions/enqueue-scripts.php:347
+#: dt-assets/functions/enqueue-scripts.php:346
 msgid "end"
 msgstr "முடிவு"
 
-#: dt-assets/functions/enqueue-scripts.php:348
+#: dt-assets/functions/enqueue-scripts.php:347
 #: dt-assets/parts/modals/modal-advanced-search.php:73
 #: dt-contacts/module-access.php:1101 dt-groups/base-setup.php:965
 #: dt-metrics/personal/activity-highlights.php:56
@@ -1150,36 +1153,36 @@ msgstr "முடிவு"
 msgid "All"
 msgstr "அனைத்தும்"
 
-#: dt-assets/functions/enqueue-scripts.php:349
+#: dt-assets/functions/enqueue-scripts.php:348
 msgid "Without"
 msgstr "இல்லாமல்"
 
-#: dt-assets/functions/enqueue-scripts.php:352
+#: dt-assets/functions/enqueue-scripts.php:351
 msgctxt "Number of emails sent. i.e. 20 sent!"
 msgid "scheduled to be sent"
 msgstr "அனுப்ப திட்டமிடப்பட்டது"
 
-#: dt-assets/functions/enqueue-scripts.php:353
+#: dt-assets/functions/enqueue-scripts.php:352
 msgctxt "Preceded with number of emails not sent. i.e. 20 not sent!"
 msgid "not sent (likely missing valid email)"
 msgstr "அனுப்பப்படவில்லை (செல்லுபடியாகும் மின்னஞ்சல் விடுபட்டிருக்கலாம்)"
 
-#: dt-assets/functions/enqueue-scripts.php:354
+#: dt-assets/functions/enqueue-scripts.php:353
 msgctxt "See queue of messages to be sent."
 msgid "See queue"
 msgstr "வரிசையைக் காண்க"
 
-#: dt-assets/functions/enqueue-scripts.php:356
+#: dt-assets/functions/enqueue-scripts.php:355
 msgid "Exclude Item"
 msgstr "உருப்படியை விலக்கு"
 
-#: dt-assets/functions/enqueue-scripts.php:359
+#: dt-assets/functions/enqueue-scripts.php:358
 #, php-format
 msgctxt "The exported csv data to contain all 64 Contact fields."
 msgid "The exported csv data to contain all %2$s %1$s fields."
 msgstr "ஏற்றுமதி செய்யப்பட்ட csv தரவு அனைத்து %2$s %1$s புலங்களையும் கொண்டிருக்கும்."
 
-#: dt-assets/functions/enqueue-scripts.php:360
+#: dt-assets/functions/enqueue-scripts.php:359
 #, php-format
 msgctxt ""
 "The exported csv data to contain the 6 visible Contact field(s) shown below."
@@ -1189,120 +1192,120 @@ msgstr ""
 "ஏற்றுமதி செய்யப்பட்ட csv தரவு கீழே காட்டப்படும் %2$s தெரியும் %1$s புலங்களைக் "
 "கொண்டிருக்கும்."
 
-#: dt-assets/functions/enqueue-scripts.php:363
-#: dt-assets/functions/enqueue-scripts.php:371
+#: dt-assets/functions/enqueue-scripts.php:362
+#: dt-assets/functions/enqueue-scripts.php:370
 msgid "Full List"
 msgstr "முழு பட்டியல்"
 
-#: dt-assets/functions/enqueue-scripts.php:364
+#: dt-assets/functions/enqueue-scripts.php:363
 msgid "No Addresses"
 msgstr "முகவரிகள் இல்லை"
 
-#: dt-assets/functions/enqueue-scripts.php:365
+#: dt-assets/functions/enqueue-scripts.php:364
 msgid "With Additional Addresses"
 msgstr "கூடுதல் முகவரிகளுடன்"
 
-#: dt-assets/functions/enqueue-scripts.php:366
+#: dt-assets/functions/enqueue-scripts.php:365
 msgid "Open Email for Group"
 msgstr "குழுவிற்கான மின்னஞ்சலைத் திற"
 
-#: dt-assets/functions/enqueue-scripts.php:367
+#: dt-assets/functions/enqueue-scripts.php:366
 msgid "Open All"
 msgstr "அனைத்தையும் திற"
 
-#: dt-assets/functions/enqueue-scripts.php:368
+#: dt-assets/functions/enqueue-scripts.php:367
 msgid "Show Group Addresses"
 msgstr "குழு முகவரிகளைக் காட்டு"
 
-#: dt-assets/functions/enqueue-scripts.php:372
+#: dt-assets/functions/enqueue-scripts.php:371
 msgid "Has No Phone Number"
 msgstr "தொலைபேசி எண் இல்லை"
 
-#: dt-assets/functions/enqueue-scripts.php:373
+#: dt-assets/functions/enqueue-scripts.php:372
 msgid "Has Additional Phone Numbers"
 msgstr "கூடுதல் தொலைபேசி எண்கள் உள்ளன"
 
-#: dt-assets/functions/enqueue-scripts.php:377
+#: dt-assets/functions/enqueue-scripts.php:376
 msgid "Mapped Locations"
 msgstr "வரைபடமிடப்பட்ட இருப்பிடங்கள்"
 
-#: dt-assets/functions/enqueue-scripts.php:378
+#: dt-assets/functions/enqueue-scripts.php:377
 msgid "Contacts Without Locations"
 msgstr "இருப்பிடங்கள் இல்லாத தொடர்புகள்"
 
-#: dt-assets/functions/enqueue-scripts.php:379
+#: dt-assets/functions/enqueue-scripts.php:378
 msgid "Records on zoomed map"
 msgstr "பெரிதாக்கப்பட்ட வரைபடத்தில் பதிவுகள்"
 
-#: dt-assets/functions/enqueue-scripts.php:380
+#: dt-assets/functions/enqueue-scripts.php:379
 msgid "No Zoomed Map Records Found!"
 msgstr "பெரிதாக்கப்பட்ட வரைபட பதிவுகள் எதுவும் கிடைக்கவில்லை!"
 
-#: dt-assets/functions/enqueue-scripts.php:381
+#: dt-assets/functions/enqueue-scripts.php:380
 msgid "Open Zoomed Map Records"
 msgstr "பெரிதாக்கப்பட்ட வரைபட பதிவுகளைத் திற"
 
+#: dt-assets/functions/enqueue-scripts.php:381
 #: dt-assets/functions/enqueue-scripts.php:382
-#: dt-assets/functions/enqueue-scripts.php:383
 msgid "Filtered Map"
 msgstr "வடிகட்டப்பட்ட வரைபடம்"
 
-#: dt-assets/functions/enqueue-scripts.php:412 dt-contacts/base-setup.php:59
+#: dt-assets/functions/enqueue-scripts.php:411 dt-contacts/base-setup.php:59
 #: dt-contacts/base-setup.php:71 dt-metrics/personal/activity-highlights.php:57
 msgid "Contact"
 msgstr "தொடர்பு கொள்ளுங்கள்"
 
-#: dt-assets/functions/enqueue-scripts.php:413
+#: dt-assets/functions/enqueue-scripts.php:412
 #, php-format
 msgctxt "Communication channel already exists"
 msgid "%s already exists"
 msgstr "%s ஏற்கனவே உள்ளது"
 
-#: dt-assets/functions/enqueue-scripts.php:458
+#: dt-assets/functions/enqueue-scripts.php:450
 msgid "File Upload"
 msgstr "கோப்பு பதிவேற்றம்"
 
-#: dt-assets/functions/enqueue-scripts.php:459
+#: dt-assets/functions/enqueue-scripts.php:451
 msgid "Choose a file"
 msgstr "ஒரு கோப்பைத் தேர்ந்தெடுக்கவும்"
 
-#: dt-assets/functions/enqueue-scripts.php:460
+#: dt-assets/functions/enqueue-scripts.php:452
 msgid "or drag it here"
 msgstr "அல்லது இங்கே இழுக்கவும்"
 
-#: dt-assets/functions/enqueue-scripts.php:461
+#: dt-assets/functions/enqueue-scripts.php:453
 msgid "Successfully Uploaded!"
 msgstr "வெற்றிகரமாக பதிவேற்றப்பட்டது!"
 
-#: dt-assets/functions/enqueue-scripts.php:462
+#: dt-assets/functions/enqueue-scripts.php:454
 msgid "Error!"
 msgstr "பிழை!"
 
-#: dt-assets/functions/enqueue-scripts.php:463
+#: dt-assets/functions/enqueue-scripts.php:455
 msgid "Unable to upload, please try again"
 msgstr "பதிவேற்ற முடியவில்லை, மீண்டும் முயற்சிக்கவும்"
 
-#: dt-assets/functions/enqueue-scripts.php:464
+#: dt-assets/functions/enqueue-scripts.php:456
 msgid "Upload"
 msgstr "பதிவேற்று"
 
-#: dt-assets/functions/enqueue-scripts.php:465
+#: dt-assets/functions/enqueue-scripts.php:457
 msgid "Delete Existing File"
 msgstr "இருக்கும் கோப்பை நீக்கு"
 
-#: dt-assets/functions/enqueue-scripts.php:466
+#: dt-assets/functions/enqueue-scripts.php:458
 msgid "Replace Existing Image"
 msgstr "இருக்கும் படத்தை மாற்று"
 
-#: dt-assets/functions/enqueue-scripts.php:467
+#: dt-assets/functions/enqueue-scripts.php:459
 msgid "Are you sure you wish to delete existing file?"
 msgstr "இருக்கும் கோப்பை நீக்க விரும்புகிறீர்களா?"
 
-#: dt-assets/functions/enqueue-scripts.php:468
+#: dt-assets/functions/enqueue-scripts.php:460
 msgid "Successfully Deleted!"
 msgstr "வெற்றிகரமாக நீக்கப்பட்டது!"
 
-#: dt-assets/functions/enqueue-scripts.php:469
+#: dt-assets/functions/enqueue-scripts.php:461
 msgid "Delete failed, please try again"
 msgstr "நீக்குதல் தோல்வியடைந்தது, மீண்டும் முயற்சிக்கவும்"
 
@@ -1314,7 +1317,7 @@ msgstr "பட்டியல்"
 msgid "Disciple.Tools"
 msgstr "சீடர்.டூல்ஸ்"
 
-#: dt-assets/functions/menu.php:51 template-settings.php:55
+#: dt-assets/functions/menu.php:51 template-settings.php:105
 msgid "Profile"
 msgstr "சுயவிவரம்"
 
@@ -1325,7 +1328,7 @@ msgstr "புதியனவற்றை சேர்"
 #. Template Name of the theme
 #: dt-assets/functions/menu.php:70 dt-assets/parts/nav-offcanvas.php:50
 #: dt-assets/parts/nav-topbar.php:170 template-notifications.php:33
-#: template-settings.php:61 template-settings.php:479
+#: template-settings.php:111 template-settings.php:492
 msgid "Notifications"
 msgstr "அறிவிப்புகள்"
 
@@ -1585,7 +1588,7 @@ msgctxt "Optional Documentation"
 msgid "You can filter this section either by 'All', 'Comments', or 'Activity'."
 msgstr "இந்த பகுதியை 'அனைத்தும்', 'கருத்துகள்' அல்லது 'செயல்பாடு' மூலம் வடிகட்டலாம்."
 
-#: dt-assets/parts/modals/modal-help.php:58 template-settings.php:118
+#: dt-assets/parts/modals/modal-help.php:58 template-settings.php:168
 msgid "Your Profile"
 msgstr "உங்கள் சுயவிவரம்"
 
@@ -1613,7 +1616,7 @@ msgstr ""
 "சரிசெய்ய முடியும்."
 
 #: dt-assets/parts/modals/modal-help.php:66 dt-posts/custom-post-type.php:247
-#: dt-users/users.php:169
+#: dt-posts/posts.php:566 dt-posts/posts.php:576 dt-users/users.php:169
 msgid "Locations"
 msgstr "இருப்பிடங்கள்"
 
@@ -1767,25 +1770,25 @@ msgctxt "Optional Documentation"
 msgid "Read the documentation"
 msgstr "ஆவணங்களைப் படியுங்கள்"
 
-#: dt-assets/parts/modals/modal-help.php:143 dt-reports/magic-url-setup.php:491
+#: dt-assets/parts/modals/modal-help.php:143 dt-reports/magic-url-setup.php:796
 msgid "Open the link"
 msgstr "இணைப்பைத் திற"
 
-#: dt-assets/parts/modals/modal-help.php:147 dt-reports/magic-url-setup.php:499
+#: dt-assets/parts/modals/modal-help.php:147 dt-reports/magic-url-setup.php:804
 msgid "Copy the link to the clipboard"
 msgstr "இணைப்பை கிளிப்போர்டுக்கு நகலெடு"
 
-#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:248
-#: dt-reports/magic-url-setup.php:508
+#: dt-assets/parts/modals/modal-help.php:151 dt-reports/magic-url-setup.php:286
+#: dt-reports/magic-url-setup.php:813
 msgid "Send the link via email."
 msgstr "இணைப்பை மின்னஞ்சல் மூலம் அனுப்பவும்."
 
-#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:312
-#: dt-reports/magic-url-setup.php:517
+#: dt-assets/parts/modals/modal-help.php:155 dt-reports/magic-url-setup.php:350
+#: dt-reports/magic-url-setup.php:822
 msgid "Scan the QR code to open the magic link on a mobile device."
 msgstr "மொபைல் சாதனத்தில் மேஜிக் இணைப்பைத் திறக்க QR குறியீட்டை ஸ்கேன் செய்யவும்."
 
-#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:327
+#: dt-assets/parts/modals/modal-help.php:159 dt-reports/magic-url-setup.php:365
 msgid ""
 "Reset the security code. No data is removed. Only access. The previous link "
 "will be disabled and another one created."
@@ -1885,7 +1888,7 @@ msgid "This contact is shared with:"
 msgstr "இந்த தொடர்பு இதனுடன் பகிரப்பட்டது:"
 
 #: dt-assets/parts/modals/modal-share.php:27 dt-contacts/module-access.php:531
-#: dt-contacts/user-module.php:137 dt-core/global-functions.php:816
+#: dt-contacts/user-module.php:137 dt-core/global-functions.php:712
 msgctxt "input field placeholder"
 msgid "Search Users"
 msgstr "பயனர்களைத் தேடுங்கள்"
@@ -2016,10 +2019,11 @@ msgid "Private Connection"
 msgstr "தனிப்பட்ட இணைப்பு"
 
 #: dt-contacts/base-setup.php:197 dt-users/users.php:162
+#: template-settings.php:401
 msgid "Languages"
 msgstr "மொழிகள்"
 
-#: dt-contacts/base-setup.php:206 template-settings.php:180
+#: dt-contacts/base-setup.php:206 template-settings.php:230
 msgid "Phone"
 msgstr "தொலைபேசி"
 
@@ -2039,12 +2043,12 @@ msgstr "WhatsApp"
 #: dt-core/configuration/config-site-defaults.php:253
 #: dt-login/login-template.php:349 dt-users/template-new-user.php:116
 #: dt-users/template-new-user.php:117 dt-users/template-user-management.php:223
-#: dt-users/users.php:129 template-settings.php:167
+#: dt-users/users.php:129 template-settings.php:217
 msgid "Email"
 msgstr "மின்னஞ்சல்"
 
 #: dt-contacts/base-setup.php:240 dt-groups/base-setup.php:359
-#: dt-people-groups/people-groups-base.php:210 template-settings.php:191
+#: dt-people-groups/people-groups-base.php:210 template-settings.php:241
 msgid "Address"
 msgstr "முகவரி"
 
@@ -2069,7 +2073,7 @@ msgstr "இந்த தொடர்பு கணினியில் உள்
 
 #: dt-contacts/base-setup.php:286 dt-contacts/module-access.php:1107
 #: dt-users/template-new-user.php:185 dt-users/template-user-management.php:231
-#: template-settings.php:708
+#: template-settings.php:726
 msgid "Gender"
 msgstr "பாலினம்"
 
@@ -2241,7 +2245,7 @@ msgstr "உறுதிப்படுத்தவும்"
 
 #: dt-contacts/base-setup.php:545
 #: dt-core/configuration/config-site-defaults.php:449
-#: dt-groups/base-setup.php:618 template-settings.php:213
+#: dt-groups/base-setup.php:618 template-settings.php:263
 msgid "Other"
 msgstr "மற்றவை"
 
@@ -2810,7 +2814,7 @@ msgid "Assign"
 msgstr "ஒதுக்க"
 
 #: dt-contacts/module-access.php:1106 dt-users/template-new-user.php:134
-#: template-settings.php:227
+#: template-settings.php:277
 msgid "Language"
 msgstr "மொழி"
 
@@ -3220,13 +3224,37 @@ msgstr "இது தவறு என்றால், இந்த மின்�
 msgid "To reset your password, visit the following address:"
 msgstr "உங்கள் கடவுச்சொல்லை மீட்டமைக்க, பின்வரும் முகவரியைப் பார்வையிடவும்:"
 
-#: dt-core/dt-storage.php:223
+#: dt-core/dt-storage.php:224
 msgid ""
 "Something went wrong. Please try again or have an admin check the connection "
 "settings."
 msgstr ""
 "ஏதோ தவறு நடந்தது. மீண்டும் முயற்சிக்கவும் அல்லது நிர்வாகி இணைப்பு அமைப்புகளைச் "
 "சரிபார்க்கவும்."
+
+#: dt-core/global-functions.php:1427
+msgid "Images"
+msgstr "படங்கள்"
+
+#: dt-core/global-functions.php:1431
+msgid "PDFs"
+msgstr "பிடிஎஃப்கள்"
+
+#: dt-core/global-functions.php:1435
+msgid "Documents"
+msgstr "ஆவணங்கள்"
+
+#: dt-core/global-functions.php:1436
+msgid "Word, Excel, CSV, text, markdown"
+msgstr "வேர்ட், எக்செல், சிவிஎஸ், உரை, மார்க்அப்"
+
+#: dt-core/global-functions.php:1448
+msgid "Audio"
+msgstr "ஒலி"
+
+#: dt-core/global-functions.php:1452
+msgid "Video"
+msgstr "காணொளி"
 
 #: dt-core/logging/hooks/class-hook-posts.php:32
 msgid "(no title)"
@@ -3274,7 +3302,7 @@ msgid "Translate"
 msgstr "மொழிபெயர்"
 
 #: dt-core/release-notifications.php:127 dt-users/user-initial-setup.php:68
-#: template-settings.php:729
+#: template-settings.php:747
 msgid ""
 "Translate Disciple.Tools into your language or help make a translation "
 "better."
@@ -3298,7 +3326,7 @@ msgstr ""
 msgid "Find out more"
 msgstr "மேலும் அறிக"
 
-#: dt-core/utilities/dt-components.php:138
+#: dt-core/utilities/dt-components.php:147
 msgid "Search Locations"
 msgstr "இருப்பிடங்களைத் தேடுங்கள்"
 
@@ -3505,7 +3533,7 @@ msgid "The group has committed to be church."
 msgstr "குழு தேவாலயமாக இருக்க உறுதியளித்துள்ளது."
 
 #: dt-groups/base-setup.php:253 dt-users/template-user-management.php:174
-#: template-settings.php:438 template-settings.php:457
+#: template-settings.php:451 template-settings.php:470
 msgid "Start Date"
 msgstr "தொடக்க தேதி"
 
@@ -3524,7 +3552,7 @@ msgid "The date this group first identified as being a church."
 msgstr "இந்த குழு முதலில் ஒரு தேவாலயம் என்று அடையாளம் காணப்பட்ட தேதி."
 
 #: dt-groups/base-setup.php:270 dt-users/template-user-management.php:175
-#: template-settings.php:444 template-settings.php:458
+#: template-settings.php:457 template-settings.php:471
 msgid "End Date"
 msgstr "கடைசி தேதி"
 
@@ -3680,38 +3708,32 @@ msgstr ""
 "தட்டச்சு செய்க."
 
 #: dt-groups/base-setup.php:556
-#, fuzzy
-#| msgid "Toggle menu"
 msgid "Toggle layout"
-msgstr "மெனுவை மாற்று"
+msgstr "அமைப்பை மாற்று"
 
 #: dt-groups/base-setup.php:560
-#, fuzzy
-#| msgid "Baptism Generation"
 msgid "Maximize generational map"
-msgstr "ஞானஸ்நானம் உருவாக்கம்"
+msgstr "தலைமுறை வரைபடத்தை பெரிதாக்கு"
 
-#: dt-groups/base-setup.php:569 dt-groups/base-setup.php:1208
+#: dt-groups/base-setup.php:569 dt-groups/base-setup.php:1253
 msgid "Loading map…"
-msgstr ""
+msgstr "வரைபடத்தை ஏற்றுகிறது…"
 
-#: dt-groups/base-setup.php:572
-#, fuzzy
-#| msgid "Generation"
+#: dt-groups/base-setup.php:572 dt-groups/base-setup.php:1256
 msgid "Group generational map"
-msgstr "தலைமுறை"
+msgstr "குழு தலைமுறை வரைபடம்"
 
 #: dt-groups/base-setup.php:590 dt-groups/base-setup.php:604
-#, fuzzy
-#| msgid "Generation"
 msgid "Generational Map"
-msgstr "தலைமுறை"
+msgstr "தலைமுறை வரைபடம்"
 
 #: dt-groups/base-setup.php:605
 msgid ""
 "Visualize the generational relationships between groups, showing parent and "
 "child group connections in a tree-like structure."
 msgstr ""
+"குழுக்களுக்கு இடையேயான தலைமுறை உறவுகளை, பெற்றோர் மற்றும் துணைக் குழுக்களின் இணைப்புகளை "
+"ஒரு மர அமைப்பில் காட்டி, காட்சிப்படுத்துங்கள்."
 
 #: dt-groups/base-setup.php:613
 msgid "Four Fields"
@@ -3727,27 +3749,66 @@ msgstr ""
 "நான்கு புலங்கள் வரைபடத்தில் 5 சதுரங்கள் உள்ளன. மேல் இடது நாற்புறத்தில் தொடங்கி கடிகார "
 "திசையில் சென்று ஐந்தாவது நடுவில் இருப்பது:"
 
-#: dt-groups/base-setup.php:1209
-#, fuzzy
-#| msgid "Unable to upload, please try again"
+#: dt-groups/base-setup.php:1254
 msgid "Unable to load generational map."
-msgstr "பதிவேற்ற முடியவில்லை, மீண்டும் முயற்சிக்கவும்"
+msgstr "தலைமுறை வரைபடத்தை ஏற்ற முடியவில்லை."
 
-#: dt-groups/base-setup.php:1210
+#: dt-groups/base-setup.php:1255
 msgid "No child groups to display."
-msgstr ""
+msgstr "காண்பிக்க குழுவகள் இல்லை."
 
-#: dt-groups/base-setup.php:1212 dt-metrics/records/genmap.php:165
+#: dt-groups/base-setup.php:1258 dt-metrics/records/genmap.php:165
 msgid "Open"
 msgstr "திற"
 
-#: dt-groups/base-setup.php:1216 dt-metrics/records/genmap.php:171
+#: dt-groups/base-setup.php:1261 dt-metrics/records/genmap.php:162
+msgid "Type"
+msgstr "வகை"
+
+#: dt-groups/base-setup.php:1262 dt-metrics/records/genmap.php:154
+#: dt-metrics/records/genmap.php:158 dt-posts/dt-posts.php:2728
+#: dt-users/template-user-management.php:378 dt-users/users.php:175
+#: single-template.php:127
+msgid "Status"
+msgstr "நிலை"
+
+#: dt-groups/base-setup.php:1263 dt-metrics/records/genmap.php:151
+#: dt-metrics/records/genmap.php:164
+msgid "Members"
+msgstr "உறுப்பினர்கள்"
+
+#: dt-groups/base-setup.php:1264
+msgid "Assigned"
+msgstr "ஒதுக்கப்பட்டது"
+
+#: dt-groups/base-setup.php:1265
+msgid "Expand"
+msgstr "விரிவாக்கு"
+
+#: dt-groups/base-setup.php:1266
+msgid "Collapse"
+msgstr "இடிந்து விழுதல்"
+
+#: dt-groups/base-setup.php:1269 dt-metrics/records/genmap.php:171
 msgid "Add Child To"
 msgstr "இதற்கு குழந்தையைச் சேர்"
 
-#: dt-groups/base-setup.php:1218 dt-metrics/records/genmap.php:173
+#: dt-groups/base-setup.php:1271 dt-metrics/records/genmap.php:173
 msgid "Add Child"
 msgstr "குழந்தையைச் சேர்"
+
+#: dt-groups/base-setup.php:1272
+msgid "Name is required"
+msgstr "பெயர் கட்டாயம்"
+
+#: dt-groups/base-setup.php:1273
+#, php-format
+msgid "Error creating child group: %s"
+msgstr "துணைக் குழுவை உருவாக்கும்போது பிழை: %s"
+
+#: dt-groups/base-setup.php:1274
+msgid "Unknown error"
+msgstr "அறியப்படாத பிழை"
 
 #: dt-login/login-template.php:68
 msgid ""
@@ -3766,7 +3827,7 @@ msgstr ""
 msgid "Get New Password"
 msgstr "புதிய கடவுச்சொல் பெறு"
 
-#: dt-login/login-template.php:98 dt-login/login-template.php:488
+#: dt-login/login-template.php:98 dt-login/login-template.php:478
 msgid "Email Address"
 msgstr "மின்னஞ்சல் முகவரி"
 
@@ -3796,8 +3857,8 @@ msgstr "கடவுச்சொல் தேவை"
 msgid "Re-enter Password"
 msgstr "கடவுச்சொல்லை மீண்டும் உள்ளிடவும்"
 
-#: dt-login/login-template.php:312 dt-login/login-template.php:374
-#: dt-login/login-template.php:545
+#: dt-login/login-template.php:312 dt-login/login-template.php:371
+#: dt-login/login-template.php:535
 msgid "Register"
 msgstr "பதிவு செய்"
 
@@ -3809,24 +3870,24 @@ msgstr "உங்கள் வடிவத்தில் சில பிழை
 msgid "Display Name (optional)"
 msgstr "காட்சி பெயர் (விருப்பம்)"
 
-#: dt-login/login-template.php:456
+#: dt-login/login-template.php:446
 msgid "User action confirmed."
 msgstr "பயனர் செயல் உறுதிப்படுத்தப்பட்டது."
 
-#: dt-login/login-template.php:466 dt-login/login-template.php:491
-#: dt-login/login-template.php:537
+#: dt-login/login-template.php:456 dt-login/login-template.php:481
+#: dt-login/login-template.php:527
 msgid "Login"
 msgstr "உள்நுழைவு"
 
-#: dt-login/login-template.php:472
+#: dt-login/login-template.php:462
 msgid "Username or password does not match. Try again."
 msgstr "பயனர்பெயர் அல்லது கடவுச்சொல் பொருந்தவில்லை. மீண்டும் முயற்சிக்கவும்."
 
-#: dt-login/login-template.php:490
+#: dt-login/login-template.php:480
 msgid "Remember Me"
 msgstr "என்னை நினைவில் வை"
 
-#: dt-login/login-template.php:552
+#: dt-login/login-template.php:542
 msgid "Lost Password"
 msgstr "கடவுச்சொல் மறந்துவிட்டது"
 
@@ -4504,19 +4565,9 @@ msgstr "செயலில் முன்னிலைப்படுத்த�
 msgid "Highlight Churches"
 msgstr "தேவாலயங்களை முன்னிலைப்படுத்தவும்"
 
-#: dt-metrics/records/genmap.php:151 dt-metrics/records/genmap.php:164
-msgid "Members"
-msgstr "உறுப்பினர்கள்"
-
 #: dt-metrics/records/genmap.php:152
 msgid "View Record"
 msgstr "பதிவைப் பார்க்கவும்"
-
-#: dt-metrics/records/genmap.php:154 dt-metrics/records/genmap.php:158
-#: dt-posts/dt-posts.php:2727 dt-users/template-user-management.php:378
-#: dt-users/users.php:175 single-template.php:127
-msgid "Status"
-msgstr "நிலை"
 
 #: dt-metrics/records/genmap.php:155
 msgid "Total Members"
@@ -4529,10 +4580,6 @@ msgstr "குழுவைக் காண்க"
 #: dt-metrics/records/genmap.php:161
 msgid "Coaches"
 msgstr "பயிற்சியாளர்கள்"
-
-#: dt-metrics/records/genmap.php:162
-msgid "Type"
-msgstr "வகை"
 
 #: dt-metrics/records/genmap.php:167
 msgid "Focus"
@@ -4628,11 +4675,11 @@ msgstr "%1$s # %2$s இல் புதுப்பிக்கவும்"
 msgid "Do not reply directly to this email."
 msgstr "இந்த மின்னஞ்சலுக்கு நேரடியாக பதிலளிக்க வேண்டாம்."
 
-#: dt-notifications/notifications-scheduler.php:140 template-settings.php:514
+#: dt-notifications/notifications-scheduler.php:140 template-settings.php:527
 msgid "Hourly Digest"
 msgstr "மணிநேர டைஜஸ்ட்"
 
-#: dt-notifications/notifications-scheduler.php:143 template-settings.php:518
+#: dt-notifications/notifications-scheduler.php:143 template-settings.php:531
 msgid "Daily Digest"
 msgstr "தினசரி டைஜஸ்ட்"
 
@@ -4845,6 +4892,45 @@ msgstr "இந்த பதிவு அமைந்துள்ள பொது
 msgid "Locations or Address"
 msgstr "இருப்பிடங்கள் அல்லது முகவரி"
 
+#: dt-posts/dt-posts-endpoints.php:1117 dt-posts/dt-posts-endpoints.php:1150
+#: dt-posts/posts.php:459 dt-posts/posts.php:469
+#, php-format
+msgctxt "file_upload activity"
+msgid "Uploaded file: %1$s to %2$s"
+msgstr "ஏற்றப்பட்ட கோப்பு: %1$s %2$s-க்கு"
+
+#: dt-posts/dt-posts-endpoints.php:1121 dt-posts/posts.php:463
+#, php-format
+msgctxt "file_upload activity"
+msgid " and %d more"
+msgstr " மற்றும் %d மேலும்"
+
+#: dt-posts/dt-posts-endpoints.php:1123 dt-posts/posts.php:465
+#, php-format
+msgctxt "file_upload activity"
+msgid "Uploaded %1$d files: %2$s to %3$s"
+msgstr "%1$d கோப்புகள் பதிவேற்றப்பட்டது: %2$s இலிருந்து %3$s"
+
+#: dt-posts/dt-posts-endpoints.php:1304 dt-posts/dt-posts-endpoints.php:1337
+#: dt-posts/dt-posts-endpoints.php:1622 dt-posts/dt-posts-endpoints.php:1660
+#: dt-posts/posts.php:438 dt-posts/posts.php:444
+#, php-format
+msgctxt "file_upload activity"
+msgid "Deleted file: %1$s from %2$s"
+msgstr "நீக்கப்பட்ட கோப்பு: %1$s, %2$s இலிருந்து"
+
+#: dt-posts/dt-posts-endpoints.php:1435
+#, php-format
+msgctxt "file_upload activity"
+msgid "Renamed file from %1$s to %2$s in %3$s"
+msgstr "%3$s-இல் கோப்பை %1$s என்பதிலிருந்து %2$s என மறுபெயரிட்டேன்."
+
+#: dt-posts/dt-posts-endpoints.php:1624 dt-posts/posts.php:440
+#, php-format
+msgctxt "file_upload activity"
+msgid "Deleted all %1$d files from %2$s"
+msgstr "%2$s-இலிருந்து அனைத்து %1$d கோப்புகளையும் நீக்கப்பட்டன."
+
 #: dt-posts/dt-posts.php:101
 msgid ""
 "This record was automatically updated rather than creating a new record."
@@ -4859,19 +4945,19 @@ msgstr "%s சமர்ப்பிப்பு"
 msgid "Magic Link"
 msgstr "மேஜிக் இணைப்பு"
 
-#: dt-posts/dt-posts.php:1662 dt-posts/dt-posts.php:2209
+#: dt-posts/dt-posts.php:1662 dt-posts/dt-posts.php:2210
 msgid "Revert Bot"
 msgstr "மாற்றும் போட்"
 
-#: dt-posts/dt-posts.php:2449
+#: dt-posts/dt-posts.php:2450
 msgid "Record already shared with user."
 msgstr "பதிவு ஏற்கனவே பயனருடன் பகிரப்பட்டது."
 
-#: dt-posts/dt-posts.php:2728 single-template.php:174
+#: dt-posts/dt-posts.php:2729 single-template.php:174
 msgid "Details"
 msgstr "விவரங்கள்"
 
-#: dt-posts/dt-posts.php:2806
+#: dt-posts/dt-posts.php:2807
 #, php-format
 msgctxt ""
 "@[user name][user_id] - User Fred has requested access to Contact [contact "
@@ -4884,7 +4970,7 @@ msgstr ""
 "@[%1$s](%2$s) - பயனர் %3$s %4$s [%5$s](%6$s) க்கு அணுகலைக் கோரியுள்ளார். "
 "விரும்பினால், அணுகலை வழங்க இந்த பதிவை பயனருடன் பகிரவும்."
 
-#: dt-posts/dt-posts.php:2812
+#: dt-posts/dt-posts.php:2813
 msgid "Access Request"
 msgstr "அணுகல் கோரிக்கை"
 
@@ -5118,142 +5204,165 @@ msgctxt "contact1 removed from [field]"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s %2$s இலிருந்து அகற்றப்பட்டது"
 
-#: dt-posts/posts.php:416
+#: dt-posts/posts.php:493
+#, php-format
+msgctxt "file_upload activity"
+msgid "Renamed file from %1$s to %2$s"
+msgstr "கோப்பை %1$s என்பதிலிருந்து %2$s என மறுபெயரிட்டேன்."
+
+#: dt-posts/posts.php:495
+msgid "File updated"
+msgstr "கோப்பு புதுப்பிக்கப்பட்டது"
+
+#: dt-posts/posts.php:504
 #, php-format
 msgctxt "User Select: User1"
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
 
-#: dt-posts/posts.php:416
+#: dt-posts/posts.php:504
 msgid "Nobody"
 msgstr "யாரும் இல்லை"
 
-#: dt-posts/posts.php:421 dt-posts/posts.php:426
+#: dt-posts/posts.php:509 dt-posts/posts.php:514
 #, php-format
 msgctxt "field1 changed to 'text'"
 msgid "%1$s changed to %2$s"
 msgstr "%1$s %2$s ஆக மாற்றப்பட்டது"
 
-#: dt-posts/posts.php:434 dt-posts/posts.php:445
+#: dt-posts/posts.php:523 dt-posts/posts.php:535
 #, php-format
 msgctxt "Milestone1 removed from Milestones"
 msgid "%1$s removed from %2$s"
 msgstr "%1$s %2$s இலிருந்து அகற்றப்பட்டது"
 
-#: dt-posts/posts.php:437 dt-posts/posts.php:448
+#: dt-posts/posts.php:526 dt-posts/posts.php:538
 #, php-format
 msgctxt "Milestone1 added to Milestones"
 msgid "%1$s added to %2$s"
 msgstr "%1$s %2$s இல் சேர்க்கப்பட்டது"
 
-#: dt-posts/posts.php:470
+#: dt-posts/posts.php:560
 #, php-format
 msgid "%s removed"
 msgstr "%s அகற்றப்பட்டது"
 
-#: dt-posts/posts.php:478 dt-posts/posts.php:491
+#: dt-posts/posts.php:569
 #, php-format
-msgctxt "Location1 removed from locations"
-msgid "%1$s removed from locations"
-msgstr "%1$s இடங்களிலிருந்து அகற்றப்பட்டது"
+msgctxt ""
+"Location name removed from field label e.g. Spain removed from Locations"
+msgid "%1$s removed from %2$s"
+msgstr "%1$s %2$s-இலிருந்து நீக்கப்பட்டது"
 
-#: dt-posts/posts.php:481 dt-posts/posts.php:498
+#: dt-posts/posts.php:572
 #, php-format
-msgctxt "Location1 added to locations"
-msgid "%1$s added to locations"
-msgstr "%1$s இருப்பிடங்களில் சேர்க்கப்பட்டது"
+msgctxt "Location name added to field label e.g. Spain added to A-Locations"
+msgid "%1$s added to %2$s"
+msgstr "%1$s %2$s-இல் சேர்க்கப்பட்டது"
 
-#: dt-posts/posts.php:512
+#: dt-posts/posts.php:583
+#, php-format
+msgctxt "Location name removed from field label"
+msgid "%1$s removed from %2$s"
+msgstr "%1$s %2$s-இலிருந்து நீக்கப்பட்டது"
+
+#: dt-posts/posts.php:590
+#, php-format
+msgctxt "Location name added to field label"
+msgid "%1$s added to %2$s"
+msgstr "%1$s %2$s-இல் சேர்க்கப்பட்டது"
+
+#: dt-posts/posts.php:604
 #, php-format
 msgctxt "link1 removed from Social Links"
 msgid "%1$s removed from %2$s links"
 msgstr "%1$s %2$s இணைப்புகளிலிருந்து அகற்றப்பட்டது"
 
-#: dt-posts/posts.php:515
+#: dt-posts/posts.php:607
 #, php-format
 msgctxt "link1 added to Social Links"
 msgid "%1$s added to %2$s links"
 msgstr "%1$s %2$s இணைப்புகளில் சேர்க்கப்பட்டது"
 
-#: dt-posts/posts.php:536
+#: dt-posts/posts.php:628
 msgctxt "message"
 msgid "verified"
 msgstr "சரிபார்க்கப்பட்டது"
 
-#: dt-posts/posts.php:536
+#: dt-posts/posts.php:628
 msgctxt "message"
 msgid "not verified"
 msgstr "சரிபார்க்கப்படவில்லை"
 
-#: dt-posts/posts.php:539
+#: dt-posts/posts.php:631
 msgctxt "message"
 msgid "invalidated"
 msgstr "செல்லாதது"
 
-#: dt-posts/posts.php:539
+#: dt-posts/posts.php:631
 msgctxt "message"
 msgid "not invalidated"
 msgstr "செல்லாது"
 
-#: dt-posts/posts.php:566
+#: dt-posts/posts.php:659
 #, php-format
 msgctxt "Added Facebook: facebook.com/123"
 msgid "Added %1$s: %2$s"
 msgstr "%1$s: %2$s சேர்க்கப்பட்டது"
 
-#: dt-posts/posts.php:568
+#: dt-posts/posts.php:661
 #, php-format
 msgctxt "Update Facebook form facebook.com/123 to facebook.com/mark"
 msgid "Updated %1$s from %2$s to %3$s"
 msgstr "%1$s %2$s இலிருந்து %3$s க்கு புதுப்பிக்கப்பட்டது"
 
-#: dt-posts/posts.php:570
+#: dt-posts/posts.php:663
 #, php-format
 msgctxt "Deleted Facebook: facebook.com/123"
 msgid "Deleted %1$s: %2$s"
 msgstr "%1$s நீக்கப்பட்டது: %2$s"
 
-#: dt-posts/posts.php:574
+#: dt-posts/posts.php:667
 #, php-format
 msgctxt "message"
 msgid "Name changed to: %s"
 msgstr "பெயர் மாற்றப்பட்டது:%s"
 
-#: dt-posts/posts.php:576
+#: dt-posts/posts.php:669
 msgctxt "message"
 msgid "Created from Demo Plugin"
 msgstr "டெமோ செருகுநிரலில் இருந்து உருவாக்கப்பட்டது"
 
-#: dt-posts/posts.php:583
+#: dt-posts/posts.php:676
 #, php-format
 msgctxt "message"
 msgid "%s declined assignment"
 msgstr "%s பணி மறுக்கப்பட்டது"
 
-#: dt-posts/posts.php:583 dt-posts/posts.php:586
+#: dt-posts/posts.php:676 dt-posts/posts.php:679
 msgctxt "message"
 msgid "A user"
 msgstr "ஒரு பயனர்"
 
-#: dt-posts/posts.php:586
+#: dt-posts/posts.php:679
 #, php-format
 msgctxt "message"
 msgid "%s accepted assignment"
 msgstr "%s ஏற்றுக்கொள்ளப்பட்ட பணி"
 
-#: dt-posts/posts.php:591
+#: dt-posts/posts.php:684
 #, php-format
 msgctxt "message"
 msgid "Shared with %s"
 msgstr "%s உடன் பகிரப்பட்டது"
 
-#: dt-posts/posts.php:593
+#: dt-posts/posts.php:686
 #, php-format
 msgctxt "message"
 msgid "Unshared with %s"
 msgstr "%s உடன் பகிரப்படவில்லை"
 
-#: dt-posts/posts.php:2702
+#: dt-posts/posts.php:2876
 msgid "Removed User"
 msgstr "அகற்றப்பட்ட பயனர்"
 
@@ -5296,11 +5405,11 @@ msgstr "{{app}} தேர்ந்தெடுக்கப்பட்ட பய
 msgid "Configure email message"
 msgstr "மின்னஞ்சல் செய்தியை அமை"
 
-#: dt-reports/magic-url-bulk-send.php:60 dt-reports/magic-url-setup.php:257
+#: dt-reports/magic-url-bulk-send.php:60 dt-reports/magic-url-setup.php:295
 msgid "Selected app name"
 msgstr "தேர்ந்தெடுக்கப்பட்ட பயன்பாட்டு பெயர்"
 
-#: dt-reports/magic-url-bulk-send.php:66 dt-reports/magic-url-setup.php:263
+#: dt-reports/magic-url-bulk-send.php:66 dt-reports/magic-url-setup.php:301
 msgid "Unique link to access the app."
 msgstr "பயன்பாட்டை அணுக தனித்துவமான இணைப்பு."
 
@@ -5338,7 +5447,11 @@ msgstr "மேஜிக் இணைப்புகள்"
 msgid "Magic Links available on this record."
 msgstr "இந்த பதிவில் மேஜிக் இணைப்புகள் கிடைக்கின்றன."
 
-#: dt-reports/magic-url-setup.php:236
+#: dt-reports/magic-url-setup.php:234
+msgid "Exp: "
+msgstr "அனுபவம்: "
+
+#: dt-reports/magic-url-setup.php:274
 msgid ""
 "Hello,\n"
 "\n"
@@ -5356,23 +5469,64 @@ msgstr ""
 "\n"
 "நன்றி!"
 
-#: dt-reports/magic-url-setup.php:248
+#: dt-reports/magic-url-setup.php:286
 msgid "Add email address"
 msgstr "மின்னஞ்சல் முகவரியைச் சேர்க்கவும்"
 
-#: dt-reports/magic-url-setup.php:253
+#: dt-reports/magic-url-setup.php:291
 msgid "Add a note"
 msgstr "குறிப்பைச் சேர்க்கவும்"
 
-#: dt-reports/magic-url-setup.php:267
+#: dt-reports/magic-url-setup.php:305
 msgid "Send email with link"
 msgstr "இணைப்புடன் மின்னஞ்சல் அனுப்பவும்"
 
-#: dt-reports/magic-url-setup.php:329
+#: dt-reports/magic-url-setup.php:367
 msgid "Delete and replace the app link"
 msgstr "பயன்பாட்டு இணைப்பை நீக்கி மாற்றவும்"
 
-#: dt-reports/magic-url-setup.php:462
+#: dt-reports/magic-url-setup.php:454 dt-reports/magic-url-setup.php:462
+#: dt-reports/magic-url-setup.php:568 dt-reports/magic-url-setup.php:574
+#: dt-reports/magic-url-setup.php:674 dt-reports/magic-url-setup.php:730
+#: dt-reports/magic-url-setup.php:834 dt-reports/magic-url-setup.php:856
+msgid "Does not expire"
+msgstr "காலாவதியாகாது"
+
+#: dt-reports/magic-url-setup.php:475 dt-reports/magic-url-setup.php:826
+#: dt-reports/magic-url-setup.php:841 dt-reports/magic-url-setup.php:846
+msgid "Reset link"
+msgstr "இணைப்பை மீட்டமை"
+
+#: dt-reports/magic-url-setup.php:518
+msgid "Please enter a valid expiration amount and time unit."
+msgstr "தயவுசெய்து செல்லுபடியாகும் கால அளவு மற்றும் நேர அலகை உள்ளிடவும்."
+
+#: dt-reports/magic-url-setup.php:545
+msgid "Setting..."
+msgstr "அமைப்பு..."
+
+#: dt-reports/magic-url-setup.php:602 dt-reports/magic-url-setup.php:839
+msgid "Reset link (clears expiration)"
+msgstr "மீட்டமை இணைப்பு (காலாவதியாவதை நீக்குகிறது)"
+
+#: dt-reports/magic-url-setup.php:609
+msgid "Expiration updated successfully."
+msgstr "காலாவதி வெற்றிகரமாகப் புதுப்பிக்கப்பட்டது."
+
+#: dt-reports/magic-url-setup.php:612
+msgid "Failed to update expiration."
+msgstr "காலாவதி தேதியைப் புதுப்பிக்கத் தவறியது."
+
+#: dt-reports/magic-url-setup.php:617
+msgid "Error updating expiration. Please try again."
+msgstr "காலாவதிப் புதுப்பித்தலில் பிழை. மீண்டும் முயற்சிக்கவும்."
+
+#: dt-reports/magic-url-setup.php:740
+#, php-format
+msgid "Exp: %s"
+msgstr "Exp: %s"
+
+#: dt-reports/magic-url-setup.php:767
 msgid ""
 "This app is not yet activated for this user. Enable the app to generate a "
 "link."
@@ -5380,28 +5534,52 @@ msgstr ""
 "இந்த பயன்பாடு இந்த பயனருக்கு இன்னும் செயல்படுத்தப்படவில்லை. இணைப்பை உருவாக்க பயன்பாட்டை "
 "இயக்கவும்."
 
-#: dt-reports/magic-url-setup.php:465 template-settings.php:266
+#: dt-reports/magic-url-setup.php:770 template-settings.php:316
 msgid "App Activation"
 msgstr "பயன்பாட்டு செயல்படுத்தல்"
 
-#: dt-reports/magic-url-setup.php:472 dt-users/user-management.php:194
-#: template-settings.php:312 template-settings.php:569
+#: dt-reports/magic-url-setup.php:777 dt-users/user-management.php:194
+#: template-settings.php:364
 msgid "Enable"
 msgstr "இயக்கு"
 
-#: dt-reports/magic-url-setup.php:512
+#: dt-reports/magic-url-setup.php:817
 msgid "QR code"
 msgstr "QR குறியீடு"
 
-#: dt-reports/magic-url-setup.php:521
-msgid "Reset"
-msgstr "மீட்டமை"
+#: dt-reports/magic-url-setup.php:853
+msgid "Link Expiration"
+msgstr "இணைப்பு காலாவதி"
 
-#: dt-reports/magic-url-setup.php:526
-msgid "Reset link"
-msgstr "இணைப்பை மீட்டமை"
+#: dt-reports/magic-url-setup.php:862
+msgid "Amount"
+msgstr "தொகை"
 
-#: dt-reports/magic-url-setup.php:528
+#: dt-reports/magic-url-setup.php:867
+msgid "Minutes"
+msgstr "நிமிடங்கள்"
+
+#: dt-reports/magic-url-setup.php:868
+msgid "Hours"
+msgstr "மணிநேரங்கள்"
+
+#: dt-reports/magic-url-setup.php:869
+msgid "Days"
+msgstr "நாட்கள்"
+
+#: dt-reports/magic-url-setup.php:870
+msgid "Weeks"
+msgstr "வாரங்கள்"
+
+#: dt-reports/magic-url-setup.php:871
+msgid "Months"
+msgstr "மாதங்கள்"
+
+#: dt-reports/magic-url-setup.php:878
+msgid "Set Expiration"
+msgstr "காலாவதி அமைத்தல்"
+
+#: dt-reports/magic-url-setup.php:883
 msgid "This app is currently disabled."
 msgstr "இந்த பயன்பாடு தற்போது முடக்கப்பட்டுள்ளது."
 
@@ -5470,13 +5648,13 @@ msgstr "பெருக்கிகள் மற்றும் தொடர்�
 msgid "Display Name"
 msgstr "காட்சி பெயர்"
 
-#: dt-users/template-new-user.php:115 template-settings.php:154
-#: template-settings.php:676
+#: dt-users/template-new-user.php:115 template-settings.php:204
+#: template-settings.php:694
 msgid "Nickname (Display Name)"
 msgstr "புனைப்பெயர் (காட்சி பெயர்)"
 
 #: dt-users/template-new-user.php:119 dt-users/template-new-user.php:120
-#: dt-users/users.php:135 template-settings.php:141 template-settings.php:641
+#: dt-users/users.php:135 template-settings.php:191 template-settings.php:659
 msgid "Username"
 msgstr "பயனர்பெயர்"
 
@@ -5501,7 +5679,7 @@ msgid "Create User"
 msgstr "பயனரை உருவாக்கவும்"
 
 #: dt-users/template-new-user.php:178 dt-users/template-new-user.php:180
-#: template-settings.php:665
+#: template-settings.php:683
 msgid "First Name"
 msgstr "முதல் பெயர்"
 
@@ -5512,14 +5690,14 @@ msgid "optional"
 msgstr "விருப்பமானது"
 
 #: dt-users/template-new-user.php:182 dt-users/template-new-user.php:183
-#: template-settings.php:671
+#: template-settings.php:689
 msgid "Last Name"
 msgstr "கடைசி பெயர்"
 
 #: dt-users/template-new-user.php:218 dt-users/template-new-user.php:222
 #: dt-users/template-user-management.php:263
-#: dt-users/template-user-management.php:270 template-settings.php:237
-#: template-settings.php:700
+#: dt-users/template-user-management.php:270 template-settings.php:287
+#: template-settings.php:718
 msgid "Biography"
 msgstr "சுயசரிதை"
 
@@ -5584,12 +5762,12 @@ msgstr "பணிச்சுமை நிலை"
 msgid "Location Responsibility"
 msgstr "இருப்பிட பொறுப்பு"
 
-#: dt-users/template-user-management.php:141 template-settings.php:362
+#: dt-users/template-user-management.php:141 template-settings.php:78
 msgid "Languages you are comfortable speaking"
 msgstr "நீங்கள் வசதியாக பேசும் மொழிகள்"
 
-#: dt-users/template-user-management.php:157 template-settings.php:60
-#: template-settings.php:425
+#: dt-users/template-user-management.php:157 template-settings.php:110
+#: template-settings.php:438
 msgid "Availability"
 msgstr "கிடைக்கும்"
 
@@ -5635,7 +5813,7 @@ msgid "Email Password Reset"
 msgstr "மின்னஞ்சல் கடவுச்சொல் மீட்டமைப்பு"
 
 #: dt-users/template-user-management.php:282 dt-users/users.php:147
-#: template-settings.php:160
+#: template-settings.php:210
 msgid "Roles"
 msgstr "பாத்திரங்கள்"
 
@@ -5924,7 +6102,7 @@ msgctxt "List Filters"
 msgid "Custom Filters"
 msgstr "தனிப்பயன் வடிப்பான்கள்"
 
-#: dt-users/users.php:1351 template-settings.php:170 template-settings.php:647
+#: dt-users/users.php:1351 template-settings.php:220 template-settings.php:665
 msgid "System Email"
 msgstr "கணினி மின்னஞ்சல்"
 
@@ -6066,55 +6244,59 @@ msgstr "குறிப்பிடுகிறார்"
 msgid "Load more notifications"
 msgstr "மேலும் அறிவிப்புகளை ஏற்றவும்"
 
-#: template-settings.php:59 template-settings.php:333
-msgid "Multiplier Preferences"
-msgstr "பெருக்கி விருப்பத்தேர்வுகள்"
-
-#: template-settings.php:68
-msgid "Invite User"
-msgstr "பயனரை அழைக்கவும்"
-
-#: template-settings.php:78
-msgid "View Contact Record"
-msgstr "தொடர்பு பதிவை பார்க்கவும்"
-
-#: template-settings.php:202
-msgid "Social"
-msgstr "சமூக"
-
-#: template-settings.php:233
-msgid "English"
-msgstr "ஆங்கிலம்"
-
-#: template-settings.php:263
-msgid "App Name"
-msgstr "பயன்பாட்டு பெயர்"
-
-#: template-settings.php:264
-msgid "App Description"
-msgstr "பயன்பாட்டு விளக்கம்"
-
-#: template-settings.php:265
-msgid "App Link"
-msgstr "பயன்பாட்டு இணைப்பு"
-
-#: template-settings.php:276
-msgid "No apps installed"
-msgstr "பயன்பாடுகள் எதுவும் நிறுவப்படவில்லை"
-
-#: template-settings.php:343 template-settings.php:351
+#: template-settings.php:68 template-settings.php:73
 msgid "Locations you are willing to be responsible for"
 msgstr "நீங்கள் பொறுப்பேற்க விரும்பும் இருப்பிடங்கள்"
 
-#: template-settings.php:383
+#: template-settings.php:84
 msgid "People Groups you wish to serve"
 msgstr "நீங்கள் சேவை செய்ய விரும்பும் மக்கள் குழுக்கள்"
 
-#: template-settings.php:406
+#: template-settings.php:109 template-settings.php:384
+msgid "Multiplier Preferences"
+msgstr "பெருக்கி விருப்பத்தேர்வுகள்"
+
+#: template-settings.php:118
+msgid "Invite User"
+msgstr "பயனரை அழைக்கவும்"
+
+#: template-settings.php:128
+msgid "View Contact Record"
+msgstr "தொடர்பு பதிவை பார்க்கவும்"
+
+#: template-settings.php:252
+msgid "Social"
+msgstr "சமூக"
+
+#: template-settings.php:283
+msgid "English"
+msgstr "ஆங்கிலம்"
+
+#: template-settings.php:313
+msgid "App Name"
+msgstr "பயன்பாட்டு பெயர்"
+
+#: template-settings.php:314
+msgid "App Description"
+msgstr "பயன்பாட்டு விளக்கம்"
+
+#: template-settings.php:315
+msgid "App Link"
+msgstr "பயன்பாட்டு இணைப்பு"
+
+#: template-settings.php:326
+msgid "No apps installed"
+msgstr "பயன்பாடுகள் எதுவும் நிறுவப்படவில்லை"
+
+#: template-settings.php:409
+msgid "People groups"
+msgstr "மக்கள் குழுக்கள்"
+
+#: template-settings.php:419
 msgid "Availability to receive contacts from the Dispatcher"
 msgstr "அனுப்பியவரிடமிருந்து தொடர்புகளைப் பெறுவதற்கான கிடைக்கும் தன்மை"
 
-#: template-settings.php:428
+#: template-settings.php:441
 msgid ""
 "Set the dates you will be traveling or unavailable so the Dispatcher will "
 "know your availability to receive new contacts"
@@ -6122,54 +6304,60 @@ msgstr ""
 "நீங்கள் பயணிக்கும் அல்லது கிடைக்காத தேதிகளை அமைக்கவும், இதனால் புதிய தொடர்புகளைப் "
 "பெறுவதற்கான உங்கள் கிடைக்கும் தன்மையை டிஸ்பாட்சர் அறிந்து கொள்வார்"
 
-#: template-settings.php:432
+#: template-settings.php:445
 msgid "Schedule Travel or Dates Unavailable"
 msgstr "அட்டவணை பயணம் அல்லது தேதிகள் கிடைக்கவில்லை"
 
-#: template-settings.php:449
+#: template-settings.php:462
 msgid "Add Unavailable dates"
 msgstr "கிடைக்காத தேதிகளைச் சேர்க்கவும்"
 
-#: template-settings.php:463
+#: template-settings.php:476
 msgid "No Travel Scheduled"
 msgstr "பயண அட்டவணை இல்லை"
 
-#: template-settings.php:483
+#: template-settings.php:496
 msgid "Contact Info"
 msgstr "தொடர்பு தகவல்"
 
-#: template-settings.php:487
+#: template-settings.php:500
 #, php-format
 msgctxt "Email will be sent to: [email]"
 msgid "Email notifications will be sent to: %s"
 msgstr "மின்னஞ்சல் அறிவிப்புகள் இங்கு அனுப்பப்படும்: %s"
 
-#: template-settings.php:504
+#: template-settings.php:517
 msgid "Email preferences"
 msgstr "மின்னஞ்சல் விருப்பத்தேர்வுகள்"
 
-#: template-settings.php:510
+#: template-settings.php:523
 msgid "Real time"
 msgstr "உண்மையான நேரம்"
 
-#: template-settings.php:525
+#: template-settings.php:538
 msgid "Type of Notification"
 msgstr "அறிவிப்பு வகை"
 
-#: template-settings.php:538
+#: template-settings.php:551
 msgid "required"
 msgstr "தேவை"
 
-#: template-settings.php:562
+#. translators: 1: notification type, 2: channel (e.g. email)
+#: template-settings.php:557
+#, php-format
+msgid "%1$s — %2$s"
+msgstr "%1$s — %2$s"
+
+#: template-settings.php:581 template-settings.php:589
 msgid "Follow all contacts"
 msgstr "எல்லா தொடர்புகளையும் பின்பற்றவும்"
 
-#: template-settings.php:564
+#: template-settings.php:583
 msgid ""
 "You will receive a notification for any update that happens in the system."
 msgstr "கணினியில் நடக்கும் எந்தவொரு புதுப்பிப்புக்கும் அறிவிப்பைப் பெறுவீர்கள்."
 
-#: template-settings.php:624
+#: template-settings.php:642
 msgid ""
 "Disciple Tools System does not store images. For profile images we use "
 "Gravatar (Globally Recognized Avatar). If you have security concerns, we "
@@ -6182,11 +6370,11 @@ msgstr ""
 "மாறாக உங்களைப் பிரதிநிதித்துவப்படுத்த ஒரு கார்ட்டூன், சுருக்கம் அல்லது மாற்று "
 "புகைப்படத்தைத் தேர்வுசெய்க."
 
-#: template-settings.php:625
+#: template-settings.php:643
 msgid "edit image on gravatar.com"
 msgstr "gravatar.com இல் படத்தைத் திருத்தவும்"
 
-#: template-settings.php:631
+#: template-settings.php:649
 msgid ""
 "Disciple Tools System does not store images. All media assets will be placed "
 "within specified media connection storage service. If you have security "
@@ -6198,27 +6386,27 @@ msgstr ""
 "புகைப்படத்தைப் பயன்படுத்த வேண்டாம் என்று நாங்கள் பரிந்துரைக்கிறோம், மாறாக உங்களைப் "
 "பிரதிநிதித்துவப்படுத்த ஒரு கார்ட்டூன், சுருக்கம் அல்லது மாற்று புகைப்படத்தைத் தேர்வுசெய்க."
 
-#: template-settings.php:632
+#: template-settings.php:650
 msgid "Upload new profile image"
 msgstr "புதிய சுயவிவரப் படத்தைப் பதிவேற்று"
 
-#: template-settings.php:642 template-settings.php:643
+#: template-settings.php:660 template-settings.php:661
 msgid "Username cannot be changed"
 msgstr "பயனர்பெயரை மாற்ற முடியாது"
 
-#: template-settings.php:648
+#: template-settings.php:666
 msgid "User email can be changed by site administrator."
 msgstr "தள நிர்வாகியால் பயனர் மின்னஞ்சலை மாற்றலாம்."
 
-#: template-settings.php:656
+#: template-settings.php:674
 msgid "Use this email reset form to create a new password."
 msgstr "புதிய கடவுச்சொல்லை உருவாக்க இந்த மின்னஞ்சல் மீட்டமைப்பு படிவத்தைப் பயன்படுத்தவும்."
 
-#: template-settings.php:658
+#: template-settings.php:676
 msgid "go to password change form"
 msgstr "கடவுச்சொல் மாற்ற படிவத்திற்குச் செல்லவும்"
 
-#: template-settings.php:722
+#: template-settings.php:740
 msgid "System Language"
 msgstr "கணினி மொழி"
 
@@ -6243,6 +6431,19 @@ msgstr "அணுகல் தொடர்புகள் ஸ்கேன்:"
 msgctxt "Duplicate contacts found: 100"
 msgid "Duplicates found:"
 msgstr "நகல்கள் காணப்படுகின்றன:"
+
+#, php-format
+#~ msgctxt "Location1 removed from locations"
+#~ msgid "%1$s removed from locations"
+#~ msgstr "%1$s இடங்களிலிருந்து அகற்றப்பட்டது"
+
+#, php-format
+#~ msgctxt "Location1 added to locations"
+#~ msgid "%1$s added to locations"
+#~ msgstr "%1$s இருப்பிடங்களில் சேர்க்கப்பட்டது"
+
+#~ msgid "Reset"
+#~ msgstr "மீட்டமை"
 
 #, fuzzy
 #~| msgid "Restore"

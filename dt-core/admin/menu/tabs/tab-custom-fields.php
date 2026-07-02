@@ -1286,6 +1286,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                             <option value="connection"><?php esc_html_e( 'Connection', 'disciple_tools' ) ?></option>
                             <option value="user_select"><?php esc_html_e( 'User Select', 'disciple_tools' ) ?></option>
                             <option value="file_upload"><?php esc_html_e( 'File Upload', 'disciple_tools' ) ?></option>
+                            <option value="location"><?php esc_html_e( 'Location (grid only)', 'disciple_tools' ) ?></option>
+                            <option value="location_meta"><?php esc_html_e( 'Location with Geocoding', 'disciple_tools' ) ?></option>
                         </select>
                     </td>
                 </tr>
@@ -1401,6 +1403,8 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
             <li><?php esc_html_e( 'Connection: An autocomplete picker to connect to another record.', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'User Select: An autocomplete picker to connect to a user account.', 'disciple_tools' ) ?></li>
             <li><?php esc_html_e( 'File Upload: A field for uploading multiple files (pictures, documents, PDFs, voice messages, etc.)', 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( 'Location (grid only): Select locations from the predefined location grid list.', 'disciple_tools' ) ?></li>
+            <li><?php esc_html_e( 'Location with Geocoding: Pin addresses using Mapbox or Google geocoding (API keys required in Mapping settings).', 'disciple_tools' ) ?></li>
         </ul>
         <strong><?php esc_html_e( 'Private Field:', 'disciple_tools' ) ?></strong>
         <ul style="list-style: disc; padding-left:40px">
@@ -1559,6 +1563,24 @@ class Disciple_Tools_Tab_Custom_Fields extends Disciple_Tools_Abstract_Menu_Base
                 $new_field = [
                     'name'        => $post_submission['new_field_name'],
                     'type'        => 'file_upload',
+                    'default'     => [],
+                    'tile'     => $field_tile,
+                    'customizable' => 'all',
+                    'private' => $field_private
+                ];
+            } elseif ( $field_type === 'location' ) {
+                $new_field = [
+                    'name'        => $post_submission['new_field_name'],
+                    'type'        => 'location',
+                    'default'     => [],
+                    'tile'     => $field_tile,
+                    'customizable' => 'all',
+                    'private' => $field_private
+                ];
+            } elseif ( $field_type === 'location_meta' ) {
+                $new_field = [
+                    'name'        => $post_submission['new_field_name'],
+                    'type'        => 'location_meta',
                     'default'     => [],
                     'tile'     => $field_tile,
                     'customizable' => 'all',

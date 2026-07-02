@@ -1283,6 +1283,7 @@ jQuery(document).ready(function ($) {
                     <option value="connection">Connection</option>
                     <option value="user_select">User Select</option>
                     <option value="location">Location (grid only)</option>
+                    <option value="location_meta">Location with Geocoding</option>
                     <option value="communication_channel">Communication Channel</option>
                     <option value="file_upload">File Upload</option>
                 </select>

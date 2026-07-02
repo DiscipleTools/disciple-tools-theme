@@ -12,8 +12,7 @@ function dt_login_redirect_login_page() {
 
 
     if ( isset( $_SERVER['REQUEST_URI'] ) && !empty( $_SERVER['REQUEST_URI'] ) ) {
-        $parsed_request_uri = ( new DT_URL( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) )->parsed_url;
-        $page_viewed = ltrim( $parsed_request_uri['path'], '/' );
+        $page_viewed = dt_get_url_path( true );
 
         //this section only applies to the login pages (ones that have the action query param)
         if ( $page_viewed !== 'wp-login.php' && !isset( $_GET['action'] ) ){
@@ -44,7 +43,16 @@ function dt_login_redirect_login_page() {
         //}
 
         if ( $page_viewed == 'wp-login.php' && isset( $_GET['action'] ) && ( $_GET['action'] === 'resetpass' || $_GET['action'] === 'rp' ) ) {
-            wp_redirect( dt_login_url( 'resetpass' ) );
+            $redirect_url = dt_login_url( 'resetpass' );
+            //phpcs:disable WordPress.Security.NonceVerification.Recommended
+            if ( isset( $_GET['key'] ) && isset( $_GET['login'] ) ) {
+                $redirect_url = add_query_arg( [
+                    'key'   => sanitize_text_field( wp_unslash( $_GET['key'] ) ),
+                    'login' => sanitize_text_field( wp_unslash( $_GET['login'] ) ),
+                ], $redirect_url );
+            }
+            //phpcs:enable WordPress.Security.NonceVerification.Recommended
+            wp_redirect( $redirect_url );
             exit;
         }
 
@@ -74,7 +82,11 @@ function dt_login_redirect_login_page() {
         //phpcs:enable
 
         if ( $page_viewed == 'wp-login.php' && isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] == 'GET' ) {
-            wp_redirect( dt_login_url( 'login' ) );
+            $allowed_actions = [ 'login', 'register', 'lostpassword', 'logout' ];
+            $action = ( isset( $_GET['action'] ) && in_array( sanitize_text_field( wp_unslash( $_GET['action'] ) ), $allowed_actions, true ) )
+                ? sanitize_text_field( wp_unslash( $_GET['action'] ) )
+                : 'login';
+            wp_redirect( dt_login_url( $action ) );
             exit;
         }
     }
@@ -231,7 +243,7 @@ function dt_login_verify_user_pass( $user, $username, $password ) {
 }
 add_filter( 'wp_signup_location', 'dt_login_multisite_signup_location', 99, 1 );
 function dt_login_multisite_signup_location( $url ) {
-    $url = dt_login_url( 'login' );
+    $url = dt_login_url( 'register' );
     return $url;
 }
 add_filter( 'register_url', 'dt_login_multisite_register_location', 99, 1 );

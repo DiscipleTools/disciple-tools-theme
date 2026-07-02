@@ -7,7 +7,7 @@ jQuery(document).ready(function ($) {
   window.open_user_modal = (user_id) => {
     const componentService = new window.DtWebComponents.ComponentService(
       'users',
-      window.current_user_lookup,
+      user_id,
       window.wpApiShare.nonce,
     );
     componentService.attachLoadEvents();
@@ -96,6 +96,13 @@ jQuery(document).ready(function ($) {
 
     $('#status-select').val('');
     $('#workload-select').val('');
+
+    // Reset form components
+    document.getElementById('update_display_name').reset();
+    document.getElementById('gender').reset();
+    document.getElementById('description').reset();
+    document.getElementById('user_status').reset();
+    document.getElementById('workload_status').reset();
 
     // Determine if provision for magic link apps should be made.
     const user_apps = get_magic_link_apps();
@@ -539,16 +546,11 @@ jQuery(document).ready(function ($) {
                 <a id="app_link_${app_key}" ${activated ? '' : 'disabled'} class="button" href="${url}" target="_blank" style="margin-right: 5px;">${window.SHAREDFUNCTIONS.escapeHTML(magic_link['label'])} <img class="dt-icon dt-white-icon" src="${window.SHAREDFUNCTIONS.escapeHTML(window.dt_user_management_localized?.theme_uri)}dt-assets/images/open-link.svg"/></a>
             </td>
             <td style="vertical-align: top;">
-                <input id="app_state_${app_key}"
-                        class="switch-input app-state-switches" type="checkbox"
+                <dt-toggle id="app_state_${app_key}"
+                        class="app-state-switches"
                         data-user_id="${user_id}" data-app_key="${app_key}" data-app_root="${app?.root}" data-app_type="${app?.type}"
                         ${activated ? 'checked' : ''}
                 />
-                <label class="switch-paddle" for="app_state_${app_key}">
-                    <span class="show-for-sr">${window.SHAREDFUNCTIONS.escapeHTML(escaped_translations.app_state_enable)}</span>
-                    <span class="switch-active" aria-hidden="true" style="color:white;">${window.SHAREDFUNCTIONS.escapeHTML(escaped_translations.app_state_active)}</span>
-                    <span class="switch-inactive" aria-hidden="false">${window.SHAREDFUNCTIONS.escapeHTML(escaped_translations.app_state_inactive)}</span>
-                </label>
             </td>
           </tr>`;
         }
@@ -567,7 +569,7 @@ jQuery(document).ready(function ($) {
     $('#magic_link_apps_spinner').hide();
   }
 
-  $(document).on('click', '.app-state-switches', function (e) {
+  $(document).on('change', '.app-state-switches', function (e) {
     const app_state = $(e.target);
     switch_magic_link_app_state(
       $(app_state).data('user_id'),
@@ -765,27 +767,35 @@ jQuery(document).ready(function ($) {
     );
   };
 
-  $('textarea.text-input, input.text-input').change(function () {
-    const id = $(this).attr('id');
-    const val = $(this).val();
-    $(`#${id}-spinner`).addClass('active');
-    update_user(window.current_user_lookup, id, val).then(() => {
-      $(`#${id}-spinner`).removeClass('active');
-    });
-  });
-  $('select.select-field').change((e) => {
-    const id = $(e.currentTarget).attr('id');
-    const val = $(e.currentTarget).val();
-    $(`#${id}-spinner`).addClass('active');
+  $('dt-textarea, dt-text').change(function () {
+    if (window.current_user_lookup) {
+      const id = $(this).attr('id');
+      const val = $(this).val();
 
-    update_user(window.current_user_lookup, id, val).then(() => {
-      $(`#${id}-spinner`).removeClass('active');
-    });
+      document.getElementById(id)?.setAttribute('loading', true);
+
+      update_user(window.current_user_lookup, id, val).then(() => {
+        document.getElementById(id)?.removeAttribute('loading');
+        document.getElementById(id)?.setAttribute('saved', true);
+      });
+    }
+  });
+  $('select.select-field, dt-single-select').change((e) => {
+    if (window.current_user_lookup) {
+      const id = $(e.currentTarget).attr('id');
+      const val = $(e.currentTarget).val();
+      document.getElementById(id)?.setAttribute('loading', true);
+
+      update_user(window.current_user_lookup, id, val).then(() => {
+        document.getElementById(id)?.removeAttribute('loading');
+        document.getElementById(id)?.setAttribute('saved', true);
+      });
+    }
   });
   $('button.dt_multi_select').on('click', function () {
     let fieldKey = $(this).data('field-key');
     let optionKey = $(this).attr('id');
-    $(`#${fieldKey}-spinner`).addClass('active');
+    document.getElementById(fieldKey)?.setAttribute('loading', true);
     let field = $(`[data-field-key="${fieldKey}"]#${optionKey}`);
     field.addClass('submitting-select-button');
     let action = 'add';
@@ -815,7 +825,7 @@ jQuery(document).ready(function ($) {
             ? 'empty-select-button'
             : 'selected-select-button',
         );
-        $(`#${fieldKey}-spinner`).removeClass('active');
+        document.getElementById(fieldKey)?.removeAttribute('loading');
       })
       .catch((err) => {
         field.removeClass('submitting-select-button selected-select-button');
@@ -1015,6 +1025,13 @@ jQuery(document).ready(function ($) {
   }
 
   function write_add_user() {
+    const componentService = new window.DtWebComponents.ComponentService(
+      'users',
+      window.current_user_lookup,
+      window.wpApiShare.nonce,
+    );
+    componentService.attachLoadEvents();
+
     const showOptionsButton = $('#show-hidden-fields');
     const hideOptionsButton = $('#hide-hidden-fields');
     const hiddenFields = $('.hidden-fields');
@@ -1083,12 +1100,12 @@ jQuery(document).ready(function ($) {
     });
 
     let create_user = (corresponds_to_contact, archive_comments = false) => {
-      let name = $('#eman').val();
+      let name = $('#emankcin').val();
       let email = $('#liame').val();
       let locale = $('#locale').val();
 
       const username = $('#emanresu').val();
-      const password = $('#drowssap').val();
+      const password = $('#ddrowssap').val();
 
       const optionalFields = document.querySelectorAll('[data-optional=""]');
       const optionalValues = {};
@@ -1154,19 +1171,41 @@ jQuery(document).ready(function ($) {
     };
 
     function getContact(id, isUser = false, overwriteTypeahead = false) {
+      $('#contact-result').empty();
+      if (!id) {
+        window.contact_record = undefined;
+        submit_button.prop('disabled', false);
+        return;
+      }
       $('.loading-spinner').addClass('active');
       window
         .makeRequest('GET', 'contacts/' + id, null, 'dt-posts/v2/')
         .done(function (response) {
           if (overwriteTypeahead) {
-            $('.js-typeahead-subassigned').val(
-              window.SHAREDFUNCTIONS.escapeHTML(response.name),
-            );
+            const safeName = window.SHAREDFUNCTIONS.escapeHTML(response.name);
+
+            const dataArray = [
+              {
+                id: response.ID,
+                label: safeName,
+                status: {
+                  key: 'active',
+                  label: 'Active',
+                  color: '#4CAF50',
+                },
+              },
+            ];
+
+            const jsonString = JSON.stringify(dataArray);
+
+            $('#subassigned').attr('value', jsonString);
           }
           if (isUser || response.corresponds_to_user >= 0) {
-            $('#name').val(window.SHAREDFUNCTIONS.escapeHTML(response.name));
+            $('#emankcin').val(
+              window.SHAREDFUNCTIONS.escapeHTML(response.name),
+            );
             if (response.contact_email && response.contact_email.length > 0) {
-              $('#email').val(
+              $('#liame').val(
                 window.SHAREDFUNCTIONS.escapeHTML(
                   response.contact_email[0].value,
                 ),
@@ -1182,62 +1221,47 @@ jQuery(document).ready(function ($) {
               `<br /> <a href="${window.SHAREDFUNCTIONS.escapeHTML(window.wpApiShare.site_url)}/contacts/${id}">${escaped_translations.view_contact}</a>`,
             );
           } else {
-            window.contact_record = response;
+            if (response.ID) {
+              window.contact_record = response;
+            } else {
+              window.contact_record = undefined;
+            }
             submit_button.prop('disabled', false);
-            $('#name').val(window.SHAREDFUNCTIONS.escapeHTML(response.title));
+            $('#emankcin').val(
+              window.SHAREDFUNCTIONS.escapeHTML(response.title),
+            );
             if (
               response.contact_email &&
               response.contact_email[0] !== 'undefined'
             ) {
-              $('#email').val(
+              $('#liame').val(
                 window.SHAREDFUNCTIONS.escapeHTML(
                   response.contact_email[0].value,
                 ),
               );
+            } else {
+              $('#liame').val(window.SHAREDFUNCTIONS.escapeHTML(''));
             }
           }
           $('.loading-spinner').removeClass('active');
         });
     }
 
-    ['subassigned'].forEach((field_id) => {
-      $.typeahead({
-        input: `.js-typeahead-${field_id}`,
-        minLength: 0,
-        accent: true,
-        maxItem: 30,
-        searchOnFocus: true,
-        template: window.TYPEAHEADS.contactListRowTemplate,
-        source: window.TYPEAHEADS.typeaheadContactsSource(),
-        display: 'name',
-        templateValue: '{{name}}',
-        dynamic: true,
-        callback: {
-          onClick: function (node, a, item, event) {
-            submit_button.prop('disabled', true);
+    $('#subassigned').on('change', function (e) {
+      submit_button.prop('disabled', true);
 
-            getContact(item.ID, item.user);
-          },
-          onResult: function (node, query, result, resultCount) {
-            let text = window.TYPEAHEADS.typeaheadHelpText(
-              resultCount,
-              query,
-              result,
-            );
-            $(`#${field_id}-result-container`).html(text);
-            submit_button.prop('disabled', false);
-            $('#contact-result').html(``);
-          },
-          onHideLayout: function () {
-            $(`#${field_id}-result-container`).html('');
-          },
-          onReady: function () {
-            if (field_id === 'subassigned') {
-            }
-          },
-          onShowLayout() {},
-        },
-      });
+      let contact_id = null;
+
+      if (e.target.value && e.target.value.length > 0) {
+        const firstValid = e.target.value.find((item) => !item.delete);
+        if (firstValid) {
+          contact_id = firstValid.id;
+        }
+      }
+
+      getContact(contact_id, false);
+
+      submit_button.prop('disabled', false);
     });
 
     // Prefill the form if contact_id is in the query params
@@ -1249,12 +1273,16 @@ jQuery(document).ready(function ($) {
   }
 
   function write_language_dropdown(translations, default_language) {
-    let select = '<select name="locale" id="locale">';
+    let options = [];
+
     for (const translation in translations) {
-      select += `<option value="${window.SHAREDFUNCTIONS.escapeHTML(translations[translation].language)}" ${translations[translation].language === default_language ? 'selected' : ''} > ${translations[translation].flag ? translations[translation].flag + ' ' : ''} ${window.SHAREDFUNCTIONS.escapeHTML(translations[translation].native_name)}</option>`;
+      options.push({
+        id: translations[translation].language,
+        label: `${translations[translation].flag ? translations[translation].flag + ' ' : ''}${translations[translation].native_name}`,
+      });
     }
-    select += '</select>';
-    return select;
+
+    return `<dt-single-select name="locale" id="locale" value="${default_language}" options='${JSON.stringify(options)}'></dt-single-select>`;
   }
 });
 

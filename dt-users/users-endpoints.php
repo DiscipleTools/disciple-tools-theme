@@ -221,8 +221,6 @@ class Disciple_Tools_Users_Endpoints
 
         $user_id = get_current_user_id();
         if ( isset( $params['password'] ) && $user_id ){
-            dt_write_log( $params['password'] );
-
             wp_set_password( $params['password'], $user_id );
             wp_logout();
             wp_redirect( '/' );

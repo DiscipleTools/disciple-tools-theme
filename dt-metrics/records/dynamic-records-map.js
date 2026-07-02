@@ -778,6 +778,18 @@ jQuery(document).ready(function ($) {
           );
       }
 
+      // Determine if layers have ever been configured/stored for this map. An
+      // empty stored object (e.g. all layers removed by the user) still counts
+      // as configured, so default layers are not re-added after a refresh.
+      let layers_never_configured =
+        !window.localStorage ||
+        (window.localStorage.getItem(
+          mapbox_library_api.dt_maps_layers_cookie_id,
+        ) === null &&
+          window.localStorage.getItem(
+            mapbox_library_api.dt_maps_layers_cookie_id_by_slug,
+          ) === null);
+
       // Convert parent object to array of layer objects.
       let layer_cookies = [];
       if (
@@ -788,24 +800,56 @@ jQuery(document).ready(function ($) {
           ([k, v]) => v,
         );
       }
-      // Default to showing all contacts if no cookies detected.
-      if (layer_cookies.length === 0 && dt_maps_layers_cookie === false) {
-        let default_cookie = {
-          post_type: 'contacts',
-          field_key: 'query_all',
-          display_order: 0,
-          displayed: true,
-          color: mapbox_library_api.add_records_generate_hex_color(),
-        };
-        default_cookie['id'] =
-          mapbox_library_api.add_records_generate_captured_state_snapshot_payload_id(
-            default_cookie,
-          );
-        layer_cookies.push(default_cookie);
-
-        // Persist default cookie.
+      // Default to showing all contacts, all groups and all users when layers
+      // have never been configured for this map. Once the user removes the
+      // layers (leaving an empty stored object), the defaults are not re-added
+      // on refresh.
+      if (layer_cookies.length === 0 && layers_never_configured) {
         dt_maps_layers_cookie = {};
-        dt_maps_layers_cookie['' + default_cookie['id']] = default_cookie;
+
+        // Build the default layer specs, only including post types that are
+        // available on this map.
+        let post_type_options = mapbox_library_api.obj.settings.post_types;
+        let system_options =
+          mapbox_library_api.obj.settings.post_types_system_options;
+        let default_layers = [];
+        if (post_type_options && post_type_options['contacts']) {
+          default_layers.push({
+            post_type: 'contacts',
+            layer_name: post_type_options['contacts'].label,
+          });
+        }
+        if (post_type_options && post_type_options['groups']) {
+          default_layers.push({
+            post_type: 'groups',
+            layer_name: post_type_options['groups'].label,
+          });
+        }
+        if (system_options && system_options['users']) {
+          default_layers.push({
+            post_type: 'system-users',
+            layer_name: system_options['users'].label,
+          });
+        }
+
+        $.each(default_layers, function (idx, layer) {
+          let default_cookie = {
+            post_type: layer.post_type,
+            field_key: 'query_all',
+            display_order: idx,
+            displayed: true,
+            layer_name: layer.layer_name,
+            color: mapbox_library_api.add_records_generate_hex_color(),
+          };
+          default_cookie['id'] =
+            mapbox_library_api.add_records_generate_captured_state_snapshot_payload_id(
+              default_cookie,
+            );
+          layer_cookies.push(default_cookie);
+          dt_maps_layers_cookie['' + default_cookie['id']] = default_cookie;
+        });
+
+        // Persist default layers.
         window.SHAREDFUNCTIONS.save_json_to_local_storage(
           mapbox_library_api.dt_maps_layers_cookie_id_by_slug,
           dt_maps_layers_cookie,

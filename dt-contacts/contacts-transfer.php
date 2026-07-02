@@ -536,7 +536,11 @@ class Disciple_Tools_Contacts_Transfer {
         $lagging_meta_input = [];
         $lagging_location_meta_input = [];
         $errors             = new WP_Error();
-        $site_link_post_id  = Site_Link_System::get_post_id_by_site_key( Site_Link_System::decrypt_transfer_token( $params['transfer_token'] ) );
+        $site_link_post_id  = empty( $params['transfer_token'] ) ? false : Site_Link_System::get_post_id_by_site_key( Site_Link_System::decrypt_transfer_token( $params['transfer_token'] ) );
+        if ( empty( $site_link_post_id ) ) {
+            $errors->add( 'transfer_token_invalid', 'Invalid or missing transfer token' );
+            return $errors;
+        }
         $field_settings = DT_Posts::get_post_field_settings( $post_args['post_type'] );
 
         /**
@@ -554,7 +558,7 @@ class Disciple_Tools_Contacts_Transfer {
                 if ( $key === 'type' && $value[0] === 'media' ) {
                     $value[0] = 'access';
                 }
-                $meta_input[ $key ] = maybe_unserialize( $value[0] );
+                $meta_input[ $key ] = is_serialized( $value[0] ) ? unserialize( $value[0], [ 'allowed_classes' => false ] ) : $value[0];
             }
         }
         $post_args['meta_input'] = $meta_input;

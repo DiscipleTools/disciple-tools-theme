@@ -220,6 +220,37 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         ];
     }
 
+    /**
+     * Authorize the current user for a map query and scope the query to the records they may view.
+     *
+     * The 'records' instance is for project-wide maps: only users with all-access or project metrics
+     * permissions may query it, and their results are unscoped. The 'personal' instance requires type
+     * access and limits results to records shared with or assigned to the current user, unless the user
+     * also holds project-wide access.
+     *
+     * @param string $post_type
+     * @param array  $query
+     * @return array|WP_Error The query scoped for the current user, or a WP_Error when not permitted.
+     */
+    private function authorize_and_scope_query( $post_type, $query ) {
+        $has_all_access = current_user_can( 'dt_all_access_' . $post_type ) || current_user_can( 'view_project_metrics' );
+
+        if ( $this->base_slug === 'records' ) {
+            if ( !$has_all_access ) {
+                return new WP_Error( __METHOD__, 'You do not have permission for this.', [ 'status' => 403 ] );
+            }
+            return $query;
+        }
+
+        if ( !current_user_can( 'access_' . $post_type ) ) {
+            return new WP_Error( __METHOD__, 'You do not have permission for this.', [ 'status' => 403 ] );
+        }
+        if ( !$has_all_access ) {
+            $query['shared_with'] = [ 'me' ];
+        }
+        return $query;
+    }
+
     public function cluster_geojson( WP_REST_Request $request ) {
         $params = $request->get_json_params() ?? $request->get_body_params();
         if ( ! isset( $params['post_type'] ) || empty( $params['post_type'] ) ) {
@@ -228,6 +259,11 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         $post_type = $params['post_type'];
         $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
+
+        $query = $this->authorize_and_scope_query( $post_type, $query );
+        if ( is_wp_error( $query ) ) {
+            return $query;
+        }
 
         return Disciple_Tools_Mapping_Queries::cluster_geojson( $post_type, $query );
     }
@@ -242,6 +278,11 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         $post_type = $params['post_type'];
         $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
+
+        $query = $this->authorize_and_scope_query( $post_type, $query );
+        if ( is_wp_error( $query ) ) {
+            return $query;
+        }
         $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( $post_type, $query );
 
         $list = [];
@@ -262,6 +303,11 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
 
+        $query = $this->authorize_and_scope_query( $post_type, $query );
+        if ( is_wp_error( $query ) ) {
+            return $query;
+        }
+
         return Disciple_Tools_Mapping_Queries::query_under_location_grid_meta_id( $post_type, $grid_id, $query );
     }
 
@@ -277,6 +323,11 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
         $post_type = $params['post_type'];
         $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
+
+        $query = $this->authorize_and_scope_query( $post_type, $query );
+        if ( is_wp_error( $query ) ) {
+            return $query;
+        }
 
         return Disciple_Tools_Mapping_Queries::points_geojson( $post_type, $query );
     }
