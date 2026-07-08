@@ -339,6 +339,11 @@
     };
   }
 
+  function normalize_filter_field_key(field_key) {
+    let safe_key = String(field_key || '');
+    return safe_key.replace(/_(start|end)$/, '');
+  }
+
   function remove_current_filter_label(label, field_details) {
     if (current_filter && current_filter.labels) {
       if (field_details && field_details.id && field_details.name) {
@@ -369,7 +374,23 @@
               if (!val[field_details.id]) {
                 // push the filter if it's not our field
                 fields.push(val);
+              } else if (field_details.id === normalize_filter_field_key(id)) {
+                // filter val to exclude val[start] or val[end] based on id's _start or _end suffix
+                let suffix = id.replace(field_details.id, '');
+
+                if (suffix == '_start' && val[field_details.id].end) {
+                  val[field_details.id] = {
+                    end: val[field_details.id].end, // Removed the extra ')' here
+                  };
+                  fields.push(val);
+                } else if (suffix == '_end' && val[field_details.id].start) {
+                  val[field_details.id] = {
+                    start: val[field_details.id].start, // Added the missing logic here
+                  };
+                  fields.push(val);
+                }
               } else if (field_details.id !== id) {
+                // loop through connection fields
                 // filter the selected option if it's an array (connections)
                 $.each(val[field_details.id], function (i, v) {
                   if (v !== id.toString()) {
@@ -862,31 +883,6 @@
     get_records(0, id);
   });
 
-  // Remove field when clicking X button
-  $(document).on('click', '.remove-field-btn', function () {
-    const fieldKey = $(this).data('field-key');
-
-    let selectedFields;
-    try {
-      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
-    } catch (e) {
-      console.error('Error parsing selected fields JSON:', e);
-      selectedFields = [];
-    }
-    selectedFields = selectedFields.filter((key) => key !== fieldKey);
-    $('#selected_fields_input').val(JSON.stringify(selectedFields));
-
-    // Remove visual tag
-    $(this).closest('.enabled-field-tag').remove();
-
-    // Show "no fields selected" message if empty
-    if (selectedFields.length === 0) {
-      $('#enabled_fields_container').html(
-        '<span class="no-fields-message">No fields selected</span>',
-      );
-    }
-  });
-
   $('#save_column_choices').on('click', function () {
     let selectedFields;
     try {
@@ -895,7 +891,9 @@
       console.error('Error parsing selected fields JSON:', e);
       selectedFields = [];
     }
-    fields_to_show_in_table = selectedFields;
+    fields_to_show_in_table = selectedFields.filter(
+      (label) => label.charAt(0) !== '-',
+    );
     window.SHAREDFUNCTIONS.save_json_cookie(
       'fields_to_show_in_table',
       fields_to_show_in_table,
@@ -1477,6 +1475,17 @@
         } else if (selectedOption === 'all-without-files') {
           search_query.push({ [field]: [] });
         }
+      } else if (type === 'date' || type === 'datetime') {
+        let date = {};
+        let start = $(`#${field}_start`).val();
+        if (start) {
+          date.start = start;
+        }
+        let end = $(`#${field}_end`).val();
+        if (end) {
+          date.end = end;
+        }
+        search_query.push({ [field]: date });
       } else {
         let options = [];
         $(`#${field}-options input:checked`).each(function () {
@@ -1751,6 +1760,26 @@
     };
   }
 
+  function create_date_label(field, date, delimiter) {
+    let field_name = window.lodash.get(
+      list_settings,
+      `post_type_settings.fields.${field}.name`,
+      field,
+    );
+
+    let delimiter_label = list_settings.translations[`range_${delimiter}`];
+
+    return {
+      newLabel: {
+        id: `${field}_${delimiter}`,
+        name: `${field_name} ${delimiter_label}: ${date}`,
+        field,
+        date: date,
+      },
+      field_name: `${field_name} ${delimiter_label}`,
+    };
+  }
+
   function create_location_label(field, id, value, listSettings) {
     let name = window.lodash.get(
       listSettings,
@@ -1770,67 +1799,6 @@
   }
 
   $('.all-without-connections').on('click', without_connections_handler);
-
-  $('.text-comms-filter-input').on('keyup', function (e) {
-    // Ensure to assign default settings accordingly.
-    const field = $(e.target).data('field');
-    const panel = $(`#${field}.tabs-panel`);
-    const field_settings = list_settings?.post_type_settings?.fields[field];
-    if (panel && field_settings && field_settings['type']) {
-      switch (field_settings['type']) {
-        case 'text':
-        case 'communication_channel': {
-          const checked_options = $(panel).find(
-            `.filter-by-text-comms-option:checked`,
-          );
-          const existing_label = new_filter_labels.find(
-            (label) => label['field'] === field,
-          );
-
-          // Only apply default settings if unable to detect and previous selections.
-          if (checked_options.length === 0 && existing_label === undefined) {
-            const default_option = $(panel).find(
-              `.filter-by-text-comms-option[value="all-with-filtered-value"]`,
-            );
-            if (default_option) {
-              $(default_option).prop('checked', true);
-              $(default_option).trigger('click');
-            }
-          }
-
-          // Update label with latest filtered value.
-          const filtered_value = $(e.target).val();
-          const latest_checked_option = $(panel).find(
-            `.filter-by-text-comms-option:checked`,
-          );
-          const latest_existing_label = new_filter_labels.find(
-            (label) => label['field'] === field,
-          );
-          if (
-            latest_checked_option.length === 1 &&
-            latest_existing_label !== undefined &&
-            ['all-with-filtered-value', 'all-without-filtered-value'].includes(
-              $(latest_checked_option).val(),
-            )
-          ) {
-            const updated_label_text = `${esc(list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '')}: ${esc(filtered_value)}`;
-            $(selected_filters)
-              .find(
-                `.current-filter[data-id="${$(latest_checked_option).val()}"].${field}`,
-              )
-              .text(updated_label_text);
-
-            // Update global filter labels array.
-            const label_idx = new_filter_labels.findIndex(
-              (label) => label['field'] === field,
-            );
-            new_filter_labels[label_idx]['name'] = updated_label_text;
-          }
-          break;
-        }
-      }
-    }
-  });
 
   $('.filter-by-text-comms-option').on('click', function (e) {
     handle_filter_by_text_comms({
@@ -2020,19 +1988,43 @@
             new_filter_labels.push(newLabel);
           }
         });
+      } else if (tagName == 'dt-date') {
+        // Else, if the element is a date
+        val = e.target.value;
+
+        const fieldName = e.target.name || '';
+        const delimiter = fieldName.endsWith('_start')
+          ? 'start'
+          : fieldName.endsWith('_end')
+            ? 'end'
+            : '';
+        const id = fieldName.replace(/_(start|end)$/, '');
+
+        const { newLabel, field_name } = create_date_label(id, val, delimiter);
+        remove_all_filter_labels(fieldName);
+
+        if (val) {
+          selected_filters.append(
+            `<span class="current-filter ${window.SHAREDFUNCTIONS.escapeHTML(newLabel.id)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(newLabel.id)}">${window.SHAREDFUNCTIONS.escapeHTML(field_name)}: ${window.SHAREDFUNCTIONS.escapeHTML(val)}</span>`,
+          );
+          new_filter_labels.push(newLabel);
+        }
       } else {
         // Else, if the element is a select array ('-' used to track deleted items)
         if (
           tagName == 'dt-multi-select' ||
-          tagName == 'dt-multi-select-button-group' ||
-          tagName == 'dt-tags'
+          tagName == 'dt-multi-select-button-group'
         ) {
           val = e.target.value.filter((label) => label.charAt(0) !== '-');
-        } else if (tagName == 'dt-multi-text') {
-          // Else, if the element is a text array
-          val = e.target.value
-            .filter((label) => label.value.length > 0)
-            .map((item) => item.value);
+          // parse through each val, and find the corresponding label from e.target.options
+          val = val.map((value) => {
+            const selectedOption = Array.from(e.target.options).find(
+              (option) => option.id === value,
+            );
+            return selectedOption ? selectedOption.label : false;
+          });
+        } else if (tagName == 'dt-tags') {
+          val = e.target.value.filter((label) => label.charAt(0) !== '-');
         } else {
           // All other elements
           val = e.target.value;
@@ -2112,17 +2104,18 @@
   $('#filter-modal').on('closed.zf.reveal', function () {
     $(this)
       .find(
-        'dt-location, dt-location, dt-toggle, dt-tags, dt-date, dt-users-connection, dt-connection, dt-single-select, dt-multi-select, dt-multi-select-button-group, dt-multi-text, dt-text',
+        'dt-location, dt-toggle, dt-tags, dt-date, dt-users-connection, dt-connection, dt-single-select, dt-multi-select, dt-multi-select-button-group, dt-multi-text, dt-text',
       )
       .each(function () {
         const tagName = this.tagName.toLowerCase();
 
-        // Reset array-based components
-        if (
+        if (tagName === 'dt-date') {
+          this.reset();
+        } else if (
           [
             'dt-connection',
             'dt-users-connection',
-            'dt-location-map',
+            'dt-single-select',
             'dt-multi-select',
             'dt-multi-select-button-group',
             'dt-tags',
@@ -2154,22 +2147,6 @@
   // but maybe by pressing the tab key
   $(document).mouseup(function (e) {
     clicked = null;
-  });
-  $('#filter-modal input.dt_date_picker').on('blur', function (e) {
-    if (clicked && clicked.closest('.ui-datepicker').length === 1) {
-      // we have clicked in the datepicker, so don't run the blur
-      return;
-    }
-    // delay the blur so that if the user has clicked we get the correct date from the input
-    setTimeout(() => {
-      if (!e.target.value) {
-        const clearButton = $(this).prev('.clear-date-picker');
-        clearButton.click();
-        return;
-      }
-      $(this).datepicker('setDate', e.target.value);
-      $('.ui-datepicker-current-day').click();
-    }, 100);
   });
 
   function edit_saved_filter(filter) {
@@ -2318,13 +2295,6 @@
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove();
       window.lodash.pullAllBy(new_filter_labels, [{ id: option_id }], 'id');
     }
-  });
-
-  $('#filter-modal .clear-date-picker').on('click', function () {
-    let id = $(this).data('for');
-    $(`#filter-modal #${id}`).datepicker('setDate', null);
-    window.lodash.pullAllBy(new_filter_labels, [{ id: `${id}` }], 'id');
-    $(`.current-filter[data-id="${id}"]`).remove();
   });
 
   //save the filter in the user meta

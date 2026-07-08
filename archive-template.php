@@ -961,10 +961,22 @@ Thanks!';
                                 <?php
                                 $type = $field_options[$field]['type'] ?? '';
                                 switch ( $type ) {
-                                    case 'key_select':
-                                        DT_Components::render_key_select( $field, [
-                                            $field => $field_options[$field]
-                                        ], [], [] );
+                                    case 'key_select':?>
+                                        <div id="<?php echo esc_html( $field ) ?>-options"><?php
+                                        foreach ( $field_options[$field]['default'] as $option_key => $option_value ) :
+                                            $label = $option_value['label'] ?? '';
+                                            if ( empty( $label ) && ( $option_key === '' || $option_key === 'none' ) ){
+                                                $label = esc_html__( 'None Set', 'disciple_tools' );
+                                            }
+                                            ?>
+                                            <div class="key_select_options">
+                                                <label style="cursor: pointer">
+                                                    <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
+                                                           value="<?php echo esc_html( $option_key ) ?>"> <?php echo esc_html( $label ) ?>
+                                                </label>
+                                            </div>
+                                        <?php endforeach;
+                                        ?></div><?php
                                         break;
                                     case 'multi_select':
                                         DT_Components::render_multi_select( $field, [
@@ -984,7 +996,7 @@ Thanks!';
                                     case 'connection':
                                         DT_Components::render_connection( $field, [
                                             $field => $field_options[$field]
-                                        ], [], [] );
+                                        ], [], [ 'allow_add' => false ] );
                                         break;
                                     case 'location':
                                         DT_Components::render_location( $field, [
@@ -992,8 +1004,22 @@ Thanks!';
                                         ], [], [] );
                                         break;
                                     case 'date':
-                                        DT_Components::render_date( $field, [
-                                            $field => $field_options[$field]
+                                        DT_Components::render_date( $field . '_start', [
+                                            $field . '_start' => [
+                                                'name' => $field_options[$field]['name'] . ' Start',
+                                                'type' => $field_options[$field]['type'],
+                                                'icon' => $field_options[$field]['icon']
+                                            ]
+                                        ], [], [] );
+                                        ?>
+                                        <br>
+                                        <?php
+                                        DT_Components::render_date( $field . '_end', [
+                                            $field . '_end' => [
+                                                'name' => $field_options[$field]['name'] . ' End',
+                                                'type' => $field_options[$field]['type'],
+                                                'icon' => $field_options[$field]['icon']
+                                            ]
                                         ], [], [] );
                                         break;
                                     case 'datetime':
@@ -1001,10 +1027,23 @@ Thanks!';
                                             $field => $field_options[$field]
                                         ], [], [] );
                                         break;
-                                    case 'boolean':
-                                        DT_Components::render_toggle( $field, [
-                                            $field => $field_options[$field]
-                                        ], [], [] );
+                                    case 'boolean':?>
+                                        <div id="<?php echo esc_html( $field ) ?>-options">
+                                            <div class="boolean_options">
+                                                <label style="cursor: pointer">
+                                                    <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
+                                                        data-label="<?php esc_html_e( 'No', 'disciple_tools' ) ?>"
+                                                        value="0"> <?php esc_html_e( 'No', 'disciple_tools' ) ?>
+                                                </label>
+                                            </div>
+                                            <div class="boolean_options">
+                                                <label style="cursor: pointer">
+                                                    <input autocomplete="off" type="checkbox" data-field="<?php echo esc_html( $field ) ?>"
+                                                        data-label="<?php esc_html_e( 'Yes', 'disciple_tools' ) ?>"
+                                                        value="1"> <?php esc_html_e( 'Yes', 'disciple_tools' ) ?>
+                                                </label>
+                                            </div>
+                                        </div><?php
                                         break;
                                     case 'text':
                                     case 'communication_channel':
