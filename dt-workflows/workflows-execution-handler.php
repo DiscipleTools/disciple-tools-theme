@@ -154,7 +154,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'number':
                 return strval( $field ) === strval( $value );
             case 'boolean':
-                return boolval( $field ) === boolval( $value );
+                return filter_var( $field, FILTER_VALIDATE_BOOLEAN ) === filter_var( $value, FILTER_VALIDATE_BOOLEAN );
             case 'date':
                 // $value to be of epoch timestamp int type
                 return isset( $field['timestamp'] ) && intval( $field['timestamp'] ) === intval( $value );
@@ -169,7 +169,7 @@ class Disciple_Tools_Workflows_Execution_Handler {
             case 'number':
                 return strval( $field ) !== strval( $value );
             case 'boolean':
-                return boolval( $field ) !== boolval( $value );
+                return filter_var( $field, FILTER_VALIDATE_BOOLEAN ) !== filter_var( $value, FILTER_VALIDATE_BOOLEAN );
             case 'date':
                 return isset( $field['timestamp'] ) && intval( $field['timestamp'] ) !== intval( $value );
         }
