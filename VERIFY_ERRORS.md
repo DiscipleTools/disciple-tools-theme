@@ -1,16 +1,32 @@
-### 02_phpunit.sh (exit 4)
+### 02_phpunit.sh (exit 1)
 === PHPUnit Tests ===
   WP_TESTS_DIR: /workspace/wp-data/wordpress-tests-lib
   DB host:      mysql / wordpress_test
-PHPUnit not found in vendor/ — running composer install...
-Installing dependencies from lock file (including require-dev)
-Verifying lock file contents can be installed on current platform.
-Warning: The lock file is not up to date with the latest changes in composer.json. You may be getting outdated dependencies. It is recommended that you run `composer update` or `composer update <package name>`.
-- Required package "kucrut/vite-for-wp" is not present in the lock file.
-- Required (in require-dev) package "phpunit/phpunit" is not present in the lock file.
-- Required (in require-dev) package "wp-coding-standards/wpcs" is in the lock file as "3.1.0" but that does not satisfy your constraint "^3.3".
-- Required (in require-dev) package "yoast/phpunit-polyfills" is not present in the lock file.
-This usually happens when composer files are incorrectly merged or the composer.json file is manually edited.
-Read more about correctly resolving merge conflicts https://getcomposer.org/doc/articles/resolving-merge-conflicts.md
-and prefer using the "require" command over editing the composer.json file directly https://getcomposer.org/doc/03-cli.md#require-r
+
+Running PHPUnit (WP_MULTISITE=1)...
+PHP Warning:  mysqli_real_connect(): (HY000/2002): No such file or directory in /workspace/wp-data/wordpress/wp-includes/class-wpdb.php on line 1988
+[0;31m
+wp_die() called
+Message: No such file or directory
+Error establishing a database connection
+This either means that the username and password information in your wp-config.php file is incorrect or that contact with the database server at localhost could not be established. This could mean your host’s database server is down.
+
+Are you sure you have the correct username and password?
+Are you sure you have typed the correct hostname?
+Are you sure the database server is running?
+
+If you are unsure what these terms mean you should probably contact your host. If you still need help you can always visit the WordPress support forums.
+
+[0mTitle: WordPress › Error
+Args:
+	response: 500
+	code: wp_die
+	exit: 1
+	back_link: 
+	link_url: 
+	link_text: 
+	text_direction: ltr
+	charset: UTF-8
+	additional_errors: array (
+)
 
