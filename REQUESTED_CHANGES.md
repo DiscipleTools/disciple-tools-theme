@@ -4,3 +4,4 @@
 - **cairocoder01**: You left the test-boolean.php file that seems to only be for your testing. Please remove it.
 
 And let's move the workflows test into a /tests/dt-workflows/ folder to match the project structure of the file it is testing.
+- **cairocoder01**: Seems to be good. Just need to remove the artifact markdown files that were left after an agent failure.
