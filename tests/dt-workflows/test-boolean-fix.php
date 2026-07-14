@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../dt-workflows/workflows-execution-handler.php';
+require_once __DIR__ . '/../../dt-workflows/workflows-execution-handler.php';
 
 class Test_Boolean_Fix extends PHPUnit\Framework\TestCase {
     public function test_action_update_boolean_fix() {
