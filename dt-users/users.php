@@ -766,7 +766,41 @@ class Disciple_Tools_Users
     public static function save_user_filter( $filter, $post_type ){
         $current_user_id = get_current_user_id();
         if ( $current_user_id && isset( $filter['ID'] ) ){
-            $filter = filter_var_array( $filter, FILTER_SANITIZE_STRING );
+
+            if ( isset( $filter['name'] ) ) {
+                $filter['name'] = sanitize_text_field( $filter['name'] );
+            }
+            if ( isset( $filter['type'] ) ) {
+                $filter['type'] = sanitize_key( $filter['type'] );
+            }
+            if ( isset( $filter['tab'] ) ) {
+                $filter['tab'] = sanitize_key( $filter['tab'] );
+            }
+            if ( isset( $filter['ID'] ) ) {
+                $filter['ID'] = is_scalar( $filter['ID'] ) ? (string) $filter['ID'] : '';
+            }
+
+            if ( isset( $filter['labels'] ) && is_array( $filter['labels'] ) ) {
+                foreach ( $filter['labels'] as $key => $label ) {
+
+                    if ( isset( $label['name'] ) ) {
+                        $filter['labels'][$key]['name'] = sanitize_text_field( $label['name'] );
+                    }
+
+                    if ( isset( $label['field'] ) ) {
+                        $filter['labels'][$key]['field'] = sanitize_key( $label['field'] );
+                    }
+
+                    if ( isset( $label['id'] ) ) {
+                        $filter['labels'][$key]['id'] = is_scalar( $label['id'] ) ? (string) $label['id'] : '';
+                    }
+                }
+            }
+
+            if ( array_key_exists( 'query', $filter ) && ! is_array( $filter['query'] ) ) {
+                $filter['query'] = [];
+            }
+
             $filters = get_user_option( 'saved_filters', $current_user_id );
             if ( !isset( $filters[$post_type] ) ){
                 $filters[$post_type] = [];
