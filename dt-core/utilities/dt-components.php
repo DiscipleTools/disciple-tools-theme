@@ -273,6 +273,8 @@ class DT_Components
             return $value;
         }, $post[$field_key] ?? []);
 
+        $params['allow_add'] ?? true;
+
         $options = null;
         if ( isset( $params['static_options'] ) && $params['static_options'] ) {
             $raw_options = DT_Posts::get_multi_select_options( $post['post_type'] ?? 'contacts', $field_key );
@@ -289,9 +291,8 @@ class DT_Components
         ?>
         <dt-tags <?php echo wp_kses_post( $shared_attributes ) ?>
             value='<?php echo esc_attr( json_encode( $value ) ) ?>'
-            placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) ) ?>"
             <?php echo $options ? "options='" . esc_attr( json_encode( $options ) ) . "'" : null ?>
-            allowAdd>
+            <?php echo $allow_add ? 'allowAdd' : null ?>>
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-tags>
         <?php

@@ -1789,7 +1789,7 @@
     const { id, field } = options || { id: null, field: null };
     if (id && field) {
       // Adjust filter text field state accordingly, based on option selection.
-      let filter_text_field = $('#' + field);
+      let filter_text_field = document.querySelector(`[name="${field}"]`);
       $(filter_text_field).prop(
         'disabled',
         ['all-with-set-value', 'all-without-set-value'].includes(id),
@@ -2187,6 +2187,61 @@
           label: label.name,
           id: label.id,
         });
+      } else if (
+        type === 'text' ||
+        type === 'communication_channel' ||
+        type === 'textarea' ||
+        type === 'number'
+      ) {
+        const dtComponent = document.querySelector(`[name="${label.field}"]`);
+
+        let textValue = '';
+        let queryArray = [];
+
+        if (filter.query && filter.query.fields) {
+          const queryField = filter.query.fields.find(
+            (f) => f[label.field] !== undefined,
+          );
+          if (queryField && queryField[label.field]) {
+            queryArray = queryField[label.field];
+          }
+        } else if (filter.query && filter.query[label.field]) {
+          queryArray = filter.query[label.field];
+        }
+
+        // Handle '-' and '*' signs
+        if (queryArray && queryArray.length > 0) {
+          let queryVal = queryArray[0];
+          if (typeof qVal === 'string') {
+            if (queryVal.startsWith('-') && queryVal !== '-*') {
+              textValue = queryVal.substring(1);
+            } else if (queryVal !== '*' && queryVal !== '-*') {
+              textValue = queryVal;
+            }
+          }
+        }
+
+        if (dtComponent) {
+          dtComponent.value = textValue;
+
+          if (
+            ['all-with-set-value', 'all-without-set-value'].includes(label.id)
+          ) {
+            dtComponent.disabled = true;
+          } else {
+            dtComponent.disabled = false;
+          }
+        }
+
+        if (type === 'text' || type === 'communication_channel') {
+          $(
+            `#filter-modal #filter_by_text_comms_option_${label.field} input[data-field="${label.field}"]`,
+          )
+            .filter(function () {
+              return this.value === label.id;
+            })
+            .prop('checked', true);
+        }
       }
     });
 
