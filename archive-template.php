@@ -960,6 +960,7 @@ Thanks!';
                             <div class="filter-field-component-wrapper">
                                 <?php
                                 $type = $field_options[$field]['type'] ?? '';
+                                $field_options[$field]['required'] = false;
                                 switch ( $type ) {
                                     case 'key_select':?>
                                         <div id="<?php echo esc_html( $field ) ?>-options"><?php

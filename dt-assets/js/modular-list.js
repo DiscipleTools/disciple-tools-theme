@@ -1795,77 +1795,53 @@
         ['all-with-set-value', 'all-without-set-value'].includes(id),
       );
 
-      // Ensure duplicates are avoided.
-      const existing_label = new_filter_labels.find(
-        (label) => label['id'] === id && label['field'] === field,
+      // identify all old labels
+      let removed_old_filter_labels = new_filter_labels.filter(
+        (label) => label['field'] === field,
       );
-      if (existing_label === undefined) {
-        // Identify stale labels to be deleted.
-        let removed_old_filter_labels = [];
-        new_filter_labels.forEach((label) => {
-          if (label['field'] === field) {
-            if (!(label['id'] === id)) {
-              removed_old_filter_labels.push(label);
-            }
-          }
+
+      if (removed_old_filter_labels.length > 0) {
+        // remove them from the active array
+        new_filter_labels = new_filter_labels.filter(
+          (existing_label) => existing_label['field'] !== field,
+        );
+
+        // remove associated UI labels
+        removed_old_filter_labels.forEach((label) => {
+          $(selected_filters)
+            .find(`.current-filter[data-id="${label['id']}"].${label['field']}`)
+            .remove();
         });
-
-        // Remove stale labels, if detected.
-        if (removed_old_filter_labels.length > 0) {
-          new_filter_labels = new_filter_labels.filter((existing_label) => {
-            let filtered = false;
-            removed_old_filter_labels.forEach((stale_label) => {
-              if (
-                existing_label['id'] !== stale_label['id'] &&
-                existing_label['name'] !== stale_label['name'] &&
-                existing_label['field'] !== stale_label['field']
-              ) {
-                filtered = true;
-              }
-            });
-
-            return filtered;
-          });
-
-          // Remove associated ui labels.
-          removed_old_filter_labels.forEach((label) => {
-            $(selected_filters)
-              .find(
-                `.current-filter[data-id="${label['id']}"].${label['field']}`,
-              )
-              .remove();
-          });
-        }
-
-        // Create new generic filter label.
-        let { newLabel, filterName } = create_label_all(
-          field,
-          ['all-without-set-value', 'all-without-filtered-value'].includes(id),
-          id,
-          list_settings,
-        );
-
-        // Adjust label to reflect filtered text.
-        if (
-          ['all-with-filtered-value', 'all-without-filtered-value'].includes(id)
-        ) {
-          let filtered_value = document.querySelector(
-            `dt-multi-text#${field}, dt-text#${field}`,
-          ).value;
-          if (Array.isArray(filtered_value)) {
-            filtered_value = filtered_value
-              .filter((label) => label.value.length > 0)
-              .map((item) => item.value);
-          }
-          newLabel['name'] =
-            filterName = `${esc(list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '')}: ${esc(filtered_value)}`;
-        }
-
-        selected_filters.append(
-          `<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`,
-        );
-        new_filter_labels.push(newLabel);
       }
+
+      // create new generic filter label.
+      let { newLabel, filterName } = create_label_all(
+        field,
+        ['all-without-set-value', 'all-without-filtered-value'].includes(id),
+        id,
+        list_settings,
+      );
+
+      // adjust label to reflect filtered text
+      if (
+        ['all-with-filtered-value', 'all-without-filtered-value'].includes(id)
+      ) {
+        let filtered_value = document.querySelector(
+          `dt-multi-text#${field}, dt-text#${field}`,
+        ).value;
+        if (Array.isArray(filtered_value)) {
+          filtered_value = filtered_value
+            .filter((label) => label.value.length > 0)
+            .map((item) => item.value);
+        }
+        newLabel['name'] =
+          filterName = `${esc(list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '')}: ${esc(filtered_value)}`;
+      }
+
+      selected_filters.append(
+        `<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`,
+      );
+      new_filter_labels.push(newLabel);
     }
   }
 
@@ -2024,6 +2000,29 @@
           val = false;
         }
 
+        const radioContainer = $(
+          `#filter_by_text_comms_option_${e.target.name}`,
+        );
+        if (radioContainer.length > 0) {
+          let radioChecked = radioContainer
+            .find('.filter-by-text-comms-option:checked')
+            .val();
+
+          // default to 'All with filtered value' if they typed but no radio was selected
+          if (!radioChecked) {
+            radioChecked = 'all-with-filtered-value';
+            radioContainer
+              .find(`input[value="${radioChecked}"]`)
+              .prop('checked', true);
+          }
+
+          handle_filter_by_text_comms({
+            id: radioChecked,
+            field: e.target.name,
+          });
+          return; // skip the generic label creation
+        }
+
         const { newLabel, name } = create_name_value_label(
           e.target.name,
           e.target.name,
@@ -2044,7 +2043,9 @@
 
   const remove_filter_labels = (id, field_key) => {
     $(`.current-filter[data-id="${id}"].${field_key}`).remove();
-    window.lodash.pullAllBy(new_filter_labels, [{ id: id }], 'id');
+    new_filter_labels = new_filter_labels.filter(
+      (label) => !(label.id === id && label.field === field_key),
+    );
   };
 
   const remove_all_filter_labels = (field_key) => {
@@ -2212,11 +2213,13 @@
         // Handle '-' and '*' signs
         if (queryArray && queryArray.length > 0) {
           let queryVal = queryArray[0];
-          if (typeof qVal === 'string') {
+          if (typeof queryVal === 'string') {
             if (queryVal.startsWith('-') && queryVal !== '-*') {
               textValue = queryVal.substring(1);
             } else if (queryVal !== '*' && queryVal !== '-*') {
               textValue = queryVal;
+            } else {
+              textValue = '';
             }
           }
         }
