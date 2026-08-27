@@ -126,6 +126,23 @@ class Disciple_Tools_Utilities_Overview_Tab extends Disciple_Tools_Abstract_Menu
                 <button name="reset_lock" value="dt_migration_lock">Reset Lock</button>
             </td>
         </tr>
+        <?php
+        $last_migration_error = get_option( 'dt_migrate_last_error' );
+        if ( !empty( $last_migration_error ) ) : ?>
+            <tr>
+                <td>
+                    Last migration error<?php echo esc_html( !empty( $last_migration_error['time'] ) ? ' (' . gmdate( 'Y-m-d H:i:s', $last_migration_error['time'] ) . ' UTC)' : '' ); ?>:
+                    <?php echo esc_html( $last_migration_error['message'] ?? '' ); ?>
+                    <?php if ( !empty( $last_migration_error['trace'] ) ) : ?>
+                        <details>
+                            <summary>Stack trace</summary>
+                            <pre style="overflow: auto; max-height: 400px;"><?php echo esc_html( print_r( $last_migration_error['trace'], true ) ); ?></pre>
+                        </details>
+                    <?php endif; ?>
+                </td>
+                <td></td>
+            </tr>
+        <?php endif; ?>
         <tr>
             <td>
                 <?php echo esc_html( sprintf( 'Mapping migration version: %1$s of %2$s', DT_Mapping_Module_Migration_Engine::get_current_db_migration(), DT_Mapping_Module_Migration_Engine::$migration_number ) ); ?>.
