@@ -580,9 +580,6 @@ if ( ! current_user_can( 'access_disciple_tools' ) ) {
 
                                     <!-- Search input for adding fields -->
                                     <div style="margin-bottom: 15px;">
-                                        <label for="field_search_input" class="field-search-label">
-                                            <?php esc_html_e( 'Add fields:', 'disciple_tools' ); ?>
-                                        </label>
                                         <div class="field-search-container">
                                             <?php DT_Components::render_multi_select( 'field_search_input', [
                                                 'field_search_input' => [
@@ -1032,8 +1029,7 @@ Thanks!';
                                         DT_Components::render_date( $field . '_start', [
                                             $field . '_start' => [
                                                 'name' => $field_options[$field]['name'] . ' Start',
-                                                'type' => $field_options[$field]['type'],
-                                                'icon' => $field_options[$field]['icon']
+                                                'type' => $field_options[$field]['type']
                                             ]
                                         ], [], [ 'hide_label' => true ] );
                                         ?>

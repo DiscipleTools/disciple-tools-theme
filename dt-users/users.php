@@ -767,37 +767,14 @@ class Disciple_Tools_Users
         $current_user_id = get_current_user_id();
         if ( $current_user_id && isset( $filter['ID'] ) ){
 
-            if ( isset( $filter['name'] ) ) {
-                $filter['name'] = sanitize_text_field( $filter['name'] );
-            }
-            if ( isset( $filter['type'] ) ) {
-                $filter['type'] = sanitize_key( $filter['type'] );
-            }
-            if ( isset( $filter['tab'] ) ) {
-                $filter['tab'] = sanitize_key( $filter['tab'] );
-            }
-            if ( isset( $filter['ID'] ) ) {
-                $filter['ID'] = is_scalar( $filter['ID'] ) ? (string) $filter['ID'] : '';
-            }
-
-            if ( isset( $filter['labels'] ) && is_array( $filter['labels'] ) ) {
-                foreach ( $filter['labels'] as $key => $label ) {
-
-                    if ( isset( $label['name'] ) ) {
-                        $filter['labels'][$key]['name'] = sanitize_text_field( $label['name'] );
-                    }
-
-                    if ( isset( $label['field'] ) ) {
-                        $filter['labels'][$key]['field'] = sanitize_key( $label['field'] );
-                    }
-
-                    if ( isset( $label['id'] ) ) {
-                        $filter['labels'][$key]['id'] = is_scalar( $label['id'] ) ? (string) $label['id'] : '';
-                    }
-                }
-            }
-
-            if ( array_key_exists( 'query', $filter ) && ! is_array( $filter['query'] ) ) {
+            // Filter values are structured query data, not HTML: values like the '<19' age
+            // key must survive. SQL safety comes from prepare/esc_sql at query time and XSS
+            // safety from escaping at render, so only byte-validity is enforced here.
+            $filter = map_deep( $filter, 'wp_check_invalid_utf8' );
+            $filter['ID']   = is_scalar( $filter['ID'] ) ? (string) $filter['ID'] : '';
+            $filter['type'] = sanitize_key( $filter['type'] ?? '' );
+            $filter['tab']  = sanitize_key( $filter['tab'] ?? '' );
+            if ( ! is_array( $filter['query'] ?? null ) ) {
                 $filter['query'] = [];
             }
 

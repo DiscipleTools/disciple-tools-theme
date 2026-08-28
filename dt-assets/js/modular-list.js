@@ -897,6 +897,15 @@
     window.location.reload();
   });
 
+  $('#reset_column_choices').on('click', function () {
+    window.SHAREDFUNCTIONS.save_json_cookie(
+      'fields_to_show_in_table',
+      [],
+      list_settings.post_type,
+    );
+    window.location.reload();
+  });
+
   archivedSwitch.on('click', function () {
     const showArchived = this.checked;
 
