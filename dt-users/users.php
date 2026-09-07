@@ -766,7 +766,18 @@ class Disciple_Tools_Users
     public static function save_user_filter( $filter, $post_type ){
         $current_user_id = get_current_user_id();
         if ( $current_user_id && isset( $filter['ID'] ) ){
-            $filter = filter_var_array( $filter, FILTER_SANITIZE_STRING );
+
+            // Filter values are structured query data, not HTML: values like the '<19' age
+            // key must survive. SQL safety comes from prepare/esc_sql at query time and XSS
+            // safety from escaping at render, so only byte-validity is enforced here.
+            $filter = map_deep( $filter, 'wp_check_invalid_utf8' );
+            $filter['ID']   = is_scalar( $filter['ID'] ) ? (string) $filter['ID'] : '';
+            $filter['type'] = sanitize_key( $filter['type'] ?? '' );
+            $filter['tab']  = sanitize_key( $filter['tab'] ?? '' );
+            if ( ! is_array( $filter['query'] ?? null ) ) {
+                $filter['query'] = [];
+            }
+
             $filters = get_user_option( 'saved_filters', $current_user_id );
             if ( !isset( $filters[$post_type] ) ){
                 $filters[$post_type] = [];

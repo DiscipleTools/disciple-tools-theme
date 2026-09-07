@@ -339,6 +339,11 @@
     };
   }
 
+  function normalize_filter_field_key(field_key) {
+    let safe_key = String(field_key || '');
+    return safe_key.replace(/_(start|end)$/, '');
+  }
+
   function remove_current_filter_label(label, field_details) {
     if (current_filter && current_filter.labels) {
       if (field_details && field_details.id && field_details.name) {
@@ -363,23 +368,40 @@
           if (current_filter.query['fields']) {
             let fields = [];
             $.each(current_filter.query['fields'], function (idx, val) {
-              // Do we have a match...?
-              let field = val[field_details.id];
-              if (field) {
-                let field_values = [];
-                $.each(field, function (field_idx, field_val) {
-                  if (id !== field_val) {
-                    field_values.push(field_val);
+              let field_values = [];
+
+              // filter out only the specific ID
+              if (!val[field_details.id]) {
+                // push the filter if it's not our field
+                fields.push(val);
+              } else if (field_details.id === normalize_filter_field_key(id)) {
+                // filter val to exclude val[start] or val[end] based on id's _start or _end suffix
+                let suffix = id.replace(field_details.id, '');
+
+                if (suffix == '_start' && val[field_details.id].end) {
+                  val[field_details.id] = {
+                    end: val[field_details.id].end, // Removed the extra ')' here
+                  };
+                  fields.push(val);
+                } else if (suffix == '_end' && val[field_details.id].start) {
+                  val[field_details.id] = {
+                    start: val[field_details.id].start, // Added the missing logic here
+                  };
+                  fields.push(val);
+                }
+              } else if (field_details.id !== id) {
+                // loop through connection fields
+                // filter the selected option if it's an array (connections)
+                $.each(val[field_details.id], function (i, v) {
+                  if (v !== id.toString()) {
+                    field_values.push(v);
                   }
                 });
+              }
 
-                // Update new fields array, if still populated
-                if (field_values.length > 0) {
-                  let updated_field = {};
-                  updated_field[field_details.id] = field_values;
-                  fields.push(updated_field);
-                }
-              } else {
+              // if there are still connections left for this field, keep them
+              if (field_values.length > 0) {
+                val[field_details.id] = field_values;
                 fields.push(val);
               }
             });
@@ -861,221 +883,12 @@
     get_records(0, id);
   });
 
-  $('#choose_fields_to_show_in_table').on('click', function () {
-    $('#list_column_picker').toggle();
-  });
-  // Enhanced Field Selection UI
-  // Store original dropdown content for restoration after "no results" message
-  const originalDropdownContent = $('#field_search_dropdown').html();
-
-  // Show dropdown on focus
-  $('#field_search_input').on('focus', function () {
-    showFieldDropdown();
-  });
-
-  // Field search functionality - filters dropdown options based on user input
-  $('#field_search_input').on('input', function () {
-    const searchTerm = $(this).val().toLowerCase();
-
-    if (searchTerm.length === 0) {
-      // Show all available options when search is empty
-      showFieldDropdown();
-      return;
-    }
-
-    filterFieldDropdown(searchTerm);
-  });
-
-  function showFieldDropdown() {
-    const dropdown = $('#field_search_dropdown');
-
-    // Restore original content if it was replaced with "no results" message
-    if (!dropdown.find('.field-search-option').length) {
-      dropdown.html(originalDropdownContent);
-    }
-
-    const options = dropdown.find('.field-search-option');
-    const selectedFields = JSON.parse(
-      $('#selected_fields_input').val() || '[]',
-    );
-    let hasVisibleOptions = false;
-
-    // Show all options that aren't already selected
-    options.each(function () {
-      const fieldKey = $(this).data('field-key');
-
-      if (selectedFields.includes(fieldKey)) {
-        $(this).hide();
-      } else {
-        $(this).show();
-        hasVisibleOptions = true;
-      }
-    });
-
-    if (hasVisibleOptions) {
-      dropdown.show();
-    } else {
-      dropdown.hide();
-    }
-  }
-
-  function filterFieldDropdown(searchTerm) {
-    const dropdown = $('#field_search_dropdown');
-
-    // Restore original content if it was replaced with "no results" message
-    if (!dropdown.find('.field-search-option').length) {
-      dropdown.html(originalDropdownContent);
-    }
-
-    const options = dropdown.find('.field-search-option');
-    const selectedFields = JSON.parse(
-      $('#selected_fields_input').val() || '[]',
-    );
-    let hasVisibleOptions = false;
-
-    options.each(function () {
-      const fieldName = $(this).data('field-name');
-      const fieldKey = $(this).data('field-key');
-
-      // Hide if already selected
-      if (selectedFields.includes(fieldKey)) {
-        $(this).hide();
-        return;
-      }
-
-      // Show/hide based on search term
-      if (
-        fieldName.includes(searchTerm) ||
-        fieldKey.toLowerCase().includes(searchTerm)
-      ) {
-        $(this).show();
-        hasVisibleOptions = true;
-      } else {
-        $(this).hide();
-      }
-    });
-
-    if (hasVisibleOptions) {
-      dropdown.show();
-    } else {
-      // Show "no results" message if search term exists but no matches
-      dropdown
-        .html('<div class="no-fields-found">No fields found</div>')
-        .show();
-    }
-  }
-
-  // Handle keyboard navigation
-  $('#field_search_input').on('keydown', function (e) {
-    const dropdown = $('#field_search_dropdown');
-    if (e.key === 'Escape') {
-      dropdown.hide();
-      $(this).val('');
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      const firstVisibleOption = dropdown
-        .find('.field-search-option:visible')
-        .first();
-      if (firstVisibleOption.length) {
-        firstVisibleOption.click();
-      }
-    }
-  });
-
-  // Hide dropdown when clicking outside
-  $(document).on('click', function (e) {
-    if (
-      !$(e.target).closest('#field_search_input, #field_search_dropdown').length
-    ) {
-      $('#field_search_dropdown').hide();
-    }
-  });
-
-  // Add field when clicking on dropdown option
-  $(document).on('click', '.field-search-option', function () {
-    const fieldKey = $(this).data('field-key');
-    const fieldName = $(this).find('span').text();
-    const fieldIcon = $(this).find('.dt-icon').prop('outerHTML') || '';
-    const hasIcon = fieldIcon.length > 0;
-    const tagClasses = hasIcon
-      ? 'enabled-field-tag'
-      : 'enabled-field-tag no-icon';
-
-    // Add to selected fields
-    let selectedFields;
-    try {
-      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
-    } catch (e) {
-      console.error('Error parsing selected fields JSON:', e);
-      selectedFields = [];
-    }
-    if (!selectedFields.includes(fieldKey)) {
-      selectedFields.push(fieldKey);
-      $('#selected_fields_input').val(JSON.stringify(selectedFields));
-
-      // Add visual tag
-      const tag = `<span class="${tagClasses} enabled-field-tag-inline" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(fieldKey)}">
-                     ${fieldIcon}
-                     <span>${window.SHAREDFUNCTIONS.escapeHTML(fieldName)}</span>
-                     <button type="button" class="remove-field-btn remove-field-btn-inline" data-field-key="${window.SHAREDFUNCTIONS.escapeHTML(fieldKey)}">×</button>
-                   </span>`;
-
-      const container = $('#enabled_fields_container');
-      // Remove "no fields selected" message if present
-      container.find('span:contains("No fields selected")').remove();
-      container.append(tag);
-    }
-
-    // Clear search and close dropdown
-    $('#field_search_input').val('');
-    $('#field_search_dropdown').hide();
-  });
-
-  // Remove field when clicking X button
-  $(document).on('click', '.remove-field-btn', function () {
-    const fieldKey = $(this).data('field-key');
-
-    // Remove from selected fields
-    let selectedFields;
-    try {
-      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
-    } catch (e) {
-      console.error('Error parsing selected fields JSON:', e);
-      selectedFields = [];
-    }
-    selectedFields = selectedFields.filter((key) => key !== fieldKey);
-    $('#selected_fields_input').val(JSON.stringify(selectedFields));
-
-    // Remove visual tag
-    $(this).closest('.enabled-field-tag').remove();
-
-    // Show "no fields selected" message if empty
-    if (selectedFields.length === 0) {
-      $('#enabled_fields_container').html(
-        '<span class="no-fields-message">No fields selected</span>',
-      );
-    }
-
-    // Refresh dropdown if it's currently visible to show the newly available field
-    if ($('#field_search_dropdown').is(':visible')) {
-      const searchTerm = $('#field_search_input').val().toLowerCase();
-      if (searchTerm.length === 0) {
-        showFieldDropdown();
-      } else {
-        filterFieldDropdown(searchTerm);
-      }
-    }
-  });
-
   $('#save_column_choices').on('click', function () {
-    let selectedFields;
-    try {
-      selectedFields = JSON.parse($('#selected_fields_input').val() || '[]');
-    } catch (e) {
-      console.error('Error parsing selected fields JSON:', e);
-      selectedFields = [];
-    }
-    fields_to_show_in_table = selectedFields;
+    let selectedFields = $('#field_search_input').val() || '[]';
+
+    fields_to_show_in_table = selectedFields.filter(
+      (label) => label.charAt(0) !== '-',
+    );
     window.SHAREDFUNCTIONS.save_json_cookie(
       'fields_to_show_in_table',
       fields_to_show_in_table,
@@ -1083,15 +896,11 @@
     );
     window.location.reload();
   });
+
   $('#reset_column_choices').on('click', function () {
-    fields_to_show_in_table = [];
-    $('#selected_fields_input').val('[]');
-    $('#enabled_fields_container').html(
-      '<span class="no-fields-message">No fields selected</span>',
-    );
     window.SHAREDFUNCTIONS.save_json_cookie(
       'fields_to_show_in_table',
-      fields_to_show_in_table,
+      [],
       list_settings.post_type,
     );
     window.location.reload();
@@ -1575,129 +1384,79 @@
         list_settings,
         `post_type_settings.fields.${field}.type`,
       );
-      if (type === 'connection') {
-        const allConnections = $(`#${field} .all-connections`);
-        const withoutConnections = $(`#${field} .all-without-connections`);
-        if (allConnections.prop('checked') === true) {
-          search_query.push({ [field]: [ALL_ID] });
-        } else if (withoutConnections.prop('checked') === true) {
-          search_query.push({ [field]: [ALL_WITHOUT_ID] });
+      let customComponent = document.querySelector(`[name="${field}"]`);
+
+      if (customComponent) {
+        let val = [];
+
+        if (type === 'connection') {
+          const allConnections = $(`#${field} .all-connections`);
+          const withoutConnections = $(`#${field} .all-without-connections`);
+          if (allConnections.prop('checked') === true) {
+            search_query.push({ [field]: [ALL_ID] });
+          } else if (withoutConnections.prop('checked') === true) {
+            search_query.push({ [field]: [ALL_WITHOUT_ID] });
+          } else {
+            val = customComponent.value
+              .filter((label) => !label.delete)
+              .map((item) => item.id);
+            search_query.push({
+              [field]: adjust_search_query_filter_states(field, type, val),
+            });
+          }
+        } else if (type === 'text' || type === 'communication_channel') {
+          val = customComponent.value;
+
+          switch (
+            $(
+              `#filter_by_text_comms_option_${field} .filter-by-text-comms-option:checked`,
+            ).val()
+          ) {
+            case 'all-with-set-value': {
+              val = '*';
+              break;
+            }
+            case 'all-without-set-value': {
+              val = null;
+              break;
+            }
+            case 'all-with-filtered-value': {
+              val = customComponent.value;
+              break;
+            }
+            case 'all-without-filtered-value': {
+              val = '-' + customComponent.value;
+              break;
+            }
+          }
+
+          search_query.push({ [field]: val !== null ? [val] : [] });
         } else {
-          search_query.push({
-            [field]: adjust_search_query_filter_states(
-              field,
-              type,
-              window.lodash.map(
-                window.lodash.get(
-                  window.Typeahead[`.js-typeahead-${field}`],
-                  'items',
-                ),
-                'ID',
-              ),
-            ),
-          });
-        }
-      }
-      if (type === 'user_select') {
-        search_query.push({
-          [field]: adjust_search_query_filter_states(
-            field,
-            type,
-            window.lodash.map(
-              window.lodash.get(
-                window.Typeahead[`.js-typeahead-${field}`],
-                'items',
-              ),
-              'ID',
-            ),
-          ),
-        });
-      } else if (type === 'multi_select') {
-        search_query.push({
-          [field]: adjust_search_query_filter_states(
-            field,
-            type,
-            window.lodash.map(
-              window.lodash.get(
-                window.Typeahead[`.js-typeahead-${field}`],
-                'items',
-              ),
-              'key',
-            ),
-          ),
-        });
-      } else if (type === 'tags') {
-        search_query.push({
-          [field]: adjust_search_query_filter_states(
-            field,
-            type,
-            window.lodash.map(
-              window.lodash.get(
-                window.Typeahead[`.js-typeahead-${field}`],
-                'items',
-              ),
-              'key',
-            ),
-          ),
-        });
-      } else if (type === 'location' || type === 'location_meta') {
-        search_query.push({
-          location_grid: adjust_search_query_filter_states(
-            'location_grid',
-            type,
-            window.lodash.map(
-              window.lodash.get(
-                window.Typeahead[`.js-typeahead-${field}`],
-                'items',
-              ),
-              'ID',
-            ),
-          ),
-        });
-      } else if (type === 'date' || type === 'datetime') {
-        let date = {};
-        let start = $(
-          `.dt_date_picker[data-field="${field}"][data-delimit="start"]`,
-        ).val();
-        if (start) {
-          date.start = start;
-        }
-        let end = $(
-          `.dt_date_picker[data-field="${field}"][data-delimit="end"]`,
-        ).val();
-        if (end) {
-          date.end = end;
-        }
-        search_query.push({ [field]: date });
-      } else if (type === 'text' || type === 'communication_channel') {
-        let filter = $('#' + field + '_text_comms_filter').val();
-        let value = filter;
+          // Extract the value from each field type
+          if (
+            type === 'user_select' ||
+            type === 'location' ||
+            type === 'location_meta'
+          ) {
+            val = customComponent.value
+              .filter((label) => !label.delete)
+              .map((item) => item.id);
+          } else if (type === 'multi_select' || type === 'tags') {
+            val = customComponent.value.filter(
+              (label) => label.charAt(0) !== '-',
+            );
+          } else {
+            // For single selects or toggles
+            val = customComponent.value ? [customComponent.value] : [];
+          }
 
-        switch ($('.filter-by-text-comms-option:checked').val()) {
-          case 'all-with-set-value': {
-            value = '*';
-            break;
-          }
-          case 'all-without-set-value': {
-            value = null;
-            break;
-          }
-          case 'all-with-filtered-value': {
-            value = filter;
-            break;
-          }
-          case 'all-without-filtered-value': {
-            value = '-' + filter;
-            break;
-          }
-        }
-
-        // Package accordingly based on field type.
-        switch (type) {
-          case 'text':
-          case 'communication_channel': {
-            search_query.push({ [field]: value !== null ? [value] : [] });
-            break;
+          if (val && val.length > 0) {
+            if (type === 'location_meta' || type === 'location') {
+              field = 'location_grid';
+            }
+            search_query.push({
+              [field]: adjust_search_query_filter_states(field, type, val),
+            });
           }
         }
       } else if (type === 'file_upload') {
@@ -1709,6 +1468,17 @@
         } else if (selectedOption === 'all-without-files') {
           search_query.push({ [field]: [] });
         }
+      } else if (type === 'date' || type === 'datetime') {
+        let date = {};
+        let start = $(`#${field}_start`).val();
+        if (start) {
+          date.start = start;
+        }
+        let end = $(`#${field}_end`).val();
+        if (end) {
+          date.end = end;
+        }
+        search_query.push({ [field]: date });
       } else {
         let options = [];
         $(`#${field}-options input:checked`).each(function () {
@@ -1865,7 +1635,6 @@
         // Prefix exclusion flag, accordingly
         return (excluded.length > 0 ? '-' : '') + value;
       });
-
       return adjusted_filters;
     }
 
@@ -1905,15 +1674,14 @@
     const id = without ? ALL_WITHOUT_ID : ALL_ID;
     const tabsPanel = $(this).closest('.tabs-panel');
     const field = tabsPanel.length === 1 ? tabsPanel[0].id : '';
-    const typeaheadQueryElement = tabsPanel.find('.typeahead__query');
-    const typeaheadCancelButtons = tabsPanel.find('.typeahead__cancel-button');
-    const typeahead = tabsPanel.find(`.js-typeahead-${field}`);
+    const connectionElement = tabsPanel.find(`#${field}`);
 
     toggle_all_connection_option(tabsPanel, without);
 
     if ($(this).prop('checked') === true) {
-      typeahead.prop('disabled', true);
-      typeaheadQueryElement.addClass('disabled');
+      // disable connection field's input when this happens (no longer typeahead)
+      connectionElement.prop('disabled', true);
+      connectionElement.val('');
       // remove the current filters and leave anything in the typeahead as it is
       remove_all_filter_labels(field);
       const { newLabel, filterName } = create_label_all(
@@ -1927,14 +1695,8 @@
       );
       new_filter_labels.push(newLabel);
     } else {
-      typeahead.prop('disabled', false);
-      typeaheadQueryElement.removeClass('disabled');
+      connectionElement.prop('disabled', false);
       remove_filter_labels(id, field);
-      // clear the typeahead by manually clicking each selected item.
-      // This is done at this point as it triggers the typeahead to open which we don't want just after we have disabled it.
-      typeaheadCancelButtons.each(function () {
-        $(this).trigger('click', { botClick: true });
-      });
     }
   }
 
@@ -1978,24 +1740,13 @@
     };
   }
 
-  function create_location_label(field, id, value, listSettings) {
-    let name = window.lodash.get(
-      listSettings,
-      `post_type_settings.fields.location_grid.name`,
-      'location_grid',
-    );
-    return {
-      newLabel: { id, name: `${name}: ${value}`, field, type: 'location_grid' },
-      name,
-    };
-  }
-
   function create_date_label(field, date, delimiter) {
     let field_name = window.lodash.get(
       list_settings,
       `post_type_settings.fields.${field}.name`,
       field,
     );
+
     let delimiter_label = list_settings.translations[`range_${delimiter}`];
 
     return {
@@ -2005,8 +1756,19 @@
         field,
         date: date,
       },
-      field_name,
-      delimiter_label,
+      field_name: `${field_name} ${delimiter_label}`,
+    };
+  }
+
+  function create_location_label(field, id, value, listSettings) {
+    let name = window.lodash.get(
+      listSettings,
+      `post_type_settings.fields.location_grid.name`,
+      field,
+    );
+    return {
+      newLabel: { id, name: `${name}: ${value}`, field, type: 'location_grid' },
+      name,
     };
   }
 
@@ -2017,67 +1779,6 @@
   }
 
   $('.all-without-connections').on('click', without_connections_handler);
-
-  $('.text-comms-filter-input').on('keyup', function (e) {
-    // Ensure to assign default settings accordingly.
-    const field = $(e.target).data('field');
-    const panel = $(`#${field}.tabs-panel`);
-    const field_settings = list_settings?.post_type_settings?.fields[field];
-    if (panel && field_settings && field_settings['type']) {
-      switch (field_settings['type']) {
-        case 'text':
-        case 'communication_channel': {
-          const checked_options = $(panel).find(
-            `.filter-by-text-comms-option:checked`,
-          );
-          const existing_label = new_filter_labels.find(
-            (label) => label['field'] === field,
-          );
-
-          // Only apply default settings if unable to detect and previous selections.
-          if (checked_options.length === 0 && existing_label === undefined) {
-            const default_option = $(panel).find(
-              `.filter-by-text-comms-option[value="all-with-filtered-value"]`,
-            );
-            if (default_option) {
-              $(default_option).prop('checked', true);
-              $(default_option).trigger('click');
-            }
-          }
-
-          // Update label with latest filtered value.
-          const filtered_value = $(e.target).val();
-          const latest_checked_option = $(panel).find(
-            `.filter-by-text-comms-option:checked`,
-          );
-          const latest_existing_label = new_filter_labels.find(
-            (label) => label['field'] === field,
-          );
-          if (
-            latest_checked_option.length === 1 &&
-            latest_existing_label !== undefined &&
-            ['all-with-filtered-value', 'all-without-filtered-value'].includes(
-              $(latest_checked_option).val(),
-            )
-          ) {
-            const updated_label_text = `${esc(list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '')}: ${esc(filtered_value)}`;
-            $(selected_filters)
-              .find(
-                `.current-filter[data-id="${$(latest_checked_option).val()}"].${field}`,
-              )
-              .text(updated_label_text);
-
-            // Update global filter labels array.
-            const label_idx = new_filter_labels.findIndex(
-              (label) => label['field'] === field,
-            );
-            new_filter_labels[label_idx]['name'] = updated_label_text;
-          }
-          break;
-        }
-      }
-    }
-  });
 
   $('.filter-by-text-comms-option').on('click', function (e) {
     handle_filter_by_text_comms({
@@ -2097,76 +1798,59 @@
     const { id, field } = options || { id: null, field: null };
     if (id && field) {
       // Adjust filter text field state accordingly, based on option selection.
-      let filter_text_field = $('#' + field + '_text_comms_filter');
+      let filter_text_field = document.querySelector(`[name="${field}"]`);
       $(filter_text_field).prop(
         'disabled',
         ['all-with-set-value', 'all-without-set-value'].includes(id),
       );
 
-      // Ensure duplicates are avoided.
-      const existing_label = new_filter_labels.find(
-        (label) => label['id'] === id && label['field'] === field,
+      // identify all old labels
+      let removed_old_filter_labels = new_filter_labels.filter(
+        (label) => label['field'] === field,
       );
-      if (existing_label === undefined) {
-        // Identify stale labels to be deleted.
-        let removed_old_filter_labels = [];
-        new_filter_labels.forEach((label) => {
-          if (label['field'] === field) {
-            if (!(label['id'] === id)) {
-              removed_old_filter_labels.push(label);
-            }
-          }
+
+      if (removed_old_filter_labels.length > 0) {
+        // remove them from the active array
+        new_filter_labels = new_filter_labels.filter(
+          (existing_label) => existing_label['field'] !== field,
+        );
+
+        // remove associated UI labels
+        removed_old_filter_labels.forEach((label) => {
+          $(selected_filters)
+            .find(`.current-filter[data-id="${label['id']}"].${label['field']}`)
+            .remove();
         });
-
-        // Remove stale labels, if detected.
-        if (removed_old_filter_labels.length > 0) {
-          new_filter_labels = new_filter_labels.filter((existing_label) => {
-            let filtered = false;
-            removed_old_filter_labels.forEach((stale_label) => {
-              if (
-                existing_label['id'] !== stale_label['id'] &&
-                existing_label['name'] !== stale_label['name'] &&
-                existing_label['field'] !== stale_label['field']
-              ) {
-                filtered = true;
-              }
-            });
-
-            return filtered;
-          });
-
-          // Remove associated ui labels.
-          removed_old_filter_labels.forEach((label) => {
-            $(selected_filters)
-              .find(
-                `.current-filter[data-id="${label['id']}"].${label['field']}`,
-              )
-              .remove();
-          });
-        }
-
-        // Create new generic filter label.
-        let { newLabel, filterName } = create_label_all(
-          field,
-          ['all-without-set-value', 'all-without-filtered-value'].includes(id),
-          id,
-          list_settings,
-        );
-
-        // Adjust label to reflect filtered text.
-        if (
-          ['all-with-filtered-value', 'all-without-filtered-value'].includes(id)
-        ) {
-          let filtered_value = $(`#${field}_text_comms_filter`).val();
-          newLabel['name'] =
-            filterName = `${esc(list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '')}: ${esc(filtered_value)}`;
-        }
-
-        selected_filters.append(
-          `<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`,
-        );
-        new_filter_labels.push(newLabel);
       }
+
+      // create new generic filter label.
+      let { newLabel, filterName } = create_label_all(
+        field,
+        ['all-without-set-value', 'all-without-filtered-value'].includes(id),
+        id,
+        list_settings,
+      );
+
+      // adjust label to reflect filtered text
+      if (
+        ['all-with-filtered-value', 'all-without-filtered-value'].includes(id)
+      ) {
+        let filtered_value = document.querySelector(
+          `dt-multi-text#${field}, dt-text#${field}`,
+        ).value;
+        if (Array.isArray(filtered_value)) {
+          filtered_value = filtered_value
+            .filter((label) => label.value.length > 0)
+            .map((item) => item.value);
+        }
+        newLabel['name'] =
+          filterName = `${esc(list_settings.post_type_settings.fields[field] ? list_settings.post_type_settings.fields[field].name : '')}: ${esc(filtered_value)}`;
+      }
+
+      selected_filters.append(
+        `<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`,
+      );
+      new_filter_labels.push(newLabel);
     }
   }
 
@@ -2189,190 +1873,188 @@
       (label) => label.field !== field,
     );
     $(selected_filters).find(`.current-filter.${field}`).remove();
-
-    selected_filters.append(
-      `<span class="current-filter ${esc(field)}" data-id="${id}">${filterName}</span>`,
-    );
-    new_filter_labels.push(newLabel);
   }
+  // attach .on('change') to all dt-* fields
+  $(document).on(
+    'change',
+    'dt-location, dt-toggle, dt-tags, dt-date, dt-users-connection, dt-connection, dt-single-select, dt-multi-select, dt-multi-select-button-group, dt-multi-text, dt-text',
+    function (e) {
+      const element = e.target;
+      const tagName = element.tagName.toLowerCase();
 
-  let load_multi_select_typeaheads =
-    async function load_multi_select_typeaheads() {
-      for (let input of $(
-        '#filter-modal .multi_select .typeahead__query input',
-      )) {
-        let field = $(input).data('field');
-        let typeahead_name = `.js-typeahead-${field}`;
+      let val = [];
+      const isConnectionLike =
+        tagName === 'dt-connection' ||
+        tagName === 'dt-users-connection' ||
+        tagName === 'dt-location';
+      const isMultiSelectLike =
+        tagName === 'dt-multi-select' ||
+        tagName === 'dt-multi-select-button-group' ||
+        tagName === 'dt-tags';
 
-        if (window.Typeahead[typeahead_name]) {
-          return;
-        }
-
-        let source_data = { data: [] };
-        let field_options = window.lodash.get(
-          list_settings,
-          `post_type_settings.fields.${field}.default`,
-          {},
-        );
-        if (Object.keys(field_options).length > 0) {
-          window.lodash.forOwn(field_options, (val, key) => {
-            if (!val.deleted) {
-              source_data.data.push({
-                key: key,
-                name: key,
-                value: val.label || key,
-              });
-            }
-          });
+      // If the element creates multiple separate items (connections or multi-selects)
+      if (isConnectionLike || isMultiSelectLike) {
+        if (isConnectionLike) {
+          // Get array of values without 'delete' property
+          val = Array.isArray(e.target.value)
+            ? e.target.value.filter((label) => !label.delete)
+            : [];
         } else {
-          source_data = {
-            [field]: {
-              display: ['value'],
-              ajax: {
-                url:
-                  window.wpApiShare.root +
-                  `dt-posts/v2/${list_settings.post_type}/multi-select-values`,
-                data: {
-                  s: '{{query}}',
-                  field,
-                },
-                beforeSend: function (xhr) {
-                  xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-                },
-                callback: {
-                  done: function (data) {
-                    return (data || []).map((tag) => {
-                      let label = window.lodash.get(
-                        field_options,
-                        tag + '.label',
-                        tag,
-                      );
-                      return { value: label, key: tag };
-                    });
-                  },
-                },
-              },
-            },
-          };
+          // Get array of values for multi-selects and tags (filtering out negative '-' deletions)
+          const rawVal = Array.isArray(e.target.value) ? e.target.value : [];
+          val = rawVal
+            .filter((id) => typeof id === 'string' && id.charAt(0) !== '-')
+            .map((id) => {
+              const selectedOption = Array.from(e.target.options || []).find(
+                (option) => option.id === id,
+              );
+              return {
+                id: id,
+                label: selectedOption ? selectedOption.label : id,
+              };
+            });
         }
-        $.typeahead({
-          input: `.js-typeahead-${field}`,
-          minLength: 0,
-          maxItem: 20,
-          searchOnFocus: true,
-          template: function (query, item) {
-            return `<span>${window.SHAREDFUNCTIONS.escapeHTML(item.value)}</span>`;
-          },
-          source: source_data,
-          display: 'value',
-          templateValue: '{{value}}',
-          dynamic: true,
-          multiselect: {
-            matchOn: ['key'],
-            data: [],
-            callback: {
-              onCancel: function (node, item) {
-                $(`.current-filter[data-id="${item.key}"].${field}`).remove();
-                window.lodash.pullAllBy(
-                  new_filter_labels,
-                  [{ id: item.key }],
-                  'id',
-                );
-              },
-            },
-          },
-          callback: {
-            onClick: function (node, a, item) {
-              const { newLabel, name } = create_name_value_label(
-                field,
-                item.key,
-                item.value,
+
+        const fieldName = e.target.name;
+
+        // Find labels that are no longer in the component's value
+        const labelsToRemove = new_filter_labels.filter(
+          (label) =>
+            label.field === fieldName &&
+            !val.some((item) => item.id === label.id),
+        );
+
+        labelsToRemove.forEach((label) => {
+          // Remove the specific span
+          $(
+            `.current-filter[data-id="${window.SHAREDFUNCTIONS.escapeHTML(label.id)}"].${window.SHAREDFUNCTIONS.escapeHTML(fieldName)}`,
+          ).remove();
+          new_filter_labels = new_filter_labels.filter(
+            (existingLabel) =>
+              existingLabel.id !== label.id ||
+              existingLabel.field !== fieldName,
+          );
+        });
+
+        // Loop through newly added labels, creating one label for each value
+        val.forEach((item) => {
+          const exists = new_filter_labels.some(
+            (label) => label.field === fieldName && label.id === item.id,
+          );
+
+          if (!exists) {
+            // Create correct label based on the tag
+            let newLabel, displayLabel;
+
+            if (tagName === 'dt-location') {
+              const locLabel = create_location_label(
+                fieldName,
+                item.id,
+                item.label,
                 list_settings,
               );
-              selected_filters.append(
-                `<span class="current-filter ${window.SHAREDFUNCTIONS.escapeHTML(field)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(item.key)}">${window.SHAREDFUNCTIONS.escapeHTML(name)}:${window.SHAREDFUNCTIONS.escapeHTML(item.value)}</span>`,
+              newLabel = locLabel.newLabel;
+              displayLabel = locLabel.newLabel.name;
+            } else if (isMultiSelectLike) {
+              const nameValLabel = create_name_value_label(
+                fieldName,
+                item.id,
+                item.label,
+                list_settings,
               );
-              new_filter_labels.push(newLabel);
-            },
-            onResult: function (node, query, result, resultCount) {
-              let text = window.TYPEAHEADS.typeaheadHelpText(
-                resultCount,
-                query,
-                result,
+              newLabel = nameValLabel.newLabel;
+              displayLabel = nameValLabel.newLabel.name; // prefixes with field name
+            } else {
+              const valLabel = create_value_label(
+                fieldName,
+                item.id,
+                item.label,
               );
-              $(`#${field}-result-container`).html(text);
-            },
-            onHideLayout: function () {
-              $(`#${field}-result-container`).html('');
-            },
-          },
-        });
-      }
-    };
+              newLabel = valLabel.newLabel;
+              displayLabel = item.label;
+            }
 
-  let load_post_type_typeaheads = () => {
-    $(".typeahead__query [data-type='connection']").each((key, el) => {
-      let field_key = $(el).data('field');
-      let post_type = window.lodash.get(
-        list_settings,
-        `post_type_settings.fields.${field_key}.post_type`,
-        field_key,
-      );
-      if (!window.Typeahead[`.js-typeahead-${field_key}`]) {
-        $.typeahead({
-          input: `.js-typeahead-${field_key}`,
-          minLength: 0,
-          accent: true,
-          searchOnFocus: true,
-          maxItem: 20,
-          template: function (query, item) {
-            return `<span dir="auto">${window.SHAREDFUNCTIONS.escapeHTML(item.name)} (#${window.SHAREDFUNCTIONS.escapeHTML(item.ID)})</span>`;
-          },
-          source: window.TYPEAHEADS.typeaheadPostsSource(post_type),
-          display: 'name',
-          templateValue: '{{name}}',
-          dynamic: true,
-          multiselect: {
-            matchOn: ['ID'],
-            data: [],
-            callback: {
-              onCancel: function (node, item, event) {
-                remove_filter_labels(item.ID, field_key);
-              },
-            },
-          },
-          callback: {
-            onResult: function (node, query, result, resultCount) {
-              let text = window.TYPEAHEADS.typeaheadHelpText(
-                resultCount,
-                query,
-                result,
-              );
-              $(`#${field_key}-result-container`).html(text);
-            },
-            onHideLayout: function () {
-              $(`#${field_key}-result-container`).html('');
-            },
-            onClick: function (node, a, item) {
-              const { newLabel } = create_value_label(
-                field_key,
-                item.ID,
-                item.name,
-              );
-              new_filter_labels.push(newLabel);
-              selected_filters.append(
-                `<span class="current-filter ${field_key}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(item.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(item.name)}</span>`,
-              );
-            },
-          },
+            selected_filters.append(
+              `<span class="current-filter ${window.SHAREDFUNCTIONS.escapeHTML(fieldName)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(item.id)}">${window.SHAREDFUNCTIONS.escapeHTML(displayLabel)}</span>`,
+            );
+            new_filter_labels.push(newLabel);
+          }
         });
+      } else if (tagName == 'dt-date') {
+        // Else, if the element is a date
+        val = e.target.value;
+
+        const fieldName = e.target.name || '';
+        const delimiter = fieldName.endsWith('_start')
+          ? 'start'
+          : fieldName.endsWith('_end')
+            ? 'end'
+            : '';
+        const id = fieldName.replace(/_(start|end)$/, '');
+
+        const { newLabel, field_name } = create_date_label(id, val, delimiter);
+        remove_all_filter_labels(fieldName);
+
+        if (val) {
+          selected_filters.append(
+            `<span class="current-filter ${window.SHAREDFUNCTIONS.escapeHTML(newLabel.id)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(newLabel.id)}">${window.SHAREDFUNCTIONS.escapeHTML(field_name)}: ${window.SHAREDFUNCTIONS.escapeHTML(val)}</span>`,
+          );
+          new_filter_labels.push(newLabel);
+        }
+      } else {
+        // All other standard elements (e.g., dt-text, dt-single-select)
+        val = e.target.value;
+
+        if (!val || val.length == 0) {
+          val = false;
+        }
+
+        const radioContainer = $(
+          `#filter_by_text_comms_option_${e.target.name}`,
+        );
+        if (radioContainer.length > 0) {
+          let radioChecked = radioContainer
+            .find('.filter-by-text-comms-option:checked')
+            .val();
+
+          // default to 'All with filtered value' if they typed but no radio was selected
+          if (!radioChecked) {
+            radioChecked = 'all-with-filtered-value';
+            radioContainer
+              .find(`input[value="${radioChecked}"]`)
+              .prop('checked', true);
+          }
+
+          handle_filter_by_text_comms({
+            id: radioChecked,
+            field: e.target.name,
+          });
+          return; // skip the generic label creation
+        }
+
+        const { newLabel, name } = create_name_value_label(
+          e.target.name,
+          e.target.name,
+          val,
+          list_settings,
+        );
+
+        remove_all_filter_labels(e.target.name);
+        if (val) {
+          selected_filters.append(
+            `<span class="current-filter ${window.SHAREDFUNCTIONS.escapeHTML(e.target.name)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(e.target.name)}">${window.SHAREDFUNCTIONS.escapeHTML(name)}: ${window.SHAREDFUNCTIONS.escapeHTML(val)}</span>`,
+          );
+          new_filter_labels.push(newLabel);
+        }
       }
-    });
-  };
+    },
+  );
 
   const remove_filter_labels = (id, field_key) => {
     $(`.current-filter[data-id="${id}"].${field_key}`).remove();
-    window.lodash.pullAllBy(new_filter_labels, [{ id: id }], 'id');
+    new_filter_labels = new_filter_labels.filter(
+      (label) => !(label.id === id && label.field === field_key),
+    );
   };
 
   const remove_all_filter_labels = (field_key) => {
@@ -2386,68 +2068,6 @@
     ids.forEach((id) => remove_filter_labels(id, field_key));
   };
 
-  let load_user_select_typeaheads = () => {
-    $(".typeahead__query [data-type='user_select']").each((key, el) => {
-      let field_key = $(el).data('field');
-      if (!window.Typeahead[`.js-typeahead-${field_key}`]) {
-        $.typeahead({
-          input: `.js-typeahead-${field_key}`,
-          minLength: 0,
-          accent: true,
-          searchOnFocus: true,
-          maxItem: 20,
-          template: function (query, item) {
-            return `<span dir="auto">${window.SHAREDFUNCTIONS.escapeHTML(item.name)} (#${window.SHAREDFUNCTIONS.escapeHTML(item.ID)})</span>`;
-          },
-          source: window.TYPEAHEADS.typeaheadUserSource(),
-          display: 'name',
-          templateValue: '{{name}}',
-          dynamic: true,
-          multiselect: {
-            matchOn: ['ID'],
-            data: [],
-            callback: {
-              onCancel: function (node, item) {
-                $(
-                  `.current-filter[data-id="${item.ID}"].${field_key}`,
-                ).remove();
-                window.lodash.pullAllBy(
-                  new_filter_labels,
-                  [{ id: item.ID }],
-                  'id',
-                );
-              },
-            },
-          },
-          callback: {
-            onResult: function (node, query, result, resultCount) {
-              let text = window.TYPEAHEADS.typeaheadHelpText(
-                resultCount,
-                query,
-                result,
-              );
-              $(`#${field_key}-result-container`).html(text);
-            },
-            onHideLayout: function () {
-              $(`#${field_key}-result-container`).html('');
-            },
-            onClick: function (node, a, item) {
-              const { newLabel } = create_value_label(
-                field_key,
-                item.ID,
-                item.name,
-              );
-              new_filter_labels.push(newLabel);
-              selected_filters.append(
-                `<span class="current-filter ${field_key}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(item.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(item.name)}</span>`,
-              );
-            },
-          },
-        });
-      }
-    });
-  };
-
   /**
    * Location
    */
@@ -2455,169 +2075,33 @@
     delete window.location_data;
   });
 
-  let load_location_typeahead = () => {
-    let key = 'location_grid';
-    if ($('.js-typeahead-location_grid_meta').length) {
-      key = 'location_grid_meta';
-    }
-    if (!window.Typeahead[`.js-typeahead-${key}`]) {
-      // Ensure element is present before proceeding!
-      if (
-        $('.js-typeahead-' + window.SHAREDFUNCTIONS.escapeHTML(key)).length > 0
-      ) {
-        $.typeahead({
-          input: `.js-typeahead-${window.SHAREDFUNCTIONS.escapeHTML(key)}`,
-          minLength: 0,
-          accent: true,
-          searchOnFocus: true,
-          maxItem: 20,
-          dropdownFilter: [
-            {
-              key: 'group',
-              value: 'used',
-              template: window.SHAREDFUNCTIONS.escapeHTML(
-                window.wpApiShare.translations.used_locations,
-              ),
-              all: window.SHAREDFUNCTIONS.escapeHTML(
-                window.wpApiShare.translations.all_locations,
-              ),
-            },
-          ],
-          source: {
-            used: {
-              display: 'name',
-              ajax: {
-                url:
-                  window.wpApiShare.root +
-                  'dt/v1/mapping_module/search_location_grid_by_name',
-                data: {
-                  s: '{{query}}',
-                  filter: function () {
-                    return window.lodash.get(
-                      window.Typeahead[`.js-typeahead-${key}`].filters.dropdown,
-                      'value',
-                      'all',
-                    );
-                  },
-                },
-                beforeSend: function (xhr) {
-                  xhr.setRequestHeader('X-WP-Nonce', window.wpApiShare.nonce);
-                },
-                callback: {
-                  done: function (data) {
-                    if (typeof window.typeaheadTotals !== 'undefined') {
-                      window.typeaheadTotals.field = data.total;
-                    }
-                    return data.location_grid;
-                  },
-                },
-              },
-            },
-          },
-          display: 'name',
-          templateValue: '{{name}}',
-          dynamic: true,
-          multiselect: {
-            matchOn: ['ID'],
-            data: [],
-            callback: {
-              onCancel: function (node, item) {
-                $(
-                  `.current-filter[data-id="${item.ID}"].location_grid`,
-                ).remove();
-                window.lodash.pullAllBy(
-                  new_filter_labels,
-                  [{ id: item.ID }],
-                  'id',
-                );
-              },
-            },
-          },
-          callback: {
-            onResult: function (node, query, result, resultCount) {
-              let text = window.TYPEAHEADS.typeaheadHelpText(
-                resultCount,
-                query,
-                result,
-              );
-              $('#location_grid-result-container').html(text);
-            },
-            onReady() {
-              this.filters.dropdown = {
-                key: 'group',
-                value: 'used',
-                template: window.SHAREDFUNCTIONS.escapeHTML(
-                  window.wpApiShare.translations.used_locations,
-                ),
-              };
-              this.container
-                .removeClass('filter')
-                .find('.' + this.options.selector.filterButton)
-                .html(
-                  window.SHAREDFUNCTIONS.escapeHTML(
-                    window.wpApiShare.translations.used_locations,
-                  ),
-                );
-            },
-            onHideLayout: function () {
-              $('#location_grid-result-container').html('');
-            },
-            onClick: function (node, a, item) {
-              const { name, newLabel } = create_location_label(
-                key,
-                item.ID,
-                item.name,
-                list_settings,
-              );
-              new_filter_labels.push(newLabel);
-              selected_filters.append(
-                `<span class="current-filter location_grid" data-id="${window.SHAREDFUNCTIONS.escapeHTML(item.ID)}">${window.SHAREDFUNCTIONS.escapeHTML(name)}:${window.SHAREDFUNCTIONS.escapeHTML(item.name)}</span>`,
-              );
-            },
-          },
-        });
-      }
-    }
-  };
-
   /*
    * Setup filter box
    */
-  let typeaheads_loaded = null;
   $('#filter-modal').on('open.zf.reveal', function () {
     new_filter_labels = [];
-    load_location_typeahead();
-    load_post_type_typeaheads();
-    load_user_select_typeaheads();
-    typeaheads_loaded = load_multi_select_typeaheads().catch((err) => {
-      console.error(err);
-    });
     $('#new-filter-name').val('');
-    $('#filter-modal input.dt_date_picker').each(function () {
-      $(this).val('');
-    });
     $('#filter-modal input:checked').each(function () {
       $(this).prop('checked', false);
     });
     $('#filter-modal input:disabled').each(function () {
       $(this).prop('disabled', false);
     });
-    $('#filter-modal .typeahead__query.disabled').each(function () {
-      $(this).removeClass('disabled');
-    });
     selected_filters.empty();
-    $('.typeahead__query input').each(function () {
-      let typeahead =
-        window.Typeahead['.' + $(this).attr('class').split(/\s+/)[0]];
-      if (typeahead && typeahead.items) {
-        for (let i = 0; i < typeahead.items.length; i) {
-          typeahead.cancelMultiselectItem(0);
-        }
-        typeahead.node.trigger('propertychange.typeahead');
-      }
-    });
+  });
+  // On close, reset all field values
+  $('#filter-modal').on('closed.zf.reveal', function () {
+    $(this)
+      .find(
+        'dt-location, dt-toggle, dt-tags, dt-date, dt-users-connection, dt-connection, dt-single-select, dt-multi-select, dt-multi-select-button-group, dt-multi-text, dt-text',
+      )
+      .each(function () {
+        this.reset();
+      });
+
+    // hide edit filters again & remove associated filter-id
+    $('#save-filter-edits').hide().removeData('filter-id');
     $('#confirm-filter-records').show();
-    $('#save-filter-edits').hide();
   });
 
   var clicked;
@@ -2630,96 +2114,156 @@
   $(document).mouseup(function (e) {
     clicked = null;
   });
-  $('#filter-modal input.dt_date_picker').on('blur', function (e) {
-    if (clicked && clicked.closest('.ui-datepicker').length === 1) {
-      // we have clicked in the datepicker, so don't run the blur
-      return;
-    }
-    // delay the blur so that if the user has clicked we get the correct date from the input
-    setTimeout(() => {
-      if (!e.target.value) {
-        const clearButton = $(this).prev('.clear-date-picker');
-        clearButton.click();
-        return;
-      }
-      $(this).datepicker('setDate', e.target.value);
-      $('.ui-datepicker-current-day').click();
-    }, 100);
-  });
 
   function edit_saved_filter(filter) {
     $('#filter-modal').foundation('open');
-    typeaheads_loaded.then(() => {
-      let connectionTypeKeys =
-        list_settings.post_type_settings.connection_types;
-      connectionTypeKeys.push('location_grid');
-      filter.labels.forEach((label) => {
-        // Determine exclusion status
-        let excluded_class = is_search_query_filter_label_excluded(
-          filter,
-          label,
-        )
-          ? 'current-filter-excluded'
-          : '';
 
-        // Proceed with displaying of filter modal
-        selected_filters.append(
-          `<span class="current-filter ${excluded_class} ${window.SHAREDFUNCTIONS.escapeHTML(label.field)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(label.id)}">${window.SHAREDFUNCTIONS.escapeHTML(label.name)}</span>`,
-        );
-        let type = window.lodash.get(
-          list_settings,
-          `post_type_settings.fields.${label.field}.type`,
-        );
-        if (
-          type === 'key_select' ||
-          type === 'boolean' ||
-          type === 'file_upload'
-        ) {
-          $(
-            `#filter-modal #${label.field}-options input[value="${label.id}"]`,
-          ).prop('checked', true);
-        } else if (type === 'date' || type === 'datetime') {
-          $(`#filter-modal #${label.field}-options #${label.id}`).datepicker(
-            'setDate',
-            label.date,
-          );
-        } else if (connectionTypeKeys.includes(label.field)) {
-          if (label.id === '*') {
-            const fieldAllConnectionsElement = document.querySelector(
-              `#filter-modal #${label.field} .all-connections`,
-            );
-            const boundAllConnectionsClickHandler =
-              all_connections_click_handler.bind(fieldAllConnectionsElement);
-            $(fieldAllConnectionsElement).prop('checked', true);
-            boundAllConnectionsClickHandler();
-          } else {
-            window.Typeahead[
-              `.js-typeahead-${label.field}`
-            ].addMultiselectItemLayout({ ID: label.id, name: label.name });
-          }
-        } else if (type === 'multi_select') {
-          window.Typeahead[
-            `.js-typeahead-${label.field}`
-          ].addMultiselectItemLayout({ key: label.id, value: label.name });
-        } else if (type === 'tags') {
-          window.Typeahead[
-            `.js-typeahead-${label.field}`
-          ].addMultiselectItemLayout({ key: label.id, value: label.id });
-        } else if (type === 'user_select') {
-          window.Typeahead[
-            `.js-typeahead-${label.field}`
-          ].addMultiselectItemLayout({ name: label.name, ID: label.id });
+    let connectionTypeKeys = [
+      ...list_settings.post_type_settings.connection_types,
+      'location_grid',
+    ];
+
+    // Helper function to handle the new dt-* component state updates
+    const appendValueToDtComponent = (field, itemObject) => {
+      const dtComponent = document.querySelector(`[name="${field}"]`);
+
+      if (dtComponent) {
+        // Assuming the dt-* component's value expects an array of selected objects
+        const currentValue = Array.isArray(dtComponent.value)
+          ? dtComponent.value
+          : [];
+        dtComponent.value = [...currentValue, itemObject];
+      } else {
+        console.warn(`Could not find dt-* component for field: ${field}`);
+      }
+    };
+
+    filter.labels.forEach((label) => {
+      // Determine exclusion status
+      let excluded_class = is_search_query_filter_label_excluded(filter, label)
+        ? 'current-filter-excluded'
+        : '';
+
+      let type = window.lodash.get(
+        list_settings,
+        `post_type_settings.fields.${label.field}.type`,
+      );
+
+      const displayField = type === 'date' ? label.id : label.field;
+
+      // Proceed with displaying of filter modal
+      selected_filters.append(
+        `<span class="current-filter ${excluded_class} ${window.SHAREDFUNCTIONS.escapeHTML(displayField)}" data-id="${window.SHAREDFUNCTIONS.escapeHTML(label.id)}">${window.SHAREDFUNCTIONS.escapeHTML(label.name)}</span>`,
+      );
+
+      if (
+        type === 'key_select' ||
+        type === 'boolean' ||
+        type === 'file_upload'
+      ) {
+        // Find all checkboxes for this specific field
+        $(
+          `#filter-modal #${label.field}-options input[data-field="${label.field}"]`,
+        )
+          // Filter down to the one where the JS value exactly matches label.id
+          .filter(function () {
+            return this.value === label.id;
+          })
+          .prop('checked', true);
+      } else if (type === 'date' || type === 'datetime') {
+        const dateComponent = document.querySelector(`[name="${label.id}"]`);
+        if (dateComponent) {
+          dateComponent.value = label.date;
         }
-      });
-      // moved this below the forEach as the global new_filter_labels was messing with the loop.
-      new_filter_labels = filter.labels;
-      (filter.query.combine || []).forEach((c) => {
-        $(`#combine_${c}`).prop('checked', true);
-      });
-      $('#new-filter-name').val(filter.name);
-      $('#confirm-filter-records').hide();
-      $('#save-filter-edits').data('filter-id', filter.ID).show();
+      } else if (connectionTypeKeys.includes(label.field)) {
+        if (label.id === '*') {
+          const fieldAllConnectionsElement = document.querySelector(
+            `#filter-modal #${label.field} .all-connections`,
+          );
+          const boundAllConnectionsClickHandler =
+            all_connections_click_handler.bind(fieldAllConnectionsElement);
+          $(fieldAllConnectionsElement).prop('checked', true);
+          boundAllConnectionsClickHandler();
+        } else {
+          appendValueToDtComponent(label.field, {
+            id: label.id,
+            label: label.name,
+          });
+        }
+      } else if (type === 'multi_select' || type === 'tags') {
+        appendValueToDtComponent(label.field, label.id);
+      } else if (type === 'user_select') {
+        appendValueToDtComponent(label.field, {
+          label: label.name,
+          id: label.id,
+        });
+      } else if (
+        type === 'text' ||
+        type === 'communication_channel' ||
+        type === 'textarea' ||
+        type === 'number'
+      ) {
+        const dtComponent = document.querySelector(`[name="${label.field}"]`);
+
+        let textValue = '';
+        let queryArray = [];
+
+        if (filter.query && filter.query.fields) {
+          const queryField = filter.query.fields.find(
+            (f) => f[label.field] !== undefined,
+          );
+          if (queryField && queryField[label.field]) {
+            queryArray = queryField[label.field];
+          }
+        } else if (filter.query && filter.query[label.field]) {
+          queryArray = filter.query[label.field];
+        }
+
+        // Handle '-' and '*' signs
+        if (queryArray && queryArray.length > 0) {
+          let queryVal = queryArray[0];
+          if (typeof queryVal === 'string') {
+            if (queryVal.startsWith('-') && queryVal !== '-*') {
+              textValue = queryVal.substring(1);
+            } else if (queryVal !== '*' && queryVal !== '-*') {
+              textValue = queryVal;
+            } else {
+              textValue = '';
+            }
+          }
+        }
+
+        if (dtComponent) {
+          dtComponent.value = textValue;
+
+          if (
+            ['all-with-set-value', 'all-without-set-value'].includes(label.id)
+          ) {
+            dtComponent.disabled = true;
+          } else {
+            dtComponent.disabled = false;
+          }
+        }
+
+        if (type === 'text' || type === 'communication_channel') {
+          $(
+            `#filter-modal #filter_by_text_comms_option_${label.field} input[data-field="${label.field}"]`,
+          )
+            .filter(function () {
+              return this.value === label.id;
+            })
+            .prop('checked', true);
+        }
+      }
     });
+
+    new_filter_labels = filter.labels;
+    (filter.query.combine || []).forEach((c) => {
+      $(`#combine_${c}`).prop('checked', true);
+    });
+    $('#new-filter-name').val(filter.name);
+    $('#confirm-filter-records').hide();
+    $('#save-filter-edits').data('filter-id', filter.ID).show();
   }
 
   $('#save-filter-edits').on('click', function () {
@@ -2741,9 +2285,6 @@
     const panel = $(`#${field}.tabs-panel`);
     $(`.tabs-panel`).removeClass('is-active');
     $(panel).addClass('is-active');
-    if (field && window.Typeahead[`.js-typeahead-${field}`]) {
-      window.Typeahead[`.js-typeahead-${field}`].adjustInputSize();
-    }
   });
 
   //watch all other checkboxes
@@ -2793,45 +2334,6 @@
       $(`.current-filter[data-id="${$(this).val()}"].${field_key}`).remove();
       window.lodash.pullAllBy(new_filter_labels, [{ id: option_id }], 'id');
     }
-  });
-
-  $('#filter-modal .dt_date_picker').datepicker({
-    constrainInput: false,
-    dateFormat: 'yy-mm-dd',
-    onSelect: function (date) {
-      let id = $(this).data('field');
-      let delimiter = $(this).data('delimit');
-      //remove existing filters
-      window.lodash.pullAllBy(
-        new_filter_labels,
-        [{ id: `${id}_${delimiter}` }],
-        'id',
-      );
-      $(`.current-filter[data-id="${id}_${delimiter}"]`).remove();
-      const { newLabel, field_name, delimiter_label } = create_date_label(
-        id,
-        date,
-        delimiter,
-      );
-      //add new filters
-      new_filter_labels.push(newLabel);
-      selected_filters.append(`
-        <span class="current-filter ${id}_${delimiter}"
-              data-id="${id}_${delimiter}">
-                ${field_name} ${delimiter_label}:${date}
-        </span>
-      `);
-    },
-    changeMonth: true,
-    changeYear: true,
-    yearRange: '-20:+10',
-  });
-
-  $('#filter-modal .clear-date-picker').on('click', function () {
-    let id = $(this).data('for');
-    $(`#filter-modal #${id}`).datepicker('setDate', null);
-    window.lodash.pullAllBy(new_filter_labels, [{ id: `${id}` }], 'id');
-    $(`.current-filter[data-id="${id}"]`).remove();
   });
 
   //save the filter in the user meta
