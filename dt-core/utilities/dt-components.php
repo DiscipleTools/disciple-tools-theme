@@ -269,11 +269,17 @@ class DT_Components
     public static function render_tags( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
 
+        $raw_value = $post[$field_key] ?? [];
+        $array_value = is_array( $raw_value ) ? $raw_value : [];
+
         $value = array_map(function ( $value ) {
             return $value;
-        }, $post[$field_key] ?? []);
+        }, $array_value);
 
-        $params['allow_add'] ?? true;
+        $allow_add = true;
+        if ( isset( $params['allow_add'] ) ) {
+            $allow_add = $params['allow_add'];
+        }
 
         $options = null;
         if ( isset( $params['static_options'] ) && $params['static_options'] ) {
@@ -349,7 +355,7 @@ class DT_Components
         ?>
         <dt-users-connection <?php echo wp_kses_post( $shared_attributes ) ?>
             value="<?php echo esc_attr( json_encode( $value ) ) ?>"
-        <?php echo ( isset( $params['single'] ) && $params['single'] === true ) ? 'single' : '';?>><?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        <?php echo ( !isset( $params['single'] ) || $params['single'] === true ) ? 'single' : '';?>><?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-users-connection>
         <?php
     }
