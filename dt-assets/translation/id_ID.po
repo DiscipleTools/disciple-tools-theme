@@ -4,8 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/disciple-tools-"
 "theme\n"
 "POT-Creation-Date: 2026-05-06T11:54:54+00:00\n"
-"PO-Revision-Date: 2026-05-06 12:16+0000\n"
-"Last-Translator: DeepL <noreply-mt-deepl@weblate.org>\n"
+"PO-Revision-Date: 2026-08-05 13:06+0000\n"
+"Last-Translator: Jon W <translator@disciple.tools>\n"
 "Language-Team: Indonesian <https://translate.disciple.tools/projects/"
 "disciple-tools/disciple-tools-theme/id_ID/>\n"
 "Language: id_ID\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.8\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -1108,7 +1108,7 @@ msgstr "Singkirkan semua kecocokan untuk %s"
 #: dt-assets/functions/enqueue-scripts.php:337
 msgctxt "just copy as they are: _START_ and _TOTAL_"
 msgid "Showing _START_ of _TOTAL_"
-msgstr "Meampilkan_pemula_dari_jumlah_"
+msgstr "Meampilkan _START_ dari _TOTAL_"
 
 #: dt-assets/functions/enqueue-scripts.php:338
 msgid "Sorting By"
