@@ -1373,6 +1373,7 @@ class Disciple_Tools_Posts
             $sort_sql = "( p.post_title LIKE '%" . str_replace( ' ', '%', esc_sql( $query['name'][0] ) ) . "%' ) desc, p.post_title asc";
         }
 
+        $sort_aggregated = false;
         if ( empty( $sort_sql ) && isset( $sort, $post_fields[$sort] ) ) {
             if ( isset( $post_fields[$sort]['private'] ) && $post_fields[$sort]['private'] ) {
                 $meta_table = $wpdb->dt_post_user_meta;
@@ -1425,6 +1426,12 @@ class Disciple_Tools_Posts
             } elseif ( $post_fields[$sort]['type'] === 'number' ){
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', CAST( sort.meta_value as DECIMAL(18,4) ) $sort_dir";
+            } elseif ( in_array( $post_fields[$sort]['type'], [ 'tags', 'multi_select' ] ) ){
+                // One meta row per value, so aggregate to keep a single row per post.
+                $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
+                $sort_aggregated = true;
+                $sort_aggregate = ( $sort_dir === 'desc' ? 'MAX' : 'MIN' ) . '(sort.meta_value)';
+                $sort_sql = "$sort_aggregate IS NULL, $sort_aggregate = '', $sort_aggregate $sort_dir";
             } else {
                 $joins = "LEFT JOIN $meta_table as sort ON ( p.ID = sort.post_id AND sort.meta_key = '$sort')";
                 $sort_sql = "sort.meta_value IS NULL, sort.meta_value = '', sort.meta_value $sort_dir";
@@ -1435,7 +1442,7 @@ class Disciple_Tools_Posts
         }
 
         $group_by_sql = '';
-        if ( strpos( $sort_sql, 'sort.meta_value' ) !== false ){
+        if ( !$sort_aggregated && strpos( $sort_sql, 'sort.meta_value' ) !== false ){
             $group_by_sql = ', sort.meta_value';
         }
 
