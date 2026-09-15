@@ -269,9 +269,17 @@ class DT_Components
     public static function render_tags( $field_key, $fields, $post, $params = [] ) {
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
 
+        $raw_value = $post[$field_key] ?? [];
+        $array_value = is_array( $raw_value ) ? $raw_value : [];
+
         $value = array_map(function ( $value ) {
             return $value;
-        }, $post[$field_key] ?? []);
+        }, $array_value);
+
+        $allow_add = true;
+        if ( isset( $params['allow_add'] ) ) {
+            $allow_add = $params['allow_add'];
+        }
 
         $options = null;
         if ( isset( $params['static_options'] ) && $params['static_options'] ) {
@@ -289,9 +297,8 @@ class DT_Components
         ?>
         <dt-tags <?php echo wp_kses_post( $shared_attributes ) ?>
             value='<?php echo esc_attr( json_encode( $value ) ) ?>'
-            placeholder="<?php echo esc_html( sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $fields[$field_key]['name'] ) ) ?>"
             <?php echo $options ? "options='" . esc_attr( json_encode( $options ) ) . "'" : null ?>
-            allowAdd>
+            <?php echo $allow_add ? 'allowAdd' : null ?>>
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-tags>
         <?php
@@ -322,7 +329,7 @@ class DT_Components
         $shared_attributes = self::shared_attributes( $field_key, $fields, $post, $params );
         ?>
         <dt-toggle <?php echo wp_kses_post( $shared_attributes ) ?>
-            <?php echo esc_html( checked( $post[$field_key], '1', false ) ) ?>>
+            <?php echo esc_html( checked( $post[$field_key] ?? '', '1', false ) ) ?>>
             <?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-toggle>
         <?php
@@ -348,7 +355,7 @@ class DT_Components
         ?>
         <dt-users-connection <?php echo wp_kses_post( $shared_attributes ) ?>
             value="<?php echo esc_attr( json_encode( $value ) ) ?>"
-        single><?php dt_render_icon_slot( $fields[$field_key] ) ?>
+        <?php echo ( !isset( $params['single'] ) || $params['single'] === true ) ? 'single' : '';?>><?php dt_render_icon_slot( $fields[$field_key] ) ?>
         </dt-users-connection>
         <?php
     }

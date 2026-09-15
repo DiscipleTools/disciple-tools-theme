@@ -536,7 +536,7 @@
     if (commentFieldSelected) {
       // Find the comment input for the comments field
       const commentInput = $(
-        '#bulk_edit_selected_fields_container textarea[id^="bulk_comment-input_"]',
+        '#bulk_edit_selected_fields_container dt-textarea[id^="bulk_comment-input_"]',
       );
       if (commentInput.length > 0) {
         commentPayload['commentText'] = commentInput.val();
@@ -751,8 +751,8 @@
           return; // Skip normal processing for remove operations
         }
 
-        // Skip share field - it's handled separately via sharePayload
-        if (fieldType === 'share') {
+        // Skip share and comment fields - they are handled separately via their own payloads
+        if (fieldType === 'share' || fieldType === 'comment') {
           return;
         }
 
@@ -1805,12 +1805,12 @@
       // Build comment HTML with proper spacing
       let commentHtml = '<div class="auto cell">';
       commentHtml +=
-        '<textarea class="mention" dir="auto" id="' +
+        '<dt-textarea class="mention" dir="auto" id="' +
         commentInputId +
         '" placeholder="' +
         (window.wpApiShare?.translations?.write_comment_placeholder ||
           'Write your comment or note here') +
-        '" style="margin-bottom: 15px;"></textarea>';
+        '" style="margin-bottom: 15px;"></dt-textarea>';
 
       // Add Type selector with proper spacing
       commentHtml += '<div class="grid-x" style="margin-top: 15px;">';
