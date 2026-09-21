@@ -156,10 +156,13 @@ function dt_jwt_throttle_record_failure( $username = '' ) {
 add_action( 'wp_login_failed', 'dt_jwt_throttle_record_failure', 10, 1 );
 
 /**
- * Clear the IP and account failure counters once a token is successfully issued.
+ * Clear the targeted account's failure counter once a token is successfully issued.
  */
 function dt_jwt_throttle_clear_on_success( $data, $user ) {
-    delete_transient( dt_jwt_throttle_key() );
+    // Only the authenticated account's counter is cleared, never the per-IP
+    // counter. A success can be an attacker authenticating to an account they
+    // control, so clearing the shared IP bucket on success would let them reset
+    // it at will and spray guesses across other accounts from one IP unthrottled.
     if ( $user instanceof WP_User ) {
         delete_transient( dt_jwt_throttle_account_key( $user->ID ) );
     }
