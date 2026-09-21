@@ -43,10 +43,13 @@ function dt_jwt_throttle_key() {
  * @return bool
  */
 function dt_is_jwt_token_request( $request = null ) {
+    // WordPress dispatches REST routes case-insensitively, so match the route
+    // the same way; a case-varied path (e.g. /JWT-Auth/v1/Token) still reaches
+    // the real token handler and must not slip past the throttle.
     if ( $request instanceof WP_REST_Request ) {
-        return $request->get_route() === '/jwt-auth/v1/token';
+        return strtolower( $request->get_route() ) === '/jwt-auth/v1/token';
     }
-    $path = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+    $path = isset( $_SERVER['REQUEST_URI'] ) ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) : '';
     return strpos( $path, 'jwt-auth/v1/token' ) !== false && strpos( $path, 'token/validate' ) === false;
 }
 
