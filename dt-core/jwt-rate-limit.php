@@ -40,10 +40,23 @@ function dt_jwt_throttle_key() {
 }
 
 /**
+ * Transient key holding the recent-failure count for an existing account.
+ *
+ * @param int $user_id
+ * @return string
+ */
+function dt_jwt_throttle_account_key( $user_id ) {
+    return 'dt_jwt_throttle_uid_' . (int) $user_id;
+}
+
+/**
  * Transient key holding the recent-failure count for a targeted account, or an
  * empty string when no usable identifier was supplied. The identifier is
- * lower-cased so case-varied usernames or emails, which resolve to the same
- * account, cannot be split into separate buckets.
+ * normalized with sanitize_user(), as wp_authenticate() does before firing
+ * wp_login_failed, then resolved to the account it names (login first, then
+ * email, matching core's authenticate order) so a username and an email for
+ * the same user share one bucket. An identifier matching no account is
+ * bucketed by its lower-cased form so guesses against unknown names still count.
  *
  * @param mixed $username Username or email as submitted.
  * @return string
@@ -52,11 +65,18 @@ function dt_jwt_throttle_user_key( $username ) {
     if ( !is_string( $username ) && !is_numeric( $username ) ) {
         return '';
     }
-    $username = strtolower( trim( (string) $username ) );
+    $username = sanitize_user( (string) $username );
     if ( $username === '' ) {
         return '';
     }
-    return 'dt_jwt_throttle_user_' . md5( $username );
+    $user = get_user_by( 'login', $username );
+    if ( !$user && is_email( $username ) ) {
+        $user = get_user_by( 'email', $username );
+    }
+    if ( $user instanceof WP_User ) {
+        return dt_jwt_throttle_account_key( $user->ID );
+    }
+    return 'dt_jwt_throttle_user_' . md5( strtolower( $username ) );
 }
 
 /**
@@ -138,12 +158,7 @@ add_action( 'wp_login_failed', 'dt_jwt_throttle_record_failure', 10, 1 );
 function dt_jwt_throttle_clear_on_success( $data, $user ) {
     delete_transient( dt_jwt_throttle_key() );
     if ( $user instanceof WP_User ) {
-        foreach ( [ $user->user_login, $user->user_email ] as $identifier ) {
-            $user_key = dt_jwt_throttle_user_key( $identifier );
-            if ( $user_key !== '' ) {
-                delete_transient( $user_key );
-            }
-        }
+        delete_transient( dt_jwt_throttle_account_key( $user->ID ) );
     }
     return $data;
 }
