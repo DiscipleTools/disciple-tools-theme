@@ -10,6 +10,20 @@ jQuery(document).ready(function ($) {
   let memberList = $('.member-list');
   let memberCountInput = $('#member_count');
   let leaderCountInput = $('#leader_count');
+  let syncMembersField = () => {
+    const field = document.querySelector('dt-connection[name="members"]');
+    if (
+      !field ||
+      !(window.DtWebComponents && window.DtWebComponents.ComponentService)
+    ) {
+      return;
+    }
+    // setting value directly does not fire change, so this does not save
+    field.value = window.DtWebComponents.ComponentService.convertApiValue(
+      field.tagName.toLowerCase(),
+      post.members,
+    );
+  };
   let populateMembersList = () => {
     memberList.empty();
 
@@ -69,6 +83,7 @@ jQuery(document).ready(function ($) {
     memberCountInput.val(post.member_count);
     leaderCountInput.val(post.leader_count);
     window.masonGrid.masonry('layout');
+    syncMembersField();
     document.dispatchEvent(
       new CustomEvent('dt-member-list-populated', { detail: post }),
     );
