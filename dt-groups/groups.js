@@ -13,6 +13,7 @@ jQuery(document).ready(function ($) {
   let populateMembersList = () => {
     memberList.empty();
 
+    post.members = post.members || [];
     post.members.forEach((m) => {
       if (window.lodash.find(post.leaders || [], { ID: m.ID })) {
         m.leader = true;
@@ -36,15 +37,14 @@ jQuery(document).ready(function ($) {
           ? `<i class="fi-torso small" style="color: ${window.SHAREDFUNCTIONS.escapeHTML(member.data.overall_status.color)}" title="${window.SHAREDFUNCTIONS.escapeHTML(member.data.overall_status.label)}"></i>`
           : '<i class="fi-torso small"></i>';
 
-      const milestonesHTML = member.data.milestones.reduce(
-        (htmlString, milestone) => {
-          return milestone.icon
-            ? htmlString +
-                `<img class="dt-icon" src="${window.SHAREDFUNCTIONS.escapeHTML(milestone.icon)}" alt="${window.SHAREDFUNCTIONS.escapeHTML(milestone.label)}" title="${window.SHAREDFUNCTIONS.escapeHTML(milestone.label)}">`
-            : htmlString;
-        },
-        '',
-      );
+      const milestones =
+        member.data && member.data.milestones ? member.data.milestones : [];
+      const milestonesHTML = milestones.reduce((htmlString, milestone) => {
+        return milestone.icon
+          ? htmlString +
+              `<img class="dt-icon" src="${window.SHAREDFUNCTIONS.escapeHTML(milestone.icon)}" alt="${window.SHAREDFUNCTIONS.escapeHTML(milestone.label)}" title="${window.SHAREDFUNCTIONS.escapeHTML(milestone.label)}">`
+          : htmlString;
+      }, '');
       let memberHTML = `<div class="member-row" style="" data-id="${window.SHAREDFUNCTIONS.escapeHTML(member.ID)}">
           <div style="flex-grow: 1" class="member-status">
               ${contactStatusHTML}
@@ -130,6 +130,22 @@ jQuery(document).ready(function ($) {
     if (field_key === 'members') {
       populateMembersList();
     }
+  });
+
+  /**
+   * The members tile renders the `members` connection itself, so it does not
+   * repaint when the dt-connection web component saves. ComponentService fires
+   * `dt:post:update` with the refreshed record after each save; redraw the list
+   * when that save touched members or leaders.
+   */
+  const MEMBER_LIST_FIELDS = ['members', 'leaders'];
+  document.addEventListener('dt:post:update', function (e) {
+    const { response, field } = e.detail || {};
+    if (!response || !MEMBER_LIST_FIELDS.includes(field)) {
+      return;
+    }
+    post = response;
+    populateMembersList();
   });
 
   /* end Member List */
