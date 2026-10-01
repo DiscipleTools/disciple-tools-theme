@@ -27,7 +27,7 @@ function dt_print_details_bar(
     }
 
     $picture_style = !DT_Storage_API::is_enabled() ? 'cursor: default !important;' : '';
-    $record_picture = isset( $dt_post['record_picture']['thumb'] ) ? $dt_post['record_picture']['thumb'] : null;
+    $record_picture = isset( $dt_post['record_picture']['full'] ) ? $dt_post['record_picture']['full'] : null;
     $record_thumbnail = isset( $dt_post['record_picture']['thumb'] ) ? $dt_post['record_picture']['thumb'] : null;
     $record_large_thumbnail = isset( $dt_post['record_picture']['large'] ) ? $dt_post['record_picture']['large'] : null;
 
@@ -118,6 +118,7 @@ function dt_print_details_bar(
 
                                             <img class="dt-storage-picture details-bar-picture"
                                                  src="<?php echo esc_html( $picture_thumbnail )?>"
+                                     onerror="this.onerror=null;this.src=this.dataset.picture_url;"
                                                  alt="<?php echo esc_attr_x( 'Record Picture', 'the picture of the record', 'disciple_tools' ) ?>"
                                                  style="<?php echo esc_attr( $picture_style ) ?>"
                                                 data-picture_url="<?php echo esc_html( $picture )?>"
@@ -297,6 +298,7 @@ function dt_print_details_bar(
                             if ( !empty( $picture ) ) : ?>
                                 <img class="dt-storage-picture details-bar-picture"
                                      src="<?php echo esc_html( $picture_thumbnail )?>"
+                                                 onerror="this.onerror=null;this.src=this.dataset.picture_url;"
                                      style="<?php echo esc_attr( $picture_style ) ?>"
                                      alt="<?php esc_attr_e( 'Record Picture', 'disciple_tools' ) ?>"
                                      data-picture_url="<?php echo esc_html( $picture )?>"

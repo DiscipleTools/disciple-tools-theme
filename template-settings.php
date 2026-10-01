@@ -628,7 +628,8 @@ $multiplier_fields = [
                                         <?php
                                         if ( DT_Storage_API::is_enabled() && isset( $dt_user_meta['dt_user_profile_picture'][0] ) ){
                                             $picture_url = DT_Storage_API::get_thumbnail_url( $dt_user_meta['dt_user_profile_picture'][0] );
-                                            ?><img src="<?php echo esc_attr( $picture_url ); ?>" alt="" width="100px"/><?php
+                                            $picture_full_url = DT_Storage_API::get_file_url( $dt_user_meta['dt_user_profile_picture'][0] );
+                                            ?><img src="<?php echo esc_attr( $picture_url ); ?>" data-full_url="<?php echo esc_attr( $picture_full_url ); ?>" onerror="this.onerror=null;this.src=this.dataset.full_url;" alt="" width="100px"/><?php
                                         } else {
                                             echo get_avatar( $dt_user->ID, '32', null, false, array( 'scheme' => 'https' ) );
                                         }

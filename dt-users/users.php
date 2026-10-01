@@ -1052,7 +1052,7 @@ class Disciple_Tools_Users
 
             // To avoid a build up of stale object keys, relating to the same user, reuse existing keys.
             $profile_pic_key = get_user_meta( $current_user->ID, 'dt_user_profile_picture', true );
-            $uploaded = DT_Storage_API::upload_file( 'users', dt_recursive_sanitize_array( $_FILES['user_profile_pic'] ), $profile_pic_key );
+            $uploaded = DT_Storage_API::upload_file( 'users', dt_recursive_sanitize_array( $_FILES['user_profile_pic'] ), $profile_pic_key, [ 'require_image' => true ] );
 
             // Handle WP_Error returns from DT_Storage_API::upload_file()
             if ( is_wp_error( $uploaded ) ) {

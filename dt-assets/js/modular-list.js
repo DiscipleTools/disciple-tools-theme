@@ -1129,7 +1129,9 @@
                 });
               }
             } else if (field_settings.type === 'image') {
-              values = [`<img src='${field_value.thumb}' class='list-image'>`];
+              values = [
+                `<img src='${field_value.thumb}' class='list-image' onerror="this.onerror=null;this.src='${field_value.full}';">`,
+              ];
             } else if (field_settings.type === 'file_upload') {
               const fileCount = Array.isArray(field_value)
                 ? field_value.length
@@ -1208,7 +1210,7 @@
 
       const record_img =
         record.record_picture && record.record_picture.thumb
-          ? `<img src='${record.record_picture.thumb}' class='list-image'>`
+          ? `<img src='${record.record_picture.thumb}' class='list-image' onerror="this.onerror=null;this.src='${record.record_picture.full}';">`
           : `<i class='${window.SHAREDFUNCTIONS.escapeHTML(list_settings.default_icon)} medium list-image'></i>`;
       table_rows += `<tr class="dnd-moved" data-link="${window.SHAREDFUNCTIONS.escapeHTML(record.permalink)}">
         <td class="index bulk_edit_checkbox" data-id="record_picture" data-type="image">

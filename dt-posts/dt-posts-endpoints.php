@@ -1030,7 +1030,9 @@ class Disciple_Tools_Posts_Endpoints {
             $existing_key = $is_multi_file ? '' : $meta_key_value;
 
             // Push an uploaded file to backend storage service.
-            $uploaded = DT_Storage_API::upload_file( $key_prefix, $uploaded_file, $existing_key );
+            $uploaded = DT_Storage_API::upload_file( $key_prefix, $uploaded_file, $existing_key, [
+                'require_image' => ( $field_settings[ $meta_key ]['type'] ?? '' ) === 'image',
+            ] );
 
             // Handle WP_Error returns from DT_Storage_API::upload_file()
             if ( is_wp_error( $uploaded ) ) {

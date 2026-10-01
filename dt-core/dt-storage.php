@@ -179,7 +179,26 @@ class DT_Storage_API {
             }
         }
         $safe_inline_types = [ 'image/gif', 'image/jpeg', 'image/png', 'image/webp' ];
-        $content_type = in_array( strtolower( trim( $type ) ), $safe_inline_types, true ) ? $type : 'application/octet-stream';
+
+        // With require_image, images browsers cannot display (e.g. HEIC) are converted to JPEG when the server's image editor can read them.
+        $converted_path = null;
+        $is_safe_inline_type = in_array( strtolower( trim( $type ) ), $safe_inline_types, true );
+        if ( $tmp && !$is_safe_inline_type && !empty( $args['require_image'] ) ) {
+            $converted_path = self::create_resized_image( $tmp, 'image/jpeg' );
+            if ( $converted_path ) {
+                $tmp = $converted_path;
+                $type = 'image/jpeg';
+                $is_safe_inline_type = true;
+                if ( $auto_key ) {
+                    $key = preg_replace( '/\.[^.\/]+$/', '', $key ) . '.jpg';
+                }
+            }
+        }
+        $content_type = $is_safe_inline_type ? $type : 'application/octet-stream';
+
+        if ( !empty( $args['require_image'] ) && !$is_safe_inline_type ) {
+            return new WP_Error( 'storage_unsupported_image', __( 'This image format is not supported. Please upload a JPG, PNG, GIF or WebP image.', 'disciple_tools' ) );
+        }
 
         try {
             $client->putObject([
@@ -192,37 +211,27 @@ class DT_Storage_API {
             $uploaded_thumbnail_key = null;
             $uploaded_large_thumbnail_key = null;
 
-            $is_image = in_array( strtolower( trim( $type ) ), [ 'image/gif', 'image/jpeg', 'image/png' ], true );
-            if ( $is_image ) {
-                // Small thumb
-                $thumb = self::generate_image_thumbnail( $tmp, $type, 100 );
-                if ( $thumb ) {
-                    $thumb_path = self::image_to_temp_file( $thumb, $type );
-                    if ( $thumb_path ) {
-                        $client->putObject([
-                            'Bucket' => $bucket,
-                            'Key' => self::generate_thumbnail_key_name( $key ),
-                            'Body' => fopen( $thumb_path, 'r' ),
-                            'ContentType' => $type
-                        ]);
-                        @unlink( $thumb_path );
-                        $uploaded_thumbnail_key = self::generate_thumbnail_key_name( $key );
+            if ( $is_safe_inline_type ) {
+                $thumbnails = [
+                    'small' => [ 100, self::generate_thumbnail_key_name( $key ) ],
+                    'large' => [ 1200, self::generate_large_thumbnail_key_name( $key ) ],
+                ];
+                foreach ( $thumbnails as $size => [ $width, $thumbnail_key ] ) {
+                    $thumbnail_path = self::create_resized_image( $tmp, $content_type, $width );
+                    if ( !$thumbnail_path ) {
+                        continue;
                     }
-                }
-
-                // Large thumb
-                $lthumb = self::generate_image_thumbnail( $tmp, $type, 1200 );
-                if ( $lthumb ) {
-                    $lthumb_path = self::image_to_temp_file( $lthumb, $type );
-                    if ( $lthumb_path ) {
-                        $client->putObject([
-                            'Bucket' => $bucket,
-                            'Key' => self::generate_large_thumbnail_key_name( $key ),
-                            'Body' => fopen( $lthumb_path, 'r' ),
-                            'ContentType' => $type
-                        ]);
-                        @unlink( $lthumb_path );
-                        $uploaded_large_thumbnail_key = self::generate_large_thumbnail_key_name( $key );
+                    $client->putObject([
+                        'Bucket' => $bucket,
+                        'Key' => $thumbnail_key,
+                        'Body' => fopen( $thumbnail_path, 'r' ),
+                        'ContentType' => $content_type
+                    ]);
+                    @unlink( $thumbnail_path );
+                    if ( $size === 'small' ) {
+                        $uploaded_thumbnail_key = $thumbnail_key;
+                    } else {
+                        $uploaded_large_thumbnail_key = $thumbnail_key;
                     }
                 }
             }
@@ -245,6 +254,10 @@ class DT_Storage_API {
                     'line' => $e->getLine()
                 ]
             );
+        } finally {
+            if ( $converted_path ) {
+                @unlink( $converted_path );
+            }
         }
     }
 
@@ -258,7 +271,7 @@ class DT_Storage_API {
             $resp = [ 'file_key' => $key, 'file_deleted' => true ];
 
             $ext = strtolower( pathinfo( $key, PATHINFO_EXTENSION ) );
-            if ( in_array( $ext, [ 'png', 'gif', 'jpeg', 'jpg' ], true ) ) {
+            if ( in_array( $ext, [ 'png', 'gif', 'jpeg', 'jpg', 'webp', 'heic', 'heif' ], true ) ) {
                 try {
                     $thumb = self::generate_thumbnail_key_name( $key );
                     $client->deleteObject( [ 'Bucket' => $bucket, 'Key' => $thumb ] );
@@ -277,28 +290,31 @@ class DT_Storage_API {
         }
     }
 
-    private static function image_to_temp_file( $gd_image, string $type ) {
-        $path = tempnam( sys_get_temp_dir(), 'dt_img_' );
-        if ( $path === false ) {
+    /**
+     * Writes a copy of an image to a temp file in the given format, auto-rotated per EXIF and
+     * scaled down to $max_width when wider. Returns the temp file path, or null when the server's
+     * image editor cannot read the source.
+     */
+    private static function create_resized_image( string $src, string $content_type, int $max_width = 0 ) {
+        $editor = wp_get_image_editor( $src );
+        if ( is_wp_error( $editor ) ) {
             return null;
         }
-        $ok = false;
-        switch ( strtolower( trim( $type ) ) ) {
-            case 'image/gif':
-                $ok = imagegif( $gd_image, $path );
-                break;
-            case 'image/jpeg':
-                $ok = imagejpeg( $gd_image, $path );
-                break;
-            case 'image/png':
-                $ok = imagepng( $gd_image, $path );
-                break;
-        }
-        if ( !$ok ) {
-            @unlink( $path );
+        $editor->maybe_exif_rotate();
+        $size = $editor->get_size();
+        if ( $max_width && $size['width'] > $max_width && is_wp_error( $editor->resize( $max_width, null ) ) ) {
             return null;
         }
-        return $path;
+        $base_path = tempnam( sys_get_temp_dir(), 'dt_img_' );
+        if ( $base_path === false ) {
+            return null;
+        }
+        @unlink( $base_path );
+        $saved = $editor->save( $base_path . '.' . wp_get_default_extension_for_mime_type( $content_type ), $content_type );
+        if ( is_wp_error( $saved ) || empty( $saved['path'] ) ) {
+            return null;
+        }
+        return $saved['path'];
     }
 
     private static function generate_random_string( $length = 112 ): string {
@@ -308,41 +324,6 @@ class DT_Storage_API {
             $random_string .= $keys[mt_rand( 0, count( $keys ) - 1 )];
         }
         return $random_string;
-    }
-
-    public static function generate_image_thumbnail( $src, $content_type, $desired_width ) {
-        $thumbnail = null;
-        try {
-            switch ( strtolower( trim( $content_type ) ) ) {
-                case 'image/gif':
-                    $source_image = imagecreatefromgif( $src );
-                    break;
-                case 'image/jpeg':
-                    $source_image = imagecreatefromjpeg( $src );
-                    break;
-                case 'image/png':
-                    $source_image = imagecreatefrompng( $src );
-                    break;
-                default:
-                    $source_image = null;
-                    break;
-            }
-            if ( !empty( $source_image ) ) {
-                $width = imagesx( $source_image );
-                $height = imagesy( $source_image );
-                $desired_height = floor( $height * ( $desired_width / $width ) );
-                $virtual_image = imagecreatetruecolor( $desired_width, $desired_height );
-                $black = imagecolorallocate( $virtual_image, 0, 0, 0 );
-                imagecolortransparent( $virtual_image, $black );
-                imagecopyresampled( $virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height );
-                if ( !empty( $virtual_image ) ) {
-                    $thumbnail = $virtual_image;
-                }
-            }
-        } catch ( Exception $e ) {
-            $thumbnail = null;
-        }
-        return $thumbnail;
     }
 
     public static function generate_thumbnail_key_name( $key_name ): string {
