@@ -135,7 +135,8 @@ class Disciple_Tools_Post_Type_Template {
         if ( current_user_can( 'access_' . $this->post_type ) ) {
             $tabs[$this->post_type] = [
                 'link' => site_url( "/$this->post_type/" ),
-                'label' => $this->plural,
+                //resolved at render time rather than using $this->plural, so that any custom label translation for the current user's locale is picked up
+                'label' => DT_Posts::get_label_for_post_type( $this->post_type ),
                 'icon' => '',
                 'hidden' => $this->hidden,
                 'submenu' => []
@@ -147,7 +148,7 @@ class Disciple_Tools_Post_Type_Template {
     public function dt_nav_add_post_menu( $links ){
         if ( current_user_can( 'create_' . $this->post_type ) ){
             $links[] = [
-                'label' => sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( $this->singular ) ),
+                'label' => sprintf( esc_html__( 'New %s', 'disciple_tools' ), esc_html( DT_Posts::get_label_for_post_type( $this->post_type, true ) ) ),
                 'link' => esc_url( site_url( '/' ) ) . esc_html( $this->post_type ) . '/new',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/circle-add-green.svg',
                 'hidden' => $this->hidden,
