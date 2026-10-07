@@ -472,12 +472,24 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
                     </tr>
                     <tr>
                         <td><label for="post_type_settings_singular"><b><?php echo esc_html( 'Custom Singular Label' ); ?></b></label></td>
-                        <td><input id="post_type_settings_singular" name="post_type_settings_singular" type="text" value="<?php echo esc_attr( $post_type_custom_settings['label_singular'] ?? '' ); ?>" /></td>
+                        <td>
+                            <div class="post_type_label_input_group">
+                                <input id="post_type_settings_singular" name="post_type_settings_singular" type="text" value="<?php echo esc_attr( $post_type_custom_settings['label_singular'] ?? '' ); ?>" />
+                                <?php self::post_type_label_translations_button( 'singular', $post_type_custom_settings['label_singular_translations'] ?? [] ); ?>
+                            </div>
+                        </td>
                     </tr>
+                    <?php self::post_type_label_translations_row( 'singular', $post_type_custom_settings['label_singular_translations'] ?? [] ); ?>
                     <tr>
                         <td><label for="post_type_settings_plural"><b><?php echo esc_html( 'Custom Plural Label' ); ?></b></label></td>
-                        <td><input id="post_type_settings_plural" name="post_type_settings_plural" type="text" value="<?php echo esc_attr( $post_type_custom_settings['label_plural'] ?? '' ); ?>" /></td>
+                        <td>
+                            <div class="post_type_label_input_group">
+                                <input id="post_type_settings_plural" name="post_type_settings_plural" type="text" value="<?php echo esc_attr( $post_type_custom_settings['label_plural'] ?? '' ); ?>" />
+                                <?php self::post_type_label_translations_button( 'plural', $post_type_custom_settings['label_plural_translations'] ?? [] ); ?>
+                            </div>
+                        </td>
                     </tr>
+                    <?php self::post_type_label_translations_row( 'plural', $post_type_custom_settings['label_plural_translations'] ?? [] ); ?>
                     <tr>
                         <td><label
                                 for="post_type_settings_frontend_displayed"><b><?php echo esc_html( sprintf( 'Display %s Tab in Navigation Bar', $settings['label_plural'] ?? $post_type ) ); ?></b></label>
@@ -512,6 +524,62 @@ class Disciple_Tools_Customizations_Tab extends Disciple_Tools_Abstract_Menu_Bas
             </table>
             <?php
         }
+    }
+
+    /**
+     * Button which expands the per language label inputs for a record type label.
+     *
+     * @param string $label_type singular|plural
+     * @param array $translations stored locale => label map
+     */
+    private static function post_type_label_translations_button( $label_type, $translations ){
+        ?>
+        <button type="button" class="button small expand_post_type_label_translations"
+                data-label_type="<?php echo esc_attr( $label_type ); ?>"
+                title="<?php esc_attr_e( 'Translate this label', 'disciple_tools' ); ?>">
+            <img style="height: 15px; vertical-align: middle"
+                 src="<?php echo esc_url( get_template_directory_uri() . '/dt-assets/images/languages.svg' ); ?>"
+                 alt="<?php esc_attr_e( 'Translate', 'disciple_tools' ); ?>" />
+            (<span class="post_type_label_translations_count" data-label_type="<?php echo esc_attr( $label_type ); ?>"><?php echo esc_html( count( $translations ) ); ?></span>)
+        </button>
+        <?php
+    }
+
+    /**
+     * Collapsed table row holding one label input per available language. Saved along with
+     * the rest of the record type settings by the Update button.
+     *
+     * @param string $label_type singular|plural
+     * @param array $translations stored locale => label map
+     */
+    private static function post_type_label_translations_row( $label_type, $translations ){
+        $languages = dt_get_available_languages( true );
+        ?>
+        <tr class="post_type_label_translations_row" data-label_type="<?php echo esc_attr( $label_type ); ?>" style="display: none;">
+            <td colspan="2">
+                <table class="post_type_label_translations_table">
+                    <?php foreach ( $languages as $locale => $language ) : ?>
+                        <tr>
+                            <td>
+                                <label for="post_type_label_translation-<?php echo esc_attr( $label_type . '-' . $locale ); ?>">
+                                    <?php echo esc_html( $language['flag'] ?? '' ); ?>
+                                    <?php echo esc_html( $language['native_name'] ?? $locale ); ?>
+                                </label>
+                            </td>
+                            <td>
+                                <input id="post_type_label_translation-<?php echo esc_attr( $label_type . '-' . $locale ); ?>"
+                                       class="post_type_label_translation"
+                                       type="text"
+                                       data-label_type="<?php echo esc_attr( $label_type ); ?>"
+                                       data-locale="<?php echo esc_attr( $locale ); ?>"
+                                       value="<?php echo esc_attr( $translations[$locale] ?? '' ); ?>" />
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </td>
+        </tr>
+        <?php
     }
 
     private function tile_settings_box() {

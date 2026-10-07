@@ -33,14 +33,17 @@ class DT_Posts extends Disciple_Tools_Posts {
      * @return array|WP_Error
      */
     public static function get_post_settings( string $post_type, $return_cache = true, $load_tags = false ){
-        $cached = wp_cache_get( $post_type . '_post_type_settings' );
+        //the labels in here are resolved for the current user's locale, so the cache has to be keyed by it.
+        //Without the locale, a site running a persistent object cache would serve one user's translated labels to everyone.
+        $cache_key = $post_type . '_post_type_settings_' . get_user_locale();
+        $cached = wp_cache_get( $cache_key );
         if ( $return_cache && $cached ){
             return $cached;
         }
         $settings = [];
         $settings['tiles'] = self::get_post_tiles( $post_type );
         $settings = apply_filters( 'dt_get_post_type_settings', $settings, $post_type, $return_cache, $load_tags );
-        wp_cache_set( $post_type . '_post_type_settings', $settings );
+        wp_cache_set( $cache_key, $settings );
         return $settings;
     }
 
