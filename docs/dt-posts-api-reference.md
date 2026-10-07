@@ -10,7 +10,8 @@ This documentation provides a comprehensive guide to the DT_Posts API for AI usa
 4. [Field Formats](#field-formats)
 5. [Query Examples](#query-examples)
 6. [Common Use Cases](#common-use-cases)
-7. [Error Handling](#error-handling)
+7. [Record Type Labels](#record-type-labels)
+8. [Error Handling](#error-handling)
 
 ## Overview
 
@@ -351,6 +352,34 @@ $results = DT_Posts::list_posts('contacts', [
     ]
 ]);
 ```
+
+## Record Type Labels
+
+Admins can rename a record type (Settings → Customizations → *record type* → Settings) and
+give that name a translation per language. Those custom labels are stored as plain strings,
+so they are **not** covered by the theme's `.po`/`.mo` files; the per-language value is
+substituted for the current user's locale when the label is read.
+
+Read a label through either of these and you get the right value for the viewing user:
+
+```php
+// Disciple.Tools API
+DT_Posts::get_label_for_post_type( 'contacts' );        // plural
+DT_Posts::get_label_for_post_type( 'contacts', true );  // singular
+DT_Posts::get_post_settings( 'contacts' )['label_plural'];
+
+// WordPress API - also translated, for plugins already using core functions
+get_post_type_labels( get_post_type_object( 'contacts' ) )->name;
+get_post_type_object( 'contacts' )->labels->singular_name;
+get_post_type_object( 'contacts' )->label;
+```
+
+Do **not** read `get_option( 'dt_custom_post_types' )[ $post_type ]['label_plural']`
+directly. That is the stored base label, with no translation applied — it is the right
+value only for an admin screen that edits the label itself.
+
+Note that `label_singular` and `label_plural` on the settings array are resolved per
+locale, so do not persist them or cache them under a locale-independent key.
 
 ## Error Handling
 

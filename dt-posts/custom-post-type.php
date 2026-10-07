@@ -25,6 +25,7 @@ class Disciple_Tools_Post_Type_Template {
         add_filter( 'desktop_navbar_menu_options', [ $this, 'add_navigation_links' ], 20 );
         add_filter( 'dt_nav_add_post_menu', [ $this, 'dt_nav_add_post_menu' ], 10, 1 );
         add_filter( 'dt_templates_for_urls', [ $this, 'add_template_for_url' ] );
+        add_filter( "post_type_labels_$this->post_type", [ $this, 'post_type_labels' ], 10, 1 );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings' ], 10, 4 );
         add_filter( 'dt_get_post_type_settings', [ $this, 'dt_get_post_type_settings_after' ], 1000, 4 );
         add_filter( 'dt_registered_post_types', [ $this, 'dt_registered_post_types' ], 10, 1 );
@@ -329,8 +330,10 @@ class Disciple_Tools_Post_Type_Template {
      * translation files. This lets an admin supply a label per language, the same way
      * fields, field options and tiles can be translated.
      *
-     * Skipped in wp-admin so that the settings screens keep displaying, and saving, the
-     * base labels rather than the viewing admin's translation.
+     * Deliberately not guarded with is_admin(): that would also exclude admin-ajax
+     * requests, which serve the front end. The settings screens are unaffected because
+     * the label inputs are populated from the dt_custom_post_types option directly
+     * rather than from these settings.
      *
      * @param array $settings
      * @param array $post_type_updates custom settings stored for this post type
@@ -338,9 +341,6 @@ class Disciple_Tools_Post_Type_Template {
      * @return array
      */
     public static function apply_label_translations( $settings, $post_type_updates ){
-        if ( is_admin() ){
-            return $settings;
-        }
         $user_locale = get_user_locale();
         if ( !empty( $post_type_updates['label_singular_translations'][$user_locale] ) ){
             $settings['label_singular'] = $post_type_updates['label_singular_translations'][$user_locale];
@@ -349,6 +349,42 @@ class Disciple_Tools_Post_Type_Template {
             $settings['label_plural'] = $post_type_updates['label_plural_translations'][$user_locale];
         }
         return $settings;
+    }
+
+    /**
+     * Apply the custom label translation for the current user's locale to the labels
+     * WordPress itself exposes for this post type.
+     *
+     * Plugins commonly read a record type's name through get_post_type_labels() or
+     * get_post_type_object( $post_type )->labels rather than through DT_Posts, so the
+     * translation has to reach WordPress's own labels as well. Core bakes these onto the
+     * WP_Post_Type object during registration and re-runs this filter on every direct
+     * get_post_type_labels() call, so both routes stay in step.
+     *
+     * Only the four labels the theme supplies at registration are replaced; the rest are
+     * core's defaults and are left alone.
+     *
+     * @param stdClass $labels
+     *
+     * @return stdClass
+     */
+    public function post_type_labels( $labels ){
+        $post_type_updates = get_option( 'dt_custom_post_types', [] );
+        $translated = self::apply_label_translations( [
+            'label_singular' => $this->singular,
+            'label_plural' => $this->plural,
+        ], $post_type_updates[$this->post_type] ?? [] );
+
+        if ( $translated['label_singular'] === $this->singular && $translated['label_plural'] === $this->plural ){
+            return $labels;
+        }
+
+        $labels->name = $translated['label_plural'];
+        $labels->singular_name = $translated['label_singular'];
+        $labels->menu_name = $translated['label_plural'];
+        $labels->search_items = sprintf( _x( 'Search %s', "Search 'something'", 'disciple_tools' ), $translated['label_plural'] );
+
+        return $labels;
     }
 
     public function dt_registered_post_types( $post_types ){
