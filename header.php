@@ -12,8 +12,9 @@
         if ( is_single() ) {
             $post_type_key = get_post_type();
             if ( DT_Posts::can_view( get_post_type(), GET_THE_ID() ) ){
-                $post_type_label = isset( $post_type_settings['label_plural'] ) ? $post_type_settings['label_plural'] : $post_type_key;
-                $title_string = single_post_title( '' ) . ' - ' . ucwords( $post_type_label );
+                //$post_type_settings is not populated on single records, so resolve the label from the post type directly
+                $post_type_label = DT_Posts::get_label_for_post_type( $post_type_key );
+                $title_string = single_post_title( '' ) . ' - ' . $post_type_label;
                 echo esc_html( $title_string . ' - ' .$instance_name );
             } else {
                 echo esc_html( __( 'D.T Record', 'disciple_tools' ) );

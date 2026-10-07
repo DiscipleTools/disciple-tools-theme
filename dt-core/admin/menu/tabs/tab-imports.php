@@ -122,6 +122,12 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
                                     'is_custom' => $post_type_settings['is_custom'] ?? true
                                 ];
 
+                                foreach ( [ 'label_singular_translations', 'label_plural_translations' ] as $translations_key ) {
+                                    if ( !empty( $post_type_settings[$translations_key] ) ) {
+                                        $custom_post_types[$post_type][$translations_key] = $post_type_settings[$translations_key];
+                                    }
+                                }
+
                                 $created_post_types[] = $post_type;
                             }
                         }
@@ -148,6 +154,11 @@ class Disciple_Tools_Tab_Imports extends Disciple_Tools_Abstract_Menu_Base{
 
                             $existing_custom_post_types[$post_type]['label_singular'] = $post_types_settings['values'][$post_type]['label_singular'] ?? $post_type;
                             $existing_custom_post_types[$post_type]['label_plural'] = $post_types_settings['values'][$post_type]['label_plural'] ?? $post_type;
+                            foreach ( [ 'label_singular_translations', 'label_plural_translations' ] as $translations_key ) {
+                                if ( !empty( $post_types_settings['values'][$post_type][$translations_key] ) ) {
+                                    $existing_custom_post_types[$post_type][$translations_key] = $post_types_settings['values'][$post_type][$translations_key];
+                                }
+                            }
                         }
                     }
 
