@@ -450,6 +450,22 @@ class Disciple_Tools_Admin_Settings_Endpoints {
             return new WP_Error( __FUNCTION__, 'Missing record type labels', [ 'status' => 400 ] );
         }
 
+        //set label translations
+        foreach ( [
+            'single_translations' => 'label_singular_translations',
+            'plural_translations' => 'label_plural_translations',
+        ] as $param_key => $settings_key ){
+            if ( !isset( $params[$param_key] ) ){
+                continue;
+            }
+            $translations = self::sanitize_label_translations( $params[$param_key] );
+            if ( empty( $translations ) ){
+                unset( $post_type_settings[$settings_key] );
+            } else {
+                $post_type_settings[$settings_key] = $translations;
+            }
+        }
+
         //set hidden
         $post_type_settings['hidden'] = empty( $params['displayed'] );
 
@@ -460,6 +476,31 @@ class Disciple_Tools_Admin_Settings_Endpoints {
         return [
             'updated' => true,
         ];
+    }
+
+    /**
+     * Sanitize a map of locale => record type label, discarding empty entries and
+     * any locale which is not available on this instance.
+     *
+     * @param array $translations
+     *
+     * @return array
+     */
+    private static function sanitize_label_translations( $translations ){
+        if ( !is_array( $translations ) ){
+            return [];
+        }
+        $available_languages = dt_get_available_languages( true );
+        $sanitized = [];
+        foreach ( $translations as $locale => $label ){
+            $locale = sanitize_text_field( wp_unslash( $locale ) );
+            $label = trim( sanitize_text_field( wp_unslash( $label ) ) );
+            if ( $label === '' || !isset( $available_languages[$locale] ) ){
+                continue;
+            }
+            $sanitized[$locale] = $label;
+        }
+        return $sanitized;
     }
 
     public static function delete_post_type( WP_REST_Request $request ){

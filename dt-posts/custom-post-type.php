@@ -314,7 +314,38 @@ class Disciple_Tools_Post_Type_Template {
             if ( !empty( $post_type_updates[$post_type]['label_plural'] ) ){
                 $settings['label_plural'] = $post_type_updates[$post_type]['label_plural'];
             }
+            $settings = self::apply_label_translations( $settings, $post_type_updates[$post_type] ?? [] );
             $settings['is_custom'] = $post_type_updates[$post_type]['is_custom'] ?? false;
+        }
+        return $settings;
+    }
+
+    /**
+     * Replace the record type labels with the admin supplied translations for the
+     * current user's locale, if any have been set.
+     *
+     * Custom labels are stored as plain strings and so are not covered by the theme's
+     * translation files. This lets an admin supply a label per language, the same way
+     * fields, field options and tiles can be translated.
+     *
+     * Skipped in wp-admin so that the settings screens keep displaying, and saving, the
+     * base labels rather than the viewing admin's translation.
+     *
+     * @param array $settings
+     * @param array $post_type_updates custom settings stored for this post type
+     *
+     * @return array
+     */
+    public static function apply_label_translations( $settings, $post_type_updates ){
+        if ( is_admin() ){
+            return $settings;
+        }
+        $user_locale = get_user_locale();
+        if ( !empty( $post_type_updates['label_singular_translations'][$user_locale] ) ){
+            $settings['label_singular'] = $post_type_updates['label_singular_translations'][$user_locale];
+        }
+        if ( !empty( $post_type_updates['label_plural_translations'][$user_locale] ) ){
+            $settings['label_plural'] = $post_type_updates['label_plural_translations'][$user_locale];
         }
         return $settings;
     }

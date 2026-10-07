@@ -535,3 +535,21 @@
 .hidden-icon {
     margin: 0 3px;
 }
+/* Record type label translations */
+.post_type_label_input_group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+.post_type_label_translations_row > td {
+    padding-top: 0;
+}
+.post_type_label_translations_table {
+    margin-left: 1em;
+    display: block;
+    max-height: 22em;
+    overflow-y: auto;
+}
+.post_type_label_translations_table td {
+    padding: 2px 10px 2px 0;
+}

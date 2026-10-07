@@ -52,6 +52,8 @@ jQuery(document).ready(function ($) {
     name_singular,
     name_plural,
     displayed,
+    singular_translations = {},
+    plural_translations = {},
   ) =>
     makeRequest(
       'POST',
@@ -61,6 +63,8 @@ jQuery(document).ready(function ($) {
         single: name_singular,
         plural: name_plural,
         displayed: displayed,
+        single_translations: singular_translations,
+        plural_translations: plural_translations,
       },
       `dt-admin-settings/`,
     );
@@ -2088,6 +2092,34 @@ jQuery(document).ready(function ($) {
       });
   });
 
+  // Expand/collapse the per language inputs for a record type label
+  $(document).on('click', '.expand_post_type_label_translations', function (e) {
+    e.preventDefault();
+    let label_type = $(this).data('label_type');
+    $(
+      `.post_type_label_translations_row[data-label_type="${label_type}"]`,
+    ).toggle();
+  });
+
+  /**
+   * Collect the non empty per language labels for a record type label.
+   *
+   * @param {string} label_type singular|plural
+   * @returns {object} locale => label
+   */
+  function get_post_type_label_translations(label_type) {
+    let translations = {};
+    $(`.post_type_label_translation[data-label_type="${label_type}"]`).each(
+      function () {
+        let value = $(this).val().trim();
+        if (value) {
+          translations[$(this).data('locale')] = value;
+        }
+      },
+    );
+    return translations;
+  }
+
   // Update Post Type
   $(document).on('click', '#post_type_settings_update_but', function (e) {
     e.preventDefault();
@@ -2125,7 +2157,17 @@ jQuery(document).ready(function ($) {
       button_icon.removeClass('active');
       button_icon.removeClass('loading-spinner');
     } else {
-      window.API.update_post_type(post_type, singular, plural, displayed)
+      let singular_translations = get_post_type_label_translations('singular');
+      let plural_translations = get_post_type_label_translations('plural');
+
+      window.API.update_post_type(
+        post_type,
+        singular,
+        plural,
+        displayed,
+        singular_translations,
+        plural_translations,
+      )
         .promise()
         .then(function (data) {
           button_icon.removeClass('active');
@@ -2134,6 +2176,12 @@ jQuery(document).ready(function ($) {
 
           if (data && data['updated']) {
             button_icon.addClass('mdi mdi-comment-check-outline');
+            $(
+              '.post_type_label_translations_count[data-label_type="singular"]',
+            ).html(Object.keys(singular_translations).length);
+            $(
+              '.post_type_label_translations_count[data-label_type="plural"]',
+            ).html(Object.keys(plural_translations).length);
           } else {
             button_icon.addClass('mdi mdi-comment-remove-outline');
           }
