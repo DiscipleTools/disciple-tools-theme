@@ -14,9 +14,12 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 // phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- PUC's property names.
 class Disciple_Tools_Update_Checks {
-    const QUEUED_FLAG = 'dt_update_checks_queued';
+    const STATE_KEY = 'dt_update_checks_state';
     const TOKEN_PARAM = 'dt_update_checks';
     const BATCH_SIZE = 5;
+    const QUEUE_TIMEOUT = 900;
+    const COOLDOWN = 3600;
+    const INLINE_HOOKS = [ 'admin_init', 'load-update.php', 'load-plugins.php', 'load-themes.php', 'load-update-core.php' ];
 
     private static $schedulers = null;
     private static $responses = null;
@@ -24,7 +27,8 @@ class Disciple_Tools_Update_Checks {
 
     public static function init() {
         add_action( 'admin_init', [ __CLASS__, 'defer_admin_checks' ], 0 );
-        add_action( 'load-update-core.php', [ __CLASS__, 'handle_force_check' ], 0 );
+        add_action( 'load-update-core.php', [ __CLASS__, 'start_force_check' ], 0 );
+        add_action( 'load-update-core.php', [ __CLASS__, 'stop_prefetch' ], 11 );
         if ( wp_doing_cron() ) {
             add_action( 'wp_loaded', [ __CLASS__, 'run_requested_checks' ], 100 );
             add_filter( 'pre_http_request', [ __CLASS__, 'serve_prefetched' ], 10, 3 );
@@ -33,30 +37,82 @@ class Disciple_Tools_Update_Checks {
 
     /**
      * Removes PUC's inline admin page checks and starts one background request when any check is due.
+     *
+     * Checks stay inline when the background request fails to run, and, during the cooldown after a run,
+     * for checkers it could not complete (e.g. ones a plugin only builds in admin requests).
      */
     public static function defer_admin_checks() {
-        $is_force_check = self::is_force_check();
-        $any_due = false;
-        foreach ( self::get_schedulers() as $scheduler ) {
-            foreach ( [ 'admin_init', 'load-update.php', 'load-plugins.php', 'load-themes.php' ] as $hook ) {
-                remove_action( $hook, [ $scheduler, 'maybeCheckForUpdates' ] );
+        $schedulers = self::get_schedulers();
+        $inline = [];
+
+        if ( self::is_force_check() ) {
+            foreach ( $schedulers as $scheduler ) {
+                foreach ( array_diff( self::INLINE_HOOKS, [ 'load-update-core.php' ] ) as $hook ) {
+                    remove_action( $hook, [ $scheduler, 'maybeCheckForUpdates' ] );
+                }
             }
-            if ( !$is_force_check ) {
-                remove_action( 'load-update-core.php', [ $scheduler, 'maybeCheckForUpdates' ] );
-            }
-            $any_due = $any_due || self::is_due( $scheduler );
+            return;
         }
 
-        if ( $any_due && !$is_force_check && !get_site_transient( self::QUEUED_FLAG ) ) {
-            $token = wp_generate_password( 32, false );
-            set_site_transient( self::QUEUED_FLAG, $token, 15 * MINUTE_IN_SECONDS );
-            // wp-cron.php exits on any POST body, so the one-time token goes in the query string.
-            wp_remote_get( add_query_arg( self::TOKEN_PARAM, $token, site_url( 'wp-cron.php' ) ), [
+        $due = array_filter( $schedulers, [ __CLASS__, 'is_due' ] );
+        if ( !empty( $due ) ) {
+            $state = get_site_transient( self::STATE_KEY );
+            $status = $state['status'] ?? '';
+            $age = time() - ( $state['time'] ?? 0 );
+
+            if ( $status === 'queued' && $age < self::QUEUE_TIMEOUT ) {
+                $inline = [];
+            } elseif ( $status === 'done' && $age < self::COOLDOWN ) {
+                $unhandled = $state['due'] ?? [];
+                $inline = array_filter( $due, function ( $scheduler ) use ( $unhandled ) {
+                    return in_array( self::get_slug( $scheduler ), $unhandled, true );
+                } );
+            } elseif ( $status === 'queued' ) {
+                dt_write_log( 'Disciple.Tools update checks: the background request did not run, checking inline.' );
+                self::set_state( 'done', [] );
+                $inline = $due;
+            } else {
+                $inline = self::queue_background_run( $due ) ? [] : $due;
+            }
+        }
+
+        foreach ( $schedulers as $scheduler ) {
+            if ( in_array( $scheduler, $inline, true ) ) {
+                continue;
+            }
+            foreach ( self::INLINE_HOOKS as $hook ) {
+                remove_action( $hook, [ $scheduler, 'maybeCheckForUpdates' ] );
+            }
+        }
+    }
+
+    /**
+     * @return bool False when the background request could not be sent.
+     */
+    private static function queue_background_run( $due ) {
+        $token = wp_generate_password( 32, false );
+        self::set_state( 'queued', array_map( [ __CLASS__, 'get_slug' ], array_values( $due ) ), $token );
+
+        /** This filter is documented in wp-includes/cron.php */
+        $cron_request = apply_filters( 'cron_request', [
+            'url' => site_url( 'wp-cron.php' ),
+            'key' => $token,
+            'args' => [
                 'timeout' => 0.01,
                 'blocking' => false,
+                /** This filter is documented in wp-includes/class-wp-http-streams.php */
                 'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
-            ] );
+            ],
+        ], $token );
+
+        // wp-cron.php exits on any POST body, so the one-time token goes in the query string.
+        $result = wp_remote_get( add_query_arg( self::TOKEN_PARAM, $token, $cron_request['url'] ), $cron_request['args'] );
+        if ( is_wp_error( $result ) ) {
+            dt_write_log( 'Disciple.Tools update checks: background request failed, checking inline. ' . $result->get_error_message() );
+            self::set_state( 'done', [] );
+            return false;
         }
+        return true;
     }
 
     /**
@@ -64,98 +120,148 @@ class Disciple_Tools_Update_Checks {
      */
     public static function run_requested_checks() {
         $token = sanitize_text_field( wp_unslash( $_GET[ self::TOKEN_PARAM ] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-        $queued = get_site_transient( self::QUEUED_FLAG );
-        if ( empty( $token ) || !is_string( $queued ) || !hash_equals( $queued, $token ) ) {
+        $state = get_site_transient( self::STATE_KEY );
+        if ( empty( $token ) || ( $state['status'] ?? '' ) !== 'queued' || !hash_equals( (string) ( $state['token'] ?? '' ), $token ) ) {
             return;
         }
-        self::run_due_checks();
+        foreach ( self::get_schedulers() as $scheduler ) {
+            $scheduler->maybeCheckForUpdates();
+        }
+        self::stop_prefetch();
+        self::set_state( 'done', $state['due'] ?? [] );
         exit;
     }
 
     /**
      * "Check again" on Dashboard -> Updates keeps PUC's immediate checks, served by one parallel fetch.
      */
-    public static function handle_force_check() {
+    public static function start_force_check() {
         if ( self::is_force_check() ) {
             self::$prefetch_all = true;
             add_filter( 'pre_http_request', [ __CLASS__, 'serve_prefetched' ], 10, 3 );
         }
     }
 
-    public static function run_due_checks() {
-        foreach ( self::get_schedulers() as $scheduler ) {
-            $scheduler->maybeCheckForUpdates();
-        }
-        delete_site_transient( self::QUEUED_FLAG );
+    public static function stop_prefetch() {
+        remove_filter( 'pre_http_request', [ __CLASS__, 'serve_prefetched' ], 10 );
+        self::$responses = null;
+        self::$prefetch_all = false;
     }
 
     /**
      * On the first PUC metadata request, fetches every due checker's metadata in parallel,
-     * then answers each checker's own wp_remote_get() from those responses.
+     * then answers each checker's own wp_remote_get() for the identical URL from those responses.
      */
     public static function serve_prefetched( $pre, $args, $url ) {
         if ( false !== $pre || strtoupper( $args['method'] ?? 'GET' ) !== 'GET' ) {
             return $pre;
         }
-        $key = strtok( $url, '?' );
         if ( null === self::$responses ) {
-            $checkers = self::get_metadata_checkers();
-            if ( !isset( $checkers[ $key ] ) ) {
+            $requests = self::get_metadata_requests();
+            if ( !isset( $requests[ $url ] ) ) {
                 return $pre;
             }
-            $urls = [];
-            foreach ( $checkers as $base_url => $entry ) {
-                if ( self::$prefetch_all || $base_url === $key || self::is_due( $entry['scheduler'] ) ) {
-                    $urls[ $base_url ] = add_query_arg( [
-                        'installed_version' => strval( $entry['checker']->getInstalledVersion() ),
-                        'php' => phpversion(),
-                        'locale' => get_locale(),
-                    ], $entry['checker']->metadataUrl );
-                }
-            }
-            self::$responses = self::fetch_parallel( $urls );
+            $selected = array_filter( $requests, function ( $request, $request_url ) use ( $url ) {
+                return self::$prefetch_all || $request_url === $url || self::is_due( $request['scheduler'] );
+            }, ARRAY_FILTER_USE_BOTH );
+            self::$responses = self::fetch_parallel( wp_list_pluck( $selected, 'headers' ) );
         }
-        // Several checkers can share one metadata URL, so each response serves every request for it.
-        return self::$responses[ $key ] ?? $pre;
+        return self::$responses[ $url ] ?? $pre;
     }
 
     /**
-     * @return array<string, array|WP_Error> WP HTTP API style responses keyed like $urls.
+     * The request each metadata-file checker would send, built the same way as PUC's requestMetadata(),
+     * keyed by full URL. Checkers whose request options are filtered beyond headers, and VCS-based checkers
+     * (several dependent API calls), keep their own requests.
      */
-    private static function fetch_parallel( $urls ) {
+    private static function get_metadata_requests() {
+        $requests = [];
+        foreach ( self::get_schedulers() as $scheduler ) {
+            $checker = self::read_scheduler( $scheduler, function () {
+                return $this->updateChecker;
+            } );
+            if ( empty( $checker->metadataUrl ) || stripos( get_class( $checker ), 'vcs' ) !== false ) {
+                continue;
+            }
+            $is_theme = stripos( get_class( $checker ), 'theme' ) !== false;
+            $filter_root = $is_theme ? 'request_update' : 'request_info';
+
+            $query_args = [
+                'installed_version' => strval( $checker->getInstalledVersion() ),
+                'php' => phpversion(),
+                'locale' => get_locale(),
+            ];
+            if ( !$is_theme ) {
+                $query_args['checking_for_updates'] = '1';
+            }
+            $query_args = apply_filters( $checker->getUniqueName( $filter_root . '_query_args' ), $query_args );
+
+            $options = apply_filters( $checker->getUniqueName( $filter_root . '_options' ), [
+                'timeout' => 10,
+                'headers' => [ 'Accept' => 'application/json' ],
+            ] );
+            if ( array_diff( array_keys( (array) $options ), [ 'timeout', 'headers' ] ) ) {
+                continue;
+            }
+
+            $url = empty( $query_args ) ? $checker->metadataUrl : add_query_arg( $query_args, $checker->metadataUrl );
+            $requests[ $url ] = [
+                'scheduler' => $scheduler,
+                'headers' => (array) ( $options['headers'] ?? [] ),
+            ];
+        }
+        return $requests;
+    }
+
+    /**
+     * Sends the requests outside WP_Http, so global http_request_args filters don't apply; proxied sites
+     * and installs without WpOrg\Requests get no prefetch and PUC makes its own requests.
+     *
+     * @param array<string, array> $requests Headers keyed by URL.
+     * @return array<string, array|WP_Error> WP HTTP API style responses keyed by URL.
+     */
+    private static function fetch_parallel( $requests ) {
         $responses = [];
         if ( !class_exists( '\WpOrg\Requests\Requests' ) || ( new WP_HTTP_Proxy() )->is_enabled() ) {
             return $responses;
         }
         $http = new WP_Http();
-        $urls = array_filter( $urls, function ( $url ) use ( $http ) {
-            return !$http->block_request( $url );
-        } );
         $options = [
             'timeout' => 10,
             'connect_timeout' => 10,
             'useragent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . get_bloginfo( 'url' ),
             'verify' => ABSPATH . WPINC . '/certificates/ca-bundle.crt',
         ];
-        foreach ( array_chunk( $urls, self::BATCH_SIZE, true ) as $batch ) {
-            $requests = [];
-            foreach ( $batch as $key => $url ) {
-                $requests[ $key ] = [
+        $batch = [];
+        foreach ( $requests as $url => $headers ) {
+            if ( !$http->block_request( $url ) ) {
+                $batch[ $url ] = [
                     'url' => $url,
-                    'headers' => [ 'Accept' => 'application/json' ],
+                    'headers' => $headers,
                 ];
             }
-            foreach ( \WpOrg\Requests\Requests::request_multiple( $requests, $options ) as $key => $result ) {
+        }
+        foreach ( array_chunk( $batch, self::BATCH_SIZE, true ) as $chunk ) {
+            foreach ( \WpOrg\Requests\Requests::request_multiple( $chunk, $options ) as $url => $result ) {
                 if ( $result instanceof \WpOrg\Requests\Response ) {
                     $wp_response = new WP_HTTP_Requests_Response( $result );
-                    $responses[ $key ] = $wp_response->to_array();
-                    $responses[ $key ]['http_response'] = $wp_response;
+                    $responses[ $url ] = $wp_response->to_array();
+                    $responses[ $url ]['http_response'] = $wp_response;
                 } else {
-                    $responses[ $key ] = new WP_Error( 'http_request_failed', $result->getMessage() );
+                    $responses[ $url ] = new WP_Error( 'http_request_failed', $result->getMessage() );
                 }
             }
         }
         return $responses;
+    }
+
+    private static function set_state( $status, $due, $token = '' ) {
+        set_site_transient( self::STATE_KEY, [
+            'status' => $status,
+            'time' => time(),
+            'due' => $due,
+            'token' => $token,
+        ], DAY_IN_SECONDS );
     }
 
     private static function is_force_check() {
@@ -168,43 +274,26 @@ class Disciple_Tools_Update_Checks {
      */
     private static function get_schedulers() {
         global $wp_filter;
-        if ( null !== self::$schedulers ) {
+        if ( !empty( self::$schedulers ) ) {
             return self::$schedulers;
         }
-        self::$schedulers = [];
-        if ( empty( $wp_filter['admin_init'] ) ) {
-            return self::$schedulers;
-        }
-        foreach ( $wp_filter['admin_init']->callbacks as $callbacks ) {
+        $schedulers = [];
+        foreach ( isset( $wp_filter['admin_init'] ) ? $wp_filter['admin_init']->callbacks : [] as $callbacks ) {
             foreach ( $callbacks as $callback ) {
                 $function = $callback['function'];
                 if ( is_array( $function ) && is_object( $function[0] ) && $function[1] === 'maybeCheckForUpdates' ) {
-                    self::$schedulers[] = $function[0];
+                    $schedulers[] = $function[0];
                 }
             }
         }
-        return self::$schedulers;
+        self::$schedulers = $schedulers;
+        return $schedulers;
     }
 
-    /**
-     * Checkers that fetch a single metadata file, keyed by that file's URL. VCS-based checkers
-     * make several dependent API calls and keep their own sequential requests.
-     */
-    private static function get_metadata_checkers() {
-        $checkers = [];
-        foreach ( self::get_schedulers() as $scheduler ) {
-            $checker = self::read_scheduler( $scheduler, function () {
-                return $this->updateChecker;
-            } );
-            if ( empty( $checker->metadataUrl ) || stripos( get_class( $checker ), 'vcs' ) !== false ) {
-                continue;
-            }
-            $checkers[ strtok( $checker->metadataUrl, '?' ) ] = [
-                'scheduler' => $scheduler,
-                'checker' => $checker,
-            ];
-        }
-        return $checkers;
+    private static function get_slug( $scheduler ) {
+        return self::read_scheduler( $scheduler, function () {
+            return $this->updateChecker->slug;
+        } );
     }
 
     /**
