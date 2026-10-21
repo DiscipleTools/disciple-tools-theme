@@ -2535,7 +2535,10 @@ class Disciple_Tools_Posts
             $new_meta_key = '';
             //check if this is a new field and is in the channel list
             if ( isset( $post_settings['fields'][ $field_key ] ) ) {
-                $new_meta_key = self::create_channel_metakey( $type, 'contact' );
+                // The 3 character hash can repeat, and reusing a key would overwrite an existing value.
+                do {
+                    $new_meta_key = self::create_channel_metakey( $type, 'contact' );
+                } while ( metadata_exists( 'post', $post_id, $new_meta_key ) );
             }
             update_post_meta( $post_id, $new_meta_key, $value );
             $details = [ 'verified' => false ];
