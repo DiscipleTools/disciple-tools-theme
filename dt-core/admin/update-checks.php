@@ -22,6 +22,7 @@ class Disciple_Tools_Update_Checks {
     const INLINE_HOOKS = [ 'admin_init', 'load-update.php', 'load-plugins.php', 'load-themes.php', 'load-update-core.php' ];
 
     private static $schedulers = null;
+    private static $metadata_requests = null;
     private static $responses = null;
     private static $prefetch_all = false;
 
@@ -175,6 +176,9 @@ class Disciple_Tools_Update_Checks {
      * (several dependent API calls), keep their own requests.
      */
     private static function get_metadata_requests() {
+        if ( !empty( self::$metadata_requests ) ) {
+            return self::$metadata_requests;
+        }
         $requests = [];
         foreach ( self::get_schedulers() as $scheduler ) {
             $checker = self::read_scheduler( $scheduler, function () {
@@ -210,6 +214,7 @@ class Disciple_Tools_Update_Checks {
                 'headers' => (array) ( $options['headers'] ?? [] ),
             ];
         }
+        self::$metadata_requests = $requests;
         return $requests;
     }
 
@@ -306,7 +311,8 @@ class Disciple_Tools_Update_Checks {
     }
 
     /**
-     * Mirrors PUC's own Scheduler::maybeCheckForUpdates() decision, without the check_now filter.
+     * Mirrors PUC's own Scheduler::maybeCheckForUpdates() decision, including its throttled and cron periods,
+     * without the check_now filter.
      */
     private static function is_due( $scheduler ) {
         return self::read_scheduler( $scheduler, function () {
