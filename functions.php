@@ -361,6 +361,10 @@ class Disciple_Tools
          * or those things directly supporting Admin panel features.
          */
         $disable = isset( $_POST['wppusher'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        // The Disciple.Tools Multisite plugin also loads this when the main site runs another theme.
+        if ( ( is_admin() || wp_doing_cron() ) && !$disable && !class_exists( 'Disciple_Tools_Update_Checks' ) ){
+            require_once( get_template_directory() . '/dt-core/admin/update-checks.php' );
+        }
         if ( !( is_multisite() && class_exists( 'DT_Multisite' ) ) && ( is_admin() || wp_doing_cron() ) && !$disable ){
             require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
             $theme_folder_name = basename( dirname( __FILE__ ) );
