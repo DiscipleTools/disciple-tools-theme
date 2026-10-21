@@ -68,7 +68,7 @@ class Disciple_Tools_Update_Checks {
                     return in_array( self::get_slug( $scheduler ), $unhandled, true );
                 } );
             } elseif ( $status === 'queued' ) {
-                dt_write_log( 'Disciple.Tools update checks: the background request did not run, checking inline.' );
+                self::log( 'the background request did not run, checking inline.' );
                 self::set_state( 'done', [] );
                 $inline = $due;
             } else {
@@ -108,7 +108,7 @@ class Disciple_Tools_Update_Checks {
         // wp-cron.php exits on any POST body, so the one-time token goes in the query string.
         $result = wp_remote_get( add_query_arg( self::TOKEN_PARAM, $token, $cron_request['url'] ), $cron_request['args'] );
         if ( is_wp_error( $result ) ) {
-            dt_write_log( 'Disciple.Tools update checks: background request failed, checking inline. ' . $result->get_error_message() );
+            self::log( 'background request failed, checking inline. ' . $result->get_error_message() );
             self::set_state( 'done', [] );
             return false;
         }
@@ -253,6 +253,15 @@ class Disciple_Tools_Update_Checks {
             }
         }
         return $responses;
+    }
+
+    private static function log( $message ) {
+        $message = 'Disciple.Tools update checks: ' . $message;
+        if ( function_exists( 'dt_write_log' ) ) {
+            dt_write_log( $message );
+        } elseif ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
+            error_log( $message ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+        }
     }
 
     private static function set_state( $status, $due, $token = '' ) {
