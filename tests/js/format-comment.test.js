@@ -24,9 +24,24 @@ vm.runInContext(
 );
 const { formatComment, escapeHTML } = context.window.SHAREDFUNCTIONS;
 
-test('escapes plain text and preserves literal entities without decoding them', () => {
+test('escapes raw markup without double encoding WordPress entities', () => {
   const text = `<img src=x onerror="alert(1)"> & 'quotes' &#34; &amp;`;
-  assert.equal(formatComment(text), escapeHTML(text));
+  assert.equal(
+    formatComment(text),
+    '&lt;img src=x onerror=&quot;alert(1)&quot;&gt; &amp; &apos;quotes&apos; &#34; &amp;',
+  );
+  assert.equal(
+    formatComment('Tom &amp; Jerry &amp;lt;tag&amp;gt;'),
+    'Tom &amp; Jerry &amp;lt;tag&amp;gt;',
+  );
+  assert.equal(
+    formatComment('[Tom &amp; Jerry](https://example.org/?a=1&amp;b=2)'),
+    '<a href="https://example.org/?a=1&amp;b=2">Tom &amp; Jerry</a>',
+  );
+  assert.equal(
+    formatComment('![&quot; onload=marker](https://example.org/?x=&apos;)'),
+    '<img src="https://example.org/?x=&apos;" alt="&quot; onload=marker">',
+  );
 });
 
 test('escapes image URLs and alt text at their attribute boundaries', () => {

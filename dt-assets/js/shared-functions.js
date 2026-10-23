@@ -769,7 +769,14 @@ window.SHAREDFUNCTIONS = {
    */
   formatComment(comment) {
     if (comment) {
-      const escapeHTML = window.SHAREDFUNCTIONS.escapeHTML;
+      // WordPress comments already contain HTML entities. Preserve one level
+      // of entity encoding: references stay inert in text and quoted attributes
+      // and must not become visible as e.g. "&amp;" after rendering.
+      const escapeHTML = (value) =>
+        window.SHAREDFUNCTIONS.escapeHTML(value).replace(
+          /&amp;((?:#\d+|#x[\da-f]+|[a-z][a-z\d]+);)/gi,
+          '&$1',
+        );
       const formatEmphasis = (text) =>
         text
           .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
