@@ -289,7 +289,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
         // Check if app_url parameter is present (for cross-domain custom apps)
         if ( isset( $_GET['app_url'] ) && ! empty( $_GET['app_url'] ) ) {
             $app_url = esc_url_raw( wp_unslash( $_GET['app_url'] ) );
-            error_log( 'DT Home: Using app_url parameter for cross-domain app: ' . $app_url );
             return $app_url;
         }
 
@@ -332,7 +331,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
     public function maybe_show_launcher_wrapper() {
         // Check if launcher parameter is present - if so, show wrapper page instead
         if ( $this->has_launcher_parameter() ) {
-            error_log( 'DT Home: launcher=1 detected in dt_blank_head, showing wrapper page' );
             $this->show_launcher_wrapper();
             // show_launcher_wrapper() will exit, so this won't continue
         }
@@ -343,7 +341,6 @@ class DT_Home_Magic_Link_App extends DT_Magic_Url_Base {
      */
     private function show_launcher_wrapper() {
         $target_app_url = $this->get_target_app_url();
-        error_log( 'DT Home: Showing launcher wrapper for URL: ' . $target_app_url );
 
         // Get Magic URL for the target app so we can use the parts to determine the user ID
         $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';

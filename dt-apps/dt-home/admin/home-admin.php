@@ -826,9 +826,6 @@ class DT_Home_Admin {
                 $submitted_color = sanitize_text_field( wp_unslash( $_POST['app_color'] ?? '' ) );
                 $form_original_color = sanitize_text_field( wp_unslash( $_POST['app_color_original'] ?? '' ) );
 
-                // Debug logging (remove in production)
-                error_log( 'DT Home: App color update - Submitted: ' . $submitted_color . ', Original: ' . ( $original_color ?: 'empty' ) . ', Form Original: ' . $form_original_color );
-
                 // Determine if we should update the color
                 // If original had no color (empty string) and submitted is #cccccc (placeholder), don't update
                 // Otherwise, update the color
