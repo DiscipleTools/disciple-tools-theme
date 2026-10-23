@@ -42,6 +42,7 @@
     "not IE 11"
   ],
   "scripts": {
+    "test:js": "node --test tests/js/*.test.js",
     "postinstall": "npm run build",
     "build:scripts": "vite build --config vite.config.scripts.js",
     "build": "vite build",

@@ -119,12 +119,14 @@ jQuery(function () {
       let activityDetails = '';
       let dateRegex = /\{(\d+)\}+/;
       object_notes.forEach((objectNote) => {
-        let newObjectNote = `${window.SHAREDFUNCTIONS.escapeHTML(objectNote)}`;
+        let newObjectNote = objectNote;
         if (dateRegex.test(objectNote)) {
-          newObjectNote = objectNote.replace(dateRegex, timestamptoDate);
+          newObjectNote = newObjectNote.replace(dateRegex, timestamptoDate);
         }
         if (action === 'comment') {
           newObjectNote = window.SHAREDFUNCTIONS.formatComment(newObjectNote);
+        } else {
+          newObjectNote = window.SHAREDFUNCTIONS.escapeHTML(newObjectNote);
         }
         activityDetails += `<li>${newObjectNote}</li>`;
       });
