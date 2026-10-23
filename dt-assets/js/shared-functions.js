@@ -864,6 +864,52 @@ window.SHAREDFUNCTIONS = {
         return match;
       });
 
+      // Keep the tags DT_Posts::$allowable_comment_tags lets into stored
+      // comments, rebuilt from validated attributes. Attribute values holding
+      // generated markup are rejected so it can never land inside an attribute.
+      // Closing tags are kept only for an opening tag that was kept.
+      const openTags = { a: 0, em: 0, strong: 0 };
+      comment = comment.replace(
+        /<(\/?)(a|br|em|strong)((?:\s+[a-z]+\s*=\s*(?:"[^"]*"|'[^']*'))*)\s*\/?>/gi,
+        (match, closing, tag, attributes) => {
+          tag = tag.toLowerCase();
+          if (closing) {
+            if (attributes || !openTags[tag]) {
+              return match;
+            }
+            openTags[tag]--;
+            return keepHtml(`</${tag}>`);
+          }
+          if (tag === 'br') {
+            return attributes ? match : keepHtml('<br>');
+          }
+          if (tag !== 'a') {
+            if (attributes) {
+              return match;
+            }
+            openTags[tag]++;
+            return keepHtml(`<${tag}>`);
+          }
+          let link = '<a';
+          for (const [, name, double, single] of attributes.matchAll(
+            /([a-z]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/gi,
+          )) {
+            const key = name.toLowerCase();
+            const value = double ?? single;
+            if (
+              !['href', 'title'].includes(key) ||
+              value.includes('\u0000') ||
+              (key === 'href' && !isHttpUrl(value))
+            ) {
+              return match;
+            }
+            link += ` ${key}="${escapeHTML(value)}"`;
+          }
+          openTags.a++;
+          return keepHtml(`${link}>`);
+        },
+      );
+
       // Escape all remaining text before adding the supported formatting.
       comment = formatEmphasis(escapeHTML(comment));
       //- comment or * comment or + comment becomes <strong>comment</strong> */

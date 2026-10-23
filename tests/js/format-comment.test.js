@@ -141,6 +141,47 @@ test('preserves list formatting and escapes list contents', () => {
   assert.match(formatComment('1. first\n2. second'), /^<ol><li>1\. first/);
 });
 
+test('renders the HTML tags WordPress allows in stored comments', () => {
+  assert.equal(
+    formatComment(
+      'ALERT: duplicate. <a href="https://dt.example/site/contacts/12">Jane &amp; Co</a>',
+    ),
+    'ALERT: duplicate. <a href="https://dt.example/site/contacts/12">Jane &amp; Co</a>',
+  );
+  assert.equal(
+    formatComment(
+      "Line<br>two<BR /> <STRONG>bold</STRONG> <em>it</em> <a title='O\"B' href='https://example.org/?a=1&amp;b=2'>x</a>",
+    ),
+    'Line<br>two<br> <strong>bold</strong> <em>it</em> <a title="O&quot;B" href="https://example.org/?a=1&amp;b=2">x</a>',
+  );
+});
+
+test('escapes allowed tags with unsafe or unexpected attributes', () => {
+  for (const input of [
+    '<a href="javascript:alert(1)">x</a>',
+    '<a href="//example.org">x</a>',
+    '<a href="https://example.org" onclick="alert(1)">x</a>',
+    '<strong class="x">x</strong>',
+    '<abbr>x</abbr>',
+  ]) {
+    assert.ok(
+      formatComment(input).startsWith(escapeHTML(input).slice(0, 12)),
+      input,
+    );
+  }
+});
+
+test('never places generated markup inside rebuilt tag attributes', () => {
+  const input =
+    '<a href="https://example.org" title="[x](https://b.example/ onmouseover=alert(1))">y</a>';
+  assert.ok(!formatComment(input).startsWith('<a href="https://example.org"'));
+  assert.ok(
+    !formatComment(
+      '![<a href="https://x.example/ onerror=alert(1) ">](https://example.org/i.png)',
+    ).includes('alt="<a'),
+  );
+});
+
 test('keeps input from impersonating generated markup placeholders', () => {
   assert.equal(
     formatComment('\u00000\u0000 [safe](https://example.org)'),
