@@ -8,16 +8,24 @@
 
 class JWT_Rate_Limit_Test extends WP_UnitTestCase {
 
+    private $request_uri;
+
     public function set_up() {
         parent::set_up();
         dt_jwt_throttle_dispatching_token( false );
         delete_transient( dt_jwt_throttle_key() );
+        $this->request_uri = $_SERVER['REQUEST_URI'] ?? null; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+        $_SERVER['REQUEST_URI'] = '/';
     }
 
     public function tear_down() {
         dt_jwt_throttle_dispatching_token( false );
         delete_transient( dt_jwt_throttle_key() );
-        unset( $_SERVER['REQUEST_URI'] );
+        if ( $this->request_uri === null ) {
+            unset( $_SERVER['REQUEST_URI'] );
+        } else {
+            $_SERVER['REQUEST_URI'] = $this->request_uri;
+        }
         parent::tear_down();
     }
 
