@@ -85,6 +85,9 @@ jobs:
       run: |
         npm install
 
+    - name: Test JavaScript helpers
+      run: npm run test:js
+
     - name: Test Syntax
       run: ./tests/test_for_syntax_errors.sh
 
