@@ -220,6 +220,7 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
         if ( !isset( $_POST['role_edit_nonce'] ) || !wp_verify_nonce( sanitize_key( $_POST['role_edit_nonce'] ), 'role_edit' ) ) {
             $error = new WP_Error( 401, __( 'Unauthorized', 'disciple_tools' ) );
             $this->show_error( $error );
+            return false;
         }
 
         $roles = Disciple_Tools_Roles::get_dt_roles_and_permissions( false );

@@ -237,6 +237,11 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         $this->assertNotContains( $group1['ID'], $this->map_ids( $res['posts'] ) );
         $res = DT_Posts::search_viewable_post( 'groups', [ 'member_count' => 5 ], false );
         $this->assertContains( $group1['ID'], $this->map_ids( $res['posts'] ) );
+        //bad request
+        $res = DT_Posts::search_viewable_post( 'groups', [ 'member_count' => [ 'number' => '5 OR 1=1' ] ], false );
+        $this->assertWPError( $res );
+        $res = DT_Posts::search_viewable_post( 'groups', [ 'member_count' => [ 'number' => '5', 'operator' => '> 0 OR 1=' ] ], false );
+        $this->assertWPError( $res );
         // search for posts with no values set for field x
         $res = DT_Posts::search_viewable_post( 'groups', [ 'member_count' => [] ], false );
         $this->assertContains( $empty_group['ID'], $this->map_ids( $res['posts'] ) );

@@ -13,6 +13,12 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
     public $js_object_name = 'wp_js_object'; // This object will be loaded into the metrics.js file by the wp_localize_script.
     public $permissions = [];
     public $namespace = null;
+    public $data_layer_supported_field_types = [
+        'date',
+        'key_select',
+        'multi_select',
+        'tags'
+    ];
 
     public function __construct( $base_slug, $base_title ) {
         $this->base_slug = $base_slug;
@@ -67,12 +73,21 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         if ( $has_permission ) {
             $user = wp_get_current_user();
             $post_type = $params['post_type'];
+            if ( !in_array( $post_type, DT_Posts::get_post_types(), true ) || ( ( $slug === 'personal' ) && !DT_Posts::can_access( $post_type ) ) ) {
+                return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 403 ] );
+            }
             $post_settings = DT_Posts::get_post_settings( $post_type );
+
+            if ( !in_array( $params['p2p_type'], array_column( $post_settings['fields'] ?? [], 'p2p_key' ), true ) ) {
+                return new WP_Error( __METHOD__, 'Invalid p2p_type', [ 'status' => 400 ] );
+            }
 
             // Determine scope of query focus, based on specified slug.
             $focus_id = $params['focus_id'] ?? 0;
             if ( ( $post_type === 'contacts' ) && ( $slug === 'personal' ) ) {
                 $focus_id = Disciple_Tools_Users::get_contact_for_user( $user->ID );
+            } elseif ( !empty( $focus_id ) && ( get_post_type( (int) $focus_id ) !== $post_type || ( ( $slug === 'personal' ) && !DT_Posts::can_view( $post_type, (int) $focus_id ) ) ) ) {
+                return new WP_Error( __METHOD__, 'Missing Permissions', [ 'status' => 403 ] );
             }
 
             // Ensure sourced focus_id is not a wp exception.
@@ -105,6 +120,15 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                 } else {
                     $generated_genmap['name'] = $user->display_name;
                 }
+            }
+
+            // Personal genmaps only expose node details and data layers for records shared with the user.
+            if ( ( $slug === 'personal' ) && !$can_list_all ) {
+                $generated_genmap = $this->strip_non_shared_node_details( $generated_genmap );
+                $user_contact_id = Disciple_Tools_Users::get_contact_for_user( $user->ID );
+                $query = array_filter( $query, function ( $row ) use ( $user_contact_id ) {
+                    return intval( $row['shared'] ?? 0 ) === 1 || ( (int) $row['id'] === (int) $user_contact_id );
+                } );
             }
 
             return [
@@ -180,12 +204,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                     ]
                 ],
                 'post_types' => Disciple_Tools_Core_Endpoints::get_settings()['post_types'] ?? [],
-                'data_layer_supported_field_types' => [
-                    'date',
-                    'key_select',
-                    'multi_select',
-                    'tags'
-                ],
+                'data_layer_supported_field_types' => $this->data_layer_supported_field_types,
                 'data_layers' => []
             ]
         );
@@ -401,6 +420,21 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
         return $updated_children;
     }
 
+    public function strip_non_shared_node_details( $node, $gen = 0 ): array {
+        if ( empty( $node ) ) {
+            return [];
+        }
+        if ( ( $gen > 0 ) && ( intval( $node['shared'] ?? 0 ) !== 1 ) ) {
+            $node['status'] = '';
+            $node['group_type'] = '';
+        }
+        foreach ( $node['children'] ?? [] as $key => $child ) {
+            $node['children'][ $key ] = $this->strip_non_shared_node_details( $child, $gen + 1 );
+        }
+
+        return $node;
+    }
+
     public function package_data_layer_post_fields( $query, $post_type, $post_settings, $data_layer_settings ): array {
         global $wpdb;
 
@@ -442,7 +476,7 @@ class DT_Metrics_Groups_Genmap extends DT_Metrics_Chart_Base
                 $meta_key = $postmeta['meta_key'];
                 $meta_value = $postmeta['meta_value'];
 
-                if ( !isset( $post_field_settings[ $meta_key ] ) ) {
+                if ( !isset( $post_field_settings[ $meta_key ] ) || !empty( $post_field_settings[ $meta_key ]['hidden'] ) || !in_array( $post_field_settings[ $meta_key ]['type'] ?? '', $this->data_layer_supported_field_types, true ) ) {
                     continue;
                 }
 

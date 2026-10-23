@@ -408,22 +408,20 @@ jQuery(document).ready(function ($) {
     let array = [];
 
     displayed.forEach((d) => {
+      let objectNote = d.object_note;
       let baptismDateRegex = /\{(\d+)\}+/;
-      if (baptismDateRegex.test(d.object_note)) {
+      if (baptismDateRegex.test(objectNote)) {
         if (d.field_type === 'datetime') {
-          d.object_note = d.object_note.replace(
+          objectNote = objectNote.replace(
             baptismDateRegex,
             formatTimestampToDateTime,
           );
         } else {
-          d.object_note = d.object_note.replace(
+          objectNote = objectNote.replace(
             baptismDateRegex,
             formatTimestampToDate,
           );
         }
-      }
-      if (d.object_note) {
-        d.object_note = formatComment(d.object_note);
       }
       let first = window.lodash.first(array);
       let name = d.comment_author || d.name;
@@ -436,7 +434,7 @@ jQuery(document).ready(function ($) {
           true,
         ),
         gravatar,
-        text: d.object_note || formatComment(d.comment_content),
+        text: formatComment(objectNote || d.comment_content),
         comment: !!d.comment_content,
         comment_ID: d.comment_ID,
         is_own_comment: d.user_id === commentsSettings.current_user_id,
@@ -610,17 +608,6 @@ jQuery(document).ready(function ($) {
       comment.sort_date = window
         .moment(comment.comment_date_gmt + 'Z')
         .add(5, 'seconds');
-
-      /* comment_content should be HTML. However, we want to make sure that
-       * HTML like "<div>Hello" gets transformed to "<div>Hello</div>", that
-       * is, that all tags are closed, so that the comment_content can be
-       * included in HTML without any nasty surprises. This is one way to do
-       * that. This is not sufficient for malicious input, but hopefully we
-       * can trust the contents of the database to have been sanitized
-       * thanks to wp_new_comment . */
-
-      // .DT lets strip out the tags provided from the submited comment and treat it as pure text.
-      comment.comment_content = $('<div>').text(comment.comment_content).text();
 
       if (!typesCount[comment.comment_type]) {
         typesCount[comment.comment_type] = 0;

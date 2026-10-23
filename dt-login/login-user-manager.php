@@ -10,6 +10,7 @@ class DT_Login_User_Manager {
     private $firebase_auth;
     private $uid;
     private $email;
+    private $email_verified;
     private $name;
     private $identities;
     private $sign_in_provider;
@@ -20,6 +21,7 @@ class DT_Login_User_Manager {
         $this->firebase_auth = $firebase_auth;
         $this->uid = $this->firebase_auth['user_id'];
         $this->email = $this->firebase_auth['email'] ?? null;
+        $this->email_verified = true === ( $this->firebase_auth['email_verified'] ?? false );
         $this->name = $this->firebase_auth['name'];
         $this->identities = (array) $this->firebase_auth['firebase']->identities;
         $this->sign_in_provider = $this->firebase_auth['firebase']->sign_in_provider;
@@ -28,7 +30,7 @@ class DT_Login_User_Manager {
 
     public function authorize_url( $authorized ){
 
-        if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), static::DEFAULT_AUTH_SERVICE_ENDPOINT ) !== false ) {
+        if ( strpos( 'wp-json' . dt_get_rest_route(), static::DEFAULT_AUTH_SERVICE_ENDPOINT ) === 0 ) {
             $authorized = true;
         }
 
@@ -64,10 +66,24 @@ class DT_Login_User_Manager {
         return $response;
     }
 
+    /**
+     * Find the user bound to this firebase uid, falling back to an account with the same email only when
+     * firebase has verified the email, so an unverified email cannot be used to sign in to someone else's account.
+     * @return WP_User|false
+     */
     private function get_user(){
-        $user = get_user_by( 'email', $this->email );
-        if ( empty( $user ) ) {
-            $user = get_user_by( 'login', $this->uid );
+        $users = get_users( [
+            'blog_id' => 0,
+            'meta_key' => 'firebase_uid',
+            'meta_value' => $this->uid,
+            'number' => 1,
+        ] );
+        if ( !empty( $users ) ) {
+            return $users[0];
+        }
+        $user = get_user_by( 'login', $this->uid );
+        if ( empty( $user ) && $this->email_verified && !empty( $this->email ) ) {
+            $user = get_user_by( 'email', $this->email );
         }
         return $user;
     }
@@ -90,6 +106,12 @@ class DT_Login_User_Manager {
         ];
 
         $user_id = wp_insert_user( $userdata );
+        if ( is_wp_error( $user_id ) ) {
+            if ( 'existing_user_email' === $user_id->get_error_code() ) {
+                throw new Exception( esc_html__( 'An account with this email already exists. Verify your email address, then sign in again.', 'disciple_tools' ), 999 );
+            }
+            throw new Exception( esc_html( $user_id->get_error_message() ), 999 );
+        }
 
         $this->add_user_to_blog_if_needed( $user_id, $user_role ); // add user to site.
 
@@ -223,13 +245,9 @@ class DT_Login_User_Manager {
      * @param WP_User $user
      * @param string $user_identifier
      * @param string $password
-     * @return bool|WP_User a WP_User object if the username matched an existing user, or false if it didn't
+     * @return bool|WP_User the WP_User resolved from the verified firebase token, or false if there is none
      */
     public function allow_programmatic_login( $user, $user_identifier, $password ) {
-        $user = get_user_by( 'email', $user_identifier );
-        if ( empty( $user ) ) {
-            $user = get_user_by( 'login', $user_identifier );
-        }
-        return $user;
+        return $this->get_user();
     }
 }

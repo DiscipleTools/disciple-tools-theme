@@ -93,20 +93,31 @@ function dt_jwt_throttle_too_many_error() {
 }
 
 /**
- * Whether the current request targets the JWT token-mint endpoint (not /validate).
+ * Whether the request targets the JWT token-mint endpoint (not /validate).
  *
  * @param WP_REST_Request|null $request
  * @return bool
  */
-function dt_is_jwt_token_request( $request = null ) {
+function dt_is_jwt_token_request( $request ) {
     // WordPress dispatches REST routes case-insensitively, so match the route
     // the same way; a case-varied path (e.g. /JWT-Auth/v1/Token) still reaches
     // the real token handler and must not slip past the throttle.
-    if ( $request instanceof WP_REST_Request ) {
-        return strtolower( $request->get_route() ) === '/jwt-auth/v1/token';
+    return $request instanceof WP_REST_Request && strtolower( $request->get_route() ) === '/jwt-auth/v1/token';
+}
+
+/**
+ * Whether a token-mint request is being dispatched in this PHP request. Set from
+ * the dispatched route so failure counting does not depend on parsing REQUEST_URI.
+ *
+ * @param bool|null $set Pass a bool to update the flag.
+ * @return bool
+ */
+function dt_jwt_throttle_dispatching_token( $set = null ) {
+    static $dispatching = false;
+    if ( $set !== null ) {
+        $dispatching = (bool) $set;
     }
-    $path = isset( $_SERVER['REQUEST_URI'] ) ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) : '';
-    return strpos( $path, 'jwt-auth/v1/token' ) !== false && strpos( $path, 'token/validate' ) === false;
+    return $dispatching;
 }
 
 /**
@@ -120,6 +131,7 @@ function dt_jwt_throttle_block( $result, $server, $request ) {
     if ( !apply_filters( 'dt_enable_jwt_login_throttle', true ) || !dt_is_jwt_token_request( $request ) ) {
         return $result;
     }
+    dt_jwt_throttle_dispatching_token( true );
     $max = (int) apply_filters( 'dt_jwt_login_throttle_max_attempts', 10 );
     if ( (int) get_transient( dt_jwt_throttle_key() ) >= $max ) {
         return dt_jwt_throttle_too_many_error();
@@ -140,7 +152,7 @@ add_filter( 'rest_pre_dispatch', 'dt_jwt_throttle_block', 10, 3 );
  * @param string $username Username or email the failed attempt targeted.
  */
 function dt_jwt_throttle_record_failure( $username = '' ) {
-    if ( !apply_filters( 'dt_enable_jwt_login_throttle', true ) || !dt_is_jwt_token_request() ) {
+    if ( !apply_filters( 'dt_enable_jwt_login_throttle', true ) || !dt_jwt_throttle_dispatching_token() ) {
         return;
     }
     $window = (int) apply_filters( 'dt_jwt_login_throttle_window', 15 * MINUTE_IN_SECONDS );

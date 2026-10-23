@@ -43,7 +43,9 @@ class DT_Login_Endpoints {
 
     public function authorize_url( $authorized ){
 
-        if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), $this->root . '/v' . $this->version . '/'.$this->type ) !== false ) {
+        $base = '/' . $this->root . '/v' . $this->version . '/' . $this->type;
+        $route = dt_get_rest_route();
+        if ( $route === $base || strpos( $route, $base . '/' ) === 0 ) {
             $authorized = true;
         }
 
@@ -70,16 +72,6 @@ class DT_Login_Endpoints {
         if ( !isset( $payload['name'] ) ) {
             $payload['name'] = $body->user->displayName;
         }
-
-        if ( empty( $payload['email'] ) && isset( $body->user->email ) ) {
-            $payload['email'] = $body->user->email;
-        }
-
-        //phpcs:disable
-        if ( empty( $payload['email'] ) && isset( $body->additionalUserInfo->profile->email ) ){
-            $payload['email'] = $body->additionalUserInfo->profile->email;
-        }
-        //phpcs:enable
 
         $user_manager = new DT_Login_User_Manager( $payload );
 

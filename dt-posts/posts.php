@@ -1144,17 +1144,23 @@ class Disciple_Tools_Posts
                              * number
                              */
                             $equality = '=';
-                            $value = is_numeric( $query_value ) ? esc_sql( $query_value ) : [];
+                            $value = is_numeric( $query_value ) ? $query_value : [];
                             if ( isset( $query_value['operator'] ) ) {
-                                $equality = esc_sql( $query_value['operator'] );
+                                $equality = $query_value['operator'];
                             }
                             if ( isset( $query_value['number'] ) ){
                                 $value = $query_value['number'];
                             }
+                            if ( !in_array( $equality, [ '=', '!=', '<', '<=', '>', '>=' ], true ) ){
+                                return new WP_Error( __FUNCTION__, "invalid operator for $query_key", [ 'status' => 400 ] );
+                            }
                             if ( empty( $value ) && $value !== 0 ){
                                 $where_sql .= " $table_key.meta_value IS NULL";
                             } else {
-                                $where_sql .= " $table_key.meta_value $equality " . esc_sql( $value );
+                                if ( !is_numeric( $value ) ){
+                                    return new WP_Error( __FUNCTION__, "$query_key must be a number", [ 'status' => 400 ] );
+                                }
+                                $where_sql .= " $table_key.meta_value $equality " . $wpdb->prepare( '%f', $value );
                             }
                         } else {
                             return new WP_Error( __FUNCTION__, "you can not filter $field_type fields", [ 'status' => 400 ] );
@@ -1225,13 +1231,12 @@ class Disciple_Tools_Posts
         }
         $offset = 0;
         if ( isset( $query['offset'] ) ){
-            $offset = esc_sql( sanitize_text_field( $query['offset'] ) );
+            $offset = absint( $query['offset'] );
             unset( $query['offset'] );
         }
         $limit = 100;
         if ( isset( $query['limit'] ) ){
-            $limit = esc_sql( sanitize_text_field( $query['limit'] ) );
-            $limit = MIN( $limit, 1000 );
+            $limit = MIN( absint( $query['limit'] ), 1000 );
             unset( $query['limit'] );
         }
         $sort = '';
@@ -1461,10 +1466,11 @@ class Disciple_Tools_Posts
         }
 
         // If detected, ensure to also query by map bound lat/lng coordinates.
-        $has_map_bounds = isset( $map_bounds['ne'], $map_bounds['ne']['lat'], $map_bounds['ne']['lng'], $map_bounds['sw'], $map_bounds['sw']['lat'], $map_bounds['sw']['lng'] );
+        $has_map_bounds = isset( $map_bounds['ne'], $map_bounds['ne']['lat'], $map_bounds['ne']['lng'], $map_bounds['sw'], $map_bounds['sw']['lat'], $map_bounds['sw']['lng'] )
+            && is_numeric( $map_bounds['ne']['lat'] ) && is_numeric( $map_bounds['ne']['lng'] ) && is_numeric( $map_bounds['sw']['lat'] ) && is_numeric( $map_bounds['sw']['lng'] );
         if ( $has_map_bounds ) {
             $joins .= " LEFT JOIN $wpdb->dt_location_grid_meta as location_grid_meta ON ( location_grid_meta.post_id = p.ID )";
-            $post_query .= ' AND ( (location_grid_meta.lng >= '. esc_sql( $map_bounds['sw']['lng'] ) .' AND location_grid_meta.lng <= '. esc_sql( $map_bounds['ne']['lng'] ) .') AND (location_grid_meta.lat >= '. esc_sql( $map_bounds['sw']['lat'] ) .' AND location_grid_meta.lat <= '. esc_sql( $map_bounds['ne']['lat'] ) .') )';
+            $post_query .= $wpdb->prepare( ' AND ( (location_grid_meta.lng >= %f AND location_grid_meta.lng <= %f) AND (location_grid_meta.lat >= %f AND location_grid_meta.lat <= %f) )', $map_bounds['sw']['lng'], $map_bounds['ne']['lng'], $map_bounds['sw']['lat'], $map_bounds['ne']['lat'] );
         }
 
         // phpcs:disable

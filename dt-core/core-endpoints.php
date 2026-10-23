@@ -101,32 +101,44 @@ class Disciple_Tools_Core_Endpoints {
             return new WP_Error( 'activity_param_error', 'Please provide a valid array', [ 'status' => 400 ] );
         }
 
+        if ( !is_user_logged_in() ) {
+            return new WP_Error( __FUNCTION__, 'You must be logged in', [ 'status' => 401 ] );
+        }
+
         // Validate user isn't trying to log activity for a different user
         $user = wp_get_current_user();
         if ( isset( $params['user_id'] ) && $params['user_id'] != $user->ID ) {
             return new WP_Error( 'activity_param_error', 'Cannot log activity for another user', [ 'status' => 400 ] );
         }
 
+        $allowed_fields = [ 'action', 'object_type', 'object_subtype', 'object_name', 'object_id', 'object_note', 'meta_key', 'meta_value', 'old_value', 'field_type' ];
+        $activity = array_intersect_key( $params, array_flip( $allowed_fields ) );
+        $activity['user_id'] = $user->ID;
+
         // If logging for a post, validate user has permission
-        if ( isset( $params['object_type'] ) && !empty( $params['object_type'] ) ) {
-            $type = $params['object_type'];
-            $post_types = DT_Posts::get_post_types();
-            if ( array_search( $type, $post_types ) !== false ) {
-                $post_id = isset( $params['object_id'] ) ? $params['object_id'] : null;
-
-                if ( !empty( $post_id ) ) {
-                    $has_permission = DT_Posts::can_update( $type, $post_id );
-                } else {
-                    $has_permission = DT_Posts::can_access( $type );
-                }
-
-                if ( !$has_permission ) {
-                    return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
-                }
+        if ( !empty( $activity['object_type'] ) ) {
+            $type = is_string( $activity['object_type'] ) ? strtolower( trim( $activity['object_type'] ) ) : '';
+            if ( !in_array( $type, DT_Posts::get_post_types(), true ) ) {
+                return new WP_Error( 'activity_param_error', 'Invalid object_type', [ 'status' => 400 ] );
             }
+            $activity['object_type'] = $type;
+            $post_id = isset( $activity['object_id'] ) ? (int) $activity['object_id'] : 0;
+
+            if ( !empty( $post_id ) ) {
+                $has_permission = DT_Posts::can_update( $type, $post_id );
+            } else {
+                $has_permission = DT_Posts::can_access( $type );
+            }
+
+            if ( !$has_permission ) {
+                return new WP_Error( __FUNCTION__, 'You do not have permission for this', [ 'status' => 403 ] );
+            }
+            $activity['object_id'] = $post_id;
+        } else {
+            unset( $activity['object_id'] );
         }
 
-        dt_activity_insert( $params );
+        dt_activity_insert( $activity );
         return [
             'logged' => true
         ];

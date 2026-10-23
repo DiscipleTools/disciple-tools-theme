@@ -769,19 +769,76 @@ window.SHAREDFUNCTIONS = {
    */
   formatComment(comment) {
     if (comment) {
-      //![image](imageUrl) becomes <img alt="image" src="imageUrl"> */
+      // WordPress comments already contain HTML entities. Preserve one level
+      // of entity encoding: references stay inert in text and quoted attributes
+      // and must not become visible as e.g. "&amp;" after rendering.
+      const escapeHTML = (value) =>
+        window.SHAREDFUNCTIONS.escapeHTML(value).replace(
+          /&amp;((?:#\d+|#x[\da-f]+|[a-z][a-z\d]+);)/gi,
+          '&$1',
+        );
+      const formatEmphasis = (text) =>
+        text
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/__(.*?)__/g, '<strong>$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em>$1</em>');
+      const isHttpUrl = (url) => {
+        try {
+          return (
+            /^https?:\/\//i.test(url) &&
+            ['http:', 'https:'].includes(new URL(url).protocol)
+          );
+        } catch (error) {
+          return false;
+        }
+      };
+
+      // Keep generated HTML out of subsequent markdown replacements. Remove
+      // input NULs so a comment cannot impersonate one of these placeholders.
+      const html = [];
+      const keepHtml = (value) => `\u0000${html.push(value) - 1}\u0000`;
+      comment = comment.split('\u0000').join('');
+
+      // Parse image, mention, and link markdown together so generated markup
+      // can never become part of another markdown capture group.
       comment = comment.replace(
-        /!\[(.*?)\]\((.*?)\)/g,
-        "<img src='$2' alt='$1'>",
+        /([!@]?)\[(.*?)\]\((.*?)\)/g,
+        (match, type, text, url) => {
+          if (type === '!') {
+            return keepHtml(
+              isHttpUrl(url)
+                ? `<img src="${escapeHTML(url)}" alt="${escapeHTML(text)}">`
+                : escapeHTML(match),
+            );
+          }
+          if (!url) {
+            return keepHtml(escapeHTML(match));
+          }
+          if (type === '@') {
+            // Keep the @ beside the name for both LTR and RTL mentions.
+            return keepHtml(
+              `<a dir="auto">@${formatEmphasis(escapeHTML(text))}</a>`,
+            );
+          }
+          if (isHttpUrl(text) && !isHttpUrl(url)) {
+            [url, text] = [text, url];
+          }
+          if (!isHttpUrl(url)) {
+            // Preserve record-relative links, but never accept other schemes or
+            // protocol-relative URLs, including ones containing "http" later on.
+            if (/^[a-z][a-z\d+.-]*:|^[/\\]{2}/i.test(url.trim())) {
+              return keepHtml(escapeHTML(match));
+            }
+            url = `${window.wpApiShare.site_url}/${window.wpApiShare.post_type}/${url}`;
+          }
+          return keepHtml(
+            isHttpUrl(url)
+              ? `<a href="${escapeHTML(url)}">${formatEmphasis(escapeHTML(text))}</a>`
+              : escapeHTML(match),
+          );
+        },
       );
-      let mentionRegex = /\@\[(.*?)\]\((.+?)\)/g;
-      comment = comment.replace(mentionRegex, (match, text, id) => {
-        /* dir=auto means that @ will be put to the left of the name if the
-         * mentioned name is LTR, and to the right if the mentioned name is
-         * RTL, instead of letting the surrounding dir determine the placement
-         * of @ */
-        return `<a dir="auto">@${text}</a>`;
-      });
+
       let urlRegex =
         /((href=('|"))|(\[|\()?|(http(s)?:((\/)|(\\))*.))*(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//\\=]*)/g;
 
@@ -798,31 +855,63 @@ window.SHAREDFUNCTIONS = {
           } else if (match.indexOf('http') === -1) {
             url = 'http://' + match;
           }
-          if (comment.includes('<img')) {
-            //do nothing
-          } else {
-            return `<a href="${url}" rel="noopener noreferrer" target="_blank">${match}</a>`;
-          }
+          return keepHtml(
+            isHttpUrl(url)
+              ? `<a href="${escapeHTML(url)}" rel="noopener noreferrer" target="_blank">${escapeHTML(match)}</a>`
+              : escapeHTML(match),
+          );
         }
         return match;
       });
-      let linkRegex = /\[(.*?)\]\((.+?)\)/g; //format [text](link)
-      comment = comment.replace(linkRegex, (match, text, url) => {
-        if (text.includes('http') && !url.includes('http')) {
-          [url, text] = [text, url];
-        }
-        url = url.includes('http')
-          ? url
-          : `${window.wpApiShare.site_url}/${window.wpApiShare.post_type}/${url}`;
-        return `<a href="${url}">${text}</a>`;
-      });
 
-      //**comment** becomes <strong>comment</strong> */
-      comment = comment.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      //__comment__ becomes <strong>comment</strong> */
-      comment = comment.replace(/\_\_(.*?)\_\_/g, '<strong>$1</strong>');
-      //*comment* becomes <em>comment</em> */
-      comment = comment.replace(/\*(.*?)\*/g, '<em>$1</em>');
+      // Keep the tags DT_Posts::$allowable_comment_tags lets into stored
+      // comments, rebuilt from validated attributes. Attribute values holding
+      // generated markup are rejected so it can never land inside an attribute.
+      // Closing tags are kept only for an opening tag that was kept.
+      const openTags = { a: 0, em: 0, strong: 0 };
+      comment = comment.replace(
+        /<(\/?)(a|br|em|strong)((?:\s+[a-z]+\s*=\s*(?:"[^"]*"|'[^']*'))*)\s*\/?>/gi,
+        (match, closing, tag, attributes) => {
+          tag = tag.toLowerCase();
+          if (closing) {
+            if (attributes || !openTags[tag]) {
+              return match;
+            }
+            openTags[tag]--;
+            return keepHtml(`</${tag}>`);
+          }
+          if (tag === 'br') {
+            return attributes ? match : keepHtml('<br>');
+          }
+          if (tag !== 'a') {
+            if (attributes) {
+              return match;
+            }
+            openTags[tag]++;
+            return keepHtml(`<${tag}>`);
+          }
+          let link = '<a';
+          for (const [, name, double, single] of attributes.matchAll(
+            /([a-z]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/gi,
+          )) {
+            const key = name.toLowerCase();
+            const value = double ?? single;
+            if (
+              !['href', 'title'].includes(key) ||
+              value.includes('\u0000') ||
+              (key === 'href' && !isHttpUrl(value))
+            ) {
+              return match;
+            }
+            link += ` ${key}="${escapeHTML(value)}"`;
+          }
+          openTags.a++;
+          return keepHtml(`${link}>`);
+        },
+      );
+
+      // Escape all remaining text before adding the supported formatting.
+      comment = formatEmphasis(escapeHTML(comment));
       //- comment or * comment or + comment becomes <strong>comment</strong> */
       comment = comment.replace(/^\s*[*+-]\s+(.*)$/gm, '<li>$1</li>');
       // also, #. becomes a numbered list
@@ -867,7 +956,10 @@ window.SHAREDFUNCTIONS = {
       }
 
       //return modified comment
-      return comment;
+      return comment
+        .split('\u0000')
+        .map((part, index) => (index % 2 ? html[part] : part))
+        .join('');
     }
 
     return comment;

@@ -322,7 +322,18 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
                     if ( ! isset( $types[$elements['type']]['meta_key'] ) ) {
                         return false;
                     }
-                    $elements['meta_key'] = $params['parts']['meta_key'];
+                    // Only the type's registered meta_key, or its instance-specific variant, may resolve the public_key.
+                    $registered_meta_key = $types[$elements['type']]['meta_key'];
+                    $body_meta_key = $params['parts']['meta_key'] ?? '';
+                    $body_instance_id = sanitize_key( $params['parts']['instance_id'] ?? '' );
+                    if ( $body_meta_key === $registered_meta_key ) {
+                        $elements['meta_key'] = $registered_meta_key;
+                    } elseif ( ! empty( $body_instance_id ) && $body_meta_key === $registered_meta_key . '_' . $body_instance_id ) {
+                        $elements['meta_key'] = $body_meta_key;
+                        $elements['instance_id'] = $body_instance_id;
+                    } else {
+                        return false;
+                    }
 
                     if ( 'user' === $types[$elements['type']]['post_type'] ) {
                         // if user

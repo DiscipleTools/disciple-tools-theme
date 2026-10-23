@@ -80,6 +80,28 @@ add_filter( 'rest_endpoints', function( $endpoints ){
     return $endpoints;
 });
 /**
+ * Whether the dispatched route is under the /dt-public/ namespace, or the first registered route pattern
+ * it matches (the one WordPress dispatches to) contains /dt-public/, e.g. /my-plugin/v1/dt-public/webhook
+ *
+ * @param string $route
+ * @return bool
+ */
+function dt_is_public_rest_route( $route ) {
+    if ( strpos( $route, '/dt-public/' ) === 0 ) {
+        return true;
+    }
+    if ( strpos( $route, '/dt-public/' ) === false ) {
+        return false;
+    }
+    foreach ( array_keys( rest_get_server()->get_routes() ) as $pattern ) {
+        if ( preg_match( '@^' . $pattern . '$@i', $route ) ) {
+            return strpos( $pattern, '/dt-public/' ) !== false;
+        }
+    }
+    return false;
+}
+
+/**
  * Returning an authentication error if a user who is not logged in tries to query tries to query a REST API endpoint that is not public
  *
  * @param  $access
@@ -92,13 +114,14 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
     /**
      * External integrations to a Disciple.Tools site can be done through the /dt-public/ route, which is left open to non-logged in external access
      */
-    if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/dt-public/' ) !== false ) {
+    $route = dt_get_rest_route();
+    if ( dt_is_public_rest_route( $route ) ) {
         $authorized = true;
     }
     /**
      * JWT token authentication is also open on the Disciple.Tools use of WP REST API
      */
-    $path = dt_get_url_path();
+    $path = 'wp-json' . $route;
     if ( $path == 'wp-json/jwt-auth/v1/token' || $path == 'wp-json/jwt-auth/v1/token/validate' ) {
         $authorized = true;
     }
