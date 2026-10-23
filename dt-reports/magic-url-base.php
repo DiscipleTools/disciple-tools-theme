@@ -338,7 +338,9 @@ abstract class DT_Magic_Url_Base {
      * @return bool
      */
     public function authorize_url( $authorized ){
-        if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), $this->root . '/v1/'.$this->type ) !== false ) {
+        $base = '/' . $this->root . '/v1/' . $this->type;
+        $route = dt_get_rest_route();
+        if ( $route === $base || strpos( $route, $base . '/' ) === 0 ) {
             $authorized = true;
         }
         return $authorized;

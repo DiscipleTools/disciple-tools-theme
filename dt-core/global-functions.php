@@ -143,6 +143,18 @@ if ( ! defined( 'DT_FUNCTIONS_READY' ) ){
         }
     }
 
+    if ( ! function_exists( 'dt_get_rest_route' ) ) {
+        /**
+         * The REST route WordPress dispatches for the current request, e.g. /dt-posts/v2/contacts
+         * Read from the parsed rest_route query var so a rest_route GET/POST override is accounted for.
+         * @return string empty when the request is not a REST request
+         */
+        function dt_get_rest_route() {
+            $route = $GLOBALS['wp']->query_vars['rest_route'] ?? '';
+            return is_string( $route ) ? untrailingslashit( $route ) : '';
+        }
+    }
+
     /**
      * The path of the url excluding the subfolder if wp is installed in a subfolder.
      * https://example.com/sub/contacts/3/?param=true

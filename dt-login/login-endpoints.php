@@ -43,7 +43,9 @@ class DT_Login_Endpoints {
 
     public function authorize_url( $authorized ){
 
-        if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), $this->root . '/v' . $this->version . '/'.$this->type ) !== false ) {
+        $base = '/' . $this->root . '/v' . $this->version . '/' . $this->type;
+        $route = dt_get_rest_route();
+        if ( $route === $base || strpos( $route, $base . '/' ) === 0 ) {
             $authorized = true;
         }
 

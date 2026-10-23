@@ -92,13 +92,14 @@ function dt_dra_only_allow_logged_in_rest_access( $access ) {
     /**
      * External integrations to a Disciple.Tools site can be done through the /dt-public/ route, which is left open to non-logged in external access
      */
-    if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), '/dt-public/' ) !== false ) {
+    $route = dt_get_rest_route();
+    if ( strpos( $route, '/dt-public/' ) === 0 ) {
         $authorized = true;
     }
     /**
      * JWT token authentication is also open on the Disciple.Tools use of WP REST API
      */
-    $path = dt_get_url_path();
+    $path = 'wp-json' . $route;
     if ( $path == 'wp-json/jwt-auth/v1/token' || $path == 'wp-json/jwt-auth/v1/token/validate' ) {
         $authorized = true;
     }

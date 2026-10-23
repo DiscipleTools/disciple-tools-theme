@@ -30,7 +30,7 @@ class DT_Login_User_Manager {
 
     public function authorize_url( $authorized ){
 
-        if ( isset( $_SERVER['REQUEST_URI'] ) && strpos( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), static::DEFAULT_AUTH_SERVICE_ENDPOINT ) !== false ) {
+        if ( strpos( 'wp-json' . dt_get_rest_route(), static::DEFAULT_AUTH_SERVICE_ENDPOINT ) === 0 ) {
             $authorized = true;
         }
 
