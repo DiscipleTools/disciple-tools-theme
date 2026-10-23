@@ -152,7 +152,14 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
             return;
         }
 
-        if ( !isset( $_GET['confirm'] ) ) {
+        if ( !isset( $_POST['role_delete_nonce'] ) ) {
+            $this->view_delete();
+            return;
+        }
+
+        $slug = sanitize_text_field( wp_unslash( $_GET['role'] ) );
+        if ( !wp_verify_nonce( sanitize_key( $_POST['role_delete_nonce'] ), 'role_delete_' . $slug ) ) {
+            $this->show_error( new WP_Error( 401, __( 'Unauthorized', 'disciple_tools' ) ) );
             $this->view_delete();
             return;
         }
@@ -842,12 +849,17 @@ class Disciple_Tools_Tab_Custom_Roles extends Disciple_Tools_Abstract_Menu_Base 
             >
                 <?php esc_html_e( 'Cancel', 'disciple_tools' ); ?>
             </a>
-            <a href="<?php echo esc_url( $this->url_base . '&' . http_build_query( [ 'action' => 'delete', 'role' => $key, 'confirm' => true ] ) ) ?>"
-               class="button button-primary button-large"
-               title=" <?php esc_html_e( 'Delete Role', 'disciple_tools' ); ?>"
-            >
-                <?php esc_html_e( 'Delete Role', 'disciple_tools' ); ?>
-            </a>
+            <form method="post"
+                  action="<?php echo esc_url( $this->url_base . '&' . http_build_query( [ 'action' => 'delete', 'role' => $key ] ) ) ?>"
+                  style="display: inline;">
+                <?php wp_nonce_field( 'role_delete_' . $key, 'role_delete_nonce', false ); ?>
+                <button type="submit"
+                        class="button button-primary button-large"
+                        title=" <?php esc_html_e( 'Delete Role', 'disciple_tools' ); ?>"
+                >
+                    <?php esc_html_e( 'Delete Role', 'disciple_tools' ); ?>
+                </button>
+            </form>
         </div>
 
         <?php
