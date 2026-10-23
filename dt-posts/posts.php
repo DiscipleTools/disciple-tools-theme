@@ -1144,17 +1144,23 @@ class Disciple_Tools_Posts
                              * number
                              */
                             $equality = '=';
-                            $value = is_numeric( $query_value ) ? esc_sql( $query_value ) : [];
+                            $value = is_numeric( $query_value ) ? $query_value : [];
                             if ( isset( $query_value['operator'] ) ) {
-                                $equality = esc_sql( $query_value['operator'] );
+                                $equality = $query_value['operator'];
                             }
                             if ( isset( $query_value['number'] ) ){
                                 $value = $query_value['number'];
                             }
+                            if ( !in_array( $equality, [ '=', '!=', '<', '<=', '>', '>=' ], true ) ){
+                                return new WP_Error( __FUNCTION__, "invalid operator for $query_key", [ 'status' => 400 ] );
+                            }
                             if ( empty( $value ) && $value !== 0 ){
                                 $where_sql .= " $table_key.meta_value IS NULL";
                             } else {
-                                $where_sql .= " $table_key.meta_value $equality " . esc_sql( $value );
+                                if ( !is_numeric( $value ) ){
+                                    return new WP_Error( __FUNCTION__, "$query_key must be a number", [ 'status' => 400 ] );
+                                }
+                                $where_sql .= " $table_key.meta_value $equality " . $wpdb->prepare( '%f', $value );
                             }
                         } else {
                             return new WP_Error( __FUNCTION__, "you can not filter $field_type fields", [ 'status' => 400 ] );
