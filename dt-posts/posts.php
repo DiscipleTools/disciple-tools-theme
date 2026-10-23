@@ -1225,13 +1225,12 @@ class Disciple_Tools_Posts
         }
         $offset = 0;
         if ( isset( $query['offset'] ) ){
-            $offset = esc_sql( sanitize_text_field( $query['offset'] ) );
+            $offset = absint( $query['offset'] );
             unset( $query['offset'] );
         }
         $limit = 100;
         if ( isset( $query['limit'] ) ){
-            $limit = esc_sql( sanitize_text_field( $query['limit'] ) );
-            $limit = MIN( $limit, 1000 );
+            $limit = MIN( absint( $query['limit'] ), 1000 );
             unset( $query['limit'] );
         }
         $sort = '';
@@ -1461,10 +1460,11 @@ class Disciple_Tools_Posts
         }
 
         // If detected, ensure to also query by map bound lat/lng coordinates.
-        $has_map_bounds = isset( $map_bounds['ne'], $map_bounds['ne']['lat'], $map_bounds['ne']['lng'], $map_bounds['sw'], $map_bounds['sw']['lat'], $map_bounds['sw']['lng'] );
+        $has_map_bounds = isset( $map_bounds['ne'], $map_bounds['ne']['lat'], $map_bounds['ne']['lng'], $map_bounds['sw'], $map_bounds['sw']['lat'], $map_bounds['sw']['lng'] )
+            && is_numeric( $map_bounds['ne']['lat'] ) && is_numeric( $map_bounds['ne']['lng'] ) && is_numeric( $map_bounds['sw']['lat'] ) && is_numeric( $map_bounds['sw']['lng'] );
         if ( $has_map_bounds ) {
             $joins .= " LEFT JOIN $wpdb->dt_location_grid_meta as location_grid_meta ON ( location_grid_meta.post_id = p.ID )";
-            $post_query .= ' AND ( (location_grid_meta.lng >= '. esc_sql( $map_bounds['sw']['lng'] ) .' AND location_grid_meta.lng <= '. esc_sql( $map_bounds['ne']['lng'] ) .') AND (location_grid_meta.lat >= '. esc_sql( $map_bounds['sw']['lat'] ) .' AND location_grid_meta.lat <= '. esc_sql( $map_bounds['ne']['lat'] ) .') )';
+            $post_query .= $wpdb->prepare( ' AND ( (location_grid_meta.lng >= %f AND location_grid_meta.lng <= %f) AND (location_grid_meta.lat >= %f AND location_grid_meta.lat <= %f) )', $map_bounds['sw']['lng'], $map_bounds['ne']['lng'], $map_bounds['sw']['lat'], $map_bounds['ne']['lat'] );
         }
 
         // phpcs:disable
