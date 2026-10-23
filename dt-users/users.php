@@ -495,6 +495,7 @@ class Disciple_Tools_Users
         $display_name = sanitize_text_field( wp_unslash( $display_name ) );
 
         $user_id = email_exists( $user_email );
+        $is_new_user = !$user_id;
         if ( $user_id ){
 
             if ( is_user_member_of_blog( $user_id ) ){
@@ -532,11 +533,18 @@ class Disciple_Tools_Users
         update_user_meta( $user_id, $wpdb->prefix . 'user_status', 'active' );
         update_user_meta( $user_id, $wpdb->prefix . 'workload_status', 'active' );
 
-        if ( $optional_fields ) {
+        if ( $optional_fields && $is_new_user && is_array( $optional_fields ) ) {
+            // Only the profile fields offered on the new-user form may be written as usermeta.
+            $allowed_meta_keys = [ 'first_name', 'last_name', 'description' ];
+            foreach ( dt_get_site_custom_lists( 'user_fields' ) as $field ){
+                if ( !empty( $field['key'] ) ){
+                    $allowed_meta_keys[] = $field['key'];
+                }
+            }
             foreach ( $optional_fields as $key => $value ) {
                 if ( $key === 'gender' ) {
                     update_user_option( $user_id, 'user_gender', $value );
-                } else {
+                } else if ( in_array( $key, $allowed_meta_keys, true ) ) {
                     update_user_meta( $user_id, $key, $value );
                 }
             }
