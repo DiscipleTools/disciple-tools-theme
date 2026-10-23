@@ -106,6 +106,12 @@ class DT_Login_User_Manager {
         ];
 
         $user_id = wp_insert_user( $userdata );
+        if ( is_wp_error( $user_id ) ) {
+            if ( 'existing_user_email' === $user_id->get_error_code() ) {
+                throw new Exception( esc_html__( 'An account with this email already exists. Verify your email address, then sign in again.', 'disciple_tools' ), 999 );
+            }
+            throw new Exception( esc_html( $user_id->get_error_message() ), 999 );
+        }
 
         $this->add_user_to_blog_if_needed( $user_id, $user_role ); // add user to site.
 
