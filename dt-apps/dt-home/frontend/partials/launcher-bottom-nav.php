@@ -36,10 +36,6 @@ $filtered_apps = array_filter( $apps, function ( $app ) {
     // For custom apps, just need to be app-type (they may not have magic_link_meta)
     return true;
 });
-
-// Debug logging
-error_log( 'DT Home Launcher Nav: Total apps: ' . count( $apps ) );
-error_log( 'DT Home Launcher Nav: Filtered app-type apps: ' . count( $filtered_apps ) );
 ?>
 <div class="dt-launcher-bottom-nav">
     <div class="nav-container">
