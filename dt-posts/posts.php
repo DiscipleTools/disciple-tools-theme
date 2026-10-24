@@ -2587,7 +2587,7 @@ class Disciple_Tools_Posts
         return $post_id;
     }
 
-    public static function update_connections( array $post_settings, int $post_id, array $fields, $existing_contact = null ){
+    public static function update_connections( array $post_settings, int $post_id, array $fields, $existing_contact = null, bool $check_permissions = true ){
         //update connections (groups, locations, etc)
         foreach ( $post_settings['connection_types'] as $connection_type ){
             if ( isset( $fields[$connection_type] ) ){
@@ -2634,6 +2634,10 @@ class Disciple_Tools_Posts
                         } else if ( !empty( $connection_value['value'] ) ) {
                             $new_connections[] = $connection_value['value'];
                             if ( !in_array( $connection_value['value'], $existing_connections ) ){
+                                $connected_post_type = $post_settings['fields'][$connection_type]['post_type'] ?? '';
+                                if ( $check_permissions && !self::can_connect_to( $connected_post_type, (int) $connection_value['value'] ) ){
+                                    return new WP_Error( __FUNCTION__, "You do not have permission to connect $connected_post_type with ID " . $connection_value['value'], [ 'status' => 403 ] );
+                                }
                                 $potential_error = self::add_connection_to_post( $post_settings['post_type'], $post_id, $connection_type, $connection_value['value'], $connection_value['meta'] ?? [] );
                                 $existing_connections[] = $connection_value['value'];
                                 if ( is_wp_error( $potential_error ) ) {
@@ -2663,6 +2667,21 @@ class Disciple_Tools_Posts
             }
         }
         return $fields;
+    }
+
+    /**
+     * Whether the current user may add a connection to a record.
+     * User contacts are allowed for users the current user can list, as get_viewable_compact offers them.
+     */
+    private static function can_connect_to( string $post_type, int $post_id ): bool {
+        if ( self::can_view( $post_type, $post_id ) ){
+            return true;
+        }
+        if ( $post_type === 'contacts' && get_post_type( $post_id ) === 'contacts' ){
+            $user_id = Disciple_Tools_Users::get_user_for_contact( $post_id );
+            return !empty( $user_id ) && Disciple_Tools_Users::can_list( (int) $user_id );
+        }
+        return false;
     }
 
     private static function update_connection_meta( $post_type, $existing_contact, $field_key, $update_value ){

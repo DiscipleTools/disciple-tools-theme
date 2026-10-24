@@ -303,7 +303,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
-        $potential_error = self::update_connections( $post_settings, $post_id, $contact_methods_and_connections, null );
+        $potential_error = self::update_connections( $post_settings, $post_id, $contact_methods_and_connections, null, $check_permissions );
         if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
@@ -491,7 +491,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
-        $potential_error = self::update_connections( $post_settings, $post_id, $fields, $existing_post );
+        $potential_error = self::update_connections( $post_settings, $post_id, $fields, $existing_post, $check_permissions );
         if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
