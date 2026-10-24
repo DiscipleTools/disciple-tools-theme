@@ -881,7 +881,10 @@ class Disciple_Tools_Posts
                                         $value = strtotime( $value );
                                         $equality = '<=';
                                     }
-                                    $where_sql .= ( $index > 0 ? $connector : ' ' ) . " $table_key.meta_value $equality " . esc_sql( $value );
+                                    if ( !is_numeric( $value ) ){
+                                        return new WP_Error( __FUNCTION__, "$query_key must be a valid date", [ 'status' => 400 ] );
+                                    }
+                                    $where_sql .= ( $index > 0 ? $connector : ' ' ) . " $table_key.meta_value $equality " . $wpdb->prepare( '%d', $value );
                                 }
                                 if ( $field_type === 'key_select' ){
                                     $where_sql .= ( $index > 0 ? $connector : ' ' ) . " $table_key.meta_value $equality '" . esc_sql( $value ) . "'";

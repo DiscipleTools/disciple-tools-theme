@@ -146,6 +146,11 @@ class DT_Posts_DT_Posts_Search_Viewable_Posts extends WP_UnitTestCase {
         $this->assertEquals( $baptism['ID'], $exact['posts'][0]->ID );
         $this->assertGreaterThan( 1, $start['total'] );
         $this->assertEquals( $baptism['ID'], $end['posts'][0]->ID );
+        //bad request
+        $res = DT_Posts::search_viewable_post( 'contacts', [ 'baptism_date' => [ '0 OR 1=1' ] ], false );
+        $this->assertWPError( $res );
+        $res = DT_Posts::search_viewable_post( 'contacts', [ 'baptism_date' => [ 'start' => 'not a date' ] ], false );
+        $this->assertWPError( $res );
 
         $contact = DT_Posts::create_post( 'contacts', [ 'name' => 'x', 'post_date' => '2003-01-02' ], true, false );
         $this->assertNotWPError( $contact );
