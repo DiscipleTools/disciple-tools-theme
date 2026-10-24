@@ -992,9 +992,10 @@ window.SHAREDFUNCTIONS = {
     );
   },
   escapeHTML(str) {
-    if (typeof str === 'undefined') return '';
-    if (typeof str !== 'string') return str;
-    return str
+    if (typeof str === 'undefined' || str === null) return '';
+    // Plain objects pass through for escapeObject's nested maps; they render as "[object Object]".
+    if (typeof str === 'object' && !Array.isArray(str)) return str;
+    return String(str)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
