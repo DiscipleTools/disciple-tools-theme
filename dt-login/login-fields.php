@@ -62,19 +62,29 @@ class DT_Login_Fields {
 
     public static function update( $params ) {
         $vars = self::all();
+        $can_edit_network_fields = !is_multisite() || is_super_admin();
 
         foreach ( $params as $key => $param ) {
-            if ( isset( $vars[$key]['value'] ) ) {
-                $vars[$key]['value'] = $param;
+            if ( !isset( $vars[$key]['value'] ) ) {
+                continue;
             }
+            if ( !$can_edit_network_fields && !empty( $vars[$key]['multisite_level'] ) ) {
+                continue;
+            }
+            if ( $vars[$key]['type'] === 'role' && !empty( $param ) && !self::is_assignable_role( $param ) ) {
+                continue;
+            }
+            $vars[$key]['value'] = $param;
         }
 
         if ( is_multisite() ) {
 
             [ $site_vars, $multisite_vars ] = self::split_site_and_multisite_vars( $vars );
 
-            $multisite_vars = self::dehydrate_fields( $multisite_vars );
-            update_network_option( get_main_network_id(), self::MULTISITE_OPTION_NAME, $multisite_vars );
+            if ( $can_edit_network_fields ) {
+                $multisite_vars = self::dehydrate_fields( $multisite_vars );
+                update_network_option( get_main_network_id(), self::MULTISITE_OPTION_NAME, $multisite_vars );
+            }
 
             $site_vars = self::dehydrate_fields( $vars );
             update_network_option( get_current_blog_id(), self::OPTION_NAME, $site_vars );
@@ -90,6 +100,20 @@ class DT_Login_Fields {
         if ( is_multisite() && is_super_admin() ) {
             delete_network_option( get_main_network_id(), self::MULTISITE_OPTION_NAME );
         }
+    }
+
+    /**
+     * Whether the current user may set this role as the default for new registrations
+     * @param mixed $role
+     * @return bool
+     */
+    private static function is_assignable_role( $role ) {
+        if ( !is_string( $role ) ) {
+            return false;
+        }
+        $roles = function_exists( 'dt_list_roles' ) ? dt_list_roles() : [ 'multiplier' => [ 'disabled' => false ] ];
+
+        return isset( $roles[$role] ) && $roles[$role]['disabled'] === false;
     }
 
     private static function parse_and_save_fields( $defaults, $option_name, $is_multisite_vars = false ) {
