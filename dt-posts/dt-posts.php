@@ -96,7 +96,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields['title'], $fields['name'], $fields['ID'] );
 
                 //update most recently created matched post.
-                $updated_post = self::update_post( $post_type, $duplicate_post_id, $fields, $silent, false, $args );
+                $updated_post = self::update_post( $post_type, $duplicate_post_id, $fields, $silent, $check_permissions, $args );
                 if ( is_wp_error( $updated_post ) ){
                     return $updated_post;
                 }
