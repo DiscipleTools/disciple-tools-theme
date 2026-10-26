@@ -41,7 +41,7 @@ class Magic_URL_Rest_Verify_Test extends WP_UnitTestCase {
         return $types;
     }
 
-    private function verify( $type, $meta_key, $public_key, $instance_id = '' ) {
+    private function verify( $type, $meta_key, $public_key, $instance_id = '', $post_id = null ) {
         $_SERVER['HTTP_HOST'] = wp_parse_url( get_site_url(), PHP_URL_HOST );
         $_SERVER['REQUEST_URI'] = wp_parse_url( get_site_url(), PHP_URL_PATH ) . '/wp-json/' . $this->root . '/v1/' . $type;
         $request = new WP_REST_Request( 'POST', '/' . $this->root . '/v1/' . $type );
@@ -51,7 +51,7 @@ class Magic_URL_Rest_Verify_Test extends WP_UnitTestCase {
                 'type' => $type,
                 'meta_key' => $meta_key,
                 'public_key' => $public_key,
-                'post_id' => $this->contact_id,
+                'post_id' => $post_id ?? $this->contact_id,
                 'instance_id' => $instance_id,
             ],
         ] );
@@ -77,5 +77,13 @@ class Magic_URL_Rest_Verify_Test extends WP_UnitTestCase {
 
     public function test_arbitrary_meta_key_fails() {
         $this->assertFalse( $this->verify( 'type_b', 'overall_status', 'mltest_status' ) );
+    }
+
+    public function test_empty_key_fails() {
+        $this->assertFalse( $this->verify( 'type_b', '', '', '', '' ) );
+    }
+
+    public function test_empty_key_with_post_id_fails() {
+        $this->assertFalse( $this->verify( 'type_b', 'mltest_type_b_magic_key', '' ) );
     }
 }
