@@ -530,7 +530,7 @@ window.TYPEAHEADS = {
         return `<div class="" dir="auto">
           <div>
               <span class="avatar"><img style="vertical-align: text-bottom" src="${window.SHAREDFUNCTIONS.escapeHTML(item.avatar)}"/></span>
-              {{name}} (#${window.SHAREDFUNCTIONS.escapeHTML(item.ID)})
+              ${window.SHAREDFUNCTIONS.escapeHTML(item.name)} (#${window.SHAREDFUNCTIONS.escapeHTML(item.ID)})
           </div>
         </div>`;
       },
