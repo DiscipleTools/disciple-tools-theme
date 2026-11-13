@@ -94,7 +94,13 @@ class Disciple_Tools_Users
         if ( !is_wp_error( $dispatchers ) && !empty( $dispatchers ) ){
             return true;
         }
-        return false;
+        /**
+         * Filter whether the current user can see the queried user in a list (and share records with them).
+         *
+         * @param bool $can_list
+         * @param int $user_id the user being listed
+         */
+        return (bool) apply_filters( 'dt_can_list_user', false, $user_id );
     }
 
     /**
@@ -357,7 +363,7 @@ class Disciple_Tools_Users
             }
         }
 
-        $list = apply_filters( 'dt_assignable_users_compact', $list, $search_string, $get_all );
+        $list = apply_filters( 'dt_assignable_users_compact', $list, $search_string, $get_all, $post_type );
 
         usort( $list, 'asc_meth' );
         return $list;
