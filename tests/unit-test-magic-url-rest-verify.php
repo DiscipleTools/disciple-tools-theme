@@ -10,9 +10,15 @@ class Magic_URL_Rest_Verify_Test extends WP_UnitTestCase {
 
     private $root = 'mltest';
     private $contact_id;
+    private $server;
 
     public function set_up() {
         parent::set_up();
+        // verify() changes these, so put them back for the tests that run after this one
+        $this->server = [
+            'REQUEST_URI' => $_SERVER['REQUEST_URI'] ?? null, // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+            'HTTP_HOST' => $_SERVER['HTTP_HOST'] ?? null, // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+        ];
         add_filter( 'dt_magic_url_register_types', [ $this, 'register_types' ] );
         $this->contact_id = self::factory()->post->create( [ 'post_type' => 'contacts' ] );
         update_post_meta( $this->contact_id, 'mltest_type_a_magic_key', 'key_a' );
@@ -23,7 +29,13 @@ class Magic_URL_Rest_Verify_Test extends WP_UnitTestCase {
 
     public function tear_down() {
         remove_filter( 'dt_magic_url_register_types', [ $this, 'register_types' ] );
-        unset( $_SERVER['REQUEST_URI'] );
+        foreach ( $this->server as $key => $value ) {
+            if ( $value === null ) {
+                unset( $_SERVER[ $key ] );
+            } else {
+                $_SERVER[ $key ] = $value;
+            }
+        }
         parent::tear_down();
     }
 
