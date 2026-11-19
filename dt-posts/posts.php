@@ -2590,7 +2590,7 @@ class Disciple_Tools_Posts
         return $post_id;
     }
 
-    public static function update_connections( array $post_settings, int $post_id, array $fields, $existing_contact = null, bool $check_permissions = true ){
+    public static function update_connections( array $post_settings, int $post_id, array $fields, $existing_contact = null ){
         //update connections (groups, locations, etc)
         foreach ( $post_settings['connection_types'] as $connection_type ){
             if ( isset( $fields[$connection_type] ) ){
@@ -2607,23 +2607,8 @@ class Disciple_Tools_Posts
                 $connection_field = $fields[$connection_type];
                 $new_connections = [];
                 foreach ( $connection_field['values'] as $connection_value ){
-                    if ( isset( $connection_value['value'] ) && !is_numeric( $connection_value['value'] ) ){
-                        if ( filter_var( $connection_value['value'], FILTER_VALIDATE_EMAIL ) ){
-                            $user = get_user_by( 'email', $connection_value['value'] );
-                            if ( $user ){
-                                $corresponding_contact = Disciple_Tools_Users::get_contact_for_user( $user->ID );
-                                if ( $corresponding_contact ){
-                                    $connection_value['value'] = $corresponding_contact;
-                                }
-                            }
-                        } else {
-                            $post_types = $post_settings['connection_types'];
-                            $post_types[] = 'contacts';
-                            $post = self::get_post_by_title_cached( $connection_value['value'], OBJECT, $post_types, $connection_type );
-                            if ( $post && !is_wp_error( $post ) ){
-                                $connection_value['value'] = $post->ID;
-                            }
-                        }
+                    if ( isset( $connection_value['value'] ) ){
+                        $connection_value['value'] = self::resolve_connection_value( $post_settings, $connection_type, $connection_value['value'] );
                     }
 
                     if ( isset( $connection_value['value'] ) && is_numeric( $connection_value['value'] ) ){
@@ -2637,10 +2622,6 @@ class Disciple_Tools_Posts
                         } else if ( !empty( $connection_value['value'] ) ) {
                             $new_connections[] = $connection_value['value'];
                             if ( !in_array( $connection_value['value'], $existing_connections ) ){
-                                $connected_post_type = $post_settings['fields'][$connection_type]['post_type'] ?? '';
-                                if ( $check_permissions && !self::can_connect_to( $connected_post_type, (int) $connection_value['value'] ) ){
-                                    return new WP_Error( __FUNCTION__, "You do not have permission to connect $connected_post_type with ID " . $connection_value['value'], [ 'status' => 403 ] );
-                                }
                                 $potential_error = self::add_connection_to_post( $post_settings['post_type'], $post_id, $connection_type, $connection_value['value'], $connection_value['meta'] ?? [] );
                                 $existing_connections[] = $connection_value['value'];
                                 if ( is_wp_error( $potential_error ) ) {
@@ -2673,14 +2654,79 @@ class Disciple_Tools_Posts
     }
 
     /**
-     * Whether the current user may add a connection to a record.
-     * User contacts are allowed for users the current user can list, as get_viewable_compact offers them.
+     * Resolve a connection value given as an email (the user's contact) or a record title to a post ID.
+     * Values that don't resolve are returned unchanged.
+     */
+    private static function resolve_connection_value( array $post_settings, string $connection_type, $value ){
+        if ( is_numeric( $value ) ){
+            return $value;
+        }
+        if ( filter_var( $value, FILTER_VALIDATE_EMAIL ) ){
+            $user = get_user_by( 'email', $value );
+            if ( $user ){
+                $corresponding_contact = Disciple_Tools_Users::get_contact_for_user( $user->ID );
+                if ( $corresponding_contact ){
+                    return $corresponding_contact;
+                }
+            }
+        } else {
+            $post_types = $post_settings['connection_types'];
+            $post_types[] = 'contacts';
+            $post = self::get_post_by_title_cached( $value, OBJECT, $post_types, $connection_type );
+            if ( $post && !is_wp_error( $post ) ){
+                return $post->ID;
+            }
+        }
+        return $value;
+    }
+
+    /**
+     * Check that the current user may add every new connection in $fields.
+     * Runs before a create or update writes anything, so a rejected connection leaves no partial changes.
+     *
+     * @return true|WP_Error
+     */
+    public static function check_new_connection_permissions( array $post_settings, array $fields, $existing_post = null ){
+        foreach ( $post_settings['connection_types'] as $connection_type ){
+            if ( !isset( $fields[$connection_type]['values'] ) || !is_array( $fields[$connection_type]['values'] ) ){
+                continue;
+            }
+            $existing_connections = [];
+            foreach ( $existing_post[$connection_type] ?? [] as $connection ){
+                $existing_connections[] = isset( $connection->ID ) ? $connection->ID : $connection['ID'];
+            }
+            foreach ( $fields[$connection_type]['values'] as $connection_value ){
+                if ( !isset( $connection_value['value'] ) || ( isset( $connection_value['delete'] ) && $connection_value['delete'] == true ) ){
+                    continue;
+                }
+                $value = self::resolve_connection_value( $post_settings, $connection_type, $connection_value['value'] );
+                if ( !is_numeric( $value ) || empty( $value ) || in_array( $value, $existing_connections ) ){
+                    continue;
+                }
+                $connected_post_type = $post_settings['fields'][$connection_type]['post_type'] ?? ( get_post_type( (int) $value ) ?: '' );
+                if ( !self::can_connect_to( $connected_post_type, (int) $value ) ){
+                    return new WP_Error( __FUNCTION__, "You do not have permission to connect $connected_post_type with ID $value", [ 'status' => 403 ] );
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Whether the current user may add a connection to a record: one they can view, or one the connection typeahead
+     * (get_viewable_compact) offers them, i.e. any record of a type they can list_all, and contacts of users they can list.
      */
     private static function can_connect_to( string $post_type, int $post_id ): bool {
         if ( self::can_view( $post_type, $post_id ) ){
             return true;
         }
-        if ( $post_type === 'contacts' && get_post_type( $post_id ) === 'contacts' ){
+        if ( empty( $post_type ) || get_post_type( $post_id ) !== $post_type ){
+            return false;
+        }
+        if ( self::can_list_all( $post_type ) ){
+            return true;
+        }
+        if ( $post_type === 'contacts' ){
             $user_id = Disciple_Tools_Users::get_user_for_contact( $post_id );
             return !empty( $user_id ) && Disciple_Tools_Users::can_list( (int) $user_id );
         }

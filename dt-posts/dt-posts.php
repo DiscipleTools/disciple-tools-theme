@@ -187,6 +187,13 @@ class DT_Posts extends Disciple_Tools_Posts {
             ] );
         }
 
+        if ( $check_permissions ){
+            $potential_error = self::check_new_connection_permissions( $post_settings, $fields );
+            if ( is_wp_error( $potential_error ) ){
+                return $potential_error;
+            }
+        }
+
         if ( !isset( $fields['last_modified'] ) ){
             $fields['last_modified'] = time();
         }
@@ -303,7 +310,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
-        $potential_error = self::update_connections( $post_settings, $post_id, $contact_methods_and_connections, null, $check_permissions );
+        $potential_error = self::update_connections( $post_settings, $post_id, $contact_methods_and_connections, null );
         if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
@@ -452,6 +459,13 @@ class DT_Posts extends Disciple_Tools_Posts {
             ] );
         }
 
+        if ( $check_permissions ){
+            $potential_error = self::check_new_connection_permissions( $post_settings, $fields, $existing_post );
+            if ( is_wp_error( $potential_error ) ){
+                return $potential_error;
+            }
+        }
+
         //set title
         if ( isset( $fields['title'] ) || isset( $fields['name'] ) ) {
             $title = $fields['title'] ?? $fields['name'];
@@ -491,7 +505,7 @@ class DT_Posts extends Disciple_Tools_Posts {
             return $potential_error;
         }
 
-        $potential_error = self::update_connections( $post_settings, $post_id, $fields, $existing_post, $check_permissions );
+        $potential_error = self::update_connections( $post_settings, $post_id, $fields, $existing_post );
         if ( is_wp_error( $potential_error ) ){
             return $potential_error;
         }
