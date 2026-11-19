@@ -8,6 +8,8 @@ class CreateUserTest extends WP_UnitTestCase {
         $multiplier_id = wp_create_user( 'inviter', 'test', 'inviter@example.com' );
         get_user_by( 'id', $multiplier_id )->set_role( 'multiplier' );
         wp_set_current_user( $multiplier_id );
+        // The role factory snapshots roles on first use, which can be before the DT roles are registered.
+        dt_multi_role_role_factory()->add_role( 'multiplier' );
     }
 
     public function test_optional_fields_cannot_write_capabilities() {
