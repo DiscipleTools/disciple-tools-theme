@@ -86,6 +86,12 @@ class DT_Posts extends Disciple_Tools_Posts {
         //if specified, check for actual duplicates.
         if ( isset( $args['check_for_duplicates'] ) && is_array( $args['check_for_duplicates'] ) && ! empty( $args['check_for_duplicates'] ) ) {
             $duplicate_post_ids = apply_filters( 'dt_create_check_for_duplicate_posts', [], $post_type, $fields, $args['check_for_duplicates'], $check_permissions );
+            // Only merge into a duplicate the user can update; otherwise create a new record.
+            if ( $check_permissions && ! empty( $duplicate_post_ids ) ) {
+                $duplicate_post_ids = array_values( array_filter( $duplicate_post_ids, function ( $duplicate_post_id ) use ( $post_type ) {
+                    return self::can_update( $post_type, (int) $duplicate_post_id );
+                } ) );
+            }
             if ( ! empty( $duplicate_post_ids ) && count( $duplicate_post_ids ) > 0 ) {
                 $duplicate_post_id = $duplicate_post_ids[0];
 
