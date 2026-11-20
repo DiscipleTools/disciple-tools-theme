@@ -630,9 +630,12 @@ class DT_Contacts_Base {
         if ( get_current_user_id() === 0 ){
             $current_user = wp_get_current_user();
             $had_cap = current_user_can( 'dt_all_access_contacts' );
+            $had_access_cap = current_user_can( 'access_contacts' );
+            // The duplicate search requires access_contacts as well as dt_all_access_contacts.
+            $current_user->add_cap( 'access_contacts' );
             $current_user->add_cap( 'dt_all_access_contacts' );
             $dup_ids = DT_Duplicate_Checker_And_Merging::ids_of_non_dismissed_duplicates( $post_type, $post_id, true );
-            if ( ! is_wp_error( $dup_ids ) && sizeof( $dup_ids['ids'] ) < 10 ){
+            if ( ! is_wp_error( $dup_ids ) && !empty( $dup_ids['ids'] ) && sizeof( $dup_ids['ids'] ) < 10 ){
                 $comment = __( 'This record might be a duplicate of: ', 'disciple_tools' );
                 foreach ( $dup_ids['ids'] as $id_of_duplicate ){
                     $comment .= " \n -  [$id_of_duplicate]($id_of_duplicate)";
@@ -645,6 +648,9 @@ class DT_Contacts_Base {
             }
             if ( !$had_cap ){
                 $current_user->remove_cap( 'dt_all_access_contacts' );
+            }
+            if ( !$had_access_cap ){
+                $current_user->remove_cap( 'access_contacts' );
             }
         }
     }
