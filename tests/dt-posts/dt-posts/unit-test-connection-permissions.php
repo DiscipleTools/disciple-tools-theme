@@ -16,6 +16,9 @@ class DT_Posts_DT_Posts_Connection_Permissions extends WP_UnitTestCase {
         $user = get_user_by( 'id', $this->user_id );
         $user->set_role( 'multiplier' );
 
+        $owner_id = wp_create_user( 'connection_dispatcher', 'test', 'connection_dispatcher@example.com' );
+        get_user_by( 'id', $owner_id )->set_role( 'dispatcher' );
+        wp_set_current_user( $owner_id );
         $hidden_group = DT_Posts::create_post( 'groups', [ 'title' => 'Hidden group' ], true, false );
         $this->hidden_group_id = $hidden_group['ID'];
 
