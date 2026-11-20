@@ -383,6 +383,10 @@ if ( ! class_exists( 'DT_Magic_URL' ) ) {
             if ( empty( $parts ) ){
                 return false;
             }
+            // A request without a key resolves to empty parts that would otherwise compare equal.
+            if ( empty( $parts['public_key'] ) || empty( $parts['post_id'] ) ){
+                return false;
+            }
             if ( $parts['root'] !== $params['parts']['root'] || $parts['type'] !== $params['parts']['type'] ){
                 return false;
             }

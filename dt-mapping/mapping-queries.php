@@ -1395,6 +1395,9 @@ class Disciple_Tools_Mapping_Queries {
     public static function cluster_geojson( $post_type, $query = [], $offset = 0, $limit = 50000 ){
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
+        if ( is_wp_error( $sql ) ){
+            return $sql;
+        }
         if ( empty( $sql['where_sql'] ) ){
             $sql['where_sql'] = '1=1';
         }
@@ -1419,6 +1422,9 @@ class Disciple_Tools_Mapping_Queries {
     public static function points_geojson( $post_type, $query = [], $offset = 0, $limit = 50000 ){
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
+        if ( is_wp_error( $sql ) ){
+            return $sql;
+        }
         if ( empty( $sql['where_sql'] ) ){
             $sql['where_sql'] = '1=1';
         }
@@ -1451,6 +1457,9 @@ class Disciple_Tools_Mapping_Queries {
     public static function query_location_grid_meta_totals( $post_type, $query ) {
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
+        if ( is_wp_error( $sql ) ){
+            return $sql;
+        }
         if ( empty( $sql['where_sql'] ) ){
             $sql['where_sql'] = '1=1';
         }
@@ -1545,6 +1554,9 @@ class Disciple_Tools_Mapping_Queries {
     public static function query_under_location_grid_meta_id( $post_type, $grid_id, $query ) {
         global $wpdb;
         $sql = DT_Posts::fields_to_sql( $post_type, $query );
+        if ( is_wp_error( $sql ) ){
+            return $sql;
+        }
         if ( empty( $sql['where_sql'] ) ){
             $sql['where_sql'] = '1=1';
         }

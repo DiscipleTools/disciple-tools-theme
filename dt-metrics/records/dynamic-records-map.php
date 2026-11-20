@@ -284,6 +284,9 @@ class DT_Metrics_Dynamic_Records_Map extends DT_Metrics_Chart_Base
             return $query;
         }
         $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( $post_type, $query );
+        if ( is_wp_error( $results ) ) {
+            return $results;
+        }
 
         $list = [];
         foreach ( $results as $result ) {

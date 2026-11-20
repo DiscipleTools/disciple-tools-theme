@@ -86,6 +86,12 @@ class DT_Posts extends Disciple_Tools_Posts {
         //if specified, check for actual duplicates.
         if ( isset( $args['check_for_duplicates'] ) && is_array( $args['check_for_duplicates'] ) && ! empty( $args['check_for_duplicates'] ) ) {
             $duplicate_post_ids = apply_filters( 'dt_create_check_for_duplicate_posts', [], $post_type, $fields, $args['check_for_duplicates'], $check_permissions );
+            // Only merge into a duplicate the user can update; otherwise create a new record.
+            if ( $check_permissions && ! empty( $duplicate_post_ids ) ) {
+                $duplicate_post_ids = array_values( array_filter( $duplicate_post_ids, function ( $duplicate_post_id ) use ( $post_type ) {
+                    return self::can_update( $post_type, (int) $duplicate_post_id );
+                } ) );
+            }
             if ( ! empty( $duplicate_post_ids ) && count( $duplicate_post_ids ) > 0 ) {
                 $duplicate_post_id = $duplicate_post_ids[0];
 
@@ -96,7 +102,7 @@ class DT_Posts extends Disciple_Tools_Posts {
                 unset( $fields['title'], $fields['name'], $fields['ID'] );
 
                 //update most recently created matched post.
-                $updated_post = self::update_post( $post_type, $duplicate_post_id, $fields, $silent, false, $args );
+                $updated_post = self::update_post( $post_type, $duplicate_post_id, $fields, $silent, $check_permissions, $args );
                 if ( is_wp_error( $updated_post ) ){
                     return $updated_post;
                 }
@@ -185,6 +191,13 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'bad_fields' => $bad_fields,
                 'status' => 400
             ] );
+        }
+
+        if ( $check_permissions ){
+            $potential_error = self::check_new_connection_permissions( $post_settings, $fields );
+            if ( is_wp_error( $potential_error ) ){
+                return $potential_error;
+            }
         }
 
         if ( !isset( $fields['last_modified'] ) ){
@@ -450,6 +463,13 @@ class DT_Posts extends Disciple_Tools_Posts {
                 'bad_fields' => $bad_fields,
                 'status' => 400
             ] );
+        }
+
+        if ( $check_permissions ){
+            $potential_error = self::check_new_connection_permissions( $post_settings, $fields, $existing_post );
+            if ( is_wp_error( $potential_error ) ){
+                return $potential_error;
+            }
         }
 
         //set title
