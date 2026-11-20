@@ -142,6 +142,9 @@ class DT_Metrics_Mapbox_Contacts_Maps extends DT_Metrics_Chart_Base
         $query = ( isset( $params['query'] ) && !empty( $params['query'] ) ) ? $params['query'] : [];
         $query = dt_array_merge_recursive_distinct( $query, $this->base_filter );
         $results = Disciple_Tools_Mapping_Queries::query_location_grid_meta_totals( $post_type, $query );
+        if ( is_wp_error( $results ) ) {
+            return $results;
+        }
 
         $list = [];
         foreach ( $results as $result ) {
